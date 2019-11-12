@@ -2107,7 +2107,7 @@ function ReloadItemDesc(): boolean {
   return true;
 }
 
-function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemDescAmmoCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fRightDown: boolean = false;
   let pStr: string /* INT16[10] */;
 
@@ -2123,7 +2123,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fRightDown = true;
     gfItemAmmoDown = true;
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP && fRightDown) {
     fRightDown = false;
     gfItemAmmoDown = false;
@@ -2170,7 +2170,7 @@ function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         fItemDescDelete = true;
       }
     }
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -4558,12 +4558,12 @@ function ItemDescCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   }
 }
 
-function ItemDescDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemDescDoneButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (gpItemDescObject.value.usItem == Enum225.MONEY) {
         RemoveMoney();
@@ -4574,10 +4574,10 @@ function ItemDescDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       DeleteItemDescriptionBox();
     }
   }
@@ -5351,35 +5351,35 @@ export function RemoveItemPickupMenu(): void {
   }
 }
 
-function ItemPickupScrollUp(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemPickupScrollUp(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     SetupPickupPage((gItemPickupMenu.bScrollPage - 1));
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function ItemPickupScrollDown(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemPickupScrollDown(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     SetupPickupPage((gItemPickupMenu.bScrollPage + 1));
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function ItemPickupAll(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemPickupAll(btn: GUI_BUTTON, reason: INT32): void {
   let cnt: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gItemPickupMenu.fAllSelected = !gItemPickupMenu.fAllSelected;
 
@@ -5397,17 +5397,17 @@ function ItemPickupAll(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       DisableButton(gItemPickupMenu.iOKButton);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function ItemPickupOK(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemPickupOK(btn: GUI_BUTTON, reason: INT32): void {
   let cnt: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
     gItemPickupMenu.fHandled = true;
@@ -5415,22 +5415,22 @@ function ItemPickupOK(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     // Tell our soldier to pickup this item!
     SoldierGetItemFromWorld(gItemPickupMenu.pSoldier, ITEM_PICKUP_SELECTION, gItemPickupMenu.sGridNo, gItemPickupMenu.bZLevel, gItemPickupMenu.pfSelectedArray);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function ItemPickupCancel(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ItemPickupCancel(btn: GUI_BUTTON, reason: INT32): void {
   let cnt: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
     gItemPickupMenu.fHandled = true;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -5535,20 +5535,20 @@ export function HandleItemPickupMenu(): boolean {
   return gItemPickupMenu.fHandled;
 }
 
-function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMoneyButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let i: INT8;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     switch (ubButton) {
       case Enum217.M_1000:
@@ -5603,13 +5603,13 @@ function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     switch (ubButton) {
       case Enum217.M_1000:
@@ -5637,7 +5637,7 @@ function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       MarkAButtonDirty(guiMoneyButtonBtn[i]);
     }
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 

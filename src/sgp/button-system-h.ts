@@ -31,11 +31,6 @@ export const BUTTON_NO_SLOT = -1;
 const BUTTON_INIT = 1;
 const BUTTON_WAS_CLICKED = 2;
 
-// effects how the button is rendered.
-export const BUTTON_TYPES = (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX);
-// effects how the button is processed
-export const BUTTON_TYPE_MASK = (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS);
-
 // button flags
 export const BUTTON_TOGGLE = 0x00000000;
 export const BUTTON_QUICK = 0x00000000;
@@ -56,6 +51,11 @@ export const BUTTON_NEWTOGGLE = 0x00002000;
 export const BUTTON_FORCE_UNDIRTY = 0x00004000; // no matter what happens this buttons does NOT get marked dirty
 export const BUTTON_IGNORE_CLICKS = 0x00008000; // Ignore any clicks on this button
 export const BUTTON_DISABLED_CALLBACK = 0x80000000;
+
+// effects how the button is rendered.
+export const BUTTON_TYPES = (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX);
+// effects how the button is processed
+export const BUTTON_TYPE_MASK = (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS);
 
 const BUTTON_SOUND_NONE = 0x00;
 export const BUTTON_SOUND_CLICKED_ON = 0x01;
@@ -78,15 +78,15 @@ const GUI_SND_DCLK = BUTTON_SOUND_DISABLED_CLICK;
 const GUI_SND_DMOV = BUTTON_SOUND_DISABLED_MOVED_ONTO;
 
 // GUI_BUTTON callback function type
-export type GUI_CALLBACK = (a: Pointer<GUI_BUTTON>, b: INT32) => void;
+export type GUI_CALLBACK = (btn: GUI_BUTTON, reason: INT32) => void;
 
 // GUI_BUTTON structure definitions.
 export interface GUI_BUTTON {
   IDNum: INT32; // ID Number, contains it's own button number
   ImageNum: UINT32; // Image number to use (see DOCs for details)
   Area: MOUSE_REGION; // Mouse System's mouse region to use for this button
-  ClickCallback: GUI_CALLBACK; // Button Callback when button is clicked
-  MoveCallback: GUI_CALLBACK; // Button Callback when mouse moved on this region
+  ClickCallback: GUI_CALLBACK | null; // Button Callback when button is clicked
+  MoveCallback: GUI_CALLBACK | null; // Button Callback when mouse moved on this region
   Cursor: INT16; // Cursor to use for this button
   uiFlags: UINT32; // Button state flags etc.( 32-bit )
   uiOldFlags: UINT32; // Old flags from previous render loop
@@ -121,11 +121,55 @@ export interface GUI_BUTTON {
   bIconYOffset: INT8; //-1 means vertically centered
   fShiftImage: boolean; // if true, icon is shifted +1,+1 when button state is down.
 
-  ubToggleButtonOldState: UINT8; // Varibles for new toggle buttons that work
-  ubToggleButtonActivated: UINT8;
+  ubToggleButtonOldState: boolean /* UINT8 */; // Varibles for new toggle buttons that work
+  ubToggleButtonActivated: boolean /* UINT8 */;
 
   BackRect: INT32; // Handle to a Background Rectangle
   ubSoundSchemeID: UINT8;
+}
+
+export function createGUIButton(): GUI_BUTTON {
+  return {
+    IDNum: 0,
+    ImageNum: 0,
+    Area: createMouseRegion(),
+    ClickCallback: null,
+    MoveCallback: null,
+    Cursor: 0,
+    uiFlags: 0,
+    uiOldFlags: 0,
+    XLoc: 0,
+    YLoc: 0,
+    UserData: createArray(4, 0),
+    Group: 0,
+    bDefaultStatus: 0,
+    bDisabledStyle: 0,
+    string: "",
+    usFont: 0,
+    fMultiColor: false,
+    sForeColor: 0,
+    sShadowColor: 0,
+    sForeColorDown: 0,
+    sShadowColorDown: 0,
+    sForeColorHilited: 0,
+    sShadowColorHilited: 0,
+    bJustification: 0,
+    bTextXOffset: 0,
+    bTextYOffset: 0,
+    bTextXSubOffSet: 0,
+    bTextYSubOffSet: 0,
+    fShiftText: false,
+    sWrappedWidth: 0,
+    iIconID: 0,
+    usIconIndex: 0,
+    bIconXOffset: 0,
+    bIconYOffset: 0,
+    fShiftImage: false,
+    ubToggleButtonOldState: false,
+    ubToggleButtonActivated: false,
+    BackRect: 0,
+    ubSoundSchemeID: 0,
+  };
 }
 
 export const MAX_BUTTONS = 400;
@@ -134,7 +178,7 @@ const GetButtonPtr = (x: number) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonLis
 
 // Struct definition for the QuickButton pictures.
 export interface BUTTON_PICS {
-  vobj: HVOBJECT; // The Image itself
+  vobj: SGPVObject /* HVOBJECT */; // The Image itself
   Grayed: INT32; // Index to use for a "Grayed-out" button
   OffNormal: INT32; // Index to use when button is OFF
   OffHilite: INT32; // Index to use when button is OFF w/ hilite on it
@@ -143,6 +187,20 @@ export interface BUTTON_PICS {
   MaxWidth: UINT32; // Width of largest image in use
   MaxHeight: UINT32; // Height of largest image in use
   fFlags: UINT32; // Special image flags
+}
+
+export function createButtonPics(): BUTTON_PICS {
+  return {
+    vobj: <SGPVObject><unknown>null,
+    Grayed: 0,
+    OffNormal: 0,
+    OffHilite: 0,
+    OnNormal: 0,
+    OnHilite: 0,
+    MaxWidth: 0,
+    MaxHeight: 0,
+    fFlags: 0,
+  };
 }
 
 export const MAX_BUTTON_PICS = 256;

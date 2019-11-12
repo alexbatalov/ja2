@@ -1133,14 +1133,14 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
   return true;
 }
 
-function BtnPreviousButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnPreviousButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
@@ -1154,22 +1154,22 @@ function BtnPreviousButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       gbCurrentSoldier = AimMercArray[gbCurrentIndex];
 
       gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnContactButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // if we are not already in the video conferemce mode, go in to it
       if (!gubVideoConferencingMode) {
         gubVideoConferencingMode = Enum65.AIM_VIDEO_POPUP_MODE;
@@ -1177,27 +1177,27 @@ function BtnContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
         gfFirstTimeInContactScreen = true;
       }
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnNextButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
       InitCreateDeleteAimPopUpBox(Enum66.AIM_POPUP_DELETE, null, null, 0, 0, 0);
 
       if (gbCurrentIndex < MAX_NUMBER_MERCS - 1)
@@ -1211,12 +1211,12 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
       gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -1399,50 +1399,50 @@ function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString:
   }
 }
 
-function BtnContractLengthButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnContractLengthButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
     gubContractLength = ubRetValue;
     DisplaySelectLights(true, false);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     DisplaySelectLights(false, false);
 
     guiMercAttitudeTime = GetJA2Clock();
 
     DisplayMercChargeAmount();
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
 
     //		InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnBuyEquipmentButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnBuyEquipmentButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     gfBuyEquipment = MSYS_GetBtnUserData(btn, 0);
     DisplaySelectLights(false, true);
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     DisplaySelectLights(false, false);
     DisplayMercChargeAmount();
 
@@ -1450,26 +1450,26 @@ function BtnBuyEquipmentButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
     //		InvalidateRegion(LAPTOP_SCREEN_UL_X,LAPTOP_SCREEN_WEB_UL_Y,LAPTOP_SCREEN_LR_X,LAPTOP_SCREEN_WEB_LR_Y);
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
 // Transfer funds button callback
-function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnAuthorizeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gfStopMercFromTalking = true;
     gubMercAttitudeLevel = QUOTE_DELAY_NO_ACTION;
@@ -1512,11 +1512,11 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     else {
       gubVideoConferencingMode = Enum65.AIM_VIDEO_FIRST_CONTACT_MERC_MODE;
     }
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -1887,21 +1887,21 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
   return true;
 }
 
-function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnPopUpOkButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fInCallback: boolean = true;
 
   if (fInCallback) {
-    if (!(btn.value.uiFlags & BUTTON_ENABLED))
+    if (!(btn.uiFlags & BUTTON_ENABLED))
       return;
 
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-      btn.value.uiFlags |= BUTTON_CLICKED_ON;
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags |= BUTTON_CLICKED_ON;
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       let ubCurPageNum: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
       fInCallback = false;
 
       //			gfStopMercFromTalking = TRUE;
@@ -1920,19 +1920,19 @@ function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
       fInCallback = true;
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
 }
 
 // we first contact merc.  We either go to hire him or cancel the call
-function BtnFirstContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnFirstContactButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       //			gfStopMercFromTalking = TRUE;
@@ -1948,24 +1948,24 @@ function BtnFirstContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
         gubVideoConferencingMode = Enum65.AIM_VIDEO_POPDOWN_MODE;
       }
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnAnsweringMachineButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnAnsweringMachineButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       if (ubRetValue == 0) {
@@ -1985,33 +1985,33 @@ function BtnAnsweringMachineButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT
         //				gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
       }
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnHangUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnHangUpButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(CONTACT_X, CONTACT_BOX_Y, CONTACT_BR_X, CONTACT_BR_Y);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       //			gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
       gubVideoConferencingMode = Enum65.AIM_VIDEO_POPDOWN_MODE;
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       InvalidateRegion(CONTACT_X, CONTACT_BOX_Y, CONTACT_BR_X, CONTACT_BR_Y);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(CONTACT_X, CONTACT_BOX_Y, CONTACT_BR_X, CONTACT_BR_Y);
   }
 }
@@ -2612,17 +2612,17 @@ function StopMercTalking(): void {
   }
 }
 
-function BtnXToCloseVideoConfButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnXToCloseVideoConfButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       gubVideoConferencingMode = Enum65.AIM_VIDEO_POPDOWN_MODE;
       //			gubVideoConferencingMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
 }

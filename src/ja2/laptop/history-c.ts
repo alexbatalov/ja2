@@ -346,7 +346,7 @@ function DestroyHistoryButtons(): void {
   return;
 }
 
-function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnHistoryDisplayPrevPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = true;
@@ -355,7 +355,7 @@ function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fReDrawScreenFlag = true;
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     // this page is > 0, there are pages before it, decrement
 
     if (iCurrentHistoryPage > 0) {
@@ -369,7 +369,7 @@ function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnHistoryDisplayNextPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = true;
   }
@@ -377,7 +377,7 @@ function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // increment currentPage
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     LoadNextHistoryPage();
     // set new state
     SetHistoryButtonStates();

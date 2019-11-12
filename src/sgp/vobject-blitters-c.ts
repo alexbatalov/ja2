@@ -12343,18 +12343,18 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   return true;
 }
 
-export function SetClippingRect(clip: Pointer<SGPRect>): void {
+export function SetClippingRect(clip: SGPRect): void {
   Assert(clip != null);
   Assert(clip.value.iLeft < clip.value.iRight);
   Assert(clip.value.iTop < clip.value.iBottom);
 
-  memcpy(addressof(ClippingRect), clip, sizeof(SGPRect));
+  copySGPRect(ClippingRect, clip);
 }
 
-export function GetClippingRect(clip: Pointer<SGPRect>): void {
+export function GetClippingRect(clip: SGPRect): void {
   Assert(clip != null);
 
-  memcpy(clip, addressof(ClippingRect), sizeof(SGPRect));
+  copySGPRect(clip, ClippingRect);
 }
 
 /**********************************************************************************************

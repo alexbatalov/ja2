@@ -609,13 +609,13 @@ export function RenderBobbyRMailOrder(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function BtnBobbyRClearOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnBobbyRClearOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
     gubSelectedLight = 0;
@@ -629,21 +629,21 @@ function BtnBobbyRClearOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     // disable the accept order button
     DisableButton(guiBobbyRAcceptOrder);
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnBobbyRAcceptOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (guiSubTotal && gfCanAcceptOrder) {
       // if the player doesnt have enough money
@@ -762,11 +762,11 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       }
     }
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -974,35 +974,35 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
   InvalidateRegion(333, 326, 374, 400);
 }
 
-function BtnBobbyRBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnBobbyRBackCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     guiCurrentLaptopMode = guiLastBobbyRayPage;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnBobbyRHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnBobbyRHomeCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBY_R;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -1880,19 +1880,19 @@ function DisplayPackageWeight(): void {
   DrawTextToScreen(zTemp, BOBBYR_PACKAXGE_WEIGHT_X + 3, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
 
-function BtnBobbyRGotoShipmentPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnBobbyRGotoShipmentPageCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     guiCurrentLaptopMode = Enum95.LAPTOP_MODE_BOBBYR_SHIPMENTS;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 

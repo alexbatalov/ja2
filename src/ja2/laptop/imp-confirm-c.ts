@@ -177,17 +177,17 @@ function AddCharacterToPlayersTeam(): boolean {
   }
 }
 
-function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPConfirmYes(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // reset button
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (LaptopSaveInfo.fIMPCompletedFlag) {
         // already here, leave
@@ -230,15 +230,15 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 // fixed? by CJC Nov 28 2002
-function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPConfirmNo(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       iCurrentImpPage = Enum71.IMP_FINISH;
 
       /*
@@ -258,7 +258,7 @@ function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
 fNoAlreadySelected = TRUE;
       */
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }

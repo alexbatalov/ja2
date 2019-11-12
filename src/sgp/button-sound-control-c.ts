@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
-  ButtonList[iButtonID].value.ubSoundSchemeID = bSoundScheme;
+  ButtonList[iButtonID].ubSoundSchemeID = bSoundScheme;
   if (bSoundScheme == Enum27.BUTTON_SOUND_SCHEME_GENERIC) {
     switch (guiCurrentScreen) {
       case Enum26.MAINMENU_SCREEN:
@@ -9,22 +9,22 @@ export function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): 
       case Enum26.LOADSAVE_SCREEN:
       case Enum26.SAVE_LOAD_SCREEN:
       case Enum26.INIT_SCREEN:
-        ButtonList[iButtonID].value.ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_BIGSWITCH3;
+        ButtonList[iButtonID].ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_BIGSWITCH3;
         break;
 
       case Enum26.LAPTOP_SCREEN:
-        ButtonList[iButtonID].value.ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_COMPUTERBEEP2;
+        ButtonList[iButtonID].ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_COMPUTERBEEP2;
         break;
 
       case Enum26.AUTORESOLVE_SCREEN:
       case Enum26.MAP_SCREEN:
       case Enum26.GAME_SCREEN:
       case Enum26.SHOPKEEPER_SCREEN:
-        ButtonList[iButtonID].value.ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_SMALLSWITCH2;
+        ButtonList[iButtonID].ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_SMALLSWITCH2;
         break;
 
       case Enum26.GAME_INIT_OPTIONS_SCREEN:
-        ButtonList[iButtonID].value.ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_VERYSMALLSWITCH2;
+        ButtonList[iButtonID].ubSoundSchemeID = Enum27.BUTTON_SOUND_SCHEME_VERYSMALLSWITCH2;
         break;
 
         // Anything not handled gets NO sound.
@@ -48,7 +48,7 @@ export function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
     return;
   }
 
-  switch (ButtonList[iButtonID].value.ubSoundSchemeID) {
+  switch (ButtonList[iButtonID].ubSoundSchemeID) {
     case Enum27.BUTTON_SOUND_SCHEME_NONE:
     case Enum27.BUTTON_SOUND_SCHEME_GENERIC:
       break;

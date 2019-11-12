@@ -3253,21 +3253,21 @@ export function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
 export function ClipBlitsToMapViewRegion(): void {
   // the standard mapscreen rectangle doesn't work for clipping while zoomed...
   let ZoomedMapScreenClipRect: SGPRect = createSGPRectFrom(MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + MAP_GRID_Y - 10);
-  let pRectToUse: Pointer<SGPRect>;
+  let pRectToUse: SGPRect;
 
   if (fZoomFlag)
-    pRectToUse = addressof(ZoomedMapScreenClipRect);
+    pRectToUse = ZoomedMapScreenClipRect;
   else
-    pRectToUse = addressof(MapScreenRect);
+    pRectToUse = MapScreenRect;
 
   SetClippingRect(pRectToUse);
-  memcpy(addressof(gOldClipRect), addressof(gDirtyClipRect), sizeof(gOldClipRect));
-  memcpy(addressof(gDirtyClipRect), pRectToUse, sizeof(gDirtyClipRect));
+  copySGPRect(gOldClipRect, gDirtyClipRect);
+  copySGPRect(gDirtyClipRect, pRectToUse);
 }
 
 export function RestoreClipRegionToFullScreen(): void {
-  SetClippingRect(addressof(FullScreenRect));
-  memcpy(addressof(gDirtyClipRect), addressof(gOldClipRect), sizeof(gDirtyClipRect));
+  SetClippingRect(FullScreenRect);
+  copySGPRect(gDirtyClipRect, gOldClipRect);
 }
 
 export function ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES: UINT32): void {
@@ -4715,13 +4715,13 @@ function SetMilitiaMapButtonsText(): void {
   return;
 }
 
-function MilitiaButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MilitiaButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let sGlobalMapSector: INT16 = 0;
   let sBaseSectorValue: INT16 = 0;
   let iValue: INT32 = 0;
 
   // is the button enabled
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   // get the value
@@ -4732,17 +4732,17 @@ function MilitiaButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       DropAPersonInASector((iValue), ((sGlobalMapSector % 16) + 1), ((sGlobalMapSector / 16) + 1));
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       PickUpATownPersonFromSector((iValue), ((sGlobalMapSector % 16) + 1), ((sGlobalMapSector / 16) + 1));
     }
   }
@@ -5085,12 +5085,12 @@ function DeleteMilitiaPanelBottomButton(): void {
   fMapPanelDirty = true;
 }
 
-function MilitiaAutoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MilitiaAutoButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // distribute troops over all the sectors under control
       HandleEveningOutOfTroopsAmongstSectors();
@@ -5101,12 +5101,12 @@ function MilitiaAutoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   return;
 }
 
-function MilitiaDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MilitiaDoneButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // reset fact we are in the box
       sSelectedMilitiaTown = 0;

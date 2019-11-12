@@ -213,14 +213,14 @@ export function RenderMercsFiles(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function BtnMercPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercPrevButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if (gubCurMercIndex > 0)
         gubCurMercIndex--;
@@ -234,23 +234,23 @@ function BtnMercPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       // Enable or disable the buttons
       EnableDisableMercFilesNextPreviousButton();
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnMercNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercNextButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       if (gubCurMercIndex <= LaptopSaveInfo.gubLastMercIndex - 1)
         gubCurMercIndex++;
@@ -264,23 +264,23 @@ function BtnMercNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
       // Enable or disable the buttons
       EnableDisableMercFilesNextPreviousButton();
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercHireButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       // if the players accont is suspended, go back to the main screen and have Speck inform the players
       if (LaptopSaveInfo.gubPlayersMercAccountStatus == Enum104.MERC_ACCOUNT_SUSPENDED) {
@@ -304,12 +304,12 @@ function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         DisplayPopUpBoxExplainingMercArrivalLocationAndTime(GetMercIDFromMERCArray(gubCurMercIndex));
       }
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -535,24 +535,24 @@ function MercFilesHireMerc(ubMercID: UINT8): boolean {
   }
 }
 
-function BtnMercFilesBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercFilesBackButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
       gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_HIRE_PAGE;
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 

@@ -1189,7 +1189,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
         case SPACE:
 
           // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-          if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.NEXTMERC_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+          if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.NEXTMERC_BUTTON]].uiFlags & BUTTON_ENABLED))) {
             if (!InKeyRingPopup()) {
               if (_KeyDown(SHIFT)) {
                 let pNewSoldier: Pointer<SOLDIERTYPE>;
@@ -1197,7 +1197,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
                 if (gusSelectedSoldier != NO_SOLDIER) {
                   // only allow if nothing in hand and if in SM panel, the Change Squad button must be enabled
-                  if (((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+                  if (((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].uiFlags & BUTTON_ENABLED))) {
                     // Select next squad
                     iCurrentSquad = CurrentSquad();
 
@@ -1232,7 +1232,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           break;
         case TAB:
           // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-          if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+          if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].uiFlags & BUTTON_ENABLED))) {
             UIHandleChangeLevel(null);
 
             if (gsCurInterfacePanel == Enum215.SM_PANEL) {
@@ -1506,7 +1506,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             // gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] ^= TRUE;
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].uiFlags & BUTTON_ENABLED))) {
               SetBurstMode();
             }
           }
@@ -1530,7 +1530,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (gTacticalStatus.uiFlags & TURNBASED && gTacticalStatus.uiFlags & INCOMBAT) {
             if (gTacticalStatus.ubCurrentTeam == gbPlayerNum) {
               // nothing in hand and the Done button for whichever panel we're in must be enabled
-              if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
+              if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_DONE_BUTTON]].uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_DONE_BUTTON]].uiFlags & BUTTON_ENABLED)))) {
                 if (fAlt) {
                   let cnt: INT32;
                   let pSoldier: Pointer<SOLDIERTYPE>;
@@ -1781,7 +1781,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             */
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].uiFlags & BUTTON_ENABLED))) {
               puiNewEvent.value = Enum207.LC_CHANGE_TO_LOOK;
             }
           }
@@ -1798,7 +1798,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             // nothing in hand and the Map Screen button for whichever panel we're in must be enabled
-            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]].value.uiFlags & BUTTON_ENABLED)))) {
+            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && (((gsCurInterfacePanel == Enum215.SM_PANEL) && (ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].uiFlags & BUTTON_ENABLED)) || ((gsCurInterfacePanel == Enum215.TEAM_PANEL) && (ButtonList[iTEAMPanelButtons[Enum221.TEAM_MAP_SCREEN_BUTTON]].uiFlags & BUTTON_ENABLED)))) {
               // go to Map screen
               if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
                 GoToMapScreenFromTactical();
@@ -1888,7 +1888,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else {
             // nothing in hand and the Options Screen button for whichever panel we're in must be enabled
-            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+            if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].uiFlags & BUTTON_ENABLED))) {
               if (!fDisableMapInterfaceDueToBattle) {
                 // go to Options screen
                 guiPreviousOptionScreen = Enum26.GAME_SCREEN;
@@ -3230,7 +3230,7 @@ export function ConfirmActionCancel(usMapPos: UINT16, usOldMapPos: UINT16): bool
 
 function ChangeCurrentSquad(iSquad: INT32): void {
   // only allow if nothing in hand and the Change Squad button for whichever panel we're in must be enabled
-  if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].value.uiFlags & BUTTON_ENABLED))) {
+  if ((gpItemPointer == null) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != Enum215.TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[Enum221.CHANGE_SQUAD_BUTTON]].uiFlags & BUTTON_ENABLED))) {
     if (IsSquadOnCurrentTacticalMap(iSquad)) {
       SetCurrentSquad(iSquad, false);
     }
@@ -3318,7 +3318,7 @@ export function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
 
 function ToggleStealthMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
-  if ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[giSMStealthButton].value.uiFlags & BUTTON_ENABLED)) {
+  if ((gsCurInterfacePanel != Enum215.SM_PANEL) || (ButtonList[giSMStealthButton].uiFlags & BUTTON_ENABLED)) {
     // ATE: Toggle stealth
     if (gpSMCurrentMerc != null && pSoldier.value.ubID == gpSMCurrentMerc.value.ubID) {
       gfUIStanceDifferent = true;

@@ -491,7 +491,7 @@ export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   // Clip fill region coords
   //
 
-  GetClippingRect(addressof(Clip));
+  GetClippingRect(Clip);
 
   if (iDestX1 < Clip.iLeft)
     iDestX1 = Clip.iLeft;
@@ -593,7 +593,7 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   // Clip fill region coords
   //
 
-  GetClippingRect(addressof(OldClip));
+  GetClippingRect(OldClip);
 
   NewClip.iLeft = iDestX1;
   NewClip.iTop = iDestY1;
@@ -627,7 +627,7 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   if ((NewClip.iRight <= NewClip.iLeft) || (NewClip.iBottom <= NewClip.iTop))
     return false;
 
-  SetClippingRect(addressof(NewClip));
+  SetClippingRect(NewClip);
 
   yc = iDestY1;
   for (h = 0; h < hblits; h++) {
@@ -639,7 +639,7 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
     yc += ph;
   }
 
-  SetClippingRect(addressof(OldClip));
+  SetClippingRect(OldClip);
   return true;
 }
 

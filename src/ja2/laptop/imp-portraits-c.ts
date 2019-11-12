@@ -178,16 +178,16 @@ function DestroyIMPPortraitButtons(): void {
   return;
 }
 
-function BtnIMPPortraitNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPortraitNextCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // next picture!!
       IncrementPictureIndex();
@@ -197,16 +197,16 @@ function BtnIMPPortraitNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 }
 
-function BtnIMPPortraitPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPortraitPreviousCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // previous picture, please!!!
       DecrementPicture();
@@ -216,16 +216,16 @@ function BtnIMPPortraitPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPortraitDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // go to main page
       iCurrentImpPage = Enum71.IMP_MAIN_PAGE;

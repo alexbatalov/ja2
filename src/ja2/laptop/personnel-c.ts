@@ -863,18 +863,18 @@ function DeletePersonnelButtons(): void {
   return;
 }
 
-function LeftButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function LeftButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       PrevPersonnelFace();
       uiCurrentInventoryIndex = 0;
@@ -883,18 +883,18 @@ function LeftButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function LeftFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function LeftFFButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       PrevPersonnelFace();
       PrevPersonnelFace();
@@ -907,18 +907,18 @@ function LeftFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function RightButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function RightButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       NextPersonnelFace();
       uiCurrentInventoryIndex = 0;
@@ -927,18 +927,18 @@ function RightButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function RightFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function RightFFButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       NextPersonnelFace();
       NextPersonnelFace();
@@ -1998,20 +1998,20 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   return;
 }
 
-function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function InventoryUpButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & (BUTTON_CLICKED_ON)) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & (BUTTON_CLICKED_ON)) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (uiCurrentInventoryIndex == 0) {
         return;
@@ -2035,13 +2035,13 @@ function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function InventoryDownButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
@@ -2054,10 +2054,10 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     fReDrawScreenFlag = true;
     FindPositionOfPersInvSlider();
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & (BUTTON_CLICKED_ON)) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & (BUTTON_CLICKED_ON)) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (uiCurrentInventoryIndex >= (GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
         return;
@@ -2080,14 +2080,14 @@ function EnableDisableInventoryScrollButtons(): void {
   }
 
   if (uiCurrentInventoryIndex == 0) {
-    ButtonList[giPersonnelInventoryButtons[0]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelInventoryButtons[0]].uiFlags &= ~(BUTTON_CLICKED_ON);
     DisableButton(giPersonnelInventoryButtons[0]);
   } else {
     EnableButton(giPersonnelInventoryButtons[0]);
   }
 
   if (uiCurrentInventoryIndex >= (GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
-    ButtonList[giPersonnelInventoryButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelInventoryButtons[1]].uiFlags &= ~(BUTTON_CLICKED_ON);
     DisableButton(giPersonnelInventoryButtons[1]);
   } else {
     EnableButton(giPersonnelInventoryButtons[1]);
@@ -3773,17 +3773,17 @@ function CreateDestroyButtonsForDepartedTeamList(): void {
   }
 }
 
-function DepartedUpCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function DepartedUpCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (giCurrentUpperLeftPortraitNumber - 20 >= 0) {
         giCurrentUpperLeftPortraitNumber -= 20;
@@ -3793,17 +3793,17 @@ function DepartedUpCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function DepartedDownCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function DepartedDownCallBack(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       if ((giCurrentUpperLeftPortraitNumber + 20) < (GetNumberOfDeadOnPastTeam() + GetNumberOfLeftOnPastTeam() + GetNumberOfOtherOnPastTeam())) {
         giCurrentUpperLeftPortraitNumber += 20;
         fReDrawScreenFlag = true;
@@ -4803,18 +4803,18 @@ function CreateDestroyATMButton(): void {
   */
 }
 
-function ATMStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function ATMStartButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       fShowAtmPanel = true;
       fShowAtmPanelStartButton = false;
@@ -4823,98 +4823,98 @@ function ATMStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function PersonnelINVStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function PersonnelINVStartButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = true;
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
     //		fShowInventory = TRUE;
     gubPersonnelInfoState = Enum109.PRSNL_INV;
   }
 }
 
-function PersonnelStatStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function PersonnelStatStartButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = true;
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
     //		fShowInventory = FALSE;
     gubPersonnelInfoState = Enum109.PRSNL_STATS;
   }
 }
 
-function EmployementInfoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function EmployementInfoButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = true;
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
     gubPersonnelInfoState = Enum109.PRSNL_EMPLOYMENT;
   }
 }
 
-function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ATMOther2ButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
 
     switch (iValue) {
       case (Enum107.DEPOSIT_ATM):
         fATMFlags = 2;
         fReDrawScreenFlag = true;
-        ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+        ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
       case (Enum107.WIDTHDRAWL_ATM):
         fATMFlags = 3;
         fReDrawScreenFlag = true;
-        ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+        ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].uiFlags &= ~(BUTTON_CLICKED_ON);
         break;
     }
   }
 }
 
-function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (iCurrentPersonSelectedId != -1) {
         if (fCurrentTeamMode == true) {
@@ -4995,8 +4995,8 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
                 sTransferString[0] = 0;
               } else if (fATMFlags != 0) {
                 fATMFlags = 0;
-                ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-                ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+                ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].uiFlags &= ~(BUTTON_CLICKED_ON);
+                ButtonList[giPersonnelATMSideButton[Enum107.DEPOSIT_ATM]].uiFlags &= ~(BUTTON_CLICKED_ON);
               } else {
                 fShowAtmPanel = false;
                 fShowAtmPanelStartButton = true;
@@ -5014,24 +5014,24 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ATMNumberButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
   let iCounter: INT32 = 0;
   let sZero: string /* CHAR16[2] */ = "0";
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
       fReDrawScreenFlag = true;
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // find position in value string, append character at end
       for (iCounter = 0; iCounter < sTransferString.length; iCounter++)
         ;
@@ -5257,17 +5257,17 @@ function UpDateStateOfStartButton(): void {
 
   //	if( fShowInventory == TRUE )
   if (gubPersonnelInfoState == Enum109.PRSNL_INV) {
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (gubPersonnelInfoState == Enum109.PRSNL_STATS) {
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_STAT_BTN]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giPersonnelATMStartButton[Enum108.PERSONNEL_EMPLOYMENT_BTN]].uiFlags |= BUTTON_CLICKED_ON;
   }
 
   // if in current mercs and the currently selected guy is valid, enable button, else disable it

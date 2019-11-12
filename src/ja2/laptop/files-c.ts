@@ -1092,8 +1092,8 @@ function DeleteButtonsForFilesPage(): void {
 }
 
 // callbacks
-function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnPreviousFilePageCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -1101,22 +1101,22 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       return;
     }
 
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fWaitAFrame == true) {
       return;
     }
 
-    if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if ((btn.uiFlags & BUTTON_CLICKED_ON)) {
       if (giFilesPage > 0) {
         giFilesPage--;
         fWaitAFrame = true;
       }
 
       fReDrawScreenFlag = true;
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
   }
@@ -1124,8 +1124,8 @@ function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   return;
 }
 
-function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnNextFilePageCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -1133,22 +1133,22 @@ function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       return;
     }
 
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fWaitAFrame == true) {
       return;
     }
 
-    if ((btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if ((btn.uiFlags & BUTTON_CLICKED_ON)) {
       if ((fOnLastFilesPageFlag) == false) {
         fWaitAFrame = true;
         giFilesPage++;
       }
 
       fReDrawScreenFlag = true;
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       MarkButtonsDirty();
     }
   }
@@ -1163,8 +1163,8 @@ function HandleFileViewerButtonStates(): void {
     // not displaying message, leave
     DisableButton(giFilesPageButtons[0]);
     DisableButton(giFilesPageButtons[1]);
-    ButtonList[giFilesPageButtons[0]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
-    ButtonList[giFilesPageButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[0]].uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[1]].uiFlags &= ~(BUTTON_CLICKED_ON);
 
     return;
   }
@@ -1172,7 +1172,7 @@ function HandleFileViewerButtonStates(): void {
   // turn off previous page button
   if (giFilesPage == 0) {
     DisableButton(giFilesPageButtons[0]);
-    ButtonList[giFilesPageButtons[0]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[0]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(giFilesPageButtons[0]);
   }
@@ -1180,7 +1180,7 @@ function HandleFileViewerButtonStates(): void {
   // turn off next page button
   if (fOnLastFilesPageFlag == true) {
     DisableButton(giFilesPageButtons[1]);
-    ButtonList[giFilesPageButtons[1]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[giFilesPageButtons[1]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(giFilesPageButtons[1]);
   }

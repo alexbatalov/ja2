@@ -248,10 +248,10 @@ export function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistant
   AllowDisabledButtonFastHelp(iPBButton[1], true);
   AllowDisabledButtonFastHelp(iPBButton[2], true);
 
-  gusRetreatButtonLeft = ButtonList[iPBButton[2]].value.Area.RegionTopLeftX;
-  gusRetreatButtonTop = ButtonList[iPBButton[2]].value.Area.RegionTopLeftY;
-  gusRetreatButtonRight = ButtonList[iPBButton[2]].value.Area.RegionBottomRightX;
-  gusRetreatButtonBottom = ButtonList[iPBButton[2]].value.Area.RegionBottomRightY;
+  gusRetreatButtonLeft = ButtonList[iPBButton[2]].Area.RegionTopLeftX;
+  gusRetreatButtonTop = ButtonList[iPBButton[2]].Area.RegionTopLeftY;
+  gusRetreatButtonRight = ButtonList[iPBButton[2]].Area.RegionBottomRightX;
+  gusRetreatButtonBottom = ButtonList[iPBButton[2]].Area.RegionBottomRightY;
 
   SetButtonCursor(iPBButtonImage[0], MSYS_NO_CURSOR);
   SetButtonCursor(iPBButtonImage[1], MSYS_NO_CURSOR);
@@ -711,7 +711,7 @@ export function RenderPreBattleInterface(): void {
   // This code determines if the cursor is inside the rectangle consisting of the
   // retreat button.  If it is inside, then we set up the variables so that the retreat
   // arrows get drawn in the mapscreen.
-  if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[2]].uiFlags & BUTTON_ENABLED) {
     if (gusMouseXPos < gusRetreatButtonLeft || gusMouseXPos > gusRetreatButtonRight || gusMouseYPos < gusRetreatButtonTop || gusMouseYPos > gusRetreatButtonBottom)
       fMouseInRetreatButtonArea = false;
     else
@@ -954,7 +954,7 @@ export function RenderPreBattleInterface(): void {
   gfIgnoreAllInput = false;
 }
 
-function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function AutoResolveBattleCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
@@ -966,9 +966,9 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
         SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
-        btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-        DrawButton(btn.value.IDNum);
-        InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+        btn.uiFlags &= ~BUTTON_CLICKED_ON;
+        DrawButton(btn.IDNum);
+        InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
         RefreshScreen(null);
@@ -982,7 +982,7 @@ function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function GoToSectorCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
@@ -994,9 +994,9 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         gStrategicStatus.usPlayerKills += NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
         EliminateAllEnemies(gubPBSectorX, gubPBSectorY);
         SetMusicMode(Enum328.MUSIC_TACTICAL_VICTORY);
-        btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-        DrawButton(btn.value.IDNum);
-        InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+        btn.uiFlags &= ~BUTTON_CLICKED_ON;
+        DrawButton(btn.IDNum);
+        InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
         RefreshScreen(null);
@@ -1008,9 +1008,9 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       if (gfPersistantPBI && gpBattleGroup && gpBattleGroup.value.fPlayer && gubEnemyEncounterCode != Enum164.ENEMY_AMBUSH_CODE && gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE && gubEnemyEncounterCode != Enum164.BLOODCAT_AMBUSH_CODE) {
         gfEnterTacticalPlacementGUI = true;
       }
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-      DrawButton(btn.value.IDNum);
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
+      DrawButton(btn.IDNum);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
       RefreshScreen(null);
@@ -1039,7 +1039,7 @@ function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function RetreatMercsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       // get them outta here!
@@ -1057,9 +1057,9 @@ function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       WarpGameTime(300, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
       ResetMovementForEnemyGroupsInLocation(gubPBSectorX, gubPBSectorY);
 
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-      DrawButton(btn.value.IDNum);
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
+      DrawButton(btn.IDNum);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
       RefreshScreen(null);
@@ -1255,28 +1255,28 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index )
 */
 
 export function ActivatePreBattleAutoresolveAction(): void {
-  if (ButtonList[iPBButton[0]].value.uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[0]].uiFlags & BUTTON_ENABLED) {
     // Feign call the autoresolve button using the callback
     AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 export function ActivatePreBattleEnterSectorAction(): void {
-  if (ButtonList[iPBButton[1]].value.uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[1]].uiFlags & BUTTON_ENABLED) {
     // Feign call the enter sector button using the callback
     GoToSectorCallback(ButtonList[iPBButton[1]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 export function ActivatePreBattleRetreatAction(): void {
-  if (ButtonList[iPBButton[2]].value.uiFlags & BUTTON_ENABLED) {
+  if (ButtonList[iPBButton[2]].uiFlags & BUTTON_ENABLED) {
     // Feign call the retreat button using the callback
     RetreatMercsCallback(ButtonList[iPBButton[2]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
 function ActivateAutomaticAutoResolveStart(): void {
-  ButtonList[iPBButton[0]].value.uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iPBButton[0]].uiFlags |= BUTTON_CLICKED_ON;
   gfIgnoreAllInput = false;
   AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }

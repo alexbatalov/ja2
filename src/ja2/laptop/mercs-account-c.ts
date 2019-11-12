@@ -147,17 +147,17 @@ export function RenderMercsAccount(): void {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercAuthorizeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       let wzAuthorizeString: string /* CHAR16[512] */;
       let wzDollarAmount: string /* CHAR16[128] */;
 
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       wzDollarAmount = swprintf("%d", giMercTotalContractCharge);
 
@@ -169,33 +169,33 @@ function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 
       DoLapTopMessageBox(Enum24.MSG_BOX_BLUE_ON_GREY, wzAuthorizeString, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, MercAuthorizePaymentMessageBoxCallBack);
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnMercBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMercBackButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       guiCurrentLaptopMode = Enum95.LAPTOP_MODE_MERC;
       gubArrivedFromMercSubSite = Enum105.MERC_CAME_FROM_ACCOUNTS_PAGE;
 
-      InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 

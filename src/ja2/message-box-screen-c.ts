@@ -434,14 +434,14 @@ function MsgBoxClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   //
 }
 
-function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function OKMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_OK;
@@ -450,14 +450,14 @@ function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function YESMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_YES;
@@ -466,14 +466,14 @@ function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function NOMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_NO;
@@ -482,14 +482,14 @@ function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ContractMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_CONTRACT;
@@ -498,14 +498,14 @@ function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function LieMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let fLButtonDown: boolean = false;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     fLButtonDown = true;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_LIE;
@@ -514,11 +514,11 @@ function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function NumberedMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function NumberedMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSYS_GetBtnUserData(btn, 0);

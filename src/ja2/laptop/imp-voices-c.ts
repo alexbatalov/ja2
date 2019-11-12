@@ -161,16 +161,16 @@ function DestroyIMPVoicesButtons(): void {
   return;
 }
 
-function BtnIMPVoicesNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPVoicesNextCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // next voice!!
       IncrementVoice();
@@ -187,16 +187,16 @@ function BtnIMPVoicesNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function BtnIMPVoicesPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPVoicesPreviousCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // previous voice, please!!!
       DecrementVoice();
@@ -213,16 +213,16 @@ function BtnIMPVoicesPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPVoicesDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // go to main page
       iCurrentImpPage = Enum71.IMP_MAIN_PAGE;

@@ -659,12 +659,12 @@ function RemoveInventoryButtonForMapPopUpBox(): void {
   return;
 }
 
-function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapTownMineInventoryButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fShowMapInventoryPool = true;
@@ -681,12 +681,12 @@ function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: IN
   }
 }
 
-function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapTownMineExitButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fMapPanelDirty = true;

@@ -223,19 +223,19 @@ function RemoveIMPBeginScreenButtons(): void {
   return;
 }
 
-function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPBeginScreenDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
   // easter egg check
   let fEggOnYouFace: boolean = false;
 
   // btn callback for IMP Begin Screen done button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (fFinishedCharGeneration) {
         // simply reviewing name and gender, exit to finish page

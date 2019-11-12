@@ -342,21 +342,21 @@ export function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): 
 
 function UpdateSectorExitMenu(): void {
   if (gExitDialog.fGotoSector) {
-    ButtonList[gExitDialog.uiLoadCheckButton].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiLoadCheckButton].uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiLoadCheckButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiLoadCheckButton].uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fSingleMove) {
-    ButtonList[gExitDialog.uiSingleMoveButton].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiSingleMoveButton].uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiSingleMoveButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiSingleMoveButton].uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fAllMove) {
-    ButtonList[gExitDialog.uiAllMoveButton].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[gExitDialog.uiAllMoveButton].uiFlags |= BUTTON_CLICKED_ON;
   } else {
-    ButtonList[gExitDialog.uiAllMoveButton].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    ButtonList[gExitDialog.uiAllMoveButton].uiFlags &= (~BUTTON_CLICKED_ON);
   }
 
   if (gExitDialog.fGotoSectorDisabled) {
@@ -605,7 +605,7 @@ export function RemoveSectorExitMenu(fOk: boolean): void {
   }
 }
 
-function CheckLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function CheckLoadMapCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gExitDialog.fGotoSector = !gExitDialog.fGotoSector;
   }
@@ -654,34 +654,34 @@ function AllMoveAction(): void {
   */
 }
 
-function SingleMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SingleMoveCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SingleMoveAction();
   }
 }
 
-function AllMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function AllMoveCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     AllMoveAction();
   }
 }
 
-function OKCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function OKCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     RemoveSectorExitMenu(true);
   }
 }
 
-function CancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function CancelCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     RemoveSectorExitMenu(false);

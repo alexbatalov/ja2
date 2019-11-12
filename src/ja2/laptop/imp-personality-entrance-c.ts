@@ -60,16 +60,16 @@ function DestroyIMPPersonalityEntranceButtons(): void {
   return;
 }
 
-function BtnIMPPersonalityEntranceDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPersonalityEntranceDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP Begin Screen done button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // done with begin screen, next screen
       iCurrentImpPage = Enum71.IMP_PERSONALITY_QUIZ;
       fButtonPendingFlag = true;

@@ -758,7 +758,7 @@ function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
 //	Displays the current selection window
 //
 export function RenderSelectionWindow(): void {
-  let button: Pointer<GUI_BUTTON>;
+  let button: GUI_BUTTON;
   let iSX: INT32;
   let iSY: INT32;
   let iEX: INT32;
@@ -780,7 +780,7 @@ export function RenderSelectionWindow(): void {
     if (button == null)
       return;
 
-    if ((Math.abs(iStartClickX - button.value.Area.MouseXPos) > 9) || (Math.abs(iStartClickY - (button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
+    if ((Math.abs(iStartClickX - button.Area.MouseXPos) > 9) || (Math.abs(iStartClickY - (button.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
       //			iSX = (INT32)iStartClickX;
       //			iEX = (INT32)button->Area.MouseXPos;
       //			iSY = (INT32)iStartClickY;
@@ -830,7 +830,7 @@ export function RenderSelectionWindow(): void {
 //	if so selects or de-selects that object. Also handles the multi-object selection (left-click
 //	and drag to get the selection rectangle)
 //
-function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SelWinClkCallback(button: GUI_BUTTON, reason: INT32): void {
   let pNode: Pointer<DisplayList>;
   let fDone: boolean;
   let iClickX: INT16;
@@ -838,19 +838,19 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
   let iYInc: INT16;
   let iXInc: INT16;
 
-  if (!(button.value.uiFlags & BUTTON_ENABLED))
+  if (!(button.uiFlags & BUTTON_ENABLED))
     return;
 
-  iClickX = button.value.Area.MouseXPos;
-  iClickY = button.value.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
+  iClickX = button.Area.MouseXPos;
+  iClickY = button.Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
     iStartClickX = iClickX;
     iStartClickY = iClickY;
     gfRenderSquareArea = true;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
 
     if (gfRenderSquareArea) {
       gfRenderSquareArea = false;
@@ -870,9 +870,9 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
         pNode = pNode.value.pNext;
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (!gfRenderSquareArea)
       return;
@@ -1169,11 +1169,11 @@ export function RestoreSelectionList(): void {
 //	OkClkCallback
 //
 //	Button callback function for the selection window's OK button
-function OkClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
+function OkClkCallback(button: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
     fAllDone = true;
   }
 }
@@ -1183,11 +1183,11 @@ function OkClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //
 //	Button callback function for the selection window's CANCEL button
 //
-function CnclClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
+function CnclClkCallback(button: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
     fAllDone = true;
     RestoreSelectionList();
   }
@@ -1198,11 +1198,11 @@ function CnclClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //
 //	Button callback function for scrolling the selection window up
 //
-function UpClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
+function UpClkCallback(button: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
     ScrollSelWinUp();
   }
 }
@@ -1269,11 +1269,11 @@ export function ScrollSelWinDown(): void {
 //
 //	Button callback function to scroll the selection window down.
 //
-function DwnClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DwnClkCallback(button: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    button.value.uiFlags |= BUTTON_CLICKED_ON;
+    button.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    button.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    button.uiFlags &= (~BUTTON_CLICKED_ON);
     ScrollSelWinDown();
   }
 }
@@ -1292,8 +1292,8 @@ function DrawSelections(): void {
   NewRect.iRight = SelWinEndPoint.iX;
   NewRect.iBottom = SelWinEndPoint.iY;
 
-  GetClippingRect(addressof(ClipRect));
-  SetClippingRect(addressof(NewRect));
+  GetClippingRect(ClipRect);
+  SetClippingRect(NewRect);
 
   //	SetFont( gpSmallFont );
   SetFont(gpLargeFontType1);
@@ -1304,7 +1304,7 @@ function DrawSelections(): void {
 
   SetObjectShade(gvoLargeFontType1, 4);
 
-  SetClippingRect(addressof(ClipRect));
+  SetClippingRect(ClipRect);
 }
 
 //----------------------------------------------------------------------------------------------

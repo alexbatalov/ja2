@@ -179,7 +179,7 @@ export function InitTacticalPlacementGUI(): void {
   PlaceMercs();
 
   if (gubDefaultButton == Enum310.GROUP_BUTTON) {
-    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
     for (i = 0; i < giPlacements; i++) {
       // go from the currently selected soldier to the end
       if (!gMercPlacement[i].fPlaced) {
@@ -358,14 +358,14 @@ function EnsureDoneButtonStatus(): void {
   // BOOLEAN fChanged = FALSE;
   for (i = 0; i < giPlacements; i++) {
     if (!gMercPlacement[i].fPlaced) {
-      if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
+      if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].uiFlags & BUTTON_ENABLED) {
         DisableButton(iTPButtons[Enum310.DONE_BUTTON]);
         SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DISABLED_DONEHELP]);
       }
       return;
     }
   }
-  if (!(ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED)) {
+  if (!(ButtonList[iTPButtons[Enum310.DONE_BUTTON]].uiFlags & BUTTON_ENABLED)) {
     // only enable it when it is disabled, otherwise the button will stay down!
     EnableButton(iTPButtons[Enum310.DONE_BUTTON]);
     SetButtonFastHelpText(iTPButtons[Enum310.DONE_BUTTON], gpStrategicString[Enum365.STR_TP_DONEHELP]);
@@ -389,7 +389,7 @@ export function TacticalPlacementHandle(): void {
     if (InputEvent.usEvent == KEY_DOWN) {
       switch (InputEvent.usParam) {
         case ENTER:
-          if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].value.uiFlags & BUTTON_ENABLED) {
+          if (ButtonList[iTPButtons[Enum310.DONE_BUTTON]].uiFlags & BUTTON_ENABLED) {
             KillTacticalPlacementGUI();
           }
           break;
@@ -543,17 +543,17 @@ function PlaceMercs(): void {
   gfTacticalPlacementGUIDirty = true;
 }
 
-function DoneOverheadPlacementClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoneOverheadPlacementClickCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfKillTacticalGUI = 2;
   }
 }
 
-function SpreadPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SpreadPlacementsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDefaultButton = Enum310.SPREAD_BUTTON;
-    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].uiFlags |= BUTTON_DIRTY;
     PlaceMercs();
     gubSelectedGroupID = 0;
     gbSelectedMercID = -1;
@@ -561,15 +561,15 @@ function SpreadPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function GroupPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function GroupPlacementsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubDefaultButton == Enum310.GROUP_BUTTON) {
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
-      btn.value.uiFlags |= BUTTON_DIRTY;
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.uiFlags |= BUTTON_DIRTY;
       gubDefaultButton = Enum310.CLEAR_BUTTON;
       gubSelectedGroupID = 0;
     } else {
-      btn.value.uiFlags |= BUTTON_CLICKED_ON | BUTTON_DIRTY;
+      btn.uiFlags |= BUTTON_CLICKED_ON | BUTTON_DIRTY;
       gubDefaultButton = Enum310.GROUP_BUTTON;
       gbSelectedMercID = 0;
       SetCursorMerc(gbSelectedMercID);
@@ -578,10 +578,10 @@ function GroupPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function ClearPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ClearPlacementsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iTPButtons[Enum310.GROUP_BUTTON]].uiFlags |= BUTTON_DIRTY;
     gubDefaultButton = Enum310.CLEAR_BUTTON;
     PlaceMercs();
   }

@@ -4102,12 +4102,12 @@ function RenderSoldierSmallFaceForUpdatePanel(iIndex: INT32, iX: INT32, iY: INT3
   return;
 }
 
-function ContinueUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ContinueUpdateButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       EndUpdateBox(true); // restart time compression
     }
@@ -4116,12 +4116,12 @@ function ContinueUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   return;
 }
 
-function StopUpdateButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function StopUpdateButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       EndUpdateBox(false); // stop time compression
     }

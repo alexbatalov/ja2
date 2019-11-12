@@ -355,7 +355,7 @@ function CreateFileDialog(zTitle: string /* Pointer<UINT16> */): void {
     // The update world info checkbox
     iFileDlgButtons[6] = CreateCheckBoxButton(183, 229, "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, UpdateWorldInfoCallback);
     if (gfUpdateSummaryInfo)
-      ButtonList[iFileDlgButtons[6]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iFileDlgButtons[6]].uiFlags |= BUTTON_CLICKED_ON;
   }
 
   // Add the text input fields
@@ -366,9 +366,9 @@ function CreateFileDialog(zTitle: string /* Pointer<UINT16> */): void {
   AddUserInputField(FileDialogModeCallback);
 }
 
-function UpdateWorldInfoCallback(b: Pointer<GUI_BUTTON>, reason: INT32): void {
+function UpdateWorldInfoCallback(b: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    gfUpdateSummaryInfo = b.value.uiFlags & BUTTON_CLICKED_ON ? true : false;
+    gfUpdateSummaryInfo = b.uiFlags & BUTTON_CLICKED_ON ? true : false;
 }
 
 // This is a hook into the text input code.  This callback is called whenever the user is currently
@@ -841,34 +841,34 @@ function ProcessFileIO(): UINT32 {
 }
 
 // LOADSCREEN
-function FDlgNamesCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FDlgNamesCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
-    SelectFileDialogYPos(butn.value.Area.RelativeYPos);
+    SelectFileDialogYPos(butn.Area.RelativeYPos);
   }
 }
 
-function FDlgOkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FDlgOkCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = true;
     iFDlgState = iCurrentAction == Enum37.ACTION_SAVE_MAP ? Enum50.DIALOG_SAVE : Enum50.DIALOG_LOAD;
   }
 }
 
-function FDlgCancelCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FDlgCancelCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = true;
     iFDlgState = Enum50.DIALOG_CANCEL;
   }
 }
 
-function FDlgUpCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FDlgUpCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if (iTopFileShown > 0)
       iTopFileShown--;
   }
 }
 
-function FDlgDwnCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FDlgDwnCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if ((iTopFileShown + 7) < iTotalFiles)
       iTopFileShown++;

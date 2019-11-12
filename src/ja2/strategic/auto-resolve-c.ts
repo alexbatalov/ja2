@@ -891,8 +891,8 @@ function BuildInterfaceBuffer(): void {
   if (!AddVideoSurface(addressof(vs_desc), addressof(gpAR.value.iInterfaceBuffer)))
     AssertMsg(0, "Failed to allocate memory for autoresolve interface buffer.");
 
-  GetClippingRect(addressof(ClipRect));
-  SetClippingRect(addressof(DestRect));
+  GetClippingRect(ClipRect);
+  SetClippingRect(DestRect);
 
   // Blit the back panels...
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
@@ -932,7 +932,7 @@ function BuildInterfaceBuffer(): void {
   y = gpAR.value.sHeight - 40;
   BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, Enum121.BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, null);
 
-  SetClippingRect(addressof(ClipRect));
+  SetClippingRect(ClipRect);
 }
 
 function ExpandWindow(): void {
@@ -1756,7 +1756,7 @@ function CreateAutoResolveInterface(): void {
   HideButton(gpAR.value.iButton[Enum119.DONEWIN_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.DONELOSE_BUTTON]);
   HideButton(gpAR.value.iButton[Enum119.BANDAGE_BUTTON]);
-  ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
 }
 
 function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
@@ -1963,40 +1963,40 @@ function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
   // VtPauseSampling();
 }
 
-function PauseButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function PauseButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.fPaused = true;
   }
 }
 
-function PlayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function PlayButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 1000 * gpAR.value.ubTimeModifierPercentage / 100;
     gpAR.value.fPaused = false;
   }
 }
 
-function FastButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FastButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 4000;
     gpAR.value.fPaused = false;
   }
 }
 
-function FinishButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function FinishButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     gpAR.value.uiTimeSlice = 0xffffffff;
     gpAR.value.fSound = false;
     gpAR.value.fPaused = false;
@@ -2004,7 +2004,7 @@ function FinishButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function RetreatButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function RetreatButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let i: INT32;
     for (i = 0; i < gpAR.value.ubMercs; i++) {
@@ -2085,14 +2085,14 @@ function DetermineBandageButtonState(): void {
   SetButtonFastHelpText(gpAR.value.iButton[Enum119.BANDAGE_BUTTON], gzLateLocalizedString[12]);
 }
 
-function BandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BandageButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     AutoBandageMercs();
     SetupDoneInterface();
   }
 }
 
-function DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoneButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpAR.value.fExitAutoResolve = true;
   }
@@ -2453,13 +2453,13 @@ function HandleAutoResolveInput(): void {
         case SPACE:
           gpAR.value.fPaused ^= true;
           if (gpAR.value.fPaused) {
-            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.FAST_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.FINISH_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
           } else {
-            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PAUSE_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
+            ButtonList[gpAR.value.iButton[Enum119.PLAY_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
           }
           break;
         case 'x':
@@ -3542,7 +3542,7 @@ function HideSurrenderInterface(): void {
   gpAR.value.fRenderAutoResolve = true;
 }
 
-function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function AcceptSurrenderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     BeginCaptureSquence();
 
@@ -3552,7 +3552,7 @@ function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function RejectSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function RejectSurrenderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpAR.value.fPlayerRejectedSurrenderOffer = true;
     HideSurrenderInterface();

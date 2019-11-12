@@ -257,12 +257,12 @@ function ExitMainMenu(): void {
   */
 }
 
-function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MenuButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let bID: INT8;
 
-  bID = btn.value.UserData[0];
+  bID = btn.UserData[0];
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -277,24 +277,24 @@ function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         gfLoadGameUponEntry = true;
     }
 
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     RenderMainMenu();
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
-function MenuButtonMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MenuButtonMoveCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
     RenderMainMenu();
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
     RenderMainMenu();
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -452,7 +452,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
       if (iMenuButtons[cnt] == -1) {
         return false;
       }
-      ButtonList[iMenuButtons[cnt]].value.UserData[0] = cnt;
+      ButtonList[iMenuButtons[cnt]].UserData[0] = cnt;
 
       // load up some info from the 'mainmenu.edt' file.  This makes sure the file is present.  The file is
       // 'marked' with a code that identifies the testers

@@ -5752,7 +5752,7 @@ function MapScreenMarkRegionBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): 
   }
 }
 
-function ContractButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ContractButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if ((iDialogueBox != -1)) {
     return;
   }
@@ -5772,19 +5772,19 @@ function ContractButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     */
 
     // redraw region
-    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fCharacterInfoPanelDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
       StopMapScreenHelpText();
     }
 
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       RequestContractMenu();
     }
@@ -7658,13 +7658,13 @@ function InvmaskRegionBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   // CJC, December 15 1998: do NOTHING for clicks here
 }
 
-function DoneInventoryMapBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoneInventoryMapBtnCallback(btn: GUI_BUTTON, reason: INT32): void {
   // prevent inventory from being closed while stack popup up!
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (gMPanelRegion.Cursor != EXTERN_CURSOR && !InItemStackPopup()) {
         fEndShowInventoryFlag = true;
@@ -8134,24 +8134,24 @@ function UpdateTheStateOfTheNextPrevMapScreenCharacterButtons(): void {
   }
 }
 
-function PrevInventoryMapBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function PrevInventoryMapBtnCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       GoToPrevCharacterInList();
     }
   }
 }
 
-function NextInventoryMapBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function NextInventoryMapBtnCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       GoToNextCharacterInList();
     }
@@ -8235,7 +8235,7 @@ export function MapScreenDefaultOkBoxCallback(bExitValue: UINT8): void {
   return;
 }
 
-function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapSortBtnCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
 
   // grab the button index value for the sort buttons
@@ -8248,10 +8248,10 @@ function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       return;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       ChangeCharacterListSortMethod(iValue);
     }
@@ -8604,14 +8604,14 @@ function DisplayIconsForMercsAsleep(): void {
 function CheckForAndRenderNewMailOverlay(): void {
   if (fNewMailFlag) {
     if (GetJA2Clock() % 1000 < 667) {
-      if (ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_CLICKED_ON) {
+      if (ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].uiFlags & BUTTON_CLICKED_ON) {
         // button is down, so offset the icon
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 1, 465, 418, VO_BLT_SRCTRANSPARENCY, null);
         InvalidateRegion(465, 418, 480, 428);
       } else {
         // button is up, so draw the icon normally
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, null);
-        if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].value.uiFlags & BUTTON_ENABLED)) {
+        if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].uiFlags & BUTTON_ENABLED)) {
           let uiDestPitchBYTES: UINT32;
           let pDestBuf: Pointer<UINT8>;
           let area: SGPRect = createSGPRectFrom(463, 417, 477, 425);

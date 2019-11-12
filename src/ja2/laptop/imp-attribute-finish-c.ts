@@ -75,16 +75,16 @@ function DestroyAttributeFinishButtons(): void {
   return;
 }
 
-function BtnIMPAttributeFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPAttributeFinishYesCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // gone far enough
       iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
       if (iCurrentProfileMode < 3) {
@@ -102,16 +102,16 @@ function BtnIMPAttributeFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
   }
 }
 
-function BtnIMPAttributeFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPAttributeFinishNoCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if no, return to attribute
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_PAGE;
       fReturnStatus = true;

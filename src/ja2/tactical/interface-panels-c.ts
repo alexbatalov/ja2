@@ -665,9 +665,9 @@ function UpdateSMPanel(): void {
   }
 
   // Set Disable /Enable UI based on buddy's stats
-  if (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.ImageNum != iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode]) {
-    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.ImageNum = iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode];
-    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_DIRTY;
+  if (ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].ImageNum != iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode]) {
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].ImageNum = iBurstButtonImages[gpSMCurrentMerc.value.bWeaponMode];
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].uiFlags |= BUTTON_DIRTY;
   }
 
   /*
@@ -689,12 +689,12 @@ function UpdateSMPanel(): void {
 
   // Toggle MUTE button...
   if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_MUTE) {
-    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
@@ -728,42 +728,42 @@ function UpdateSMPanel(): void {
 
   //	if ( gpSMCurrentMerc->bUIInterfaceLevel > 0 )
   if (gsInterfaceLevel > 0) {
-    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
   if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
-    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
     }
   } else {
-    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.ubToggleButtonActivated) {
-      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (!ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].ubToggleButtonActivated) {
+      ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].uiFlags &= (~BUTTON_CLICKED_ON);
     }
   }
 
@@ -2232,16 +2232,16 @@ function SelectedMercEnemyIndicatorCallback(pRegion: MOUSE_REGION, iReason: INT3
   }
 }
 
-function BtnStanceUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnStanceUpCallback(btn: GUI_BUTTON, reason: INT32): void {
   let bNewStance: INT8;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     bNewStance = gAnimControl[gpSMCurrentMerc.value.usAnimState].ubEndHeight;
 
@@ -2253,18 +2253,18 @@ function BtnStanceUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     UIHandleSoldierStanceChange(gpSMCurrentMerc.value.ubID, bNewStance);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnUpdownCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // gsInterfaceLevel = gpSMCurrentMerc->bUIInterfaceLevel;
 
@@ -2274,22 +2274,22 @@ function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     // Remember soldier's new value
     gpSMCurrentMerc.value.bUIInterfaceLevel = gsInterfaceLevel;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnClimbCallback(btn: GUI_BUTTON, reason: INT32): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
   let bDirection: INT8;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     GetMercClimbDirection(gpSMCurrentMerc.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
@@ -2304,20 +2304,20 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       BeginSoldierClimbFence(gpSMCurrentMerc);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnStanceDownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnStanceDownCallback(btn: GUI_BUTTON, reason: INT32): void {
   let bNewStance: INT8;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     bNewStance = gAnimControl[gpSMCurrentMerc.value.usAnimState].ubEndHeight;
 
@@ -2329,30 +2329,30 @@ function BtnStanceDownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     UIHandleSoldierStanceChange(gpSMCurrentMerc.value.ubID, bNewStance);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnStealthModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnStealthModeCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gpSMCurrentMerc.value.bStealthMode = !gpSMCurrentMerc.value.bStealthMode;
     gfUIStanceDifferent = true;
     gfPlotNewMovement = true;
     fInterfacePanelDirty = DIRTYLEVEL2;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnHandCursorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnHandCursorCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2360,8 +2360,8 @@ function BtnHandCursorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnTalkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnTalkCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2369,8 +2369,8 @@ function BtnTalkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnMuteCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2384,16 +2384,16 @@ function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnPrevMercCallback(btn: GUI_BUTTON, reason: INT32): void {
   let sID: INT16;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     sID = FindPrevActiveAndAliveMerc(gpSMCurrentMerc, true, true);
 
@@ -2416,20 +2416,20 @@ function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnNextMercCallback(btn: GUI_BUTTON, reason: INT32): void {
   let sID: INT16;
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     sID = FindNextActiveAndAliveMerc(gpSMCurrentMerc, true, true);
 
@@ -2453,55 +2453,55 @@ function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       }
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnOptionsCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     guiPreviousOptionScreen = guiCurrentScreen;
     LeaveTacticalScreen(Enum26.OPTIONS_SCREEN);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnSMDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnSMDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     gfBeginEndTurn = true;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // Enter mapscreen...
     // gfEnteringMapScreen = TRUE;
     GoToMapScreenFromTactical();
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -2523,8 +2523,8 @@ void CycleCallback( GUI_BUTTON *btn, INT32 reason )
 }
 */
 
-function BtnBurstModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnBurstModeCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2534,19 +2534,19 @@ function BtnBurstModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnLookCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnLookCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     ToggleLookCursorMode(null);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnPositionShowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnPositionShowCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 // TEAM PANEL!!!!!!!!!!!!!!
@@ -2960,24 +2960,24 @@ export function RemoveTEAMPanelButtons(): void {
   }
 }
 
-function BtnEndTurnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnEndTurnCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // END TURN
     UIHandleEndTurn(null);
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function BtnRostermodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnRostermodeCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       GoToMapScreenFromTactical();
@@ -2987,16 +2987,16 @@ function BtnRostermodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 // callback to handle squad switching callback
-function BtnSquadCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSquadCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Not Implemented Yet" );
     ToggleRadarScreenRender();
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -4218,35 +4218,35 @@ export function DisableSMPpanelButtonsWhenInShopKeeperInterface(fDontDrawButtons
     // ATM:
 
     // Go through the buttons that will be under the ShopKeepers ATM panel and disable them
-    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
-    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].uiFlags &= ~BUTTON_DIRTY;
 
-    ButtonList[giSMStealthButton].value.uiFlags &= ~BUTTON_DIRTY;
+    ButtonList[giSMStealthButton].uiFlags &= ~BUTTON_DIRTY;
 
     // Make sure the options button is disabled
-    ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[Enum220.OPTIONS_BUTTON]].uiFlags &= ~BUTTON_ENABLED;
 
     // Make sure the mapscreen button is disabled
-    ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].value.uiFlags &= ~BUTTON_ENABLED;
+    ButtonList[iSMPanelButtons[Enum220.SM_MAP_SCREEN_BUTTON]].uiFlags &= ~BUTTON_ENABLED;
 
-    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEUP_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.UPDOWN_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.CLIMB_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.STANCEDOWN_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.HANDCURSOR_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.BURSTMODE_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.LOOK_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.TALK_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[iSMPanelButtons[Enum220.MUTE_BUTTON]].uiFlags |= BUTTON_FORCE_UNDIRTY;
 
-    ButtonList[giSMStealthButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[giSMStealthButton].uiFlags |= BUTTON_FORCE_UNDIRTY;
   }
 }
 

@@ -1080,9 +1080,9 @@ function DestroyFinanceButtons(): void {
     UnloadButtonImage(giFinanceButtonImage[uiCnt]);
   }
 }
-function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnFinanceDisplayPrevPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     // if greater than page zero, we can move back, decrement iCurrentPage counter
     LoadPreviousPage();
@@ -1094,9 +1094,9 @@ function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnFinanceDisplayNextPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     // increment currentPage
     // IncrementCurrentPageFinancialDisplay( );
     LoadNextPage();
@@ -1110,11 +1110,11 @@ function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
   }
 }
 
-function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnFinanceFirstLastPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let uiButton: UINT32 = MSYS_GetBtnUserData(btn, 0);
 
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     // if its the first page button
     if (uiButton == 0) {

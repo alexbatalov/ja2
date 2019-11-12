@@ -106,6 +106,13 @@ export function createSGPRectFrom(iLeft: INT32, iTop: INT32, iRight: INT32, iBot
   };
 }
 
+export function copySGPRect(destination: SGPRect, source: SGPRect) {
+  destination.iLeft = source.iLeft;
+  destination.iTop = source.iTop;
+  destination.iRight = source.iRight;
+  destination.iBottom = source.iBottom;
+}
+
 export interface SGPPoint {
   iX: INT32;
   iY: INT32;

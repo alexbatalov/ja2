@@ -151,25 +151,25 @@ function DestroyIMPersonalityFinishButtons(): void {
   return;
 }
 
-function BtnIMPPersonalityFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPersonalityFinishYesCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // confirm flag set, get out of HERE!
     if (fConfirmHasBeenSelectedFlag) {
       // now set this button off
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       return;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // now set this button off
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // set fact yes was selected
       fConfirmIsYesFlag = true;
@@ -185,25 +185,25 @@ function BtnIMPPersonalityFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   }
 }
 
-function BtnIMPPersonalityFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPersonalityFinishNoCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     // confirm flag set, get out of HERE!
     if (fConfirmHasBeenSelectedFlag) {
       // now set this button off
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       return;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // now set this button on
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // set fact yes was selected
       fConfirmIsYesFlag = false;
@@ -234,17 +234,17 @@ function DestroyPersonalityFinishOkButton(): void {
   UnloadButtonImage(giIMPPersonalityFinishButtonImage[0]);
 }
 
-function BtnIMPPersonalityFinishOkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPPersonalityFinishOkCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // now set this button on
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (iCurrentProfileMode < 2) {
         iCurrentProfileMode = 2;

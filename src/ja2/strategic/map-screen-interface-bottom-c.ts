@@ -285,7 +285,7 @@ function DestroyButtonsForMapScreenInterfaceBottom(): void {
   return;
 }
 
-function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnLaptopCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -293,20 +293,20 @@ function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // redraw region
-    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
       StopMapScreenHelpText();
     }
 
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON | BUTTON_DIRTY);
-      DrawButton(btn.value.IDNum);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      DrawButton(btn.IDNum);
 
       RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_LAPTOP);
     }
@@ -318,7 +318,7 @@ function BtnLaptopCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnTacticalCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -327,14 +327,14 @@ function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     // redraw region
-    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_TACTICAL);
     }
@@ -347,7 +347,7 @@ function BtnTacticalCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnOptionsFromMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -356,14 +356,14 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = true;
 
       RequestTriggerExitFromMapscreen(Enum144.MAP_EXIT_TO_OPTIONS);
@@ -404,20 +404,20 @@ function CompressModeClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void 
   }
 }
 
-function BtnTimeCompressMoreMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnTimeCompressMoreMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (CommonTimeCompressionChecks() == true)
       return;
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = true;
 
       RequestIncreaseInTimeCompression();
@@ -428,20 +428,20 @@ function BtnTimeCompressMoreMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function BtnTimeCompressLessMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnTimeCompressLessMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (CommonTimeCompressionChecks() == true)
       return;
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fMapScreenBottomDirty = true;
 
       RequestDecreaseInTimeCompression();
@@ -452,7 +452,7 @@ function BtnTimeCompressLessMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: 
   }
 }
 
-function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let iLastRepeatScrollTime: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -463,19 +463,19 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = true;
       }
 
@@ -497,19 +497,19 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     }
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = true;
       }
 
@@ -526,7 +526,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
   }
 }
 
-function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
   /* static */ let iLastRepeatScrollTime: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -536,10 +536,10 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
       return;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
 
     // redraw region
-    if (btn.value.Area.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.Area.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
@@ -547,11 +547,11 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = true;
       }
 
@@ -573,19 +573,19 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
     }
 
     // redraw region
-    if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+    if (btn.uiFlags & MSYS_HAS_BACKRECT) {
       fMapScreenBottomDirty = true;
     }
 
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
 
     iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // redraw region
-      if (btn.value.uiFlags & MSYS_HAS_BACKRECT) {
+      if (btn.uiFlags & MSYS_HAS_BACKRECT) {
         fMapScreenBottomDirty = true;
       }
 
@@ -610,7 +610,7 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   // if no scrolling required, or already showing the topmost message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || (gubFirstMapscreenMessageIndex == 0)) {
     DisableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]);
-    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_UP]);
   }
@@ -618,7 +618,7 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   // if no scrolling required, or already showing the last message
   if ((ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) || ((gubFirstMapscreenMessageIndex + MAX_MESSAGES_ON_MAP_BOTTOM) >= ubNumMessages)) {
     DisableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]);
-    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]].uiFlags &= ~(BUTTON_CLICKED_ON);
   } else {
     EnableButton(guiMapMessageScrollButtons[Enum142.MAP_SCROLL_MESSAGE_DOWN]);
   }

@@ -65,7 +65,7 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
   let ubColumn: UINT8;
   let ubEntry: UINT8;
   let ubCounter: UINT8;
-  let button: Pointer<GUI_BUTTON>;
+  let button: GUI_BUTTON;
   // calculate the location of the menu based on the button position.
   // This also calculates the menu's direction based on position.
 
@@ -77,20 +77,20 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
 
   switch (ubDirection) {
     case DIR_UPRIGHT:
-      usX = button.value.Area.RegionTopLeftX;
-      usY = button.value.Area.RegionTopLeftY;
+      usX = button.Area.RegionTopLeftX;
+      usY = button.Area.RegionTopLeftY;
       break;
     case DIR_UPLEFT:
-      usX = button.value.Area.RegionBottomRightX;
-      usY = button.value.Area.RegionTopLeftY;
+      usX = button.Area.RegionBottomRightX;
+      usY = button.Area.RegionTopLeftY;
       break;
     case DIR_DOWNRIGHT:
-      usX = button.value.Area.RegionTopLeftX;
-      usY = button.value.Area.RegionBottomRightY;
+      usX = button.Area.RegionTopLeftX;
+      usY = button.Area.RegionBottomRightY;
       break;
     case DIR_DOWNLEFT:
-      usX = button.value.Area.RegionBottomRightX;
-      usY = button.value.Area.RegionBottomRightY;
+      usX = button.Area.RegionBottomRightX;
+      usY = button.Area.RegionBottomRightY;
       break;
   }
 

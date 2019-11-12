@@ -467,24 +467,24 @@ export function DrawEditorInfoBox(str: string /* Pointer<UINT16> */, uiFont: UIN
 }
 
 export function ClickEditorButton(iEditorButtonID: INT32): void {
-  let butn: Pointer<GUI_BUTTON>;
+  let butn: GUI_BUTTON;
   if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
     if (butn)
-      butn.value.uiFlags |= BUTTON_CLICKED_ON;
+      butn.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
 export function UnclickEditorButton(iEditorButtonID: INT32): void {
-  let butn: Pointer<GUI_BUTTON>;
+  let butn: GUI_BUTTON;
   if (iEditorButtonID < 0 || iEditorButtonID >= Enum32.NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
     butn = ButtonList[iEditorButton[iEditorButtonID]];
     if (butn)
-      butn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      butn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
@@ -506,23 +506,23 @@ export function EnableEditorButton(iEditorButtonID: INT32): void {
 
 function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
     Assert(b);
-    b.value.uiFlags |= BUTTON_CLICKED_ON;
+    b.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
 export function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   let i: INT32;
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
     Assert(b);
-    b.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    b.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 

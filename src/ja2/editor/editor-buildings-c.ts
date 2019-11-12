@@ -449,13 +449,13 @@ export function InitDoorEditing(iMapIndex: INT32): void {
   pDoor = FindDoorInfoAtGridNo(iDoorMapIndex);
   if (pDoor) {
     if (pDoor.value.fLocked) {
-      ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].uiFlags |= BUTTON_CLICKED_ON;
     }
     SetInputFieldStringWithNumericStrictValue(0, pDoor.value.ubLockID);
     SetInputFieldStringWithNumericStrictValue(1, pDoor.value.ubTrapID);
     SetInputFieldStringWithNumericStrictValue(2, pDoor.value.ubTrapLevel);
   } else {
-    ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -490,7 +490,7 @@ export function ExtractAndUpdateDoorInfo(): void {
   if (num)
     fCursor = true;
 
-  if (ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].value.uiFlags & BUTTON_CLICKED_ON) {
+  if (ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].uiFlags & BUTTON_CLICKED_ON) {
     door.fLocked = true;
   } else {
     door.fLocked = false;
@@ -565,20 +565,20 @@ export function KillDoorEditing(): void {
   KillTextInputMode();
 }
 
-function DoorOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoorOkayCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ExtractAndUpdateDoorInfo();
     KillDoorEditing();
   }
 }
 
-function DoorCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoorCancelCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     KillDoorEditing();
   }
 }
 
-function DoorToggleLockedCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoorToggleLockedCallback(btn: GUI_BUTTON, reason: INT32): void {
   // handled in ExtractAndUpdateDoorInfo();
 }
 

@@ -1376,21 +1376,21 @@ function EmailMvtCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   }
 }
 
-function BtnMessageXCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnMessageXCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if ((reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) || (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN)) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (reason & MSYS_CALLBACK_REASON_RBUTTON_UP)) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       // X button has been pressed and let up, this means to stop displaying the currently displayed message
 
       // reset display message flag
       fDisplayMessageFlag = false;
 
       // reset button flag
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
 
       // reset page being displayed
       giMessagePage = 0;
@@ -1634,17 +1634,17 @@ while( pTempRecord )
   return iViewerPositionY;
 }
 
-function BtnNewOkback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnNewOkback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fNewMailFlag = false;
     }
   }
@@ -1892,17 +1892,17 @@ function DetermineNextPrevPageDisplay(): void {
   }
 }
 
-function NextRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function NextRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // not on last page, move ahead one
       if (iCurrentPage < iLastPage) {
@@ -1917,21 +1917,21 @@ function NextRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function BtnPreviousEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnPreviousEmailPageCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       if (giMessagePage > 0) {
         giMessagePage--;
       }
 
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       fReDraw = true;
       RenderEmail();
@@ -1942,17 +1942,17 @@ function BtnPreviousEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function BtnNextEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnNextEmailPageCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // not on last page, move ahead one
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
     if ((giNumberOfPagesToCurrentEmail - 1) <= giMessagePage) {
       return;
@@ -1970,17 +1970,17 @@ function BtnNextEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
   }
 }
 
-function PreviousRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function PreviousRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if we are not on forst page, more back one
       if (iCurrentPage > 0) {
         iCurrentPage--;
@@ -1994,34 +1994,34 @@ function PreviousRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
   }
 }
 
-function BtnDeleteNoback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnDeleteNoback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fDeleteMailFlag = false;
       fReDrawScreenFlag = true;
     }
   }
 }
 
-function BtnDeleteYesback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnDeleteYesback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fReDrawScreenFlag = true;
       DeleteEmail();
     }
@@ -2207,7 +2207,7 @@ function DeleteEmail(): void {
   InvalidateRegion(0, 0, 640, 480);
 }
 
-function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
+function FromCallback(btn: GUI_BUTTON, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2222,7 +2222,7 @@ function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     fJustStartedEmail = false;
 
     PlaceMessagesinPages();
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
   }
 
   else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -2230,7 +2230,7 @@ function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   }
 }
 
-function SubjectCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
+function SubjectCallback(btn: GUI_BUTTON, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2242,18 +2242,18 @@ function SubjectCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
     fJustStartedEmail = false;
     PlaceMessagesinPages();
 
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // nothing yet
   }
 }
 
-function BtnDeleteCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
+function BtnDeleteCallback(btn: GUI_BUTTON, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     iDeleteId = giMessageId;
     fDeleteMailFlag = true;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -2261,7 +2261,7 @@ function BtnDeleteCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   }
 }
 
-function DateCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
+function DateCallback(btn: GUI_BUTTON, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2273,13 +2273,13 @@ function DateCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
 
     fJustStartedEmail = false;
 
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // nothing yet
   }
 }
 
-function ReadCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
+function ReadCallback(btn: GUI_BUTTON, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2290,7 +2290,7 @@ function ReadCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
 
     fJustStartedEmail = false;
 
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // nothing yet
   }

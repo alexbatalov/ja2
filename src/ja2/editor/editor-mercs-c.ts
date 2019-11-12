@@ -855,73 +855,73 @@ function IsMercHere(iMapIndex: INT32): INT32 {
 //----------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------
 
-function EditMercChangeToStatsPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercChangeToStatsPageCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_TO_STATS;
   }
 }
 
-function EditMercChangeToColorPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercChangeToColorPageCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_TO_COLOR;
   }
 }
 
-function EditMercDoneEditCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercDoneEditCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_DONE;
   }
 }
 
-function EditMercBkgrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercBkgrndCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_DONE;
   }
 }
 
-function EditMercPrevOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercPrevOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_PREV_ORDER;
   }
 }
 
-function EditMercNextOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercNextOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NEXT_ORDER;
   }
 }
 
-function EditMercPrevAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercPrevAttCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_PREV_ATT;
   }
 }
 
-function EditMercNextAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercNextAttCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NEXT_ATT;
   }
 }
 
-function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercStatUpCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn.value.IDNum == iEditorButton[iBtn])
+      if (btn.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -930,21 +930,21 @@ function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       iEditMercMode = EDIT_MERC_INC_STAT;
     }
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NONE;
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercStatDwnCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn.value.IDNum == iEditorButton[iBtn])
+      if (btn.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -953,21 +953,21 @@ function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       iEditMercMode = EDIT_MERC_DEC_STAT;
     }
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_NONE;
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
   }
 }
 
-function EditMercSetDirCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercSetDirCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 36 && iEditWhichStat == -1; iBtn++) {
-      if (btn.value.IDNum == iEditorButton[iBtn])
+      if (btn.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -976,26 +976,26 @@ function EditMercSetDirCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       iEditMercMode = EDIT_MERC_SET_DIR;
     }
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
-function EditMercCenterCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercCenterCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditStatTimer = 0;
     iEditMercMode = EDIT_MERC_FIND;
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
-function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercColorDwnCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = 0; iBtn < 8 && iEditWhichStat == -1; iBtn++) {
-      if (btn.value.IDNum == iEditorButton[iBtn])
+      if (btn.IDNum == iEditorButton[iBtn])
         iEditWhichStat = iBtn;
     }
 
@@ -1004,13 +1004,13 @@ function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       iEditMercMode = EDIT_MERC_PREV_COLOR;
     }
 
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
-export function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsToggleColorModeCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) // button is checked
+    if (btn.uiFlags & BUTTON_CLICKED_ON) // button is checked
     {
       EnableEditorButtons(FIRST_MERCS_COLOR_BUTTON, LAST_MERCS_COLOR_BUTTON);
       gpSelected.value.pDetailedPlacement.value.fVisible = true;
@@ -1028,12 +1028,12 @@ export function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: I
   }
 }
 
-export function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetColorsCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iBtn: INT32;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = FIRST_MERCS_COLOR_BUTTON; iBtn <= LAST_MERCS_COLOR_BUTTON; iBtn++) {
-      if (btn.value.IDNum == iEditorButton[iBtn]) {
+      if (btn.IDNum == iEditorButton[iBtn]) {
         iEditWhichStat = iBtn - FIRST_MERCS_COLOR_BUTTON;
         iEditStatTimer = 0;
         iEditMercMode = EDIT_MERC_NEXT_COLOR;
@@ -1044,27 +1044,27 @@ export function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-export function MercsSetBodyTypeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function MercsSetBodyTypeCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderMercInfo = true;
-    if (btn.value.IDNum == iEditorButton[Enum32.MERCS_BODYTYPE_DOWN])
+    if (btn.IDNum == iEditorButton[Enum32.MERCS_BODYTYPE_DOWN])
       ChangeBodyType(1); // next
     else
       ChangeBodyType(-1); // previous
   }
 }
 
-function EditMercDecDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercDecDifficultyCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
     iEditorToolbarState = Enum35.TBAR_MODE_DEC_DIFF;
   }
 }
 
-function EditMercIncDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function EditMercIncDifficultyCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
     iEditorToolbarState = Enum35.TBAR_MODE_INC_DIFF;
   }

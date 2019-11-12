@@ -475,7 +475,7 @@ function PopupPositionMenu(pUIEvent: Pointer<UI_EVENT>): void {
 function PopDownPositionMenu(): void {
 }
 
-function BtnPositionCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnPositionCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
@@ -531,7 +531,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.RUN_ICON], pTacticalPopupButtonStrings[Enum209.RUN_ICON]);
   // SetButtonSavedRect( iActionIcons[ RUN_ICON ] );
-  ButtonList[iActionIcons[Enum209.RUN_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.RUN_ICON]].UserData[0] = pUIEvent;
 
   if (MercInWater(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT)) {
     DisableButton(iActionIcons[Enum209.RUN_ICON]);
@@ -550,7 +550,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     SetButtonFastHelpText(iActionIcons[Enum209.WALK_ICON], pTacticalPopupButtonStrings[Enum209.WALK_ICON]);
   }
 
-  ButtonList[iActionIcons[Enum209.WALK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.WALK_ICON]].UserData[0] = pUIEvent;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
@@ -565,7 +565,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.SNEAK_ICON], pTacticalPopupButtonStrings[Enum209.SNEAK_ICON]);
   // SetButtonSavedRect( iActionIcons[ SNEAK_ICON ] );
-  ButtonList[iActionIcons[Enum209.SNEAK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.SNEAK_ICON]].UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_CROUCH)) {
@@ -579,7 +579,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.CRAWL_ICON], pTacticalPopupButtonStrings[Enum209.CRAWL_ICON]);
   // SetButtonSavedRect( iActionIcons[ CRAWL_ICON ] );
-  ButtonList[iActionIcons[Enum209.CRAWL_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.CRAWL_ICON]].UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_PRONE)) {
@@ -593,7 +593,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   SetButtonFastHelpText(iActionIcons[Enum209.LOOK_ICON], TacticalStr[Enum335.LOOK_CURSOR_POPUPTEXT]);
   // SetButtonSavedRect( iActionIcons[ LOOK_ICON ] );
-  ButtonList[iActionIcons[Enum209.LOOK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.LOOK_ICON]].UserData[0] = pUIEvent;
 
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
     DisableButton(iActionIcons[Enum209.LOOK_ICON]);
@@ -672,7 +672,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   // SetButtonSavedRect( iActionIcons[ ACTIONC_ICON ] );
   SetButtonFastHelpText(iActionIcons[Enum209.ACTIONC_ICON], zActionString);
-  ButtonList[iActionIcons[Enum209.ACTIONC_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.ACTIONC_ICON]].UserData[0] = pUIEvent;
 
   if (fDisableAction) {
     DisableButton(iActionIcons[Enum209.ACTIONC_ICON]);
@@ -685,7 +685,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   // SetButtonSavedRect( iActionIcons[ TALK_ICON ] );
   SetButtonFastHelpText(iActionIcons[Enum209.TALK_ICON], pTacticalPopupButtonStrings[Enum209.TALK_ICON]);
-  ButtonList[iActionIcons[Enum209.TALK_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.TALK_ICON]].UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[Enum209.TALK_ICON]);
@@ -698,7 +698,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   // SetButtonSavedRect( iActionIcons[ HAND_ICON ] );
   SetButtonFastHelpText(iActionIcons[Enum209.HAND_ICON], pTacticalPopupButtonStrings[Enum209.HAND_ICON]);
-  ButtonList[iActionIcons[Enum209.HAND_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[Enum209.HAND_ICON]].UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[Enum209.HAND_ICON]);
@@ -711,7 +711,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   // SetButtonSavedRect( iActionIcons[ CANCEL_ICON ] );
   SetButtonFastHelpText(iActionIcons[CANCEL_ICON], pTacticalPopupButtonStrings[CANCEL_ICON]);
-  ButtonList[iActionIcons[CANCEL_ICON]].value.UserData[0] = pUIEvent;
+  ButtonList[iActionIcons[CANCEL_ICON]].UserData[0] = pUIEvent;
 
   // LockTacticalInterface( );
 
@@ -773,16 +773,16 @@ export function CancelMovementMenu(): void {
   guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
 }
 
-function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMovementCallback(btn: GUI_BUTTON, reason: INT32): void {
   let uiBtnID: INT32;
   let pUIEvent: Pointer<UI_EVENT>;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
-    uiBtnID = btn.value.IDNum;
+    uiBtnID = btn.IDNum;
 
-    pUIEvent = (btn.value.UserData[0]);
+    pUIEvent = (btn.UserData[0]);
 
     if (uiBtnID == iActionIcons[Enum209.WALK_ICON]) {
       pUIEvent.value.uiParams[0] = MOVEMENT_MENU_WALK;
@@ -1970,13 +1970,13 @@ export function CancelOpenDoorMenu(): void {
   gOpenDoorMenu.fMenuHandled = 2;
 }
 
-function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
   let uiBtnID: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
-    uiBtnID = btn.value.IDNum;
+    uiBtnID = btn.IDNum;
 
     // Popdown menu
     gOpenDoorMenu.fMenuHandled = true;

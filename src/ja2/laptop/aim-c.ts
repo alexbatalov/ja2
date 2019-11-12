@@ -515,19 +515,19 @@ export function ExitAimMenuBar(): boolean {
   return true;
 }
 
-function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnAimBottomButtonsCallback(btn: GUI_BUTTON, reason: INT32): void {
   let bNewValue: UINT32;
 
   bNewValue = MSYS_GetBtnUserData(btn, 0);
   gubAimMenuButtonDown = 255;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
     gubAimMenuButtonDown = MSYS_GetBtnUserData(btn, 1);
     InvalidateRegion(BOTTOM_BUTTON_START_X, BOTTOM_BUTTON_START_Y, BOTTOM_BUTTON_END_X, BOTTOM_BUTTON_END_Y);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       ResetAimButtons(guiBottomButtons, NUM_AIM_BOTTOMBUTTONS);
 
       guiCurrentLaptopMode = MSYS_GetBtnUserData(btn, 0);
@@ -536,7 +536,7 @@ function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(BOTTOM_BUTTON_START_X, BOTTOM_BUTTON_START_Y, BOTTOM_BUTTON_END_X, BOTTOM_BUTTON_END_Y);
   }
   DisableAimButton();
@@ -546,7 +546,7 @@ function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): vo
   let cnt: UINT32;
 
   for (cnt = 0; cnt < uNumberOfButtons; cnt++) {
-    ButtonList[Buttons[cnt]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    ButtonList[Buttons[cnt]].uiFlags &= ~(BUTTON_CLICKED_ON);
   }
 }
 
@@ -555,7 +555,7 @@ export function DisableAimButton(): void {
 
   for (i = 0; i < NUM_AIM_BOTTOMBUTTONS; i++) {
     if (gCurrentAimPage[i] == guiCurrentLaptopMode)
-      ButtonList[guiBottomButtons[i]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiBottomButtons[i]].uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 

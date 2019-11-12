@@ -96,18 +96,18 @@ export function RemoveMessageBox(): void {
 //	Quick Message Box button callback functions.
 //----------------------------------------------------------------------------------------------
 
-function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MsgBoxOkClkCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    butn.value.uiFlags |= BUTTON_CLICKED_ON;
+    butn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
     gfMessageBoxResult = true;
   }
 }
 
-function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MsgBoxCnclClkCallback(butn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    butn.value.uiFlags |= BUTTON_CLICKED_ON;
+    butn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
     gfMessageBoxResult = false;

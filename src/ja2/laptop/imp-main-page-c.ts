@@ -199,16 +199,16 @@ function DeleteIMPMainPageButtons(): void {
   return;
 }
 
-function BtnIMPMainPageBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPMainPageBackCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP Homepage About US button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_HOME_PAGE;
       fButtonPendingFlag = true;
       iCurrentProfileMode = 0;
@@ -218,19 +218,19 @@ function BtnIMPMainPageBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
   }
 }
 
-function BtnIMPMainPageBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPMainPageBeginCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   // too far along to change gender
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // are we going to change name, or do we have to start over from scratch
       if (iCurrentProfileMode > 2) {
@@ -251,89 +251,89 @@ function BtnIMPMainPageBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   }
 }
 
-function BtnIMPMainPagePersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPMainPagePersonalityCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode != 1) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_PERSONALITY;
       fButtonPendingFlag = true;
     }
   }
 }
 
-function BtnIMPMainPageAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPMainPageAttributesCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if (iCurrentProfileMode < 2) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_ATTRIBUTE_ENTRANCE;
       fButtonPendingFlag = true;
     }
   }
 }
 
-export function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnIMPMainPagePortraitCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if ((iCurrentProfileMode != 3) && (iCurrentProfileMode != 4) && (iCurrentProfileMode > 5)) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_PORTRAIT;
       fButtonPendingFlag = true;
     }
   }
 }
 
-export function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnIMPMainPageVoiceCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
   // if not this far in char generation, don't alot ANY action
   if ((iCurrentProfileMode != 4) && (iCurrentProfileMode > 5)) {
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     return;
   }
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       iCurrentImpPage = Enum71.IMP_VOICE;
       fButtonPendingFlag = true;
     }

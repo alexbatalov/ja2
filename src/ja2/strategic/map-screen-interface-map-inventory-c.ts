@@ -1220,12 +1220,12 @@ export function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): 
   return true;
 }
 
-function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapInventoryPoolNextBtn(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage < (iLastInventoryPoolPage)) {
@@ -1236,12 +1236,12 @@ function MapInventoryPoolNextBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function MapInventoryPoolPrevBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapInventoryPoolPrevBtn(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // if can go to next page, go there
       if (iCurrentInventoryPoolPage > 0) {
@@ -1252,12 +1252,12 @@ function MapInventoryPoolPrevBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function MapInventoryPoolDoneBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function MapInventoryPoolDoneBtn(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // done
       fShowMapInventoryPool = false;

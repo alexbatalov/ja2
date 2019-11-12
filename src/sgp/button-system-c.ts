@@ -30,29 +30,29 @@ let str: string /* UINT8[128] */;
 // When you click on a button, it get's anchored, until you release the mouse button.
 // When you move around, you don't want to select other buttons, even when you release
 // it.  This follows the Windows 95 convention.
-export let gpAnchoredButton: Pointer<GUI_BUTTON>;
-let gpPrevAnchoredButton: Pointer<GUI_BUTTON>;
+export let gpAnchoredButton: GUI_BUTTON /* Pointer<GUI_BUTTON> */;
+let gpPrevAnchoredButton: GUI_BUTTON /* Pointer<GUI_BUTTON> */;
 export let gfAnchoredState: boolean;
 
 let gbDisabledButtonStyle: INT8;
 
-let gpCurrentFastHelpButton: Pointer<GUI_BUTTON>;
+let gpCurrentFastHelpButton: GUI_BUTTON /* Pointer<GUI_BUTTON> */;
 
 export let gfRenderHilights: boolean = true;
 
-export let ButtonPictures: BUTTON_PICS[] /* [MAX_BUTTON_PICS] */;
+export let ButtonPictures: BUTTON_PICS[] /* [MAX_BUTTON_PICS] */ = createArrayFrom(MAX_BUTTON_PICS, createButtonPics);
 let ButtonPicsLoaded: INT32;
 
 export let ButtonDestBuffer: UINT32 = BACKBUFFER;
 let ButtonDestPitch: UINT32 = 640 * 2;
 let ButtonDestBPP: UINT32 = 16;
 
-export let ButtonList: Pointer<GUI_BUTTON>[] /* [MAX_BUTTONS] */;
+export let ButtonList: GUI_BUTTON[] /* Pointer<GUI_BUTTON>[MAX_BUTTONS] */ = createArray(MAX_BUTTONS, <GUI_BUTTON><unknown>null);
 
 let ButtonsInList: INT32 = 0;
 
 export function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16 {
-  return ButtonPictures[usButtonPicID].vobj.value.pETRLEObject[iSlot].usWidth;
+  return ButtonPictures[usButtonPicID].vobj.pETRLEObject[iSlot].usWidth;
 }
 
 let GenericButtonGrayed: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
@@ -104,7 +104,7 @@ function FindFreeButtonSlot(): INT32 {
 export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let vo_desc: VOBJECT_DESC = createVObjectDesc();
   let UseSlot: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let MaxHeight: UINT32;
   let MaxWidth: UINT32;
   let ThisHeight: UINT32;
@@ -133,7 +133,7 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   vo_desc.ImageFile = filename;
 
   MemBefore = MemGetFree();
-  if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Couldn't create VOBJECT for %s", filename));
     return -1;
   }
@@ -151,9 +151,9 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   // Fit the button size to the largest image in the set
   MaxWidth = MaxHeight = 0;
   if (Grayed != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[Grayed]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[Grayed];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -162,9 +162,9 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   }
 
   if (OffNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -173,9 +173,9 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   }
 
   if (OffHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -184,9 +184,9 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   }
 
   if (OnNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -195,9 +195,9 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   }
 
   if (OnHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -222,7 +222,7 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
 //
 export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let UseSlot: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let MaxHeight: UINT32;
   let MaxWidth: UINT32;
   let ThisHeight: UINT32;
@@ -264,9 +264,9 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
   // Fit the button size to the largest image in the set
   MaxWidth = MaxHeight = 0;
   if (Grayed != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[Grayed]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[Grayed];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -275,9 +275,9 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
   }
 
   if (OffNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -286,9 +286,9 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
   }
 
   if (OffHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -297,9 +297,9 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
   }
 
   if (OnNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -308,9 +308,9 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
   }
 
   if (OnHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -340,7 +340,7 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
 //
 function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let UseSlot: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let MaxHeight: UINT32;
   let MaxWidth: UINT32;
   let ThisHeight: UINT32;
@@ -376,9 +376,9 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   // Fit the button size to the largest image in the set
   MaxWidth = MaxHeight = 0;
   if (Grayed != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[Grayed]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[Grayed];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -387,9 +387,9 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   }
 
   if (OffNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -398,9 +398,9 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   }
 
   if (OffHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OffHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OffHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -409,9 +409,9 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   }
 
   if (OnNormal != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnNormal]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnNormal];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -420,9 +420,9 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
   }
 
   if (OnHilite != BUTTON_NO_IMAGE) {
-    pTrav = addressof(ButtonPictures[UseSlot].vobj.value.pETRLEObject[OnHilite]);
-    ThisHeight = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    ThisWidth = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    pTrav = ButtonPictures[UseSlot].vobj.pETRLEObject[OnHilite];
+    ThisHeight = (pTrav.usHeight + pTrav.sOffsetY);
+    ThisWidth = (pTrav.usWidth + pTrav.sOffsetX);
 
     if (MaxWidth < ThisWidth)
       MaxWidth = ThisWidth;
@@ -468,7 +468,7 @@ export function UnloadButtonImage(Index: INT32): void {
 
   // If this is a duplicated button image, then don't trash the vobject
   if (ButtonPictures[Index].fFlags & GUI_BTN_DUPLICATE_VOBJ || ButtonPictures[Index].fFlags & GUI_BTN_EXTERNAL_VOBJ) {
-    ButtonPictures[Index].vobj = null;
+    ButtonPictures[Index].vobj = <SGPVObject><unknown>null;
     ButtonPicsLoaded--;
   } else {
     // Deleting a non-duplicate, so see if any dups present. if so, then
@@ -483,7 +483,7 @@ export function UnloadButtonImage(Index: INT32): void {
           ButtonPictures[x].fFlags &= (~GUI_BTN_DUPLICATE_VOBJ);
 
           // Now remove this button, but not it's vobject
-          ButtonPictures[Index].vobj = null;
+          ButtonPictures[Index].vobj = <SGPVObject><unknown>null;
 
           fDone = true;
           ButtonPicsLoaded--;
@@ -495,7 +495,7 @@ export function UnloadButtonImage(Index: INT32): void {
   // If image slot isn't empty, delete the image
   if (ButtonPictures[Index].vobj != null) {
     DeleteVideoObject(ButtonPictures[Index].vobj);
-    ButtonPictures[Index].vobj = null;
+    ButtonPictures[Index].vobj = <SGPVObject><unknown>null;
     ButtonPicsLoaded--;
   }
 }
@@ -506,7 +506,7 @@ export function UnloadButtonImage(Index: INT32): void {
 //	Enables an already created button.
 //
 export function EnableButton(iButtonID: INT32): boolean {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
@@ -518,8 +518,8 @@ export function EnableButton(iButtonID: INT32): boolean {
 
   // If button exists, set the ENABLED flag
   if (b) {
-    OldState = b.value.uiFlags & BUTTON_ENABLED;
-    b.value.uiFlags |= (BUTTON_ENABLED | BUTTON_DIRTY);
+    OldState = b.uiFlags & BUTTON_ENABLED;
+    b.uiFlags |= (BUTTON_ENABLED | BUTTON_DIRTY);
   } else
     OldState = 0;
 
@@ -537,7 +537,7 @@ export function EnableButton(iButtonID: INT32): boolean {
 //	graphics for such are not available).
 //
 export function DisableButton(iButtonID: INT32): boolean {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
@@ -549,9 +549,9 @@ export function DisableButton(iButtonID: INT32): boolean {
 
   // If button exists, reset the ENABLED flag
   if (b) {
-    OldState = b.value.uiFlags & BUTTON_ENABLED;
-    b.value.uiFlags &= (~BUTTON_ENABLED);
-    b.value.uiFlags |= BUTTON_DIRTY;
+    OldState = b.uiFlags & BUTTON_ENABLED;
+    b.uiFlags &= (~BUTTON_ENABLED);
+    b.uiFlags |= BUTTON_DIRTY;
   } else
     OldState = 0;
 
@@ -588,7 +588,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all QuickButton images
   for (x = 0; x < MAX_BUTTON_PICS; x++) {
-    ButtonPictures[x].vobj = null;
+    ButtonPictures[x].vobj = <SGPVObject><unknown>null;
     ButtonPictures[x].Grayed = -1;
     ButtonPictures[x].OffNormal = -1;
     ButtonPictures[x].OffHilite = -1;
@@ -620,7 +620,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_OFF;
 
-  if ((GenericButtonOffNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((GenericButtonOffNormal[0] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_OFF);
     return false;
   }
@@ -628,7 +628,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_ON;
 
-  if ((GenericButtonOnNormal[0] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((GenericButtonOnNormal[0] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't create VOBJECT for " + DEFAULT_GENERIC_BUTTON_ON);
     return false;
   }
@@ -638,11 +638,11 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   // aren't required for operation (only OFF Normal and ON Normal are required).
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_OFF_HI;
-  GenericButtonOffHilite[0] = CreateVideoObject(addressof(vo_desc));
+  GenericButtonOffHilite[0] = CreateVideoObject(vo_desc);
 
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = DEFAULT_GENERIC_BUTTON_ON_HI;
-  GenericButtonOnHilite[0] = CreateVideoObject(addressof(vo_desc));
+  GenericButtonOnHilite[0] = CreateVideoObject(vo_desc);
 
   Pix = 0;
   if (!GetETRLEPixelValue(addressof(Pix), GenericButtonOffNormal[0], 8, 0, 0)) {
@@ -715,7 +715,7 @@ export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): IN
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = filename;
 
-  if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonIcon: Couldn't create VOBJECT for %s", filename));
     return -1;
   }
@@ -831,7 +831,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = OffNormName;
 
-  if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffNormName));
     return -1;
   }
@@ -840,7 +840,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = OnNormName;
 
-  if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnNormName));
     return -1;
   }
@@ -852,7 +852,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     vo_desc.ImageFile = GrayName;
 
-    if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+    if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", GrayName));
       return -1;
     }
@@ -863,7 +863,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     vo_desc.ImageFile = OffHiliteName;
 
-    if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+    if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffHiliteName));
       return -1;
     }
@@ -874,7 +874,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     vo_desc.ImageFile = OnHiliteName;
 
-    if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+    if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnHiliteName));
       return -1;
     }
@@ -885,7 +885,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     vo_desc.ImageFile = BkGrndName;
 
-    if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(addressof(vo_desc))) == null) {
+    if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
       DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", BkGrndName));
       return -1;
     }
@@ -984,7 +984,7 @@ export function InitButtonSystem(): boolean {
 
   // Clear out button list
   for (x = 0; x < MAX_BUTTONS; x++) {
-    ButtonList[x] = null;
+    ButtonList[x] = <GUI_BUTTON><unknown>null;
   }
 
   // Initialize the button image manager sub-system
@@ -1022,7 +1022,7 @@ export function ShutdownButtonSystem(): void {
 function RemoveButtonsMarkedForDeletion(): void {
   let i: INT32;
   for (i = 0; i < MAX_BUTTONS; i++) {
-    if (ButtonList[i] && ButtonList[i].value.uiFlags & BUTTON_DELETION_PENDING) {
+    if (ButtonList[i] && ButtonList[i].uiFlags & BUTTON_DELETION_PENDING) {
       RemoveButton(i);
     }
   }
@@ -1035,7 +1035,7 @@ function RemoveButtonsMarkedForDeletion(): void {
 //	button is released.
 //
 export function RemoveButton(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     str = sprintf("Attempting to RemoveButton with out of range buttonID %d.", iButtonID);
@@ -1054,39 +1054,37 @@ export function RemoveButton(iButtonID: INT32): void {
   // like deleting a node during list processing, then we delay it till after the callback
   // is completed.
   if (gfDelayButtonDeletion) {
-    b.value.uiFlags |= BUTTON_DELETION_PENDING;
+    b.uiFlags |= BUTTON_DELETION_PENDING;
     gfPendingButtonDeletion = true;
     return;
   }
 
   // Kris:
-  if (b.value.uiFlags & BUTTON_SELFDELETE_IMAGE) {
+  if (b.uiFlags & BUTTON_SELFDELETE_IMAGE) {
     // checkboxes and simple create buttons have their own graphics associated with them,
     // and it is handled internally.  We delete it here.  This provides the advantage of less
     // micromanagement, but with the disadvantage of wasting more memory if you have lots of
     // buttons using the same graphics.
-    UnloadButtonImage(b.value.ImageNum);
+    UnloadButtonImage(b.ImageNum);
   }
 
   // ...kill it!!!
-  MSYS_RemoveRegion(b.value.Area);
+  MSYS_RemoveRegion(b.Area);
 
-  if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
-    FreeBackgroundRectPending(b.value.BackRect);
+  if (b.uiFlags & BUTTON_SAVEBACKGROUND) {
+    FreeBackgroundRectPending(b.BackRect);
   }
 
   // Get rid of the text string
-  if (b.value.string != null)
-    MemFree(b.value.string);
+  if (b.string != null)
+    b.string = "";
 
   if (b == gpAnchoredButton)
-    gpAnchoredButton = null;
+    gpAnchoredButton = <GUI_BUTTON><unknown>null;
   if (b == gpPrevAnchoredButton)
-    gpPrevAnchoredButton = null;
+    gpPrevAnchoredButton = <GUI_BUTTON><unknown>null;
 
-  MemFree(b);
-  b = null;
-  ButtonList[iButtonID] = null;
+  ButtonList[iButtonID] = <GUI_BUTTON><unknown>null;
 }
 
 //=============================================================================
@@ -1114,7 +1112,7 @@ function GetNextButtonNumber(): INT32 {
 //	call if a QuickButton is given.
 //
 function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let xloc: INT32;
   let yloc: INT32;
 
@@ -1137,23 +1135,23 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
   }
 
   // If this is a QuickButton, ignore this call
-  if ((b.value.uiFlags & BUTTON_TYPES) == BUTTON_QUICK)
+  if ((b.uiFlags & BUTTON_TYPES) == BUTTON_QUICK)
     return;
 
   // Get current button screen location
-  xloc = b.value.XLoc;
-  yloc = b.value.YLoc;
+  xloc = b.XLoc;
+  yloc = b.YLoc;
 
   // Set the new MOUSE_REGION area values to reflect change in size.
-  b.value.Area.RegionTopLeftX = xloc;
-  b.value.Area.RegionTopLeftY = yloc;
-  b.value.Area.RegionBottomRightX = (xloc + w);
-  b.value.Area.RegionBottomRightY = (yloc + h);
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.Area.RegionTopLeftX = xloc;
+  b.Area.RegionTopLeftY = yloc;
+  b.Area.RegionBottomRightX = (xloc + w);
+  b.Area.RegionBottomRightY = (yloc + h);
+  b.uiFlags |= BUTTON_DIRTY;
 
-  if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
-    FreeBackgroundRectPending(b.value.BackRect);
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
+  if (b.uiFlags & BUTTON_SAVEBACKGROUND) {
+    FreeBackgroundRectPending(b.BackRect);
+    b.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 }
 
@@ -1164,7 +1162,7 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
 //	to the top left corner of the button.
 //
 function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let xloc: INT32;
   let yloc: INT32;
   let w: INT32;
@@ -1186,22 +1184,22 @@ function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
   xloc = x;
   yloc = y;
   // Compute current width and height of this button
-  w = b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
-  h = b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
+  w = b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
+  h = b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
 
   // Set button to new location
-  b.value.XLoc = x;
-  b.value.YLoc = y;
+  b.XLoc = x;
+  b.YLoc = y;
   // Set the buttons MOUSE_REGION to appropriate area
-  b.value.Area.RegionTopLeftX = xloc;
-  b.value.Area.RegionTopLeftY = yloc;
-  b.value.Area.RegionBottomRightX = (xloc + w);
-  b.value.Area.RegionBottomRightY = (yloc + h);
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.Area.RegionTopLeftX = xloc;
+  b.Area.RegionTopLeftY = yloc;
+  b.Area.RegionBottomRightX = (xloc + w);
+  b.Area.RegionBottomRightY = (yloc + h);
+  b.uiFlags |= BUTTON_DIRTY;
 
-  if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
-    FreeBackgroundRectPending(b.value.BackRect);
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
+  if (b.uiFlags & BUTTON_SAVEBACKGROUND) {
+    FreeBackgroundRectPending(b.BackRect);
+    b.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 }
 
@@ -1213,7 +1211,7 @@ function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
 //	Calling this function with a button type other than Iconic has no effect.
 //
 function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     str = sprintf("Attempting to set button icon with out of range buttonID %d.", iButtonID);
@@ -1235,13 +1233,13 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
   }
 
   // If button isn't an icon button, ignore this call
-  if (((b.value.uiFlags & BUTTON_TYPES) == BUTTON_QUICK) || ((b.value.uiFlags & BUTTON_TYPES) == BUTTON_HOT_SPOT) || ((b.value.uiFlags & BUTTON_TYPES) == BUTTON_GENERIC)) {
+  if (((b.uiFlags & BUTTON_TYPES) == BUTTON_QUICK) || ((b.uiFlags & BUTTON_TYPES) == BUTTON_HOT_SPOT) || ((b.uiFlags & BUTTON_TYPES) == BUTTON_GENERIC)) {
     return -1;
   }
 
   // Set the icon number and index to use for this button
-  b.value.iIconID = Icon;
-  b.value.usIconIndex = IconIndex;
+  b.iIconID = Icon;
+  b.usIconIndex = IconIndex;
 
   return Icon;
 }
@@ -1251,8 +1249,8 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
 //
 //	Creates an Iconic type button.
 //
-export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK | null, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let ButtonNum: INT32;
   let BType: INT32;
   let x: INT32;
@@ -1282,90 +1280,90 @@ export function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, x
   }
 
   // Allocate memory for the GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
+  if ((b = createGUIButton()) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateIconButton: Can't alloc mem for button struct");
     return -1;
   }
 
   // Init the values in the struct
-  b.value.uiFlags = BUTTON_DIRTY;
-  b.value.uiOldFlags = 0;
-  b.value.IDNum = ButtonNum;
-  b.value.XLoc = xloc;
-  b.value.YLoc = yloc;
+  b.uiFlags = BUTTON_DIRTY;
+  b.uiOldFlags = 0;
+  b.IDNum = ButtonNum;
+  b.XLoc = xloc;
+  b.YLoc = yloc;
 
   if (GenImg < 0)
-    b.value.ImageNum = 0;
+    b.ImageNum = 0;
   else
-    b.value.ImageNum = GenImg;
+    b.ImageNum = GenImg;
 
   for (x = 0; x < 4; x++)
-    b.value.UserData[x] = 0;
-  b.value.Group = -1;
+    b.UserData[x] = 0;
+  b.Group = -1;
 
-  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
+  b.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
   // Init text
-  b.value.string = null;
-  b.value.usFont = 0;
-  b.value.fMultiColor = false;
-  b.value.sForeColor = 0;
-  b.value.sWrappedWidth = -1;
-  b.value.sShadowColor = -1;
-  b.value.sForeColorDown = -1;
-  b.value.sShadowColorDown = -1;
-  b.value.sForeColorHilited = -1;
-  b.value.sShadowColorHilited = -1;
-  b.value.bJustification = BUTTON_TEXT_CENTER;
-  b.value.bTextXOffset = -1;
-  b.value.bTextYOffset = -1;
-  b.value.bTextXSubOffSet = 0;
-  b.value.bTextYSubOffSet = 0;
-  b.value.fShiftText = true;
+  b.string = "";
+  b.usFont = 0;
+  b.fMultiColor = false;
+  b.sForeColor = 0;
+  b.sWrappedWidth = -1;
+  b.sShadowColor = -1;
+  b.sForeColorDown = -1;
+  b.sShadowColorDown = -1;
+  b.sForeColorHilited = -1;
+  b.sShadowColorHilited = -1;
+  b.bJustification = BUTTON_TEXT_CENTER;
+  b.bTextXOffset = -1;
+  b.bTextYOffset = -1;
+  b.bTextXSubOffSet = 0;
+  b.bTextYSubOffSet = 0;
+  b.fShiftText = true;
   // Init icon
-  b.value.iIconID = Icon;
-  b.value.usIconIndex = IconIndex;
-  b.value.bIconXOffset = -1;
-  b.value.bIconYOffset = -1;
-  b.value.fShiftImage = true;
+  b.iIconID = Icon;
+  b.usIconIndex = IconIndex;
+  b.bIconXOffset = -1;
+  b.bIconYOffset = -1;
+  b.fShiftImage = true;
 
   // Set the click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
-    b.value.ClickCallback = ClickCallback;
+    b.ClickCallback = ClickCallback;
     BType |= BUTTON_CLICK_CALLBACK;
   } else
-    b.value.ClickCallback = BUTTON_NO_CALLBACK;
+    b.ClickCallback = BUTTON_NO_CALLBACK;
 
   // Set the move callback function (if any)
   if (MoveCallback != BUTTON_NO_CALLBACK) {
-    b.value.MoveCallback = MoveCallback;
+    b.MoveCallback = MoveCallback;
     BType |= BUTTON_MOVE_CALLBACK;
   } else
-    b.value.MoveCallback = BUTTON_NO_CALLBACK;
+    b.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a mouse region for this button
-  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the mouse region to this button (for callback purposes)
-  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
+  MSYS_SetRegionUserData(b.Area, 0, ButtonNum);
 
   // Set this button's flags
-  b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
+  b.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
 
-  b.value.BackRect = -1;
+  b.BackRect = -1;
 
 // Add button to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return this button's slot number
   return ButtonNum;
 }
 
 // Creates a generic button with text on it.
-export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK | null, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let ButtonNum: INT32;
   let BType: INT32;
   let x: INT32;
@@ -1395,88 +1393,86 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
+  if ((b = createGUIButton()) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateTextButton: Can't alloc mem for button struct");
     return -1;
   }
 
   // Allocate memory for the button's text string...
-  b.value.string = null;
+  b.string = "";
   if (string && string.length) {
-    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
-    AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateTextButton.");
-    b.value.string = string;
+    b.string = string;
   }
 
   // Init the button structure variables
-  b.value.uiFlags = BUTTON_DIRTY;
-  b.value.uiOldFlags = 0;
-  b.value.IDNum = ButtonNum;
-  b.value.XLoc = xloc;
-  b.value.YLoc = yloc;
+  b.uiFlags = BUTTON_DIRTY;
+  b.uiOldFlags = 0;
+  b.IDNum = ButtonNum;
+  b.XLoc = xloc;
+  b.YLoc = yloc;
 
   if (GenImg < 0)
-    b.value.ImageNum = 0;
+    b.ImageNum = 0;
   else
-    b.value.ImageNum = GenImg;
+    b.ImageNum = GenImg;
 
   for (x = 0; x < 4; x++)
-    b.value.UserData[x] = 0;
-  b.value.Group = -1;
-  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
+    b.UserData[x] = 0;
+  b.Group = -1;
+  b.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
   // Init string
-  b.value.usFont = uiFont;
-  b.value.fMultiColor = false;
-  b.value.sForeColor = sForeColor;
-  b.value.sWrappedWidth = -1;
-  b.value.sShadowColor = sShadowColor;
-  b.value.sForeColorDown = -1;
-  b.value.sShadowColorDown = -1;
-  b.value.sForeColorHilited = -1;
-  b.value.sShadowColorHilited = -1;
-  b.value.bJustification = BUTTON_TEXT_CENTER;
-  b.value.bTextXOffset = -1;
-  b.value.bTextYOffset = -1;
-  b.value.bTextXSubOffSet = 0;
-  b.value.bTextYSubOffSet = 0;
-  b.value.fShiftText = true;
+  b.usFont = uiFont;
+  b.fMultiColor = false;
+  b.sForeColor = sForeColor;
+  b.sWrappedWidth = -1;
+  b.sShadowColor = sShadowColor;
+  b.sForeColorDown = -1;
+  b.sShadowColorDown = -1;
+  b.sForeColorHilited = -1;
+  b.sShadowColorHilited = -1;
+  b.bJustification = BUTTON_TEXT_CENTER;
+  b.bTextXOffset = -1;
+  b.bTextYOffset = -1;
+  b.bTextXSubOffSet = 0;
+  b.bTextYSubOffSet = 0;
+  b.fShiftText = true;
   // Init icon
-  b.value.iIconID = -1;
-  b.value.usIconIndex = -1;
-  b.value.bIconXOffset = -1;
-  b.value.bIconYOffset = -1;
-  b.value.fShiftImage = true;
+  b.iIconID = -1;
+  b.usIconIndex = -1;
+  b.bIconXOffset = -1;
+  b.bIconYOffset = -1;
+  b.fShiftImage = true;
 
   // Set the button click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
-    b.value.ClickCallback = ClickCallback;
+    b.ClickCallback = ClickCallback;
     BType |= BUTTON_CLICK_CALLBACK;
   } else
-    b.value.ClickCallback = BUTTON_NO_CALLBACK;
+    b.ClickCallback = BUTTON_NO_CALLBACK;
 
   // Set the button's mouse movement callback function (if any)
   if (MoveCallback != BUTTON_NO_CALLBACK) {
-    b.value.MoveCallback = MoveCallback;
+    b.MoveCallback = MoveCallback;
     BType |= BUTTON_MOVE_CALLBACK;
   } else
-    b.value.MoveCallback = BUTTON_NO_CALLBACK;
+    b.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a MOUSE_REGION for this button
-  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.Area, xloc, yloc, (xloc + w), (yloc + h), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION to this button
-  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
+  MSYS_SetRegionUserData(b.Area, 0, ButtonNum);
 
   // Set the flags for this button
-  b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
+  b.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_GENERIC);
 
-  b.value.BackRect = -1;
+  b.BackRect = -1;
 
 // Add this button to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the slot number
   return ButtonNum;
@@ -1488,8 +1484,8 @@ export function CreateTextButton(string: string /* Pointer<UINT16> */, uiFont: U
 //	Creates a button like HotSpot. HotSpots have no graphics associated with
 //	them.
 //
-export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK | null, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let ButtonNum: INT32;
   let BType: INT16;
   let x: INT16;
@@ -1508,52 +1504,52 @@ export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: IN
   }
 
   // Allocate memory for the GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
+  if ((b = createGUIButton()) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "CreateHotSpot: Can't alloc mem for button struct");
     return -1;
   }
 
   // Init the structure values
-  b.value.uiFlags = 0;
-  b.value.uiOldFlags = 0;
-  b.value.IDNum = ButtonNum;
-  b.value.XLoc = xloc;
-  b.value.YLoc = yloc;
-  b.value.ImageNum = 0xffffffff;
+  b.uiFlags = 0;
+  b.uiOldFlags = 0;
+  b.IDNum = ButtonNum;
+  b.XLoc = xloc;
+  b.YLoc = yloc;
+  b.ImageNum = 0xffffffff;
   for (x = 0; x < 4; x++)
-    b.value.UserData[x] = 0;
-  b.value.Group = -1;
-  b.value.string = null;
+    b.UserData[x] = 0;
+  b.Group = -1;
+  b.string = "";
 
   // Set the hotspot click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
-    b.value.ClickCallback = ClickCallback;
+    b.ClickCallback = ClickCallback;
     BType |= BUTTON_CLICK_CALLBACK;
   } else
-    b.value.ClickCallback = BUTTON_NO_CALLBACK;
+    b.ClickCallback = BUTTON_NO_CALLBACK;
 
   // Set the hotspot's mouse movement callback function (if any)
   if (MoveCallback != BUTTON_NO_CALLBACK) {
-    b.value.MoveCallback = MoveCallback;
+    b.MoveCallback = MoveCallback;
     BType |= BUTTON_MOVE_CALLBACK;
   } else
-    b.value.MoveCallback = BUTTON_NO_CALLBACK;
+    b.MoveCallback = BUTTON_NO_CALLBACK;
 
   // define a MOUSE_REGION for this hotspot
-  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + Width), (yloc + Height), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.Area, xloc, yloc, (xloc + Width), (yloc + Height), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION to this hotspot
-  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
+  MSYS_SetRegionUserData(b.Area, 0, ButtonNum);
 
   // Set the flags entry for this hotspot
-  b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_HOT_SPOT);
+  b.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_HOT_SPOT);
 
-  b.value.BackRect = -1;
+  b.BackRect = -1;
 
 // Add this button (hotspot) to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button slot number
   return ButtonNum;
@@ -1564,11 +1560,11 @@ export function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: IN
 // SetButtonCursor
 // will simply set the cursor for the mouse region the button occupies
 export function SetButtonCursor(iBtnId: INT32, crsr: UINT16): boolean {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   b = ButtonList[iBtnId];
   if (!b)
     return false;
-  b.value.Area.Cursor = crsr;
+  b.Area.Cursor = crsr;
   return true;
 }
 
@@ -1578,8 +1574,8 @@ export function SetButtonCursor(iBtnId: INT32, crsr: UINT16): boolean {
 //	Creates a QuickButton. QuickButtons only have graphics associated with
 //	them. They cannot be re-sized, nor can the graphic be changed.
 //
-export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK | null, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let ButtonNum: INT32;
   let BType: INT32;
   let x: INT32;
@@ -1609,89 +1605,89 @@ export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type:
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
+  if ((b = createGUIButton()) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Can't alloc mem for button struct");
     return -1;
   }
 
   // Set the values for this buttn
-  b.value.uiFlags = BUTTON_DIRTY;
-  b.value.uiOldFlags = 0;
+  b.uiFlags = BUTTON_DIRTY;
+  b.uiOldFlags = 0;
 
   // Set someflags if of s certain type....
   if (Type & BUTTON_NEWTOGGLE) {
-    b.value.uiFlags |= BUTTON_NEWTOGGLE;
+    b.uiFlags |= BUTTON_NEWTOGGLE;
   }
 
   // shadow style
-  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
+  b.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
 
-  b.value.Group = -1;
+  b.Group = -1;
   // Init string
-  b.value.string = null;
-  b.value.usFont = 0;
-  b.value.fMultiColor = false;
-  b.value.sForeColor = 0;
-  b.value.sWrappedWidth = -1;
-  b.value.sShadowColor = -1;
-  b.value.sForeColorDown = -1;
-  b.value.sShadowColorDown = -1;
-  b.value.sForeColorHilited = -1;
-  b.value.sShadowColorHilited = -1;
-  b.value.bJustification = BUTTON_TEXT_CENTER;
-  b.value.bTextXOffset = -1;
-  b.value.bTextYOffset = -1;
-  b.value.bTextXSubOffSet = 0;
-  b.value.bTextYSubOffSet = 0;
-  b.value.fShiftText = true;
+  b.string = "";
+  b.usFont = 0;
+  b.fMultiColor = false;
+  b.sForeColor = 0;
+  b.sWrappedWidth = -1;
+  b.sShadowColor = -1;
+  b.sForeColorDown = -1;
+  b.sShadowColorDown = -1;
+  b.sForeColorHilited = -1;
+  b.sShadowColorHilited = -1;
+  b.bJustification = BUTTON_TEXT_CENTER;
+  b.bTextXOffset = -1;
+  b.bTextYOffset = -1;
+  b.bTextXSubOffSet = 0;
+  b.bTextYSubOffSet = 0;
+  b.fShiftText = true;
   // Init icon
-  b.value.iIconID = -1;
-  b.value.usIconIndex = -1;
-  b.value.bIconXOffset = -1;
-  b.value.bIconYOffset = -1;
-  b.value.fShiftImage = true;
+  b.iIconID = -1;
+  b.usIconIndex = -1;
+  b.bIconXOffset = -1;
+  b.bIconYOffset = -1;
+  b.fShiftImage = true;
   // Init quickbutton
-  b.value.IDNum = ButtonNum;
-  b.value.ImageNum = Image;
+  b.IDNum = ButtonNum;
+  b.ImageNum = Image;
   for (x = 0; x < 4; x++)
-    b.value.UserData[x] = 0;
+    b.UserData[x] = 0;
 
-  b.value.XLoc = xloc;
-  b.value.YLoc = yloc;
+  b.XLoc = xloc;
+  b.YLoc = yloc;
 
-  b.value.ubToggleButtonOldState = 0;
-  b.value.ubToggleButtonActivated = false;
+  b.ubToggleButtonOldState = false;
+  b.ubToggleButtonActivated = false;
 
   // Set the button click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
-    b.value.ClickCallback = ClickCallback;
+    b.ClickCallback = ClickCallback;
     BType |= BUTTON_CLICK_CALLBACK;
   } else
-    b.value.ClickCallback = BUTTON_NO_CALLBACK;
+    b.ClickCallback = BUTTON_NO_CALLBACK;
 
   // Set the button's mouse movement callback function (if any)
   if (MoveCallback != BUTTON_NO_CALLBACK) {
-    b.value.MoveCallback = MoveCallback;
+    b.MoveCallback = MoveCallback;
     BType |= BUTTON_MOVE_CALLBACK;
   } else
-    b.value.MoveCallback = BUTTON_NO_CALLBACK;
+    b.MoveCallback = BUTTON_NO_CALLBACK;
 
-  memset(addressof(b.value.Area), 0, sizeof(MOUSE_REGION));
+  resetMouseRegion(b.Area);
   // Define a MOUSE_REGION for this QuickButton
-  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION with this QuickButton
-  MSYS_SetRegionUserData(b.value.Area, 0, ButtonNum);
+  MSYS_SetRegionUserData(b.Area, 0, ButtonNum);
 
   // Set the flags for this button
-  b.value.uiFlags |= BUTTON_ENABLED | BType | BUTTON_QUICK;
-  b.value.BackRect = -1;
+  b.uiFlags |= BUTTON_ENABLED | BType | BUTTON_QUICK;
+  b.BackRect = -1;
 
 // Add this QuickButton to the button list
   ButtonList[ButtonNum] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button number (slot)
   return ButtonNum;
@@ -1701,25 +1697,25 @@ export function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type:
 // loading, and deleting of the image.  The size of the image determines the size of the button.  It also uses
 // the default move callback which emulates Win95.  Finally, it sets the priority to normal.  The function you
 // choose also determines the type of button (toggle, notoggle, or newtoggle)
-export function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK | null): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-export function CreateEasyToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateEasyToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK | null): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-function CreateEasyNewToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK): INT32 {
+function CreateEasyNewToggleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, ClickCallback: GUI_CALLBACK | null): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NEWTOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts specify toggle type
-function CreateEasyButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, ClickCallback: GUI_CALLBACK): INT32 {
+function CreateEasyButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, ClickCallback: GUI_CALLBACK | null): INT32 {
   return CreateSimpleButton(x, y, filename, Type, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts priority specification.
-export function CreateSimpleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
+export function CreateSimpleButton(x: INT32, y: INT32, filename: string /* Pointer<UINT8> */, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK | null): INT32 {
   let ButPic: INT32;
   let ButNum: INT32;
 
@@ -1735,15 +1731,15 @@ export function CreateSimpleButton(x: INT32, y: INT32, filename: string /* Point
 
   AssertMsg(ButNum != -1, "Failed to CreateSimpleButton.");
 
-  ButtonList[ButNum].value.uiFlags |= BUTTON_SELFDELETE_IMAGE;
+  ButtonList[ButNum].uiFlags |= BUTTON_SELFDELETE_IMAGE;
 
   SpecifyDisabledButtonStyle(ButNum, Enum29.DISABLED_STYLE_SHADED);
 
   return ButNum;
 }
 
-export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<UINT16> */, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK | null, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let iButtonID: INT32;
   let BType: INT32;
   let x: INT32;
@@ -1773,80 +1769,78 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
   }
 
   // Allocate memory for a GUI_BUTTON structure
-  if ((b = MemAlloc(sizeof(GUI_BUTTON))) == null) {
+  if ((b = createGUIButton()) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "QuickCreateButton: Can't alloc mem for button struct");
     return -1;
   }
 
   // Set the values for this button
-  b.value.uiFlags = BUTTON_DIRTY;
-  b.value.uiOldFlags = 0;
-  b.value.IDNum = iButtonID;
-  b.value.XLoc = xloc;
-  b.value.YLoc = yloc;
-  b.value.ImageNum = Image;
+  b.uiFlags = BUTTON_DIRTY;
+  b.uiOldFlags = 0;
+  b.IDNum = iButtonID;
+  b.XLoc = xloc;
+  b.YLoc = yloc;
+  b.ImageNum = Image;
   for (x = 0; x < 4; x++)
-    b.value.UserData[x] = 0;
-  b.value.Group = -1;
-  b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
-  b.value.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
+    b.UserData[x] = 0;
+  b.Group = -1;
+  b.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+  b.bDisabledStyle = Enum29.DISABLED_STYLE_DEFAULT;
 
   // Allocate memory for the button's text string...
-  b.value.string = null;
+  b.string = "";
   if (string) {
-    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
-    AssertMsg(b.value.string, "Out of memory error:  Couldn't allocate string in CreateIconAndTextButton.");
-    b.value.string = string;
+    b.string = string;
   }
 
-  b.value.bJustification = bJustification;
-  b.value.usFont = uiFont;
-  b.value.fMultiColor = false;
-  b.value.sForeColor = sForeColor;
-  b.value.sWrappedWidth = -1;
-  b.value.sShadowColor = sShadowColor;
-  b.value.sForeColorDown = sForeColorDown;
-  b.value.sShadowColorDown = sShadowColorDown;
-  b.value.sForeColorHilited = -1;
-  b.value.sShadowColorHilited = -1;
-  b.value.bTextXOffset = -1;
-  b.value.bTextYOffset = -1;
-  b.value.bTextXSubOffSet = 0;
-  b.value.bTextYSubOffSet = 0;
-  b.value.fShiftText = true;
+  b.bJustification = bJustification;
+  b.usFont = uiFont;
+  b.fMultiColor = false;
+  b.sForeColor = sForeColor;
+  b.sWrappedWidth = -1;
+  b.sShadowColor = sShadowColor;
+  b.sForeColorDown = sForeColorDown;
+  b.sShadowColorDown = sShadowColorDown;
+  b.sForeColorHilited = -1;
+  b.sShadowColorHilited = -1;
+  b.bTextXOffset = -1;
+  b.bTextYOffset = -1;
+  b.bTextXSubOffSet = 0;
+  b.bTextYSubOffSet = 0;
+  b.fShiftText = true;
 
-  b.value.iIconID = -1;
-  b.value.usIconIndex = 0;
+  b.iIconID = -1;
+  b.usIconIndex = 0;
 
   // Set the button click callback function (if any)
   if (ClickCallback != BUTTON_NO_CALLBACK) {
-    b.value.ClickCallback = ClickCallback;
+    b.ClickCallback = ClickCallback;
     BType |= BUTTON_CLICK_CALLBACK;
   } else
-    b.value.ClickCallback = BUTTON_NO_CALLBACK;
+    b.ClickCallback = BUTTON_NO_CALLBACK;
 
   // Set the button's mouse movement callback function (if any)
   if (MoveCallback != BUTTON_NO_CALLBACK) {
-    b.value.MoveCallback = MoveCallback;
+    b.MoveCallback = MoveCallback;
     BType |= BUTTON_MOVE_CALLBACK;
   } else
-    b.value.MoveCallback = BUTTON_NO_CALLBACK;
+    b.MoveCallback = BUTTON_NO_CALLBACK;
 
   // Define a MOUSE_REGION for this QuickButton
-  MSYS_DefineRegion(b.value.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
+  MSYS_DefineRegion(b.Area, xloc, yloc, (xloc + ButtonPictures[Image].MaxWidth), (yloc + ButtonPictures[Image].MaxHeight), Priority, MSYS_STARTING_CURSORVAL, QuickButtonCallbackMMove, QuickButtonCallbackMButn);
 
   // Link the MOUSE_REGION with this QuickButton
-  MSYS_SetRegionUserData(b.value.Area, 0, iButtonID);
+  MSYS_SetRegionUserData(b.Area, 0, iButtonID);
 
   // Set the flags for this button
-  b.value.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_QUICK);
+  b.uiFlags |= (BUTTON_ENABLED | BType | BUTTON_QUICK);
 
-  b.value.BackRect = -1;
+  b.BackRect = -1;
 
 // Add this QuickButton to the button list
   ButtonList[iButtonID] = b;
 
-  SpecifyButtonSoundScheme(b.value.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
+  SpecifyButtonSoundScheme(b.IDNum, Enum27.BUTTON_SOUND_SCHEME_GENERIC);
 
   // return the button number (slot)
   return iButtonID;
@@ -1854,7 +1848,7 @@ export function CreateIconAndTextButton(Image: INT32, string: string /* Pointer<
 
 // New functions
 export function SpecifyButtonText(iButtonID: INT32, string: string /* Pointer<UINT16> */): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1862,75 +1856,70 @@ export function SpecifyButtonText(iButtonID: INT32, string: string /* Pointer<UI
   b = ButtonList[iButtonID];
 
   // free the previous strings memory if applicable
-  if (b.value.string)
-    MemFree(b.value.string);
-  b.value.string = null;
+  b.string = "";
 
   if (string && string.length) {
-    // allocate memory for the new string
-    b.value.string = MemAlloc((string.length + 1) * sizeof(UINT16));
-    Assert(b.value.string);
     // copy the string to the button
-    b.value.string = string;
-    b.value.uiFlags |= BUTTON_DIRTY;
+    b.string = string;
+    b.uiFlags |= BUTTON_DIRTY;
   }
 }
 
 function SpecifyButtonMultiColorFont(iButtonID: INT32, fMultiColor: boolean): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  b.value.fMultiColor = fMultiColor;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.fMultiColor = fMultiColor;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  b.value.usFont = uiFont;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.usFont = uiFont;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowColor: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  b.value.sForeColor = sForeColor;
-  b.value.sShadowColor = sShadowColor;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.sForeColor = sForeColor;
+  b.sShadowColor = sShadowColor;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sShadowColorDown: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  b.value.sForeColorDown = sForeColorDown;
-  b.value.sShadowColorDown = sShadowColorDown;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.sForeColorDown = sForeColorDown;
+  b.sShadowColorDown = sShadowColorDown;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT16, sShadowColorHilited: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  b.value.sForeColorHilited = sForeColorHilited;
-  b.value.sShadowColorHilited = sShadowColorHilited;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.sForeColorHilited = sForeColorHilited;
+  b.sShadowColorHilited = sShadowColorHilited;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1938,80 +1927,80 @@ export function SpecifyButtonTextJustification(iButtonID: INT32, bJustification:
   // Range check:  if invalid, then set it to center justified.
   if (bJustification < BUTTON_TEXT_LEFT || bJustification > BUTTON_TEXT_RIGHT)
     bJustification = BUTTON_TEXT_CENTER;
-  b.value.bJustification = bJustification;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.bJustification = bJustification;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: string /* Pointer<UINT16> */, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
   // Copy over information
   SpecifyButtonText(iButtonID, string);
-  b.value.usFont = uiFont;
-  b.value.sForeColor = sForeColor;
-  b.value.sShadowColor = sShadowColor;
-  b.value.sForeColorDown = sForeColorDown;
-  b.value.sShadowColorDown = sShadowColorDown;
+  b.usFont = uiFont;
+  b.sForeColor = sForeColor;
+  b.sShadowColor = sShadowColor;
+  b.sForeColorDown = sForeColorDown;
+  b.sShadowColorDown = sShadowColorDown;
   // Range check:  if invalid, then set it to center justified.
   if (bJustification < BUTTON_TEXT_LEFT || bJustification > BUTTON_TEXT_RIGHT)
     bJustification = BUTTON_TEXT_CENTER;
-  b.value.bJustification = bJustification;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.bJustification = bJustification;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: string /* Pointer<UINT16> */, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
   // Copy over information
   SpecifyButtonText(iButtonID, string);
-  b.value.usFont = uiFont;
-  b.value.sForeColor = sForeColor;
-  b.value.sShadowColor = sShadowColor;
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.usFont = uiFont;
+  b.sForeColor = sForeColor;
+  b.sShadowColor = sShadowColor;
+  b.uiFlags |= BUTTON_DIRTY;
 }
 
 export function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
   // Copy over information
-  b.value.bTextXOffset = bTextXOffset;
-  b.value.bTextYOffset = bTextYOffset;
-  b.value.fShiftText = fShiftText;
+  b.bTextXOffset = bTextXOffset;
+  b.bTextYOffset = bTextYOffset;
+  b.fShiftText = fShiftText;
 }
 
 export function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: boolean): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
   // Copy over information
-  b.value.bTextXSubOffSet = bTextXOffset;
-  b.value.bTextYSubOffSet = bTextYOffset;
-  b.value.fShiftText = fShiftText;
+  b.bTextXSubOffSet = bTextXOffset;
+  b.bTextYSubOffSet = bTextYOffset;
+  b.fShiftText = fShiftText;
 }
 
 export function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
 
-  b.value.sWrappedWidth = sWrappedWidth;
+  b.sWrappedWidth = sWrappedWidth;
 }
 
 export function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -2019,86 +2008,83 @@ export function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void
 
   Assert(bStyle >= Enum29.DISABLED_STYLE_NONE && bStyle <= Enum29.DISABLED_STYLE_SHADED);
 
-  b.value.bDisabledStyle = bStyle;
+  b.bDisabledStyle = bStyle;
 }
 
 // Note:  Text is always on top
 // If fShiftImage is true, then the image will shift down one pixel and right one pixel
 // just like the text does.
 export function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjectIndex: UINT16, bXOffset: INT8, bYOffset: INT8, fShiftImage: boolean): boolean {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
 
-  b.value.iIconID = iVideoObjectID;
-  b.value.usIconIndex = usVideoObjectIndex;
+  b.iIconID = iVideoObjectID;
+  b.usIconIndex = usVideoObjectIndex;
 
-  if (b.value.iIconID == -1)
+  if (b.iIconID == -1)
     return false;
 
-  b.value.bIconXOffset = bXOffset;
-  b.value.bIconYOffset = bYOffset;
-  b.value.fShiftImage = true;
+  b.bIconXOffset = bXOffset;
+  b.bIconYOffset = bYOffset;
+  b.fShiftImage = true;
 
-  b.value.uiFlags |= BUTTON_DIRTY;
+  b.uiFlags |= BUTTON_DIRTY;
 
   return true;
 }
 
 function RemoveTextFromButton(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
-  // Init string
-  if (b.value.string)
-    MemFree(b.value.string);
-  b.value.string = null;
-  b.value.usFont = 0;
-  b.value.sForeColor = 0;
-  b.value.sWrappedWidth = -1;
-  b.value.sShadowColor = -1;
-  b.value.sForeColorDown = -1;
-  b.value.sShadowColorDown = -1;
-  b.value.sForeColorHilited = -1;
-  b.value.sShadowColorHilited = -1;
-  b.value.bJustification = BUTTON_TEXT_CENTER;
-  b.value.bTextXOffset = -1;
-  b.value.bTextYOffset = -1;
-  b.value.bTextXSubOffSet = 0;
-  b.value.bTextYSubOffSet = 0;
-  b.value.fShiftText = true;
+  b.string = "";
+  b.usFont = 0;
+  b.sForeColor = 0;
+  b.sWrappedWidth = -1;
+  b.sShadowColor = -1;
+  b.sForeColorDown = -1;
+  b.sShadowColorDown = -1;
+  b.sForeColorHilited = -1;
+  b.sShadowColorHilited = -1;
+  b.bJustification = BUTTON_TEXT_CENTER;
+  b.bTextXOffset = -1;
+  b.bTextYOffset = -1;
+  b.bTextXSubOffSet = 0;
+  b.bTextYSubOffSet = 0;
+  b.fShiftText = true;
 }
 
 function RemoveIconFromButton(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
   // Clear icon
-  b.value.iIconID = -1;
-  b.value.usIconIndex = -1;
-  b.value.bIconXOffset = -1;
-  b.value.bIconYOffset = -1;
-  b.value.fShiftImage = true;
+  b.iIconID = -1;
+  b.usIconIndex = -1;
+  b.bIconXOffset = -1;
+  b.bIconYOffset = -1;
+  b.fShiftImage = true;
 }
 
 export function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
 
-  b.value.Area.uiFlags |= MSYS_ALLOW_DISABLED_FASTHELP;
+  b.Area.uiFlags |= MSYS_ALLOW_DISABLED_FASTHELP;
 }
 
 //=============================================================================
@@ -2107,22 +2093,22 @@ export function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: boolean): 
 //	Set the text that will be displayed as the FastHelp
 //
 export function SetButtonFastHelpText(iButton: INT32, Text: string /* Pointer<UINT16> */): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
   b = ButtonList[iButton];
   AssertMsg(b, "Called SetButtonFastHelpText() with a non-existant button.");
-  SetRegionFastHelpText(b.value.Area, Text);
+  SetRegionFastHelpText(b.Area, Text);
 }
 
 export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
   b = ButtonList[iButton];
   AssertMsg(b, "Called SetBtnHelpEndCallback() with a non-existant button.");
 
-  SetRegionHelpEndCallback(b.value.Area, CallbackFxn);
+  SetRegionHelpEndCallback(b.Area, CallbackFxn);
 }
 
 //=============================================================================
@@ -2132,7 +2118,7 @@ export function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEX
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
 function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let iButtonID: INT32;
 
   Assert(reg != null);
@@ -2151,16 +2137,16 @@ function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
   if (!b)
     return; // This is getting called when Adding new regions...
 
-  if (b.value.uiFlags & BUTTON_ENABLED && reason & (MSYS_CALLBACK_REASON_LOST_MOUSE | MSYS_CALLBACK_REASON_GAIN_MOUSE)) {
-    b.value.uiFlags |= BUTTON_DIRTY;
+  if (b.uiFlags & BUTTON_ENABLED && reason & (MSYS_CALLBACK_REASON_LOST_MOUSE | MSYS_CALLBACK_REASON_GAIN_MOUSE)) {
+    b.uiFlags |= BUTTON_DIRTY;
   }
 
   // Mouse moved on the button, so reset it's timer to maximum.
-  if (b.value.Area.uiFlags & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
+  if (b.Area.uiFlags & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     // check for sound playing stuff
-    if (b.value.ubSoundSchemeID) {
-      if (addressof(b.value.Area == MSYS_PrevRegion) && !gpAnchoredButton) {
-        if (b.value.uiFlags & BUTTON_ENABLED) {
+    if (b.ubSoundSchemeID) {
+      if (b.Area == MSYS_PrevRegion && !gpAnchoredButton) {
+        if (b.uiFlags & BUTTON_ENABLED) {
           PlayButtonSound(iButtonID, BUTTON_SOUND_MOVED_ONTO);
         } else {
           PlayButtonSound(iButtonID, BUTTON_SOUND_DISABLED_MOVED_ONTO);
@@ -2169,9 +2155,9 @@ function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
     }
   } else {
     // Check if we should play a sound
-    if (b.value.ubSoundSchemeID) {
-      if (b.value.uiFlags & BUTTON_ENABLED) {
-        if (addressof(b.value.Area == MSYS_PrevRegion) && !gpAnchoredButton) {
+    if (b.ubSoundSchemeID) {
+      if (b.uiFlags & BUTTON_ENABLED) {
+        if (b.Area == MSYS_PrevRegion && !gpAnchoredButton) {
           PlayButtonSound(iButtonID, BUTTON_SOUND_MOVED_OFF_OF);
         }
       } else {
@@ -2181,15 +2167,15 @@ function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
   }
 
   // ATE: New stuff for toggle buttons that work with new Win95 paridigm
-  if ((b.value.uiFlags & BUTTON_NEWTOGGLE)) {
+  if ((b.uiFlags & BUTTON_NEWTOGGLE)) {
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-      if (b.value.ubToggleButtonActivated) {
-        b.value.ubToggleButtonActivated = false;
+      if (b.ubToggleButtonActivated) {
+        b.ubToggleButtonActivated = false;
 
-        if (!b.value.ubToggleButtonOldState) {
-          b.value.uiFlags &= (~BUTTON_CLICKED_ON);
+        if (!b.ubToggleButtonOldState) {
+          b.uiFlags &= (~BUTTON_CLICKED_ON);
         } else {
-          b.value.uiFlags |= BUTTON_CLICKED_ON;
+          b.uiFlags |= BUTTON_CLICKED_ON;
         }
       }
     }
@@ -2197,8 +2183,8 @@ function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
 
   // If this button is enabled and there is a callback function associated with it,
   // call the callback function.
-  if ((b.value.uiFlags & BUTTON_ENABLED) && (b.value.uiFlags & BUTTON_MOVE_CALLBACK))
-    (b.value.MoveCallback)(b, reason);
+  if ((b.uiFlags & BUTTON_ENABLED) && (b.uiFlags & BUTTON_MOVE_CALLBACK))
+    (<GUI_CALLBACK>b.MoveCallback)(b, reason);
 }
 
 //=============================================================================
@@ -2208,7 +2194,7 @@ function QuickButtonCallbackMMove(reg: MOUSE_REGION, reason: INT32): void {
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
 function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let iButtonID: INT32;
   let MouseBtnDown: boolean;
   let StateBefore: boolean;
@@ -2235,23 +2221,23 @@ function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
   else
     MouseBtnDown = false;
 
-  StateBefore = (b.value.uiFlags & BUTTON_CLICKED_ON) ? (true) : (false);
+  StateBefore = (b.uiFlags & BUTTON_CLICKED_ON) ? (true) : (false);
 
   // ATE: New stuff for toggle buttons that work with new Win95 paridigm
-  if (b.value.uiFlags & BUTTON_NEWTOGGLE && b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.uiFlags & BUTTON_NEWTOGGLE && b.uiFlags & BUTTON_ENABLED) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-      if (!b.value.ubToggleButtonActivated) {
-        if (!(b.value.uiFlags & BUTTON_CLICKED_ON)) {
-          b.value.ubToggleButtonOldState = false;
-          b.value.uiFlags |= BUTTON_CLICKED_ON;
+      if (!b.ubToggleButtonActivated) {
+        if (!(b.uiFlags & BUTTON_CLICKED_ON)) {
+          b.ubToggleButtonOldState = false;
+          b.uiFlags |= BUTTON_CLICKED_ON;
         } else {
-          b.value.ubToggleButtonOldState = true;
-          b.value.uiFlags &= (~BUTTON_CLICKED_ON);
+          b.ubToggleButtonOldState = true;
+          b.uiFlags &= (~BUTTON_CLICKED_ON);
         }
-        b.value.ubToggleButtonActivated = true;
+        b.ubToggleButtonActivated = true;
       }
     } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      b.value.ubToggleButtonActivated = false;
+      b.ubToggleButtonActivated = false;
     }
   }
 
@@ -2260,15 +2246,15 @@ function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
   // down the button, but only if the button is up.  In Win95, buttons that are already
   // down, and anchored never change state, unless you release the mouse in the button area.
 
-  if (b.value.MoveCallback == DEFAULT_MOVE_CALLBACK() && b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.MoveCallback == DEFAULT_MOVE_CALLBACK() && b.uiFlags & BUTTON_ENABLED) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       gpAnchoredButton = b;
       gfAnchoredState = StateBefore;
-      b.value.uiFlags |= BUTTON_CLICKED_ON;
-    } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP && b.value.uiFlags & BUTTON_NO_TOGGLE) {
-      b.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      b.uiFlags |= BUTTON_CLICKED_ON;
+    } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP && b.uiFlags & BUTTON_NO_TOGGLE) {
+      b.uiFlags &= (~BUTTON_CLICKED_ON);
     }
-  } else if (b.value.uiFlags & BUTTON_CHECKBOX) {
+  } else if (b.uiFlags & BUTTON_CHECKBOX) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       // the check box button gets anchored, though it doesn't actually use the anchoring move callback.
       // The effect is different, we don't want to toggle the button state, but we do want to anchor this
@@ -2278,68 +2264,68 @@ function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
 
       // Trick the before state of the button to be different so the sound will play properly as checkbox buttons
       // are processed differently.
-      StateBefore = (b.value.uiFlags & BUTTON_CLICKED_ON) ? false : true;
+      StateBefore = (b.uiFlags & BUTTON_CLICKED_ON) ? false : true;
       StateAfter = !StateBefore;
     } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      b.value.uiFlags ^= BUTTON_CLICKED_ON; // toggle the checkbox state upon release inside button area.
+      b.uiFlags ^= BUTTON_CLICKED_ON; // toggle the checkbox state upon release inside button area.
       // Trick the before state of the button to be different so the sound will play properly as checkbox buttons
       // are processed differently.
-      StateBefore = (b.value.uiFlags & BUTTON_CLICKED_ON) ? false : true;
+      StateBefore = (b.uiFlags & BUTTON_CLICKED_ON) ? false : true;
       StateAfter = !StateBefore;
     }
   }
 
   // Should we play a sound if clicked on while disabled?
-  if (b.value.ubSoundSchemeID && !(b.value.uiFlags & BUTTON_ENABLED) && MouseBtnDown) {
+  if (b.ubSoundSchemeID && !(b.uiFlags & BUTTON_ENABLED) && MouseBtnDown) {
     PlayButtonSound(iButtonID, BUTTON_SOUND_DISABLED_CLICK);
   }
 
   // If this button is disabled, and no callbacks allowed when disabled
   // callback
-  if (!(b.value.uiFlags & BUTTON_ENABLED) && !(b.value.uiFlags & BUTTON_ALLOW_DISABLED_CALLBACK))
+  if (!(b.uiFlags & BUTTON_ENABLED) && !(b.uiFlags & BUTTON_ALLOW_DISABLED_CALLBACK))
     return;
 
   // Button not enabled but allowed to use callback, then do that!
-  if (!(b.value.uiFlags & BUTTON_ENABLED) && (b.value.uiFlags & BUTTON_ALLOW_DISABLED_CALLBACK)) {
-    if (b.value.uiFlags & BUTTON_CLICK_CALLBACK) {
-      (b.value.ClickCallback)(b, reason | BUTTON_DISABLED_CALLBACK);
+  if (!(b.uiFlags & BUTTON_ENABLED) && (b.uiFlags & BUTTON_ALLOW_DISABLED_CALLBACK)) {
+    if (b.uiFlags & BUTTON_CLICK_CALLBACK) {
+      (<GUI_CALLBACK>b.ClickCallback)(b, reason | BUTTON_DISABLED_CALLBACK);
     }
     return;
   }
 
   // If there is a callback function with this button, call it
-  if (b.value.uiFlags & BUTTON_CLICK_CALLBACK) {
+  if (b.uiFlags & BUTTON_CLICK_CALLBACK) {
     // Kris:  January 6, 1998
     // Added these checks to avoid a case where it was possible to process a leftbuttonup message when
     // the button wasn't anchored, and should have been.
     gfDelayButtonDeletion = true;
-    if (!(reason & MSYS_CALLBACK_REASON_LBUTTON_UP) || b.value.MoveCallback != DEFAULT_MOVE_CALLBACK() || b.value.MoveCallback == DEFAULT_MOVE_CALLBACK() && gpPrevAnchoredButton == b)
-      (b.value.ClickCallback)(b, reason);
+    if (!(reason & MSYS_CALLBACK_REASON_LBUTTON_UP) || b.MoveCallback != DEFAULT_MOVE_CALLBACK() || b.MoveCallback == DEFAULT_MOVE_CALLBACK() && gpPrevAnchoredButton == b)
+      (<GUI_CALLBACK>b.ClickCallback)(b, reason);
     gfDelayButtonDeletion = false;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) && !(b.value.uiFlags & BUTTON_IGNORE_CLICKS)) {
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) && !(b.uiFlags & BUTTON_IGNORE_CLICKS)) {
     // Otherwise, do default action with this button.
-    b.value.uiFlags ^= BUTTON_CLICKED_ON;
+    b.uiFlags ^= BUTTON_CLICKED_ON;
   }
 
-  if (b.value.uiFlags & BUTTON_CHECKBOX) {
-    StateAfter = (b.value.uiFlags & BUTTON_CLICKED_ON) ? (true) : (false);
+  if (b.uiFlags & BUTTON_CHECKBOX) {
+    StateAfter = (b.uiFlags & BUTTON_CLICKED_ON) ? (true) : (false);
   }
 
   // Play sounds for this enabled button (disabled sounds have already been done)
-  if (b.value.ubSoundSchemeID && b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.ubSoundSchemeID && b.uiFlags & BUTTON_ENABLED) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      if (b.value.ubSoundSchemeID && StateBefore && !StateAfter) {
+      if (b.ubSoundSchemeID && StateBefore && !StateAfter) {
         PlayButtonSound(iButtonID, BUTTON_SOUND_CLICKED_OFF);
       }
     } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-      if (b.value.ubSoundSchemeID && !StateBefore && StateAfter) {
+      if (b.ubSoundSchemeID && !StateBefore && StateAfter) {
         PlayButtonSound(iButtonID, BUTTON_SOUND_CLICKED_ON);
       }
     }
   }
 
   if (StateBefore != StateAfter) {
-    InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
+    InvalidateRegion(b.Area.RegionTopLeftX, b.Area.RegionTopLeftY, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY);
   }
 
   if (gfPendingButtonDeletion) {
@@ -2349,52 +2335,52 @@ function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
 
 export function RenderButtons(): void {
   let iButtonID: INT32;
-  let fOldButtonDown: boolean;
-  let fOldEnabled: boolean;
-  let b: Pointer<GUI_BUTTON>;
+  let fOldButtonDown: number;
+  let fOldEnabled: number;
+  let b: GUI_BUTTON;
 
   SaveFontSettings();
   for (iButtonID = 0; iButtonID < MAX_BUTTONS; iButtonID++) {
     // If the button exists, and it's not owned by another object, draw it
     // Kris:  and make sure that the button isn't hidden.
     b = ButtonList[iButtonID];
-    if (b && b.value.Area.uiFlags & MSYS_REGION_ENABLED) {
+    if (b && b.Area.uiFlags & MSYS_REGION_ENABLED) {
       // Check for buttonchanged status
-      fOldButtonDown = (b.value.uiFlags & BUTTON_CLICKED_ON);
+      fOldButtonDown = (b.uiFlags & BUTTON_CLICKED_ON);
 
-      if (fOldButtonDown != (b.value.uiOldFlags & BUTTON_CLICKED_ON)) {
+      if (fOldButtonDown != (b.uiOldFlags & BUTTON_CLICKED_ON)) {
         // Something is different, set dirty!
-        b.value.uiFlags |= BUTTON_DIRTY;
+        b.uiFlags |= BUTTON_DIRTY;
       }
 
       // Check for button dirty flags
-      fOldEnabled = (b.value.uiFlags & BUTTON_ENABLED);
+      fOldEnabled = (b.uiFlags & BUTTON_ENABLED);
 
-      if (fOldEnabled != (b.value.uiOldFlags & BUTTON_ENABLED)) {
+      if (fOldEnabled != (b.uiOldFlags & BUTTON_ENABLED)) {
         // Something is different, set dirty!
-        b.value.uiFlags |= BUTTON_DIRTY;
+        b.uiFlags |= BUTTON_DIRTY;
       }
 
       // If we ABSOLUTELY want to render every frame....
-      if (b.value.uiFlags & BUTTON_SAVEBACKGROUND) {
-        b.value.uiFlags |= BUTTON_DIRTY;
+      if (b.uiFlags & BUTTON_SAVEBACKGROUND) {
+        b.uiFlags |= BUTTON_DIRTY;
       }
 
       // Set old flags
-      b.value.uiOldFlags = b.value.uiFlags;
+      b.uiOldFlags = b.uiFlags;
 
-      if (b.value.uiFlags & BUTTON_FORCE_UNDIRTY) {
-        b.value.uiFlags &= ~(BUTTON_DIRTY);
-        b.value.uiFlags &= ~(BUTTON_FORCE_UNDIRTY);
+      if (b.uiFlags & BUTTON_FORCE_UNDIRTY) {
+        b.uiFlags &= ~(BUTTON_DIRTY);
+        b.uiFlags &= ~(BUTTON_FORCE_UNDIRTY);
       }
 
       // Check if we need to update!
-      if (b.value.uiFlags & BUTTON_DIRTY) {
+      if (b.uiFlags & BUTTON_DIRTY) {
         // Turn off dirty flag
-        b.value.uiFlags &= (~BUTTON_DIRTY);
+        b.uiFlags &= (~BUTTON_DIRTY);
         DrawButtonFromPtr(b);
 
-        InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
+        InvalidateRegion(b.Area.RegionTopLeftX, b.Area.RegionTopLeftY, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY);
 //#else
 //				InvalidateRegion(b->Area.RegionTopLeftX, b->Area.RegionTopLeftY, b->Area.RegionBottomRightX, b->Area.RegionBottomRightY, FALSE);
       }
@@ -2419,7 +2405,7 @@ export function MarkAButtonDirty(iButtonNum: INT32): void {
   // If the button exists, and it's not owned by another object, draw it
   if (ButtonList[iButtonNum]) {
     // Turn on dirty flag
-    ButtonList[iButtonNum].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iButtonNum].uiFlags |= BUTTON_DIRTY;
   }
 }
 
@@ -2432,14 +2418,14 @@ export function MarkButtonsDirty(): void {
     // If the button exists, and it's not owned by another object, draw it
     if (ButtonList[x]) {
       // Turn on dirty flag
-      ButtonList[x].value.uiFlags |= BUTTON_DIRTY;
+      ButtonList[x].uiFlags |= BUTTON_DIRTY;
     }
   }
 }
 
 export function UnMarkButtonDirty(iButtonIndex: INT32): void {
   if (ButtonList[iButtonIndex]) {
-    ButtonList[iButtonIndex].value.uiFlags &= ~(BUTTON_DIRTY);
+    ButtonList[iButtonIndex].uiFlags &= ~(BUTTON_DIRTY);
   }
 }
 
@@ -2454,8 +2440,8 @@ export function UnmarkButtonsDirty(): void {
 }
 
 export function ForceButtonUnDirty(iButtonIndex: INT32): void {
-  ButtonList[iButtonIndex].value.uiFlags &= ~(BUTTON_DIRTY);
-  ButtonList[iButtonIndex].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+  ButtonList[iButtonIndex].uiFlags &= ~(BUTTON_DIRTY);
+  ButtonList[iButtonIndex].uiFlags |= BUTTON_FORCE_UNDIRTY;
 }
 
 //=============================================================================
@@ -2483,14 +2469,14 @@ export function DrawButton(iButtonID: INT32): boolean {
   if (!ButtonList[iButtonID])
     return false;
 
-  if (ButtonList[iButtonID].value.string)
+  if (ButtonList[iButtonID].string)
     SaveFontSettings();
   // Draw this button
-  if (ButtonList[iButtonID].value.Area.uiFlags & MSYS_REGION_ENABLED) {
+  if (ButtonList[iButtonID].Area.uiFlags & MSYS_REGION_ENABLED) {
     DrawButtonFromPtr(ButtonList[iButtonID]);
   }
 
-  if (ButtonList[iButtonID].value.string)
+  if (ButtonList[iButtonID].string)
     RestoreFontSettings();
   return true;
 }
@@ -2501,11 +2487,11 @@ export function DrawButton(iButtonID: INT32): boolean {
 //	Given a pointer to a GUI_BUTTON structure, draws the button on the
 //	screen.
 //
-function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
+function DrawButtonFromPtr(b: GUI_BUTTON): void {
   Assert(b);
   // Draw the appropriate button according to button type
   gbDisabledButtonStyle = Enum29.DISABLED_STYLE_NONE;
-  switch (b.value.uiFlags & BUTTON_TYPES) {
+  switch (b.uiFlags & BUTTON_TYPES) {
     case BUTTON_QUICK:
       DrawQuickButton(b);
       break;
@@ -2513,18 +2499,18 @@ function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
       DrawGenericButton(b);
       break;
     case BUTTON_HOT_SPOT:
-      if (b.value.uiFlags & BUTTON_NO_TOGGLE)
-        b.value.uiFlags &= (~BUTTON_CLICKED_ON);
+      if (b.uiFlags & BUTTON_NO_TOGGLE)
+        b.uiFlags &= (~BUTTON_CLICKED_ON);
       return; // hotspots don't have text, but if you want to, change this to a break!
     case BUTTON_CHECKBOX:
       DrawCheckBoxButton(b);
       break;
   }
   // If button has an icon, overlay it on current button.
-  if (b.value.iIconID != -1)
+  if (b.iIconID != -1)
     DrawIconOnButton(b);
   // If button has text, draw it now
-  if (b.value.string)
+  if (b.string)
     DrawTextOnButton(b);
   // If the button is disabled, and a style has been calculated, then
   // draw the style last.
@@ -2536,7 +2522,7 @@ function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
       DrawShadeOnButton(b);
       break;
   }
-  if (b.value.bDefaultStatus) {
+  if (b.bDefaultStatus) {
     DrawDefaultOnButton(b);
   }
 }
@@ -2546,97 +2532,97 @@ function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
 //
 //	Draws a QuickButton type button on the screen.
 //
-function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
+function DrawQuickButton(b: GUI_BUTTON): void {
   let UseImage: INT32;
   UseImage = 0;
   // Is button Enabled, or diabled but no "Grayed" image associated with this QuickButton?
-  if (b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.uiFlags & BUTTON_ENABLED) {
     // Is the button's state ON?
-    if (b.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (b.uiFlags & BUTTON_CLICKED_ON) {
       // Is the mouse over this area, and we have a hilite image?
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && gfRenderHilights && (ButtonPictures[b.value.ImageNum].OnHilite != -1))
-        UseImage = ButtonPictures[b.value.ImageNum].OnHilite; // Use On-Hilite image
-      else if (ButtonPictures[b.value.ImageNum].OnNormal != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OnNormal; // Use On-Normal image
+      if ((b.Area.uiFlags & MSYS_MOUSE_IN_AREA) && gfRenderHilights && (ButtonPictures[b.ImageNum].OnHilite != -1))
+        UseImage = ButtonPictures[b.ImageNum].OnHilite; // Use On-Hilite image
+      else if (ButtonPictures[b.ImageNum].OnNormal != -1)
+        UseImage = ButtonPictures[b.ImageNum].OnNormal; // Use On-Normal image
     } else {
       // Is the mouse over the button, and do we have hilite image?
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && gfRenderHilights && (ButtonPictures[b.value.ImageNum].OffHilite != -1))
-        UseImage = ButtonPictures[b.value.ImageNum].OffHilite; // Use Off-Hilite image
-      else if (ButtonPictures[b.value.ImageNum].OffNormal != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OffNormal; // Use Off-Normal image
+      if ((b.Area.uiFlags & MSYS_MOUSE_IN_AREA) && gfRenderHilights && (ButtonPictures[b.ImageNum].OffHilite != -1))
+        UseImage = ButtonPictures[b.ImageNum].OffHilite; // Use Off-Hilite image
+      else if (ButtonPictures[b.ImageNum].OffNormal != -1)
+        UseImage = ButtonPictures[b.ImageNum].OffNormal; // Use Off-Normal image
     }
-  } else if (ButtonPictures[b.value.ImageNum].Grayed != -1) {
+  } else if (ButtonPictures[b.ImageNum].Grayed != -1) {
     // Button is diabled so use the "Grayed-out" image
-    UseImage = ButtonPictures[b.value.ImageNum].Grayed;
+    UseImage = ButtonPictures[b.ImageNum].Grayed;
   } else {
-    UseImage = ButtonPictures[b.value.ImageNum].OffNormal;
-    switch (b.value.bDisabledStyle) {
+    UseImage = ButtonPictures[b.ImageNum].OffNormal;
+    switch (b.bDisabledStyle) {
       case Enum29.DISABLED_STYLE_DEFAULT:
-        gbDisabledButtonStyle = b.value.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
+        gbDisabledButtonStyle = b.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
         break;
       case Enum29.DISABLED_STYLE_HATCHED:
       case Enum29.DISABLED_STYLE_SHADED:
-        gbDisabledButtonStyle = b.value.bDisabledStyle;
+        gbDisabledButtonStyle = b.bDisabledStyle;
         break;
     }
   }
 
   // Display the button image
-  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.ImageNum].vobj, UseImage, b.XLoc, b.YLoc, VO_BLT_SRCTRANSPARENCY, null);
 }
 
-function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
+function DrawHatchOnButton(b: GUI_BUTTON): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect = createSGPRect();
-  ClipRect.iLeft = b.value.Area.RegionTopLeftX;
-  ClipRect.iRight = b.value.Area.RegionBottomRightX - 1;
-  ClipRect.iTop = b.value.Area.RegionTopLeftY;
-  ClipRect.iBottom = b.value.Area.RegionBottomRightY - 1;
+  ClipRect.iLeft = b.Area.RegionTopLeftX;
+  ClipRect.iRight = b.Area.RegionBottomRightX - 1;
+  ClipRect.iTop = b.Area.RegionTopLeftY;
+  ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
   Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-function DrawShadeOnButton(b: Pointer<GUI_BUTTON>): void {
+function DrawShadeOnButton(b: GUI_BUTTON): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect = createSGPRect();
-  ClipRect.iLeft = b.value.Area.RegionTopLeftX;
-  ClipRect.iRight = b.value.Area.RegionBottomRightX - 1;
-  ClipRect.iTop = b.value.Area.RegionTopLeftY;
-  ClipRect.iBottom = b.value.Area.RegionBottomRightY - 1;
+  ClipRect.iLeft = b.Area.RegionTopLeftX;
+  ClipRect.iRight = b.Area.RegionBottomRightX - 1;
+  ClipRect.iTop = b.Area.RegionTopLeftY;
+  ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
   Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
+function DrawDefaultOnButton(b: GUI_BUTTON): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  if (b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_DARKBORDER || b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
+  if (b.bDefaultStatus == Enum28.DEFAULT_STATUS_DARKBORDER || b.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
     // left (one thick)
-    LineDraw(true, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
+    LineDraw(true, b.Area.RegionTopLeftX - 1, b.Area.RegionTopLeftY - 1, b.Area.RegionTopLeftX - 1, b.Area.RegionBottomRightY + 1, 0, pDestBuf);
     // top (one thick)
-    LineDraw(true, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionTopLeftY - 1, 0, pDestBuf);
+    LineDraw(true, b.Area.RegionTopLeftX - 1, b.Area.RegionTopLeftY - 1, b.Area.RegionBottomRightX + 1, b.Area.RegionTopLeftY - 1, 0, pDestBuf);
     // right (two thick)
-    LineDraw(true, b.value.Area.RegionBottomRightX, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
-    LineDraw(true, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
+    LineDraw(true, b.Area.RegionBottomRightX, b.Area.RegionTopLeftY - 1, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY + 1, 0, pDestBuf);
+    LineDraw(true, b.Area.RegionBottomRightX + 1, b.Area.RegionTopLeftY - 1, b.Area.RegionBottomRightX + 1, b.Area.RegionBottomRightY + 1, 0, pDestBuf);
     // bottom (two thick)
-    LineDraw(true, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionBottomRightY, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY, 0, pDestBuf);
-    LineDraw(true, b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionBottomRightY + 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY + 1, 0, pDestBuf);
-    InvalidateRegion(b.value.Area.RegionTopLeftX - 1, b.value.Area.RegionTopLeftY - 1, b.value.Area.RegionBottomRightX + 1, b.value.Area.RegionBottomRightY + 1);
+    LineDraw(true, b.Area.RegionTopLeftX - 1, b.Area.RegionBottomRightY, b.Area.RegionBottomRightX + 1, b.Area.RegionBottomRightY, 0, pDestBuf);
+    LineDraw(true, b.Area.RegionTopLeftX - 1, b.Area.RegionBottomRightY + 1, b.Area.RegionBottomRightX + 1, b.Area.RegionBottomRightY + 1, 0, pDestBuf);
+    InvalidateRegion(b.Area.RegionTopLeftX - 1, b.Area.RegionTopLeftY - 1, b.Area.RegionBottomRightX + 1, b.Area.RegionBottomRightY + 1);
   }
-  if (b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_DOTTEDINTERIOR || b.value.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
+  if (b.bDefaultStatus == Enum28.DEFAULT_STATUS_DOTTEDINTERIOR || b.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
     // Draw an internal dotted rectangle.
   }
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
 export function DrawCheckBoxButtonOn(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let fLeftButtonState: boolean = gfLeftButtonState;
 
   Assert(iButtonID >= 0);
@@ -2645,7 +2631,7 @@ export function DrawCheckBoxButtonOn(iButtonID: INT32): void {
   Assert(b);
 
   gfLeftButtonState = true;
-  b.value.Area.uiFlags |= MSYS_MOUSE_IN_AREA;
+  b.Area.uiFlags |= MSYS_MOUSE_IN_AREA;
 
   DrawButton(iButtonID);
 
@@ -2653,7 +2639,7 @@ export function DrawCheckBoxButtonOn(iButtonID: INT32): void {
 }
 
 export function DrawCheckBoxButtonOff(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let fLeftButtonState: boolean = gfLeftButtonState;
 
   Assert(iButtonID >= 0);
@@ -2662,58 +2648,58 @@ export function DrawCheckBoxButtonOff(iButtonID: INT32): void {
   Assert(b);
 
   gfLeftButtonState = false;
-  b.value.Area.uiFlags |= MSYS_MOUSE_IN_AREA;
+  b.Area.uiFlags |= MSYS_MOUSE_IN_AREA;
 
   DrawButton(iButtonID);
 
   gfLeftButtonState = fLeftButtonState;
 }
 
-function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
+function DrawCheckBoxButton(b: GUI_BUTTON): void {
   let UseImage: INT32;
 
   UseImage = 0;
   // Is button Enabled, or diabled but no "Grayed" image associated with this QuickButton?
-  if (b.value.uiFlags & BUTTON_ENABLED) {
+  if (b.uiFlags & BUTTON_ENABLED) {
     // Is the button's state ON?
-    if (b.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (b.uiFlags & BUTTON_CLICKED_ON) {
       // Is the mouse over this area, and we have a hilite image?
-      if (b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState && ButtonPictures[b.value.ImageNum].OnHilite != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OnHilite; // Use On-Hilite image
-      else if (ButtonPictures[b.value.ImageNum].OnNormal != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OnNormal; // Use On-Normal image
+      if (b.Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState && ButtonPictures[b.ImageNum].OnHilite != -1)
+        UseImage = ButtonPictures[b.ImageNum].OnHilite; // Use On-Hilite image
+      else if (ButtonPictures[b.ImageNum].OnNormal != -1)
+        UseImage = ButtonPictures[b.ImageNum].OnNormal; // Use On-Normal image
     } else {
       // Is the mouse over the button, and do we have hilite image?
-      if (b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState && ButtonPictures[b.value.ImageNum].OffHilite != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OffHilite; // Use Off-Hilite image
-      else if (ButtonPictures[b.value.ImageNum].OffNormal != -1)
-        UseImage = ButtonPictures[b.value.ImageNum].OffNormal; // Use Off-Normal image
+      if (b.Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState && ButtonPictures[b.ImageNum].OffHilite != -1)
+        UseImage = ButtonPictures[b.ImageNum].OffHilite; // Use Off-Hilite image
+      else if (ButtonPictures[b.ImageNum].OffNormal != -1)
+        UseImage = ButtonPictures[b.ImageNum].OffNormal; // Use Off-Normal image
     }
-  } else if (ButtonPictures[b.value.ImageNum].Grayed != -1) {
+  } else if (ButtonPictures[b.ImageNum].Grayed != -1) {
     // Button is disabled so use the "Grayed-out" image
-    UseImage = ButtonPictures[b.value.ImageNum].Grayed;
+    UseImage = ButtonPictures[b.ImageNum].Grayed;
   } else // use the disabled style
   {
-    if (b.value.uiFlags & BUTTON_CLICKED_ON)
-      UseImage = ButtonPictures[b.value.ImageNum].OnHilite;
+    if (b.uiFlags & BUTTON_CLICKED_ON)
+      UseImage = ButtonPictures[b.ImageNum].OnHilite;
     else
-      UseImage = ButtonPictures[b.value.ImageNum].OffHilite;
-    switch (b.value.bDisabledStyle) {
+      UseImage = ButtonPictures[b.ImageNum].OffHilite;
+    switch (b.bDisabledStyle) {
       case Enum29.DISABLED_STYLE_DEFAULT:
         gbDisabledButtonStyle = Enum29.DISABLED_STYLE_HATCHED;
         break;
       case Enum29.DISABLED_STYLE_HATCHED:
       case Enum29.DISABLED_STYLE_SHADED:
-        gbDisabledButtonStyle = b.value.bDisabledStyle;
+        gbDisabledButtonStyle = b.bDisabledStyle;
         break;
     }
   }
 
   // Display the button image
-  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.value.ImageNum].vobj, UseImage, b.value.XLoc, b.value.YLoc, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(ButtonDestBuffer, ButtonPictures[b.ImageNum].vobj, UseImage, b.XLoc, b.YLoc, VO_BLT_SRCTRANSPARENCY, null);
 }
 
-function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
+function DrawIconOnButton(b: GUI_BUTTON): void {
   let xp: INT32;
   let yp: INT32;
   let width: INT32;
@@ -2724,27 +2710,27 @@ function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
   let IconH: INT32;
   let NewClip: SGPRect = createSGPRect();
   let OldClip: SGPRect = createSGPRect();
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let hvObject: HVOBJECT;
 
   // If there's an actual icon on this button, try to show it.
-  if (b.value.iIconID >= 0) {
+  if (b.iIconID >= 0) {
     // Get width and height of button area
-    width = b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
-    height = b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
+    width = b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
+    height = b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
 
     // Compute viewable area (inside borders)
-    NewClip.iLeft = b.value.XLoc + 3;
-    NewClip.iRight = b.value.XLoc + width - 3;
-    NewClip.iTop = b.value.YLoc + 2;
-    NewClip.iBottom = b.value.YLoc + height - 2;
+    NewClip.iLeft = b.XLoc + 3;
+    NewClip.iRight = b.XLoc + width - 3;
+    NewClip.iTop = b.YLoc + 2;
+    NewClip.iBottom = b.YLoc + height - 2;
 
     // Get Icon's blit start coordinates
     IconX = NewClip.iLeft;
     IconY = NewClip.iTop;
 
     // Get current clip area
-    GetClippingRect(addressof(OldClip));
+    GetClippingRect(OldClip);
 
     // Clip button's viewable area coords to screen
     if (NewClip.iLeft < OldClip.iLeft)
@@ -2780,47 +2766,47 @@ function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
       return;
 
     // Get the width and height of the icon itself
-    if (b.value.uiFlags & BUTTON_GENERIC)
-      pTrav = addressof(GenericButtonIcons[b.value.iIconID].value.pETRLEObject[b.value.usIconIndex]);
+    if (b.uiFlags & BUTTON_GENERIC)
+      pTrav = GenericButtonIcons[b.iIconID].value.pETRLEObject[b.usIconIndex];
     else {
-      GetVideoObject(addressof(hvObject), b.value.iIconID);
-      pTrav = addressof(hvObject.value.pETRLEObject[b.value.usIconIndex]);
+      GetVideoObject(addressof(hvObject), b.iIconID);
+      pTrav = hvObject.value.pETRLEObject[b.usIconIndex];
     }
-    IconH = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-    IconW = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+    IconH = (pTrav.usHeight + pTrav.sOffsetY);
+    IconW = (pTrav.usWidth + pTrav.sOffsetX);
 
     // Compute coordinates for centering the icon on the button or
     // use the offset system.
-    if (b.value.bIconXOffset == -1)
+    if (b.bIconXOffset == -1)
       xp = (((width - 6) - IconW) / 2) + IconX;
     else
-      xp = b.value.Area.RegionTopLeftX + b.value.bIconXOffset;
-    if (b.value.bIconYOffset == -1)
+      xp = b.Area.RegionTopLeftX + b.bIconXOffset;
+    if (b.bIconYOffset == -1)
       yp = (((height - 4) - IconH) / 2) + IconY;
     else
-      yp = b.value.Area.RegionTopLeftY + b.value.bIconYOffset;
+      yp = b.Area.RegionTopLeftY + b.bIconYOffset;
 
     // Was the button clicked on? if so, move the image slightly for the illusion
     // that the image moved into the screen.
-    if (b.value.uiFlags & BUTTON_CLICKED_ON && b.value.fShiftImage) {
+    if (b.uiFlags & BUTTON_CLICKED_ON && b.fShiftImage) {
       xp++;
       yp++;
     }
 
     // Set the clipping rectangle to the viewable area of the button
-    SetClippingRect(addressof(NewClip));
+    SetClippingRect(NewClip);
     // Blit the icon
-    if (b.value.uiFlags & BUTTON_GENERIC)
-      BltVideoObject(ButtonDestBuffer, GenericButtonIcons[b.value.iIconID], b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
+    if (b.uiFlags & BUTTON_GENERIC)
+      BltVideoObject(ButtonDestBuffer, GenericButtonIcons[b.iIconID], b.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
     else
-      BltVideoObject(ButtonDestBuffer, hvObject, b.value.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(ButtonDestBuffer, hvObject, b.usIconIndex, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
     // Restore previous clip region
-    SetClippingRect(addressof(OldClip));
+    SetClippingRect(OldClip);
   }
 }
 
 // If a button has text attached to it, then it'll draw it last.
-function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
+function DrawTextOnButton(b: GUI_BUTTON): void {
   let xp: INT32;
   let yp: INT32;
   let width: INT32;
@@ -2832,23 +2818,23 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
   let sForeColor: INT16;
 
   // If this button actually has a string to print
-  if (b.value.string) {
+  if (b.string) {
     // Get the width and height of this button
-    width = b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
-    height = b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
+    width = b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
+    height = b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
 
     // Compute the viewable area on this button
-    NewClip.iLeft = b.value.XLoc + 3;
-    NewClip.iRight = b.value.XLoc + width - 3;
-    NewClip.iTop = b.value.YLoc + 2;
-    NewClip.iBottom = b.value.YLoc + height - 2;
+    NewClip.iLeft = b.XLoc + 3;
+    NewClip.iRight = b.XLoc + width - 3;
+    NewClip.iTop = b.YLoc + 2;
+    NewClip.iBottom = b.YLoc + height - 2;
 
     // Get the starting coordinates to print
     TextX = NewClip.iLeft;
     TextY = NewClip.iTop;
 
     // Get the current clipping area
-    GetClippingRect(addressof(OldClip));
+    GetClippingRect(OldClip);
 
     // Clip the button's viewable area to the screen
     if (NewClip.iLeft < OldClip.iLeft)
@@ -2887,57 +2873,57 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
     SetFontDestBuffer(ButtonDestBuffer, NewClip.iLeft, NewClip.iTop, NewClip.iRight, NewClip.iBottom, false);
 
     // Compute the coordinates to center the text
-    if (b.value.bTextYOffset == -1)
-      yp = (((height)-GetFontHeight(b.value.usFont)) / 2) + TextY - 1;
+    if (b.bTextYOffset == -1)
+      yp = (((height)-GetFontHeight(b.usFont)) / 2) + TextY - 1;
     else
-      yp = b.value.Area.RegionTopLeftY + b.value.bTextYOffset;
-    if (b.value.bTextXOffset == -1) {
-      switch (b.value.bJustification) {
+      yp = b.Area.RegionTopLeftY + b.bTextYOffset;
+    if (b.bTextXOffset == -1) {
+      switch (b.bJustification) {
         case BUTTON_TEXT_LEFT:
           xp = TextX + 3;
           break;
         case BUTTON_TEXT_RIGHT:
-          xp = NewClip.iRight - StringPixLength(b.value.string, b.value.usFont) - 3;
+          xp = NewClip.iRight - StringPixLength(b.string, b.usFont) - 3;
           break;
         case BUTTON_TEXT_CENTER:
         default:
-          xp = (((width - 6) - StringPixLength(b.value.string, b.value.usFont)) / 2) + TextX;
+          xp = (((width - 6) - StringPixLength(b.string, b.usFont)) / 2) + TextX;
           break;
       }
     } else
-      xp = b.value.Area.RegionTopLeftX + b.value.bTextXOffset;
+      xp = b.Area.RegionTopLeftX + b.bTextXOffset;
 
     // Set the printing font to the button text font
-    SetFont(b.value.usFont);
+    SetFont(b.usFont);
 
     // print the text
     SetFontBackground(FONT_MCOLOR_BLACK);
-    SetFontForeground(b.value.sForeColor);
-    sForeColor = b.value.sForeColor;
-    if (b.value.sShadowColor != -1)
-      SetFontShadow(b.value.sShadowColor);
+    SetFontForeground(b.sForeColor);
+    sForeColor = b.sForeColor;
+    if (b.sShadowColor != -1)
+      SetFontShadow(b.sShadowColor);
     // Override the colors if necessary.
-    if (b.value.uiFlags & BUTTON_ENABLED && b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA && b.value.sForeColorHilited != -1) {
-      SetFontForeground(b.value.sForeColorHilited);
-      sForeColor = b.value.sForeColorHilited;
-    } else if (b.value.uiFlags & BUTTON_CLICKED_ON && b.value.sForeColorDown != -1) {
-      SetFontForeground(b.value.sForeColorDown);
-      sForeColor = b.value.sForeColorDown;
+    if (b.uiFlags & BUTTON_ENABLED && b.Area.uiFlags & MSYS_MOUSE_IN_AREA && b.sForeColorHilited != -1) {
+      SetFontForeground(b.sForeColorHilited);
+      sForeColor = b.sForeColorHilited;
+    } else if (b.uiFlags & BUTTON_CLICKED_ON && b.sForeColorDown != -1) {
+      SetFontForeground(b.sForeColorDown);
+      sForeColor = b.sForeColorDown;
     }
-    if (b.value.uiFlags & BUTTON_ENABLED && b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA && b.value.sShadowColorHilited != -1) {
-      SetFontShadow(b.value.sShadowColorHilited);
-    } else if (b.value.uiFlags & BUTTON_CLICKED_ON && b.value.sShadowColorDown != -1) {
-      SetFontShadow(b.value.sShadowColorDown);
+    if (b.uiFlags & BUTTON_ENABLED && b.Area.uiFlags & MSYS_MOUSE_IN_AREA && b.sShadowColorHilited != -1) {
+      SetFontShadow(b.sShadowColorHilited);
+    } else if (b.uiFlags & BUTTON_CLICKED_ON && b.sShadowColorDown != -1) {
+      SetFontShadow(b.sShadowColorDown);
     }
-    if (b.value.uiFlags & BUTTON_CLICKED_ON && b.value.fShiftText) {
+    if (b.uiFlags & BUTTON_CLICKED_ON && b.fShiftText) {
       // Was the button clicked on? if so, move the text slightly for the illusion
       // that the text moved into the screen.
       xp++;
       yp++;
     }
-    if (b.value.sWrappedWidth != -1) {
+    if (b.sWrappedWidth != -1) {
       let bJustified: UINT8 = 0;
-      switch (b.value.bJustification) {
+      switch (b.bJustification) {
         case BUTTON_TEXT_LEFT:
           bJustified = LEFT_JUSTIFIED;
           break;
@@ -2951,37 +2937,37 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
           Assert(0);
           break;
       }
-      if (b.value.bTextXOffset == -1) {
+      if (b.bTextXOffset == -1) {
         // Kris:
         // There needs to be recalculation of the start positions based on the
         // justification and the width specified wrapped width.  I was drawing a
         // double lined word on the right side of the button to find it drawing way
         // over to the left.  I've added the necessary code for the right and center
         // justification.
-        yp = b.value.Area.RegionTopLeftY + 2;
+        yp = b.Area.RegionTopLeftY + 2;
 
-        switch (b.value.bJustification) {
+        switch (b.bJustification) {
           case BUTTON_TEXT_RIGHT:
-            xp = b.value.Area.RegionBottomRightX - 3 - b.value.sWrappedWidth;
+            xp = b.Area.RegionBottomRightX - 3 - b.sWrappedWidth;
 
-            if (b.value.fShiftText && b.value.uiFlags & BUTTON_CLICKED_ON)
+            if (b.fShiftText && b.uiFlags & BUTTON_CLICKED_ON)
               xp++, yp++;
             break;
           case BUTTON_TEXT_CENTER:
-            xp = b.value.Area.RegionTopLeftX + 3 + b.value.sWrappedWidth / 2;
+            xp = b.Area.RegionTopLeftX + 3 + b.sWrappedWidth / 2;
 
-            if (b.value.fShiftText && b.value.uiFlags & BUTTON_CLICKED_ON)
+            if (b.fShiftText && b.uiFlags & BUTTON_CLICKED_ON)
               xp++, yp++;
             break;
         }
       }
-      yp += b.value.bTextYSubOffSet;
-      xp += b.value.bTextXSubOffSet;
-      DisplayWrappedString(xp, yp, b.value.sWrappedWidth, 1, b.value.usFont, sForeColor, b.value.string, FONT_MCOLOR_BLACK, false, bJustified);
+      yp += b.bTextYSubOffSet;
+      xp += b.bTextXSubOffSet;
+      DisplayWrappedString(xp, yp, b.sWrappedWidth, 1, b.usFont, sForeColor, b.string, FONT_MCOLOR_BLACK, false, bJustified);
     } else {
-      yp += b.value.bTextYSubOffSet;
-      xp += b.value.bTextXSubOffSet;
-      mprintf(xp, yp, b.value.string);
+      yp += b.bTextYSubOffSet;
+      xp += b.bTextXSubOffSet;
+      mprintf(xp, yp, b.string);
     }
     // Restore the old text printing settings
   }
@@ -2993,7 +2979,7 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
 //	This function is called by the DrawIconicButton and DrawTextButton
 //	routines to draw the borders and background of the buttons.
 //
-function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
+function DrawGenericButton(b: GUI_BUTTON): void {
   let NumChunksWide: INT32;
   let NumChunksHigh: INT32;
   let cx: INT32;
@@ -3012,34 +2998,34 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let ClipRect: SGPRect = createSGPRect();
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Select the graphics to use depending on the current state of the button
-  if (b.value.uiFlags & BUTTON_ENABLED) {
-    if (!(b.value.uiFlags & BUTTON_ENABLED) && (GenericButtonGrayed[b.value.ImageNum] == null))
-      BPic = GenericButtonOffNormal[b.value.ImageNum];
-    else if (b.value.uiFlags & BUTTON_CLICKED_ON) {
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOnHilite[b.value.ImageNum] != null) && gfRenderHilights)
-        BPic = GenericButtonOnHilite[b.value.ImageNum];
+  if (b.uiFlags & BUTTON_ENABLED) {
+    if (!(b.uiFlags & BUTTON_ENABLED) && (GenericButtonGrayed[b.ImageNum] == null))
+      BPic = GenericButtonOffNormal[b.ImageNum];
+    else if (b.uiFlags & BUTTON_CLICKED_ON) {
+      if ((b.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOnHilite[b.ImageNum] != null) && gfRenderHilights)
+        BPic = GenericButtonOnHilite[b.ImageNum];
       else
-        BPic = GenericButtonOnNormal[b.value.ImageNum];
+        BPic = GenericButtonOnNormal[b.ImageNum];
     } else {
-      if ((b.value.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOffHilite[b.value.ImageNum] != null) && gfRenderHilights)
-        BPic = GenericButtonOffHilite[b.value.ImageNum];
+      if ((b.Area.uiFlags & MSYS_MOUSE_IN_AREA) && (GenericButtonOffHilite[b.ImageNum] != null) && gfRenderHilights)
+        BPic = GenericButtonOffHilite[b.ImageNum];
       else
-        BPic = GenericButtonOffNormal[b.value.ImageNum];
+        BPic = GenericButtonOffNormal[b.ImageNum];
     }
-  } else if (GenericButtonGrayed[b.value.ImageNum])
-    BPic = GenericButtonGrayed[b.value.ImageNum];
+  } else if (GenericButtonGrayed[b.ImageNum])
+    BPic = GenericButtonGrayed[b.ImageNum];
   else {
-    BPic = GenericButtonOffNormal[b.value.ImageNum];
-    switch (b.value.bDisabledStyle) {
+    BPic = GenericButtonOffNormal[b.ImageNum];
+    switch (b.bDisabledStyle) {
       case Enum29.DISABLED_STYLE_DEFAULT:
-        gbDisabledButtonStyle = b.value.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
+        gbDisabledButtonStyle = b.string ? Enum29.DISABLED_STYLE_SHADED : Enum29.DISABLED_STYLE_HATCHED;
         break;
       case Enum29.DISABLED_STYLE_HATCHED:
       case Enum29.DISABLED_STYLE_SHADED:
-        gbDisabledButtonStyle = b.value.bDisabledStyle;
+        gbDisabledButtonStyle = b.bDisabledStyle;
         break;
     }
   }
@@ -3053,35 +3039,35 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   // size, unchanged
 
   // Compute the number of button "chunks" needed to be blitted
-  width = b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
-  height = b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
+  width = b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
+  height = b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
   NumChunksWide = width / iBorderWidth;
   NumChunksHigh = height / iBorderHeight;
   hremain = height % iBorderHeight;
   wremain = width % iBorderWidth;
 
-  cx = (b.value.XLoc + ((NumChunksWide - 1) * iBorderWidth) + wremain);
-  cy = (b.value.YLoc + ((NumChunksHigh - 1) * iBorderHeight) + hremain);
+  cx = (b.XLoc + ((NumChunksWide - 1) * iBorderWidth) + wremain);
+  cy = (b.YLoc + ((NumChunksHigh - 1) * iBorderHeight) + hremain);
 
   // Fill the button's area with the button's background color
-  ColorFillVideoSurfaceArea(ButtonDestBuffer, b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY, GenericButtonFillColors[b.value.ImageNum]);
+  ColorFillVideoSurfaceArea(ButtonDestBuffer, b.Area.RegionTopLeftX, b.Area.RegionTopLeftY, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY, GenericButtonFillColors[b.ImageNum]);
 
   // If there is a background image, fill the button's area with it
-  if (GenericButtonBackground[b.value.ImageNum] != null) {
+  if (GenericButtonBackground[b.ImageNum] != null) {
     ox = oy = 0;
     // if the button was clicked on, adjust the background image so that we get
     // the illusion that it is sunk into the screen.
-    if (b.value.uiFlags & BUTTON_CLICKED_ON)
+    if (b.uiFlags & BUTTON_CLICKED_ON)
       ox = oy = 1;
 
     // Fill the area with the image, tilling it if need be.
-    ImageFillVideoSurfaceArea(ButtonDestBuffer, b.value.Area.RegionTopLeftX + ox, b.value.Area.RegionTopLeftY + oy, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY, GenericButtonBackground[b.value.ImageNum], GenericButtonBackgroundIndex[b.value.ImageNum], GenericButtonOffsetX[b.value.ImageNum], GenericButtonOffsetY[b.value.ImageNum]);
+    ImageFillVideoSurfaceArea(ButtonDestBuffer, b.Area.RegionTopLeftX + ox, b.Area.RegionTopLeftY + oy, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY, GenericButtonBackground[b.ImageNum], GenericButtonBackgroundIndex[b.ImageNum], GenericButtonOffsetX[b.ImageNum], GenericButtonOffsetY[b.ImageNum]);
   }
 
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
 
-  GetClippingRect(addressof(ClipRect));
+  GetClippingRect(ClipRect);
 
   // Draw the button's borders and corners (horizontally)
   for (q = 0; q < NumChunksWide; q++) {
@@ -3091,9 +3077,9 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
       ImgNum = 1;
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.value.XLoc + (q * iBorderWidth)), b.value.YLoc, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.value.XLoc + (q * iBorderWidth)), b.value.YLoc, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, addressof(ClipRect));
     }
 
     if (q == 0)
@@ -3102,16 +3088,16 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
       ImgNum = 6;
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.value.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.value.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
     }
   }
   // Blit the right side corners
   if (gbPixelDepth == 16) {
-    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.value.YLoc, 2, addressof(ClipRect));
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, addressof(ClipRect));
   } else if (gbPixelDepth == 8) {
-    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.value.YLoc, 2, addressof(ClipRect));
+    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, addressof(ClipRect));
   }
 
   if (gbPixelDepth == 16) {
@@ -3125,29 +3111,29 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   if (hremain != 0) {
     q = NumChunksHigh;
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.value.XLoc, (b.value.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.value.XLoc, (b.value.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
     }
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.value.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.value.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
     }
   }
 
   for (q = 1; q < NumChunksHigh; q++) {
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.value.XLoc, (b.value.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.value.XLoc, (b.value.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
     }
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.value.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.value.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
     }
   }
 
@@ -3155,249 +3141,8 @@ function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-//=======================================================================================================
-// Dialog box code
-//
-
-//=======================================================================================================
-//=======================================================================================================
-//
-//	Very preliminary stuff follows
-//
-//=======================================================================================================
-//=======================================================================================================
-
-interface CreateDlgInfo {
-  iFlags: INT32; // Holds the creation flags
-
-  iPosX: INT32; // Screen position of dialog box
-  iPosY: INT32;
-  iWidth: INT32; // Dimensions of dialog box (if needed)
-  iHeight: INT32;
-
-  iAreaWidth: INT32; // Dimensions of area the dialog box will be
-  iAreaHeight: INT32; // placed (for auto-sizing and auto-placement
-  iAreaOffsetX: INT32; // only)
-  iAreaOffsetY: INT32;
-
-  zDlgText: string /* Pointer<UINT16> */; // Text to be displayed (if any)
-  iTextFont: INT32; // Font to be used for text (if any)
-  usTextCols: UINT16; // Font colors (for mono fonts only)
-
-  iTextAreaX: INT32; // Area in dialog box where text is to be
-  iTextAreaY: INT32; // put (for non-auto placed text)
-  iTextAreaWidth: INT32;
-  iTextAreaHeight: INT32;
-
-  hBackImg: HVOBJECT; // Background pic for dialog box (if any)
-  iBackImgIndex: INT32; // Sub-image index to use for image
-  iBackOffsetX: INT32; // Offset on dialog box where to put image
-  iBackOffsetY: INT32;
-
-  hIconImg: HVOBJECT; // Icon image pic and index.
-  iIconImgIndex: INT32;
-  iIconPosX: INT32;
-  iIconPosY: INT32;
-
-  iBtnTypes: INT32;
-
-  iOkPosX: INT32; // Ok button info
-  iOkPosY: INT32;
-  iOkWidth: INT32;
-  iOkHeight: INT32;
-  iOkImg: INT32;
-
-  iCnclPosX: INT32; // Cancel button info
-  iCnclPosY: INT32;
-  iCnclWidth: INT32;
-  iCnclHeight: INT32;
-  iCnclImg: INT32;
-}
-
-const DLG_RESTRICT_MOUSE = 1;
-const DLG_OK_BUTTON = 2;
-const DLG_CANCEL_BUTTON = 4;
-const DLG_AUTOSIZE = 8;
-const DLG_RECREATE = 16;
-const DLG_AUTOPOSITION = 32;
-const DLG_TEXT_IN_AREA = 64;
-const DLG_USE_BKGRND_IMAGE = 128;
-const DLG_USE_BORDERS = 256;
-const DLG_USE_BTN_HOTSPOTS = 512;
-const DLG_USE_MONO_FONTS = 1024;
-const DLG_IS_ACTIVE = 2048;
-
-const DLG_MANUAL_RENDER = 0;
-const DLG_START_RENDER = 1;
-const DLG_STOP_RENDER = 2;
-const DLG_AUTO_RENDER = 3;
-
-const DLG_GET_STATUS = 0;
-const DLG_WAIT_FOR_RESPONSE = 1;
-
-const DLG_STATUS_NONE = 0;
-const DLG_STATUS_OK = 1;
-const DLG_STATUS_CANCEL = 2;
-const DLG_STATUS_PENDING = 3;
-
-const DLG_CLEARALL = 0;
-const DLG_POSITION = 1;
-const DLG_AREA = 2;
-const DLG_TEXT = 3;
-const DLG_TEXTAREA = 4;
-const DLG_BACKPIC = 5;
-const DLG_ICON = 6;
-const DLG_OKBUTTON = 7;
-const DLG_CANCELBUTTON = 8;
-const DLG_OPTIONS = 9;
-const DLG_SIZE = 10;
-
-function SetDialogAttributes(pDlgInfo: Pointer<CreateDlgInfo>, iAttrib: INT32, ...args: any[]): boolean {
-  let arg: va_list;
-  let iFont: INT32;
-  let iFontOptions: INT32;
-  let zString: string /* Pointer<UINT16> */;
-  let iX: INT32;
-  let iY: INT32;
-  let iW: INT32;
-  let iH: INT32;
-  let iIndex: INT32;
-  let hVObj: HVOBJECT;
-  let iButnImg: INT32;
-  let iFlags: INT32;
-  let ubFGrnd: UINT8;
-  let ubBGrnd: UINT8;
-
-  // Set up for var args
-  va_start(arg, iAttrib); // Init variable argument list
-
-  switch (iAttrib) {
-    case DLG_CLEARALL:
-      // Check to make sure it's not enabled, if so either abort or trash it!
-      memset(pDlgInfo, 0, sizeof(CreateDlgInfo));
-      break;
-
-    case DLG_POSITION:
-      // Screen X/Y position of dialog box
-      iFlags = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      break;
-
-    case DLG_SIZE:
-      // Width and height of doalog box
-      iFlags = va_arg(arg, INT32);
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      break;
-
-    case DLG_AREA:
-      // Area where dialog box should be placed in (if not screen)
-      iFlags = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      break;
-
-    case DLG_TEXT:
-      // Set text and font for this dialog box
-      iFontOptions = va_arg(arg, INT32);
-
-      iFont = va_arg(arg, INT32);
-      pDlgInfo.value.iTextFont = iFont;
-
-      zString = va_arg(arg, UINT32);
-
-      if (pDlgInfo.value.zDlgText != null)
-        MemFree(pDlgInfo.value.zDlgText);
-
-      if (zString == null)
-        pDlgInfo.value.zDlgText = null;
-      else {
-        pDlgInfo.value.zDlgText = null; // Temp
-      }
-
-      if (iFontOptions & DLG_USE_MONO_FONTS) {
-        ubFGrnd = va_arg(arg, UINT8);
-        ubBGrnd = va_arg(arg, UINT8);
-        pDlgInfo.value.usTextCols = (((ubBGrnd) << 8) | ubFGrnd);
-      }
-      break;
-
-    case DLG_TEXTAREA:
-      // Area on dialog box where the text should go!
-      iFlags = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      break;
-
-    case DLG_BACKPIC:
-      iFlags = va_arg(arg, INT32);
-      hVObj = va_arg(arg, UINT32);
-      iIndex = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      break;
-
-    case DLG_ICON:
-      // Icon
-      iFlags = va_arg(arg, INT32);
-      hVObj = va_arg(arg, UINT32);
-      iIndex = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      break;
-
-    case DLG_OKBUTTON:
-      // Ok button options
-      iFlags = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      iButnImg = va_arg(arg, INT32);
-      break;
-
-    case DLG_CANCELBUTTON:
-      // Cancel button options
-      iFlags = va_arg(arg, INT32);
-      iX = va_arg(arg, INT32);
-      iY = va_arg(arg, INT32);
-      iW = va_arg(arg, INT32);
-      iH = va_arg(arg, INT32);
-      iButnImg = va_arg(arg, INT32);
-      break;
-
-    case DLG_OPTIONS:
-      iFlags = va_arg(arg, INT32);
-      break;
-  }
-
-  va_end(arg); // Must have this for proper exit
-
-  return true;
-}
-
-function CreateDialogBox(pDlgInfo: Pointer<CreateDlgInfo>): INT32 {
-  return -1;
-}
-
-function RemoveDialogBox(): void {
-}
-
-function DrawDialogBox(iDlgBox: INT32): void {
-}
-
-//------------------------------------------------------------------------------------------------------
-
-export function CreateCheckBoxButton(x: INT16, y: INT16, filename: string /* Pointer<UINT8> */, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+export function CreateCheckBoxButton(x: INT16, y: INT16, filename: string /* Pointer<UINT8> */, Priority: INT16, ClickCallback: GUI_CALLBACK | null): INT32 {
+  let b: GUI_BUTTON;
   let ButPic: INT32;
   let iButtonID: INT32;
   Assert(filename != null);
@@ -3414,48 +3159,48 @@ export function CreateCheckBoxButton(x: INT16, y: INT16, filename: string /* Poi
 
   // change the flags so that it isn't a quick button anymore
   b = ButtonList[iButtonID];
-  b.value.uiFlags &= (~BUTTON_QUICK);
-  b.value.uiFlags |= (BUTTON_CHECKBOX | BUTTON_SELFDELETE_IMAGE);
+  b.uiFlags &= (~BUTTON_QUICK);
+  b.uiFlags |= (BUTTON_CHECKBOX | BUTTON_SELFDELETE_IMAGE);
 
   return iButtonID;
 }
 
 // Added Oct17, 97 Carter - kind of mindless, but might as well have it
 export function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   b = ButtonList[iButtonNum];
   if (index < 0 || index > 3)
     return;
-  b.value.UserData[index] = userdata;
+  b.UserData[index] = userdata;
 }
 
-export function MSYS_GetBtnUserData(b: Pointer<GUI_BUTTON>, index: INT32): INT32 {
+export function MSYS_GetBtnUserData(b: GUI_BUTTON, index: INT32): INT32 {
   if (index < 0 || index > 3)
     return 0;
 
-  return b.value.UserData[index];
+  return b.UserData[index];
 }
 
 // Generic Button Movement Callback to reset the mouse button if the mouse is no longer
 // in the button region.
-export function BtnGenericMouseMoveButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function BtnGenericMouseMoveButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   // If the button isn't the anchored button, then we don't want to modify the button state.
   if (btn != gpAnchoredButton)
     return;
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     if (!gfAnchoredState) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-      if (btn.value.ubSoundSchemeID) {
-        PlayButtonSound(btn.value.IDNum, BUTTON_SOUND_CLICKED_OFF);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
+      if (btn.ubSoundSchemeID) {
+        PlayButtonSound(btn.IDNum, BUTTON_SOUND_CLICKED_OFF);
       }
     }
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    if (btn.value.ubSoundSchemeID) {
-      PlayButtonSound(btn.value.IDNum, BUTTON_SOUND_CLICKED_ON);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    if (btn.ubSoundSchemeID) {
+      PlayButtonSound(btn.IDNum, BUTTON_SOUND_CLICKED_ON);
     }
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -3463,21 +3208,21 @@ export function ReleaseAnchorMode(): void {
   if (!gpAnchoredButton)
     return;
 
-  if (gusMouseXPos < gpAnchoredButton.value.Area.RegionTopLeftX || gusMouseXPos > gpAnchoredButton.value.Area.RegionBottomRightX || gusMouseYPos < gpAnchoredButton.value.Area.RegionTopLeftY || gusMouseYPos > gpAnchoredButton.value.Area.RegionBottomRightY) {
+  if (gusMouseXPos < gpAnchoredButton.Area.RegionTopLeftX || gusMouseXPos > gpAnchoredButton.Area.RegionBottomRightX || gusMouseYPos < gpAnchoredButton.Area.RegionTopLeftY || gusMouseYPos > gpAnchoredButton.Area.RegionBottomRightY) {
     // released outside button area, so restore previous button state.
     if (gfAnchoredState)
-      gpAnchoredButton.value.uiFlags |= BUTTON_CLICKED_ON;
+      gpAnchoredButton.uiFlags |= BUTTON_CLICKED_ON;
     else
-      gpAnchoredButton.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(gpAnchoredButton.value.Area.RegionTopLeftX, gpAnchoredButton.value.Area.RegionTopLeftY, gpAnchoredButton.value.Area.RegionBottomRightX, gpAnchoredButton.value.Area.RegionBottomRightY);
+      gpAnchoredButton.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(gpAnchoredButton.Area.RegionTopLeftX, gpAnchoredButton.Area.RegionTopLeftY, gpAnchoredButton.Area.RegionBottomRightX, gpAnchoredButton.Area.RegionBottomRightY);
   }
   gpPrevAnchoredButton = gpAnchoredButton;
-  gpAnchoredButton = null;
+  gpAnchoredButton = <GUI_BUTTON><unknown>null;
 }
 
 // Used to setup a dirtysaved region for buttons
 function SetButtonSavedRect(iButton: INT32): boolean {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   let xloc: INT32;
   let yloc: INT32;
   let w: INT32;
@@ -3488,38 +3233,38 @@ function SetButtonSavedRect(iButton: INT32): boolean {
 
   b = ButtonList[iButton];
 
-  xloc = b.value.XLoc;
-  yloc = b.value.YLoc;
-  w = (b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX);
-  h = (b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY);
+  xloc = b.XLoc;
+  yloc = b.YLoc;
+  w = (b.Area.RegionBottomRightX - b.Area.RegionTopLeftX);
+  h = (b.Area.RegionBottomRightY - b.Area.RegionTopLeftY);
 
-  if (!(b.value.uiFlags & BUTTON_SAVEBACKGROUND)) {
-    b.value.uiFlags |= BUTTON_SAVEBACKGROUND;
+  if (!(b.uiFlags & BUTTON_SAVEBACKGROUND)) {
+    b.uiFlags |= BUTTON_SAVEBACKGROUND;
 
-    b.value.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
+    b.BackRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, null, xloc, yloc, (xloc + w), (yloc + h));
   }
 
   return true;
 }
 
 function FreeButtonSavedRect(iButton: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButton >= 0);
   Assert(iButton < MAX_BUTTONS);
 
   b = ButtonList[iButton];
 
-  if ((b.value.uiFlags & BUTTON_SAVEBACKGROUND)) {
-    b.value.uiFlags &= (~BUTTON_SAVEBACKGROUND);
-    FreeBackgroundRectPending(b.value.BackRect);
+  if ((b.uiFlags & BUTTON_SAVEBACKGROUND)) {
+    b.uiFlags &= (~BUTTON_SAVEBACKGROUND);
+    FreeBackgroundRectPending(b.BackRect);
   }
 }
 
 // Kris:
 // Yet new logical additions to the winbart library.
 export function HideButton(iButtonNum: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonNum >= 0);
   Assert(iButtonNum < MAX_BUTTONS);
@@ -3528,13 +3273,13 @@ export function HideButton(iButtonNum: INT32): void {
 
   Assert(b);
 
-  b.value.Area.uiFlags &= (~MSYS_REGION_ENABLED);
-  b.value.uiFlags |= BUTTON_DIRTY;
-  InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
+  b.Area.uiFlags &= (~MSYS_REGION_ENABLED);
+  b.uiFlags |= BUTTON_DIRTY;
+  InvalidateRegion(b.Area.RegionTopLeftX, b.Area.RegionTopLeftY, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY);
 }
 
 export function ShowButton(iButtonNum: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonNum >= 0);
   Assert(iButtonNum < MAX_BUTTONS);
@@ -3543,9 +3288,9 @@ export function ShowButton(iButtonNum: INT32): void {
 
   Assert(b);
 
-  b.value.Area.uiFlags |= MSYS_REGION_ENABLED;
-  b.value.uiFlags |= BUTTON_DIRTY;
-  InvalidateRegion(b.value.Area.RegionTopLeftX, b.value.Area.RegionTopLeftY, b.value.Area.RegionBottomRightX, b.value.Area.RegionBottomRightY);
+  b.Area.uiFlags |= MSYS_REGION_ENABLED;
+  b.uiFlags |= BUTTON_DIRTY;
+  InvalidateRegion(b.Area.RegionTopLeftX, b.Area.RegionTopLeftY, b.Area.RegionBottomRightX, b.Area.RegionBottomRightY);
 }
 
 export function DisableButtonHelpTextRestore(): void {
@@ -3557,7 +3302,7 @@ export function EnableButtonHelpTextRestore(): void {
 }
 
 function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -3565,27 +3310,27 @@ function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void 
   AssertMsg(iDefaultStatus >= Enum28.DEFAULT_STATUS_NONE && iDefaultStatus <= Enum28.DEFAULT_STATUS_WINDOWS95, String("Illegal button default status of %d", iDefaultStatus));
   Assert(b);
 
-  if (b.value.bDefaultStatus != iDefaultStatus) {
-    b.value.bDefaultStatus = iDefaultStatus;
-    b.value.uiFlags |= BUTTON_DIRTY;
+  if (b.bDefaultStatus != iDefaultStatus) {
+    b.bDefaultStatus = iDefaultStatus;
+    b.uiFlags |= BUTTON_DIRTY;
   }
 }
 
 function RemoveButtonDefaultStatus(iButtonID: INT32): void {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   Assert(b);
 
-  if (b.value.bDefaultStatus) {
-    b.value.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
-    b.value.uiFlags |= BUTTON_DIRTY;
+  if (b.bDefaultStatus) {
+    b.bDefaultStatus = Enum28.DEFAULT_STATUS_NONE;
+    b.uiFlags |= BUTTON_DIRTY;
   }
 }
 
-function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): boolean {
-  let b: Pointer<GUI_BUTTON>;
+function GetButtonArea(iButtonID: INT32, pRect: SGPRect): boolean {
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3597,16 +3342,16 @@ function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): boolean {
   if ((pRect == null) || (b == null))
     return false;
 
-  pRect.value.iLeft = b.value.Area.RegionTopLeftX;
-  pRect.value.iTop = b.value.Area.RegionTopLeftY;
-  pRect.value.iRight = b.value.Area.RegionBottomRightX;
-  pRect.value.iBottom = b.value.Area.RegionBottomRightY;
+  pRect.iLeft = b.Area.RegionTopLeftX;
+  pRect.iTop = b.Area.RegionTopLeftY;
+  pRect.iRight = b.Area.RegionBottomRightX;
+  pRect.iBottom = b.Area.RegionBottomRightY;
 
   return true;
 }
 
 function GetButtonWidth(iButtonID: INT32): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3617,11 +3362,11 @@ function GetButtonWidth(iButtonID: INT32): INT32 {
   if (b == null)
     return -1;
 
-  return b.value.Area.RegionBottomRightX - b.value.Area.RegionTopLeftX;
+  return b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
 }
 
 function GetButtonHeight(iButtonID: INT32): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3632,11 +3377,11 @@ function GetButtonHeight(iButtonID: INT32): INT32 {
   if (b == null)
     return -1;
 
-  return b.value.Area.RegionBottomRightY - b.value.Area.RegionTopLeftY;
+  return b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
 }
 
 function GetButtonX(iButtonID: INT32): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3647,11 +3392,11 @@ function GetButtonX(iButtonID: INT32): INT32 {
   if (b == null)
     return 0;
 
-  return b.value.Area.RegionTopLeftX;
+  return b.Area.RegionTopLeftX;
 }
 
 function GetButtonY(iButtonID: INT32): INT32 {
-  let b: Pointer<GUI_BUTTON>;
+  let b: GUI_BUTTON;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3662,7 +3407,7 @@ function GetButtonY(iButtonID: INT32): INT32 {
   if (b == null)
     return 0;
 
-  return b.value.Area.RegionTopLeftY;
+  return b.Area.RegionTopLeftY;
 }
 
 }

@@ -480,37 +480,37 @@ export function UpdateItemStatsPanel(): void {
   InvalidateRegion(477, 362, 161, 97);
 }
 
-function RealisticOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function RealisticOnlyCheckboxCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[giSciFiCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giSciFiCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[giBothCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giBothCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giRealisticCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[giSciFiCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giSciFiCheckboxButton].uiFlags |= BUTTON_DIRTY;
+    ButtonList[giBothCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giBothCheckboxButton].uiFlags |= BUTTON_DIRTY;
     gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
     gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags |= WORLD_ITEM_REALISTIC_ONLY;
   }
 }
 
-function SciFiOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SciFiOnlyCheckboxCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giRealisticCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[giSciFiCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[giBothCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giBothCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[giRealisticCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giRealisticCheckboxButton].uiFlags |= BUTTON_DIRTY;
+    ButtonList[giSciFiCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[giBothCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giBothCheckboxButton].uiFlags |= BUTTON_DIRTY;
     gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
     gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags |= WORLD_ITEM_SCIFI_ONLY;
   }
 }
 
-function BothModesCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BothModesCheckboxCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[giRealisticCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giRealisticCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[giSciFiCheckboxButton].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[giSciFiCheckboxButton].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[giBothCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[giRealisticCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giRealisticCheckboxButton].uiFlags |= BUTTON_DIRTY;
+    ButtonList[giSciFiCheckboxButton].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[giSciFiCheckboxButton].uiFlags |= BUTTON_DIRTY;
+    ButtonList[giBothCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags &= ~(WORLD_ITEM_REALISTIC_ONLY | WORLD_ITEM_SCIFI_ONLY);
   }
 }
@@ -525,11 +525,11 @@ function SetupGameTypeFlags(): void {
     SetButtonFastHelpText(giSciFiCheckboxButton, "Item appears in |Sci-Fi mode only.");
 
     if (gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags & WORLD_ITEM_REALISTIC_ONLY)
-      ButtonList[giRealisticCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      ButtonList[giRealisticCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     else if (gWorldItems[gpEditingItemPool.value.iItemIndex].usFlags & WORLD_ITEM_SCIFI_ONLY)
-      ButtonList[giSciFiCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      ButtonList[giSciFiCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     else
-      ButtonList[giBothCheckboxButton].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+      ButtonList[giBothCheckboxButton].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
   }
 }
 
@@ -570,7 +570,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON] = CreateTextButton("SILENCER", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SILENCER) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.SILENCER_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[0] = true;
     }
   }
@@ -579,7 +579,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("SNIPERSCOPE", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.SNIPERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.SNIPERSCOPE_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[1] = true;
     }
   }
@@ -588,7 +588,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON] = CreateTextButton("LASERSCOPE", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.LASERSCOPE) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.LASERSCOPE_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[2] = true;
     }
   }
@@ -597,7 +597,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON] = CreateTextButton("BIPOD", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.BIPOD) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.BIPOD_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[3] = true;
     }
   }
@@ -606,7 +606,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON] = CreateTextButton("DUCKBILL", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DUCKBILL) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.DUCKBILL_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[4] = true;
     }
   }
@@ -615,7 +615,7 @@ function SetupGunGUI(): void {
     guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON] = CreateTextButton("G-LAUNCHER", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleAttachment);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.UNDER_GLAUNCHER) != -1) {
-      ButtonList[guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiAttachmentButton[Enum46.GLAUNCHER_ATTACHMENT_BUTTON]].uiFlags |= BUTTON_CLICKED_ON;
       gfAttachment[5] = true;
     }
   }
@@ -718,7 +718,7 @@ function SetupArmourGUI(): void {
   if (ValidAttachment(Enum225.CERAMIC_PLATES, gpItem.value.usItem)) {
     guiCeramicPlatesButton = CreateTextButton("CERAMIC PLATES", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 558, 375, 72, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleCeramicPlates);
     if (FindAttachment(gpItem, Enum225.CERAMIC_PLATES) != -1) {
-      ButtonList[guiCeramicPlatesButton].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiCeramicPlatesButton].uiFlags |= BUTTON_CLICKED_ON;
       gfCeramicPlates = true;
     }
   }
@@ -816,7 +816,7 @@ function SetupExplosivesGUI(): void {
     guiDetonatorButton = CreateTextButton("DETONATOR", SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 570, yp, 60, 12, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), ToggleDetonator);
     yp += 14;
     if (FindAttachment(gpItem, Enum225.DETONATOR) != -1) {
-      ButtonList[guiDetonatorButton].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiDetonatorButton].uiFlags |= BUTTON_CLICKED_ON;
       gfDetonator = true;
     }
   }
@@ -902,9 +902,9 @@ function SetupOwnershipGUI(): void {
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem.value.ubOwnerCivGroup], SMALLCOMPFONT(), FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK(), OwnershipGroupButtonCallback);
 }
 
-function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function OwnershipGroupButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    InitPopupMenu(btn.value.IDNum, Enum53.OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
+    InitPopupMenu(btn.IDNum, Enum53.OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
   }
 }
 
@@ -1000,9 +1000,9 @@ function RemoveActionItemsGUI(): void {
   }
 }
 
-function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function AlarmTriggerCheckboxCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON)
+    if (btn.uiFlags & BUTTON_CLICKED_ON)
       gpItem.value.fFlags |= OBJECT_ALARM_TRIGGER;
     else
       gpItem.value.fFlags &= ~OBJECT_ALARM_TRIGGER;
@@ -1022,7 +1022,7 @@ function SetupTriggersGUI(): void {
       giAlarmTriggerButton = CreateCheckBoxButton(485, 405, "EDITOR//smCheckBox.sti", MSYS_PRIORITY_NORMAL, AlarmTriggerCheckboxCallback);
       SetButtonFastHelpText(giAlarmTriggerButton, "If the panic trigger is an alarm trigger,\nenemies won't attempt to use it if they\nare already aware of your presence.");
       if (gpItem.value.fFlags & OBJECT_ALARM_TRIGGER)
-        ButtonList[giAlarmTriggerButton].value.uiFlags |= BUTTON_CLICKED_ON;
+        ButtonList[giAlarmTriggerButton].uiFlags |= BUTTON_CLICKED_ON;
     }
   }
 }
@@ -1057,7 +1057,7 @@ function RemoveTriggersGUI(): void {
   }
 }
 
-function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ToggleAttachment(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let i: INT32;
     let usAttachment: UINT16;
@@ -1088,14 +1088,14 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         // Found it, now check the state of the button.
         if (!gfAttachment[i]) {
           gfAttachment[i] = true;
-          btn.value.uiFlags |= BUTTON_CLICKED_ON;
+          btn.uiFlags |= BUTTON_CLICKED_ON;
           CreateItem(usAttachment, gpItem.value.bGunStatus, addressof(temp));
           AttachObject(null, gpItem, addressof(temp));
         } else {
           // Button is out, so remove the attachment
           let slot: INT8;
           gfAttachment[i] = false;
-          btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+          btn.uiFlags &= ~BUTTON_CLICKED_ON;
           slot = FindAttachment(gpItem, usAttachment);
           if (slot != -1)
             RemoveAttachment(gpItem, slot, addressof(temp));
@@ -1106,17 +1106,17 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ToggleCeramicPlates(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let temp: OBJECTTYPE = createObjectType();
     gfCeramicPlates ^= true;
     if (gfCeramicPlates) {
-      btn.value.uiFlags |= BUTTON_CLICKED_ON;
+      btn.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
       AttachObject(null, gpItem, addressof(temp));
     } else {
       let slot: INT8;
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, Enum225.CERAMIC_PLATES);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, addressof(temp));
@@ -1124,19 +1124,19 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ToggleDetonator(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let temp: OBJECTTYPE = createObjectType();
     if (!gfDetonator) {
       gfDetonator = true;
-      btn.value.uiFlags |= BUTTON_CLICKED_ON;
+      btn.uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(Enum225.DETONATOR, gpItem.value.bStatus[0], addressof(temp));
       AttachObject(null, gpItem, addressof(temp));
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;
       gfDetonator = false;
-      btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
+      btn.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, Enum225.DETONATOR);
       if (slot != -1)
         RemoveAttachment(gpItem, slot, addressof(temp));
@@ -1144,7 +1144,7 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function ActionItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function ActionItemCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     InitPopupMenu(guiActionItemButton, Enum53.ACTIONITEM_POPUP, DIR_UPLEFT);
   }
@@ -1312,7 +1312,7 @@ function ReEvaluateAttachmentStatii(): void {
   let i: INT32;
   let usAttachment: UINT16;
   for (i = 0; i < Enum46.NUM_ATTACHMENT_BUTTONS; i++) {
-    if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]].value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]].uiFlags & BUTTON_CLICKED_ON)) {
       // if button exists and button isn't clicked
       switch (i) {
         case 0:

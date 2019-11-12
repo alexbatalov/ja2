@@ -382,7 +382,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   SpecifyButtonHilitedTextColors(gTalkPanel.uiCancelButton, FONT_MCOLOR_WHITE, DEFAULT_SHADOW);
 
   // Turn off dirty flags
-  ButtonList[gTalkPanel.uiCancelButton].value.uiFlags &= (~BUTTON_DIRTY);
+  ButtonList[gTalkPanel.uiCancelButton].uiFlags &= (~BUTTON_DIRTY);
 
   // Render once!
   RenderAutoFace(gTalkPanel.iFaceIndex);
@@ -395,11 +395,11 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   return true;
 }
 
-function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function DoneTalkingButtonClickCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, pickup item....
     gTalkPanel.fHandled = true;

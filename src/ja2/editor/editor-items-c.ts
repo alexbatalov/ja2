@@ -266,8 +266,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   NewRect.iBottom = eInfo.sHeight;
   NewRect.iLeft = 0;
   NewRect.iRight = eInfo.sWidth;
-  GetClippingRect(addressof(SaveRect));
-  SetClippingRect(addressof(NewRect));
+  GetClippingRect(SaveRect);
+  SetClippingRect(NewRect);
   if (eInfo.uiItemType == Enum35.TBAR_MODE_ITEM_KEYS) {
     // Keys use a totally different method for determining
     for (i = 0; i < eInfo.sNumItems; i++) {
@@ -418,7 +418,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       }
     }
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
-  SetClippingRect(addressof(SaveRect));
+  SetClippingRect(SaveRect);
   gfRenderTaskbar = true;
 }
 

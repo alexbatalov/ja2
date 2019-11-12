@@ -391,7 +391,7 @@ void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-function BtnMilitiaCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMilitiaCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowMilitiaMode();
@@ -400,7 +400,7 @@ function BtnMilitiaCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnTeamCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowTeamsMode();
@@ -409,7 +409,7 @@ function BtnTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnTownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnTownCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowTownsMode();
@@ -418,7 +418,7 @@ function BtnTownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnMineCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnMineCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowMinesMode();
@@ -427,7 +427,7 @@ function BtnMineCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnAircraftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnAircraftCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
 
@@ -437,7 +437,7 @@ function BtnAircraftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function BtnItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnItemCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
 
@@ -902,12 +902,12 @@ void HandleMapScrollButtonStates( void )
 */
 
 // generic button mvt callback for mapscreen map border
-function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: GUI_BUTTON, reason: INT32): void {
   // If the button isn't the anchored button, then we don't want to modify the button state.
 
   if (btn != gpAnchoredButton) {
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-      if (btn.value.Area.uiFlags & MSYS_FASTHELP) {
+      if (btn.Area.uiFlags & MSYS_FASTHELP) {
         // redraw area
         fMapPanelDirty = true;
       }
@@ -917,11 +917,11 @@ function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>,
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     if (!gfAnchoredState)
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -1311,7 +1311,7 @@ function MapBorderButtonOff(ubBorderButtonIndex: UINT8): void {
 
   Assert(giMapBorderButtons[ubBorderButtonIndex] < MAX_BUTTONS);
 
-  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].value.uiFlags &= ~(BUTTON_CLICKED_ON);
+  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].uiFlags &= ~(BUTTON_CLICKED_ON);
 }
 
 function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
@@ -1328,7 +1328,7 @@ function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
 
   Assert(giMapBorderButtons[ubBorderButtonIndex] < MAX_BUTTONS);
 
-  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].value.uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[giMapBorderButtons[ubBorderButtonIndex]].uiFlags |= BUTTON_CLICKED_ON;
 }
 
 }

@@ -894,8 +894,8 @@ function HandleShopKeeperInterface(): void {
     // make sure the buttons dont render
     //		ButtonList[ guiSKI_InvPageUpButton ]->uiFlags |= BUTTON_FORCE_UNDIRTY;
     //		ButtonList[ guiSKI_InvPageDownButton ]->uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_TransactionButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     // make sure the shop keeper doesn't start talking ( reset the timing variable )
     HandleShopKeeperDialog(2);
@@ -1146,13 +1146,13 @@ function GetShopKeeperInterfaceUserInput(): void {
   }
 }
 
-function BtnSKI_InvPageUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSKI_InvPageUpButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gSelectArmsDealerInfo.ubCurrentPage > 1) {
       gSelectArmsDealerInfo.ubCurrentPage--;
@@ -1160,17 +1160,17 @@ function BtnSKI_InvPageUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
       EnableDisableDealersInventoryPageButtons();
     }
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
-function BtnSKI_InvPageDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSKI_InvPageDownButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     if (gSelectArmsDealerInfo.ubCurrentPage < gSelectArmsDealerInfo.ubNumberOfPages) {
       gSelectArmsDealerInfo.ubCurrentPage++;
@@ -1178,7 +1178,7 @@ function BtnSKI_InvPageDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
       EnableDisableDealersInventoryPageButtons();
     }
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -1202,14 +1202,14 @@ void BtnSKI_EvaluateButtonCallback(GUI_BUTTON *btn,INT32 reason)
         }
 }
 */
-function BtnSKI_TransactionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSKI_TransactionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
 
     // if not already doing it (multiple clicks can be queued up while shopkeeper is still talking)
     if (!gfPerformTransactionInProgress) {
@@ -1223,16 +1223,16 @@ function BtnSKI_TransactionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT3
   }
 }
 
-function BtnSKI_DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSKI_DoneButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     ExitSKIRequested();
   }
 
-  InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+  InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
 }
 
 function CreateSkiInventorySlotMouseRegions(): void {
@@ -3930,20 +3930,20 @@ function RemoveSkiAtmButtons(): void {
   }
 }
 
-function BtnSKI_AtmButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnSKI_AtmButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    btn.uiFlags |= BUTTON_CLICKED_ON;
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // ATM:
 
     //		HandleSkiAtmPanelInput( ubButton );
 
-    InvalidateRegion(btn.value.Area.RegionTopLeftX, btn.value.Area.RegionTopLeftY, btn.value.Area.RegionBottomRightX, btn.value.Area.RegionBottomRightY);
+    InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
   }
 }
 
@@ -4275,24 +4275,24 @@ function HandleCurrentModeText(ubMode: UINT8): void {
 function ToggleSkiAtmButtons(): void {
   switch (gubCurrentSkiAtmMode) {
     case Enum250.SKI_ATM_DISABLED_MODE:
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].uiFlags &= ~BUTTON_CLICKED_ON;
       break;
     case Enum250.SKI_ATM_TAKE_MODE:
     case Enum250.SKI_ATM_ERR_TAKE_MODE:
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].uiFlags |= BUTTON_CLICKED_ON;
       break;
 
     case Enum250.SKI_ATM_GIVE_MODE:
     case Enum250.SKI_ATM_ERR_GIVE_MODE:
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_TAKE]].uiFlags &= ~BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_CANCEL]].uiFlags &= ~BUTTON_CLICKED_ON;
 
-      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[guiSKI_AtmButton[Enum368.SKI_ATM_GIVE]].uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 }
@@ -4425,11 +4425,11 @@ function EnableDisableEvaluateAndTransactionButtons(): void {
 
   // if the player is in the item desc for the arms dealer items
   if (InItemDescriptionBox() && pShopKeeperItemDescObject != null) {
-    ButtonList[guiSKI_TransactionButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].uiFlags |= BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].uiFlags |= BUTTON_FORCE_UNDIRTY;
   } else {
-    ButtonList[guiSKI_TransactionButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
-    ButtonList[guiSKI_DoneButton].value.uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_TransactionButton].uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+    ButtonList[guiSKI_DoneButton].uiFlags &= ~BUTTON_FORCE_UNDIRTY;
   }
 }
 

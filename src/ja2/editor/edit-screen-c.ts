@@ -4,7 +4,7 @@ let gfCorruptMap: boolean = false;
 let gfCorruptSchedules: boolean = false;
 export let gfProfileDataLoaded: boolean = false;
 
-let gpPersistantButton: Pointer<GUI_BUTTON>;
+let gpPersistantButton: GUI_BUTTON /* Pointer<GUI_BUTTON> */;
 
 // These are global variables used by the main game loop
 
@@ -636,8 +636,8 @@ export function ShowCurrentDrawingMode(): void {
   NewRect.iRight = 100;
   NewRect.iBottom = 458;
 
-  GetClippingRect(addressof(ClipRect));
-  SetClippingRect(addressof(NewRect));
+  GetClippingRect(ClipRect);
+  SetClippingRect(NewRect);
 
   // Clear it out
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 400, 100, 458, 0);
@@ -845,7 +845,7 @@ export function ShowCurrentDrawingMode(): void {
   UnLockVideoSurface(FRAME_BUFFER);
 
   InvalidateRegion(0, 400, 100, 458);
-  SetClippingRect(addressof(ClipRect));
+  SetClippingRect(ClipRect);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2399,8 +2399,8 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   iWinWidth = NewRect.iRight - NewRect.iLeft;
   iWinHeight = NewRect.iBottom - NewRect.iTop;
 
-  GetClippingRect(addressof(ClipRect));
-  SetClippingRect(addressof(NewRect));
+  GetClippingRect(ClipRect);
+  SetClippingRect(NewRect);
 
   pETRLEObject = addressof(hVObj.value.pETRLEObject[0]);
 
@@ -2424,7 +2424,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   pETRLEObject.value.sOffsetX = sTempOffsetX;
   pETRLEObject.value.sOffsetY = sTempOffsetY;
 
-  SetClippingRect(addressof(ClipRect));
+  SetClippingRect(ClipRect);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -3077,37 +3077,37 @@ function HideEntryPoints(): void {
     RemoveAllTopmostsOfTypeRange(gMapInformation.sWestGridNo, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
 }
 
-export function TaskOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskOptionsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_OPTIONS;
   }
 }
 
-export function TaskTerrainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskTerrainCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_TERRAIN;
   }
 }
 
-export function TaskBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskBuildingCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_BUILDINGS;
   }
 }
 
-export function TaskItemsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskItemsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_ITEMS;
   }
 }
 
-export function TaskMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskMercsCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_MERCS;
   }
 }
 
-export function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+export function TaskMapInfoCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = Enum36.TASK_MAPINFO;
   }

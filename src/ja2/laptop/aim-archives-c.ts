@@ -352,18 +352,18 @@ function SelectAlumniFaceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): 
   }
 }
 
-function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnAlumniPageButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= BUTTON_CLICKED_ON;
+    btn.uiFlags |= BUTTON_CLICKED_ON;
 
     gunAlumniButtonDown = ubRetValue;
 
     InvalidateRegion(AIM_ALUMNI_PAGE1_X, AIM_ALUMNI_PAGE1_Y, AIM_ALUMNI_PAGE_END_X, AIM_ALUMNI_PAGE_END_Y);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
       RemoveAimAlumniFaceRegion();
 
@@ -384,7 +384,7 @@ function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     }
   }
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
+    btn.uiFlags &= (~BUTTON_CLICKED_ON);
     gunAlumniButtonDown = 255;
     DisableAimArchiveButton();
     InvalidateRegion(AIM_ALUMNI_PAGE1_X, AIM_ALUMNI_PAGE1_Y, AIM_ALUMNI_PAGE_END_X, AIM_ALUMNI_PAGE_END_Y);
@@ -395,7 +395,7 @@ function ResetAimArchiveButtons(): void {
   let i: number = 0;
 
   for (i = 0; i < 3; i++) {
-    ButtonList[guiAlumniPageButton[i]].value.uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[guiAlumniPageButton[i]].uiFlags &= ~BUTTON_CLICKED_ON;
   }
 }
 
@@ -404,11 +404,11 @@ function DisableAimArchiveButton(): void {
     return;
 
   if ((gubPageNum == 0)) {
-    ButtonList[guiAlumniPageButton[0]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiAlumniPageButton[0]].uiFlags |= (BUTTON_CLICKED_ON);
   } else if (gubPageNum == 1) {
-    ButtonList[guiAlumniPageButton[1]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiAlumniPageButton[1]].uiFlags |= (BUTTON_CLICKED_ON);
   } else if (gubPageNum == 2) {
-    ButtonList[guiAlumniPageButton[2]].value.uiFlags |= (BUTTON_CLICKED_ON);
+    ButtonList[guiAlumniPageButton[2]].uiFlags |= (BUTTON_CLICKED_ON);
   }
 }
 

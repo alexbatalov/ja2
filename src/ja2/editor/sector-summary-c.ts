@@ -210,32 +210,32 @@ export function CreateSummaryWindow(): void {
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
   iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
-  ButtonList[iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iSummaryButton[Enum58.SUMMARY_GRIDCHECKBOX]].uiFlags |= BUTTON_CLICKED_ON;
   gfRenderGrid = true;
 
   iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
-  ButtonList[iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX]].value.uiFlags |= BUTTON_CLICKED_ON;
+  ButtonList[iSummaryButton[Enum58.SUMMARY_PROGRESSCHECKBOX]].uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = true;
 
   iSummaryButton[Enum58.SUMMARY_ALL] = CreateTextButton("A", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 110, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == ALL_LEVELS_MASK || giCurrentViewLevel == ALTERNATE_LEVELS_MASK)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ALL]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ALL]].uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[Enum58.SUMMARY_G] = CreateTextButton("G", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 128, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == GROUND_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_GROUND_MASK)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_G]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_G]].uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[Enum58.SUMMARY_B1] = CreateTextButton("B1", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 146, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_B1]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B1]].uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[Enum58.SUMMARY_B2] = CreateTextButton("B2", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 164, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_B2]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B2]].uiFlags |= BUTTON_CLICKED_ON;
   iSummaryButton[Enum58.SUMMARY_B3] = CreateTextButton("B3", SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 182, MAP_BOTTOM + 5, 16, 16, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryToggleLevelCallback);
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_B3]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_B3]].uiFlags |= BUTTON_CLICKED_ON;
 
   iSummaryButton[Enum58.SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
   if (gfAlternateMaps)
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ALTERNATE]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ALTERNATE]].uiFlags |= BUTTON_CLICKED_ON;
 
   iSummaryButton[Enum58.SUMMARY_LOAD] = CreateTextButton("LOAD", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummaryLoadMapCallback);
   iSummaryButton[Enum58.SUMMARY_SAVE] = CreateTextButton("SAVE", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), SummarySaveMapCallback);
@@ -251,13 +251,13 @@ export function CreateSummaryWindow(): void {
   // SetButtonFastHelpText( iSummaryButton[ SUMMARY_REAL ], L"Display items that appear in Realistic mode." );
   switch (gubSummaryItemMode) {
     case Enum56.ITEMMODE_SCIFI:
-      ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags |= BUTTON_CLICKED_ON;
       break;
     case Enum56.ITEMMODE_REAL:
-      ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags |= BUTTON_CLICKED_ON;
       break;
     case Enum56.ITEMMODE_ENEMY:
-      ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_CLICKED_ON;
+      ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags |= BUTTON_CLICKED_ON;
       break;
   }
 
@@ -288,7 +288,7 @@ export function CreateSummaryWindow(): void {
     gsSelSectorX = 9;
     gsSelSectorY = 1;
     gpCurrentSectorSummary = gpSectorSummary[8][0][0];
-    ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]].value.uiFlags |= BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]].uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
@@ -1412,22 +1412,22 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 }
 
-function SummaryOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryOkayCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     DestroySummaryWindow();
   }
 }
 
-function SummaryToggleGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryToggleGridCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderGrid = (btn.value.uiFlags & BUTTON_CLICKED_ON);
+    gfRenderGrid = (btn.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = true;
   }
 }
 
-function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryToggleAlternateCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       giCurrentViewLevel <<= 4;
       gfAlternateMaps = true;
     } else {
@@ -1438,45 +1438,45 @@ function SummaryToggleAlternateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
 }
 
-function SummarySciFiCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummarySciFiCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = Enum56.ITEMMODE_SCIFI;
     gfRenderSummary = true;
   }
 }
 
-function SummaryRealCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryRealCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags |= BUTTON_DIRTY;
     gubSummaryItemMode = Enum56.ITEMMODE_REAL;
     gfRenderSummary = true;
   }
 }
 
-function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryEnemyCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags &= ~BUTTON_CLICKED_ON;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].value.uiFlags |= BUTTON_DIRTY;
-    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].value.uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_SCIFI]].uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags &= ~BUTTON_CLICKED_ON;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_REAL]].uiFlags |= BUTTON_DIRTY;
+    ButtonList[iSummaryButton[Enum58.SUMMARY_ENEMY]].uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     gubSummaryItemMode = Enum56.ITEMMODE_ENEMY;
     gfRenderSummary = true;
   }
 }
 
-function SummaryToggleProgressCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryToggleProgressCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderProgress = (btn.value.uiFlags & BUTTON_CLICKED_ON);
+    gfRenderProgress = (btn.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = true;
   }
 }
@@ -1741,14 +1741,14 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
   }
 }
 
-function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryToggleLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
   let i: INT8;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1)
       SelectNextField();
     gfRenderSummary = true;
     for (i = Enum58.SUMMARY_ALL; i <= Enum58.SUMMARY_B3; i++) {
-      if (btn.value.IDNum == iSummaryButton[i]) {
+      if (btn.IDNum == iSummaryButton[i]) {
         switch (i) {
           case Enum58.SUMMARY_ALL:
             giCurrentViewLevel = ALL_LEVELS_MASK;
@@ -1769,13 +1769,13 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
         if (gfAlternateMaps)
           giCurrentViewLevel <<= 4;
       } else {
-        ButtonList[iSummaryButton[i]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+        ButtonList[iSummaryButton[i]].uiFlags &= (~BUTTON_CLICKED_ON);
       }
     }
   }
 }
 
-function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryLoadMapCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ptr: string /* Pointer<UINT16> */;
     let str: string /* UINT16[50] */;
@@ -1827,7 +1827,7 @@ function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummarySaveMapCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderSummary = true;
     if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == true) {
@@ -1848,7 +1848,7 @@ function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 
-function SummaryOverrideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryOverrideCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfOverride ^= true;
     gfRenderSummary = true;
@@ -1884,7 +1884,7 @@ function CalculateOverrideStatus(): void {
       else
         gubOverrideStatus = Enum57.OVERWRITE;
       ShowButton(iSummaryButton[Enum58.SUMMARY_OVERRIDE]);
-      ButtonList[iSummaryButton[Enum58.SUMMARY_OVERRIDE]].value.uiFlags &= (~BUTTON_CLICKED_ON);
+      ButtonList[iSummaryButton[Enum58.SUMMARY_OVERRIDE]].uiFlags &= (~BUTTON_CLICKED_ON);
       GetFileClose(addressof(FileInfo));
       DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
     }
@@ -2138,7 +2138,7 @@ export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> *
   SetFileManCurrentDirectory(Dir);
 }
 
-function SummaryNewGroundLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryNewGroundLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfPendingBasement = false;
     gfPendingCaves = false;
@@ -2150,12 +2150,12 @@ function SummaryNewGroundLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-function SummaryNewBasementLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryNewBasementLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
   }
 }
 
-function SummaryNewCaveLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryNewCaveLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
   }
 }
@@ -2316,7 +2316,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
   gfUpdatingNow = false;
 }
 
-function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let str: string /* UINT8[40] */;
     CreateProgressBar(0, 20, 100, 300, 112); // slave (individual)

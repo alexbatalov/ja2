@@ -1947,22 +1947,22 @@ function DeleteLapTopButtons(): void {
   }
 }
 
-function BtnOnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnOnCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
     InvalidateRegion(0, 0, 640, 480);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
       if (HandleExit()) {
         //			 btn->uiFlags&=~(BUTTON_CLICKED_ON);
         fExitingLaptopFlag = true;
         InvalidateRegion(0, 0, 640, 480);
       }
     }
-    btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    btn.uiFlags &= ~(BUTTON_CLICKED_ON);
   }
 }
 
@@ -2156,16 +2156,16 @@ function DeleteLapTopMouseRegions(): boolean {
   return true;
 }
 
-function FinancialRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function FinancialRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       if (giCurrentRegion != Enum92.FINANCIAL_REGION)
         giOldRegion = giCurrentRegion;
       giCurrentRegion = Enum92.FINANCIAL_REGION;
@@ -2180,16 +2180,16 @@ function FinancialRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-function PersonnelRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function PersonnelRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       if (giCurrentRegion != Enum92.PERSONNEL_REGION)
         giOldRegion = giCurrentRegion;
@@ -2208,16 +2208,16 @@ function PersonnelRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
 }
 
-function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function EmailRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // set old region
       if (giCurrentRegion != Enum92.EMAIL_REGION)
         giOldRegion = giCurrentRegion;
@@ -2247,19 +2247,19 @@ function EmailRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
 }
 
-function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function WWWRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       if (giCurrentRegion != Enum92.WWW_REGION)
         giOldRegion = giCurrentRegion;
       if (!fNewWWW)
@@ -2303,8 +2303,8 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
       fReDrawScreenFlag = true;
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // nothing yet
 
       if (giCurrentRegion != Enum92.WWW_REGION)
@@ -2326,16 +2326,16 @@ function WWWRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
   }
 }
 
-function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function HistoryRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // if not in history, update to the fact
       if (giCurrentRegion != Enum92.HISTORY_REGION)
         giOldRegion = giCurrentRegion;
@@ -2365,16 +2365,16 @@ function HistoryRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     }
   }
 }
-function FilesRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function FilesRegionButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON))
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON))
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       // reset old region
       if (giCurrentRegion != Enum92.FILES_REGION)
         giOldRegion = giCurrentRegion;
@@ -3234,17 +3234,17 @@ function DeleteLoadPending(): void {
   return;
 }
 
-function BtnErrorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function BtnErrorCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
     }
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fErrorFlag = false;
     }
   }
@@ -3428,7 +3428,7 @@ function DisplayPlayersBalanceToDate(): void {
   FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT(), addressof(sX), addressof(sY));
   //	gprintfdirty( sX , LAPTOP_ICON_TEXT_FINANCIAL_Y + 10, sString );
   // printf it!
-  if (ButtonList[gLaptopButton[5]].value.uiFlags & BUTTON_CLICKED_ON) {
+  if (ButtonList[gLaptopButton[5]].uiFlags & BUTTON_CLICKED_ON) {
     mprintf(sX + 5, LAPTOP_ICON_TEXT_FINANCIAL_Y + 10 + 5, sString);
   } else {
     mprintf(sX, LAPTOP_ICON_TEXT_FINANCIAL_Y + 10, sString);
@@ -4070,16 +4070,16 @@ function DestroyMinimizeButtonForCurrentMode(): void {
   UnloadButtonImage(gLaptopMinButtonImage[0]);
 }
 
-function LaptopMinimizeProgramButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+function LaptopMinimizeProgramButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    if (!(btn.value.uiFlags & BUTTON_CLICKED_ON)) {
-      btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    if (!(btn.uiFlags & BUTTON_CLICKED_ON)) {
+      btn.uiFlags |= (BUTTON_CLICKED_ON);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       switch (guiCurrentLaptopMode) {
         case (Enum95.LAPTOP_MODE_EMAIL):
@@ -4308,7 +4308,7 @@ export function PrintBalance(): void {
   InsertCommasForDollarFigure(pString);
   InsertDollarSignInToString(pString);
 
-  if (ButtonList[gLaptopButton[5]].value.uiFlags & BUTTON_CLICKED_ON) {
+  if (ButtonList[gLaptopButton[5]].uiFlags & BUTTON_CLICKED_ON) {
     //		gprintfdirty(47 +1, 257 +15 + 1,pString);
     mprintf(47 + 1, 257 + 15 + 1, pString);
   } else {
@@ -4351,7 +4351,7 @@ export function PrintNumberOnTeam(): void {
   usFontHeight = GetFontHeight(FONT10ARIAL());
   usStrLength = StringPixLength(pString, FONT10ARIAL());
 
-  if (ButtonList[gLaptopButton[3]].value.uiFlags & BUTTON_CLICKED_ON) {
+  if (ButtonList[gLaptopButton[3]].uiFlags & BUTTON_CLICKED_ON) {
     usPosX = 47 + 1;
     usPosY = 194 + 30 + 1;
     //		gprintfdirty(47 + 1, 194 +30 +1  ,pString);

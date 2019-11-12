@@ -649,16 +649,16 @@ function DestroyIMPAttributeSelectionButtons(): void {
   return;
 }
 
-function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPAttributeFinishCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for IMP attrbite begin button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
 
       // are we done diting, or just reviewing the stats?
       if (fReviewStats == true) {
@@ -922,11 +922,11 @@ function DestroyAttributeSliderButtons(): void {
   return;
 }
 
-function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPAttributeSliderLeftCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
@@ -939,22 +939,22 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     DecrementStat(iValue);
     fHasAnySlidingBarMoved = true;
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
     uiBarToReRender = iValue;
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }
 
-function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
+function BtnIMPAttributeSliderRightCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
-  if (!(btn.value.uiFlags & BUTTON_ENABLED))
+  if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
 
   iValue = MSYS_GetBtnUserData(btn, 0);
@@ -968,12 +968,12 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
     IncrementStat(iValue);
     fHasAnySlidingBarMoved = true;
     uiBarToReRender = iValue;
-    btn.value.uiFlags |= (BUTTON_CLICKED_ON);
+    btn.uiFlags |= (BUTTON_CLICKED_ON);
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    if (btn.value.uiFlags & BUTTON_CLICKED_ON) {
-      btn.value.uiFlags &= ~(BUTTON_CLICKED_ON);
+    if (btn.uiFlags & BUTTON_CLICKED_ON) {
+      btn.uiFlags &= ~(BUTTON_CLICKED_ON);
     }
   }
 }
