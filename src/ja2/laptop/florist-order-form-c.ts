@@ -465,7 +465,7 @@ export function RenderFloristOrderForm(): void {
   // The flower name
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_NAME_BOUQUET], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_FLOWER_NAME_X;
   uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower;
-  LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
+  sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_FLOWER_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Deliverry Date
@@ -784,7 +784,7 @@ function DisplayFlowerDynamicItems(): void {
   // price
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_PRICE], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_BOUQUET_NAME_X;
   uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower + FLOR_GALLERY_TEXT_TITLE_SIZE;
-  LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
+  sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
   swscanf(sTemp, "%hu", addressof(usPrice));
 
   // if its the next day delivery
@@ -1027,7 +1027,7 @@ function InitFlowerOrderTextInputBoxes(): void {
     // Display Flower Desc
 
     uiStartLoc = FLOR_CARD_TEXT_TITLE_SIZE * +gbCurrentlySelectedCard;
-    LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
+    sTemp = LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
     CleanOutControlCodesFromString(sTemp, sText);
 
     wcsncpy(gsSentimentTextField, sText, FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1);

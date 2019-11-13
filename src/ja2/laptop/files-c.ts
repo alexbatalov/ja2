@@ -690,7 +690,7 @@ function DisplayFormattedText(): boolean {
   iLength = ubFileRecordsLength[pFilesList.value.ubCode];
 
   if (pFilesList.value.ubFormat < Enum78.ENRICO_BACKGROUND) {
-    LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet)*2, FILE_STRING_SIZE * iLength * 2);
+    sString = LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", FILE_STRING_SIZE * (iOffSet)*2, FILE_STRING_SIZE * iLength * 2);
   }
 
   // reset counter
@@ -706,7 +706,7 @@ function DisplayFormattedText(): boolean {
 
       while (iLength > iCounter) {
         // read one record from file manager file
-        LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
+        sString = LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
         iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
@@ -739,7 +739,7 @@ function DisplayFormattedText(): boolean {
 
       while (iLength > iCounter) {
         // read one record from file manager file
-        LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
+        sString = LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
         iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
@@ -802,7 +802,7 @@ function DisplayFormattedText(): boolean {
 
       while (iLength > iCounter) {
         // read one record from file manager file
-        LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
+        sString = LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
         iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT(), FILE_TEXT_COLOR, sString, 0, false, 0);
@@ -856,7 +856,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
 
       WidthList = CreateWidthRecordsForAruloIntelFile();
       while (iCounter < LENGTH_OF_ENRICO_FILE) {
-        LoadEncryptedDataFromFile("BINARYDATA\\RIS.EDT", sString, FILE_STRING_SIZE * (iCounter)*2, FILE_STRING_SIZE * 2);
+        sString = LoadEncryptedDataFromFile("BINARYDATA\\RIS.EDT", FILE_STRING_SIZE * (iCounter)*2, FILE_STRING_SIZE * 2);
         AddStringToFilesList(sString);
         iCounter++;
       }
@@ -1351,7 +1351,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   WidthList = CreateWidthRecordsForTerroristFile();
 
   while (iCounter < ubFileRecordsLength[iFileNumber]) {
-    LoadEncryptedDataFromFile("BINARYDATA\\files.EDT", sString, FILE_STRING_SIZE * (iOffset + iCounter) * 2, FILE_STRING_SIZE * 2);
+    sString = LoadEncryptedDataFromFile("BINARYDATA\\files.EDT", FILE_STRING_SIZE * (iOffset + iCounter) * 2, FILE_STRING_SIZE * 2);
     AddStringToFilesList(sString);
     iCounter++;
   }

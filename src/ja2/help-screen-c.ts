@@ -1072,7 +1072,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
 
   // if this screen has a valid title
   if (iStartLoc != -1) {
-    LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, iStartLoc, HELPSCREEN_RECORD_SIZE);
+    zText = LoadEncryptedDataFromFile(HELPSCREEN_FILE, iStartLoc, HELPSCREEN_RECORD_SIZE);
 
     SetFontShadow(NO_SHADOW);
 
@@ -1087,7 +1087,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
 
   // Display the '( press H to get help... )'
   iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_CONSTANT_SUBTITLE;
-  LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, iStartLoc, HELPSCREEN_RECORD_SIZE);
+  zText = LoadEncryptedDataFromFile(HELPSCREEN_FILE, iStartLoc, HELPSCREEN_RECORD_SIZE);
 
   usPosX = gHelpScreen.usLeftMarginPosX;
 
@@ -1100,7 +1100,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
     // calc location for the ' [ x ] Dont display again...'
     iStartLoc = HELPSCREEN_RECORD_SIZE * Enum18.HLP_TXT_CONSTANT_FOOTER;
-    LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, iStartLoc, HELPSCREEN_RECORD_SIZE);
+    zText = LoadEncryptedDataFromFile(HELPSCREEN_FILE, iStartLoc, HELPSCREEN_RECORD_SIZE);
 
     usPosX = gHelpScreen.usLeftMarginPosX + HELP_SCREEN_SHOW_HELP_AGAIN_REGION_TEXT_OFFSET_X;
 
@@ -1189,7 +1189,7 @@ function GetHelpScreenText(uiRecordToGet: UINT32, pText: Pointer<string> /* STR1
   let iStartLoc: INT32 = -1;
 
   iStartLoc = HELPSCREEN_RECORD_SIZE * uiRecordToGet;
-  LoadEncryptedDataFromFile(HELPSCREEN_FILE, pText, iStartLoc, HELPSCREEN_RECORD_SIZE);
+  pText = LoadEncryptedDataFromFile(HELPSCREEN_FILE, iStartLoc, HELPSCREEN_RECORD_SIZE);
 }
 
 // returns the number of vertical pixels printed
@@ -1204,7 +1204,7 @@ function GetAndDisplayHelpScreenText(uiRecord: UINT32, usPosX: UINT16, usPosY: U
 
   // Get the record
   uiStartLoc = HELPSCREEN_RECORD_SIZE * uiRecord;
-  LoadEncryptedDataFromFile(HELPSCREEN_FILE, zText, uiStartLoc, HELPSCREEN_RECORD_SIZE);
+  zText = LoadEncryptedDataFromFile(HELPSCREEN_FILE, uiStartLoc, HELPSCREEN_RECORD_SIZE);
 
   // Display the text
   usNumVertPixels = IanDisplayWrappedString(usPosX, usPosY, usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TEXT_BODY_FONT(), HELP_SCREEN_TEXT_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, false, 0);

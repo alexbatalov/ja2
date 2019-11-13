@@ -457,7 +457,7 @@ function SelectAimLogoRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): voi
 export function DisplayAimSlogan(): boolean {
   let sSlogan: string /* wchar_t[400] */;
 
-  LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, 0, AIM_HISTORY_LINE_SIZE);
+  sSlogan = LoadEncryptedDataFromFile(AIMHISTORYFILE, 0, AIM_HISTORY_LINE_SIZE);
   // Display Aim Text under the logo
   DisplayWrappedString(AIM_LOGO_TEXT_X, AIM_LOGO_TEXT_Y, AIM_LOGO_TEXT_WIDTH, 2, AIM_LOGO_FONT(), AIM_FONT_MCOLOR_WHITE, sSlogan, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
@@ -471,15 +471,15 @@ export function DisplayAimCopyright(): boolean {
   // Load and Display the copyright notice
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_1;
-  LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+  sSlogan = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_2;
-  LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+  sSlogan = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_COPYRIGHT_3;
-  LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+  sSlogan = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sSlogan, AIM_COPYRIGHT_X, AIM_COPYRIGHT_Y + AIM_COPYRIGHT_GAP * 2, AIM_COPYRIGHT_WIDTH, AIM_COPYRIGHT_FONT(), FONT_MCOLOR_DKWHITE, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   return true;
@@ -733,7 +733,7 @@ function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
     BltVideoObject(FRAME_BUFFER, hWarningHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum63.AIM_WARNING_1;
-    LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
 
     // Display Aim Warning Text
     DisplayWrappedString(AIM_WARNING_TEXT_X, AIM_WARNING_TEXT_Y, AIM_WARNING_TEXT_WIDTH, 2, AIM_WARNING_FONT(), FONT_RED, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);

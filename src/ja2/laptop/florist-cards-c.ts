@@ -120,7 +120,7 @@ export function RenderFloristCards(): void {
 
       // Get and display the card saying
       uiStartLoc = FLOR_CARD_TEXT_TITLE_SIZE * ubCount;
-      LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
+      sTemp = LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
 
       //			DisplayWrappedString((UINT16)(usPosX+7), (UINT16)(usPosY+15), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR,  sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       usHeightOffset = IanWrappedStringHeight((usPosX + 7), (usPosY), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT(), FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, false, 0);

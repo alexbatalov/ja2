@@ -293,19 +293,19 @@ function DisplayFloralDescriptions(): boolean {
   for (i = 0; i < gubCurNumberOfFlowers; i++) {
     // Display Flower title
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex);
-    LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
+    sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
     DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_TITLE_FONT(), FLOR_GALLERY_FLOWER_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Flower Price
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
-    LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
+    sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
     swscanf(sTemp, "%hu", addressof(usPrice));
     sTemp = swprintf("$%d.00 %s", usPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
     DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT(), FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Flower Desc
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE + FLOR_GALLERY_TEXT_PRICE_SIZE;
-    LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_DESC_SIZE);
+    sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_DESC_SIZE);
     DisplayWrappedString(FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_DESC_OFFSET_Y), FLOR_GALLERY_DESC_WIDTH, 2, FLOR_GALLERY_FLOWER_DESC_FONT(), FLOR_GALLERY_FLOWER_DESC_COLOR, sTemp, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += FLOR_GALLERY_FLOWER_BUTTON_OFFSET_Y;

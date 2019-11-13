@@ -1435,7 +1435,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   // if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
   {
     if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, addressof(pFilename))) {
-      LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
+      zDialogueText = LoadEncryptedDataFromFile(pFilename, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText[0] == 0) {
         zDialogueText = swprintf("I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 

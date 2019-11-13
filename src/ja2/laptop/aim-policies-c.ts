@@ -411,7 +411,7 @@ function DrawAimPolicyMenu(): boolean {
     BltVideoObject(FRAME_BUFFER, hContentButtonHandle, 0, AIM_POLICY_TOC_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
     uiStartLoc = AIM_POLICY_LINE_SIZE * ubLocInFile[i];
-    LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
     DrawTextToScreen(sText, AIM_POLICY_TOC_X + AIM_POLICY_TOC_TEXT_OFFSET_X, (usPosY + AIM_POLICY_TOC_TEXT_OFFSET_Y), AIM_CONTENTBUTTON_WIDTH, AIM_POLICY_TOC_FONT(), AIM_POLICY_TOC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
@@ -477,7 +477,7 @@ function DisplayAimPolicyTitleText(): boolean {
 
   // Load anfd display title
   uiStartLoc = AIM_POLICY_LINE_SIZE * Enum68.AIM_STATEMENT_OF_POLICY;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
 
   if (gubCurPageNum == 0)
     DrawTextToScreen(sText, AIM_POLICY_TITLE_X, AIM_POLICY_TITLE_STATEMENT_Y - 25, AIM_POLICY_TITLE_WIDTH, AIM_POLICY_TITLE_FONT(), AIM_POLICY_TITLE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -494,12 +494,12 @@ function DisplayAimPolicyStatement(): boolean {
 
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * Enum68.AIM_STATEMENT_OF_POLICY_1;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
   usNumPixels = DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, AIM_POLICY_TITLE_STATEMENT_Y, AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * Enum68.AIM_STATEMENT_OF_POLICY_2;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
   DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, (AIM_POLICY_TITLE_STATEMENT_Y + usNumPixels + 15), AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT(), AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   return true;
@@ -553,7 +553,7 @@ function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT)
 
   // Load and display title
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
   DrawTextToScreen(sText, AIM_POLICY_SUBTITLE_NUMBER, usPosY, 0, AIM_POLICY_SUBTITLE_FONT(), AIM_POLICY_SUBTITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   return true;
@@ -566,7 +566,7 @@ function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FL
   let usNumPixels: UINT16;
 
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
 
   if (fNumber != 0.0) {
     // Display the section number
@@ -587,7 +587,7 @@ function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber:
   let usNumPixels: UINT16;
 
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
-  LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMPOLICYFILE, uiStartLoc, AIM_POLICY_LINE_SIZE);
 
   // Display the section number
   sTemp = swprintf("%2.2f", fNumber);

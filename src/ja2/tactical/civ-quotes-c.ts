@@ -115,7 +115,7 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
   }
 
   // Get data...
-  LoadEncryptedDataFromFile(zFileName, zQuote, ubEntryID * 320, 320);
+  zQuote = LoadEncryptedDataFromFile(zFileName, ubEntryID * 320, 320);
 
   if (zQuote[0] == 0) {
     return false;

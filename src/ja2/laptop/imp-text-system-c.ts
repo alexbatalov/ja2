@@ -56,7 +56,7 @@ function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT1
   }
 
   // load the string
-  LoadEncryptedDataFromFile("BINARYDATA\\IMPText.EDT", sString, ((sIMPTextRecordNumber)*IMP_SEEK_AMOUNT), IMP_SEEK_AMOUNT);
+  sString = LoadEncryptedDataFromFile("BINARYDATA\\IMPText.EDT", ((sIMPTextRecordNumber)*IMP_SEEK_AMOUNT), IMP_SEEK_AMOUNT);
 
   // null put last char
   sString[sString.length] = 0;

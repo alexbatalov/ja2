@@ -1,32 +1,34 @@
 namespace ja2 {
 
-export function LoadEncryptedDataFromFile(pFileName: string /* STR */, pDestString: Pointer<string> /* STR16 */, uiSeekFrom: UINT32, uiSeekAmount: UINT32): boolean {
+export function LoadEncryptedDataFromFile(pFileName: string /* STR */, uiSeekFrom: UINT32, uiSeekAmount: UINT32): string {
   let hFile: HWFILE;
   let i: UINT16;
   let uiBytesRead: UINT32;
+  let buffer: Buffer;
 
   hFile = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!hFile) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed to FileOpen");
-    return false;
+    return <string><unknown>null;
   }
 
   if (FileSeek(hFile, uiSeekFrom, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed FileSeek");
-    return false;
+    return <string><unknown>null;
   }
 
-  if (!FileRead(hFile, pDestString, uiSeekAmount, addressof(uiBytesRead))) {
+  buffer = Buffer.allocUnsafe(uiSeekAmount);
+  if ((uiBytesRead = FileRead(hFile, buffer, uiSeekAmount)) === -1) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed FileRead");
-    return false;
+    return <string><unknown>null;
   }
 
   // Decrement, by 1, any value > 32
-  for (i = 0; (i < uiSeekAmount) && (pDestString[i] != 0); i++) {
-    if (pDestString[i] > 33)
-      pDestString[i] -= 1;
+  for (i = 0; (i < uiSeekAmount) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //     switch (pDestString[i]) {
@@ -91,7 +93,7 @@ export function LoadEncryptedDataFromFile(pFileName: string /* STR */, pDestStri
   }
 
   FileClose(hFile);
-  return true;
+  return readStringNL(buffer, 'utf16le', 0, buffer.length);
 }
 
 }

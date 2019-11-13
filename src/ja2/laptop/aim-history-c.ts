@@ -163,7 +163,7 @@ export function RenderAimHistory(): void {
       // display coloniel Mohanned...
       usPosY = AIM_HISTORY_PARAGRAPH_Y + (GetFontHeight(AIM_HISTORY_TEXT_FONT()) + 2) * 5 + LAPTOP_SCREEN_WEB_DELTA_Y;
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.COLONEL_MOHANNED;
-      LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+      sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 210 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
       break;
 
@@ -173,12 +173,12 @@ export function RenderAimHistory(): void {
 
       // display dunn and bradbord...
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.DUNN_AND_BRADROAD;
-      LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+      sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 270 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // AIM_HISTORY_PARAGRAPH_Y
       uiStartLoc = AIM_HISTORY_LINE_SIZE * Enum64.INCORPORATION_3;
-      LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+      sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
       DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, 290 + LAPTOP_SCREEN_WEB_DELTA_Y, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       break;
   }
@@ -291,14 +291,14 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): b
 
   // title
   uiStartLoc = AIM_HISTORY_LINE_SIZE * ubPageNum;
-  LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+  sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
   DrawTextToScreen(sText, AIM_HISTORY_PARAGRAPH_X, AIM_HISTORY_SUBTITLE_Y, 0, AIM_HISTORY_PARAGRAPH_TITLE_FONT(), AIM_HISTORY_PARAGRAPH_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   if (ubNumParagraphs >= 1) {
     usPosY = AIM_HISTORY_PARAGRAPH_Y;
     // 1st paragraph
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 1);
-    LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
     usNumPixels = DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
@@ -306,7 +306,7 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): b
     // 2nd paragraph
     usPosY += usNumPixels + AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS;
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 2);
-    LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
     DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
@@ -315,7 +315,7 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): b
     usPosY += usNumPixels + AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS;
 
     uiStartLoc = AIM_HISTORY_LINE_SIZE * (ubPageNum + 3);
-    LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
     DisplayWrappedString(AIM_HISTORY_PARAGRAPH_X, usPosY, AIM_HISTORY_PARAGRAPH_WIDTH, 2, AIM_HISTORY_TEXT_FONT(), AIM_HISTORY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
@@ -345,7 +345,7 @@ function InitTocMenu(): boolean {
   usPosY = AIM_HISTORY_CONTENTBUTTON_Y;
   for (i = 0; i < NUM_AIM_HISTORY_PAGES; i++) {
     uiStartLoc = AIM_HISTORY_LINE_SIZE * ubLocInFile[i];
-    LoadEncryptedDataFromFile(AIMHISTORYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
+    sText = LoadEncryptedDataFromFile(AIMHISTORYFILE, uiStartLoc, AIM_HISTORY_LINE_SIZE);
 
     usWidth = StringPixLength(sText, AIM_HISTORY_TOC_TEXT_FONT());
 

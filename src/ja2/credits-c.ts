@@ -880,7 +880,7 @@ function GetNextCreditFromTextFile(): boolean {
 
   // Get the current Credit record
   uiStartLoc = CREDITS_LINESIZE * guiCurrentCreditRecord;
-  if (!LoadEncryptedDataFromFile(CRDT_NAME_OF_CREDIT_FILE, zOriginalString, uiStartLoc, CREDITS_LINESIZE)) {
+  if ((zOriginalString = LoadEncryptedDataFromFile(CRDT_NAME_OF_CREDIT_FILE, uiStartLoc, CREDITS_LINESIZE)) !== null) {
     // there are no more credits
     return false;
   }

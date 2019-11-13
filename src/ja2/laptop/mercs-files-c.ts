@@ -394,12 +394,12 @@ function LoadAndDisplayMercBio(ubMercID: UINT8): void {
 
   // load and display the merc bio
   uiStartLoc = MERC_BIO_SIZE * ubMercID;
-  LoadEncryptedDataFromFile(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_INFO_TEXT_SIZE);
+  sText = LoadEncryptedDataFromFile(MERCBIOFILE, uiStartLoc, MERC_BIO_INFO_TEXT_SIZE);
   DisplayWrappedString(MERC_BIO_TEXT_X, MERC_BIO_TEXT_Y, MERC_BIO_WIDTH, 2, MERC_BIO_FONT(), MERC_BIO_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // load and display the merc's additioanl info (if any)
   uiStartLoc = MERC_BIO_SIZE * ubMercID + MERC_BIO_INFO_TEXT_SIZE;
-  LoadEncryptedDataFromFile(MERCBIOFILE, sText, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
+  sText = LoadEncryptedDataFromFile(MERCBIOFILE, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
   if (sText[0] != 0) {
     DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ADDITIONAL_INFO], MERC_ADD_BIO_TITLE_X, MERC_ADD_BIO_TITLE_Y, 0, MERC_TITLE_FONT(), MERC_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     DisplayWrappedString(MERC_ADD_BIO_TEXT_X, MERC_ADD_BIO_TEXT_Y, MERC_BIO_WIDTH, 2, MERC_BIO_FONT(), MERC_BIO_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);

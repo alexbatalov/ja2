@@ -300,7 +300,7 @@ export function RenderAimArchives(): void {
 
       // Display the merc's name
       uiStartLoc = AIM_ALUMNI_NAME_LINESIZE * i;
-      LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sText, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
+      sText = LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
       DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       usPosX += AIM_ALUMNI_GRID_OFFSET_X;
@@ -320,7 +320,7 @@ export function RenderAimArchives(): void {
 
     // Display the merc's name
     uiStartLoc = AIM_ALUMNI_NAME_LINESIZE * i;
-    LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sText, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
+    sText = LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
     DrawTextToScreen(sText, (usPosX + AIM_ALUMNI_NAME_OFFSET_X), (usPosY + AIM_ALUMNI_NAME_OFFSET_Y), AIM_ALUMNI_NAME_WIDTH, AIM_ALUMNI_NAME_FONT(), AIM_ALUMNI_NAME_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     usPosX += AIM_ALUMNI_GRID_OFFSET_X;
@@ -439,7 +439,7 @@ function DisplayAlumniOldMercPopUp(): void {
 
   // Load the description
   uiStartLoc = AIM_ALUMNI_FILE_RECORD_SIZE * gubDrawOldMerc + AIM_ALUMNI_FULL_NAME_SIZE;
-  LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, sDesc, uiStartLoc, AIM_ALUMNI_DECRIPTION_SIZE);
+  sDesc = LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, uiStartLoc, AIM_ALUMNI_DECRIPTION_SIZE);
 
   usStringPixLength = StringPixLength(sDesc, AIM_ALUMNI_POPUP_FONT());
   ubNumDescLines = (usStringPixLength / AIM_POPUP_TEXT_WIDTH);
@@ -475,7 +475,7 @@ function DisplayAlumniOldMercPopUp(): void {
   //	uiStartLoc = AIM_ALUMNI_NAME_SIZE * gubDrawOldMerc;
   //	LoadEncryptedDataFromFile(AIM_ALUMNI_NAME_FILE, sName, uiStartLoc, AIM_ALUMNI_NAME_SIZE);
   uiStartLoc = AIM_ALUMNI_FILE_RECORD_SIZE * gubDrawOldMerc;
-  LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, sName, uiStartLoc, AIM_ALUMNI_FULL_NAME_SIZE);
+  sName = LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, uiStartLoc, AIM_ALUMNI_FULL_NAME_SIZE);
 
   DrawTextToScreen(sName, AIM_ALUMNI_POPUP_NAME_X, AIM_ALUMNI_POPUP_NAME_Y, 0, AIM_ALUMNI_POPUP_NAME_FONT(), AIM_ALUMNI_POPUP_NAME_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 

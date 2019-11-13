@@ -850,10 +850,10 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
       }
 
       if (pBobbyRayPurchase[i].fUsed) {
-        LoadEncryptedDataFromFile(BOBBYRDESCFILE, sBack, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
+        sBack = LoadEncryptedDataFromFile(BOBBYRDESCFILE, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
         sText = swprintf("%s %s", "*", sBack);
       } else
-        LoadEncryptedDataFromFile(BOBBYRDESCFILE, sText, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
+        sText = LoadEncryptedDataFromFile(BOBBYRDESCFILE, uiStartLoc, BOBBYR_ITEM_DESC_NAME_SIZE);
 
       // if the name is bigger then can fit into the slot, reduce the size
       if (StringPixLength(sText, BOBBYR_ORDER_DYNAMIC_TEXT_FONT()) > BOBBYR_GRID_THIRD_COLUMN_WIDTH - 4) {

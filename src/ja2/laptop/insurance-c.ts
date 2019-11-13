@@ -307,11 +307,11 @@ export function GetInsuranceText(ubNumber: UINT8, pString: Pointer<string> /* ST
   if (ubNumber < Enum90.INS_MULTI_LINE_BEGINS) {
     // Get and display the card saying
     uiStartLoc = INSURANCE_TEXT_SINGLE_LINE_SIZE * ubNumber;
-    LoadEncryptedDataFromFile(INSURANCE_TEXT_SINGLE_FILE, pString, uiStartLoc, INSURANCE_TEXT_SINGLE_LINE_SIZE);
+    pString = LoadEncryptedDataFromFile(INSURANCE_TEXT_SINGLE_FILE, uiStartLoc, INSURANCE_TEXT_SINGLE_LINE_SIZE);
   } else {
     // Get and display the card saying
     uiStartLoc = INSURANCE_TEXT_MULTI_LINE_SIZE * (ubNumber - Enum90.INS_MULTI_LINE_BEGINS - 1);
-    LoadEncryptedDataFromFile(INSURANCE_TEXT_MULTI_FILE, pString, uiStartLoc, INSURANCE_TEXT_MULTI_LINE_SIZE);
+    pString = LoadEncryptedDataFromFile(INSURANCE_TEXT_MULTI_FILE, uiStartLoc, INSURANCE_TEXT_MULTI_LINE_SIZE);
   }
 }
 

@@ -457,7 +457,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
       // load up some info from the 'mainmenu.edt' file.  This makes sure the file is present.  The file is
       // 'marked' with a code that identifies the testers
       iStartLoc = MAINMENU_RECORD_SIZE * cnt;
-      if (!LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, zText, iStartLoc, MAINMENU_RECORD_SIZE)) {
+      if ((zText = LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, iStartLoc, MAINMENU_RECORD_SIZE)) !== null) {
         // the file was not able to be loaded properly
         let pSoldier: Pointer<SOLDIERTYPE> = null;
 

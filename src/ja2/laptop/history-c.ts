@@ -1408,12 +1408,12 @@ export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
 
 function GetQuestStartedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
   // open the file and copy the string
-  LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * (ubQuestValue * 2), 160);
+  sQuestString = LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * (ubQuestValue * 2), 160);
 }
 
 function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
   // open the file and copy the string
-  LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * ((ubQuestValue * 2) + 1), 160);
+  sQuestString = LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * ((ubQuestValue * 2) + 1), 160);
 }
 
 function GetNumberOfHistoryPages(): INT32 {
