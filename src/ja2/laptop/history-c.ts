@@ -27,7 +27,7 @@ const RECORD_DATE_WIDTH = 31; // 68
 const RECORD_HEADER_Y = 90;
 
 const NUM_RECORDS_PER_PAGE = PAGE_SIZE;
-const SIZE_OF_HISTORY_FILE_RECORD = () => (sizeof(UINT8) + sizeof(UINT8) + sizeof(UINT32) + sizeof(UINT16) + sizeof(UINT16) + sizeof(UINT8) + sizeof(UINT8));
+const SIZE_OF_HISTORY_FILE_RECORD = 1 + 1 + 4 + 2 + 2 + 1 + 1;
 
 // button positions
 const NEXT_BTN_X = 577;
@@ -35,13 +35,13 @@ const PREV_BTN_X = 553;
 const BTN_Y = 53;
 
 // graphics handles
-export let guiTITLE: UINT32;
+let guiTITLE: UINT32;
 // UINT32 guiGREYFRAME;
-export let guiTOP: UINT32;
+let guiTOP: UINT32;
 // UINT32 guiMIDDLE;
 // UINT32 guiBOTTOM;
 // UINT32 guiLINE;
-export let guiLONGLINE: UINT32;
+let guiLONGLINE: UINT32;
 let guiSHADELINE: UINT32;
 // UINT32 guiVERTLINE;
 // UINT32 guiBIGBOX;
@@ -60,10 +60,10 @@ let fInHistoryMode: boolean = false;
 let iCurrentHistoryPage: INT32 = 1;
 
 // the History record list
-let pHistoryListHead: HistoryUnitPtr = null;
+let pHistoryListHead: HistoryUnit | null = null;
 
 // current History record (the one at the top of the current page)
-let pCurrentHistory: HistoryUnitPtr = null;
+let pCurrentHistory: HistoryUnit | null = null;
 
 // last page in list
 let guiLastPageInHistoryRecordsList: UINT32 = 0;
@@ -73,7 +73,7 @@ export function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT3
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
   let ubColor: UINT8 = 0;
-  let pHistory: HistoryUnitPtr = pHistoryListHead;
+  let pHistory: HistoryUnit | null = pHistoryListHead;
 
   // clear the list
   ClearHistoryList();
@@ -109,7 +109,7 @@ export function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDat
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
-  let pHistory: HistoryUnitPtr = pHistoryListHead;
+  let pHistory: HistoryUnit | null = pHistoryListHead;
 
   // clear the list
   ClearHistoryList();
@@ -387,7 +387,7 @@ function BtnHistoryDisplayNextPageCallBack(btn: GUI_BUTTON, reason: INT32): void
 
 function IncrementCurrentPageHistoryDisplay(): boolean {
   // run through list, from pCurrentHistory, to NUM_RECORDS_PER_PAGE +1 HistoryUnits
-  let pTempHistory: HistoryUnitPtr = pCurrentHistory;
+  let pTempHistory: HistoryUnit | null = pCurrentHistory;
   let fOkToIncrementPage: boolean = false;
   let iCounter: INT32 = 0;
   let hFileHandle: HWFILE;
@@ -412,7 +412,7 @@ function IncrementCurrentPageHistoryDisplay(): boolean {
   }
 
   uiFileSize = FileGetSize(hFileHandle) - 1;
-  uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (sizeof(UINT8) + sizeof(UINT32) + 3 * sizeof(UINT8) + sizeof(INT16) + sizeof(INT16)));
+  uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (1 + 4 + 3 * 1 + 2 + 2));
 
   // is the file long enough?
   //  if( ( FileGetSize( hFileHandle ) - 1 ) / ( NUM_RECORDS_PER_PAGE * ( sizeof( UINT8 ) + sizeof( UINT32 ) + 3*sizeof( UINT8 )+ sizeof(INT16) + sizeof( INT16 ) ) ) + 1 < ( UINT32 )( iCurrentHistoryPage + 1 ) )
@@ -448,46 +448,46 @@ iCounter++;
 
 function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCode: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubColor: UINT8): UINT32 {
   let uiId: UINT32 = 0;
-  let pHistory: HistoryUnitPtr = pHistoryListHead;
+  let pHistory: HistoryUnit | null = pHistoryListHead;
 
   // add to History list
   if (pHistory) {
     // go to end of list
-    while (pHistory.value.Next)
-      pHistory = pHistory.value.Next;
+    while (pHistory.Next)
+      pHistory = pHistory.Next;
 
     // alloc space
-    pHistory.value.Next = MemAlloc(sizeof(HistoryUnit));
+    pHistory.Next = createHistoryUnit();
 
     // increment id number
-    uiId = pHistory.value.uiIdNumber + 1;
+    uiId = pHistory.uiIdNumber + 1;
 
     // set up information passed
-    pHistory = pHistory.value.Next;
-    pHistory.value.Next = null;
-    pHistory.value.ubCode = ubCode;
-    pHistory.value.ubSecondCode = ubSecondCode;
-    pHistory.value.uiDate = uiDate;
-    pHistory.value.uiIdNumber = uiId;
-    pHistory.value.sSectorX = sSectorX;
-    pHistory.value.sSectorY = sSectorY;
-    pHistory.value.bSectorZ = bSectorZ;
-    pHistory.value.ubColor = ubColor;
+    pHistory = pHistory.Next;
+    pHistory.Next = null;
+    pHistory.ubCode = ubCode;
+    pHistory.ubSecondCode = ubSecondCode;
+    pHistory.uiDate = uiDate;
+    pHistory.uiIdNumber = uiId;
+    pHistory.sSectorX = sSectorX;
+    pHistory.sSectorY = sSectorY;
+    pHistory.bSectorZ = bSectorZ;
+    pHistory.ubColor = ubColor;
   } else {
     // alloc space
-    pHistory = MemAlloc(sizeof(HistoryUnit));
+    pHistory = createHistoryUnit();
 
     // setup info passed
-    pHistory.value.Next = null;
-    pHistory.value.ubCode = ubCode;
-    pHistory.value.ubSecondCode = ubSecondCode;
-    pHistory.value.uiDate = uiDate;
-    pHistory.value.uiIdNumber = uiId;
+    pHistory.Next = null;
+    pHistory.ubCode = ubCode;
+    pHistory.ubSecondCode = ubSecondCode;
+    pHistory.uiDate = uiDate;
+    pHistory.uiIdNumber = uiId;
     pHistoryListHead = pHistory;
-    pHistory.value.sSectorX = sSectorX;
-    pHistory.value.sSectorY = sSectorY;
-    pHistory.value.bSectorZ = bSectorZ;
-    pHistory.value.ubColor = ubColor;
+    pHistory.sSectorX = sSectorX;
+    pHistory.sSectorY = sSectorY;
+    pHistory.bSectorZ = bSectorZ;
+    pHistory.ubColor = ubColor;
   }
 
   return uiId;
@@ -506,6 +506,7 @@ function OpenAndReadHistoryFile(): void {
   let ubColor: UINT8;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // clear out the old list
   ClearHistoryList();
@@ -529,21 +530,23 @@ function OpenAndReadHistoryFile(): void {
   }
 
   // file exists, read in data, continue until file end
+  buffer = Buffer.allocUnsafe(SIZE_OF_HISTORY_FILE_RECORD);
   while (FileGetSize(hFileHandle) > uiByteCount) {
     // read in other data
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(sSectorX), sizeof(INT16), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(sSectorY), sizeof(INT16), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(bSectorZ), sizeof(INT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubColor), sizeof(UINT8), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, SIZE_OF_HISTORY_FILE_RECORD);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    sSectorX = buffer.readInt16LE(6);
+    sSectorY = buffer.readInt16LE(8);
+    bSectorZ = buffer.readInt8(10);
+    ubColor = buffer.readUInt8(11);
 
     // add transaction
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
 
     // increment byte counter
-    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD();
+    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD;
   }
 
   // close file
@@ -557,7 +560,8 @@ function OpenAndWriteHistoryFile(): boolean {
 
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
-  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
+  let pHistoryList: HistoryUnit | null = pHistoryListHead;
+  let buffer: Buffer;
 
   // open file
   hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
@@ -567,18 +571,20 @@ function OpenAndWriteHistoryFile(): boolean {
     return false;
   }
   // write info, while there are elements left in the list
+  buffer = Buffer.allocUnsafe(SIZE_OF_HISTORY_FILE_RECORD);
   while (pHistoryList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), null);
-    FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), null);
+    buffer.writeUInt8(pHistoryList.ubCode, 0);
+    buffer.writeUInt8(pHistoryList.ubSecondCode, 1);
+    buffer.writeUInt32LE(pHistoryList.uiDate, 2);
+    buffer.writeInt16LE(pHistoryList.sSectorX, 6);
+    buffer.writeInt16LE(pHistoryList.sSectorY, 8);
+    buffer.writeInt8(pHistoryList.bSectorZ, 10);
+    buffer.writeUInt8(pHistoryList.ubColor, 11);
+    FileWrite(hFileHandle, buffer, SIZE_OF_HISTORY_FILE_RECORD);
 
     // next element in list
-    pHistoryList = pHistoryList.value.Next;
+    pHistoryList = pHistoryList.Next;
   }
 
   // close file
@@ -592,8 +598,8 @@ function OpenAndWriteHistoryFile(): boolean {
 export function ClearHistoryList(): void {
   // remove each element from list of transactions
 
-  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
-  let pHistoryNode: HistoryUnitPtr = pHistoryList;
+  let pHistoryList: HistoryUnit | null = pHistoryListHead;
+  let pHistoryNode: HistoryUnit | null = pHistoryList;
 
   // while there are elements in the list left, delete them
   while (pHistoryList) {
@@ -601,10 +607,7 @@ export function ClearHistoryList(): void {
     pHistoryNode = pHistoryList;
 
     // set list head to next node
-    pHistoryList = pHistoryList.value.Next;
-
-    // delete current node
-    MemFree(pHistoryNode);
+    pHistoryList = pHistoryList.Next;
   }
   pHistoryListHead = null;
 
@@ -660,8 +663,8 @@ function DisplayHistoryListBackground(): void {
 
 function DrawHistoryRecordsText(): void {
   // draws the text of the records
-  let pCurHistory: HistoryUnitPtr = pHistoryListHead;
-  let pTempHistory: HistoryUnitPtr = pHistoryListHead;
+  let pCurHistory: HistoryUnit | null = pHistoryListHead;
+  let pTempHistory: HistoryUnit | null = pHistoryListHead;
   let sString: string /* wchar_t[512] */;
   let iCounter: INT32 = 0;
   let usX: UINT16;
@@ -682,28 +685,28 @@ function DrawHistoryRecordsText(): void {
 
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
-    if (pCurHistory.value.ubColor == 0) {
+    if (pCurHistory.ubColor == 0) {
       SetFontForeground(FONT_BLACK);
     } else {
       SetFontForeground(FONT_RED);
     }
     // get and write the date
-    sString = swprintf("%d", (pCurHistory.value.uiDate / (24 * 60)));
+    sString = swprintf("%d", (pCurHistory.uiDate / (24 * 60)));
     FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // now the actual history text
     // FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH,0,RECORD_HISTORY_WIDTH,0,  pHistoryStrings[pCurHistory->ubCode], HISTORY_TEXT_FONT,&usX, &usY);
-    ProcessHistoryTransactionString(sString, pCurHistory);
+    sString = ProcessHistoryTransactionString(pCurHistory);
     //	mprintf(RECORD_DATE_X + RECORD_DATE_WIDTH + 25, RECORD_Y + ( iCounter * ( BOX_HEIGHT ) ) + 3, pHistoryStrings[pCurHistory->ubCode] );
     mprintf(RECORD_DATE_X + RECORD_LOCATION_WIDTH + RECORD_DATE_WIDTH + 15, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // no location
-    if ((pCurHistory.value.sSectorX == -1) || (pCurHistory.value.sSectorY == -1)) {
+    if ((pCurHistory.sSectorX == -1) || (pCurHistory.sSectorY == -1)) {
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
-      GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, true);
+      GetSectorIDString(pCurHistory.sSectorX, pCurHistory.sSectorY, pCurHistory.bSectorZ, sString, true);
       FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
 
       ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT());
@@ -715,7 +718,7 @@ function DrawHistoryRecordsText(): void {
     SetFontForeground(FONT_BLACK);
 
     // next History
-    pCurHistory = pCurHistory.value.Next;
+    pCurHistory = pCurHistory.Next;
 
     // last page, no Historys left, return
     if (!pCurHistory) {
@@ -767,7 +770,7 @@ function DisplayPageNumberAndDateRange(): void {
   let iLastPage: INT32 = 0;
   let iCounter: INT32 = 0;
   let uiLastDate: UINT32;
-  let pTempHistory: HistoryUnitPtr = pHistoryListHead;
+  let pTempHistory: HistoryUnit | null = pHistoryListHead;
   let sString: string /* wchar_t[50] */;
 
   // setup the font stuff
@@ -789,7 +792,7 @@ function DisplayPageNumberAndDateRange(): void {
     return;
   }
 
-  uiLastDate = pCurrentHistory.value.uiDate;
+  uiLastDate = pCurrentHistory.uiDate;
 
   /*
           // find last page
@@ -813,10 +816,10 @@ function DisplayPageNumberAndDateRange(): void {
 
   // run through list until end or num_records, which ever first
   while ((pTempHistory) && (iCounter < NUM_RECORDS_PER_PAGE)) {
-    uiLastDate = pTempHistory.value.uiDate;
+    uiLastDate = pTempHistory.uiDate;
     iCounter++;
 
-    pTempHistory = pTempHistory.value.Next;
+    pTempHistory = pTempHistory.Next;
   }
 
   // get the last page
@@ -824,7 +827,7 @@ function DisplayPageNumberAndDateRange(): void {
   sString = swprintf("%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-  sString = swprintf("%s %d - %d", pHistoryHeaders[2], pCurrentHistory.value.uiDate / (24 * 60), uiLastDate / (24 * 60));
+  sString = swprintf("%s %d - %d", pHistoryHeaders[2], pCurrentHistory.uiDate / (24 * 60), uiLastDate / (24 * 60));
   mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
   // reset shadow
@@ -833,25 +836,27 @@ function DisplayPageNumberAndDateRange(): void {
   return;
 }
 
-function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, pHistory: HistoryUnitPtr): void {
+function ProcessHistoryTransactionString(pHistory: HistoryUnit): string {
+  let pString: string = <string><unknown>undefined;
+
   let sString: string /* CHAR16[128] */;
 
-  switch (pHistory.value.ubCode) {
+  switch (pHistory.ubCode) {
     case Enum83.HISTORY_ENTERED_HISTORY_MODE:
       pString = pHistoryStrings[Enum83.HISTORY_ENTERED_HISTORY_MODE];
       break;
 
     case Enum83.HISTORY_HIRED_MERC_FROM_AIM:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_AIM], gMercProfiles[pHistory.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_MERC_KILLED:
-      if (pHistory.value.ubSecondCode != NO_PROFILE)
-        pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_KILLED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      if (pHistory.ubSecondCode != NO_PROFILE)
+        pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_KILLED], gMercProfiles[pHistory.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_HIRED_MERC_FROM_MERC:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_HIRED_MERC_FROM_MERC], gMercProfiles[pHistory.ubSecondCode].zName);
       break;
 
     case Enum83.HISTORY_SETTLED_ACCOUNTS_AT_MERC:
@@ -864,50 +869,50 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
       pString = pHistoryStrings[Enum83.HISTORY_CHARACTER_GENERATED];
       break;
     case (Enum83.HISTORY_PURCHASED_INSURANCE):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_PURCHASED_INSURANCE], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
     case (Enum83.HISTORY_CANCELLED_INSURANCE):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_CANCELLED_INSURANCE], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
     case (Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_INSURANCE_CLAIM_PAYOUT], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_DAY], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_1_WEEK], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_EXTENDED_CONTRACT_2_WEEK], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_MERC_FIRED):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_FIRED], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_FIRED], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_MERC_QUIT):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_QUIT], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_QUIT], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     case (Enum83.HISTORY_QUEST_STARTED):
-      GetQuestStartedString(pHistory.value.ubSecondCode, sString);
+      sString = GetQuestStartedString(pHistory.ubSecondCode);
       pString = sString;
 
       break;
     case (Enum83.HISTORY_QUEST_FINISHED):
-      GetQuestEndedString(pHistory.value.ubSecondCode, sString);
+      sString = GetQuestEndedString(pHistory.ubSecondCode);
       pString = sString;
 
       break;
     case (Enum83.HISTORY_TALKED_TO_MINER):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_TALKED_TO_MINER], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_TALKED_TO_MINER], pTownNames[pHistory.ubSecondCode]);
       break;
     case (Enum83.HISTORY_LIBERATED_TOWN):
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_LIBERATED_TOWN], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_LIBERATED_TOWN], pTownNames[pHistory.ubSecondCode]);
       break;
     case (Enum83.HISTORY_CHEAT_ENABLED):
       pString = pHistoryStrings[Enum83.HISTORY_CHEAT_ENABLED];
@@ -916,13 +921,13 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
       pString = pHistoryStrings[Enum83.HISTORY_TALKED_TO_FATHER_WALKER];
       break;
     case Enum83.HISTORY_MERC_MARRIED_OFF:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_MARRIED_OFF], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
     case Enum83.HISTORY_MERC_CONTRACT_EXPIRED:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_MERC_CONTRACT_EXPIRED], gMercProfiles[pHistory.ubSecondCode].zName);
       break;
     case Enum83.HISTORY_RPC_JOINED_TEAM:
-      pString = swprintf(pHistoryStrings[Enum83.HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.value.ubSecondCode].zName);
+      pString = swprintf(pHistoryStrings[Enum83.HISTORY_RPC_JOINED_TEAM], gMercProfiles[pHistory.ubSecondCode].zName);
       break;
     case Enum83.HISTORY_ENRICO_COMPLAINED:
       pString = pHistoryStrings[Enum83.HISTORY_ENRICO_COMPLAINED];
@@ -932,14 +937,14 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
     case Enum83.HISTORY_MINE_SHUTDOWN:
     case Enum83.HISTORY_MINE_REOPENED:
       // all the same format
-      pString = swprintf(pHistoryStrings[pHistory.value.ubCode], pTownNames[pHistory.value.ubSecondCode]);
+      pString = swprintf(pHistoryStrings[pHistory.ubCode], pTownNames[pHistory.ubSecondCode]);
       break;
     case Enum83.HISTORY_LOST_BOXING:
     case Enum83.HISTORY_WON_BOXING:
     case Enum83.HISTORY_DISQUALIFIED_BOXING:
     case Enum83.HISTORY_NPC_KILLED:
     case Enum83.HISTORY_MERC_KILLED_CHARACTER:
-      pString = swprintf(pHistoryStrings[pHistory.value.ubCode], gMercProfiles[pHistory.value.ubSecondCode].zNickname);
+      pString = swprintf(pHistoryStrings[pHistory.ubCode], gMercProfiles[pHistory.ubSecondCode].zNickname);
       break;
 
     // ALL SIMPLE HISTORY LOG MSGS, NO PARAMS
@@ -988,9 +993,11 @@ function ProcessHistoryTransactionString(pString: Pointer<string> /* STR16 */, p
     case Enum83.HISTORY_SLAUGHTEREDBLOODCATS:
     case Enum83.HISTORY_GAVE_CARMEN_HEAD:
     case Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT:
-      pString = pHistoryStrings[pHistory.value.ubCode];
+      pString = pHistoryStrings[pHistory.ubCode];
       break;
   }
+
+  return pString;
 }
 
 function DrawHistoryLocation(sSectorX: INT16, sSectorY: INT16): void {
@@ -1037,6 +1044,7 @@ function LoadInHistoryRecords(uiPage: UINT32): boolean {
   let ubColor: UINT8;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1061,31 +1069,33 @@ function LoadInHistoryRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
+  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
   }
 
-  FileSeek(hFileHandle, (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD()), FILE_SEEK_FROM_START);
+  FileSeek(hFileHandle, (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD), FILE_SEEK_FROM_START);
 
-  uiByteCount = (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD());
+  uiByteCount = (uiPage - 1) * NUM_RECORDS_PER_PAGE * (SIZE_OF_HISTORY_FILE_RECORD);
   // file exists, read in data, continue until end of page
+  buffer = Buffer.allocUnsafe(SIZE_OF_HISTORY_FILE_RECORD);
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
     // read in other data
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(sSectorX), sizeof(INT16), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(sSectorY), sizeof(INT16), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(bSectorZ), sizeof(INT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubColor), sizeof(UINT8), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, SIZE_OF_HISTORY_FILE_RECORD);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    sSectorX = buffer.readInt16LE(6);
+    sSectorY = buffer.readInt16LE(8);
+    bSectorZ = buffer.readInt8(10);
+    ubColor = buffer.readUInt8(11);
 
     // add transaction
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
 
     // increment byte counter
-    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD();
+    uiByteCount += SIZE_OF_HISTORY_FILE_RECORD;
 
     // we've overextended our welcome, and bypassed end of file, get out
     if (uiByteCount >= FileGetSize(hFileHandle)) {
@@ -1117,9 +1127,10 @@ function WriteOutHistoryRecords(uiPage: UINT32): boolean {
   let fOkToContinue: boolean = true;
   let iCount: INT32 = 0;
   let hFileHandle: HWFILE;
-  let pList: HistoryUnitPtr;
+  let pList: HistoryUnit | null;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1144,7 +1155,7 @@ function WriteOutHistoryRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD()) + 1 < uiPage) {
+  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
@@ -1156,20 +1167,22 @@ function WriteOutHistoryRecords(uiPage: UINT32): boolean {
     return false;
   }
 
-  FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD(), FILE_SEEK_FROM_START);
+  FileSeek(hFileHandle, 4 + (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD, FILE_SEEK_FROM_START);
 
-  uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD();
+  uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD;
   // file exists, read in data, continue until end of page
+  buffer = Buffer.allocUnsafe(SIZE_OF_HISTORY_FILE_RECORD);
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
-    FileWrite(hFileHandle, addressof(pList.value.ubCode), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pList.value.ubSecondCode), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pList.value.uiDate), sizeof(UINT32), null);
-    FileWrite(hFileHandle, addressof(pList.value.sSectorX), sizeof(INT16), null);
-    FileWrite(hFileHandle, addressof(pList.value.sSectorY), sizeof(INT16), null);
-    FileWrite(hFileHandle, addressof(pList.value.bSectorZ), sizeof(INT8), null);
-    FileWrite(hFileHandle, addressof(pList.value.ubColor), sizeof(UINT8), null);
+    buffer.writeUInt8((<HistoryUnit>pList).ubCode, 0);
+    buffer.writeUInt8((<HistoryUnit>pList).ubSecondCode, 1);
+    buffer.writeUInt32LE((<HistoryUnit>pList).uiDate, 2);
+    buffer.writeInt16LE((<HistoryUnit>pList).sSectorX, 6);
+    buffer.writeInt16LE((<HistoryUnit>pList).sSectorY, 8);
+    buffer.writeInt8((<HistoryUnit>pList).bSectorZ, 10);
+    buffer.writeUInt8((<HistoryUnit>pList).ubColor, 11);
+    FileWrite(hFileHandle, buffer, SIZE_OF_HISTORY_FILE_RECORD);
 
-    pList = pList.value.Next;
+    pList = (<HistoryUnit>pList).Next;
 
     // we've overextended our welcome, and bypassed end of file, get out
     if (pList == null) {
@@ -1274,7 +1287,7 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   }
 
   // make sure file is more than balance size + length of 1 record - 1 byte
-  if (FileGetSize(hFileHandle) < SIZE_OF_HISTORY_FILE_RECORD()) {
+  if (FileGetSize(hFileHandle) < SIZE_OF_HISTORY_FILE_RECORD) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -1286,14 +1299,15 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   FileClose(hFileHandle);
 
   // file size  / sizeof record in bytes is id
-  return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD());
+  return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD);
 }
 
-function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): boolean {
+function AppendHistoryToEndOfFile(pHistory: HistoryUnit | null): boolean {
   // will write the current finance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
-  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
+  let pHistoryList: HistoryUnit | null = pHistoryListHead;
+  let buffer: Buffer;
 
   // open file
   hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -1311,13 +1325,15 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): boolean {
   }
 
   // now write date and amount, and code
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), null);
-  FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), null);
+  buffer = Buffer.allocUnsafe(SIZE_OF_HISTORY_FILE_RECORD);
+  buffer.writeUInt8((<HistoryUnit>pHistoryList).ubCode, 0);
+  buffer.writeUInt8((<HistoryUnit>pHistoryList).ubSecondCode, 1);
+  buffer.writeUInt32LE((<HistoryUnit>pHistoryList).uiDate, 2);
+  buffer.writeInt16LE((<HistoryUnit>pHistoryList).sSectorX, 6);
+  buffer.writeInt16LE((<HistoryUnit>pHistoryList).sSectorY, 8);
+  buffer.writeInt8((<HistoryUnit>pHistoryList).bSectorZ, 10);
+  buffer.writeUInt8((<HistoryUnit>pHistoryList).ubColor, 11);
+  FileWrite(hFileHandle, buffer, SIZE_OF_HISTORY_FILE_RECORD);
 
   // close file
   FileClose(hFileHandle);
@@ -1328,7 +1344,7 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): boolean {
 export function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
-  let pList: HistoryUnitPtr = pHistoryListHead;
+  let pList: HistoryUnit | null = pHistoryListHead;
   let fFound: boolean = false;
 
   // set current page to before list
@@ -1341,9 +1357,9 @@ export function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
+    if ((pList.ubSecondCode == ubCode) && (pList.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
       // reset color
-      pList.value.ubColor = 0;
+      pList.ubColor = 0;
       fFound = true;
 
       // save
@@ -1352,7 +1368,7 @@ export function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16
     }
 
     if (fFound != true) {
-      pList = pList.value.Next;
+      pList = (<HistoryUnit>pList).Next;
     }
   }
 
@@ -1370,7 +1386,7 @@ export function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16
 export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   // run through history list
   let iOldHistoryPage: INT32 = iCurrentHistoryPage;
-  let pList: HistoryUnitPtr = pHistoryListHead;
+  let pList: HistoryUnit | null = pHistoryListHead;
   let fFound: boolean = false;
   let uiTime: UINT32 = 0;
 
@@ -1384,15 +1400,15 @@ export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   pList = pHistoryListHead;
 
   while (pList) {
-    if ((pList.value.ubSecondCode == ubCode) && (pList.value.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
-      uiTime = pList.value.uiDate;
+    if ((pList.ubSecondCode == ubCode) && (pList.ubCode == Enum83.HISTORY_QUEST_STARTED)) {
+      uiTime = pList.uiDate;
       fFound = true;
 
       pList = null;
     }
 
     if (fFound != true) {
-      pList = pList.value.Next;
+      pList = (<HistoryUnit>pList).Next;
     }
   }
 
@@ -1406,14 +1422,14 @@ export function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   return uiTime;
 }
 
-function GetQuestStartedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
+function GetQuestStartedString(ubQuestValue: UINT8): string {
   // open the file and copy the string
-  sQuestString = LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * (ubQuestValue * 2), 160);
+  return LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * (ubQuestValue * 2), 160);
 }
 
-function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: Pointer<string> /* STR16 */): void {
+function GetQuestEndedString(ubQuestValue: UINT8): string {
   // open the file and copy the string
-  sQuestString = LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * ((ubQuestValue * 2) + 1), 160);
+  return LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", 160 * ((ubQuestValue * 2) + 1), 160);
 }
 
 function GetNumberOfHistoryPages(): INT32 {
@@ -1440,7 +1456,7 @@ function GetNumberOfHistoryPages(): INT32 {
   }
 
   uiFileSize = FileGetSize(hFileHandle) - 1;
-  uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (sizeof(UINT8) + sizeof(UINT32) + 3 * sizeof(UINT8) + sizeof(INT16) + sizeof(INT16)));
+  uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (1 + 4 + 3 * 1 + 2 + 2));
 
   iNumberOfHistoryPages = (uiFileSize / uiSizeOfRecordsOnEachPage);
 

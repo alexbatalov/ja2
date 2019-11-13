@@ -15,6 +15,20 @@ export interface HistoryUnit {
   Next: HistoryUnit | null /* Pointer<HistoryUnit> */; // next unit in the list
 }
 
+export function createHistoryUnit(): HistoryUnit {
+  return {
+    ubCode: 0,
+    uiIdNumber: 0,
+    ubSecondCode: 0,
+    uiDate: 0,
+    sSectorX: 0,
+    sSectorY: 0,
+    bSectorZ: 0,
+    ubColor: 0,
+    Next: null,
+  };
+}
+
 export const enum Enum83 {
   HISTORY_ENTERED_HISTORY_MODE = 0,
   HISTORY_HIRED_MERC_FROM_AIM,
@@ -95,7 +109,5 @@ export const enum Enum83 {
   HISTORY_SLAY_MYSTERIOUSLY_LEFT,
   HISTORY_MERC_KILLED_CHARACTER,
 }
-
-export type HistoryUnitPtr = Pointer<HistoryUnit>;
 
 }
