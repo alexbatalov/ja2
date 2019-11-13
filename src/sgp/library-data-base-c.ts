@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 // NUMBER_OF_LIBRARIES
 
 // used when doing the binary search of the libraries
@@ -22,21 +24,13 @@ export function InitializeFileDatabase(): boolean {
   let uiSize: UINT32;
   let fLibraryInited: boolean = false;
 
-  GetCDLocation();
-
   // if all the libraries exist, set them up
   gFileDataBase.usNumberOfLibraries = Enum30.NUMBER_OF_LIBRARIES;
 
   // allocate memory for the each of the library headers
-  uiSize = Enum30.NUMBER_OF_LIBRARIES * sizeof(LibraryHeaderStruct);
+  uiSize = Enum30.NUMBER_OF_LIBRARIES;
   if (uiSize) {
-    gFileDataBase.pLibraries = MemAlloc(uiSize);
-    if (!gFileDataBase.pLibraries) {
-      return false;
-    }
-
-    // set all the memrory to 0
-    memset(gFileDataBase.pLibraries, 0, uiSize);
+    gFileDataBase.pLibraries = createArrayFrom(uiSize, createLibraryHeaderStruct);
 
     // Load up each library
     for (i = 0; i < Enum30.NUMBER_OF_LIBRARIES; i++) {
@@ -59,14 +53,8 @@ export function InitializeFileDatabase(): boolean {
 
   // allocate memory for the handles of the 'real files' that will be open
   // This is needed because the the code wouldnt be able to tell the difference between a 'real' handle and a made up one
-  uiSize = INITIAL_NUM_HANDLES * sizeof(RealFileOpenStruct);
-  gFileDataBase.RealFiles.pRealFilesOpen = MemAlloc(uiSize);
-  if (!gFileDataBase.RealFiles.pRealFilesOpen) {
-    return false;
-  }
-
-  // clear the memory
-  memset(gFileDataBase.RealFiles.pRealFilesOpen, 0, uiSize);
+  uiSize = INITIAL_NUM_HANDLES;
+  gFileDataBase.RealFiles.pRealFilesOpen = createArrayFrom(uiSize, createRealFileOpenStruct);
 
   // set the initial number how many files can be opened at the one time
   gFileDataBase.RealFiles.iSizeOfOpenFileArray = INITIAL_NUM_HANDLES;
@@ -115,8 +103,7 @@ export function ShutDownFileDatabase(): boolean {
 
   // Free up the memory used for all the library headers
   if (gFileDataBase.pLibraries) {
-    MemFree(gFileDataBase.pLibraries);
-    gFileDataBase.pLibraries = null;
+    gFileDataBase.pLibraries = <LibraryHeaderStruct[]><unknown>null;
   }
 
   // loop through all the 'opened files' ( there should be no files open )
@@ -127,8 +114,7 @@ export function ShutDownFileDatabase(): boolean {
 
   // Free up the memory used for the real files array for the opened files
   if (gFileDataBase.RealFiles.pRealFilesOpen) {
-    MemFree(gFileDataBase.RealFiles.pRealFilesOpen);
-    gFileDataBase.RealFiles.pRealFilesOpen = null;
+    gFileDataBase.RealFiles.pRealFilesOpen = <RealFileOpenStruct[]><unknown>null;
   }
 
   return true;
@@ -153,101 +139,86 @@ function CheckForLibraryExistence(pLibraryName: string /* STR */): boolean {
   return fRetVal;
 }
 
-function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<LibraryHeaderStruct>, fCanBeOnCDrom: boolean): boolean {
+function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: LibraryHeaderStruct, fCanBeOnCDrom: boolean): boolean {
   let hFile: HANDLE;
   let usNumEntries: UINT16 = 0;
   let uiNumBytesRead: UINT32;
   let uiLoop: UINT32;
-  let DirEntry: DIRENTRY;
-  let LibFileHeader: LIBHEADER;
+  let DirEntry: DIRENTRY = createDirEntry();
+  let LibFileHeader: LIBHEADER = createLibHeader();
   let uiCount: UINT32 = 0;
   let zTempPath: string /* CHAR8[SGPFILENAME_LEN] */;
+
+  let buffer: Buffer;
 
   // open the library for reading ( if it exists )
   hFile = CreateFile(pLibraryName, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
   if (hFile == INVALID_HANDLE_VALUE) {
-    // if it failed finding the file on the hard drive, and the file can be on the cdrom
-    if (fCanBeOnCDrom) {
-      // Add the path of the cdrom to the path of the library file
-      zTempPath = sprintf("%s%s", gzCdDirectory, pLibraryName);
-
-      // look on the cdrom
-      hFile = CreateFile(zTempPath, GENERIC_READ, 0, null, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, null);
-      if (hFile == INVALID_HANDLE_VALUE) {
-        let uiLastError: UINT32 = GetLastError();
-        let zString: string /* char[1024] */;
-        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
-
-        return false;
-      } else
-        FastDebugMsg(String("CD Library %s opened.", zTempPath));
-    } else {
-      // error opening the library
-      return false;
-    }
+    // error opening the library
+    return false;
   }
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(hFile, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), null))
+  buffer = Buffer.allocUnsafe(LIBHEADER_SIZE);
+  if ((uiNumBytesRead = ReadFile(hFile, buffer, LIBHEADER_SIZE)) === -1)
     return false;
 
-  if (uiNumBytesRead != sizeof(LIBHEADER)) {
+  if (uiNumBytesRead != LIBHEADER_SIZE) {
     // Error Reading the file database header.
     return false;
   }
 
+  readLibHeader(LibFileHeader, buffer);
+
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
-  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), null, FILE_END);
+  SetFilePointer(hFile, -(LibFileHeader.iEntries * DIRENTRY_SIZE), null, FILE_END);
 
   // loop through the library and determine the number of files that are FILE_OK
   // ie.  so we dont load the old or deleted files
   usNumEntries = 0;
+  buffer = Buffer.allocUnsafe(DIRENTRY_SIZE);
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), null))
+    if ((uiNumBytesRead = ReadFile(hFile, buffer, DIRENTRY_SIZE)) === -1)
       return false;
+
+    readDirEntry(DirEntry, buffer);
 
     if (DirEntry.ubState == FILE_OK)
       usNumEntries++;
   }
 
   // Allocate enough memory for the library header
-  pLibHeader.value.pFileHeader = MemAlloc(sizeof(FileHeaderStruct) * usNumEntries);
+  pLibHeader.pFileHeader = createArrayFrom(usNumEntries, createFileHeaderStruct);
 
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
-  SetFilePointer(hFile, -(LibFileHeader.iEntries * sizeof(DIRENTRY)), null, FILE_END);
+  SetFilePointer(hFile, -(LibFileHeader.iEntries * DIRENTRY_SIZE), null, FILE_END);
 
   // loop through all the entries
   uiCount = 0;
+  buffer = Buffer.allocUnsafe(DIRENTRY_SIZE);
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), null))
+    if ((uiNumBytesRead = ReadFile(hFile, buffer, DIRENTRY_SIZE)) === -1)
       return false;
+
+    readDirEntry(DirEntry, buffer);
 
     if (DirEntry.ubState == FILE_OK) {
       // Check to see if the file is not longer then it should be
       if ((DirEntry.sFileName.length + 1) >= FILENAME_SIZE)
-        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.value.sLibraryPath, (DirEntry.sFileName.length + 1), FILENAME_SIZE));
-
-      // allocate memory for the files name
-      pLibHeader.value.pFileHeader[uiCount].pFileName = MemAlloc(DirEntry.sFileName.length + 1);
-
-      // if we couldnt allocate memory
-      if (!pLibHeader.value.pFileHeader[uiCount].pFileName) {
-        // report an error
-        return false;
-      }
+        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.sLibraryPath, (DirEntry.sFileName.length + 1), FILENAME_SIZE));
 
       // copy the file name, offset and length into the header
-      pLibHeader.value.pFileHeader[uiCount].pFileName = DirEntry.sFileName;
-      pLibHeader.value.pFileHeader[uiCount].uiFileOffset = DirEntry.uiOffset;
-      pLibHeader.value.pFileHeader[uiCount].uiFileLength = DirEntry.uiLength;
+      pLibHeader.pFileHeader[uiCount].pFileName = DirEntry.sFileName;
+      pLibHeader.pFileHeader[uiCount].uiFileOffset = DirEntry.uiOffset;
+      pLibHeader.pFileHeader[uiCount].uiFileLength = DirEntry.uiLength;
 
       uiCount++;
     }
   }
 
-  pLibHeader.value.usNumberOfEntries = usNumEntries;
+  pLibHeader.usNumberOfEntries = usNumEntries;
 
   // allocate memory for the library path
   //	if( strlen( LibFileHeader.sPathToLibrary ) == 0 )
@@ -258,33 +229,25 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: Pointer<L
 
   // if the library has a path
   if (LibFileHeader.sPathToLibrary.length != 0) {
-    pLibHeader.value.sLibraryPath = MemAlloc(LibFileHeader.sPathToLibrary.length + 1);
-    pLibHeader.value.sLibraryPath = LibFileHeader.sPathToLibrary;
+    pLibHeader.sLibraryPath = LibFileHeader.sPathToLibrary;
   } else {
     // else the library name does not contain a path ( most likely either an error or it is the default path )
-    pLibHeader.value.sLibraryPath = MemAlloc(1);
-    pLibHeader.value.sLibraryPath[0] = '\0';
+    pLibHeader.sLibraryPath = "";
   }
 
   // allocate space for the open files array
-  pLibHeader.value.pOpenFiles = MemAlloc(INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
-  if (!pLibHeader.value.pOpenFiles) {
-    // report an error
-    return false;
-  }
+  pLibHeader.pOpenFiles = createArrayFrom(INITIAL_NUM_HANDLES, createFileOpenStruct);
 
-  memset(pLibHeader.value.pOpenFiles, 0, INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
-
-  pLibHeader.value.hLibraryHandle = hFile;
-  pLibHeader.value.usNumberOfEntries = usNumEntries;
-  pLibHeader.value.fLibraryOpen = true;
-  pLibHeader.value.iNumFilesOpen = 0;
-  pLibHeader.value.iSizeOfOpenFileArray = INITIAL_NUM_HANDLES;
+  pLibHeader.hLibraryHandle = hFile;
+  pLibHeader.usNumberOfEntries = usNumEntries;
+  pLibHeader.fLibraryOpen = true;
+  pLibHeader.iNumFilesOpen = 0;
+  pLibHeader.iSizeOfOpenFileArray = INITIAL_NUM_HANDLES;
 
   return true;
 }
 
-export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32, pBytesRead: Pointer<UINT32>): boolean {
+export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32): UINT32 {
   let uiOffsetInLibrary: UINT32;
   let uiLength: UINT32;
   let hLibraryFile: HANDLE;
@@ -292,8 +255,8 @@ export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData:
   let uiCurPos: UINT32;
 
   // get the offset into the library, the length and current position of the file pointer.
-  uiOffsetInLibrary = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset;
-  uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
+  uiOffsetInLibrary = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileOffset;
+  uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileLength;
   hLibraryFile = gFileDataBase.pLibraries[sLibraryID].hLibraryHandle;
   uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
 
@@ -302,13 +265,12 @@ export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData:
 
   // if we are trying to read more data then the size of the file, return an error
   if (uiBytesToRead + uiCurPos > uiLength) {
-    pBytesRead.value = 0;
-    return false;
+    return -1;
   }
 
   // get the data
-  if (!ReadFile(hLibraryFile, pData, uiBytesToRead, addressof(uiNumBytesRead), null))
-    return false;
+  if ((uiNumBytesRead = ReadFile(hLibraryFile, pData, uiBytesToRead)) === -1)
+    return -1;
 
   if (uiBytesToRead != uiNumBytesRead) {
     //		Gets the reason why the function failed
@@ -316,16 +278,14 @@ export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData:
     //		char zString[1024];
     //		FormatMessage( FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
 
-    return false;
+    return -1;
   }
 
   gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile += uiNumBytesRead;
 
   //	CloseHandle( hLibraryFile );
 
-  pBytesRead.value = uiNumBytesRead;
-
-  return true;
+  return uiNumBytesRead;
 }
 
 //************************************************************************
@@ -336,7 +296,7 @@ export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData:
 
 export function CheckIfFileExistInLibrary(pFileName: string /* STR */): boolean {
   let sLibraryID: INT16;
-  let pFileHeader: Pointer<FileHeaderStruct>;
+  let pFileHeader: FileHeaderStruct | null;
 
   // get thelibrary that file is in
   sLibraryID = GetLibraryIDFromFileName(pFileName);
@@ -345,7 +305,7 @@ export function CheckIfFileExistInLibrary(pFileName: string /* STR */): boolean 
     return false;
   }
 
-  if (GetFileHeaderFromLibrary(sLibraryID, pFileName, addressof(pFileHeader)))
+  if ((pFileHeader = GetFileHeaderFromLibrary(sLibraryID, pFileName)) !== null)
     return true;
   else
     return false;
@@ -369,7 +329,7 @@ function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
       // if the library path name is of size zero, ( the library is for the default path )
       if (gFileDataBase.pLibraries[sLoop1].sLibraryPath.length == 0) {
         // determine if there is a directory in the file name
-        if (strchr(pFileName, '\\') == null && strchr(pFileName, '//') == null) {
+        if (pFileName.indexOf('\\') == -1 && pFileName.indexOf('//') == -1) {
           // There is no directory in the file name
           return sLoop1;
         }
@@ -378,7 +338,7 @@ function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
       // compare the library name to the file name that is passed in
       else {
         // if the directory paths are the same, to the length of the lib's path
-        if (_strnicmp(gFileDataBase.pLibraries[sLoop1].sLibraryPath, pFileName, gFileDataBase.pLibraries[sLoop1].sLibraryPath.length) == 0) {
+        if (pFileName.toLowerCase().startsWith(gFileDataBase.pLibraries[sLoop1].sLibraryPath.toLowerCase())) {
           // if we've never matched, or this match's path is longer than the previous match (meaning it's more exact)
           if ((sBestMatch == (-1)) || (gFileDataBase.pLibraries[sLoop1].sLibraryPath.length > gFileDataBase.pLibraries[sBestMatch].sLibraryPath.length))
             sBestMatch = sLoop1;
@@ -400,8 +360,8 @@ function GetLibraryIDFromFileName(pFileName: string /* STR */): INT16 {
 //
 //************************************************************************
 
-function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR */, pFileHeader: Pointer<Pointer<FileHeaderStruct>>): boolean {
-  let ppFileHeader: Pointer<Pointer<FileHeaderStruct>>;
+function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR */): FileHeaderStruct | null {
+  let ppFileHeader: FileHeaderStruct | null = null;
   let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
 
   // combine the library path to the file name (need it for the search of the library )
@@ -410,15 +370,13 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR
   gsCurrentLibrary = sLibraryID;
 
   /* try to find the filename using a binary search algorithm: */
-  ppFileHeader = bsearch(addressof(sFileNameWithPath), gFileDataBase.pLibraries[sLibraryID].pFileHeader, gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries, sizeof(FileHeaderStruct), CompareFileNames);
-
-  if (ppFileHeader) {
-    pFileHeader.value = ppFileHeader;
-    return true;
-  } else {
-    pFileHeader = null;
-    return false;
+  for (let i = 0; i < gFileDataBase.pLibraries[sLibraryID].pFileHeader.length; i++) {
+    if (CompareFileNames(sFileNameWithPath, gFileDataBase.pLibraries[sLibraryID].pFileHeader[i])) {
+      ppFileHeader = gFileDataBase.pLibraries[sLibraryID].pFileHeader[i];
+    }
   }
+
+  return ppFileHeader;
 }
 
 //************************************************************************
@@ -427,44 +385,19 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: string /* STR
 //
 //************************************************************************
 
-function CompareFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT32 {
+function CompareFileNames(arg1: string /* Pointer<CHAR8>[] */, arg2: FileHeaderStruct): boolean {
   let sSearchKey: string /* CHAR8[FILENAME_SIZE] */;
   let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
-  let TempFileHeader: Pointer<FileHeaderStruct>;
+  let TempFileHeader: FileHeaderStruct;
 
   TempFileHeader = arg2;
 
-  sSearchKey = sprintf("%s", arg1);
+  sSearchKey = arg1;
 
-  sFileNameWithPath = sprintf("%s%s", gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath, TempFileHeader.value.pFileName);
+  sFileNameWithPath = gFileDataBase.pLibraries[gsCurrentLibrary].sLibraryPath + TempFileHeader.pFileName;
 
   /* Compare all of both strings: */
-  return _stricmp(sSearchKey, sFileNameWithPath);
-}
-
-function AddSlashToPath(pName: Pointer<string> /* STR */): void {
-  let uiLoop: UINT32;
-  let uiCounter: UINT32;
-  let fDone: boolean = false;
-  let fFound: boolean = false;
-  let sNewName: string /* CHAR8[FILENAME_SIZE] */;
-
-  // find out if there is a '\' in the file name
-
-  uiCounter = 0;
-  for (uiLoop = 0; uiLoop < pName.length && !fDone; uiLoop++) {
-    if (pName[uiLoop] == '\\') {
-      sNewName[uiCounter] = pName[uiLoop];
-      uiCounter++;
-      sNewName[uiCounter] = '\\';
-    } else
-      sNewName[uiCounter] = pName[uiLoop];
-
-    uiCounter++;
-  }
-  sNewName[uiCounter] = '\0';
-
-  pName = sNewName;
+  return sSearchKey.toLowerCase() == sFileNameWithPath.toLowerCase();
 }
 
 //************************************************************************
@@ -475,7 +408,7 @@ function AddSlashToPath(pName: Pointer<string> /* STR */): void {
 //************************************************************************
 
 export function OpenFileFromLibrary(pName: string /* STR */): HWFILE {
-  let pFileHeader: Pointer<FileHeaderStruct>;
+  let pFileHeader: FileHeaderStruct | null;
   let hLibFile: HWFILE;
   let sLibraryID: INT16;
   let uiLoop1: UINT16;
@@ -501,19 +434,16 @@ export function OpenFileFromLibrary(pName: string /* STR */): HWFILE {
       return 0;
 
     // if the file is in a library, get the file
-    if (GetFileHeaderFromLibrary(sLibraryID, pName, addressof(pFileHeader))) {
+    if ((pFileHeader = GetFileHeaderFromLibrary(sLibraryID, pName)) !== null) {
       // increment the number of open files
       gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen++;
 
       // if there isnt enough space to put the file, realloc more space
       if (gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen >= gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray) {
-        let pOpenFiles: Pointer<FileOpenStruct>;
+        let pOpenFiles: FileOpenStruct[];
 
         // reallocate more space for the array
-        pOpenFiles = MemRealloc(gFileDataBase.pLibraries[sLibraryID].pOpenFiles, gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray + NUM_FILES_TO_ADD_AT_A_TIME);
-
-        if (!pOpenFiles)
-          return 0;
+        pOpenFiles = gFileDataBase.pLibraries[sLibraryID].pOpenFiles.concat(createArrayFrom(NUM_FILES_TO_ADD_AT_A_TIME, createFileOpenStruct));
 
         // increment the number of open files that we can have open
         gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray += NUM_FILES_TO_ADD_AT_A_TIME;
@@ -546,7 +476,7 @@ export function OpenFileFromLibrary(pName: string /* STR */): HWFILE {
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiActualPositionInLibrary = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, null, FILE_CURRENT);
 
       // Set the file position in the library to the begining of the 'file' in the library
-      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileOffset, null, FILE_BEGIN);
+      uiNewFilePosition = SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileOffset, null, FILE_BEGIN);
 
       uiNewFilePosition = GetFileSize(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, null);
     } else {
@@ -582,15 +512,9 @@ export function CreateRealFileHandle(hFile: HANDLE): HWFILE {
 
   // if there isnt enough space to put the file, realloc more space
   if (gFileDataBase.RealFiles.iNumFilesOpen >= (gFileDataBase.RealFiles.iSizeOfOpenFileArray - 1)) {
-    uiSize = (gFileDataBase.RealFiles.iSizeOfOpenFileArray + NUM_FILES_TO_ADD_AT_A_TIME) * sizeof(RealFileOpenStruct);
+    uiSize = NUM_FILES_TO_ADD_AT_A_TIME;
 
-    gFileDataBase.RealFiles.pRealFilesOpen = MemRealloc(gFileDataBase.RealFiles.pRealFilesOpen, uiSize);
-    if (!gFileDataBase.RealFiles.pRealFilesOpen) {
-      return false;
-    }
-
-    // Clear out the new part of the array
-    memset(addressof(gFileDataBase.RealFiles.pRealFilesOpen[gFileDataBase.RealFiles.iSizeOfOpenFileArray]), 0, (NUM_FILES_TO_ADD_AT_A_TIME * sizeof(RealFileOpenStruct)));
+    gFileDataBase.RealFiles.pRealFilesOpen = gFileDataBase.RealFiles.pRealFilesOpen.concat(createArrayFrom(uiSize, createRealFileOpenStruct));
 
     gFileDataBase.RealFiles.iSizeOfOpenFileArray += NUM_FILES_TO_ADD_AT_A_TIME;
   }
@@ -619,19 +543,6 @@ export function CreateRealFileHandle(hFile: HANDLE): HWFILE {
   return hLibFile;
 }
 
-export function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: Pointer<INT16>, pFileNum: Pointer<UINT32>): boolean {
-  pFileNum.value = DB_EXTRACT_FILE_ID(hlibFile);
-  pLibraryID.value = DB_EXTRACT_LIBRARY(hlibFile);
-
-  // TEST: qq
-  /*	if( *pLibraryID == LIBRARY_SOUNDS )
-          {
-                  int q=5;
-          }
-  */
-  return true;
-}
-
 //************************************************************************
 //
 //	Close an individual file that is contained in the library
@@ -649,7 +560,7 @@ export function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): boolean {
       // reset the variables
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiFileID = 0;
       gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiFilePosInFile = 0;
-      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].pFileHeader = null;
+      gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].pFileHeader = <FileHeaderStruct><unknown>null;
 
       // reset the libraries file pointer to the positon it was in prior to opening the current file
       SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileID].uiActualPositionInLibrary, null, FILE_CURRENT);
@@ -675,7 +586,7 @@ export function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance
     return false;
 
   uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
-  uiSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
+  uiSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileLength;
 
   if (uiHowToSeek == FILE_SEEK_FROM_START)
     uiCurPos = uiDistance;
@@ -708,7 +619,7 @@ function OpenLibrary(sLibraryID: INT16): boolean {
     return false;
 
   // if we cant open the library
-  if (!InitializeLibrary(gGameLibaries[sLibraryID].sLibraryName, addressof(gFileDataBase.pLibraries[sLibraryID]), gGameLibaries[sLibraryID].fOnCDrom))
+  if (!InitializeLibrary(gGameLibaries[sLibraryID].sLibraryName, gFileDataBase.pLibraries[sLibraryID], gGameLibaries[sLibraryID].fOnCDrom))
     return false;
 
   return true;
@@ -737,26 +648,22 @@ function CloseLibrary(sLibraryID: INT16): boolean {
 
   // Free up the memory used for each file name
   for (uiLoop1 = 0; uiLoop1 < gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries; uiLoop1++) {
-    MemFree(gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName);
-    gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName = null;
+    gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName = "";
   }
 
   // Free up the memory needed for the Library File Headers
   if (gFileDataBase.pLibraries[sLibraryID].pFileHeader) {
-    MemFree(gFileDataBase.pLibraries[sLibraryID].pFileHeader);
-    gFileDataBase.pLibraries[sLibraryID].pFileHeader = null;
+    gFileDataBase.pLibraries[sLibraryID].pFileHeader = <FileHeaderStruct[]><unknown>null;
   }
 
   // Free up the memory used for the library name
   if (gFileDataBase.pLibraries[sLibraryID].sLibraryPath) {
-    MemFree(gFileDataBase.pLibraries[sLibraryID].sLibraryPath);
-    gFileDataBase.pLibraries[sLibraryID].sLibraryPath = null;
+    gFileDataBase.pLibraries[sLibraryID].sLibraryPath = "";
   }
 
   // Free up the space requiered for the open files array
   if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles) {
-    MemFree(gFileDataBase.pLibraries[sLibraryID].pOpenFiles);
-    gFileDataBase.pLibraries[sLibraryID].pOpenFiles = null;
+    gFileDataBase.pLibraries[sLibraryID].pOpenFiles = <FileOpenStruct[]><unknown>null;
   }
 
   // set that the library isnt open
@@ -794,7 +701,7 @@ function CheckIfFileIsAlreadyOpen(pFileName: string /* STR */, sLibraryID: INT16
 
   let sTempName: string /* CHAR8[70] */;
 
-  _splitpath(pFileName, sDrive, sPath, sName, sExt);
+  ({ root: sDrive, dir: sPath, name: sName, ext: sExt } = path.parse(pFileName));
 
   sTempName = sName;
   sTempName += sExt;
@@ -804,62 +711,74 @@ function CheckIfFileIsAlreadyOpen(pFileName: string /* STR */, sLibraryID: INT16
     // check if the file is open
     if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].uiFileID != 0) {
       // Check if the file already exists
-      if (_stricmp(sTempName, gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].pFileHeader.value.pFileName) == 0)
+      if (sTempName.toLowerCase() == gFileDataBase.pLibraries[sLibraryID].pOpenFiles[usLoop1].pFileHeader.pFileName.toLowerCase())
         return true;
     }
   }
   return false;
 }
 
-export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: Pointer<SGP_FILETIME>): boolean {
+export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: SGP_FILETIME): boolean {
   let usNumEntries: UINT16 = 0;
   let uiNumBytesRead: UINT32;
-  let pDirEntry: Pointer<DIRENTRY>;
-  let LibFileHeader: LIBHEADER;
+  let pDirEntry: DIRENTRY | undefined;
+  let LibFileHeader: LIBHEADER = createLibHeader();
   let fDone: boolean = false;
   //	UINT32	cnt;
   let iFilePos: INT32 = 0;
 
-  let ppDirEntry: Pointer<Pointer<DIRENTRY>>;
+  let ppDirEntry: DIRENTRY | undefined;
 
-  let pAllEntries: Pointer<DIRENTRY>;
+  let pAllEntries: DIRENTRY[];
 
-  memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
+  let buffer: Buffer;
+
+  pLastWriteTime.dwLowDateTime = 0;
+  pLastWriteTime.dwHighDateTime = 0;
 
   SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, null, FILE_BEGIN);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), null))
+  buffer = Buffer.allocUnsafe(LIBHEADER_SIZE);
+  if ((uiNumBytesRead = ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, buffer, LIBHEADER_SIZE)) === -1)
     return false;
-  if (uiNumBytesRead != sizeof(LIBHEADER)) {
+  if (uiNumBytesRead != LIBHEADER_SIZE) {
     // Error Reading the file database header.
     return false;
   }
+
+  readLibHeader(LibFileHeader, buffer);
 
   // If the file number is greater then the number in the lirary, return false
   if (uiFileNum >= LibFileHeader.iEntries)
     return false;
 
-  pAllEntries = MemAlloc(sizeof(DIRENTRY) * LibFileHeader.iEntries);
-  if (pAllEntries == null)
-    return false;
-  memset(pAllEntries, 0, sizeof(DIRENTRY));
+  pAllEntries = createArrayFrom(LibFileHeader.iEntries, createDirEntry);
 
-  iFilePos = -(LibFileHeader.iEntries * sizeof(DIRENTRY));
+  iFilePos = -(LibFileHeader.iEntries * DIRENTRY_SIZE);
 
   // set the file pointer to the right location
   SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, iFilePos, null, FILE_END);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, pAllEntries, (sizeof(DIRENTRY) * LibFileHeader.iEntries), addressof(uiNumBytesRead), null))
+  buffer = Buffer.allocUnsafe(DIRENTRY_SIZE * LibFileHeader.iEntries);
+  if ((uiNumBytesRead = ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, buffer, (DIRENTRY_SIZE * LibFileHeader.iEntries))) === -1)
     return false;
-  if (uiNumBytesRead != (sizeof(DIRENTRY) * LibFileHeader.iEntries)) {
+  if (uiNumBytesRead != (DIRENTRY_SIZE * LibFileHeader.iEntries)) {
     // Error Reading the file database header.
     return false;
   }
 
+  for (let i = 0; i < pAllEntries.length; i++) {
+    readDirEntry(pAllEntries[i], buffer, i * DIRENTRY_SIZE);
+  }
+
   /* try to find the filename using a binary search algorithm: */
-  ppDirEntry = bsearch(gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.pFileName, pAllEntries, LibFileHeader.iEntries, sizeof(DIRENTRY), CompareDirEntryFileNames);
+  for (let i = 0; i < pAllEntries.length; i++) {
+    if (CompareDirEntryFileNames(gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.pFileName, pAllEntries[i])) {
+      ppDirEntry = pAllEntries[i];
+    }
+  }
 
   if (ppDirEntry)
     pDirEntry = ppDirEntry;
@@ -867,10 +786,7 @@ export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWr
     return false;
 
   // Copy the dir entry time over to the passed in time
-  memcpy(pLastWriteTime, addressof(pDirEntry.value.sFileTime), sizeof(SGP_FILETIME));
-
-  MemFree(pAllEntries);
-  pAllEntries = null;
+  pLastWriteTime.dwLowDateTime = ((pDirEntry.sFileTime.dwHighDateTime * 0xFFFFFFFFFF + pDirEntry.sFileTime.dwLowDateTime) - 116444736000000000) / 10000000;
 
   return true;
 }
@@ -881,19 +797,19 @@ export function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWr
 //
 //************************************************************************
 
-function CompareDirEntryFileNames(arg1: string[] /* Pointer<CHAR8>[] */, arg2: Pointer<Pointer<DIRENTRY>>): INT32 {
+function CompareDirEntryFileNames(arg1: string /* Pointer<CHAR8>[] */, arg2: DIRENTRY): boolean {
   let sSearchKey: string /* CHAR8[FILENAME_SIZE] */;
   let sFileNameWithPath: string /* CHAR8[FILENAME_SIZE] */;
-  let TempDirEntry: Pointer<DIRENTRY>;
+  let TempDirEntry: DIRENTRY;
 
   TempDirEntry = arg2;
 
-  sSearchKey = sprintf("%s", arg1);
+  sSearchKey = arg1;
 
-  sFileNameWithPath = sprintf("%s", TempDirEntry.value.sFileName);
+  sFileNameWithPath = TempDirEntry.sFileName;
 
   /* Compare all of both strings: */
-  return _stricmp(sSearchKey, sFileNameWithPath);
+  return sSearchKey.toLowerCase() == sFileNameWithPath.toLowerCase();
 }
 
 }

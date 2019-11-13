@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+
 //**************************************************************************
 //
 // Filename :	FileMan.c
@@ -37,24 +39,6 @@ const PRINT_DEBUG_INFO = () => FileDebugPrint();
 //
 //**************************************************************************
 
-interface FMFileInfo {
-  strFilename: string /* CHAR[FILENAME_LENGTH] */;
-  uiFileAccess: UINT8;
-  uiFilePosition: UINT32;
-  hFileHandle: HANDLE;
-  hDBFile: HDBFILE;
-} // for 'File Manager File Information'
-
-interface FileSystem {
-  pFileInfo: Pointer<FMFileInfo>;
-  uiNumHandles: UINT32;
-  fDebug: boolean;
-  fDBInitialized: boolean;
-
-  pcFileNames: string[] /* Pointer<CHAR> */;
-  uiNumFilesInDirectory: UINT32;
-}
-
 //**************************************************************************
 //
 //				Variables
@@ -62,7 +46,7 @@ interface FileSystem {
 //**************************************************************************
 
 // The FileDatabaseHeader
-export let gFileDataBase: DatabaseManagerHeaderStruct;
+export let gFileDataBase: DatabaseManagerHeaderStruct = createDatabaseManagerHeaderStruct();
 
 // FileSystem gfs;
 
@@ -206,20 +190,9 @@ function FileDebug(f: boolean): void {
 
 export function FileExists(strFilename: string /* STR */): boolean {
   let fExists: boolean = false;
-  let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
-  // open up the file to see if it exists on the disk
-  file = fopen(strFilename, "r");
-  // hRealFile = CreateFile( strFilename, GENERIC_READ, 0, NULL, OPEN_EXISTING,
-  //								FILE_FLAG_RANDOM_ACCESS, NULL );
-  if (file)
-  // if ( hRealFile != INVALID_HANDLE_VALUE )
-  {
-    fExists = true;
-    fclose(file);
-    // CloseHandle( hRealFile );
-  }
+  fExists = fs.existsSync(strFilename);
 
   // if the file wasnt on disk, check to see if its in a library
   if (fExists == false) {
@@ -254,20 +227,9 @@ export function FileExists(strFilename: string /* STR */): boolean {
 
 export function FileExistsNoDB(strFilename: string /* STR */): boolean {
   let fExists: boolean = false;
-  let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
-  // open up the file to see if it exists on the disk
-  file = fopen(strFilename, "r");
-  // hRealFile = CreateFile( strFilename, GENERIC_READ, 0, NULL, OPEN_EXISTING,
-  //								FILE_FLAG_RANDOM_ACCESS, NULL );
-  if (file)
-  // if ( hRealFile != INVALID_HANDLE_VALUE )
-  {
-    fExists = true;
-    fclose(file);
-    // CloseHandle( hRealFile );
-  }
+  fExists = fs.existsSync(strFilename);
 
   return fExists;
 }
@@ -326,13 +288,11 @@ export function FileOpen(strFilename: string /* STR */, uiOptions: UINT32, fDele
   let hRealFile: HANDLE;
   let dwAccess: number;
   let dwFlagsAndAttributes: number;
-  let hDBFile: HDBFILE;
   let fExists: boolean;
   let dwCreationFlags: number;
   let hLibFile: HWFILE;
 
   hFile = 0;
-  hDBFile = 0;
   dwCreationFlags = 0;
 
   // check if the file exists - note that we use the function FileExistsNoDB
@@ -410,10 +370,6 @@ export function FileOpen(strFilename: string /* STR */, uiOptions: UINT32, fDele
 
     hRealFile = CreateFile(strFilename, dwAccess, 0, null, dwCreationFlags, dwFlagsAndAttributes, null);
     if (hRealFile == INVALID_HANDLE_VALUE) {
-      let uiLastError: UINT32 = GetLastError();
-      let zString: string /* char[1024] */;
-      FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
-
       return 0;
     }
 
@@ -448,7 +404,8 @@ export function FileClose(hFile: HWFILE): void {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its the 'real file' library
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -497,7 +454,7 @@ export function FileClose(hFile: HWFILE): void {
 //
 //**************************************************************************
 
-export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
+export function FileRead(hFile: HWFILE, pDest: Buffer, uiBytesToRead: UINT32): UINT32 {
   let hRealFile: HANDLE;
   let dwNumBytesToRead: number;
   let dwNumBytesRead: number;
@@ -508,7 +465,8 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
   // init the variables
   dwNumBytesToRead = dwNumBytesRead = 0;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   dwNumBytesToRead = uiBytesToRead;
 
@@ -518,17 +476,13 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
     if (uiFileNum != 0) {
       hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
-      fRet = ReadFile(hRealFile, pDest, dwNumBytesToRead, addressof(dwNumBytesRead), null);
+      fRet = (dwNumBytesRead = ReadFile(hRealFile, pDest, dwNumBytesToRead)) !== -1;
       if (dwNumBytesToRead != dwNumBytesRead) {
-        let uiLastError: UINT32 = GetLastError();
-        let zString: string /* char[1024] */;
-        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
-
         fRet = false;
       }
 
-      if (puiBytesRead)
-        puiBytesRead.value = dwNumBytesRead;
+      if (fRet)
+        return dwNumBytesRead;
     }
   } else {
     // if the database is initialized
@@ -538,16 +492,15 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
         // if the file is opened
         if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFileID != 0) {
           // read the data from the library
-          fRet = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead, addressof(dwNumBytesRead));
-          if (puiBytesRead) {
-            puiBytesRead.value = dwNumBytesRead;
-          }
+          fRet = (dwNumBytesRead = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead)) !== -1;
+          if (fRet)
+            return dwNumBytesRead;
         }
       }
     }
   }
 
-  return fRet;
+  return -1;
 }
 
 //**************************************************************************
@@ -577,7 +530,7 @@ export function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBy
 //
 //**************************************************************************
 
-export function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): boolean {
+export function FileWrite(hFile: HWFILE, pDest: Buffer, uiBytesToWrite: UINT32): UINT32 {
   let hRealFile: HANDLE;
   let dwNumBytesToWrite: number;
   let dwNumBytesWritten: number;
@@ -585,7 +538,8 @@ export function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, pui
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -594,116 +548,19 @@ export function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, pui
     // get the real file handle to the file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
-    fRet = WriteFile(hRealFile, pDest, dwNumBytesToWrite, addressof(dwNumBytesWritten), null);
+    fRet = (dwNumBytesWritten = WriteFile(hRealFile, pDest, dwNumBytesToWrite)) !== -1;
 
     if (dwNumBytesToWrite != dwNumBytesWritten)
       fRet = false;
 
-    if (puiBytesWritten)
-      puiBytesWritten.value = dwNumBytesWritten;
+    if (fRet)
+      return dwNumBytesWritten;
   } else {
     // we cannot write to a library file
-    if (puiBytesWritten)
-      puiBytesWritten.value = 0;
-    return false;
+    return -1;
   }
 
-  return fRet;
-}
-
-//**************************************************************************
-//
-// FileLoad
-//
-//		To open, read, and close a file.
-//
-// Parameter List :
-//
-//
-// Return Value :
-//
-//		BOOLEAN	-> TRUE if successful
-//					-> FALSE if not
-//
-// Modification history :
-//
-//		24sep96:HJH		-> creation
-//		08Dec97:ARM		-> return FALSE if bytes to read != bytes read (CHECKF is inappropriate?)
-//
-//**************************************************************************
-
-function FileLoad(strFilename: string /* STR */, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
-  let hFile: HWFILE;
-  let uiNumBytesRead: UINT32;
-  let fRet: boolean;
-
-  hFile = FileOpen(strFilename, FILE_ACCESS_READ, false);
-  if (hFile) {
-    fRet = FileRead(hFile, pDest, uiBytesToRead, addressof(uiNumBytesRead));
-    FileClose(hFile);
-
-    if (uiBytesToRead != uiNumBytesRead)
-      fRet = false;
-
-    if (puiBytesRead)
-      puiBytesRead.value = uiNumBytesRead;
-
-    if (uiNumBytesRead != uiBytesToRead) {
-      return false;
-    }
-  } else
-    fRet = false;
-
-  return fRet;
-}
-
-//**************************************************************************
-//
-// FilePrintf
-//
-//		To printf to a file.
-//
-// Parameter List :
-//
-//		HWFILE	-> handle to file to seek in
-//		...		-> arguments, 1st of which should be a string
-//
-// Return Value :
-//
-//		BOOLEAN	-> TRUE if successful
-//					-> FALSE if not
-//
-// Modification history :
-//
-//		24sep96:HJH		-> creation
-//
-//		9 Feb 98	DEF - modified to work with the library system
-//
-//**************************************************************************
-
-function FilePrintf(hFile: HWFILE, strFormatted: string /* Pointer<UINT8> */, ...args: any[]): boolean {
-  let strToSend: string /* UINT8[80] */;
-  let argptr: va_list;
-  let fRetVal: boolean = false;
-
-  let sLibraryID: INT16;
-  let uiFileNum: UINT32;
-
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
-
-  // if its a real file, read the data from the file
-  if (sLibraryID == REAL_FILE_LIBRARY_ID) {
-    va_start(argptr, strFormatted);
-    vsprintf(strToSend, strFormatted, argptr);
-    va_end(argptr);
-
-    fRetVal = FileWrite(hFile, strToSend, strToSend.length, null);
-  } else {
-    // its a library file, cant write to it so return an error
-    fRetVal = false;
-  }
-
-  return fRetVal;
+  return -1;
 }
 
 //**************************************************************************
@@ -740,7 +597,8 @@ export function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): boole
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -801,7 +659,8 @@ export function FileGetPos(hFile: HWFILE): INT32 {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -857,7 +716,8 @@ export function FileGetSize(hFile: HWFILE): UINT32 {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -868,7 +728,7 @@ export function FileGetSize(hFile: HWFILE): UINT32 {
   } else {
     // if the library is open
     if (IsLibraryOpened(sLibraryID))
-      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
+      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileLength;
   }
 
   if (uiFileSize == 0xFFFFFFFF)
@@ -892,43 +752,6 @@ export function FileGetSize(hFile: HWFILE): UINT32 {
 //**************************************************************************
 
 function FileDebugPrint(): void {
-}
-
-//**************************************************************************
-//
-// GetHandleToRealFile
-//
-//
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		24sep96:HJH		-> creation
-//
-//		9 Feb 98	DEF - modified to work with the library system
-//
-//**************************************************************************
-
-function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<boolean>): HANDLE {
-  let hRealFile: HANDLE;
-
-  let sLibraryID: INT16;
-  let uiFileNum: UINT32;
-
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
-
-  // if its a real file, read the data from the file
-  if (sLibraryID == REAL_FILE_LIBRARY_ID) {
-    // Get the handle to the real file
-    hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
-    pfDatabaseFile.value = false;
-  } else {
-    pfDatabaseFile.value = true;
-    hRealFile = hFile;
-  }
-
-  return hRealFile;
 }
 
 //**************************************************************************
@@ -1178,30 +1001,6 @@ export function GetFileManCurrentDirectory(pcDirectory: Pointer<string> /* STRIN
     return false;
   }
   return true;
-}
-
-function DirectoryExists(pcDirectory: string /* STRING512 */): boolean {
-  let uiAttribs: UINT32;
-  let uiLastError: number;
-
-  uiAttribs = GetFileAttributes(pcDirectory);
-
-  if (uiAttribs == 0xFFFFFFFF) {
-    // an error, make sure it's the right error
-    uiLastError = GetLastError();
-
-    if (uiLastError != ERROR_FILE_NOT_FOUND) {
-      FastDebugMsg(String("DirectoryExists: ERROR - GetFileAttributes failed, error #%d on file %s", uiLastError, pcDirectory));
-    }
-  } else {
-    // something's there, make sure it's a directory
-    if (uiAttribs & FILE_ATTRIBUTE_DIRECTORY) {
-      return true;
-    }
-  }
-
-  // this could also mean that the name given is that of a file, or that an error occurred
-  return false;
 }
 
 export function MakeFileManDirectory(pcDirectory: string /* STRING512 */): boolean {
@@ -1459,114 +1258,6 @@ function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer
   }
 }
 
-function FileCopy(strSrcFile: string /* STR */, strDstFile: string /* STR */, fFailIfExists: boolean): boolean {
-  return CopyFile(strSrcFile, strDstFile, fFailIfExists);
-
-  // Not needed, use Windows CopyFile
-  /*
-          HWFILE hFile;
-          UINT32 uiSize;
-          CHAR *pBuffer;
-          UINT32 uiBytesRead, uiBytesWritten;
-
-
-          // open source file
-    hFile = FileOpen(strSrcFile, FILE_ACCESS_READ, FALSE);
-    if (hFile == 0)
-    {
-          FastDebugMsg(String("FileCopy: FileOpen failed on Src file %s", strSrcFile));
-      return(FALSE);
-    }
-
-          // get its size
-          uiSize = FileGetSize(hFile);
-          if (uiSize == 0)
-          {
-          FastDebugMsg(String("FileCopy: size is 0, Src file %s", strSrcFile));
-      FileClose(hFile);
-      return(FALSE);
-          }
-
-          // allocate a buffer big enough to hold the entire file
-          pBuffer = MemAlloc(uiSize);
-          if (pBuffer == NULL)
-          {
-                  FastDebugMsg(String("FileCopy: ERROR - MemAlloc pBuffer failed, size %d", uiSize));
-      FileClose(hFile);
-                  return(FALSE);
-          }
-
-          // read the file into memory
-    if (!FileRead(hFile, pBuffer, uiSize, &uiBytesRead))
-    {
-          FastDebugMsg(String("FileCopy: FileRead failed, file %s", strSrcFile));
-      FileClose(hFile);
-      return(FALSE);
-    }
-
-          // close source file
-    FileClose(hFile);
-
-
-          // open destination file
-    hFile = FileOpen(strDstFile, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
-    if (hFile == 0)
-    {
-          FastDebugMsg(String("FileCopy: FileOpen failed on Dst file %s", strDstFile));
-      return(FALSE);
-    }
-
-          // write buffer to the destination file
-    if (!FileWrite(hFile, pBuffer, uiSize, &uiBytesWritten))
-    {
-          FastDebugMsg(String("FileCopy: FileWrite failed, file %s", strDstFile));
-      FileClose(hFile);
-      return(FALSE);
-    }
-
-          // close destination file
-    FileClose(hFile);
-
-
-    MemFree(pBuffer);
-    pBuffer = NULL;
-          return(TRUE);
-  */
-}
-
-function FileMove(strOldName: string /* STR */, strNewName: string /* STR */): boolean {
-  // rename
-  return MoveFile(strOldName, strNewName);
-}
-
-// Additions by Kris Morness
-function FileSetAttributes(strFilename: string /* STR */, uiNewAttribs: UINT32): boolean {
-  let uiFileAttrib: UINT32 = 0;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_ARCHIVE)
-    uiFileAttrib |= FILE_ATTRIBUTE_ARCHIVE;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_HIDDEN)
-    uiFileAttrib |= FILE_ATTRIBUTE_HIDDEN;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_NORMAL)
-    uiFileAttrib |= FILE_ATTRIBUTE_NORMAL;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_OFFLINE)
-    uiFileAttrib |= FILE_ATTRIBUTE_OFFLINE;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_READONLY)
-    uiFileAttrib |= FILE_ATTRIBUTE_READONLY;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_SYSTEM)
-    uiFileAttrib |= FILE_ATTRIBUTE_SYSTEM;
-
-  if (uiNewAttribs & FILE_ATTRIBUTES_TEMPORARY)
-    uiFileAttrib |= FILE_ATTRIBUTE_TEMPORARY;
-
-  return SetFileAttributes(strFilename, uiFileAttrib);
-}
-
 export function FileGetAttributes(strFilename: string /* STR */): UINT32 {
   let uiAttribs: UINT32 = 0;
   let uiFileAttrib: UINT32 = 0;
@@ -1618,7 +1309,8 @@ export function FileCheckEndOfFile(hFile: HWFILE): boolean {
   let uiEndOfFilePtrLoc: UINT32 = 0;
   let temp: UINT32 = 0;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1636,7 +1328,7 @@ export function FileCheckEndOfFile(hFile: HWFILE): boolean {
 
     // if the 2 pointers are the same, we are at the end of a file
     if (uiEndOfFilePtrLoc <= uiOldFilePtrLoc) {
-      return 1;
+      return true;
     }
   }
 
@@ -1653,7 +1345,7 @@ export function FileCheckEndOfFile(hFile: HWFILE): boolean {
           //					UINT32	uiNumBytesRead;
           let uiCurPos: UINT32;
 
-          uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.value.uiFileLength;
+          uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileLength;
           uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
 
           // if we are trying to read more data then the size of the file, return an error
@@ -1666,10 +1358,10 @@ export function FileCheckEndOfFile(hFile: HWFILE): boolean {
   }
 
   // we are not and the end of a file
-  return 0;
+  return false;
 }
 
-export function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>, pLastAccessedTime: Pointer<SGP_FILETIME>, pLastWriteTime: Pointer<SGP_FILETIME>): boolean {
+export function GetFileManFileTime(hFile: HWFILE, pCreationTime: SGP_FILETIME, pLastAccessedTime: SGP_FILETIME, pLastWriteTime: SGP_FILETIME): boolean {
   let hRealFile: HANDLE;
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
@@ -1679,11 +1371,15 @@ export function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FIL
   let sLastWriteUtcFileTime: FILETIME;
 
   // Initialize the passed in variables
-  memset(pCreationTime, 0, sizeof(SGP_FILETIME));
-  memset(pLastAccessedTime, 0, sizeof(SGP_FILETIME));
-  memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
+  pCreationTime.dwLowDateTime = 0;
+  pCreationTime.dwHighDateTime = 0;
+  pLastAccessedTime.dwLowDateTime = 0;
+  pLastAccessedTime.dwHighDateTime = 0;
+  pLastWriteTime.dwLowDateTime = 0;
+  pLastWriteTime.dwHighDateTime = 0;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1691,16 +1387,16 @@ export function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FIL
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
     // Gets the UTC file time for the 'real' file
-    GetFileTime(hRealFile, addressof(sCreationUtcFileTime), addressof(sLastAccessedUtcFileTime), addressof(sLastWriteUtcFileTime));
+    const stats = fs.fstatSync(hRealFile);
 
     // converts the creation UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(addressof(sCreationUtcFileTime), pCreationTime);
+    pCreationTime.dwLowDateTime = stats.birthtimeMs;
 
     // converts the accessed UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(addressof(sLastAccessedUtcFileTime), pLastAccessedTime);
+    pLastAccessedTime.dwLowDateTime = stats.atimeMs;
 
     // converts the write UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(addressof(sLastWriteUtcFileTime), pLastWriteTime);
+    pLastWriteTime.dwLowDateTime = stats.ctimeMs;
   } else {
     // if the database is initialized
     if (gFileDataBase.fInitialized) {
@@ -1719,8 +1415,13 @@ export function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FIL
   return true;
 }
 
-export function CompareSGPFileTimes(pFirstFileTime: Pointer<SGP_FILETIME>, pSecondFileTime: Pointer<SGP_FILETIME>): INT32 {
-  return CompareFileTime(pFirstFileTime, pSecondFileTime);
+export function CompareSGPFileTimes(pFirstFileTime: SGP_FILETIME, pSecondFileTime: SGP_FILETIME): INT32 {
+  if (pFirstFileTime.dwLowDateTime > pSecondFileTime.dwLowDateTime) {
+    return 1;
+  } else if (pFirstFileTime.dwLowDateTime < pSecondFileTime.dwLowDateTime) {
+    return -1;
+  }
+  return 0;
 }
 
 export function FileSize(strFilename: string /* STR */): UINT32 {
@@ -1740,7 +1441,8 @@ export function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
+  sLibraryID = DB_EXTRACT_LIBRARY(hFile);
+  uiFileNum = DB_EXTRACT_FILE_ID(hFile);
 
   // if its the 'real file' library
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1755,70 +1457,6 @@ export function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
     }
   }
   return 0;
-}
-
-//**************************************************************************
-//
-// AddSubdirectoryToPath
-//
-//		Puts a subdirectory of the current working directory into the current
-// task's system path.
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		10June98:DB		-> creation
-//
-//**************************************************************************
-function AddSubdirectoryToPath(pDirectory: string /* Pointer<CHAR8> */): boolean {
-  let pSystemPath: string /* Pointer<CHAR8> */;
-  let pPath: string /* Pointer<CHAR8> */;
-  let uiPathLen: UINT32;
-
-  // Check for NULL
-  if (!pDirectory)
-    return false;
-
-  // Check for zero length string
-  if (!pDirectory.length)
-    return false;
-
-  if ((pSystemPath = MemAlloc(_MAX_PATH)) == null)
-    return false;
-
-  memset(pSystemPath, 0, _MAX_PATH);
-
-  if ((pPath = MemAlloc(_MAX_PATH)) == null) {
-    MemFree(pSystemPath);
-    return false;
-  }
-
-  memset(pPath, 0, _MAX_PATH);
-
-  // Builds a path to the directory with the SR DLL files.
-  _getcwd(pPath, _MAX_PATH);
-  uiPathLen = pPath.length;
-  if (uiPathLen)
-    uiPathLen--;
-  if (pPath[uiPathLen] != '\\')
-    pPath += "\\";
-
-  pPath += pDirectory;
-
-  // Appends it to the path for the current task
-  if (GetEnvironmentVariable("PATH", pSystemPath, _MAX_PATH)) {
-    pSystemPath += ";";
-    pSystemPath += pPath;
-    SetEnvironmentVariable("PATH", pSystemPath);
-    MemFree(pSystemPath);
-    MemFree(pPath);
-    return true;
-  } else {
-    MemFree(pSystemPath);
-    MemFree(pPath);
-    return false;
-  }
 }
 
 export function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
