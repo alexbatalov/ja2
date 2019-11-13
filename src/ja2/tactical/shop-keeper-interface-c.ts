@@ -2072,11 +2072,11 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // Display 'JAMMED' if it's jammed
   if (pItemObject.value.bGunAmmoStatus < 0) {
     zTemp = TacticalStr[Enum335.JAMMED_ITEM_STR];
-    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
+    ({ sX: sCenX, sY: sCenY } = VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), zTemp));
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   } else if (fPrintRepaired) {
     zTemp = SKI_Text[Enum367.SKI_TEXT_REPAIRED];
-    VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), addressof(sCenX), addressof(sCenY), zTemp);
+    ({ sX: sCenX, sY: sCenY } = VarFindFontCenterCoordinates(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT, TINYFONT1(), zTemp));
     DrawTextToScreen(zTemp, sCenX, sCenY, SKI_INV_SLOT_WIDTH, TINYFONT1(), FONT_RED, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 

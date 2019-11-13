@@ -2728,7 +2728,7 @@ function DisplayBookMarks(): void {
       SetFontBackground(FONT_BLACK);
     }
 
-    FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT(), addressof(sX), addressof(sY));
+    ({ sX, sY } = FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT()));
 
     mprintf(sX, sY, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]]);
     iCounter++;
@@ -2753,7 +2753,7 @@ function DisplayBookMarks(): void {
     SetFontForeground(FONT_BLACK);
     SetFontBackground(FONT_BLACK);
   }
-  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[Enum98.CANCEL_STRING], BOOK_FONT(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[Enum98.CANCEL_STRING], BOOK_FONT()));
   mprintf(sX, sY, pBookMarkStrings[Enum98.CANCEL_STRING]);
   iCounter++;
 
@@ -3183,12 +3183,12 @@ function DisplayLoadPending(): boolean {
 
   // reload or download?
   if (fFastLoadFlag == true) {
-    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[1], DOWNLOAD_FONT(), addressof(sXPosition), addressof(sYPosition));
+    ({ sX: sXPosition, sY: sYPosition } = FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[1], DOWNLOAD_FONT()));
 
     // display download string
     mprintf(sXPosition, DOWN_STRING_Y, pDownloadString[1]);
   } else {
-    FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[0], DOWNLOAD_FONT(), addressof(sXPosition), addressof(sYPosition));
+    ({ sX: sXPosition, sY: sYPosition } = FindFontCenterCoordinates(328, 0, 446 - 328, 0, pDownloadString[0], DOWNLOAD_FONT()));
 
     // display download string
     mprintf(sXPosition, DOWN_STRING_Y, pDownloadString[0]);
@@ -3425,7 +3425,7 @@ function DisplayPlayersBalanceToDate(): void {
   InsertDollarSignInToString(sString);
 
   // get center
-  FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT()));
   //	gprintfdirty( sX , LAPTOP_ICON_TEXT_FINANCIAL_Y + 10, sString );
   // printf it!
   if (ButtonList[gLaptopButton[5]].uiFlags & BUTTON_CLICKED_ON) {

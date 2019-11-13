@@ -568,23 +568,23 @@ function DrawRecordsColumnHeadersText(): void {
   SetFontShadow(NO_SHADOW);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, pFinanceHeaders[0], FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, pFinanceHeaders[0], FINANCE_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[0]);
 
   // debit header
-  FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, pFinanceHeaders[1], FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, pFinanceHeaders[1], FINANCE_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[1]);
 
   // credit header
-  FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, pFinanceHeaders[2], FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, pFinanceHeaders[2], FINANCE_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[2]);
 
   // balance header
-  FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, pFinanceHeaders[4], FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, pFinanceHeaders[4], FINANCE_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[4]);
 
   // transaction header
-  FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, pFinanceHeaders[3], FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, pFinanceHeaders[3], FINANCE_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[3]);
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -627,7 +627,7 @@ function DrawRecordsText(): void {
     // get and write the date
     sString = swprintf("%d", pCurFinance.value.uiDate / (24 * 60));
 
-    FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
 
     // get and write debit/ credit
@@ -641,7 +641,7 @@ function DrawRecordsText(): void {
       //		 if( iCounter == 0 )
       { InsertDollarSignInToString(sString); }
 
-      FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, sString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+      ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
     } else {
       // decrease in asset - credit
@@ -653,7 +653,7 @@ function DrawRecordsText(): void {
       //		 if( iCounter == 0 )
       { InsertDollarSignInToString(sString); }
 
-      FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, sString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+      ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
       SetFontForeground(FONT_BLACK);
     }
@@ -671,7 +671,7 @@ function DrawRecordsText(): void {
 
     // transaction string
     ProcessTransactionString(sString, pCurFinance);
-    FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, sString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
 
     // print the balance string
@@ -682,7 +682,7 @@ function DrawRecordsText(): void {
     //		if( iCounter == 0 )
     { InsertDollarSignInToString(sString); }
 
-    FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, sString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
 
     // restore font color
@@ -760,7 +760,7 @@ function DrawSummaryText(): void {
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
 
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_INCOME, pString);
 
@@ -773,7 +773,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_OTHER, pString);
 
@@ -791,7 +791,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_DEBITS, pString);
 
@@ -809,7 +809,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_BALANCE, pString);
 
@@ -822,7 +822,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_INCOME, pString);
 
@@ -835,7 +835,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_OTHER, pString);
 
@@ -854,7 +854,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_DEBITS, pString);
 
@@ -874,7 +874,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
   mprintf(usX, TODAYS_CURRENT_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
 
@@ -885,7 +885,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_CURRENT_FORCAST_INCOME, pString);
 
@@ -905,7 +905,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
   mprintf(usX, TODAYS_CURRENT_FORCAST_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
 

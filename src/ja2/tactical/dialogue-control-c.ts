@@ -1848,7 +1848,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       // reset the font dest buffer
       SetFontDestBuffer(pBlitter.value.uiDestBuff, 0, 0, 640, 480, false);
 
-      VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
+      ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), "%s", pSoldier.value.name));
       mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
 
       // What sector are we in, ( and is it the same as ours? )
@@ -1857,7 +1857,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2());
 
-        VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 68), 73, 9, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", zTownIDString);
+        ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 68), 73, 9, BLOCKFONT2(), "%s", zTownIDString));
         mprintf(sFontX, sFontY, "%s", zTownIDString);
       }
 
@@ -1869,7 +1869,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       DrawBreathUIBarEx(pSoldier, (pBlitter.value.sX + 75), (pBlitter.value.sY + 47), 3, 42, false, pBlitter.value.uiDestBuff);
       DrawMoraleUIBarEx(pSoldier, (pBlitter.value.sX + 81), (pBlitter.value.sY + 47), 3, 42, false, pBlitter.value.uiDestBuff);
     } else {
-      VarFindFontCenterCoordinates((pBlitter.value.sX + 9), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
+      ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates((pBlitter.value.sX + 9), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2(), "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname));
       mprintf(sFontX, sFontY, "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
     }
 

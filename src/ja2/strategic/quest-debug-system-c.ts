@@ -1527,7 +1527,7 @@ function DisplaySelectedNPC(): void {
       //			GetShortSectorString( gMercProfiles[ i ].sSectorX, gMercProfiles[ i ].sSectorY, sTempString );
     }
 
-    FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, usPosY, gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT(), addressof(usLocationX), addressof(usLocationY));
+    ({ sX: usLocationX, sY: usLocationY } = FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, usPosY, gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT()));
 
     // the location value
     DrawTextToScreen(sTempString, (usLocationX - 2), usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -1560,7 +1560,7 @@ function DisplaySelectedNPC(): void {
       //			GetShortSectorString( gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorX, gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorY, sTempString );
     }
 
-    FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, (usPosY), gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT(), addressof(usLocationX), addressof(usLocationY));
+    ({ sX: usLocationX, sY: usLocationY } = FindFontRightCoordinates(gpActiveListBox.value.usScrollPosX, (usPosY), gpActiveListBox.value.usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT()));
 
     // the location value
     DrawTextToScreen(sTempString, usLocationX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);

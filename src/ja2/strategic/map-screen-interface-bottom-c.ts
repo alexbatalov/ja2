@@ -391,7 +391,7 @@ function DrawNameOfLoadedSector(): void {
   GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, true);
   ReduceStringLength(sString, 80, COMPFONT());
 
-  VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
+  ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT(), sString));
   mprintf(sFontX, sFontY, "%s", sString);
 }
 
@@ -665,7 +665,7 @@ function DisplayCompressMode(): void {
 
   SetFontForeground(usColor);
   SetFontBackground(FONT_BLACK);
-  FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT()));
   mprintf(sX, sY, sString);
 
   return;
@@ -1010,7 +1010,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   sString = swprintf("%s", pMapScreenBottomText[0]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
+  ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT(), sString));
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1018,7 +1018,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   sString = swprintf("%s", zMarksMapScreenText[2]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
+  ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT(), sString));
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1050,7 +1050,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
+  ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT(), sString));
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1133,7 +1133,7 @@ function DisplayProjectedDailyMineIncome(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT(), addressof(sFontX), addressof(sFontY), sString);
+  ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT(), sString));
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);

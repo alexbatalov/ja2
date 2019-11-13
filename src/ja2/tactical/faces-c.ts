@@ -1078,7 +1078,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: b
 
           SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, false);
 
-          VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1(), addressof(sFontX), addressof(sFontY), pFace.value.zDisplayText);
+          ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1(), pFace.value.zDisplayText));
 
           if (pFace.value.fDisplayTextOver == FACE_DRAW_TEXT_OVER) {
             gprintfinvalidate(sFontX, sFontY, pFace.value.zDisplayText);

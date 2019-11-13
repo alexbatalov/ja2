@@ -1234,7 +1234,7 @@ export function DisplayWayPoints(): void {
       } else
         SetFontBackground(FONT_LTRED);
       SetFontForeground(FONT_WHITE);
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), "%d", bPoint);
+      ({ sX, sY } = VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), "%d", bPoint));
       mprintf(sX, sY, "%d", bPoint);
     }
   }
@@ -2963,7 +2963,7 @@ export function RenderMercStrings(): void {
       SetFontBackground(FONT_BLACK);
       SetFontForeground(FONT_WHITE);
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, pSoldier.value.name);
           mprintf(sX, sY, pSoldier.value.name);
@@ -2976,7 +2976,7 @@ export function RenderMercStrings(): void {
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -2985,7 +2985,7 @@ export function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         str = swprintf("Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -2998,7 +2998,7 @@ export function RenderMercStrings(): void {
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -3007,7 +3007,7 @@ export function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         str = swprintf("Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3022,7 +3022,7 @@ export function RenderMercStrings(): void {
           else
             SetFontForeground(FONT_RED);
           str = "Patrol orders with no waypoints";
-          FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
+          ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1()));
           if (sY < 352) {
             gprintfdirty(sX, sY, str);
             mprintf(sX, sY, str);
@@ -3035,7 +3035,7 @@ export function RenderMercStrings(): void {
         else
           SetFontForeground(FONT_RED);
         str = "Waypoints with no patrol orders";
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1()));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3333,7 +3333,7 @@ function RenderCurrentSchedule(): void {
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
       str = swprintf("%d%c", i / 2 + 1, 'A' + (i % 2));
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), str);
+      ({ sX, sY } = VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), str));
       mprintf(sX, sY, str);
     }
   }

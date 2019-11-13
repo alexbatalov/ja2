@@ -465,7 +465,7 @@ function RenderCharFullName(): void {
 
   sString = swprintf(pIMPFinishStrings[0], pFullName);
 
-  FindFontCenterCoordinates(LAPTOP_SCREEN_UL_X, 0, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, 0, sString, FONT14ARIAL(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(LAPTOP_SCREEN_UL_X, 0, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, 0, sString, FONT14ARIAL()));
   mprintf(sX, LAPTOP_SCREEN_WEB_DELTA_Y + 33, sString);
   return;
 }

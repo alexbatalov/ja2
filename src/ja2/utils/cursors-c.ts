@@ -1271,7 +1271,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1(), addressof(sX), addressof(sY));
+    ({ sX, sY } = FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1()));
     SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1286,7 +1286,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1(), addressof(sX), addressof(sY));
+    ({ sX, sY } = FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1()));
     SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1301,7 +1301,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, false);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1(), addressof(sX), addressof(sY));
+    ({ sX, sY } = FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1()));
     SetFont(TINYFONT1());
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1344,9 +1344,9 @@ function DrawMouseText(): void {
       pStr = swprintf("%d", gsCurrentActionPoints);
 
       if (gfUIDisplayActionPointsCenter) {
-        FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1()));
       } else {
-        FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1()));
       }
 
       SetFont(TINYFONT1());

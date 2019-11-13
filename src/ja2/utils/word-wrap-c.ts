@@ -390,9 +390,9 @@ export function DrawTextToScreen(pStr: string /* STR16 */, usLocX: UINT16, usLoc
     usPosX = usLocX;
     usPosY = usLocY;
   } else if (ulFlags & CENTER_JUSTIFIED) {
-    VarFindFontCenterCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, addressof(usPosX), addressof(usPosY), pStr);
+    ({ sX: usPosX, sY: usPosY } = VarFindFontCenterCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, pStr));
   } else if (ulFlags & RIGHT_JUSTIFIED) {
-    VarFindFontRightCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, addressof(usPosX), addressof(usPosY), pStr);
+    ({ sX: usPosX, sY: usPosY } = VarFindFontRightCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, pStr));
   }
 
   SetFont(ulFont);

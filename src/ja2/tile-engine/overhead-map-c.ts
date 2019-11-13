@@ -256,7 +256,7 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   // Center here....
-  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1()));
 
   // OK, selected guy is here...
   gprintfdirty(sX, sY, pSoldier.value.name);

@@ -1258,32 +1258,32 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     if (gfUIMouseOnValidCatcher == 1 && pSoldier.value.ubID == gubUIValidCatcherID) {
       NameStr = TacticalStr[Enum335.CATCH_STR];
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
       NameStr = TacticalStr[Enum335.RELOAD_STR];
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
       NameStr = pMessageStrings[Enum333.MSG_PASS];
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
     } else if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       NameStr = swprintf("(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
     } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < Enum117.ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       NameStr = swprintf(gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
@@ -1303,12 +1303,12 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     if (fDoName) {
       if (fRaiseName) {
         NameStr = swprintf("%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1()));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
         NameStr = swprintf("%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1()));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       }
@@ -1348,7 +1348,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
         SetFontForeground(FONT_MCOLOR_WHITE);
 
         NameStr = TacticalStr[Enum335.GIVE_STR];
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1()));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
@@ -1358,7 +1358,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
         pStr = GetSoldierHealthString(pSoldier);
 
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1()));
         gprintfdirty(sX, sY, pStr);
         mprintf(sX, sY, pStr);
       }
@@ -1371,7 +1371,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       SetFontForeground(FONT_YELLOW);
 
       NameStr = gzLateLocalizedString[15];
-      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
     }
@@ -1382,7 +1382,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKRED);
 
-    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1(), addressof(sX), addressof(sY));
+    ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1()));
     gprintfdirty(sX, sY, pStr);
     mprintf(sX, sY, pStr);
   }
@@ -2433,7 +2433,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: string /* 
   { DeleteVideoObjectFromIndex(uiPLAYERBAR); }
 
   // Draw text....
-  FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1()));
   mprintf(sX, sY, psString);
 
   // Change back...

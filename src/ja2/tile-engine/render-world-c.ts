@@ -1646,7 +1646,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   SetFont(TINYFONT1());
                   SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, false);
-                  VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), "%d", pNode.value.uiAPCost);
+                  ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pNode.value.uiAPCost));
                   mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pNode.value.uiAPCost);
                   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
                 } else if ((uiLevelNodeFlags & LEVELNODE_ERASEZ) && !(uiFlags & TILES_DIRTY)) {
@@ -2005,7 +2005,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if (pSoldier != null && pSoldier.value.ubID >= MAX_NUM_SOLDIERS) {
                       SetFont(TINYFONT1());
                       SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, false);
-                      VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), addressof(sX), addressof(sY), "%d", pSoldier.value.ubPlannedUIAPCost);
+                      ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pSoldier.value.ubPlannedUIAPCost));
                       mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pSoldier.value.ubPlannedUIAPCost);
                       SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
                     }

@@ -575,7 +575,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         sString = swprintf("%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1()));
         SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -609,7 +609,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
   sString = swprintf("%s", zMarksMapScreenText[13]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1()));
   // print medic
   mprintf(sX, sYPosition - 7, sString);
 
@@ -637,7 +637,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         sString = swprintf("%s", (Menptr[iPatientList[iIndex]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+        ({ sX, sY } = FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1()));
         SetFont(TINYFONT1());
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -699,7 +699,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   SetFontBackground(FONT_BLACK);
 
   sString = swprintf("%s", zMarksMapScreenText[14]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1()));
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);
 

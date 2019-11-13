@@ -586,9 +586,9 @@ function RenderSquadList(): void {
   for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
     // run through list of squads and place appropriatly
     if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
-      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
     } else {
-      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
     }
 
     // highlight line?

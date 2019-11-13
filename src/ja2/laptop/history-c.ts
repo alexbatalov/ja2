@@ -626,15 +626,15 @@ function DisplayHistoryListHeaders(): void {
   SetFontShadow(NO_SHADOW);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[0]);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[3]);
 
   // event header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT()));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[4]);
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -692,7 +692,7 @@ function DrawHistoryRecordsText(): void {
     }
     // get and write the date
     sString = swprintf("%d", (pCurHistory.uiDate / (24 * 60)));
-    FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT()));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // now the actual history text
@@ -703,11 +703,11 @@ function DrawHistoryRecordsText(): void {
 
     // no location
     if ((pCurHistory.sSectorX == -1) || (pCurHistory.sSectorY == -1)) {
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT()));
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
       GetSectorIDString(pCurHistory.sSectorX, pCurHistory.sSectorY, pCurHistory.bSectorZ, sString, true);
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT(), addressof(sX), addressof(sY));
+      ({ sX, sY } = FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT()));
 
       ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT());
 

@@ -680,29 +680,23 @@ export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   return 0;
 }
 
-export function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
+export function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): { sX: INT16, sY: INT16 } {
   let string: string /* wchar_t[512] */;
-  let argptr: va_list;
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  FindFontRightCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex, psNewX, psNewY);
+  return FindFontRightCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex);
 }
 
-export function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
+export function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): { sX: INT16, sY: INT16 } {
   let string: string /* wchar_t[512] */;
-  let argptr: va_list;
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  FindFontCenterCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex, psNewX, psNewY);
+  return FindFontCenterCoordinates(sLeft, sTop, sWidth, sHeight, string, iFontIndex);
 }
 
-export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
+export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32): { sX: INT16, sY: INT16 } {
   let xp: INT16;
   let yp: INT16;
 
@@ -710,11 +704,10 @@ export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT1
   xp = ((sWidth - StringPixLength(pStr, iFontIndex))) + sLeft;
   yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
-  psNewX.value = xp;
-  psNewY.value = yp;
+  return { sX: xp, sY: yp };
 }
 
-export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
+export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: string /* Pointer<UINT16> */, iFontIndex: INT32): { sX: INT16, sY: INT16 } {
   let xp: INT16;
   let yp: INT16;
 
@@ -722,8 +715,7 @@ export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT
   xp = ((sWidth - StringPixLength(pStr, iFontIndex) + 1) / 2) + sLeft;
   yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
-  psNewX.value = xp;
-  psNewY.value = yp;
+  return { sX: xp, sY: yp };
 }
 
 //*****************************************************************************

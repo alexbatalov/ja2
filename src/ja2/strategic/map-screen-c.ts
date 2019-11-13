@@ -529,7 +529,7 @@ function DisplayDestinationOfCurrentDestMerc(): void {
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
 
   sString = swprintf("%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
-  FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()), sString, MAP_SCREEN_FONT(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()), sString, MAP_SCREEN_FONT()));
 
   RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()));
   mprintf(sX, sY, sString);
@@ -915,7 +915,7 @@ function DrawPay(sCharNumber: INT16): void {
   sString = swprintf("%d", uiSalary);
 
   // right justify salary
-  FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI(), sString, CHAR_FONT()));
 
   // draw salary
   DrawString(sString, usX, usY, CHAR_FONT());
@@ -999,7 +999,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, STR_Y, CHAR_FONT());
 
   // dexterity
@@ -1016,7 +1016,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, DEX_Y, CHAR_FONT());
 
   // agility
@@ -1033,7 +1033,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, AGL_Y, CHAR_FONT());
 
   // wisdom
@@ -1050,7 +1050,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, WIS_Y, CHAR_FONT());
 
   // leadership
@@ -1067,7 +1067,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, LDR_Y, CHAR_FONT());
 
   // experience level
@@ -1084,7 +1084,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, LVL_Y, CHAR_FONT());
 
   // marksmanship
@@ -1101,7 +1101,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, MRK_Y, CHAR_FONT());
 
   // explosives
@@ -1118,7 +1118,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, EXP_Y, CHAR_FONT());
 
   // mechanical
@@ -1135,7 +1135,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, MEC_Y, CHAR_FONT());
 
   // medical
@@ -1152,7 +1152,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, MED_Y, CHAR_FONT());
 
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
@@ -1172,7 +1172,7 @@ function DrawCharHealth(sCharNum: INT16): void {
   if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     // find starting X coordinate by centering all 3 substrings together, then print them separately (different colors)!
     sString = swprintf("%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT()));
 
     if (pSoldier.value.bLifeMax > 0) {
       uiHealthPercent = (pSoldier.value.bLife * 100) / pSoldier.value.bLifeMax;
@@ -1221,7 +1221,7 @@ function DrawCharHealth(sCharNum: INT16): void {
     // POW - health unknown
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
     sString = pPOWStrings[1];
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT()));
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT());
   }
 
@@ -1269,7 +1269,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     sString = gMercProfiles[usMercProfileID].zNickname;
   }
 
-  FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
 
   // Full name (Top Box)
@@ -1281,7 +1281,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     sString = gMercProfiles[usMercProfileID].zName;
   }
 
-  FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
 
   // Assignment
@@ -1292,7 +1292,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     sString = pAssignmentStrings[pSoldier.value.bAssignment];
   }
 
-  FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
 
   // second assignment line
@@ -1342,7 +1342,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   }
 
   if (sString.length > 0) {
-    FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT()));
     DrawString(sString, usX, usY, CHAR_FONT());
   }
 
@@ -1425,7 +1425,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   SetFontBackground(FONT_BLACK);
 
   // center and draw
-  FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
 
   // salary
@@ -1449,7 +1449,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   InsertCommasForDollarFigure(sString);
   InsertDollarSignInToString(sString);
 
-  FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
 
   // medical deposit
@@ -1460,7 +1460,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI(), sString, CHAR_FONT(), addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI(), sString, CHAR_FONT()));
     DrawString(sString, usX, CHAR_MEDICAL_Y, CHAR_FONT());
   }
 
@@ -1485,7 +1485,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     sString = pPOWStrings[1];
   }
 
-  FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT()));
   DrawString(sString, usX, CHAR_MORALE_Y, CHAR_FONT());
 
   return;
@@ -3169,9 +3169,9 @@ function DrawName(pName: string /* STR16 */, sRowIndex: INT16, iFont: INT32): vo
   let usY: UINT16 = 0;
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE())), NAME_WIDTH, Y_SIZE(), pName, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE())), NAME_WIDTH, Y_SIZE(), pName, iFont));
   } else {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), NAME_WIDTH, Y_SIZE(), pName, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), NAME_WIDTH, Y_SIZE(), pName, iFont));
   }
 
   // RestoreExternBackgroundRect(NAME_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), NAME_WIDTH, Y_SIZE);
@@ -3186,9 +3186,9 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE())), ASSIGN_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE())), ASSIGN_WIDTH, Y_SIZE(), sString, iFont));
   } else {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), ASSIGN_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), ASSIGN_WIDTH, Y_SIZE(), sString, iFont));
   }
 
   if (fFlashAssignDone == true) {
@@ -3210,9 +3210,9 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 
   if (sRowIndex < FIRST_VEHICLE) {
     // center
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE())), LOC_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE())), LOC_WIDTH, Y_SIZE(), sString, iFont));
   } else {
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), LOC_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), LOC_WIDTH, Y_SIZE(), sString, iFont));
   }
   // restore background
   // RestoreExternBackgroundRect(LOC_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), LOC_WIDTH, Y_SIZE);
@@ -3233,9 +3233,9 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
   }
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE())), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE())), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont));
   } else {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE()) + 6), DEST_ETA_WIDTH, Y_SIZE(), sString, iFont));
   }
 
   // RestoreExternBackgroundRect(DEST_ETA_X+1, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), DEST_ETA_WIDTH-1, Y_SIZE);
@@ -3259,9 +3259,9 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   SetFontForeground(ubFontColor);
 
   if (sCharNumber < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE())), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE())), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont));
   } else {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE()) + 6), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont, addressof(usX), addressof(usY));
+    ({ sX: usX, sY: usY } = FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE()) + 6), TIME_REMAINING_WIDTH, Y_SIZE(), sString, iFont));
   }
 
   // RestoreExternBackgroundRect(TIME_REMAINING_X, ((UINT16)(usY+(Y_OFFSET*sCharNumber+1))), TIME_REMAINING_WIDTH, Y_SIZE);
@@ -4916,7 +4916,7 @@ function PopupText(pFontString: string /* Pointer<UINT16> */, ...args: any[]): v
   vswprintf(PopupString, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-  FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1(), addressof(sX), addressof(sY));
+  ({ sX, sY } = FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1()));
 
   BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
 
@@ -5084,17 +5084,17 @@ function BltCharInvPanel(): void {
 
   // display armor value
   sString = swprintf("%3d", ArmourPercent(pSoldier));
-  FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
   // Display weight value
   sString = swprintf("%3d", CalculateCarriedWeight(pSoldier));
-  FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
   // Display camo value
   sString = swprintf("%3d", pSoldier.value.bCamo);
-  FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2(), addressof(usX), addressof(usY));
+  ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
   if (InKeyRingPopup()) {
