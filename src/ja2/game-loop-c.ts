@@ -137,7 +137,7 @@ export function GameLoop(): void {
           let zSizeNeeded: string /* CHAR16[512] */;
 
           zSizeNeeded = swprintf("%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
-          InsertCommasForDollarFigure(zSizeNeeded);
+          zSizeNeeded = InsertCommasForDollarFigure(zSizeNeeded);
 
           uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 

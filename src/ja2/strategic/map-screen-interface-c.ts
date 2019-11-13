@@ -4393,8 +4393,8 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
       sStringC = swprintf("%d", iValue);
 
       // insert
-      InsertCommasForDollarFigure(sStringC);
-      InsertDollarSignInToString(sStringC);
+      sStringC = InsertCommasForDollarFigure(sStringC);
+      sStringC = InsertDollarSignInToString(sStringC);
 
       sStringB = swprintf(pMapErrorString[16], sString, sStringC);
 

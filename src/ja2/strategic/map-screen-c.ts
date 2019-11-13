@@ -1446,8 +1446,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   sString = swprintf("%d", iDailyCost);
 
   // insert commas and dollar sign
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
 
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI(), sString, CHAR_FONT()));
   DrawString(sString, usX, usY, CHAR_FONT());
@@ -1457,8 +1457,8 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     sString = swprintf("%d", gMercProfiles[Menptr[gCharactersList[sCharNumber].usSolID].ubProfile].sMedicalDepositAmount);
 
     // insert commas and dollar sign
-    InsertCommasForDollarFigure(sString);
-    InsertDollarSignInToString(sString);
+    sString = InsertCommasForDollarFigure(sString);
+    sString = InsertDollarSignInToString(sString);
 
     ({ sX: usX, sY: usY } = FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI(), sString, CHAR_FONT()));
     DrawString(sString, usX, CHAR_MEDICAL_Y, CHAR_FONT());

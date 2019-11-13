@@ -873,16 +873,16 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 
       // unit price
       sTemp = swprintf("%d", CalcBobbyRayCost(pBobbyRayPurchase[i].usItemIndex, pBobbyRayPurchase[i].usBobbyItemIndex, pBobbyRayPurchase[i].fUsed));
-      InsertCommasForDollarFigure(sTemp);
-      InsertDollarSignInToString(sTemp);
+      sTemp = InsertCommasForDollarFigure(sTemp);
+      sTemp = InsertDollarSignInToString(sTemp);
 
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FOURTH_COLUMN_X - 2), usPosY, BOBBYR_GRID_FOURTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       uiTotal += CalcBobbyRayCost(pBobbyRayPurchase[i].usItemIndex, pBobbyRayPurchase[i].usBobbyItemIndex, pBobbyRayPurchase[i].fUsed) * pBobbyRayPurchase[i].ubNumberPurchased;
 
       sTemp = swprintf("%d", uiTotal);
-      InsertCommasForDollarFigure(sTemp);
-      InsertDollarSignInToString(sTemp);
+      sTemp = InsertCommasForDollarFigure(sTemp);
+      sTemp = InsertDollarSignInToString(sTemp);
 
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X - 2), usPosY, BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
@@ -950,23 +950,23 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
   if (iSubTotal) {
     // Display the subtotal
     sTemp = swprintf("%d", iSubTotal);
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
 
     DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X - 2), (usGridY + BOBBYR_SUBTOTAL_Y), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
     // Display the shipping and handling charge
     sTemp = swprintf("%d", iShippingCost);
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
 
     DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X - 2), (usGridY + BOBBYR_SHIPPING_N_HANDLE_Y), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
     // Display the grand total
     giGrandTotal = iSubTotal + iShippingCost;
     sTemp = swprintf("%d", giGrandTotal);
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
 
     DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIFTH_COLUMN_X - 2), (usGridY + BOBBYR_GRAND_TOTAL_Y), BOBBYR_GRID_FIFTH_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   }
@@ -1367,8 +1367,8 @@ function DisplayShippingLocationCity(): void {
 
   if (gbSelectedCity != -1) {
     sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
   }
 
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_SPEED_NUMBER_X, usPosY, BOBBYR_SHIPPING_SPEED_NUMBER_WIDTH, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
@@ -1376,8 +1376,8 @@ function DisplayShippingLocationCity(): void {
 
   if (gbSelectedCity != -1) {
     sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].us2DaysService / GetWeightBasedOnMetricOption(1)));
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
   }
 
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_SPEED_NUMBER_X, usPosY, BOBBYR_SHIPPING_SPEED_NUMBER_WIDTH, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
@@ -1385,8 +1385,8 @@ function DisplayShippingLocationCity(): void {
 
   if (gbSelectedCity != -1) {
     sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usStandardService / GetWeightBasedOnMetricOption(1)));
-    InsertCommasForDollarFigure(sTemp);
-    InsertDollarSignInToString(sTemp);
+    sTemp = InsertCommasForDollarFigure(sTemp);
+    sTemp = InsertDollarSignInToString(sTemp);
   }
 
   DrawTextToScreen(sTemp, BOBBYR_SHIPPING_SPEED_NUMBER_X, usPosY, BOBBYR_SHIPPING_SPEED_NUMBER_WIDTH, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);

@@ -1064,8 +1064,8 @@ function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ub
   sStringA = swprintf("%d", iCost);
 
   // insert the commans and dollar sign
-  InsertCommasForDollarFigure(sStringA);
-  InsertDollarSignInToString(sStringA);
+  sStringA = InsertCommasForDollarFigure(sStringA);
+  sStringA = InsertDollarSignInToString(sStringA);
 
   sString = swprintf(zMarksMapScreenText[10], pSoldier.value.name, sStringA, ubLength);
 

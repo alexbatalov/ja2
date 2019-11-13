@@ -595,8 +595,8 @@ export function DisplayItemInfo(uiItemClass: UINT32): boolean {
 
   // Display the subtotal at the bottom of the screen
   sDollarTemp = swprintf("%d", CalculateTotalPurchasePrice());
-  InsertCommasForDollarFigure(sDollarTemp);
-  InsertDollarSignInToString(sDollarTemp);
+  sDollarTemp = InsertCommasForDollarFigure(sDollarTemp);
+  sDollarTemp = InsertDollarSignInToString(sDollarTemp);
   sTemp = swprintf("%s %s", BobbyRText[Enum350.BOBBYR_GUNS_SUB_TOTAL], sDollarTemp);
   DrawTextToScreen(sTemp, BOBBYR_ORDER_SUBTOTAL_X, BOBBYR_ORDER_SUBTOTAL_Y, 0, BOBBYR_ORDER_TITLE_FONT(), BOBBYR_ORDER_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
@@ -777,8 +777,8 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
   usPosY += usFontHeight + 2;
 
   sTemp = swprintf("%d", CalcBobbyRayCost(usIndex, usBobbyIndex, fUsed));
-  InsertCommasForDollarFigure(sTemp);
-  InsertDollarSignInToString(sTemp);
+  sTemp = InsertCommasForDollarFigure(sTemp);
+  sTemp = InsertDollarSignInToString(sTemp);
 
   DrawTextToScreen(sTemp, BOBBYR_ITEM_COST_NUM_X, usPosY, BOBBYR_ITEM_COST_TEXT_WIDTH, BOBBYR_ITEM_DESC_TEXT_FONT(), BOBBYR_ITEM_DESC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
   usPosY += usFontHeight + 2;

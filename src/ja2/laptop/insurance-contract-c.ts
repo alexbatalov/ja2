@@ -547,13 +547,13 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
     // display the amount of refund
     sText = swprintf("%d", iCostOfContract);
-    InsertCommasForDollarFigure(sText);
-    InsertDollarSignInToString(sText);
+    sText = InsertCommasForDollarFigure(sText);
+    sText = InsertDollarSignInToString(sText);
   }
 
   if (IsMercDead(ubMercID)) {
     sText = "0";
-    InsertDollarSignInToString(sText);
+    sText = InsertDollarSignInToString(sText);
   }
   // display the amount owing
   DrawTextToScreen(sText, (usPosX + 32), INS_CTRCT_ORDER_GRID1_Y + 179, 72, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);

@@ -4294,8 +4294,8 @@ function SMInvMoneyButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 
         zMoney = swprintf("%d", gpItemPointer.value.uiMoneyAmount);
 
-        InsertCommasForDollarFigure(zMoney);
-        InsertDollarSignInToString(zMoney);
+        zMoney = InsertCommasForDollarFigure(zMoney);
+        zMoney = InsertDollarSignInToString(zMoney);
 
         // ask the user if they are sure they want to deposit the money
         zText = swprintf(gzMoneyWithdrawMessageText[Enum374.CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT], zMoney);

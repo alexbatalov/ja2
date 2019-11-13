@@ -4255,8 +4255,8 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
 
         sDollarAmount = swprintf("%d", pMail.value.iFirstData);
 
-        InsertCommasForDollarFigure(sDollarAmount);
-        InsertDollarSignInToString(sDollarAmount);
+        sDollarAmount = InsertCommasForDollarFigure(sDollarAmount);
+        sDollarAmount = InsertDollarSignInToString(sDollarAmount);
 
         // add the mercs name to the string
         pFinishedString += sDollarAmount;

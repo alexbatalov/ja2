@@ -1019,8 +1019,8 @@ function RenderShopKeeperInterface(): boolean {
   // Display the players current balance value
   zMoney = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
 
-  InsertCommasForDollarFigure(zMoney);
-  InsertDollarSignInToString(zMoney);
+  zMoney = InsertCommasForDollarFigure(zMoney);
+  zMoney = InsertDollarSignInToString(zMoney);
   DrawTextToScreen(zMoney, SKI_PLAYERS_CURRENT_BALANCE_X, SKI_PLAYERS_CURRENT_BALANCE_OFFSET_TO_VALUE, SKI_PLAYERS_CURRENT_BALANCE_WIDTH, FONT10ARIAL(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, true, CENTER_JUSTIFIED);
 
   BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, 0, 0, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_HEIGHT);
@@ -2037,8 +2037,8 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // if the item has a price, display it
   if (uiItemCost != 0) {
     zTemp = swprintf("%d", uiItemCost);
-    InsertCommasForDollarFigure(zTemp);
-    InsertDollarSignInToString(zTemp);
+    zTemp = InsertCommasForDollarFigure(zTemp);
+    zTemp = InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, (usPosX + SKI_INV_PRICE_OFFSET_X), (usPosY + SKI_INV_PRICE_OFFSET_Y), SKI_INV_SLOT_WIDTH, SKI_ITEM_DESC_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
@@ -2530,8 +2530,8 @@ function DisplayArmsDealerOfferArea(): void {
 
     // Display the total cost text
     zTemp = swprintf("%d", uiTotalCost);
-    InsertCommasForDollarFigure(zTemp);
-    InsertDollarSignInToString(zTemp);
+    zTemp = InsertCommasForDollarFigure(zTemp);
+    zTemp = InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, SKI_ARMS_DEALER_TOTAL_COST_X, (SKI_ARMS_DEALER_TOTAL_COST_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 }
@@ -2769,8 +2769,8 @@ function DisplayPlayersOfferArea(): void {
 
     // Display the total cost text
     zTemp = swprintf("%d", uiTotalCost);
-    InsertCommasForDollarFigure(zTemp);
-    InsertDollarSignInToString(zTemp);
+    zTemp = InsertCommasForDollarFigure(zTemp);
+    zTemp = InsertDollarSignInToString(zTemp);
     DrawTextToScreen(zTemp, SKI_PLAYERS_TOTAL_VALUE_X, (SKI_PLAYERS_TOTAL_VALUE_Y + 5), SKI_INV_SLOT_WIDTH, SKI_LABEL_FONT(), SKI_ITEM_PRICE_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
@@ -4116,8 +4116,8 @@ function DisplaySkiAtmTransferString(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, SKI_TRANSFER_STRING_X, SKI_TRANSFER_STRING_Y, SKI_TRANSFER_STRING_X + SKI_TRANSFER_STRING_WIDTH, SKI_TRANSFER_STRING_Y + SKI_TRANSFER_STRING_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
 
   zSkiAtmTransferString = gzSkiAtmTransferString;
-  InsertCommasForDollarFigure(zSkiAtmTransferString);
-  InsertDollarSignInToString(zSkiAtmTransferString);
+  zSkiAtmTransferString = InsertCommasForDollarFigure(zSkiAtmTransferString);
+  zSkiAtmTransferString = InsertDollarSignInToString(zSkiAtmTransferString);
 
   // Display the transfer string
   DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_TRANSFER_STRING_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
@@ -4129,8 +4129,8 @@ function DisplaySkiAtmTransferString(): void {
 
   zSkiAtmTransferString = swprintf("%d", uiMoney);
 
-  InsertCommasForDollarFigure(zSkiAtmTransferString);
-  InsertDollarSignInToString(zSkiAtmTransferString);
+  zSkiAtmTransferString = InsertCommasForDollarFigure(zSkiAtmTransferString);
+  zSkiAtmTransferString = InsertDollarSignInToString(zSkiAtmTransferString);
 
   DrawTextToScreen(zSkiAtmTransferString, SKI_TRANSFER_STRING_X, SKI_MERCS_MONEY_Y, SKI_TRANSFER_STRING_WIDTH, SKI_ATM_BUTTON_FONT(), FONT_MCOLOR_WHITE, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
@@ -4259,8 +4259,8 @@ function HandleCurrentModeText(ubMode: UINT8): void {
 
     case Enum250.SKI_ATM_DISPLAY_PLAYERS_BALANCE:
       zMoney = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
-      InsertCommasForDollarFigure(zMoney);
-      InsertDollarSignInToString(zMoney);
+      zMoney = InsertCommasForDollarFigure(zMoney);
+      zMoney = InsertDollarSignInToString(zMoney);
 
       zTemp = swprintf("%s: %s", gzSkiAtmText[Enum369.SKI_ATM_MODE_TEXT_BALANCE], zMoney);
       break;

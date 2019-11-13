@@ -3667,7 +3667,7 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
     case Enum213.NPC_ACTION_ASK_ABOUT_PAYING_RPC_WITH_DAILY_SALARY:
     case Enum213.NPC_ACTION_REDUCE_CONRAD_SALARY_CONDITIONS:
       zTemp2 = swprintf("%d", gMercProfiles[ubProfileID].sSalary);
-      InsertDollarSignInToString(zTemp2);
+      zTemp2 = InsertDollarSignInToString(zTemp2);
       zTemp = swprintf(TacticalStr[Enum335.HIRE_PROMPT], gMercProfiles[ubProfileID].zNickname, zTemp2);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
@@ -3677,7 +3677,7 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       break;
     case Enum213.NPC_ACTION_BUY_LEATHER_KEVLAR_VEST:
       zTemp2 = swprintf("%d", Item[Enum225.LEATHER_JACKET_W_KEVLAR].usPrice);
-      InsertDollarSignInToString(zTemp2);
+      zTemp2 = InsertDollarSignInToString(zTemp2);
       zTemp = swprintf(TacticalStr[Enum335.BUY_VEST_PROMPT], ItemNames[Enum225.LEATHER_JACKET_W_KEVLAR], zTemp2);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
@@ -3696,14 +3696,14 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
         iTemp -= giHospitalRefund;
       }
       zTemp2 = swprintf("%ld", iTemp);
-      InsertDollarSignInToString(zTemp2);
+      zTemp2 = InsertDollarSignInToString(zTemp2);
       zTemp = swprintf(TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
 
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);
       break;
     case Enum213.NPC_ACTION_BUY_VEHICLE_REQUESTOR:
       zTemp2 = swprintf("%ld", 10000);
-      InsertDollarSignInToString(zTemp2);
+      zTemp2 = InsertDollarSignInToString(zTemp2);
       zTemp = swprintf(TacticalStr[Enum335.PAY_MONEY_PROMPT], zTemp2);
 
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zTemp, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, null);

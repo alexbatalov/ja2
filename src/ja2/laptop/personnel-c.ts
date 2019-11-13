@@ -2365,8 +2365,8 @@ function DisplayCostOfCurrentTeam(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_COST_Y, pPersonelTeamStrings[2]);
 
     sString = swprintf("%d", GetTotalDailyCostOfCurrentTeam());
-    InsertCommasForDollarFigure(sString);
-    InsertDollarSignInToString(sString);
+    sString = InsertCommasForDollarFigure(sString);
+    sString = InsertDollarSignInToString(sString);
 
     ({ sX, sY } = FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT()));
 
@@ -2376,8 +2376,8 @@ function DisplayCostOfCurrentTeam(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_HIGHEST_Y, pPersonelTeamStrings[3]);
 
     sString = swprintf("%d", GetHighestDailyCostOfCurrentTeam());
-    InsertCommasForDollarFigure(sString);
-    InsertDollarSignInToString(sString);
+    sString = InsertCommasForDollarFigure(sString);
+    sString = InsertDollarSignInToString(sString);
 
     ({ sX, sY } = FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT()));
 
@@ -2387,8 +2387,8 @@ function DisplayCostOfCurrentTeam(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_LOWEST_Y, pPersonelTeamStrings[4]);
 
     sString = swprintf("%d", GetLowestDailyCostOfCurrentTeam());
-    InsertCommasForDollarFigure(sString);
-    InsertDollarSignInToString(sString);
+    sString = InsertCommasForDollarFigure(sString);
+    sString = InsertDollarSignInToString(sString);
 
     ({ sX, sY } = FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT()));
 
@@ -5068,8 +5068,8 @@ function DisplayATMAmount(): void {
   }
 
   // insert commas and dollar sign
-  InsertCommasForDollarFigure(sTempString);
-  InsertDollarSignInToString(sTempString);
+  sTempString = InsertCommasForDollarFigure(sTempString);
+  sTempString = InsertDollarSignInToString(sTempString);
 
   // set font
   SetFont(ATM_FONT());
@@ -5339,8 +5339,8 @@ function DisplayAmountOnCurrentMerc(): void {
   sString = swprintf("%d", iFunds);
 
   // insert commas and dollar sign
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
 
   // set font
   SetFont(ATM_FONT());
@@ -5409,8 +5409,8 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   }
 
   // insert commas and dollar sign
-  InsertCommasForDollarFigure(sTempString);
-  InsertDollarSignInToString(sTempString);
+  sTempString = InsertCommasForDollarFigure(sTempString);
+  sTempString = InsertDollarSignInToString(sTempString);
 
   // string not worth worrying about?
   if (sTempString.length < 2) {
@@ -5593,8 +5593,8 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         sString = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].uiTotalCostToDate);
 
         // insert commas and dollar sign
-        InsertCommasForDollarFigure(sString);
-        InsertDollarSignInToString(sString);
+        sString = InsertCommasForDollarFigure(sString);
+        sString = InsertDollarSignInToString(sString);
 
         /*
         DEF:3/19/99:
@@ -5617,27 +5617,27 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
             // 2 week contract
             sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].uiBiWeeklySalary / 14);
-            InsertCommasForDollarFigure(sStringA);
-            InsertDollarSignInToString(sStringA);
+            sStringA = InsertCommasForDollarFigure(sStringA);
+            sStringA = InsertDollarSignInToString(sStringA);
             sString = swprintf("%s", sStringA);
           } else if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
             // 1 week contract
             sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].uiWeeklySalary / 7);
-            InsertCommasForDollarFigure(sStringA);
-            InsertDollarSignInToString(sStringA);
+            sStringA = InsertCommasForDollarFigure(sStringA);
+            sStringA = InsertDollarSignInToString(sStringA);
             sString = swprintf("%s", sStringA);
           } else {
             sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].sSalary);
-            InsertCommasForDollarFigure(sStringA);
-            InsertDollarSignInToString(sStringA);
+            sStringA = InsertCommasForDollarFigure(sStringA);
+            sStringA = InsertDollarSignInToString(sStringA);
             sString = swprintf("%s", sStringA);
           }
         } else if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
           // DEF: 99/2/7
           //				 swprintf( sStringA, L"%d", gMercProfiles[Menptr[ iId ].ubProfile].sSalary * Menptr[ iId ].iTotalContractLength);
           sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].sSalary);
-          InsertCommasForDollarFigure(sStringA);
-          InsertDollarSignInToString(sStringA);
+          sStringA = InsertCommasForDollarFigure(sStringA);
+          sStringA = InsertDollarSignInToString(sStringA);
           sString = swprintf("%s", sStringA);
         }
 
@@ -5646,8 +5646,8 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           //				 swprintf( sString, L"0" );
           //				 InsertDollarSignInToString( sString );
           sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].sSalary);
-          InsertCommasForDollarFigure(sStringA);
-          InsertDollarSignInToString(sStringA);
+          sStringA = InsertCommasForDollarFigure(sStringA);
+          sStringA = InsertDollarSignInToString(sStringA);
           sString = swprintf("%s", sStringA);
         }
 
@@ -5670,8 +5670,8 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_UNPAID_AMOUNT]);
 
           sString = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].sSalary * gMercProfiles[Menptr[iId].ubProfile].iMercMercContractLength);
-          InsertCommasForDollarFigure(sString);
-          InsertDollarSignInToString(sString);
+          sString = InsertCommasForDollarFigure(sString);
+          sString = InsertDollarSignInToString(sString);
 
           ({ sX, sY } = FindFontRightCoordinates((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT()));
           mprintf(sX, pPersonnelScreenPoints[iCounter - 1].y, sString);
@@ -5681,8 +5681,8 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           sString = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].sMedicalDepositAmount);
 
           // insert commas and dollar sign
-          InsertCommasForDollarFigure(sString);
-          InsertDollarSignInToString(sString);
+          sString = InsertCommasForDollarFigure(sString);
+          sString = InsertDollarSignInToString(sString);
 
           ({ sX, sY } = FindFontRightCoordinates((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT()));
           mprintf(sX, pPersonnelScreenPoints[iCounter - 1].y, sString);

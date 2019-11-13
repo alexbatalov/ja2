@@ -3616,8 +3616,8 @@ export function DisplayDistancesForHelicopter(): void {
   uiTripCost = (sNumSafeSectors * COST_AIRSPACE_SAFE) + (sNumUnSafeSectors * COST_AIRSPACE_UNSAFE);
 
   sString = swprintf("%d", uiTripCost);
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
   ({ sX, sY } = FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 3 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT()));
   mprintf(sX, (sYPosition + 5 + 3 * GetFontHeight(MAP_FONT())), sString);
 
@@ -3974,8 +3974,8 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   if (PlayerControlsMine(ubMineIndex) && !gMineStatus[ubMineIndex].fEmpty) {
     // show current production
     wSubString = swprintf("%d", PredictDailyIncomeFromAMine(ubMineIndex));
-    InsertCommasForDollarFigure(wSubString);
-    InsertDollarSignInToString(wSubString);
+    wSubString = InsertCommasForDollarFigure(wSubString);
+    wSubString = InsertDollarSignInToString(wSubString);
     wString = wSubString;
 
     /*

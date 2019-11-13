@@ -1046,8 +1046,8 @@ function DisplayCurrentBalanceForMapBottom(): void {
 
   // insert
 
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
 
   // center it
   ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT(), sString));
@@ -1129,8 +1129,8 @@ function DisplayProjectedDailyMineIncome(): void {
   sString = swprintf("%d", iRate);
 
   // insert
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
 
   // center it
   ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT(), sString));

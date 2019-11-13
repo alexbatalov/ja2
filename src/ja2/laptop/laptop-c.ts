@@ -3421,8 +3421,8 @@ function DisplayPlayersBalanceToDate(): void {
   sString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
 
   // put in commas, then dollar sign
-  InsertCommasForDollarFigure(sString);
-  InsertDollarSignInToString(sString);
+  sString = InsertCommasForDollarFigure(sString);
+  sString = InsertDollarSignInToString(sString);
 
   // get center
   ({ sX, sY } = FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT()));
@@ -4305,8 +4305,8 @@ export function PrintBalance(): void {
   SetFontShadow(NO_SHADOW);
 
   pString = swprintf("%d", LaptopSaveInfo.iCurrentBalance);
-  InsertCommasForDollarFigure(pString);
-  InsertDollarSignInToString(pString);
+  pString = InsertCommasForDollarFigure(pString);
+  pString = InsertDollarSignInToString(pString);
 
   if (ButtonList[gLaptopButton[5]].uiFlags & BUTTON_CLICKED_ON) {
     //		gprintfdirty(47 +1, 257 +15 + 1,pString);

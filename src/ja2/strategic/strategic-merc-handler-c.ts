@@ -218,8 +218,8 @@ export function MercDailyUpdate(): void {
 
             // create a string for the salary owed to the npc
             zMoney = swprintf("%d", sSalary);
-            InsertCommasForDollarFigure(zMoney);
-            InsertDollarSignInToString(zMoney);
+            zMoney = InsertCommasForDollarFigure(zMoney);
+            zMoney = InsertDollarSignInToString(zMoney);
 
             // Display a screen msg indicating that the npc was NOT paid
             ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, pMessageStrings[Enum333.MSG_CANT_AFFORD_TO_PAY_NPC_DAILY_SALARY_MSG], gMercProfiles[pSoldier.value.ubProfile].zNickname, zMoney);

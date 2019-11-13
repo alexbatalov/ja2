@@ -33,6 +33,7 @@ const FINANCE_TEXT_FONT = () => FONT12ARIAL();
 const NUM_RECORDS_PER_PAGE = PAGE_SIZE;
 
 // records text positions
+const RECORD_DATE_WIDTH = 47;
 const RECORD_CREDIT_WIDTH = 106 - 47;
 const RECORD_DEBIT_WIDTH = RECORD_CREDIT_WIDTH;
 const RECORD_DATE_X = TOP_X + 10;
@@ -41,7 +42,6 @@ const RECORD_TRANSACTION_WIDTH = 500 - 280;
 const RECORD_DEBIT_X = RECORD_TRANSACTION_X + RECORD_TRANSACTION_WIDTH;
 const RECORD_CREDIT_X = RECORD_DEBIT_X + RECORD_DEBIT_WIDTH;
 const RECORD_Y = 107 - 10;
-const RECORD_DATE_WIDTH = 47;
 const RECORD_BALANCE_X = RECORD_DATE_X + 385;
 const RECORD_BALANCE_WIDTH = 479 - 385;
 const RECORD_HEADER_Y = 90;
@@ -66,28 +66,28 @@ const LAST_PAGE_X = 577;
 const BTN_Y = 53;
 
 // sizeof one record
-const RECORD_SIZE = () => (sizeof(UINT32) + sizeof(INT32) + sizeof(INT32) + sizeof(UINT8) + sizeof(UINT8));
+const RECORD_SIZE = 4 + 4 + 4 + 1 + 1;
 
 // the financial record list
-let pFinanceListHead: FinanceUnitPtr = null;
+let pFinanceListHead: FinanceUnit | null = null;
 
 // current players balance
 // INT32 iCurrentBalance=0;
 
 // current page displayed
-export let iCurrentPage: INT32 = 0;
+let iCurrentPage: INT32 = 0;
 
 // current financial record (the one at the top of the current page)
-let pCurrentFinance: FinanceUnitPtr = null;
+let pCurrentFinance: FinanceUnit | null = null;
 
 // video object id's
-export let guiTITLE: UINT32;
+let guiTITLE: UINT32;
 let guiGREYFRAME: UINT32;
-export let guiTOP: UINT32;
+let guiTOP: UINT32;
 let guiMIDDLE: UINT32;
 let guiBOTTOM: UINT32;
 let guiLINE: UINT32;
-export let guiLONGLINE: UINT32;
+let guiLONGLINE: UINT32;
 let guiLISTCOLUMNS: UINT32;
 
 // are in the financial system right now?
@@ -109,7 +109,7 @@ export function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, 
 
   let iCurPage: INT32 = iCurrentPage;
   let uiId: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   // read in balance from file
 
@@ -157,8 +157,8 @@ export function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, 
   return uiId;
 }
 
-function GetFinance(uiId: UINT32): FinanceUnitPtr {
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+function GetFinance(uiId: UINT32): FinanceUnit | null {
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   // get a finance object and return a pointer to it, the obtaining of the
   // finance object is via a unique ID the programmer must store
@@ -170,11 +170,11 @@ function GetFinance(uiId: UINT32): FinanceUnitPtr {
 
   // look for finance object with Id
   while (pFinance) {
-    if (pFinance.value.uiIdNumber == uiId)
+    if (pFinance.uiIdNumber == uiId)
       break;
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return pFinance;
@@ -183,16 +183,16 @@ function GetFinance(uiId: UINT32): FinanceUnitPtr {
 function GetTotalDebits(): UINT32 {
   // returns the total of the debits
   let uiDebits: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   // run to end of list
   while (pFinance) {
     // if a debit, add to debit total
-    if (pFinance.value.iAmount > 0)
-      uiDebits += ((pFinance.value.iAmount));
+    if (pFinance.iAmount > 0)
+      uiDebits += ((pFinance.iAmount));
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return uiDebits;
@@ -201,16 +201,16 @@ function GetTotalDebits(): UINT32 {
 function GetTotalCredits(): UINT32 {
   // returns the total of the credits
   let uiCredits: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   // run to end of list
   while (pFinance) {
     // if a credit, add to credit total
-    if (pFinance.value.iAmount < 0)
-      uiCredits += ((pFinance.value.iAmount));
+    if (pFinance.iAmount < 0)
+      uiCredits += ((pFinance.iAmount));
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return uiCredits;
@@ -219,15 +219,15 @@ function GetTotalCredits(): UINT32 {
 function GetDayCredits(usDayNumber: UINT32): UINT32 {
   // returns the total of the credits for day( note resolution of usDayNumber is days)
   let uiCredits: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   while (pFinance) {
     // if a credit and it occurs on day passed
-    if ((pFinance.value.iAmount < 0) && ((pFinance.value.uiDate / (60 * 24)) == usDayNumber))
-      uiCredits += ((pFinance.value.iAmount));
+    if ((pFinance.iAmount < 0) && ((pFinance.uiDate / (60 * 24)) == usDayNumber))
+      uiCredits += ((pFinance.iAmount));
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return uiCredits;
@@ -236,14 +236,14 @@ function GetDayCredits(usDayNumber: UINT32): UINT32 {
 function GetDayDebits(usDayNumber: UINT32): UINT32 {
   // returns the total of the debits
   let uiDebits: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   while (pFinance) {
-    if ((pFinance.value.iAmount > 0) && ((pFinance.value.uiDate / (60 * 24)) == usDayNumber))
-      uiDebits += ((pFinance.value.iAmount));
+    if ((pFinance.iAmount > 0) && ((pFinance.uiDate / (60 * 24)) == usDayNumber))
+      uiDebits += ((pFinance.iAmount));
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return uiDebits;
@@ -252,14 +252,14 @@ function GetDayDebits(usDayNumber: UINT32): UINT32 {
 function GetTotalToDay(sTimeInMins: INT32): INT32 {
   // gets the total amount to this day
   let uiTotal: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   while (pFinance) {
-    if (((pFinance.value.uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
-      uiTotal += ((pFinance.value.iAmount));
+    if (((pFinance.uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
+      uiTotal += ((pFinance.iAmount));
 
     // next finance record
-    pFinance = pFinance.value.Next;
+    pFinance = pFinance.Next;
   }
 
   return uiTotal;
@@ -593,8 +593,8 @@ function DrawRecordsColumnHeadersText(): void {
 
 function DrawRecordsText(): void {
   // draws the text of the records
-  let pCurFinance: FinanceUnitPtr = pCurrentFinance;
-  let pTempFinance: FinanceUnitPtr = pFinanceListHead;
+  let pCurFinance: FinanceUnit | null = pCurrentFinance;
+  let pTempFinance: FinanceUnit | null = pFinanceListHead;
   let sString: string /* wchar_t[512] */;
   let iCounter: INT32 = 0;
   let usX: UINT16;
@@ -616,42 +616,42 @@ function DrawRecordsText(): void {
   // get balance to this point
   while (pTempFinance != pCurFinance) {
     // increment balance by amount of transaction
-    iBalance += pTempFinance.value.iAmount;
+    iBalance += (<FinanceUnit>pTempFinance).iAmount;
 
     // next element
-    pTempFinance = pTempFinance.value.Next;
+    pTempFinance = (<FinanceUnit>pTempFinance).Next;
   }
 
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
     // get and write the date
-    sString = swprintf("%d", pCurFinance.value.uiDate / (24 * 60));
+    sString = swprintf("%d", (<FinanceUnit>pCurFinance).uiDate / (24 * 60));
 
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
 
     // get and write debit/ credit
-    if (pCurFinance.value.iAmount >= 0) {
+    if ((<FinanceUnit>pCurFinance).iAmount >= 0) {
       // increase in asset - debit
-      sString = swprintf("%d", pCurFinance.value.iAmount);
+      sString = swprintf("%d", (<FinanceUnit>pCurFinance).iAmount);
       // insert commas
-      InsertCommasForDollarFigure(sString);
+      sString = InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
       // DEF: 3/19/99: removed cause we want to see the dollar sign on ALL entries
       //		 if( iCounter == 0 )
-      { InsertDollarSignInToString(sString); }
+      { sString = InsertDollarSignInToString(sString); }
 
       ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
     } else {
       // decrease in asset - credit
-      sString = swprintf("%d", pCurFinance.value.iAmount * (-1));
+      sString = swprintf("%d", (<FinanceUnit>pCurFinance).iAmount * (-1));
       SetFontForeground(FONT_RED);
-      InsertCommasForDollarFigure(sString);
+      sString = InsertCommasForDollarFigure(sString);
       // insert dollar sight for first record in the list
       // DEF: 3/19/99: removed cause we want to see the dollar sign on ALL entries
       //		 if( iCounter == 0 )
-      { InsertDollarSignInToString(sString); }
+      { sString = InsertDollarSignInToString(sString); }
 
       ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
@@ -659,7 +659,7 @@ function DrawRecordsText(): void {
     }
 
     // the balance to this point
-    iBalance = pCurFinance.value.iBalanceToDate;
+    iBalance = (<FinanceUnit>pCurFinance).iBalanceToDate;
 
     // set font based on balance
     if (iBalance >= 0) {
@@ -670,17 +670,17 @@ function DrawRecordsText(): void {
     }
 
     // transaction string
-    ProcessTransactionString(sString, pCurFinance);
+    sString = ProcessTransactionString(<FinanceUnit>pCurFinance);
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
 
     // print the balance string
     sString = swprintf("%d", iBalance);
-    InsertCommasForDollarFigure(sString);
+    sString = InsertCommasForDollarFigure(sString);
     // insert dollar sight for first record in the list
     // DEF: 3/19/99: removed cause we want to see the dollar sign on ALL entries
     //		if( iCounter == 0 )
-    { InsertDollarSignInToString(sString); }
+    { sString = InsertDollarSignInToString(sString); }
 
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
@@ -689,7 +689,7 @@ function DrawRecordsText(): void {
     SetFontForeground(FONT_BLACK);
 
     // next finance
-    pCurFinance = pCurFinance.value.Next;
+    pCurFinance = (<FinanceUnit>pCurFinance).Next;
 
     // last page, no finances left, return
     if (!pCurFinance) {
@@ -755,10 +755,10 @@ function DrawSummaryText(): void {
   iBalance = GetPreviousDaysIncome();
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
 
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
 
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
@@ -770,9 +770,9 @@ function DrawSummaryText(): void {
   iBalance = GetYesterdaysOtherDeposits();
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_OTHER, pString);
@@ -788,9 +788,9 @@ function DrawSummaryText(): void {
 
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_DEBITS, pString);
@@ -806,9 +806,9 @@ function DrawSummaryText(): void {
   }
 
   pString = swprintf("%d", iBalance);
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, YESTERDAYS_BALANCE, pString);
@@ -819,9 +819,9 @@ function DrawSummaryText(): void {
   iBalance = GetTodaysDaysIncome();
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_INCOME, pString);
@@ -832,9 +832,9 @@ function DrawSummaryText(): void {
   iBalance = GetTodaysOtherDeposits();
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_OTHER, pString);
@@ -851,9 +851,9 @@ function DrawSummaryText(): void {
 
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_DEBITS, pString);
@@ -871,9 +871,9 @@ function DrawSummaryText(): void {
     pString = swprintf("%d", iBalance);
   }
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
   mprintf(usX, TODAYS_CURRENT_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
@@ -882,9 +882,9 @@ function DrawSummaryText(): void {
   iBalance = GetProjectedTotalDailyIncome();
   pString = swprintf("%d", iBalance);
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
 
   mprintf(usX, TODAYS_CURRENT_FORCAST_INCOME, pString);
@@ -902,9 +902,9 @@ function DrawSummaryText(): void {
     pString = swprintf("%d", iBalance);
   }
 
-  InsertCommasForDollarFigure(pString);
+  pString = InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
-    InsertDollarSignInToString(pString);
+    pString = InsertDollarSignInToString(pString);
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT()));
   mprintf(usX, TODAYS_CURRENT_FORCAST_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
@@ -925,6 +925,7 @@ function OpenAndReadFinancesFile(): void {
   let iBalanceToDate: INT32;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // clear out the old list
   ClearFinanceList();
@@ -952,19 +953,24 @@ function OpenAndReadFinancesFile(): void {
 
   // read in balance
   // write balance to disk first
-  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
-  uiByteCount += sizeof(INT32);
+  buffer = Buffer.allocUnsafe(4);
+  iBytesRead = FileRead(hFileHandle, buffer, 4);
+  uiByteCount += 4;
+
+  LaptopSaveInfo.iCurrentBalance = buffer.readInt32LE(0);
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
   // file exists, read in data, continue until file end
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while (FileGetSize(hFileHandle) > uiByteCount) {
     // read in other data
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -972,7 +978,7 @@ function OpenAndReadFinancesFile(): void {
     ProcessAndEnterAFinacialRecord(ubCode, uiDate, iAmount, ubSecondCode, iBalanceToDate);
 
     // increment byte counter
-    uiByteCount += sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32);
+    uiByteCount += 4 + 4 + 1 + 1 + 4;
   }
 
   // close file
@@ -983,8 +989,8 @@ function OpenAndReadFinancesFile(): void {
 
 function ClearFinanceList(): void {
   // remove each element from list of transactions
-  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
-  let pFinanceNode: FinanceUnitPtr = pFinanceList;
+  let pFinanceList: FinanceUnit | null = pFinanceListHead;
+  let pFinanceNode: FinanceUnit | null = pFinanceList;
 
   // while there are elements in the list left, delete them
   while (pFinanceList) {
@@ -992,10 +998,7 @@ function ClearFinanceList(): void {
     pFinanceNode = pFinanceList;
 
     // set list head to next node
-    pFinanceList = pFinanceList.value.Next;
-
-    // delete current node
-    MemFree(pFinanceNode);
+    pFinanceList = pFinanceList.Next;
   }
   pCurrentFinance = null;
   pFinanceListHead = null;
@@ -1004,42 +1007,42 @@ function ClearFinanceList(): void {
 
 function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: INT32, ubSecondCode: UINT8, iBalanceToDate: INT32): UINT32 {
   let uiId: UINT32 = 0;
-  let pFinance: FinanceUnitPtr = pFinanceListHead;
+  let pFinance: FinanceUnit | null = pFinanceListHead;
 
   // add to finance list
   if (pFinance) {
     // go to end of list
-    while (pFinance.value.Next)
-      pFinance = pFinance.value.Next;
+    while (pFinance.Next)
+      pFinance = pFinance.Next;
 
     // alloc space
-    pFinance.value.Next = MemAlloc(sizeof(FinanceUnit));
+    pFinance.Next = createFinanceUnit();
 
     // increment id number
-    uiId = pFinance.value.uiIdNumber + 1;
+    uiId = pFinance.uiIdNumber + 1;
 
     // set up information passed
-    pFinance = pFinance.value.Next;
-    pFinance.value.Next = null;
-    pFinance.value.ubCode = ubCode;
-    pFinance.value.ubSecondCode = ubSecondCode;
-    pFinance.value.uiDate = uiDate;
-    pFinance.value.iAmount = iAmount;
-    pFinance.value.uiIdNumber = uiId;
-    pFinance.value.iBalanceToDate = iBalanceToDate;
+    pFinance = pFinance.Next;
+    pFinance.Next = null;
+    pFinance.ubCode = ubCode;
+    pFinance.ubSecondCode = ubSecondCode;
+    pFinance.uiDate = uiDate;
+    pFinance.iAmount = iAmount;
+    pFinance.uiIdNumber = uiId;
+    pFinance.iBalanceToDate = iBalanceToDate;
   } else {
     // alloc space
     uiId = ReadInLastElementOfFinanceListAndReturnIdNumber();
-    pFinance = MemAlloc(sizeof(FinanceUnit));
+    pFinance = createFinanceUnit();
 
     // setup info passed
-    pFinance.value.Next = null;
-    pFinance.value.ubCode = ubCode;
-    pFinance.value.ubSecondCode = ubSecondCode;
-    pFinance.value.uiDate = uiDate;
-    pFinance.value.iAmount = iAmount;
-    pFinance.value.uiIdNumber = uiId;
-    pFinance.value.iBalanceToDate = iBalanceToDate;
+    pFinance.Next = null;
+    pFinance.ubCode = ubCode;
+    pFinance.ubSecondCode = ubSecondCode;
+    pFinance.uiDate = uiDate;
+    pFinance.iAmount = iAmount;
+    pFinance.uiIdNumber = uiId;
+    pFinance.iBalanceToDate = iBalanceToDate;
     pFinanceListHead = pFinance;
   }
   pCurrentFinance = pFinanceListHead;
@@ -1140,7 +1143,7 @@ function BtnFinanceFirstLastPageCallBack(btn: GUI_BUTTON, reason: INT32): void {
 
 function IncrementCurrentPageFinancialDisplay(): void {
   // run through list, from pCurrentFinance, to NUM_RECORDS_PER_PAGE +1 FinancialUnits
-  let pTempFinance: FinanceUnitPtr = pCurrentFinance;
+  let pTempFinance: FinanceUnit | null = pCurrentFinance;
   let fOkToIncrementPage: boolean = false;
   let iCounter: INT32 = 0;
 
@@ -1163,11 +1166,11 @@ function IncrementCurrentPageFinancialDisplay(): void {
     // found the next page,  first record thereof
     if (iCounter == NUM_RECORDS_PER_PAGE + 1) {
       fOkToIncrementPage = true;
-      pCurrentFinance = pTempFinance.value.Next;
+      pCurrentFinance = pTempFinance.Next;
     }
 
     // next record
-    pTempFinance = pTempFinance.value.Next;
+    pTempFinance = pTempFinance.Next;
     iCounter++;
   }
 
@@ -1179,8 +1182,10 @@ function IncrementCurrentPageFinancialDisplay(): void {
   return;
 }
 
-function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance: FinanceUnitPtr): void {
-  switch (pFinance.value.ubCode) {
+function ProcessTransactionString(pFinance: FinanceUnit): string {
+  let pString: string = <string><unknown>undefined;
+
+  switch (pFinance.ubCode) {
     case Enum80.ACCRUED_INTEREST:
       pString = swprintf("%s", pTransactionText[Enum80.ACCRUED_INTEREST]);
       break;
@@ -1194,7 +1199,7 @@ function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance
       break;
 
     case Enum80.HIRED_MERC:
-      pString = swprintf(pMessageStrings[Enum333.MSG_HIRED_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pMessageStrings[Enum333.MSG_HIRED_MERC], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.BOBBYR_PURCHASE:
@@ -1202,11 +1207,11 @@ function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance
       break;
 
     case Enum80.PAY_SPECK_FOR_MERC:
-      pString = swprintf("%s", pTransactionText[Enum80.PAY_SPECK_FOR_MERC], gMercProfiles[pFinance.value.ubSecondCode].zName);
+      pString = swprintf("%s", pTransactionText[Enum80.PAY_SPECK_FOR_MERC], gMercProfiles[pFinance.ubSecondCode].zName);
       break;
 
     case Enum80.MEDICAL_DEPOSIT:
-      pString = swprintf(pTransactionText[Enum80.MEDICAL_DEPOSIT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.MEDICAL_DEPOSIT], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.IMP_PROFILE:
@@ -1214,35 +1219,35 @@ function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance
       break;
 
     case Enum80.PURCHASED_INSURANCE:
-      pString = swprintf(pTransactionText[Enum80.PURCHASED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.PURCHASED_INSURANCE], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.REDUCED_INSURANCE:
-      pString = swprintf(pTransactionText[Enum80.REDUCED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.REDUCED_INSURANCE], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.EXTENDED_INSURANCE:
-      pString = swprintf(pTransactionText[Enum80.EXTENDED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.EXTENDED_INSURANCE], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.CANCELLED_INSURANCE:
-      pString = swprintf(pTransactionText[Enum80.CANCELLED_INSURANCE], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.CANCELLED_INSURANCE], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.INSURANCE_PAYOUT:
-      pString = swprintf(pTransactionText[Enum80.INSURANCE_PAYOUT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.INSURANCE_PAYOUT], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.EXTENDED_CONTRACT_BY_1_DAY:
-      pString = swprintf(pTransactionAlternateText[1], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionAlternateText[1], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.EXTENDED_CONTRACT_BY_1_WEEK:
-      pString = swprintf(pTransactionAlternateText[2], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionAlternateText[2], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.EXTENDED_CONTRACT_BY_2_WEEKS:
-      pString = swprintf(pTransactionAlternateText[3], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionAlternateText[3], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.DEPOSIT_FROM_GOLD_MINE:
@@ -1255,44 +1260,46 @@ function ProcessTransactionString(pString: Pointer<string> /* STR16 */, pFinance
       break;
 
     case Enum80.FULL_MEDICAL_REFUND:
-      pString = swprintf(pTransactionText[Enum80.FULL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.FULL_MEDICAL_REFUND], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.PARTIAL_MEDICAL_REFUND:
-      pString = swprintf(pTransactionText[Enum80.PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.PARTIAL_MEDICAL_REFUND], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.NO_MEDICAL_REFUND:
-      pString = swprintf(pTransactionText[Enum80.NO_MEDICAL_REFUND], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.NO_MEDICAL_REFUND], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case Enum80.TRANSFER_FUNDS_TO_MERC:
-      pString = swprintf(pTransactionText[Enum80.TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.TRANSFER_FUNDS_TO_MERC], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
     case Enum80.TRANSFER_FUNDS_FROM_MERC:
-      pString = swprintf(pTransactionText[Enum80.TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.TRANSFER_FUNDS_FROM_MERC], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
     case Enum80.PAYMENT_TO_NPC:
-      pString = swprintf(pTransactionText[Enum80.PAYMENT_TO_NPC], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.PAYMENT_TO_NPC], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
     case (Enum80.TRAIN_TOWN_MILITIA): {
       let str: string /* UINT16[128] */;
       let ubSectorX: UINT8;
       let ubSectorY: UINT8;
-      ubSectorX = SECTORX(pFinance.value.ubSecondCode);
-      ubSectorY = SECTORY(pFinance.value.ubSecondCode);
+      ubSectorX = SECTORX(pFinance.ubSecondCode);
+      ubSectorY = SECTORY(pFinance.ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, true);
       pString = swprintf(pTransactionText[Enum80.TRAIN_TOWN_MILITIA], str);
     } break;
 
     case (Enum80.PURCHASED_ITEM_FROM_DEALER):
-      pString = swprintf(pTransactionText[Enum80.PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.PURCHASED_ITEM_FROM_DEALER], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
 
     case (Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT):
-      pString = swprintf(pTransactionText[Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance.value.ubSecondCode].zNickname);
+      pString = swprintf(pTransactionText[Enum80.MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT], gMercProfiles[pFinance.ubSecondCode].zNickname);
       break;
   }
+
+  return pString;
 }
 
 function DisplayFinancePageNumberAndDateRange(): void {
@@ -1301,7 +1308,7 @@ function DisplayFinancePageNumberAndDateRange(): void {
   let iLastPage: INT32 = 0;
   let iCounter: INT32 = 0;
   let uiLastDate: UINT32;
-  let pTempFinance: FinanceUnitPtr = pFinanceListHead;
+  let pTempFinance: FinanceUnit | null = pFinanceListHead;
   let sString: string /* wchar_t[50] */;
 
   // setup the font stuff
@@ -1319,11 +1326,11 @@ function DisplayFinancePageNumberAndDateRange(): void {
     }
   }
 
-  uiLastDate = pCurrentFinance.value.uiDate;
+  uiLastDate = pCurrentFinance.uiDate;
   // find last page
   while (pTempFinance) {
     iCounter++;
-    pTempFinance = pTempFinance.value.Next;
+    pTempFinance = pTempFinance.Next;
   }
 
   // get the last page
@@ -1339,13 +1346,16 @@ function WriteBalanceToDisk(): boolean {
   // will write the current balance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
-  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
+  let pFinanceList: FinanceUnit | null = pFinanceListHead;
+  let buffer: Buffer;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
   // write balance to disk
-  FileWrite(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), null);
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeInt32LE(LaptopSaveInfo.iCurrentBalance, 0);
+  FileWrite(hFileHandle, buffer, 4);
 
   // close file
   FileClose(hFileHandle);
@@ -1359,6 +1369,7 @@ function GetBalanceFromDisk(): void {
   // this procedure will open and read in data to the finance list
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
+  let buffer: Buffer;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), false);
@@ -1375,7 +1386,9 @@ function GetBalanceFromDisk(): void {
   FileSeek(hFileHandle, 0, FILE_SEEK_FROM_START);
 
   // get balance from disk first
-  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
+  buffer = Buffer.allocUnsafe(4);
+  iBytesRead = FileRead(hFileHandle, buffer, 4);
+  LaptopSaveInfo.iCurrentBalance = buffer.readInt32LE(0);
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -1385,11 +1398,12 @@ function GetBalanceFromDisk(): void {
   return;
 }
 
-function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): boolean {
+function AppendFinanceToEndOfFile(pFinance: FinanceUnit | null): boolean {
   // will write the current finance to disk
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
-  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
+  let pFinanceList: FinanceUnit = <FinanceUnit>pFinanceListHead;
+  let buffer: Buffer;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -1411,11 +1425,12 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): boolean {
 
   // write finance to disk
   // now write date and amount, and code
-  FileWrite(hFileHandle, addressof(pFinanceList.value.ubCode), sizeof(UINT8), null);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.ubSecondCode), sizeof(UINT8), null);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.uiDate), sizeof(UINT32), null);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.iAmount), sizeof(INT32), null);
-  FileWrite(hFileHandle, addressof(pFinanceList.value.iBalanceToDate), sizeof(INT32), null);
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
+  buffer.writeUInt8(pFinanceList.ubCode, 0);
+  buffer.writeUInt8(pFinanceList.ubSecondCode, 1);
+  buffer.writeUInt32LE(pFinanceList.uiDate, 2);
+  buffer.writeInt32LE(pFinanceList.iAmount, 6);
+  buffer.writeInt32LE(pFinanceList.iBalanceToDate, 10);
 
   // close file
   FileClose(hFileHandle);
@@ -1446,7 +1461,7 @@ function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
   }
 
   // make sure file is more than balance size + length of 1 record - 1 byte
-  if (FileGetSize(hFileHandle) < sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32)) {
+  if (FileGetSize(hFileHandle) < 4 + 4 + 1 + 1 + 4) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -1458,7 +1473,7 @@ function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
   FileClose(hFileHandle);
 
   // file size -1 / sizeof record in bytes is id
-  return (iFileSize - 1) / (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32));
+  return (iFileSize - 1) / (4 + 4 + 1 + 1 + 4);
 }
 
 function SetLastPageInRecords(): void {
@@ -1542,6 +1557,7 @@ function LoadInRecords(uiPage: UINT32): boolean {
   let iAmount: INT32;
   let iBytesRead: INT32 = 0;
   let uiByteCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1569,23 +1585,25 @@ function LoadInRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - sizeof(INT32) - 1) / (NUM_RECORDS_PER_PAGE * (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32))) + 1 < uiPage) {
+  if ((FileGetSize(hFileHandle) - 4 - 1) / (NUM_RECORDS_PER_PAGE * (4 + 4 + 1 + 1 + 4)) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
   }
 
-  FileSeek(hFileHandle, sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32)), FILE_SEEK_FROM_START);
+  FileSeek(hFileHandle, 4 + (uiPage - 1) * NUM_RECORDS_PER_PAGE * (4 + 4 + 1 + 1 + 4), FILE_SEEK_FROM_START);
 
-  uiByteCount = sizeof(INT32) + (uiPage - 1) * NUM_RECORDS_PER_PAGE * (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32));
+  uiByteCount = 4 + (uiPage - 1) * NUM_RECORDS_PER_PAGE * (4 + 4 + 1 + 1 + 4);
   // file exists, read in data, continue until end of page
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue) && (uiByteCount < FileGetSize(hFileHandle))) {
     // read in data
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -1593,7 +1611,7 @@ function LoadInRecords(uiPage: UINT32): boolean {
     ProcessAndEnterAFinacialRecord(ubCode, uiDate, iAmount, ubSecondCode, iBalanceToDate);
 
     // increment byte counter
-    uiByteCount += sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32);
+    uiByteCount += 4 + 4 + 1 + 1 + 4;
 
     // we've overextended our welcome, and bypassed end of file, get out
     if (uiByteCount >= FileGetSize(hFileHandle)) {
@@ -1619,16 +1637,14 @@ function LoadInRecords(uiPage: UINT32): boolean {
   return true;
 }
 
-export function InsertCommasForDollarFigure(pString: string /* STR16 */): void {
+export function InsertCommasForDollarFigure(pString: string /* STR16 */): string {
   let sCounter: INT16 = 0;
   let sZeroCount: INT16 = 0;
   let sTempCounter: INT16 = 0;
   let sEndPosition: INT16 = 0;
 
   // go to end of dollar figure
-  while (pString[sCounter] != 0) {
-    sCounter++;
-  }
+  sCounter = pString.length;
 
   // negative?
   if (pString[0] == '-') {
@@ -1639,7 +1655,7 @@ export function InsertCommasForDollarFigure(pString: string /* STR16 */): void {
   // is there under $1,000?
   if (sCounter < 4) {
     // can't do anything, return
-    return;
+    return pString;
   }
 
   // at end, start backing up until beginning
@@ -1651,17 +1667,7 @@ export function InsertCommasForDollarFigure(pString: string /* STR16 */): void {
       // set tempcounter to current counter
       sTempCounter = sCounter;
 
-      // run until end
-      while (pString[sTempCounter] != 0) {
-        sTempCounter++;
-      }
-      // now shift everything over ot the right one place until sTempCounter = sCounter
-      while (sTempCounter >= sCounter) {
-        pString[sTempCounter + 1] = pString[sTempCounter];
-        sTempCounter--;
-      }
-      // now insert comma
-      pString[sCounter] = ',';
+      pString = pString.substring(0, sCounter) + ',' + pString.substring(sCounter);
     }
 
     // increment count of digits
@@ -1671,28 +1677,11 @@ export function InsertCommasForDollarFigure(pString: string /* STR16 */): void {
     sCounter--;
   }
 
-  return;
+  return pString;
 }
 
-export function InsertDollarSignInToString(pString: string /* STR16 */): void {
-  // run to end of string, copy everything in string 2 places right, insert a space at pString[ 1 ] and a L'$' at pString[ 0 ]
-
-  let iCounter: INT32 = 0;
-
-  // run to end of string
-  while (pString[iCounter] != 0) {
-    iCounter++;
-  }
-
-  // now copy over
-  while (iCounter >= 0) {
-    pString[iCounter + 1] = pString[iCounter];
-    iCounter--;
-  }
-
-  pString[0] = '$';
-
-  return;
+export function InsertDollarSignInToString(pString: string /* STR16 */): string {
+  return '$' + pString;
 }
 
 function GetPreviousBalanceToDate(): INT32 {
@@ -1701,6 +1690,7 @@ function GetPreviousBalanceToDate(): INT32 {
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
   let iBalanceToDate: INT32 = 0;
+  let buffer: Buffer;
 
   // no file, return
   if (!(FileExists(FINANCES_DATA_FILE)))
@@ -1717,15 +1707,17 @@ function GetPreviousBalanceToDate(): INT32 {
     return 0;
   }
 
-  if (FileGetSize(hFileHandle) < sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32)) {
+  if (FileGetSize(hFileHandle) < 4 + 4 + 1 + 1 + 4) {
     FileClose(hFileHandle);
     return 0;
   }
 
-  FileSeek(hFileHandle, (sizeof(INT32)), FILE_SEEK_FROM_END);
+  FileSeek(hFileHandle, 4, FILE_SEEK_FROM_END);
 
   // get balnce to date
-  FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+  buffer = Buffer.allocUnsafe(4);
+  iBytesRead = FileRead(hFileHandle, buffer, 4);
+  iBalanceToDate = buffer.readInt32LE(0);
 
   FileClose(hFileHandle);
 
@@ -1745,9 +1737,10 @@ function GetPreviousDaysBalance(): INT32 {
   let ubSecondCode: UINT8;
   let uiDate: UINT32;
   let iAmount: INT32;
-  let iBalanceToDate: INT32;
+  let iBalanceToDate: INT32 = <number><unknown>undefined;
   let fGoneTooFar: boolean = false;
   let iFileSize: INT32 = 0;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin() - (60 * 24);
@@ -1769,19 +1762,21 @@ function GetPreviousDaysBalance(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
@@ -1825,8 +1820,9 @@ function GetTodaysBalance(): INT32 {
   let ubSecondCode: UINT8;
   let uiDate: UINT32;
   let iAmount: INT32;
-  let iBalanceToDate: INT32;
+  let iBalanceToDate: INT32 = <number><unknown>undefined;
   let fGoneTooFar: boolean = false;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -1848,20 +1844,22 @@ function GetTodaysBalance(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
 
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -1901,6 +1899,7 @@ function GetPreviousDaysIncome(): INT32 {
   let iBalanceToDate: INT32;
   let fGoneTooFar: boolean = false;
   let iTotalPreviousIncome: INT32 = 0;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -1922,24 +1921,26 @@ function GetPreviousDaysIncome(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
 
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
     FileGetPos(hFileHandle);
 
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
     FileGetPos(hFileHandle);
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt8(2);
+    iAmount = buffer.readUInt8(6);
+    iBalanceToDate = buffer.readUInt8(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -1991,6 +1992,7 @@ function GetTodaysDaysIncome(): INT32 {
   let iBalanceToDate: INT32;
   let fGoneTooFar: boolean = false;
   let iTotalIncome: INT32 = 0;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2012,20 +2014,22 @@ function GetTodaysDaysIncome(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
 
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2048,7 +2052,7 @@ function GetTodaysDaysIncome(): INT32 {
   }
 
   // no entries, return nothing - no income for the day
-  if (fGoneTooFar == true) {
+  if (fGoneTooFar) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -2105,6 +2109,7 @@ function GetTodaysOtherDeposits(): INT32 {
   let iBalanceToDate: INT32;
   let fGoneTooFar: boolean = false;
   let iTotalIncome: INT32 = 0;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2126,20 +2131,22 @@ function GetTodaysOtherDeposits(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
 
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2164,7 +2171,7 @@ function GetTodaysOtherDeposits(): INT32 {
   }
 
   // no entries, return nothing - no income for the day
-  if (fGoneTooFar == true) {
+  if (fGoneTooFar) {
     FileClose(hFileHandle);
     return 0;
   }
@@ -2193,6 +2200,7 @@ function GetYesterdaysOtherDeposits(): INT32 {
   let iBalanceToDate: INT32;
   let fGoneTooFar: boolean = false;
   let iTotalPreviousIncome: INT32 = 0;
+  let buffer: Buffer;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2214,20 +2222,22 @@ function GetYesterdaysOtherDeposits(): INT32 {
   }
 
   // start at the end, move back until Date / 24 * 60 on the record is =  ( iDateInMinutes /  ( 24 * 60 ) ) - 2
-  iByteCount += sizeof(INT32);
+  iByteCount += 4;
 
   // loop, make sure we don't pass beginning of file, if so, we have an error, and check for condifition above
+  buffer = Buffer.allocUnsafe(RECORD_SIZE);
   while ((iByteCount < FileGetSize(hFileHandle)) && (!fOkToContinue) && (!fGoneTooFar)) {
-    FileSeek(hFileHandle, RECORD_SIZE() * iCounter, FILE_SEEK_FROM_END);
+    FileSeek(hFileHandle, RECORD_SIZE * iCounter, FILE_SEEK_FROM_END);
 
     // incrment byte count
-    iByteCount += RECORD_SIZE();
+    iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
-    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
+    iBytesRead = FileRead(hFileHandle, buffer, RECORD_SIZE);
+    ubCode = buffer.readUInt8(0);
+    ubSecondCode = buffer.readUInt8(1);
+    uiDate = buffer.readUInt32LE(2);
+    iAmount = buffer.readInt32LE(6);
+    iBalanceToDate = buffer.readInt32LE(10);
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2279,6 +2289,7 @@ function LoadCurrentBalance(): void {
   // will load the current balance from finances.dat file
   let hFileHandle: HWFILE;
   let iBytesRead: INT32 = 0;
+  let buffer: Buffer;
 
   // is the first record in the file
   // error checking
@@ -2302,7 +2313,9 @@ function LoadCurrentBalance(): void {
   }
 
   FileSeek(hFileHandle, 0, FILE_SEEK_FROM_START);
-  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
+  buffer = Buffer.allocUnsafe(4);
+  iBytesRead = FileRead(hFileHandle, buffer, 4);
+  LaptopSaveInfo.iCurrentBalance = buffer.readInt32LE(0);
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
   // close file

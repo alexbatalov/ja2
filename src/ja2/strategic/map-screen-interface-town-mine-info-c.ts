@@ -319,8 +319,8 @@ function AddTextToMineBox(): void {
     AddMonoString(addressof(hStringHandle), wString);
 
     wString = swprintf("%d", PredictDailyIncomeFromAMine(ubMineIndex));
-    InsertCommasForDollarFigure(wString);
-    InsertDollarSignInToString(wString);
+    wString = InsertCommasForDollarFigure(wString);
+    wString = InsertDollarSignInToString(wString);
     AddSecondColumnMonoString(addressof(hStringHandle), wString);
 
     // potential production
@@ -328,8 +328,8 @@ function AddTextToMineBox(): void {
     AddMonoString(addressof(hStringHandle), wString);
 
     wString = swprintf("%d", GetMaxDailyRemovalFromMine(ubMineIndex));
-    InsertCommasForDollarFigure(wString);
-    InsertDollarSignInToString(wString);
+    wString = InsertCommasForDollarFigure(wString);
+    wString = InsertDollarSignInToString(wString);
     AddSecondColumnMonoString(addressof(hStringHandle), wString);
 
     // if potential is not nil

@@ -761,8 +761,8 @@ export function RenderAIMMembers(): boolean {
   DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_MEMBER_OPTIONAL_GEAR_X, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   wTemp = swprintf("%d", gMercProfiles[gbCurrentSoldier].usOptionalGearCost);
-  InsertCommasForDollarFigure(wTemp);
-  InsertDollarSignInToString(wTemp);
+  wTemp = InsertCommasForDollarFigure(wTemp);
+  wTemp = InsertDollarSignInToString(wTemp);
   uiPosX = AIM_MEMBER_OPTIONAL_GEAR_X + StringPixLength(CharacterInfo[Enum355.AIM_MEMBER_OPTIONAL_GEAR], AIM_M_FONT_STATIC_TEXT()) + 5;
   DrawTextToScreen(wTemp, uiPosX, AIM_MEMBER_OPTIONAL_GEAR_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
@@ -818,8 +818,8 @@ function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY:
   let sStr: string /* wchar_t[10] */;
 
   sStr = swprintf("%d", iNumber);
-  InsertCommasForDollarFigure(sStr);
-  InsertDollarSignInToString(sStr);
+  sStr = InsertCommasForDollarFigure(sStr);
+  sStr = InsertDollarSignInToString(sStr);
 
   //	DrawTextToScreen(L"$", usLocX, usLocY, 0, ulFont, ubColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   DrawTextToScreen(sStr, usLocX, usLocY, bWidth, ulFont, ubColor, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
@@ -868,8 +868,8 @@ function UpdateMercInfo(): boolean {
 
     // Display the medical cost
     zTemp = swprintf("%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
-    InsertCommasForDollarFigure(zTemp);
-    InsertDollarSignInToString(zTemp);
+    zTemp = InsertCommasForDollarFigure(zTemp);
+    zTemp = InsertDollarSignInToString(zTemp);
 
     sMedicalString = swprintf("%s %s", zTemp, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
 
@@ -1757,8 +1757,8 @@ function DisplayMercChargeAmount(): UINT32 {
   }
 
   wDollarTemp = swprintf("%d", giContractAmount);
-  InsertCommasForDollarFigure(wDollarTemp);
-  InsertDollarSignInToString(wDollarTemp);
+  wDollarTemp = InsertCommasForDollarFigure(wDollarTemp);
+  wDollarTemp = InsertDollarSignInToString(wDollarTemp);
 
   // if the merc hasnt just been hired
   //	if( FindSoldierByProfileID( gbCurrentSoldier, TRUE ) == NULL )

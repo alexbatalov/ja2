@@ -1072,8 +1072,8 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
 
       // Get the current balance
       zBalanceString = swprintf("%d", SaveGameHeader.iCurrentBalance);
-      InsertCommasForDollarFigure(zBalanceString);
-      InsertDollarSignInToString(zBalanceString);
+      zBalanceString = InsertCommasForDollarFigure(zBalanceString);
+      zBalanceString = InsertDollarSignInToString(zBalanceString);
 
       //
       // Display the Saved game information

@@ -161,8 +161,8 @@ function BtnMercAuthorizeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
       wzDollarAmount = swprintf("%d", giMercTotalContractCharge);
 
-      InsertCommasForDollarFigure(wzDollarAmount);
-      InsertDollarSignInToString(wzDollarAmount);
+      wzDollarAmount = InsertCommasForDollarFigure(wzDollarAmount);
+      wzDollarAmount = InsertDollarSignInToString(wzDollarAmount);
 
       // create the string to show to the user
       wzAuthorizeString = swprintf(MercAccountText[Enum340.MERC_ACCOUNT_AUTHORIZE_CONFIRMATION], wzDollarAmount);

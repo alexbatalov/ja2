@@ -6554,8 +6554,8 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           } else {
             sDollarString = swprintf("%d", gMercProfiles[pCharacter.value.ubProfile].sSalary);
           }
-          InsertCommasForDollarFigure(sDollarString);
-          InsertDollarSignInToString(sDollarString);
+          sDollarString = InsertCommasForDollarFigure(sDollarString);
+          sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(addressof(hStringHandle), sString);
           break;
@@ -6567,8 +6567,8 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
             sDollarString = swprintf("%d", gMercProfiles[pCharacter.value.ubProfile].uiWeeklySalary);
           }
 
-          InsertCommasForDollarFigure(sDollarString);
-          InsertDollarSignInToString(sDollarString);
+          sDollarString = InsertCommasForDollarFigure(sDollarString);
+          sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(addressof(hStringHandle), sString);
           break;
@@ -6580,8 +6580,8 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
             sDollarString = swprintf("%d", gMercProfiles[pCharacter.value.ubProfile].uiBiWeeklySalary);
           }
 
-          InsertCommasForDollarFigure(sDollarString);
-          InsertDollarSignInToString(sDollarString);
+          sDollarString = InsertCommasForDollarFigure(sDollarString);
+          sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
           AddMonoString(addressof(hStringHandle), sString);
           break;

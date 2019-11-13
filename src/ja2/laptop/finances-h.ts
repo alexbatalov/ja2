@@ -13,6 +13,18 @@ export interface FinanceUnit {
   Next: FinanceUnit | null /* Pointer<FinanceUnit> */; // next unit in the list
 }
 
+export function createFinanceUnit(): FinanceUnit {
+  return {
+    ubCode: 0,
+    uiIdNumber: 0,
+    ubSecondCode: 0,
+    uiDate: 0,
+    iAmount: 0,
+    iBalanceToDate: 0,
+    Next: null,
+  };
+}
+
 export const enum Enum80 {
   ACCRUED_INTEREST,
   ANONYMOUS_DEPOSIT,
@@ -43,7 +55,5 @@ export const enum Enum80 {
   PURCHASED_ITEM_FROM_DEALER,
   MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT,
 }
-
-export type FinanceUnitPtr = Pointer<FinanceUnit>;
 
 }

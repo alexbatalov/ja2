@@ -937,7 +937,7 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
         let sTempString: string /* INT16[100] */;
 
         sTempString = swprintf("%ld", iCost - uiMoneyAmount - giHospitalTempBalance);
-        InsertDollarSignInToString(sTempString);
+        sTempString = InsertDollarSignInToString(sTempString);
 
         // not enough cash
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_NEED_TO_GIVE_MONEY], gMercProfiles[ubNPC].zNickname, sTempString);

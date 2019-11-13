@@ -718,8 +718,8 @@ export function HandleDialogue(): void {
       if (QItem.value.uiSpecialEventData < 3) {
         // post a notice if the player wants to withdraw money from thier account to cover the difference?
         zMoney = swprintf("%d", QItem.value.uiSpecialEventData2);
-        InsertCommasForDollarFigure(zMoney);
-        InsertDollarSignInToString(zMoney);
+        zMoney = InsertCommasForDollarFigure(zMoney);
+        zMoney = InsertDollarSignInToString(zMoney);
       }
 
       switch (QItem.value.uiSpecialEventData) {
