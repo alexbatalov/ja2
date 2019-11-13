@@ -452,7 +452,7 @@ export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Poi
     bTownId = GetTownIdForSector(sSectorX, sSectorY);
     if (bTownId == Enum135.BLANK_SECTOR) {
       // wilderness SAM site
-      GetSectorIDString(sSectorX, sSectorY, 0, sStringB, true);
+      sStringB = GetSectorIDString(sSectorX, sSectorY, 0, true);
       sString = swprintf(pMilitiaConfirmStrings[10], sStringB, GetSectorIDString, MIN_RATING_TO_TRAIN_TOWN);
     } else {
       // town
@@ -475,7 +475,7 @@ export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Poi
 
   // ok to continue, ask player
 
-  GetSectorIDString(sSectorX, sSectorY, 0, sStringB, true);
+  sStringB = GetSectorIDString(sSectorX, sSectorY, 0, true);
   sString = swprintf(pMilitiaConfirmStrings[3], sStringB, pMilitiaConfirmStrings[4], giTotalCostOfTraining);
 
   // ask player whether he'd like to continue training

@@ -1365,7 +1365,7 @@ function RenderAutoResolve(): void {
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
 
-  GetSectorIDString(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, str, true);
+  str = GetSectorIDString(gpAR.value.ubSectorX, gpAR.value.ubSectorY, 0, true);
   xp = gpAR.value.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
   yp += 11;
   mprintf(xp, yp, str);

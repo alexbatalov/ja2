@@ -1372,9 +1372,11 @@ function InitializeStrategicMapSectorTownNames(): void {
 }
 
 // Get sector ID string makes a string like 'A9 - OMERTA', or just J11 if no town....
-export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zString: Pointer<string> /* Pointer<CHAR16> */, fDetailed: boolean): void {
-  let pSector: Pointer<SECTORINFO> = null;
-  let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
+export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fDetailed: boolean): string {
+  let zString: string = <string><unknown>undefined;
+
+  let pSector: SECTORINFO;
+  let pUnderground: UNDERGROUND_SECTORINFO | null;
   let bTownNameID: INT8;
   let bMineIndex: INT8;
   let ubSectorID: UINT8 = 0;
@@ -1384,10 +1386,10 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
     // swprintf( zString, L"%s", pErrorStrings[0] );
   } else if (bSectorZ != 0) {
     pUnderground = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
-    if (pUnderground && (pUnderground.value.fVisited || gfGettingNameFromSaveLoadScreen)) {
+    if (pUnderground && (pUnderground.fVisited || gfGettingNameFromSaveLoadScreen)) {
       bMineIndex = GetIdOfMineForSector(sSectorX, sSectorY, bSectorZ);
       if (bMineIndex != -1) {
-        zString = swprintf("%c%d: %s %s", 'A' + sSectorY - 1, sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
+        zString = swprintf("%c%d: %s %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
       } else
         switch (SECTOR(sSectorX, sSectorY)) {
           case Enum123.SEC_A10:
@@ -1406,7 +1408,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
             zString = swprintf("P3: %s", pLandTypeStrings[Enum127.SHELTER]);
             break;
           default:
-            zString = swprintf("%c%d: %s", 'A' + sSectorY - 1, sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
+            zString = swprintf("%c%d: %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
             break;
         }
     } else {
@@ -1416,9 +1418,9 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
   } else {
     bTownNameID = StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId;
     ubSectorID = SECTOR(sSectorX, sSectorY);
-    pSector = addressof(SectorInfo[ubSectorID]);
-    ubLandType = pSector.value.ubTraversability[4];
-    zString = swprintf("%c%d: ", 'A' + sSectorY - 1, sSectorX);
+    pSector = SectorInfo[ubSectorID];
+    ubLandType = pSector.ubTraversability[4];
+    zString = swprintf("%c%d: ", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX);
 
     if (bTownNameID == Enum135.BLANK_SECTOR) {
       // OK, build string id like J11
@@ -1513,6 +1515,8 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
       }
     }
   }
+
+  return zString;
 }
 
 function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirection: UINT8, sAdditionalData: INT16): UINT8 {
@@ -2777,14 +2781,14 @@ export function UpdateAirspaceControl(): void {
     let sMsgSubString2: string /* CHAR16[64] */;
 
     // get the name of the old sector
-    GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, sMsgSubString1, false);
+    sMsgSubString1 = GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, false);
 
     // move the landing zone over to Omerta
     gsMercArriveSectorX = 9;
     gsMercArriveSectorY = 1;
 
     // get the name of the new sector
-    GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, sMsgSubString2, false);
+    sMsgSubString2 = GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, false);
 
     // now build the string
     sMsgString = swprintf(pBullseyeStrings[4], sMsgSubString1, sMsgSubString2);

@@ -3498,7 +3498,7 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   zTimeString = swprintf("%02d:%02d", uiHour, 0);
 
   // get the id string
-  GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, zSectorIDString, false);
+  zSectorIDString = GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, false);
 
   // create the string to display to the user, looks like....
   //	L"%s should arrive at the designated drop-off point ( sector %d:%d %s ) on day %d, at approximately %s.",		//first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival

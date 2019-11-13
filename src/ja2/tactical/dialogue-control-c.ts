@@ -1853,7 +1853,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
       // What sector are we in, ( and is it the same as ours? )
       if (pSoldier.value.sSectorX != gWorldSectorX || pSoldier.value.sSectorY != gWorldSectorY || pSoldier.value.bSectorZ != gbWorldSectorZ || pSoldier.value.fBetweenSectors) {
-        GetSectorIDString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, zTownIDString, false);
+        zTownIDString = GetSectorIDString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, false);
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2());
 

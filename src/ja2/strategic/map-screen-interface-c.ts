@@ -4367,7 +4367,7 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
   }
 
   // get the name of the sector
-  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sString, true);
+  sString = GetSectorIDString(sSectorX, sSectorY, bSectorZ, true);
 
   bTownId = GetTownIdForSector(sSectorX, sSectorY);
 
@@ -4424,7 +4424,7 @@ export function NotifyPlayerWhenEnemyTakesControlOfImportantSector(sSectorX: INT
   }
 
   // get the name of the sector
-  GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
+  sStringA = GetSectorIDString(sSectorX, sSectorY, bSectorZ, true);
 
   // now build the string
   sString = swprintf(pMapErrorString[17], sStringA);
@@ -4466,7 +4466,7 @@ export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: I
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
   } else if (bTownId) {
     // get the name of the sector
-    GetSectorIDString(sSectorX, sSectorY, bSectorZ, sStringA, true);
+    sStringA = GetSectorIDString(sSectorX, sSectorY, bSectorZ, true);
 
     sString = swprintf(pMapErrorString[23], sStringA);
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);

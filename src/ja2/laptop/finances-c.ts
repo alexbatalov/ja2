@@ -1286,7 +1286,7 @@ function ProcessTransactionString(pFinance: FinanceUnit): string {
       let ubSectorY: UINT8;
       ubSectorX = SECTORX(pFinance.ubSecondCode);
       ubSectorY = SECTORY(pFinance.ubSecondCode);
-      GetSectorIDString(ubSectorX, ubSectorY, 0, str, true);
+      str = GetSectorIDString(ubSectorX, ubSectorY, 0, true);
       pString = swprintf(pTransactionText[Enum80.TRAIN_TOWN_MILITIA], str);
     } break;
 

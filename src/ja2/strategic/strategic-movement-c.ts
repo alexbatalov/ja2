@@ -908,7 +908,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): boolean {
       } else {
         let str: string /* UINT16[256] */;
         let pSectorStr: string /* UINT16[128] */;
-        GetSectorIDString(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, pSectorStr, true);
+        pSectorStr = GetSectorIDString(pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubSectorZ, true);
         str = swprintf(gpStrategicString[Enum365.STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS], pSectorStr);
         DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
       }
@@ -3821,7 +3821,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
   let str: string /* UINT16[256] */;
   let zTempString: string /* UINT16[128] */;
   if (gubEnemyEncounterCode == Enum164.BLOODCAT_AMBUSH_CODE) {
-    GetSectorIDString(ubSectorX, ubSectorY, 0, zTempString, true);
+    zTempString = GetSectorIDString(ubSectorX, ubSectorY, 0, true);
     str = swprintf(pMapErrorString[12], zTempString);
   } else if (gubEnemyEncounterCode == Enum164.ENTERING_BLOODCAT_LAIR_CODE) {
     str = pMapErrorString[13];
@@ -4000,7 +4000,7 @@ function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GRO
   gpGroupPrompting = pGroup;
 
   // build string for squad
-  GetSectorIDString(sSectorX, sSectorY, bSectorZ, wSectorName, false);
+  wSectorName = GetSectorIDString(sSectorX, sSectorY, bSectorZ, false);
   sString = swprintf(pLandMarkInSectorString[0], pGroup.value.pPlayerList.value.pSoldier.value.bAssignment + 1, wSectorName);
 
   if (GroupAtFinalDestination(pGroup)) {

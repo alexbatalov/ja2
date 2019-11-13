@@ -899,7 +899,7 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
   Assert(GetSectorFlagStatus(sSectorX, sSectorY, sSectorZ, SF_ALREADY_VISITED) == true);
 
   // get sector name string
-  GetSectorIDString(sSectorX, sSectorY, sSectorZ, wSectorName, true);
+  wSectorName = GetSectorIDString(sSectorX, sSectorY, sSectorZ, true);
 
   // go through list of items in sector and randomly remove them
 
@@ -1214,7 +1214,7 @@ export function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: I
   }
 
   // Report this to player
-  GetSectorIDString(sSectorX, sSectorY, 0, pSectorString, true);
+  pSectorString = GetSectorIDString(sSectorX, sSectorY, 0, true);
   str = swprintf(gpStrategicString[Enum365.STR_DIALOG_CREATURES_KILL_CIVILIANS], ubHowMany, pSectorString);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
 

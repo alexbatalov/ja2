@@ -1052,7 +1052,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       } else {
         gfGettingNameFromSaveLoadScreen = true;
 
-        GetSectorIDString(SaveGameHeader.sSectorX, SaveGameHeader.sSectorY, SaveGameHeader.bSectorZ, zLocationString, false);
+        zLocationString = GetSectorIDString(SaveGameHeader.sSectorX, SaveGameHeader.sSectorY, SaveGameHeader.bSectorZ, false);
 
         gfGettingNameFromSaveLoadScreen = false;
       }

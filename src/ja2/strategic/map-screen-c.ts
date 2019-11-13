@@ -3571,7 +3571,7 @@ function HandleMapUI(): UINT32 {
               CancelChangeArrivalSectorMode();
 
               // get the name of the sector
-              GetSectorIDString(sMapX, sMapY, 0, sMsgSubString, false);
+              sMsgSubString = GetSectorIDString(sMapX, sMapY, 0, false);
 
               // now build the string
               sMsgString = swprintf(pBullseyeStrings[1], sMsgSubString);
@@ -8212,7 +8212,7 @@ export function TellPlayerWhyHeCantCompressTime(): void {
     if (OnlyHostileCivsInSector()) {
       let str: string /* UINT16[256] */;
       let pSectorString: string /* UINT16[128] */;
-      GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, pSectorString, true);
+      pSectorString = GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true);
       str = swprintf(gzLateLocalizedString[27], pSectorString);
       DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, str, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
     } else {

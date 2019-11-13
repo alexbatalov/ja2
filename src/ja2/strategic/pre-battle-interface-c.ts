@@ -814,7 +814,7 @@ export function RenderPreBattleInterface(): void {
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
 
-    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, pSectorName, true);
+    pSectorName = GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, true);
     mprintf(70, 17, "%s %s", gpStrategicString[Enum365.STR_PB_SECTOR], pSectorName);
 
     // enemy

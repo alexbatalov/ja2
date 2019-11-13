@@ -270,7 +270,7 @@ function RenderTacticalPlacementGUI(): void {
     SetFontForeground(FONT_BEIGE);
     SetFontShadow(141);
 
-    GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, str, true);
+    str = GetSectorIDString(gubPBSectorX, gubPBSectorY, gubPBSectorZ, true);
 
     mprintf(120, 335, "%s %s -- %s...", gpStrategicString[Enum365.STR_TP_SECTOR], str, gpStrategicString[Enum365.STR_TP_CHOOSEENTRYPOSITIONS]);
 

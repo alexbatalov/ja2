@@ -3787,7 +3787,7 @@ export function RenderTownIDString(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTownIDString, true);
+  zTownIDString = GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true);
   ReduceStringLength(zTownIDString, 80, COMPFONT());
   ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT(), zTownIDString));
   mprintf(sFontX, sFontY, "%s", zTownIDString);
