@@ -13,13 +13,13 @@ export function InitAnimationCache(usSoldierID: UINT16, pAnimCache: AnimationSur
   let cnt: UINT32;
 
   // Allocate entries
-  AnimDebugMsg(String("*** Initializing anim cache surface for soldier %d", usSoldierID));
+  AnimDebugMsg(FormatString("*** Initializing anim cache surface for soldier %d", usSoldierID));
   pAnimCache.usCachedSurfaces = createArray(guiCacheSize, 0);
   if (pAnimCache.usCachedSurfaces == null) {
     return false;
   }
 
-  AnimDebugMsg(String("*** Initializing anim cache hit counter for soldier %d", usSoldierID));
+  AnimDebugMsg(FormatString("*** Initializing anim cache hit counter for soldier %d", usSoldierID));
   pAnimCache.sCacheHits = createArray(guiCacheSize, 0);
   if (pAnimCache.sCacheHits == null) {
     return false;
@@ -41,12 +41,12 @@ export function InitAnimationCache(usSoldierID: UINT16, pAnimCache: AnimationSur
 export function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: AnimationSurfaceCacheType): void {
   // Allocate entries
   if (pAnimCache.usCachedSurfaces != null) {
-    AnimDebugMsg(String("*** Removing Anim Cache surface for soldier %d", usSoldierID));
+    AnimDebugMsg(FormatString("*** Removing Anim Cache surface for soldier %d", usSoldierID));
     pAnimCache.usCachedSurfaces = <UINT16[]><unknown>null;
   }
 
   if (pAnimCache.sCacheHits != null) {
-    AnimDebugMsg(String("*** Removing Anim Cache hit counter for soldier %d", usSoldierID));
+    AnimDebugMsg(FormatString("*** Removing Anim Cache hit counter for soldier %d", usSoldierID));
     pAnimCache.sCacheHits = <UINT16[]><unknown>null;
   }
 }
@@ -61,7 +61,7 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Anima
   for (cnt = 0; cnt < pAnimCache.ubCacheSize; cnt++) {
     if (pAnimCache.usCachedSurfaces[cnt] == usSurfaceIndex) {
       // Found surface, return
-      AnimDebugMsg(String("Anim Cache: Hit %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
+      AnimDebugMsg(FormatString("Anim Cache: Hit %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
       pAnimCache.sCacheHits[cnt]++;
       return true;
     }
@@ -69,7 +69,7 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Anima
 
   // Check if max size has been reached
   if (pAnimCache.ubCacheSize == guiCacheSize) {
-    AnimDebugMsg(String("Anim Cache: Determining Bump Candidate ( Soldier %d )", usSoldierID));
+    AnimDebugMsg(FormatString("Anim Cache: Determining Bump Candidate ( Soldier %d )", usSoldierID));
 
     // Determine exisiting surface used by merc
     usCurrentAnimSurface = DetermineSoldierAnimationSurface(MercPtrs[usSoldierID], usCurrentAnimation);
@@ -78,10 +78,10 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Anima
     // If we get here, we need to remove an animation, pick the best one
     // Loop through and pick one with lowest cache hits
     for (cnt = 0; cnt < pAnimCache.ubCacheSize; cnt++) {
-      AnimDebugMsg(String("Anim Cache: Slot %d Hits %d ( Soldier %d )", cnt, pAnimCache.sCacheHits[cnt], usSoldierID));
+      AnimDebugMsg(FormatString("Anim Cache: Slot %d Hits %d ( Soldier %d )", cnt, pAnimCache.sCacheHits[cnt], usSoldierID));
 
       if (pAnimCache.usCachedSurfaces[cnt] == usCurrentAnimSurface) {
-        AnimDebugMsg(String("Anim Cache: REJECTING Slot %d EXISTING ANIM SURFACE ( Soldier %d )", cnt, usSoldierID));
+        AnimDebugMsg(FormatString("Anim Cache: REJECTING Slot %d EXISTING ANIM SURFACE ( Soldier %d )", cnt, usSoldierID));
       } else {
         if (pAnimCache.sCacheHits[cnt] < sMostHits) {
           sMostHits = pAnimCache.sCacheHits[cnt];
@@ -91,7 +91,7 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Anima
     }
 
     // Bump off lowest index
-    AnimDebugMsg(String("Anim Cache: Bumping %d ( Soldier %d )", ubLowestIndex, usSoldierID));
+    AnimDebugMsg(FormatString("Anim Cache: Bumping %d ( Soldier %d )", ubLowestIndex, usSoldierID));
     UnLoadAnimationSurface(usSoldierID, pAnimCache.usCachedSurfaces[ubLowestIndex]);
 
     // Decrement
@@ -104,7 +104,7 @@ export function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Anima
   // Find an empty slot
   for (cnt = 0; cnt < guiCacheSize; cnt++) {
     if (pAnimCache.usCachedSurfaces[cnt] == EMPTY_CACHE_ENTRY) {
-      AnimDebugMsg(String("Anim Cache: Loading Surface %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
+      AnimDebugMsg(FormatString("Anim Cache: Loading Surface %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
 
       // Insert here
       if (LoadAnimationSurface(usSoldierID, usSurfaceIndex, usCurrentAnimation) == false) {

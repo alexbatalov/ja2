@@ -118,13 +118,13 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
 
   // is there ANY file to open?
   if ((Grayed == BUTTON_NO_IMAGE) && (OffNormal == BUTTON_NO_IMAGE) && (OffHilite == BUTTON_NO_IMAGE) && (OnNormal == BUTTON_NO_IMAGE) && (OnHilite == BUTTON_NO_IMAGE)) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("No button pictures selected for %s", filename));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("No button pictures selected for %s", filename));
     return -1;
   }
 
   // Get a button image slot
   if ((UseSlot = FindFreeButtonSlot()) == BUTTON_NO_SLOT) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Out of button image slots for %s", filename));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Out of button image slots for %s", filename));
     return -1;
   }
 
@@ -134,7 +134,7 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
 
   MemBefore = MemGetFree();
   if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(vo_desc)) == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Couldn't create VOBJECT for %s", filename));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Couldn't create VOBJECT for %s", filename));
     return -1;
   }
   MemAfter = MemGetFree();
@@ -230,25 +230,25 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
 
   // Is button image index given valid?
   if (ButtonPictures[LoadedImg].vobj == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Invalid button picture handle given for pre-loaded button image %d", LoadedImg));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Invalid button picture handle given for pre-loaded button image %d", LoadedImg));
     return -1;
   }
 
   // Is button image an external vobject?
   if (ButtonPictures[LoadedImg].fFlags & GUI_BTN_EXTERNAL_VOBJ) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Invalid button picture handle given (%d), cannot use external images as duplicates.", LoadedImg));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Invalid button picture handle given (%d), cannot use external images as duplicates.", LoadedImg));
     return -1;
   }
 
   // is there ANY file to open?
   if ((Grayed == BUTTON_NO_IMAGE) && (OffNormal == BUTTON_NO_IMAGE) && (OffHilite == BUTTON_NO_IMAGE) && (OnNormal == BUTTON_NO_IMAGE) && (OnHilite == BUTTON_NO_IMAGE)) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("No button pictures selected for pre-loaded button image %d", LoadedImg));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("No button pictures selected for pre-loaded button image %d", LoadedImg));
     return -1;
   }
 
   // Get a button image slot
   if ((UseSlot = FindFreeButtonSlot()) == BUTTON_NO_SLOT) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("Out of button image slots for pre-loaded button image %d", LoadedImg));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Out of button image slots for pre-loaded button image %d", LoadedImg));
     return -1;
   }
 
@@ -348,19 +348,19 @@ function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT3
 
   // Is button image index given valid?
   if (hVObject == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("UseVObjAsButtonImage: Invalid VObject image given"));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("UseVObjAsButtonImage: Invalid VObject image given"));
     return -1;
   }
 
   // is there ANY file to open?
   if ((Grayed == BUTTON_NO_IMAGE) && (OffNormal == BUTTON_NO_IMAGE) && (OffHilite == BUTTON_NO_IMAGE) && (OnNormal == BUTTON_NO_IMAGE) && (OnHilite == BUTTON_NO_IMAGE)) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("UseVObjAsButtonImage: No button pictures indexes selected for VObject"));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("UseVObjAsButtonImage: No button pictures indexes selected for VObject"));
     return -1;
   }
 
   // Get a button image slot
   if ((UseSlot = FindFreeButtonSlot()) == BUTTON_NO_SLOT) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("UseVObjAsButtonImage: Out of button image slots for VObject"));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("UseVObjAsButtonImage: Out of button image slots for VObject"));
     return -1;
   }
 
@@ -716,7 +716,7 @@ export function LoadGenericButtonIcon(filename: string /* Pointer<UINT8> */): IN
   vo_desc.ImageFile = filename;
 
   if ((GenericButtonIcons[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonIcon: Couldn't create VOBJECT for %s", filename));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonIcon: Couldn't create VOBJECT for %s", filename));
     return -1;
   }
 
@@ -832,7 +832,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
   vo_desc.ImageFile = OffNormName;
 
   if ((GenericButtonOffNormal[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffNormName));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffNormName));
     return -1;
   }
 
@@ -841,7 +841,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
   vo_desc.ImageFile = OnNormName;
 
   if ((GenericButtonOnNormal[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnNormName));
+    DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnNormName));
     return -1;
   }
 
@@ -853,7 +853,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.ImageFile = GrayName;
 
     if ((GenericButtonGrayed[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", GrayName));
+      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", GrayName));
       return -1;
     }
   } else
@@ -864,7 +864,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.ImageFile = OffHiliteName;
 
     if ((GenericButtonOffHilite[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffHiliteName));
+      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OffHiliteName));
       return -1;
     }
   } else
@@ -875,7 +875,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.ImageFile = OnHiliteName;
 
     if ((GenericButtonOnHilite[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnHiliteName));
+      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", OnHiliteName));
       return -1;
     }
   } else
@@ -886,7 +886,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
     vo_desc.ImageFile = BkGrndName;
 
     if ((GenericButtonBackground[ImgSlot] = CreateVideoObject(vo_desc)) == null) {
-      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, String("LoadGenericButtonImages: Couldn't create VOBJECT for %s", BkGrndName));
+      DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("LoadGenericButtonImages: Couldn't create VOBJECT for %s", BkGrndName));
       return -1;
     }
   } else
@@ -3307,7 +3307,7 @@ function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void 
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
   // If new default status added, then this assert may need to be adjusted.
-  AssertMsg(iDefaultStatus >= Enum28.DEFAULT_STATUS_NONE && iDefaultStatus <= Enum28.DEFAULT_STATUS_WINDOWS95, String("Illegal button default status of %d", iDefaultStatus));
+  AssertMsg(iDefaultStatus >= Enum28.DEFAULT_STATUS_NONE && iDefaultStatus <= Enum28.DEFAULT_STATUS_WINDOWS95, FormatString("Illegal button default status of %d", iDefaultStatus));
   Assert(b);
 
   if (b.bDefaultStatus != iDefaultStatus) {

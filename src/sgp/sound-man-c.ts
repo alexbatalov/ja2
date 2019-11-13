@@ -226,7 +226,7 @@ export function SoundPlay(pFilename: string /* STR */, pParms: Pointer<SOUNDPARM
 
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("\n*******\nSoundPlay():  ERROR:  trying to play %s which is bigger then the 'guiSoundCacheThreshold', use SoundPlayStreamedFile() instead\n", pFilename ) );
 
-      FastDebugMsg(String("SoundPlay: ERROR: Trying to play %s sound is too lardge to load into cache, use SoundPlayStreamedFile() instead\n", pFilename));
+      FastDebugMsg(FormatString("SoundPlay: ERROR: Trying to play %s sound is too lardge to load into cache, use SoundPlayStreamedFile() instead\n", pFilename));
     }
   }
 
@@ -258,7 +258,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Point
       // Open the file
       hFile = FileOpen(pFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       if (!hFile) {
-        FastDebugMsg(String("\n*******\nSoundPlayStreamedFile():  ERROR:  Couldnt open '%s' in SoundPlayStreamedFile()\n", pFilename));
+        FastDebugMsg(FormatString("\n*******\nSoundPlayStreamedFile():  ERROR:  Couldnt open '%s' in SoundPlayStreamedFile()\n", pFilename));
         return SOUND_ERROR;
       }
 
@@ -272,7 +272,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Point
       // Get the real file handle of the file
       hRealFileHandle = GetRealFileHandleFromFileManFileHandle(hFile);
       if (hRealFileHandle == 0) {
-        FastDebugMsg(String("\n*******\nSoundPlayStreamedFile():  ERROR:  Couldnt get a real file handle for '%s' in SoundPlayStreamedFile()\n", pFilename));
+        FastDebugMsg(FormatString("\n*******\nSoundPlayStreamedFile():  ERROR:  Couldnt get a real file handle for '%s' in SoundPlayStreamedFile()\n", pFilename));
         return SOUND_ERROR;
       }
 
@@ -1435,7 +1435,7 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
 
     // if we still don't fit
     if ((uiSize + guiSoundMemoryUsed) > guiSoundMemoryLimit) {
-      FastDebugMsg(String("SoundLoadDisk:  ERROR:  trying to play %s, not enough memory\n", pFilename));
+      FastDebugMsg(FormatString("SoundLoadDisk:  ERROR:  trying to play %s, not enough memory\n", pFilename));
       FileClose(hFile);
       return NO_SAMPLE;
     }
@@ -1448,7 +1448,7 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
 
     // if we still don't have a sample slot
     if (uiSample == NO_SAMPLE) {
-      FastDebugMsg(String("SoundLoadDisk:  ERROR: Trying to play %s, sound channels are full\n", pFilename));
+      FastDebugMsg(FormatString("SoundLoadDisk:  ERROR: Trying to play %s, sound channels are full\n", pFilename));
       FileClose(hFile);
       return NO_SAMPLE;
     }
@@ -1456,7 +1456,7 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
     memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
 
     if ((pSampleList[uiSample].pData = AIL_mem_alloc_lock(uiSize)) == null) {
-      FastDebugMsg(String("SoundLoadDisk:  ERROR: Trying to play %s, AIL channels are full\n", pFilename));
+      FastDebugMsg(FormatString("SoundLoadDisk:  ERROR: Trying to play %s, AIL channels are full\n", pFilename));
       FileClose(hFile);
       return NO_SAMPLE;
     }
@@ -1758,7 +1758,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
 
   memset(cBuf, 0, 128);
   AIL_digital_configuration(DIG, 0, 0, cBuf);
-  FastDebugMsg(String("Sound Init: %dKHz, %d uiBits, %s %s\n", uiRate, uiBits, (uiChans == 1) ? "Mono" : "Stereo", cBuf));
+  FastDebugMsg(FormatString("Sound Init: %dKHz, %d uiBits, %s %s\n", uiRate, uiBits, (uiChans == 1) ? "Mono" : "Stereo", cBuf));
 
   return DIG;
 }
@@ -2566,7 +2566,7 @@ function Sound3DPlay(pFilename: string /* STR */, pParms: Pointer<SOUND3DPARMS>)
         return Sound3DStartSample(uiSample, uiChannel, pParms);
       }
     } else {
-      FastDebugMsg(String("Sound3DPlay: ERROR: Failed loading sample %s\n", pFilename));
+      FastDebugMsg(FormatString("Sound3DPlay: ERROR: Failed loading sample %s\n", pFilename));
     }
   }
 

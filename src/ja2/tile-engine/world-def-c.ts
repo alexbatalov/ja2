@@ -2902,7 +2902,7 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   if (gTilesets[iTilesetID].MovementCostFnc != null) {
     gTilesets[iTilesetID].MovementCostFnc();
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Tileset %d has no callback function for movement costs. Using default.", iTilesetID));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Tileset %d has no callback function for movement costs. Using default.", iTilesetID));
     SetTilesetOneTerrainValues();
   }
 

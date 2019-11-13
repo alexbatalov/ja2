@@ -124,7 +124,7 @@ export function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ
   }
 
   gTacticalStatus.ubAttackBusyCount++;
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Incrementing Attack: Explosion gone off, COunt now %d", gTacticalStatus.ubAttackBusyCount));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Incrementing Attack: Explosion gone off, COunt now %d", gTacticalStatus.ubAttackBusyCount));
 
   // OK, go on!
   ExpParams.uiFlags = EXPLOSION_FLAG_USEABSPOS;
@@ -1019,7 +1019,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
 
   // Increment attack counter...
   gTacticalStatus.ubAttackBusyCount++;
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Incrementing Attack: Explosion dishing out damage, Count now %d", gTacticalStatus.ubAttackBusyCount));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Incrementing Attack: Explosion dishing out damage, Count now %d", gTacticalStatus.ubAttackBusyCount));
 
   sNewWoundAmt = sWoundAmt - Math.min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
   if (sNewWoundAmt < 0) {

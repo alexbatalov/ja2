@@ -168,7 +168,7 @@ export function InitTacticalPlacementGUI(): void {
     if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
       if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
-        AssertMsg(0, String("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.value.ubProfile].ubFaceIndex));
+        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }
     xp = 91 + (i / 2) * 54;

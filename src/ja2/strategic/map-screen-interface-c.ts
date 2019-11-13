@@ -3162,7 +3162,7 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
         fShowMapScreenMovementList = false;
         return;
       } else {
-        AssertMsg(0, String("MoveMenuBtnCallback: Invalid regionType %d, moveBoxLine %d", iRegionType, iMoveBoxLine));
+        AssertMsg(0, FormatString("MoveMenuBtnCallback: Invalid regionType %d, moveBoxLine %d", iRegionType, iMoveBoxLine));
         return;
       }
 
@@ -3270,7 +3270,7 @@ function HandleMoveoutOfSectorMovementTroops(): void {
       iSquadNumber = FindSquadThatSoldierCanJoin(pSoldier);
       if (iSquadNumber != -1) {
         if (!AddCharacterToSquad(pSoldier, (iSquadNumber))) {
-          AssertMsg(0, String("HandleMoveoutOfSectorMovementTroops: AddCharacterToSquad %d failed, iCounter %d", iSquadNumber, iCounter));
+          AssertMsg(0, FormatString("HandleMoveoutOfSectorMovementTroops: AddCharacterToSquad %d failed, iCounter %d", iSquadNumber, iCounter));
           // toggle whether he's going or not to try and recover somewhat gracefully
           fSoldierIsMoving[iCounter] = !fSoldierIsMoving[iCounter];
         }
@@ -3288,7 +3288,7 @@ function HandleMoveoutOfSectorMovementTroops(): void {
           }
         } else {
           // failed - should never happen!
-          AssertMsg(0, String("HandleMoveoutOfSectorMovementTroops: AddCharacterToUniqueSquad failed, iCounter %d", iCounter));
+          AssertMsg(0, FormatString("HandleMoveoutOfSectorMovementTroops: AddCharacterToUniqueSquad failed, iCounter %d", iCounter));
           // toggle whether he's going or not to try and recover somewhat gracefully
           fSoldierIsMoving[iCounter] = !fSoldierIsMoving[iCounter];
         }

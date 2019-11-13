@@ -169,7 +169,7 @@ export function CreateTileDatabase(): void {
         NumRegions = gNumTilesPerType[cnt1];
       }
 
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Type: %s Size: %d Index: %d", gTileSurfaceName[cnt1], gNumTilesPerType[cnt1], gTileDatabaseSize));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Type: %s Size: %d Index: %d", gTileSurfaceName[cnt1], gNumTilesPerType[cnt1], gTileDatabaseSize));
 
       for (cnt2 = 0; cnt2 < NumRegions; cnt2++) {
         memset(addressof(TileElement), 0, sizeof(TileElement));
@@ -278,10 +278,10 @@ export function CreateTileDatabase(): void {
 
   // Calculate mem usgae
   gSurfaceMemUsage = guiMemTotal - gSurfaceMemUsage;
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Sizes: %d vs %d", gTileDatabaseSize, Enum312.NUMBEROFTILES));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Types: %d", Enum313.NUMBEROFTILETYPES));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Mem:		%d", gTileDatabaseSize * sizeof(TILE_ELEMENT)));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Total Mem:		%d", gSurfaceMemUsage));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Sizes: %d vs %d", gTileDatabaseSize, Enum312.NUMBEROFTILES));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Types: %d", Enum313.NUMBEROFTILETYPES));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Item Mem:		%d", gTileDatabaseSize * sizeof(TILE_ELEMENT)));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Item Total Mem:		%d", gSurfaceMemUsage));
 }
 
 export function DeallocateTileDatabase(): void {

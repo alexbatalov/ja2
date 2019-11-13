@@ -77,7 +77,7 @@ export function InitializeVideoSurfaceManager(): boolean {
 
   // Create primary and backbuffer from globals
   if (!SetPrimaryVideoSurfaces()) {
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_1, String("Could not create primary surfaces"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_1, FormatString("Could not create primary surfaces"));
     return false;
   }
 
@@ -862,7 +862,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
     // Return failure due to not in video
     //
 
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed to create Video Surface in video memory"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed to create Video Surface in video memory"));
     DDReleaseSurface(addressof(lpDDS), addressof(lpDDS2));
     MemFree(hVSurface);
     return null;
@@ -946,7 +946,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
 
   giMemUsedInSurfaces += (hVSurface.value.usHeight * hVSurface.value.usWidth * (hVSurface.value.ubBitDepth / 8));
 
-  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_3, String("Success in Creating Video Surface"));
+  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_3, FormatString("Success in Creating Video Surface"));
 
   return hVSurface;
 }
@@ -973,7 +973,7 @@ function RestoreVideoSurface(hVSurface: HVSURFACE): boolean {
     // No second surfaace has been allocated, return failure
     //
 
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed to restore Video Surface surface"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed to restore Video Surface surface"));
     return false;
   }
 
@@ -986,7 +986,7 @@ function RestoreVideoSurface(hVSurface: HVSURFACE): boolean {
     // No secondary surface available
     //
 
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failure in retoring- no secondary surface found"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failure in retoring- no secondary surface found"));
     return false;
   }
 
@@ -1108,7 +1108,7 @@ function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX
 
   // This HIMAGE function will transparently copy buffer
   if (!CopyImageToBuffer(hImage, fBufferBPP, pDest, usEffectiveWidth, hVSurface.value.usHeight, usX, usY, addressof(aRect))) {
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Error Occured Copying HIMAGE to HVSURFACE"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Error Occured Copying HIMAGE to HVSURFACE"));
     UnLockVideoSurfaceBuffer(hVSurface);
     return false;
   }
@@ -1143,7 +1143,7 @@ export function SetVideoSurfacePalette(hVSurface: HVSURFACE, pSrcPalette: Pointe
   // Create 16BPP Palette
   hVSurface.value.p16BPPPalette = Create16BPPPalette(pSrcPalette);
 
-  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_3, String("Video Surface Palette change successfull"));
+  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_3, FormatString("Video Surface Palette change successfull"));
   return true;
 }
 
@@ -1498,7 +1498,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
 
   // Check that both region and subrect are not given
   if ((fBltFlags & VS_BLT_SRCREGION) && (fBltFlags & VS_BLT_SRCSUBRECT)) {
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Inconsistant blit flags given"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Inconsistant blit flags given"));
     return false;
   }
 
@@ -1561,11 +1561,11 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     // Here, use default, which is entire Video Surface
     // Check Sizes, SRC size MUST be <= DEST size
     if (hDestVSurface.value.usHeight < hSrcVSurface.value.usHeight) {
-      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Incompatible height size given in Video Surface blit"));
+      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Incompatible height size given in Video Surface blit"));
       return false;
     }
     if (hDestVSurface.value.usWidth < hSrcVSurface.value.usWidth) {
-      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Incompatible height size given in Video Surface blit"));
+      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Incompatible height size given in Video Surface blit"));
       return false;
     }
 
@@ -1621,13 +1621,13 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
   if (hDestVSurface.value.ubBitDepth == 16 && hSrcVSurface.value.ubBitDepth == 16) {
     if (fBltFlags & VS_BLT_MIRROR_Y) {
       if ((pSrcSurface16 = LockVideoSurfaceBuffer(hSrcVSurface, addressof(uiSrcPitch))) == null) {
-        DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed on lock of 16BPP surface for blitting"));
+        DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed on lock of 16BPP surface for blitting"));
         return false;
       }
 
       if ((pDestSurface16 = LockVideoSurfaceBuffer(hDestVSurface, addressof(uiDestPitch))) == null) {
         UnLockVideoSurfaceBuffer(hSrcVSurface);
-        DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed on lock of 16BPP dest surface for blitting"));
+        DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed on lock of 16BPP dest surface for blitting"));
         return false;
       }
 
@@ -1643,13 +1643,13 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     }
   } else if (hDestVSurface.value.ubBitDepth == 8 && hSrcVSurface.value.ubBitDepth == 8) {
     if ((pSrcSurface8 = LockVideoSurfaceBuffer(hSrcVSurface, addressof(uiSrcPitch))) == null) {
-      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed on lock of 8BPP surface for blitting"));
+      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed on lock of 8BPP surface for blitting"));
       return false;
     }
 
     if ((pDestSurface8 = LockVideoSurfaceBuffer(hDestVSurface, addressof(uiDestPitch))) == null) {
       UnLockVideoSurfaceBuffer(hSrcVSurface);
-      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Failed on lock of 8BPP dest surface for blitting"));
+      DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Failed on lock of 8BPP dest surface for blitting"));
       return false;
     }
 
@@ -1659,7 +1659,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     UnLockVideoSurfaceBuffer(hDestVSurface);
     return true;
   } else {
-    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, String("Incompatible BPP values with src and dest Video Surfaces for blitting"));
+    DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, FormatString("Incompatible BPP values with src and dest Video Surfaces for blitting"));
     return false;
   }
 
@@ -1768,7 +1768,7 @@ function CreateVideoSurfaceFromDDSurface(lpDDSurface: LPDIRECTDRAWSURFACE2): HVS
   }
 
   // All is well
-  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, String("Success in Creating Video Surface from DD Surface"));
+  DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, FormatString("Success in Creating Video Surface from DD Surface"));
 
   return hVSurface;
 }

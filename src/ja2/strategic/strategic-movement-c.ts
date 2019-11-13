@@ -59,8 +59,8 @@ let gfWaitingForInput: boolean = false;
 // step before adding waypoints and members to the player group.
 export function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8): UINT8 {
   let pNew: Pointer<GROUP>;
-  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewPlayerGroup with out of range sectorX value of %d", ubSectorX));
-  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewPlayerGroup with out of range sectorY value of %d", ubSectorY));
+  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, FormatString("CreateNewPlayerGroup with out of range sectorX value of %d", ubSectorX));
+  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, FormatString("CreateNewPlayerGroup with out of range sectorY value of %d", ubSectorY));
   pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewPlayerGroup.");
   memset(pNew, 0, sizeof(GROUP));
@@ -84,8 +84,8 @@ export function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSect
 
 export function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8, uiUNISEDVehicleId: UINT32): UINT8 {
   let pNew: Pointer<GROUP>;
-  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewVehicleGroup with out of range sectorX value of %d", ubSectorX));
-  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewVehicleGroup with out of range sectorY value of %d", ubSectorY));
+  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, FormatString("CreateNewVehicleGroup with out of range sectorX value of %d", ubSectorX));
+  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, FormatString("CreateNewVehicleGroup with out of range sectorY value of %d", ubSectorY));
   pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewVehicleGroup.");
   memset(pNew, 0, sizeof(GROUP));
@@ -144,7 +144,7 @@ export function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE
     pSoldier.value.ubDesiredSquadAssignment = curr.value.pSoldier.value.ubDesiredSquadAssignment;
     while (curr.value.next) {
       if (curr.value.ubProfileID == pSoldier.value.ubProfile)
-        AssertMsg(0, String("Attempting to add an already existing merc to group (ubProfile=%d).", pSoldier.value.ubProfile));
+        AssertMsg(0, FormatString("Attempting to add an already existing merc to group (ubProfile=%d).", pSoldier.value.ubProfile));
       curr = curr.value.next;
     }
     curr.value.next = pPlayer;
@@ -165,7 +165,7 @@ function RemoveAllPlayersFromGroup(ubGroupId: UINT8): boolean {
   pGroup = GetGroup(ubGroupId);
 
   // init errors checks
-  AssertMsg(pGroup, String("Attempting to RemovePlayerFromGroup( %d ) from non-existant group", ubGroupId));
+  AssertMsg(pGroup, FormatString("Attempting to RemovePlayerFromGroup( %d ) from non-existant group", ubGroupId));
 
   return RemoveAllPlayersFromPGroup(pGroup);
 }
@@ -273,7 +273,7 @@ export function RemovePlayerFromGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIE
   }
   // end
 
-  AssertMsg(pGroup, String("Attempting to RemovePlayerFromGroup( %d, %d ) from non-existant group", ubGroupID, pSoldier.value.ubProfile));
+  AssertMsg(pGroup, FormatString("Attempting to RemovePlayerFromGroup( %d, %d ) from non-existant group", ubGroupID, pSoldier.value.ubProfile));
 
   return RemovePlayerFromPGroup(pGroup, pSoldier);
 }
@@ -365,7 +365,7 @@ export function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Poi
 
   // error checking
   if (ubNumUnalignedAxes > 1) {
-    AssertMsg(false, String("Checking a diagonal move for direction change, groupID %d. AM-0", pGroup.value.ubGroupID));
+    AssertMsg(false, FormatString("Checking a diagonal move for direction change, groupID %d. AM-0", pGroup.value.ubGroupID));
     return false;
   }
 
@@ -388,8 +388,8 @@ export function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ub
   let ubNumAlignedAxes: UINT8 = 0;
   let fReversingDirection: boolean = false;
 
-  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("AddWaypointToPGroup with out of range sectorX value of %d", ubSectorX));
-  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("AddWaypointToPGroup with out of range sectorY value of %d", ubSectorY));
+  AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, FormatString("AddWaypointToPGroup with out of range sectorX value of %d", ubSectorX));
+  AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, FormatString("AddWaypointToPGroup with out of range sectorY value of %d", ubSectorY));
 
   if (!pGroup)
     return false;
@@ -434,12 +434,12 @@ export function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ub
 
   if (!fReversingDirection) {
     if (ubNumAlignedAxes == 0) {
-      AssertMsg(false, String("Invalid DIAGONAL waypoint being added for groupID %d. AM-0", pGroup.value.ubGroupID));
+      AssertMsg(false, FormatString("Invalid DIAGONAL waypoint being added for groupID %d. AM-0", pGroup.value.ubGroupID));
       return false;
     }
 
     if (ubNumAlignedAxes >= 2) {
-      AssertMsg(false, String("Invalid IDENTICAL waypoint being added for groupID %d. AM-0", pGroup.value.ubGroupID));
+      AssertMsg(false, FormatString("Invalid IDENTICAL waypoint being added for groupID %d. AM-0", pGroup.value.ubGroupID));
       return false;
     }
 
@@ -527,7 +527,7 @@ export function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorI
 //............................................................
 export function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8): Pointer<GROUP> {
   let pNew: Pointer<GROUP>;
-  AssertMsg(uiSector >= 0 && uiSector <= 255, String("CreateNewEnemyGroup with out of range value of %d", uiSector));
+  AssertMsg(uiSector >= 0 && uiSector <= 255, FormatString("CreateNewEnemyGroup with out of range value of %d", uiSector));
   pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewEnemyGroup.");
   memset(pNew, 0, sizeof(GROUP));
@@ -702,7 +702,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
   AssertMsg(pPlayerDialogGroup, "Didn't get a player dialog group for prebattle interface.");
 
   pPlayer = pPlayerDialogGroup.value.pPlayerList;
-  AssertMsg(pPlayer, String("Player group %d doesn't have *any* players in it!  (Finding dialog group)", pPlayerDialogGroup.value.ubGroupID));
+  AssertMsg(pPlayer, FormatString("Player group %d doesn't have *any* players in it!  (Finding dialog group)", pPlayerDialogGroup.value.ubGroupID));
 
   while (pPlayer != null) {
     pSoldier = pPlayer.value.pSoldier;
@@ -1173,7 +1173,7 @@ export function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: boolean,
     } else {
       if (pGroup.value.pPlayerList == null) {
         // nobody here, better just get out now
-        AssertMsg(0, String("Player group %d arrived in sector empty.  KM 0", ubGroupID));
+        AssertMsg(0, FormatString("Player group %d arrived in sector empty.  KM 0", ubGroupID));
         return;
       }
     }
@@ -1746,10 +1746,10 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   dy = wp.value.y - pGroup.value.ubSectorY;
   if (dx && dy) {
     // Can't move diagonally!
-    AssertMsg(0, String("Attempting to move to waypoint in a diagonal direction from sector %d,%d to sector %d,%d", pGroup.value.ubSectorX, pGroup.value.ubSectorY, wp.value.x, wp.value.y));
+    AssertMsg(0, FormatString("Attempting to move to waypoint in a diagonal direction from sector %d,%d to sector %d,%d", pGroup.value.ubSectorX, pGroup.value.ubSectorY, wp.value.x, wp.value.y));
   }
   if (!dx && !dy) // Can't move to position currently at!
-    AssertMsg(0, String("Attempting to move to waypoint %d, %d that you are already at!", wp.value.x, wp.value.y));
+    AssertMsg(0, FormatString("Attempting to move to waypoint %d, %d that you are already at!", wp.value.x, wp.value.y));
   // Clip dx/dy value so that the move is for only one sector.
   if (dx >= 1) {
     ubDirection = Enum186.EAST_STRATEGIC_MOVE;
@@ -1795,7 +1795,7 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   }
 
   if (pGroup.value.uiTraverseTime == 0xffffffff) {
-    AssertMsg(0, String("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A', pGroup.value.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
+    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A', pGroup.value.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
   }
 
   // add sleep, if any
@@ -2203,7 +2203,7 @@ export function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest
     iThisCostInTime = GetSectorMvtTimeForGroup(ubCurrentSector, ubDirection, pGroup);
 
     if (iThisCostInTime == 0xffffffff) {
-      AssertMsg(0, String("Group %d (%s) attempting illegal move from sector %d, dir %d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", ubCurrentSector, ubDirection, gszTerrain[SectorInfo[ubCurrentSector].ubTraversability[ubDirection]]));
+      AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from sector %d, dir %d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", ubCurrentSector, ubDirection, gszTerrain[SectorInfo[ubCurrentSector].ubTraversability[ubDirection]]));
     }
 
     // accumulate it
@@ -3209,7 +3209,7 @@ export function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX;
     pGroup.value.ubPrevY = pGroup.value.ubSectorY + 1;
   } else {
-    AssertMsg(0, String("Player group cannot retreat from sector %c%d ", pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
+    AssertMsg(0, FormatString("Player group cannot retreat from sector %c%d ", pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
     return;
   }
   if (pGroup.value.fPlayer) {
@@ -3251,7 +3251,7 @@ export function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
     else if (dx == -1 && !dy)
       ubDirection = Enum186.WEST_STRATEGIC_MOVE;
     else {
-      AssertMsg(0, String("Player group attempting illegal retreat from %c%d to %c%d.", pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A' - 1, pGroup.value.ubNextX));
+      AssertMsg(0, FormatString("Player group attempting illegal retreat from %c%d to %c%d.", pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A' - 1, pGroup.value.ubNextX));
     }
   } else {
     // Group doesn't have a previous sector.  Create one, then recurse
@@ -3263,7 +3263,7 @@ export function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   ubSector = SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
   pGroup.value.uiTraverseTime = GetSectorMvtTimeForGroup(ubSector, ubDirection, pGroup);
   if (pGroup.value.uiTraverseTime == 0xffffffff) {
-    AssertMsg(0, String("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A', pGroup.value.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
+    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.value.ubGroupID, (pGroup.value.fPlayer) ? "Player" : "AI", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, pGroup.value.ubNextY + 'A', pGroup.value.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
   }
 
   if (!pGroup.value.uiTraverseTime) {
@@ -3488,7 +3488,7 @@ export function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UI
   let ubOrigY: UINT8;
 
   Assert(pGroup);
-  AssertMsg(pGroup.value.ubMoveType == Enum185.ONE_WAY, String("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %c%d -- KM:0", pGroup.value.ubGroupID, pGroup.value.ubMoveType, pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
+  AssertMsg(pGroup.value.ubMoveType == Enum185.ONE_WAY, FormatString("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %c%d -- KM:0", pGroup.value.ubGroupID, pGroup.value.ubMoveType, pGroup.value.ubSectorY + 'A' - 1, pGroup.value.ubSectorX));
 
   // Preserve the original sector values, as we will be temporarily modifying the group's ubSectorX/Y values
   // as we traverse the waypoints.
@@ -3517,14 +3517,14 @@ export function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UI
       dy = wp.value.y - pGroup.value.ubSectorY;
       if (dx && dy) {
         // Can't move diagonally!
-        AssertMsg(0, String("GroupWillMoveThroughSector() -- Attempting to process waypoint in a diagonal direction from sector %c%d to sector %c%d for group at sector %c%d -- KM:0", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, wp.value.y + 'A' - 1, wp.value.x, ubOrigY + 'A' - 1, ubOrigX));
+        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process waypoint in a diagonal direction from sector %c%d to sector %c%d for group at sector %c%d -- KM:0", pGroup.value.ubSectorY + 'A', pGroup.value.ubSectorX, wp.value.y + 'A' - 1, wp.value.x, ubOrigY + 'A' - 1, ubOrigX));
         pGroup.value.ubSectorX = ubOrigX;
         pGroup.value.ubSectorY = ubOrigY;
         return true;
       }
       if (!dx && !dy) // Can't move to position currently at!
       {
-        AssertMsg(0, String("GroupWillMoveThroughSector() -- Attempting to process same waypoint at %c%d for group at %c%d -- KM:0", wp.value.y + 'A' - 1, wp.value.x, ubOrigY + 'A' - 1, ubOrigX));
+        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process same waypoint at %c%d for group at %c%d -- KM:0", wp.value.y + 'A' - 1, wp.value.x, ubOrigY + 'A' - 1, ubOrigX));
         pGroup.value.ubSectorX = ubOrigX;
         pGroup.value.ubSectorY = ubOrigY;
         return true;
@@ -3865,7 +3865,7 @@ export function SetGroupArrivalTime(pGroup: Pointer<GROUP>, uiArrivalTime: UINT3
   if (IsGroupTheHelicopterGroup(pGroup)) {
     // make sure it's valid (NOTE: the correct traverse time must be set first!)
     if (uiArrivalTime > (GetWorldTotalMin() + pGroup.value.uiTraverseTime)) {
-      AssertMsg(false, String("SetGroupArrivalTime: Setting invalid arrival time %d for group %d, WorldTime = %d, TraverseTime = %d", uiArrivalTime, pGroup.value.ubGroupID, GetWorldTotalMin(), pGroup.value.uiTraverseTime));
+      AssertMsg(false, FormatString("SetGroupArrivalTime: Setting invalid arrival time %d for group %d, WorldTime = %d, TraverseTime = %d", uiArrivalTime, pGroup.value.ubGroupID, GetWorldTotalMin(), pGroup.value.uiTraverseTime));
 
       // fix it if assertions are disabled
       uiArrivalTime = GetWorldTotalMin() + pGroup.value.uiTraverseTime;

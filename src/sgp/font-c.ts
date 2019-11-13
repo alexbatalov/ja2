@@ -290,7 +290,7 @@ export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   Assert(filename.length);
 
   if ((LoadIndex = FindFreeFont()) == (-1)) {
-    DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Out of font slots (%s)", filename));
+    DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, FormatString("Out of font slots (%s)", filename));
     FatalError("Cannot init FONT file %s", filename);
     return -1;
   }
@@ -299,7 +299,7 @@ export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   vo_desc.ImageFile = filename;
 
   if ((FontObjs[LoadIndex] = CreateVideoObject(addressof(vo_desc))) == null) {
-    DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error creating VOBJECT (%s)", filename));
+    DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, FormatString("Error creating VOBJECT (%s)", filename));
     FatalError("Cannot init FONT file %s", filename);
     return -1;
   }
@@ -582,7 +582,7 @@ export function GetIndex(siChar: UINT16): INT16 {
   }
 
   // If here, present warning and give the first index
-  DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error: Invalid character given %d", siChar));
+  DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, FormatString("Error: Invalid character given %d", siChar));
 
   // Return 0 here, NOT -1 - we should see A's here now...
   return 0;

@@ -539,9 +539,9 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
   pSoldier = MercPtrs[pSchedule.value.ubSoldierID];
 
   if (pSoldier.value.ubProfile != NO_PROFILE) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.name, pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.name, pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.value.ubAction[index]], pSoldier.value.ubID, GetWorldHour(), guiMin, pSchedule.value.usTime[index] / 60, pSchedule.value.usTime[index] % 60, pSchedule.value.usData1[index]));
   }
 
   // always assume the merc is going to wake, unless the event is a sleep

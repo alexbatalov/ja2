@@ -1702,7 +1702,7 @@ export function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
       break;
 
     default:
-      AssertMsg(false, String("Invalid creature bodytype %d", pSoldier.value.ubBodyType));
+      AssertMsg(false, FormatString("Invalid creature bodytype %d", pSoldier.value.ubBodyType));
       return;
   }
 
@@ -1745,7 +1745,7 @@ export function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierC
         usNewGun = StandardGunListReplacement(usItem);
       } else {
         bWeaponClass = GetWeaponClass(usItem);
-        AssertMsg(bWeaponClass != -1, String("Gun %d does not have a match in the extended gun array", usItem));
+        AssertMsg(bWeaponClass != -1, FormatString("Gun %d does not have a match in the extended gun array", usItem));
         usNewGun = SelectStandardArmyGun(bWeaponClass);
       }
 

@@ -354,7 +354,7 @@ export function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT
   SurfaceDescription.dwHeight = MAX_CURSOR_HEIGHT;
   ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpMouseCursor), null);
   if (ReturnCode != DD_OK) {
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create MouseCursor witd %ld", ReturnCode & 0x0f));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Failed to create MouseCursor witd %ld", ReturnCode & 0x0f));
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return false;
   }
@@ -2181,7 +2181,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
     gusMouseCursorHeight = pETRLEPointer.usHeight + pETRLEPointer.sOffsetY;
 
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "=================================================");
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Mouse Create with [ %d. %d ] [ %d, %d]", pETRLEPointer.sOffsetX, pETRLEPointer.sOffsetY, pETRLEPointer.usWidth, pETRLEPointer.usHeight));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Mouse Create with [ %d. %d ] [ %d, %d]", pETRLEPointer.sOffsetX, pETRLEPointer.sOffsetY, pETRLEPointer.usWidth, pETRLEPointer.usHeight));
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "=================================================");
   } else {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to get mouse info");
@@ -2317,7 +2317,7 @@ export function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT1
     gusMouseCursorHeight = pETRLEPointer.usHeight + pETRLEPointer.sOffsetY;
 
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "=================================================");
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Mouse Create with [ %d. %d ] [ %d, %d]", pETRLEPointer.sOffsetX, pETRLEPointer.sOffsetY, pETRLEPointer.usWidth, pETRLEPointer.usHeight));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Mouse Create with [ %d. %d ] [ %d, %d]", pETRLEPointer.sOffsetX, pETRLEPointer.sOffsetY, pETRLEPointer.usWidth, pETRLEPointer.usHeight));
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "=================================================");
   } else {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to get mouse info");
@@ -2355,25 +2355,25 @@ export function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): boolean {
 
   ReturnCode = IDirectDraw_CreatePalette(gpDirectDrawObject, (DDPCAPS_8BIT | DDPCAPS_ALLOW256), (addressof(gSgpPalette[0])), addressof(gpDirectDrawPalette), null);
   if (ReturnCode != DD_OK) {
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create palette (Rc = %d)", ReturnCode));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Failed to create palette (Rc = %d)", ReturnCode));
     return false;
   }
   // Apply the palette to the surfaces
   ReturnCode = IDirectDrawSurface_SetPalette(gpPrimarySurface, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to primary surface"));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Failed to apply 8-bit palette to primary surface"));
     return false;
   }
 
   ReturnCode = IDirectDrawSurface_SetPalette(gpBackBuffer, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to back buffer"));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Failed to apply 8-bit palette to back buffer"));
     return false;
   }
 
   ReturnCode = IDirectDrawSurface_SetPalette(gpFrameBuffer, gpDirectDrawPalette);
   if (ReturnCode != DD_OK) {
-    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to apply 8-bit palette to frame buffer"));
+    DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, FormatString("Failed to apply 8-bit palette to frame buffer"));
     return false;
   }
 

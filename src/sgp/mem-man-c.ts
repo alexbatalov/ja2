@@ -134,22 +134,22 @@ function MemDebug(f: boolean): void {
 
 export function ShutdownMemoryManager(): void {
   if (MemDebugCounter != 0) {
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("  >>>>> MEMORY LEAK DETECTED!!! <<<<<  "));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("%d memory blocks still allocated", MemDebugCounter));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("%d bytes memory total STILL allocated", guiMemTotal));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("%d bytes memory total was allocated", guiMemAlloced));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("%d bytes memory total was freed", guiMemFreed));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString(" "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString(" "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("  >>>>> MEMORY LEAK DETECTED!!! <<<<<  "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("%d memory blocks still allocated", MemDebugCounter));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("%d bytes memory total STILL allocated", guiMemTotal));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("%d bytes memory total was allocated", guiMemAlloced));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("%d bytes memory total was freed", guiMemFreed));
 
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString(" "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("***** WARNING - WARNING - WARNING *****"));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString(" "));
   }
 
   UnRegisterDebugTopic(TOPIC_MEMORY_MANAGER, "Memory Manager Un-initialized");
@@ -161,7 +161,7 @@ function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
   let ptr: PTR;
 
   if (!fMemManagerInit)
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemAllocLocked: Warning -- Memory manager not initialized!!! "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemAllocLocked: Warning -- Memory manager not initialized!!! "));
 
   ptr = VirtualAlloc(null, uiSize, MEM_COMMIT, PAGE_READWRITE);
 
@@ -172,7 +172,7 @@ function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
     guiMemAlloced += uiSize;
     MemDebugCounter++;
   } else {
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemAllocLocked failed: %d bytes", uiSize));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemAllocLocked failed: %d bytes", uiSize));
   }
 
   return ptr;
@@ -180,7 +180,7 @@ function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
 
 function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
   if (!fMemManagerInit)
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemFreeLocked: Warning -- Memory manager not initialized!!! "));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemFreeLocked: Warning -- Memory manager not initialized!!! "));
 
   if (ptr != null) {
     VirtualUnlock(ptr, uiSize);
@@ -189,7 +189,7 @@ function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
     guiMemTotal -= uiSize;
     guiMemFreed += uiSize;
   } else {
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemFreeLocked ERROR: NULL ptr received, size %d", uiSize));
+    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemFreeLocked ERROR: NULL ptr received, size %d", uiSize));
   }
 
   // count even a NULL ptr as a MemFree, not because it's really a memory leak, but because it is still an error of some

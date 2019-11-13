@@ -2447,32 +2447,32 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
     ubIntensity = (sRadius / LIGHT_DECAY);
     if ((iLightHandle = LightCreateOmni(ubIntensity, sRadius)) == (-1)) {
       // Can't create light template
-      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't create light template for radius %d", sRadius));
+      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't create light template for radius %d", sRadius));
       return false;
     }
 
     if (!LightSave(iLightHandle, Filename)) {
       // Can't save light template
-      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't save light template for radius %d", sRadius));
+      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't save light template for radius %d", sRadius));
       return false;
     }
 
     if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
       // Can't create sprite
-      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't create light sprite of radius %d", sRadius));
+      DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't create light sprite of radius %d", sRadius));
       return false;
     }
   }
 
   if (!LightSpritePower(iLightHandle, true)) {
     // Can't turn this light on
-    DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't turn on light %d", iLightHandle));
+    DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't turn on light %d", iLightHandle));
     return false;
   }
 
   if (!LightSpritePosition(iLightHandle, iMapX, iMapY)) {
     // Can't set light's position
-    DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't set light position for light %d", iLightHandle));
+    DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't set light position for light %d", iLightHandle));
     return false;
   }
 

@@ -149,13 +149,13 @@ export function LoadMercProfiles(): boolean {
 
   fptr = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!fptr) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to LoadMercProfiles from file %s", pFileName));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to LoadMercProfiles from file %s", pFileName));
     return false;
   }
 
   for (uiLoop = 0; uiLoop < NUM_PROFILES; uiLoop++) {
     if (JA2EncryptedFileRead(fptr, addressof(gMercProfiles[uiLoop]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead)) != 1) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to Read Merc Profiles from File %d %s", uiLoop, pFileName));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to Read Merc Profiles from File %d %s", uiLoop, pFileName));
       FileClose(fptr);
       return false;
     }

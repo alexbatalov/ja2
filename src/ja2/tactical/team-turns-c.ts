@@ -405,7 +405,7 @@ export function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): vo
   // JA2Gold: use function to make sure flags turned off everywhere else
   // pActingSoldier->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
   SetSoldierAsUnderAiControl(pActingSoldier);
-  DebugAI(String("Giving AI control to %d", pActingSoldier.value.ubID));
+  DebugAI(FormatString("Giving AI control to %d", pActingSoldier.value.ubID));
   pActingSoldier.value.fTurnInProgress = true;
   gTacticalStatus.uiTimeSinceMercAIStart = GetJA2Clock();
 
@@ -454,7 +454,7 @@ function StartInterrupt(): void {
 
   // display everyone on int queue!
   for (cnt = gubOutOfTurnPersons; cnt > 0; cnt--) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("STARTINT:  Q position %d: %d", cnt, gubOutOfTurnOrder[cnt]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("STARTINT:  Q position %d: %d", cnt, gubOutOfTurnOrder[cnt]));
   }
 
   // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: %d is now on top of the interrupt queue", ubFirstInterrupter ) );
@@ -479,7 +479,7 @@ function StartInterrupt(): void {
     // build string for display of who gets interrupt
     while (1) {
       MercPtrs[ubInterrupter].value.bMoved = false;
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
 
       REMOVE_LATEST_INTERRUPT_GUY();
       // now LATEST_INTERRUPT_GUY is the guy before the previous
@@ -521,7 +521,7 @@ function StartInterrupt(): void {
 
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sTemp);
 
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: starting interrupt for %d", ubFirstInterrupter));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: starting interrupt for %d", ubFirstInterrupter));
     // gusSelectedSoldier should become the topmost guy on the interrupt list
     // gusSelectedSoldier = ubFirstInterrupter;
 
@@ -579,7 +579,7 @@ function StartInterrupt(): void {
     while (1) {
       MercPtrs[ubInterrupter].value.bMoved = false;
 
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
 
       REMOVE_LATEST_INTERRUPT_GUY();
       // now LATEST_INTERRUPT_GUY is the guy before the previous
@@ -634,7 +634,7 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
   let ubMinAPsToAttack: UINT8;
 
   for (cnt = gubOutOfTurnPersons; cnt > 0; cnt--) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ENDINT:  Q position %d: %d", cnt, gubOutOfTurnOrder[cnt]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("ENDINT:  Q position %d: %d", cnt, gubOutOfTurnOrder[cnt]));
   }
 
   // ATE: OK, now if this all happended on one frame, we may not have to stop
@@ -665,7 +665,7 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
   } else {
     ubInterruptedSoldier = LATEST_INTERRUPT_GUY();
 
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: interrupt over, %d's team regains control", ubInterruptedSoldier));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: interrupt over, %d's team regains control", ubInterruptedSoldier));
 
     pSoldier = MercPtrs[ubInterruptedSoldier];
 
@@ -1240,7 +1240,7 @@ export function AddToIntList(ubID: UINT8, fGainControl: boolean, fCommunicate: b
   let ubLoop: UINT8;
 
   //	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%d added to int list", ubID );
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: adding ID %d who %s", ubID, fGainControl ? "gains control" : "loses control"));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: adding ID %d who %s", ubID, fGainControl ? "gains control" : "loses control"));
 
   // check whether 'who' is already anywhere on the queue after the first index
   // which we want to preserve so we can restore turn order
@@ -1280,7 +1280,7 @@ export function AddToIntList(ubID: UINT8, fGainControl: boolean, fCommunicate: b
     gubLastInterruptedGuy = ubID;
     // turn off AI control flag if they lost control
     if (Menptr[ubID].uiStatusFlags & SOLDIER_UNDERAICONTROL) {
-      DebugAI(String("Taking away AI control from %d", ubID));
+      DebugAI(FormatString("Taking away AI control from %d", ubID));
       Menptr[ubID].uiStatusFlags &= (~SOLDIER_UNDERAICONTROL);
     }
   }

@@ -1711,7 +1711,7 @@ export function LoadSavedGame(ubSavedGameID: UINT8): boolean {
   gTacticalStatus.uiFlags &= ~SHOW_ALL_ITEMS;
 
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Setting attack busy count to 0 from load"));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Setting attack busy count to 0 from load"));
     gTacticalStatus.ubAttackBusyCount = 0;
   }
 
@@ -2329,7 +2329,7 @@ export function LoadFilesFromSavedGame(pSrcFileName: string /* STR */, hFile: HW
   FileWrite(hSrcFile, pData, uiFileSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiFileSize) {
     FileClose(hSrcFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to Write to the %s File", pSrcFileName));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to Write to the %s File", pSrcFileName));
     // Free the buffer
     MemFree(pData);
 

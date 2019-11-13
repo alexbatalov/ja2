@@ -406,7 +406,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
     UnLockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex);
   } else {
     if (!GetVideoSurface(addressof(hSrcVSurface), pPopUpTextBox.value.uiMercTextPopUpBackground)) {
-      AssertMsg(0, String("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.value.uiMercTextPopUpBackground));
+      AssertMsg(0, FormatString("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.value.uiMercTextPopUpBackground));
     }
 
     pDestBuf = LockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex, addressof(uiDestPitchBYTES));

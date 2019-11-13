@@ -1338,7 +1338,7 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
       break;
 
     default:
-      AssertMsg(false, String("Invalid bRelativeAttributeLevel = %d", bp.value.bRelativeAttributeLevel));
+      AssertMsg(false, FormatString("Invalid bRelativeAttributeLevel = %d", bp.value.bRelativeAttributeLevel));
       break;
   }
 

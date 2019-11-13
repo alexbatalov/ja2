@@ -138,7 +138,7 @@ export function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength:
     pObject.value.EndedWithCollisionPosition.z += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject.value.sGridNo].sHeight);
   }
 
-  PhysicsDebugMsg(String("NewPhysics Object"));
+  PhysicsDebugMsg(FormatString("NewPhysics Object"));
 
   return iObjectIndex;
 }
@@ -319,7 +319,7 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: FLOAT): boo
         PlayJA2Sample(Enum330.THROW_IMPACT_2, RATE_11025, SoundVolume(MIDVOLUME, pObject.value.sGridNo), 1, SoundDir(pObject.value.sGridNo));
       }
 
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., PHYSICS OBJECT DONE effect gone off"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count..., PHYSICS OBJECT DONE effect gone off"));
       ReduceAttackBusyCount(pObject.value.ubOwner, false);
 
       // ATE: Handle end of animation...
@@ -376,10 +376,10 @@ function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: FLOAT): bool
   pObject.value.Velocity = VAdd(addressof(pObject.value.Velocity), addressof(vTemp));
 
   if (pObject.value.fPotentialForDebug) {
-    PhysicsDebugMsg(String("Object %d: Force		%f %f %f", pObject.value.iID, pObject.value.Force.x, pObject.value.Force.y, pObject.value.Force.z));
-    PhysicsDebugMsg(String("Object %d: Velocity %f %f %f", pObject.value.iID, pObject.value.Velocity.x, pObject.value.Velocity.y, pObject.value.Velocity.z));
-    PhysicsDebugMsg(String("Object %d: Position %f %f %f", pObject.value.iID, pObject.value.Position.x, pObject.value.Position.y, pObject.value.Position.z));
-    PhysicsDebugMsg(String("Object %d: Delta Pos %f %f %f", pObject.value.iID, (pObject.value.OldPosition.x - pObject.value.Position.x), (pObject.value.OldPosition.y - pObject.value.Position.y), (pObject.value.OldPosition.z - pObject.value.Position.z)));
+    PhysicsDebugMsg(FormatString("Object %d: Force		%f %f %f", pObject.value.iID, pObject.value.Force.x, pObject.value.Force.y, pObject.value.Force.z));
+    PhysicsDebugMsg(FormatString("Object %d: Velocity %f %f %f", pObject.value.iID, pObject.value.Velocity.x, pObject.value.Velocity.y, pObject.value.Velocity.z));
+    PhysicsDebugMsg(FormatString("Object %d: Position %f %f %f", pObject.value.iID, pObject.value.Position.x, pObject.value.Position.y, pObject.value.Position.z));
+    PhysicsDebugMsg(FormatString("Object %d: Delta Pos %f %f %f", pObject.value.iID, (pObject.value.OldPosition.x - pObject.value.Position.x), (pObject.value.OldPosition.y - pObject.value.Position.y), (pObject.value.OldPosition.z - pObject.value.Position.z)));
   }
 
   if (pObject.value.Obj.usItem == Enum225.MORTAR_SHELL && !pObject.value.fTestObject && pObject.value.ubActionCode == Enum258.THROW_ARM_ITEM) {
@@ -659,7 +659,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
     if (iCollisionCode == Enum229.COLLISION_WINDOW_NORTHWEST || iCollisionCode == Enum229.COLLISION_WINDOW_NORTHEAST || iCollisionCode == Enum229.COLLISION_WINDOW_SOUTHWEST || iCollisionCode == Enum229.COLLISION_WINDOW_SOUTHEAST) {
       if (!pObject.value.fTestObject) {
         // Break window!
-        PhysicsDebugMsg(String("Object %d: Collision Window", pObject.value.iID));
+        PhysicsDebugMsg(FormatString("Object %d: Collision Window", pObject.value.iID));
 
         sGridNo = MAPROWCOLTOPOS((pObject.value.Position.y / CELL_Y_SIZE), (pObject.value.Position.x / CELL_X_SIZE));
 
@@ -838,10 +838,10 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       pObject.value.CollisionVelocity = VSetEqual(addressof(pObject.value.OldVelocity));
 
       if (pObject.value.fPotentialForDebug) {
-        PhysicsDebugMsg(String("Object %d: Collision %d", pObject.value.iID, iCollisionCode));
-        PhysicsDebugMsg(String("Object %d: Collision Normal %f %f %f", pObject.value.iID, vTemp.x, vTemp.y, vTemp.z));
-        PhysicsDebugMsg(String("Object %d: Collision OldPos %f %f %f", pObject.value.iID, pObject.value.Position.x, pObject.value.Position.y, pObject.value.Position.z));
-        PhysicsDebugMsg(String("Object %d: Collision Velocity %f %f %f", pObject.value.iID, pObject.value.CollisionVelocity.x, pObject.value.CollisionVelocity.y, pObject.value.CollisionVelocity.z));
+        PhysicsDebugMsg(FormatString("Object %d: Collision %d", pObject.value.iID, iCollisionCode));
+        PhysicsDebugMsg(FormatString("Object %d: Collision Normal %f %f %f", pObject.value.iID, vTemp.x, vTemp.y, vTemp.z));
+        PhysicsDebugMsg(FormatString("Object %d: Collision OldPos %f %f %f", pObject.value.iID, pObject.value.Position.x, pObject.value.Position.y, pObject.value.Position.z));
+        PhysicsDebugMsg(FormatString("Object %d: Collision Velocity %f %f %f", pObject.value.iID, pObject.value.CollisionVelocity.x, pObject.value.CollisionVelocity.y, pObject.value.CollisionVelocity.z));
       }
 
       pObject.value.fColliding = true;
@@ -978,7 +978,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): boolean {
     pObject.value.sGridNo = sNewGridNo;
 
     if (pObject.value.fPotentialForDebug) {
-      PhysicsDebugMsg(String("Object %d: uiNumTilesMoved: %d", pObject.value.iID, pObject.value.uiNumTilesMoved));
+      PhysicsDebugMsg(FormatString("Object %d: uiNumTilesMoved: %d", pObject.value.iID, pObject.value.uiNumTilesMoved));
     }
   }
 

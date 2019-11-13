@@ -1341,7 +1341,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           break;
         case Enum296.TRIGGER_NPC:
           // if triggering, pass in the approach data as the record to consider
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
           NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
           break;
         default:
@@ -1863,7 +1863,7 @@ export function TriggerNPCRecord(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): v
     NPCTriggerNPC(ubTriggerNPC, ubTriggerNPCRec, Enum296.TRIGGER_NPC, fDisplayDialogue);
   } else {
     // don't do anything
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("WARNING: trigger of %d, record %d cannot proceed, possible error", ubTriggerNPC, ubTriggerNPCRec));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("WARNING: trigger of %d, record %d cannot proceed, possible error", ubTriggerNPC, ubTriggerNPCRec));
   }
 }
 
@@ -1886,7 +1886,7 @@ export function TriggerNPCRecordImmediately(ubTriggerNPC: UINT8, ubTriggerNPCRec
     HandleNPCTriggerNPC(ubTriggerNPC, ubTriggerNPCRec, fDisplayDialogue, Enum296.TRIGGER_NPC);
   } else {
     // don't do anything
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("WARNING: trigger of %d, record %d cannot proceed, possible error", ubTriggerNPC, ubTriggerNPCRec));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("WARNING: trigger of %d, record %d cannot proceed, possible error", ubTriggerNPC, ubTriggerNPCRec));
   }
 }
 

@@ -197,7 +197,7 @@ export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStru
       if (pSoldier.value.bTeam == gbPlayerNum) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.DOOR_IS_BUSY]);
       } else {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Trying to open door and door is busy: %d", pSoldier.value.ubID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Trying to open door and door is busy: %d", pSoldier.value.ubID));
       }
       return;
     }

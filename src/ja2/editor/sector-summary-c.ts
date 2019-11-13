@@ -2054,14 +2054,14 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
     }
-    OutputDebugString(String("Sector Row %c complete... \n", y + 'A'));
+    OutputDebugString(FormatString("Sector Row %c complete... \n", y + 'A'));
   }
 
   MapsDir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(MapsDir);
 
   if (gfMustForceUpdateAllMaps) {
-    OutputDebugString(String("A MAJOR MAP UPDATE EVENT HAS BEEN DETECTED FOR %d MAPS!!!!.\n", gusNumberOfMapsToBeForceUpdated));
+    OutputDebugString(FormatString("A MAJOR MAP UPDATE EVENT HAS BEEN DETECTED FOR %d MAPS!!!!.\n", gusNumberOfMapsToBeForceUpdated));
   }
 
   OutputDebugString("LoadGlobalSummary() finished...\n");

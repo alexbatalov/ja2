@@ -4018,7 +4018,7 @@ export function HandleItemPointerClick(usMapPos: UINT16): boolean {
 
       // Increment attacker count...
       gTacticalStatus.ubAttackBusyCount++;
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INcremtning ABC: Throw item to %d", gTacticalStatus.ubAttackBusyCount));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INcremtning ABC: Throw item to %d", gTacticalStatus.ubAttackBusyCount));
 
       // Given our gridno, throw grenate!
       CalculateLaunchItemParamsForThrow(gpItemPointerSoldier, sGridNo, gpItemPointerSoldier.value.bLevel, ((gsInterfaceLevel * 256) + sEndZ), gpItemPointer, 0, ubThrowActionCode, uiThrowActionData);

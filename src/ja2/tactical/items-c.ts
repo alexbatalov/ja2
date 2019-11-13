@@ -870,7 +870,7 @@ export function StandardGunListReplacement(usGun: UINT16): UINT16 {
       ubLoop++;
     }
     // ERROR!
-    AssertMsg(0, String("Extended gun with no replacement %d, CC:0", usGun));
+    AssertMsg(0, FormatString("Extended gun with no replacement %d, CC:0", usGun));
     return NOTHING;
   } else {
     return NOTHING;
@@ -889,7 +889,7 @@ export function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
       ubLoop++;
     }
     // ERROR!
-    AssertMsg(0, String("Extended gun with no replacement %d, CC:0", usAmmo));
+    AssertMsg(0, FormatString("Extended gun with no replacement %d, CC:0", usAmmo));
     return NOTHING;
   } else {
     return NOTHING;
@@ -2187,7 +2187,7 @@ function PerformAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>, bAttachmentCombo
     }
 
     bAttachPos = FindAttachment(pObj, AttachmentComboMerge[bAttachmentComboMerge].usAttachment[bAttachLoop]);
-    AssertMsg(bAttachPos != -1, String("Attachment combo merge couldn't find a necessary attachment"));
+    AssertMsg(bAttachPos != -1, FormatString("Attachment combo merge couldn't find a necessary attachment"));
 
     uiStatusTotal += pObj.value.bAttachStatus[bAttachPos];
     bNumStatusContributors++;

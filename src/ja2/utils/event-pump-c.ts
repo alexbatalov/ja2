@@ -417,7 +417,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SChangeDest.usSoldierID) == false) {
         // Handle Error?
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Invalid Soldier ID #%d", SChangeDest.usSoldierID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Invalid Soldier ID #%d", SChangeDest.usSoldierID));
         break;
       }
 
@@ -530,7 +530,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
       }
 
       // Call soldier function
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: SetDirection: Dir( %d )", SSetDirection.usNewDirection));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: SetDirection: Dir( %d )", SSetDirection.usNewDirection));
       EVENT_SetSoldierDirection(pSoldier, SSetDirection.usNewDirection);
       break;
 
@@ -551,7 +551,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
       }
 
       // Call soldier function
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: SetDesiredDirection: Dir( %d )", SSetDesiredDirection.usDesiredDirection));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: SetDesiredDirection: Dir( %d )", SSetDesiredDirection.usDesiredDirection));
       EVENT_SetSoldierDesiredDirection(pSoldier, SSetDesiredDirection.usDesiredDirection);
       break;
 
@@ -607,34 +607,34 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
     case Enum319.S_WEAPONHIT:
 
       memcpy(addressof(SWeaponHit), pEvent.value.pData, pEvent.value.uiDataSize);
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WeaponHit %d Damage", SWeaponHit.sDamage));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: WeaponHit %d Damage", SWeaponHit.sDamage));
       WeaponHit(SWeaponHit.usSoldierID, SWeaponHit.usWeaponIndex, SWeaponHit.sDamage, SWeaponHit.sBreathLoss, SWeaponHit.usDirection, SWeaponHit.sXPos, SWeaponHit.sYPos, SWeaponHit.sZPos, SWeaponHit.sRange, SWeaponHit.ubAttackerID, SWeaponHit.fHit, SWeaponHit.ubSpecial, SWeaponHit.ubLocation);
       break;
 
     case Enum319.S_STRUCTUREHIT:
 
       memcpy(addressof(SStructureHit), pEvent.value.pData, pEvent.value.uiDataSize);
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: StructureHit"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: StructureHit"));
       StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, true);
       break;
 
     case Enum319.S_WINDOWHIT:
 
       memcpy(addressof(SWindowHit), pEvent.value.pData, pEvent.value.uiDataSize);
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: WindowHit"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: WindowHit"));
       WindowHit(SWindowHit.sGridNo, SWindowHit.usStructureID, SWindowHit.fBlowWindowSouth, SWindowHit.fLargeForce);
       break;
 
     case Enum319.S_MISS:
 
       memcpy(addressof(SMiss), pEvent.value.pData, pEvent.value.uiDataSize);
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Shot Miss ( obsolete )"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Shot Miss ( obsolete )"));
       // ShotMiss( SMiss.ubAttackerID );
       break;
 
     case Enum319.S_NOISE:
       memcpy(addressof(SNoise), pEvent.value.pData, pEvent.value.uiDataSize);
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Noise from %d at %d/%d, type %d volume %d", SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubNoiseType, SNoise.ubVolume));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Noise from %d at %d/%d, type %d volume %d", SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubNoiseType, SNoise.ubVolume));
       OurNoise(SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubTerrType, SNoise.ubVolume, SNoise.ubNoiseType);
       break;
 
@@ -654,7 +654,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
       }
 
       // Call soldier function
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Event Pump: Stop Merc at Gridno %d", SStopMerc.sGridNo));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Stop Merc at Gridno %d", SStopMerc.sGridNo));
       EVENT_StopMerc(pSoldier, SStopMerc.sGridNo, SStopMerc.bDirection);
       break;
 

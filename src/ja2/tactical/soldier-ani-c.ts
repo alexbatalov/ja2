@@ -594,7 +594,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
                 // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Gun jammed!" );
               }
 
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - aborting start of attack due to burst gun jam"));
+              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - aborting start of attack due to burst gun jam"));
               FreeUpAttacker(pSoldier.value.ubID);
             } else if (bWeaponJammed == 255) {
               // Play intermediate animation...
@@ -614,7 +614,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
             }
 
             // ATE; Reduce it due to animation being stopped...
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - Burst animation ended"));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - Burst animation ended"));
             ReduceAttackBusyCount(pSoldier.value.ubID, false);
 
             if (CheckForImproperFireGunEnd(pSoldier)) {
@@ -961,7 +961,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
           bOKFireWeapon = OKFireWeapon(pSoldier);
 
           if (bOKFireWeapon == false) {
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Fire Weapon: Gun Cannot fire, code 470"));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Fire Weapon: Gun Cannot fire, code 470"));
 
             // OK, SKIP x # OF FRAMES
             // Skip 3 frames, ( a third ia added at the end of switch.. ) For a total of 4
@@ -973,7 +973,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
             PlayJA2Sample(Enum330.S_DRYFIRE1, RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
 
             // Free-up!
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - gun failed to fire"));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - gun failed to fire"));
             FreeUpAttacker(pSoldier.value.ubID);
           } else if (bOKFireWeapon == 255) {
             // Play intermediate animation...
@@ -1161,7 +1161,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
 
           // CODE: FORCE FREE ATTACKER
           // Release attacker
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 480"));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Releasesoldierattacker, code 480"));
 
           ReleaseSoldiersAttacker(pSoldier);
 
@@ -1554,7 +1554,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
 
                 default:
                   // IF we are here - something is wrong - we should have a death animation here
-                  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Ani: Death sequence needed for animation %d", pSoldier.value.usAnimState));
+                  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Ani: Death sequence needed for animation %d", pSoldier.value.usAnimState));
               }
             } else {
               let fMadeCorpse: boolean;
@@ -1572,7 +1572,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
               gfPotentialTeamChangeDuringDeath = true;
 
               // Release attacker
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 497 = check for death"));
+              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Releasesoldierattacker, code 497 = check for death"));
               ReleaseSoldiersAttacker(pSoldier);
 
               // ATE: OK - the above call can potentially
@@ -1639,7 +1639,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
 
             if (pSoldier.value.fChangingStanceDueToSuppression) {
               pSoldier.value.fChangingStanceDueToSuppression = false;
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - end of suppression stance change"));
+              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - end of suppression stance change"));
               ReduceAttackBusyCount(pSoldier.value.ubSuppressorID, false);
             }
 
@@ -2063,12 +2063,12 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
         case 753:
 
           // code: freeup attcker
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., CODE FROM ANIMATION %s ( %d )", gAnimControl[pSoldier.value.usAnimState].zAnimStr, pSoldier.value.usAnimState));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count..., CODE FROM ANIMATION %s ( %d )", gAnimControl[pSoldier.value.usAnimState].zAnimStr, pSoldier.value.usAnimState));
           ReduceAttackBusyCount(pSoldier.value.ubID, false);
 
           // ATE: Here, reduce again if creaturequeen tentical attack...
           if (pSoldier.value.usAnimState == Enum193.QUEEN_SWIPE) {
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count for end of queen swipe"));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count for end of queen swipe"));
             ReduceAttackBusyCount(pSoldier.value.ubID, false);
           }
           break;
@@ -2114,7 +2114,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
 
           // INcrement attacker busy count....
           gTacticalStatus.ubAttackBusyCount++;
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!! Incrementing attacker busy count..., CODE FROM ANIMATION %s ( %d ) : Count now %d", gAnimControl[pSoldier.value.usAnimState].zAnimStr, pSoldier.value.usAnimState, gTacticalStatus.ubAttackBusyCount));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!! Incrementing attacker busy count..., CODE FROM ANIMATION %s ( %d ) : Count now %d", gAnimControl[pSoldier.value.usAnimState].zAnimStr, pSoldier.value.usAnimState, gTacticalStatus.ubAttackBusyCount));
           break;
 
         case 758:
@@ -2757,7 +2757,7 @@ export function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse:
     if (pSoldier.value.bTeam != gbPlayerNum) {
       if (!pSoldier.value.fDoingExternalDeath) {
         // Release attacker
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
         ReleaseSoldiersAttacker(pSoldier);
       }
     }
@@ -2780,7 +2780,7 @@ export function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse:
 export function HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Release attacker
   if (!pSoldier.value.fDoingExternalDeath) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
     ReleaseSoldiersAttacker(pSoldier);
   }
 
@@ -3065,7 +3065,7 @@ export function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIE
           break;
 
         default:
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Control: Death state %d has no death hit", pSoldier.value.usAnimState));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Control: Death state %d has no death hit", pSoldier.value.usAnimState));
           {
             let fMadeCorpse: boolean;
             CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
@@ -3281,7 +3281,7 @@ export function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): b
 
     default:
       // IF we are here - something is wrong - we should have a death animation here
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Ani: unconscious hit sequence needed for animation %d", pSoldier.value.usAnimState));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Ani: unconscious hit sequence needed for animation %d", pSoldier.value.usAnimState));
   }
   // OTHERWISE, GOTO APPROPRIATE STOPANIMATION!
   pSoldier.value.bCollapsed = true;
@@ -3330,7 +3330,7 @@ export function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): b
 
     default:
       // IF we are here - something is wrong - we should have a death animation here
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Ani: unconscious hit sequence needed for animation %d", pSoldier.value.usAnimState));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Ani: unconscious hit sequence needed for animation %d", pSoldier.value.usAnimState));
   }
 
   return true;

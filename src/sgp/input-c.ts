@@ -195,10 +195,10 @@ export function InitializeInputManager(): boolean {
   gpCurrentStringDescriptor = null;
   // Activate the hook functions for both keyboard and Mouse
   ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHandler, 0, GetCurrentThreadId());
-  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set keyboard hook returned %d", ghKeyboardHook));
+  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, FormatString("Set keyboard hook returned %d", ghKeyboardHook));
 
   ghMouseHook = SetWindowsHookEx(WH_MOUSE, MouseHandler, 0, GetCurrentThreadId());
-  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set mouse hook returned %d", ghMouseHook));
+  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, FormatString("Set mouse hook returned %d", ghMouseHook));
   return true;
 }
 
@@ -719,7 +719,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
       } else {
         // There is a current input string which will capture this event
         RedirectToString(ubChar);
-        DbgMessage(TOPIC_INPUT, DBG_LEVEL_0, String("Pressed character %d (%d)", ubChar, ubKey));
+        DbgMessage(TOPIC_INPUT, DBG_LEVEL_0, FormatString("Pressed character %d (%d)", ubChar, ubKey));
       }
     } else {
       // Well the key gets repeated

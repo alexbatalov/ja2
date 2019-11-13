@@ -154,7 +154,7 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   }
 
   if (guiGameClock < guiPreviousGameClock) {
-    AssertMsg(false, String("AdvanceClock: TIME FLOWING BACKWARDS!!! guiPreviousGameClock %d, now %d", guiPreviousGameClock, guiGameClock));
+    AssertMsg(false, FormatString("AdvanceClock: TIME FLOWING BACKWARDS!!! guiPreviousGameClock %d, now %d", guiPreviousGameClock, guiGameClock));
 
     // fix it if assertions are disabled
     guiGameClock = guiPreviousGameClock;

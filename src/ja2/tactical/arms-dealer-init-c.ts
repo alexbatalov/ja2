@@ -744,7 +744,7 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
       break;
 
     default:
-      AssertMsg(false, String("GetArmsDealerItemTypeFromItemNumber(), invalid class %d for item %d.  DF 0.", Item[usItem].usItemClass, usItem));
+      AssertMsg(false, FormatString("GetArmsDealerItemTypeFromItemNumber(), invalid class %d for item %d.  DF 0.", Item[usItem].usItemClass, usItem));
       break;
   }
   return 0;
@@ -908,7 +908,7 @@ export function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, 
       return CanDealerRepairItem(ubArmsDealer, usItemIndex);
 
     default:
-      AssertMsg(false, String("CanDealerTransactItem(), type of dealer %d.  AM 0.", ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer));
+      AssertMsg(false, FormatString("CanDealerTransactItem(), type of dealer %d.  AM 0.", ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer));
       return false;
   }
 
@@ -942,7 +942,7 @@ export function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): b
       break;
 
     default:
-      AssertMsg(false, String("CanDealerRepairItem(), Arms Dealer %d is not a recognized repairman!.  AM 1.", ubArmsDealer));
+      AssertMsg(false, FormatString("CanDealerRepairItem(), Arms Dealer %d is not a recognized repairman!.  AM 1.", ubArmsDealer));
   }
 
   // can't repair this...

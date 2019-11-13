@@ -333,7 +333,7 @@ export function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: st
         curr.value.ubStrLen = 0;
         curr.value.szString = "";
       } else {
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
+        AssertMsg(0, FormatString("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
       return;
     }
@@ -354,7 +354,7 @@ export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: str
         curr.value.ubStrLen = 0;
         curr.value.szString = "";
       } else {
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
+        AssertMsg(0, FormatString("Attempting to illegally set text into user field %d", curr.value.ubID));
       }
       return;
     }
@@ -424,7 +424,7 @@ export function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumbe
   while (curr) {
     if (curr.value.ubID == ubField) {
       if (curr.value.fUserField)
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
+        AssertMsg(0, FormatString("Attempting to illegally set text into user field %d", curr.value.ubID));
       if (iNumber < 0) // negative number converts to blank string
         curr.value.szString = "";
       else {
@@ -1422,7 +1422,7 @@ export function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
     curr = curr.value.next;
   }
 
-  AssertMsg(false, String("GetExclusive24HourTimeValueFromField: Invalid field %d", ubField));
+  AssertMsg(false, FormatString("GetExclusive24HourTimeValueFromField: Invalid field %d", ubField));
   return 0xffff;
 }
 
@@ -1439,7 +1439,7 @@ export function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): voi
   while (curr) {
     if (curr.value.ubID == ubField) {
       if (curr.value.fUserField)
-        AssertMsg(0, String("Attempting to illegally set text into user field %d", curr.value.ubID));
+        AssertMsg(0, FormatString("Attempting to illegally set text into user field %d", curr.value.ubID));
       curr.value.szString[0] = (usTime / 600) + 0x30; // 10 hours
       curr.value.szString[1] = (usTime / 60 % 10) + 0x30; // 1 hour
       usTime %= 60; // truncate the hours

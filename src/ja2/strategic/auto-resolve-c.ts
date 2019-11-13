@@ -1589,7 +1589,7 @@ function CreateAutoResolveInterface(): void {
     if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
       if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
-        AssertMsg(0, String("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
+        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }
     if ((hVObject = GetVideoObject(gpMercs[i].uiVObjectID))) {
@@ -2870,7 +2870,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
       iAvailableTargets--;
     }
     if (!IsBattleOver()) {
-      AssertMsg(0, String("***Please send PRIOR save and screenshot of this message***  iAvailableTargets %d, index %d, iRandom %d, defence %d. ", iAvailableTargets, index, iRandom, gpAR.value.usPlayerDefence));
+      AssertMsg(0, FormatString("***Please send PRIOR save and screenshot of this message***  iAvailableTargets %d, index %d, iRandom %d, defence %d. ", iAvailableTargets, index, iRandom, gpAR.value.usPlayerDefence));
     }
   } else {
     // player team attacking an enemy

@@ -196,7 +196,7 @@ export function InitLightingSystem(): boolean {
     memset(addressof(LightSprites[uiCount]), 0, sizeof(LIGHT_SPRITE));
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
-    DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
+    DebugMsg(TOPIC_GAME, DBG_LEVEL_0, FormatString("Failed to load translucency template"));
     return false;
   }
 
@@ -256,7 +256,7 @@ export function LightReset(): boolean {
     memset(addressof(LightSprites[uiCount]), 0, sizeof(LIGHT_SPRITE));
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
-    DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
+    DebugMsg(TOPIC_GAME, DBG_LEVEL_0, FormatString("Failed to load translucency template"));
     return false;
   }
 

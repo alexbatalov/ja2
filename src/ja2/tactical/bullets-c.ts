@@ -123,7 +123,7 @@ export function RemoveBullet(iBullet: INT32): void {
 
     // decrement reference to bullet in the firer
     gBullets[iBullet].pFirer.value.bBulletsLeft--;
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer.value.bBulletsLeft));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer.value.bBulletsLeft));
 
     if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
       // Delete ani tile

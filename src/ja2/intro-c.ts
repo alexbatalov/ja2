@@ -360,7 +360,7 @@ function DisplaySirtechSplashScreen(): void {
 
   //	FilenameForBPP("INTERFACE\\TShold.sti", VObjectDesc.ImageFile);
   if (!(uiLogoID = AddVideoObject(VObjectDesc))) {
-    AssertMsg(0, String("Failed to load %s", VObjectDesc.ImageFile));
+    AssertMsg(0, FormatString("Failed to load %s", VObjectDesc.ImageFile));
     return;
   }
 

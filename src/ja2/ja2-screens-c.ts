@@ -142,7 +142,7 @@ export function ErrorScreenHandle(): UINT32 {
   SetFontForeground(FONT_LTRED);
 
   if (!fFirstTime) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("Runtime Error: %s ", gubErrorText));
     fFirstTime = true;
   }
 

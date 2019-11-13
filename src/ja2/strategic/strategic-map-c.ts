@@ -424,7 +424,7 @@ export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bStri
 
   if (fUsePlaceholder && !FileExists(bTestString)) {
     // Debug str
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Map does not exist for %s, using default.", bTestString));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Map does not exist for %s, using default.", bTestString));
     // Set to a string we know!
     bString = sprintf("H10.DAT", pVertStrings[sMapY], pHortStrings[sMapX]);
     ScreenMsg(FONT_YELLOW, MSG_DEBUG, "Using PLACEHOLDER map!");
@@ -1292,7 +1292,7 @@ export function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT
           break;
         default:
           pSoldier.value.sInsertionGridNo = 12880;
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Improper insertion code %d given to UpdateMercsInSector", pSoldier.value.ubStrategicInsertionCode));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Improper insertion code %d given to UpdateMercsInSector", pSoldier.value.ubStrategicInsertionCode));
           break;
       }
 
@@ -1345,7 +1345,7 @@ export function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT
       }
       // If no insertion direction exists, this is bad!
       if (pSoldier.value.sInsertionGridNo == -1) {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Insertion gridno for direction %d not added to map sector %d %d", pSoldier.value.ubStrategicInsertionCode, sSectorX, sSectorY));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Insertion gridno for direction %d not added to map sector %d %d", pSoldier.value.ubStrategicInsertionCode, sSectorX, sSectorY));
         pSoldier.value.sInsertionGridNo = 12880;
       }
 
@@ -1525,7 +1525,7 @@ function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE
 
     case 255:
       if (!GetExitGrid(sAdditionalData, addressof(ExitGrid))) {
-        AssertMsg(0, String("No valid Exit grid can be found when one was expected: SetInsertionDataFromAdjacentMoveDirection."));
+        AssertMsg(0, FormatString("No valid Exit grid can be found when one was expected: SetInsertionDataFromAdjacentMoveDirection."));
       }
       ubDirection = 255;
       pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
@@ -1694,14 +1694,14 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
     }
   } else {
     // OK, no jump code here given...
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Improper jump code %d given to JumpIntoAdjacentSector", ubJumpCode));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Improper jump code %d given to JumpIntoAdjacentSector", ubJumpCode));
   }
 
   Assert(pValidSoldier);
 
   // Now, determine the traversal time.
   pGroup = GetGroup(pValidSoldier.value.ubGroupID);
-  AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
+  AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
 
   // If we are going through an exit grid, don't get traversal direction!
   if (ubTacticalDirection != 255) {
@@ -1738,7 +1738,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
   } else {
     // Take directions from exit grid info!
     if (!GetExitGrid(sAdditionalData, addressof(ExitGrid))) {
-      AssertMsg(0, String("Told to use exit grid at %d but one does not exist", sAdditionalData));
+      AssertMsg(0, FormatString("Told to use exit grid at %d but one does not exist", sAdditionalData));
     }
 
     gsAdjacentSectorX = ExitGrid.ubGotoSectorX;
@@ -1768,7 +1768,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
             // This will set the direction so we know now to move into oblivion
             curr.value.pSoldier.value.uiPendingActionData1 = ubTacticalDirection;
           } else {
-            AssertMsg(0, String("Failed to get good exit location for adjacentmove"));
+            AssertMsg(0, FormatString("Failed to get good exit location for adjacentmove"));
           }
 
           EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, Enum193.WALKING);
@@ -1781,7 +1781,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
             // Save wait code - this will make buddy walk off screen into oblivion
             //	curr->pSoldier->ubWaitActionToDo = 2;
           } else {
-            AssertMsg(0, String("Failed to get good exit location for adjacentmove"));
+            AssertMsg(0, FormatString("Failed to get good exit location for adjacentmove"));
           }
 
           // Don't worry about walk off screen, just stay at gridno...
@@ -2527,7 +2527,7 @@ export function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, 
         if (bExitDirection != -1) {
           // Now, determine if this is a valid path.
           pGroup = GetGroup(pValidSoldier.value.ubGroupID);
-          AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
+          AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
           if (!gbWorldSectorZ) {
             puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
           } else if (gbWorldSectorZ > 1) {
@@ -2574,7 +2574,7 @@ export function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, 
       let pGroup: Pointer<GROUP>;
       // Now, determine if this is a valid path.
       pGroup = GetGroup(pValidSoldier.value.ubGroupID);
-      AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
+      AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.value.name, pValidSoldier.value.ubGroupID));
       if (!gbWorldSectorZ) {
         puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY), bExitDirection, pGroup);
       } else if (gbWorldSectorZ > 0) {

@@ -3109,7 +3109,7 @@ export function InitRenderParams(ubRestrictionID: UINT8): void {
   gsTilesX = (gsTRX - gsTLX) / WORLD_TILE_X;
   gsTilesY = (gsBRY - gsTRY) / WORLD_TILE_Y;
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("World Screen Width %d Height %d", (gsTRX - gsTLX), (gsBRY - gsTRY)));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("World Screen Width %d Height %d", (gsTRX - gsTLX), (gsBRY - gsTRY)));
 
   // Determine scale factors
   // First scale world screen coords for VIEWPORT ratio
@@ -3525,13 +3525,13 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
   if (hSrcVObject.value.ppZStripInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
   pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
   if (pZInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
@@ -3922,13 +3922,13 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
   if (hSrcVObject.value.ppZStripInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
   pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
   if (pZInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
@@ -4325,13 +4325,13 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
   if (hSrcVObject.value.ppZStripInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
   pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
   if (pZInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
@@ -4739,13 +4739,13 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
   if (hSrcVObject.value.ppZStripInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
   pZInfo = hSrcVObject.value.ppZStripInfo[sZIndex];
   if (pZInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
@@ -5195,13 +5195,13 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
   if (hSrcVObject.value.ppZStripInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
   pZInfo = hSrcVObject.value.ppZStripInfo[sZIndex];
   if (pZInfo == null) {
-    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, String("Missing Z-Strip info on multi-Z object"));
+    DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 

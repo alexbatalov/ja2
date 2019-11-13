@@ -74,7 +74,7 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
 
   // Determine if resource exists before creating image structure
   if (!FileExists(ImageFile)) {
-    DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, String("Resource file %s does not exist.", ImageFile));
+    DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, FormatString("Resource file %s does not exist.", ImageFile));
     return null;
   }
 
@@ -397,7 +397,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   // Convert to Pixel specification
   pDest = pDestBuf + uiDestStart;
   pSrc = hImage.value.p8BPPData + uiSrcStart;
-  DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("Start Copying at %p", pDest));
+  DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, FormatString("Start Copying at %p", pDest));
 
   // For every entry, look up into 16BPP palette
   for (rows = 0; rows < uiNumLines - 1; rows++) {
@@ -414,7 +414,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
     pSrc += hImage.value.usWidth;
   }
   // Do last line
-  DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("End Copying at %p", pDest));
+  DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, FormatString("End Copying at %p", pDest));
 
   return true;
 }

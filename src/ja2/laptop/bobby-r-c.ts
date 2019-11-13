@@ -694,7 +694,7 @@ export function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   // find out which inventory slot that item is stored in
   sInventorySlot = GetInventorySlotForItem(pInventoryArray, usItemIndex, fUsed);
   if (sInventorySlot == -1) {
-    AssertMsg(false, String("AddFreshBobbyRayInventory(), Item %d not found.  AM-0.", usItemIndex));
+    AssertMsg(false, FormatString("AddFreshBobbyRayInventory(), Item %d not found.  AM-0.", usItemIndex));
     return;
   }
 

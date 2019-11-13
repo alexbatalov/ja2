@@ -155,7 +155,7 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   hfile = FileOpen(ShadeFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hfile) {
     FileClose(hfile);
-    AssertMsg(0, String("Can't create %s", ShadeFileName));
+    AssertMsg(0, FormatString("Can't create %s", ShadeFileName));
     return false;
   }
   for (i = 0; i < 16; i++) {

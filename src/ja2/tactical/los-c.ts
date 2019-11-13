@@ -1360,7 +1360,7 @@ function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYP
   }
   uiEndTime = GetJA2Clock();
   if ((OutFile = fopen("Timing.txt", "a+t")) != null) {
-    fprintf(OutFile, String("Time for %d calls is %d milliseconds\n", uiLoopLimit, uiEndTime - uiStartTime));
+    fprintf(OutFile, FormatString("Time for %d calls is %d milliseconds\n", uiLoopLimit, uiEndTime - uiStartTime));
     fclose(OutFile);
   }
   return true;
@@ -2141,7 +2141,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
     // check a particular tile
     // retrieve values from world for this particular tile
     iGridNo = pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS;
-    DebugLOS(String("CTGT now at %ld", iGridNo));
+    DebugLOS(FormatString("CTGT now at %ld", iGridNo));
     pMapElement = addressof(gpWorldLevelData[iGridNo]);
     qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
@@ -2326,7 +2326,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
         pBullet.value.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrX);
         pBullet.value.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrY);
 
-        DebugLOS(String("  CTGT at %ld %ld after traversing empty tile", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY));
+        DebugLOS(FormatString("  CTGT at %ld %ld after traversing empty tile", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY));
       } else {
         // there are structures in this tile
 
@@ -2407,7 +2407,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
         } while ((pBullet.value.bLOSIndexX == bOldLOSIndexX) && (pBullet.value.bLOSIndexY == bOldLOSIndexY) && (pBullet.value.iCurrCubesZ == iOldCubesZ));
 
-        DebugLOS(String("  CTGT at %ld %ld %ld after moving in nonempty tile from %ld %ld %ld", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.iCurrCubesZ, bOldLOSIndexX, bOldLOSIndexY, iOldCubesZ));
+        DebugLOS(FormatString("  CTGT at %ld %ld %ld after moving in nonempty tile from %ld %ld %ld", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.iCurrCubesZ, bOldLOSIndexX, bOldLOSIndexY, iOldCubesZ));
         pBullet.value.iCurrTileX = FIXEDPT_TO_INT32(pBullet.value.qCurrX) / CELL_X_SIZE;
         pBullet.value.iCurrTileY = FIXEDPT_TO_INT32(pBullet.value.qCurrY) / CELL_Y_SIZE;
       }
@@ -2890,7 +2890,7 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
   for (ubLoop = 0; ubLoop < ubShots; ubLoop++) {
     iBullet = CreateBullet(pFirer.value.ubID, fFake, usBulletFlags);
     if (iBullet == -1) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Failed to create bullet"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Failed to create bullet"));
 
       return false;
     }
@@ -3556,7 +3556,7 @@ export function MoveBullet(iBullet: INT32): void {
                         RemoveBullet(pBullet.value.iBullet);
 
                         CorpseHit(pBullet.value.sGridNo, pStructure.value.usStructureID);
-                        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., CORPSE HIT"));
+                        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count..., CORPSE HIT"));
 
                         FreeUpAttacker(pBullet.value.pFirer.value.ubID);
                         return;

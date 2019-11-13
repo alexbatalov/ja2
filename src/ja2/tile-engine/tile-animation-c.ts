@@ -310,7 +310,7 @@ export function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
           }
 
           // Freeup attacker from explosion
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., EXPLOSION effect gone off"));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count..., EXPLOSION effect gone off"));
           ReduceAttackBusyCount(pAniNode.value.ubUserData2, false);
         }
 
@@ -318,7 +318,7 @@ export function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
           // First delete the bullet!
           RemoveBullet(pAniNode.value.uiUserData3);
 
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - miss finished animation"));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - miss finished animation"));
           FreeUpAttacker(pAniNode.value.ubAttackerMissed);
         }
       } else {

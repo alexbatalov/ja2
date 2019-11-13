@@ -106,7 +106,7 @@ export function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLe
 
   // ATE: If in realtime, set attacker count to 0...
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Setting attack busy count to 0 due to no combat"));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Setting attack busy count to 0 due to no combat"));
     gTacticalStatus.ubAttackBusyCount = 0;
   }
 
@@ -857,7 +857,7 @@ export function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLe
     // pSoldier->ubTargetID = WhoIsThere2( sTargetGridNo, pSoldier->bTargetLevel );
 
     gTacticalStatus.ubAttackBusyCount++;
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting swipe attack, incrementing a.b.c in HandleItems to %d", gTacticalStatus.ubAttackBusyCount));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Starting swipe attack, incrementing a.b.c in HandleItems to %d", gTacticalStatus.ubAttackBusyCount));
 
     sAPCost = CalcTotalAPsToAttack(pSoldier, sGridNo, false, pSoldier.value.bAimTime);
 

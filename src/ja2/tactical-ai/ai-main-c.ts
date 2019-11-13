@@ -241,7 +241,7 @@ export function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       } else if (pSoldier.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE) {
         if (guiNumObjectSlots == 0) {
           // abort attack!
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String(">>>>>> Attack busy count lobotomized due to new situation for %d", pSoldier.value.ubID));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString(">>>>>> Attack busy count lobotomized due to new situation for %d", pSoldier.value.ubID));
           gTacticalStatus.ubAttackBusyCount = 0;
           fProcessNewSituation = true;
         }
@@ -454,7 +454,7 @@ export function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
 
     // We are at the end, return control to next team
-    DebugAI(String("Ending AI turn\n"));
+    DebugAI(FormatString("Ending AI turn\n"));
     EndAITurn();
   } else {
     // realtime
@@ -474,9 +474,9 @@ export function EndAIDeadlock(): void {
       if (pSoldier.value.uiStatusFlags & SOLDIER_UNDERAICONTROL) {
         CancelAIAction(pSoldier, FORCE);
 
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Number of bullets in the air is %ld", guiNumBullets));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Number of bullets in the air is %ld", guiNumBullets));
 
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Setting attack busy count to 0 from deadlock break"));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Setting attack busy count to 0 from deadlock break"));
         gTacticalStatus.ubAttackBusyCount = 0;
 
         EndAIGuysTurn(pSoldier);
@@ -1496,7 +1496,7 @@ export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // reset this field, too
   pSoldier.value.bLastAttackHit = false;
 
-  DebugAI(String("%d does %s (a.d. %d) at time %ld", pSoldier.value.ubID, gzActionStr[pSoldier.value.bAction], pSoldier.value.usActionData, GetJA2Clock()));
+  DebugAI(FormatString("%d does %s (a.d. %d) at time %ld", pSoldier.value.ubID, gzActionStr[pSoldier.value.bAction], pSoldier.value.usActionData, GetJA2Clock()));
 
   switch (pSoldier.value.bAction) {
     case Enum289.AI_ACTION_NONE: // maintain current position & facing
@@ -1598,7 +1598,7 @@ export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         }
         // check for loop
         else if (pSoldier.value.usActionData == pSoldier.value.sLastTwoLocations[1] && pSoldier.value.sGridNo == pSoldier.value.sLastTwoLocations[0]) {
-          DebugAI(String("%d in movement loop, aborting turn", pSoldier.value.ubID));
+          DebugAI(FormatString("%d in movement loop, aborting turn", pSoldier.value.ubID));
 
           // loop found!
           ActionDone(pSoldier);
@@ -1702,7 +1702,7 @@ export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         // temporarily black list this gridno to stop enemy from going there
         pSoldier.value.sBlackList = pSoldier.value.usActionData;
 
-        DebugAI(String("Setting blacklist for %d to %d", pSoldier.value.ubID, pSoldier.value.sBlackList));
+        DebugAI(FormatString("Setting blacklist for %d to %d", pSoldier.value.ubID, pSoldier.value.sBlackList));
 
         CancelAIAction(pSoldier, FORCE);
         return (false); // nothing is in progress
@@ -1753,7 +1753,7 @@ export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (iRetCode != ITEM_HANDLE_OK) {
         if (iRetCode != ITEM_HANDLE_BROKEN) // if the item broke, this is 'legal' and doesn't need reporting
         {
-          DebugAI(String("AI %d got error code %ld from HandleItem, doing action %d, has %d APs... aborting deadlock!", pSoldier.value.ubID, iRetCode, pSoldier.value.bAction, pSoldier.value.bActionPoints));
+          DebugAI(FormatString("AI %d got error code %ld from HandleItem, doing action %d, has %d APs... aborting deadlock!", pSoldier.value.ubID, iRetCode, pSoldier.value.bAction, pSoldier.value.bActionPoints));
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "AI %d got error code %ld from HandleItem, doing action %d... aborting deadlock!", pSoldier.value.ubID, iRetCode, pSoldier.value.bAction);
         }
         CancelAIAction(pSoldier, FORCE);
@@ -2091,7 +2091,7 @@ export function SetNewSituation(pSoldier: Pointer<SOLDIERTYPE>): void {
       pSoldier.value.bNewSituation = IS_NEW_SITUATION;
 
       if (gTacticalStatus.ubAttackBusyCount != 0) {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("BBBBBB bNewSituation is set for %d when ABC !=0.", pSoldier.value.ubID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("BBBBBB bNewSituation is set for %d when ABC !=0.", pSoldier.value.ubID));
       }
 
       if (!(gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.uiFlags & REALTIME)) {

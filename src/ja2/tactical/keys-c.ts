@@ -99,7 +99,7 @@ export function LoadLockTable(): boolean {
 
   hFile = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!hFile) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to LoadLockTable from file %s", pFileName));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to LoadLockTable from file %s", pFileName));
     return false;
   }
 
@@ -526,7 +526,7 @@ export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DO
       // Increment  being attacked count
       pSoldier.value.bBeingAttackedCount++;
       gTacticalStatus.ubAttackBusyCount++;
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
       SoldierTakeDamage(pSoldier, 0, (10 + PreRandom(10)), ((3 + PreRandom(3) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.value.sGridNo, 0, true);
       break;
@@ -540,7 +540,7 @@ export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DO
       // Increment  being attacked count
       pSoldier.value.bBeingAttackedCount++;
       gTacticalStatus.ubAttackBusyCount++;
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
       SoldierTakeDamage(pSoldier, 0, (20 + PreRandom(20)), ((6 + PreRandom(6) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.value.sGridNo, 0, true);
       break;

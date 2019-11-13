@@ -1023,7 +1023,7 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
   GetFileManCurrentDirectory(zOldDir);
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
-    FastDebugMsg(String("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
+    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
     return (false); // Error going into directory
   }
 
@@ -1040,7 +1040,7 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
 
           if ((strcmp(sFindData.cFileName, ".") != 0) && (strcmp(sFindData.cFileName, "..") != 0)) {
             if (!RemoveFileManDirectory(zSubdirectory, true)) {
-              FastDebugMsg(String("RemoveFileManDirectory: ERROR - Recursive call on %s failed", zSubdirectory));
+              FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - Recursive call on %s failed", zSubdirectory));
               break;
             }
           }
@@ -1063,14 +1063,14 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
   }
 
   if (!SetFileManCurrentDirectory(zOldDir)) {
-    FastDebugMsg(String("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
+    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
     return (false); // Error returning from subdirectory
   }
 
   // The directory MUST be empty
   fRetval = RemoveDirectory(pcDirectory);
   if (!fRetval) {
-    FastDebugMsg(String("RemoveFileManDirectory: ERROR - RemoveDirectory on %s failed, error %d", pcDirectory, GetLastError()));
+    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - RemoveDirectory on %s failed, error %d", pcDirectory, GetLastError()));
   }
 
   return fRetval;
@@ -1090,7 +1090,7 @@ export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
   GetFileManCurrentDirectory(zOldDir);
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
-    FastDebugMsg(String("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
+    FastDebugMsg(FormatString("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
     return (false); // Error going into directory
   }
 
@@ -1115,7 +1115,7 @@ export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
   }
 
   if (!SetFileManCurrentDirectory(zOldDir)) {
-    FastDebugMsg(String("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
+    FastDebugMsg(FormatString("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
     return (false); // Error returning from directory
   }
 

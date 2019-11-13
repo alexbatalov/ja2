@@ -927,7 +927,7 @@ export function ExecuteOverhead(): boolean {
                       }
                     }
                   } else if (pSoldier.value.ubPendingAction != NO_PENDING_ACTION) {
-                    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("We are inside the IF PENDING Animation with soldier #%d", pSoldier.value.ubID));
+                    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("We are inside the IF PENDING Animation with soldier #%d", pSoldier.value.ubID));
 
                     if (pSoldier.value.ubPendingAction == Enum257.MERC_OPENDOOR || pSoldier.value.ubPendingAction == Enum257.MERC_OPENSTRUCT) {
                       sGridNo = pSoldier.value.sPendingActionData2;
@@ -1330,14 +1330,14 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
         UnSetUIBusy(pSoldier.value.ubID);
       }
 
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Out of Breath"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: Out of Breath"));
       return false;
     }
 
     // OK, if we are collapsed now, check for OK breath instead...
     if (pSoldier.value.bCollapsed) {
       // Collapse!
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Has Collapsed"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: Has Collapsed"));
       pSoldier.value.bBreathCollapsed = true;
       pSoldier.value.bEndDoorOpenCode = false;
       return false;
@@ -1400,7 +1400,7 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
     } else if (bDirection == Enum245.SOUTH || bDirection == Enum245.EAST) {
       sDoorGridNo = pSoldier.value.sGridNo;
     } else {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Open door - invalid approach direction"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: Open door - invalid approach direction"));
 
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier.value.bEndDoorOpenCode = false;
@@ -1412,7 +1412,7 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
     pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
 
     if (pStructure == null) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Door does not exist"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: Door does not exist"));
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier.value.bEndDoorOpenCode = false;
       (pfKeepMoving.value) = false;
@@ -1438,7 +1438,7 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
 
   // CHECK IF THIS TILE IS A GOOD ONE!
   if (!HandleNextTile(pSoldier, pSoldier.value.usPathingData[pSoldier.value.usPathIndex], usNewGridNo, pSoldier.value.sFinalDestination)) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Tile %d Was blocked", usNewGridNo));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: Tile %d Was blocked", usNewGridNo));
 
     // ATE: If our own guy and an initial move.. display message
     // if ( fInitialMove && pSoldier->bTeam == gbPlayerNum  )
@@ -1502,11 +1502,11 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
   // ATE: Check if we have sighted anyone, if so, don't do anything else...
   // IN other words, we have stopped from sighting...
   if (pSoldier.value.fNoAPToFinishMove && !fInitialMove) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No APs to finish move set"));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: No APs to finish move set"));
     pSoldier.value.bEndDoorOpenCode = false;
     (pfKeepMoving.value) = false;
   } else if (pSoldier.value.usPathIndex == pSoldier.value.usPathDataSize && pSoldier.value.usPathDataSize == 0) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No Path"));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: No Path"));
     pSoldier.value.bEndDoorOpenCode = false;
     (pfKeepMoving.value) = false;
   }
@@ -1671,7 +1671,7 @@ export function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving
     }
   } else {
     // HALT GUY HERE
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: No APs %d %d", sAPCost, pSoldier.value.bActionPoints));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("HandleGotoNewGridNo() Failed: No APs %d %d", sAPCost, pSoldier.value.bActionPoints));
     HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
     pSoldier.value.bEndDoorOpenCode = false;
     (pfKeepMoving.value) = false;
@@ -5511,7 +5511,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
 
         // This person will be busy while they crouch or go prone
         if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting suppression, on %d", pSoldier.value.ubID));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Starting suppression, on %d", pSoldier.value.ubID));
 
           gTacticalStatus.ubAttackBusyCount++;
 
@@ -5683,7 +5683,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean, 
       pTarget = MercPtrs[ubTargetID];
     } else {
       pTarget = null;
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String(">>Target ptr is null!"));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString(">>Target ptr is null!"));
     }
   }
 
@@ -5702,13 +5702,13 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean, 
     // ATE: We have a problem here... if testversion, report error......
     // But for all means.... DON'T wrap!
     if ((gTacticalStatus.uiFlags & INCOMBAT)) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! &&&&&&& Problem with attacker busy count decrementing past 0.... preventing wrap-around."));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! &&&&&&& Problem with attacker busy count decrementing past 0.... preventing wrap-around."));
     }
   } else {
     gTacticalStatus.ubAttackBusyCount--;
   }
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Ending attack, attack count now %d", gTacticalStatus.ubAttackBusyCount));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Ending attack, attack count now %d", gTacticalStatus.ubAttackBusyCount));
   //	}
 
   if (gTacticalStatus.ubAttackBusyCount > 0) {
@@ -5727,7 +5727,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean, 
 
     // suppression fire might cause the count to be increased, so check it again
     if (gTacticalStatus.ubAttackBusyCount > 0) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting suppression, attack count now %d", gTacticalStatus.ubAttackBusyCount));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Starting suppression, attack count now %d", gTacticalStatus.ubAttackBusyCount));
       return pTarget;
     }
   }

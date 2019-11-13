@@ -3379,7 +3379,7 @@ export function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAni
     // Ensure that it's loaded!
     if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
       ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %S, surface %d not loaded.", pSoldier.value.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
-      AnimDebugMsg(String("Surface Database: PROBLEMS!!!!!!"));
+      AnimDebugMsg(FormatString("Surface Database: PROBLEMS!!!!!!"));
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }
   }

@@ -694,7 +694,7 @@ export function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
   Assert(uiShade < HVOBJECT_SHADE_TABLES);
 
   if (pObj.value.pShades[uiShade] == null) {
-    DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Attempt to set shade level to NULL table"));
+    DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, FormatString("Attempt to set shade level to NULL table"));
     return false;
   }
 
@@ -706,7 +706,7 @@ export function SetObjectHandleShade(uiHandle: UINT32, uiShade: UINT32): UINT16 
   let hObj: HVOBJECT;
 
   if (!(hObj = GetVideoObject(uiHandle))) {
-    DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Invalid object handle for setting shade level"));
+    DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, FormatString("Invalid object handle for setting shade level"));
     return false;
   }
   return SetObjectShade(hObj, uiShade);
@@ -1001,7 +1001,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
       pInput++;
       // uiDataLoop++;
       if (uiLen != p16BPPObject.value.usWidth)
-        DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_1, String("Actual pixel width different from header width"));
+        DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_1, FormatString("Actual pixel width different from header width"));
       uiLen = 0;
     }
 

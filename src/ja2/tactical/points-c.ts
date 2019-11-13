@@ -82,7 +82,7 @@ export function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT
 
     default:
 
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Calc AP: Unrecongnized MP type %d in %d, direction %d", sSwitchValue, sGridno, bDir));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Calc AP: Unrecongnized MP type %d in %d, direction %d", sSwitchValue, sGridno, bDir));
       break;
   }
 
@@ -263,7 +263,7 @@ export function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
       default:
 
         // Invalid movement mode
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Invalid movement mode %d used in ActionPointCost", usMovementMode));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Invalid movement mode %d used in ActionPointCost", usMovementMode));
         sPoints = 1;
     }
   }
@@ -330,7 +330,7 @@ export function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo:
       default:
 
         // Invalid movement mode
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Invalid movement mode %d used in ActionPointCost", usMovementMode));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Invalid movement mode %d used in ActionPointCost", usMovementMode));
         sPoints = 1;
     }
   }
@@ -445,7 +445,7 @@ export function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBP
 
   pSoldier.value.bActionPoints = sNewAP;
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Deduct Points (%d at %d) %d %d", pSoldier.value.ubID, pSoldier.value.sGridNo, sAPCost, sBPCost));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Deduct Points (%d at %d) %d %d", pSoldier.value.ubID, pSoldier.value.sGridNo, sAPCost, sBPCost));
 
   if (AM_A_ROBOT(pSoldier)) {
     // zap all breath costs for robot
@@ -715,7 +715,7 @@ function GetBreathPerAP(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): IN
   }
 
   if (!fAnimTypeFound) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Unknown end-of-turn breath anim: %s", gAnimControl[usAnimState].zAnimStr));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Unknown end-of-turn breath anim: %s", gAnimControl[usAnimState].zAnimStr));
   }
 
   return sBreathPerAP;

@@ -2664,7 +2664,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
     if (FileExists(QUEST_DEBUG_FILE)) {
       // delete the file
       if (!FileDelete(QUEST_DEBUG_FILE)) {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to delete %s file", QUEST_DEBUG_FILE));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to delete %s file", QUEST_DEBUG_FILE));
         return;
       }
     }
@@ -2675,7 +2675,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
     return;
   }
 
@@ -2690,7 +2690,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
 
   if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
   }
 
@@ -2700,7 +2700,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   // append to file
   if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
   }
 
@@ -2736,7 +2736,7 @@ function NpcRecordLogging(ubApproach: UINT8, pStringA: string /* STR */, ...args
   hFile = FileOpen(QUEST_DEBUG_FILE, FILE_OPEN_ALWAYS | FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
     return;
   }
 
@@ -2751,7 +2751,7 @@ function NpcRecordLogging(ubApproach: UINT8, pStringA: string /* STR */, ...args
   // append to file
   if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
   }
 

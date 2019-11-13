@@ -231,7 +231,7 @@ function ReevaluateBestSightingPosition(pSoldier: Pointer<SOLDIERTYPE>, bInterru
     // this guy has fewer interrupt pts vs another enemy!  reduce position unless in last place
     if (fFound) {
       // set new points
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP: reducing points for %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP: reducing points for %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
       pSoldier.value.bInterruptDuelPts = bInterruptDuelPts;
 
       // must percolate him down
@@ -244,7 +244,7 @@ function ReevaluateBestSightingPosition(pSoldier: Pointer<SOLDIERTYPE>, bInterru
       }
     } else if (pSoldier.value.ubID == gubBestToMakeSighting[gubBestToMakeSightingSize - 1]) {
       // in list but can't be bumped down... set his new points
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP: reduced points for last individual %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP: reduced points for last individual %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
       pSoldier.value.bInterruptDuelPts = bInterruptDuelPts;
     }
   } else {
@@ -261,11 +261,11 @@ function ReevaluateBestSightingPosition(pSoldier: Pointer<SOLDIERTYPE>, bInterru
         if ((gubBestToMakeSighting[ubLoop] == NOBODY) || (bInterruptDuelPts > MercPtrs[gubBestToMakeSighting[ubLoop]].value.bInterruptDuelPts)) {
           if (gubBestToMakeSighting[gubBestToMakeSightingSize - 1] != NOBODY) {
             MercPtrs[gubBestToMakeSighting[gubBestToMakeSightingSize - 1]].value.bInterruptDuelPts = NO_INTERRUPT;
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP: resetting points for %d to zilch", pSoldier.value.ubID));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP: resetting points for %d to zilch", pSoldier.value.ubID));
           }
 
           // set new points
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP: setting points for %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP: setting points for %d to %d", pSoldier.value.ubID, bInterruptDuelPts));
           pSoldier.value.bInterruptDuelPts = bInterruptDuelPts;
 
           // insert here!
@@ -282,7 +282,7 @@ function ReevaluateBestSightingPosition(pSoldier: Pointer<SOLDIERTYPE>, bInterru
 
   for (ubLoop = 0; ubLoop < BEST_SIGHTING_ARRAY_SIZE; ubLoop++) {
     if ((gubBestToMakeSighting[ubLoop] != NOBODY)) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP entry %d: %d (%d pts)", ubLoop, gubBestToMakeSighting[ubLoop], MercPtrs[gubBestToMakeSighting[ubLoop]].value.bInterruptDuelPts));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP entry %d: %d (%d pts)", ubLoop, gubBestToMakeSighting[ubLoop], MercPtrs[gubBestToMakeSighting[ubLoop]].value.bInterruptDuelPts));
     }
   }
 }
@@ -328,13 +328,13 @@ function HandleBestSightingPositionInRealtime(): void {
     for (ubLoop = 0; ubLoop < BEST_SIGHTING_ARRAY_SIZE; ubLoop++) {
       if (gubBestToMakeSighting[ubLoop] != NOBODY) {
         MercPtrs[gubBestToMakeSighting[ubLoop]].value.bInterruptDuelPts = NO_INTERRUPT;
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP: done, resetting points for %d to zilch", MercPtrs[gubBestToMakeSighting[ubLoop]].value.ubID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP: done, resetting points for %d to zilch", MercPtrs[gubBestToMakeSighting[ubLoop]].value.ubID));
       }
     }
 
     for (ubLoop = 0; ubLoop < guiNumMercSlots; ubLoop++) {
       if (MercSlots[ubLoop]) {
-        AssertMsg(MercSlots[ubLoop].value.bInterruptDuelPts == NO_INTERRUPT, String("%S (%d) still has interrupt pts!", MercSlots[ubLoop].value.name, MercSlots[ubLoop].value.ubID));
+        AssertMsg(MercSlots[ubLoop].value.bInterruptDuelPts == NO_INTERRUPT, FormatString("%S (%d) still has interrupt pts!", MercSlots[ubLoop].value.name, MercSlots[ubLoop].value.ubID));
       }
     }
   }
@@ -380,13 +380,13 @@ function HandleBestSightingPositionInTurnbased(): void {
     for (ubLoop = 0; ubLoop < BEST_SIGHTING_ARRAY_SIZE; ubLoop++) {
       if (gubBestToMakeSighting[ubLoop] != NOBODY) {
         MercPtrs[gubBestToMakeSighting[ubLoop]].value.bInterruptDuelPts = NO_INTERRUPT;
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("RBSP (TB): done, resetting points for %d to zilch", MercPtrs[gubBestToMakeSighting[ubLoop]].value.ubID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("RBSP (TB): done, resetting points for %d to zilch", MercPtrs[gubBestToMakeSighting[ubLoop]].value.ubID));
       }
     }
 
     for (ubLoop = 0; ubLoop < guiNumMercSlots; ubLoop++) {
       if (MercSlots[ubLoop]) {
-        AssertMsg(MercSlots[ubLoop].value.bInterruptDuelPts == NO_INTERRUPT, String("%S (%d) still has interrupt pts!", MercSlots[ubLoop].value.name, MercSlots[ubLoop].value.ubID));
+        AssertMsg(MercSlots[ubLoop].value.bInterruptDuelPts == NO_INTERRUPT, FormatString("%S (%d) still has interrupt pts!", MercSlots[ubLoop].value.name, MercSlots[ubLoop].value.ubID));
       }
     }
   }
@@ -1872,7 +1872,7 @@ function OtherTeamsLookForMan(pOpponent: Pointer<SOLDIERTYPE>): void {
             if (gubSightFlags & SIGHT_INTERRUPT && StandardInterruptConditionsMet(pSoldier, pOpponent.value.ubID, bOldOppList)) {
               // calculate the interrupt duel points
               pSoldier.value.bInterruptDuelPts = CalcInterruptDuelPts(pSoldier, pOpponent.value.ubID, true);
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Calculating int duel pts in OtherTeamsLookForMan, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
+              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Calculating int duel pts in OtherTeamsLookForMan, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
             } else {
               pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
             }
@@ -1927,7 +1927,7 @@ function RemoveOneOpponent(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.bOppCnt--;
 
   if (pSoldier.value.bOppCnt < 0) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Oppcnt for %d (%s) tried to go below 0", pSoldier.value.ubID, pSoldier.value.name));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Oppcnt for %d (%s) tried to go below 0", pSoldier.value.ubID, pSoldier.value.name));
     pSoldier.value.bOppCnt = 0;
   }
 
@@ -4571,7 +4571,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
           if (StandardInterruptConditionsMet(pSoldier, ubNoiseMaker, bOldOpplist)) {
             // he gets a chance to interrupt the noisemaker
             pSoldier.value.bInterruptDuelPts = CalcInterruptDuelPts(pSoldier, ubNoiseMaker, true);
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Calculating int duel pts in noise code, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Calculating int duel pts in noise code, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
           } else {
             pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
           }
@@ -4638,7 +4638,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
         // reasonable to assume the guy throwing wants to wait for their reaction!
         if (StandardInterruptConditionsMet(pSoldier, NOBODY, false)) {
           pSoldier.value.bInterruptDuelPts = AUTOMATIC_INTERRUPT; // force automatic interrupt
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Calculating int duel pts in noise code, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Calculating int duel pts in noise code, %d has %d points", pSoldier.value.ubID, pSoldier.value.bInterruptDuelPts));
         } else {
           pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
         }
@@ -5126,7 +5126,7 @@ export function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender:
   }
 
   if (StandardInterruptConditionsMet(pDefender, pAttacker.value.ubID, bOldOppList)) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: NoticeUnseenAttacker, standard conditions are met; defender %d, attacker %d", pDefender.value.ubID, pAttacker.value.ubID));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: NoticeUnseenAttacker, standard conditions are met; defender %d, attacker %d", pDefender.value.ubID, pAttacker.value.ubID));
 
     // calculate the interrupt duel points
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Calculating int duel pts for defender in NUA");
@@ -5145,7 +5145,7 @@ export function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender:
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Calculating int duel pts for attacker in NUA");
     pAttacker.value.bInterruptDuelPts = CalcInterruptDuelPts(pAttacker, pDefender.value.ubID, false);
     if (InterruptDuel(pDefender, pAttacker)) {
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: NoticeUnseenAttacker, defender pts %d, attacker pts %d, defender gets interrupt", pDefender.value.bInterruptDuelPts, pAttacker.value.bInterruptDuelPts));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: NoticeUnseenAttacker, defender pts %d, attacker pts %d, defender gets interrupt", pDefender.value.bInterruptDuelPts, pAttacker.value.bInterruptDuelPts));
       AddToIntList(pAttacker.value.ubID, false, true);
       AddToIntList(pDefender.value.ubID, true, true);
       DoneAddingToIntList(pDefender, true, SIGHTINTERRUPT);

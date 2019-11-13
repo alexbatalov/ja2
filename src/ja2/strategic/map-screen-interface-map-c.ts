@@ -3661,8 +3661,8 @@ export function DisplayPositionOfHelicopter(): void {
   let iNumberOfPeopleInHelicopter: INT32 = 0;
   let sString: string /* CHAR16[4] */;
 
-  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), String("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
-  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), String("DisplayPositionOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
+  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
+  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
 
   // restore background on map where it is
   if (sOldMapX != 0) {
@@ -3727,10 +3727,10 @@ export function DisplayPositionOfHelicopter(): void {
                               }
       */
 
-      AssertMsg((minX >= 0) && (minX < 640), String("DisplayPositionOfHelicopter: Invalid minX = %d", minX));
-      AssertMsg((maxX >= 0) && (maxX < 640), String("DisplayPositionOfHelicopter: Invalid maxX = %d", maxX));
-      AssertMsg((minY >= 0) && (minY < 640), String("DisplayPositionOfHelicopter: Invalid minY = %d", minY));
-      AssertMsg((maxY >= 0) && (maxY < 640), String("DisplayPositionOfHelicopter: Invalid maxY = %d", maxY));
+      AssertMsg((minX >= 0) && (minX < 640), FormatString("DisplayPositionOfHelicopter: Invalid minX = %d", minX));
+      AssertMsg((maxX >= 0) && (maxX < 640), FormatString("DisplayPositionOfHelicopter: Invalid maxX = %d", maxX));
+      AssertMsg((minY >= 0) && (minY < 640), FormatString("DisplayPositionOfHelicopter: Invalid minY = %d", minY));
+      AssertMsg((maxY >= 0) && (maxY < 640), FormatString("DisplayPositionOfHelicopter: Invalid maxY = %d", maxY));
 
       // IMPORTANT: Since min can easily be larger than max, we gotta cast to as signed value
       x = (minX + flRatio * (maxX - minX));
@@ -3749,9 +3749,9 @@ export function DisplayPositionOfHelicopter(): void {
         y += 3;
       }
 
-      AssertMsg((x >= 0) && (x < 640), String("DisplayPositionOfHelicopter: Invalid x = %d.  At %d,%d.  Next %d,%d.  Min/Max X = %d/%d", x, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minX, maxX));
+      AssertMsg((x >= 0) && (x < 640), FormatString("DisplayPositionOfHelicopter: Invalid x = %d.  At %d,%d.  Next %d,%d.  Min/Max X = %d/%d", x, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minX, maxX));
 
-      AssertMsg((y >= 0) && (y < 480), String("DisplayPositionOfHelicopter: Invalid y = %d.  At %d,%d.  Next %d,%d.  Min/Max Y = %d/%d", y, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minY, maxY));
+      AssertMsg((y >= 0) && (y < 480), FormatString("DisplayPositionOfHelicopter: Invalid y = %d.  At %d,%d.  Next %d,%d.  Min/Max Y = %d/%d", y, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minY, maxY));
 
       // clip blits to mapscreen region
       ClipBlitsToMapViewRegion();
@@ -3792,8 +3792,8 @@ function DisplayDestinationOfHelicopter(): void {
   let y: UINT32;
   let hHandle: HVOBJECT;
 
-  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), String("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
-  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), String("DisplayDestinationOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
+  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
+  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
 
   // restore background on map where it is
   if (sOldMapX != 0) {
@@ -3811,8 +3811,8 @@ function DisplayDestinationOfHelicopter(): void {
     x = MAP_VIEW_START_X + (MAP_GRID_X * sMapX) + 1;
     y = MAP_VIEW_START_Y + (MAP_GRID_Y * sMapY) + 3;
 
-    AssertMsg((x >= 0) && (x < 640), String("DisplayDestinationOfHelicopter: Invalid x = %d.  Dest %d,%d", x, sMapX, sMapY));
-    AssertMsg((y >= 0) && (y < 480), String("DisplayDestinationOfHelicopter: Invalid y = %d.  Dest %d,%d", y, sMapX, sMapY));
+    AssertMsg((x >= 0) && (x < 640), FormatString("DisplayDestinationOfHelicopter: Invalid x = %d.  Dest %d,%d", x, sMapX, sMapY));
+    AssertMsg((y >= 0) && (y < 480), FormatString("DisplayDestinationOfHelicopter: Invalid y = %d.  Dest %d,%d", y, sMapX, sMapY));
 
     // clip blits to mapscreen region
     ClipBlitsToMapViewRegion();

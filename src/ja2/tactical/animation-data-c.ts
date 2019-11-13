@@ -819,7 +819,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
   // Check if surface is loaded
   if (gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject != null) {
     // just increment usage counter ( below )
-    AnimDebugMsg(String("Surface Database: Hit %d", usSurfaceIndex));
+    AnimDebugMsg(FormatString("Surface Database: Hit %d", usSurfaceIndex));
   } else {
     // Load into memory
     let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
@@ -828,7 +828,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     let sFilename: string /* CHAR8[48] */;
     let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
-    AnimDebugMsg(String("Surface Database: Loading %d", usSurfaceIndex));
+    AnimDebugMsg(FormatString("Surface Database: Loading %d", usSurfaceIndex));
 
     gSystemDebugStr = "Cache Load";
 
@@ -894,13 +894,13 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
 
     // Determine if we have a problem with #frames + directions ( ie mismatch )
     if ((gAnimSurfaceDatabase[usSurfaceIndex].uiNumDirections * gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir) != gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject.value.usNumberOfObjects) {
-      AnimDebugMsg(String("Surface Database: WARNING!!! Surface %d has #frames mismatch.", usSurfaceIndex));
+      AnimDebugMsg(FormatString("Surface Database: WARNING!!! Surface %d has #frames mismatch.", usSurfaceIndex));
     }
   }
 
   // Increment usage count only if history for soldier is not yet set
   if (gbAnimUsageHistory[usSurfaceIndex][usSoldierID] == 0) {
-    AnimDebugMsg(String("Surface Database: Incrementing Usage %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
+    AnimDebugMsg(FormatString("Surface Database: Incrementing Usage %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
     // Increment usage count
     gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount++;
     // Set history for particular sodlier
@@ -914,17 +914,17 @@ export function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT
   // Decrement usage flag, only if this soldier has it currently tagged
   if (gbAnimUsageHistory[usSurfaceIndex][usSoldierID] > 0) {
     // Decrement usage count
-    AnimDebugMsg(String("Surface Database: Decrementing Usage %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
+    AnimDebugMsg(FormatString("Surface Database: Decrementing Usage %d ( Soldier %d )", usSurfaceIndex, usSoldierID));
     gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount--;
     // Set history for particular sodlier
     gbAnimUsageHistory[usSurfaceIndex][usSoldierID] = 0;
   } else {
     // Return warning that we have not actually loaded the surface previously
-    AnimDebugMsg(String("Surface Database: WARNING!!! Soldier has tried to unlock surface that he has not locked."));
+    AnimDebugMsg(FormatString("Surface Database: WARNING!!! Soldier has tried to unlock surface that he has not locked."));
     return false;
   }
 
-  AnimDebugMsg(String("Surface Database: MercUsage: %d, Global Uasage: %d", gbAnimUsageHistory[usSurfaceIndex][usSoldierID], gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount));
+  AnimDebugMsg(FormatString("Surface Database: MercUsage: %d, Global Uasage: %d", gbAnimUsageHistory[usSurfaceIndex][usSoldierID], gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount));
 
   // Check for < 0
   if (gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount < 0) {
@@ -933,7 +933,7 @@ export function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT
 
   // Check if count has reached zero and delet if so
   if (gAnimSurfaceDatabase[usSurfaceIndex].bUsageCount == 0) {
-    AnimDebugMsg(String("Surface Database: Unloading Surface: %d", usSurfaceIndex));
+    AnimDebugMsg(FormatString("Surface Database: Unloading Surface: %d", usSurfaceIndex));
 
     if (gAnimSurfaceDatabase[usSurfaceIndex].hVideoObject == null) {
       return false;

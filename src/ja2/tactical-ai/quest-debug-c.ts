@@ -97,7 +97,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
     if (FileExists(QUEST_DEBUG_FILE)) {
       // delete the file
       if (!FileDelete(QUEST_DEBUG_FILE)) {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to delete %s file", QUEST_DEBUG_FILE));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to delete %s file", QUEST_DEBUG_FILE));
         return;
       }
     }
@@ -108,7 +108,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
   hFile = FileOpen(QUEST_DEBUG_FILE, FILE_ACCESS_WRITE, false);
   if (!hFile) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to open Quest Debug File %s", QUEST_DEBUG_FILE));
     return;
   }
 
@@ -117,7 +117,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
   // open the file and append to it
   if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
     FileClose(hFile);
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to write to %s", QUEST_DEBUG_FILE));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
   }
 

@@ -84,7 +84,7 @@ export function MusicPlay(uiNum: UINT32): boolean {
   uiMusicHandle = SoundPlayStreamedFile(szMusicList[uiNum], addressof(spParms));
 
   if (uiMusicHandle != SOUND_ERROR) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 
     gfMusicEnded = false;
     fMusicPlaying = true;
@@ -92,7 +92,7 @@ export function MusicPlay(uiNum: UINT32): boolean {
     return true;
   }
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 
   return false;
 }
@@ -154,7 +154,7 @@ export function MusicGetVolume(): UINT32 {
 //********************************************************************************
 function MusicStop(): boolean {
   if (uiMusicHandle != NO_SAMPLE) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
     SoundStop(uiMusicHandle);
     fMusicPlaying = false;
@@ -162,7 +162,7 @@ function MusicStop(): boolean {
     return true;
   }
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
   return false;
 }
@@ -249,7 +249,7 @@ export function MusicPoll(fForce: boolean): boolean {
 
     if (gfMusicEnded) {
       // OK, based on our music mode, play another!
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music End Loop %d %d", uiMusicHandle, gubMusicMode));
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music End Loop %d %d", uiMusicHandle, gubMusicMode));
 
       // If we were in victory mode, change!
       if (gbVictorySongCount == 1 || gbDeathSongCount == 1) {
@@ -294,7 +294,7 @@ export function SetMusicMode(ubMusicMode: UINT8): boolean {
     // Set mode....
     gubMusicMode = ubMusicMode;
 
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music New Mode %d %d", uiMusicHandle, gubMusicMode));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music New Mode %d %d", uiMusicHandle, gubMusicMode));
 
     gbVictorySongCount = 0;
     gbDeathSongCount = 0;
@@ -325,7 +325,7 @@ function StartMusicBasedOnMode(): boolean {
     bBattleModeSong = Enum327.BATTLE_A_MUSIC + Random(2);
   }
 
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("StartMusicBasedOnMode() %d %d", uiMusicHandle, gubMusicMode));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("StartMusicBasedOnMode() %d %d", uiMusicHandle, gubMusicMode));
 
   // Setup a song based on mode we're in!
   switch (gubMusicMode) {
@@ -403,7 +403,7 @@ function StartMusicBasedOnMode(): boolean {
 }
 
 function MusicStopCallback(pData: Pointer<void>): void {
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music EndCallback %d %d", uiMusicHandle, gubMusicMode));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Music EndCallback %d %d", uiMusicHandle, gubMusicMode));
 
   gfMusicEnded = true;
   uiMusicHandle = NO_SAMPLE;

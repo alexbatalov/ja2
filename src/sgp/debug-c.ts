@@ -36,8 +36,7 @@ let gubStringIndex: UINT8 = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in
 // release mode builds. -- DB
-export function String(String: string /* Pointer<char> */, ...args: any[]): string /* Pointer<UINT8> */ {
-  let ArgPtr: va_list;
+export function FormatString(string: string /* Pointer<char> */, ...args: any[]): string /* Pointer<UINT8> */ {
   let usIndex: UINT8;
 
   // Record string index. This index is used since we live in a multitasking environment.
@@ -48,9 +47,7 @@ export function String(String: string /* Pointer<char> */, ...args: any[]): stri
     gubStringIndex = 0;
   }
 
-  va_start(ArgPtr, String);
-  vsprintf(gbTmpDebugString[usIndex], String, ArgPtr);
-  va_end(ArgPtr);
+  gbTmpDebugString[usIndex] = sprintf(string, ...args);
 
   return gbTmpDebugString[usIndex];
 }

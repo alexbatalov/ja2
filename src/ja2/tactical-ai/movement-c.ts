@@ -588,7 +588,7 @@ export function HaltMoveForSoldierOutOfPoints(pSoldier: Pointer<SOLDIERTYPE>): v
   AdjustNoAPToFinishMove(pSoldier, true);
 
   // We'll keep his action intact though...
-  DebugAI(String("NO AP TO FINISH MOVE for %d (%d APs left)", pSoldier.value.ubID, pSoldier.value.bActionPoints));
+  DebugAI(FormatString("NO AP TO FINISH MOVE for %d (%d APs left)", pSoldier.value.ubID, pSoldier.value.bActionPoints));
 
   // if this dude is under AI right now, then pass the baton to someone else
   if (pSoldier.value.uiStatusFlags & SOLDIER_UNDERAICONTROL) {

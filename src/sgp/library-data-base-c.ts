@@ -42,7 +42,7 @@ export function InitializeFileDatabase(): boolean {
 
         // else the library doesnt exist
         else {
-          FastDebugMsg(String("Warning in InitializeFileDatabase( ): Library Id #%d (%s) is to be loaded but cannot be found.\n", i, gGameLibaries[i].sLibraryName));
+          FastDebugMsg(FormatString("Warning in InitializeFileDatabase( ): Library Id #%d (%s) is to be loaded but cannot be found.\n", i, gGameLibaries[i].sLibraryName));
           gFileDataBase.pLibraries[i].fLibraryOpen = false;
         }
       }
@@ -108,7 +108,7 @@ export function ShutDownFileDatabase(): boolean {
 
   // loop through all the 'opened files' ( there should be no files open )
   for (sLoop1 = 0; sLoop1 < gFileDataBase.RealFiles.iNumFilesOpen; sLoop1++) {
-    FastDebugMsg(String("ShutDownFileDatabase( ):  ERROR:  real file id still exists, wasnt closed"));
+    FastDebugMsg(FormatString("ShutDownFileDatabase( ):  ERROR:  real file id still exists, wasnt closed"));
     CloseHandle(gFileDataBase.RealFiles.pRealFilesOpen[sLoop1].hRealFileHandle);
   }
 
@@ -207,7 +207,7 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: LibraryHe
     if (DirEntry.ubState == FILE_OK) {
       // Check to see if the file is not longer then it should be
       if ((DirEntry.sFileName.length + 1) >= FILENAME_SIZE)
-        FastDebugMsg(String("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.sLibraryPath, (DirEntry.sFileName.length + 1), FILENAME_SIZE));
+        FastDebugMsg(FormatString("\n*******InitializeLibrary():  Warning!:  '%s' from the library '%s' has name whose size (%d) is bigger then it should be (%s)", DirEntry.sFileName, pLibHeader.sLibraryPath, (DirEntry.sFileName.length + 1), FILENAME_SIZE));
 
       // copy the file name, offset and length into the header
       pLibHeader.pFileHeader[uiCount].pFileName = DirEntry.sFileName;
@@ -637,7 +637,7 @@ function CloseLibrary(sLibraryID: INT16): boolean {
     // loop though the array of open files to see if any are still open
     for (uiLoop1 = 0; uiLoop1 < gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries; uiLoop1++) {
       if (CheckIfFileIsAlreadyOpen(gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName, sLibraryID)) {
-        FastDebugMsg(String("CloseLibrary():  ERROR:  %s library file id still exists, wasnt closed, closing now.", gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName));
+        FastDebugMsg(FormatString("CloseLibrary():  ERROR:  %s library file id still exists, wasnt closed, closing now.", gFileDataBase.pLibraries[sLibraryID].pFileHeader[uiLoop1].pFileName));
         CloseLibraryFile(sLibraryID, uiLoop1);
 
         //	Removed because the memory gets freed in the next for loop.  Would only enter here if files were still open
