@@ -13,12 +13,31 @@ export interface FilesUnit {
   Next: FilesUnit | null /* Pointer<FilesUnit> */; // next unit in the list
 }
 
+export function createFilesUnit(): FilesUnit {
+  return {
+    ubCode: 0,
+    ubFormat: 0,
+    uiIdNumber: 0,
+    uiDate: 0,
+    fRead: false,
+    pPicFileNameList: createArray(2, ''),
+    Next: null,
+  };
+}
+
+export const FILES_UNIT_SIZE = 263;
+
 export interface FileString {
   pString: string /* STR16 */;
   Next: FileString | null /* Pointer<FileString> */;
 }
 
-export type FileStringPtr = Pointer<FileString>;
+export function createFileString(): FileString {
+  return {
+    pString: '',
+    Next: null,
+  };
+}
 
 // files codes
 const enum Enum77 {
@@ -36,8 +55,6 @@ export const enum Enum78 {
   ELGIN_BACKGROUND,
 }
 
-export type FilesUnitPtr = Pointer<FilesUnit>;
-
 export interface FileRecordWidth {
   iRecordNumber: INT32;
   iRecordWidth: INT32;
@@ -46,6 +63,14 @@ export interface FileRecordWidth {
   Next: FileRecordWidth | null /* Pointer<FileRecordWidth> */;
 }
 
-export type FileRecordWidthPtr = Pointer<FileRecordWidth>;
+export function createFileRecordWidth(): FileRecordWidth {
+  return {
+    iRecordNumber: 0,
+    iRecordWidth: 0,
+    iRecordHeightAdjustment: 0,
+    ubFlags: 0,
+    Next: null,
+  };
+}
 
 }

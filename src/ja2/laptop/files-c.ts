@@ -40,9 +40,9 @@ const FILES_COUNTER_3_WIDTH = 45;
 let iHighLightFileLine: INT32 = -1;
 
 // the files record list
-let pFilesListHead: FilesUnitPtr = null;
+let pFilesListHead: FilesUnit | null = null;
 
-let pFileStringList: FileStringPtr = null;
+let pFileStringList: FileString | null = null;
 
 // are we in files mode
 let fInFilesMode: boolean = false;
@@ -111,7 +111,7 @@ const enum Enum76 {
 // mouse regions
 let pFilesRegions: MOUSE_REGION[] /* [MAX_FILES_PAGE] */ = createArrayFrom(MAX_FILES_PAGE, createMouseRegion);
 
-function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string /* STR8 */, pSecondPicFile: string /* STR8 */): UINT32 {
+function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string | null /* STR8 */, pSecondPicFile: string | null /* STR8 */): UINT32 {
   // adds Files item to player's log(Files List), returns unique id number of it
   // outside of the Files system(the code in this .c file), this is the only function you'll ever need
   let uiId: UINT32 = 0;
@@ -301,80 +301,72 @@ function RemoveFiles(): void {
   return;
 }
 
-function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string /* STR8 */, pSecondPicFile: string /* STR8 */, fRead: boolean): UINT32 {
+function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: string | null /* STR8 */, pSecondPicFile: string | null /* STR8 */, fRead: boolean): UINT32 {
   let uiId: UINT32 = 0;
-  let pFiles: FilesUnitPtr = pFilesListHead;
+  let pFiles: FilesUnit | null = pFilesListHead;
 
   // add to Files list
   if (pFiles) {
     while (pFiles) {
       // check to see if the file is already there
-      if (pFiles.value.ubCode == ubCode) {
+      if (pFiles.ubCode == ubCode) {
         // if so, return it's id number
-        return pFiles.value.uiIdNumber;
+        return pFiles.uiIdNumber;
       }
 
       // next in the list
-      pFiles = pFiles.value.Next;
+      pFiles = pFiles.Next;
     }
 
     // reset pointer
-    pFiles = pFilesListHead;
+    pFiles = <FilesUnit>pFilesListHead;
 
     // go to end of list
-    while (pFiles.value.Next) {
-      pFiles = pFiles.value.Next;
+    while (pFiles.Next) {
+      pFiles = pFiles.Next;
     }
     // alloc space
-    pFiles.value.Next = MemAlloc(sizeof(FilesUnit));
+    pFiles.Next = createFilesUnit();
 
     // increment id number
-    uiId = pFiles.value.uiIdNumber + 1;
+    uiId = pFiles.uiIdNumber + 1;
 
     // set up information passed
-    pFiles = pFiles.value.Next;
-    pFiles.value.Next = null;
-    pFiles.value.ubCode = ubCode;
-    pFiles.value.uiDate = uiDate;
-    pFiles.value.uiIdNumber = uiId;
-    pFiles.value.ubFormat = ubFormat;
-    pFiles.value.fRead = fRead;
+    pFiles = pFiles.Next;
+    pFiles.Next = null;
+    pFiles.ubCode = ubCode;
+    pFiles.uiDate = uiDate;
+    pFiles.uiIdNumber = uiId;
+    pFiles.ubFormat = ubFormat;
+    pFiles.fRead = fRead;
   } else {
     // alloc space
-    pFiles = MemAlloc(sizeof(FilesUnit));
+    pFiles = createFilesUnit();
 
     // setup info passed
-    pFiles.value.Next = null;
-    pFiles.value.ubCode = ubCode;
-    pFiles.value.uiDate = uiDate;
-    pFiles.value.uiIdNumber = uiId;
+    pFiles.Next = null;
+    pFiles.ubCode = ubCode;
+    pFiles.uiDate = uiDate;
+    pFiles.uiIdNumber = uiId;
     pFilesListHead = pFiles;
-    pFiles.value.ubFormat = ubFormat;
-    pFiles.value.fRead = fRead;
+    pFiles.ubFormat = ubFormat;
+    pFiles.fRead = fRead;
   }
-
-  // null out ptr's to picture file names
-  pFiles.value.pPicFileNameList[0] = null;
-  pFiles.value.pPicFileNameList[1] = null;
 
   // copy file name strings
 
   // first file
   if (pFirstPicFile) {
-    if ((pFirstPicFile[0]) != 0) {
-      pFiles.value.pPicFileNameList[0] = MemAlloc(pFirstPicFile.length + 1);
-      pFiles.value.pPicFileNameList[0] = pFirstPicFile;
-      pFiles.value.pPicFileNameList[0][pFirstPicFile.length] = 0;
+    if ((pFirstPicFile) != '') {
+      pFiles.pPicFileNameList[0] = pFirstPicFile;
     }
   }
 
   // second file
 
   if (pSecondPicFile) {
-    if ((pSecondPicFile[0]) != 0) {
-      pFiles.value.pPicFileNameList[1] = MemAlloc(pSecondPicFile.length + 1);
-      pFiles.value.pPicFileNameList[1] = pSecondPicFile;
-      pFiles.value.pPicFileNameList[1][pSecondPicFile.length] = 0;
+    if ((pSecondPicFile) != '') {
+      pFiles.pPicFileNameList[1] = pSecondPicFile;
     }
   }
 
@@ -393,6 +385,7 @@ function OpenAndReadFilesFile(): void {
   let pSecondFilePath: string /* CHAR8[128] */;
   let ubFormat: UINT8;
   let fRead: boolean;
+  let buffer: Buffer;
 
   // clear out the old list
   ClearFilesList();
@@ -416,24 +409,26 @@ function OpenAndReadFilesFile(): void {
   }
 
   // file exists, read in data, continue until file end
+  buffer = Buffer.allocUnsafe(FILES_UNIT_SIZE);
   while (FileGetSize(hFileHandle) > uiByteCount) {
+    iBytesRead = FileRead(hFileHandle, buffer, FILES_UNIT_SIZE);
     // read in data
-    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    ubCode = buffer.readUInt8(0);
 
-    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    uiDate = buffer.readUInt32LE(1);
 
-    FileRead(hFileHandle, addressof(pFirstFilePath), 128, addressof(iBytesRead));
+    pFirstFilePath = readStringNL(buffer, 'ascii', 5, 133);
 
-    FileRead(hFileHandle, addressof(pSecondFilePath), 128, addressof(iBytesRead));
+    pSecondFilePath = readStringNL(buffer, 'ascii', 133, 261);
 
-    FileRead(hFileHandle, addressof(ubFormat), sizeof(UINT8), addressof(iBytesRead));
+    ubFormat = buffer.readUInt8(261);
 
-    FileRead(hFileHandle, addressof(fRead), sizeof(UINT8), addressof(iBytesRead));
+    fRead = Boolean(buffer.readUInt8(262));
     // add transaction
     ProcessAndEnterAFilesRecord(ubCode, uiDate, ubFormat, pFirstFilePath, pSecondFilePath, fRead);
 
     // increment byte counter
-    uiByteCount += sizeof(UINT32) + sizeof(UINT8) + 128 + 128 + sizeof(UINT8) + sizeof(BOOLEAN);
+    uiByteCount += 4 + 1 + 128 + 128 + 1 + 1;
   }
 
   // close file
@@ -446,19 +441,20 @@ function OpenAndWriteFilesFile(): boolean {
   // this procedure will open and write out data from the finance list
   let hFileHandle: HWFILE;
   let iBytesWritten: INT32 = 0;
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit | null = pFilesListHead;
   let pFirstFilePath: string /* CHAR8[128] */;
   let pSecondFilePath: string /* CHAR8[128] */;
+  let buffer: Buffer;
 
-  memset(addressof(pFirstFilePath), 0, sizeof(pFirstFilePath));
-  memset(addressof(pSecondFilePath), 0, sizeof(pSecondFilePath));
+  pFirstFilePath = '';
+  pSecondFilePath = '';
 
   if (pFilesList != null) {
-    if (pFilesList.value.pPicFileNameList[0]) {
-      pFirstFilePath = pFilesList.value.pPicFileNameList[0];
+    if (pFilesList.pPicFileNameList[0]) {
+      pFirstFilePath = pFilesList.pPicFileNameList[0];
     }
-    if (pFilesList.value.pPicFileNameList[1]) {
-      pSecondFilePath = pFilesList.value.pPicFileNameList[1];
+    if (pFilesList.pPicFileNameList[1]) {
+      pSecondFilePath = pFilesList.pPicFileNameList[1];
     }
   }
 
@@ -470,17 +466,19 @@ function OpenAndWriteFilesFile(): boolean {
     return false;
   }
   // write info, while there are elements left in the list
+  buffer = Buffer.allocUnsafe(FILES_UNIT_SIZE);
   while (pFilesList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, addressof(pFilesList.value.ubCode), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pFilesList.value.uiDate), sizeof(UINT32), null);
-    FileWrite(hFileHandle, addressof(pFirstFilePath), 128, null);
-    FileWrite(hFileHandle, addressof(pSecondFilePath), 128, null);
-    FileWrite(hFileHandle, addressof(pFilesList.value.ubFormat), sizeof(UINT8), null);
-    FileWrite(hFileHandle, addressof(pFilesList.value.fRead), sizeof(UINT8), null);
+    buffer.writeUInt8(pFilesList.ubCode, 0);
+    buffer.writeUInt32LE(pFilesList.uiDate, 1);
+    writeStringNL(pFirstFilePath, buffer, 5, 128, 'ascii');
+    writeStringNL(pSecondFilePath, buffer, 133, 128, 'ascii');
+    buffer.writeUInt8(pFilesList.ubFormat, 261);
+    buffer.writeUInt8(Number(pFilesList.fRead), 262);
+    FileWrite(hFileHandle, buffer, FILES_UNIT_SIZE);
 
     // next element in list
-    pFilesList = pFilesList.value.Next;
+    pFilesList = pFilesList.Next;
   }
 
   // close file
@@ -493,8 +491,8 @@ function OpenAndWriteFilesFile(): boolean {
 
 function ClearFilesList(): void {
   // remove each element from list of transactions
-  let pFilesList: FilesUnitPtr = pFilesListHead;
-  let pFilesNode: FilesUnitPtr = pFilesList;
+  let pFilesList: FilesUnit | null = pFilesListHead;
+  let pFilesNode: FilesUnit | null = pFilesList;
 
   // while there are elements in the list left, delete them
   while (pFilesList) {
@@ -502,18 +500,16 @@ function ClearFilesList(): void {
     pFilesNode = pFilesList;
 
     // set list head to next node
-    pFilesList = pFilesList.value.Next;
+    pFilesList = pFilesList.Next;
 
     // if present, dealloc string
-    if (pFilesNode.value.pPicFileNameList[0]) {
-      MemFree(pFilesNode.value.pPicFileNameList[0]);
+    if (pFilesNode.pPicFileNameList[0]) {
+      pFilesNode.pPicFileNameList[0] = '';
     }
 
-    if (pFilesNode.value.pPicFileNameList[1]) {
-      MemFree(pFilesNode.value.pPicFileNameList[1]);
+    if (pFilesNode.pPicFileNameList[1]) {
+      pFilesNode.pPicFileNameList[1] = '';
     }
-    // delete current node
-    MemFree(pFilesNode);
   }
   pFilesListHead = null;
   return;
@@ -531,7 +527,7 @@ function DrawFilesListBackGround(): void {
 
 function DisplayFilesList(): void {
   // this function will run through the list of files of files and display the 'sender'
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit | null = pFilesListHead;
   let iCounter: INT32 = 0;
   let hHandle: HVOBJECT;
 
@@ -549,9 +545,9 @@ function DisplayFilesList(): void {
       hHandle = GetVideoObject(guiHIGHLIGHT);
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, null);
     }
-    mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.value.ubCode]);
+    mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.ubCode]);
     iCounter++;
-    pFilesList = pFilesList.value.Next;
+    pFilesList = pFilesList.Next;
   }
 
   // reset shadow
@@ -597,7 +593,7 @@ function RemoveFilesMouseRegions(): void {
 function FilesBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iFileId: INT32 = -1;
   let iCounter: INT32 = 0;
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit | null = pFilesListHead;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -623,7 +619,7 @@ function FilesBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
       }
 
       // next element in list
-      pFilesList = pFilesList.value.Next;
+      pFilesList = pFilesList.Next;
 
       // increment counter
       iCounter++;
@@ -636,7 +632,7 @@ function FilesBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
 }
 
 function DisplayFormattedText(): boolean {
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit = <FilesUnit>pFilesListHead;
 
   let usFirstWidth: UINT16 = 0;
   let usFirstHeight: UINT16 = 0;
@@ -661,15 +657,15 @@ function DisplayFormattedText(): boolean {
   // get the file that was highlighted
   while (iCounter < iHighLightFileLine) {
     iCounter++;
-    pFilesList = pFilesList.value.Next;
+    pFilesList = <FilesUnit>pFilesList.Next;
   }
 
   // message code found, reset counter
-  iMessageCode = pFilesList.value.ubCode;
+  iMessageCode = pFilesList.ubCode;
   iCounter = 0;
 
   // set file as read
-  pFilesList.value.fRead = true;
+  pFilesList.fRead = true;
 
   // clear the file string structure list
   // get file background object
@@ -687,9 +683,9 @@ function DisplayFormattedText(): boolean {
     iCounter++;
   }
 
-  iLength = ubFileRecordsLength[pFilesList.value.ubCode];
+  iLength = ubFileRecordsLength[pFilesList.ubCode];
 
-  if (pFilesList.value.ubFormat < Enum78.ENRICO_BACKGROUND) {
+  if (pFilesList.ubFormat < Enum78.ENRICO_BACKGROUND) {
     sString = LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", FILE_STRING_SIZE * (iOffSet)*2, FILE_STRING_SIZE * iLength * 2);
   }
 
@@ -699,7 +695,7 @@ function DisplayFormattedText(): boolean {
   // no shadow
   SetFontShadow(NO_SHADOW);
 
-  switch (pFilesList.value.ubFormat) {
+  switch (pFilesList.ubFormat) {
     case 0:
 
       // no format, all text
@@ -722,7 +718,7 @@ function DisplayFormattedText(): boolean {
 
       // load graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[0]);
+      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.pPicFileNameList[0]);
       if (!(uiFirstTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
@@ -758,14 +754,14 @@ function DisplayFormattedText(): boolean {
 
       // load first graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[0]);
+      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.pPicFileNameList[0]);
       if (!(uiFirstTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
 
       // load second graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.value.pPicFileNameList[1]);
+      VObjectDesc.ImageFile = FilenameForBPP(pFilesList.pPicFileNameList[1]);
       if (!(uiSecondTempPicture = AddVideoObject(VObjectDesc))) {
         return false;
       }
@@ -816,10 +812,10 @@ function DisplayFormattedText(): boolean {
     case 3:
       // picture on the left, with text on right and below
       // load first graphic
-      HandleSpecialTerroristFile(pFilesList.value.ubCode, pFilesList.value.pPicFileNameList[0]);
+      HandleSpecialTerroristFile(pFilesList.ubCode, pFilesList.pPicFileNameList[0]);
       break;
     default:
-      HandleSpecialFiles(pFilesList.value.ubFormat);
+      HandleSpecialFiles(pFilesList.ubFormat);
       break;
   }
 
@@ -832,8 +828,8 @@ function DisplayFormattedText(): boolean {
 function HandleSpecialFiles(ubFormat: UINT8): boolean {
   let iCounter: INT32 = 0;
   let sString: string /* wchar_t[2048] */;
-  let pTempString: FileStringPtr = null;
-  let pLocatorString: FileStringPtr = null;
+  let pTempString: FileString | null = null;
+  let pLocatorString: FileString | null = null;
   let iTotalYPosition: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
   let iFileLineWidth: INT32 = 0;
@@ -841,7 +837,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
   let fGoingOffCurrentPage: boolean = false;
-  let WidthList: FileRecordWidthPtr = null;
+  let WidthList: FileRecordWidth;
 
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
@@ -872,16 +868,16 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
       // find out where this string is
       while (pLocatorString != pTempString) {
         iCounter++;
-        pLocatorString = pLocatorString.value.Next;
+        pLocatorString = (<FileString>pLocatorString).Next;
       }
 
       // move through list and display
       while (pTempString) {
         uiFlags = IAN_WRAP_NO_SHADOW;
         // copy over string
-        sString = pTempString.value.pString;
+        sString = pTempString.pString;
 
-        if (sString[0] == 0) {
+        if (sString == '') {
           // on last page
           fOnLastFilesPageFlag = true;
         }
@@ -935,7 +931,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
         }
         // not far enough, advance
 
-        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
+        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, false, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
           // now print it
           iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, false, uiFlags);
 
@@ -945,7 +941,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
           fGoingOffCurrentPage = true;
         }
 
-        pTempString = pTempString.value.Next;
+        pTempString = pTempString.Next;
 
         if (pTempString == null) {
           // on last page
@@ -1018,49 +1014,43 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
 }
 
 function AddStringToFilesList(pString: string /* STR16 */): void {
-  let pFileString: FileStringPtr;
-  let pTempString: FileStringPtr = pFileStringList;
+  let pFileString: FileString;
+  let pTempString: FileString | null = pFileStringList;
 
   // create string structure
-  pFileString = MemAlloc(sizeof(FileString));
+  pFileString = createFileString();
 
   // alloc string and copy
-  pFileString.value.pString = MemAlloc((pString.length * 2) + 2);
-  pFileString.value.pString = pString;
-  pFileString.value.pString[pString.length] = 0;
+  pFileString.pString = pString;
 
   // set Next to NULL
 
-  pFileString.value.Next = null;
-  if (pFileStringList == null) {
+  pFileString.Next = null;
+  if (pTempString == null) {
     pFileStringList = pFileString;
   } else {
-    while (pTempString.value.Next) {
-      pTempString = pTempString.value.Next;
+    while (pTempString.Next) {
+      pTempString = pTempString.Next;
     }
-    pTempString.value.Next = pFileString;
+    pTempString.Next = pFileString;
   }
 
   return;
 }
 
 function ClearFileStringList(): void {
-  let pFileString: FileStringPtr;
-  let pDeleteFileString: FileStringPtr;
+  let pFileString: FileString | null;
+  let pDeleteFileString: FileString | null;
 
   pFileString = pFileStringList;
 
   if (pFileString == null) {
     return;
   }
-  while (pFileString.value.Next) {
+  while (pFileString.Next) {
     pDeleteFileString = pFileString;
-    pFileString = pFileString.value.Next;
-    MemFree(pDeleteFileString);
+    pFileString = pFileString.Next;
   }
-
-  // last one
-  MemFree(pFileString);
 
   pFileStringList = null;
 }
@@ -1188,26 +1178,26 @@ function HandleFileViewerButtonStates(): void {
   return;
 }
 
-function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHeightAdjustment: INT32, ubFlags: UINT8): FileRecordWidthPtr {
-  let pTempRecord: FileRecordWidthPtr = null;
+function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHeightAdjustment: INT32, ubFlags: UINT8): FileRecordWidth {
+  let pTempRecord: FileRecordWidth;
 
   // allocs and inits a width info record for the multipage file viewer...this will tell the procedure that does inital computation on which record is the start of the current page
   // how wide special records are ( ones that share space with pictures )
-  pTempRecord = MemAlloc(sizeof(FileRecordWidth));
+  pTempRecord = createFileRecordWidth();
 
-  pTempRecord.value.Next = null;
-  pTempRecord.value.iRecordNumber = iRecordNumber;
-  pTempRecord.value.iRecordWidth = iRecordWidth;
-  pTempRecord.value.iRecordHeightAdjustment = iRecordHeightAdjustment;
-  pTempRecord.value.ubFlags = ubFlags;
+  pTempRecord.Next = null;
+  pTempRecord.iRecordNumber = iRecordNumber;
+  pTempRecord.iRecordWidth = iRecordWidth;
+  pTempRecord.iRecordHeightAdjustment = iRecordHeightAdjustment;
+  pTempRecord.ubFlags = ubFlags;
 
   return pTempRecord;
 }
 
-function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
+function CreateWidthRecordsForAruloIntelFile(): FileRecordWidth {
   // this fucntion will create the width list for the Arulco intelligence file
-  let pTempRecord: FileRecordWidthPtr = null;
-  let pRecordListHead: FileRecordWidthPtr = null;
+  let pTempRecord: FileRecordWidth;
+  let pRecordListHead: FileRecordWidth;
 
   // first record width
   //	pTempRecord = CreateRecordWidth( 7, 350, 200,0 );
@@ -1218,21 +1208,21 @@ function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
 
   // next record
   //	pTempRecord -> Next = CreateRecordWidth( 43, 200,0, 0 );
-  pTempRecord.value.Next = CreateRecordWidth(FILES_COUNTER_2_WIDTH, 200, 0, 0);
-  pTempRecord = pTempRecord.value.Next;
+  pTempRecord.Next = CreateRecordWidth(FILES_COUNTER_2_WIDTH, 200, 0, 0);
+  pTempRecord = pTempRecord.Next;
 
   // and the next..
   //	pTempRecord -> Next = CreateRecordWidth( 45, 200,0, 0 );
-  pTempRecord.value.Next = CreateRecordWidth(FILES_COUNTER_3_WIDTH, 200, 0, 0);
-  pTempRecord = pTempRecord.value.Next;
+  pTempRecord.Next = CreateRecordWidth(FILES_COUNTER_3_WIDTH, 200, 0, 0);
+  pTempRecord = pTempRecord.Next;
 
   return pRecordListHead;
 }
 
-function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
+function CreateWidthRecordsForTerroristFile(): FileRecordWidth {
   // this fucntion will create the width list for the Arulco intelligence file
-  let pTempRecord: FileRecordWidthPtr = null;
-  let pRecordListHead: FileRecordWidthPtr = null;
+  let pTempRecord: FileRecordWidth;
+  let pRecordListHead: FileRecordWidth;
 
   // first record width
   pTempRecord = CreateRecordWidth(4, 170, 0, 0);
@@ -1241,18 +1231,18 @@ function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
   pRecordListHead = pTempRecord;
 
   // next record
-  pTempRecord.value.Next = CreateRecordWidth(5, 170, 0, 0);
-  pTempRecord = pTempRecord.value.Next;
+  pTempRecord.Next = CreateRecordWidth(5, 170, 0, 0);
+  pTempRecord = pTempRecord.Next;
 
-  pTempRecord.value.Next = CreateRecordWidth(6, 170, 0, 0);
-  pTempRecord = pTempRecord.value.Next;
+  pTempRecord.Next = CreateRecordWidth(6, 170, 0, 0);
+  pTempRecord = pTempRecord.Next;
 
   return pRecordListHead;
 }
 
-function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): void {
-  let pTempRecord: FileRecordWidthPtr = null;
-  let pDeleteRecord: FileRecordWidthPtr = null;
+function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidth): void {
+  let pTempRecord: FileRecordWidth | null = null;
+  let pDeleteRecord: FileRecordWidth | null = null;
 
   // set up to head of the list
   pTempRecord = pDeleteRecord = pFileRecordWidthList;
@@ -1262,21 +1252,13 @@ function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): voi
     return;
   }
 
-  while (pTempRecord.value.Next) {
+  while (pTempRecord.Next) {
     // set up delete record
     pDeleteRecord = pTempRecord;
 
     // move to next record
-    pTempRecord = pTempRecord.value.Next;
-
-    MemFree(pDeleteRecord);
+    pTempRecord = pTempRecord.Next;
   }
-
-  // now get the last element
-  MemFree(pTempRecord);
-
-  // null out passed ptr
-  pFileRecordWidthList = null;
 
   return;
 }
@@ -1284,17 +1266,17 @@ function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): voi
 function OpenFirstUnreadFile(): void {
   // open the first unread file in the list
   let iCounter: INT32 = 0;
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit | null = pFilesListHead;
 
   // make sure is a valid
   while (pFilesList) {
     // if iCounter = iFileId, is a valid file
-    if (pFilesList.value.fRead == false) {
+    if (pFilesList.fRead == false) {
       iHighLightFileLine = iCounter;
     }
 
     // next element in list
-    pFilesList = pFilesList.value.Next;
+    pFilesList = pFilesList.Next;
 
     // increment counter
     iCounter++;
@@ -1307,17 +1289,17 @@ function CheckForUnreadFiles(): void {
   let fStatusOfNewFileFlag: boolean = fNewFilesInFileViewer;
 
   // willc heck for any unread files and set flag if any
-  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesList: FilesUnit | null = pFilesListHead;
 
   fNewFilesInFileViewer = false;
 
   while (pFilesList) {
     // unread?...if so, set flag
-    if (pFilesList.value.fRead == false) {
+    if (pFilesList.fRead == false) {
       fNewFilesInFileViewer = true;
     }
     // next element in list
-    pFilesList = pFilesList.value.Next;
+    pFilesList = pFilesList.Next;
   }
 
   // if the old flag and the new flag arent the same, either create or destory the fast help region
@@ -1329,8 +1311,8 @@ function CheckForUnreadFiles(): void {
 function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* STR */): boolean {
   let iCounter: INT32 = 0;
   let sString: string /* wchar_t[2048] */;
-  let pTempString: FileStringPtr = null;
-  let pLocatorString: FileStringPtr = null;
+  let pTempString: FileString | null = null;
+  let pLocatorString: FileString | null = null;
   let iTotalYPosition: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
   let iFileLineWidth: INT32 = 0;
@@ -1338,7 +1320,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   let uiFlags: UINT32 = 0;
   let uiFont: UINT32 = 0;
   let fGoingOffCurrentPage: boolean = false;
-  let WidthList: FileRecordWidthPtr = null;
+  let WidthList: FileRecordWidth;
   let iOffset: INT32 = 0;
   let uiPicture: UINT32;
   let hHandle: HVOBJECT;
@@ -1367,16 +1349,16 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   // find out where this string is
   while (pLocatorString != pTempString) {
     iCounter++;
-    pLocatorString = pLocatorString.value.Next;
+    pLocatorString = (<FileString>pLocatorString).Next;
   }
 
   // move through list and display
   while (pTempString) {
     uiFlags = IAN_WRAP_NO_SHADOW;
     // copy over string
-    sString = pTempString.value.pString;
+    sString = pTempString.pString;
 
-    if (sString[0] == 0) {
+    if (sString == '') {
       // on last page
       fOnLastFilesPageFlag = true;
     }
@@ -1401,7 +1383,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
     }
 
     // based on the record we are at, selected X start position and the width to wrap the line, to fit around pictures
-    if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
+    if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, false, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
       // now print it
       iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, false, uiFlags);
 
@@ -1411,7 +1393,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
       fGoingOffCurrentPage = true;
     }
 
-    pTempString = pTempString.value.Next;
+    pTempString = pTempString.Next;
 
     if ((pTempString == null) && (fGoingOffCurrentPage == false)) {
       // on last page
