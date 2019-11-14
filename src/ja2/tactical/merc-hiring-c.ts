@@ -8,11 +8,11 @@ const MIN_FLIGHT_PREP_TIME = 6;
 export let gsMercArriveSectorX: INT16 = 9;
 export let gsMercArriveSectorY: INT16 = 1;
 
-export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
+export function HireMerc(pHireMerc: MERC_HIRE_STRUCT): INT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let iNewIndex: UINT8;
   let ubCount: UINT8 = 0;
-  let ubCurrentSoldier: UINT8 = pHireMerc.value.ubProfileID;
+  let ubCurrentSoldier: UINT8 = pHireMerc.ubProfileID;
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let fReturn: boolean = false;
@@ -28,21 +28,21 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 
   // ATE: if we are to use landing zone, update to latest value
   // they will be updated again just before arrival...
-  if (pHireMerc.value.fUseLandingZoneForArrival) {
-    pHireMerc.value.sSectorX = gsMercArriveSectorX;
-    pHireMerc.value.sSectorY = gsMercArriveSectorY;
-    pHireMerc.value.bSectorZ = 0;
+  if (pHireMerc.fUseLandingZoneForArrival) {
+    pHireMerc.sSectorX = gsMercArriveSectorX;
+    pHireMerc.sSectorY = gsMercArriveSectorY;
+    pHireMerc.bSectorZ = 0;
   }
 
   // BUILD STRUCTURES
   memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.ubProfile = ubCurrentSoldier;
   MercCreateStruct.fPlayerMerc = true;
-  MercCreateStruct.sSectorX = pHireMerc.value.sSectorX;
-  MercCreateStruct.sSectorY = pHireMerc.value.sSectorY;
-  MercCreateStruct.bSectorZ = pHireMerc.value.bSectorZ;
+  MercCreateStruct.sSectorX = pHireMerc.sSectorX;
+  MercCreateStruct.sSectorY = pHireMerc.sSectorY;
+  MercCreateStruct.bSectorZ = pHireMerc.bSectorZ;
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
-  MercCreateStruct.fCopyProfileItemsOver = pHireMerc.value.fCopyProfileItemsOver;
+  MercCreateStruct.fCopyProfileItemsOver = pHireMerc.fCopyProfileItemsOver;
 
   if (!TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "TacticalCreateSoldier in HireMerc():  Failed to Add Merc");
@@ -68,19 +68,19 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
     // Set insertion for first time in chopper
 
     // ATE: Insert for demo , not using the heli sequence....
-    pHireMerc.value.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
+    pHireMerc.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
   }
 
   // record how long the merc will be gone for
-  pMerc.value.bMercStatus = pHireMerc.value.iTotalContractLength;
+  pMerc.value.bMercStatus = pHireMerc.iTotalContractLength;
 
   pSoldier = addressof(Menptr[iNewIndex]);
 
   // Copy over insertion data....
-  pSoldier.value.ubStrategicInsertionCode = pHireMerc.value.ubInsertionCode;
-  pSoldier.value.usStrategicInsertionData = pHireMerc.value.usInsertionData;
+  pSoldier.value.ubStrategicInsertionCode = pHireMerc.ubInsertionCode;
+  pSoldier.value.usStrategicInsertionData = pHireMerc.usInsertionData;
   // ATE: Copy over value for using alnding zone to soldier type
-  pSoldier.value.fUseLandingZoneForArrival = pHireMerc.value.fUseLandingZoneForArrival;
+  pSoldier.value.fUseLandingZoneForArrival = pHireMerc.fUseLandingZoneForArrival;
 
   // Set assignment
   // ATE: If first time, make ON_DUTY, otherwise GUARD
@@ -90,7 +90,7 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   ChangeSoldiersAssignment(pSoldier, Enum117.IN_TRANSIT);
 
   // set the contract length
-  pSoldier.value.iTotalContractLength = pHireMerc.value.iTotalContractLength;
+  pSoldier.value.iTotalContractLength = pHireMerc.iTotalContractLength;
 
   // reset the insurance values
   pSoldier.value.iStartOfInsuranceContract = 0;
@@ -100,17 +100,17 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   //	pSoldier->iTotalContractCharge = 0;
 
   // store arrival time in soldier structure so map screen can display it
-  pSoldier.value.uiTimeSoldierWillArrive = pHireMerc.value.uiTimeTillMercArrives;
+  pSoldier.value.uiTimeSoldierWillArrive = pHireMerc.uiTimeTillMercArrives;
 
   // Set the type of merc
 
   if (DidGameJustStart()) {
     // Set time of initial merc arrival in minutes
-    pHireMerc.value.uiTimeTillMercArrives = (STARTING_TIME + FIRST_ARRIVAL_DELAY) / NUM_SEC_IN_MIN;
+    pHireMerc.uiTimeTillMercArrives = (STARTING_TIME + FIRST_ARRIVAL_DELAY) / NUM_SEC_IN_MIN;
 
 // ATE: Insert for demo , not using the heli sequence....
     // Set insertion for first time in chopper
-    pHireMerc.value.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
+    pHireMerc.ubInsertionCode = Enum175.INSERTION_CODE_CHOPPER;
 
     // set when the merc's contract is finished
     pSoldier.value.iEndofContractTime = GetMidnightOfFutureDayInMinutes(pSoldier.value.iTotalContractLength) + (GetHourWhenContractDone(pSoldier) * 60);
@@ -120,12 +120,12 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   }
 
   // Set the time and ID of the last hired merc will arrive
-  LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = pHireMerc.value.ubProfileID;
-  LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = pHireMerc.value.uiTimeTillMercArrives;
+  LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = pHireMerc.ubProfileID;
+  LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = pHireMerc.uiTimeTillMercArrives;
 
   // if we are trying to hire a merc that should arrive later, put the merc in the queue
-  if (pHireMerc.value.uiTimeTillMercArrives != 0) {
-    AddStrategicEvent(Enum132.EVENT_DELAYED_HIRING_OF_MERC, pHireMerc.value.uiTimeTillMercArrives, pSoldier.value.ubID);
+  if (pHireMerc.uiTimeTillMercArrives != 0) {
+    AddStrategicEvent(Enum132.EVENT_DELAYED_HIRING_OF_MERC, pHireMerc.uiTimeTillMercArrives, pSoldier.value.ubID);
 
     // specify that the merc is hired but hasnt arrived yet
     pMerc.value.bMercStatus = MERC_HIRED_BUT_NOT_ARRIVED_YET;
@@ -135,15 +135,15 @@ export function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   if (ubCurrentSoldier < 40) {
     pSoldier.value.ubWhatKindOfMercAmI = Enum260.MERC_TYPE__AIM_MERC;
     // determine how much the contract is, and remember what type of contract he got
-    if (pHireMerc.value.iTotalContractLength == 1) {
+    if (pHireMerc.iTotalContractLength == 1) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].sSalary;
       pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_1_DAY;
       pSoldier.value.iTimeCanSignElsewhere = GetWorldTotalMin();
-    } else if (pHireMerc.value.iTotalContractLength == 7) {
+    } else if (pHireMerc.iTotalContractLength == 7) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].uiWeeklySalary;
       pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_1_WEEK;
       pSoldier.value.iTimeCanSignElsewhere = GetWorldTotalMin();
-    } else if (pHireMerc.value.iTotalContractLength == 14) {
+    } else if (pHireMerc.iTotalContractLength == 14) {
       // pSoldier->iTotalContractCharge = gMercProfiles[ pSoldier->ubProfile ].uiBiWeeklySalary;
       pSoldier.value.bTypeOfLastContract = Enum161.CONTRACT_EXTEND_2_WEEK;
       // These luck fellows need to stay the whole duration!

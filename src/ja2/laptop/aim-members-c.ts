@@ -122,10 +122,10 @@ const NEXT_BR_Y = NEXT_BOX_Y + BOTTOM_BUTTON_START_HEIGHT;
 const AIM_MERC_INFO_X = 124;
 const AIM_MERC_INFO_Y = 223 + LAPTOP_SCREEN_WEB_DELTA_Y;
 
-const AIM_MERC_ADD_X = AIM_MERC_ADD_INFO_X;
+const AIM_MERC_ADD_X = AIM_MERC_INFO_X;
 const AIM_MERC_ADD_Y = 269 + LAPTOP_SCREEN_WEB_DELTA_Y;
 
-const AIM_MERC_ADD_INFO_X = AIM_MERC_INFO_X;
+const AIM_MERC_ADD_INFO_X = AIM_MERC_ADD_X;
 const AIM_MERC_ADD_INFO_Y = AIM_MERC_ADD_Y + 15;
 const AIM_MERC_INFO_WIDTH = 470;
 
@@ -329,7 +329,6 @@ let gfVideoFaceActive: boolean = false;
 
 let gubPopUpBoxAction: UINT8 = Enum66.AIM_POPUP_NOTHING;
 let gfRedrawScreen: boolean = false;
-export let gubContractLength: UINT8;
 let gfBuyEquipment: boolean;
 let giContractAmount: INT32 = 0;
 let giMercFaceIndex: INT32;
@@ -880,11 +879,11 @@ function UpdateMercInfo(): boolean {
       DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, AIM_MEDICAL_DEPOSIT_Y, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
-  LoadMercBioInfo(gbCurrentSoldier, MercInfoString, AdditionalInfoString);
-  if (MercInfoString[0] != 0) {
+  ({ info: MercInfoString, additionalInfo: AdditionalInfoString } = LoadMercBioInfo(gbCurrentSoldier));
+  if (MercInfoString != '') {
     DisplayWrappedString(AIM_MERC_INFO_X, AIM_MERC_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, MercInfoString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
-  if (AdditionalInfoString[0] != 0) {
+  if (AdditionalInfoString != '') {
     DrawTextToScreen(CharacterInfo[Enum355.AIM_MEMBER_ADDTNL_INFO], AIM_MERC_ADD_X, AIM_MERC_ADD_Y, 0, AIM_M_FONT_STATIC_TEXT(), AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     DisplayWrappedString(AIM_MERC_ADD_INFO_X, AIM_MERC_ADD_INFO_Y, AIM_MERC_INFO_WIDTH, 2, AIM_M_FONT_DYNAMIC_TEXT(), AIM_FONT_MCOLOR_WHITE, AdditionalInfoString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
@@ -892,32 +891,39 @@ function UpdateMercInfo(): boolean {
   return true;
 }
 
-function LoadMercBioInfo(ubIndex: UINT8, pInfoString: Pointer<string> /* STR16 */, pAddInfo: Pointer<string> /* STR16 */): boolean {
+type MercBioInfo = { info: string, additionalInfo: string };
+
+function LoadMercBioInfo(ubIndex: UINT8): MercBioInfo {
+  let pInfoString: string;
+  let pAddInfo: string;
+
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
+  let buffer: Buffer;
 
   hFile = FileOpen(MERCBIOSFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return false;
+    return <MercBioInfo><unknown>undefined;
   }
 
   // Get current mercs bio info
   uiStartSeekAmount = (SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex;
 
   if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
-    return false;
+    return <MercBioInfo><unknown>undefined;
   }
 
-  if (!FileRead(hFile, pInfoString, SIZE_MERC_BIO_INFO, addressof(uiBytesRead))) {
-    return false;
+  buffer = Buffer.allocUnsafe(SIZE_MERC_BIO_INFO);
+  if ((uiBytesRead = FileRead(hFile, buffer, SIZE_MERC_BIO_INFO)) === -1) {
+    return <MercBioInfo><unknown>undefined;
   }
 
   // Decrement, by 1, any value > 32
-  for (i = 0; (i < SIZE_MERC_BIO_INFO) && (pInfoString[i] != 0); i++) {
-    if (pInfoString[i] > 33)
-      pInfoString[i] -= 1;
+  for (i = 0; (i < SIZE_MERC_BIO_INFO) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //     switch (pInfoString[i]) {
@@ -981,20 +987,23 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: Pointer<string> /* STR16 *
 // #endif
   }
 
+  pInfoString = readStringNL(buffer, 'utf16le', 0, uiBytesRead);
+
   // Get the additional info
   uiStartSeekAmount = ((SIZE_MERC_BIO_INFO + SIZE_MERC_ADDITIONAL_INFO) * ubIndex) + SIZE_MERC_BIO_INFO;
   if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
-    return false;
+    return <MercBioInfo><unknown>undefined;
   }
 
-  if (!FileRead(hFile, pAddInfo, SIZE_MERC_ADDITIONAL_INFO, addressof(uiBytesRead))) {
-    return false;
+  buffer = Buffer.allocUnsafe(SIZE_MERC_ADDITIONAL_INFO);
+  if ((uiBytesRead = FileRead(hFile, buffer, SIZE_MERC_ADDITIONAL_INFO)) === -1) {
+    return <MercBioInfo><unknown>undefined;
   }
 
   // Decrement, by 1, any value > 32
-  for (i = 0; (i < SIZE_MERC_BIO_INFO) && (pAddInfo[i] != 0); i++) {
-    if (pAddInfo[i] > 33)
-      pAddInfo[i] -= 1;
+  for (i = 0; (i < SIZE_MERC_BIO_INFO) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //     switch (pAddInfo[i]) {
@@ -1058,8 +1067,10 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: Pointer<string> /* STR16 *
 // #endif
   }
 
+  pAddInfo = readStringNL(buffer, 'utf16le', 0, uiBytesRead);
+
   FileClose(hFile);
-  return true;
+  return { info: pInfoString, additionalInfo: pAddInfo };
 }
 
 function DisplayMercsInventory(ubMercID: UINT8): boolean {
@@ -1069,11 +1080,11 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
   let sCenX: INT16;
   let sCenY: INT16;
   let usItem: UINT16;
-  let pItem: Pointer<INVTYPE>;
+  let pItem: INVTYPE;
   let hVObject: HVOBJECT;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let gzItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let ubItemCount: UINT8 = 0;
   //	UINT16			gzTempItemName[ SIZE_ITEM_INFO ];
@@ -1092,20 +1103,20 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       // increase the item count
       ubItemCount++;
 
-      pItem = addressof(Item[usItem]);
+      pItem = Item[usItem];
       hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-      pTrav = addressof(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
+      pTrav = hVObject.value.pETRLEObject[pItem.ubGraphicNum];
 
-      usHeight = pTrav.value.usHeight;
-      usWidth = pTrav.value.usWidth;
+      usHeight = pTrav.usHeight;
+      usWidth = pTrav.usWidth;
 
-      sCenX = PosX + (Math.abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.value.sOffsetX;
-      sCenY = PosY + (Math.abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.value.sOffsetY;
+      sCenX = PosX + (Math.abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.sOffsetX;
+      sCenY = PosY + (Math.abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.sOffsetY;
 
       // blt the shadow of the item
-      BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX - 2, sCenY + 2);
+      BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.ubGraphicNum, sCenX - 2, sCenY + 2);
       // blt the item
-      BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, false);
+      BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.ubGraphicNum, sCenX, sCenY, 0, false);
 
       // if there are more then 1 piece of equipment in the current slot, display how many there are
       if (gMercProfiles[ubMercID].bInvNumber[i] > 1) {
@@ -1226,7 +1237,7 @@ function DisplayMercsFace(): boolean {
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
   // See if the merc is currently hired
   pSoldier = FindSoldierByProfileID(gbCurrentSoldier, true);
@@ -1266,7 +1277,7 @@ function DisplayMercsFace(): boolean {
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
-  else if (gMercProfiles[gbCurrentSoldier].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+  else if (gMercProfiles[gbCurrentSoldier].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, FACE_X, FACE_Y, FACE_X + FACE_WIDTH, FACE_Y + FACE_HEIGHT);
     DrawTextToScreen(pPOWStrings[0], FACE_X + 1, FACE_Y + 107, FACE_WIDTH, FONT14ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
@@ -1436,7 +1447,7 @@ function BtnBuyEquipmentButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    gfBuyEquipment = MSYS_GetBtnUserData(btn, 0);
+    gfBuyEquipment = Boolean(MSYS_GetBtnUserData(btn, 0));
     DisplaySelectLights(false, true);
 
     InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
@@ -1520,7 +1531,7 @@ function BtnAuthorizeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
-function AimMemberHireMerc(): INT8 {
+function AimMemberHireMerc(): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let ubCurrentSoldier: UINT8 = AimMercArray[gbCurrentIndex];
   let bReturnCode: INT8;
@@ -1541,8 +1552,6 @@ function AimMemberHireMerc(): INT8 {
 
     return false;
   }
-
-  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
   HireMercStruct.ubProfileID = ubCurrentSoldier;
 
@@ -1578,7 +1587,7 @@ function AimMemberHireMerc(): INT8 {
   //	LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = HireMercStruct.uiTimeTillMercArrives;
 
   // if we succesfully hired the merc
-  bReturnCode = HireMerc(addressof(HireMercStruct));
+  bReturnCode = HireMerc(HireMercStruct);
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     // display a warning saying u cant hire more then 20 mercs
     DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[Enum357.AIM_MEMBER_ALREADY_HAVE_20_MERCS], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
@@ -1701,7 +1710,7 @@ function DisplaySelectLights(fContractDown: boolean, fBuyEquipDown: boolean): vo
   // draw the select light for the buy equipment buttons
   usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
   for (i = 0; i < 2; i++) {
-    if (gfBuyEquipment == i) {
+    if (Number(gfBuyEquipment) == i) {
       if (fBuyEquipDown) {
         usPosX = AIM_MEMBER_BUY_EQUIPMENT_X + AIM_SELECT_LIGHT_ON_X;
         ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, usPosY + AIM_SELECT_LIGHT_ON_Y, usPosX + 8, usPosY + AIM_SELECT_LIGHT_ON_Y + 8, Get16BPPColor(FROMRGB(0, 255, 0)));
@@ -1774,36 +1783,36 @@ function DisplayMercChargeAmount(): UINT32 {
   return giContractAmount;
 }
 
-function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */, sString2: string /* STR16 */, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
+/* static */ let InitCreateDeleteAimPopUpBox__usPopUpBoxPosX: UINT16;
+/* static */ let InitCreateDeleteAimPopUpBox__usPopUpBoxPosY: UINT16;
+/* static */ let InitCreateDeleteAimPopUpBox__sPopUpString1: string /* wchar_t[400] */;
+/* static */ let InitCreateDeleteAimPopUpBox__sPopUpString2: string /* wchar_t[400] */;
+/* static */ let InitCreateDeleteAimPopUpBox__fPopUpBoxActive: boolean = false;
+function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string | null /* STR16 */, sString2: string | null /* STR16 */, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hPopupBoxHandle: HVOBJECT;
-  /* static */ let usPopUpBoxPosX: UINT16;
-  /* static */ let usPopUpBoxPosY: UINT16;
-  /* static */ let sPopUpString1: string /* wchar_t[400] */;
-  /* static */ let sPopUpString2: string /* wchar_t[400] */;
-  /* static */ let fPopUpBoxActive: boolean = false;
   ;
 
   switch (ubFlag) {
     case Enum66.AIM_POPUP_CREATE: {
-      if (fPopUpBoxActive)
+      if (InitCreateDeleteAimPopUpBox__fPopUpBoxActive)
         return false;
 
       // Disable the 'X' to close the pop upi video
       DisableButton(giXToCloseVideoConfButton);
 
       if (sString1 != null)
-        sPopUpString1 = sString1;
+        InitCreateDeleteAimPopUpBox__sPopUpString1 = sString1;
       else
-        sPopUpString1[0] = '\0';
+        InitCreateDeleteAimPopUpBox__sPopUpString1 = '';
 
       if (sString2 != null)
-        sPopUpString2 = sString2;
+        InitCreateDeleteAimPopUpBox__sPopUpString2 = sString2;
       else
-        sPopUpString2[0] = '\0';
+        InitCreateDeleteAimPopUpBox__sPopUpString2 = '';
 
-      usPopUpBoxPosX = usPosX;
-      usPopUpBoxPosY = usPosY;
+      InitCreateDeleteAimPopUpBox__usPopUpBoxPosX = usPosX;
+      InitCreateDeleteAimPopUpBox__usPopUpBoxPosY = usPosY;
 
       // load the popup box graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1821,7 +1830,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
       SetButtonCursor(guiPopUpOkButton, Enum317.CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiPopUpOkButton, 0, ubData);
 
-      fPopUpBoxActive = true;
+      InitCreateDeleteAimPopUpBox__fPopUpBoxActive = true;
       gubPopUpBoxAction = Enum66.AIM_POPUP_DISPLAY;
 
       // Disable the current video conference buttons
@@ -1839,22 +1848,22 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
 
     case Enum66.AIM_POPUP_DISPLAY: {
       let hPopupBoxHandle: HVOBJECT;
-      let usTempPosY: UINT16 = usPopUpBoxPosY;
+      let usTempPosY: UINT16 = InitCreateDeleteAimPopUpBox__usPopUpBoxPosY;
 
       if (gubPopUpBoxAction != Enum66.AIM_POPUP_DISPLAY)
         return false;
 
       // load and display the popup box graphic
       hPopupBoxHandle = GetVideoObject(guiPopUpBox);
-      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPopUpBoxPosX, usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, InitCreateDeleteAimPopUpBox__usPopUpBoxPosX, InitCreateDeleteAimPopUpBox__usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, null);
 
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
 
       usTempPosY += AIM_POPUP_BOX_STRING1_Y;
-      if (sPopUpString1[0] != '\0')
-        usTempPosY += DisplayWrappedString(usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString1, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
-      if (sPopUpString2[0] != '\0')
-        DisplayWrappedString(usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+      if (InitCreateDeleteAimPopUpBox__sPopUpString1[0] != '\0')
+        usTempPosY += DisplayWrappedString(InitCreateDeleteAimPopUpBox__usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, InitCreateDeleteAimPopUpBox__sPopUpString1, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+      if (InitCreateDeleteAimPopUpBox__sPopUpString2[0] != '\0')
+        DisplayWrappedString(InitCreateDeleteAimPopUpBox__usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, InitCreateDeleteAimPopUpBox__sPopUpString2, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       SetFontShadow(DEFAULT_SHADOW);
 
@@ -1862,7 +1871,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
     } break;
 
     case Enum66.AIM_POPUP_DELETE: {
-      if (!fPopUpBoxActive)
+      if (!InitCreateDeleteAimPopUpBox__fPopUpBoxActive)
         return false;
 
       // Disable the 'X' to close the pop upi video
@@ -1872,7 +1881,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string /* STR16 */
       RemoveButton(guiPopUpOkButton);
       DeleteVideoObjectFromIndex(guiPopUpBox);
 
-      fPopUpBoxActive = false;
+      InitCreateDeleteAimPopUpBox__fPopUpBoxActive = false;
       gubPopUpBoxAction = Enum66.AIM_POPUP_NOTHING;
 
       if (gubVideoConferencingPreviousMode == Enum65.AIM_VIDEO_HIRE_MERC_MODE) {
@@ -2080,7 +2089,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
   //	if( !gfIsAnsweringMachineActive )
   {
     // Blt the face surface to the video background surface
-    if (!BltStretchVideoSurface(FRAME_BUFFER, guiVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
+    if (!BltStretchVideoSurface(FRAME_BUFFER, guiVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, SrcRect, DestRect))
       return false;
 
     // if the merc is not at home and the players is leaving a message, shade the players face
@@ -3113,7 +3122,7 @@ function HandleCurrentVideoConfMode(): boolean {
         gubVideoConferencingMode = Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE;
 
         // display the popup telling the user when the just hired merc is going to land
-        DisplayPopUpBoxExplainingMercArrivalLocationAndTime(giIdOfLastHiredMerc);
+        DisplayPopUpBoxExplainingMercArrivalLocationAndTime();
 
         // render the screen immediately to get rid of the pop down stuff
         InitDeleteVideoConferencePopUp();
@@ -3278,8 +3287,8 @@ export function DisableNewMailMessage(): boolean {
   return false;
 }
 
+/* static */ let DisplayMovingTitleBar__ubCount: UINT8;
 function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
-  /* static */ let ubCount: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
   let usPosRightX: UINT16;
@@ -3293,30 +3302,30 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
 
   if (fForward) {
     if (fInit)
-      ubCount = 1;
+      DisplayMovingTitleBar__ubCount = 1;
 
     usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosX = (331 - usTemp * ubCount);
+    usPosX = (331 - usTemp * DisplayMovingTitleBar__ubCount);
 
     usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosRightX = (405 + usTemp * ubCount);
+    usPosRightX = (405 + usTemp * DisplayMovingTitleBar__ubCount);
 
     usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
+    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * DisplayMovingTitleBar__ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
   } else {
     if (fInit)
-      ubCount = AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1;
+      DisplayMovingTitleBar__ubCount = AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1;
 
     usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosX = (331 - usTemp * ubCount);
+    usPosX = (331 - usTemp * DisplayMovingTitleBar__ubCount);
 
     usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosRightX = (405 + usTemp * ubCount);
+    usPosRightX = (405 + usTemp * DisplayMovingTitleBar__ubCount);
 
     usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
+    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * DisplayMovingTitleBar__ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
   }
@@ -3333,35 +3342,35 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
 
   if (fForward) {
     // Restore the old rect
-    if (ubCount > 2) {
+    if (DisplayMovingTitleBar__ubCount > 2) {
       usWidth = (LastRect.iRight - LastRect.iLeft);
       usHeight = (LastRect.iBottom - LastRect.iTop);
       BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
-    if (ubCount > 1) {
+    if (DisplayMovingTitleBar__ubCount > 1) {
       usWidth = (DestRect.iRight - DestRect.iLeft);
       usHeight = (DestRect.iBottom - DestRect.iTop);
       BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, usWidth, usHeight);
     }
   } else {
     // Restore the old rect
-    if (ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 2) {
+    if (DisplayMovingTitleBar__ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 2) {
       usWidth = (LastRect.iRight - LastRect.iLeft);
       usHeight = (LastRect.iBottom - LastRect.iTop);
       BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
-    if (ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1) {
+    if (DisplayMovingTitleBar__ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1) {
       usWidth = (DestRect.iRight - DestRect.iLeft);
       usHeight = (DestRect.iBottom - DestRect.iTop);
       BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, usWidth, usHeight);
     }
   }
 
-  BltStretchVideoSurface(FRAME_BUFFER, guiVideoTitleBar, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect));
+  BltStretchVideoSurface(FRAME_BUFFER, guiVideoTitleBar, 0, 0, VO_BLT_SRCTRANSPARENCY, SrcRect, DestRect);
 
   InvalidateRegion(DestRect.iLeft, DestRect.iTop, DestRect.iRight, DestRect.iBottom);
   InvalidateRegion(LastRect.iLeft, LastRect.iTop, LastRect.iRight, LastRect.iBottom);
@@ -3369,58 +3378,58 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   LastRect = DestRect;
 
   if (fForward) {
-    ubCount++;
-    if (ubCount == AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1)
+    DisplayMovingTitleBar__ubCount++;
+    if (DisplayMovingTitleBar__ubCount == AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1)
       return true;
     else
       return false;
   } else {
-    ubCount--;
-    if (ubCount == 0)
+    DisplayMovingTitleBar__ubCount--;
+    if (DisplayMovingTitleBar__ubCount == 0)
       return true;
     else
       return false;
   }
 }
 
+/* static */ let DelayMercSpeech__uiLastTime: UINT32 = 0;
+/* static */ let DelayMercSpeech__usCurQuoteNum: UINT16;
+/* static */ let DelayMercSpeech__usCurDelay: UINT16;
+/* static */ let DelayMercSpeech__fQuoteWaiting: boolean = false; // a quote is waiting to be said
+/* static */ let DelayMercSpeech__ubCurMercID: UINT8;
+/* static */ let DelayMercSpeech__fHangUpAfter: boolean = false;
 function DelayMercSpeech(ubMercID: UINT8, usQuoteNum: UINT16, usDelay: UINT16, fNewQuote: boolean, fReset: boolean): void {
-  /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32;
-  /* static */ let usCurQuoteNum: UINT16;
-  /* static */ let usCurDelay: UINT16;
-  /* static */ let fQuoteWaiting: boolean = false; // a quote is waiting to be said
-  /* static */ let ubCurMercID: UINT8;
-  /* static */ let fHangUpAfter: boolean = false;
 
   uiCurTime = GetJA2Clock();
 
   if (fReset)
-    fQuoteWaiting = false;
+    DelayMercSpeech__fQuoteWaiting = false;
 
   if (fNewQuote) {
     // set up the counters
-    uiLastTime = uiCurTime;
+    DelayMercSpeech__uiLastTime = uiCurTime;
 
-    ubCurMercID = ubMercID;
-    usCurQuoteNum = usQuoteNum;
-    usCurDelay = usDelay;
+    DelayMercSpeech__ubCurMercID = ubMercID;
+    DelayMercSpeech__usCurQuoteNum = usQuoteNum;
+    DelayMercSpeech__usCurDelay = usDelay;
 
     if (gfHangUpMerc) {
       gfHangUpMerc = false;
-      fHangUpAfter = true;
+      DelayMercSpeech__fHangUpAfter = true;
     }
 
-    fQuoteWaiting = true;
+    DelayMercSpeech__fQuoteWaiting = true;
   }
 
-  if (fQuoteWaiting) {
-    if ((uiCurTime - uiLastTime) > usCurDelay) {
-      InitVideoFaceTalking(ubCurMercID, usCurQuoteNum);
-      fQuoteWaiting = false;
+  if (DelayMercSpeech__fQuoteWaiting) {
+    if ((uiCurTime - DelayMercSpeech__uiLastTime) > DelayMercSpeech__usCurDelay) {
+      InitVideoFaceTalking(DelayMercSpeech__ubCurMercID, DelayMercSpeech__usCurQuoteNum);
+      DelayMercSpeech__fQuoteWaiting = false;
 
-      if (fHangUpAfter) {
+      if (DelayMercSpeech__fHangUpAfter) {
         gfHangUpMerc = true;
-        fHangUpAfter = false;
+        DelayMercSpeech__fHangUpAfter = false;
       }
     }
   }
@@ -3473,7 +3482,7 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 
 export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   let szLocAndTime: string /* CHAR16[512] */;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
   let zTimeString: string /* CHAR16[128] */;
   let zSectorIDString: string /* CHAR16[512] */;
   let uiHour: UINT32;
@@ -3508,7 +3517,7 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
 //   // Germans version has a different argument order
 //   swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString, zSectorIDString);
 // #else
-  szLocAndTime = swprintf(pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.value.ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
+  szLocAndTime = swprintf(pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
 // #endif
 
   // display the message box
