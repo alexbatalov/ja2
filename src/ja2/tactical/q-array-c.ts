@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let QuoteExp_HeadShotOnly: boolean[] /* [75] */ = [
+export let QuoteExp_HeadShotOnly: UINT8[] /* [75] */ = [
   // this is for quote 33 (0=generic grossout, 1=headshot specific)
   /* 0	Barry  	*/ 1,
   /* 1	Blood  	*/ 1,
@@ -80,7 +80,7 @@ export let QuoteExp_HeadShotOnly: boolean[] /* [75] */ = [
   /* 74	RPC74	*/ 0,
 ];
 
-let QuoteExp_TeamSpecific: boolean[] /* [75] */ = [
+let QuoteExp_TeamSpecific: UINT8[] /* [75] */ = [
   // this is for quote 41 (0=refers to anyone, 1=team specific)
   /* 0	Barry  	*/ 1,
   /* 1	Blood  	*/ 1,
@@ -160,7 +160,7 @@ let QuoteExp_TeamSpecific: boolean[] /* [75] */ = [
   /* 74	RPC74	*/ 0,
 ];
 
-export let QuoteExp_GenderCode: boolean[] /* [75] */ = [
+export let QuoteExp_GenderCode: UINT8[] /* [75] */ = [
   // this is for quote 58 (0=male, 1=female, 2=either)
   /* 0	Barry  	*/ 0,
   /* 1	Blood  	*/ 2,
@@ -240,7 +240,7 @@ export let QuoteExp_GenderCode: boolean[] /* [75] */ = [
   /* 74	RPC74	*/ 0,
 ];
 
-export let QuoteExp_GotGunOrUsedGun: boolean[] /* [75] */ = [
+export let QuoteExp_GotGunOrUsedGun: UINT8[] /* [75] */ = [
   // this is to indicate whether they have quote 61 or 62
   /* 0	Barry	*/ 62,
   /* 1	Blood   */ 62,
@@ -320,7 +320,7 @@ export let QuoteExp_GotGunOrUsedGun: boolean[] /* [75] */ = [
   /* 74	RPC74   */ 0,
 ];
 
-export let QuoteExp_PassingDislike: boolean[] /* [75] */ = [
+export let QuoteExp_PassingDislike: UINT8[] /* [75] */ = [
   // this is to indicate what kind of quote 45 (if any) mercs have
   /* 0	Barry	*/ 2,
   /* 1	Blood   */ 4,
@@ -400,7 +400,7 @@ export let QuoteExp_PassingDislike: boolean[] /* [75] */ = [
   /* 74	RPC74   */ 0,
 ];
 
-export let QuoteExp_WitnessDeidrannaDeath: boolean[] /* [73] */ = [
+export let QuoteExp_WitnessDeidrannaDeath: UINT8[] /* [73] */ = [
   // this is to indicate what kind of quote 37,
   // (Killed Deidranna) quote mercs have, 0 means
   // it can only be used if merc is the KILLER, a
@@ -482,7 +482,7 @@ export let QuoteExp_WitnessDeidrannaDeath: boolean[] /* [73] */ = [
   /* 72	Maddog  */ 0,
 ];
 
-export let QuoteExp_WitnessQueenBugDeath: boolean[] /* [73] */ = [
+export let QuoteExp_WitnessQueenBugDeath: UINT8[] /* [73] */ = [
   // this is to indicate what kind of quote 38,
   // (Killed Queen Bug) quote mercs have, 0 means
   // it can only be used if merc is the KILLER, a
