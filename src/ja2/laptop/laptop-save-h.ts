@@ -28,6 +28,58 @@ export interface BobbyRayPurchaseStruct {
   fUsed: boolean; // Indicates wether or not the item is from the used inventory or the regular inventory
 }
 
+export function createBobbyRayPurchaseStruct(): BobbyRayPurchaseStruct {
+  return {
+    usItemIndex: 0,
+    ubNumberPurchased: 0,
+    bItemQuality: 0,
+    usBobbyItemIndex: 0,
+    fUsed: false,
+  };
+}
+
+export function copyBobbyRayPurchaseStruct(destination: BobbyRayPurchaseStruct, source: BobbyRayPurchaseStruct) {
+  destination.usItemIndex = source.usItemIndex;
+  destination.ubNumberPurchased = source.ubNumberPurchased;
+  destination.bItemQuality = source.bItemQuality;
+  destination.usBobbyItemIndex = source.usBobbyItemIndex;
+  destination.fUsed = source.fUsed;
+}
+
+export function resetBobbyRayPurchaseStruct(o: BobbyRayPurchaseStruct) {
+  o.usItemIndex = 0;
+  o.ubNumberPurchased = 0;
+  o.bItemQuality = 0;
+  o.usBobbyItemIndex = 0;
+  o.fUsed = false;
+}
+
+export const BOBBY_RAY_PURCHASE_STRUCT_SIZE = 8;
+
+export function readBobbyRayPurchaseStruct(o: BobbyRayPurchaseStruct, buffer: Buffer, offset: number = 0): number {
+  o.usItemIndex = buffer.readUInt16LE(offset); offset += 2;
+  o.ubNumberPurchased = buffer.readUInt8(offset++);
+  o.bItemQuality = buffer.readInt8(offset++);
+  o.usBobbyItemIndex = buffer.readUInt16LE(offset); offset += 2;
+  o.fUsed = Boolean(buffer.readUInt8(offset++));
+
+  offset++; // padding
+
+  return offset;
+}
+
+export function writeBobbyRayPurchaseStruct(o: BobbyRayPurchaseStruct, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt16LE(o.usItemIndex, offset);
+  offset = buffer.writeUInt8(o.ubNumberPurchased, offset);
+  offset = buffer.writeInt8(o.bItemQuality, offset);
+  offset = buffer.writeUInt16LE(o.usBobbyItemIndex, offset);
+  offset = buffer.writeUInt8(Number(o.fUsed), offset);
+
+  offset = buffer.writeUInt8(0, offset); // padding
+
+  return offset;
+}
+
 export interface BobbyRayOrderStruct {
   fActive: boolean;
   BobbyRayPurchase: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;

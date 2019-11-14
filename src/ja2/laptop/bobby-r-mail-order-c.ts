@@ -155,6 +155,9 @@ const BOBBYR_DROP_DOWN_WIDTH = 182; // 203
 const BOBBYR_DROP_DOWN_HEIGHT = 19;
 const BOBBYR_CITY_NAME_OFFSET = 6;
 
+const BOBBYR_SCROLL_ARROW_WIDTH = 18;
+const BOBBYR_SCROLL_ARROW_HEIGHT = 20;
+
 const BOBBYR_SCROLL_AREA_X = BOBBYR_CITY_START_LOCATION_X + BOBBYR_DROP_DOWN_WIDTH;
 const BOBBYR_SCROLL_AREA_Y = BOBBYR_CITY_START_LOCATION_Y;
 const BOBBYR_SCROLL_AREA_WIDTH = 22;
@@ -165,8 +168,6 @@ const BOBBYR_SCROLL_UP_ARROW_X = BOBBYR_SCROLL_AREA_X;
 const BOBBYR_SCROLL_UP_ARROW_Y = BOBBYR_SCROLL_AREA_Y + 5;
 const BOBBYR_SCROLL_DOWN_ARROW_X = BOBBYR_SCROLL_UP_ARROW_X;
 const BOBBYR_SCROLL_DOWN_ARROW_Y = BOBBYR_SCROLL_AREA_Y + BOBBYR_SCROLL_AREA_HEIGHT - 24;
-const BOBBYR_SCROLL_ARROW_WIDTH = 18;
-const BOBBYR_SCROLL_ARROW_HEIGHT = 20;
 
 const BOBBYR_SHIPPING_LOC_AREA_L_X = BOBBYR_LOCATION_BOX_X + 9;
 const BOBBYR_SHIPPING_LOC_AREA_T_Y = BOBBYR_LOCATION_BOX_Y + 39;
@@ -204,7 +205,7 @@ let guiBobbyRLocationGraphic: UINT32;
 let guiDeliverySpeedGraphic: UINT32;
 let guiConfirmGraphic: UINT32;
 let guiTotalSaveArea: UINT32; // used as a savebuffer for the subtotal, s&h, and grand total values
-export let guiDropDownBorder: UINT32;
+let guiDropDownBorder: UINT32;
 let guiGoldArrowImages: UINT32;
 let guiPackageWeightImage: UINT32;
 
@@ -227,7 +228,7 @@ let gubCityAtTopOfList: UINT8;
 
 let gfRemoveItemsFromStock: boolean = false;
 
-export let gpNewBobbyrShipments: Pointer<NewBobbyRayOrderStruct>;
+export let gpNewBobbyrShipments: NewBobbyRayOrderStruct[] /* Pointer<NewBobbyRayOrderStruct> */;
 export let giNumberOfNewBobbyRShipment: INT32;
 
 //
@@ -243,8 +244,8 @@ let guiBobbyRAcceptOrderImage: INT32;
 let guiBobbyRBack: UINT32;
 let guiBobbyRBackImage: INT32;
 
-export let guiBobbyRHome: UINT32;
-export let guiBobbyRHomeImage: INT32;
+let guiBobbyRHome: UINT32;
+let guiBobbyRHomeImage: INT32;
 
 let guiBobbyRGotoShipmentPage: UINT32;
 let giBobbyRGotoShipmentPageImage: INT32;
@@ -278,7 +279,7 @@ let gSelectedUpDownArrowOnScrollAreaRegion: MOUSE_REGION[] /* [2] */ = createArr
 export function GameInitBobbyRMailOrder(): void {
   gubSelectedLight = 0;
 
-  gpNewBobbyrShipments = null;
+  gpNewBobbyrShipments = <NewBobbyRayOrderStruct[]><unknown>null;
   giNumberOfNewBobbyRShipment = 0;
 }
 
@@ -617,7 +618,7 @@ function BtnBobbyRClearOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
+    BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
     gubSelectedLight = 0;
     gfReDrawBobbyOrder = true;
     gbSelectedCity = -1;
@@ -658,7 +659,7 @@ function BtnBobbyRAcceptOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
           ConfirmBobbyRPurchaseMessageBoxCallBack(MSG_BOX_RETURN_YES);
         } else {
           // else pop up a confirmation box
-          zTemp = swprintf(BobbyROrderFormText[Enum349.BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc.value);
+          zTemp = swprintf(BobbyROrderFormText[Enum349.BOBBYR_CONFIRM_DEST], BobbyROrderLocations[gbSelectedCity].psCityLoc);
           DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, zTemp, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO, ConfirmBobbyRPurchaseMessageBoxCallBack);
         }
 
@@ -770,7 +771,7 @@ function BtnBobbyRAcceptOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
-export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: Pointer<BobbyRayPurchaseStruct>, fJustDisplayTitles: boolean, iOrderNum: INT32): void {
+export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: BobbyRayPurchaseStruct[], fJustDisplayTitles: boolean, iOrderNum: INT32): void {
   let i: UINT16;
   let j: UINT16;
   let sText: string /* wchar_t[400] */;
@@ -783,7 +784,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
   let usPixLength: UINT16;
   let OneChar: string /* wchar_t[2] */;
   let iGrandTotal: INT32;
-  let iSubTotal: INT32;
+  let iSubTotal: INT32 = 0;
 
   // Output the qty
   DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_QTY], (usGridX + BOBBYR_GRID_FIRST_COLUMN_X), (usGridY + BOBBYR_GRID_FIRST_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -859,13 +860,12 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
       if (StringPixLength(sText, BOBBYR_ORDER_DYNAMIC_TEXT_FONT()) > BOBBYR_GRID_THIRD_COLUMN_WIDTH - 4) {
         usStringLength = sText.length;
         usPixLength = 0;
-        OneChar[1] = '\0';
+        sBack = '';
         for (j = 0; (i < usStringLength) && (usPixLength < BOBBYR_GRID_THIRD_COLUMN_WIDTH - 16); j++) {
-          sBack[j] = sText[j];
-          OneChar[0] = sBack[j];
+          sBack += sText[j];
+          OneChar = sBack[j];
           usPixLength += StringPixLength(OneChar, BOBBYR_ORDER_DYNAMIC_TEXT_FONT());
         }
-        sBack[j] = 0;
         sText = swprintf("%s...", sBack);
       }
 
@@ -1042,7 +1042,7 @@ function SelectConfirmOrderRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32)
     RemovePurchasedItemsFromBobbyRayInventory();
 
     // delete the order
-    memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
+    BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
     gubSelectedLight = 0;
     gfDestroyConfirmGrphiArea = true;
     gubSelectedLight = 0;
@@ -1054,7 +1054,7 @@ function SelectConfirmOrderRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32)
     RemovePurchasedItemsFromBobbyRayInventory();
 
     // delete the order
-    memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
+    BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
     gubSelectedLight = 0;
     gfDestroyConfirmGrphiArea = true;
     gubSelectedLight = 0;
@@ -1159,7 +1159,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       if (gbSelectedCity == -1)
         DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
       else
-        DrawTextToScreen((BobbyROrderLocations[gbSelectedCity].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+        DrawTextToScreen(BobbyROrderLocations[gbSelectedCity].psCityLoc, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // disable the r\close regiuon
       MSYS_DisableRegion(gSelectedCloseDropDownRegion);
@@ -1313,7 +1313,7 @@ function DrawSelectedCity(ubCityNumber: UINT8): void {
   // Display the list of cities
   usPosY = BOBBYR_CITY_START_LOCATION_Y + 5;
   for (i = gubCityAtTopOfList; i < gubCityAtTopOfList + BOBBYR_NUM_DISPLAYED_CITIES; i++) {
-    DrawTextToScreen((BobbyROrderLocations[i].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, usPosY, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+    DrawTextToScreen(BobbyROrderLocations[i].psCityLoc, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, usPosY, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     usPosY += usFontHeight + 2;
   }
 
@@ -1327,9 +1327,9 @@ function DrawSelectedCity(ubCityNumber: UINT8): void {
 
   SetFontShadow(NO_SHADOW);
   if (ubCityNumber == 255)
-    DrawTextToScreen((BobbyROrderLocations[0].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, (usPosY + 5), 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_FONT_BLACK, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+    DrawTextToScreen(BobbyROrderLocations[0].psCityLoc, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, (usPosY + 5), 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_FONT_BLACK, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   else
-    DrawTextToScreen((BobbyROrderLocations[ubCityNumber].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, (usPosY + 5), 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_FONT_BLACK, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+    DrawTextToScreen(BobbyROrderLocations[ubCityNumber].psCityLoc, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, (usPosY + 5), 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_FONT_BLACK, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -1353,7 +1353,7 @@ function DisplayShippingLocationCity(): void {
   if (gbSelectedCity == -1)
     DrawTextToScreen(BobbyROrderFormText[Enum349.BOBBYR_SELECT_DEST], BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   else
-    DrawTextToScreen((BobbyROrderLocations[gbSelectedCity].psCityLoc).value, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+    DrawTextToScreen(BobbyROrderLocations[gbSelectedCity].psCityLoc, BOBBYR_CITY_START_LOCATION_X + BOBBYR_CITY_NAME_OFFSET, BOBBYR_SHIPPING_LOC_AREA_T_Y + 3, 0, BOBBYR_DROPDOWN_FONT(), BOBBYR_ORDER_DROP_DOWN_SELEC_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   DisplayShippingCosts(true, 0, BOBBYR_ORDERGRID_X, BOBBYR_ORDERGRID_Y, -1);
 
@@ -1659,8 +1659,7 @@ export function BobbyRayMailOrderEndGameShutDown(): void {
 
 function ShutDownBobbyRNewMailOrders(): void {
   if (gpNewBobbyrShipments != null) {
-    MemFree(gpNewBobbyrShipments);
-    gpNewBobbyrShipments = null;
+    gpNewBobbyrShipments = <NewBobbyRayOrderStruct[]><unknown>null;
   }
   giNumberOfNewBobbyRShipment = 0;
 }
@@ -1769,12 +1768,9 @@ function PurchaseBobbyOrder(): void {
 }
 
 export function AddJohnsGunShipment(): void {
-  let Temp: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
+  let Temp: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */ = createArrayFrom(MAX_PURCHASE_AMOUNT, createBobbyRayPurchaseStruct);
   //	UINT8	cnt;
   let bDaysAhead: INT8;
-
-  // clear out the memory
-  memset(Temp, 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
 
   /*
           //if we need to add more array elements for the Order Array
@@ -1837,7 +1833,7 @@ function ConfirmBobbyRPurchaseMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 export function EnterInitBobbyRayOrder(): void {
-  memset(addressof(BobbyRayPurchases), 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
+  BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
   gubSelectedLight = 0;
   gfReDrawBobbyOrder = true;
   gbSelectedCity = -1;
@@ -1926,7 +1922,7 @@ export function DrawBobbyROrderTitle(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BOBBY_RAY_TITLE_X, BOBBYR_BOBBY_RAY_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 }
 
-function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, ubDeliveryLoc: UINT8, ubDeliveryMethod: UINT8, fPruchasedFromBobbyR: boolean, uiPackageWeight: UINT32): boolean {
+function AddNewBobbyRShipment(pPurchaseStruct: BobbyRayPurchaseStruct[], ubDeliveryLoc: UINT8, ubDeliveryMethod: UINT8, fPruchasedFromBobbyR: boolean, uiPackageWeight: UINT32): boolean {
   let iCnt: INT32;
   let iFoundSpot: INT32 = -1;
   let ubItemCount: UINT8 = 0;
@@ -1938,7 +1934,7 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
 
   // loop through and see if there is a free spot to insert the new order
   for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
-    if (!gpNewBobbyrShipments.value.fActive) {
+    if (!gpNewBobbyrShipments[iCnt].fActive) {
       iFoundSpot = iCnt;
       break;
     }
@@ -1949,13 +1945,13 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
     giNumberOfNewBobbyRShipment++;
 
     // allocate some more memory
-    gpNewBobbyrShipments = MemRealloc(gpNewBobbyrShipments, sizeof(NewBobbyRayOrderStruct) * giNumberOfNewBobbyRShipment);
+    gpNewBobbyrShipments = gpNewBobbyrShipments.concat(createArrayFrom(1, createNewBobbyRayOrderStruct));
 
     iFoundSpot = giNumberOfNewBobbyRShipment - 1;
   }
 
   // memset the memory
-  memset(addressof(gpNewBobbyrShipments[iFoundSpot]), 0, sizeof(NewBobbyRayOrderStruct));
+  resetNewBobbyRayOrderStruct(gpNewBobbyrShipments[iFoundSpot]);
 
   gpNewBobbyrShipments[iFoundSpot].fActive = true;
   gpNewBobbyrShipments[iFoundSpot].ubDeliveryLoc = ubDeliveryLoc;
@@ -1981,7 +1977,7 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
     // if the item was purchased
     if (pPurchaseStruct[i].ubNumberPurchased) {
       // copy the new data into the order struct
-      memcpy(addressof(gpNewBobbyrShipments[iFoundSpot].BobbyRayPurchase[ubItemCount]), addressof(pPurchaseStruct[i]), sizeof(BobbyRayPurchaseStruct));
+      copyBobbyRayPurchaseStruct(gpNewBobbyrShipments[iFoundSpot].BobbyRayPurchase[ubItemCount], pPurchaseStruct[i]);
 
       // copy the purchases into the struct that will be added to the queue
       //			memcpy(&LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[ cnt ].BobbyRayPurchase[ ubCount ] , &BobbyRayPurchases[i],  sizeof(BobbyRayPurchaseStruct));
@@ -2019,19 +2015,24 @@ export function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
 export function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
   let iCnt: INT32;
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
   // Write the number of orders
-  FileWrite(hFile, addressof(giNumberOfNewBobbyRShipment), sizeof(INT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(INT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeInt32LE(giNumberOfNewBobbyRShipment, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     FileClose(hFile);
     return false;
   }
 
   // loop through and save all the mail order slots
+  buffer = Buffer.allocUnsafe(NEW_BOBBY_RAY_ORDER_STRUCT_SIZE);
   for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
     // Write the order
-    FileWrite(hFile, addressof(gpNewBobbyrShipments[iCnt]), sizeof(NewBobbyRayOrderStruct), addressof(uiNumBytesWritten));
-    if (uiNumBytesWritten != sizeof(NewBobbyRayOrderStruct)) {
+    writeNewBobbyRayOrderStruct(gpNewBobbyrShipments[iCnt], buffer);
+    uiNumBytesWritten = FileWrite(hFile, buffer, NEW_BOBBY_RAY_ORDER_STRUCT_SIZE);
+    if (uiNumBytesWritten != NEW_BOBBY_RAY_ORDER_STRUCT_SIZE) {
       FileClose(hFile);
       return false;
     }
@@ -2043,35 +2044,38 @@ export function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boo
 export function NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): boolean {
   let iCnt: INT32;
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // clear out the old list
   ShutDownBobbyRNewMailOrders();
 
   // Read the number of orders
-  FileRead(hFile, addressof(giNumberOfNewBobbyRShipment), sizeof(INT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(INT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     FileClose(hFile);
     return false;
   }
 
+  giNumberOfNewBobbyRShipment = buffer.readInt32LE(0);
+
   if (giNumberOfNewBobbyRShipment == 0) {
-    gpNewBobbyrShipments = null;
+    gpNewBobbyrShipments = <NewBobbyRayOrderStruct[]><unknown>null;
   } else {
     // Allocate memory for the list
-    gpNewBobbyrShipments = MemAlloc(sizeof(NewBobbyRayOrderStruct) * giNumberOfNewBobbyRShipment);
-    if (gpNewBobbyrShipments == null) {
-      Assert(0);
-      return false;
-    }
+    gpNewBobbyrShipments = createArrayFrom(giNumberOfNewBobbyRShipment, createNewBobbyRayOrderStruct);
 
     // loop through and load all the mail order slots
+    buffer = Buffer.allocUnsafe(NEW_BOBBY_RAY_ORDER_STRUCT_SIZE);
     for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
       // Read the order
-      FileRead(hFile, addressof(gpNewBobbyrShipments[iCnt]), sizeof(NewBobbyRayOrderStruct), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(NewBobbyRayOrderStruct)) {
+      uiNumBytesRead = FileRead(hFile, buffer, NEW_BOBBY_RAY_ORDER_STRUCT_SIZE);
+      if (uiNumBytesRead != NEW_BOBBY_RAY_ORDER_STRUCT_SIZE) {
         FileClose(hFile);
         return false;
       }
+
+      readNewBobbyRayOrderStruct(gpNewBobbyrShipments[iCnt], buffer);
     }
   }
 
