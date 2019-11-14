@@ -190,7 +190,7 @@ let uiCurrentInventoryIndex: UINT8 = 0;
 let guiSliderPosition: UINT32;
 
 // the transfer funds string
-let sTransferString: string /* CHAR16[32] */;
+let sTransferString: string /* CHAR16[32] */ = '';
 
 let giPersonnelATMSideButton: INT32[] /* [NUMBER_ATM_BUTTONS] */;
 let giPersonnelATMSideButtonImage: INT32[] /* [NUMBER_ATM_BUTTONS] */;
@@ -240,7 +240,7 @@ let pPersonnelScreenPoints: POINT[] /* [] */ = [
 ];
 
 let guiSCREEN: UINT32;
-export let guiTITLE: UINT32;
+let guiTITLE: UINT32;
 let guiFACE: UINT32;
 let guiDEPARTEDTEAM: UINT32;
 let guiCURRENTTEAM: UINT32;
@@ -261,8 +261,8 @@ let giPersonnelATMStartButtonImage: INT32[] /* [3] */;
 let giPersonnelATMButton: INT32;
 let giPersonnelATMButtonImage: INT32;
 
-let fATMFlags: boolean = 0;
-let fOldATMFlags: boolean = 0;
+let fATMFlags: UINT8 = 0;
+let fOldATMFlags: UINT8 = 0;
 // the past team of the player
 // INT16 ubDeadCharactersList[ 256 ];
 // INT16 ubLeftCharactersList[ 256 ];
@@ -548,8 +548,8 @@ export function RenderPersonnel(): void {
 function RenderPersonnelPictures(): boolean {
   // will render portraits of personnel onscreen
   // find person with iStartPersonId, unless it is -1, then find first bActive Merc on Staff
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let fFound: boolean = false;
   let iCounter: INT32 = 0;
   let iSlot: INT32 = 0;
@@ -560,9 +560,9 @@ function RenderPersonnelPictures(): boolean {
   pTeamSoldier = pSoldier;
 
   if (iStartPersonId == -1) {
-    cnt = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.bActive) {
+    cnt = gTacticalStatus.Team[pSoldier.bTeam].bFirstID;
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bLife >= OKLIFE && pSoldier.bActive) {
         fFound = true;
         iStartPersonId = cnt;
         break;
@@ -587,9 +587,9 @@ function RenderPersonnelPictures(): boolean {
     // find next guy
     pSoldier = MercPtrs[iCurrentId];
     cnt++;
-    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-      if (pTeamSoldier.value.bLife >= OKLIFE && pTeamSoldier.value.bActive) {
-        if (pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+      if (pTeamSoldier.bLife >= OKLIFE && pTeamSoldier.bActive) {
+        if (pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
           return false;
         }
 
@@ -965,13 +965,13 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
   // get merc's nickName, assignment, and sector location info
   let sX: INT16;
   let sY: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sString: string /* CHAR16[64] */;
   let sTownName: string /* CHAR16[256] */;
   let bTownId: INT8 = -1;
   let iHeightOfText: INT32;
 
-  sTownName[0] = '\0';
+  sTownName = '';
 
   pSoldier = MercPtrs[iId];
 
@@ -979,7 +979,7 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
   SetFontForeground(PERS_TEXT_FONT_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
@@ -994,7 +994,7 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
     }
   }
 
-  if (sTownName[0] != '\0') {
+  if (sTownName != '') {
     // nick name - town name
     sString = swprintf("%s - %s", gMercProfiles[Menptr[iId].ubProfile].zNickname, sTownName);
   } else {
@@ -1076,10 +1076,10 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
   let sX: INT16;
   let sY: INT16;
   let uiHits: UINT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = addressof(Menptr[iId]);
+  let pSoldier: SOLDIERTYPE = Menptr[iId];
   let fAmIaRobot: boolean = AM_A_ROBOT(pSoldier);
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
@@ -1456,14 +1456,14 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
 function GetLastMercId(): INT32 {
   // rolls through list of mercs and returns how many on team
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   pSoldier = MercPtrs[0];
 
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && (pTeamSoldier.value.bLife > 0))
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && (pTeamSoldier.bLife > 0))
       iCounter++;
   }
   return iCounter;
@@ -1584,24 +1584,23 @@ function DeletePersonnelScreenBackgroundGraphics(): void {
   DeleteVideoObjectFromIndex(guiDEPARTEDTEAM);
 }
 
+/* static */ let CreateDestroyButtonsForPersonnelDepartures__fCreated: boolean = false;
 function CreateDestroyButtonsForPersonnelDepartures(): void {
-  /* static */ let fCreated: boolean = false;
-
   // create/ destroy personnel departures buttons as needed
 
   // create button?..if not created
-  if ((fCreatePeronnelDepartureButton == true) && (fCreated == false)) {
-    fCreated = true;
-  } else if ((fCreatePeronnelDepartureButton == false) && (fCreated == true)) {
-    fCreated = false;
+  if ((fCreatePeronnelDepartureButton == true) && (!CreateDestroyButtonsForPersonnelDepartures__fCreated == false)) {
+    CreateDestroyButtonsForPersonnelDepartures__fCreated = true;
+  } else if ((fCreatePeronnelDepartureButton == false) && (CreateDestroyButtonsForPersonnelDepartures__fCreated == true)) {
+    CreateDestroyButtonsForPersonnelDepartures__fCreated = false;
   }
 
   return;
 }
 
 function GetNumberOfMercsOnPlayersTeam(): INT32 {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -1610,8 +1609,8 @@ function GetNumberOfMercsOnPlayersTeam(): INT32 {
 
   // no soldiers
 
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.value.bLife > 0))
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && !(pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.bLife > 0))
       iCounter++;
   }
 
@@ -1619,8 +1618,8 @@ function GetNumberOfMercsOnPlayersTeam(): INT32 {
 }
 
 function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -1629,21 +1628,20 @@ function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
 
   // no soldiers
 
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && !(pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE))
       iCounter++;
   }
 
   return iCounter;
 }
 
+/* static */ let CreateDestroyMouseRegionsForPersonnelPortraits__fCreated: boolean = false;
 function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   // creates/ destroys mouse regions for portraits
-
-  /* static */ let fCreated: boolean = false;
   let sCounter: INT16 = 0;
 
-  if ((fCreated == false) && (fCreatePersonnelPortraitMouseRegions == true)) {
+  if ((CreateDestroyMouseRegionsForPersonnelPortraits__fCreated == false) && (fCreatePersonnelPortraitMouseRegions == true)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
       MSYS_DefineRegion(gPortraitMouseRegions[sCounter], (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
@@ -1651,14 +1649,14 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
       MSYS_AddRegion(gPortraitMouseRegions[sCounter]);
     }
 
-    fCreated = true;
-  } else if ((fCreated == true) && (fCreatePersonnelPortraitMouseRegions == false)) {
+    CreateDestroyMouseRegionsForPersonnelPortraits__fCreated = true;
+  } else if ((CreateDestroyMouseRegionsForPersonnelPortraits__fCreated == true) && (fCreatePersonnelPortraitMouseRegions == false)) {
     // destroy regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
       MSYS_RemoveRegion(gPortraitMouseRegions[sCounter]);
     }
 
-    fCreated = false;
+    CreateDestroyMouseRegionsForPersonnelPortraits__fCreated = false;
   }
   return;
 }
@@ -1669,7 +1667,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   let sTemp: string /* char[100] */;
   let hFaceHandle: HVOBJECT;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let iId: INT32 = 0;
   let iCnt: INT32 = 0;
 
@@ -1686,7 +1684,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   pSoldier = MercPtrs[iCounter];
 
   // start id
-  iId = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
+  iId = gTacticalStatus.Team[pSoldier.bTeam].bFirstID;
 
   for (iCounter = 0; iCounter < iTotalOnTeam; iCnt++) {
     if ((MercPtrs[iId + iCnt].value.bActive == true)) {
@@ -1858,11 +1856,11 @@ function DisplayInventoryForSelectedChar(): void {
 
 function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let ubCounter: UINT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sIndex: INT16;
   let hHandle: HVOBJECT;
-  let pTrav: Pointer<ETRLEObject>;
-  let pItem: Pointer<INVTYPE>;
+  let pTrav: ETRLEObject;
+  let pItem: INVTYPE;
   let PosX: INT16;
   let PosY: INT16;
   let sCenX: INT16;
@@ -1887,7 +1885,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   // render the bar for the character
   RenderSliderBarForPersonnelInventory();
 
-  pSoldier = addressof(Menptr[iId]);
+  pSoldier = Menptr[iId];
 
   // if this is a robot, dont display any inventory
   if (AM_A_ROBOT(pSoldier)) {
@@ -1899,31 +1897,31 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
     PosY = 200 + 8 + (ubItemCount * (29));
 
     // if the character is a robot, only display the inv for the hand pos
-    if (pSoldier.value.ubProfile == Enum268.ROBOT && ubCounter != Enum261.HANDPOS) {
+    if (pSoldier.ubProfile == Enum268.ROBOT && ubCounter != Enum261.HANDPOS) {
       continue;
     }
 
-    if (pSoldier.value.inv[ubCounter].ubNumberOfObjects) {
+    if (pSoldier.inv[ubCounter].ubNumberOfObjects) {
       if (uiCurrentInventoryIndex > ubUpToCount) {
         ubUpToCount++;
       } else {
-        sIndex = (pSoldier.value.inv[ubCounter].usItem);
-        pItem = addressof(Item[sIndex]);
+        sIndex = (pSoldier.inv[ubCounter].usItem);
+        pItem = Item[sIndex];
 
         hHandle = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-        pTrav = addressof(hHandle.value.pETRLEObject[pItem.value.ubGraphicNum]);
+        pTrav = hHandle.value.pETRLEObject[pItem.ubGraphicNum];
 
-        usHeight = pTrav.value.usHeight;
-        usWidth = pTrav.value.usWidth;
+        usHeight = pTrav.usHeight;
+        usWidth = pTrav.usWidth;
 
-        sCenX = PosX + (Math.abs(57 - usWidth) / 2) - pTrav.value.sOffsetX;
-        sCenY = PosY + (Math.abs(22 - usHeight) / 2) - pTrav.value.sOffsetY;
+        sCenX = PosX + (Math.abs(57 - usWidth) / 2) - pTrav.sOffsetX;
+        sCenY = PosY + (Math.abs(22 - usHeight) / 2) - pTrav.sOffsetY;
 
         // shadow
         // BltVideoObjectOutlineShadowFromIndex( FRAME_BUFFER, GetInterfaceGraphicForItem( pItem ), pItem->ubGraphicNum, sCenX-2, sCenY+2);
 
         // blt the item
-        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.value.ubGraphicNum, sCenX, sCenY, 0, false);
+        BltVideoObjectOutlineFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.ubGraphicNum, sCenX, sCenY, 0, false);
 
         SetFont(FONT10ARIAL());
         SetFontForeground(FONT_WHITE);
@@ -1942,22 +1940,22 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         mprintf(PosX + 65, PosY + 3, sString);
 
         // condition
-        if (Item[pSoldier.value.inv[ubCounter].usItem].usItemClass & IC_AMMO) {
+        if (Item[pSoldier.inv[ubCounter].usItem].usItemClass & IC_AMMO) {
           // Ammo
           iTotalAmmo = 0;
-          if (pSoldier.value.inv[ubCounter].ubNumberOfObjects > 1) {
-            for (cnt = 0; cnt < pSoldier.value.inv[ubCounter].ubNumberOfObjects; cnt++) {
+          if (pSoldier.inv[ubCounter].ubNumberOfObjects > 1) {
+            for (cnt = 0; cnt < pSoldier.inv[ubCounter].ubNumberOfObjects; cnt++) {
               // get total ammo
-              iTotalAmmo += pSoldier.value.inv[ubCounter].ubShotsLeft[cnt];
+              iTotalAmmo += pSoldier.inv[ubCounter].ubShotsLeft[cnt];
             }
           } else {
-            iTotalAmmo = pSoldier.value.inv[ubCounter].ubShotsLeft[0];
+            iTotalAmmo = pSoldier.inv[ubCounter].ubShotsLeft[0];
           }
 
-          sString = swprintf("%d/%d", iTotalAmmo, (pSoldier.value.inv[ubCounter].ubNumberOfObjects * Magazine[Item[pSoldier.value.inv[ubCounter].usItem].ubClassIndex].ubMagSize));
+          sString = swprintf("%d/%d", iTotalAmmo, (pSoldier.inv[ubCounter].ubNumberOfObjects * Magazine[Item[pSoldier.inv[ubCounter].usItem].ubClassIndex].ubMagSize));
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
         } else {
-          sString = swprintf("%2d%%%%", pSoldier.value.inv[ubCounter].bStatus[0]);
+          sString = swprintf("%2d%%%%", pSoldier.inv[ubCounter].bStatus[0]);
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
 
           sX += StringPixLength("%", FONT10ARIAL());
@@ -1965,8 +1963,8 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
 
         mprintf(sX, sY, sString);
 
-        if (Item[pSoldier.value.inv[ubCounter].usItem].usItemClass & IC_GUN) {
-          sString = swprintf("%s", AmmoCaliber[Weapon[Item[pSoldier.value.inv[ubCounter].usItem].ubClassIndex].ubCalibre]);
+        if (Item[pSoldier.inv[ubCounter].usItem].usItemClass & IC_GUN) {
+          sString = swprintf("%s", AmmoCaliber[Weapon[Item[pSoldier.inv[ubCounter].usItem].ubClassIndex].ubCalibre]);
 
           // shorten if needed
           if (StringPixLength(sString, FONT10ARIAL()) > (171 - 75)) {
@@ -1978,8 +1976,8 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         }
 
         // if more than 1?
-        if (pSoldier.value.inv[ubCounter].ubNumberOfObjects > 1) {
-          sString = swprintf("x%d", pSoldier.value.inv[ubCounter].ubNumberOfObjects);
+        if (pSoldier.inv[ubCounter].ubNumberOfObjects > 1) {
+          sString = swprintf("x%d", pSoldier.inv[ubCounter].ubNumberOfObjects);
           ({ sX, sY } = FindFontRightCoordinates((PosX), (PosY + 15), (58), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
           mprintf(sX, sY, sString);
         }
@@ -2000,7 +1998,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
 
 function InventoryUpButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let pSoldier: SOLDIERTYPE = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
@@ -2037,7 +2035,7 @@ function InventoryUpButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function InventoryDownButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let pSoldier: SOLDIERTYPE = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
@@ -2100,7 +2098,7 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
   let iId: INT32 = 0;
   let ubCounter: UINT8 = 0;
   let ubCount: UINT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // in current team mode?..nope...move on
   if (fCurrentTeamMode == false) {
@@ -2109,10 +2107,10 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
 
   iId = GetIdOfThisSlot(iCurrentPersonSelectedId);
 
-  pSoldier = addressof(Menptr[iId]);
+  pSoldier = Menptr[iId];
 
   for (ubCounter = 0; ubCounter < Enum261.NUM_INV_SLOTS; ubCounter++) {
-    if ((pSoldier.value.inv[ubCounter].ubNumberOfObjects) && (pSoldier.value.inv[ubCounter].usItem)) {
+    if ((pSoldier.inv[ubCounter].ubNumberOfObjects) && (pSoldier.inv[ubCounter].usItem)) {
       ubCount++;
     }
   }
@@ -2120,11 +2118,10 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
   return ubCount;
 }
 
+/* static */ let CreateDestroyPersonnelInventoryScrollButtons__fCreated: boolean = false;
 function CreateDestroyPersonnelInventoryScrollButtons(): void {
-  /* static */ let fCreated: boolean = false;
-
   //	if( ( fShowInventory == TRUE ) && ( fCreated == FALSE ) )
-  if ((gubPersonnelInfoState == Enum109.PRSNL_INV) && (fCreated == false)) {
+  if ((gubPersonnelInfoState == Enum109.PRSNL_INV) && (CreateDestroyPersonnelInventoryScrollButtons__fCreated == false)) {
     // create buttons
     giPersonnelInventoryButtonsImages[0] = LoadButtonImage("LAPTOP\\personnel_inventory.sti", -1, 1, -1, 2, -1);
     giPersonnelInventoryButtons[0] = QuickCreateButton(giPersonnelInventoryButtonsImages[0], 176 + 397, 2 + 200, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryUpButtonCallback);
@@ -2138,10 +2135,10 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
     MSYS_DefineRegion(gMouseScrollPersonnelINV, X_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION, X_OF_PERSONNEL_SCROLL_REGION + X_SIZE_OF_PERSONNEL_SCROLL_REGION, Y_OF_PERSONNEL_SCROLL_REGION + Y_SIZE_OF_PERSONNEL_SCROLL_REGION, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, HandleSliderBarClickCallback);
 
-    fCreated = true;
+    CreateDestroyPersonnelInventoryScrollButtons__fCreated = true;
   }
   //	else if( ( fCreated == TRUE ) && ( fShowInventory == FALSE ) )
-  else if ((fCreated == true) && (gubPersonnelInfoState != Enum108.PERSONNEL_INV_BTN)) {
+  else if ((CreateDestroyPersonnelInventoryScrollButtons__fCreated == true) && (gubPersonnelInfoState != Enum108.PERSONNEL_INV_BTN)) {
     // destroy buttons
     RemoveButton(giPersonnelInventoryButtons[0]);
     UnloadButtonImage(giPersonnelInventoryButtonsImages[0]);
@@ -2150,7 +2147,7 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
     MSYS_RemoveRegion(gMouseScrollPersonnelINV);
 
-    fCreated = false;
+    CreateDestroyPersonnelInventoryScrollButtons__fCreated = false;
   }
 }
 
@@ -2208,7 +2205,7 @@ function DisplayNumberDeparted(): void {
 function GetTotalDailyCostOfCurrentTeam(): INT32 {
   // will return the total daily cost of the current team
 
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let iCostOfTeam: INT32 = 0;
@@ -2222,22 +2219,22 @@ function GetTotalDailyCostOfCurrentTeam(): INT32 {
   for (pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++) {
     pSoldier = MercPtrs[cnt];
 
-    if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0)) {
+    if ((pSoldier.bActive) && (pSoldier.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+      if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
+          iCostOfTeam += gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+        } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
+          iCostOfTeam += gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
         } else {
-          iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].sSalary;
+          iCostOfTeam += gMercProfiles[pSoldier.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+      } else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
-        iCostOfTeam += gMercProfiles[pSoldier.value.ubProfile].sSalary;
+        iCostOfTeam += gMercProfiles[pSoldier.ubProfile].sSalary;
       } else {
         // no cost
         iCostOfTeam += 0;
@@ -2250,7 +2247,7 @@ function GetTotalDailyCostOfCurrentTeam(): INT32 {
 function GetLowestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let iLowest: INT32 = 999999;
@@ -2266,22 +2263,22 @@ function GetLowestDailyCostOfCurrentTeam(): INT32 {
   for (pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++) {
     pSoldier = MercPtrs[cnt];
 
-    if ((pSoldier.value.bActive) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bLife > 0)) {
+    if ((pSoldier.bActive) && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+      if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCost = gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
+          iCost = gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+        } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCost = gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
+          iCost = gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
         } else {
-          iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
+          iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+      } else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
-        iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
+        iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
       } else {
         // no cost
         iCost = 0;
@@ -2304,7 +2301,7 @@ function GetLowestDailyCostOfCurrentTeam(): INT32 {
 function GetHighestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let iHighest: INT32 = 0;
@@ -2320,22 +2317,22 @@ function GetHighestDailyCostOfCurrentTeam(): INT32 {
   for (pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++) {
     pSoldier = MercPtrs[cnt];
 
-    if ((pSoldier.value.bActive) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.bLife > 0)) {
+    if ((pSoldier.bActive) && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.bLife > 0)) {
       // valid soldier, get cost
-      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+      if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
         // daily rate
-        if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
+        if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCost = gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary / 14;
-        } else if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
+          iCost = gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+        } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCost = gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary / 7;
+          iCost = gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
         } else {
-          iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
+          iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
         }
-      } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+      } else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // MERC Merc
-        iCost = gMercProfiles[pSoldier.value.ubProfile].sSalary;
+        iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
       } else {
         // no cost
         iCost = 0;
@@ -2404,13 +2401,13 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
   // -1 means error
   let iId: INT32 = -1;
   let iValue: INT32 = 0;
-  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let pTeamSoldier: MERCPROFILESTRUCT;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
-  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let bCurrentListValue: INT16[] = LaptopSaveInfo.ubDeadCharactersList;
   let fNotDone: boolean = true;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let uiLoopCounter: UINT32;
 
   // run through active soldiers
@@ -2446,15 +2443,14 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = bCurrentListValue.value;
+    cnt = bCurrentListValue[uiLoopCounter];
 
     // do we need to reset the count?
     if (cnt == -1) {
-      bCurrentListValue++;
       continue;
     }
 
-    pTeamSoldier = addressof(gMercProfiles[cnt]);
+    pTeamSoldier = gMercProfiles[cnt];
 
     switch (iStat) {
       case 0:
@@ -2462,90 +2458,88 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
 
         // if the soldier is a pow, dont use the health cause it aint known
         pSoldier = FindSoldierByProfileID(cnt, false);
-        if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+        if (pSoldier && pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
 
-        if (pTeamSoldier.value.bLife >= iValue) {
+        if (pTeamSoldier.bLife >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bLife;
+          iValue = pTeamSoldier.bLife;
         }
         break;
       case 1:
         // agility
-        if (pTeamSoldier.value.bAgility >= iValue) {
+        if (pTeamSoldier.bAgility >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bAgility;
+          iValue = pTeamSoldier.bAgility;
         }
         break;
       case 2:
         // dexterity
-        if (pTeamSoldier.value.bDexterity >= iValue) {
+        if (pTeamSoldier.bDexterity >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bDexterity;
+          iValue = pTeamSoldier.bDexterity;
         }
         break;
       case 3:
         // strength
-        if (pTeamSoldier.value.bStrength >= iValue) {
+        if (pTeamSoldier.bStrength >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bStrength;
+          iValue = pTeamSoldier.bStrength;
         }
         break;
       case 4:
         // leadership
-        if (pTeamSoldier.value.bLeadership >= iValue) {
+        if (pTeamSoldier.bLeadership >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bLeadership;
+          iValue = pTeamSoldier.bLeadership;
         }
         break;
       case 5:
         // wisdom
-        if (pTeamSoldier.value.bWisdom >= iValue) {
+        if (pTeamSoldier.bWisdom >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bWisdom;
+          iValue = pTeamSoldier.bWisdom;
         }
         break;
       case 6:
         // exper
-        if (pTeamSoldier.value.bExpLevel >= iValue) {
+        if (pTeamSoldier.bExpLevel >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bExpLevel;
+          iValue = pTeamSoldier.bExpLevel;
         }
 
         break;
       case 7:
         // mrkmanship
-        if (pTeamSoldier.value.bMarksmanship >= iValue) {
+        if (pTeamSoldier.bMarksmanship >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMarksmanship;
+          iValue = pTeamSoldier.bMarksmanship;
         }
 
         break;
       case 8:
         // mech
-        if (pTeamSoldier.value.bMechanical >= iValue) {
+        if (pTeamSoldier.bMechanical >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMechanical;
+          iValue = pTeamSoldier.bMechanical;
         }
         break;
       case 9:
         // exp
-        if (pTeamSoldier.value.bExplosive >= iValue) {
+        if (pTeamSoldier.bExplosive >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bExplosive;
+          iValue = pTeamSoldier.bExplosive;
         }
         break;
       case 10:
         // med
-        if (pTeamSoldier.value.bMedical >= iValue) {
+        if (pTeamSoldier.bMedical >= iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMedical;
+          iValue = pTeamSoldier.bMedical;
         }
         break;
     }
-
-    bCurrentListValue++;
   }
 
   return iId;
@@ -2556,13 +2550,13 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
   // -1 means error
   let iId: INT32 = -1;
   let iValue: INT32 = 9999999;
-  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let pTeamSoldier: MERCPROFILESTRUCT;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
-  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let bCurrentListValue: INT16[] = LaptopSaveInfo.ubDeadCharactersList;
   let fNotDone: boolean = true;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let uiLoopCounter: UINT32;
 
   // run through active soldiers
@@ -2598,105 +2592,102 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = bCurrentListValue.value;
+    cnt = bCurrentListValue[uiLoopCounter];
 
     // do we need to reset the count?
     if (cnt == -1) {
-      bCurrentListValue++;
       continue;
     }
 
-    pTeamSoldier = addressof(gMercProfiles[cnt]);
+    pTeamSoldier = gMercProfiles[cnt];
 
     switch (iStat) {
       case 0:
         // health
 
         pSoldier = FindSoldierByProfileID(cnt, false);
-        if (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+        if (pSoldier && pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
           continue;
         }
 
-        if (pTeamSoldier.value.bLife < iValue) {
+        if (pTeamSoldier.bLife < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bLife;
+          iValue = pTeamSoldier.bLife;
         }
         break;
       case 1:
         // agility
-        if (pTeamSoldier.value.bAgility < iValue) {
+        if (pTeamSoldier.bAgility < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bAgility;
+          iValue = pTeamSoldier.bAgility;
         }
         break;
       case 2:
         // dexterity
-        if (pTeamSoldier.value.bDexterity < iValue) {
+        if (pTeamSoldier.bDexterity < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bDexterity;
+          iValue = pTeamSoldier.bDexterity;
         }
         break;
       case 3:
         // strength
-        if (pTeamSoldier.value.bStrength < iValue) {
+        if (pTeamSoldier.bStrength < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bStrength;
+          iValue = pTeamSoldier.bStrength;
         }
         break;
       case 4:
         // leadership
-        if (pTeamSoldier.value.bLeadership < iValue) {
+        if (pTeamSoldier.bLeadership < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bLeadership;
+          iValue = pTeamSoldier.bLeadership;
         }
         break;
       case 5:
         // wisdom
-        if (pTeamSoldier.value.bWisdom < iValue) {
+        if (pTeamSoldier.bWisdom < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bWisdom;
+          iValue = pTeamSoldier.bWisdom;
         }
         break;
       case 6:
         // exper
-        if (pTeamSoldier.value.bExpLevel < iValue) {
+        if (pTeamSoldier.bExpLevel < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bExpLevel;
+          iValue = pTeamSoldier.bExpLevel;
         }
 
         break;
       case 7:
         // mrkmanship
-        if (pTeamSoldier.value.bMarksmanship < iValue) {
+        if (pTeamSoldier.bMarksmanship < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMarksmanship;
+          iValue = pTeamSoldier.bMarksmanship;
         }
 
         break;
       case 8:
         // mech
-        if (pTeamSoldier.value.bMechanical < iValue) {
+        if (pTeamSoldier.bMechanical < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMechanical;
+          iValue = pTeamSoldier.bMechanical;
         }
         break;
       case 9:
         // exp
-        if (pTeamSoldier.value.bExplosive < iValue) {
+        if (pTeamSoldier.bExplosive < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bExplosive;
+          iValue = pTeamSoldier.bExplosive;
         }
         break;
       case 10:
         // med
-        if (pTeamSoldier.value.bMedical < iValue) {
+        if (pTeamSoldier.bMedical < iValue) {
           iId = cnt;
-          iValue = pTeamSoldier.value.bMedical;
+          iValue = pTeamSoldier.bMedical;
         }
         break;
     }
-
-    bCurrentListValue++;
   }
 
   return iId;
@@ -2707,98 +2698,98 @@ function GetIdOfMercWithHighestStat(iStat: INT32): INT32 {
   // -1 means error
   let iId: INT32 = -1;
   let iValue: INT32 = 0;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
 
   // run through active soldiers
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.value.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && !(pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
       switch (iStat) {
         case 0:
           // health
-          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+          if (pTeamSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
             continue;
           }
 
-          if (pTeamSoldier.value.bLifeMax >= iValue) {
+          if (pTeamSoldier.bLifeMax >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bLifeMax;
+            iValue = pTeamSoldier.bLifeMax;
           }
           break;
         case 1:
           // agility
-          if (pTeamSoldier.value.bAgility >= iValue) {
+          if (pTeamSoldier.bAgility >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bAgility;
+            iValue = pTeamSoldier.bAgility;
           }
           break;
         case 2:
           // dexterity
-          if (pTeamSoldier.value.bDexterity >= iValue) {
+          if (pTeamSoldier.bDexterity >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bDexterity;
+            iValue = pTeamSoldier.bDexterity;
           }
           break;
         case 3:
           // strength
-          if (pTeamSoldier.value.bStrength >= iValue) {
+          if (pTeamSoldier.bStrength >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bStrength;
+            iValue = pTeamSoldier.bStrength;
           }
           break;
         case 4:
           // leadership
-          if (pTeamSoldier.value.bLeadership >= iValue) {
+          if (pTeamSoldier.bLeadership >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bLeadership;
+            iValue = pTeamSoldier.bLeadership;
           }
           break;
         case 5:
           // wisdom
-          if (pTeamSoldier.value.bWisdom >= iValue) {
+          if (pTeamSoldier.bWisdom >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bWisdom;
+            iValue = pTeamSoldier.bWisdom;
           }
           break;
         case 6:
           // exper
-          if (pTeamSoldier.value.bExpLevel >= iValue) {
+          if (pTeamSoldier.bExpLevel >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bExpLevel;
+            iValue = pTeamSoldier.bExpLevel;
           }
 
           break;
         case 7:
           // mrkmanship
-          if (pTeamSoldier.value.bMarksmanship >= iValue) {
+          if (pTeamSoldier.bMarksmanship >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMarksmanship;
+            iValue = pTeamSoldier.bMarksmanship;
           }
 
           break;
         case 8:
           // mech
-          if (pTeamSoldier.value.bMechanical >= iValue) {
+          if (pTeamSoldier.bMechanical >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMechanical;
+            iValue = pTeamSoldier.bMechanical;
           }
           break;
         case 9:
           // exp
-          if (pTeamSoldier.value.bExplosive >= iValue) {
+          if (pTeamSoldier.bExplosive >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bExplosive;
+            iValue = pTeamSoldier.bExplosive;
           }
           break;
         case 10:
           // med
-          if (pTeamSoldier.value.bMedical >= iValue) {
+          if (pTeamSoldier.bMedical >= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMedical;
+            iValue = pTeamSoldier.bMedical;
           }
           break;
       }
@@ -2813,99 +2804,99 @@ function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
   // -1 means error
   let iId: INT32 = -1;
   let iValue: INT32 = 999999;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
 
   // run through active soldiers
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.value.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && !(pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pTeamSoldier.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
       switch (iStat) {
         case 0:
           // health
 
-          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+          if (pTeamSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
             continue;
           }
 
-          if (pTeamSoldier.value.bLifeMax <= iValue) {
+          if (pTeamSoldier.bLifeMax <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bLifeMax;
+            iValue = pTeamSoldier.bLifeMax;
           }
           break;
         case 1:
           // agility
-          if (pTeamSoldier.value.bAgility <= iValue) {
+          if (pTeamSoldier.bAgility <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bAgility;
+            iValue = pTeamSoldier.bAgility;
           }
           break;
         case 2:
           // dexterity
-          if (pTeamSoldier.value.bDexterity <= iValue) {
+          if (pTeamSoldier.bDexterity <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bDexterity;
+            iValue = pTeamSoldier.bDexterity;
           }
           break;
         case 3:
           // strength
-          if (pTeamSoldier.value.bStrength <= iValue) {
+          if (pTeamSoldier.bStrength <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bStrength;
+            iValue = pTeamSoldier.bStrength;
           }
           break;
         case 4:
           // leadership
-          if (pTeamSoldier.value.bLeadership <= iValue) {
+          if (pTeamSoldier.bLeadership <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bLeadership;
+            iValue = pTeamSoldier.bLeadership;
           }
           break;
         case 5:
           // wisdom
-          if (pTeamSoldier.value.bWisdom <= iValue) {
+          if (pTeamSoldier.bWisdom <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bWisdom;
+            iValue = pTeamSoldier.bWisdom;
           }
           break;
         case 6:
           // exper
-          if (pTeamSoldier.value.bExpLevel <= iValue) {
+          if (pTeamSoldier.bExpLevel <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bExpLevel;
+            iValue = pTeamSoldier.bExpLevel;
           }
 
           break;
         case 7:
           // mrkmanship
-          if (pTeamSoldier.value.bMarksmanship <= iValue) {
+          if (pTeamSoldier.bMarksmanship <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMarksmanship;
+            iValue = pTeamSoldier.bMarksmanship;
           }
 
           break;
         case 8:
           // mech
-          if (pTeamSoldier.value.bMechanical <= iValue) {
+          if (pTeamSoldier.bMechanical <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMechanical;
+            iValue = pTeamSoldier.bMechanical;
           }
           break;
         case 9:
           // exp
-          if (pTeamSoldier.value.bExplosive <= iValue) {
+          if (pTeamSoldier.bExplosive <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bExplosive;
+            iValue = pTeamSoldier.bExplosive;
           }
           break;
         case 10:
           // med
-          if (pTeamSoldier.value.bMedical <= iValue) {
+          if (pTeamSoldier.bMedical <= iValue) {
             iId = cnt;
-            iValue = pTeamSoldier.value.bMedical;
+            iValue = pTeamSoldier.bMedical;
           }
           break;
       }
@@ -2918,8 +2909,8 @@ function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
 function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iTotalStatValue: INT32 = 0;
   let bNumberOfPows: INT8 = 0;
@@ -2929,72 +2920,72 @@ function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
   pSoldier = MercPtrs[0];
 
   // run through active soldiers
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
-    if ((pTeamSoldier.value.bActive) && (pTeamSoldier.value.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if ((pTeamSoldier.bActive) && (pTeamSoldier.bLife > 0) && !AM_A_ROBOT(pTeamSoldier)) {
       switch (iStat) {
         case 0:
           // health
 
           // if this is a pow, dont count his stats
-          if (pTeamSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+          if (pTeamSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
             bNumberOfPows++;
             continue;
           }
 
-          iTotalStatValue += pTeamSoldier.value.bLifeMax;
+          iTotalStatValue += pTeamSoldier.bLifeMax;
 
           break;
         case 1:
           // agility
-          iTotalStatValue += pTeamSoldier.value.bAgility;
+          iTotalStatValue += pTeamSoldier.bAgility;
 
           break;
         case 2:
           // dexterity
-          iTotalStatValue += pTeamSoldier.value.bDexterity;
+          iTotalStatValue += pTeamSoldier.bDexterity;
 
           break;
         case 3:
           // strength
-          iTotalStatValue += pTeamSoldier.value.bStrength;
+          iTotalStatValue += pTeamSoldier.bStrength;
 
           break;
         case 4:
           // leadership
-          iTotalStatValue += pTeamSoldier.value.bLeadership;
+          iTotalStatValue += pTeamSoldier.bLeadership;
 
           break;
         case 5:
           // wisdom
 
-          iTotalStatValue += pTeamSoldier.value.bWisdom;
+          iTotalStatValue += pTeamSoldier.bWisdom;
           break;
         case 6:
           // exper
 
-          iTotalStatValue += pTeamSoldier.value.bExpLevel;
+          iTotalStatValue += pTeamSoldier.bExpLevel;
 
           break;
         case 7:
           // mrkmanship
 
-          iTotalStatValue += pTeamSoldier.value.bMarksmanship;
+          iTotalStatValue += pTeamSoldier.bMarksmanship;
 
           break;
         case 8:
           // mech
 
-          iTotalStatValue += pTeamSoldier.value.bMechanical;
+          iTotalStatValue += pTeamSoldier.bMechanical;
           break;
         case 9:
           // exp
 
-          iTotalStatValue += pTeamSoldier.value.bExplosive;
+          iTotalStatValue += pTeamSoldier.bExplosive;
           break;
         case 10:
           // med
 
-          iTotalStatValue += pTeamSoldier.value.bMedical;
+          iTotalStatValue += pTeamSoldier.bMedical;
           break;
       }
 
@@ -3018,10 +3009,10 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
   let cnt: INT32 = 0;
   let iTotalStatValue: INT32 = 0;
   let iId: INT32 = -1;
-  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let pTeamSoldier: MERCPROFILESTRUCT;
   let iCounter: INT32 = 0;
   let bCurrentList: INT8 = 0;
-  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let bCurrentListValue: INT16[] = LaptopSaveInfo.ubDeadCharactersList;
   let fNotDone: boolean = true;
   let uiLoopCounter: UINT32;
 
@@ -3060,86 +3051,83 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
     }
 
     // get the id of the grunt
-    cnt = bCurrentListValue.value;
+    cnt = bCurrentListValue[uiLoopCounter];
 
     // do we need to reset the count?
     if (cnt == -1) {
-      bCurrentListValue++;
       continue;
     }
 
-    pTeamSoldier = addressof(gMercProfiles[cnt]);
+    pTeamSoldier = gMercProfiles[cnt];
 
     switch (iStat) {
       case 0:
         // health
 
-        iTotalStatValue += pTeamSoldier.value.bLife;
+        iTotalStatValue += pTeamSoldier.bLife;
 
         break;
       case 1:
         // agility
 
-        iTotalStatValue += pTeamSoldier.value.bAgility;
+        iTotalStatValue += pTeamSoldier.bAgility;
 
         break;
       case 2:
         // dexterity
 
-        iTotalStatValue += pTeamSoldier.value.bDexterity;
+        iTotalStatValue += pTeamSoldier.bDexterity;
 
         break;
       case 3:
         // strength
 
-        iTotalStatValue += pTeamSoldier.value.bStrength;
+        iTotalStatValue += pTeamSoldier.bStrength;
 
         break;
       case 4:
         // leadership
 
-        iTotalStatValue += pTeamSoldier.value.bLeadership;
+        iTotalStatValue += pTeamSoldier.bLeadership;
 
         break;
       case 5:
         // wisdom
 
-        iTotalStatValue += pTeamSoldier.value.bWisdom;
+        iTotalStatValue += pTeamSoldier.bWisdom;
 
         break;
       case 6:
         // exper
 
-        iTotalStatValue += pTeamSoldier.value.bExpLevel;
+        iTotalStatValue += pTeamSoldier.bExpLevel;
 
         break;
       case 7:
         // mrkmanship
 
         iId = cnt;
-        iTotalStatValue += pTeamSoldier.value.bMarksmanship;
+        iTotalStatValue += pTeamSoldier.bMarksmanship;
 
         break;
       case 8:
         // mech
 
-        iTotalStatValue += pTeamSoldier.value.bMechanical;
+        iTotalStatValue += pTeamSoldier.bMechanical;
 
         break;
       case 9:
         // exp
 
-        iTotalStatValue += pTeamSoldier.value.bExplosive;
+        iTotalStatValue += pTeamSoldier.bExplosive;
 
         break;
       case 10:
         // med
 
-        iTotalStatValue += pTeamSoldier.value.bMedical;
+        iTotalStatValue += pTeamSoldier.bMedical;
         break;
     }
-
-    bCurrentListValue++;
   }
 
   if (GetNumberOfPastMercsOnPlayersTeam() > 0) {
@@ -3592,9 +3580,9 @@ function GetNumberOfPastMercsOnPlayersTeam(): INT32 {
 
 function InitPastCharactersList(): void {
   // inits the past characters list
-  memset(addressof(LaptopSaveInfo.ubDeadCharactersList), -1, sizeof(LaptopSaveInfo.ubDeadCharactersList));
-  memset(addressof(LaptopSaveInfo.ubLeftCharactersList), -1, sizeof(LaptopSaveInfo.ubLeftCharactersList));
-  memset(addressof(LaptopSaveInfo.ubOtherCharactersList), -1, sizeof(LaptopSaveInfo.ubOtherCharactersList));
+  LaptopSaveInfo.ubDeadCharactersList.fill(-1);
+  LaptopSaveInfo.ubLeftCharactersList.fill(-1);
+  LaptopSaveInfo.ubOtherCharactersList.fill(-1);
 
   return;
 }
@@ -3677,12 +3665,11 @@ function DisplayStateOfPastTeamMembers(): void {
   return;
 }
 
+/* static */ let CreateDestroyCurrentDepartedMouseRegions__fCreated: boolean = false;
 function CreateDestroyCurrentDepartedMouseRegions(): void {
-  /* static */ let fCreated: boolean = false;
-
   // will arbitrate the creation/deletion of mouse regions for current/past team toggles
 
-  if ((fCreateRegionsForPastCurrentToggle == true) && (fCreated == false)) {
+  if ((fCreateRegionsForPastCurrentToggle == true) && (CreateDestroyCurrentDepartedMouseRegions__fCreated == false)) {
     // not created, create
     MSYS_DefineRegion(gTogglePastCurrentTeam[0], PERS_TOGGLE_CUR_DEPART_X, PERS_TOGGLE_CUR_Y, PERS_TOGGLE_CUR_DEPART_X + PERS_TOGGLE_CUR_DEPART_WIDTH, PERS_TOGGLE_CUR_Y + PERS_TOGGLE_CUR_DEPART_HEIGHT, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelCurrentTeamCallback);
 
@@ -3692,13 +3679,13 @@ function CreateDestroyCurrentDepartedMouseRegions(): void {
 
     MSYS_AddRegion(gTogglePastCurrentTeam[1]);
 
-    fCreated = true;
-  } else if ((fCreateRegionsForPastCurrentToggle == false) && (fCreated == true)) {
+    CreateDestroyCurrentDepartedMouseRegions__fCreated = true;
+  } else if ((fCreateRegionsForPastCurrentToggle == false) && (CreateDestroyCurrentDepartedMouseRegions__fCreated == true)) {
     // created, get rid of
 
     MSYS_RemoveRegion(gTogglePastCurrentTeam[0]);
     MSYS_RemoveRegion(gTogglePastCurrentTeam[1]);
-    fCreated = false;
+    CreateDestroyCurrentDepartedMouseRegions__fCreated = false;
   }
 
   return;
@@ -3744,11 +3731,11 @@ function PersonnelDepartedTeamCallback(pRegion: MOUSE_REGION, iReason: INT32): v
   }
 }
 
+/* static */ let CreateDestroyButtonsForDepartedTeamList__fCreated: boolean = false;
 function CreateDestroyButtonsForDepartedTeamList(): void {
   // creates/ destroys the buttons for cdeparted team list
-  /* static */ let fCreated: boolean = false;
 
-  if ((fCurrentTeamMode == false) && (fCreated == false)) {
+  if ((fCurrentTeamMode == false) && (CreateDestroyButtonsForDepartedTeamList__fCreated == false)) {
     // not created. create
     giPersonnelButtonImage[4] = LoadButtonImage("LAPTOP\\departuresbuttons.sti", -1, 0, -1, 2, -1);
     giPersonnelButton[4] = QuickCreateButton(giPersonnelButtonImage[4], PERS_DEPARTED_UP_X, PERS_DEPARTED_UP_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DepartedUpCallBack);
@@ -3761,14 +3748,14 @@ function CreateDestroyButtonsForDepartedTeamList(): void {
     SetButtonCursor(giPersonnelButton[4], Enum317.CURSOR_LAPTOP_SCREEN);
     SetButtonCursor(giPersonnelButton[5], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fCreated = true;
-  } else if ((fCurrentTeamMode == true) && (fCreated == true)) {
+    CreateDestroyButtonsForDepartedTeamList__fCreated = true;
+  } else if ((fCurrentTeamMode == true) && (CreateDestroyButtonsForDepartedTeamList__fCreated == true)) {
     // created. destroy
     RemoveButton(giPersonnelButton[4]);
     UnloadButtonImage(giPersonnelButtonImage[4]);
     RemoveButton(giPersonnelButton[5]);
     UnloadButtonImage(giPersonnelButtonImage[5]);
-    fCreated = false;
+    CreateDestroyButtonsForDepartedTeamList__fCreated = false;
     fReDrawScreenFlag = true;
   }
 }
@@ -4337,58 +4324,58 @@ function DisplayHighLightBox(): boolean {
 }
 
 // add to dead list
-export function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToDeadList(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == -1) {
       // valid slot, merc not found yet, inset here
-      LaptopSaveInfo.ubDeadCharactersList[iCounter] = pSoldier.value.ubProfile;
+      LaptopSaveInfo.ubDeadCharactersList[iCounter] = pSoldier.ubProfile;
 
       // leave
       return;
     }
 
     // are they already in the list?
-    if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == pSoldier.value.ubProfile) {
+    if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == pSoldier.ubProfile) {
       return;
     }
   }
 }
 
-export function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToFiredList(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == -1) {
       // valid slot, merc not found yet, inset here
-      LaptopSaveInfo.ubLeftCharactersList[iCounter] = pSoldier.value.ubProfile;
+      LaptopSaveInfo.ubLeftCharactersList[iCounter] = pSoldier.ubProfile;
 
       // leave
       return;
     }
 
     // are they already in the list?
-    if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == pSoldier.value.ubProfile) {
+    if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == pSoldier.ubProfile) {
       return;
     }
   }
 }
 
-export function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddCharacterToOtherList(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == -1) {
       // valid slot, merc not found yet, inset here
-      LaptopSaveInfo.ubOtherCharactersList[iCounter] = pSoldier.value.ubProfile;
+      LaptopSaveInfo.ubOtherCharactersList[iCounter] = pSoldier.ubProfile;
 
       // leave
       return;
     }
 
     // are they already in the list?
-    if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == pSoldier.value.ubProfile) {
+    if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == pSoldier.ubProfile) {
       return;
     }
   }
@@ -4428,7 +4415,7 @@ export function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8):
 
 // grab the id of the first merc being displayed
 function GetIdOfFirstDisplayedMerc(): INT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -4438,8 +4425,8 @@ function GetIdOfFirstDisplayedMerc(): INT32 {
   if (fCurrentTeamMode == true) {
     // run through list of soldiers on players current team
     // cnt = gTacticalStatus.Team[ pSoldier->bTeam ].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
-      if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0)) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if ((pSoldier.bActive) && (pSoldier.bLife > 0)) {
         return 0;
       }
     }
@@ -4451,7 +4438,7 @@ function GetIdOfFirstDisplayedMerc(): INT32 {
 }
 
 function GetIdOfThisSlot(iSlot: INT32): INT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -4460,9 +4447,9 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
 
   if (fCurrentTeamMode == true) {
     // run through list of soldiers on players current team
-    cnt = gTacticalStatus.Team[pSoldier.value.bTeam].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pSoldier++) {
-      if ((pSoldier.value.bActive)) {
+    cnt = gTacticalStatus.Team[pSoldier.bTeam].bFirstID;
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if ((pSoldier.bActive)) {
         // same character as slot, return this value
         if (iCounter == iSlot) {
           return cnt;
@@ -4544,11 +4531,11 @@ function RenderAtmPanel(): boolean {
   return true;
 }
 
+/* static */ let CreateDestroyStartATMButton__fCreated: boolean = false;
 function CreateDestroyStartATMButton(): void {
-  /* static */ let fCreated: boolean = false;
   // create/destroy atm start button as needed
 
-  if ((fCreated == false) && (fShowAtmPanelStartButton == true)) {
+  if ((CreateDestroyStartATMButton__fCreated == false) && (fShowAtmPanelStartButton == true)) {
     // not created, must create
 
     /*
@@ -4594,8 +4581,8 @@ function CreateDestroyStartATMButton(): void {
     SpecifyButtonFont(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], PERS_FONT());
     SetButtonCursor(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN], Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fCreated = true;
-  } else if ((fCreated == true) && (fShowAtmPanelStartButton == false)) {
+    CreateDestroyStartATMButton__fCreated = true;
+  } else if ((CreateDestroyStartATMButton__fCreated == true) && (fShowAtmPanelStartButton == false)) {
     // stop showing
     /*
     RemoveButton( giPersonnelATMStartButton[ 0 ] );
@@ -4608,7 +4595,7 @@ function CreateDestroyStartATMButton(): void {
     RemoveButton(giPersonnelATMStartButton[Enum108.PERSONNEL_INV_BTN]);
     UnloadButtonImage(giPersonnelATMStartButtonImage[Enum108.PERSONNEL_INV_BTN]);
 
-    fCreated = false;
+    CreateDestroyStartATMButton__fCreated = false;
   }
 }
 
@@ -4866,7 +4853,7 @@ function EmployementInfoButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function ATMOther2ButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let pSoldier: SOLDIERTYPE = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
@@ -4898,7 +4885,7 @@ function ATMOther2ButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let iValue: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let pSoldier: SOLDIERTYPE = MercPtrs[0];
   let cnt: INT32 = 0;
   let iId: INT32 = 0;
 
@@ -4932,18 +4919,18 @@ function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
                 fOneFrameDelayInPersonnel = true;
               } else if (fATMFlags == 2) {
                 // deposit from merc to account
-                if (GetFundsOnMerc(pSoldier) >= wcstol(sTransferString, null, 10)) {
-                  if ((wcstol(sTransferString, null, 10) % 10) != 0) {
+                if (GetFundsOnMerc(pSoldier) >= parseInt(sTransferString, 10)) {
+                  if ((parseInt(sTransferString, 10) % 10) != 0) {
                     fOldATMFlags = fATMFlags;
                     fATMFlags = 5;
 
-                    iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
+                    iValue = (parseInt(sTransferString, 10) - (parseInt(sTransferString, 10) % 10));
                     sTransferString = swprintf("%d", iValue);
                     fReDrawScreenFlag = true;
                   } else {
                     // transfer
-                    TransferFundsFromMercToBank(pSoldier, wcstol(sTransferString, null, 10));
-                    sTransferString[0] = 0;
+                    TransferFundsFromMercToBank(pSoldier, parseInt(sTransferString, 10));
+                    sTransferString = '';
                     fReDrawScreenFlag = true;
                   }
                 } else {
@@ -4955,18 +4942,18 @@ function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
                 }
               } else if (fATMFlags == 3) {
                 // deposit from merc to account
-                if (LaptopSaveInfo.iCurrentBalance >= wcstol(sTransferString, null, 10)) {
-                  if ((wcstol(sTransferString, null, 10) % 10) != 0) {
+                if (LaptopSaveInfo.iCurrentBalance >= parseInt(sTransferString, 10)) {
+                  if ((parseInt(sTransferString, 10) % 10) != 0) {
                     fOldATMFlags = fATMFlags;
                     fATMFlags = 5;
 
-                    iValue = (wcstol(sTransferString, null, 10) - (wcstol(sTransferString, null, 10) % 10));
+                    iValue = (parseInt(sTransferString, 10) - (parseInt(sTransferString, 10) % 10));
                     sTransferString = swprintf("%d", iValue);
                     fReDrawScreenFlag = true;
                   } else {
                     // transfer
-                    TransferFundsFromBankToMerc(pSoldier, wcstol(sTransferString, null, 10));
-                    sTransferString[0] = 0;
+                    TransferFundsFromBankToMerc(pSoldier, parseInt(sTransferString, 10));
+                    sTransferString = '';
                     fReDrawScreenFlag = true;
                   }
                 } else {
@@ -4991,8 +4978,8 @@ function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
               fReDrawScreenFlag = true;
               break;
             case (Enum107.CANCEL_ATM):
-              if (sTransferString[0] != 0) {
-                sTransferString[0] = 0;
+              if (sTransferString != '') {
+                sTransferString = '';
               } else if (fATMFlags != 0) {
                 fATMFlags = 0;
                 ButtonList[giPersonnelATMSideButton[Enum107.WIDTHDRAWL_ATM]].uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -5004,7 +4991,7 @@ function ATMOtherButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
               fReDrawScreenFlag = true;
               break;
             case (Enum107.CLEAR_ATM):
-              sTransferString[0] = 0;
+              sTransferString = '';
               fReDrawScreenFlag = true;
               break;
           }
@@ -5035,13 +5022,12 @@ function ATMNumberButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
       // find position in value string, append character at end
       for (iCounter = 0; iCounter < sTransferString.length; iCounter++)
         ;
-      sTransferString[iCounter] = (sZero[0] + iValue);
-      sTransferString[iCounter + 1] = 0;
+      sTransferString += String.fromCharCode(sZero.charCodeAt(0) + iValue);
       fReDrawScreenFlag = true;
 
       // gone too far
       if (StringPixLength(sTransferString, ATM_FONT()) >= ATM_DISPLAY_WIDTH - 10) {
-        sTransferString[iCounter] = 0;
+        sTransferString = sTransferString.substring(0, iCounter);
       }
     }
   }
@@ -5060,11 +5046,9 @@ function DisplayATMAmount(): void {
 
   sTempString = sTransferString;
 
-  if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
+  if ((sTempString.charCodeAt(0) == 48) && (sTempString.length != 1)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < sTempString.length; iCounter++) {
-      sTempString[iCounter - 1] = sTempString[iCounter];
-    }
+    sTempString = sTempString.substring(1);
   }
 
   // insert commas and dollar sign
@@ -5112,7 +5096,7 @@ function HandleStateOfATMButtons(): void {
   }
 }
 
-export function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+export function GetFundsOnMerc(pSoldier: SOLDIERTYPE | null): INT32 {
   let iCurrentAmount: INT32 = 0;
   let iCurrentPocket: INT32 = 0;
   // run through mercs pockets, if any money in them, add to total
@@ -5124,15 +5108,15 @@ export function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 
   // run through grunts pockets and count all the spare change
   for (iCurrentPocket = 0; iCurrentPocket < Enum261.NUM_INV_SLOTS; iCurrentPocket++) {
-    if (Item[pSoldier.value.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
-      iCurrentAmount += pSoldier.value.inv[iCurrentPocket].uiMoneyAmount;
+    if (Item[pSoldier.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
+      iCurrentAmount += pSoldier.inv[iCurrentPocket].uiMoneyAmount;
     }
   }
 
   return iCurrentAmount;
 }
 
-export function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
+export function TransferFundsFromMercToBank(pSoldier: SOLDIERTYPE, iCurrentBalance: INT32): boolean {
   let iCurrentPocket: INT32 = 0;
   let iAmountLeftToTake: INT32 = iCurrentBalance;
   let ObjectToRemove: OBJECTTYPE = createObjectType();
@@ -5145,33 +5129,33 @@ export function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCur
 
   // run through grunts pockets and count all the spare change
   for (iCurrentPocket = 0; iCurrentPocket < Enum261.NUM_INV_SLOTS; iCurrentPocket++) {
-    if (Item[pSoldier.value.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
+    if (Item[pSoldier.inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
       // is there more left to go, or does this pocket finish it off?
-      if (pSoldier.value.inv[iCurrentPocket].uiMoneyAmount > iAmountLeftToTake) {
-        pSoldier.value.inv[iCurrentPocket].uiMoneyAmount -= iAmountLeftToTake;
+      if (pSoldier.inv[iCurrentPocket].uiMoneyAmount > iAmountLeftToTake) {
+        pSoldier.inv[iCurrentPocket].uiMoneyAmount -= iAmountLeftToTake;
         iAmountLeftToTake = 0;
       } else {
-        iAmountLeftToTake -= pSoldier.value.inv[iCurrentPocket].uiMoneyAmount;
-        pSoldier.value.inv[iCurrentPocket].uiMoneyAmount = 0;
+        iAmountLeftToTake -= pSoldier.inv[iCurrentPocket].uiMoneyAmount;
+        pSoldier.inv[iCurrentPocket].uiMoneyAmount = 0;
 
         // Remove the item out off the merc
-        RemoveObjectFromSlot(pSoldier, iCurrentPocket, addressof(ObjectToRemove));
+        RemoveObjectFromSlot(pSoldier, iCurrentPocket, ObjectToRemove);
       }
     }
   }
 
   if (iAmountLeftToTake != 0) {
     // something wrong
-    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance - iAmountLeftToTake));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.ubProfile, GetWorldTotalMin(), (iCurrentBalance - iAmountLeftToTake));
     return false;
   } else {
     // everything ok
-    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), (iCurrentBalance));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_FROM_MERC, pSoldier.ubProfile, GetWorldTotalMin(), (iCurrentBalance));
     return true;
   }
 }
 
-export function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): boolean {
+export function TransferFundsFromBankToMerc(pSoldier: SOLDIERTYPE, iCurrentBalance: INT32): boolean {
   let pMoneyObject: OBJECTTYPE = createObjectType();
 
   // move this amount of money from the grunt to the bank
@@ -5190,9 +5174,6 @@ export function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCur
     iCurrentBalance = LaptopSaveInfo.iCurrentBalance;
   }
 
-  // set up object
-  memset(addressof(pMoneyObject), 0, sizeof(OBJECTTYPE));
-
   // set up money object
   pMoneyObject.usItem = Enum225.MONEY;
   pMoneyObject.ubNumberOfObjects = 1;
@@ -5201,9 +5182,9 @@ export function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCur
   pMoneyObject.uiMoneyAmount = iCurrentBalance;
 
   // now auto place money object
-  if (AutoPlaceObject(pSoldier, addressof(pMoneyObject), true) == true) {
+  if (AutoPlaceObject(pSoldier, pMoneyObject, true) == true) {
     // now place transaction
-    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iCurrentBalance));
+    AddTransactionToPlayersBook(Enum80.TRANSFER_FUNDS_TO_MERC, pSoldier.ubProfile, GetWorldTotalMin(), -(iCurrentBalance));
   } else {
     // error, notify player that merc doesn't have the spce for this much cash
   }
@@ -5221,7 +5202,7 @@ function DisplayATMStrings(): void {
       }
       break;
     case (2):
-      if (sTransferString[0] != 0) {
+      if (sTransferString[0] != '') {
         DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         // DisplayWrappedString(509, ( INT16 )( 80 + GetFontHeight( ATM_FONT ) ), 81, 2, ATM_FONT, FONT_WHITE, sATMText[ 1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED );
       } else {
@@ -5229,7 +5210,7 @@ function DisplayATMStrings(): void {
       }
       break;
     case (3):
-      if (sTransferString[0] != 0) {
+      if (sTransferString[0] != '') {
         DisplayWrappedString(509, 80, 81, 2, ATM_FONT(), FONT_WHITE, sATMText[0], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
         // DisplayWrappedString(509, ( INT16 )( 80 + GetFontHeight( ATM_FONT ) ), 81, 2, ATM_FONT, FONT_WHITE, sATMText[ 1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED );
       } else {
@@ -5319,7 +5300,7 @@ function UpDateStateOfStartButton(): void {
 function DisplayAmountOnCurrentMerc(): void {
   // will display the amount that the merc is carrying on him or herself
   let iId: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
   let iFunds: INT32;
   let sString: string /* CHAR16[64] */;
   let sX: INT16;
@@ -5369,19 +5350,18 @@ function HandlePersonnelKeyboard(): void {
   GetCursorPos(addressof(MousePos));
 
   while (DequeueEvent(addressof(InputEvent)) == true) {
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0') && (InputEvent.usParam <= '9')) {
+    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0'.charCodeAt(0)) && (InputEvent.usParam <= '9'.charCodeAt(0))) {
       if ((fShowAtmPanel) && (fATMFlags != 0)) {
-        iValue = (InputEvent.usParam - '0');
+        iValue = (InputEvent.usParam - '0'.charCodeAt(0));
 
         for (iCounter = 0; iCounter < sTransferString.length; iCounter++)
           ;
-        sTransferString[iCounter] = (sZero[0] + iValue);
-        sTransferString[iCounter + 1] = 0;
+        sTransferString += String.fromCharCode(sZero.charCodeAt(0) + iValue);
         fPausedReDrawScreenFlag = true;
 
         // gone too far
         if (StringPixLength(sTransferString, ATM_FONT()) >= ATM_DISPLAY_WIDTH - 10) {
-          sTransferString[iCounter] = 0;
+          sTransferString = sTransferString.substring(0, iCounter);
         }
       }
     }
@@ -5401,11 +5381,9 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
 
   sTempString = sTransferString;
 
-  if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
+  if ((sTempString.charCodeAt(0) == 48) && (sTempString.length != 1)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < sTempString.length; iCounter++) {
-      sTempString[iCounter - 1] = sTempString[iCounter];
-    }
+    sTempString = sTempString.substring(1);
   }
 
   // insert commas and dollar sign
@@ -5426,22 +5404,21 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
+/* static */ let HandleTimedAtmModes__fOldAtmMode: UINT8 = 0;
+/* static */ let HandleTimedAtmModes__uiBaseTime: UINT32 = 0;
 function HandleTimedAtmModes(): void {
-  /* static */ let fOldAtmMode: boolean = 0;
-  /* static */ let uiBaseTime: UINT32 = 0;
-
   if (fShowAtmPanel == false) {
     return;
   }
 
   // update based on modes
-  if (fATMFlags != fOldAtmMode) {
-    uiBaseTime = GetJA2Clock();
-    fOldAtmMode = fATMFlags;
+  if (fATMFlags != HandleTimedAtmModes__fOldAtmMode) {
+    HandleTimedAtmModes__uiBaseTime = GetJA2Clock();
+    HandleTimedAtmModes__fOldAtmMode = fATMFlags;
     fPausedReDrawScreenFlag = true;
   }
 
-  if ((GetJA2Clock() - uiBaseTime) > DELAY_PER_MODE_CHANGE_IN_ATM) {
+  if ((GetJA2Clock() - HandleTimedAtmModes__uiBaseTime) > DELAY_PER_MODE_CHANGE_IN_ATM) {
     switch (fATMFlags) {
       case (4):
       case (5):
@@ -5500,7 +5477,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         let uiMinutesInDay: UINT32 = 24 * 60;
 
         if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC || Menptr[iId].ubProfile == Enum268.SLAY) {
-          let iTimeLeftOnContract: INT32 = CalcTimeLeftOnMercContract(addressof(Menptr[iId]));
+          let iTimeLeftOnContract: INT32 = CalcTimeLeftOnMercContract(Menptr[iId]);
 
           // if the merc is in transit
           if (Menptr[iId].bAssignment == Enum117.IN_TRANSIT) {
@@ -5697,20 +5674,20 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 // MERC merc: Returns the amount of time the merc has worked
 // IMP merc:	Returns the amount of time the merc has worked
 // else:			returns -1
-function CalcTimeLeftOnMercContract(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+function CalcTimeLeftOnMercContract(pSoldier: SOLDIERTYPE): INT32 {
   let iTimeLeftOnContract: INT32 = -1;
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
-    iTimeLeftOnContract = pSoldier.value.iEndofContractTime - GetWorldTotalMin();
+  if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+    iTimeLeftOnContract = pSoldier.iEndofContractTime - GetWorldTotalMin();
 
     if (iTimeLeftOnContract < 0)
       iTimeLeftOnContract = 0;
-  } else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
-    iTimeLeftOnContract = gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength;
+  } else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+    iTimeLeftOnContract = gMercProfiles[pSoldier.ubProfile].iMercMercContractLength;
   }
 
-  else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
-    iTimeLeftOnContract = pSoldier.value.iTotalContractLength;
+  else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
+    iTimeLeftOnContract = pSoldier.iTotalContractLength;
   }
 
   else {
