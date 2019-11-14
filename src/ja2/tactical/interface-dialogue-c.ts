@@ -271,7 +271,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   }
 
   // Get ETRLE Properties
-  GetVideoObjectETRLESubregionProperties(gTalkPanel.uiPanelVO, 0, addressof(usWidth), addressof(usHeight));
+  ({ usWidth, usHeight } = GetVideoObjectETRLESubregionProperties(gTalkPanel.uiPanelVO, 0));
 
   // Set values into structure
   gTalkPanel.usWidth = usWidth;

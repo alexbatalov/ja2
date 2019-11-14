@@ -5078,14 +5078,14 @@ function CalculateItemPickupMenuDimensions(): void {
     }
 
     // Add hieght of object
-    GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, usSubRegion, addressof(usWidth), addressof(usHeight));
+    ({ usWidth, usHeight } = GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, usSubRegion));
 
     sY += usHeight;
   }
   gItemPickupMenu.sButtomPanelStartY = sY;
 
   // Do end
-  GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, 2, addressof(usWidth), addressof(usHeight));
+  ({ usWidth, usHeight } = GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, 2));
 
   sY += usHeight;
 
@@ -5144,7 +5144,7 @@ export function RenderItemPickupMenu(): void {
       BltVideoObjectFromIndex(FRAME_BUFFER, gItemPickupMenu.uiPanelVo, usSubRegion, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
 
       // Add hieght of object
-      GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, usSubRegion, addressof(usWidth), addressof(usHeight));
+      ({ usWidth, usHeight } = GetVideoObjectETRLESubregionProperties(gItemPickupMenu.uiPanelVo, usSubRegion));
 
       sY += usHeight;
     }

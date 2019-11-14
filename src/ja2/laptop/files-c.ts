@@ -723,7 +723,7 @@ function DisplayFormattedText(): boolean {
         return false;
       }
 
-      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, addressof(usFirstWidth), addressof(usFirstHeight));
+      ({ usWidth: usFirstWidth, usHeight: usFirstHeight } = GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0));
 
       // get file background object
       hHandle = GetVideoObject(uiFirstTempPicture);
@@ -766,8 +766,8 @@ function DisplayFormattedText(): boolean {
         return false;
       }
 
-      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, addressof(usFirstWidth), addressof(usFirstHeight));
-      GetVideoObjectETRLESubregionProperties(uiSecondTempPicture, 0, addressof(usSecondWidth), addressof(usSecondHeight));
+      ({ usWidth: usFirstWidth, usHeight: usFirstHeight } = GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0));
+      ({ usWidth: usSecondWidth, usHeight: usSecondHeight } = GetVideoObjectETRLESubregionProperties(uiSecondTempPicture, 0));
 
       // get free space;
       usFreeSpace = FILE_VIEWER_WIDTH - usFirstWidth - usSecondWidth;

@@ -823,26 +823,23 @@ export function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: 
   return true;
 }
 
-export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16, pusWidth: Pointer<UINT16>, pusHeight: Pointer<UINT16>): boolean {
+export function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16): { usWidth: UINT16, usHeight: UINT16 } {
   let hVObject: HVOBJECT;
   let ETRLEObject: ETRLEObject = createETRLEObject();
 
 // Get video object
   if (!(hVObject = GetVideoObject(uiVideoObject))) {
-    return false;
+    throw new Error('Should be unreachable');
   }
 
-  if (!GetVideoObjectETRLEProperties(hVObject, addressof(ETRLEObject), usIndex)) {
-    return false;
+  if (!GetVideoObjectETRLEProperties(hVObject, ETRLEObject, usIndex)) {
+    throw new Error('Should be unreachable');
   }
 
-  pusWidth.value = ETRLEObject.usWidth;
-  pusHeight.value = ETRLEObject.usHeight;
-
-  return true;
+  return { usWidth: ETRLEObject.usWidth, usHeight: ETRLEObject.usHeight };
 }
 
-export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): boolean {
+export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObject: ETRLEObject, usIndex: UINT16): boolean {
   let hVObject: HVOBJECT;
 
 // Get video object
