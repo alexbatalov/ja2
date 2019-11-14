@@ -736,7 +736,7 @@ function RenderSelectedItemBlownUp(): void {
   } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
     szItemName = swprintf("%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
   } else {
-    LoadItemInfo(gpItem.value.usItem, szItemName, null);
+    ({ name: szItemName } = LoadItemInfo(gpItem.value.usItem));
   }
   xp = sScreenX - (StringPixLength(szItemName, FONT10ARIAL()) - 40) / 2;
   yp -= 10;

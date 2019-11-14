@@ -2078,15 +2078,18 @@ function ReloadItemDesc(): boolean {
   //
 
   // if the player is extracting money from the players account, use a different item name and description
+  let itemInfo: ItemInfo;
   if (gfAddingMoneyToMercFromPlayersAccount && gpItemDescObject.value.usItem == Enum225.MONEY) {
-    if (!LoadItemInfo(Enum225.MONEY_FOR_PLAYERS_ACCOUNT, gzItemName, gzItemDesc)) {
+    if ((itemInfo = LoadItemInfo(Enum225.MONEY_FOR_PLAYERS_ACCOUNT)) === undefined) {
       return false;
     }
   } else {
-    if (!LoadItemInfo(gpItemDescObject.value.usItem, gzItemName, gzItemDesc)) {
+    if ((itemInfo = LoadItemInfo(gpItemDescObject.value.usItem)) === undefined) {
       return false;
     }
   }
+
+  ({ name: gzItemName, info: gzItemDesc } = itemInfo);
 
   /*
           if (Item[ gpItemDescObject->usItem ].usItemClass & IC_WEAPON)

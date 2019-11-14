@@ -1,14 +1,20 @@
 namespace ja2 {
 
-export function LoadItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* STR16 */, pInfoString: Pointer<string> /* STR16 */): boolean {
+export type ItemInfo = { name: string, info: string };
+
+export function LoadItemInfo(ubIndex: UINT16): ItemInfo {
+  let pNameString: string;
+  let pInfoString: string;
+
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
+  let buffer: Buffer;
 
   hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return false;
+    return <ItemInfo><unknown>undefined;
   }
 
   // Get current mercs bio info
@@ -19,18 +25,19 @@ export function LoadItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* ST
 
   if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
-    return false;
+    return <ItemInfo><unknown>undefined;
   }
 
-  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
+  buffer = Buffer.allocUnsafe(SIZE_ITEM_NAME);
+  if ((uiBytesRead = FileRead(hFile, buffer, SIZE_ITEM_NAME)) === -1) {
     FileClose(hFile);
-    return false;
+    return <ItemInfo><unknown>undefined;
   }
 
   // Decrement, by 1, any value > 32
-  for (i = 0; (i < SIZE_ITEM_NAME) && (pNameString[i] != 0); i++) {
-    if (pNameString[i] > 33)
-      pNameString[i] -= 1;
+  for (i = 0; (i < SIZE_ITEM_NAME) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //     switch (pNameString[i]) {
@@ -94,26 +101,25 @@ export function LoadItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* ST
 // #endif
   }
 
-  // condition added by Chris - so we can get the name without the item info
-  // when desired, by passing in a null pInfoString
+  pNameString = readStringNL(buffer, 'utf16le', 0, buffer.length);
 
-  if (pInfoString != null) {
-    // Get the additional info
-    uiStartSeekAmount = ((SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex) + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME;
-    if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
-      FileClose(hFile);
-      return false;
-    }
+  // Get the additional info
+  uiStartSeekAmount = ((SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME + SIZE_ITEM_INFO) * ubIndex) + SIZE_ITEM_NAME + SIZE_SHORT_ITEM_NAME;
+  if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
+    FileClose(hFile);
+    return <ItemInfo><unknown>undefined;
+  }
 
-    if (!FileRead(hFile, pInfoString, SIZE_ITEM_INFO, addressof(uiBytesRead))) {
-      FileClose(hFile);
-      return false;
-    }
+  buffer = Buffer.allocUnsafe(SIZE_ITEM_INFO);
+  if ((uiBytesRead = FileRead(hFile, buffer, SIZE_ITEM_INFO)) === -1) {
+    FileClose(hFile);
+    return <ItemInfo><unknown>undefined;
+  }
 
-    // Decrement, by 1, any value > 32
-    for (i = 0; (i < SIZE_ITEM_INFO) && (pInfoString[i] != 0); i++) {
-      if (pInfoString[i] > 33)
-        pInfoString[i] -= 1;
+  // Decrement, by 1, any value > 32
+  for (i = 0; (i < SIZE_ITEM_INFO) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //       switch (pInfoString[i]) {
@@ -175,23 +181,27 @@ export function LoadItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* ST
 //           break;
 //       }
 // #endif
-    }
   }
 
+  pInfoString = readStringNL(buffer, 'utf16le', 0, buffer.length);
+
   FileClose(hFile);
-  return true;
+  return { name: pNameString, info: pInfoString };
 }
 
-export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: Pointer<string> /* STR16 */): boolean {
+export function LoadShortNameItemInfo(ubIndex: UINT16): string {
+  let pNameString: string
+
   let hFile: HWFILE;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
   let uiBytesRead: UINT32;
   let i: UINT16;
   let uiStartSeekAmount: UINT32;
+  let buffer: Buffer;
 
   hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, false);
   if (!hFile) {
-    return false;
+    return <string><unknown>undefined;
   }
 
   // Get current mercs bio info
@@ -199,18 +209,19 @@ export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: Pointer<stri
 
   if (FileSeek(hFile, uiStartSeekAmount, FILE_SEEK_FROM_START) == false) {
     FileClose(hFile);
-    return false;
+    return <string><unknown>undefined;
   }
 
-  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
+  buffer = Buffer.allocUnsafe(SIZE_ITEM_NAME);
+  if ((uiBytesRead = FileRead(hFile, buffer, SIZE_ITEM_NAME)) === -1) {
     FileClose(hFile);
-    return false;
+    return <string><unknown>undefined;
   }
 
   // Decrement, by 1, any value > 32
-  for (i = 0; (i < SIZE_ITEM_NAME) && (pNameString[i] != 0); i++) {
-    if (pNameString[i] > 33)
-      pNameString[i] -= 1;
+  for (i = 0; (i < SIZE_ITEM_NAME) && (buffer.readUInt16LE(i) != 0); i += 2) {
+    if (buffer.readUInt16LE(i) > 33)
+      buffer.writeUInt16LE(buffer.readUInt16LE(i) - 1, i);
 // FIXME: Language-specific code
 // #ifdef POLISH
 //     switch (pNameString[i]) {
@@ -274,18 +285,20 @@ export function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: Pointer<stri
 // #endif
   }
 
+  pNameString = readStringNL(buffer, 'utf16le', 0, uiBytesRead);
+
   FileClose(hFile);
-  return true;
+  return pNameString;
 }
 
 function LoadAllItemNames(): void {
   let usLoop: UINT16;
 
   for (usLoop = 0; usLoop < Enum225.MAXITEMS; usLoop++) {
-    LoadItemInfo(usLoop, ItemNames[usLoop], null);
+    ({ name: ItemNames[usLoop] } = LoadItemInfo(usLoop));
 
     // Load short item info
-    LoadShortNameItemInfo(usLoop, ShortItemNames[usLoop]);
+    ShortItemNames[usLoop] = LoadShortNameItemInfo(usLoop);
   }
 }
 

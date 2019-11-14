@@ -369,7 +369,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
           SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, false);
 
           if (eInfo.uiItemType != Enum35.TBAR_MODE_ITEM_TRIGGERS) {
-            LoadItemInfo(usCounter, pItemName, null);
+            ({ name: pItemName } = LoadItemInfo(usCounter));
             pStr = swprintf("%s", pItemName);
           } else {
             if (i == PRESSURE_ACTION_ID) {
@@ -1347,7 +1347,7 @@ export function DisplayItemStatistics(): void {
     return;
   usItemIndex = eInfo.pusItemIndex[fUseSelectedItem ? eInfo.sSelItemIndex : eInfo.sHilitedItemIndex];
   pItem = addressof(Item[usItemIndex]);
-  LoadItemInfo(usItemIndex, pItemName, null);
+  ({ name: pItemName } = LoadItemInfo(usItemIndex));
 
   mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT()) / 2, 403, pItemName);
   mprintf(2, 410, "Status Info Line 1");

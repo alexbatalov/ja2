@@ -2546,7 +2546,7 @@ function RenderSelectedMercsInventory(): void {
       Blt16BPPTo16BPPTrans(pDst, uiDstPitchBYTES, pSrc, uiSrcPitchBYTES, xp, yp, 0, 0, i < 3 ? 22 : 44, 15, 0);
       UnLockVideoSurface(FRAME_BUFFER);
       UnLockVideoSurface(guiMercInvPanelBuffers[i]);
-      LoadItemInfo(gpMercSlotItem[i].value.usItem, pItemName, null);
+      ({ name: pItemName } = LoadItemInfo(gpMercSlotItem[i].value.usItem));
       // Render the text
       switch (i) {
         case 2: // legs (to the right of the box, but move it down to make room for right hand text)

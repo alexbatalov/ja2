@@ -1929,7 +1929,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
         // grab item name
-        LoadItemInfo(sIndex, sString, null);
+        ({ name: sString } = LoadItemInfo(sIndex));
 
         // shorten if needed
         if (StringPixLength(sString, FONT10ARIAL()) > (171 - 75)) {

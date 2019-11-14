@@ -609,7 +609,7 @@ function RenderItemDetails(): void {
         dAvgExistChance = (uiExistChance / 100.0);
         dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
-        LoadShortNameItemInfo(index, str);
+        str = LoadShortNameItemInfo(index);
         mprintf(xp, yp, "%s", str);
         mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
         mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
@@ -712,7 +712,7 @@ function RenderItemDetails(): void {
           dAvgExistChance = (uiExistChance / 100.0);
           dAvgStatus = uiStatus / uiQuantity;
           // Display stats.
-          LoadShortNameItemInfo(index, str);
+          str = LoadShortNameItemInfo(index);
           mprintf(xp, yp, "%s", str);
           mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
           mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
@@ -771,7 +771,7 @@ function RenderItemDetails(): void {
         dAvgExistChance = (uiExistChance / 100.0);
         dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
-        LoadShortNameItemInfo(index, str);
+        str = LoadShortNameItemInfo(index);
         mprintf(xp, yp, "%s", str);
         mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
         mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
