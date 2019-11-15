@@ -20,10 +20,10 @@ const FLOWER_ORDER_SENTIMENT_BOX_Y = LAPTOP_SCREEN_WEB_UL_Y + 226;
 const FLOWER_ORDER_SENTIMENT_BOX_WIDTH = 468;
 const FLOWER_ORDER_SENTIMENT_BOX_HEIGHT = 27;
 
+const FLOWER_ORDER_SMALLER_PS_OFFSET_Y = 27;
+
 const FLOWER_ORDER_NAME_BOX_X = LAPTOP_SCREEN_UL_X + 60;
 const FLOWER_ORDER_NAME_BOX_Y = LAPTOP_SCREEN_WEB_UL_Y + 314 - FLOWER_ORDER_SMALLER_PS_OFFSET_Y;
-
-const FLOWER_ORDER_SMALLER_PS_OFFSET_Y = 27;
 
 const FLOWER_ORDER_DELIVERY_LOCATION_X = LAPTOP_SCREEN_UL_X + 205;
 const FLOWER_ORDER_DELIVERY_LOCATION_Y = LAPTOP_SCREEN_WEB_UL_Y + 143;
@@ -46,10 +46,10 @@ const FLOWER_ORDER_FLOWER_NAME_X = LAPTOP_SCREEN_UL_X + 94;
 const FLOWER_ORDER_FLOWER_NAME_Y = LAPTOP_SCREEN_WEB_UL_Y + 68;
 
 const FLOWER_ORDER_BOUQUET_NAME_X = FLOWER_ORDER_FLOWER_NAME_X;
+const FLOWER_ORDER_ORDER_NUM_NAME_Y = FLOWER_ORDER_FLOWER_NAME_Y + 15; // FLOWER_ORDER_BOUQUET_NAME_Y + 15
 const FLOWER_ORDER_BOUQUET_NAME_Y = FLOWER_ORDER_ORDER_NUM_NAME_Y + 15; // FLOWER_ORDER_FLOWER_NAME_Y + 15
 
 const FLOWER_ORDER_ORDER_NUM_NAME_X = FLOWER_ORDER_BOUQUET_NAME_X;
-const FLOWER_ORDER_ORDER_NUM_NAME_Y = FLOWER_ORDER_FLOWER_NAME_Y + 15; // FLOWER_ORDER_BOUQUET_NAME_Y + 15
 
 const FLOWER_ORDER_DATE_X = FLOWER_ORDER_FLOWER_NAME_X;
 const FLOWER_ORDER_DATE_Y = LAPTOP_SCREEN_WEB_UL_Y + 126;
@@ -156,7 +156,7 @@ let guiCurrentlySelectedFlowerImage: UINT32;
 let guiNameBox: UINT32;
 let guiPersonalSentiments: UINT32;
 let guiFlowerOrderCheckBoxButtonImage: UINT32;
-export let guiDropDownBorder: UINT32;
+let guiDropDownBorder: UINT32;
 
 let gfFLoristCheckBox0Down: boolean = false; // next day delviery
 let gfFLoristCheckBox1Down: boolean = true; // when it gets there delivery
@@ -178,8 +178,8 @@ const enum Enum81 {
 let gubFlowerDestDropDownMode: UINT8;
 let gubCurrentlySelectedFlowerLocation: UINT8;
 
-let gsSentimentTextField: string /* wchar_t[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = [ 0 ];
-let gsNameTextField: string /* wchar_t[FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = [ 0 ];
+let gsSentimentTextField: string /* wchar_t[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = '';
+let gsNameTextField: string /* wchar_t[FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = '';
 
 // buttons
 let guiFlowerOrderButtonImage: INT32;
@@ -785,7 +785,7 @@ function DisplayFlowerDynamicItems(): void {
   usPosX = StringPixLength(sOrderFormText[Enum346.FLORIST_ORDER_PRICE], FLOWER_ORDEER_SMALL_FONT()) + 5 + FLOWER_ORDER_BOUQUET_NAME_X;
   uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * guiCurrentlySelectedFlower + FLOR_GALLERY_TEXT_TITLE_SIZE;
   sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
-  swscanf(sTemp, "%hu", addressof(usPrice));
+  usPrice = parseInt(sTemp, 10);
 
   // if its the next day delivery
   if (gfFLoristCheckBox0Down)
@@ -843,10 +843,9 @@ function SelectFlowerDropDownMovementCallBack(pRegion: MOUSE_REGION, reason: INT
   }
 }
 
+/* static */ let CreateDestroyFlowerOrderDestDropDown__usHeight: UINT16;
+/* static */ let CreateDestroyFlowerOrderDestDropDown__fMouseRegionsCreated: boolean = false;
 function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
-  /* static */ let usHeight: UINT16;
-  /* static */ let fMouseRegionsCreated: boolean = false;
-
   switch (ubDropDownMode) {
     case Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION: {
     } break;
@@ -859,7 +858,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       let usFontHeight: UINT16 = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT());
       let ubTextFieldID: UINT8;
 
-      if (fMouseRegionsCreated) {
+      if (CreateDestroyFlowerOrderDestDropDown__fMouseRegionsCreated) {
         return false;
         break;
       }
@@ -877,7 +876,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
 
       SetActiveField(0);
 
-      fMouseRegionsCreated = true;
+      CreateDestroyFlowerOrderDestDropDown__fMouseRegionsCreated = true;
 
       usPosX = FLOWER_ORDER_DROP_DOWN_CITY_START_X;
       usPosY = FLOWER_ORDER_DROP_DOWN_CITY_START_Y;
@@ -889,7 +888,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
         usPosY += usFontHeight + 2;
       }
       usTemp = FLOWER_ORDER_DROP_DOWN_CITY_START_Y;
-      usHeight = usPosY - usTemp + 10;
+      CreateDestroyFlowerOrderDestDropDown__usHeight = usPosY - usTemp + 10;
 
       gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_DISPLAY;
       MSYS_EnableRegion(gSelectedFloristDisableDropDownRegion);
@@ -905,7 +904,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
     case Enum81.FLOWER_ORDER_DROP_DOWN_DESTROY: {
       let i: UINT8;
 
-      if (!fMouseRegionsCreated)
+      if (!CreateDestroyFlowerOrderDestDropDown__fMouseRegionsCreated)
         break;
 
       for (i = 0; i < FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS; i++)
@@ -913,13 +912,13 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
 
       // display the name on the title bar
       ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-      DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+      DrawTextToScreen(FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // enable the drop down region
       MSYS_DisableRegion(gSelectedFloristDisableDropDownRegion);
 
       fPausedReDrawScreenFlag = true;
-      fMouseRegionsCreated = false;
+      CreateDestroyFlowerOrderDestDropDown__fMouseRegionsCreated = false;
       gubFlowerDestDropDownMode = Enum81.FLOWER_ORDER_DROP_DOWN_NO_ACTION;
 
       // enable the text entry fields
@@ -934,7 +933,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       let hImageHandle: HVOBJECT;
 
       // Display the background for the drop down window
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X, FLOWER_ORDER_DROP_DOWN_LOCATION_Y, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DROP_DOWN_LOCATION_Y + usHeight, Get16BPPColor(FROMRGB(0, 0, 0)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X, FLOWER_ORDER_DROP_DOWN_LOCATION_Y, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DROP_DOWN_LOCATION_Y + CreateDestroyFlowerOrderDestDropDown__usHeight, Get16BPPColor(FROMRGB(0, 0, 0)));
 
       //
       // Place the border around the background
@@ -949,12 +948,12 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
         BltVideoObject(FRAME_BUFFER, hImageHandle, 1, i + FLOWER_ORDER_DROP_DOWN_LOCATION_X, usPosY + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // BOTTOM ROW
-        BltVideoObject(FRAME_BUFFER, hImageHandle, 6, i + FLOWER_ORDER_DROP_DOWN_LOCATION_X, usHeight - 10 + 6 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+        BltVideoObject(FRAME_BUFFER, hImageHandle, 6, i + FLOWER_ORDER_DROP_DOWN_LOCATION_X, CreateDestroyFlowerOrderDestDropDown__usHeight - 10 + 6 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       }
 
       // blit the left and right row of images
       usPosX = 0;
-      for (i = 10; i < usHeight - 10; i += 10) {
+      for (i = 10; i < CreateDestroyFlowerOrderDestDropDown__usHeight - 10; i += 10) {
         BltVideoObject(FRAME_BUFFER, hImageHandle, 3, usPosX + FLOWER_ORDER_DROP_DOWN_LOCATION_X, i + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
         BltVideoObject(FRAME_BUFFER, hImageHandle, 4, usPosX + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 4 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, i + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       }
@@ -965,14 +964,14 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       // top right
       BltVideoObject(FRAME_BUFFER, hImageHandle, 2, FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, usPosY + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       // bottom left
-      BltVideoObject(FRAME_BUFFER, hImageHandle, 5, 0 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, usHeight - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hImageHandle, 5, 0 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, CreateDestroyFlowerOrderDestDropDown__usHeight - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       // bottom right
-      BltVideoObject(FRAME_BUFFER, hImageHandle, 7, FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, usHeight - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hImageHandle, 7, FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_X, CreateDestroyFlowerOrderDestDropDown__usHeight - 10 + FLOWER_ORDER_DROP_DOWN_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // Display the list of cities
       usPosY = FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3;
       for (i = 0; i < FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS; i++) {
-        DrawTextToScreen((FlowerOrderLocations[i].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, usPosY, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+        DrawTextToScreen(FlowerOrderLocations[i].psCityLoc, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, usPosY, 0, FLOWER_ORDEER_DROP_DOWN_FONT(), FLOWER_ORDEER_DROP_DOWN_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
         usPosY += usFontHeight + 2;
       }
 
@@ -994,7 +993,7 @@ function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_CITY_START_X, usPosY + 2, FLOWER_ORDER_DROP_DOWN_CITY_START_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 9, usPosY + usFontHeight + 4, Get16BPPColor(FROMRGB(255, 255, 255)));
 
   SetFontShadow(NO_SHADOW);
-  DrawTextToScreen((FlowerOrderLocations[ubNumber].psCityLoc).value, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, (usPosY + 3), 0, FLOWER_ORDEER_DROP_DOWN_FONT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(FlowerOrderLocations[ubNumber].psCityLoc, FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6, (usPosY + 3), 0, FLOWER_ORDEER_DROP_DOWN_FONT(), 2, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   SetFontShadow(DEFAULT_SHADOW);
 
   FlowerOrderDisplayShippingLocationCity();
@@ -1004,7 +1003,7 @@ function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
 function FlowerOrderDisplayShippingLocationCity(): void {
   // display the name on the title bar
   ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-  DrawTextToScreen((FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc).value, FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
+  DrawTextToScreen(FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc, FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0, FLOWER_ORDEER_SMALL_FONT(), FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 }
 
 function InitFlowerOrderTextInputBoxes(): void {
@@ -1030,13 +1029,13 @@ function InitFlowerOrderTextInputBoxes(): void {
     sTemp = LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
     CleanOutControlCodesFromString(sTemp, sText);
 
-    wcsncpy(gsSentimentTextField, sText, FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1);
+    gsSentimentTextField = sText.substring(0, FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1);
 
     gbCurrentlySelectedCard = -1;
   }
 
   if (gsSentimentTextField.length >= FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 2) {
-    gsSentimentTextField[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1] = '\0';
+    gsSentimentTextField = gsSentimentTextField.substring(0, FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1);
   }
 
   // personal sentiment box
@@ -1092,7 +1091,7 @@ function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: boolean): void
 
 // Initialize the Florsit Order Page (reset some variables)
 export function InitFloristOrderForm(): void {
-  gsSentimentTextField[0] = 0;
+  gsSentimentTextField = '';
 
   gfFLoristCheckBox0Down = false; // next day delviery
   gfFLoristCheckBox1Down = true; // when it gets there delivery
@@ -1106,8 +1105,8 @@ export function InitFloristOrderForm(): void {
   gubCurrentlySelectedFlowerLocation = 0;
   gbCurrentlySelectedCard = -1;
 
-  gsSentimentTextField[0] = 0;
-  gsNameTextField[0] = 0;
+  gsSentimentTextField = '';
+  gsNameTextField = '';
 }
 
 }
