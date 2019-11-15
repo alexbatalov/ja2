@@ -1,10 +1,10 @@
 namespace ja2 {
 
 // static EmailPtr pEmailList;
-export let pEmailList: EmailPtr;
-/* static */ let pPageList: PagePtr;
+export let pEmailList: Email | null;
+/* static */ let pPageList: Page | null;
 /* static */ let iLastPage: INT32 = -1;
-/* static */ export let iCurrentPage: INT32 = 0;
+/* static */ let iCurrentPage: INT32 = 0;
 let iDeleteId: INT32 = 0;
 export let fUnReadMailFlag: boolean = false;
 export let fOldUnreadFlag: boolean = true;
@@ -175,7 +175,7 @@ let gfPageButtonsWereCreated: boolean = false;
 
 // mouse regions
 let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */ = createArrayFrom(MAX_MESSAGES_PAGE, createMouseRegion);
-export let pScreenMask: MOUSE_REGION = createMouseRegion();
+let pScreenMask: MOUSE_REGION = createMouseRegion();
 let pDeleteScreenMask: MOUSE_REGION = createMouseRegion();
 
 // the email info struct to speed up email
@@ -200,7 +200,7 @@ let pEmailMoveRegions: MOUSE_REGION[] /* [NEXT_BUTTON + 1] */ = createArrayFrom(
 let pSortMailRegions: MOUSE_REGION[] /* [3] */ = createArrayFrom(3, createMouseRegion);
 
 // the message record list, for the currently displayed message
-let pMessageRecordList: RecordPtr = null;
+let pMessageRecordList: Record | null = null;
 
 // video handles
 let guiEmailTitle: UINT32;
@@ -538,7 +538,7 @@ export function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: I
   // wchar_t pMessageString[320];
   let iPosition: INT32 = 0;
   let iCounter: INT32 = 1;
-  let FakeEmail: Email;
+  let FakeEmail: Email = createEmail();
 
   // starts at iSubjectOffset amd goes iSubjectLength, reading in string
   pSubject = LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", 640 * (iMessageOffset), 640);
@@ -548,7 +548,7 @@ export function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: I
   FakeEmail.uiSecondData = uiSecondData;
 
   // Replace the $mercname$ with the actual mercname
-  ReplaceMercNameAndAmountWithProperData(pSubject, addressof(FakeEmail));
+  pSubject = ReplaceMercNameAndAmountWithProperData(pSubject, FakeEmail);
 
   // add message to list
   AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, false, iFirstData, uiSecondData);
@@ -613,17 +613,17 @@ export function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ub
 
 function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: string /* STR16 */, iDate: INT32, ubSender: UINT8, fAlreadyRead: boolean, iFirstData: INT32, uiSecondData: UINT32): void {
   // will add a message to the list of messages
-  let pEmail: EmailPtr = pEmailList;
-  let pTempEmail: EmailPtr = null;
+  let pEmail: Email | null = pEmailList;
+  let pTempEmail: Email | null = null;
   let iCounter: UINT32 = 0;
   let iId: INT32 = 0;
 
   // run through list of messages, get id of oldest message
   if (pEmail) {
     while (pEmail) {
-      if (pEmail.value.iId > iId)
-        iId = pEmail.value.iId;
-      pEmail = pEmail.value.Next;
+      if (pEmail.iId > iId)
+        iId = pEmail.iId;
+      pEmail = pEmail.Next;
     }
   }
 
@@ -632,12 +632,12 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
 
   // move to end of list
   if (pEmail) {
-    while (pEmail.value.Next)
-      pEmail = pEmail.value.Next;
+    while (pEmail.Next)
+      pEmail = pEmail.Next;
   }
 
   // add new element onto list
-  pTempEmail = MemAlloc(sizeof(Email));
+  pTempEmail = createEmail();
   // add in strings
   // while(pMessage !=NULL)
   //{
@@ -649,64 +649,59 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
   // pTempEmail->pText[iCounter]=NULL;
 
   // copy subject
-  pTempEmail.value.pSubject = MemAlloc(128 * 2);
-  memset(pTempEmail.value.pSubject, 0, sizeof(CHAR16) * 128);
-  pTempEmail.value.pSubject = pSubject;
+  pTempEmail.pSubject = pSubject;
 
   // copy offset and length of the actual message in email.edt
-  pTempEmail.value.usOffset = iMessageOffset;
-  pTempEmail.value.usLength = iMessageLength;
-
-  // null out last byte of subject
-  pTempEmail.value.pSubject[pSubject.length + 1] = 0;
+  pTempEmail.usOffset = iMessageOffset;
+  pTempEmail.usLength = iMessageLength;
 
   // set date and sender, Id
   if (pEmail)
-    pTempEmail.value.iId = iId + 1;
+    pTempEmail.iId = iId + 1;
   else
-    pTempEmail.value.iId = 0;
+    pTempEmail.iId = 0;
 
   // copy date and sender id's
-  pTempEmail.value.iDate = iDate;
-  pTempEmail.value.ubSender = ubSender;
+  pTempEmail.iDate = iDate;
+  pTempEmail.ubSender = ubSender;
 
   // the special data
-  pTempEmail.value.iFirstData = iFirstData;
-  pTempEmail.value.uiSecondData = uiSecondData;
+  pTempEmail.iFirstData = iFirstData;
+  pTempEmail.uiSecondData = uiSecondData;
 
   // place into list
   if (pEmail) {
     // list exists, place at end
-    pEmail.value.Next = pTempEmail;
-    pTempEmail.value.Prev = pEmail;
+    pEmail.Next = pTempEmail;
+    pTempEmail.Prev = pEmail;
   } else {
     // no list, becomes head of a new list
     pEmail = pTempEmail;
-    pTempEmail.value.Prev = null;
+    pTempEmail.Prev = null;
     pEmailList = pEmail;
   }
 
   // reset Next ptr
-  pTempEmail.value.Next = null;
+  pTempEmail.Next = null;
 
   // set flag that new mail has arrived
   fNewMailFlag = true;
 
   // add this message to the pages of email
-  AddMessageToPages(pTempEmail.value.iId);
+  AddMessageToPages(pTempEmail.iId);
 
   // reset read flag of this particular message
-  pTempEmail.value.fRead = fAlreadyRead;
+  pTempEmail.fRead = fAlreadyRead;
 
   // set fact this message is new
-  pTempEmail.value.fNew = true;
+  pTempEmail.fNew = true;
   return;
 }
 
 function RemoveEmailMessage(iId: INT32): void {
   // run through list and remove message, update everyone afterwards
-  let pEmail: EmailPtr = pEmailList;
-  let pTempEmail: EmailPtr = null;
+  let pEmail: Email | null = pEmailList;
+  let pTempEmail: Email | null = null;
   let iCounter: INT32 = 0;
 
   // error check
@@ -727,58 +722,49 @@ function RemoveEmailMessage(iId: INT32): void {
   pTempEmail = pEmail;
 
   // check position of message in list
-  if ((pEmail.value.Prev) && (pTempEmail.value.Next)) {
+  if ((pEmail.Prev) && (pTempEmail.Next)) {
     // in the middle of the list
-    pEmail = pEmail.value.Prev;
-    pTempEmail = pTempEmail.value.Next;
-    MemFree(pEmail.value.Next.value.pSubject);
+    pEmail = pEmail.Prev;
+    pTempEmail = pTempEmail.Next;
     // while(pEmail->Next->pText[iCounter])
     //{
     // MemFree(pEmail->Next->pText[iCounter]);
     // iCounter++;
     //}
-    MemFree(pEmail.value.Next);
-    pEmail.value.Next = pTempEmail;
-    pTempEmail.value.Prev = pEmail;
-  } else if (pEmail.value.Prev) {
+    pEmail.Next = pTempEmail;
+    pTempEmail.Prev = pEmail;
+  } else if (pEmail.Prev) {
     // end of the list
-    pEmail = pEmail.value.Prev;
-    MemFree(pEmail.value.Next.value.pSubject);
+    pEmail = pEmail.Prev;
     // while(pEmail->Next->pText[iCounter])
     //{
     // MemFree(pEmail->Next->pText[iCounter]);
     // iCounter++;
     //}
-    MemFree(pEmail.value.Next);
-    pEmail.value.Next = null;
-  } else if (pTempEmail.value.Next) {
+    pEmail.Next = null;
+  } else if (pTempEmail.Next) {
     // beginning of the list
     pEmail = pTempEmail;
-    pTempEmail = pTempEmail.value.Next;
-    MemFree(pEmail.value.pSubject);
+    pTempEmail = pTempEmail.Next;
     // while(pEmail->pText[iCounter])
     //{
     // MemFree(pEmail->pText[iCounter]);
     // iCounter++;
     //}
-    MemFree(pEmail);
-    pTempEmail.value.Prev = null;
+    pTempEmail.Prev = null;
     pEmailList = pTempEmail;
   } else {
-    // all alone
-    MemFree(pEmail.value.pSubject);
     //	while(pEmail->pText[iCounter])
     //{
     // MemFree(pEmail->pText[iCounter]);
     // iCounter++;
     //}
-    MemFree(pEmail);
     pEmailList = null;
   }
 }
 
-function GetEmailMessage(iId: INT32): EmailPtr {
-  let pEmail: EmailPtr = pEmailList;
+function GetEmailMessage(iId: INT32): Email | null {
+  let pEmail: Email | null = pEmailList;
   // return pointer to message with iId
 
   // invalid id
@@ -791,10 +777,10 @@ function GetEmailMessage(iId: INT32): EmailPtr {
   }
 
   // look for message
-  while ((pEmail.value.iId != iId) && (pEmail.value.Next))
-    pEmail = pEmail.value.Next;
+  while ((pEmail.iId != iId) && (pEmail.Next))
+    pEmail = pEmail.Next;
 
-  if ((pEmail.value.iId != iId) && (pEmail.value.Next == null)) {
+  if ((pEmail.iId != iId) && (pEmail.Next == null)) {
     pEmail = null;
   }
 
@@ -807,28 +793,28 @@ function GetEmailMessage(iId: INT32): EmailPtr {
 
 function AddEmailPage(): void {
   // simple adds a page to the list
-  let pPage: PagePtr = pPageList;
+  let pPage: Page | null = pPageList;
   if (pPage) {
-    while (pPage.value.Next)
-      pPage = pPage.value.Next;
+    while (pPage.Next)
+      pPage = pPage.Next;
   }
 
   if (pPage) {
     // there is a page, add current page after it
-    pPage.value.Next = MemAlloc(sizeof(Page));
-    pPage.value.Next.value.Prev = pPage;
-    pPage = pPage.value.Next;
-    pPage.value.Next = null;
-    pPage.value.iPageId = pPage.value.Prev.value.iPageId + 1;
-    memset(pPage.value.iIds, -1, sizeof(INT32) * MAX_MESSAGES_PAGE);
+    pPage.Next = createPage();
+    pPage.Next.Prev = pPage;
+    pPage = pPage.Next;
+    pPage.Next = null;
+    pPage.iPageId = (<Page>pPage.Prev).iPageId + 1;
+    pPage.iIds.fill(-1);
   } else {
     // page becomes head of page list
-    pPageList = MemAlloc(sizeof(Page));
+    pPageList = createPage();
     pPage = pPageList;
-    pPage.value.Prev = null;
-    pPage.value.Next = null;
-    pPage.value.iPageId = 0;
-    memset(pPage.value.iIds, -1, sizeof(INT32) * MAX_MESSAGES_PAGE);
+    pPage.Prev = null;
+    pPage.Next = null;
+    pPage.iPageId = 0;
+    pPage.iIds.fill(-1);
     pPageList = pPage;
   }
   iLastPage++;
@@ -836,12 +822,12 @@ function AddEmailPage(): void {
 }
 
 function RemoveEmailPage(iPageId: INT32): void {
-  let pPage: PagePtr = pPageList;
-  let pTempPage: PagePtr = null;
+  let pPage: Page | null = pPageList;
+  let pTempPage: Page | null = null;
 
   // run through list until page is matched, or out of pages
-  while ((pPage.value.iPageId != iPageId) && (pPage))
-    pPage = pPage.value.Next;
+  while ((pPage) && (pPage.iPageId != iPageId))
+    pPage = pPage.Next;
 
   // error check
   if (!pPage)
@@ -849,28 +835,22 @@ function RemoveEmailPage(iPageId: INT32): void {
 
   // found
   pTempPage = pPage;
-  if ((pPage.value.Prev) && (pTempPage.value.Next)) {
+  if ((pPage.Prev) && (pTempPage.Next)) {
     // in the middle of the list
-    pPage = pPage.value.Prev;
-    pTempPage = pTempPage.value.Next;
-    MemFree(pPage.value.Next);
-    pPage.value.Next = pTempPage;
-    pTempPage.value.Prev = pPage;
-  } else if (pPage.value.Prev) {
+    pPage = pPage.Prev;
+    pTempPage = pTempPage.Next;
+    pPage.Next = pTempPage;
+    pTempPage.Prev = pPage;
+  } else if (pPage.Prev) {
     // end of the list
-    pPage = pPage.value.Prev;
-    MemFree(pPage.value.Next);
-    pPage.value.Next = null;
-  } else if (pTempPage.value.Next) {
+    pPage = pPage.Prev;
+    pPage.Next = null;
+  } else if (pTempPage.Next) {
     // beginning of the list
     pPage = pTempPage;
-    pTempPage = pTempPage.value.Next;
-    MemFree(pPage);
-    pTempPage.value.Prev = null;
+    pTempPage = pTempPage.Next;
+    pTempPage.Prev = null;
   } else {
-    // all alone
-
-    MemFree(pPage);
     pPageList = null;
   }
   if (iLastPage != 0)
@@ -879,16 +859,16 @@ function RemoveEmailPage(iPageId: INT32): void {
 
 export function AddMessageToPages(iMessageId: INT32): void {
   // go to end of page list
-  let pPage: PagePtr = pPageList;
+  let pPage: Page | null = pPageList;
   let iCounter: INT32 = 0;
   if (!pPage)
     AddEmailPage();
-  pPage = pPageList;
-  while ((pPage.value.Next) && (pPage.value.iIds[MAX_MESSAGES_PAGE - 1] != -1))
-    pPage = pPage.value.Next;
+  pPage = <Page>pPageList;
+  while ((pPage.Next) && (pPage.iIds[MAX_MESSAGES_PAGE - 1] != -1))
+    pPage = pPage.Next;
   // if list is full, add new page
   while (iCounter < MAX_MESSAGES_PAGE) {
-    if (pPage.value.iIds[iCounter] == -1)
+    if (pPage.iIds[iCounter] == -1)
       break;
     iCounter++;
   }
@@ -897,14 +877,14 @@ export function AddMessageToPages(iMessageId: INT32): void {
     AddMessageToPages(iMessageId);
     return;
   } else {
-    pPage.value.iIds[iCounter] = iMessageId;
+    pPage.iIds[iCounter] = iMessageId;
   }
   return;
 }
 
 function SortMessages(iCriteria: INT32): void {
-  let pA: EmailPtr = pEmailList;
-  let pB: EmailPtr = pEmailList;
+  let pA: Email | null = pEmailList;
+  let pB: Email | null = pEmailList;
   let pSubjectA: string /* CHAR16[256] */;
   let pSubjectB: string /* CHAR16[256] */;
   let iId: INT32 = 0;
@@ -915,90 +895,90 @@ function SortMessages(iCriteria: INT32): void {
   }
 
   // nothing here either?
-  if (!pA.value.Next)
+  if (!pA.Next)
     return;
 
-  pB = pA.value.Next;
+  pB = pA.Next;
   switch (iCriteria) {
     case Enum74.RECEIVED:
       while (pA) {
         // set B to next in A
-        pB = pA.value.Next;
+        pB = pA.Next;
         while (pB) {
           if (fSortDateUpwards) {
             // if date is lesser, swap
-            if (pA.value.iDate > pB.value.iDate)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pA.iDate > pB.iDate)
+              SwapMessages(pA.iId, pB.iId);
           } else {
             // if date is lesser, swap
-            if (pA.value.iDate < pB.value.iDate)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pA.iDate < pB.iDate)
+              SwapMessages(pA.iId, pB.iId);
           }
 
           // next in B's list
-          pB = pB.value.Next;
+          pB = pB.Next;
         }
 
         // next in A's List
-        pA = pA.value.Next;
+        pA = pA.Next;
       }
       break;
     case Enum74.SENDER:
       while (pA) {
-        pB = pA.value.Next;
+        pB = pA.Next;
         while (pB) {
           // lesser string?...need sorting
           if (fSortSenderUpwards) {
-            if ((wcscmp(pSenderNameList[pA.value.ubSender], pSenderNameList[pB.value.ubSender])) < 0)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pSenderNameList[pA.ubSender].localeCompare(pSenderNameList[pB.ubSender]) < 0)
+              SwapMessages(pA.iId, pB.iId);
           } else {
-            if ((wcscmp(pSenderNameList[pA.value.ubSender], pSenderNameList[pB.value.ubSender])) > 0)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pSenderNameList[pA.ubSender].localeCompare(pSenderNameList[pB.ubSender]) > 0)
+              SwapMessages(pA.iId, pB.iId);
           }
           // next in B's list
-          pB = pB.value.Next;
+          pB = pB.Next;
         }
         // next in A's List
-        pA = pA.value.Next;
+        pA = pA.Next;
       }
       break;
     case Enum74.SUBJECT:
       while (pA) {
-        pB = pA.value.Next;
+        pB = pA.Next;
         while (pB) {
           // clear out control codes
-          CleanOutControlCodesFromString(pA.value.pSubject, pSubjectA);
-          CleanOutControlCodesFromString(pB.value.pSubject, pSubjectB);
+          CleanOutControlCodesFromString(pA.pSubject, pSubjectA);
+          CleanOutControlCodesFromString(pB.pSubject, pSubjectB);
 
           // lesser string?...need sorting
           if (fSortSubjectUpwards) {
-            if ((wcscmp(pA.value.pSubject, pB.value.pSubject)) < 0)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pA.pSubject.localeCompare(pB.pSubject) < 0)
+              SwapMessages(pA.iId, pB.iId);
           } else {
-            if ((wcscmp(pA.value.pSubject, pB.value.pSubject)) > 0)
-              SwapMessages(pA.value.iId, pB.value.iId);
+            if (pA.pSubject.localeCompare(pB.pSubject) > 0)
+              SwapMessages(pA.iId, pB.iId);
           }
           // next in B's list
-          pB = pB.value.Next;
+          pB = pB.Next;
         }
         // next in A's List
-        pA = pA.value.Next;
+        pA = pA.Next;
       }
       break;
 
     case Enum74.READ:
       while (pA) {
-        pB = pA.value.Next;
+        pB = pA.Next;
         while (pB) {
           // one read and another not?...need sorting
-          if ((pA.value.fRead) && (!(pB.value.fRead)))
-            SwapMessages(pA.value.iId, pB.value.iId);
+          if ((pA.fRead) && (!(pB.fRead)))
+            SwapMessages(pA.iId, pB.iId);
 
           // next in B's list
-          pB = pB.value.Next;
+          pB = pB.Next;
         }
         // next in A's List
-        pA = pA.value.Next;
+        pA = pA.Next;
       }
       break;
   }
@@ -1012,75 +992,63 @@ function SortMessages(iCriteria: INT32): void {
 
 function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   // swaps locations of messages in the linked list
-  let pA: EmailPtr = pEmailList;
-  let pB: EmailPtr = pEmailList;
-  let pTemp: EmailPtr = MemAlloc(sizeof(Email));
-  pTemp.value.pSubject = MemAlloc(128 * 2);
+  let pA: Email = <Email>pEmailList;
+  let pB: Email = <Email>pEmailList;
+  let pTemp: Email = createEmail();
 
-  memset(pTemp.value.pSubject, 0, sizeof(CHAR16) * 128);
-
-  if (!pA.value.Next)
+  if (!pA.Next)
     return;
   // find pA
-  while (pA.value.iId != iIdA)
-    pA = pA.value.Next;
+  while (pA.iId != iIdA)
+    pA = <Email>pA.Next;
   // find pB
-  while (pB.value.iId != iIdB)
-    pB = pB.value.Next;
+  while (pB.iId != iIdB)
+    pB = <Email>pB.Next;
 
   // swap
 
   // pTemp becomes pA
-  pTemp.value.iId = pA.value.iId;
-  pTemp.value.fRead = pA.value.fRead;
-  pTemp.value.fNew = pA.value.fNew;
-  pTemp.value.usOffset = pA.value.usOffset;
-  pTemp.value.usLength = pA.value.usLength;
-  pTemp.value.iDate = pA.value.iDate;
-  pTemp.value.ubSender = pA.value.ubSender;
-  pTemp.value.pSubject = pA.value.pSubject;
+  pTemp.iId = pA.iId;
+  pTemp.fRead = pA.fRead;
+  pTemp.fNew = pA.fNew;
+  pTemp.usOffset = pA.usOffset;
+  pTemp.usLength = pA.usLength;
+  pTemp.iDate = pA.iDate;
+  pTemp.ubSender = pA.ubSender;
+  pTemp.pSubject = pA.pSubject;
 
   // pA becomes pB
-  pA.value.iId = pB.value.iId;
-  pA.value.fRead = pB.value.fRead;
-  pA.value.fNew = pB.value.fNew;
-  pA.value.usOffset = pB.value.usOffset;
-  pA.value.usLength = pB.value.usLength;
-  pA.value.iDate = pB.value.iDate;
-  pA.value.ubSender = pB.value.ubSender;
-  pA.value.pSubject = pB.value.pSubject;
+  pA.iId = pB.iId;
+  pA.fRead = pB.fRead;
+  pA.fNew = pB.fNew;
+  pA.usOffset = pB.usOffset;
+  pA.usLength = pB.usLength;
+  pA.iDate = pB.iDate;
+  pA.ubSender = pB.ubSender;
+  pA.pSubject = pB.pSubject;
 
   // pB becomes pTemp
-  pB.value.iId = pTemp.value.iId;
-  pB.value.fRead = pTemp.value.fRead;
-  pB.value.fNew = pTemp.value.fNew;
-  pB.value.usOffset = pTemp.value.usOffset;
-  pB.value.usLength = pTemp.value.usLength;
-  pB.value.iDate = pTemp.value.iDate;
-  pB.value.ubSender = pTemp.value.ubSender;
-  pB.value.pSubject = pTemp.value.pSubject;
+  pB.iId = pTemp.iId;
+  pB.fRead = pTemp.fRead;
+  pB.fNew = pTemp.fNew;
+  pB.usOffset = pTemp.usOffset;
+  pB.usLength = pTemp.usLength;
+  pB.iDate = pTemp.iDate;
+  pB.ubSender = pTemp.ubSender;
+  pB.pSubject = pTemp.pSubject;
 
-  // free up memory
-  MemFree(pTemp.value.pSubject);
-  MemFree(pTemp);
   return;
 }
 
 function ClearPages(): void {
   // run through list of message pages and set to -1
-  let pPage: PagePtr = pPageList;
+  let pPage: Page | null = pPageList;
 
   // error check
   if (pPageList == null) {
     return;
   }
 
-  while (pPage.value.Next) {
-    pPage = pPage.value.Next;
-    MemFree(pPage.value.Prev);
-  }
-  if (pPage)
-    MemFree(pPage);
   pPageList = null;
   iLastPage = -1;
 
@@ -1088,12 +1056,12 @@ function ClearPages(): void {
 }
 
 function PlaceMessagesinPages(): void {
-  let pEmail: EmailPtr = pEmailList;
+  let pEmail: Email | null = pEmailList;
   // run through the list of messages and add to pages
   ClearPages();
   while (pEmail) {
-    AddMessageToPages(pEmail.value.iId);
-    pEmail = pEmail.value.Next;
+    AddMessageToPages(pEmail.iId);
+    pEmail = pEmail.Next;
   }
   if (iCurrentPage > iLastPage)
     iCurrentPage = iLastPage;
@@ -1102,9 +1070,9 @@ function PlaceMessagesinPages(): void {
 
 function DisplayMessageList(iPageNum: INT32): void {
   // will display page with idNumber iPageNum
-  let pPage: PagePtr = pPageList;
-  while (pPage.value.iPageId != iPageNum) {
-    pPage = pPage.value.Next;
+  let pPage: Page | null = pPageList;
+  while ((<Page>pPage).iPageId != iPageNum) {
+    pPage = (<Page>pPage).Next;
     if (!pPage)
       return;
   }
@@ -1209,8 +1177,8 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: boolean): void {
 function DisplayEmailList(): void {
   let iCounter: INT32 = 0;
   // look at current page, and display
-  let pPage: PagePtr = pPageList;
-  let pEmail: EmailPtr = null;
+  let pPage: Page | null = pPageList;
+  let pEmail: Email | null = null;
 
   // error check, if no page, return
   if (!pPage)
@@ -1221,11 +1189,11 @@ function DisplayEmailList(): void {
     iCurrentPage = 0;
 
   // loop until we get to the current page
-  while ((pPage.value.iPageId != iCurrentPage) && (iCurrentPage <= iLastPage))
-    pPage = pPage.value.Next;
+  while (pPage && (pPage.iPageId != iCurrentPage) && (iCurrentPage <= iLastPage))
+    pPage = pPage.Next;
 
   // now we have current page, display it
-  pEmail = GetEmailMessage(pPage.value.iIds[iCounter]);
+  pEmail = GetEmailMessage((<Page>pPage).iIds[iCounter]);
   SetFontShadow(NO_SHADOW);
   SetFont(EMAIL_TEXT_FONT());
 
@@ -1234,7 +1202,7 @@ function DisplayEmailList(): void {
     // highlighted message, set text of message in list to blue
     if (iCounter == iHighLightLine) {
       SetFontForeground(FONT_BLUE);
-    } else if (pEmail.value.fRead) {
+    } else if (pEmail.fRead) {
       // message has been read, reset color to black
       SetFontForeground(FONT_BLACK);
       // SetFontBackground(FONT_BLACK);
@@ -1246,10 +1214,10 @@ function DisplayEmailList(): void {
     SetFontBackground(FONT_BLACK);
 
     // draw the icon, sender, date, subject
-    DrawLetterIcon(iCounter, pEmail.value.fRead);
-    DrawSubject(iCounter, pEmail.value.pSubject, pEmail.value.fRead);
-    DrawSender(iCounter, pEmail.value.ubSender, pEmail.value.fRead);
-    DrawDate(iCounter, pEmail.value.iDate, pEmail.value.fRead);
+    DrawLetterIcon(iCounter, pEmail.fRead);
+    DrawSubject(iCounter, pEmail.pSubject, pEmail.fRead);
+    DrawSender(iCounter, pEmail.ubSender, pEmail.fRead);
+    DrawDate(iCounter, pEmail.iDate, pEmail.fRead);
 
     iCounter++;
 
@@ -1257,7 +1225,7 @@ function DisplayEmailList(): void {
     if (iCounter >= MAX_MESSAGES_PAGE)
       pEmail = null;
     else
-      pEmail = GetEmailMessage(pPage.value.iIds[iCounter]);
+      pEmail = GetEmailMessage((<Page>pPage).iIds[iCounter]);
   }
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y);
@@ -1271,7 +1239,7 @@ export function LookForUnread(): void {
 
   // simply runrs through list of messages, if any unread, set unread flag
 
-  let pA: EmailPtr = pEmailList;
+  let pA: Email | null = pEmailList;
 
   // reset unread flag
   fUnReadMailFlag = false;
@@ -1279,9 +1247,9 @@ export function LookForUnread(): void {
   // look for unread mail
   while (pA) {
     // unread mail found, set flag
-    if (!(pA.value.fRead))
+    if (!(pA.fRead))
       fUnReadMailFlag = true;
-    pA = pA.value.Next;
+    pA = pA.Next;
   }
 
   if (fStatusOfNewEmailFlag != fUnReadMailFlag) {
@@ -1294,9 +1262,9 @@ export function LookForUnread(): void {
 
 function EmailBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCount: INT32;
-  let pPage: PagePtr = pPageList;
+  let pPage: Page | null = pPageList;
   let iId: INT32 = 0;
-  let pEmail: EmailPtr = null;
+  let pEmail: Email | null = null;
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -1309,14 +1277,14 @@ function EmailBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
     // find surrent page
     if (!pPage)
       return;
-    while ((pPage.value.Next) && (pPage.value.iPageId != iCurrentPage))
-      pPage = pPage.value.Next;
+    while ((pPage.Next) && (pPage.iPageId != iCurrentPage))
+      pPage = pPage.Next;
     if (!pPage)
       return;
     // found page
 
     // get id for element iCount
-    iId = pPage.value.iIds[iCount];
+    iId = pPage.iIds[iCount];
 
     // invalid message
     if (iId == -1) {
@@ -1339,15 +1307,15 @@ function EmailBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
 
     giMessagePage = 0;
 
-    while ((pPage.value.Next) && (pPage.value.iPageId != iCurrentPage))
-      pPage = pPage.value.Next;
+    while ((pPage.Next) && (pPage.iPageId != iCurrentPage))
+      pPage = pPage.Next;
     if (!pPage) {
       HandleRightButtonUpEvent();
       return;
     }
     // found page
     // get id for element iCount
-    iId = pPage.value.iIds[iCount];
+    iId = pPage.iIds[iCount];
     if (!GetEmailMessage(iId)) {
       // no mail here, handle right button up event
       HandleRightButtonUpEvent();
@@ -1409,17 +1377,17 @@ function BtnMessageXCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function SetUnNewMessages(): void {
   // on exit from the mailer, set all new messages as 'un'new
-  let pEmail: EmailPtr = pEmailList;
+  let pEmail: Email | null = pEmailList;
   // run through the list of messages and add to pages
 
   while (pEmail) {
-    pEmail.value.fNew = false;
-    pEmail = pEmail.value.Next;
+    pEmail.fNew = false;
+    pEmail = pEmail.Next;
   }
   return;
 }
 
-function DisplayEmailMessage(pMail: EmailPtr): INT32 {
+function DisplayEmailMessage(pMail: Email | null): INT32 {
   let hHandle: HVOBJECT;
   let iCnt: INT32 = 0;
   let iHeight: INT32 = 0;
@@ -1429,7 +1397,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   let iOffSet: INT32 = 0;
   let iHeightTemp: INT32 = 0;
   let iHeightSoFar: INT32 = 0;
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
   let iPageSize: INT32 = 0;
   let iPastHeight: INT32 = 0;
   let iYPositionOnPage: INT32 = 0;
@@ -1440,13 +1408,13 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   if (!pMail)
     return 0;
 
-  iOffSet = pMail.value.usOffset;
+  iOffSet = pMail.usOffset;
 
   // reset redraw email message flag
   fReDrawMessageFlag = false;
 
   // we KNOW the player is going to "read" this, so mark it as so
-  pMail.value.fRead = true;
+  pMail.fRead = true;
 
   // draw text for title bar
   // swprintf(pString, L"%s / %s", pSenderNameList[pMail->ubSender],pMail->pSubject);
@@ -1458,7 +1426,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   // is there any special event meant for this mail?..if so, handle it
   HandleAnySpecialEmailMessageEvents(iOffSet);
 
-  HandleMailSpecialMessages((iOffSet), addressof(iViewerPositionY), pMail);
+  HandleMailSpecialMessages((iOffSet), pMail);
 
   PreProcessEmail(pMail);
 
@@ -1470,7 +1438,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, null);
-  BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + GetFontHeight(MESSAGE_FONT()) + iViewerPositionY, VO_BLT_SRCTRANSPARENCYnullLL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + GetFontHeight(MESSAGE_FONT()) + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, null);
 
   // set shadow
   SetFontShadow(NO_SHADOW);
@@ -1498,7 +1466,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
     hHandle = GetVideoObject(guiEmailMessage);
 
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCYnullLL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // now the bottom piece to the message viewer
@@ -1506,10 +1474,10 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   if (giNumberOfPagesToCurrentEmail <= 2) {
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 2, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCYnullLL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 2, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, null);
   } else {
     // place the graphic on the frame buffer
-    BltVideoObject(FRAME_BUFFER, hHandle, 3, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCYnullLL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 3, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT())) * (iCounter)), VO_BLT_SRCTRANSPARENCY, null);
   }
 
   // reset iCounter and iHeight
@@ -1531,13 +1499,13 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   if (pTempRecord) {
     while (fDonePrintingMessage == false) {
       // copy over string
-      pString = pTempRecord.value.pRecord;
+      pString = (<Record>pTempRecord).pRecord;
 
       // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
       iHeight += IanDisplayWrappedString(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, IAN_WRAP_NO_SHADOW);
 
       // increment email record ptr
-      pTempRecord = pTempRecord.value.Next;
+      pTempRecord = (<Record>pTempRecord).Next;
 
       if (pTempRecord == null) {
         fDonePrintingMessage = true;
@@ -2113,7 +2081,7 @@ export function CreateDestroyDeleteNoticeMailButton(): void {
   }
   return;
 }
-function DisplayDeleteNotice(pMail: EmailPtr): boolean {
+function DisplayDeleteNotice(pMail: Email | null): boolean {
   let hHandle: HVOBJECT;
   // will display a delete mail box whenever delete mail has arrived
   if (!fDeleteMailFlag)
@@ -2153,7 +2121,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): boolean {
   SetFontForeground(FONT_BLACK);
 
   // draw text based on mail being read or not
-  if ((pMail.value.fRead))
+  if ((pMail.fRead))
     mprintf(EMAIL_WARNING_X + 95, EMAIL_WARNING_Y + 65, pDeleteMailStrings[0]);
   else
     mprintf(EMAIL_WARNING_X + 70, EMAIL_WARNING_Y + 65, pDeleteMailStrings[1]);
@@ -2393,7 +2361,7 @@ function CreateMailScreenButtons(): void {
   return;
 }
 
-function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT32): void {
+function DisplayEmailMessageSubjectDateFromLines(pMail: Email, iViewerY: INT32): void {
   // this procedure will draw the title/headers to From, Subject, Date fields in the display
   // message box
   let usX: UINT16;
@@ -2413,14 +2381,14 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   mprintf(usX, MESSAGE_FROM_Y + iViewerY, pEmailHeaders[0]);
 
   // the actual from info
-  mprintf(MESSAGE_HEADER_X + MESSAGE_HEADER_WIDTH - 13, MESSAGE_FROM_Y + iViewerY, pSenderNameList[pMail.value.ubSender]);
+  mprintf(MESSAGE_HEADER_X + MESSAGE_HEADER_WIDTH - 13, MESSAGE_FROM_Y + iViewerY, pSenderNameList[pMail.ubSender]);
 
   // print date
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(MESSAGE_HEADER_X + 168, (MESSAGE_DATE_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_DATE_Y + GetFontHeight(MESSAGE_FONT())), pEmailHeaders[2], MESSAGE_FONT()));
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
-  sString = swprintf("%d", ((pMail.value.iDate) / (24 * 60)));
+  sString = swprintf("%d", ((pMail.iDate) / (24 * 60)));
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
@@ -2429,7 +2397,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
 
   // the actual subject info
   // mprintf( , MESSAGE_SUBJECT_Y, pMail->pSubject);
-  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pMail.value.pSubject, 0, false, 0);
+  IanDisplayWrappedString(SUBJECT_LINE_X + 2, (SUBJECT_LINE_Y + 2 + iViewerY), SUBJECT_LINE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pMail.pSubject, 0, false, 0);
 
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -2464,7 +2432,7 @@ function DrawLineDividers(): void {
 }
 
 function ClearOutEmailMessageRecordsList(): void {
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
   let iCounter: INT32 = 0;
 
   // runt hrough list freeing records up
@@ -2473,9 +2441,7 @@ function ClearOutEmailMessageRecordsList(): void {
     pTempRecord = pMessageRecordList;
 
     // next element
-    pMessageRecordList = pMessageRecordList.value.Next;
-
-    MemFree(pTempRecord);
+    pMessageRecordList = pMessageRecordList.Next;
   }
 
   for (iCounter = 0; iCounter < MAX_NUMBER_EMAIL_PAGES; iCounter++) {
@@ -2491,33 +2457,33 @@ function ClearOutEmailMessageRecordsList(): void {
 }
 
 function AddEmailRecordToList(pString: string /* STR16 */): void {
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
 
   // set to head of list
   pTempRecord = pMessageRecordList;
 
   if (!pTempRecord) {
     // list empty, set this node to head
-    pTempRecord = MemAlloc(sizeof(Record));
+    pTempRecord = createRecord();
     pMessageRecordList = pTempRecord;
   } else {
     // run to end of list
-    while (pTempRecord.value.Next) {
-      pTempRecord = pTempRecord.value.Next;
+    while (pTempRecord.Next) {
+      pTempRecord = pTempRecord.Next;
     }
 
     // found, alloc
-    pTempRecord.value.Next = MemAlloc(sizeof(Record));
+    pTempRecord.Next = createRecord();
 
     // move to node
-    pTempRecord = pTempRecord.value.Next;
+    pTempRecord = pTempRecord.Next;
   }
 
   // set next to null
-  pTempRecord.value.Next = null;
+  pTempRecord.Next = null;
 
   // copy in string
-  pTempRecord.value.pRecord = pString;
+  pTempRecord.pRecord = pString;
 
   // done return
 
@@ -2568,7 +2534,7 @@ function ReDisplayBoxes(): void {
   }
 }
 
-function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr): boolean {
+function HandleMailSpecialMessages(usMessageId: UINT16, pMail: Email): boolean {
   let fSpecialCase: boolean = false;
 
   // this procedure will handle special cases of email messages that are not stored in email.edt, or need special processing
@@ -2588,11 +2554,11 @@ function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>
     case INSUR_SUSPIC:
     case INSUR_SUSPIC_2:
     case INSUR_INVEST_OVER:
-      ModifyInsuranceEmails(usMessageId, iResults, pMail, INSUR_PAYMENT_LENGTH);
+      ModifyInsuranceEmails(usMessageId, pMail, INSUR_PAYMENT_LENGTH);
       break;
 
     case INSUR_1HOUR_FRAUD:
-      ModifyInsuranceEmails(usMessageId, iResults, pMail, INSUR_1HOUR_FRAUD_LENGTH);
+      ModifyInsuranceEmails(usMessageId, pMail, INSUR_1HOUR_FRAUD_LENGTH);
       break;
 
     case MERC_NEW_SITE_ADDRESS:
@@ -2601,13 +2567,13 @@ function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>
       break;
 
     case MERC_DIED_ON_OTHER_ASSIGNMENT:
-      ModifyInsuranceEmails(usMessageId, iResults, pMail, MERC_DIED_ON_OTHER_ASSIGNMENT_LENGTH);
+      ModifyInsuranceEmails(usMessageId, pMail, MERC_DIED_ON_OTHER_ASSIGNMENT_LENGTH);
       break;
 
     case AIM_MEDICAL_DEPOSIT_REFUND:
     case AIM_MEDICAL_DEPOSIT_NO_REFUND:
     case AIM_MEDICAL_DEPOSIT_PARTIAL_REFUND:
-      ModifyInsuranceEmails(usMessageId, iResults, pMail, AIM_MEDICAL_DEPOSIT_REFUND_LENGTH);
+      ModifyInsuranceEmails(usMessageId, pMail, AIM_MEDICAL_DEPOSIT_REFUND_LENGTH);
       break;
   }
 
@@ -2743,7 +2709,7 @@ function HandleIMPCharProfileResultsMessage(): void {
   let iViewerY: INT32 = 0;
   let iHeightTemp: INT32 = 0;
   let iHeightSoFar: INT32 = 0;
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
   let iEndOfSection: INT32 = 0;
   let iRand: INT32 = 0;
   let fSufficientMechSkill: boolean = false;
@@ -3853,18 +3819,18 @@ function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
 function OpenMostRecentUnreadEmail(): void {
   // will open the most recent email the player has recieved and not read
   let iMostRecentMailId: INT32 = -1;
-  let pB: EmailPtr = pEmailList;
+  let pB: Email | null = pEmailList;
   let iLowestDate: UINT32 = 9999999;
 
   while (pB) {
     // if date is lesser and unread , swap
-    if ((pB.value.iDate < iLowestDate) && (pB.value.fRead == false)) {
-      iMostRecentMailId = pB.value.iId;
-      iLowestDate = pB.value.iDate;
+    if ((pB.iDate < iLowestDate) && (pB.fRead == false)) {
+      iMostRecentMailId = pB.iId;
+      iLowestDate = pB.iDate;
     }
 
     // next in B's list
-    pB = pB.value.Next;
+    pB = pB.Next;
   }
 
   // set up id
@@ -3919,7 +3885,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): boolean {
 }
 
 function GetNumberOfPagesToEmail(): INT32 {
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
   let iNumberOfPagesToEmail: INT32 = 0;
 
   // set temp record to head of list
@@ -3935,19 +3901,17 @@ function GetNumberOfPagesToEmail(): INT32 {
 }
 
 export function ShutDownEmailList(): void {
-  let pEmail: EmailPtr = pEmailList;
-  let pTempEmail: EmailPtr = null;
+  let pEmail: Email | null = pEmailList;
+  let pTempEmail: Email | null = null;
 
   // loop through all the emails to delete them
   while (pEmail) {
     pTempEmail = pEmail;
 
-    pEmail = pEmail.value.Next;
+    pEmail = pEmail.Next;
 
-    MemFree(pTempEmail.value.pSubject);
-    pTempEmail.value.pSubject = null;
+    pTempEmail.pSubject = '';
 
-    MemFree(pTempEmail);
     pTempEmail = null;
   }
   pEmailList = null;
@@ -3955,11 +3919,11 @@ export function ShutDownEmailList(): void {
   ClearPages();
 }
 
-function PreProcessEmail(pMail: EmailPtr): void {
-  let pTempRecord: RecordPtr;
-  let pCurrentRecord: RecordPtr;
-  let pLastRecord: RecordPtr;
-  let pTempList: RecordPtr;
+function PreProcessEmail(pMail: Email): void {
+  let pTempRecord: Record | null;
+  let pCurrentRecord: Record | null = <Record><unknown>undefined;
+  let pLastRecord: Record | null;
+  let pTempList: Record | null;
   let pString: string /* CHAR16[512] */;
   let iCounter: INT32 = 0;
   let iHeight: INT32 = 0;
@@ -3967,7 +3931,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
   let fGoingOffCurrentPage: boolean = false;
   let iYPositionOnPage: INT32 = 0;
 
-  iOffSet = pMail.value.usOffset;
+  iOffSet = pMail.usOffset;
 
   // set record ptr to head of list
   pTempRecord = pMessageRecordList;
@@ -3979,7 +3943,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
 
   // list doesn't exist, reload
   if (!pTempRecord) {
-    while (pMail.value.usLength > iCounter) {
+    while (pMail.usLength > iCounter) {
       // read one record from email file
       pString = LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", MAIL_STRING_SIZE * (iOffSet + iCounter), MAIL_STRING_SIZE);
 
@@ -3996,8 +3960,8 @@ function PreProcessEmail(pMail: EmailPtr): void {
   pTempRecord = pMessageRecordList;
   // def removed
   // pass the subject line
-  if (pTempRecord && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
-    pTempRecord = pTempRecord.value.Next;
+  if (pTempRecord && pMail.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
+    pTempRecord = pTempRecord.Next;
   }
 
   // get number of pages to this email
@@ -4005,13 +3969,13 @@ function PreProcessEmail(pMail: EmailPtr): void {
 
   while (pTempRecord) {
     // copy over string
-    pString = pTempRecord.value.pRecord;
+    pString = pTempRecord.pRecord;
 
     // get the height of the string, ONLY!...must redisplay ON TOP OF background graphic
     iHeight += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + iHeight + GetFontHeight(MESSAGE_FONT())), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, 0);
 
     // next message record string
-    pTempRecord = pTempRecord.value.Next;
+    pTempRecord = pTempRecord.Next;
   }
 
   // set iViewerY so to center the viewer
@@ -4041,8 +4005,8 @@ function PreProcessEmail(pMail: EmailPtr): void {
   if (iTotalHeight < MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
     fOnLastPageFlag = true;
 
-    if (pTempRecord && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
-      pTempRecord = pTempRecord.value.Next;
+    if (pTempRecord && pMail.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
+      pTempRecord = pTempRecord.Next;
     }
 
     /*
@@ -4062,7 +4026,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
       pCurrentRecord = pTempRecord;
 
       // increment email record ptr
-      pTempRecord = pTempRecord.value.Next;
+      pTempRecord = pTempRecord.Next;
     }
 
     // only one record to this email?..then set next to null
@@ -4081,8 +4045,8 @@ function PreProcessEmail(pMail: EmailPtr): void {
     fOnLastPageFlag = false;
     pTempList = pMessageRecordList;
 
-    if (pTempList && pMail.value.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
-      pTempList = pTempList.value.Next;
+    if (pTempList && pMail.usOffset != IMP_EMAIL_PROFILE_RESULTS) {
+      pTempList = pTempList.Next;
     }
 
     /*
@@ -4108,14 +4072,14 @@ function PreProcessEmail(pMail: EmailPtr): void {
       // go to the right record
       while (pTempRecord) {
         // copy over string
-        pString = pTempRecord.value.pRecord;
+        pString = pTempRecord.pRecord;
 
-        if (pString[0] == 0) {
+        if (pString == '') {
           // on last page
           fOnLastPageFlag = true;
         }
 
-        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), 0, pTempRecord.value.pRecord, 0, 0, 0)) <= MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
+        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), 0, pTempRecord.pRecord, 0, false, 0)) <= MAX_EMAIL_MESSAGE_PAGE_SIZE()) {
           // now print it
           iYPositionOnPage += IanWrappedStringHeight(VIEWER_X + MESSAGE_X + 4, (VIEWER_MESSAGE_BODY_START_Y + 10 + iYPositionOnPage + iViewerPositionY), MESSAGE_WIDTH, MESSAGE_GAP, MESSAGE_FONT(), MESSAGE_COLOR, pString, 0, false, IAN_WRAP_NO_SHADOW);
           fGoingOffCurrentPage = false;
@@ -4125,7 +4089,7 @@ function PreProcessEmail(pMail: EmailPtr): void {
         }
 
         pCurrentRecord = pTempRecord;
-        pTempRecord = pTempRecord.value.Next;
+        pTempRecord = pTempRecord.Next;
 
         if (fGoingOffCurrentPage == false) {
           pLastRecord = pTempRecord;
@@ -4151,9 +4115,9 @@ function PreProcessEmail(pMail: EmailPtr): void {
   }
 }
 
-function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr, ubNumberOfRecords: UINT8): void {
+function ModifyInsuranceEmails(usMessageId: UINT16, pMail: Email, ubNumberOfRecords: UINT8): void {
   let iHeight: INT32 = 0;
-  let pTempRecord: RecordPtr;
+  let pTempRecord: Record | null;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
   let pString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let ubCnt: UINT8;
@@ -4172,7 +4136,7 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
     pString = LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", MAIL_STRING_SIZE * usMessageId, MAIL_STRING_SIZE);
 
     // Replace the $MERCNAME$ and $AMOUNT$ with the mercs name and the amountm if the string contains the keywords.
-    ReplaceMercNameAndAmountWithProperData(pString, pMail);
+    pString = ReplaceMercNameAndAmountWithProperData(pString, pMail);
 
     // add to list
     AddEmailRecordToList(pString);
@@ -4184,15 +4148,15 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
   giPrevMessageId = giMessageId;
 }
 
-function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string> /* Pointer<CHAR16> */, pMail: EmailPtr): boolean {
+function ReplaceMercNameAndAmountWithProperData(pFinishedString: string /* Pointer<CHAR16> */, pMail: Email): string {
   //	wchar_t		pTempString[MAIL_STRING_SIZE/2 + 1];
   let pTempString: string /* wchar_t[MAIL_STRING_SIZE] */;
   let iLength: INT32 = 0;
   let iCurLocInSourceString: INT32 = 0;
   let iLengthOfSourceString: INT32 = pFinishedString.length; // Get the length of the source string
-  let pMercNameString: string /* Pointer<CHAR16> */ = null;
-  let pAmountString: string /* Pointer<CHAR16> */ = null;
-  let pSubString: string /* Pointer<CHAR16> */ = null;
+  let pMercNameString: number /* Pointer<CHAR16> */;
+  let pAmountString: number /* Pointer<CHAR16> */;
+  let pSubString: number /* Pointer<CHAR16> */;
   let fReplacingMercName: boolean = true;
 
   let sMercName: string /* CHAR16[32] */ = "$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
@@ -4203,19 +4167,19 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
   pTempString = pFinishedString;
 
   // Null out the string
-  pFinishedString[0] = '\0';
+  pFinishedString = '';
 
   // Keep looping through to replace all references to the keyword
   while (iCurLocInSourceString < iLengthOfSourceString) {
     iLength = 0;
-    pSubString = null;
+    pSubString = -1;
 
     // Find out if the $MERCNAME$ is in the string
-    pMercNameString = wcsstr(addressof(pTempString[iCurLocInSourceString]), sMercName);
+    pMercNameString = pTempString.indexOf(sMercName, iCurLocInSourceString);
 
-    pAmountString = wcsstr(addressof(pTempString[iCurLocInSourceString]), sAmount);
+    pAmountString = pTempString.indexOf(sAmount, iCurLocInSourceString);
 
-    if (pMercNameString != null && pAmountString != null) {
+    if (pMercNameString != -1 && pAmountString != -1) {
       if (pMercNameString < pAmountString) {
         fReplacingMercName = true;
         pSubString = pMercNameString;
@@ -4225,35 +4189,36 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
         pSubString = pAmountString;
         sSearchString = sAmount;
       }
-    } else if (pMercNameString != null) {
+    } else if (pMercNameString != -1) {
       fReplacingMercName = true;
       pSubString = pMercNameString;
       sSearchString = sMercName;
-    } else if (pAmountString != null) {
+    } else if (pAmountString != -1) {
       fReplacingMercName = false;
       pSubString = pAmountString;
       sSearchString = sAmount;
     } else {
-      pSubString = null;
+      pSubString = -1;
+      sSearchString = '';
     }
 
     // if there is a substring
-    if (pSubString != null) {
-      iLength = pSubString - addressof(pTempString[iCurLocInSourceString]);
+    if (pSubString != -1) {
+      iLength = pSubString - iCurLocInSourceString;
 
       // Copy the part of the source string upto the keyword
-      wcsncat(pFinishedString, addressof(pTempString[iCurLocInSourceString]), iLength);
+      pFinishedString += pTempString.substr(iCurLocInSourceString, iLength);
 
       // increment the source string counter by how far in the keyword is and by the length of the keyword
       iCurLocInSourceString += iLength + sSearchString.length;
 
       if (fReplacingMercName) {
         // add the mercs name to the string
-        pFinishedString += gMercProfiles[pMail.value.uiSecondData].zName;
+        pFinishedString += gMercProfiles[pMail.uiSecondData].zName;
       } else {
         let sDollarAmount: string /* CHAR16[64] */;
 
-        sDollarAmount = swprintf("%d", pMail.value.iFirstData);
+        sDollarAmount = swprintf("%d", pMail.iFirstData);
 
         sDollarAmount = InsertCommasForDollarFigure(sDollarAmount);
         sDollarAmount = InsertDollarSignInToString(sDollarAmount);
@@ -4263,13 +4228,13 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<string>
       }
     } else {
       // add the rest of the string
-      pFinishedString += addressof(pTempString[iCurLocInSourceString]);
+      pFinishedString += pTempString.substring(iCurLocInSourceString);
 
-      iCurLocInSourceString += addressof(pTempString[iCurLocInSourceString]).length;
+      iCurLocInSourceString += pTempString.substring(iCurLocInSourceString).length;
     }
   }
 
-  return true;
+  return pFinishedString;
 }
 
 }

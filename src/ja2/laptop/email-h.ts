@@ -132,11 +132,17 @@ export const BOBBY_R_MEDUNA_SHIPMENT_LENGTH = 4;
 
 export interface EmailMessage {
   pString: string /* STR16 */;
-  Next: Pointer<EmailMessage>;
-  Prev: Pointer<EmailMessage>;
+  Next: EmailMessage | null;
+  Prev: EmailMessage | null;
 }
 
-type MessagePtr = Pointer<EmailMessage>;
+export function createEmailMessage(): EmailMessage {
+  return {
+    pString: '',
+    Next: null,
+    Prev: null,
+  };
+}
 
 export interface Email {
   pSubject: string /* STR16 */;
@@ -155,11 +161,30 @@ export interface Email {
   uiFifthData: UINT32;
   uiSixData: UINT32;
 
-  Next: Pointer<Email>;
-  Prev: Pointer<Email>;
+  Next: Email | null;
+  Prev: Email | null;
 }
 
-export type EmailPtr = Pointer<Email>;
+export function createEmail(): Email {
+  return {
+    pSubject: '',
+    usOffset: 0,
+    usLength: 0,
+    ubSender: 0,
+    iDate: 0,
+    iId: 0,
+    iFirstData: 0,
+    uiSecondData: 0,
+    fRead: false,
+    fNew: false,
+    iThirdData: 0,
+    iFourthData: 0,
+    uiFifthData: 0,
+    uiSixData: 0,
+    Next: null,
+    Prev: null,
+  };
+}
 
 // This used when saving the emails to disk.
 export interface SavedEmailStruct {
@@ -203,24 +228,44 @@ export function createSavedEmailStruct(): SavedEmailStruct {
 export interface Page {
   iIds: INT32[] /* [MAX_MESSAGES_PAGE] */;
   iPageId: INT32;
-  Next: Pointer<Page>;
-  Prev: Pointer<Page>;
+  Next: Page | null;
+  Prev: Page | null;
 }
 
-export type PagePtr = Pointer<Page>;
+export function createPage(): Page {
+  return {
+    iIds: createArray(MAX_MESSAGES_PAGE, 0),
+    iPageId: 0,
+    Next: null,
+    Prev: null,
+  };
+}
 
 export interface Record {
   //  CHAR16 pRecord[ 320 ];
   pRecord: string /* CHAR16[640] */;
-  Next: Pointer<Record>;
+  Next: Record | null;
 }
 
-export type RecordPtr = Pointer<Record>;
+export function createRecord(): Record {
+  return {
+    pRecord: '',
+    Next: null,
+  };
+}
 
 export interface EmailPageInfoStruct {
-  pFirstRecord: RecordPtr;
-  pLastRecord: RecordPtr;
+  pFirstRecord: Record | null;
+  pLastRecord: Record | null;
   iPageNumber: INT32;
+}
+
+export function createEmailPageInfoStruct(): EmailPageInfoStruct {
+  return {
+    pFirstRecord: null,
+    pLastRecord: null,
+    iPageNumber: 0,
+  };
 }
 
 export const enum Enum74 {
