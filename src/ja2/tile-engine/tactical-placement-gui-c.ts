@@ -385,7 +385,7 @@ export function TacticalPlacementHandle(): void {
     gpTacticalPlacementSelectedSoldier = null;
   }
 
-  while (DequeueEvent(addressof(InputEvent))) {
+  while (DequeueEvent(InputEvent)) {
     if (InputEvent.usEvent == KEY_DOWN) {
       switch (InputEvent.usParam) {
         case ENTER:

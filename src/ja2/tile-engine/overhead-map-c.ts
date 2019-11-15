@@ -474,7 +474,7 @@ function HandleOverheadUI(): void {
     }
   }
 
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN)) {
       switch (InputEvent.usParam) {
         case (ESC):

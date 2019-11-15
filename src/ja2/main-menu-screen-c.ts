@@ -302,7 +302,7 @@ function HandleMainMenuInput(): void {
   let InputEvent: InputAtom = createInputAtom();
 
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if (InputEvent.usEvent == KEY_UP) {
       switch (InputEvent.usParam) {
         /*
@@ -335,7 +335,7 @@ function HandleHelpScreenInput(): void {
   let InputEvent: InputAtom = createInputAtom();
 
   // Check for key
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     switch (InputEvent.usEvent) {
       case KEY_UP:
         SetMainMenuExitScreen(Enum26.INIT_SCREEN);

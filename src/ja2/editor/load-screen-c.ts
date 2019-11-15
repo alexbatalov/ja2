@@ -223,7 +223,7 @@ export function LoadSaveScreenHandle(): UINT32 {
   }
 
   // handle all key input.
-  while (DequeueEvent(addressof(DialogEvent))) {
+  while (DequeueEvent(DialogEvent)) {
     if (!HandleTextInput(addressof(DialogEvent)) && (DialogEvent.usEvent == KEY_DOWN || DialogEvent.usEvent == KEY_REPEAT)) {
       HandleMainKeyEvents(addressof(DialogEvent));
     }

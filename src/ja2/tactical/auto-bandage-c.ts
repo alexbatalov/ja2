@@ -179,7 +179,7 @@ export function HandleAutoBandage(): boolean {
     // Deque all game events
     DequeAllGameEvents(true);
 
-    while (DequeueEvent(addressof(InputEvent)) == true) {
+    while (DequeueEvent(InputEvent) == true) {
       if (InputEvent.usEvent == KEY_UP) {
         if (((InputEvent.usParam == ESC) && (fAutoBandageComplete == false)) || (((InputEvent.usParam == ENTER) || (InputEvent.usParam == SPACE)) && (fAutoBandageComplete == true))) {
           AutoBandage(false);

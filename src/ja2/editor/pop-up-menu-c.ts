@@ -334,7 +334,7 @@ function PopupMenuHandle(): void {
     return;
   }
   // Use keyboard input as well.
-  while (DequeueEvent(addressof(InputEvent))) {
+  while (DequeueEvent(InputEvent)) {
     switch (InputEvent.usEvent) {
       case KEY_DOWN:
         switch (InputEvent.usParam) {

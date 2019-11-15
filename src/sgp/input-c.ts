@@ -342,13 +342,13 @@ export function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT3
   }
 }
 
-export function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): boolean {
+export function DequeueSpecificEvent(Event: InputAtom, uiMaskFlags: UINT32): boolean {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
-    memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
+    copyInputAtom(Event, gEventQueue[gusHeadIndex]);
 
     // Check if it has the masks!
-    if ((Event.value.usEvent & uiMaskFlags)) {
+    if ((Event.usEvent & uiMaskFlags)) {
       return DequeueEvent(Event);
     }
   }
@@ -356,13 +356,13 @@ export function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UIN
   return false;
 }
 
-export function DequeueEvent(Event: Pointer<InputAtom>): boolean {
+export function DequeueEvent(Event: InputAtom): boolean {
   HandleSingleClicksAndButtonRepeats();
 
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     // We have an event, so we dequeue it
-    memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
+    copyInputAtom(Event, gEventQueue[gusHeadIndex]);
 
     if (gusHeadIndex == 255) {
       gusHeadIndex = 0;

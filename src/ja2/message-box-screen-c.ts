@@ -783,7 +783,7 @@ export function MessageBoxScreenHandle(): UINT32 {
 
   // carter, need key shortcuts for clearing up message boxes
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if (InputEvent.usEvent == KEY_UP) {
       if ((InputEvent.usParam == ESC) || (InputEvent.usParam == 'n')) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_YESNO) {

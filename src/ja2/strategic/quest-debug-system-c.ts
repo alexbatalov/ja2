@@ -942,7 +942,7 @@ function GetUserInput(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(addressof(Event))) {
+  while (DequeueEvent(Event)) {
     if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:

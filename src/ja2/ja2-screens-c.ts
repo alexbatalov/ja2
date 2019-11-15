@@ -151,7 +151,7 @@ export function ErrorScreenHandle(): UINT32 {
   EndFrameBufferRender();
 
   // Check for esc
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if (InputEvent.usEvent == KEY_DOWN) {
       if (InputEvent.usParam == ESC || InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN) {
         // Exit the program

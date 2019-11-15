@@ -287,7 +287,7 @@ function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
   GetCursorPos(addressof(MousePos));
 
   // handle input events
-  while (DequeueEvent(addressof(InputEvent))) {
+  while (DequeueEvent(InputEvent)) {
     /*
            // HOOK INTO MOUSE HOOKS
 switch(InputEvent.usEvent)

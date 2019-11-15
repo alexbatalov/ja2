@@ -645,7 +645,7 @@ function GetSaveLoadScreenUserInput(): void {
 
   fWasCtrlHeldDownLastFrame = gfKeyState[CTRL];
 
-  while (DequeueEvent(addressof(Event))) {
+  while (DequeueEvent(Event)) {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:

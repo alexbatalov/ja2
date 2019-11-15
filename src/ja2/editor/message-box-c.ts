@@ -51,7 +51,7 @@ export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
 export function MessageBoxHandled(): boolean {
   let DummyEvent: InputAtom = createInputAtom();
 
-  while (DequeueEvent(addressof(DummyEvent))) {
+  while (DequeueEvent(DummyEvent)) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case ENTER:
@@ -71,7 +71,7 @@ export function MessageBoxHandled(): boolean {
   }
 
   if (gubMessageBoxStatus == Enum52.MESSAGEBOX_DONE) {
-    while (DequeueEvent(addressof(DummyEvent)))
+    while (DequeueEvent(DummyEvent))
       continue;
   }
   MarkButtonsDirty();

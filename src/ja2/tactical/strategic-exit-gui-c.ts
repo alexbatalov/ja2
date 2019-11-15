@@ -458,7 +458,7 @@ export function RenderSectorExitMenu(): void {
   gsGlobalCursorYOffset = 0;
   SetCurrentCursorFromDatabase(Enum317.CURSOR_NORMAL);
 
-  while (DequeueEvent(addressof(Event))) {
+  while (DequeueEvent(Event)) {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:

@@ -527,7 +527,7 @@ function GetGIOScreenUserInput(): void {
 
   //	GetCursorPos(&MousePos);
 
-  while (DequeueEvent(addressof(Event))) {
+  while (DequeueEvent(Event)) {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:

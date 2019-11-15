@@ -44,9 +44,20 @@ export function createInputAtom(): InputAtom {
   };
 }
 
+export function copyInputAtom(destination: InputAtom, source: InputAtom) {
+  destination.uiTimeStamp = source.uiTimeStamp;
+  destination.usKeyState = source.usKeyState;
+  destination.usEvent = source.usEvent;
+  destination.usParam = source.usParam;
+  destination.uiParam = source.uiParam;
+}
+
+export const HIWORD = (n: number) => (n >> 16) & 0xFFFF;
+export const LOWORD = (n: number) => n & 0xFFFF;
+
 // Mouse pos extracting macros from InputAtom
-const GETYPOS = (a: Pointer<InputAtom>) => HIWORD(((a).value.uiParam));
-const GETXPOS = (a: Pointer<InputAtom>) => LOWORD(((a).value.uiParam));
+const GETYPOS = (a: InputAtom) => HIWORD(a.uiParam);
+const GETXPOS = (a: InputAtom) => LOWORD(a.uiParam);
 
 export interface StringInput {
   pString: string /* Pointer<UINT16> */;
@@ -58,8 +69,24 @@ export interface StringInput {
   usLastCharacter: UINT16;
   fInsertMode: boolean;
   fFocus: boolean;
-  pPreviousString: Pointer<StringInput>;
-  pNextString: Pointer<StringInput>;
+  pPreviousString: StringInput | null;
+  pNextString: StringInput | null;
+}
+
+export function createStringInput(): StringInput {
+  return {
+    pString: '',
+    pOriginalString: '',
+    pFilter: '',
+    usMaxStringLength: 0,
+    usCurrentStringLength: 0,
+    usStringOffset: 0,
+    usLastCharacter: 0,
+    fInsertMode: false,
+    fFocus: false,
+    pPreviousString: null,
+    pNextString: null,
+  };
 }
 
 export const _KeyDown = (a: number) => gfKeyState[(a)];
@@ -71,13 +98,13 @@ const _MouseYPos = () => gusMouseYPos;
 // NOTE: this may not be the absolute most-latest current mouse co-ordinates, use GetCursorPos for that
 const _gusMouseInside = (x1: number, y1: number, x2: number, y2: number) => ((gusMouseXPos >= x1) && (gusMouseXPos <= x2) && (gusMouseYPos >= y1) && (gusMouseYPos <= y2));
 
-const _EvType = (a: Pointer<InputAtom>) => ((a)).value.usEvent;
-const _EvTimeStamp = (a: Pointer<InputAtom>) => ((a)).value.uiTimeStamp;
-const _EvKey = (a: Pointer<InputAtom>) => ((a)).value.usParam;
-export const _EvMouseX = (a: Pointer<InputAtom>) => (((a)).value.uiParam & 0x0000ffff);
-export const _EvMouseY = (a: Pointer<InputAtom>) => ((((a)).value.uiParam & 0xffff0000) >> 16);
-const _EvShiftDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & SHIFT_DOWN);
-const _EvCtrlDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & CTRL_DOWN);
-const _EvAltDown = (a: Pointer<InputAtom>) => (((a)).value.usKeyState & ALT_DOWN);
+const _EvType = (a: InputAtom) => a.usEvent;
+const _EvTimeStamp = (a: InputAtom) => a.uiTimeStamp;
+const _EvKey = (a: InputAtom) => a.usParam;
+export const _EvMouseX = (a: InputAtom) => (a.uiParam & 0x0000ffff);
+export const _EvMouseY = (a: InputAtom) => ((a.uiParam & 0xffff0000) >> 16);
+const _EvShiftDown = (a: InputAtom) => (a.usKeyState & SHIFT_DOWN);
+const _EvCtrlDown = (a: InputAtom) => (a.usKeyState & CTRL_DOWN);
+const _EvAltDown = (a: InputAtom) => (a.usKeyState & ALT_DOWN);
 
 }

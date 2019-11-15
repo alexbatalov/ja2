@@ -3693,7 +3693,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   fCtrl = _KeyDown(CTRL);
   fAlt = _KeyDown(ALT);
 
-  while (DequeueEvent(addressof(InputEvent)))
+  while (DequeueEvent(InputEvent))
   //		while( DequeueSpecificEvent( &InputEvent, KEY_DOWN ) )		// doesn't work for some reason
   {
     GetCursorPos(addressof(MousePos));

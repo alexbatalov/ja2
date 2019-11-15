@@ -1097,7 +1097,7 @@ function GetShopKeeperInterfaceUserInput(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(addressof(Event))) {
+  while (DequeueEvent(Event)) {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {}
 

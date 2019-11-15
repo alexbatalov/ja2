@@ -294,7 +294,7 @@ export function MapUtilScreenHandle(): UINT32 {
 
   InvalidateScreen();
 
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
       // Exit the program
       gfProgramIsRunning = false;

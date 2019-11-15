@@ -942,7 +942,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
   GetMouseMapPos(addressof(usMapPos));
 
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:

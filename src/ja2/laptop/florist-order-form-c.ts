@@ -1052,7 +1052,7 @@ function DestroyFlowerOrderTextInputBoxes(): void {
 function HandleFloristOrderKeyBoardInput(): void {
   let InputEvent: InputAtom = createInputAtom();
 
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if (!HandleTextInput(addressof(InputEvent)) && InputEvent.usEvent == KEY_DOWN) {
       let ubTextFieldID: UINT8;
       switch (InputEvent.usParam) {

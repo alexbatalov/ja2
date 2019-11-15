@@ -115,7 +115,7 @@ export function AniEditScreenHandle(): UINT32 {
     gprintfdirty(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
   }
 
-  if (DequeueEvent(addressof(InputEvent)) == true) {
+  if (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
       fFirstTime = true;
 

@@ -1119,7 +1119,7 @@ function HandleJA2ToolbarSelection(): void {
 function HandleKeyboardShortcuts(): void {
   /* static */ let iSavedMode: INT32;
   /* static */ let fShowTrees: boolean = true;
-  while (DequeueEvent(addressof(EditorInputEvent))) {
+  while (DequeueEvent(EditorInputEvent)) {
     if (!HandleSummaryInput(addressof(EditorInputEvent)) && !HandleTextInput(addressof(EditorInputEvent)) && EditorInputEvent.usEvent == KEY_DOWN) {
       if (gfGotoGridNoUI) {
         switch (EditorInputEvent.usParam) {
@@ -2212,7 +2212,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 
   fLeaveScreen = false;
 
-  while (DequeueEvent(addressof(DummyEvent)) == true) {
+  while (DequeueEvent(DummyEvent) == true) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
@@ -2228,7 +2228,7 @@ function WaitForHelpScreenResponse(): UINT32 {
   if ((_LeftButtonDown()) || (_RightButtonDown()) || fLeaveScreen) {
     fHelpScreen = false;
 
-    while (DequeueEvent(addressof(DummyEvent)))
+    while (DequeueEvent(DummyEvent))
       continue;
 
     EnableEditorTaskbar();
@@ -2249,7 +2249,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 function WaitForSelectionWindowResponse(): UINT32 {
   let DummyEvent: InputAtom = createInputAtom();
 
-  while (DequeueEvent(addressof(DummyEvent)) == true) {
+  while (DequeueEvent(DummyEvent) == true) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
@@ -2277,7 +2277,7 @@ function WaitForSelectionWindowResponse(): UINT32 {
     fSelectionWindow = false;
     ShutdownJA2SelectionWindow();
     // Quick hack to trash the mouse event queue.
-    while (DequeueEvent(addressof(DummyEvent)))
+    while (DequeueEvent(DummyEvent))
       continue;
 
     iCurBank = 0;

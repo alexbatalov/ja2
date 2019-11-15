@@ -5349,7 +5349,7 @@ function HandlePersonnelKeyboard(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0'.charCodeAt(0)) && (InputEvent.usParam <= '9'.charCodeAt(0))) {
       if ((fShowAtmPanel) && (fATMFlags != 0)) {
         iValue = (InputEvent.usParam - '0'.charCodeAt(0));

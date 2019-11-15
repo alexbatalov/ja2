@@ -1305,7 +1305,7 @@ function HandleIMPQuizKeyBoard(): void {
 
   GetCursorPos(addressof(MousePos));
 
-  while ((DequeueEvent(addressof(InputEvent)) == true)) {
+  while ((DequeueEvent(InputEvent) == true)) {
     if (fSkipFrame == false) {
       // HOOK INTO MOUSE HOOKS
 
