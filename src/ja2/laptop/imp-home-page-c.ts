@@ -36,7 +36,7 @@ let fNewCharInActivationString: boolean = false;
 
 export function EnterImpHomePage(): void {
   // upon entry to Imp home page
-  memset(pPlayerActivationString, 0, sizeof(pPlayerActivationString));
+  pPlayerActivationString = '';
 
   // reset string position
   iStringPos = 0;
@@ -244,7 +244,7 @@ function HandleTextEvent(uiKey: UINT32): void {
         }
 
         // null out char
-        pPlayerActivationString[iStringPos] = 0;
+        pPlayerActivationString = pPlayerActivationString.substring(0, iStringPos);
 
         // move back cursor
         uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL()) + IMP_PLAYER_ACTIVATION_STRING_X;
@@ -256,7 +256,7 @@ function HandleTextEvent(uiKey: UINT32): void {
       break;
 
     default:
-      if (uiKey >= 'A' && uiKey <= 'Z' || uiKey >= 'a' && uiKey <= 'z' || uiKey >= '0' && uiKey <= '9' || uiKey == '_' || uiKey == '.') {
+      if (uiKey >= 'A'.charCodeAt(0) && uiKey <= 'Z'.charCodeAt(0) || uiKey >= 'a'.charCodeAt(0) && uiKey <= 'z'.charCodeAt(0) || uiKey >= '0'.charCodeAt(0) && uiKey <= '9'.charCodeAt(0) || uiKey == '_'.charCodeAt(0) || uiKey == '.'.charCodeAt(0)) {
         // if the current string position is at max or great, do nothing
         if (iStringPos >= 6) {
           break;
@@ -265,10 +265,7 @@ function HandleTextEvent(uiKey: UINT32): void {
             iStringPos = 0;
           }
           // valid char, capture and convert to CHAR16
-          pPlayerActivationString[iStringPos] = uiKey;
-
-          // null out next char position
-          pPlayerActivationString[iStringPos + 1] = 0;
+          pPlayerActivationString += String.fromCharCode(uiKey);
 
           // move cursor position ahead
           uiCursorPosition = StringPixLength(pPlayerActivationString, FONT14ARIAL()) + IMP_PLAYER_ACTIVATION_STRING_X;
@@ -289,7 +286,7 @@ function HandleTextEvent(uiKey: UINT32): void {
 
 function ProcessPlayerInputActivationString(): void {
   // prcess string to see if it matches activation string
-  if (((wcscmp(pPlayerActivationString, "XEP624") == 0) || (wcscmp(pPlayerActivationString, "xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
+  if (((pPlayerActivationString == "XEP624") || (pPlayerActivationString == "xep624")) && (LaptopSaveInfo.fIMPCompletedFlag == false) && (Number(LaptopSaveInfo.gfNewGameLaptop) < 2)) {
     iCurrentImpPage = Enum71.IMP_MAIN_PAGE;
   }
   /*
@@ -299,7 +296,7 @@ function ProcessPlayerInputActivationString(): void {
           }
   */
   else {
-    if (((wcscmp(pPlayerActivationString, "XEP624") != 0) && (wcscmp(pPlayerActivationString, "xep624") != 0))) {
+    if (((pPlayerActivationString !== "XEP624") && (pPlayerActivationString !== "xep624"))) {
       DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[0], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
     } else if (LaptopSaveInfo.fIMPCompletedFlag == true) {
       DoLapTopMessageBox(Enum24.MSG_BOX_IMP_STYLE, pImpPopUpStrings[6], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
