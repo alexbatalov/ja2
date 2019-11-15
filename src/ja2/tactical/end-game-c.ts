@@ -43,15 +43,15 @@ export function ChangeO3SectorStatue(fFromExplosion: boolean): void {
   ApplyMapChangesToMapTempFile(true);
   // Remove it!
   // Get index for it...
-  GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (5), addressof(usTileIndex));
+  usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (5));
   RemoveStruct(13830, usTileIndex);
 
   // Add new one...
   if (fFromExplosion) {
     // Use damaged peice
-    GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (7), addressof(usTileIndex));
+    usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (7));
   } else {
-    GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (8), addressof(usTileIndex));
+    usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.EIGHTOSTRUCT, (8));
     // Play sound...
 
     PlayJA2Sample(Enum330.OPEN_STATUE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);

@@ -118,7 +118,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
       case Enum307.SLM_LAND:
         break;
       case Enum307.SLM_OBJECT:
-        GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
+        usIndex = GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex);
 
         AddObjectFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
 
@@ -130,7 +130,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
 
         break;
       case Enum307.SLM_STRUCT:
-        GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
+        usIndex = GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex);
 
         AddStructFromMapTempFileToMap(pMap.value.usGridNo, usIndex);
 
@@ -165,7 +165,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
           // Remove ANY door...
           RemoveAllStructsOfTypeRange(pMap.value.usGridNo, Enum313.FIRSTDOOR, Enum313.FOURTHDOOR);
         } else {
-          GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex, addressof(usIndex));
+          usIndex = GetTileIndexFromTypeSubIndex(pMap.value.usImageType, pMap.value.usSubImageIndex);
           RemoveSavedStructFromMap(pMap.value.usGridNo, usIndex);
         }
 
@@ -257,8 +257,8 @@ export function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): voi
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -287,8 +287,8 @@ export function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): voi
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -317,8 +317,8 @@ export function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -343,8 +343,8 @@ export function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16)
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -631,8 +631,8 @@ export function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -654,8 +654,8 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -677,8 +677,8 @@ export function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex:
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -700,8 +700,8 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
 
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   memset(addressof(Map), 0, sizeof(MODIFY_MAP));
 
@@ -801,8 +801,8 @@ export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, s
   uiNumberOfElements = uiFileSize / sizeof(MODIFY_MAP);
 
   // Get the image type and subindex
-  GetTileType(usIndex, addressof(uiType));
-  GetSubIndexFromTileIndex(usIndex, addressof(usSubIndex));
+  uiType = GetTileType(usIndex);
+  usSubIndex = GetSubIndexFromTileIndex(usIndex);
 
   for (cnt = 0; cnt < uiNumberOfElements; cnt++) {
     pMap = addressof(pTempArrayOfMaps[cnt]);

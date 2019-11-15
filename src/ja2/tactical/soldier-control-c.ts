@@ -6046,7 +6046,7 @@ function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): boolean 
 
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE && pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
-      GetTileFlags(pStruct.value.usIndex, addressof(fTileFlags));
+      fTileFlags = GetTileFlags(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;

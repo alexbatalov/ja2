@@ -568,7 +568,7 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     // nothing in the old tile, so smooth the entire land in world's tile
     pLand = gpWorldLevelData[iWorldTile].pLandHead;
     while (pLand != null) {
-      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
+      uiCheckType = GetTileType(pLand.value.usIndex);
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
       pLand = pLand.value.pNext;
     }
@@ -576,19 +576,19 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     // Nothing in world's tile, so smooth out the land in the old tile.
     pLand = pUndoLand;
     while (pLand != null) {
-      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
+      uiCheckType = GetTileType(pLand.value.usIndex);
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
       pLand = pLand.value.pNext;
     }
   } else {
     pLand = pUndoLand;
     while (pLand != null) {
-      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
+      uiCheckType = GetTileType(pLand.value.usIndex);
 
       fFound = false;
       pWLand = pWorldLand;
       while (pWLand != null && !fFound) {
-        GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
+        uiWCheckType = GetTileType(pWLand.value.usIndex);
 
         if (uiCheckType == uiWCheckType)
           fFound = true;
@@ -604,12 +604,12 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
 
     pWLand = pWorldLand;
     while (pWLand != null) {
-      GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
+      uiWCheckType = GetTileType(pWLand.value.usIndex);
 
       fFound = false;
       pLand = pUndoLand;
       while (pLand != null && !fFound) {
-        GetTileType(pLand.value.usIndex, addressof(uiCheckType));
+        uiCheckType = GetTileType(pLand.value.usIndex);
 
         if (uiCheckType == uiWCheckType)
           fFound = true;

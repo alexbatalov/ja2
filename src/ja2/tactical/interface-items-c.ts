@@ -4469,13 +4469,13 @@ export function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
 
   // CHECK SUBCLASS
   if (pItem.value.ubGraphicType == 0) {
-    GetTileIndexFromTypeSubIndex(Enum313.GUNS, (pItem.value.ubGraphicNum + 1), addressof(usIndex));
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.GUNS, (pItem.value.ubGraphicNum + 1));
   } else if (pItem.value.ubGraphicType == 1) {
-    GetTileIndexFromTypeSubIndex(Enum313.P1ITEMS, (pItem.value.ubGraphicNum + 1), addressof(usIndex));
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P1ITEMS, (pItem.value.ubGraphicNum + 1));
   } else if (pItem.value.ubGraphicType == 2) {
-    GetTileIndexFromTypeSubIndex(Enum313.P2ITEMS, (pItem.value.ubGraphicNum + 1), addressof(usIndex));
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P2ITEMS, (pItem.value.ubGraphicNum + 1));
   } else {
-    GetTileIndexFromTypeSubIndex(Enum313.P3ITEMS, (pItem.value.ubGraphicNum + 1), addressof(usIndex));
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P3ITEMS, (pItem.value.ubGraphicNum + 1));
   }
   return usIndex;
 }

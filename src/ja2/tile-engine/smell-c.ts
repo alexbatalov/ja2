@@ -444,9 +444,9 @@ export function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
         usIndex = ((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
 
         if (BLOOD_FLOOR_TYPE(pMapElement.value.ubSmellInfo) == 0) {
-          GetTileIndexFromTypeSubIndex(Enum313.HUMANBLOOD, (usIndex + 1), addressof(usNewIndex));
+          usNewIndex = GetTileIndexFromTypeSubIndex(Enum313.HUMANBLOOD, (usIndex + 1));
         } else {
-          GetTileIndexFromTypeSubIndex(Enum313.CREATUREBLOOD, (usIndex + 1), addressof(usNewIndex));
+          usNewIndex = GetTileIndexFromTypeSubIndex(Enum313.CREATUREBLOOD, (usIndex + 1));
         }
 
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.

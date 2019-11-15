@@ -3395,7 +3395,7 @@ export function FlatRoofAboveGridNo(iMapIndex: INT32): boolean {
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
   while (pRoof) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pRoof.value.usIndex);
       if (uiTileType >= Enum313.FIRSTROOF && uiTileType <= LASTROOF)
         return true;
     }

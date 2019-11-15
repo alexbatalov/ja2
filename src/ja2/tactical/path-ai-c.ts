@@ -1954,7 +1954,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
             }
           }
 
-          GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum, addressof(usTileIndex));
+          usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum);
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -2000,7 +2000,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
           // this is a LEAVING footstep which is always the second set of 8
           usTileNum += 8;
 
-          GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum, addressof(usTileIndex));
+          usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.FOOTPRINTS, usTileNum);
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {

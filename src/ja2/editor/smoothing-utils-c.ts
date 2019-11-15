@@ -29,7 +29,7 @@ export function SearchForWallType(iMapIndex: UINT32): UINT16 {
           }
           pWall = gpWorldLevelData[iMapIndex + sOffset].pStructHead;
           while (pWall) {
-            GetTileType(pWall.value.usIndex, addressof(uiTileType));
+            uiTileType = GetTileType(pWall.value.usIndex);
             if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL) {
               // found a roof, so return its type.
               return uiTileType;
@@ -67,7 +67,7 @@ export function SearchForRoofType(iMapIndex: UINT32): UINT16 {
           }
           pRoof = gpWorldLevelData[iMapIndex + sOffset].pRoofHead;
           while (pRoof) {
-            GetTileType(pRoof.value.usIndex, addressof(uiTileType));
+            uiTileType = GetTileType(pRoof.value.usIndex);
             if (uiTileType >= Enum313.FIRSTROOF && uiTileType <= LASTROOF) {
               // found a roof, so return its type.
               return uiTileType;
@@ -88,7 +88,7 @@ function RoofAtGridNo(iMapIndex: UINT32): boolean {
   // Look through all objects and Search for type
   while (pRoof) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pRoof.value.usIndex);
       if (uiTileType >= Enum313.FIRSTROOF && uiTileType <= Enum313.SECONDSLANTROOF)
         return true;
       pRoof = pRoof.value.pNext;
@@ -118,9 +118,9 @@ export function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pStruct.value.usIndex);
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
-        GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
+        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
           return pStruct;
         }
@@ -138,9 +138,9 @@ export function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pStruct.value.usIndex);
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
-        GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
+        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
           return pStruct;
         }
@@ -156,7 +156,7 @@ export function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
   let uiTileType: UINT32;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR)
       uiTileType = SearchForWallType(iMapIndex);
     return uiTileType;
@@ -169,7 +169,7 @@ export function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
   let uiTileType: UINT32;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR)
       uiTileType = SearchForWallType(iMapIndex);
     return uiTileType;
@@ -184,9 +184,9 @@ function GetVerticalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pStruct.value.usIndex);
       if (uiTileType == Enum313.FENCESTRUCT) {
-        GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
+        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
           return pStruct;
         }
@@ -204,9 +204,9 @@ function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pStruct.value.usIndex);
       if (uiTileType == Enum313.FENCESTRUCT) {
-        GetWallOrientation(pStruct.value.usIndex, addressof(usWallOrientation));
+        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
           return pStruct;
         }
@@ -244,12 +244,12 @@ function ChangeHorizontalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
   let sIndex: INT16;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL) {
       // Okay, we have the wall, now change it's type.
       sIndex = PickAWallPiece(usNewPiece);
       AddToUndoList(iMapIndex);
-      GetTileIndexFromTypeSubIndex(uiTileType, sIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(uiTileType, sIndex);
       ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usTileIndex);
     }
   }
@@ -262,12 +262,12 @@ export function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void 
   let sIndex: INT16;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL) {
       // Okay, we have the wall, now change it's type.
       sIndex = PickAWallPiece(usNewPiece);
       AddToUndoList(iMapIndex);
-      GetTileIndexFromTypeSubIndex(uiTileType, sIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(uiTileType, sIndex);
       ReplaceStructIndex(iMapIndex, pWall.value.usIndex, usTileIndex);
     }
   }
@@ -283,11 +283,11 @@ export function RestoreWalls(iMapIndex: UINT32): void {
 
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     usWallType = uiTileType;
     if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
-    GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
+    usWallOrientation = GetWallOrientation(pWall.value.usIndex);
     AddToUndoList(iMapIndex);
     RemoveStruct(iMapIndex, pWall.value.usIndex);
     RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
@@ -303,11 +303,11 @@ export function RestoreWalls(iMapIndex: UINT32): void {
   }
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     usWallType = uiTileType;
     if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
-    GetWallOrientation(pWall.value.usIndex, addressof(usWallOrientation));
+    usWallOrientation = GetWallOrientation(pWall.value.usIndex);
     AddToUndoList(iMapIndex);
     RemoveStruct(iMapIndex, pWall.value.usIndex);
     RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.FIRSTWALL, LASTWALL);
@@ -340,7 +340,7 @@ export function RestoreWalls(iMapIndex: UINT32): void {
     return;
   // found a wall.  Let's back up the current wall value, and restore it after pasting a smart wall.
   if (pWall) {
-    GetTileType(pWall.value.usIndex, addressof(uiTileType));
+    uiTileType = GetTileType(pWall.value.usIndex);
     usWallType = uiTileType;
     if (uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
@@ -360,7 +360,7 @@ function GetWallClass(pWall: Pointer<LEVELNODE>): UINT16 {
   let usWallIndex: UINT16;
   if (!pWall)
     return 0xffff;
-  GetSubIndexFromTileIndex(pWall.value.usIndex, addressof(usWallIndex));
+  usWallIndex = GetSubIndexFromTileIndex(pWall.value.usIndex);
   for (row = 0; row < Enum60.NUM_WALL_TYPES; row++) {
     rowVariants = gbWallTileLUT[row][0];
     for (col = 1; col <= rowVariants; col++) {

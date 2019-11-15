@@ -2361,7 +2361,7 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): boolean {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != null) {
-        GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
+        fTileFlags = GetTileFlags(pNode.value.usIndex);
 
         if (fTileFlags & FULL3D_TILE) {
           if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
@@ -2403,7 +2403,7 @@ function LightHideTrees(iX: INT16, iY: INT16): boolean {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != null) {
-        GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
+        fTileFlags = GetTileFlags(pNode.value.usIndex);
 
         if (fTileFlags & FULL3D_TILE) {
           if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {

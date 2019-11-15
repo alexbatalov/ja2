@@ -95,7 +95,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
 
   // Get land index value for given level and adjust according to type
   if (TypeExistsInLandLayer(gridno, origType, addressof(usTileIndex))) {
-    GetTypeSubIndexFromTileIndex(origType, usTileIndex, addressof(usOldIndex));
+    usOldIndex = GetTypeSubIndexFromTileIndex(origType, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
     return;
@@ -150,7 +150,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
   cnt = 0;
   fFound = false;
 
-  GetLandHeadType(gridno, addressof(uiTopType));
+  uiTopType = GetLandHeadType(gridno);
 
   while (pSmoothStruct[cnt] != -1) {
     if (pSmoothStruct[cnt] == temp) {
@@ -189,7 +189,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
     land = (rand() % 10) + 1;
     FullTile = true;
   }
-  GetTileIndexFromTypeSubIndex(origType, land, addressof(usTileIndex));
+  usTileIndex = GetTileIndexFromTypeSubIndex(origType, land);
   piNewTile.value = usTileIndex;
 }
 
@@ -238,7 +238,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
 
   // Get Object index value for given level and adjust according to type
   if (TypeExistsInShadowLayer(gridno, Enum313.EXITTEXTURE, addressof(usTileIndex))) {
-    GetTypeSubIndexFromTileIndex(Enum313.EXITTEXTURE, usTileIndex, addressof(usOldIndex));
+    usOldIndex = GetTypeSubIndexFromTileIndex(Enum313.EXITTEXTURE, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
     return;
@@ -330,7 +330,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
     usExitGridIndex = (rand() % 10) + 1;
     FullTile = true;
   }
-  GetTileIndexFromTypeSubIndex(Enum313.EXITTEXTURE, usExitGridIndex, addressof(usTileIndex));
+  usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.EXITTEXTURE, usExitGridIndex);
   piNewTile.value = usTileIndex;
 }
 
@@ -466,7 +466,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   pSmoothStruct = gbSmoothWaterStruct;
   // Get land index value for given level and adjust according to type
   if (TypeExistsInLandLayer(gridno, origType, addressof(usTileIndex))) {
-    GetTypeSubIndexFromTileIndex(origType, usTileIndex, addressof(usOldIndex));
+    usOldIndex = GetTypeSubIndexFromTileIndex(origType, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
     return;
@@ -548,7 +548,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   // Loop through smooth struct
   cnt = 0;
   fFound = false;
-  GetLandHeadType(gridno, addressof(uiTopType));
+  uiTopType = GetLandHeadType(gridno);
   // Speed up of this while loop  using double/quick search will result
   // in an incorrect solution due to multiple instances of bitvalues in the list of
   // smoothed water textures
@@ -586,7 +586,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
     land = (rand() % 10) + 1;
     FullTile = true;
   }
-  GetTileIndexFromTypeSubIndex(origType, land, addressof(usTileIndex));
+  usTileIndex = GetTileIndexFromTypeSubIndex(origType, land);
   piNewTile.value = usTileIndex;
 }
 

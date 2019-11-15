@@ -1347,7 +1347,7 @@ function HandleKeyboardShortcuts(): void {
                   RemoveAllOnRoofsOfTypeRange(i, Enum313.FIRSTTEXTURE, LASTITEM);
                   RemoveAllShadowsOfTypeRange(i, Enum313.FIRSTROOF, LASTSLANTROOF);
                   usRoofIndex = 9 + (rand() % 3);
-                  GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex, addressof(usTileIndex));
+                  usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
                   AddRoofToHead(i, usTileIndex);
                 }
               }
@@ -2060,7 +2060,7 @@ export function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
-      GetTileIndexFromTypeSubIndex(Enum313.FIRSTROOF, (9 + Random(3)), addressof(usIndex));
+      usIndex = GetTileIndexFromTypeSubIndex(Enum313.FIRSTROOF, (9 + Random(3)));
       AddRoofToHead(i, usIndex);
     }
     SetEditorSmoothingMode(Enum231.SMOOTHING_BASEMENT);
@@ -2069,7 +2069,7 @@ export function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
-      GetTileIndexFromTypeSubIndex(Enum313.FIRSTWALL, (60 + Random(6)), addressof(usIndex));
+      usIndex = GetTileIndexFromTypeSubIndex(Enum313.FIRSTWALL, (60 + Random(6)));
       AddCave(i, usIndex);
     }
     SetEditorSmoothingMode(Enum231.SMOOTHING_CAVES);

@@ -83,7 +83,7 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
   // Look through all objects and Search for type
   while (pStartNode != null) {
     if (pStartNode.value.usIndex != NO_TILE && pStartNode.value.usIndex < Enum312.NUMBEROFTILES) {
-      GetTileType(pStartNode.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pStartNode.value.usIndex);
 
       if (fTileType == fType) {
         pusIndex.value = pStartNode.value.usIndex;
@@ -276,7 +276,7 @@ export function TypeRangeExistsInObjectLayer(iMapIndex: UINT32, fStartType: UINT
     pObject = pObject.value.pNext;
 
     if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < Enum312.NUMBEROFTILES) {
-      GetTileType(pOldObject.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pOldObject.value.usIndex);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         pusObjectIndex.value = pOldObject.value.usIndex;
@@ -330,7 +330,7 @@ export function RemoveAllObjectsOfTypeRange(iMapIndex: UINT32, fStartType: UINT3
     pObject = pObject.value.pNext;
 
     if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < Enum312.NUMBEROFTILES) {
-      GetTileType(pOldObject.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pOldObject.value.usIndex);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
@@ -559,7 +559,7 @@ export function TypeRangeExistsInLandLayer(iMapIndex: UINT32, fStartType: UINT32
 
   while (pLand != null) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pLand.value.usIndex);
 
       // Advance to next
       pOldLand = pLand;
@@ -587,7 +587,7 @@ function TypeRangeExistsInLandHead(iMapIndex: UINT32, fStartType: UINT32, fEndTy
   // Look through all objects and Search for type
 
   if (pLand.value.usIndex != NO_TILE) {
-    GetTileType(pLand.value.usIndex, addressof(fTileType));
+    fTileType = GetTileType(pLand.value.usIndex);
 
     // Advance to next
     pOldLand = pLand;
@@ -615,7 +615,7 @@ function TypeRangeExistsInStructLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
 
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -645,7 +645,7 @@ export function RemoveAllLandsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32,
 
   while (pLand != null) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pLand.value.usIndex);
 
       // Advance to next
       pOldLand = pLand;
@@ -776,11 +776,11 @@ export function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiH
   pLand = pOldLand;
 
   // Get src height
-  GetTileTypeLogicalHeight(fSrcType, addressof(ubSrcLogHeight));
+  ubSrcLogHeight = GetTileTypeLogicalHeight(fSrcType);
 
   // Look through all objects and Search for height
   while (pLand != null) {
-    GetTileType(pLand.value.usIndex, addressof(fTileType));
+    fTileType = GetTileType(pLand.value.usIndex);
 
     // Advance to next
     pOldLand = pLand;
@@ -814,11 +814,11 @@ function SetLowerLandLevels(iMapIndex: UINT32, fSrcType: UINT32, usIndex: UINT16
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   // Get src height
-  GetTileTypeLogicalHeight(fSrcType, addressof(ubSrcLogHeight));
+  ubSrcLogHeight = GetTileTypeLogicalHeight(fSrcType);
 
   // Look through all objects and Search for height
   while (pLand != null) {
-    GetTileType(pLand.value.usIndex, addressof(fTileType));
+    fTileType = GetTileType(pLand.value.usIndex);
 
     // Advance to next
     pOldLand = pLand;
@@ -826,7 +826,7 @@ function SetLowerLandLevels(iMapIndex: UINT32, fSrcType: UINT32, usIndex: UINT16
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       // Set item
-      GetTileIndexFromTypeSubIndex(fTileType, usIndex, addressof(NewTile));
+      NewTile = GetTileIndexFromTypeSubIndex(fTileType, usIndex);
 
       // Set as normal
       SetLandIndex(iMapIndex, NewTile, fTileType, false);
@@ -1246,7 +1246,7 @@ export function RemoveAllStructsOfTypeRange(iMapIndex: UINT32, fStartType: UINT3
 
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1309,11 +1309,11 @@ export function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
   // Get orientation of peice we want to add
-  GetWallOrientation(usIndex, addressof(usWallOrientation));
+  usWallOrientation = GetWallOrientation(usIndex);
 
   // Look through all objects and Search for orientation
   while (pStruct != null) {
-    GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrient));
+    usCheckWallOrient = GetWallOrientation(pStruct.value.usIndex);
     // OLD CASE
     // if ( usCheckWallOrient > usWallOrientation )
     // Kris:
@@ -1325,7 +1325,7 @@ export function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace
       }
     }
 
-    GetTileType(pStruct.value.usIndex, addressof(uiCheckType));
+    uiCheckType = GetTileType(pStruct.value.usIndex);
 
     //		if ( uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR )
     if (uiCheckType >= Enum313.FIRSTROOF && uiCheckType <= LASTROOF) {
@@ -1408,7 +1408,7 @@ function SetStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32,
 
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1444,7 +1444,7 @@ function RemoveStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT
 
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1647,7 +1647,7 @@ export function RemoveAllShadowsOfTypeRange(iMapIndex: UINT32, fStartType: UINT3
 
   while (pShadow != null) {
     if (pShadow.value.usIndex != NO_TILE) {
-      GetTileType(pShadow.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pShadow.value.usIndex);
 
       // Advance to next
       pOldShadow = pShadow;
@@ -2058,7 +2058,7 @@ export function TypeRangeExistsInRoofLayer(iMapIndex: UINT32, fStartType: UINT32
 
   while (pRoof != null) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pRoof.value.usIndex);
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2124,7 +2124,7 @@ export function RemoveAllRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32,
 
   while (pRoof != null) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pRoof.value.usIndex);
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2154,7 +2154,7 @@ export function RemoveRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType:
 
   while (pRoof != null) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pRoof.value.usIndex);
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2178,7 +2178,7 @@ export function SetRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UI
 
   while (pRoof != null) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pRoof.value.usIndex);
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2388,7 +2388,7 @@ export function RemoveAllOnRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT3
 
   while (pOnRoof != null) {
     if (pOnRoof.value.usIndex != NO_TILE) {
-      GetTileType(pOnRoof.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pOnRoof.value.usIndex);
 
       // Advance to next
       pOldOnRoof = pOnRoof;
@@ -2577,7 +2577,7 @@ export function RemoveAllTopmostsOfTypeRange(iMapIndex: UINT32, fStartType: UINT
     pTopmost = pTopmost.value.pNext;
 
     if (pOldTopmost.value.usIndex != NO_TILE && pOldTopmost.value.usIndex < Enum312.NUMBEROFTILES) {
-      GetTileType(pOldTopmost.value.usIndex, addressof(fTileType));
+      fTileType = GetTileType(pOldTopmost.value.usIndex);
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
@@ -2782,7 +2782,7 @@ export function SetStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
   // Look through all Roofs and Search for type
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileFlags(pStruct.value.usIndex, addressof(uiTileFlags));
+      uiTileFlags = GetTileFlags(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -2805,7 +2805,7 @@ function RemoveStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
   // Look through all Roofs and Search for type
   while (pStruct != null) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileFlags(pStruct.value.usIndex, addressof(uiTileFlags));
+      uiTileFlags = GetTileFlags(pStruct.value.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
@@ -2892,7 +2892,7 @@ export function WorldHideTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != null) {
-      GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
+      fTileFlags = GetTileFlags(pNode.value.usIndex);
 
       if (fTileFlags & FULL3D_TILE) {
         if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
@@ -2917,7 +2917,7 @@ export function WorldShowTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != null) {
-      GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
+      fTileFlags = GetTileFlags(pNode.value.usIndex);
 
       if (fTileFlags & FULL3D_TILE) {
         if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {

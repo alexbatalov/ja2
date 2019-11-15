@@ -79,7 +79,7 @@ export function FloorAtGridNo(iMapIndex: UINT32): boolean {
   // Look through all objects and Search for type
   while (pLand) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, addressof(uiTileType));
+      uiTileType = GetTileType(pLand.value.usIndex);
       if (uiTileType >= Enum313.FIRSTFLOOR && uiTileType <= LASTFLOOR) {
         return true;
       }
@@ -1386,7 +1386,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         let uiTileType: UINT32;
         // Make sure this isn't a UI Element
-        GetTileType(pObject.value.usIndex, addressof(uiTileType));
+        uiTileType = GetTileType(pObject.value.usIndex);
         if (uiTileType < Enum313.FIRSTPOINTERS)
           ObjectCount++;
       }
@@ -1531,9 +1531,9 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
       while (pTailLand != null) {
         // Write out object type and sub-index
-        GetTileType(pTailLand.value.usIndex, addressof(uiType));
+        uiType = GetTileType(pTailLand.value.usIndex);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pTailLand.value.usIndex, addressof(ubTypeSubIndex));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pTailLand.value.usIndex);
         FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
         FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
 
@@ -1549,13 +1549,13 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       // DON'T WRITE ANY ITEMS
       if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        GetTileType(pObject.value.usIndex, addressof(uiType));
+        uiType = GetTileType(pObject.value.usIndex);
         // Make sure this isn't a UI Element
         if (uiType < Enum313.FIRSTPOINTERS) {
           // We are writing 2 bytes for the type subindex in the object layer because the
           // ROADPIECES slot contains more than 256 subindices.
           ubType = uiType;
-          GetTypeSubIndexFromTileIndex(uiType, pObject.value.usIndex, addressof(usTypeSubIndex));
+          usTypeSubIndex = GetTypeSubIndexFromTileIndex(uiType, pObject.value.usIndex);
           FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
           FileWrite(hfile, addressof(usTypeSubIndex), sizeof(UINT16), addressof(uiBytesWritten));
         }
@@ -1571,9 +1571,9 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       // DON'T WRITE ANY ITEMS
       if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        GetTileType(pStruct.value.usIndex, addressof(uiType));
+        uiType = GetTileType(pStruct.value.usIndex);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pStruct.value.usIndex, addressof(ubTypeSubIndex));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pStruct.value.usIndex);
         FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
         FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
       }
@@ -1590,9 +1590,9 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         // Write out object type and sub-index
         // Write out object type and sub-index
-        GetTileType(pShadow.value.usIndex, addressof(uiType));
+        uiType = GetTileType(pShadow.value.usIndex);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pShadow.value.usIndex, addressof(ubTypeSubIndex));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pShadow.value.usIndex);
         FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
         FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
       } else if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
@@ -1610,9 +1610,9 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       // ATE: Don't save revealed roof info...
       if (pRoof.value.usIndex != Enum312.SLANTROOFCEILING1) {
         // Write out object type and sub-index
-        GetTileType(pRoof.value.usIndex, addressof(uiType));
+        uiType = GetTileType(pRoof.value.usIndex);
         ubType = uiType;
-        GetTypeSubIndexFromTileIndexChar(uiType, pRoof.value.usIndex, addressof(ubTypeSubIndex));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pRoof.value.usIndex);
         FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
         FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
       }
@@ -1626,9 +1626,9 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pOnRoof = gpWorldLevelData[cnt].pOnRoofHead;
     while (pOnRoof != null) {
       // Write out object type and sub-index
-      GetTileType(pOnRoof.value.usIndex, addressof(uiType));
+      uiType = GetTileType(pOnRoof.value.usIndex);
       ubType = uiType;
-      GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof.value.usIndex, addressof(ubTypeSubIndex));
+      ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof.value.usIndex);
       FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
       FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
 
@@ -2288,7 +2288,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
 
       // Get tile index
-      GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
 
       // Add layer
       AddLandToHead(cnt, usTileIndex);
@@ -2314,7 +2314,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
           continue;
         }
         // Get tile index
-        GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+        usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
         // Add layer
         AddObjectToTail(cnt, usTileIndex);
       }
@@ -2334,7 +2334,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
           continue;
         }
         // Get tile index
-        GetTileIndexFromTypeSubIndex(ubType, usTypeSubIndex, addressof(usTileIndex));
+        usTileIndex = GetTileIndexFromTypeSubIndex(ubType, usTypeSubIndex);
         // Add layer
         AddObjectToTail(cnt, usTileIndex);
 
@@ -2359,12 +2359,12 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
 
       // Get tile index
-      GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
 
       if (ubMinorMapVersion <= 25) {
         // Check patching for phantom menace struct data...
         if (gTileDatabase[usTileIndex].uiFlags & UNDERFLOW_FILLER) {
-          GetTileIndexFromTypeSubIndex(ubType, 1, addressof(usTileIndex));
+          usTileIndex = GetTileIndexFromTypeSubIndex(ubType, 1);
         }
       }
 
@@ -2390,7 +2390,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
 
       // Get tile index
-      GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
 
       // Add layer
       AddShadowToTail(cnt, usTileIndex);
@@ -2414,7 +2414,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
 
       // Get tile index
-      GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
 
       // Add layer
       AddRoofToTail(cnt, usTileIndex);
@@ -2438,7 +2438,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
 
       // Get tile index
-      GetTileIndexFromTypeSubIndex(ubType, ubSubIndex, addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
 
       // Add layer
       AddOnRoofToTail(cnt, usTileIndex);
@@ -2998,7 +2998,7 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
 
     if (pNode != null) {
       // Get Subindex for this wall...
-      GetSubIndexFromTileIndex(pNode.value.usIndex, addressof(usSubIndex));
+      usSubIndex = GetSubIndexFromTileIndex(pNode.value.usIndex);
 
       // Check for broken peices...
       if (usSubIndex == 48 || usSubIndex == 52) {

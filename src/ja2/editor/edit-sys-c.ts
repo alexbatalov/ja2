@@ -86,7 +86,7 @@ export function EraseMapTile(iMapIndex: UINT32): void {
       if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == null)
         break;
       AddToUndoList(iMapIndex);
-      GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, addressof(uiCheckType));
+      uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
       RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
       SmoothTerrainRadius(iMapIndex, uiCheckType, 1, true);
       break;
@@ -244,8 +244,8 @@ export function PasteSingleBrokenWall(iMapIndex: UINT32): void {
 
   usIndex = pSelList[iCurBank].usIndex;
   usObjIndex = pSelList[iCurBank].uiObject;
-  usTileIndex = GetTileIndexFromTypeSubIndex(usObjIndex, usIndex, addressof(usTileIndex));
-  GetWallOrientation(usTileIndex, addressof(usWallOrientation));
+  usTileIndex = usTileIndex = GetTileIndexFromTypeSubIndex(usObjIndex, usIndex);
+  usWallOrientation = GetWallOrientation(usTileIndex);
   if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.INSIDE_TOP_RIGHT)
     EraseHorizontalWall(iMapIndex);
   else
@@ -390,7 +390,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
   for (i = 0; i < pNumSelList.value; i++) {
     usObject = pSelList[i].uiObject;
     if ((usObject >= usRangeStart) && (usObject <= usRangeEnd)) {
-      GetTileType(usObject, addressof(uiType));
+      uiType = GetTileType(usObject);
       usPickList[usNumInPickList] = uiType;
       usNumInPickList++;
     }
@@ -479,7 +479,7 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
         // For now, adjust to shadows by a hard-coded amount,
 
         // Add mask if in long grass
-        GetLandHeadType(iMapIndex, addressof(fHeadType));
+        fHeadType = GetLandHeadType(iMapIndex);
       }
     }
   } else if (CurrentStruct == ERASE_TILE && iMapIndex < 0x8000) {
@@ -650,7 +650,7 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   } else if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
 
-    GetTileIndexFromTypeSubIndex(fNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
+    NewTile = GetTileIndexFromTypeSubIndex(fNewType, REQUIRES_SMOOTHING_TILE);
     SetLandIndex(iMapIndex, NewTile, fNewType, false);
 
     // Smooth item then adding here
@@ -736,7 +736,7 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): boolean {
 
   // Get top tile index
   // Remove all land peices except
-  GetTileType(usIndex, addressof(uiNewType));
+  uiNewType = GetTileType(usIndex);
 
   DeleteAllLandLayers(iMapIndex);
 
@@ -850,20 +850,20 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
-            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
+            NewTile = GetTileIndexFromTypeSubIndex(uiNewType, usTemp);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else if (AnyHeigherLand(iNewIndex, uiNewType, addressof(ubLastHighLevel))) {
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
-            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
+            NewTile = GetTileIndexFromTypeSubIndex(uiNewType, usTemp);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else {
             AddToUndoList(iMapIndex);
 
             // Set tile to 'smooth target' tile
-            GetTileIndexFromTypeSubIndex(uiNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
+            NewTile = GetTileIndexFromTypeSubIndex(uiNewType, REQUIRES_SMOOTHING_TILE);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
 
             // If we are top-most, add to smooth list
@@ -903,7 +903,7 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
     }
   } else {
     // Fill with just first tile, smoothworld() will pick proper piece later
-    GetTileIndexFromTypeSubIndex(usType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
+    NewTile = GetTileIndexFromTypeSubIndex(usType, REQUIRES_SMOOTHING_TILE);
 
     SetLandIndex(sGridNo, NewTile, usType, false);
   }
@@ -1165,7 +1165,7 @@ function EliminateObjectLayerRedundancy(): void {
     pValidRoad = pValidAnother = null;
     numRoads = numAnothers = 0;
     while (pObject) {
-      GetTileType(pObject.value.usIndex, addressof(uiType));
+      uiType = GetTileType(pObject.value.usIndex);
       if (uiType == Enum313.ROADPIECES) {
         // keep track of the last valid road piece, and count the total
         pValidRoad = pObject;

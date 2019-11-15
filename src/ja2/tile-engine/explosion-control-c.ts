@@ -330,12 +330,12 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
       pFenceNode = FindLevelNodeBasedOnStructure(pFenceBaseStructure.value.sGridNo, pFenceBaseStructure);
 
       // Get type from index...
-      GetTileType(pFenceNode.value.usIndex, addressof(uiFenceType));
+      uiFenceType = GetTileType(pFenceNode.value.usIndex);
 
       bFenceDestructionPartner = -1 * (pFenceBaseStructure.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner);
 
       // Get new index
-      GetTileIndexFromTypeSubIndex(uiFenceType, (bFenceDestructionPartner), addressof(usTileIndex));
+      usTileIndex = GetTileIndexFromTypeSubIndex(uiFenceType, (bFenceDestructionPartner));
 
       // Set a flag indicating that the following changes are to go the the maps, temp file
       ApplyMapChangesToMapTempFile(true);
@@ -442,7 +442,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // It's -ve and 1-based, change to +ve, 1 based
           bDestructionPartner = (-1 * pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner);
 
-          GetTileType(pNode.value.usIndex, addressof(uiTileType));
+          uiTileType = GetTileType(pNode.value.usIndex);
 
           fContinue = 2;
         }
@@ -470,9 +470,9 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // OK, destrcution index is , as default, the partner, until we go over the first set of explsion
           // debris...
           if (bDestructionPartner > 39) {
-            GetTileIndexFromTypeSubIndex(Enum313.SECONDEXPLDEBRIS, (bDestructionPartner - 40), addressof(usTileIndex));
+            usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.SECONDEXPLDEBRIS, (bDestructionPartner - 40));
           } else {
-            GetTileIndexFromTypeSubIndex(Enum313.FIRSTEXPLDEBRIS, bDestructionPartner, addressof(usTileIndex));
+            usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.FIRSTEXPLDEBRIS, bDestructionPartner);
           }
 
           // Free all the non-base tiles; the base tile is at pointer 0
@@ -581,7 +581,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   }
 
                   // Replace!
-                  GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex, addressof(sNewIndex));
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -607,7 +607,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   }
 
                   // Replace!
-                  GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex, addressof(sNewIndex));
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -690,7 +690,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   }
 
                   // Replace!
-                  GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex, addressof(sNewIndex));
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -716,7 +716,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   }
 
                   // Replace!
-                  GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex, addressof(sNewIndex));
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -801,19 +801,19 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         // OK, we need to remove the water from the fountain
         // Lots of HARD CODING HERE :(
         // Get tile type
-        GetTileType(pNode.value.usIndex, addressof(uiTileType));
+        uiTileType = GetTileType(pNode.value.usIndex);
         // Check if we are a fountain!
         if (stricmp(gTilesets[giCurrentTilesetID].TileSurfaceFilenames[uiTileType], "fount1.sti") == 0) {
           // Yes we are!
           // Remove water....
           ApplyMapChangesToMapTempFile(true);
-          GetTileIndexFromTypeSubIndex(uiTileType, 1, addressof(sNewIndex));
+          sNewIndex = GetTileIndexFromTypeSubIndex(uiTileType, 1);
           RemoveStruct(sBaseGridNo, sNewIndex);
           RemoveStruct(sBaseGridNo, sNewIndex);
-          GetTileIndexFromTypeSubIndex(uiTileType, 2, addressof(sNewIndex));
+          sNewIndex = GetTileIndexFromTypeSubIndex(uiTileType, 2);
           RemoveStruct(sBaseGridNo, sNewIndex);
           RemoveStruct(sBaseGridNo, sNewIndex);
-          GetTileIndexFromTypeSubIndex(uiTileType, 3, addressof(sNewIndex));
+          sNewIndex = GetTileIndexFromTypeSubIndex(uiTileType, 3);
           RemoveStruct(sBaseGridNo, sNewIndex);
           RemoveStruct(sBaseGridNo, sNewIndex);
           ApplyMapChangesToMapTempFile(false);
@@ -836,7 +836,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         if (fContinue == 2) {
           // We have a levelnode...
           // Get new index for new grpahic....
-          GetTileIndexFromTypeSubIndex(uiTileType, bDestructionPartner, addressof(usTileIndex));
+          usTileIndex = GetTileIndexFromTypeSubIndex(uiTileType, bDestructionPartner);
 
           ApplyMapChangesToMapTempFile(true);
 
@@ -2752,7 +2752,7 @@ export function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: 
     // Are we i nthe same sector...
     if (pSamList[cnt] == sSectorNo) {
       // get graphic.......
-      GetTileIndexFromTypeSubIndex(Enum313.EIGHTISTRUCT, (gbSAMGraphicList[cnt]), addressof(usGoodGraphic));
+      usGoodGraphic = GetTileIndexFromTypeSubIndex(Enum313.EIGHTISTRUCT, (gbSAMGraphicList[cnt]));
 
       // Damaged one ( current ) is 2 less...
       usDamagedGraphic = usGoodGraphic - 2;
