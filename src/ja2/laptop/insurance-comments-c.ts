@@ -77,7 +77,7 @@ export function RenderInsuranceComments(): void {
   DisplayInsuranceDefaults();
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_COMMENTSFROM_CLIENTS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_COMMENTSFROM_CLIENTS);
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CMNT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   usPosY = INS_CMNT_FIRST_BULLET_Y;
@@ -111,14 +111,14 @@ export function RenderInsuranceComments(): void {
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
   // Display the third link text
-  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y + 6, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
   usPosX += INS_CMNT_LINK_OFFSET_X;
 
   // Display the fourth link text
-  GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW);
   DisplayWrappedString(usPosX, INS_CMNT_LINK_Y - 1, INS_CMNT_LINK_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(usPosX, INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT);
@@ -154,7 +154,7 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CMNT_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the commenters comment
-  GetInsuranceText(ubComment, sText); //+INS_CMNT_COMMENT_OFFSET_Y
+  sText = GetInsuranceText(ubComment); //+INS_CMNT_COMMENT_OFFSET_Y
   sNumPixels = DisplayWrappedString(INS_CMNT_FIRST_BULLET_X + INSURANCE_BULLET_TEXT_OFFSET_X, (usPosY), INS_CMNT_COMMENT_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the red bar under the link at the bottom
@@ -163,7 +163,7 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
   sNumPixels += 4;
 
   // Display the commenters name
-  GetInsuranceText(ubCommentorsName, sText);
+  sText = GetInsuranceText(ubCommentorsName);
   DrawTextToScreen(sText, INS_CMNT_FIRST_BULLET_X + INSURANCE_BULLET_TEXT_OFFSET_X, (usPosY + sNumPixels), INS_CMNT_REDLINE_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   return true;

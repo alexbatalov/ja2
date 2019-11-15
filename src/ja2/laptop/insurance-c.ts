@@ -134,49 +134,49 @@ export function RenderInsurance(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_BIG_TITLE_X, INSURANCE_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_WERE_LISTENING, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_WERE_LISTENING);
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INSURANCE_TOP_RED_BAR_Y - 35, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the subtitle slogan
-  GetInsuranceText(Enum90.INS_SNGL_LIFE_INSURANCE_SPECIALISTS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_LIFE_INSURANCE_SPECIALISTS);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X, INSURANCE_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the bulleted text 1
   hPixHandle = GetVideoObject(guiInsuranceBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SUBTITLE_X, INSURANCE_BULLET_TEXT_1_Y, VO_BLT_SRCTRANSPARENCY, null);
-  GetInsuranceText(Enum90.INS_MLTI_EMPLOY_HIGH_RISK, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_EMPLOY_HIGH_RISK);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X + INSURANCE_BULLET_TEXT_OFFSET_X, INSURANCE_BULLET_TEXT_1_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the bulleted text 2
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SUBTITLE_X, INSURANCE_BULLET_TEXT_2_Y, VO_BLT_SRCTRANSPARENCY, null);
-  GetInsuranceText(Enum90.INS_MLTI_HIGH_FATALITY_RATE, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_HIGH_FATALITY_RATE);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X + INSURANCE_BULLET_TEXT_OFFSET_X, INSURANCE_BULLET_TEXT_2_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the bulleted text 3
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SUBTITLE_X, INSURANCE_BULLET_TEXT_3_Y, VO_BLT_SRCTRANSPARENCY, null);
-  GetInsuranceText(Enum90.INS_MLTI_DRAIN_SALARY, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_DRAIN_SALARY);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X + INSURANCE_BULLET_TEXT_OFFSET_X, INSURANCE_BULLET_TEXT_3_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the bottom slogan
-  GetInsuranceText(Enum90.INS_MLTI_IF_ANSWERED_YES, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_IF_ANSWERED_YES);
   DrawTextToScreen(sText, INSURANCE_BOTTOM_SLOGAN_X, INSURANCE_BOTTOM_SLOGAN_Y, INSURANCE_BOTTOM_SLOGAN_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(INSURANCE_BOTTOM_LINK_RED_BAR_X, INSURANCE_BOTTOM_LINK_RED_BAR_Y, INSURANCE_BOTTOM_LINK_RED_BAR_X + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH, INSURANCE_BOTTOM_LINK_RED_BAR_Y);
 
-  GetInsuranceText(Enum90.INS_SNGL_COMMENTSFROM_CLIENTS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_COMMENTSFROM_CLIENTS);
   DisplayWrappedString(INSURANCE_LINK_TEXT_1_X, INSURANCE_LINK_TEXT_1_Y, INSURANCE_LINK_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(INSURANCE_BOTTOM_LINK_RED_BAR_X_2, INSURANCE_BOTTOM_LINK_RED_BAR_Y, INSURANCE_BOTTOM_LINK_RED_BAR_X_2 + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH, INSURANCE_BOTTOM_LINK_RED_BAR_Y);
 
-  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK);
   DisplayWrappedString(INSURANCE_LINK_TEXT_2_X, INSURANCE_LINK_TEXT_2_Y + 7, INSURANCE_LINK_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the red bar under the link at the bottom
   DisplaySmallRedLineWithShadow(INSURANCE_BOTTOM_LINK_RED_BAR_X_3, INSURANCE_BOTTOM_LINK_RED_BAR_Y, INSURANCE_BOTTOM_LINK_RED_BAR_X_3 + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH, INSURANCE_BOTTOM_LINK_RED_BAR_Y);
 
-  GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW);
   DisplayWrappedString(INSURANCE_LINK_TEXT_3_X, INSURANCE_LINK_TEXT_3_Y + 7, INSURANCE_LINK_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -301,7 +301,9 @@ export function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-export function GetInsuranceText(ubNumber: UINT8, pString: Pointer<string> /* STR16 */): void {
+export function GetInsuranceText(ubNumber: UINT8): string {
+  let pString: string;
+
   let uiStartLoc: UINT32 = 0;
 
   if (ubNumber < Enum90.INS_MULTI_LINE_BEGINS) {
@@ -313,6 +315,8 @@ export function GetInsuranceText(ubNumber: UINT8, pString: Pointer<string> /* ST
     uiStartLoc = INSURANCE_TEXT_MULTI_LINE_SIZE * (ubNumber - Enum90.INS_MULTI_LINE_BEGINS - 1);
     pString = LoadEncryptedDataFromFile(INSURANCE_TEXT_MULTI_FILE, uiStartLoc, INSURANCE_TEXT_MULTI_LINE_SIZE);
   }
+
+  return pString;
 }
 
 function SelectInsuranceRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {

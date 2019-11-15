@@ -14,6 +14,15 @@ export interface LIFE_INSURANCE_PAYOUT {
   iPayOutPrice: INT32;
 }
 
+export function createLifeInsurancePayout(): LIFE_INSURANCE_PAYOUT {
+  return {
+    fActive: false,
+    ubSoldierID: 0,
+    ubMercID: 0,
+    iPayOutPrice: 0,
+  };
+}
+
 export interface LAST_HIRED_MERC_STRUCT {
   fHaveDisplayedPopUpInLaptop: boolean; // Is set when the popup gets displayed, reset when entering laptop again.
   iIdOfMerc: INT32;
@@ -119,12 +128,12 @@ export interface LaptopSaveInfoStruct {
   BobbyRayInventory: STORE_INVENTORY[] /* [MAXITEMS] */;
   BobbyRayUsedInventory: STORE_INVENTORY[] /* [MAXITEMS] */;
 
-  BobbyRayOrdersOnDeliveryArray: Pointer<BobbyRayOrderStruct>;
+  BobbyRayOrdersOnDeliveryArray: BobbyRayOrderStruct[] /* Pointer<BobbyRayOrderStruct> */;
   usNumberOfBobbyRayOrderItems: UINT8; // The number of elements in the array
   usNumberOfBobbyRayOrderUsed: UINT8; // The number of items in the array that are used
 
   // Insurance Site
-  pLifeInsurancePayouts: Pointer<LIFE_INSURANCE_PAYOUT>;
+  pLifeInsurancePayouts: LIFE_INSURANCE_PAYOUT[] /* Pointer<LIFE_INSURANCE_PAYOUT> */;
   ubNumberLifeInsurancePayouts: UINT8; // The number of elements in the array
   ubNumberLifeInsurancePayoutUsed: UINT8; // The number of items in the array that are used
 

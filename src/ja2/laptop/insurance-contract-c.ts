@@ -235,7 +235,7 @@ export function RenderInsuranceContract(): void {
   let sNextMercID: INT16;
   let usPosX: UINT16;
   let fIsThereAnyAimMercs: boolean = false;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -255,11 +255,11 @@ export function RenderInsuranceContract(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y);
-  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK);
   DisplayWrappedString(usPosX, INS_CTRCT_BOTTON_LINK_Y + 12, INS_CTRCT_BOTTOM_LINK_RED_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_ENTERING_REVIEWING_CLAIM, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_ENTERING_REVIEWING_CLAIM);
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CTRCT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Get and display the insurance bullet
@@ -267,7 +267,7 @@ export function RenderInsuranceContract(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the first instruction sentence
-  GetInsuranceText(Enum90.INS_MLTI_TO_PURCHASE_INSURANCE, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_TO_PURCHASE_INSURANCE);
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Get and display the insurance bullet
@@ -275,7 +275,7 @@ export function RenderInsuranceContract(): void {
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // Display the second instruction sentence
-  GetInsuranceText(Enum90.INS_MLTI_ONCE_SATISFIED_CLICK_ACCEPT, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_ONCE_SATISFIED_CLICK_ACCEPT);
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the red bar under the instruction text
@@ -285,7 +285,7 @@ export function RenderInsuranceContract(): void {
   while ((ubCount < gubNumberofDisplayedInsuranceGrids) && (sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID)) {
     sMercID = gubInsuranceMercArray[sNextMercID];
 
-    pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sMercID)]);
+    pSoldier = Menptr[GetSoldierIDFromMercID(sMercID)];
 
     if ((sMercID != -1) && MercIsInsurable(pSoldier)) {
       DisplayOrderGrid(ubCount, sMercID);
@@ -300,11 +300,11 @@ export function RenderInsuranceContract(): void {
     // if there where AIM mercs ( on short contract )
     if (AreAnyAimMercsOnTeam()) {
       // Display Error Message, all aim mercs are on short contract
-      GetInsuranceText(Enum90.INS_MLTI_ALL_AIM_MERCS_ON_SHORT_CONTRACT, sText);
+      sText = GetInsuranceText(Enum90.INS_MLTI_ALL_AIM_MERCS_ON_SHORT_CONTRACT);
       DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
     } else {
       // Display Error Message, no valid mercs
-      GetInsuranceText(Enum90.INS_MLTI_NO_QUALIFIED_MERCS, sText);
+      sText = GetInsuranceText(Enum90.INS_MLTI_NO_QUALIFIED_MERCS);
       DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, InsContractNoMercsPopupCallBack);
     }
   }
@@ -373,9 +373,9 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   let sText: string /* wchar_t[800] */;
   let fDisplayMercContractStateTextColorInRed: boolean = false;
 
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
-  pSoldier = addressof(Menptr[GetSoldierIDFromMercID(ubMercID)]);
+  pSoldier = Menptr[GetSoldierIDFromMercID(ubMercID)];
 
   usPosX = usPosY = 0;
 
@@ -383,19 +383,19 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
     case 0:
       usPosX = INS_CTRCT_ORDER_GRID1_X;
       gubMercIDForMercInForm1 = ubMercID;
-      gsForm1InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
+      gsForm1InsuranceLengthNumber = pSoldier.iTotalLengthOfInsuranceContract;
       break;
 
     case 1:
       usPosX = INS_CTRCT_ORDER_GRID2_X;
       gubMercIDForMercInForm2 = ubMercID;
-      gsForm2InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
+      gsForm2InsuranceLengthNumber = pSoldier.iTotalLengthOfInsuranceContract;
       break;
 
     case 2:
       usPosX = INS_CTRCT_ORDER_GRID3_X;
       gubMercIDForMercInForm3 = ubMercID;
-      gsForm3InsuranceLengthNumber = pSoldier.value.iTotalLengthOfInsuranceContract;
+      gsForm3InsuranceLengthNumber = pSoldier.iTotalLengthOfInsuranceContract;
       break;
 
     default:
@@ -439,32 +439,32 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   DrawTextToScreen(gMercProfiles[ubMercID].zNickname, (usPosX + INS_CTRCT_OG_NICK_NAME_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_NICK_NAME_OFFSET_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Get the text to display the mercs current insurance contract status
-  if (IsMercDead(pSoldier.value.ubProfile)) {
+  if (IsMercDead(pSoldier.ubProfile)) {
     // if the merc has a contract
-    if (pSoldier.value.usLifeInsurance) {
+    if (pSoldier.usLifeInsurance) {
       // Display the contract text
-      GetInsuranceText(Enum90.INS_SNGL_DEAD_WITH_CONTRACT, sText);
+      sText = GetInsuranceText(Enum90.INS_SNGL_DEAD_WITH_CONTRACT);
     } else {
       // Display the contract text
-      GetInsuranceText(Enum90.INS_SNGL_DEAD_NO_CONTRACT, sText);
+      sText = GetInsuranceText(Enum90.INS_SNGL_DEAD_NO_CONTRACT);
     }
     DisplayWrappedString((usPosX + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_OG_HAS_CONTRACT_OFFSET_Y, INS_CTRCT_CONTRACT_STATUS_TEXT_WIDTH, 2, INS_FONT_SMALL(), INS_FONT_COLOR_RED, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   } else {
     // if the merc has a contract
-    if (pSoldier.value.usLifeInsurance) {
+    if (pSoldier.usLifeInsurance) {
       // if the soldier can extend their insurance
       if (CanSoldierExtendInsuranceContract(pSoldier)) {
         // Display the contract text
-        GetInsuranceText(Enum90.INS_SNGL_PARTIALLY_INSURED, sText);
+        sText = GetInsuranceText(Enum90.INS_SNGL_PARTIALLY_INSURED);
         fDisplayMercContractStateTextColorInRed = true;
       } else {
         // Display the contract text
-        GetInsuranceText(Enum90.INS_SNGL_CONTRACT, sText);
+        sText = GetInsuranceText(Enum90.INS_SNGL_CONTRACT);
         fDisplayMercContractStateTextColorInRed = false;
       }
     } else {
       // Display the contract text
-      GetInsuranceText(Enum90.INS_SNGL_NOCONTRACT, sText);
+      sText = GetInsuranceText(Enum90.INS_SNGL_NOCONTRACT);
       fDisplayMercContractStateTextColorInRed = true;
     }
     if (fDisplayMercContractStateTextColorInRed)
@@ -474,19 +474,19 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   }
 
   // Display the Emplyment contract text
-  GetInsuranceText(Enum90.INS_SNGL_EMPLOYMENT_CONTRACT, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_EMPLOYMENT_CONTRACT);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the merc contract Length text
-  GetInsuranceText(Enum90.INS_SNGL_LENGTH, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_LENGTH);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the mercs contract length
-  sText = swprintf("%d", pSoldier.value.iTotalContractLength);
+  sText = swprintf("%d", pSoldier.iTotalContractLength);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Display the days remaining for the emplyment contract text
-  GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // display the amount of time the merc has left on their Regular contract
@@ -498,14 +498,14 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_OG_BOX_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y, INS_CTRCT_OG_BOX_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
   // Display the Insurqance contract
-  GetInsuranceText(Enum90.INS_SNGL_INSURANCE_CONTRACT, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_INSURANCE_CONTRACT);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_INSURANCE_CNTRCT_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
-  GetInsuranceText(Enum90.INS_SNGL_LENGTH, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_LENGTH);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_LENGTH_OFFSET_Y + 54, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the insurance days remaining text
-  GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_DAYS_REMAINING);
   DrawTextToScreen(sText, (usPosX + INS_CTRCT_LENGTH_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_DAYS_REMAINING_OFFSET_Y + 54, 0, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   //
@@ -516,7 +516,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   if (IsMercDead(ubMercID))
     sText = swprintf("%s", pMessageStrings[Enum333.MSG_LOWERCASE_NA]);
 
-  else if (pSoldier.value.usLifeInsurance != 0)
+  else if (pSoldier.usLifeInsurance != 0)
     sText = swprintf("%d", GetTimeRemainingOnSoldiersInsuranceContract(pSoldier));
 
   else
@@ -530,7 +530,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
   // if the soldier can get insurance, calculate a new cost
   if (CanSoldierExtendInsuranceContract(pSoldier)) {
-    iCostOfContract = CalculateInsuranceContractCost(CalculateSoldiersInsuranceContractLength(pSoldier), pSoldier.value.ubProfile);
+    iCostOfContract = CalculateInsuranceContractCost(CalculateSoldiersInsuranceContractLength(pSoldier), pSoldier.ubProfile);
   }
 
   else {
@@ -542,7 +542,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
     Assert(0);
   } else {
     // Display the premium owing text
-    GetInsuranceText(Enum90.INS_SNGL_PREMIUM_OWING, sText);
+    sText = GetInsuranceText(Enum90.INS_SNGL_PREMIUM_OWING);
     DrawTextToScreen(sText, (usPosX + INS_CTRCT_EMPLYMNT_CNTRCT_TEXT_OFFSET_X), INS_CTRCT_ORDER_GRID1_Y + INS_CTRCT_PREMIUM_OWING_OFFSET_Y, INS_CTRCT_ORDER_GRID_WIDTH, INS_FONT_MED(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     // display the amount of refund
@@ -737,7 +737,7 @@ function SelectInsuranceContractRegionCallBack(pRegion: MOUSE_REGION, iReason: I
 
 function CountInsurableMercs(): INT8 {
   let cnt: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let bLastTeamID: INT16;
   let bCount: INT8 = 0;
 
@@ -745,7 +745,7 @@ function CountInsurableMercs(): INT8 {
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
-  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier = MercPtrs[cnt]) {
     if (MercIsInsurable(pSoldier)) {
       bCount++;
     }
@@ -830,7 +830,7 @@ function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
   // passed in either 1,2,3 should be 0,1,2
   ubFormID--;
 
-  PurchaseOrExtendInsuranceForSoldier(addressof(Menptr[ubSoldierID]), CalculateSoldiersInsuranceContractLength(addressof(Menptr[ubSoldierID])));
+  PurchaseOrExtendInsuranceForSoldier(Menptr[ubSoldierID], CalculateSoldiersInsuranceContractLength(Menptr[ubSoldierID]));
 
   RenderInsuranceContract();
 }
@@ -839,25 +839,25 @@ function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
 export function DailyUpdateOfInsuredMercs(): void {
   let cnt: INT16;
   let bLastTeamID: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
-  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier = MercPtrs[cnt]) {
     // if the soldier is in the team array
-    if (pSoldier.value.bActive) {
+    if (pSoldier.bActive) {
       // if the merc has life insurance
-      if (pSoldier.value.usLifeInsurance) {
+      if (pSoldier.usLifeInsurance) {
         // if the merc wasn't just hired
-        if (GetWorldDay() != pSoldier.value.iStartOfInsuranceContract) {
+        if (GetWorldDay() != pSoldier.iStartOfInsuranceContract) {
           // if the contract has run out of time
           if (GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) <= 0) {
             // if the soldier isn't dead
-            if (!IsMercDead(pSoldier.value.ubProfile)) {
-              pSoldier.value.usLifeInsurance = 0;
-              pSoldier.value.iTotalLengthOfInsuranceContract = 0;
-              pSoldier.value.iStartOfInsuranceContract = 0;
+            if (!IsMercDead(pSoldier.ubProfile)) {
+              pSoldier.usLifeInsurance = 0;
+              pSoldier.iTotalLengthOfInsuranceContract = 0;
+              pSoldier.iStartOfInsuranceContract = 0;
             }
           }
         }
@@ -870,7 +870,7 @@ const MIN_INSURANCE_RATIO = 0.1;
 const MAX_INSURANCE_RATIO = 10.0;
 
 export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
   let sTotalSkill: INT16 = 0;
   let flSkillFactor: FLOAT;
   let flFitnessFactor: FLOAT;
@@ -879,18 +879,18 @@ export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8):
   let flRiskFactor: FLOAT;
   let uiDailyInsurancePremium: UINT32;
   let uiTotalInsurancePremium: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
-  pSoldier = addressof(Menptr[GetSoldierIDFromMercID(ubMercID)]);
+  pSoldier = Menptr[GetSoldierIDFromMercID(ubMercID)];
 
   // only mercs with at least 2 days to go on their employment contract are insurable
   // def: 2/5/99.  However if they already have insurance is SHOULD be ok
-  if (GetTimeRemainingOnSoldiersContract(pSoldier) < 2 && !(pSoldier.value.usLifeInsurance != 0 && GetTimeRemainingOnSoldiersContract(pSoldier) >= 1)) {
+  if (GetTimeRemainingOnSoldiersContract(pSoldier) < 2 && !(pSoldier.usLifeInsurance != 0 && GetTimeRemainingOnSoldiersContract(pSoldier) >= 1)) {
     return 0;
   }
 
   // If the merc is currently being held captive, get out
-  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+  if (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
     return 0;
   }
 
@@ -903,17 +903,17 @@ export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8):
           }
           */
 
-  pProfile = addressof(gMercProfiles[ubMercID]);
+  pProfile = gMercProfiles[ubMercID];
 
   // calculate the degree of training
-  sTotalSkill = (pProfile.value.bMarksmanship + pProfile.value.bMedical + pProfile.value.bMechanical + pProfile.value.bExplosive + pProfile.value.bLeadership) / 5;
+  sTotalSkill = (pProfile.bMarksmanship + pProfile.bMedical + pProfile.bMechanical + pProfile.bExplosive + pProfile.bLeadership) / 5;
   flSkillFactor = DiffFromNormRatio(sTotalSkill, INS_CTRCT_SKILL_BASE);
 
   // calc relative fitness level
-  flFitnessFactor = DiffFromNormRatio(pProfile.value.bLife, INS_CTRCT_FITNESS_BASE);
+  flFitnessFactor = DiffFromNormRatio(pProfile.bLife, INS_CTRCT_FITNESS_BASE);
 
   // calc relative experience
-  flExpFactor = DiffFromNormRatio(pProfile.value.bExpLevel, INS_CTRCT_EXP_LEVEL_BASE);
+  flExpFactor = DiffFromNormRatio(pProfile.bExpLevel, INS_CTRCT_EXP_LEVEL_BASE);
 
   // calc player's survival rate (death rate subtracted from 100)
   flSurvivalFactor = DiffFromNormRatio((100 - CalcDeathRate()), INS_CTRCT_SURVIVAL_BASE);
@@ -929,7 +929,7 @@ export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8):
   }
 
   // premium depend on merc's salary, the base insurance rate, and the individual's risk factor at this time
-  uiDailyInsurancePremium = (((pProfile.value.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
+  uiDailyInsurancePremium = (((pProfile.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
   // multiply by the insurance contract length
   uiTotalInsurancePremium = uiDailyInsurancePremium * iLength;
 
@@ -968,7 +968,7 @@ function InsContractNoMercsPopupCallBack(bExitValue: UINT8): void {
 
 function BuildInsuranceArray(): void {
   let cnt: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let bLastTeamID: INT16;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -976,34 +976,30 @@ function BuildInsuranceArray(): void {
   gsMaxPlayersOnTeam = 0;
 
   // store profile #s of all insurable mercs in an array
-  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier = MercPtrs[cnt]) {
     if (MercIsInsurable(pSoldier)) {
-      gubInsuranceMercArray[gsMaxPlayersOnTeam] = pSoldier.value.ubProfile;
+      gubInsuranceMercArray[gsMaxPlayersOnTeam] = pSoldier.ubProfile;
       gsMaxPlayersOnTeam++;
     }
   }
 }
 
-export function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function AddLifeInsurancePayout(pSoldier: SOLDIERTYPE): boolean {
   let ubPayoutID: UINT8;
   let uiTimeInMinutes: UINT32;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
   let uiCostPerDay: UINT32;
   let uiDaysToPay: UINT32;
 
   Assert(pSoldier != null);
-  Assert(pSoldier.value.ubProfile != NO_PROFILE);
+  Assert(pSoldier.ubProfile != NO_PROFILE);
 
-  pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
+  pProfile = gMercProfiles[pSoldier.ubProfile];
 
   // if we need to add more array elements
   if (LaptopSaveInfo.ubNumberLifeInsurancePayouts <= LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
     LaptopSaveInfo.ubNumberLifeInsurancePayouts++;
-    LaptopSaveInfo.pLifeInsurancePayouts = MemRealloc(LaptopSaveInfo.pLifeInsurancePayouts, sizeof(LIFE_INSURANCE_PAYOUT) * LaptopSaveInfo.ubNumberLifeInsurancePayouts);
-    if (LaptopSaveInfo.pLifeInsurancePayouts == null)
-      return false;
-
-    memset(addressof(LaptopSaveInfo.pLifeInsurancePayouts[LaptopSaveInfo.ubNumberLifeInsurancePayouts - 1]), 0, sizeof(LIFE_INSURANCE_PAYOUT));
+    LaptopSaveInfo.pLifeInsurancePayouts.push(createLifeInsurancePayout());
   }
 
   for (ubPayoutID = 0; ubPayoutID < LaptopSaveInfo.ubNumberLifeInsurancePayouts; ubPayoutID++) {
@@ -1012,8 +1008,8 @@ export function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean 
       break;
   }
 
-  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID = pSoldier.value.ubID;
-  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID = pSoldier.value.ubProfile;
+  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID = pSoldier.ubID;
+  LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID = pSoldier.ubProfile;
   LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].fActive = true;
 
   // This uses the merc's latest salaries, ignoring that they may be higher than the salaries paid under the current
@@ -1026,20 +1022,20 @@ export function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean 
   // avoid getting back more than the merc cost if he was on a 2-week contract!
 
   // start with the daily salary
-  uiCostPerDay = pProfile.value.sSalary;
+  uiCostPerDay = pProfile.sSalary;
 
   // consider weekly salary / day
-  if ((pProfile.value.uiWeeklySalary / 7) < uiCostPerDay) {
-    uiCostPerDay = (pProfile.value.uiWeeklySalary / 7);
+  if ((pProfile.uiWeeklySalary / 7) < uiCostPerDay) {
+    uiCostPerDay = (pProfile.uiWeeklySalary / 7);
   }
 
   // consider biweekly salary / day
-  if ((pProfile.value.uiBiWeeklySalary / 14) < uiCostPerDay) {
-    uiCostPerDay = (pProfile.value.uiBiWeeklySalary / 14);
+  if ((pProfile.uiBiWeeklySalary / 14) < uiCostPerDay) {
+    uiCostPerDay = (pProfile.uiBiWeeklySalary / 14);
   }
 
   // calculate how many full, insured days of work the merc is going to miss
-  uiDaysToPay = pSoldier.value.iTotalLengthOfInsuranceContract - (GetWorldDay() + 1 - pSoldier.value.iStartOfInsuranceContract);
+  uiDaysToPay = pSoldier.iTotalLengthOfInsuranceContract - (GetWorldDay() + 1 - pSoldier.iStartOfInsuranceContract);
 
   // calculate & store how much is to be paid out
   LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].iPayOutPrice = uiDaysToPay * uiCostPerDay;
@@ -1048,7 +1044,7 @@ export function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): boolean 
   uiTimeInMinutes = GetMidnightOfFutureDayInMinutes(1) + 16 * 60;
 
   // if the death was suspicious, or he's already been investigated twice or more
-  if (pProfile.value.ubSuspiciousDeath || (gStrategicStatus.ubInsuranceInvestigationsCnt >= 2)) {
+  if (pProfile.ubSuspiciousDeath || (gStrategicStatus.ubInsuranceInvestigationsCnt >= 2)) {
     // fraud suspected, claim will be investigated first
     AddStrategicEvent(Enum132.EVENT_INSURANCE_INVESTIGATION_STARTED, uiTimeInMinutes, ubPayoutID);
   } else {
@@ -1136,16 +1132,16 @@ export function InsuranceContractEndGameShutDown(): void {
   }
 }
 
-function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function MercIsInsurable(pSoldier: SOLDIERTYPE): boolean {
   // only A.I.M. mercs currently on player's team
-  if ((pSoldier.value.bActive) && (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
+  if ((pSoldier.bActive) && (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
     // with more than one day left on their employment contract are eligible for insurance
     // the second part is because the insurance doesn't pay for any working day already started at time of death
     //		if( ( (pSoldier->iEndofContractTime - GetWorldTotalMin()) > 24 * 60) || pSoldier->usLifeInsurance )
-    if (CanSoldierExtendInsuranceContract(pSoldier) || pSoldier.value.usLifeInsurance) {
+    if (CanSoldierExtendInsuranceContract(pSoldier) || pSoldier.usLifeInsurance) {
       // who aren't currently being held POW
       // POWs are also uninsurable - if already insured, that insurance IS valid but no new contracts or extension allowed
-      if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
+      if (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW) {
         return true;
       }
     }
@@ -1157,21 +1153,21 @@ function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 function EnableDisableInsuranceContractAcceptButtons(): void {
   // If it is the first grid
   if (gubNumberofDisplayedInsuranceGrids >= 1) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm1, addressof(guiInsuranceAcceptClearForm1Button));
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm1, guiInsuranceAcceptClearForm1Button);
   }
 
   // If it is the 2nd grid
   if (gubNumberofDisplayedInsuranceGrids >= 2) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm2, addressof(guiInsuranceAcceptClearForm2Button));
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm2, guiInsuranceAcceptClearForm2Button);
   }
 
   // If it is the 3rd grid
   if (gubNumberofDisplayedInsuranceGrids >= 3) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm3, addressof(guiInsuranceAcceptClearForm3Button));
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm3, guiInsuranceAcceptClearForm3Button);
   }
 }
 
-function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: UINT8, puiAcceptButton: Pointer<UINT32>): void {
+function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: UINT8, puiAcceptButton: UINT32): void {
   let sSoldierID: INT16 = 0;
 
   sSoldierID = GetSoldierIDFromMercID(ubMercIDForMercInForm);
@@ -1179,16 +1175,16 @@ function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: U
     return;
 
   // if the soldiers contract can be extended, enable the button
-  if (CanSoldierExtendInsuranceContract(addressof(Menptr[sSoldierID])))
-    EnableButton(puiAcceptButton.value);
+  if (CanSoldierExtendInsuranceContract(Menptr[sSoldierID]))
+    EnableButton(puiAcceptButton);
 
   // else the soldier cant extend their insurance contract, disable the button
   else
-    DisableButton(puiAcceptButton.value);
+    DisableButton(puiAcceptButton);
 
   // if the merc is dead, disable the button
   if (IsMercDead(ubMercIDForMercInForm))
-    DisableButton(puiAcceptButton.value);
+    DisableButton(puiAcceptButton);
 }
 
 /*
@@ -1220,64 +1216,64 @@ UINT32	GetContractLengthForFormNumber( UINT8 ubFormID )
 }
 */
 
-function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
+function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: SOLDIERTYPE): UINT32 {
   // if the soldier has life insurance
-  if (pSoldier.value.usLifeInsurance) {
+  if (pSoldier.usLifeInsurance) {
     // if the insurance contract hasnt started yet
-    if (GetWorldDay() < pSoldier.value.iStartOfInsuranceContract)
-      return pSoldier.value.iTotalLengthOfInsuranceContract;
+    if (GetWorldDay() < pSoldier.iStartOfInsuranceContract)
+      return pSoldier.iTotalLengthOfInsuranceContract;
     else
-      return pSoldier.value.iTotalLengthOfInsuranceContract - (GetWorldDay() - pSoldier.value.iStartOfInsuranceContract);
+      return pSoldier.iTotalLengthOfInsuranceContract - (GetWorldDay() - pSoldier.iStartOfInsuranceContract);
   } else
     return 0;
 }
 
-function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
-  let iDayMercLeaves: INT32 = (pSoldier.value.iEndofContractTime / 1440) - 1;
+function GetTimeRemainingOnSoldiersContract(pSoldier: SOLDIERTYPE): UINT32 {
+  let iDayMercLeaves: INT32 = (pSoldier.iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time left would be different if we did the calc
   // at 11:59 or 12:01 ( noon )
-  if (pSoldier.value.iEndofContractTime % 1440)
+  if (pSoldier.iEndofContractTime % 1440)
     iDayMercLeaves++;
 
   // Subtract todays day number
   iDayMercLeaves = iDayMercLeaves - GetWorldDay();
 
-  if (iDayMercLeaves > pSoldier.value.iTotalContractLength)
-    iDayMercLeaves = pSoldier.value.iTotalContractLength;
+  if (iDayMercLeaves > pSoldier.iTotalContractLength)
+    iDayMercLeaves = pSoldier.iTotalContractLength;
 
   return iDayMercLeaves;
   //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) / 1440 );
 }
 
-export function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
+export function PurchaseOrExtendInsuranceForSoldier(pSoldier: SOLDIERTYPE, uiInsuranceLength: UINT32): void {
   let iAmountOfMoneyTransfer: INT32 = -1;
 
   if (pSoldier == null)
     AssertMsg(0, "Soldier pointer is NULL!");
 
   // if the user doesnt have insruance already,
-  if (!(pSoldier.value.usLifeInsurance)) {
+  if (!(pSoldier.usLifeInsurance)) {
     // specify the start date of the contract
-    pSoldier.value.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
-    pSoldier.value.uiStartTimeOfInsuranceContract = GetWorldTotalMin();
+    pSoldier.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
+    pSoldier.uiStartTimeOfInsuranceContract = GetWorldTotalMin();
   }
 
   // transfer money
-  iAmountOfMoneyTransfer = CalculateInsuranceContractCost(uiInsuranceLength, pSoldier.value.ubProfile);
+  iAmountOfMoneyTransfer = CalculateInsuranceContractCost(uiInsuranceLength, pSoldier.ubProfile);
 
   // if the user did have insruance already,
-  if (pSoldier.value.usLifeInsurance) {
+  if (pSoldier.usLifeInsurance) {
     // specify the start date of the contract
-    pSoldier.value.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
+    pSoldier.iStartOfInsuranceContract = CalcStartDayOfInsurance(pSoldier);
   }
 
   // add transaction to finaces page
   // if the player has life insurance
-  if (pSoldier.value.usLifeInsurance) {
+  if (pSoldier.usLifeInsurance) {
     // if the player is extending the contract
     if (iAmountOfMoneyTransfer > 0)
-      AddTransactionToPlayersBook(Enum80.EXTENDED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(Enum80.EXTENDED_INSURANCE, pSoldier.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
     else
       Assert(0);
   } else {
@@ -1285,7 +1281,7 @@ export function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYP
     if (LaptopSaveInfo.iCurrentBalance < iAmountOfMoneyTransfer) {
       let sText: string /* wchar_t[800] */;
 
-      GetInsuranceText(Enum90.INS_MLTI_NOT_ENOUGH_FUNDS, sText);
+      sText = GetInsuranceText(Enum90.INS_MLTI_NOT_ENOUGH_FUNDS);
       if (guiCurrentScreen == Enum26.LAPTOP_SCREEN)
         DoLapTopMessageBox(Enum24.MSG_BOX_RED_ON_WHITE, sText, Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);
       else
@@ -1294,42 +1290,42 @@ export function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYP
       // else if the player has enought to cover the bill, let him
 
       // the player just purchased life insurance
-      AddTransactionToPlayersBook(Enum80.PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
+      AddTransactionToPlayersBook(Enum80.PURCHASED_INSURANCE, pSoldier.ubProfile, GetWorldTotalMin(), -(iAmountOfMoneyTransfer));
 
       // add an entry in the history page for the purchasing of life insurance
-      AddHistoryToPlayersLog(Enum83.HISTORY_PURCHASED_INSURANCE, pSoldier.value.ubProfile, GetWorldTotalMin(), -1, -1);
+      AddHistoryToPlayersLog(Enum83.HISTORY_PURCHASED_INSURANCE, pSoldier.ubProfile, GetWorldTotalMin(), -1, -1);
 
       // Set that we have life insurance
-      pSoldier.value.usLifeInsurance = 1;
+      pSoldier.usLifeInsurance = 1;
     }
   }
 
-  pSoldier.value.iTotalLengthOfInsuranceContract += uiInsuranceLength;
+  pSoldier.iTotalLengthOfInsuranceContract += uiInsuranceLength;
 
   // make sure the length doesnt exceed the contract length
   if ((GetTimeRemainingOnSoldiersInsuranceContract(pSoldier)) > GetTimeRemainingOnSoldiersContract(pSoldier)) {
-    pSoldier.value.iTotalLengthOfInsuranceContract -= GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) - GetTimeRemainingOnSoldiersContract(pSoldier);
+    pSoldier.iTotalLengthOfInsuranceContract -= GetTimeRemainingOnSoldiersInsuranceContract(pSoldier) - GetTimeRemainingOnSoldiersContract(pSoldier);
   }
 }
 
-function CanSoldierExtendInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function CanSoldierExtendInsuranceContract(pSoldier: SOLDIERTYPE): boolean {
   if (CalculateSoldiersInsuranceContractLength(pSoldier) != 0)
     return true;
   else
     return false;
 }
 
-function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+function CalculateSoldiersInsuranceContractLength(pSoldier: SOLDIERTYPE): INT32 {
   let iInsuranceContractLength: INT32 = 0;
   let uiTimeRemainingOnSoldiersContract: UINT32 = GetTimeRemainingOnSoldiersContract(pSoldier);
 
   // if the merc is dead
-  if (IsMercDead(pSoldier.value.ubProfile))
+  if (IsMercDead(pSoldier.ubProfile))
     return 0;
 
   // only mercs with at least 2 days to go on their employment contract are insurable
   // def: 2/5/99.  However if they already have insurance is SHOULD be ok
-  if (uiTimeRemainingOnSoldiersContract < 2 && !(pSoldier.value.usLifeInsurance != 0 && uiTimeRemainingOnSoldiersContract >= 1)) {
+  if (uiTimeRemainingOnSoldiersContract < 2 && !(pSoldier.usLifeInsurance != 0 && uiTimeRemainingOnSoldiersContract >= 1)) {
     return 0;
   }
 
@@ -1338,7 +1334,7 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
   //
 
   // if the soldier has an insurance contract, dont deduct a day
-  if (pSoldier.value.usLifeInsurance || DidGameJustStart())
+  if (pSoldier.usLifeInsurance || DidGameJustStart())
     iInsuranceContractLength = uiTimeRemainingOnSoldiersContract - GetTimeRemainingOnSoldiersInsuranceContract(pSoldier);
 
   // else deduct a day
@@ -1354,17 +1350,17 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
   if (iInsuranceContractLength < 0)
     iInsuranceContractLength = 0;
 
-  if (pSoldier.value.usLifeInsurance && pSoldier.value.iStartOfInsuranceContract >= GetWorldDay() && iInsuranceContractLength < 2)
+  if (pSoldier.usLifeInsurance && pSoldier.iStartOfInsuranceContract >= GetWorldDay() && iInsuranceContractLength < 2)
     iInsuranceContractLength = 0;
 
   return iInsuranceContractLength;
 }
 
-function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
+function CalcStartDayOfInsurance(pSoldier: SOLDIERTYPE): INT32 {
   let uiDayToStartInsurance: UINT32 = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
-  if (pSoldier.value.bAssignment == Enum117.IN_TRANSIT && !DidGameJustStart()) {
+  if (pSoldier.bAssignment == Enum117.IN_TRANSIT && !DidGameJustStart()) {
     uiDayToStartInsurance = GetWorldDay();
   } else {
     // Get tomorows date ( and convert it to days )
@@ -1377,13 +1373,13 @@ function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 function AreAnyAimMercsOnTeam(): boolean {
   let sNextMercID: INT16 = 0;
   let fIsThereAnyAimMercs: boolean = false;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   for (sNextMercID = 0; sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID; sNextMercID++) {
-    pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sNextMercID)]);
+    pSoldier = Menptr[GetSoldierIDFromMercID(sNextMercID)];
 
     // check to see if any of the mercs are AIM mercs
-    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+    if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
       fIsThereAnyAimMercs = true;
     }
   }

@@ -42,7 +42,7 @@ const enum Enum89 {
 }
 let gubCurrentInsInfoSubPage: UINT8 = 0;
 
-let InsuranceInfoSubPagesVisitedFlag: boolean[] /* [INS_INFO_LAST_PAGE - 1] */;
+let InsuranceInfoSubPagesVisitedFlag: boolean[] /* [INS_INFO_LAST_PAGE - 1] */ = createArray(Enum89.INS_INFO_LAST_PAGE - 1, false);
 
 let guiInsPrevButtonImage: INT32;
 let guiInsPrevBackButton: UINT32;
@@ -59,7 +59,7 @@ function GameInitInsuranceInfo(): void {
 }
 
 export function EnterInitInsuranceInfo(): void {
-  memset(addressof(InsuranceInfoSubPagesVisitedFlag), 0, Enum89.INS_INFO_LAST_PAGE - 1);
+  InsuranceInfoSubPagesVisitedFlag.fill(false);
 }
 
 export function EnterInsuranceInfo(): boolean {
@@ -168,7 +168,7 @@ export function RenderInsuranceInfo(): void {
 
   // Display the red bar under the link at the bottom.  and the text
   DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
-  GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_TO_ENTER_REVIEW);
   DisplayWrappedString(usPosX, INS_INFO_LINK_TO_CONTRACT_TEXT_Y, INS_INFO_LINK_TO_CONTRACT_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -251,31 +251,31 @@ function DisplaySubmitClaimPage(): void {
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_SUBMITTING_CLAIM, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_SUBMITTING_CLAIM);
   DrawTextToScreen(sText, INS_INFO_SUBTITLE_X, INS_INFO_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_MLTI_U_CAN_REST_ASSURED, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_U_CAN_REST_ASSURED);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
-  GetInsuranceText(Enum90.INS_MLTI_HAD_U_HIRED_AN_INDIVIDUAL, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_HAD_U_HIRED_AN_INDIVIDUAL);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // display the BIG FRAUD
-  GetInsuranceText(Enum90.INS_SNGL_FRAUD, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_FRAUD);
   DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG(), INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
   usPosX = INS_INFO_FIRST_PARAGRAPH_X + StringPixLength(sText, INS_FONT_BIG()) + 2;
-  GetInsuranceText(Enum90.INS_MLTI_WE_RESERVE_THE_RIGHT, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_WE_RESERVE_THE_RIGHT);
   usNewLineOffset += DisplayWrappedString(usPosX, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  GetInsuranceText(Enum90.INS_MLTI_SHOULD_THERE_BE_GROUNDS, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_SHOULD_THERE_BE_GROUNDS);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
-  GetInsuranceText(Enum90.INS_MLTI_SHOULD_SUCH_A_SITUATION, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_SHOULD_SUCH_A_SITUATION);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
@@ -288,10 +288,10 @@ function DisplayPremiumPage(): void {
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_PREMIUMS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_PREMIUMS);
   DrawTextToScreen(sText, INS_INFO_SUBTITLE_X, INS_INFO_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  GetInsuranceText(Enum90.INS_MLTI_EACH_TIME_U_COME_TO_US, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_EACH_TIME_U_COME_TO_US);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
@@ -299,7 +299,7 @@ function DisplayPremiumPage(): void {
   hPixHandle = GetVideoObject(guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetInsuranceText(Enum90.INS_MLTI_LENGTH_OF_EMPLOYMENT_CONTRACT, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_LENGTH_OF_EMPLOYMENT_CONTRACT);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
@@ -307,7 +307,7 @@ function DisplayPremiumPage(): void {
   hPixHandle = GetVideoObject(guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetInsuranceText(Enum90.INS_MLTI_EMPLOYEES_AGE_AND_HEALTH, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_EMPLOYEES_AGE_AND_HEALTH);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
@@ -315,7 +315,7 @@ function DisplayPremiumPage(): void {
   hPixHandle = GetVideoObject(guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetInsuranceText(Enum90.INS_MLTI_EMPLOOYEES_TRAINING_AND_EXP, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_EMPLOOYEES_TRAINING_AND_EXP);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
@@ -328,19 +328,19 @@ function DisplayRenewingPremiumPage(): void {
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_RENEWL_PREMIUMS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_RENEWL_PREMIUMS);
   DrawTextToScreen(sText, INS_INFO_SUBTITLE_X, INS_INFO_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  GetInsuranceText(Enum90.INS_MLTI_WHEN_IT_COMES_TIME_TO_RENEW, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_WHEN_IT_COMES_TIME_TO_RENEW);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
-  GetInsuranceText(Enum90.INS_MLTI_SHOULD_THE_PROJECT_BE_GOING_WELL, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_SHOULD_THE_PROJECT_BE_GOING_WELL);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // display the LOWER PREMIUM FOR RENWING EARLY
-  GetInsuranceText(Enum90.INS_SNGL_LOWER_PREMIUMS_4_RENEWING, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_LOWER_PREMIUMS_4_RENEWING);
   DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG(), INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS + 2;
 
@@ -362,18 +362,18 @@ function DisplayCancelationPagePage(): void {
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_POLICY_CANCELATIONS, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_POLICY_CANCELATIONS);
   DrawTextToScreen(sText, INS_INFO_SUBTITLE_X, INS_INFO_SUBTITLE_Y, 0, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  GetInsuranceText(Enum90.INS_MLTI_WE_WILL_ACCEPT_INS_CANCELATION, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_WE_WILL_ACCEPT_INS_CANCELATION);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
-  GetInsuranceText(Enum90.INS_MLTI_1_HOUR_EXCLUSION_A, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_1_HOUR_EXCLUSION_A);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
-  GetInsuranceText(Enum90.INS_MLTI_1_HOUR_EXCLUSION_B, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_1_HOUR_EXCLUSION_B);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
@@ -413,21 +413,21 @@ function DisplayInfoTocPage(): void {
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
   // Display the title slogan
-  GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_HOW_DOES_INS_WORK);
   DrawTextToScreen(sText, INS_INFO_INFO_TOC_TITLE_X, INS_INFO_INFO_TOC_TITLE_Y, 439, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
   // Display the First paragraph
-  GetInsuranceText(Enum90.INS_MLTI_HIRING_4_SHORT_TERM_HIGH_RISK_1, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_HIRING_4_SHORT_TERM_HIGH_RISK_1);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // Display the 2nd paragraph
-  GetInsuranceText(Enum90.INS_MLTI_HIRING_4_SHORT_TERM_HIGH_RISK_2, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_HIRING_4_SHORT_TERM_HIGH_RISK_2);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // Display the sub title
-  GetInsuranceText(Enum90.INS_SNGL_WE_CAN_OFFER_U, sText);
+  sText = GetInsuranceText(Enum90.INS_SNGL_WE_CAN_OFFER_U);
   DrawTextToScreen(sText, INS_INFO_TOC_SUBTITLE_X, usNewLineOffset, 640 - INS_INFO_INFO_TOC_TITLE_X, INS_FONT_BIG(), INS_FONT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usPosY = usNewLineOffset + 12;
   DisplaySmallRedLineWithShadow(INS_INFO_SUBTITLE_X, usPosY, (INS_INFO_SUBTITLE_X + INS_INFO_SUBTITLE_LINE_WIDTH), usPosY);
@@ -443,7 +443,7 @@ function DisplayInfoTocPage(): void {
   hPixHandle = GetVideoObject(guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetInsuranceText(Enum90.INS_MLTI_REASONABLE_AND_FLEXIBLE, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_REASONABLE_AND_FLEXIBLE);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
@@ -455,7 +455,7 @@ function DisplayInfoTocPage(): void {
   hPixHandle = GetVideoObject(guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, null);
 
-  GetInsuranceText(Enum90.INS_MLTI_QUICKLY_AND_EFFICIENT, sText);
+  sText = GetInsuranceText(Enum90.INS_MLTI_QUICKLY_AND_EFFICIENT);
   usNewLineOffset += DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X + INSURANCE_BULLET_TEXT_OFFSET_X, usNewLineOffset, INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_MED(), INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
