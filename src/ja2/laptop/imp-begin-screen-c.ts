@@ -57,8 +57,8 @@ let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, c
 export function EnterIMPBeginScreen(): void {
   // reset all variables
 
-  memset(pFullNameString, 0, sizeof(pFullNameString));
-  memset(pNickNameString, 0, sizeof(pNickNameString));
+  pFullNameString = '';
+  pNickNameString = '';
 
   // if we are not restarting...then copy over name, set cursor and array positions
   if (iCurrentProfileMode != 0) {
@@ -70,7 +70,7 @@ export function EnterIMPBeginScreen(): void {
     uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
 
     // set gender too
-    bGenderFlag = fCharacterIsMale;
+    bGenderFlag = Number(fCharacterIsMale);
   } else {
     uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X;
     uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X;
@@ -151,13 +151,13 @@ export function ExitIMPBeginScreen(): void {
   // is nick name too long?..shorten
   if (pNickNameString.length > 8) {
     // null out char 9
-    pNickNameString[8] = 0;
+    pNickNameString = pNickNameString.substring(0, 8);
   }
 
   pNickName = pNickNameString;
 
   // set gender
-  fCharacterIsMale = bGenderFlag;
+  fCharacterIsMale = Boolean(bGenderFlag);
 
   return;
 }
@@ -251,9 +251,9 @@ function BtnIMPBeginScreenDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
       // back to mainpage
 
       // check to see if a name has been selected, if not, do not allow player to proceed with more char generation
-      if ((pFullNameString[0] != 0) && (pFullNameString[0] != ' ') && (bGenderFlag != -1)) {
+      if ((pFullNameString != '') && (pFullNameString[0] != ' ') && (bGenderFlag != -1)) {
         // valid full name, check to see if nick name
-        if ((pNickNameString[0] == 0) || (pNickNameString[0] == ' ')) {
+        if ((pNickNameString == '') || (pNickNameString[0] == ' ')) {
           // no nick name
           // copy first name to nick name
           CopyFirstNameIntoNickName();
@@ -372,7 +372,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
             }
 
             // null out char
-            pFullNameString[uiFullNameCharacterPosition] = 0;
+            pFullNameString = pFullNameString.substring(0, uiFullNameCharacterPosition);
 
             // move cursor back by sizeof char
             uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
@@ -388,7 +388,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               uiNickNameCharacterPosition -= 1;
 
             // null out char
-            pNickNameString[uiNickNameCharacterPosition] = 0;
+            pNickNameString = pNickNameString.substring(0, uiNickNameCharacterPosition);
 
             // move cursor back by sizeof char
             uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
@@ -402,7 +402,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
       break;
 
     default:
-      if (uiKey >= 'A' && uiKey <= 'Z' || uiKey >= 'a' && uiKey <= 'z' || uiKey >= '0' && uiKey <= '9' || uiKey == '_' || uiKey == '.' || uiKey == ' ') {
+      if (uiKey >= 'A'.charCodeAt(0) && uiKey <= 'Z'.charCodeAt(0) || uiKey >= 'a'.charCodeAt(0) && uiKey <= 'z'.charCodeAt(0) || uiKey >= '0'.charCodeAt(0) && uiKey <= '9'.charCodeAt(0) || uiKey == '_'.charCodeAt(0) || uiKey == '.'.charCodeAt(0) || uiKey == ' '.charCodeAt(0)) {
         // if the current string position is at max or great, do nothing
         switch (ubTextEnterMode) {
           case (Enum87.FULL_NAME_MODE):
@@ -413,15 +413,12 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
                 uiFullNameCharacterPosition = 0;
               }
               // make sure we haven't moved too far
-              if ((uiFullNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL())) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiFullNameCursorPosition + StringPixLength(String.fromCharCode(uiKey), FONT14ARIAL())) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
               // valid char, capture and convert to CHAR16
-              pFullNameString[uiFullNameCharacterPosition] = uiKey;
-
-              // null out next char position
-              pFullNameString[uiFullNameCharacterPosition + 1] = 0;
+              pFullNameString += String.fromCharCode(uiKey);
 
               // move cursor position ahead
               uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pFullNameString, FONT14ARIAL());
@@ -442,16 +439,13 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               }
 
               // make sure we haven't moved too far
-              if ((uiNickNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL())) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiNickNameCursorPosition + StringPixLength(String.fromCharCode(uiKey), FONT14ARIAL())) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
 
               // valid char, capture and convert to CHAR16
-              pNickNameString[uiNickNameCharacterPosition] = uiKey;
-
-              // null out next char position
-              pNickNameString[uiNickNameCharacterPosition + 1] = 0;
+              pNickNameString += String.fromCharCode(uiKey);
 
               // move cursor position ahead
               uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X + StringPixLength(pNickNameString, FONT14ARIAL());
@@ -726,9 +720,10 @@ function DisplayFemaleGlowCursor(): void {
 function CopyFirstNameIntoNickName(): void {
   // this procedure will copy the characters first name in to the nickname for the character
   let iCounter: UINT32 = 0;
-  while ((pFullNameString[iCounter] != ' ') && (iCounter < 20) && (pFullNameString[iCounter] != 0)) {
+  pNickNameString = '';
+  while ((pFullNameString[iCounter] != ' ') && (iCounter < 20) && (pFullNameString.length < iCounter)) {
     // copy charcters into nick name
-    pNickNameString[iCounter] = pFullNameString[iCounter];
+    pNickNameString += pFullNameString[iCounter];
     iCounter++;
   }
 
@@ -921,7 +916,7 @@ function CheckCharacterInputForEgg(): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
 
   return false;
-  if ((wcscmp(pFullNameString, "Test Female") == 0) && (wcscmp(pNickNameString, "Test") == 0)) {
+  if (pFullNameString == "Test Female" && pNickNameString == "Test") {
     pFullNameString = "Test Female";
     pNickNameString = "Test";
     bGenderFlag = Enum86.IMP_FEMALE;
