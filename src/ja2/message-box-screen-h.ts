@@ -32,7 +32,7 @@ export const enum Enum24 {
   MSG_BOX_LAPTOP_DEFAULT,
 }
 
-type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
+export type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 export interface MESSAGE_BOX_STRUCT {
   usFlags: UINT16;

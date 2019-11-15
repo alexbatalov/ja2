@@ -52,6 +52,30 @@ export function createInventoryInSlot(): INVENTORY_IN_SLOT {
   };
 }
 
+export function copyInventoryInSlot(destination: INVENTORY_IN_SLOT, source: INVENTORY_IN_SLOT) {
+  destination.fActive = source.fActive;
+  destination.sItemIndex = source.sItemIndex;
+  destination.uiFlags = source.uiFlags;
+  copyObjectType(destination.ItemObject, source.ItemObject);
+  destination.ubLocationOfObject = source.ubLocationOfObject;
+  destination.bSlotIdInOtherLocation = source.bSlotIdInOtherLocation;
+  destination.ubIdOfMercWhoOwnsTheItem = source.ubIdOfMercWhoOwnsTheItem;
+  destination.uiItemPrice = source.uiItemPrice;
+  destination.sSpecialItemElement = source.sSpecialItemElement;
+}
+
+export function resetInventoryInSlot(o: INVENTORY_IN_SLOT) {
+  o.fActive = false;
+  o.sItemIndex = 0;
+  o.uiFlags = 0;
+  resetObjectType(o.ItemObject);
+  o.ubLocationOfObject = 0;
+  o.bSlotIdInOtherLocation = 0;
+  o.ubIdOfMercWhoOwnsTheItem = 0;
+  o.uiItemPrice = 0;
+  o.sSpecialItemElement = 0;
+}
+
 // extern	BOOLEAN		gfRedrawSkiScreen;
 
 export const enum Enum253 {

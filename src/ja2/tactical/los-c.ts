@@ -1214,7 +1214,7 @@ export function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: 
   return true;
 }
 
-export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -1366,7 +1366,7 @@ function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYP
   return true;
 }
 
-export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sXPos: INT16;

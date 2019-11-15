@@ -12377,7 +12377,7 @@ export function GetClippingRect(clip: SGPRect): void {
           This was the only internal modification I made other than adding the usColor argument.
 
 *********************************************************************************************/
-function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, Pattern: UINT8[][] /* [8][8] */, usColor: UINT16): boolean {
+function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect, Pattern: UINT8[][] /* [8][8] */, usColor: UINT16): boolean {
   let width: INT32;
   let height: INT32;
   let LineSkip: UINT32;
@@ -12447,7 +12447,7 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
 // Original prototype (this function) didn't have a color field.  I've added the color field to
 // Blt16BPPBufferPixelateRectWithColor(), moved the previous implementation of this function there, and added
 // the modification to allow a specific color.
-export function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, Pattern: UINT8[][] /* [8][8] */): boolean {
+export function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect, Pattern: UINT8[][] /* [8][8] */): boolean {
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 

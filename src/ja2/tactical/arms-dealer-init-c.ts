@@ -1585,41 +1585,41 @@ export function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): boolean {
   return true;
 }
 
-export function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
+export function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: SPECIAL_ITEM_INFO, pObject: OBJECTTYPE, ubHowMany: UINT8): void {
   let bItemCondition: INT8;
   let ubCnt: UINT8;
 
-  bItemCondition = pSpclItemInfo.value.bItemCondition;
+  bItemCondition = pSpclItemInfo.bItemCondition;
 
   // if the item condition is below 0, the item is in for repairs, so flip the sign
   if (bItemCondition < 0) {
     bItemCondition *= -1;
   }
 
-  memset(pObject, 0, sizeof(OBJECTTYPE));
+  resetObjectType(pObject);
 
   // Create the item object
   CreateItems(usItemIndex, bItemCondition, ubHowMany, pObject);
 
   // set the ImprintID
-  pObject.value.ubImprintID = pSpclItemInfo.value.ubImprintID;
+  pObject.ubImprintID = pSpclItemInfo.ubImprintID;
 
   // add any attachments we've been storing
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
-    if (pSpclItemInfo.value.usAttachment[ubCnt] != Enum225.NONE) {
+    if (pSpclItemInfo.usAttachment[ubCnt] != Enum225.NONE) {
       // store what it is, and its condition
-      pObject.value.usAttachItem[ubCnt] = pSpclItemInfo.value.usAttachment[ubCnt];
-      pObject.value.bAttachStatus[ubCnt] = pSpclItemInfo.value.bAttachmentStatus[ubCnt];
+      pObject.usAttachItem[ubCnt] = pSpclItemInfo.usAttachment[ubCnt];
+      pObject.bAttachStatus[ubCnt] = pSpclItemInfo.bAttachmentStatus[ubCnt];
     }
   }
 
   // if it's a gun
-  if (Item[pObject.value.usItem].usItemClass == IC_GUN) {
+  if (Item[pObject.usItem].usItemClass == IC_GUN) {
     // Empty out the bullets put in by CreateItem().  We now sell all guns empty of bullets.  This is so that we don't
     // have to keep track of #bullets in a gun throughout dealer inventory.  Without this, players could "reload" guns
     // they don't have ammo for by selling them to Tony & buying them right back fully loaded!  One could repeat this
     // ad nauseum (empty the gun between visits) as a (really expensive) way to get unlimited special ammo like rockets.
-    pObject.value.ubGunShotsLeft = 0;
+    pObject.ubGunShotsLeft = 0;
   }
 }
 

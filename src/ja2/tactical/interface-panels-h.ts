@@ -40,6 +40,8 @@ interface TEAM_PANEL_SLOTS_TYPE {
   fOccupied: boolean;
 }
 
+export let gSMPanelRegion: MOUSE_REGION = createMouseRegion();
+
 // void DisableSMPpanelButtonsWhenInShopKeeperInterface( );
 
 }

@@ -173,6 +173,84 @@ export function createObjectType(): OBJECTTYPE {
   };
 }
 
+export function copyObjectType(destination: OBJECTTYPE, source: OBJECTTYPE) {
+  destination.usItem = source.usItem;
+  destination.ubNumberOfObjects = source.ubNumberOfObjects;
+  destination.bGunStatus = source.bGunStatus;
+  destination.ubGunAmmoType = source.ubGunAmmoType;
+  destination.ubGunShotsLeft = source.ubGunShotsLeft;
+  destination.usGunAmmoItem = source.usGunAmmoItem;
+  destination.bGunAmmoStatus = source.bGunAmmoStatus;
+  copyArray(destination.ubGunUnused, source.ubGunUnused);
+  copyArray(destination.ubShotsLeft, source.ubShotsLeft);
+  copyArray(destination.bStatus, source.bStatus);
+  destination.bMoneyStatus = source.bMoneyStatus;
+  destination.uiMoneyAmount = source.uiMoneyAmount;
+  copyArray(destination.ubMoneyUnused, source.ubMoneyUnused);
+  destination.bBombStatus = source.bBombStatus;
+  destination.bDetonatorType = source.bDetonatorType;
+  destination.usBombItem = source.usBombItem;
+  destination.bDelay = source.bDelay;
+  destination.bFrequency = source.bFrequency;
+  destination.ubBombOwner = source.ubBombOwner;
+  destination.bActionValue = source.bActionValue;
+  destination.ubTolerance = source.ubTolerance;
+  destination.ubLocationID = source.ubLocationID;
+  copyArray(destination.bKeyStatus, source.bKeyStatus);
+  destination.ubKeyID = source.ubKeyID;
+  copyArray(destination.ubKeyUnused, source.ubKeyUnused);
+  destination.ubOwnerProfile = source.ubOwnerProfile;
+  destination.ubOwnerCivGroup = source.ubOwnerCivGroup;
+  copyArray(destination.ubOwnershipUnused, source.ubOwnershipUnused);
+  copyArray(destination.usAttachItem, source.usAttachItem);
+  copyArray(destination.bAttachStatus, source.bAttachStatus);
+  destination.fFlags = source.fFlags;
+  destination.ubMission = source.ubMission;
+  destination.bTrap = source.bTrap;
+  destination.ubImprintID = source.ubImprintID;
+  destination.ubWeight = source.ubWeight;
+  destination.fUsed = source.fUsed;
+}
+
+export function resetObjectType(o: OBJECTTYPE) {
+  o.usItem = 0;
+  o.ubNumberOfObjects = 0;
+  o.bGunStatus = 0;
+  o.ubGunAmmoType = 0;
+  o.ubGunShotsLeft = 0;
+  o.usGunAmmoItem = 0;
+  o.bGunAmmoStatus = 0;
+  o.ubGunUnused.fill(0);
+  o.ubShotsLeft.fill(0);
+  o.bStatus.fill(0);
+  o.bMoneyStatus = 0;
+  o.uiMoneyAmount = 0;
+  o.ubMoneyUnused.fill(0);
+  o.bBombStatus = 0;
+  o.bDetonatorType = 0;
+  o.usBombItem = 0;
+  o.bDelay = 0;
+  o.bFrequency = 0;
+  o.ubBombOwner = 0;
+  o.bActionValue = 0;
+  o.ubTolerance = 0;
+  o.ubLocationID = 0;
+  o.bKeyStatus.fill(0);
+  o.ubKeyID = 0;
+  o.ubKeyUnused.fill(0);
+  o.ubOwnerProfile = 0;
+  o.ubOwnerCivGroup = 0;
+  o.ubOwnershipUnused.fill(0);
+  o.usAttachItem.fill(0);
+  o.bAttachStatus.fill(0);
+  o.fFlags = 0;
+  o.ubMission = 0;
+  o.bTrap = 0;
+  o.ubImprintID = 0;
+  o.ubWeight = 0;
+  o.fUsed = 0;
+}
+
 /*
 interface INVTYPE {
   ubCursor: UINT8;

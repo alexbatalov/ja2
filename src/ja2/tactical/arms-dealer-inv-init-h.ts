@@ -10,8 +10,8 @@ export const ITEM_SUITABILITY_MEDIUM = 2;
 export const ITEM_SUITABILITY_HIGH = 3;
 export const ITEM_SUITABILITY_ALWAYS = 4;
 
-export const DEALER_BUYING = 0;
-export const DEALER_SELLING = 1;
+export const DEALER_BUYING = false;
+export const DEALER_SELLING = true;
 
 export interface DEALER_POSSIBLE_INV {
   sItemIndex: INT16;

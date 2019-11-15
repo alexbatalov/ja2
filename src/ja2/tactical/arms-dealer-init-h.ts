@@ -192,7 +192,7 @@ export interface DEALER_ITEM_HEADER {
   ubStrayAmmo: UINT8; // partially-depleted ammo mags are stored here as #bullets, and can be converted to full packs
 
   ubElementsAlloced: UINT8; // number of DEALER_SPECIAL_ITEM array elements alloced for the special item array
-  SpecialItem: Pointer<DEALER_SPECIAL_ITEM>; // dynamic array of special items with this same item index
+  SpecialItem: DEALER_SPECIAL_ITEM[]; // dynamic array of special items with this same item index
 
   uiOrderArrivalTime: UINT32; // Day the items ordered will arrive on.  It's UINT32 in case we change this to minutes.
   ubQtyOnOrder: UINT8; // The number of items currently on order

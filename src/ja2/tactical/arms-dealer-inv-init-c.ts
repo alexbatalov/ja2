@@ -663,7 +663,7 @@ export function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16):
   }
 }
 
-function GetMaxItemAmount(pInv: Pointer<DEALER_POSSIBLE_INV>, usItemIndex: UINT16): INT8 {
+function GetMaxItemAmount(pInv: DEALER_POSSIBLE_INV[], usItemIndex: UINT16): INT8 {
   let usCnt: UINT16 = 0;
 
   // loop through the array until a the LAST_DEALER_ITEM is hit
@@ -679,7 +679,7 @@ function GetMaxItemAmount(pInv: Pointer<DEALER_POSSIBLE_INV>, usItemIndex: UINT1
   return NO_DEALER_ITEM;
 }
 
-export function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DEALER_POSSIBLE_INV> {
+export function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): DEALER_POSSIBLE_INV[] {
   switch (ubArmsDealerID) {
     case Enum197.ARMS_DEALER_TONY:
       return gTonyInventory;
@@ -758,7 +758,7 @@ export function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Poi
       break;
 
     default:
-      return null;
+      return <DEALER_POSSIBLE_INV[]><unknown>null;
   }
 }
 
@@ -1019,50 +1019,50 @@ export function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT
   return ubNumReordered;
 }
 
-export function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
+export function BobbyRayItemQsortCompare(pArg1: STORE_INVENTORY, pArg2: STORE_INVENTORY): number {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = (pArg1).value.usItemIndex;
-  usItem2Index = (pArg2).value.usItemIndex;
+  usItem1Index = pArg1.usItemIndex;
+  usItem2Index = pArg2.usItemIndex;
 
-  ubItem1Quality = (pArg1).value.ubItemQuality;
-  ubItem2Quality = (pArg2).value.ubItemQuality;
+  ubItem1Quality = pArg1.ubItemQuality;
+  ubItem2Quality = pArg2.ubItemQuality;
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-export function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
+export function ArmsDealerItemQsortCompare(pArg1: INVENTORY_IN_SLOT, pArg2: INVENTORY_IN_SLOT): number {
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = (pArg1).value.sItemIndex;
-  usItem2Index = (pArg2).value.sItemIndex;
+  usItem1Index = pArg1.sItemIndex;
+  usItem2Index = pArg2.sItemIndex;
 
-  ubItem1Quality = (pArg1).value.ItemObject.bStatus[0];
-  ubItem2Quality = (pArg2).value.ItemObject.bStatus[0];
+  ubItem1Quality = pArg1.ItemObject.bStatus[0];
+  ubItem2Quality = pArg2.ItemObject.bStatus[0];
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-export function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): number {
-  let pInvSlot1: Pointer<INVENTORY_IN_SLOT>;
-  let pInvSlot2: Pointer<INVENTORY_IN_SLOT>;
+export function RepairmanItemQsortCompare(pArg1: INVENTORY_IN_SLOT, pArg2: INVENTORY_IN_SLOT): number {
+  let pInvSlot1: INVENTORY_IN_SLOT;
+  let pInvSlot2: INVENTORY_IN_SLOT;
   let uiRepairTime1: UINT32;
   let uiRepairTime2: UINT32;
 
   pInvSlot1 = pArg1;
   pInvSlot2 = pArg2;
 
-  Assert(pInvSlot1.value.sSpecialItemElement != -1);
-  Assert(pInvSlot2.value.sSpecialItemElement != -1);
+  Assert(pInvSlot1.sSpecialItemElement != -1);
+  Assert(pInvSlot2.sSpecialItemElement != -1);
 
-  uiRepairTime1 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot1.value.sItemIndex].SpecialItem[pInvSlot1.value.sSpecialItemElement].uiRepairDoneTime;
-  uiRepairTime2 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot2.value.sItemIndex].SpecialItem[pInvSlot2.value.sSpecialItemElement].uiRepairDoneTime;
+  uiRepairTime1 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot1.sItemIndex].SpecialItem[pInvSlot1.sSpecialItemElement].uiRepairDoneTime;
+  uiRepairTime2 = gArmsDealersInventory[gbSelectedArmsDealerID][pInvSlot2.sItemIndex].SpecialItem[pInvSlot2.sSpecialItemElement].uiRepairDoneTime;
 
   // lower reapir time first
   if (uiRepairTime1 < uiRepairTime2) {

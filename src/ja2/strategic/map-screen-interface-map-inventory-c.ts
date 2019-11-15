@@ -283,7 +283,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
   // run through list of items in slots and update help text for mouse regions
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     if (pInventoryPoolList[iCounter + iFirstSlotOnPage].o.ubNumberOfObjects > 0) {
-      GetHelpTextForItem(pStr, addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), null);
+      pStr = GetHelpTextForItem(addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), null);
       SetRegionFastHelpText(MapInventoryPoolSlots[iCounter], pStr);
 
       /*

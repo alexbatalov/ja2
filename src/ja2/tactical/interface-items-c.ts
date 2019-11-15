@@ -809,7 +809,7 @@ export function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel
   } else {
     for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
       if (fDirtyLevel == DIRTYLEVEL2) {
-        GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[cnt]), pSoldier);
+        pStr = GetHelpTextForItem(addressof(pSoldier.value.inv[cnt]), pSoldier);
 
         SetRegionFastHelpText(gSMInvRegion[cnt], pStr);
       }
@@ -1783,11 +1783,11 @@ export function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPositio
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-export function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
-  let pObject: Pointer<OBJECTTYPE>;
+export function InitKeyItemDescriptionBox(pSoldier: SOLDIERTYPE, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): boolean {
+  let pObject: OBJECTTYPE;
 
-  AllocateObject(addressof(pObject));
-  CreateKeyObject(pObject, pSoldier.value.pKeyRing[ubPosition].ubNumber, pSoldier.value.pKeyRing[ubPosition].ubKeyID);
+  pObject = AllocateObject();
+  CreateKeyObject(pObject, pSoldier.pKeyRing[ubPosition].ubNumber, pSoldier.pKeyRing[ubPosition].ubKeyID);
 
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
@@ -5722,28 +5722,27 @@ function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16)
   return false;
 }
 
-export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GetHelpTextForItem(pObject: OBJECTTYPE, pSoldier: SOLDIERTYPE | null): string {
   let pStr: string /* INT16[250] */;
-  let usItem: UINT16 = pObject.value.usItem;
+  let usItem: UINT16 = pObject.usItem;
   let cnt: INT32 = 0;
   let iNumAttachments: INT32 = 0;
 
   if (pSoldier != null) {
-    if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
+    if (pSoldier.uiStatusFlags & SOLDIER_DEAD) {
       pStr = "";
-      pzStr = swprintf("%s", pStr);
-      return;
+      return swprintf("%s", pStr);
     }
   }
 
   if (usItem == Enum225.MONEY) {
-    pStr = swprintf("%ld", pObject.value.uiMoneyAmount);
+    pStr = swprintf("%ld", pObject.uiMoneyAmount);
     pStr = InsertCommasForDollarFigure(pStr);
     pStr = InsertDollarSignInToString(pStr);
   } else if (Item[usItem].usItemClass == IC_MONEY) {
     // alternate money like silver or gold
     let pStr2: string /* INT16[20] */;
-    pStr2 = swprintf("%ld", pObject.value.uiMoneyAmount);
+    pStr2 = swprintf("%ld", pObject.uiMoneyAmount);
     pStr2 = InsertCommasForDollarFigure(pStr2);
     pStr2 = InsertDollarSignInToString(pStr2);
 
@@ -5755,15 +5754,15 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
       pStr = swprintf("%s", ItemNames[usItem]);
     }
 
-    if ((pObject.value.usItem == Enum225.ROCKET_RIFLE || pObject.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObject.value.ubImprintID < NO_PROFILE) {
+    if ((pObject.usItem == Enum225.ROCKET_RIFLE || pObject.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObject.ubImprintID < NO_PROFILE) {
       let pStr2: string /* INT16[20] */;
-      pStr2 = swprintf(" [%s]", gMercProfiles[pObject.value.ubImprintID].zNickname);
+      pStr2 = swprintf(" [%s]", gMercProfiles[pObject.ubImprintID].zNickname);
       pStr += pStr2;
     }
 
     // Add attachment string....
     for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
-      if (pObject.value.usAttachItem[cnt] != NOTHING) {
+      if (pObject.usAttachItem[cnt] != NOTHING) {
         iNumAttachments++;
 
         if (iNumAttachments == 1) {
@@ -5772,7 +5771,7 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
           pStr += ", \n";
         }
 
-        pStr += ItemNames[pObject.value.usAttachItem[cnt]];
+        pStr += ItemNames[pObject.usAttachItem[cnt]];
       }
     }
 
@@ -5784,7 +5783,7 @@ export function GetHelpTextForItem(pzStr: Pointer<string> /* Pointer<INT16> */, 
   }
 
   // Copy over...
-  pzStr = swprintf("%s", pStr);
+  return swprintf("%s", pStr);
 }
 
 function GetPrefferedItemSlotGraphicNum(usItem: UINT16): UINT8 {

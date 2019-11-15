@@ -2170,7 +2170,7 @@ function ResetAllAnimationCache(): boolean {
   return true;
 }
 
-export function LocateSoldier(usID: UINT16, fSetLocator: boolean): void {
+export function LocateSoldier(usID: UINT16, fSetLocator: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let sNewCenterWorldX: INT16;
   let sNewCenterWorldY: INT16;

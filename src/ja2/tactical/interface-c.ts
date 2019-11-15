@@ -151,7 +151,7 @@ let giUpArrowRect: UINT32;
 let giDownArrowRect: UINT32;
 
 export let fFirstTimeInGameScreen: boolean = true;
-export let fInterfacePanelDirty: boolean = DIRTYLEVEL2;
+export let fInterfacePanelDirty: UINT8 = DIRTYLEVEL2;
 export let gsInterfaceLevel: INT16 = Enum214.I_GROUND_LEVEL;
 let gsCurrentSoldierGridNo: INT16 = 0;
 export let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;

@@ -2746,7 +2746,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
         }
         // Add text for first hand popup
         else {
-          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[Enum261.HANDPOS]), pSoldier);
+          pStr = GetHelpTextForItem(addressof(pSoldier.value.inv[Enum261.HANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(gTEAM_FirstHandInv[cnt], pStr);
@@ -2757,7 +2757,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(gTEAM_SecondHandInv[cnt], TacticalStr[Enum335.EXIT_VEHICLE_POPUPTEXT]);
         } else {
-          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]), pSoldier);
+          pStr = GetHelpTextForItem(addressof(pSoldier.value.inv[Enum261.SECONDHANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
           SetRegionFastHelpText(gTEAM_SecondHandInv[cnt], pStr);
