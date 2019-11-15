@@ -608,7 +608,7 @@ function BtnFileBoxButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 export function DailyUpdateOfMercSite(usDate: UINT16): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sSoldierID: INT16;
   let i: INT16;
   let ubMercID: UINT8;
@@ -633,14 +633,14 @@ export function DailyUpdateOfMercSite(usDate: UINT16): void {
       pSoldier = MercPtrs[sSoldierID];
 
       // if the merc is dead, dont advance the contract length
-      if (!IsMercDead(pSoldier.value.ubProfile)) {
-        gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength += 1;
+      if (!IsMercDead(pSoldier.ubProfile)) {
+        gMercProfiles[pSoldier.ubProfile].iMercMercContractLength += 1;
         //				pSoldier->iTotalContractLength++;
       }
 
       // Get the longest time
-      if (gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength > iNumDays)
-        iNumDays = gMercProfiles[pSoldier.value.ubProfile].iMercMercContractLength;
+      if (gMercProfiles[pSoldier.ubProfile].iMercMercContractLength > iNumDays)
+        iNumDays = gMercProfiles[pSoldier.ubProfile].iMercMercContractLength;
     }
   }
 
@@ -839,7 +839,7 @@ export function GetMercIDFromMERCArray(ubMercID: UINT8): UINT8 {
   // else its an error
   else {
     Assert(0);
-    return true;
+    return 1;
   }
 }
 
@@ -904,14 +904,14 @@ function StartSpeckTalking(usQuoteNum: UINT16): boolean {
 }
 
 // Performs the frame by frame update
+/* static */ let HandleSpeckTalking__fWasTheMercTalking: boolean = false;
 function HandleSpeckTalking(fReset: boolean): boolean {
-  /* static */ let fWasTheMercTalking: boolean = false;
   let fIsTheMercTalking: boolean;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
 
   if (fReset) {
-    fWasTheMercTalking = false;
+    HandleSpeckTalking__fWasTheMercTalking = false;
     return true;
   }
 
@@ -930,7 +930,7 @@ function HandleSpeckTalking(fReset: boolean): boolean {
   HandleTalkingAutoFaces();
 
   // Blt the face surface to the video background surface
-  if (!BltStretchVideoSurface(FRAME_BUFFER, guiMercVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
+  if (!BltStretchVideoSurface(FRAME_BUFFER, guiMercVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, SrcRect, DestRect))
     return false;
 
   // HandleCurrentMercDistortion();
@@ -941,8 +941,8 @@ function HandleSpeckTalking(fReset: boolean): boolean {
   fIsTheMercTalking = gFacesData[giVideoSpeckFaceIndex].fTalking;
 
   // if the merc just stopped talking
-  if (fWasTheMercTalking && !fIsTheMercTalking) {
-    fWasTheMercTalking = false;
+  if (HandleSpeckTalking__fWasTheMercTalking && !fIsTheMercTalking) {
+    HandleSpeckTalking__fWasTheMercTalking = false;
 
     if (DialogueQueueIsEmpty()) {
       RemoveSpeckPopupTextBox();
@@ -957,17 +957,17 @@ function HandleSpeckTalking(fReset: boolean): boolean {
       fIsTheMercTalking = true;
   }
 
-  fWasTheMercTalking = fIsTheMercTalking;
+  HandleSpeckTalking__fWasTheMercTalking = fIsTheMercTalking;
 
   return fIsTheMercTalking;
 }
 
+/* static */ let HandleCurrentMercDistortion__ubCurrentMercDistortionMode: UINT8 = Enum101.MERC_DISTORTION_NO_DISTORTION;
 function HandleCurrentMercDistortion(): void {
-  /* static */ let ubCurrentMercDistortionMode: UINT8 = Enum101.MERC_DISTORTION_NO_DISTORTION;
   let fReturnStatus: boolean;
 
   // if there is no current distortion mode, randomly choose one
-  if (ubCurrentMercDistortionMode == Enum101.MERC_DISTORTION_NO_DISTORTION) {
+  if (HandleCurrentMercDistortion__ubCurrentMercDistortionMode == Enum101.MERC_DISTORTION_NO_DISTORTION) {
     let ubRandom: UINT8;
 
     ubRandom = Random(200);
@@ -975,14 +975,14 @@ function HandleCurrentMercDistortion(): void {
     if (ubRandom < 40) {
       ubRandom = Random(100);
       if (ubRandom < 10)
-        ubCurrentMercDistortionMode = Enum101.MERC_DISRTORTION_DISTORT_IMAGE;
+        HandleCurrentMercDistortion__ubCurrentMercDistortionMode = Enum101.MERC_DISRTORTION_DISTORT_IMAGE;
       else if (ubRandom < 30)
-        ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_PIXELATE_UP;
+        HandleCurrentMercDistortion__ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_PIXELATE_UP;
     }
   }
 
   // Perform whichever video distortion mode is current
-  switch (ubCurrentMercDistortionMode) {
+  switch (HandleCurrentMercDistortion__ubCurrentMercDistortionMode) {
     case Enum101.MERC_DISTORTION_NO_DISTORTION:
       break;
 
@@ -990,14 +990,14 @@ function HandleCurrentMercDistortion(): void {
       //			fReturnStatus = PixelateVideoMercImage( TRUE );
       fReturnStatus = PixelateVideoMercImage(true, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
       if (fReturnStatus)
-        ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_PIXELATE_DOWN;
+        HandleCurrentMercDistortion__ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_PIXELATE_DOWN;
       break;
 
     case Enum101.MERC_DISTORTION_PIXELATE_DOWN:
       //			fReturnStatus = PixelateVideoMercImage( FALSE );
       fReturnStatus = PixelateVideoMercImage(false, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
       if (fReturnStatus)
-        ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_NO_DISTORTION;
+        HandleCurrentMercDistortion__ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_NO_DISTORTION;
       break;
 
     case Enum101.MERC_DISRTORTION_DISTORT_IMAGE:
@@ -1005,58 +1005,58 @@ function HandleCurrentMercDistortion(): void {
       fReturnStatus = DistortVideoMercImage(MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_HEIGHT);
 
       if (fReturnStatus)
-        ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_NO_DISTORTION;
+        HandleCurrentMercDistortion__ubCurrentMercDistortionMode = Enum101.MERC_DISTORTION_NO_DISTORTION;
       break;
   }
 }
 
+/* static */ let PixelateVideoMercImage__uiLastTime: UINT32;
+/* static */ let PixelateVideoMercImage__ubPixelationAmount: UINT8 = 255;
 function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
-  /* static */ let uiLastTime: UINT32;
   let uiCurTime: UINT32 = GetJA2Clock();
   let pBuffer: Pointer<UINT16> = null;
   let DestColor: UINT16;
   let uiPitch: UINT32;
   let i: UINT16;
   let j: UINT16;
-  /* static */ let ubPixelationAmount: UINT8 = 255;
   let fReturnStatus: boolean = false;
   i = 0;
 
   pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
   Assert(pBuffer);
 
-  if (ubPixelationAmount == 255) {
+  if (PixelateVideoMercImage__ubPixelationAmount == 255) {
     if (fUp)
-      ubPixelationAmount = 1;
+      PixelateVideoMercImage__ubPixelationAmount = 1;
     else
-      ubPixelationAmount = 4;
-    uiLastTime = GetJA2Clock();
+      PixelateVideoMercImage__ubPixelationAmount = 4;
+    PixelateVideoMercImage__uiLastTime = GetJA2Clock();
   }
 
   // is it time to change the animation
-  if ((uiCurTime - uiLastTime) > 100) {
+  if ((uiCurTime - PixelateVideoMercImage__uiLastTime) > 100) {
     // if we are starting to pixelate the image
     if (fUp) {
       // the varying degrees of pixelation
-      if (ubPixelationAmount <= 4) {
-        ubPixelationAmount++;
+      if (PixelateVideoMercImage__ubPixelationAmount <= 4) {
+        PixelateVideoMercImage__ubPixelationAmount++;
         fReturnStatus = false;
       } else {
-        ubPixelationAmount = 255;
+        PixelateVideoMercImage__ubPixelationAmount = 255;
         fReturnStatus = true;
       }
     }
     // else we are pixelating down
     else {
-      if (ubPixelationAmount > 1) {
-        ubPixelationAmount--;
+      if (PixelateVideoMercImage__ubPixelationAmount > 1) {
+        PixelateVideoMercImage__ubPixelationAmount--;
         fReturnStatus = false;
       } else {
-        ubPixelationAmount = 255;
+        PixelateVideoMercImage__ubPixelationAmount = 255;
         fReturnStatus = true;
       }
     }
-    uiLastTime = GetJA2Clock();
+    PixelateVideoMercImage__uiLastTime = GetJA2Clock();
   } else
     i = i;
 
@@ -1067,9 +1067,9 @@ function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, us
   for (j = usPosY; j < usPosY + usHeight; j++) {
     for (i = usPosX; i < usPosX + usWidth; i++) {
       // get the next color
-      if (!(i % ubPixelationAmount)) {
-        if (i < usPosX + usWidth - ubPixelationAmount)
-          DestColor = pBuffer[(j * uiPitch) + i + ubPixelationAmount / 2];
+      if (!(i % PixelateVideoMercImage__ubPixelationAmount)) {
+        if (i < usPosX + usWidth - PixelateVideoMercImage__ubPixelationAmount)
+          DestColor = pBuffer[(j * uiPitch) + i + PixelateVideoMercImage__ubPixelationAmount / 2];
         else
           DestColor = pBuffer[(j * uiPitch) + i];
       }
@@ -1083,6 +1083,7 @@ function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, us
   return fReturnStatus;
 }
 
+/* static */ let DistortVideoMercImage__usDistortionValue: UINT16 = 255;
 function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
   let uiPitch: UINT32;
   let i: UINT16;
@@ -1093,8 +1094,7 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   let red: UINT8;
   let green: UINT8;
   let blue: UINT8;
-  /* static */ let usDistortionValue: UINT16 = 255;
-  let uiReturnValue: UINT8;
+  let uiReturnValue: boolean;
   let usEndOnLine: UINT16 = 0;
 
   pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
@@ -1106,20 +1106,20 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
 
   DestColor = pBuffer[(j * uiPitch) + i];
 
-  if (usDistortionValue >= usPosY + usHeight) {
-    usDistortionValue = 0;
+  if (DistortVideoMercImage__usDistortionValue >= usPosY + usHeight) {
+    DistortVideoMercImage__usDistortionValue = 0;
     uiReturnValue = true;
   } else {
-    usDistortionValue++;
+    DistortVideoMercImage__usDistortionValue++;
 
     uiReturnValue = false;
 
-    if (usDistortionValue + 10 >= usHeight)
+    if (DistortVideoMercImage__usDistortionValue + 10 >= usHeight)
       usEndOnLine = usHeight - 1;
     else
-      usEndOnLine = usDistortionValue + 10;
+      usEndOnLine = DistortVideoMercImage__usDistortionValue + 10;
 
-    for (j = usPosY + usDistortionValue; j < usPosY + usEndOnLine; j++) {
+    for (j = usPosY + DistortVideoMercImage__usDistortionValue; j < usPosY + usEndOnLine; j++) {
       for (i = usPosX; i < usPosX + usWidth; i++) {
         DestColor = pBuffer[(j * uiPitch) + i];
 
@@ -1140,24 +1140,23 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   return uiReturnValue;
 }
 
+/* static */ let InitDestroyXToCloseVideoWindow__fButtonCreated: boolean = false;
 function InitDestroyXToCloseVideoWindow(fCreate: boolean): boolean {
-  /* static */ let fButtonCreated: boolean = false;
-
   // if we are asked to create the buttons and the button isnt already created
-  if (fCreate && !fButtonCreated) {
+  if (fCreate && !InitDestroyXToCloseVideoWindow__fButtonCreated) {
     guiXToCloseMercVideoButtonImage = LoadButtonImage("LAPTOP\\CloseButton.sti", -1, 0, -1, 1, -1);
 
     guiXToCloseMercVideoButton = QuickCreateButton(guiXToCloseMercVideoButtonImage, MERC_X_TO_CLOSE_VIDEO_X, MERC_X_TO_CLOSE_VIDEO_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnXToCloseMercVideoButtonCallback);
     SetButtonCursor(guiXToCloseMercVideoButton, Enum317.CURSOR_LAPTOP_SCREEN);
 
-    fButtonCreated = true;
+    InitDestroyXToCloseVideoWindow__fButtonCreated = true;
   }
 
   // if we are asked to destroy the buttons and the buttons are created
-  if (!fCreate && fButtonCreated) {
+  if (!fCreate && InitDestroyXToCloseVideoWindow__fButtonCreated) {
     UnloadButtonImage(guiXToCloseMercVideoButtonImage);
     RemoveButton(guiXToCloseMercVideoButton);
-    fButtonCreated = false;
+    InitDestroyXToCloseVideoWindow__fButtonCreated = false;
   }
 
   return true;
@@ -1193,19 +1192,19 @@ function BtnXToCloseMercVideoButtonCallback(btn: GUI_BUTTON, reason: INT32): voi
   }
 }
 
+/* static */ let DisplayMercVideoIntro__uiLastTime: UINT32 = 0;
 function DisplayMercVideoIntro(usTimeTillFinish: UINT16): boolean {
   let uiCurTime: UINT32 = GetJA2Clock();
-  /* static */ let uiLastTime: UINT32 = 0;
 
   // init variable
-  if (uiLastTime == 0)
-    uiLastTime = uiCurTime;
+  if (DisplayMercVideoIntro__uiLastTime == 0)
+    DisplayMercVideoIntro__uiLastTime = uiCurTime;
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, MERC_VIDEO_FACE_X, MERC_VIDEO_FACE_Y, MERC_VIDEO_FACE_X + MERC_VIDEO_FACE_WIDTH, MERC_VIDEO_FACE_Y + MERC_VIDEO_FACE_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
 
   // if the intro is done
-  if ((uiCurTime - uiLastTime) > usTimeTillFinish) {
-    uiLastTime = 0;
+  if ((uiCurTime - DisplayMercVideoIntro__uiLastTime) > usTimeTillFinish) {
+    DisplayMercVideoIntro__uiLastTime = 0;
     return true;
   } else
     return false;
@@ -1222,10 +1221,10 @@ function HandleTalkingSpeck(): void {
       // if the intro is finished
       if (DisplayMercVideoIntro(MERC_INTRO_TIME)) {
         // NULL out the string
-        gsSpeckDialogueTextPopUp[0] = '\0';
+        gsSpeckDialogueTextPopUp = '';
 
         // Start speck talking
-        if (gusMercVideoSpeckSpeech != MERC_VIDEO_SPECK_SPEECH_NOT_TALKING || gusMercVideoSpeckSpeech != MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET)
+        if (gusMercVideoSpeckSpeech != MERC_VIDEO_SPECK_SPEECH_NOT_TALKING || gusMercVideoSpeckSpeech != <number>MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET)
           StartSpeckTalking(gusMercVideoSpeckSpeech);
 
         gusMercVideoSpeckSpeech = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
@@ -1363,8 +1362,8 @@ function CheatToGetAll5Merc(): void {
   LaptopSaveInfo.gubLastMercIndex = NUMBER_MERCS_AFTER_FOURTH_MERC_ARRIVES;
 }
 
+/* static */ let GetSpeckConditionalOpening__usQuoteToSay: UINT16 = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
 function GetSpeckConditionalOpening(fJustEnteredScreen: boolean): boolean {
-  /* static */ let usQuoteToSay: UINT16 = MERC_VIDEO_SPECK_SPEECH_NOT_TALKING;
   let ubRandom: UINT8 = 0;
   let ubCnt: UINT8;
   let fCanSayLackOfPaymentQuote: boolean = true;
@@ -1373,7 +1372,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: boolean): boolean {
   // If we just entered the screen, reset some variables
   if (fJustEnteredScreen) {
     gfDoneIntroSpeech = false;
-    usQuoteToSay = 0;
+    GetSpeckConditionalOpening__usQuoteToSay = 0;
     return false;
   }
 
@@ -1385,11 +1384,11 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: boolean): boolean {
   gfDoneIntroSpeech = true;
 
   // set the opening quote based on if the player has been here before
-  if (LaptopSaveInfo.ubPlayerBeenToMercSiteStatus == Enum102.MERC_SITE_FIRST_VISIT && usQuoteToSay <= 8) //!= 0 )
+  if (LaptopSaveInfo.ubPlayerBeenToMercSiteStatus == Enum102.MERC_SITE_FIRST_VISIT && GetSpeckConditionalOpening__usQuoteToSay <= 8) //!= 0 )
   {
-    StartSpeckTalking(usQuoteToSay);
-    usQuoteToSay++;
-    if (usQuoteToSay <= 8)
+    StartSpeckTalking(GetSpeckConditionalOpening__usQuoteToSay);
+    GetSpeckConditionalOpening__usQuoteToSay++;
+    if (GetSpeckConditionalOpening__usQuoteToSay <= 8)
       gfDoneIntroSpeech = false;
   }
 
@@ -1409,7 +1408,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: boolean): boolean {
 
     // else if it is the first visit since the server went down
     else if (LaptopSaveInfo.fFirstVisitSinceServerWentDown == true) {
-      LaptopSaveInfo.fFirstVisitSinceServerWentDown = 2;
+      LaptopSaveInfo.fFirstVisitSinceServerWentDown = <boolean><unknown>2;
       StartSpeckTalking(Enum111.SPECK_QUOTE_ALTERNATE_OPENING_9_FIRST_VISIT_SINCE_SERVER_WENT_DOWN);
       fCanUseIdleTag = true;
     }
@@ -1829,18 +1828,18 @@ function ShouldSpeckSayAQuote(): boolean {
   return false;
 }
 
+/* static */ let HandleSpeckIdleConversation__uiLastTime: UINT32 = 0;
 function HandleSpeckIdleConversation(fReset: boolean): void {
-  /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   let sLeastSaidQuote: INT16;
 
   // if we should reset the variables
   if (fReset) {
-    uiLastTime = GetJA2Clock();
+    HandleSpeckIdleConversation__uiLastTime = GetJA2Clock();
     return;
   }
 
-  if ((uiCurTime - uiLastTime) > SPECK_IDLE_CHAT_DELAY) {
+  if ((uiCurTime - HandleSpeckIdleConversation__uiLastTime) > SPECK_IDLE_CHAT_DELAY) {
     // if Speck is not talking
     if (!gfMercVideoIsBeingDisplayed) {
       sLeastSaidQuote = GetRandomQuoteThatHasBeenSaidTheLeast();
@@ -1855,7 +1854,7 @@ function HandleSpeckIdleConversation(fReset: boolean): void {
         IncreaseMercRandomQuoteValue(sLeastSaidQuote, 3);
     }
 
-    uiLastTime = GetJA2Clock();
+    HandleSpeckIdleConversation__uiLastTime = GetJA2Clock();
   }
 }
 

@@ -1772,7 +1772,7 @@ export function LoadSavedGame(ubSavedGameID: UINT8): boolean {
 
   if (SaveGameHeader.uiSavedGameVersion < 73) {
     if (LaptopSaveInfo.fMercSiteHasGoneDownYet)
-      LaptopSaveInfo.fFirstVisitSinceServerWentDown = 2;
+      LaptopSaveInfo.fFirstVisitSinceServerWentDown = <boolean><unknown>2;
   }
 
   // Update the MERC merc contract lenght.  Before save version 77 the data was stored in the SOLDIERTYPE,
