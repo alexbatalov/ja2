@@ -1027,7 +1027,7 @@ function InitFlowerOrderTextInputBoxes(): void {
 
     uiStartLoc = FLOR_CARD_TEXT_TITLE_SIZE * +gbCurrentlySelectedCard;
     sTemp = LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
-    CleanOutControlCodesFromString(sTemp, sText);
+    sText = CleanOutControlCodesFromString(sTemp);
 
     gsSentimentTextField = sText.substring(0, FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS - 1);
 

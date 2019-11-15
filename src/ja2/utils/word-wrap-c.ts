@@ -850,7 +850,9 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
   return (usLinesUsed * (WFGetFontHeight(uiFont) + ubGap)); // +ubGap
 }
 
-export function CleanOutControlCodesFromString(pSourceString: string /* STR16 */, pDestString: string /* STR16 */): void {
+export function CleanOutControlCodesFromString(pSourceString: string /* STR16 */): string {
+  let pDestString: string = '';
+
   let iSourceCounter: INT32 = 0;
   let iDestCounter: INT32 = 0;
 
@@ -863,18 +865,18 @@ export function CleanOutControlCodesFromString(pSourceString: string /* STR16 */
   fRemoveCurrentCharAndNextChar = false;
 
   // while not end of source string,
-  while (pSourceString[iSourceCounter] != 0) {
-    if (pSourceString[iSourceCounter + 1] == 0) {
+  while (pSourceString[iSourceCounter] != undefined) {
+    if (pSourceString[iSourceCounter + 1] == undefined) {
       fRemoveCurrentCharAndNextChar = false;
       fRemoveCurrentChar = true;
     } else {
-      switch (pSourceString[iSourceCounter]) {
+      switch (pSourceString.charCodeAt(iSourceCounter)) {
         case TEXT_CODE_CENTER:
         case TEXT_CODE_NEWCOLOR:
         case TEXT_CODE_BOLD:
         case TEXT_CODE_DEFCOLOR:
 
-          if (pSourceString[iSourceCounter + 1] == TEXT_SPACE) {
+          if (pSourceString.charCodeAt(iSourceCounter + 1) == TEXT_SPACE) {
             fRemoveCurrentCharAndNextChar = true;
             fRemoveCurrentChar = false;
           } else {
@@ -899,12 +901,12 @@ export function CleanOutControlCodesFromString(pSourceString: string /* STR16 */
     if (fRemoveCurrentChar) {
       iSourceCounter++;
     } else if (fRemoveCurrentCharAndNextChar) {
-      if (pSourceString[iSourceCounter + 2] != 0)
+      if (pSourceString[iSourceCounter + 2] != undefined)
         iSourceCounter += 2;
       else
         iSourceCounter++;
     } else {
-      pDestString[iDestCounter] = pSourceString[iSourceCounter];
+      pDestString += pSourceString[iSourceCounter];
 
       iDestCounter++;
       iSourceCounter++;
@@ -914,9 +916,7 @@ export function CleanOutControlCodesFromString(pSourceString: string /* STR16 */
     fRemoveCurrentChar = false;
   }
 
-  pDestString[iDestCounter] = '\0';
-
-  return;
+  return pDestString;
 }
 
 //

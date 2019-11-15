@@ -947,8 +947,8 @@ function SortMessages(iCriteria: INT32): void {
         pB = pA.Next;
         while (pB) {
           // clear out control codes
-          CleanOutControlCodesFromString(pA.pSubject, pSubjectA);
-          CleanOutControlCodesFromString(pB.pSubject, pSubjectB);
+          pSubjectA = CleanOutControlCodesFromString(pA.pSubject);
+          pSubjectB = CleanOutControlCodesFromString(pB.pSubject);
 
           // lesser string?...need sorting
           if (fSortSubjectUpwards) {
