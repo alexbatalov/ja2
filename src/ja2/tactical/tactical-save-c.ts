@@ -2288,19 +2288,21 @@ let ubRotationArray: UINT8[] /* [46] */ = [
   233,
 ];
 
-export function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): boolean {
+export function JA2EncryptedFileRead(hFile: HWFILE, pDest: Buffer, uiBytesToRead: UINT32): UINT32 {
+  let uiBytesRead: UINT32;
+
   let uiLoop: UINT32;
   let ubArrayIndex: UINT8 = 0;
   // UINT8		ubLastNonBlank = 0;
   let ubLastByte: UINT8 = 0;
   let ubLastByteForNextLoop: UINT8;
   let fRet: boolean;
-  let pMemBlock: Pointer<UINT8>;
+  let pMemBlock: Buffer;
 
-  fRet = FileRead(hFile, pDest, uiBytesToRead, puiBytesRead);
+  fRet = ((uiBytesRead = FileRead(hFile, pDest, uiBytesToRead)) !== -1);
   if (fRet) {
     pMemBlock = pDest;
-    for (uiLoop = 0; uiLoop < puiBytesRead.value; uiLoop++) {
+    for (uiLoop = 0; uiLoop < uiBytesRead; uiLoop++) {
       ubLastByteForNextLoop = pMemBlock[uiLoop];
       pMemBlock[uiLoop] -= (ubLastByte + ubRotationArray[ubArrayIndex]);
       ubArrayIndex++;
@@ -2311,25 +2313,22 @@ export function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: U
     }
   }
 
-  return fRet;
+  return uiBytesRead;
 }
 
-export function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): boolean {
+export function JA2EncryptedFileWrite(hFile: HWFILE, pDest: Buffer, uiBytesToWrite: UINT32): UINT32 {
+  let uiBytesWritten: UINT32;
+
   let uiLoop: UINT32;
   let ubArrayIndex: UINT8 = 0;
   // UINT8		ubLastNonBlank = 0;
   let ubLastByte: UINT8 = 0; //, ubTemp;
-  let pMemBlock: Pointer<UINT8>;
+  let pMemBlock: Buffer;
   let fRet: boolean;
 
-  pMemBlock = MemAlloc(uiBytesToWrite);
+  pMemBlock = Buffer.allocUnsafe(uiBytesToWrite);
 
-  if (!pMemBlock) {
-    return false;
-  }
-  memset(pMemBlock, 0, uiBytesToWrite);
-
-  memcpy(pMemBlock, pDest, uiBytesToWrite);
+  pDest.copy(pMemBlock);
   for (uiLoop = 0; uiLoop < uiBytesToWrite; uiLoop++) {
     // ubTemp = pMemBlock[ uiLoop ];
     pMemBlock[uiLoop] += ubLastByte + ubRotationArray[ubArrayIndex];
@@ -2363,11 +2362,9 @@ export function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite:
     */
   }
 
-  fRet = FileWrite(hFile, pMemBlock, uiBytesToWrite, puiBytesWritten);
+  fRet = (uiBytesWritten = FileWrite(hFile, pMemBlock, uiBytesToWrite)) !== -1;
 
-  MemFree(pMemBlock);
-
-  return fRet;
+  return uiBytesWritten;
 }
 
 export function GetMapTempFileName(uiType: UINT32, pMapName: Pointer<string> /* STR */, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {

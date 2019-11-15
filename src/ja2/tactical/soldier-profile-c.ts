@@ -5,7 +5,7 @@ export let gfPotentialTeamChangeDuringDeath: boolean = false;
 const MIN_BLINK_FREQ = 3000;
 const MIN_EXPRESSION_FREQ = 2000;
 
-export let gMercProfiles: MERCPROFILESTRUCT[] /* [NUM_PROFILES] */;
+export let gMercProfiles: MERCPROFILESTRUCT[] /* [NUM_PROFILES] */ = createArrayFrom(NUM_PROFILES, createMercProfileStruct);
 
 export let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = [
   0, // NO_SKILLTRAIT
@@ -146,6 +146,7 @@ export function LoadMercProfiles(): boolean {
   let usAmmo: UINT16;
   let usNewAmmo: UINT16;
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   fptr = FileOpen(pFileName, FILE_ACCESS_READ, false);
   if (!fptr) {
@@ -153,12 +154,15 @@ export function LoadMercProfiles(): boolean {
     return false;
   }
 
+  buffer = Buffer.allocUnsafe(MERC_PROFILE_STRUCT_SIZE);
   for (uiLoop = 0; uiLoop < NUM_PROFILES; uiLoop++) {
-    if (JA2EncryptedFileRead(fptr, addressof(gMercProfiles[uiLoop]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead)) != 1) {
+    if ((uiNumBytesRead = JA2EncryptedFileRead(fptr, buffer, MERC_PROFILE_STRUCT_SIZE)) === -1) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to Read Merc Profiles from File %d %s", uiLoop, pFileName));
       FileClose(fptr);
       return false;
     }
+
+    readMercProfileStruct(gMercProfiles[uiLoop], buffer);
 
     // if the Dialogue exists for the merc, allow the merc to be hired
     if (DialogueDataFileExistsForProfile(uiLoop, 0, false, null)) {

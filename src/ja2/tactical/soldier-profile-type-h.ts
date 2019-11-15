@@ -341,6 +341,618 @@ export interface MERCPROFILESTRUCT {
   ubBuffer: UINT8[] /* [4] */;
 }
 
+export function createMercProfileStruct(): MERCPROFILESTRUCT {
+  return {
+    zName: '',
+    zNickname: '',
+    uiAttnSound: 0,
+    uiCurseSound: 0,
+    uiDieSound: 0,
+    uiGoodSound: 0,
+    uiGruntSound: 0,
+    uiGrunt2Sound: 0,
+    uiOkSound: 0,
+    ubFaceIndex: 0,
+    PANTS: '',
+    VEST: '',
+    SKIN: '',
+    HAIR: '',
+    bSex: 0,
+    bArmourAttractiveness: 0,
+    ubMiscFlags2: 0,
+    bEvolution: 0,
+    ubMiscFlags: 0,
+    bSexist: 0,
+    bLearnToHate: 0,
+
+    bStealRate: 0,
+    bVocalVolume: 0,
+    ubQuoteRecord: 0,
+    bDeathRate: 0,
+    bScientific: 0,
+
+    sExpLevelGain: 0,
+    sLifeGain: 0,
+    sAgilityGain: 0,
+    sDexterityGain: 0,
+    sWisdomGain: 0,
+    sMarksmanshipGain: 0,
+    sMedicalGain: 0,
+    sMechanicGain: 0,
+    sExplosivesGain: 0,
+
+    ubBodyType: 0,
+    bMedical: 0,
+
+    usEyesX: 0,
+    usEyesY: 0,
+    usMouthX: 0,
+    usMouthY: 0,
+    uiEyeDelay: 0,
+    uiMouthDelay: 0,
+    uiBlinkFrequency: 0,
+    uiExpressionFrequency: 0,
+    sSectorX: 0,
+    sSectorY: 0,
+
+    uiDayBecomesAvailable: 0,
+
+    bStrength: 0,
+
+    bLifeMax: 0,
+    bExpLevelDelta: 0,
+    bLifeDelta: 0,
+    bAgilityDelta: 0,
+    bDexterityDelta: 0,
+    bWisdomDelta: 0,
+    bMarksmanshipDelta: 0,
+    bMedicalDelta: 0,
+    bMechanicDelta: 0,
+    bExplosivesDelta: 0,
+    bStrengthDelta: 0,
+    bLeadershipDelta: 0,
+    usKills: 0,
+    usAssists: 0,
+    usShotsFired: 0,
+    usShotsHit: 0,
+    usBattlesFought: 0,
+    usTimesWounded: 0,
+    usTotalDaysServed: 0,
+
+    sLeadershipGain: 0,
+    sStrengthGain: 0,
+
+    uiBodyTypeSubFlags: 0,
+
+    sSalary: 0,
+    bLife: 0,
+    bDexterity: 0,
+    bPersonalityTrait: 0,
+    bSkillTrait: 0,
+
+    bReputationTolerance: 0,
+    bExplosive: 0,
+    bSkillTrait2: 0,
+    bLeadership: 0,
+
+    bBuddy: createArray(5, 0),
+    bHated: createArray(5, 0),
+    bExpLevel: 0,
+
+    bMarksmanship: 0,
+    bMinService: 0,
+    bWisdom: 0,
+    bResigned: 0,
+    bActive: 0,
+
+    bInvStatus: createArray(19, 0),
+    bInvNumber: createArray(19, 0),
+    usApproachFactor: createArray(4, 0),
+
+    bMainGunAttractiveness: 0,
+    bAgility: 0,
+
+    fUseProfileInsertionInfo: false,
+    sGridNo: 0,
+    ubQuoteActionID: 0,
+    bMechanical: 0,
+
+    ubInvUndroppable: 0,
+    ubRoomRangeStart: createArray(2, 0),
+    inv: createArray(19, 0),
+    bMercTownReputation: createArray(20, 0),
+
+    usStatChangeChances: createArray(12, 0),
+    usStatChangeSuccesses: createArray(12, 0),
+
+    ubStrategicInsertionCode: 0,
+
+    ubRoomRangeEnd: createArray(2, 0),
+
+    bPadding: createArray(4, 0),
+
+    ubLastQuoteSaid: 0,
+
+    bRace: 0,
+    bNationality: 0,
+    bAppearance: 0,
+    bAppearanceCareLevel: 0,
+    bRefinement: 0,
+    bRefinementCareLevel: 0,
+    bHatedNationality: 0,
+    bHatedNationalityCareLevel: 0,
+    bRacist: 0,
+    uiWeeklySalary: 0,
+    uiBiWeeklySalary: 0,
+    bMedicalDeposit: 0,
+    bAttitude: 0,
+    bBaseMorale: 0,
+    sMedicalDepositAmount: 0,
+
+    bLearnToLike: 0,
+    ubApproachVal: createArray(4, 0),
+    ubApproachMod: createArrayFrom(3, () => createArray(4, 0)),
+    bTown: 0,
+    bTownAttachment: 0,
+    usOptionalGearCost: 0,
+    bMercOpinion: createArray(75, 0),
+    bApproached: 0,
+    bMercStatus: 0,
+    bHatedTime: createArray(5, 0),
+    bLearnToLikeTime: 0,
+    bLearnToHateTime: 0,
+    bHatedCount: createArray(5, 0),
+    bLearnToLikeCount: 0,
+    bLearnToHateCount: 0,
+    ubLastDateSpokenTo: 0,
+    bLastQuoteSaidWasSpecial: 0,
+    bSectorZ: 0,
+    usStrategicInsertionData: 0,
+    bFriendlyOrDirectDefaultResponseUsedRecently: 0,
+    bRecruitDefaultResponseUsedRecently: 0,
+    bThreatenDefaultResponseUsedRecently: 0,
+    bNPCData: 0,
+    iBalance: 0,
+    sTrueSalary: 0,
+    ubCivilianGroup: 0,
+    ubNeedForSleep: 0,
+    uiMoney: 0,
+    bNPCData2: 0,
+
+    ubMiscFlags3: 0,
+
+    ubDaysOfMoraleHangover: 0,
+    ubNumTimesDrugUseInLifetime: 0,
+
+    uiPrecedentQuoteSaid: 0,
+    uiProfileChecksum: 0,
+    sPreCombatGridNo: 0,
+    ubTimeTillNextHatedComplaint: 0,
+    ubSuspiciousDeath: 0,
+
+    iMercMercContractLength: 0,
+
+    uiTotalCostToDate: 0,
+    ubBuffer: createArray(4, 0),
+  };
+}
+
+export const MERC_PROFILE_STRUCT_SIZE = 716;
+
+export function readMercProfileStruct(o:  MERCPROFILESTRUCT, buffer: Buffer, offset: number = 0): number {
+  o.zName = readStringNL(buffer, 'utf16le', offset, offset + 60); offset += 60;
+  o.zNickname = readStringNL(buffer, 'utf16le', offset, offset + 20); offset += 20;
+  o.uiAttnSound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiCurseSound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiDieSound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiGoodSound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiGruntSound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiGrunt2Sound = buffer.readUInt32LE(offset); offset += 4;
+  o.uiOkSound = buffer.readUInt32LE(offset); offset += 4;
+  o.ubFaceIndex = buffer.readUInt8(offset++);
+  o.PANTS = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.VEST = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.SKIN = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.HAIR = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.bSex = buffer.readInt8(offset++);
+  o.bArmourAttractiveness = buffer.readInt8(offset++);
+  o.ubMiscFlags2 = buffer.readUInt8(offset++);
+  o.bEvolution = buffer.readInt8(offset++);
+  o.ubMiscFlags = buffer.readUInt8(offset++);
+  o.bSexist = buffer.readUInt8(offset++);
+  o.bLearnToHate = buffer.readInt8(offset++);
+
+  o.bStealRate = buffer.readInt8(offset++);
+  o.bVocalVolume = buffer.readInt8(offset++);
+  o.ubQuoteRecord = buffer.readUInt8(offset++);
+  o.bDeathRate = buffer.readInt8(offset++);
+  o.bScientific = buffer.readInt8(offset++);
+
+  offset++; // padding
+
+  o.sExpLevelGain = buffer.readInt16LE(offset); offset += 2;
+  o.sLifeGain = buffer.readInt16LE(offset); offset += 2;
+  o.sAgilityGain = buffer.readInt16LE(offset); offset += 2;
+  o.sDexterityGain = buffer.readInt16LE(offset); offset += 2;
+  o.sWisdomGain = buffer.readInt16LE(offset); offset += 2;
+  o.sMarksmanshipGain = buffer.readInt16LE(offset); offset += 2;
+  o.sMedicalGain = buffer.readInt16LE(offset); offset += 2;
+  o.sMechanicGain = buffer.readInt16LE(offset); offset += 2;
+  o.sExplosivesGain = buffer.readInt16LE(offset); offset += 2;
+
+  o.ubBodyType = buffer.readUInt8(offset++);
+  o.bMedical = buffer.readInt8(offset++);
+
+  o.usEyesX = buffer.readUInt16LE(offset); offset += 2;
+  o.usEyesY = buffer.readUInt16LE(offset); offset += 2;
+  o.usMouthX = buffer.readUInt16LE(offset); offset += 2;
+  o.usMouthY = buffer.readUInt16LE(offset); offset += 2;
+  offset += 2; // padding
+  o.uiEyeDelay = buffer.readUInt32LE(offset); offset += 4;
+  o.uiMouthDelay = buffer.readUInt32LE(offset); offset += 4;
+  o.uiBlinkFrequency = buffer.readUInt32LE(offset); offset += 4;
+  o.uiExpressionFrequency = buffer.readUInt32LE(offset); offset += 4;
+  o.sSectorX = buffer.readUInt16LE(offset); offset += 2;
+  o.sSectorY = buffer.readUInt16LE(offset); offset += 2;
+
+  o.uiDayBecomesAvailable = buffer.readUInt32LE(offset); offset += 4;
+
+  o.bStrength = buffer.readInt8(offset++);
+
+  o.bLifeMax = buffer.readInt8(offset++);
+  o.bExpLevelDelta = buffer.readInt8(offset++);
+  o.bLifeDelta = buffer.readInt8(offset++);
+  o.bAgilityDelta = buffer.readInt8(offset++);
+  o.bDexterityDelta = buffer.readInt8(offset++);
+  o.bWisdomDelta = buffer.readInt8(offset++);
+  o.bMarksmanshipDelta = buffer.readInt8(offset++);
+  o.bMedicalDelta = buffer.readInt8(offset++);
+  o.bMechanicDelta = buffer.readInt8(offset++);
+  o.bExplosivesDelta = buffer.readInt8(offset++);
+  o.bStrengthDelta = buffer.readInt8(offset++);
+  o.bLeadershipDelta = buffer.readInt8(offset++);
+  offset++; // padding
+  o.usKills = buffer.readUInt16LE(offset); offset += 2;
+  o.usAssists = buffer.readUInt16LE(offset); offset += 2;
+  o.usShotsFired = buffer.readUInt16LE(offset); offset += 2;
+  o.usShotsHit = buffer.readUInt16LE(offset); offset += 2;
+  o.usBattlesFought = buffer.readUInt16LE(offset); offset += 2;
+  o.usTimesWounded = buffer.readUInt16LE(offset); offset += 2;
+  o.usTotalDaysServed = buffer.readUInt16LE(offset); offset += 2;
+
+  o.sLeadershipGain = buffer.readInt16LE(offset); offset += 2;
+  o.sStrengthGain = buffer.readInt16LE(offset); offset += 2;
+
+  o.uiBodyTypeSubFlags = buffer.readUInt32LE(offset); offset += 4;
+
+  o.sSalary = buffer.readInt16LE(offset); offset += 2;
+  o.bLife = buffer.readInt8(offset++);
+  o.bDexterity = buffer.readInt8(offset++);
+  o.bPersonalityTrait = buffer.readInt8(offset++);
+  o.bSkillTrait = buffer.readInt8(offset++);
+
+  o.bReputationTolerance = buffer.readInt8(offset++);
+  o.bExplosive = buffer.readInt8(offset++);
+  o.bSkillTrait2 = buffer.readInt8(offset++);
+  o.bLeadership = buffer.readInt8(offset++);
+
+  offset = readIntArray(o.bBuddy, buffer, offset, 1);
+  offset = readIntArray(o.bHated, buffer, offset, 1);
+  o.bExpLevel = buffer.readInt8(offset++);
+
+  o.bMarksmanship = buffer.readInt8(offset++);
+  o.bMinService = buffer.readUInt8(offset++);
+  o.bWisdom = buffer.readInt8(offset++);
+  o.bResigned = buffer.readUInt8(offset++);
+  o.bActive = buffer.readUInt8(offset++);
+
+  offset = readUIntArray(o.bInvStatus, buffer, offset, 1);
+  offset = readUIntArray(o.bInvNumber, buffer, offset, 1);
+  offset = readUIntArray(o.usApproachFactor, buffer, offset, 2);
+
+  o.bMainGunAttractiveness = buffer.readInt8(offset++);
+  o.bAgility = buffer.readInt8(offset++);
+
+  o.fUseProfileInsertionInfo = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.sGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.ubQuoteActionID = buffer.readUInt8(offset++);
+  o.bMechanical = buffer.readInt8(offset++);
+
+  o.ubInvUndroppable = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubRoomRangeStart, buffer, offset, 1);
+  offset++; // padding
+  offset = readUIntArray(o.inv, buffer, offset, 2);
+  offset = readIntArray(o.bMercTownReputation, buffer, offset, 1);
+
+  offset = readUIntArray(o.usStatChangeChances, buffer, offset, 2);
+  offset = readUIntArray(o.usStatChangeSuccesses, buffer, offset, 2);
+
+  o.ubStrategicInsertionCode = buffer.readUInt8(offset++);
+
+  offset = readUIntArray(o.ubRoomRangeEnd, buffer, offset, 1);
+
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+
+  o.ubLastQuoteSaid = buffer.readUInt8(offset++);
+
+  o.bRace = buffer.readInt8(offset++);
+  o.bNationality = buffer.readInt8(offset++);
+  o.bAppearance = buffer.readInt8(offset++);
+  o.bAppearanceCareLevel = buffer.readInt8(offset++);
+  o.bRefinement = buffer.readInt8(offset++);
+  o.bRefinementCareLevel = buffer.readInt8(offset++);
+  o.bHatedNationality = buffer.readInt8(offset++);
+  o.bHatedNationalityCareLevel = buffer.readInt8(offset++);
+  o.bRacist = buffer.readInt8(offset++);
+  offset++; // padding
+  o.uiWeeklySalary = buffer.readUInt32LE(offset); offset += 4;
+  o.uiBiWeeklySalary = buffer.readUInt32LE(offset); offset += 4;
+  o.bMedicalDeposit = buffer.readInt8(offset++);
+  o.bAttitude = buffer.readInt8(offset++);
+  o.bBaseMorale = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sMedicalDepositAmount = buffer.readUInt16LE(offset); offset += 2;
+
+  o.bLearnToLike = buffer.readInt8(offset++);
+  offset = readUIntArray(o.ubApproachVal, buffer, offset, 1);
+  for (let i = 0; i < o.ubApproachMod.length; i++) {
+    offset = readUIntArray(o.ubApproachMod[i], buffer, offset, 1);
+  }
+  o.bTown = buffer.readInt8(offset++);
+  o.bTownAttachment = buffer.readInt8(offset++);
+  offset++; // padding
+  o.usOptionalGearCost = buffer.readUInt16LE(offset); offset += 2;
+  offset = readIntArray(o.bMercOpinion, buffer, offset, 1);
+  o.bApproached = buffer.readInt8(offset++);
+  o.bMercStatus = buffer.readInt8(offset++);
+  offset = readIntArray(o.bHatedTime, buffer, offset, 1);
+  o.bLearnToLikeTime = buffer.readInt8(offset++);
+  o.bLearnToHateTime = buffer.readInt8(offset++);
+  offset = readIntArray(o.bHatedCount, buffer, offset, 1);
+  o.bLearnToLikeCount = buffer.readInt8(offset++);
+  o.bLearnToHateCount = buffer.readInt8(offset++);
+  o.ubLastDateSpokenTo = buffer.readUInt8(offset++);
+  o.bLastQuoteSaidWasSpecial = buffer.readUInt8(offset++);
+  o.bSectorZ = buffer.readInt8(offset++);
+  o.usStrategicInsertionData = buffer.readUInt16LE(offset); offset += 2;
+  o.bFriendlyOrDirectDefaultResponseUsedRecently = buffer.readInt8(offset++);
+  o.bRecruitDefaultResponseUsedRecently = buffer.readInt8(offset++);
+  o.bThreatenDefaultResponseUsedRecently = buffer.readInt8(offset++);
+  o.bNPCData = buffer.readInt8(offset++);
+  o.iBalance = buffer.readInt32LE(offset); offset += 4;
+  o.sTrueSalary = buffer.readInt16LE(offset); offset += 2;
+  o.ubCivilianGroup = buffer.readUInt8(offset++);
+  o.ubNeedForSleep = buffer.readUInt8(offset++);
+  o.uiMoney = buffer.readUInt32LE(offset); offset += 4;
+  o.bNPCData2 = buffer.readInt8(offset++);
+
+  o.ubMiscFlags3 = buffer.readUInt8(offset++);
+
+  o.ubDaysOfMoraleHangover = buffer.readUInt8(offset++);
+  o.ubNumTimesDrugUseInLifetime = buffer.readUInt8(offset++);
+
+  o.uiPrecedentQuoteSaid = buffer.readUInt32LE(offset); offset += 4;
+  o.uiProfileChecksum = buffer.readUInt32LE(offset); offset += 4;
+  o.sPreCombatGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.ubTimeTillNextHatedComplaint = buffer.readUInt8(offset++);
+  o.ubSuspiciousDeath = buffer.readUInt8(offset++);
+
+  o.iMercMercContractLength = buffer.readInt32LE(offset); offset += 4;
+
+  o.uiTotalCostToDate = buffer.readUInt32LE(offset); offset += 4;
+  offset = readUIntArray(o.ubBuffer, buffer, offset, 1);
+
+  return offset;
+}
+
+export function writeMercProfileStruct(o: MERCPROFILESTRUCT, buffer: Buffer, offset: number = 0) {
+  offset = writeStringNL(o.zName, buffer, offset, 60, 'utf16le');
+  offset = writeStringNL(o.zNickname, buffer, offset, 20, 'utf16le');
+  offset = buffer.writeUInt32LE(o.uiAttnSound, offset);
+  offset = buffer.writeUInt32LE(o.uiCurseSound, offset);
+  offset = buffer.writeUInt32LE(o.uiDieSound, offset);
+  offset = buffer.writeUInt32LE(o.uiGoodSound, offset);
+  offset = buffer.writeUInt32LE(o.uiGruntSound, offset);
+  offset = buffer.writeUInt32LE(o.uiGrunt2Sound, offset);
+  offset = buffer.writeUInt32LE(o.uiOkSound, offset);
+  offset = buffer.writeUInt8(o.ubFaceIndex, offset);
+  offset = writeStringNL(o.PANTS, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.VEST, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.SKIN, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.HAIR, buffer, offset, 30, 'ascii');
+  offset = buffer.writeInt8(o.bSex, offset);
+  offset = buffer.writeInt8(o.bArmourAttractiveness, offset);
+  offset = buffer.writeUInt8(o.ubMiscFlags2, offset);
+  offset = buffer.writeInt8(o.bEvolution, offset);
+  offset = buffer.writeUInt8(o.ubMiscFlags, offset);
+  offset = buffer.writeUInt8(o.bSexist, offset);
+  offset = buffer.writeInt8(o.bLearnToHate, offset);
+
+  offset = buffer.writeInt8(o.bStealRate, offset);
+  offset = buffer.writeInt8(o.bVocalVolume, offset);
+  offset = buffer.writeUInt8(o.ubQuoteRecord, offset);
+  offset = buffer.writeInt8(o.bDeathRate, offset);
+  offset = buffer.writeInt8(o.bScientific, offset);
+
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+
+  offset = buffer.writeInt16LE(o.sExpLevelGain, offset);
+  offset = buffer.writeInt16LE(o.sLifeGain, offset);
+  offset = buffer.writeInt16LE(o.sAgilityGain, offset);
+  offset = buffer.writeInt16LE(o.sDexterityGain, offset);
+  offset = buffer.writeInt16LE(o.sWisdomGain, offset);
+  offset = buffer.writeInt16LE(o.sMarksmanshipGain, offset);
+  offset = buffer.writeInt16LE(o.sMedicalGain, offset);
+  offset = buffer.writeInt16LE(o.sMechanicGain, offset);
+  offset = buffer.writeInt16LE(o.sExplosivesGain, offset);
+
+  offset = buffer.writeUInt8(o.ubBodyType, offset);
+  offset = buffer.writeInt8(o.bMedical, offset);
+
+  offset = buffer.writeUInt16LE(o.usEyesX, offset);
+  offset = buffer.writeUInt16LE(o.usEyesY, offset);
+  offset = buffer.writeUInt16LE(o.usMouthX, offset);
+  offset = buffer.writeUInt16LE(o.usMouthY, offset);
+  offset = buffer.writeUIntLE(0, offset, 2); // padding
+  offset = buffer.writeUInt32LE(o.uiEyeDelay, offset);
+  offset = buffer.writeUInt32LE(o.uiMouthDelay, offset);
+  offset = buffer.writeUInt32LE(o.uiBlinkFrequency, offset);
+  offset = buffer.writeUInt32LE(o.uiExpressionFrequency, offset);
+  offset = buffer.writeUInt16LE(o.sSectorX, offset);
+  offset = buffer.writeUInt16LE(o.sSectorY, offset);
+
+  offset = buffer.writeUInt32LE(o.uiDayBecomesAvailable, offset);
+
+  offset = buffer.writeInt8(o.bStrength, offset);
+
+  offset = buffer.writeInt8(o.bLifeMax, offset);
+  offset = buffer.writeInt8(o.bExpLevelDelta, offset);
+  offset = buffer.writeInt8(o.bLifeDelta, offset);
+  offset = buffer.writeInt8(o.bAgilityDelta, offset);
+  offset = buffer.writeInt8(o.bDexterityDelta, offset);
+  offset = buffer.writeInt8(o.bWisdomDelta, offset);
+  offset = buffer.writeInt8(o.bMarksmanshipDelta, offset);
+  offset = buffer.writeInt8(o.bMedicalDelta, offset);
+  offset = buffer.writeInt8(o.bMechanicDelta, offset);
+  offset = buffer.writeInt8(o.bExplosivesDelta, offset);
+  offset = buffer.writeInt8(o.bStrengthDelta, offset);
+  offset = buffer.writeInt8(o.bLeadershipDelta, offset);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usKills, offset);
+  offset = buffer.writeUInt16LE(o.usAssists, offset);
+  offset = buffer.writeUInt16LE(o.usShotsFired, offset);
+  offset = buffer.writeUInt16LE(o.usShotsHit, offset);
+  offset = buffer.writeUInt16LE(o.usBattlesFought, offset);
+  offset = buffer.writeUInt16LE(o.usTimesWounded, offset);
+  offset = buffer.writeUInt16LE(o.usTotalDaysServed, offset);
+
+  offset = buffer.writeInt16LE(o.sLeadershipGain, offset);
+  offset = buffer.writeInt16LE(o.sStrengthGain, offset);
+
+  offset = buffer.writeUInt32LE(o.uiBodyTypeSubFlags, offset);
+
+  offset = buffer.writeInt16LE(o.sSalary, offset);
+  offset = buffer.writeInt8(o.bLife, offset);
+  offset = buffer.writeInt8(o.bDexterity, offset);
+  offset = buffer.writeInt8(o.bPersonalityTrait, offset);
+  offset = buffer.writeInt8(o.bSkillTrait, offset);
+
+  offset = buffer.writeInt8(o.bReputationTolerance, offset);
+  offset = buffer.writeInt8(o.bExplosive, offset);
+  offset = buffer.writeInt8(o.bSkillTrait2, offset);
+  offset = buffer.writeInt8(o.bLeadership, offset);
+
+  offset = writeIntArray(o.bBuddy, buffer, offset, 1);
+  offset = writeIntArray(o.bHated, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bExpLevel, offset);
+
+  offset = buffer.writeInt8(o.bMarksmanship, offset);
+  offset = buffer.writeUInt8(o.bMinService, offset);
+  offset = buffer.writeInt8(o.bWisdom, offset);
+  offset = buffer.writeUInt8(o.bResigned, offset);
+  offset = buffer.writeUInt8(o.bActive, offset);
+
+  offset = writeUIntArray(o.bInvStatus, buffer, offset, 1);
+  offset = writeUIntArray(o.bInvNumber, buffer, offset, 1);
+  offset = writeUIntArray(o.usApproachFactor, buffer, offset, 2);
+
+  offset = buffer.writeInt8(o.bMainGunAttractiveness, offset);
+  offset = buffer.writeInt8(o.bAgility, offset);
+
+  offset = buffer.writeUInt8(Number(o.fUseProfileInsertionInfo), offset);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sGridNo, offset);
+  offset = buffer.writeUInt8(o.ubQuoteActionID, offset);
+  offset = buffer.writeInt8(o.bMechanical, offset);
+
+  offset = buffer.writeUInt8(o.ubInvUndroppable, offset);
+  offset = writeUIntArray(o.ubRoomRangeStart, buffer, offset, 1);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = writeUIntArray(o.inv, buffer, offset, 2);
+  offset = writeIntArray(o.bMercTownReputation, buffer, offset, 1);
+
+  offset = writeUIntArray(o.usStatChangeChances, buffer, offset, 2);
+  offset = writeUIntArray(o.usStatChangeSuccesses, buffer, offset, 2);
+
+  offset = buffer.writeUInt8(o.ubStrategicInsertionCode, offset);
+
+  offset = writeUIntArray(o.ubRoomRangeEnd, buffer, offset, 1);
+
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+
+  offset = buffer.writeUInt8(o.ubLastQuoteSaid, offset);
+
+  offset = buffer.writeInt8(o.bRace, offset);
+  offset = buffer.writeInt8(o.bNationality, offset);
+  offset = buffer.writeInt8(o.bAppearance, offset);
+  offset = buffer.writeInt8(o.bAppearanceCareLevel, offset);
+  offset = buffer.writeInt8(o.bRefinement, offset);
+  offset = buffer.writeInt8(o.bRefinementCareLevel, offset);
+  offset = buffer.writeInt8(o.bHatedNationality, offset);
+  offset = buffer.writeInt8(o.bHatedNationalityCareLevel, offset);
+  offset = buffer.writeInt8(o.bRacist, offset);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiWeeklySalary, offset);
+  offset = buffer.writeUInt32LE(o.uiBiWeeklySalary, offset);
+  offset = buffer.writeInt8(o.bMedicalDeposit, offset);
+  offset = buffer.writeInt8(o.bAttitude, offset);
+  offset = buffer.writeInt8(o.bBaseMorale, offset);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.sMedicalDepositAmount, offset);
+
+  offset = buffer.writeInt8(o.bLearnToLike, offset);
+  offset = writeUIntArray(o.ubApproachVal, buffer, offset, 1);
+  for (let i = 0; i < o.ubApproachMod.length; i++) {
+    offset = writeUIntArray(o.ubApproachMod[i], buffer, offset, 1);
+  }
+  offset = buffer.writeInt8(o.bTown, offset);
+  offset = buffer.writeInt8(o.bTownAttachment, offset);
+  offset = buffer.writeUIntLE(0, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usOptionalGearCost, offset);
+  offset = writeIntArray(o.bMercOpinion, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bApproached, offset);
+  offset = buffer.writeInt8(o.bMercStatus, offset);
+  offset = writeIntArray(o.bHatedTime, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bLearnToLikeTime, offset);
+  offset = buffer.writeInt8(o.bLearnToHateTime, offset);
+  offset = writeIntArray(o.bHatedCount, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bLearnToLikeCount, offset);
+  offset = buffer.writeInt8(o.bLearnToHateCount, offset);
+  offset = buffer.writeUInt8(o.ubLastDateSpokenTo, offset);
+  offset = buffer.writeUInt8(o.bLastQuoteSaidWasSpecial, offset);
+  offset = buffer.writeInt8(o.bSectorZ, offset);
+  offset = buffer.writeUInt16LE(o.usStrategicInsertionData, offset);
+  offset = buffer.writeInt8(o.bFriendlyOrDirectDefaultResponseUsedRecently, offset);
+  offset = buffer.writeInt8(o.bRecruitDefaultResponseUsedRecently, offset);
+  offset = buffer.writeInt8(o.bThreatenDefaultResponseUsedRecently, offset);
+  offset = buffer.writeInt8(o.bNPCData, offset);
+  offset = buffer.writeInt32LE(o.iBalance, offset);
+  offset = buffer.writeInt16LE(o.sTrueSalary, offset);
+  offset = buffer.writeUInt8(o.ubCivilianGroup, offset);
+  offset = buffer.writeUInt8(o.ubNeedForSleep, offset);
+  offset = buffer.writeUInt32LE(o.uiMoney, offset);
+  offset = buffer.writeInt8(o.bNPCData2, offset);
+
+  offset = buffer.writeUInt8(o.ubMiscFlags3, offset);
+
+  offset = buffer.writeUInt8(o.ubDaysOfMoraleHangover, offset);
+  offset = buffer.writeUInt8(o.ubNumTimesDrugUseInLifetime, offset);
+
+  offset = buffer.writeUInt32LE(o.uiPrecedentQuoteSaid, offset);
+  offset = buffer.writeUInt32LE(o.uiProfileChecksum, offset);
+  offset = buffer.writeInt16LE(o.sPreCombatGridNo, offset);
+  offset = buffer.writeUInt8(o.ubTimeTillNextHatedComplaint, offset);
+  offset = buffer.writeUInt8(o.ubSuspiciousDeath, offset);
+
+  offset = buffer.writeInt32LE(o.iMercMercContractLength, offset);
+
+  offset = buffer.writeUInt32LE(o.uiTotalCostToDate, offset);
+  offset = writeUIntArray(o.ubBuffer, buffer, offset, 1);
+
+  return offset;
+}
+
 export const TIME_BETWEEN_HATED_COMPLAINTS = 24;
 
 export const SUSPICIOUS_DEATH = 1;

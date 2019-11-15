@@ -218,4 +218,38 @@ export function writeStringNL(string: string, buffer: Buffer, offset: number, le
   return offset + length;
 }
 
+export function readIntArray(arr: number[], buffer: Buffer, offset: number, byteLength: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    arr[i] = buffer.readIntLE(offset, byteLength);
+    offset += byteLength;
+  }
+  return offset;
+}
+
+export function readUIntArray(arr: number[], buffer: Buffer, offset: number, byteLength: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    arr[i] = buffer.readUIntLE(offset, byteLength);
+    offset += byteLength;
+  }
+  return offset;
+}
+
+export function writeIntArray(arr: number[], buffer: Buffer, offset: number, byteLength: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    offset = buffer.writeIntLE(arr[i], offset, byteLength);
+  }
+  return offset;
+}
+
+export function writeUIntArray(arr: number[], buffer: Buffer, offset: number, byteLength: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    offset = buffer.writeUIntLE(arr[i], offset, byteLength);
+  }
+  return offset;
+}
+
 }

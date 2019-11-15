@@ -146,8 +146,6 @@ function AddCharacterToPlayersTeam(): boolean {
 
   HandleMercStatsForChangesInFace();
 
-  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
-
   HireMercStruct.ubProfileID = (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
   if (fLoadingCharacterForPreviousImpProfile == false) {
@@ -170,7 +168,7 @@ function AddCharacterToPlayersTeam(): boolean {
   SetProfileFaceData(HireMercStruct.ubProfileID, (200 + iPortraitNumber), uiEyeXPositions[iPortraitNumber], uiEyeYPositions[iPortraitNumber], uiMouthXPositions[iPortraitNumber], uiMouthYPositions[iPortraitNumber]);
 
   // if we succesfully hired the merc
-  if (!HireMerc(addressof(HireMercStruct))) {
+  if (!HireMerc(HireMercStruct)) {
     return false;
   } else {
     return true;
@@ -294,28 +292,28 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 }
 */
 
-const PROFILE_HAS_SKILL_TRAIT = (p: Pointer<MERCPROFILESTRUCT>, t: number) => ((p.value.bSkillTrait == t) || (p.value.bSkillTrait2 == t));
+const PROFILE_HAS_SKILL_TRAIT = (p: MERCPROFILESTRUCT, t: number) => ((p.bSkillTrait == t) || (p.bSkillTrait2 == t));
 
 function GiveItemsToPC(ubProfileId: UINT8): void {
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
 
   // gives starting items to merc
   // NOTE: Any guns should probably be from those available in regular gun set
 
-  pProfile = addressof(gMercProfiles[ubProfileId]);
+  pProfile = gMercProfiles[ubProfileId];
 
   // STANDARD EQUIPMENT
 
   // kevlar vest, leggings, & helmet
   MakeProfileInvItemThisSlot(pProfile, Enum261.VESTPOS, Enum225.FLAK_JACKET, 100, 1);
-  if (PreRandom(100) < pProfile.value.bWisdom) {
+  if (PreRandom(100) < pProfile.bWisdom) {
     MakeProfileInvItemThisSlot(pProfile, Enum261.HELMETPOS, Enum225.STEEL_HELMET, 100, 1);
   }
 
   // canteen
   MakeProfileInvItemThisSlot(pProfile, Enum261.SMALLPOCK4POS, Enum225.CANTEEN, 100, 1);
 
-  if (pProfile.value.bMarksmanship >= 80) {
+  if (pProfile.bMarksmanship >= 80) {
     // good shooters get a better & matching ammo
     MakeProfileInvItemThisSlot(pProfile, Enum261.HANDPOS, Enum225.MP5K, 100, 1);
     MakeProfileInvItemThisSlot(pProfile, Enum261.SMALLPOCK1POS, Enum225.CLIP9_30, 100, 2);
@@ -327,20 +325,20 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
 
   // OPTIONAL EQUIPMENT: depends on skills & special skills
 
-  if (pProfile.value.bMedical >= 60) {
+  if (pProfile.bMedical >= 60) {
     // strong medics get full medic kit
     MakeProfileInvItemAnySlot(pProfile, Enum225.MEDICKIT, 100, 1);
-  } else if (pProfile.value.bMedical >= 30) {
+  } else if (pProfile.bMedical >= 30) {
     // passable medics get first aid kit
     MakeProfileInvItemAnySlot(pProfile, Enum225.FIRSTAIDKIT, 100, 1);
   }
 
-  if (pProfile.value.bMechanical >= 50) {
+  if (pProfile.bMechanical >= 50) {
     // mechanics get toolkit
     MakeProfileInvItemAnySlot(pProfile, Enum225.TOOLKIT, 100, 1);
   }
 
-  if (pProfile.value.bExplosive >= 50) {
+  if (pProfile.bExplosive >= 50) {
     // loonies get TNT & Detonator
     MakeProfileInvItemAnySlot(pProfile, Enum225.TNT, 100, 1);
     MakeProfileInvItemAnySlot(pProfile, Enum225.DETONATOR, 100, 1);
@@ -380,7 +378,7 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
   }
 }
 
-function MakeProfileInvItemAnySlot(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
+function MakeProfileInvItemAnySlot(pProfile: MERCPROFILESTRUCT, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
   let iSlot: INT32;
 
   iSlot = FirstFreeBigEnoughPocket(pProfile, usItem);
@@ -394,20 +392,20 @@ function MakeProfileInvItemAnySlot(pProfile: Pointer<MERCPROFILESTRUCT>, usItem:
   MakeProfileInvItemThisSlot(pProfile, iSlot, usItem, ubStatus, ubHowMany);
 }
 
-function MakeProfileInvItemThisSlot(pProfile: Pointer<MERCPROFILESTRUCT>, uiPos: UINT32, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
-  pProfile.value.inv[uiPos] = usItem;
-  pProfile.value.bInvStatus[uiPos] = ubStatus;
-  pProfile.value.bInvNumber[uiPos] = ubHowMany;
+function MakeProfileInvItemThisSlot(pProfile: MERCPROFILESTRUCT, uiPos: UINT32, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
+  pProfile.inv[uiPos] = usItem;
+  pProfile.bInvStatus[uiPos] = ubStatus;
+  pProfile.bInvNumber[uiPos] = ubHowMany;
 }
 
-function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16): INT32 {
+function FirstFreeBigEnoughPocket(pProfile: MERCPROFILESTRUCT, usItem: UINT16): INT32 {
   let uiPos: UINT32;
 
   // if it fits into a small pocket
   if (Item[usItem].ubPerPocket != 0) {
     // check small pockets first
     for (uiPos = Enum261.SMALLPOCK1POS; uiPos <= Enum261.SMALLPOCK8POS; uiPos++) {
-      if (pProfile.value.inv[uiPos] == Enum225.NONE) {
+      if (pProfile.inv[uiPos] == Enum225.NONE) {
         return uiPos;
       }
     }
@@ -415,7 +413,7 @@ function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: 
 
   // check large pockets
   for (uiPos = Enum261.BIGPOCK1POS; uiPos <= Enum261.BIGPOCK4POS; uiPos++) {
-    if (pProfile.value.inv[uiPos] == Enum225.NONE) {
+    if (pProfile.inv[uiPos] == Enum225.NONE) {
       return uiPos;
     }
   }
@@ -427,22 +425,29 @@ function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
   // grab the profile number and write out what is contained there in
   let hFile: HWFILE;
   let uiBytesWritten: UINT32 = 0;
+  let buffer: Buffer;
 
   // open the file for writing
   hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
 
+  buffer = Buffer.allocUnsafe(4);
+
   // write out the profile id
-  if (!FileWrite(hFile, addressof(iProfileId), sizeof(INT32), addressof(uiBytesWritten))) {
+  buffer.writeInt32LE(iProfileId, 0);
+  if ((uiBytesWritten = FileWrite(hFile, buffer, 4)) === -1) {
     return;
   }
 
   // write out the portrait id
-  if (!FileWrite(hFile, addressof(iPortraitNumber), sizeof(INT32), addressof(uiBytesWritten))) {
+  buffer.writeInt32LE(iPortraitNumber, 0);
+  if ((uiBytesWritten = FileWrite(hFile, buffer, 4)) === -1) {
     return;
   }
 
   // write out the profile itself
-  if (!FileWrite(hFile, addressof(gMercProfiles[iProfileId]), sizeof(MERCPROFILESTRUCT), addressof(uiBytesWritten))) {
+  buffer = Buffer.allocUnsafe(MERC_PROFILE_STRUCT_SIZE);
+  writeMercProfileStruct(gMercProfiles[iProfileId], buffer);
+  if ((uiBytesWritten = FileWrite(hFile, buffer, MERC_PROFILE_STRUCT_SIZE)) === -1) {
     return;
   }
 
@@ -456,6 +461,7 @@ function LoadInCurrentImpCharacter(): void {
   let iProfileId: INT32 = 0;
   let hFile: HWFILE;
   let uiBytesRead: UINT32 = 0;
+  let buffer: Buffer;
 
   // open the file for writing
   hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_READ, false);
@@ -465,20 +471,29 @@ function LoadInCurrentImpCharacter(): void {
     return;
   }
 
+  buffer = Buffer.allocUnsafe(4);
+
   // read in the profile
-  if (!FileRead(hFile, addressof(iProfileId), sizeof(INT32), addressof(uiBytesRead))) {
+  if ((uiBytesRead = FileRead(hFile, buffer, 4)) === -1) {
     return;
   }
+
+  iProfileId = buffer.readInt32LE(0);
 
   // read in the portrait
-  if (!FileRead(hFile, addressof(iPortraitNumber), sizeof(INT32), addressof(uiBytesRead))) {
+  if ((uiBytesRead = FileRead(hFile, buffer, 4)) === -1) {
     return;
   }
 
+  iPortraitNumber = buffer.readInt32LE(0);
+
   // read in the profile
-  if (!FileRead(hFile, addressof(gMercProfiles[iProfileId]), sizeof(MERCPROFILESTRUCT), addressof(uiBytesRead))) {
+  buffer = Buffer.allocUnsafe(MERC_PROFILE_STRUCT_SIZE);
+  if ((uiBytesRead = FileRead(hFile, buffer, MERC_PROFILE_STRUCT_SIZE)) === -1) {
     return;
   }
+
+  readMercProfileStruct(gMercProfiles[iProfileId], buffer);
 
   // close file
   FileClose(hFile);
