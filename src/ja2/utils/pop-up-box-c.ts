@@ -10,25 +10,15 @@ const BOTTOM_LEFT_CORNER = 2;
 const BOTTOM_EDGE = 4;
 const BOTTOM_RIGHT_CORNER = 3;
 
-function InitPopUpBoxList(): void {
-  memset(addressof(PopUpBoxList), 0, sizeof(PopUpBoxPt));
-  return;
-}
-
-function InitPopUpBox(hBoxHandle: INT32): void {
-  if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
-    return;
-
-  Assert(PopUpBoxList[hBoxHandle]);
-  memset(PopUpBoxList[hBoxHandle], 0, sizeof(PopUpBo));
-}
+/* static */ let PopUpBoxList: PopUpBo[] /* POPUPSTRINGPTR[MAX_POPUP_BOX_COUNT] */ = createArray(MAX_POPUP_BOX_COUNT, <PopUpBo><unknown>null);
+/* static */ let guiCurrentBox: UINT32;
 
 export function SetLineSpace(hBoxHandle: INT32, uiLineSpace: UINT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
   Assert(PopUpBoxList[hBoxHandle]);
-  PopUpBoxList[hBoxHandle].value.uiLineSpace = uiLineSpace;
+  PopUpBoxList[hBoxHandle].uiLineSpace = uiLineSpace;
   return;
 }
 
@@ -38,7 +28,7 @@ export function GetLineSpace(hBoxHandle: INT32): UINT32 {
 
   Assert(PopUpBoxList[hBoxHandle]);
   // return number of pixels between lines for this box
-  return PopUpBoxList[hBoxHandle].value.uiLineSpace;
+  return PopUpBoxList[hBoxHandle].uiLineSpace;
 }
 
 export function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
@@ -47,20 +37,20 @@ export function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.uiBoxMinWidth = iMinWidth;
+  PopUpBoxList[hBoxHandle].uiBoxMinWidth = iMinWidth;
 
   // check if the box is currently too small
-  if (PopUpBoxList[hBoxHandle].value.Dimensions.iRight < iMinWidth) {
-    PopUpBoxList[hBoxHandle].value.Dimensions.iRight = iMinWidth;
+  if (PopUpBoxList[hBoxHandle].Dimensions.iRight < iMinWidth) {
+    PopUpBoxList[hBoxHandle].Dimensions.iRight = iMinWidth;
   }
 
   return;
 }
 
-export function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect, Position: SGPPoint, uiFlags: UINT32): boolean {
+export function CreatePopUpBox(Dimensions: SGPRect, Position: SGPPoint, uiFlags: UINT32): INT32 {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
-  let pBox: PopUpBoxPt = null;
+  let pBox: PopUpBo;
 
   // find first free box
   for (iCounter = 0; (iCounter < MAX_POPUP_BOX_COUNT) && (PopUpBoxList[iCounter] != null); iCounter++)
@@ -69,26 +59,21 @@ export function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect,
   if (iCounter >= MAX_POPUP_BOX_COUNT) {
     // ran out of available popup boxes - probably not freeing them up right!
     Assert(0);
-    return false;
+    return -1;
   }
 
   iCount = iCounter;
-  phBoxHandle.value = iCount;
 
-  pBox = MemAlloc(sizeof(PopUpBo));
-  if (pBox == null) {
-    return false;
-  }
+  pBox = createPopUpBo();
   PopUpBoxList[iCount] = pBox;
 
-  InitPopUpBox(iCount);
   SetBoxPosition(iCount, Position);
   SetBoxSize(iCount, Dimensions);
   SetBoxFlags(iCount, uiFlags);
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    PopUpBoxList[iCount].value.Text[iCounter] = null;
-    PopUpBoxList[iCount].value.pSecondColumnString[iCounter] = null;
+    PopUpBoxList[iCount].Text[iCounter] = <POPUPSTRING><unknown>null;
+    PopUpBoxList[iCount].pSecondColumnString[iCounter] = <POPUPSTRING><unknown>null;
   }
 
   SetCurrentBox(iCount);
@@ -96,9 +81,9 @@ export function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect,
   SetBoxSecondColumnMinimumOffset(iCount, 0);
   SetBoxSecondColumnCurrentOffset(iCount, 0);
 
-  PopUpBoxList[iCount].value.fUpdated = false;
+  PopUpBoxList[iCount].fUpdated = false;
 
-  return true;
+  return iCount;
 }
 
 function SetBoxFlags(hBoxHandle: INT32, uiFlags: UINT32): void {
@@ -107,8 +92,8 @@ function SetBoxFlags(hBoxHandle: INT32, uiFlags: UINT32): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.uiFlags = uiFlags;
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].uiFlags = uiFlags;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
@@ -119,12 +104,12 @@ export function SetMargins(hBoxHandle: INT32, uiLeft: UINT32, uiTop: UINT32, uiB
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.uiLeftMargin = uiLeft;
-  PopUpBoxList[hBoxHandle].value.uiRightMargin = uiRight;
-  PopUpBoxList[hBoxHandle].value.uiTopMargin = uiTop;
-  PopUpBoxList[hBoxHandle].value.uiBottomMargin = uiBottom;
+  PopUpBoxList[hBoxHandle].uiLeftMargin = uiLeft;
+  PopUpBoxList[hBoxHandle].uiRightMargin = uiRight;
+  PopUpBoxList[hBoxHandle].uiTopMargin = uiTop;
+  PopUpBoxList[hBoxHandle].uiBottomMargin = uiBottom;
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
@@ -137,7 +122,7 @@ export function GetTopMarginSize(hBoxHandle: INT32): UINT32 {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  return PopUpBoxList[hBoxHandle].value.uiTopMargin;
+  return PopUpBoxList[hBoxHandle].uiTopMargin;
 }
 
 export function ShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
@@ -148,12 +133,12 @@ export function ShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
     // set current box
     SetCurrentBox(hBoxHandle);
 
     // shade line
-    PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fShadeFlag = true;
+    PopUpBoxList[hBoxHandle].Text[iLineNumber].fShadeFlag = true;
   }
 
   return;
@@ -167,12 +152,12 @@ export function UnShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32): void 
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
     // set current box
     SetCurrentBox(hBoxHandle);
 
     // shade line
-    PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fShadeFlag = false;
+    PopUpBoxList[hBoxHandle].Text[iLineNumber].fShadeFlag = false;
   }
 
   return;
@@ -186,12 +171,12 @@ export function SecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT32)
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
     // set current box
     SetCurrentBox(hBoxHandle);
 
     // shade line
-    PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fSecondaryShadeFlag = true;
+    PopUpBoxList[hBoxHandle].Text[iLineNumber].fSecondaryShadeFlag = true;
   }
 
   return;
@@ -205,12 +190,12 @@ export function UnSecondaryShadeStringInBox(hBoxHandle: INT32, iLineNumber: INT3
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
     // set current box
     SetCurrentBox(hBoxHandle);
 
     // shade line
-    PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fSecondaryShadeFlag = false;
+    PopUpBoxList[hBoxHandle].Text[iLineNumber].fSecondaryShadeFlag = false;
   }
 
   return;
@@ -222,9 +207,9 @@ export function SetBoxBuffer(hBoxHandle: INT32, uiBuffer: UINT32): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.uiBuffer = uiBuffer;
+  PopUpBoxList[hBoxHandle].uiBuffer = uiBuffer;
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
@@ -235,22 +220,22 @@ export function SetBoxPosition(hBoxHandle: INT32, Position: SGPPoint): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.Position.iX = Position.iX;
-  PopUpBoxList[hBoxHandle].value.Position.iY = Position.iY;
+  PopUpBoxList[hBoxHandle].Position.iX = Position.iX;
+  PopUpBoxList[hBoxHandle].Position.iY = Position.iY;
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
 
-export function GetBoxPosition(hBoxHandle: INT32, Position: Pointer<SGPPoint>): void {
+export function GetBoxPosition(hBoxHandle: INT32, Position: SGPPoint): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  Position.value.iX = PopUpBoxList[hBoxHandle].value.Position.iX;
-  Position.value.iY = PopUpBoxList[hBoxHandle].value.Position.iY;
+  Position.iX = PopUpBoxList[hBoxHandle].Position.iX;
+  Position.iY = PopUpBoxList[hBoxHandle].Position.iY;
 
   return;
 }
@@ -261,26 +246,26 @@ export function SetBoxSize(hBoxHandle: INT32, Dimensions: SGPRect): void {
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  PopUpBoxList[hBoxHandle].value.Dimensions.iLeft = Dimensions.iLeft;
-  PopUpBoxList[hBoxHandle].value.Dimensions.iBottom = Dimensions.iBottom;
-  PopUpBoxList[hBoxHandle].value.Dimensions.iRight = Dimensions.iRight;
-  PopUpBoxList[hBoxHandle].value.Dimensions.iTop = Dimensions.iTop;
+  PopUpBoxList[hBoxHandle].Dimensions.iLeft = Dimensions.iLeft;
+  PopUpBoxList[hBoxHandle].Dimensions.iBottom = Dimensions.iBottom;
+  PopUpBoxList[hBoxHandle].Dimensions.iRight = Dimensions.iRight;
+  PopUpBoxList[hBoxHandle].Dimensions.iTop = Dimensions.iTop;
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
 
-export function GetBoxSize(hBoxHandle: INT32, Dimensions: Pointer<SGPRect>): void {
+export function GetBoxSize(hBoxHandle: INT32, Dimensions: SGPRect): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
   Assert(PopUpBoxList[hBoxHandle]);
 
-  Dimensions.value.iLeft = PopUpBoxList[hBoxHandle].value.Dimensions.iLeft;
-  Dimensions.value.iBottom = PopUpBoxList[hBoxHandle].value.Dimensions.iBottom;
-  Dimensions.value.iRight = PopUpBoxList[hBoxHandle].value.Dimensions.iRight;
-  Dimensions.value.iTop = PopUpBoxList[hBoxHandle].value.Dimensions.iTop;
+  Dimensions.iLeft = PopUpBoxList[hBoxHandle].Dimensions.iLeft;
+  Dimensions.iBottom = PopUpBoxList[hBoxHandle].Dimensions.iBottom;
+  Dimensions.iRight = PopUpBoxList[hBoxHandle].Dimensions.iRight;
+  Dimensions.iTop = PopUpBoxList[hBoxHandle].Dimensions.iTop;
 
   return;
 }
@@ -290,7 +275,7 @@ export function SetBorderType(hBoxHandle: INT32, iBorderObjectIndex: INT32): voi
     return;
 
   Assert(PopUpBoxList[hBoxHandle]);
-  PopUpBoxList[hBoxHandle].value.iBorderObjectIndex = iBorderObjectIndex;
+  PopUpBoxList[hBoxHandle].iBorderObjectIndex = iBorderObjectIndex;
   return;
 }
 
@@ -299,148 +284,124 @@ export function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex:
     return;
 
   Assert(PopUpBoxList[hBoxHandle]);
-  PopUpBoxList[hBoxHandle].value.iBackGroundSurface = iBackGroundSurfaceIndex;
+  PopUpBoxList[hBoxHandle].iBackGroundSurface = iBackGroundSurfaceIndex;
   return;
 }
 
 // adds a FIRST column string to the CURRENT popup box
-export function AddMonoString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
-  let pLocalString: string /* STR16 */ = null;
-  let pStringSt: POPUPSTRINGPTR = null;
+export function AddMonoString(pString: string /* STR16 */): INT32 {
+  let pLocalString: string /* STR16 */;
+  let pStringSt: POPUPSTRING;
   let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
-    return;
+    return -1;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
   // find first free slot in list
-  for (iCounter = 0; (iCounter < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].value.Text[iCounter] != null); iCounter++)
+  for (iCounter = 0; (iCounter < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].Text[iCounter] != null); iCounter++)
     ;
 
   if (iCounter >= MAX_POPUP_BOX_STRING_COUNT) {
     // using too many text lines, or not freeing them up properly
     Assert(0);
-    return;
+    return -1;
   }
 
-  pStringSt = (MemAlloc(sizeof(POPUPSTRING)));
-  if (pStringSt == null)
-    return;
-
-  pLocalString = (MemAlloc(pString.length * 2 + 2));
-  if (pLocalString == null)
-    return;
+  pStringSt = createPopUpString();
 
   pLocalString = pString;
 
   RemoveCurrentBoxPrimaryText(iCounter);
 
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter] = pStringSt;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fColorFlag = false;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.pString = pLocalString;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fShadeFlag = false;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fHighLightFlag = false;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fSecondaryShadeFlag = false;
+  PopUpBoxList[guiCurrentBox].Text[iCounter] = pStringSt;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].fColorFlag = false;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].pString = pLocalString;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].fShadeFlag = false;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].fHighLightFlag = false;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].fSecondaryShadeFlag = false;
 
-  hStringHandle.value = iCounter;
+  PopUpBoxList[guiCurrentBox].fUpdated = false;
 
-  PopUpBoxList[guiCurrentBox].value.fUpdated = false;
-
-  return;
+  return iCounter;
 }
 
 // adds a SECOND column string to the CURRENT popup box
-export function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
-  let pLocalString: string /* STR16 */ = null;
-  let pStringSt: POPUPSTRINGPTR = null;
+export function AddSecondColumnMonoString(pString: string /* STR16 */): INT32 {
+  let pLocalString: string /* STR16 */;
+  let pStringSt: POPUPSTRING;
   let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
-    return;
+    return -1;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
   // find the LAST USED text string index
-  for (iCounter = 0; (iCounter + 1 < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].value.Text[iCounter + 1] != null); iCounter++)
+  for (iCounter = 0; (iCounter + 1 < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].Text[iCounter + 1] != null); iCounter++)
     ;
 
   if (iCounter >= MAX_POPUP_BOX_STRING_COUNT) {
     // using too many text lines, or not freeing them up properly
     Assert(0);
-    return;
+    return -1;
   }
 
-  pStringSt = (MemAlloc(sizeof(POPUPSTRING)));
-  if (pStringSt == null)
-    return;
-
-  pLocalString = (MemAlloc(pString.length * 2 + 2));
-  if (pLocalString == null)
-    return;
+  pStringSt = createPopUpString();
 
   pLocalString = pString;
 
   RemoveCurrentBoxSecondaryText(iCounter);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter] = pStringSt;
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.fColorFlag = false;
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.pString = pLocalString;
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.fShadeFlag = false;
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[iCounter].value.fHighLightFlag = false;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[iCounter] = pStringSt;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[iCounter].fColorFlag = false;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[iCounter].pString = pLocalString;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[iCounter].fShadeFlag = false;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[iCounter].fHighLightFlag = false;
 
-  hStringHandle.value = iCounter;
-
-  return;
+  return iCounter;
 }
 
 // Adds a COLORED first column string to the CURRENT box
-function AddColorString(hStringHandle: Pointer<INT32>, pString: string /* STR16 */): void {
+function AddColorString(pString: string /* STR16 */): INT32 {
   let pLocalString: string /* STR16 */;
-  let pStringSt: POPUPSTRINGPTR = null;
+  let pStringSt: POPUPSTRING;
   let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
-    return;
+    return -1;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
   // find first free slot in list
-  for (iCounter = 0; (iCounter < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].value.Text[iCounter] != null); iCounter++)
+  for (iCounter = 0; (iCounter < MAX_POPUP_BOX_STRING_COUNT) && (PopUpBoxList[guiCurrentBox].Text[iCounter] != null); iCounter++)
     ;
 
   if (iCounter >= MAX_POPUP_BOX_STRING_COUNT) {
     // using too many text lines, or not freeing them up properly
     Assert(0);
-    return;
+    return -1;
   }
 
-  pStringSt = (MemAlloc(sizeof(POPUPSTRING)));
-  if (pStringSt == null)
-    return;
-
-  pLocalString = (MemAlloc(pString.length * 2 + 2));
-  if (pLocalString == null)
-    return;
+  pStringSt = createPopUpString();
 
   pLocalString = pString;
 
   RemoveCurrentBoxPrimaryText(iCounter);
 
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter] = pStringSt;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.fColorFlag = true;
-  PopUpBoxList[guiCurrentBox].value.Text[iCounter].value.pString = pLocalString;
+  PopUpBoxList[guiCurrentBox].Text[iCounter] = pStringSt;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].fColorFlag = true;
+  PopUpBoxList[guiCurrentBox].Text[iCounter].pString = pLocalString;
 
-  hStringHandle.value = iCounter;
+  PopUpBoxList[guiCurrentBox].fUpdated = false;
 
-  PopUpBoxList[guiCurrentBox].value.fUpdated = false;
-
-  return;
+  return iCounter;
 }
 
 function ResizeBoxForSecondStrings(hBoxHandle: INT32): void {
   let iCounter: INT32 = 0;
-  let pBox: PopUpBoxPt;
+  let pBox: PopUpBo;
   let uiBaseWidth: UINT32;
   let uiThisWidth: UINT32;
 
@@ -450,15 +411,15 @@ function ResizeBoxForSecondStrings(hBoxHandle: INT32): void {
   pBox = (PopUpBoxList[hBoxHandle]);
   Assert(pBox);
 
-  uiBaseWidth = pBox.value.uiLeftMargin + pBox.value.uiSecondColumnMinimunOffset;
+  uiBaseWidth = pBox.uiLeftMargin + pBox.uiSecondColumnMinimunOffset;
 
   // check string sizes
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (pBox.value.Text[iCounter]) {
-      uiThisWidth = uiBaseWidth + StringPixLength(pBox.value.Text[iCounter].value.pString, pBox.value.Text[iCounter].value.uiFont);
+    if (pBox.Text[iCounter]) {
+      uiThisWidth = uiBaseWidth + StringPixLength(pBox.Text[iCounter].pString, pBox.Text[iCounter].uiFont);
 
-      if (uiThisWidth > pBox.value.uiSecondColumnCurrentOffset) {
-        pBox.value.uiSecondColumnCurrentOffset = uiThisWidth;
+      if (uiThisWidth > pBox.uiSecondColumnCurrentOffset) {
+        pBox.uiSecondColumnCurrentOffset = uiThisWidth;
       }
     }
   }
@@ -473,7 +434,7 @@ export function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
   // count number of lines
   // check string size
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[iCounter] == null) {
+    if (PopUpBoxList[hBoxHandle].Text[iCounter] == null) {
       break;
     }
   }
@@ -488,15 +449,15 @@ export function SetBoxFont(hBoxHandle: INT32, uiFont: UINT32): void {
     return;
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[uiCounter] != null) {
-      PopUpBoxList[hBoxHandle].value.Text[uiCounter].value.uiFont = uiFont;
+    if (PopUpBoxList[hBoxHandle].Text[uiCounter] != null) {
+      PopUpBoxList[hBoxHandle].Text[uiCounter].uiFont = uiFont;
     }
   }
 
   // set up the 2nd column font
   SetBoxSecondColumnFont(hBoxHandle, uiFont);
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
@@ -505,7 +466,7 @@ export function SetBoxSecondColumnMinimumOffset(hBoxHandle: INT32, uiWidth: UINT
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
-  PopUpBoxList[hBoxHandle].value.uiSecondColumnMinimunOffset = uiWidth;
+  PopUpBoxList[hBoxHandle].uiSecondColumnMinimunOffset = uiWidth;
   return;
 }
 
@@ -513,7 +474,7 @@ function SetBoxSecondColumnCurrentOffset(hBoxHandle: INT32, uiCurrentOffset: UIN
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
-  PopUpBoxList[hBoxHandle].value.uiSecondColumnCurrentOffset = uiCurrentOffset;
+  PopUpBoxList[hBoxHandle].uiSecondColumnCurrentOffset = uiCurrentOffset;
   return;
 }
 
@@ -524,12 +485,12 @@ export function SetBoxSecondColumnFont(hBoxHandle: INT32, uiFont: UINT32): void 
     return;
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter]) {
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.uiFont = uiFont;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter]) {
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].uiFont = uiFont;
     }
   }
 
-  PopUpBoxList[hBoxHandle].value.fUpdated = false;
+  PopUpBoxList[hBoxHandle].fUpdated = false;
 
   return;
 }
@@ -539,10 +500,10 @@ export function GetBoxFont(hBoxHandle: INT32): UINT32 {
     return 0;
 
   Assert(PopUpBoxList[hBoxHandle]);
-  Assert(PopUpBoxList[hBoxHandle].value.Text[0]);
+  Assert(PopUpBoxList[hBoxHandle].Text[0]);
 
   // return font id of first line of text of box
-  return PopUpBoxList[hBoxHandle].value.Text[0].value.uiFont;
+  return PopUpBoxList[hBoxHandle].Text[0].uiFont;
 }
 
 // set the foreground color of this string in this pop up box
@@ -551,9 +512,9 @@ export function SetBoxLineForeground(iBox: INT32, iStringValue: INT32, ubColor: 
     return;
 
   Assert(PopUpBoxList[iBox]);
-  Assert(PopUpBoxList[iBox].value.Text[iStringValue]);
+  Assert(PopUpBoxList[iBox].Text[iStringValue]);
 
-  PopUpBoxList[iBox].value.Text[iStringValue].value.ubForegroundColor = ubColor;
+  PopUpBoxList[iBox].Text[iStringValue].ubForegroundColor = ubColor;
   return;
 }
 
@@ -566,8 +527,8 @@ export function SetBoxSecondaryShade(iBox: INT32, ubColor: UINT8): void {
   Assert(PopUpBoxList[iBox]);
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[iBox].value.Text[uiCounter] != null) {
-      PopUpBoxList[iBox].value.Text[uiCounter].value.ubSecondaryShade = ubColor;
+    if (PopUpBoxList[iBox].Text[uiCounter] != null) {
+      PopUpBoxList[iBox].Text[uiCounter].ubSecondaryShade = ubColor;
     }
   }
   return;
@@ -580,9 +541,9 @@ function SetPopUpStringFont(hStringHandle: INT32, uiFont: UINT32): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.uiFont = uiFont;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].uiFont = uiFont;
   return;
 }
 
@@ -591,9 +552,9 @@ function SetPopUpSecondColumnStringFont(hStringHandle: INT32, uiFont: UINT32): v
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.uiFont = uiFont;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].uiFont = uiFont;
   return;
 }
 
@@ -602,9 +563,9 @@ function SetStringSecondaryShade(hStringHandle: INT32, ubColor: UINT8): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.ubSecondaryShade = ubColor;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].ubSecondaryShade = ubColor;
   return;
 }
 
@@ -613,9 +574,9 @@ function SetStringForeground(hStringHandle: INT32, ubColor: UINT8): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.ubForegroundColor = ubColor;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].ubForegroundColor = ubColor;
   return;
 }
 
@@ -624,9 +585,9 @@ function SetStringBackground(hStringHandle: INT32, ubColor: UINT8): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.ubBackgroundColor = ubColor;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].ubBackgroundColor = ubColor;
   return;
 }
 
@@ -635,9 +596,9 @@ function SetStringHighLight(hStringHandle: INT32, ubColor: UINT8): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.ubHighLight = ubColor;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].ubHighLight = ubColor;
   return;
 }
 
@@ -646,9 +607,9 @@ function SetStringShade(hStringHandle: INT32, ubShade: UINT8): void {
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].Text[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.ubShade = ubShade;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].ubShade = ubShade;
   return;
 }
 
@@ -657,9 +618,9 @@ function SetStringSecondColumnForeground(hStringHandle: INT32, ubColor: UINT8): 
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.ubForegroundColor = ubColor;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].ubForegroundColor = ubColor;
   return;
 }
 
@@ -668,9 +629,9 @@ function SetStringSecondColumnBackground(hStringHandle: INT32, ubColor: UINT8): 
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.ubBackgroundColor = ubColor;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].ubBackgroundColor = ubColor;
   return;
 }
 
@@ -679,9 +640,9 @@ function SetStringSecondColumnHighLight(hStringHandle: INT32, ubColor: UINT8): v
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.ubHighLight = ubColor;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].ubHighLight = ubColor;
   return;
 }
 
@@ -690,9 +651,9 @@ function SetStringSecondColumnShade(hStringHandle: INT32, ubShade: UINT8): void 
     return;
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
-  Assert(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
+  Assert(PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle]);
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.ubShade = ubShade;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].ubShade = ubShade;
   return;
 }
 
@@ -705,8 +666,8 @@ export function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[uiCounter] != null) {
-      PopUpBoxList[hBoxHandle].value.Text[uiCounter].value.ubForegroundColor = ubColor;
+    if (PopUpBoxList[hBoxHandle].Text[uiCounter] != null) {
+      PopUpBoxList[hBoxHandle].Text[uiCounter].ubForegroundColor = ubColor;
     }
   }
   return;
@@ -721,8 +682,8 @@ export function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[uiCounter] != null) {
-      PopUpBoxList[hBoxHandle].value.Text[uiCounter].value.ubBackgroundColor = ubColor;
+    if (PopUpBoxList[hBoxHandle].Text[uiCounter] != null) {
+      PopUpBoxList[hBoxHandle].Text[uiCounter].ubBackgroundColor = ubColor;
     }
   }
   return;
@@ -737,8 +698,8 @@ export function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[uiCounter] != null) {
-      PopUpBoxList[hBoxHandle].value.Text[uiCounter].value.ubHighLight = ubColor;
+    if (PopUpBoxList[hBoxHandle].Text[uiCounter] != null) {
+      PopUpBoxList[hBoxHandle].Text[uiCounter].ubHighLight = ubColor;
     }
   }
   return;
@@ -753,8 +714,8 @@ export function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_STRING_COUNT; uiCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[uiCounter] != null) {
-      PopUpBoxList[hBoxHandle].value.Text[uiCounter].value.ubShade = ubColor;
+    if (PopUpBoxList[hBoxHandle].Text[uiCounter] != null) {
+      PopUpBoxList[hBoxHandle].Text[uiCounter].ubShade = ubColor;
     }
   }
   return;
@@ -769,8 +730,8 @@ export function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8):
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter]) {
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.ubForegroundColor = ubColor;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter]) {
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].ubForegroundColor = ubColor;
     }
   }
 
@@ -786,8 +747,8 @@ export function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8):
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter]) {
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.ubBackgroundColor = ubColor;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter]) {
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].ubBackgroundColor = ubColor;
     }
   }
 
@@ -803,8 +764,8 @@ export function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): 
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter]) {
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.ubHighLight = ubColor;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter]) {
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].ubHighLight = ubColor;
     }
   }
 
@@ -820,8 +781,8 @@ export function SetBoxSecondColumnShade(hBoxHandle: INT32, ubColor: UINT8): void
   Assert(PopUpBoxList[hBoxHandle] != null);
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter]) {
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.ubShade = ubColor;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter]) {
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].ubShade = ubColor;
     }
   }
   return;
@@ -833,9 +794,9 @@ function HighLightLine(hStringHandle: INT32): void {
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
-  if (!PopUpBoxList[guiCurrentBox].value.Text[hStringHandle])
+  if (!PopUpBoxList[guiCurrentBox].Text[hStringHandle])
     return;
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.fHighLightFlag = true;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].fHighLightFlag = true;
   return;
 }
 
@@ -845,10 +806,10 @@ function GetShadeFlag(hStringHandle: INT32): boolean {
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
-  if (!PopUpBoxList[guiCurrentBox].value.Text[hStringHandle])
+  if (!PopUpBoxList[guiCurrentBox].Text[hStringHandle])
     return false;
 
-  return PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.fShadeFlag;
+  return PopUpBoxList[guiCurrentBox].Text[hStringHandle].fShadeFlag;
 }
 
 function GetSecondaryShadeFlag(hStringHandle: INT32): boolean {
@@ -857,10 +818,10 @@ function GetSecondaryShadeFlag(hStringHandle: INT32): boolean {
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
-  if (!PopUpBoxList[guiCurrentBox].value.Text[hStringHandle])
+  if (!PopUpBoxList[guiCurrentBox].Text[hStringHandle])
     return false;
 
-  return PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.fSecondaryShadeFlag;
+  return PopUpBoxList[guiCurrentBox].Text[hStringHandle].fSecondaryShadeFlag;
 }
 
 export function HighLightBoxLine(hBoxHandle: INT32, iLineNumber: INT32): void {
@@ -869,7 +830,7 @@ export function HighLightBoxLine(hBoxHandle: INT32, iLineNumber: INT32): void {
 
   // highlight iLineNumber Line in box indexed by hBoxHandle
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
     // set current box
     SetCurrentBox(hBoxHandle);
 
@@ -884,8 +845,8 @@ export function GetBoxShadeFlag(hBoxHandle: INT32, iLineNumber: INT32): boolean 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return false;
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
-    return PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fShadeFlag;
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
+    return PopUpBoxList[hBoxHandle].Text[iLineNumber].fShadeFlag;
   }
 
   return false;
@@ -895,8 +856,8 @@ function GetBoxSecondaryShadeFlag(hBoxHandle: INT32, iLineNumber: INT32): boolea
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return false;
 
-  if (PopUpBoxList[hBoxHandle].value.Text[iLineNumber] != null) {
-    return PopUpBoxList[hBoxHandle].value.Text[iLineNumber].value.fSecondaryShadeFlag;
+  if (PopUpBoxList[hBoxHandle].Text[iLineNumber] != null) {
+    return PopUpBoxList[hBoxHandle].Text[iLineNumber].fSecondaryShadeFlag;
   }
 
   return false;
@@ -908,9 +869,9 @@ export function UnHighLightLine(hStringHandle: INT32): void {
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
-  if (!PopUpBoxList[guiCurrentBox].value.Text[hStringHandle])
+  if (!PopUpBoxList[guiCurrentBox].Text[hStringHandle])
     return;
-  PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.fHighLightFlag = false;
+  PopUpBoxList[guiCurrentBox].Text[hStringHandle].fHighLightFlag = false;
   return;
 }
 
@@ -921,8 +882,8 @@ export function UnHighLightBox(hBoxHandle: INT32): void {
     return;
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[iCounter])
-      PopUpBoxList[hBoxHandle].value.Text[iCounter].value.fHighLightFlag = false;
+    if (PopUpBoxList[hBoxHandle].Text[iCounter])
+      PopUpBoxList[hBoxHandle].Text[iCounter].fHighLightFlag = false;
   }
 }
 
@@ -932,10 +893,10 @@ function UnHighLightSecondColumnLine(hStringHandle: INT32): void {
 
   Assert(PopUpBoxList[guiCurrentBox] != null);
 
-  if (!PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle])
+  if (!PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle])
     return;
 
-  PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.fHighLightFlag = false;
+  PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle].fHighLightFlag = false;
   return;
 }
 
@@ -946,8 +907,8 @@ function UnHighLightSecondColumnBox(hBoxHandle: INT32): void {
     return;
 
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_STRING_COUNT; iCounter++) {
-    if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter])
-      PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCounter].value.fHighLightFlag = false;
+    if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter])
+      PopUpBoxList[hBoxHandle].pSecondColumnString[iCounter].fHighLightFlag = false;
   }
 }
 
@@ -966,12 +927,12 @@ function RemoveOneCurrentBoxString(hStringHandle: INT32, fFillGaps: boolean): vo
   if (fFillGaps) {
     // shuffle all strings down a slot to fill in the gap
     for (uiCounter = hStringHandle; uiCounter < (MAX_POPUP_BOX_STRING_COUNT - 1); uiCounter++) {
-      PopUpBoxList[guiCurrentBox].value.Text[uiCounter] = PopUpBoxList[guiCurrentBox].value.Text[uiCounter + 1];
-      PopUpBoxList[guiCurrentBox].value.pSecondColumnString[uiCounter] = PopUpBoxList[guiCurrentBox].value.pSecondColumnString[uiCounter + 1];
+      PopUpBoxList[guiCurrentBox].Text[uiCounter] = PopUpBoxList[guiCurrentBox].Text[uiCounter + 1];
+      PopUpBoxList[guiCurrentBox].pSecondColumnString[uiCounter] = PopUpBoxList[guiCurrentBox].pSecondColumnString[uiCounter + 1];
     }
   }
 
-  PopUpBoxList[guiCurrentBox].value.fUpdated = false;
+  PopUpBoxList[guiCurrentBox].fUpdated = false;
 }
 
 export function RemoveAllCurrentBoxStrings(): void {
@@ -990,13 +951,12 @@ export function RemoveBox(hBoxHandle: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
-  GetCurrentBox(addressof(hOldBoxHandle));
+  hOldBoxHandle = GetCurrentBox();
   SetCurrentBox(hBoxHandle);
 
   RemoveAllCurrentBoxStrings();
 
-  MemFree(PopUpBoxList[hBoxHandle]);
-  PopUpBoxList[hBoxHandle] = null;
+  PopUpBoxList[hBoxHandle] = <PopUpBo><unknown>null;
 
   if (hOldBoxHandle != hBoxHandle)
     SetCurrentBox(hOldBoxHandle);
@@ -1009,9 +969,9 @@ export function ShowBox(hBoxHandle: INT32): void {
     return;
 
   if (PopUpBoxList[hBoxHandle] != null) {
-    if (PopUpBoxList[hBoxHandle].value.fShowBox == false) {
-      PopUpBoxList[hBoxHandle].value.fShowBox = true;
-      PopUpBoxList[hBoxHandle].value.fUpdated = false;
+    if (PopUpBoxList[hBoxHandle].fShowBox == false) {
+      PopUpBoxList[hBoxHandle].fShowBox = true;
+      PopUpBoxList[hBoxHandle].fUpdated = false;
     }
   }
 }
@@ -1021,9 +981,9 @@ export function HideBox(hBoxHandle: INT32): void {
     return;
 
   if (PopUpBoxList[hBoxHandle] != null) {
-    if (PopUpBoxList[hBoxHandle].value.fShowBox == true) {
-      PopUpBoxList[hBoxHandle].value.fShowBox = false;
-      PopUpBoxList[hBoxHandle].value.fUpdated = false;
+    if (PopUpBoxList[hBoxHandle].fShowBox == true) {
+      PopUpBoxList[hBoxHandle].fShowBox = false;
+      PopUpBoxList[hBoxHandle].fUpdated = false;
     }
   }
 }
@@ -1035,8 +995,8 @@ export function SetCurrentBox(hBoxHandle: INT32): void {
   guiCurrentBox = hBoxHandle;
 }
 
-function GetCurrentBox(hBoxHandle: Pointer<INT32>): void {
-  hBoxHandle.value = guiCurrentBox;
+function GetCurrentBox(): INT32 {
+  return guiCurrentBox;
 }
 
 export function DisplayBoxes(uiBuffer: UINT32): void {
@@ -1053,7 +1013,7 @@ export function DisplayOnePopupBox(uiIndex: UINT32, uiBuffer: UINT32): void {
     return;
 
   if (PopUpBoxList[uiIndex] != null) {
-    if ((PopUpBoxList[uiIndex].value.uiBuffer == uiBuffer) && (PopUpBoxList[uiIndex].value.fShowBox)) {
+    if ((PopUpBoxList[uiIndex].uiBuffer == uiBuffer) && (PopUpBoxList[uiIndex].fShowBox)) {
       DrawBox(uiIndex);
       DrawBoxText(uiIndex);
     }
@@ -1066,7 +1026,7 @@ export function ForceUpDateOfBox(uiIndex: UINT32): void {
     return;
 
   if (PopUpBoxList[uiIndex] != null) {
-    PopUpBoxList[uiIndex].value.fUpdated = false;
+    PopUpBoxList[uiIndex].fUpdated = false;
   }
 }
 
@@ -1094,24 +1054,24 @@ function DrawBox(uiCounter: UINT32): boolean {
 
   // only update if we need to
 
-  if (PopUpBoxList[uiCounter].value.fUpdated == true) {
+  if (PopUpBoxList[uiCounter].fUpdated == true) {
     return false;
   }
 
-  PopUpBoxList[uiCounter].value.fUpdated = true;
+  PopUpBoxList[uiCounter].fUpdated = true;
 
-  if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_RESIZE) {
+  if (PopUpBoxList[uiCounter].uiFlags & POPUP_BOX_FLAG_RESIZE) {
     ResizeBoxToText(uiCounter);
   }
 
-  usTopX = PopUpBoxList[uiCounter].value.Position.iX;
-  usTopY = PopUpBoxList[uiCounter].value.Position.iY;
-  usWidth = ((PopUpBoxList[uiCounter].value.Dimensions.iRight - PopUpBoxList[uiCounter].value.Dimensions.iLeft));
-  usHeight = ((PopUpBoxList[uiCounter].value.Dimensions.iBottom - PopUpBoxList[uiCounter].value.Dimensions.iTop));
+  usTopX = PopUpBoxList[uiCounter].Position.iX;
+  usTopY = PopUpBoxList[uiCounter].Position.iY;
+  usWidth = ((PopUpBoxList[uiCounter].Dimensions.iRight - PopUpBoxList[uiCounter].Dimensions.iLeft));
+  usHeight = ((PopUpBoxList[uiCounter].Dimensions.iBottom - PopUpBoxList[uiCounter].Dimensions.iTop));
 
   // check if we have a min width, if so then update box for such
-  if ((PopUpBoxList[uiCounter].value.uiBoxMinWidth) && (usWidth < PopUpBoxList[uiCounter].value.uiBoxMinWidth)) {
-    usWidth = (PopUpBoxList[uiCounter].value.uiBoxMinWidth);
+  if ((PopUpBoxList[uiCounter].uiBoxMinWidth) && (usWidth < PopUpBoxList[uiCounter].uiBoxMinWidth)) {
+    usWidth = (PopUpBoxList[uiCounter].uiBoxMinWidth);
   }
 
   // make sure it will fit on screen!
@@ -1129,44 +1089,44 @@ function DrawBox(uiCounter: UINT32): boolean {
 
   // blit in texture first, then borders
   // blit in surface
-  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer, addressof(uiDestPitchBYTES));
-  if (!GetVideoSurface(addressof(hSrcVSurface), PopUpBoxList[uiCounter].value.iBackGroundSurface)) {
+  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].uiBuffer, addressof(uiDestPitchBYTES));
+  if (!GetVideoSurface(addressof(hSrcVSurface), PopUpBoxList[uiCounter].iBackGroundSurface)) {
     return false;
   }
-  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface, addressof(uiSrcPitchBYTES));
-  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, addressof(clip));
-  UnLockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface);
-  UnLockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer);
-  hBoxHandle = GetVideoObject(PopUpBoxList[uiCounter].value.iBorderObjectIndex);
+  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface, addressof(uiSrcPitchBYTES));
+  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, clip);
+  UnLockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface);
+  UnLockVideoSurface(PopUpBoxList[uiCounter].uiBuffer);
+  hBoxHandle = GetVideoObject(PopUpBoxList[uiCounter].iBorderObjectIndex);
 
   // blit in 4 corners (they're 2x2 pixels)
-  BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_LEFT_CORNER, usTopX, usTopY, VO_BLT_SRCTRANSPARENCY, null);
-  BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_RIGHT_CORNER, usTopX + usWidth - 2, usTopY, VO_BLT_SRCTRANSPARENCY, null);
-  BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, BOTTOM_RIGHT_CORNER, usTopX + usWidth - 2, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
-  BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, BOTTOM_LEFT_CORNER, usTopX, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, TOP_LEFT_CORNER, usTopX, usTopY, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, TOP_RIGHT_CORNER, usTopX + usWidth - 2, usTopY, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, BOTTOM_RIGHT_CORNER, usTopX + usWidth - 2, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, BOTTOM_LEFT_CORNER, usTopX, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
 
   // blit in edges
   if (uiNumTilesWide > 0) {
     // full pieces
     for (uiCount = 0; uiCount < uiNumTilesWide; uiCount++) {
-      BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_EDGE, usTopX + 2 + (uiCount * BORDER_WIDTH), usTopY, VO_BLT_SRCTRANSPARENCY, null);
-      BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, BOTTOM_EDGE, usTopX + 2 + (uiCount * BORDER_WIDTH), usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, TOP_EDGE, usTopX + 2 + (uiCount * BORDER_WIDTH), usTopY, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, BOTTOM_EDGE, usTopX + 2 + (uiCount * BORDER_WIDTH), usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // partial pieces
-    BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_EDGE, usTopX + usWidth - 2 - BORDER_WIDTH, usTopY, VO_BLT_SRCTRANSPARENCY, null);
-    BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, BOTTOM_EDGE, usTopX + usWidth - 2 - BORDER_WIDTH, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, TOP_EDGE, usTopX + usWidth - 2 - BORDER_WIDTH, usTopY, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, BOTTOM_EDGE, usTopX + usWidth - 2 - BORDER_WIDTH, usTopY + usHeight - 2, VO_BLT_SRCTRANSPARENCY, null);
   }
   if (uiNumTilesHigh > 0) {
     // full pieces
     for (uiCount = 0; uiCount < uiNumTilesHigh; uiCount++) {
-      BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, SIDE_EDGE, usTopX, usTopY + 2 + (uiCount * BORDER_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
-      BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, SIDE_EDGE, usTopX + usWidth - 2, usTopY + 2 + (uiCount * BORDER_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, SIDE_EDGE, usTopX, usTopY + 2 + (uiCount * BORDER_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, SIDE_EDGE, usTopX + usWidth - 2, usTopY + 2 + (uiCount * BORDER_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
     }
 
     // partial pieces
-    BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, SIDE_EDGE, usTopX, usTopY + usHeight - 2 - BORDER_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
-    BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, SIDE_EDGE, usTopX + usWidth - 2, usTopY + usHeight - 2 - BORDER_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, SIDE_EDGE, usTopX, usTopY + usHeight - 2 - BORDER_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(PopUpBoxList[uiCounter].uiBuffer, hBoxHandle, SIDE_EDGE, usTopX + usWidth - 2, usTopY + usHeight - 2 - BORDER_HEIGHT, VO_BLT_SRCTRANSPARENCY, null);
   }
 
   InvalidateRegion(usTopX, usTopY, usTopX + usWidth, usTopY + usHeight);
@@ -1185,88 +1145,88 @@ function DrawBoxText(uiCounter: UINT32): boolean {
   Assert(PopUpBoxList[uiCounter] != null);
 
   // clip text?
-  if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CLIP_TEXT) {
-    SetFontDestBuffer(PopUpBoxList[uiCounter].value.uiBuffer, PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin - 1, PopUpBoxList[uiCounter].value.Position.iY + PopUpBoxList[uiCounter].value.uiTopMargin, PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.Dimensions.iRight - PopUpBoxList[uiCounter].value.uiRightMargin, PopUpBoxList[uiCounter].value.Position.iY + PopUpBoxList[uiCounter].value.Dimensions.iBottom - PopUpBoxList[uiCounter].value.uiBottomMargin, false);
+  if (PopUpBoxList[uiCounter].uiFlags & POPUP_BOX_FLAG_CLIP_TEXT) {
+    SetFontDestBuffer(PopUpBoxList[uiCounter].uiBuffer, PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin - 1, PopUpBoxList[uiCounter].Position.iY + PopUpBoxList[uiCounter].uiTopMargin, PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].Dimensions.iRight - PopUpBoxList[uiCounter].uiRightMargin, PopUpBoxList[uiCounter].Position.iY + PopUpBoxList[uiCounter].Dimensions.iBottom - PopUpBoxList[uiCounter].uiBottomMargin, false);
   }
 
   for (uiCount = 0; uiCount < MAX_POPUP_BOX_STRING_COUNT; uiCount++) {
     // there is text in this line?
-    if (PopUpBoxList[uiCounter].value.Text[uiCount]) {
+    if (PopUpBoxList[uiCounter].Text[uiCount]) {
       // set font
-      SetFont(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont);
+      SetFont(PopUpBoxList[uiCounter].Text[uiCount].uiFont);
 
       // are we highlighting?...shading?..or neither
-      if ((PopUpBoxList[uiCounter].value.Text[uiCount].value.fHighLightFlag == false) && (PopUpBoxList[uiCounter].value.Text[uiCount].value.fShadeFlag == false) && (PopUpBoxList[uiCounter].value.Text[uiCount].value.fSecondaryShadeFlag == false)) {
+      if ((PopUpBoxList[uiCounter].Text[uiCount].fHighLightFlag == false) && (PopUpBoxList[uiCounter].Text[uiCount].fShadeFlag == false) && (PopUpBoxList[uiCounter].Text[uiCount].fSecondaryShadeFlag == false)) {
         // neither
-        SetFontForeground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubForegroundColor);
-      } else if ((PopUpBoxList[uiCounter].value.Text[uiCount].value.fHighLightFlag == true)) {
+        SetFontForeground(PopUpBoxList[uiCounter].Text[uiCount].ubForegroundColor);
+      } else if ((PopUpBoxList[uiCounter].Text[uiCount].fHighLightFlag == true)) {
         // highlight
-        SetFontForeground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubHighLight);
-      } else if ((PopUpBoxList[uiCounter].value.Text[uiCount].value.fSecondaryShadeFlag == true)) {
-        SetFontForeground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubSecondaryShade);
+        SetFontForeground(PopUpBoxList[uiCounter].Text[uiCount].ubHighLight);
+      } else if ((PopUpBoxList[uiCounter].Text[uiCount].fSecondaryShadeFlag == true)) {
+        SetFontForeground(PopUpBoxList[uiCounter].Text[uiCount].ubSecondaryShade);
       } else {
         // shading
-        SetFontForeground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubShade);
+        SetFontForeground(PopUpBoxList[uiCounter].Text[uiCount].ubShade);
       }
 
       // set background
-      SetFontBackground(PopUpBoxList[uiCounter].value.Text[uiCount].value.ubBackgroundColor);
+      SetFontBackground(PopUpBoxList[uiCounter].Text[uiCount].ubBackgroundColor);
 
       // copy string
-      wcsncpy(sString, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString.length + 1);
+      sString = PopUpBoxList[uiCounter].Text[uiCount].pString;
 
       // cnetering?
-      if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        ({ sX: uX, sY: uY } = FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont)));
+      if (PopUpBoxList[uiCounter].uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
+        ({ sX: uX, sY: uY } = FindFontCenterCoordinates(((PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin)), ((PopUpBoxList[uiCounter].Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].Text[uiCount].uiFont) + PopUpBoxList[uiCounter].uiTopMargin + uiCount * PopUpBoxList[uiCounter].uiLineSpace)), ((PopUpBoxList[uiCounter].Dimensions.iRight - (PopUpBoxList[uiCounter].uiRightMargin + PopUpBoxList[uiCounter].uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].Text[uiCount].uiFont)), (sString), (PopUpBoxList[uiCounter].Text[uiCount].uiFont)));
       } else {
-        uX = ((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin));
-        uY = ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace));
+        uX = ((PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin));
+        uY = ((PopUpBoxList[uiCounter].Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].Text[uiCount].uiFont) + PopUpBoxList[uiCounter].uiTopMargin + uiCount * PopUpBoxList[uiCounter].uiLineSpace));
       }
 
       // print
       // gprintfdirty(uX,uY,PopUpBoxList[uiCounter]->Text[uiCount]->pString );
-      mprintf(uX, uY, PopUpBoxList[uiCounter].value.Text[uiCount].value.pString);
+      mprintf(uX, uY, PopUpBoxList[uiCounter].Text[uiCount].pString);
     }
 
     // there is secondary text in this line?
-    if (PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount]) {
+    if (PopUpBoxList[uiCounter].pSecondColumnString[uiCount]) {
       // set font
-      SetFont(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont);
+      SetFont(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].uiFont);
 
       // are we highlighting?...shading?..or neither
-      if ((PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.fHighLightFlag == false) && (PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.fShadeFlag == false)) {
+      if ((PopUpBoxList[uiCounter].pSecondColumnString[uiCount].fHighLightFlag == false) && (PopUpBoxList[uiCounter].pSecondColumnString[uiCount].fShadeFlag == false)) {
         // neither
-        SetFontForeground(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.ubForegroundColor);
-      } else if ((PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.fHighLightFlag == true)) {
+        SetFontForeground(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].ubForegroundColor);
+      } else if ((PopUpBoxList[uiCounter].pSecondColumnString[uiCount].fHighLightFlag == true)) {
         // highlight
-        SetFontForeground(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.ubHighLight);
+        SetFontForeground(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].ubHighLight);
       } else {
         // shading
-        SetFontForeground(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.ubShade);
+        SetFontForeground(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].ubShade);
       }
 
       // set background
-      SetFontBackground(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.ubBackgroundColor);
+      SetFontBackground(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].ubBackgroundColor);
 
       // copy string
-      wcsncpy(sString, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString.length + 1);
+      sString = PopUpBoxList[uiCounter].pSecondColumnString[uiCount].pString;
 
       // cnetering?
-      if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        ({ sX: uX, sY: uY } = FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont)));
+      if (PopUpBoxList[uiCounter].uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
+        ({ sX: uX, sY: uY } = FindFontCenterCoordinates(((PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin)), ((PopUpBoxList[uiCounter].Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].uiFont) + PopUpBoxList[uiCounter].uiTopMargin + uiCount * PopUpBoxList[uiCounter].uiLineSpace)), ((PopUpBoxList[uiCounter].Dimensions.iRight - (PopUpBoxList[uiCounter].uiRightMargin + PopUpBoxList[uiCounter].uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].uiFont)), (sString), (PopUpBoxList[uiCounter].pSecondColumnString[uiCount].uiFont)));
       } else {
-        uX = ((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin + PopUpBoxList[uiCounter].value.uiSecondColumnCurrentOffset));
-        uY = ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace));
+        uX = ((PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin + PopUpBoxList[uiCounter].uiSecondColumnCurrentOffset));
+        uY = ((PopUpBoxList[uiCounter].Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].pSecondColumnString[uiCount].uiFont) + PopUpBoxList[uiCounter].uiTopMargin + uiCount * PopUpBoxList[uiCounter].uiLineSpace));
       }
 
       // print
       // gprintfdirty(uX,uY,PopUpBoxList[uiCounter]->Text[uiCount]->pString );
-      mprintf(uX, uY, PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.pString);
+      mprintf(uX, uY, PopUpBoxList[uiCounter].pSecondColumnString[uiCount].pString);
     }
   }
 
-  if (PopUpBoxList[uiCounter].value.uiBuffer != guiSAVEBUFFER) {
-    InvalidateRegion(PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin - 1, PopUpBoxList[uiCounter].value.Position.iY + PopUpBoxList[uiCounter].value.uiTopMargin, PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.Dimensions.iRight - PopUpBoxList[uiCounter].value.uiRightMargin, PopUpBoxList[uiCounter].value.Position.iY + PopUpBoxList[uiCounter].value.Dimensions.iBottom - PopUpBoxList[uiCounter].value.uiBottomMargin);
+  if (PopUpBoxList[uiCounter].uiBuffer != guiSAVEBUFFER) {
+    InvalidateRegion(PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].uiLeftMargin - 1, PopUpBoxList[uiCounter].Position.iY + PopUpBoxList[uiCounter].uiTopMargin, PopUpBoxList[uiCounter].Position.iX + PopUpBoxList[uiCounter].Dimensions.iRight - PopUpBoxList[uiCounter].uiRightMargin, PopUpBoxList[uiCounter].Position.iY + PopUpBoxList[uiCounter].Dimensions.iBottom - PopUpBoxList[uiCounter].uiBottomMargin);
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
@@ -1290,29 +1250,29 @@ export function ResizeBoxToText(hBoxHandle: INT32): void {
 
   ResizeBoxForSecondStrings(hBoxHandle);
 
-  iHeight = PopUpBoxList[hBoxHandle].value.uiTopMargin + PopUpBoxList[hBoxHandle].value.uiBottomMargin;
+  iHeight = PopUpBoxList[hBoxHandle].uiTopMargin + PopUpBoxList[hBoxHandle].uiBottomMargin;
 
   for (iCurrString = 0; iCurrString < MAX_POPUP_BOX_STRING_COUNT; iCurrString++) {
-    if (PopUpBoxList[hBoxHandle].value.Text[iCurrString] != null) {
-      if (PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCurrString] != null) {
-        iSecondColumnLength = StringPixLength(PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCurrString].value.pString, PopUpBoxList[hBoxHandle].value.pSecondColumnString[iCurrString].value.uiFont);
-        if (PopUpBoxList[hBoxHandle].value.uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle].value.uiLeftMargin + PopUpBoxList[hBoxHandle].value.uiRightMargin > (iWidth)) {
-          iWidth = PopUpBoxList[hBoxHandle].value.uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle].value.uiLeftMargin + PopUpBoxList[hBoxHandle].value.uiRightMargin;
+    if (PopUpBoxList[hBoxHandle].Text[iCurrString] != null) {
+      if (PopUpBoxList[hBoxHandle].pSecondColumnString[iCurrString] != null) {
+        iSecondColumnLength = StringPixLength(PopUpBoxList[hBoxHandle].pSecondColumnString[iCurrString].pString, PopUpBoxList[hBoxHandle].pSecondColumnString[iCurrString].uiFont);
+        if (PopUpBoxList[hBoxHandle].uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle].uiLeftMargin + PopUpBoxList[hBoxHandle].uiRightMargin > (iWidth)) {
+          iWidth = PopUpBoxList[hBoxHandle].uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle].uiLeftMargin + PopUpBoxList[hBoxHandle].uiRightMargin;
         }
       }
 
-      if ((StringPixLength(PopUpBoxList[hBoxHandle].value.Text[iCurrString].value.pString, PopUpBoxList[hBoxHandle].value.Text[iCurrString].value.uiFont) + PopUpBoxList[hBoxHandle].value.uiLeftMargin + PopUpBoxList[hBoxHandle].value.uiRightMargin) > (iWidth))
-        iWidth = StringPixLength(PopUpBoxList[hBoxHandle].value.Text[iCurrString].value.pString, PopUpBoxList[hBoxHandle].value.Text[iCurrString].value.uiFont) + PopUpBoxList[hBoxHandle].value.uiLeftMargin + PopUpBoxList[hBoxHandle].value.uiRightMargin;
+      if ((StringPixLength(PopUpBoxList[hBoxHandle].Text[iCurrString].pString, PopUpBoxList[hBoxHandle].Text[iCurrString].uiFont) + PopUpBoxList[hBoxHandle].uiLeftMargin + PopUpBoxList[hBoxHandle].uiRightMargin) > (iWidth))
+        iWidth = StringPixLength(PopUpBoxList[hBoxHandle].Text[iCurrString].pString, PopUpBoxList[hBoxHandle].Text[iCurrString].uiFont) + PopUpBoxList[hBoxHandle].uiLeftMargin + PopUpBoxList[hBoxHandle].uiRightMargin;
 
       // vertical
-      iHeight += GetFontHeight(PopUpBoxList[hBoxHandle].value.Text[iCurrString].value.uiFont) + PopUpBoxList[hBoxHandle].value.uiLineSpace;
+      iHeight += GetFontHeight(PopUpBoxList[hBoxHandle].Text[iCurrString].uiFont) + PopUpBoxList[hBoxHandle].uiLineSpace;
     } else {
       // doesn't support gaps in text array...
       break;
     }
   }
-  PopUpBoxList[hBoxHandle].value.Dimensions.iBottom = iHeight;
-  PopUpBoxList[hBoxHandle].value.Dimensions.iRight = iWidth;
+  PopUpBoxList[hBoxHandle].Dimensions.iBottom = iHeight;
+  PopUpBoxList[hBoxHandle].Dimensions.iRight = iWidth;
 }
 
 export function IsBoxShown(uiHandle: UINT32): boolean {
@@ -1323,7 +1283,7 @@ export function IsBoxShown(uiHandle: UINT32): boolean {
     return false;
   }
 
-  return PopUpBoxList[uiHandle].value.fShowBox;
+  return PopUpBoxList[uiHandle].fShowBox;
 }
 
 export function MarkAllBoxesAsAltered(): void {
@@ -1354,13 +1314,8 @@ function RemoveCurrentBoxPrimaryText(hStringHandle: INT32): void {
   Assert(hStringHandle < MAX_POPUP_BOX_STRING_COUNT);
 
   // remove & release primary text
-  if (PopUpBoxList[guiCurrentBox].value.Text[hStringHandle] != null) {
-    if (PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.pString) {
-      MemFree(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle].value.pString);
-    }
-
-    MemFree(PopUpBoxList[guiCurrentBox].value.Text[hStringHandle]);
-    PopUpBoxList[guiCurrentBox].value.Text[hStringHandle] = null;
+  if (PopUpBoxList[guiCurrentBox].Text[hStringHandle] != null) {
+    PopUpBoxList[guiCurrentBox].Text[hStringHandle] = <POPUPSTRING><unknown>null;
   }
 }
 
@@ -1372,13 +1327,8 @@ function RemoveCurrentBoxSecondaryText(hStringHandle: INT32): void {
   Assert(hStringHandle < MAX_POPUP_BOX_STRING_COUNT);
 
   // remove & release secondary strings
-  if (PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle] != null) {
-    if (PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.pString) {
-      MemFree(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle].value.pString);
-    }
-
-    MemFree(PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle]);
-    PopUpBoxList[guiCurrentBox].value.pSecondColumnString[hStringHandle] = null;
+  if (PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle] != null) {
+    PopUpBoxList[guiCurrentBox].pSecondColumnString[hStringHandle] = <POPUPSTRING><unknown>null;
   }
 }
 

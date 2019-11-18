@@ -3569,14 +3569,14 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
       iFontHeight = GetLineSpace(ghEpcBox) + GetFontHeight(GetBoxFont(ghEpcBox));
 
       // get x.y position of box
-      GetBoxPosition(ghEpcBox, addressof(pPosition));
+      GetBoxPosition(ghEpcBox, pPosition);
 
       // grab box x and y position
       iBoxXPosition = pPosition.iX;
       iBoxYPosition = pPosition.iY;
 
       // get dimensions..mostly for width
-      GetBoxSize(ghEpcBox, addressof(pDimensions));
+      GetBoxSize(ghEpcBox, pDimensions);
 
       // get width
       iBoxWidth = pDimensions.iRight;
@@ -3587,14 +3587,14 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
       iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
       // get x.y position of box
-      GetBoxPosition(ghAssignmentBox, addressof(pPosition));
+      GetBoxPosition(ghAssignmentBox, pPosition);
 
       // grab box x and y position
       iBoxXPosition = pPosition.iX;
       iBoxYPosition = pPosition.iY;
 
       // get dimensions..mostly for width
-      GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+      GetBoxSize(ghAssignmentBox, pDimensions);
 
       // get width
       iBoxWidth = pDimensions.iRight;
@@ -3647,10 +3647,10 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (fShowVehicleMenu) {
-    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
+    GetBoxPosition(ghAssignmentBox, pPoint);
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+    GetBoxSize(ghAssignmentBox, pDimensions);
 
     // vehicle position
     VehiclePosition.iX = pPoint.iX + pDimensions.iRight;
@@ -3663,14 +3663,14 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     iFontHeight = GetLineSpace(ghVehicleBox) + GetFontHeight(GetBoxFont(ghVehicleBox));
 
     // get x.y position of box
-    GetBoxPosition(ghVehicleBox, addressof(pPosition));
+    GetBoxPosition(ghVehicleBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghVehicleBox, addressof(pDimensions));
+    GetBoxSize(ghVehicleBox, pDimensions);
     SetBoxSecondaryShade(ghVehicleBox, FONT_YELLOW);
 
     // get width
@@ -3856,7 +3856,7 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
         // don't even list the helicopter, because it's NEVER repairable...
         if (iVehicleIndex != iHelicopterVehicleId) {
           if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
-            AddMonoString(addressof(hStringHandle), pVehicleStrings[pVehicleList[iVehicleIndex].ubVehicleType]);
+            hStringHandle = AddMonoString(pVehicleStrings[pVehicleList[iVehicleIndex].ubVehicleType]);
           }
         }
       }
@@ -3875,14 +3875,14 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   // is the ROBOT here?
   if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
     // robot
-    AddMonoString(addressof(hStringHandle), pRepairStrings[3]);
+    hStringHandle = AddMonoString(pRepairStrings[3]);
   }
 
   // items
-  AddMonoString(addressof(hStringHandle), pRepairStrings[0]);
+  hStringHandle = AddMonoString(pRepairStrings[0]);
 
   // cancel
-  AddMonoString(addressof(hStringHandle), pRepairStrings[2]);
+  hStringHandle = AddMonoString(pRepairStrings[2]);
 
   SetBoxFont(ghRepairBox, MAP_SCREEN_FONT());
   SetBoxHighLight(ghRepairBox, FONT_WHITE);
@@ -4003,14 +4003,14 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
     iFontHeight = GetLineSpace(ghRepairBox) + GetFontHeight(GetBoxFont(ghRepairBox));
 
     // get x.y position of box
-    GetBoxPosition(ghRepairBox, addressof(pPosition));
+    GetBoxPosition(ghRepairBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghRepairBox, addressof(pDimensions));
+    GetBoxSize(ghRepairBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4725,14 +4725,14 @@ function CreateDestroyMouseRegions(): void {
     iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
     // get x.y position of box
-    GetBoxPosition(ghAssignmentBox, addressof(pPosition));
+    GetBoxPosition(ghAssignmentBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+    GetBoxSize(ghAssignmentBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4828,14 +4828,14 @@ export function CreateDestroyMouseRegionsForContractMenu(): void {
     iFontHeight = GetLineSpace(ghContractBox) + GetFontHeight(GetBoxFont(ghContractBox));
 
     // get x.y position of box
-    GetBoxPosition(ghContractBox, addressof(pPosition));
+    GetBoxPosition(ghContractBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghContractBox, addressof(pDimensions));
+    GetBoxSize(ghContractBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4914,14 +4914,14 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
     iFontHeight = GetLineSpace(ghTrainingBox) + GetFontHeight(GetBoxFont(ghTrainingBox));
 
     // get x.y position of box
-    GetBoxPosition(ghTrainingBox, addressof(pPosition));
+    GetBoxPosition(ghTrainingBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghTrainingBox, addressof(pDimensions));
+    GetBoxSize(ghTrainingBox, pDimensions);
     SetBoxSecondaryShade(ghTrainingBox, FONT_YELLOW);
 
     // get width
@@ -4998,14 +4998,14 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
     iFontHeight = GetLineSpace(ghAttributeBox) + GetFontHeight(GetBoxFont(ghAttributeBox));
 
     // get x.y position of box
-    GetBoxPosition(ghAttributeBox, addressof(pPosition));
+    GetBoxPosition(ghAttributeBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAttributeBox, addressof(pDimensions));
+    GetBoxSize(ghAttributeBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -5090,14 +5090,14 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
     iFontHeight = GetLineSpace(ghRemoveMercAssignBox) + GetFontHeight(GetBoxFont(ghRemoveMercAssignBox));
 
     // get x.y position of box
-    GetBoxPosition(ghRemoveMercAssignBox, addressof(pPosition));
+    GetBoxPosition(ghRemoveMercAssignBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghRemoveMercAssignBox, addressof(pDimensions));
+    GetBoxSize(ghRemoveMercAssignBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -5166,7 +5166,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
   if ((fShowSquadMenu == true) && (fCreated == false)) {
     // create squad box
     CreateSquadBox();
-    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+    GetBoxSize(ghAssignmentBox, pDimensions);
 
     CheckAndUpdateTacticalAssignmentPopUpPositions();
 
@@ -5174,14 +5174,14 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: boolean): void {
     iFontHeight = GetLineSpace(ghSquadBox) + GetFontHeight(GetBoxFont(ghSquadBox));
 
     // get x.y position of box
-    GetBoxPosition(ghSquadBox, addressof(pPosition));
+    GetBoxPosition(ghSquadBox, pPosition);
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghSquadBox, addressof(pDimensions));
+    GetBoxSize(ghSquadBox, pDimensions);
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -6275,7 +6275,7 @@ function CreateSquadBox(): void {
   let uiMaxSquad: UINT32;
 
   // create basic box
-  CreatePopUpBox(addressof(ghSquadBox), SquadDimensions, SquadPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghSquadBox = CreatePopUpBox(SquadDimensions, SquadPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghSquadBox, FRAME_BUFFER);
@@ -6301,14 +6301,14 @@ function CreateSquadBox(): void {
   for (uiCounter = 0; uiCounter <= uiMaxSquad; uiCounter++) {
     // get info about current squad and put in  string
     sString = swprintf("%s ( %d/%d )", pSquadMenuStrings[uiCounter], NumberOfPeopleInSquad(uiCounter), NUMBER_OF_SOLDIERS_PER_SQUAD);
-    AddMonoString(addressof(hStringHandle), sString);
+    hStringHandle = AddMonoString(sString);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
   }
 
   // add cancel line
-  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum275.NUMBER_OF_SQUADS]);
+  hStringHandle = AddMonoString(pSquadMenuStrings[Enum275.NUMBER_OF_SQUADS]);
 
   // set font type
   SetBoxFont(ghSquadBox, MAP_SCREEN_FONT());
@@ -6333,8 +6333,8 @@ function CreateSquadBox(): void {
 
   DetermineBoxPositions();
 
-  GetBoxPosition(ghSquadBox, addressof(pPoint));
-  GetBoxSize(ghSquadBox, addressof(pDimensions));
+  GetBoxPosition(ghSquadBox, pPoint);
+  GetBoxSize(ghSquadBox, pDimensions);
 
   if (giBoxY + pDimensions.iBottom > 479) {
     pPoint.iY = SquadPosition.iY = 479 - pDimensions.iBottom;
@@ -6351,7 +6351,7 @@ function CreateEPCBox(): void {
   let iCount: INT32;
 
   // create basic box
-  CreatePopUpBox(addressof(ghEpcBox), SquadDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE | POPUP_BOX_FLAG_CENTER_TEXT));
+  ghEpcBox = CreatePopUpBox(SquadDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE | POPUP_BOX_FLAG_CENTER_TEXT));
 
   // which buffer will box render to
   SetBoxBuffer(ghEpcBox, FRAME_BUFFER);
@@ -6372,7 +6372,7 @@ function CreateEPCBox(): void {
   SetCurrentBox(ghEpcBox);
 
   for (iCount = 0; iCount < Enum147.MAX_EPC_MENU_STRING_COUNT; iCount++) {
-    AddMonoString(addressof(hStringHandle), pEpcMenuStrings[iCount]);
+    hStringHandle = AddMonoString(pEpcMenuStrings[iCount]);
   }
 
   // set font type
@@ -6393,9 +6393,9 @@ function CreateEPCBox(): void {
   // resize box to text
   ResizeBoxToText(ghEpcBox);
 
-  GetBoxPosition(ghEpcBox, addressof(pPoint));
+  GetBoxPosition(ghEpcBox, pPoint);
 
-  GetBoxSize(ghEpcBox, addressof(pDimensions));
+  GetBoxSize(ghEpcBox, pDimensions);
 
   if (giBoxY + pDimensions.iBottom > 479) {
     pPoint.iY = AssignmentPosition.iY = 479 - pDimensions.iBottom;
@@ -6475,14 +6475,14 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
     if (pVehicleList[iCounter].fValid == true) {
       if (IsThisVehicleAccessibleToSoldier(pSoldier, iCounter)) {
-        AddMonoString(addressof(hStringHandle), pVehicleStrings[pVehicleList[iCounter].ubVehicleType]);
+        hStringHandle = AddMonoString(pVehicleStrings[pVehicleList[iCounter].ubVehicleType]);
         fVehiclePresent = true;
       }
     }
   }
 
   // cancel string (borrow the one in the squad menu)
-  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[Enum151.SQUAD_MENU_CANCEL]);
+  hStringHandle = AddMonoString(pSquadMenuStrings[Enum151.SQUAD_MENU_CANCEL]);
 
   SetBoxFont(ghVehicleBox, MAP_SCREEN_FONT());
   SetBoxHighLight(ghVehicleBox, FONT_WHITE);
@@ -6493,7 +6493,7 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 }
 
 function CreateVehicleBox(): void {
-  CreatePopUpBox(addressof(ghVehicleBox), VehicleDimensions, VehiclePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghVehicleBox = CreatePopUpBox(VehicleDimensions, VehiclePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghVehicleBox, FRAME_BUFFER);
   SetBorderType(ghVehicleBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghVehicleBox, guiPOPUPTEX);
@@ -6502,7 +6502,7 @@ function CreateVehicleBox(): void {
 }
 
 function CreateRepairBox(): void {
-  CreatePopUpBox(addressof(ghRepairBox), RepairDimensions, RepairPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghRepairBox = CreatePopUpBox(RepairDimensions, RepairPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghRepairBox, FRAME_BUFFER);
   SetBorderType(ghRepairBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghRepairBox, guiPOPUPTEX);
@@ -6522,7 +6522,7 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
     ContractPosition.iX = giBoxY;
   }
 
-  CreatePopUpBox(addressof(ghContractBox), ContractDimensions, ContractPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghContractBox = CreatePopUpBox(ContractDimensions, ContractPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghContractBox, FRAME_BUFFER);
   SetBorderType(ghContractBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghContractBox, guiPOPUPTEX);
@@ -6545,7 +6545,7 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
                                            swprintf( sString, L"%s %s",  pContractStrings[uiCounter], sDollarString );
                                            AddMonoString(&hStringHandle, sString);
           */
-          AddMonoString(addressof(hStringHandle), pContractStrings[uiCounter]);
+          hStringHandle = AddMonoString(pContractStrings[uiCounter]);
           break;
         case (Enum152.CONTRACT_MENU_DAY):
 
@@ -6557,7 +6557,7 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           sDollarString = InsertCommasForDollarFigure(sDollarString);
           sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(addressof(hStringHandle), sString);
+          hStringHandle = AddMonoString(sString);
           break;
         case (Enum152.CONTRACT_MENU_WEEK):
 
@@ -6570,7 +6570,7 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           sDollarString = InsertCommasForDollarFigure(sDollarString);
           sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(addressof(hStringHandle), sString);
+          hStringHandle = AddMonoString(sString);
           break;
         case (Enum152.CONTRACT_MENU_TWO_WEEKS):
 
@@ -6583,10 +6583,10 @@ export function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           sDollarString = InsertCommasForDollarFigure(sDollarString);
           sDollarString = InsertDollarSignInToString(sDollarString);
           sString = swprintf("%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(addressof(hStringHandle), sString);
+          hStringHandle = AddMonoString(sString);
           break;
         default:
-          AddMonoString(addressof(hStringHandle), pContractStrings[uiCounter]);
+          hStringHandle = AddMonoString(pContractStrings[uiCounter]);
           break;
       }
       UnHighLightLine(hStringHandle);
@@ -6626,7 +6626,7 @@ function CreateAttributeBox(): void {
   UpdateMapScreenAssignmentPositions();
 
   // create basic box
-  CreatePopUpBox(addressof(ghAttributeBox), AttributeDimensions, AttributePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghAttributeBox = CreatePopUpBox(AttributeDimensions, AttributePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghAttributeBox, FRAME_BUFFER);
@@ -6648,7 +6648,7 @@ function CreateAttributeBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < Enum146.MAX_ATTRIBUTE_STRING_COUNT; uiCounter++) {
-    AddMonoString(addressof(hStringHandle), pAttributeMenuStrings[uiCounter]);
+    hStringHandle = AddMonoString(pAttributeMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6686,7 +6686,7 @@ function CreateTrainingBox(): void {
   }
 
   // create basic box
-  CreatePopUpBox(addressof(ghTrainingBox), TrainDimensions, TrainPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghTrainingBox = CreatePopUpBox(TrainDimensions, TrainPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghTrainingBox, FRAME_BUFFER);
@@ -6708,7 +6708,7 @@ function CreateTrainingBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < Enum149.MAX_TRAIN_STRING_COUNT; uiCounter++) {
-    AddMonoString(addressof(hStringHandle), pTrainingMenuStrings[uiCounter]);
+    hStringHandle = AddMonoString(pTrainingMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6753,7 +6753,7 @@ function CreateAssignmentsBox(): void {
   // pSoldier NULL is legal here!  Gets called during every mapscreen initialization even when nobody is assign char
 
   // create basic box
-  CreatePopUpBox(addressof(ghAssignmentBox), AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghAssignmentBox = CreatePopUpBox(AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghAssignmentBox, FRAME_BUFFER);
@@ -6783,7 +6783,7 @@ function CreateAssignmentsBox(): void {
       sString = pAssignMenuStrings[uiCounter];
     }
 
-    AddMonoString(addressof(hStringHandle), sString);
+    hStringHandle = AddMonoString(sString);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6817,7 +6817,7 @@ export function CreateMercRemoveAssignBox(): void {
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
   // create basic box
-  CreatePopUpBox(addressof(ghRemoveMercAssignBox), AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghRemoveMercAssignBox = CreatePopUpBox(AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghRemoveMercAssignBox, FRAME_BUFFER);
@@ -6839,7 +6839,7 @@ export function CreateMercRemoveAssignBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < Enum150.MAX_REMOVE_MERC_COUNT; uiCounter++) {
-    AddMonoString(addressof(hStringHandle), pRemoveMercStrings[uiCounter]);
+    hStringHandle = AddMonoString(pRemoveMercStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6941,7 +6941,7 @@ export function DetermineBoxPositions(): void {
   }
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
+    GetBoxPosition(ghAssignmentBox, pPoint);
     gsAssignmentBoxesX = pPoint.iX;
     gsAssignmentBoxesY = pPoint.iY;
   }
@@ -6951,10 +6951,10 @@ export function DetermineBoxPositions(): void {
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     SetBoxPosition(ghEpcBox, pPoint);
-    GetBoxSize(ghEpcBox, addressof(pDimensions));
+    GetBoxSize(ghEpcBox, pDimensions);
   } else {
     SetBoxPosition(ghAssignmentBox, pPoint);
-    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+    GetBoxSize(ghAssignmentBox, pDimensions);
   }
 
   // hang it right beside the assignment/EPC box menu
@@ -6980,8 +6980,8 @@ export function DetermineBoxPositions(): void {
     OrigTrainPosition.iY = pNewPoint.iY;
     OrigTrainPosition.iX = pNewPoint.iX;
 
-    GetBoxSize(ghTrainingBox, addressof(pDimensions));
-    GetBoxPosition(ghTrainingBox, addressof(pPoint));
+    GetBoxSize(ghTrainingBox, pDimensions);
+    GetBoxPosition(ghTrainingBox, pPoint);
 
     if ((fShowAttributeMenu == true) && (ghAttributeBox != -1)) {
       // hang it right beside the training box menu
@@ -7072,13 +7072,13 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   pSoldier = GetSelectedAssignSoldier(false);
 
   if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
-    GetBoxSize(ghEpcBox, addressof(pDimensions2));
+    GetBoxSize(ghEpcBox, pDimensions2);
   } else {
-    GetBoxSize(ghAssignmentBox, addressof(pDimensions2));
+    GetBoxSize(ghAssignmentBox, pDimensions2);
   }
 
   if (fShowRepairMenu == true) {
-    GetBoxSize(ghRepairBox, addressof(pDimensions));
+    GetBoxSize(ghRepairBox, pDimensions);
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7101,7 +7101,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghRepairBox, pPoint);
   } else if (fShowSquadMenu == true) {
-    GetBoxSize(ghSquadBox, addressof(pDimensions));
+    GetBoxSize(ghSquadBox, pDimensions);
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7124,8 +7124,8 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghSquadBox, pPoint);
   } else if (fShowAttributeMenu == true) {
-    GetBoxSize(ghTrainingBox, addressof(pDimensions));
-    GetBoxSize(ghAttributeBox, addressof(pDimensions3));
+    GetBoxSize(ghTrainingBox, pDimensions);
+    GetBoxSize(ghAttributeBox, pDimensions3);
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight + pDimensions3.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight + pDimensions3.iRight));
@@ -7150,7 +7150,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else if (fShowTrainingMenu == true) {
-    GetBoxSize(ghTrainingBox, addressof(pDimensions));
+    GetBoxSize(ghTrainingBox, pDimensions);
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7199,10 +7199,10 @@ function PositionCursorForTacticalAssignmentBox(): void {
   let iFontHeight: INT32;
 
   // get x.y position of box
-  GetBoxPosition(ghAssignmentBox, addressof(pPosition));
+  GetBoxPosition(ghAssignmentBox, pPosition);
 
   // get dimensions..mostly for width
-  GetBoxSize(ghAssignmentBox, addressof(pDimensions));
+  GetBoxSize(ghAssignmentBox, pDimensions);
 
   iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 

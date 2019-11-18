@@ -22,7 +22,21 @@ export interface POPUPSTRING {
   fSecondaryShadeFlag: boolean;
 }
 
-export type POPUPSTRINGPTR = Pointer<POPUPSTRING>;
+export function createPopUpString(): POPUPSTRING {
+  return {
+    pString: '',
+    ubForegroundColor: 0,
+    ubBackgroundColor: 0,
+    ubHighLight: 0,
+    ubShade: 0,
+    ubSecondaryShade: 0,
+    uiFont: 0,
+    fColorFlag: false,
+    fHighLightFlag: false,
+    fShadeFlag: false,
+    fSecondaryShadeFlag: false,
+  };
+}
 
 export interface PopUpBo {
   Dimensions: SGPRect;
@@ -42,10 +56,31 @@ export interface PopUpBo {
   fUpdated: boolean;
   fShowBox: boolean;
 
-  Text: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
-  pSecondColumnString: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
+  Text: POPUPSTRING[] /* POPUPSTRINGPTR[MAX_POPUP_BOX_STRING_COUNT] */;
+  pSecondColumnString: POPUPSTRING[] /* POPUPSTRINGPTR[MAX_POPUP_BOX_STRING_COUNT] */;
 }
 
-export type PopUpBoxPt = Pointer<PopUpBo>;
+export function createPopUpBo(): PopUpBo {
+  return {
+    Dimensions: createSGPRect(),
+    Position: createSGPPoint(),
+    uiLeftMargin: 0,
+    uiRightMargin: 0,
+    uiBottomMargin: 0,
+    uiTopMargin: 0,
+    uiLineSpace: 0,
+    iBorderObjectIndex: 0,
+    iBackGroundSurface: 0,
+    uiFlags: 0,
+    uiBuffer: 0,
+    uiSecondColumnMinimunOffset: 0,
+    uiSecondColumnCurrentOffset: 0,
+    uiBoxMinWidth: 0,
+    fUpdated: false,
+    fShowBox: false,
+    Text: createArray(MAX_POPUP_BOX_STRING_COUNT, <POPUPSTRING><unknown>null),
+    pSecondColumnString: createArray(MAX_POPUP_BOX_STRING_COUNT, <POPUPSTRING><unknown>null),
+  };
+}
 
 }

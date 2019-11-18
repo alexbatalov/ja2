@@ -113,6 +113,13 @@ export function copySGPRect(destination: SGPRect, source: SGPRect) {
   destination.iBottom = source.iBottom;
 }
 
+export function resetSGPRect(o: SGPRect) {
+  o.iLeft = 0;
+  o.iTop = 0;
+  o.iRight = 0;
+  o.iBottom = 0;
+}
+
 export interface SGPPoint {
   iX: INT32;
   iY: INT32;
@@ -130,6 +137,11 @@ export function createSGPPointFrom(iX: INT32, iY: INT32): SGPPoint {
     iX,
     iY,
   };
+}
+
+export function resetSGPPoint(o: SGPPoint) {
+  o.iX = 0;
+  o.iY = 0;
 }
 
 interface SGPRange {

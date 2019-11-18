@@ -1668,19 +1668,19 @@ export function UpdateMapScreenAssignmentPositions(): void {
   SquadPosition.iY = AssignmentPosition.iY;
 
   if (fShowAssignmentMenu) {
-    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
+    GetBoxPosition(ghAssignmentBox, pPoint);
     pPoint.iY = giBoxY;
 
     SetBoxPosition(ghAssignmentBox, pPoint);
 
-    GetBoxPosition(ghEpcBox, addressof(pPoint));
+    GetBoxPosition(ghEpcBox, pPoint);
     pPoint.iY = giBoxY;
 
     SetBoxPosition(ghEpcBox, pPoint);
   }
 
   if (fShowAttributeMenu) {
-    GetBoxPosition(ghAttributeBox, addressof(pPoint));
+    GetBoxPosition(ghAttributeBox, pPoint);
 
     pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_TRAIN;
 
@@ -1688,7 +1688,7 @@ export function UpdateMapScreenAssignmentPositions(): void {
   }
 
   if (fShowRepairMenu) {
-    GetBoxPosition(ghRepairBox, addressof(pPoint));
+    GetBoxPosition(ghRepairBox, pPoint);
     pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT()) + 2) * Enum148.ASSIGN_MENU_REPAIR;
 
     SetBoxPosition(ghRepairBox, pPoint);
@@ -2686,7 +2686,7 @@ function CreatePopUpBoxForMovementBox(): void {
   // create the pop up box and mouse regions for movement list
 
   // create basic box
-  CreatePopUpBox(addressof(ghMoveBox), AssignmentDimensions, MovePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  ghMoveBox = CreatePopUpBox(AssignmentDimensions, MovePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghMoveBox, FRAME_BUFFER);
@@ -2737,8 +2737,8 @@ function CreatePopUpBoxForMovementBox(): void {
   // resize box to text
   ResizeBoxToText(ghMoveBox);
 
-  GetBoxPosition(ghMoveBox, addressof(Position));
-  GetBoxSize(ghMoveBox, addressof(Dimensions));
+  GetBoxPosition(ghMoveBox, Position);
+  GetBoxSize(ghMoveBox, Dimensions);
 
   // adjust position to try to keep it in the map area as best as possible
   if (Position.iX + Dimensions.iRight >= (MAP_VIEW_START_X + MAP_VIEW_WIDTH)) {
@@ -2769,10 +2769,10 @@ function AddStringsToMoveBox(): void {
   // add title
   sStringB = GetShortSectorString(sSelMapX, sSelMapY);
   sString = swprintf("%s %s", pMovementMenuStrings[0], sStringB);
-  AddMonoString(addressof(hStringHandle), sString);
+  hStringHandle = AddMonoString(sString);
 
   // blank line
-  AddMonoString(addressof(hStringHandle), "");
+  hStringHandle = AddMonoString("");
 
   // add squads
   for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
@@ -2782,7 +2782,7 @@ function AddStringsToMoveBox(): void {
     } else {
       sString = swprintf("%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
     }
-    AddMonoString(addressof(hStringHandle), sString);
+    hStringHandle = AddMonoString(sString);
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
@@ -2793,7 +2793,7 @@ function AddStringsToMoveBox(): void {
         } else {
           sString = swprintf("   %s", pSoldierMovingList[iCountB].name);
         }
-        AddMonoString(addressof(hStringHandle), sString);
+        hStringHandle = AddMonoString(sString);
       }
     }
   }
@@ -2806,7 +2806,7 @@ function AddStringsToMoveBox(): void {
     } else {
       sString = swprintf("%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     }
-    AddMonoString(addressof(hStringHandle), sString);
+    hStringHandle = AddMonoString(sString);
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
@@ -2817,7 +2817,7 @@ function AddStringsToMoveBox(): void {
         } else {
           sString = swprintf("   %s", pSoldierMovingList[iCountB].name);
         }
-        AddMonoString(addressof(hStringHandle), sString);
+        hStringHandle = AddMonoString(sString);
       }
     }
   }
@@ -2835,7 +2835,7 @@ function AddStringsToMoveBox(): void {
         } else {
           sString = swprintf("%s", pMovementMenuStrings[3]);
         }
-        AddMonoString(addressof(hStringHandle), sString);
+        hStringHandle = AddMonoString(sString);
 
         fFirstOne = false;
       }
@@ -2846,25 +2846,25 @@ function AddStringsToMoveBox(): void {
       } else {
         sString = swprintf("   %s ( %s )", pSoldierMovingList[iCount].name, pAssignmentStrings[pSoldierMovingList[iCount].bAssignment]);
       }
-      AddMonoString(addressof(hStringHandle), sString);
+      hStringHandle = AddMonoString(sString);
     }
   }
 
   // blank line
-  AddMonoString(addressof(hStringHandle), "");
+  hStringHandle = AddMonoString("");
 
   if (IsAnythingSelectedForMoving()) {
     // add PLOT MOVE line
     sString = swprintf("%s", pMovementMenuStrings[1]);
-    AddMonoString(addressof(hStringHandle), sString);
+    hStringHandle = AddMonoString(sString);
   } else {
     // blank line
-    AddMonoString(addressof(hStringHandle), "");
+    hStringHandle = AddMonoString("");
   }
 
   // add cancel line
   sString = swprintf("%s", pMovementMenuStrings[2]);
-  AddMonoString(addressof(hStringHandle), sString);
+  hStringHandle = AddMonoString(sString);
 
   return;
 }
@@ -2886,14 +2886,14 @@ function BuildMouseRegionsForMoveBox(): void {
   iFontHeight = GetLineSpace(ghMoveBox) + GetFontHeight(GetBoxFont(ghMoveBox));
 
   // get x.y position of box
-  GetBoxPosition(ghMoveBox, addressof(pPosition));
+  GetBoxPosition(ghMoveBox, pPosition);
 
   // grab box x and y position
   iBoxXPosition = pPosition.iX;
   iBoxYPosition = pPosition.iY + GetTopMarginSize(ghMoveBox) - 2; // -2 to improve highlighting accuracy between lines
 
   // get dimensions..mostly for width
-  GetBoxSize(ghMoveBox, addressof(Dimensions));
+  GetBoxSize(ghMoveBox, Dimensions);
 
   // get width
   iBoxWidth = Dimensions.iRight;

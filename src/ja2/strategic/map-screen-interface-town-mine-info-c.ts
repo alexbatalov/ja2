@@ -107,7 +107,7 @@ export function CreateDestroyTownInfoBox(): void {
     ResizeBoxToText(ghTownMineBox);
 
     // make box bigger to this size
-    GetBoxSize(ghTownMineBox, addressof(pDimensions));
+    GetBoxSize(ghTownMineBox, pDimensions);
 
     if (pDimensions.iRight < BOX_BUTTON_WIDTH) {
       // resize box to fit button
@@ -133,10 +133,10 @@ export function CreateDestroyTownInfoBox(): void {
     fCreated = true;
   } else if ((fCreated == true) && (fShowTownInfo == false)) {
     // get box size
-    GetBoxSize(ghTownMineBox, addressof(pDimensions));
+    GetBoxSize(ghTownMineBox, pDimensions);
 
     // get position
-    GetBoxPosition(ghTownMineBox, addressof(pPosition));
+    GetBoxPosition(ghTownMineBox, pPosition);
 
     // destroy pop up box
     RemoveBox(ghTownMineBox);
@@ -156,7 +156,7 @@ export function CreateDestroyTownInfoBox(): void {
 
 function CreateTownInfoBox(): void {
   // create basic box
-  CreatePopUpBox(addressof(ghTownMineBox), TownMineDimensions, TownMinePosition, (POPUP_BOX_FLAG_CLIP_TEXT));
+  ghTownMineBox = CreatePopUpBox(TownMineDimensions, TownMinePosition, (POPUP_BOX_FLAG_CLIP_TEXT));
 
   // which buffer will box render to
   SetBoxBuffer(ghTownMineBox, FRAME_BUFFER);
@@ -195,71 +195,71 @@ function AddTextToTownBox(): void {
 
   switch (usTownSectorIndex) {
     case Enum123.SEC_B13:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE]);
+      hStringHandle = AddMonoString(pLandTypeStrings[Enum127.DRASSEN_AIRPORT_SITE]);
       break;
     case Enum123.SEC_F8:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE]);
+      hStringHandle = AddMonoString(pLandTypeStrings[Enum127.CAMBRIA_HOSPITAL_SITE]);
       break;
     case Enum123.SEC_J9: // Tixa
       if (!fFoundTixa)
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SAND]);
       else
-        AddMonoString(addressof(hStringHandle), pTownNames[Enum135.TIXA]);
+        hStringHandle = AddMonoString(pTownNames[Enum135.TIXA]);
       break;
     case Enum123.SEC_K4: // Orta
       if (!fFoundOrta)
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SWAMP]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SWAMP]);
       else
-        AddMonoString(addressof(hStringHandle), pTownNames[Enum135.ORTA]);
+        hStringHandle = AddMonoString(pTownNames[Enum135.ORTA]);
       break;
     case Enum123.SEC_N3:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE]);
+      hStringHandle = AddMonoString(pLandTypeStrings[Enum127.MEDUNA_AIRPORT_SITE]);
       break;
     default:
       if (usTownSectorIndex == Enum123.SEC_N4 && fSamSiteFound[Enum138.SAM_SITE_FOUR]) {
         // Meduna's SAM site
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.MEDUNA_SAM_SITE]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.MEDUNA_SAM_SITE]);
       } else {
         // town name
         wString = swprintf("%s", pTownNames[ubTownId]);
-        AddMonoString(addressof(hStringHandle), wString);
+        hStringHandle = AddMonoString(wString);
       }
       break;
   }
   // blank line
-  AddMonoString(addressof(hStringHandle), "");
+  hStringHandle = AddMonoString("");
 
   // sector
   AddSectorToBox();
 
   // town size
   wString = swprintf("%s:", pwTownInfoStrings[0]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
   wString = swprintf("%d", GetTownSectorSize(ubTownId));
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 
   // main facilities
   wString = swprintf("%s:", pwTownInfoStrings[8]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
   wString = GetSectorFacilitiesFlags(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 
   // the concept of control is only meaningful in sectors where militia can be trained
   if (MilitiaTrainingAllowedInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY, 0)) {
     // town control
     wString = swprintf("%s:", pwTownInfoStrings[2]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
     wString = swprintf("%d%%%%", (GetTownSectorsUnderControl(ubTownId) * 100) / GetTownSectorSize(ubTownId));
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
   }
 
   // the concept of town loyalty is only meaningful in towns where loyalty is tracked
   if (gTownLoyalty[ubTownId].fStarted && gfTownUsesLoyalty[ubTownId]) {
     // town loyalty
     wString = swprintf("%s:", pwTownInfoStrings[5]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
     wString = swprintf("%d%%%%", gTownLoyalty[ubTownId].ubRating);
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
   }
 
   // if the town has a mine
@@ -267,9 +267,9 @@ function AddTextToTownBox(): void {
   if (sMineSector != -1) {
     // Associated Mine: Sector
     wString = swprintf("%s:", pwTownInfoStrings[4]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
     wString = GetShortSectorString((sMineSector % MAP_WORLD_X), (sMineSector / MAP_WORLD_X));
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
   }
 }
 
@@ -284,17 +284,17 @@ function AddTextToMineBox(): void {
 
   // name of town followed by "mine"
   wString = swprintf("%s %s", pTownNames[GetTownAssociatedWithMine(ubMineIndex)], pwMineStrings[0]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
 
   // blank line
-  AddMonoString(addressof(hStringHandle), "");
+  hStringHandle = AddMonoString("");
 
   // sector
   AddSectorToBox();
 
   // mine status
   wString = swprintf("%s:", pwMineStrings[9]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
 
   // check if mine is empty (abandoned) or running out
   if (gMineStatus[ubMineIndex].fEmpty) {
@@ -310,50 +310,50 @@ function AddTextToMineBox(): void {
     // producing
     wString = pwMineStrings[8];
   }
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 
   // if still producing
   if (!gMineStatus[ubMineIndex].fEmpty) {
     // current production
     wString = swprintf("%s:", pwMineStrings[3]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
 
     wString = swprintf("%d", PredictDailyIncomeFromAMine(ubMineIndex));
     wString = InsertCommasForDollarFigure(wString);
     wString = InsertDollarSignInToString(wString);
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
 
     // potential production
     wString = swprintf("%s:", pwMineStrings[4]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
 
     wString = swprintf("%d", GetMaxDailyRemovalFromMine(ubMineIndex));
     wString = InsertCommasForDollarFigure(wString);
     wString = InsertDollarSignInToString(wString);
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
 
     // if potential is not nil
     if (GetMaxPeriodicRemovalFromMine(ubMineIndex) > 0) {
       // production rate (current production as a percentage of potential production)
       wString = swprintf("%s:", pwMineStrings[10]);
-      AddMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddMonoString(wString);
       wString = swprintf("%d%%%%", (PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex));
-      AddSecondColumnMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddSecondColumnMonoString(wString);
     }
 
     // town control percentage
     wString = swprintf("%s:", pwMineStrings[12]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
     wString = swprintf("%d%%%%", (GetTownSectorsUnderControl(gMineLocation[ubMineIndex].bAssociatedTown) * 100) / GetTownSectorSize(gMineLocation[ubMineIndex].bAssociatedTown));
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
 
     ubTown = gMineLocation[ubMineIndex].bAssociatedTown;
     if (gTownLoyalty[ubTown].fStarted && gfTownUsesLoyalty[ubTown]) {
       // town loyalty percentage
       wString = swprintf("%s:", pwMineStrings[13]);
-      AddMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddMonoString(wString);
       wString = swprintf("%d%%%%", gTownLoyalty[gMineLocation[ubMineIndex].bAssociatedTown].ubRating);
-      AddSecondColumnMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddSecondColumnMonoString(wString);
     }
 
     /* gradual monster infestation concept was ditched, now simply IN PRODUCTION or SHUT DOWN
@@ -366,8 +366,8 @@ function AddTextToMineBox(): void {
 
     // ore type (silver/gold
     wString = swprintf("%s:", pwMineStrings[11]);
-    AddMonoString(addressof(hStringHandle), wString);
-    AddSecondColumnMonoString(addressof(hStringHandle), (gMineStatus[ubMineIndex].ubMineType == Enum181.SILVER_MINE) ? pwMineStrings[1] : pwMineStrings[2]);
+    hStringHandle = AddMonoString(wString);
+    hStringHandle = AddSecondColumnMonoString((gMineStatus[ubMineIndex].ubMineType == Enum181.SILVER_MINE) ? pwMineStrings[1] : pwMineStrings[2]);
   }
 }
 
@@ -381,31 +381,31 @@ function AddTextToBlankSectorBox(): void {
   switch (usSectorValue) {
     case Enum123.SEC_D2: // Chitzena SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_ONE])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.TROPICS]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.TROPICS]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.TROPICS_SAM_SITE]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.TROPICS_SAM_SITE]);
       break;
     case Enum123.SEC_D15: // Drassen SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_TWO])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SPARSE]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SPARSE]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SPARSE_SAM_SITE]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SPARSE_SAM_SITE]);
       break;
     case Enum123.SEC_I8: // Cambria SAM
       if (!fSamSiteFound[Enum138.SAM_SITE_THREE])
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SAND]);
       else
-        AddMonoString(addressof(hStringHandle), pLandTypeStrings[Enum127.SAND_SAM_SITE]);
+        hStringHandle = AddMonoString(pLandTypeStrings[Enum127.SAND_SAM_SITE]);
       break;
       // SAM Site 4 in Meduna is within town limits, so it's handled in AddTextToTownBox()
 
     default:
-      AddMonoString(addressof(hStringHandle), pLandTypeStrings[(SectorInfo[usSectorValue].ubTraversability[4])]);
+      hStringHandle = AddMonoString(pLandTypeStrings[(SectorInfo[usSectorValue].ubTraversability[4])]);
       break;
   }
 
   // blank line
-  AddMonoString(addressof(hStringHandle), "");
+  hStringHandle = AddMonoString("");
 
   // sector
   AddSectorToBox();
@@ -418,7 +418,7 @@ function AddSectorToBox(): void {
 
   // sector
   wString = swprintf("%s:", pwMiscSectorStrings[1]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
 
   wString = GetShortSectorString(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
   if (bCurrentTownMineSectorZ != 0) {
@@ -426,7 +426,7 @@ function AddSectorToBox(): void {
     wString += wString2;
   }
 
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 }
 
 function AddCommonInfoToBox(): void {
@@ -459,37 +459,37 @@ function AddCommonInfoToBox(): void {
   if (MilitiaTrainingAllowedInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY, 0) && !fUnknownSAMSite) {
     // controlled:
     wString = swprintf("%s:", pwMiscSectorStrings[4]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
 
     // No/Yes
     wString = swprintf("%s", pwMiscSectorStrings[(StrategicMap[CALCULATE_STRATEGIC_INDEX(bCurrentTownMineSectorX, bCurrentTownMineSectorY)].fEnemyControlled) ? 6 : 5]);
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
 
     // militia - is there any?
     wString = swprintf("%s:", pwTownInfoStrings[11]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
 
     ubMilitiaTotal = CountAllMilitiaInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
     if (ubMilitiaTotal > 0) {
       // some militia, show total & their breakdown by level
       wString = swprintf("%d  (%d/%d/%d)", ubMilitiaTotal, MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.GREEN_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.REGULAR_MILITIA), MilitiaInSectorOfRank(bCurrentTownMineSectorX, bCurrentTownMineSectorY, Enum126.ELITE_MILITIA));
-      AddSecondColumnMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddSecondColumnMonoString(wString);
     } else {
       // no militia: don't bother displaying level breakdown
       wString = "0";
-      AddSecondColumnMonoString(addressof(hStringHandle), wString);
+      hStringHandle = AddSecondColumnMonoString(wString);
     }
 
     // percentage of current militia squad training completed
     wString = swprintf("%s:", pwTownInfoStrings[10]);
-    AddMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddMonoString(wString);
     wString = swprintf("%d%%%%", SectorInfo[SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)].ubMilitiaTrainingPercentDone);
-    AddSecondColumnMonoString(addressof(hStringHandle), wString);
+    hStringHandle = AddSecondColumnMonoString(wString);
   }
 
   // enemy forces
   wString = swprintf("%s:", pwMiscSectorStrings[0]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
 
   // how many are there, really?
   ubNumEnemies = NumEnemiesInSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
@@ -517,7 +517,7 @@ function AddCommonInfoToBox(): void {
       break;
   }
 
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 }
 
 function AddItemsInSectorToBox(): void {
@@ -527,11 +527,11 @@ function AddItemsInSectorToBox(): void {
   // items in sector (this works even for underground)
 
   wString = swprintf("%s:", pwMiscSectorStrings[2]);
-  AddMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddMonoString(wString);
 
   //	swprintf( wString, L"%d", GetSizeOfStashInSector( bCurrentTownMineSectorX, bCurrentTownMineSectorY, bCurrentTownMineSectorZ, FALSE ));
   wString = swprintf("%d", GetNumberOfVisibleWorldItemsFromSectorStructureForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY, bCurrentTownMineSectorZ));
-  AddSecondColumnMonoString(addressof(hStringHandle), wString);
+  hStringHandle = AddSecondColumnMonoString(wString);
 }
 
 function PositionTownMineInfoBox(): void {
@@ -553,10 +553,10 @@ function PositionTownMineInfoBox(): void {
   SetBoxPosition(ghTownMineBox, pPosition);
 
   // get box size
-  GetBoxSize(ghTownMineBox, addressof(pDimensions));
+  GetBoxSize(ghTownMineBox, pDimensions);
 
   // get position
-  GetBoxPosition(ghTownMineBox, addressof(pPosition));
+  GetBoxPosition(ghTownMineBox, pPosition);
 
   if (pDimensions.iRight < (sTotalButtonWidth + 30)) {
     SpecifyBoxMinWidth(ghTownMineBox, (sTotalButtonWidth + 30));
@@ -616,8 +616,8 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   sTotalBoxWidth = sTotalButtonWidth;
 
-  GetBoxSize(ghTownMineBox, addressof(pDimensions));
-  GetBoxPosition(ghTownMineBox, addressof(pPosition));
+  GetBoxSize(ghTownMineBox, pDimensions);
+  GetBoxPosition(ghTownMineBox, pPosition);
 
   sX = pPosition.iX + (pDimensions.iRight - sTotalBoxWidth) / 3;
   sY = pPosition.iY + pDimensions.iBottom - ((BOX_BUTTON_HEIGHT + 5));
