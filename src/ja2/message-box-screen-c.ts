@@ -856,24 +856,24 @@ export function MessageBoxScreenShutdown(): boolean {
 }
 
 // a basic box that don't care what screen we came from
-export function DoScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): void {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
-function DoUpperScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+function DoUpperScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): void {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y / 2);
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
-export function DoLowerScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
+export function DoLowerScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): void {
   let CenteringRect: SGPRect = createSGPRectFrom(0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y);
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, CenteringRect);
 }
 
-function DoScreenIndependantMessageBoxWithRect(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): void {
+function DoScreenIndependantMessageBoxWithRect(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect): void {
   /// which screen are we in?
 
   // Map Screen (excluding AI Viewer)

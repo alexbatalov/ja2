@@ -380,11 +380,9 @@ export function InitializeSAMSites(): void {
 }
 
 // get short sector name without town name
-export function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: Pointer<string> /* STR16 */): void {
+export function GetShortSectorString(sMapX: INT16, sMapY: INT16): string {
   // OK, build string id like J11
-  sString = swprintf("%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
-
-  return;
+  return swprintf("%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
 }
 
 export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: Pointer<string> /* STR8 */, fUsePlaceholder: boolean, fAddAlternateMapLetter: boolean): void {

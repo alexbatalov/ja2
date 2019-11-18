@@ -268,7 +268,7 @@ function AddTextToTownBox(): void {
     // Associated Mine: Sector
     wString = swprintf("%s:", pwTownInfoStrings[4]);
     AddMonoString(addressof(hStringHandle), wString);
-    GetShortSectorString((sMineSector % MAP_WORLD_X), (sMineSector / MAP_WORLD_X), wString);
+    wString = GetShortSectorString((sMineSector % MAP_WORLD_X), (sMineSector / MAP_WORLD_X));
     AddSecondColumnMonoString(addressof(hStringHandle), wString);
   }
 }
@@ -420,7 +420,7 @@ function AddSectorToBox(): void {
   wString = swprintf("%s:", pwMiscSectorStrings[1]);
   AddMonoString(addressof(hStringHandle), wString);
 
-  GetShortSectorString(bCurrentTownMineSectorX, bCurrentTownMineSectorY, wString);
+  wString = GetShortSectorString(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
   if (bCurrentTownMineSectorZ != 0) {
     wString2 = swprintf("-%d", bCurrentTownMineSectorZ);
     wString += wString2;
@@ -543,7 +543,7 @@ function PositionTownMineInfoBox(): void {
   let sNewMargin: INT16 = 0;
 
   // position the box based on x and y of the selected sector
-  GetScreenXYFromMapXY(bCurrentTownMineSectorX, bCurrentTownMineSectorY, addressof(sX), addressof(sY));
+  ({ sX, sY } = GetScreenXYFromMapXY(bCurrentTownMineSectorX, bCurrentTownMineSectorY));
 
   // set box position
   pPosition.iX = sX;

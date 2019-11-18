@@ -1476,7 +1476,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   // morale
   if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
     if (pSoldier.value.bLife != 0) {
-      GetMoraleString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
+      sString = GetMoraleString(MercPtrs[gCharactersList[sCharNumber].usSolID]);
     } else {
       sString = "";
     }
@@ -4672,7 +4672,7 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
   */
 
   //	if((!fStationary)||(!fZoomFlag))
-  { GetScreenXYFromMapXY(sMapX, sMapY, addressof(sScreenX), addressof(sScreenY)); }
+  { ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(sMapX, sMapY)); }
   /*
     else
           {
@@ -9836,7 +9836,7 @@ function RestoreMapSectorCursor(sMapX: INT16, sMapY: INT16): void {
   Assert((sMapX >= 1) && (sMapX <= 16));
   Assert((sMapY >= 1) && (sMapY <= 16));
 
-  GetScreenXYFromMapXY(sMapX, sMapY, addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(sMapX, sMapY));
 
   sScreenY -= 1;
 

@@ -475,7 +475,7 @@ function CheckForValidArrivalSector(): void {
     return;
   }
 
-  GetShortSectorString(gsMercArriveSectorX, gsMercArriveSectorY, zShortTownIDString1);
+  zShortTownIDString1 = GetShortSectorString(gsMercArriveSectorX, gsMercArriveSectorY);
 
   // If here - we need to do a search!
   sTop = ubRadius;
@@ -510,7 +510,7 @@ function CheckForValidArrivalSector(): void {
 
     UpdateAnyInTransitMercsWithGlobalArrivalSector();
 
-    GetShortSectorString(gsMercArriveSectorX, gsMercArriveSectorY, zShortTownIDString2);
+    zShortTownIDString2 = GetShortSectorString(gsMercArriveSectorX, gsMercArriveSectorY);
 
     sString = swprintf("Arrival of new recruits is being rerouted to sector %s, as scheduled drop-off point of sector %s is enemy occupied.", zShortTownIDString2, zShortTownIDString1);
 

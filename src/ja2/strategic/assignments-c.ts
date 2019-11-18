@@ -5816,7 +5816,7 @@ function TrainingMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
           if (IsMilitiaTrainableFromSoldiersSectorMaxed(pSoldier)) {
             if (bTownId == Enum135.BLANK_SECTOR) {
               // SAM site
-              GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, sStringA);
+              sStringA = GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
               sString = swprintf(zMarksMapScreenText[21], sStringA);
             } else {
               // town

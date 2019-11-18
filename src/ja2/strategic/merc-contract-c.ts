@@ -805,7 +805,7 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
 
   // GetSectorIDString( pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, zTownIDString, TRUE );
 
-  GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, zShortTownIDString);
+  zShortTownIDString = GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
 
   // Set string for generic button
   gzUserDefinedButton1 = swprintf("%s", zShortTownIDString);

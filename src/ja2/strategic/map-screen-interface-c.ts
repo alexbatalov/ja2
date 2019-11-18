@@ -116,20 +116,20 @@ let giNumberOfVehiclesInSectorMoving: INT32 = 0;
 let iHeightOfInitFastHelpText: INT32 = 0;
 
 // the list of soldiers that are moving
-let pSoldierMovingList: Pointer<SOLDIERTYPE>[] /* [MAX_CHARACTER_COUNT] */;
-let fSoldierIsMoving: boolean[] /* [MAX_CHARACTER_COUNT] */;
+let pSoldierMovingList: SOLDIERTYPE[] /* Pointer<SOLDIERTYPE>[MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, <SOLDIERTYPE><unknown>null);
+let fSoldierIsMoving: boolean[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, false);
 
-let pUpdateSoldierBox: Pointer<SOLDIERTYPE>[] /* [SIZE_OF_UPDATE_BOX] */;
+let pUpdateSoldierBox: SOLDIERTYPE[] /* Pointer<SOLDIERTYPE>[SIZE_OF_UPDATE_BOX] */ = createArray(SIZE_OF_UPDATE_BOX, <SOLDIERTYPE><unknown>null);
 
-let giUpdateSoldierFaces: INT32[] /* [SIZE_OF_UPDATE_BOX] */;
+let giUpdateSoldierFaces: INT32[] /* [SIZE_OF_UPDATE_BOX] */ = createArray(SIZE_OF_UPDATE_BOX, 0);
 
 // the squads thata re moving
-let iSquadMovingList: INT32[] /* [NUMBER_OF_SQUADS] */;
-let fSquadIsMoving: INT32[] /* [NUMBER_OF_SQUADS] */;
+let iSquadMovingList: INT32[] /* [NUMBER_OF_SQUADS] */ = createArray(Enum275.NUMBER_OF_SQUADS, 0);
+let fSquadIsMoving: boolean[] /* INT32[NUMBER_OF_SQUADS] */ = createArray(Enum275.NUMBER_OF_SQUADS, false);
 
 // the vehicles thata re moving
-let iVehicleMovingList: INT32[] /* [NUMBER_OF_SQUADS] */;
-let fVehicleIsMoving: INT32[] /* [NUMBER_OF_SQUADS] */;
+let iVehicleMovingList: INT32[] /* [NUMBER_OF_SQUADS] */ = createArray(Enum275.NUMBER_OF_SQUADS, 0);
+let fVehicleIsMoving: boolean[] /* INT32[NUMBER_OF_SQUADS] */ = createArray(Enum275.NUMBER_OF_SQUADS, false);
 
 let gMoveBoxScreenMask: MOUSE_REGION = createMouseRegion();
 
@@ -137,7 +137,7 @@ let gMoveBoxScreenMask: MOUSE_REGION = createMouseRegion();
 let fMapInventoryPoolInited: boolean = false;
 export let fShowMapScreenMovementList: boolean = false;
 
-export let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */;
+export let gCharactersList: MapScreenCharacterSt[] /* [MAX_CHARACTER_COUNT + 1] */ = createArrayFrom(MAX_CHARACTER_COUNT + 1, createMapScreenCharacterSt);
 
 export let gMapStatusBarsRegion: MOUSE_REGION = createMouseRegion();
 
@@ -197,7 +197,7 @@ export let guiUpdatePanel: UINT32;
 export let guiUpdatePanelTactical: UINT32;
 
 // the leave item list
-let gpLeaveListHead: Pointer<MERC_LEAVE_ITEM>[] /* [NUM_LEAVE_LIST_SLOTS] */;
+let gpLeaveListHead: MERC_LEAVE_ITEM[] /* Pointer<MERC_LEAVE_ITEM>[NUM_LEAVE_LIST_SLOTS] */ = createArray(NUM_LEAVE_LIST_SLOTS, <MERC_LEAVE_ITEM><unknown>null);
 
 // holds ids of mercs who left stuff behind
 let guiLeaveListOwnerProfileId: UINT32[] /* [NUM_LEAVE_LIST_SLOTS] */;
@@ -256,7 +256,7 @@ export let gfAtLeastOneMercWasHired: boolean = false;
 
 export function InitalizeVehicleAndCharacterList(): void {
   // will init the vehicle and character lists to zero
-  memset(addressof(gCharactersList), 0, sizeof(gCharactersList));
+  gCharactersList.forEach(resetMapScreenCharacterSt);
 
   return;
 }
@@ -281,7 +281,7 @@ export function ResetEntryForSelectedList(bEntry: INT8): void {
 
 export function ResetSelectedListForMapScreen(): void {
   // set all the entries int he selected list to false
-  memset(addressof(fSelectedListOfMercsForMapScreen), false, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
+  fSelectedListOfMercsForMapScreen.fill(false);
 
   // if we still have a valid dude selected
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == true)) {
@@ -352,7 +352,7 @@ export function MultipleCharacterListEntriesSelected(): boolean {
 
 export function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment: INT8): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
@@ -361,14 +361,14 @@ export function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAss
       continue;
     }
 
-    pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+    pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
-    if (pSoldier.value.bActive == false) {
+    if (pSoldier.bActive == 0) {
       continue;
     }
 
-    if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
-      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
+    if (pSoldier.bAssignment == Enum117.TRAIN_TOWN) {
+      if (SectorInfo[SECTOR(pSoldier.sSectorX, pSoldier.sSectorY)].fMilitiaTrainingPaid == false) {
         ResumeOldAssignment(pSoldier);
       }
     }
@@ -377,7 +377,7 @@ export function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAss
 
 export function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT16, sSectorY: INT16): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
@@ -386,14 +386,14 @@ export function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSecto
       continue;
     }
 
-    pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+    pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
-    if (pSoldier.value.bActive == false) {
+    if (pSoldier.bActive == 0) {
       continue;
     }
 
-    if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
-      if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == 0)) {
+    if (pSoldier.bAssignment == Enum117.TRAIN_TOWN) {
+      if ((pSoldier.sSectorX == sSectorX) && (pSoldier.sSectorY == sSectorY) && (pSoldier.bSectorZ == 0)) {
         ResumeOldAssignment(pSoldier);
       }
     }
@@ -417,15 +417,15 @@ void PlotPathForSelectedCharacterList( INT16 sX, INT16 sY )
 */
 
 // check if the members of the selected list move with this guy... are they in the same mvt group?
-export function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
-  let pSoldier2: Pointer<SOLDIERTYPE> = null;
+  let pSoldier2: SOLDIERTYPE;
 
   // deselect any other selected mercs that can't travel together with pSoldier
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
       if (fSelectedListOfMercsForMapScreen[iCounter] == true) {
-        pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier2 = Menptr[gCharactersList[iCounter].usSolID];
 
         // skip the guy we are
         if (pSoldier == pSoldier2) {
@@ -438,44 +438,44 @@ export function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointe
         // However, different vehicles CAN plot together, since they all travel at the same rates now
 
         // if anchor guy is IN a vehicle
-        if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-          if (!CanSoldierMoveWithVehicleId(pSoldier2, pSoldier.value.iVehicleId)) {
+        if (pSoldier.bAssignment == Enum117.VEHICLE) {
+          if (!CanSoldierMoveWithVehicleId(pSoldier2, pSoldier.iVehicleId)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
           }
         }
         // if anchor guy IS a vehicle
-        else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-          if (!CanSoldierMoveWithVehicleId(pSoldier2, pSoldier.value.bVehicleID)) {
+        else if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+          if (!CanSoldierMoveWithVehicleId(pSoldier2, pSoldier.bVehicleID)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
           }
         }
         // if this guy is IN a vehicle
-        else if (pSoldier2.value.bAssignment == Enum117.VEHICLE) {
-          if (!CanSoldierMoveWithVehicleId(pSoldier, pSoldier2.value.iVehicleId)) {
+        else if (pSoldier2.bAssignment == Enum117.VEHICLE) {
+          if (!CanSoldierMoveWithVehicleId(pSoldier, pSoldier2.iVehicleId)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
           }
         }
         // if this guy IS a vehicle
-        else if (pSoldier2.value.uiStatusFlags & SOLDIER_VEHICLE) {
-          if (!CanSoldierMoveWithVehicleId(pSoldier, pSoldier2.value.bVehicleID)) {
+        else if (pSoldier2.uiStatusFlags & SOLDIER_VEHICLE) {
+          if (!CanSoldierMoveWithVehicleId(pSoldier, pSoldier2.bVehicleID)) {
             // reset entry for selected list
             ResetEntryForSelectedList(iCounter);
           }
         }
         // reject those not a squad (vehicle handled above)
-        else if (pSoldier2.value.bAssignment >= Enum117.ON_DUTY) {
+        else if (pSoldier2.bAssignment >= Enum117.ON_DUTY) {
           ResetEntryForSelectedList(iCounter);
         } else {
           // reject those not in the same sector
-          if ((pSoldier.value.sSectorX != pSoldier2.value.sSectorX) || (pSoldier.value.sSectorY != pSoldier2.value.sSectorY) || (pSoldier.value.bSectorZ != pSoldier2.value.bSectorZ)) {
+          if ((pSoldier.sSectorX != pSoldier2.sSectorX) || (pSoldier.sSectorY != pSoldier2.sSectorY) || (pSoldier.bSectorZ != pSoldier2.bSectorZ)) {
             ResetEntryForSelectedList(iCounter);
           }
 
           // if either is between sectors, they must be in the same movement group
-          if ((pSoldier.value.fBetweenSectors || pSoldier2.value.fBetweenSectors) && (pSoldier.value.ubGroupID != pSoldier2.value.ubGroupID)) {
+          if ((pSoldier.fBetweenSectors || pSoldier2.fBetweenSectors) && (pSoldier.ubGroupID != pSoldier2.ubGroupID)) {
             ResetEntryForSelectedList(iCounter);
           }
         }
@@ -490,16 +490,16 @@ export function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointe
 
 export function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
       // if not already selected
       if (fSelectedListOfMercsForMapScreen[iCounter] == false) {
-        pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
         // if on a squad or in a vehicle
-        if ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
+        if ((pSoldier.bAssignment < Enum117.ON_DUTY) || (pSoldier.bAssignment == Enum117.VEHICLE)) {
           // and a member of that squad or vehicle is selected
           if (AnyMercInSameSquadOrVehicleIsSelected(pSoldier)) {
             // then also select this guy
@@ -511,36 +511,36 @@ export function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
   }
 }
 
-function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: SOLDIERTYPE): boolean {
   let iCounter: INT32 = 0;
-  let pSoldier2: Pointer<SOLDIERTYPE> = null;
+  let pSoldier2: SOLDIERTYPE;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
       // if selected
       if (fSelectedListOfMercsForMapScreen[iCounter] == true) {
-        pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier2 = Menptr[gCharactersList[iCounter].usSolID];
 
         // if they have the same assignment
-        if (pSoldier.value.bAssignment == pSoldier2.value.bAssignment) {
+        if (pSoldier.bAssignment == pSoldier2.bAssignment) {
           // same squad?
-          if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+          if (pSoldier.bAssignment < Enum117.ON_DUTY) {
             return true;
           }
 
           // same vehicle?
-          if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.iVehicleId)) {
+          if ((pSoldier.bAssignment == Enum117.VEHICLE) && (pSoldier.iVehicleId == pSoldier2.iVehicleId)) {
             return true;
           }
         }
 
         // target guy is in a vehicle, and this guy IS that vehicle
-        if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier2.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.iVehicleId == pSoldier2.value.bVehicleID)) {
+        if ((pSoldier.bAssignment == Enum117.VEHICLE) && (pSoldier2.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.iVehicleId == pSoldier2.bVehicleID)) {
           return true;
         }
 
         // this guy is in a vehicle, and the target guy IS that vehicle
-        if ((pSoldier2.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier2.value.iVehicleId == pSoldier.value.bVehicleID)) {
+        if ((pSoldier2.bAssignment == Enum117.VEHICLE) && (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier2.iVehicleId == pSoldier.bVehicleID)) {
           return true;
         }
       }
@@ -685,7 +685,7 @@ export function PlayGlowRegionSound(): void {
   return;
 }
 
-export function CharacterIsGettingPathPlotted(sCharNumber: INT16): INT16 {
+export function CharacterIsGettingPathPlotted(sCharNumber: INT16): boolean {
   // valid character number?
   if ((sCharNumber < 0) || (sCharNumber >= MAX_CHARACTER_COUNT)) {
     return false;
@@ -858,20 +858,20 @@ void ActivateSoldierPopup( SOLDIERTYPE *pSoldier, UINT8 ubPopupType, INT16 xp, I
 }
 */
 
-export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
+export function DoMapMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect): INT32 {
   // reset the highlighted line
   giHighLine = -1;
   return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 }
 
-export function DoMapMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): INT32 {
+export function DoMapMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): INT32 {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
 
   // reset the highlighted line
   giHighLine = -1;
 
   // do message box and return
-  return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
+  return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, CenteringRect);
 }
 
 export function GoDownOneLevelInMap(): void {
@@ -1008,28 +1008,28 @@ export function HandleDisplayOfSelectedMercArrows(): void {
   return;
 }
 
+/* static */ let HandleDisplayOfItemPopUpForSector__fWasInited: boolean = false;
 export function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
   // handle display of item pop up for this sector
   // check if anyone alive in this sector
-  let pItemPool: Pointer<ITEM_POOL> = null;
-  /* static */ let fWasInited: boolean = false;
+  let pItemPool: ITEM_POOL | null = null;
 
   if (bSelectedInfoChar == -1) {
     return;
   }
 
-  if ((fWasInited == false) && (fMapInventoryPoolInited)) {
+  if ((HandleDisplayOfItemPopUpForSector__fWasInited == false) && (fMapInventoryPoolInited)) {
     if (gCharactersList[bSelectedInfoChar].fValid == true) {
       if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorX == sMapX) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorY == sMapY) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bSectorZ == sMapZ) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bActive) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife >= OKLIFE)) {
         // valid character
-        InitializeItemPickupMenu(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]), NOWHERE, pItemPool, MAP_INVEN_POOL_X, MAP_INVEN_POOL_Y, -1);
-        fWasInited = true;
+        InitializeItemPickupMenu(Menptr[gCharactersList[bSelectedInfoChar].usSolID], NOWHERE, pItemPool, MAP_INVEN_POOL_X, MAP_INVEN_POOL_Y, -1);
+        HandleDisplayOfItemPopUpForSector__fWasInited = true;
 
         CreateScreenMaskForInventoryPoolPopUp();
       }
     }
-  } else if ((fWasInited == true) && (fMapInventoryPoolInited == false)) {
-    fWasInited = false;
+  } else if ((HandleDisplayOfItemPopUpForSector__fWasInited == true) && (fMapInventoryPoolInited == false)) {
+    HandleDisplayOfItemPopUpForSector__fWasInited = false;
 
     // now clear up the box
     RemoveItemPickupMenu();
@@ -1042,8 +1042,8 @@ export function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sM
   }
 
   // showing it
-  if ((fMapInventoryPoolInited) && (fWasInited)) {
-    SetPickUpMenuDirtyLevel(DIRTYLEVEL2);
+  if ((fMapInventoryPoolInited) && (HandleDisplayOfItemPopUpForSector__fWasInited)) {
+    SetPickUpMenuDirtyLevel(<boolean><unknown>DIRTYLEVEL2);
     RenderItemPickupMenu();
   }
 
@@ -1068,10 +1068,12 @@ function InventoryScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): 
   }
 }
 
-export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer<string> /* STR16 */): void {
-  let bMorale: INT8 = pSoldier.value.bMorale;
+export function GetMoraleString(pSoldier: SOLDIERTYPE): string {
+  let sString: string;
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_DEAD) {
+  let bMorale: INT8 = pSoldier.bMorale;
+
+  if (pSoldier.uiStatusFlags & SOLDIER_DEAD) {
     sString = pMoralStrings[5];
   } else if (bMorale > 80) {
     sString = pMoralStrings[0];
@@ -1084,6 +1086,8 @@ export function GetMoraleString(pSoldier: Pointer<SOLDIERTYPE>, sString: Pointer
   } else {
     sString = pMoralStrings[4];
   }
+
+  return sString;
 }
 
 // NOTE: This doesn't use the "LeaveList" system at all!
@@ -1124,9 +1128,9 @@ export function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void 
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       if (Menptr[uiMercId].sSectorX != gWorldSectorX || Menptr[uiMercId].sSectorY != gWorldSectorY || Menptr[uiMercId].bSectorZ != gbWorldSectorZ) {
         // Set flag for item...
-        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, addressof(Menptr[uiMercId].inv[iCounter]), Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, false);
+        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, Menptr[uiMercId].inv[iCounter], Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, false);
       } else {
-        AddItemToPool(sGridNo, addressof(Menptr[uiMercId].inv[iCounter]), 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
+        AddItemToPool(sGridNo, Menptr[uiMercId].inv[iCounter], 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
       }
     }
   }
@@ -1161,7 +1165,7 @@ export function HandleMercLeavingEquipmentInDrassen(uiMercId: UINT32): void {
 }
 
 export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
-  let pItem: Pointer<MERC_LEAVE_ITEM>;
+  let pItem: MERC_LEAVE_ITEM | null;
   let sString: string /* CHAR16[128] */;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
@@ -1181,18 +1185,18 @@ export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != OMERTA_LEAVE_EQUIP_SECTOR_X || gWorldSectorY != OMERTA_LEAVE_EQUIP_SECTOR_Y || gbWorldSectorZ != OMERTA_LEAVE_EQUIP_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, false);
+      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, pItem.o, 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
-      AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
+      AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, pItem.o, 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
-    pItem = pItem.value.pNext;
+    pItem = pItem.pNext;
   }
 
   FreeLeaveListSlot(uiSlotIndex);
 }
 
 export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
-  let pItem: Pointer<MERC_LEAVE_ITEM>;
+  let pItem: MERC_LEAVE_ITEM | null;
   let sString: string /* CHAR16[128] */;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
@@ -1212,11 +1216,11 @@ export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || gWorldSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || gbWorldSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, false);
+      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, pItem.o, 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
-      AddItemToPool(10433, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
+      AddItemToPool(10433, pItem.o, 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
-    pItem = pItem.value.pNext;
+    pItem = pItem.pNext;
   }
 
   FreeLeaveListSlot(uiSlotIndex);
@@ -1227,7 +1231,7 @@ export function InitLeaveList(): void {
 
   // init leave list with NULLS/zeroes
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
-    gpLeaveListHead[iCounter] = null;
+    gpLeaveListHead[iCounter] = <MERC_LEAVE_ITEM><unknown>null;
     guiLeaveListOwnerProfileId[iCounter] = NO_PROFILE;
   }
 }
@@ -1243,9 +1247,9 @@ export function ShutDownLeaveList(): void {
   }
 }
 
-export function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): boolean {
-  let pItem: Pointer<MERC_LEAVE_ITEM>;
-  let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
+export function AddItemToLeaveIndex(o: OBJECTTYPE, uiSlotIndex: UINT32): boolean {
+  let pItem: MERC_LEAVE_ITEM;
+  let pCurrentItem: MERC_LEAVE_ITEM | null;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
 
@@ -1254,13 +1258,13 @@ export function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32)
   }
 
   // allocate space
-  pItem = MemAlloc(sizeof(MERC_LEAVE_ITEM));
+  pItem = createMercLeaveItem();
 
   // copy object
-  memcpy(addressof(pItem.value.o), o, sizeof(OBJECTTYPE));
+  copyObjectType(pItem.o, o);
 
   // nobody afterwards
-  pItem.value.pNext = null;
+  pItem.pNext = null;
 
   // now add to list in this index slot
   pCurrentItem = gpLeaveListHead[uiSlotIndex];
@@ -1271,20 +1275,20 @@ export function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32)
   }
 
   // move through list
-  while (pCurrentItem.value.pNext) {
-    pCurrentItem = pCurrentItem.value.pNext;
+  while (pCurrentItem.pNext) {
+    pCurrentItem = pCurrentItem.pNext;
   }
 
   // found
-  pCurrentItem.value.pNext = pItem;
+  pCurrentItem.pNext = pItem;
 
   return true;
 }
 
 // release memory for all items in this slot's leave item list
 function FreeLeaveListSlot(uiSlotIndex: UINT32): void {
-  let pCurrent: Pointer<MERC_LEAVE_ITEM> = null;
-  let pTemp: Pointer<MERC_LEAVE_ITEM> = null;
+  let pCurrent: MERC_LEAVE_ITEM | null = null;
+  let pTemp: MERC_LEAVE_ITEM | null = null;
 
   Assert(uiSlotIndex < NUM_LEAVE_LIST_SLOTS);
 
@@ -1292,12 +1296,11 @@ function FreeLeaveListSlot(uiSlotIndex: UINT32): void {
 
   // go through nodes and free them
   while (pCurrent) {
-    pTemp = pCurrent.value.pNext;
-    MemFree(pCurrent);
+    pTemp = pCurrent.pNext;
     pCurrent = pTemp;
   }
 
-  gpLeaveListHead[uiSlotIndex] = null;
+  gpLeaveListHead[uiSlotIndex] = <MERC_LEAVE_ITEM><unknown>null;
 }
 
 function FindFreeSlotInLeaveList(): INT32 {
@@ -1327,7 +1330,7 @@ function SetUpDropItemListForMerc(uiMercId: UINT32): INT32 {
     // check if actual item
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       // make a linked list of the items left behind, with the ptr to its head in this free slot
-      AddItemToLeaveIndex(addressof(Menptr[uiMercId].inv[iCounter]), iSlotIndex);
+      AddItemToLeaveIndex(Menptr[uiMercId].inv[iCounter], iSlotIndex);
 
       // store owner's profile id for the items added to this leave slot index
       SetUpMercAboutToLeaveEquipment(Menptr[uiMercId].ubProfile, iSlotIndex);
@@ -1339,9 +1342,9 @@ function SetUpDropItemListForMerc(uiMercId: UINT32): INT32 {
   DropKeysInKeyRing(MercPtrs[uiMercId], NOWHERE, 0, 0, true, iSlotIndex, false);
 
   // zero out profiles
-  memset((gMercProfiles[Menptr[uiMercId].ubProfile].bInvStatus), 0, sizeof(UINT8) * 19);
-  memset((gMercProfiles[Menptr[uiMercId].ubProfile].bInvNumber), 0, sizeof(UINT8) * 19);
-  memset((gMercProfiles[Menptr[uiMercId].ubProfile].inv), 0, sizeof(UINT16) * 19);
+  gMercProfiles[Menptr[uiMercId].ubProfile].bInvStatus.fill(0);
+  gMercProfiles[Menptr[uiMercId].ubProfile].bInvNumber.fill(0);
+  gMercProfiles[Menptr[uiMercId].ubProfile].inv.fill(0);
 
   return iSlotIndex;
 }
@@ -1531,25 +1534,25 @@ export function RemoveMapStatusBarsRegion(): void {
 export function UpdateCharRegionHelpText(): void {
   let sString: string /* CHAR16[128] */;
   let pMoraleStr: string /* CHAR16[128] */;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == true)) {
     // valid soldier selected
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
 
     // health/energy/morale
-    if (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) {
-      if (pSoldier.value.bLife != 0) {
+    if (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW) {
+      if (pSoldier.bLife != 0) {
         if (AM_A_ROBOT(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID])) {
           // robot (condition only)
-          sString = swprintf("%s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax);
+          sString = swprintf("%s: %d/%d", pMapScreenStatusStrings[3], pSoldier.bLife, pSoldier.bLifeMax);
         } else if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].uiStatusFlags & SOLDIER_VEHICLE) {
           // vehicle (condition/fuel)
-          sString = swprintf("%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[4], pSoldier.value.bBreath, pSoldier.value.bBreathMax);
+          sString = swprintf("%s: %d/%d, %s: %d/%d", pMapScreenStatusStrings[3], pSoldier.bLife, pSoldier.bLifeMax, pMapScreenStatusStrings[4], pSoldier.bBreath, pSoldier.bBreathMax);
         } else {
           // person (health/energy/morale)
-          GetMoraleString(pSoldier, pMoraleStr);
-          sString = swprintf("%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier.value.bLife, pSoldier.value.bLifeMax, pMapScreenStatusStrings[1], pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
+          pMoraleStr = GetMoraleString(pSoldier);
+          sString = swprintf("%s: %d/%d, %s: %d/%d, %s: %s", pMapScreenStatusStrings[0], pSoldier.bLife, pSoldier.bLifeMax, pMapScreenStatusStrings[1], pSoldier.bBreath, pSoldier.bBreathMax, pMapScreenStatusStrings[2], pMoraleStr);
         }
       } else {
         sString = "";
@@ -1591,14 +1594,14 @@ export function UpdateCharRegionHelpText(): void {
 }
 
 // find this merc in the mapscreen list and set as selected
-export function FindAndSetThisContractSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function FindAndSetThisContractSoldier(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   fShowContractMenu = false;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
-      if (gCharactersList[iCounter].usSolID == pSoldier.value.ubID) {
+      if (gCharactersList[iCounter].usSolID == pSoldier.ubID) {
         ChangeSelectedInfoChar(iCounter, true);
         bSelectedContractChar = iCounter;
         fShowContractMenu = true;
@@ -1694,31 +1697,31 @@ export function UpdateMapScreenAssignmentPositions(): void {
   return;
 }
 
-export function RandomMercInGroupSaysQuote(pGroup: Pointer<GROUP>, usQuoteNum: UINT16): void {
-  let pPlayer: Pointer<PLAYERGROUP>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let ubMercsInGroup: UINT8[] /* [20] */;
+export function RandomMercInGroupSaysQuote(pGroup: GROUP, usQuoteNum: UINT16): void {
+  let pPlayer: PLAYERGROUP | null;
+  let pSoldier: SOLDIERTYPE;
+  let ubMercsInGroup: UINT8[] /* [20] */ = createArray(20, 0);
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
 
   // if traversing tactically, don't do this, unless time compression was required for some reason (don't go to sector)
-  if ((gfTacticalTraversal || (pGroup.value.ubSectorZ > 0)) && !IsTimeBeingCompressed()) {
+  if ((gfTacticalTraversal || (pGroup.ubSectorZ > 0)) && !IsTimeBeingCompressed()) {
     return;
   }
 
   // Let's choose somebody in group.....
-  pPlayer = pGroup.value.pPlayerList;
+  pPlayer = pGroup.pPlayerList;
 
   while (pPlayer != null) {
-    pSoldier = pPlayer.value.pSoldier;
+    pSoldier = pPlayer.pSoldier;
     Assert(pSoldier);
 
-    if (pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && !AM_AN_EPC(pSoldier) && !pSoldier.value.fMercAsleep) {
-      ubMercsInGroup[ubNumMercs] = pSoldier.value.ubID;
+    if (pSoldier.bLife >= OKLIFE && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && !AM_AN_EPC(pSoldier) && !pSoldier.fMercAsleep) {
+      ubMercsInGroup[ubNumMercs] = pSoldier.ubID;
       ubNumMercs++;
     }
 
-    pPlayer = pPlayer.value.next;
+    pPlayer = pPlayer.next;
   }
 
   // At least say quote....
@@ -1769,8 +1772,8 @@ function ValidSelectableCharForNextOrPrev(iNewCharSlot: INT32): boolean {
 }
 
 export function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
-  let pNewSoldier: Pointer<SOLDIERTYPE>;
-  let pOldSoldier: Pointer<SOLDIERTYPE>;
+  let pNewSoldier: SOLDIERTYPE;
+  let pOldSoldier: SOLDIERTYPE | null;
 
   // assumes we're holding an item
   Assert((gMPanelRegion.Cursor == EXTERN_CURSOR) || gpItemPointer || fMapInventoryItem);
@@ -1790,11 +1793,11 @@ export function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
   // if showing sector inventory, and the item came from there
   if (fShowMapInventoryPool && !gpItemPointerSoldier && fMapInventoryItem) {
     // disallow passing items to anyone not in that sector
-    if (pNewSoldier.value.sSectorX != sSelMapX || pNewSoldier.value.sSectorY != sSelMapY || pNewSoldier.value.bSectorZ != (iCurrentMapSectorZ)) {
+    if (pNewSoldier.sSectorX != sSelMapX || pNewSoldier.sSectorY != sSelMapY || pNewSoldier.bSectorZ != (iCurrentMapSectorZ)) {
       return false;
     }
 
-    if (pNewSoldier.value.fBetweenSectors) {
+    if (pNewSoldier.fBetweenSectors) {
       return false;
     }
   }
@@ -1814,24 +1817,24 @@ export function MapscreenCanPassItemToCharNum(iNewCharSlot: INT32): boolean {
   // if another merc had it previously
   if (pOldSoldier != null) {
     // disallow passing items to a merc not in the same sector
-    if (pNewSoldier.value.sSectorX != pOldSoldier.value.sSectorX || pNewSoldier.value.sSectorY != pOldSoldier.value.sSectorY || pNewSoldier.value.bSectorZ != pOldSoldier.value.bSectorZ) {
+    if (pNewSoldier.sSectorX != pOldSoldier.sSectorX || pNewSoldier.sSectorY != pOldSoldier.sSectorY || pNewSoldier.bSectorZ != pOldSoldier.bSectorZ) {
       return false;
     }
 
     // if on the road
-    if (pNewSoldier.value.fBetweenSectors) {
+    if (pNewSoldier.fBetweenSectors) {
       // other guy must also be on the road...
-      if (!pOldSoldier.value.fBetweenSectors) {
+      if (!pOldSoldier.fBetweenSectors) {
         return false;
       }
 
       // only exchanges between those is the same squad or vehicle are permitted
-      if (pNewSoldier.value.bAssignment != pOldSoldier.value.bAssignment) {
+      if (pNewSoldier.bAssignment != pOldSoldier.bAssignment) {
         return false;
       }
 
       // if in vehicles, make sure it's the same one
-      if ((pNewSoldier.value.bAssignment == Enum117.VEHICLE) && (pNewSoldier.value.iVehicleId != pOldSoldier.value.iVehicleId)) {
+      if ((pNewSoldier.bAssignment == Enum117.VEHICLE) && (pNewSoldier.iVehicleId != pOldSoldier.iVehicleId)) {
         return false;
       }
     }
@@ -2050,19 +2053,19 @@ export function IsTheInterfaceFastHelpTextActive(): boolean {
 }
 
 // display all the regions in the list
-function DisplayFastHelpRegions(pRegion: Pointer<FASTHELPREGION>, iSize: INT32): void {
+function DisplayFastHelpRegions(pRegion: FASTHELPREGION[], iSize: INT32): void {
   let iCounter: INT32 = 0;
 
   // run through and show all the regions
   for (iCounter = 0; iCounter < iSize; iCounter++) {
-    DisplayUserDefineHelpTextRegions(addressof(pRegion[iCounter]));
+    DisplayUserDefineHelpTextRegions(pRegion[iCounter]);
   }
 
   return;
 }
 
 // show one region
-function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): void {
+function DisplayUserDefineHelpTextRegions(pRegion: FASTHELPREGION): void {
   let usFillColor: UINT16;
   let iX: INT32;
   let iY: INT32;
@@ -2075,11 +2078,11 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   // grab the color for the background region
   usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
 
-  iX = pRegion.value.iX;
-  iY = pRegion.value.iY;
+  iX = pRegion.iX;
+  iY = pRegion.iY;
   // get the width and height of the string
-  iW = (pRegion.value.iW) + 14;
-  iH = IanWrappedStringHeight(iX, iY, (pRegion.value.iW), 0, FONT10ARIAL(), FONT_BLACK, pRegion.value.FastHelpText, FONT_BLACK, true, 0);
+  iW = (pRegion.iW) + 14;
+  iH = IanWrappedStringHeight(iX, iY, (pRegion.iW), 0, FONT10ARIAL(), FONT_BLACK, pRegion.FastHelpText, FONT_BLACK, true, 0);
 
   // tack on the outer border
   iH += 14;
@@ -2089,11 +2092,11 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
     iX = 0;
 
   // gone too far
-  if ((pRegion.value.iX + iW) >= SCREEN_WIDTH)
+  if ((pRegion.iX + iW) >= SCREEN_WIDTH)
     iX = (SCREEN_WIDTH - iW - 4);
 
   // what about the y value?
-  iY = pRegion.value.iY - (iH * 3 / 4);
+  iY = pRegion.iY - (iH * 3 / 4);
 
   // not far enough
   if (iY < 0)
@@ -2118,14 +2121,14 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_BEIGE);
 
-  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.value.iW, 0, FONT10ARIAL(), FONT_BEIGE, pRegion.value.FastHelpText, FONT_NEARBLACK, true, 0);
+  iH = DisplayWrappedString((iX + 10), (iY + 6), pRegion.iW, 0, FONT10ARIAL(), FONT_BEIGE, pRegion.FastHelpText, FONT_NEARBLACK, true, 0);
 
   iHeightOfInitFastHelpText = iH + 20;
 
   InvalidateRegion(iX, iY, (iX + iW), (iY + iH + 20));
 }
 
-function DisplayFastHelpForInitialTripInToMapScreen(pRegion: Pointer<FASTHELPREGION>): void {
+function DisplayFastHelpForInitialTripInToMapScreen(pRegion: FASTHELPREGION): void {
   if (gTacticalStatus.fDidGameJustStart) {
     if (AnyMercsHired() == false) {
       return;
@@ -2146,7 +2149,7 @@ function DisplayFastHelpForInitialTripInToMapScreen(pRegion: Pointer<FASTHELPREG
 export function DisplayMapScreenFastHelpList(): void {
   let iCounter: INT32 = 0;
 
-  DisplayFastHelpForInitialTripInToMapScreen(addressof(pFastHelpMapScreenList[iCounter]));
+  DisplayFastHelpForInitialTripInToMapScreen(pFastHelpMapScreenList[iCounter]);
 
   return;
 }
@@ -2187,22 +2190,21 @@ export function IsMapScreenHelpTextUp(): boolean {
   return fShowMapScreenHelpText;
 }
 
+/* static */ let SetUpShutDownMapScreenHelpTextScreenMask__fCreated: boolean = false;
 function SetUpShutDownMapScreenHelpTextScreenMask(): void {
-  /* static */ let fCreated: boolean = false;
-
   // create or destroy the screen mask as needed
-  if (((fShowMapScreenHelpText == true) || (fInterfaceFastHelpTextActive == true)) && (fCreated == false)) {
+  if (((fShowMapScreenHelpText == true) || (fInterfaceFastHelpTextActive == true)) && (SetUpShutDownMapScreenHelpTextScreenMask__fCreated == false)) {
     if (gTacticalStatus.fDidGameJustStart) {
       MSYS_DefineRegion(gMapScreenHelpTextMask, (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     } else {
       MSYS_DefineRegion(gMapScreenHelpTextMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     }
 
-    fCreated = true;
-  } else if ((fShowMapScreenHelpText == false) && (fInterfaceFastHelpTextActive == false) && (fCreated == true)) {
+    SetUpShutDownMapScreenHelpTextScreenMask__fCreated = true;
+  } else if ((fShowMapScreenHelpText == false) && (fInterfaceFastHelpTextActive == false) && (SetUpShutDownMapScreenHelpTextScreenMask__fCreated == true)) {
     MSYS_RemoveRegion(gMapScreenHelpTextMask);
 
-    fCreated = false;
+    SetUpShutDownMapScreenHelpTextScreenMask__fCreated = false;
   }
 }
 
@@ -2216,7 +2218,7 @@ function MapScreenHelpTextScreenMaskBtnCallback(pRegion: MOUSE_REGION, iReason: 
   }
 }
 
-function IsSoldierSelectedForMovement(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function IsSoldierSelectedForMovement(pSoldier: SOLDIERTYPE | null): boolean {
   let iCounter: INT32 = 0;
 
   // run through the list and turn this soldiers value on
@@ -2253,7 +2255,7 @@ function IsVehicleSelectedForMovement(iVehicleId: INT32): boolean {
   return false;
 }
 
-function SelectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
+function SelectSoldierForMovement(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   if (pSoldier == null) {
@@ -2270,7 +2272,7 @@ function SelectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function DeselectSoldierForMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
+function DeselectSoldierForMovement(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   if (pSoldier == null) {
@@ -2291,7 +2293,7 @@ function SelectSquadForMovement(iSquadNumber: INT32): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
   let fSomeCantMove: boolean = false;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
   let fFirstFailure: boolean;
 
   // run through squad list and set them on
@@ -2305,7 +2307,7 @@ function SelectSquadForMovement(iSquadNumber: INT32): void {
       for (iCount = 0; iCount < NUMBER_OF_SOLDIERS_PER_SQUAD; iCount++) {
         pSoldier = Squad[iSquadNumber][iCount];
 
-        if (pSoldier && pSoldier.value.bActive) {
+        if (pSoldier && pSoldier.bActive) {
           // is he able & allowed to move?  (Report only the first reason for failure encountered)
           if (CanMoveBoxSoldierMoveStrategically(pSoldier, fFirstFailure)) {
             SelectSoldierForMovement(pSoldier);
@@ -2328,7 +2330,7 @@ function SelectSquadForMovement(iSquadNumber: INT32): void {
 function DeselectSquadForMovement(iSquadNumber: INT32): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
   // run through squad list and set them off
   for (iCounter = 0; iCounter < giNumberOfSquadsInSectorMoving; iCounter++) {
@@ -2340,7 +2342,7 @@ function DeselectSquadForMovement(iSquadNumber: INT32): void {
       for (iCount = 0; iCount < NUMBER_OF_SOLDIERS_PER_SQUAD; iCount++) {
         pSoldier = Squad[iSquadNumber][iCount];
 
-        if (pSoldier && pSoldier.value.bActive) {
+        if (pSoldier && pSoldier.bActive) {
           DeselectSoldierForMovement(pSoldier);
         }
       }
@@ -2356,7 +2358,7 @@ function AllSoldiersInSquadSelected(iSquadNumber: INT32): boolean {
 
   // is everyone on this squad moving?
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if (pSoldierMovingList[iCounter].value.bAssignment == iSquadNumber) {
+    if (pSoldierMovingList[iCounter].bAssignment == iSquadNumber) {
       if (fSoldierIsMoving[iCounter] == false) {
         return false;
       }
@@ -2369,7 +2371,7 @@ function AllSoldiersInSquadSelected(iSquadNumber: INT32): boolean {
 function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: boolean): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
-  let pPassenger: Pointer<SOLDIERTYPE> = null;
+  let pPassenger: SOLDIERTYPE | null = null;
   let fHasDriver: boolean = false;
   let fFirstFailure: boolean;
 
@@ -2386,7 +2388,7 @@ function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: boolean): v
         if (fAndAllOnBoard) {
           // try to select everyone in vehicle
 
-          if (pPassenger && pPassenger.value.bActive) {
+          if (pPassenger && pPassenger.bActive) {
             // is he able & allowed to move?
             if (CanMoveBoxSoldierMoveStrategically(pPassenger, fFirstFailure)) {
               SelectSoldierForMovement(pPassenger);
@@ -2414,7 +2416,7 @@ function SelectVehicleForMovement(iVehicleId: INT32, fAndAllOnBoard: boolean): v
 function DeselectVehicleForMovement(iVehicleId: INT32): void {
   let iCounter: INT32 = 0;
   let iCount: INT32 = 0;
-  let pPassenger: Pointer<SOLDIERTYPE> = null;
+  let pPassenger: SOLDIERTYPE | null = null;
 
   // run through vehicle list and set them off
   for (iCounter = 0; iCounter < giNumberOfVehiclesInSectorMoving; iCounter++) {
@@ -2426,7 +2428,7 @@ function DeselectVehicleForMovement(iVehicleId: INT32): void {
       for (iCount = 0; iCount < 10; iCount++) {
         pPassenger = pVehicleList[iVehicleId].pPassengers[iCount];
 
-        if (pPassenger && pPassenger.value.bActive) {
+        if (pPassenger && pPassenger.bActive) {
           DeselectSoldierForMovement(pPassenger);
         }
       }
@@ -2442,7 +2444,7 @@ function HowManyMovingSoldiersInVehicle(iVehicleId: INT32): INT32 {
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     // is he in the right vehicle
-    if ((pSoldierMovingList[iCounter].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCounter].value.iVehicleId == iVehicleId)) {
+    if ((pSoldierMovingList[iCounter].bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCounter].iVehicleId == iVehicleId)) {
       // if he moving?
       if (fSoldierIsMoving[iCounter]) {
         // ok, another one in the vehicle that is going to move
@@ -2460,7 +2462,7 @@ function HowManyMovingSoldiersInSquad(iSquadNumber: INT32): INT32 {
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
     // is he in the right squad
-    if (pSoldierMovingList[iCounter].value.bAssignment == iSquadNumber) {
+    if (pSoldierMovingList[iCounter].bAssignment == iSquadNumber) {
       // if he moving?
       if (fSoldierIsMoving[iCounter]) {
         // ok, another one in the squad that is going to move
@@ -2473,7 +2475,7 @@ function HowManyMovingSoldiersInSquad(iSquadNumber: INT32): INT32 {
 }
 
 // try to add this soldier to the moving lists
-function AddSoldierToMovingLists(pSoldier: Pointer<SOLDIERTYPE>): void {
+function AddSoldierToMovingLists(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -2554,7 +2556,7 @@ function InitializeMovingLists(): void {
   // init the soldiers
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // soldier is NOT moving
-    pSoldierMovingList[iCounter] = null;
+    pSoldierMovingList[iCounter] = <SOLDIERTYPE><unknown>null;
     // turn the selected soldier off
     fSoldierIsMoving[iCounter] = false;
   }
@@ -2605,22 +2607,21 @@ function IsAnythingSelectedForMoving(): boolean {
   return false;
 }
 
+/* static */ let CreateDestroyMovementBox__fCreated: boolean = false;
 export function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
-  /* static */ let fCreated: boolean = false;
-
   // not allowed for underground movement!
   Assert(sSectorZ == 0);
 
-  if ((fShowMapScreenMovementList == true) && (fCreated == false)) {
-    fCreated = true;
+  if ((fShowMapScreenMovementList == true) && (CreateDestroyMovementBox__fCreated == false)) {
+    CreateDestroyMovementBox__fCreated = true;
 
     // create the box and mouse regions
     CreatePopUpBoxForMovementBox();
     BuildMouseRegionsForMoveBox();
     CreateScreenMaskForMoveBox();
     fMapPanelDirty = true;
-  } else if ((fShowMapScreenMovementList == false) && (fCreated == true)) {
-    fCreated = false;
+  } else if ((fShowMapScreenMovementList == false) && (CreateDestroyMovementBox__fCreated == true)) {
+    CreateDestroyMovementBox__fCreated = false;
 
     // destroy the box and mouse regions
     ClearMouseRegionsForMoveBox();
@@ -2634,7 +2635,7 @@ export function CreateDestroyMovementBox(sSectorX: INT16, sSectorY: INT16, sSect
 
 export function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   // not allowed for underground movement!
   Assert(sSectorZ == 0);
@@ -2648,25 +2649,25 @@ export function SetUpMovingListsForSector(sSectorX: INT16, sSectorY: INT16, sSec
     if (gCharactersList[iCounter].fValid) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
-      if ((pSoldier.value.bActive) && (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == sSectorZ)) {
-        if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+      if ((pSoldier.bActive) && (pSoldier.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.sSectorX == sSectorX) && (pSoldier.sSectorY == sSectorY) && (pSoldier.bSectorZ == sSectorZ)) {
+        if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
           // vehicle
           // if it can move (can't be empty)
-          if (GetNumberInVehicle(pSoldier.value.bVehicleID) > 0) {
+          if (GetNumberInVehicle(pSoldier.bVehicleID) > 0) {
             // add vehicle
-            AddVehicleToMovingLists(pSoldier.value.bVehicleID);
+            AddVehicleToMovingLists(pSoldier.bVehicleID);
           }
         } else // soldier
         {
           // alive, not aboard Skyrider (airborne or not!)
-          if ((pSoldier.value.bLife >= OKLIFE) && ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId))) {
+          if ((pSoldier.bLife >= OKLIFE) && ((pSoldier.bAssignment != Enum117.VEHICLE) || (pSoldier.iVehicleId != iHelicopterVehicleId))) {
             // add soldier
             AddSoldierToMovingLists(pSoldier);
 
             // if on a squad,
-            if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+            if (pSoldier.bAssignment < Enum117.ON_DUTY) {
               // add squad (duplicates ok, they're ignored inside the function)
-              AddSquadToMovingLists(pSoldier.value.bAssignment);
+              AddSquadToMovingLists(pSoldier.bAssignment);
             }
           }
         }
@@ -2766,7 +2767,7 @@ function AddStringsToMoveBox(): void {
   RemoveAllCurrentBoxStrings();
 
   // add title
-  GetShortSectorString(sSelMapX, sSelMapY, sStringB);
+  sStringB = GetShortSectorString(sSelMapX, sSelMapY);
   sString = swprintf("%s %s", pMovementMenuStrings[0], sStringB);
   AddMonoString(addressof(hStringHandle), sString);
 
@@ -2785,12 +2786,12 @@ function AddStringsToMoveBox(): void {
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-      if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
+      if (pSoldierMovingList[iCountB].bAssignment == iSquadMovingList[iCount]) {
         // add mercs in squads
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
-          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].name);
         } else {
-          sString = swprintf("   %s", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   %s", pSoldierMovingList[iCountB].name);
         }
         AddMonoString(addressof(hStringHandle), sString);
       }
@@ -2809,12 +2810,12 @@ function AddStringsToMoveBox(): void {
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-      if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
+      if ((pSoldierMovingList[iCountB].bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].iVehicleId == iVehicleMovingList[iCount])) {
         // add mercs in vehicles
         if (IsSoldierSelectedForMovement(pSoldierMovingList[iCountB]) == true) {
-          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   *%s*", pSoldierMovingList[iCountB].name);
         } else {
-          sString = swprintf("   %s", pSoldierMovingList[iCountB].value.name);
+          sString = swprintf("   %s", pSoldierMovingList[iCountB].name);
         }
         AddMonoString(addressof(hStringHandle), sString);
       }
@@ -2826,7 +2827,7 @@ function AddStringsToMoveBox(): void {
   // add "other" soldiers heading, once, if there are any
   for (iCount = 0; iCount < giNumberOfSoldiersInSectorMoving; iCount++) {
     // not on duty, not in a vehicle
-    if ((pSoldierMovingList[iCount].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != Enum117.VEHICLE)) {
+    if ((pSoldierMovingList[iCount].bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].bAssignment != Enum117.VEHICLE)) {
       if (fFirstOne) {
         // add OTHER header line
         if (AllOtherSoldiersInListAreSelected()) {
@@ -2841,9 +2842,9 @@ function AddStringsToMoveBox(): void {
 
       // add OTHER soldiers (not on duty nor in a vehicle)
       if (IsSoldierSelectedForMovement(pSoldierMovingList[iCount]) == true) {
-        sString = swprintf("  *%s ( %s )*", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
+        sString = swprintf("  *%s ( %s )*", pSoldierMovingList[iCount].name, pAssignmentStrings[pSoldierMovingList[iCount].bAssignment]);
       } else {
-        sString = swprintf("   %s ( %s )", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
+        sString = swprintf("   %s ( %s )", pSoldierMovingList[iCount].name, pAssignmentStrings[pSoldierMovingList[iCount].bAssignment]);
       }
       AddMonoString(addressof(hStringHandle), sString);
     }
@@ -2925,7 +2926,7 @@ function BuildMouseRegionsForMoveBox(): void {
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-        if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
+        if (pSoldierMovingList[iCountB].bAssignment == iSquadMovingList[iCount]) {
           MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
@@ -2948,7 +2949,7 @@ function BuildMouseRegionsForMoveBox(): void {
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
-        if ((pSoldierMovingList[iCountB].value.bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
+        if ((pSoldierMovingList[iCountB].bAssignment == Enum117.VEHICLE) && (pSoldierMovingList[iCountB].iVehicleId == iVehicleMovingList[iCount])) {
           MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
@@ -2963,7 +2964,7 @@ function BuildMouseRegionsForMoveBox(): void {
     // define regions for "other" soldiers
     for (iCount = 0; iCount < giNumberOfSoldiersInSectorMoving; iCount++) {
       // this guy is not in a squad or vehicle
-      if ((pSoldierMovingList[iCount].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != Enum117.VEHICLE)) {
+      if ((pSoldierMovingList[iCount].bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCount].bAssignment != Enum117.VEHICLE)) {
         // this line gets place only once...
         if (!fDefinedOtherRegion) {
           MSYS_DefineRegion(gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
@@ -3050,7 +3051,7 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iRegionType: INT32 = -1;
   let iListIndex: INT32 = -1;
   let iClickTime: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   iMoveBoxLine = MSYS_GetRegionUserData(pRegion, 0);
   iRegionType = MSYS_GetRegionUserData(pRegion, 1);
@@ -3097,7 +3098,7 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       } else if (iRegionType == Enum145.SOLDIER_REGION) {
         pSoldier = pSoldierMovingList[iListIndex];
 
-        if (pSoldier.value.fBetweenSectors) {
+        if (pSoldier.fBetweenSectors) {
           // we don't allow mercs to change squads or get out of vehicles between sectors, easiest way to handle this
           // is to prevent any toggling of individual soldiers on the move at the outset.
           DoScreenIndependantMessageBox(pMapErrorString[41], MSG_BOX_FLAG_OK, null);
@@ -3108,20 +3109,20 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
         if (IsSoldierSelectedForMovement(pSoldier)) {
           // change him to NOT move instead
 
-          if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
+          if (pSoldier.bAssignment == Enum117.VEHICLE) {
             // if he's the only one left moving in the vehicle, deselect whole vehicle
-            if (HowManyMovingSoldiersInVehicle(pSoldier.value.iVehicleId) == 1) {
+            if (HowManyMovingSoldiersInVehicle(pSoldier.iVehicleId) == 1) {
               // whole vehicle stays
-              DeselectVehicleForMovement(pSoldier.value.iVehicleId);
+              DeselectVehicleForMovement(pSoldier.iVehicleId);
             } else {
               // soldier is staying behind
               DeselectSoldierForMovement(pSoldier);
             }
-          } else if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+          } else if (pSoldier.bAssignment < Enum117.ON_DUTY) {
             // if he's the only one left moving in the squad, deselect whole squad
-            if (HowManyMovingSoldiersInSquad(pSoldier.value.bAssignment) == 1) {
+            if (HowManyMovingSoldiersInSquad(pSoldier.bAssignment) == 1) {
               // whole squad stays
-              DeselectSquadForMovement(pSoldier.value.bAssignment);
+              DeselectSquadForMovement(pSoldier.bAssignment);
             } else {
               // soldier is staying behind
               DeselectSoldierForMovement(pSoldier);
@@ -3137,10 +3138,10 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
             // change him to move instead
             SelectSoldierForMovement(pSoldier);
 
-            if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+            if (pSoldier.bAssignment < Enum117.ON_DUTY) {
               // if everyone in the squad is now selected, select the squad itself
-              if (AllSoldiersInSquadSelected(pSoldier.value.bAssignment)) {
-                SelectSquadForMovement(pSoldier.value.bAssignment);
+              if (AllSoldiersInSquadSelected(pSoldier.bAssignment)) {
+                SelectSquadForMovement(pSoldier.bAssignment);
               }
             }
             /* ARM: it's more flexible without this - player can take the vehicle along or not without having to exit it.
@@ -3177,12 +3178,12 @@ function MoveMenuBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   return;
 }
 
-function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fShowErrorMessage: boolean): boolean {
+function CanMoveBoxSoldierMoveStrategically(pSoldier: SOLDIERTYPE, fShowErrorMessage: boolean): boolean {
   let bErrorNumber: INT8 = -1;
 
   // valid soldier?
   Assert(pSoldier);
-  Assert(pSoldier.value.bActive);
+  Assert(pSoldier.bActive);
 
   if (CanCharacterMoveInStrategic(pSoldier, addressof(bErrorNumber))) {
     return true;
@@ -3202,7 +3203,7 @@ function SelectAllOtherSoldiersInList(): void {
   let fSomeCantMove: boolean = false;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].bAssignment != Enum117.VEHICLE)) {
       if (CanMoveBoxSoldierMoveStrategically(pSoldierMovingList[iCounter], false)) {
         fSoldierIsMoving[iCounter] = true;
       } else {
@@ -3221,7 +3222,7 @@ function DeselectAllOtherSoldiersInList(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment != Enum117.VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].bAssignment != Enum117.VEHICLE)) {
       fSoldierIsMoving[iCounter] = false;
     }
   }
@@ -3229,7 +3230,7 @@ function DeselectAllOtherSoldiersInList(): void {
 
 function HandleMoveoutOfSectorMovementTroops(): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = 0;
+  let pSoldier: SOLDIERTYPE;
   let iSquadNumber: INT32 = -1;
   let fCheckForCompatibleSquad: boolean = false;
 
@@ -3242,17 +3243,17 @@ function HandleMoveoutOfSectorMovementTroops(): void {
     fCheckForCompatibleSquad = false;
 
     // if he is on a valid squad
-    if (pSoldier.value.bAssignment < Enum117.ON_DUTY) {
+    if (pSoldier.bAssignment < Enum117.ON_DUTY) {
       // if he and his squad are parting ways (soldier is staying behind, but squad is leaving, or vice versa)
-      if (fSoldierIsMoving[iCounter] != IsSquadSelectedForMovement(pSoldier.value.bAssignment)) {
+      if (fSoldierIsMoving[iCounter] != IsSquadSelectedForMovement(pSoldier.bAssignment)) {
         // split the guy from his squad to any other compatible squad
         fCheckForCompatibleSquad = true;
       }
     }
     // if in a vehicle
-    else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
+    else if (pSoldier.bAssignment == Enum117.VEHICLE) {
       // if he and his vehicle are parting ways (soldier is staying behind, but vehicle is leaving, or vice versa)
-      if (fSoldierIsMoving[iCounter] != IsVehicleSelectedForMovement(pSoldier.value.iVehicleId)) {
+      if (fSoldierIsMoving[iCounter] != IsVehicleSelectedForMovement(pSoldier.iVehicleId)) {
         // split the guy from his vehicle to any other compatible squad
         fCheckForCompatibleSquad = true;
       }
@@ -3305,7 +3306,7 @@ function HandleMoveoutOfSectorMovementTroops(): void {
 function HandleSettingTheSelectedListOfMercs(): void {
   let fFirstOne: boolean = true;
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let fSelected: boolean;
 
   // reset the selected character
@@ -3317,8 +3318,8 @@ function HandleSettingTheSelectedListOfMercs(): void {
     if (gCharactersList[iCounter].fValid == true) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        fSelected = IsVehicleSelectedForMovement(pSoldier.value.bVehicleID);
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+        fSelected = IsVehicleSelectedForMovement(pSoldier.bVehicleID);
       } else {
         fSelected = IsSoldierSelectedForMovement(pSoldier);
       }
@@ -3350,7 +3351,7 @@ function HandleSettingTheSelectedListOfMercs(): void {
     fMapPanelDirty = true;
     fCharacterInfoPanelDirty = true;
 
-    DeselectSelectedListMercsWhoCantMoveWithThisGuy(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
+    DeselectSelectedListMercsWhoCantMoveWithThisGuy(Menptr[gCharactersList[bSelectedDestChar].usSolID]);
 
     // remember the current paths for all selected characters so we can restore them if need be
     RememberPreviousPathForAllSelectedChars();
@@ -3379,7 +3380,7 @@ function AllOtherSoldiersInListAreSelected(): boolean {
   let iCount: INT32 = 0;
 
   for (iCounter = 0; iCounter < giNumberOfSoldiersInSectorMoving; iCounter++) {
-    if ((pSoldierMovingList[iCounter].value.bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].value.bAssignment >= Enum117.VEHICLE)) {
+    if ((pSoldierMovingList[iCounter].bAssignment >= Enum117.ON_DUTY) && (pSoldierMovingList[iCounter].bAssignment >= Enum117.VEHICLE)) {
       if (fSoldierIsMoving[iCounter] == false) {
         return false;
       }
@@ -3404,7 +3405,7 @@ function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
   // check if the squad is empty
   if (SquadIsEmpty(bSquadValue) == false) {
     // now grab the squad location
-    GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
+    ({ sX, sY, bZ } = GetLocationOfSquad(bSquadValue));
 
     // check if this non-empty squad is in this sector
     if ((sX == sSectorX) && (sY == sSectorY) && (bSectorZ == bZ)) {
@@ -3514,7 +3515,7 @@ function ResetSoldierUpdateBox(): void {
 
   // reset the soldier ptrs in the update box
   for (iCounter = 0; iCounter < SIZE_OF_UPDATE_BOX; iCounter++) {
-    pUpdateSoldierBox[iCounter] = null;
+    pUpdateSoldierBox[iCounter] = <SOLDIERTYPE><unknown>null;
   }
 
   return;
@@ -3576,18 +3577,18 @@ export function ShowUpdateBox(): void {
   fShowUpdateBox = true;
 }
 
-export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddSoldierToUpdateBox(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // going to load face
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
 
-  if (pSoldier.value.bLife == 0) {
+  if (pSoldier.bLife == 0) {
     return;
   }
 
-  if (pSoldier.value.bActive == false) {
+  if (pSoldier.bActive == 0) {
     return;
   }
 
@@ -3606,12 +3607,12 @@ export function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
       // add to box
       pUpdateSoldierBox[iCounter] = pSoldier;
 
-      if (gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex < 100) {
+      if (gMercProfiles[pSoldier.ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex);
       } else {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[pSoldier.value.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex);
       }
 
       // load the face
@@ -3775,8 +3776,8 @@ export function DisplaySoldierUpdateBox(): void {
       RenderSoldierSmallFaceForUpdatePanel(iCounter, iFaceX, iFaceY);
 
       // display the mercs name
-      sString = swprintf("%s", pUpdateSoldierBox[iCounter].value.name);
-      DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1(), FONT_LTRED, FONT_BLACK, 0, CENTER_JUSTIFIED);
+      sString = swprintf("%s", pUpdateSoldierBox[iCounter].name);
+      DrawTextToScreen(sString, (iFaceX - 5), (iFaceY + 31), 57, TINYFONT1(), FONT_LTRED, FONT_BLACK, false, CENTER_JUSTIFIED);
     }
   }
 
@@ -3786,13 +3787,13 @@ export function DisplaySoldierUpdateBox(): void {
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 19, iX - 4 + TACT_UPDATE_MERC_FACE_X_WIDTH, iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3, VO_BLT_SRCTRANSPARENCY, null);
 
     // ATE: Display string for time compression
-    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, false, CENTER_JUSTIFIED);
   } else {
     // def: 3/1/99 WAS SUBINDEX 6,
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 19, iX - 4, iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3, VO_BLT_SRCTRANSPARENCY, null);
 
     // ATE: Display string for time compression
-    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + iNumberHigh * TACT_UPDATE_MERC_FACE_X_HEIGHT + 5 + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y + 3), (iUpdatePanelWidth), 0, MAP_SCREEN_FONT(), FONT_WHITE, gzLateLocalizedString[49], FONT_BLACK, false, CENTER_JUSTIFIED);
   }
 
   iCounter = 0;
@@ -3813,9 +3814,9 @@ export function DisplaySoldierUpdateBox(): void {
 
   // Display the reason for the update box
   if (fFourWideMode) {
-    DisplayWrappedString((iX), (iY + 6), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + 6), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, false, CENTER_JUSTIFIED);
   } else {
-    DisplayWrappedString((iX), (iY + 3), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, 0, CENTER_JUSTIFIED);
+    DisplayWrappedString((iX), (iY + 3), iUpdatePanelWidth, 0, MAP_SCREEN_FONT(), FONT_WHITE, pUpdateMercStrings[iReasonForSoldierUpDate], FONT_BLACK, false, CENTER_JUSTIFIED);
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
@@ -3829,12 +3830,11 @@ export function DisplaySoldierUpdateBox(): void {
   return;
 }
 
+/* static */ let CreateDestroyUpdatePanelButtons__fCreated: boolean = false;
 function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: boolean): void {
-  /* static */ let fCreated: boolean = false;
-
-  if ((fShowUpdateBox == true) && (fCreated == false)) {
+  if ((fShowUpdateBox == true) && (CreateDestroyUpdatePanelButtons__fCreated == false)) {
     // set to created
-    fCreated = true;
+    CreateDestroyUpdatePanelButtons__fCreated = true;
 
     fShowAssignmentMenu = false;
     fShowContractMenu = false;
@@ -3865,9 +3865,9 @@ function CreateDestroyUpdatePanelButtons(iX: INT32, iY: INT32, fFourWideMode: bo
     SpecifyButtonUpTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SpecifyButtonDownTextColors(guiUpdatePanelButtons[1], FONT_MCOLOR_BLACK, FONT_BLACK);
     SetButtonFastHelpText(guiUpdatePanelButtons[1], gzLateLocalizedString[52]);
-  } else if ((fShowUpdateBox == false) && (fCreated == true)) {
+  } else if ((fShowUpdateBox == false) && (CreateDestroyUpdatePanelButtons__fCreated == true)) {
     // set to uncreated
-    fCreated = false;
+    CreateDestroyUpdatePanelButtons__fCreated = false;
 
     // get rid of the buttons and images
     RemoveButton(guiUpdatePanelButtons[0]);
@@ -3994,23 +3994,22 @@ void DisplayUpdateBox( void )
 }
 */
 
+/* static */ let CreateDestroyTheUpdateBox__fCreated: boolean = false;
 export function CreateDestroyTheUpdateBox(): void {
-  /* static */ let fCreated: boolean = false;
-
-  if ((fCreated == false) && (fShowUpdateBox == true)) {
+  if ((CreateDestroyTheUpdateBox__fCreated == false) && (fShowUpdateBox == true)) {
     if (GetNumberOfMercsInUpdateList() == 0) {
       fShowUpdateBox = false;
       return;
     }
 
-    fCreated = true;
+    CreateDestroyTheUpdateBox__fCreated = true;
 
     // InterruptTime();
     // create screen mask
     CreateScreenMaskForMoveBox();
 
     // lock it paused
-    PauseGame(true);
+    PauseGame();
     LockPauseState(5);
 
     // display the box
@@ -4018,11 +4017,11 @@ export function CreateDestroyTheUpdateBox(): void {
 
     // Do beep
     PlayJA2SampleFromFile("Sounds\\newbeep.wav", RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
-  } else if ((fCreated == true) && (fShowUpdateBox == false)) {
-    fCreated = false;
+  } else if ((CreateDestroyTheUpdateBox__fCreated == true) && (fShowUpdateBox == false)) {
+    CreateDestroyTheUpdateBox__fCreated = false;
 
     UnLockPauseState();
-    UnPauseGame(false);
+    UnPauseGame();
 
     // dirty screen
     fMapPanelDirty = true;
@@ -4056,7 +4055,7 @@ function UpdateButtonsDuringCharacterDialogueSubTitles(): void {
 
 function RenderSoldierSmallFaceForUpdatePanel(iIndex: INT32, iX: INT32, iY: INT32): void {
   let iStartY: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   // fill the background for the info bars black
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iY + 2, iX + 44, iY + 30, 0);
@@ -4071,31 +4070,31 @@ function RenderSoldierSmallFaceForUpdatePanel(iIndex: INT32, iX: INT32, iY: INT3
   pSoldier = pUpdateSoldierBox[iIndex];
 
   // is the merc alive?
-  if (!pSoldier.value.bLife)
+  if (!pSoldier.bLife)
     return;
 
   // yellow one for bleeding
-  iStartY = iY + 29 - 27 * pSoldier.value.bLifeMax / 100;
+  iStartY = iY + 29 - 27 * pSoldier.bLifeMax / 100;
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
-  iStartY += 27 * pSoldier.value.bBleeding / 100;
+  iStartY += 27 * pSoldier.bBleeding / 100;
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
 
   // red one for actual health
-  iStartY = iY + 29 - 27 * pSoldier.value.bLife / 100;
+  iStartY = iY + 29 - 27 * pSoldier.bLife / 100;
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
-  iStartY = iY + 29 - 27 * pSoldier.value.bBreathMax / 100;
+  iStartY = iY + 29 - 27 * pSoldier.bBreathMax / 100;
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 39, iStartY, iX + 40, iY + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 40, iStartY, iX + 41, iY + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
-  iStartY = iY + 29 - 27 * pSoldier.value.bMorale / 100;
+  iStartY = iY + 29 - 27 * pSoldier.bMorale / 100;
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 42, iStartY, iX + 43, iY + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 43, iStartY, iX + 44, iY + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 
@@ -4204,22 +4203,21 @@ export function UpdateHelpTextForMapScreenMercIcons(): void {
   }
 }
 
+/* static */ let CreateDestroyInsuranceMouseRegionForMercs__fCreated: boolean = false;
 export function CreateDestroyInsuranceMouseRegionForMercs(fCreate: boolean): void {
-  /* static */ let fCreated: boolean = false;
-
-  if ((fCreated == false) && (fCreate == true)) {
+  if ((CreateDestroyInsuranceMouseRegionForMercs__fCreated == false) && (fCreate == true)) {
     MSYS_DefineRegion(gContractIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     MSYS_DefineRegion(gInsuranceIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     MSYS_DefineRegion(gDepositIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    fCreated = true;
-  } else if ((fCreated == true) && (fCreate == false)) {
+    CreateDestroyInsuranceMouseRegionForMercs__fCreated = true;
+  } else if ((CreateDestroyInsuranceMouseRegionForMercs__fCreated == true) && (fCreate == false)) {
     MSYS_RemoveRegion(gContractIconRegion);
     MSYS_RemoveRegion(gInsuranceIconRegion);
     MSYS_RemoveRegion(gDepositIconRegion);
-    fCreated = false;
+    CreateDestroyInsuranceMouseRegionForMercs__fCreated = false;
   }
 }
 
@@ -4460,7 +4458,7 @@ export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: I
   // check if SAM site here
   if (IsThisSectorASAMSector(sSectorX, sSectorY, bSectorZ)) {
     // get sector id value
-    GetShortSectorString(sSectorX, sSectorY, sStringA);
+    sStringA = GetShortSectorString(sSectorX, sSectorY);
 
     sString = swprintf(pMapErrorString[22], sStringA);
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
@@ -4472,21 +4470,21 @@ export function NotifyPlayerOfInvasionByEnemyForces(sSectorX: INT16, sSectorY: I
     DoScreenIndependantMessageBox(sString, MSG_BOX_FLAG_OK, ReturnCallback);
   } else {
     // get sector id value
-    GetShortSectorString(sSectorX, sSectorY, sStringA);
+    sStringA = GetShortSectorString(sSectorX, sSectorY);
 
     sString = swprintf(pMapErrorString[24], sStringA);
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sString);
   }
 }
 
-function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
+function CanCharacterMoveInStrategic(pSoldier: SOLDIERTYPE, pbErrorNumber: Pointer<INT8>): boolean {
   let fCanMove: boolean = true;
   let sSector: INT16 = 0;
   let fProblemExists: boolean = false;
 
   // valid soldier?
   Assert(pSoldier);
-  Assert(pSoldier.value.bActive);
+  Assert(pSoldier.bActive);
 
   // NOTE: Check for the most permanent conditions first, and the most easily remedied ones last!
   // In case several cases apply, only the reason found first will be given, so make it a good one!
@@ -4498,27 +4496,27 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // a POW?
-  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+  if (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
     pbErrorNumber.value = 5;
     return false;
   }
 
   // underground? (can't move strategically, must use tactical traversal )
-  if (pSoldier.value.bSectorZ != 0) {
+  if (pSoldier.bSectorZ != 0) {
     pbErrorNumber.value = 1;
     return false;
   }
 
   // vehicle checks
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     // empty (needs a driver!)?
-    if (GetNumberInVehicle(pSoldier.value.bVehicleID) == 0) {
+    if (GetNumberInVehicle(pSoldier.bVehicleID) == 0) {
       pbErrorNumber.value = 32;
       return false;
     }
 
     // too damaged?
-    if (pSoldier.value.bLife < OKLIFE) {
+    if (pSoldier.bLife < OKLIFE) {
       pbErrorNumber.value = 47;
       return false;
     }
@@ -4531,26 +4529,26 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   } else // non-vehicle
   {
     // dead?
-    if (pSoldier.value.bLife <= 0) {
-      gsCustomErrorString = swprintf(pMapErrorString[35], pSoldier.value.name);
+    if (pSoldier.bLife <= 0) {
+      gsCustomErrorString = swprintf(pMapErrorString[35], pSoldier.name);
       pbErrorNumber.value = -99; // customized error message!
       return false;
     }
 
     // too injured?
-    if (pSoldier.value.bLife < OKLIFE) {
-      gsCustomErrorString = swprintf(pMapErrorString[33], pSoldier.value.name);
+    if (pSoldier.bLife < OKLIFE) {
+      gsCustomErrorString = swprintf(pMapErrorString[33], pSoldier.name);
       pbErrorNumber.value = -99; // customized error message!
       return false;
     }
   }
 
   // if merc is in a particular sector, not somewhere in between
-  if (pSoldier.value.fBetweenSectors == false) {
+  if (pSoldier.fBetweenSectors == false) {
     // and he's NOT flying above it all in a working helicopter
     if (!SoldierAboardAirborneHeli(pSoldier)) {
       // and that sector is loaded...
-      if ((pSoldier.value.sSectorX == gWorldSectorX) && (pSoldier.value.sSectorY == gWorldSectorY) && (pSoldier.value.bSectorZ == gbWorldSectorZ)) {
+      if ((pSoldier.sSectorX == gWorldSectorX) && (pSoldier.sSectorY == gWorldSectorY) && (pSoldier.bSectorZ == gbWorldSectorZ)) {
         // in combat?
         if (gTacticalStatus.uiFlags & INCOMBAT) {
           pbErrorNumber.value = 11;
@@ -4571,7 +4569,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
       }
 
       // not necessarily loaded - if there are any hostiles there
-      if (NumHostilesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ) > 0) {
+      if (NumHostilesInSector(pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ) > 0) {
         pbErrorNumber.value = 2;
         return false;
       }
@@ -4579,16 +4577,16 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // if in L12 museum, and the museum alarm went off, and Eldin still around?
-  if ((pSoldier.value.sSectorX == 12) && (pSoldier.value.sSectorY == MAP_ROW_L) && (pSoldier.value.bSectorZ == 0) && (!pSoldier.value.fBetweenSectors) && gMercProfiles[Enum268.ELDIN].bMercStatus != MERC_IS_DEAD) {
+  if ((pSoldier.sSectorX == 12) && (pSoldier.sSectorY == MAP_ROW_L) && (pSoldier.bSectorZ == 0) && (!pSoldier.fBetweenSectors) && gMercProfiles[Enum268.ELDIN].bMercStatus != MERC_IS_DEAD) {
     let ubRoom: UINT8;
     let cnt: UINT8;
-    let pSoldier2: Pointer<SOLDIERTYPE>;
+    let pSoldier2: SOLDIERTYPE;
 
-    if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom >= 22 && ubRoom <= 41) {
+    if (InARoom(pSoldier.sGridNo, addressof(ubRoom)) && ubRoom >= 22 && ubRoom <= 41) {
       cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
-      for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2++) {
-        if (pSoldier2.value.bActive) {
+      for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2 = MercPtrs[cnt]) {
+        if (pSoldier2.bActive) {
           if (FindObj(pSoldier2, Enum225.CHALICE) != ITEM_NOT_FOUND) {
             pbErrorNumber.value = 34;
             return false;
@@ -4599,7 +4597,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   }
 
   // on assignment, other than just in a VEHICLE?
-  if ((pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE)) {
+  if ((pSoldier.bAssignment >= Enum117.ON_DUTY) && (pSoldier.bAssignment != Enum117.VEHICLE)) {
     pbErrorNumber.value = 3;
     return false;
   }
@@ -4608,7 +4606,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // or already asleep and can't be awakened
   if (PlayerSoldierTooTiredToTravel(pSoldier)) {
     // too tired
-    gsCustomErrorString = swprintf(pMapErrorString[43], pSoldier.value.name);
+    gsCustomErrorString = swprintf(pMapErrorString[43], pSoldier.name);
     pbErrorNumber.value = -99; // customized error message!
     return false;
   }
@@ -4616,20 +4614,20 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   // a robot?
   if (AM_A_ROBOT(pSoldier)) {
     // going alone?
-    if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.value.iVehicleId))) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.value.bAssignment)))) {
+    if (((pSoldier.bAssignment == Enum117.VEHICLE) && (!IsRobotControllerInVehicle(pSoldier.iVehicleId))) || ((pSoldier.bAssignment < Enum117.ON_DUTY) && (!IsRobotControllerInSquad(pSoldier.bAssignment)))) {
       pbErrorNumber.value = 49;
       return false;
     }
   }
   // an Escorted NPC?
-  else if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
+  else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     // going alone?
-    if (((pSoldier.value.bAssignment == Enum117.VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier.value.iVehicleId) == 0)) || ((pSoldier.value.bAssignment < Enum117.ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier.value.bAssignment) == 0))) {
+    if (((pSoldier.bAssignment == Enum117.VEHICLE) && (GetNumberOfNonEPCsInVehicle(pSoldier.iVehicleId) == 0)) || ((pSoldier.bAssignment < Enum117.ON_DUTY) && (NumberOfNonEPCsInSquad(pSoldier.bAssignment) == 0))) {
       // are they male or female
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        gsCustomErrorString = swprintf("%s %s", pSoldier.value.name, pMapErrorString[6]);
+      if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        gsCustomErrorString = swprintf("%s %s", pSoldier.name, pMapErrorString[6]);
       } else {
-        gsCustomErrorString = swprintf("%s %s", pSoldier.value.name, pMapErrorString[7]);
+        gsCustomErrorString = swprintf("%s %s", pSoldier.name, pMapErrorString[7]);
       }
 
       pbErrorNumber.value = -99; // customized error message!
@@ -4641,10 +4639,10 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   fProblemExists = false;
 
   // find out if this particular character can't move for some reason
-  switch (pSoldier.value.ubProfile) {
+  switch (pSoldier.ubProfile) {
     case (Enum268.MARIA):
       // Maria can't move if she's in sector C5
-      sSector = SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+      sSector = SECTOR(pSoldier.sSectorX, pSoldier.sSectorY);
       if (sSector == Enum123.SEC_C5) {
         // can't move at this time
         fProblemExists = true;
@@ -4654,7 +4652,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
 
   if (fProblemExists) {
     // inform user this specific merc cannot be moved out of the sector
-    gsCustomErrorString = swprintf(pMapErrorString[29], pSoldier.value.name);
+    gsCustomErrorString = swprintf(pMapErrorString[29], pSoldier.name);
     pbErrorNumber.value = -99; // customized error message!
     return false;
   }
@@ -4663,8 +4661,8 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
   return true;
 }
 
-export function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumber: Pointer<INT8>): boolean {
-  let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
+export function CanEntireMovementGroupMercIsInMove(pSoldier: SOLDIERTYPE, pbErrorNumber: Pointer<INT8>): boolean {
+  let pCurrentSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
   let ubGroup: UINT8 = 0;
   let ubCurrentGroup: UINT8 = 0;
@@ -4678,14 +4676,14 @@ export function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE
   // now check anybody who would be travelling with him
 
   // does character have group?
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     // IS a vehicle - use vehicle's group
-    ubGroup = pVehicleList[pSoldier.value.bVehicleID].ubMovementGroup;
-  } else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
+    ubGroup = pVehicleList[pSoldier.bVehicleID].ubMovementGroup;
+  } else if (pSoldier.bAssignment == Enum117.VEHICLE) {
     // IN a vehicle - use vehicle's group
-    ubGroup = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
+    ubGroup = pVehicleList[pSoldier.iVehicleId].ubMovementGroup;
   } else {
-    ubGroup = pSoldier.value.ubGroupID;
+    ubGroup = pSoldier.ubGroupID;
   }
 
   // even if group is 0 (not that that should happen, should it?) still loop through for other mercs selected to move
@@ -4694,10 +4692,10 @@ export function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == true) {
       // get soldier
-      pCurrentSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+      pCurrentSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
       // skip inactive grunts
-      if (pCurrentSoldier.value.bActive == false) {
+      if (pCurrentSoldier.bActive == 0) {
         continue;
       }
 
@@ -4707,14 +4705,14 @@ export function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE
       }
 
       // does character have group?
-      if (pCurrentSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+      if (pCurrentSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
         // IS a vehicle
-        ubCurrentGroup = pVehicleList[pCurrentSoldier.value.bVehicleID].ubMovementGroup;
-      } else if (pCurrentSoldier.value.bAssignment == Enum117.VEHICLE) {
+        ubCurrentGroup = pVehicleList[pCurrentSoldier.bVehicleID].ubMovementGroup;
+      } else if (pCurrentSoldier.bAssignment == Enum117.VEHICLE) {
         // IN a vehicle
-        ubCurrentGroup = pVehicleList[pCurrentSoldier.value.iVehicleId].ubMovementGroup;
+        ubCurrentGroup = pVehicleList[pCurrentSoldier.iVehicleId].ubMovementGroup;
       } else {
-        ubCurrentGroup = pCurrentSoldier.value.ubGroupID;
+        ubCurrentGroup = pCurrentSoldier.ubGroupID;
       }
 
       // if he is in the same movement group (i.e. squad), or he is still selected to go with us (legal?)
@@ -4797,20 +4795,20 @@ export function RequestDecreaseInTimeCompression(): void {
   }
 }
 
-function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id: INT32): boolean {
+function CanSoldierMoveWithVehicleId(pSoldier: SOLDIERTYPE, iVehicle1Id: INT32): boolean {
   let iVehicle2Id: INT32 = -1;
-  let pVehicle1: Pointer<VEHICLETYPE>;
-  let pVehicle2: Pointer<VEHICLETYPE>;
+  let pVehicle1: VEHICLETYPE;
+  let pVehicle2: VEHICLETYPE;
 
   Assert(iVehicle1Id != -1);
 
   // if soldier is IN a vehicle
-  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-    iVehicle2Id = pSoldier.value.iVehicleId;
+  if (pSoldier.bAssignment == Enum117.VEHICLE) {
+    iVehicle2Id = pSoldier.iVehicleId;
   } else
       // if soldier IS a vehicle
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    iVehicle2Id = pSoldier.value.bVehicleID;
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+    iVehicle2Id = pSoldier.bVehicleID;
   }
 
   // if also (in) a vehicle
@@ -4825,11 +4823,11 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
       return false;
     }
 
-    pVehicle1 = addressof(pVehicleList[iVehicle1Id]);
-    pVehicle2 = addressof(pVehicleList[iVehicle2Id]);
+    pVehicle1 = pVehicleList[iVehicle1Id];
+    pVehicle2 = pVehicleList[iVehicle2Id];
 
     // as long as they're in the same location, amd neither is between sectors, different vehicles is also ok
-    if ((pVehicle1.value.sSectorX == pVehicle2.value.sSectorX) && (pVehicle1.value.sSectorY == pVehicle2.value.sSectorY) && (pVehicle1.value.sSectorZ == pVehicle2.value.sSectorZ) && !pVehicle1.value.fBetweenSectors && !pVehicle2.value.fBetweenSectors) {
+    if ((pVehicle1.sSectorX == pVehicle2.sSectorX) && (pVehicle1.sSectorY == pVehicle2.sSectorY) && (pVehicle1.sSectorZ == pVehicle2.sSectorZ) && !pVehicle1.fBetweenSectors && !pVehicle2.fBetweenSectors) {
       return true;
     }
   }
@@ -4840,11 +4838,12 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
 
 export function SaveLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
-  let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
+  let pCurrentItem: MERC_LEAVE_ITEM | null;
   let uiCount: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
   let fNodeExists: boolean = false;
   let uiCnt: UINT32;
+  let buffer: Buffer;
 
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     // go through nodes and save them
@@ -4852,8 +4851,10 @@ export function SaveLeaveItemList(hFile: HWFILE): boolean {
       fNodeExists = true;
 
       // Save the to specify that a node DOES exist
-      FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(BOOLEAN)) {
+      buffer = Buffer.allocUnsafe(1);
+      buffer.writeUInt8(Number(fNodeExists), 0);
+      uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+      if (uiNumBytesWritten != 1) {
         return false;
       }
 
@@ -4861,43 +4862,51 @@ export function SaveLeaveItemList(hFile: HWFILE): boolean {
       pCurrentItem = gpLeaveListHead[iCounter];
 
       // loop through all the nodes to see how many there are
-      while (pCurrentItem.value.pNext) {
-        pCurrentItem = pCurrentItem.value.pNext;
+      while (pCurrentItem.pNext) {
+        pCurrentItem = pCurrentItem.pNext;
         uiCount++;
       }
 
       // Save the number specifing how many items there are in the list
-      FileWrite(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(UINT32)) {
+      buffer = Buffer.allocUnsafe(4);
+      buffer.writeUInt32LE(uiCount, 0);
+      uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+      if (uiNumBytesWritten != 4) {
         return false;
       }
 
       pCurrentItem = gpLeaveListHead[iCounter];
 
       // loop through all the nodes to see how many there are
+      buffer = Buffer.allocUnsafe(MERC_LEAVE_ITEM_SIZE);
       for (uiCnt = 0; uiCnt < uiCount; uiCnt++) {
         // Save the items
-        FileWrite(hFile, pCurrentItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesWritten));
-        if (uiNumBytesWritten != sizeof(MERC_LEAVE_ITEM)) {
+        writeMercLeaveItem(<MERC_LEAVE_ITEM>pCurrentItem, buffer);
+        uiNumBytesWritten = FileWrite(hFile, buffer, MERC_LEAVE_ITEM_SIZE);
+        if (uiNumBytesWritten != MERC_LEAVE_ITEM_SIZE) {
           return false;
         }
 
-        pCurrentItem = pCurrentItem.value.pNext;
+        pCurrentItem = (<MERC_LEAVE_ITEM>pCurrentItem).pNext;
       }
     } else {
       fNodeExists = false;
       // Save the to specify that a node DOENST exist
-      FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(BOOLEAN)) {
+      buffer = Buffer.allocUnsafe(1);
+      buffer.writeUInt8(Number(fNodeExists), 0);
+      uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+      if (uiNumBytesWritten != 1) {
         return false;
       }
     }
   }
 
   // Save the leave list profile id's
+  buffer = Buffer.allocUnsafe(4);
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
-    FileWrite(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesWritten));
-    if (uiNumBytesWritten != sizeof(UINT32)) {
+    buffer.writeUInt32LE(guiLeaveListOwnerProfileId[iCounter], 0);
+    uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+    if (uiNumBytesWritten != 4) {
       return false;
     }
   }
@@ -4907,12 +4916,13 @@ export function SaveLeaveItemList(hFile: HWFILE): boolean {
 
 export function LoadLeaveItemList(hFile: HWFILE): boolean {
   let iCounter: INT32 = 0;
-  let pCurrentItem: Pointer<MERC_LEAVE_ITEM>;
-  let pItem: Pointer<MERC_LEAVE_ITEM>;
+  let pCurrentItem: MERC_LEAVE_ITEM | null;
+  let pItem: MERC_LEAVE_ITEM;
   let uiCount: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
   let fNodeExists: boolean = false;
   let uiSubItem: UINT32;
+  let buffer: Buffer;
 
   // Shutdown the list
   ShutDownLeaveList();
@@ -4923,76 +4933,80 @@ export function LoadLeaveItemList(hFile: HWFILE): boolean {
   // loop through all the lists
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     // load the flag that specifis that a node DOES exist
-    FileRead(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(BOOLEAN)) {
+    buffer = Buffer.allocUnsafe(1);
+    uiNumBytesRead = FileRead(hFile, buffer, 1);
+    if (uiNumBytesRead != 1) {
       return false;
     }
+
+    fNodeExists = Boolean(buffer.readUInt8(0));
 
     // if a root node is supposed to exist
     if (fNodeExists) {
       // load the number specifing how many items there are in the list
-      FileRead(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(UINT32)) {
+      buffer = Buffer.allocUnsafe(4);
+      uiNumBytesRead = FileRead(hFile, buffer, 4);
+      if (uiNumBytesRead != 4) {
         return false;
       }
 
+      uiCount = buffer.readUInt32LE(0);
+
       // allocate space
-      gpLeaveListHead[iCounter] = MemAlloc(sizeof(MERC_LEAVE_ITEM));
-      if (gpLeaveListHead[iCounter] == null) {
-        return false;
-      }
-      memset(gpLeaveListHead[iCounter], 0, sizeof(MERC_LEAVE_ITEM));
+      gpLeaveListHead[iCounter] = createMercLeaveItem();
 
       pCurrentItem = gpLeaveListHead[iCounter];
 
       for (uiSubItem = 0; uiSubItem < uiCount; uiSubItem++) {
         // allocate space
-        pItem = MemAlloc(sizeof(MERC_LEAVE_ITEM));
-        if (pItem == null) {
-          return false;
-        }
-        memset(pItem, 0, sizeof(MERC_LEAVE_ITEM));
+        pItem = createMercLeaveItem();
 
         // Load the items
-        FileRead(hFile, pItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesRead));
-        if (uiNumBytesRead != sizeof(MERC_LEAVE_ITEM)) {
+        buffer = Buffer.allocUnsafe(MERC_LEAVE_ITEM_SIZE);
+        uiNumBytesRead = FileRead(hFile, buffer, MERC_LEAVE_ITEM_SIZE);
+        if (uiNumBytesRead != MERC_LEAVE_ITEM_SIZE) {
           return false;
         }
 
-        pItem.value.pNext = null;
+        readMercLeaveItem(pItem, buffer);
+
+        pItem.pNext = null;
 
         // add the node to the list
         if (uiSubItem == 0) {
           gpLeaveListHead[iCounter] = pItem;
           pCurrentItem = gpLeaveListHead[iCounter];
         } else {
-          pCurrentItem.value.pNext = pItem;
-          pCurrentItem = pCurrentItem.value.pNext;
+          pCurrentItem.pNext = pItem;
+          pCurrentItem = pCurrentItem.pNext;
         }
       }
     }
   }
 
   // Load the leave list profile id's
+  buffer = Buffer.allocUnsafe(4);
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
-    FileRead(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(UINT32)) {
+    uiNumBytesRead = FileRead(hFile, buffer, 4);
+    if (uiNumBytesRead != 4) {
       return false;
     }
+
+    guiLeaveListOwnerProfileId[iCounter] = buffer.readUInt32LE(0);
   }
 
   return true;
 }
 
 export function TurnOnSectorLocator(ubProfileID: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   Assert(ubProfileID != NO_PROFILE);
 
   pSoldier = FindSoldierByProfileID(ubProfileID, false);
   if (pSoldier) {
-    gsSectorLocatorX = pSoldier.value.sSectorX;
-    gsSectorLocatorY = pSoldier.value.sSectorY;
+    gsSectorLocatorX = pSoldier.sSectorX;
+    gsSectorLocatorY = pSoldier.sSectorY;
   } else {
     // if it's Skyrider (when he's not on our team), and his chopper has been setup
     if ((ubProfileID == Enum268.SKYRIDER) && fSkyRiderSetUp) {
@@ -5061,7 +5075,7 @@ export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, 
   }
 
   // Convert the sector value into screen values.
-  GetScreenXYFromMapXY(sSectorX, sSectorY, addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(sSectorX, sSectorY));
   // make sure we are on the border
   if (sScreenX < MAP_GRID_X) {
     sScreenX = MAP_GRID_X;
@@ -5097,11 +5111,11 @@ export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, 
   InvalidateRegion(sScreenX, sScreenY - 1, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y);
 }
 
-export function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>, fTriggerContractMenu: boolean): boolean {
+export function CheckIfSalaryIncreasedAndSayQuote(pSoldier: SOLDIERTYPE, fTriggerContractMenu: boolean): boolean {
   Assert(pSoldier);
 
   // OK, check if their price has gone up
-  if (pSoldier.value.fContractPriceHasIncreased) {
+  if (pSoldier.fContractPriceHasIncreased) {
     if (fTriggerContractMenu) {
       // have him say so first - post the dialogue event with the contract menu event
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_ENTER_MAPSCREEN, 0, 0, 0, 0, 0);
@@ -5112,7 +5126,7 @@ export function CheckIfSalaryIncreasedAndSayQuote(pSoldier: Pointer<SOLDIERTYPE>
       HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_GONE_UP_IN_PRICE);
     }
 
-    pSoldier.value.fContractPriceHasIncreased = false;
+    pSoldier.fContractPriceHasIncreased = false;
 
     // said quote / triggered contract menu
     return true;

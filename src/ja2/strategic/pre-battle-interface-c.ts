@@ -516,7 +516,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   iPercentage = 0;
   uiStartTime = GetJA2Clock();
 
-  GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY, addressof(sStartLeft), addressof(sStartTop));
+  ({ sX: sStartLeft, sY: sStartTop } = GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY));
   sStartLeft += MAP_GRID_X / 2;
   sStartTop += MAP_GRID_Y / 2;
   sEndLeft = 131;

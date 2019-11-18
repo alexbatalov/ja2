@@ -3194,12 +3194,12 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: Pointer<string> /* 
 
   // the soldier is in this sector
   else if (pSoldier != null) {
-    GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pzText);
+    pzText = GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
   }
 
   // else the soldier is in a different map
   else {
-    GetShortSectorString(gMercProfiles[usProfileID].sSectorX, gMercProfiles[usProfileID].sSectorY, pzText);
+    pzText = GetShortSectorString(gMercProfiles[usProfileID].sSectorX, gMercProfiles[usProfileID].sSectorY);
   }
 }
 

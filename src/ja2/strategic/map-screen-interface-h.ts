@@ -184,10 +184,44 @@ export interface MERC_LEAVE_ITEM {
   pNext: MERC_LEAVE_ITEM | null /* Pointer<MERC_LEAVE_ITEM> */;
 }
 
+export function createMercLeaveItem(): MERC_LEAVE_ITEM {
+  return {
+    o: createObjectType(),
+    pNext: null,
+  };
+}
+
+export const MERC_LEAVE_ITEM_SIZE = OBJECT_TYPE_SIZE + 4;
+
+export function readMercLeaveItem(o: MERC_LEAVE_ITEM, buffer: Buffer, offset: number = 0): number {
+  offset = readObjectType(o.o, buffer, offset);
+  o.pNext = null; offset += 4;
+
+  return offset;
+}
+
+export function writeMercLeaveItem(o: MERC_LEAVE_ITEM, buffer: Buffer, offset: number = 0): number {
+  offset = writeObjectType(o.o, buffer, offset);
+  offset = buffer.writeUInt32LE(0, offset);
+  return offset;
+}
+
 // The character data structure
 export interface MapScreenCharacterSt {
   usSolID: UINT16; // soldier ID in MenPtrs
   fValid: boolean; // is the current soldier a valid soldier
+}
+
+export function createMapScreenCharacterSt(): MapScreenCharacterSt {
+  return {
+    usSolID: 0,
+    fValid: false,
+  };
+}
+
+export function resetMapScreenCharacterSt(o: MapScreenCharacterSt) {
+  o.usSolID = 0;
+  o.fValid = false;
 }
 
 /*

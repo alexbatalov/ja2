@@ -72,18 +72,18 @@ export interface OBJECTTYPE {
   ubGunShotsLeft: UINT8; // duh, amount of ammo left
   usGunAmmoItem: UINT16; // the item # for the item table
   bGunAmmoStatus: INT8; // only for "attached ammo" - grenades, mortar shells
-  ubGunUnused: UINT8[] /* [MAX_OBJECTS_PER_SLOT-6] */;
+  ubGunUnused: Uint8Array /* UINT8[MAX_OBJECTS_PER_SLOT-6] */;
   /*   } */
   /*   struct { */
-  ubShotsLeft: UINT8[] /* [MAX_OBJECTS_PER_SLOT] */;
+  ubShotsLeft: Uint8Array /* UINT8[MAX_OBJECTS_PER_SLOT] */;
   /*   } */
   /*   struct { */
-  bStatus: INT8[] /* [MAX_OBJECTS_PER_SLOT] */;
+  bStatus: Int8Array /* INT8[MAX_OBJECTS_PER_SLOT] */;
   /*   } */
   /*   struct { */
   bMoneyStatus: INT8;
   uiMoneyAmount: UINT32;
-  ubMoneyUnused: UINT8[] /* [MAX_OBJECTS_PER_SLOT-5] */;
+  ubMoneyUnused: Uint8Array /* UINT8[MAX_OBJECTS_PER_SLOT-5] */;
   /*   } */
   /*   struct { */
   // this is used by placed bombs, switches, and the action item
@@ -110,14 +110,14 @@ export interface OBJECTTYPE {
   /*     } */
   /*   } */
   /*   struct { */
-  bKeyStatus: INT8[] /* [6] */;
+  bKeyStatus: Int8Array /* INT8[6] */;
   ubKeyID: UINT8;
-  ubKeyUnused: UINT8[] /* [1] */;
+  ubKeyUnused: Uint8Array /* UINT8[1] */;
   /*   } */
   /*   struct { */
   ubOwnerProfile: UINT8;
   ubOwnerCivGroup: UINT8;
-  ubOwnershipUnused: UINT8[] /* [6] */;
+  ubOwnershipUnused: Uint8Array /* UINT8[6] */;
   /*   } */
   /* } */
   // attached objects
@@ -132,76 +132,209 @@ export interface OBJECTTYPE {
   fUsed: UINT8; // flags for whether the item is used or not
 }
 
+const OBJECT_TYPE_SHARED_BUFFER_SIZE = 12;
+
+class _OBJECTTYPE implements OBJECTTYPE {
+  public sharedBuffer: Buffer;
+
+  public usItem: UINT16;
+  public ubNumberOfObjects: UINT8;
+  public ubGunUnused: Uint8Array;
+  public ubShotsLeft: Uint8Array;
+  public bStatus: Int8Array;
+  public ubMoneyUnused: Uint8Array;
+  public bKeyStatus: Int8Array;
+  public ubKeyUnused: Uint8Array;
+  public ubOwnershipUnused: Uint8Array;
+  public usAttachItem: UINT16[];
+  public bAttachStatus: INT8[];
+  public fFlags: INT8;
+  public ubMission: UINT8;
+  public bTrap: INT8;
+  public ubImprintID: UINT8;
+  public ubWeight: UINT8;
+  public fUsed: UINT8;
+
+  constructor() {
+    this.usItem = 0;
+    this.ubNumberOfObjects = 0;
+
+    this.sharedBuffer = Buffer.alloc(OBJECT_TYPE_SHARED_BUFFER_SIZE);
+    this.ubGunUnused = new Uint8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset + 7, MAX_OBJECTS_PER_SLOT - 6);
+    this.ubShotsLeft = new Uint8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset, MAX_OBJECTS_PER_SLOT);
+    this.bStatus = new Int8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset, MAX_OBJECTS_PER_SLOT);
+    this.ubMoneyUnused = new Uint8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset + 8, MAX_OBJECTS_PER_SLOT - 5);
+    this.bKeyStatus = new Int8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset, 6);
+    this.ubKeyUnused = new Uint8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset + 7, 1);
+    this.ubOwnershipUnused = new Uint8Array(this.sharedBuffer.buffer, this.sharedBuffer.byteOffset + 2, 6);
+
+    this.usAttachItem = createArray(MAX_ATTACHMENTS, 0);
+    this.bAttachStatus = createArray(MAX_ATTACHMENTS, 0);
+    this.fFlags = 0;
+    this.ubMission = 0;
+    this.bTrap = 0;
+    this.ubImprintID = 0;
+    this.ubWeight = 0;
+    this.fUsed = 0;
+  }
+
+  get bGunStatus() {
+    return this.sharedBuffer.readInt8(0);
+  }
+
+  set bGunStatus(value) {
+    this.sharedBuffer.writeInt8(value, 0);
+  }
+
+  get ubGunAmmoType() {
+    return this.sharedBuffer.readUInt8(1);
+  }
+
+  set ubGunAmmoType(value) {
+    this.sharedBuffer.writeUInt8(value, 1);
+  }
+
+  get ubGunShotsLeft() {
+    return this.sharedBuffer.readUInt8(2);
+  }
+
+  set ubGunShotsLeft(value) {
+    this.sharedBuffer.writeUInt8(value, 2);
+  }
+
+  get usGunAmmoItem() {
+    return this.sharedBuffer.readUInt16LE(4);
+  }
+
+  set usGunAmmoItem(value) {
+    this.sharedBuffer.writeUInt16LE(value, 4);
+  }
+
+  get bGunAmmoStatus() {
+    return this.sharedBuffer.readUInt8(6);
+  }
+
+  get bMoneyStatus() {
+    return this.sharedBuffer.readInt8(0);
+  }
+
+  set bMoneyStatus(value) {
+    this.sharedBuffer.writeInt8(value, 0);
+  }
+
+  get uiMoneyAmount() {
+    return this.sharedBuffer.readUInt32LE(4);
+  }
+
+  set uiMoneyAmount(value) {
+    this.sharedBuffer.writeUInt32LE(value, 4);
+  }
+
+  get bBombStatus() {
+    return this.sharedBuffer.readInt8(0);
+  }
+
+  set bBombStatus(value) {
+    this.sharedBuffer.writeInt8(value, 0);
+  }
+
+  get bDetonatorType() {
+    return this.sharedBuffer.readInt8(1);
+  }
+
+  set bDetonatorType(value) {
+    this.sharedBuffer.writeInt8(value, 1);
+  }
+
+  get usBombItem() {
+    return this.sharedBuffer.readUInt16LE(2);
+  }
+
+  set usBombItem(value) {
+    this.sharedBuffer.writeUInt16LE(value, 2);
+  }
+
+  get bDelay() {
+    return this.sharedBuffer.readInt8(4);
+  }
+
+  set bDelay(value) {
+    this.sharedBuffer.writeInt8(value, 4);
+  }
+
+  get bFrequency() {
+    return this.sharedBuffer.readInt8(4);
+  }
+
+  set bFrequency(value) {
+    this.sharedBuffer.writeInt8(value, 4);
+  }
+
+  get ubBombOwner() {
+    return this.sharedBuffer.readUInt8(5);
+  }
+
+  set ubBombOwner(value) {
+    this.sharedBuffer.writeUInt8(value, 5);
+  }
+
+  get bActionValue() {
+    return this.sharedBuffer.readInt8(6);
+  }
+
+  set bActionValue(value) {
+    this.sharedBuffer.writeInt8(value, 6);
+  }
+
+  get ubTolerance() {
+    return this.sharedBuffer.readUInt8(7);
+  }
+
+  set ubTolerance(value) {
+    this.sharedBuffer.writeUInt8(value, 7);
+  }
+
+  get ubLocationID() {
+    return this.sharedBuffer.readUInt8(7);
+  }
+
+  set ubLocationID(value) {
+    this.sharedBuffer.writeUInt8(value, 7);
+  }
+
+  get ubKeyID() {
+    return this.sharedBuffer.readUInt8(6);
+  }
+
+  set ubKeyID(value) {
+    this.sharedBuffer.writeUInt8(value, 6);
+  }
+
+  get ubOwnerProfile() {
+    return this.sharedBuffer.readUInt8(0);
+  }
+
+  set ubOwnerProfile(value) {
+    this.sharedBuffer.writeUInt8(value, 0);
+  }
+
+  get ubOwnerCivGroup() {
+    return this.sharedBuffer.readUInt8(1);
+  }
+
+  set ubOwnerCivGroup(value) {
+    this.sharedBuffer.writeUInt8(value, 1);
+  }
+}
+
 export function createObjectType(): OBJECTTYPE {
-  return {
-    usItem: 0,
-    ubNumberOfObjects: 0,
-    bGunStatus: 0,
-    ubGunAmmoType: 0,
-    ubGunShotsLeft: 0,
-    usGunAmmoItem: 0,
-    bGunAmmoStatus: 0,
-    ubGunUnused: createArray(MAX_OBJECTS_PER_SLOT - 6, 0),
-    ubShotsLeft: createArray(MAX_OBJECTS_PER_SLOT, 0),
-    bStatus: createArray(MAX_OBJECTS_PER_SLOT, 0),
-    bMoneyStatus: 0,
-    uiMoneyAmount: 0,
-    ubMoneyUnused: createArray(MAX_OBJECTS_PER_SLOT - 5, 0),
-    bBombStatus: 0,
-    bDetonatorType: 0,
-    usBombItem: 0,
-    bDelay: 0,
-    bFrequency: 0,
-    ubBombOwner: 0,
-    bActionValue: 0,
-    ubTolerance: 0,
-    ubLocationID: 0,
-    bKeyStatus: createArray(6, 0),
-    ubKeyID: 0,
-    ubKeyUnused: createArray(1, 0),
-    ubOwnerProfile: 0,
-    ubOwnerCivGroup: 0,
-    ubOwnershipUnused: createArray(6, 0),
-    usAttachItem: createArray(MAX_ATTACHMENTS, 0),
-    bAttachStatus: createArray(MAX_ATTACHMENTS, 0),
-    fFlags: 0,
-    ubMission: 0,
-    bTrap: 0,
-    ubImprintID: 0,
-    ubWeight: 0,
-    fUsed: 0,
-  };
+  return new _OBJECTTYPE();
 }
 
 export function copyObjectType(destination: OBJECTTYPE, source: OBJECTTYPE) {
   destination.usItem = source.usItem;
   destination.ubNumberOfObjects = source.ubNumberOfObjects;
-  destination.bGunStatus = source.bGunStatus;
-  destination.ubGunAmmoType = source.ubGunAmmoType;
-  destination.ubGunShotsLeft = source.ubGunShotsLeft;
-  destination.usGunAmmoItem = source.usGunAmmoItem;
-  destination.bGunAmmoStatus = source.bGunAmmoStatus;
-  copyArray(destination.ubGunUnused, source.ubGunUnused);
-  copyArray(destination.ubShotsLeft, source.ubShotsLeft);
-  copyArray(destination.bStatus, source.bStatus);
-  destination.bMoneyStatus = source.bMoneyStatus;
-  destination.uiMoneyAmount = source.uiMoneyAmount;
-  copyArray(destination.ubMoneyUnused, source.ubMoneyUnused);
-  destination.bBombStatus = source.bBombStatus;
-  destination.bDetonatorType = source.bDetonatorType;
-  destination.usBombItem = source.usBombItem;
-  destination.bDelay = source.bDelay;
-  destination.bFrequency = source.bFrequency;
-  destination.ubBombOwner = source.ubBombOwner;
-  destination.bActionValue = source.bActionValue;
-  destination.ubTolerance = source.ubTolerance;
-  destination.ubLocationID = source.ubLocationID;
-  copyArray(destination.bKeyStatus, source.bKeyStatus);
-  destination.ubKeyID = source.ubKeyID;
-  copyArray(destination.ubKeyUnused, source.ubKeyUnused);
-  destination.ubOwnerProfile = source.ubOwnerProfile;
-  destination.ubOwnerCivGroup = source.ubOwnerCivGroup;
-  copyArray(destination.ubOwnershipUnused, source.ubOwnershipUnused);
+  (<_OBJECTTYPE>source).sharedBuffer.copy((<_OBJECTTYPE>destination).sharedBuffer);
   copyArray(destination.usAttachItem, source.usAttachItem);
   copyArray(destination.bAttachStatus, source.bAttachStatus);
   destination.fFlags = source.fFlags;
@@ -215,32 +348,7 @@ export function copyObjectType(destination: OBJECTTYPE, source: OBJECTTYPE) {
 export function resetObjectType(o: OBJECTTYPE) {
   o.usItem = 0;
   o.ubNumberOfObjects = 0;
-  o.bGunStatus = 0;
-  o.ubGunAmmoType = 0;
-  o.ubGunShotsLeft = 0;
-  o.usGunAmmoItem = 0;
-  o.bGunAmmoStatus = 0;
-  o.ubGunUnused.fill(0);
-  o.ubShotsLeft.fill(0);
-  o.bStatus.fill(0);
-  o.bMoneyStatus = 0;
-  o.uiMoneyAmount = 0;
-  o.ubMoneyUnused.fill(0);
-  o.bBombStatus = 0;
-  o.bDetonatorType = 0;
-  o.usBombItem = 0;
-  o.bDelay = 0;
-  o.bFrequency = 0;
-  o.ubBombOwner = 0;
-  o.bActionValue = 0;
-  o.ubTolerance = 0;
-  o.ubLocationID = 0;
-  o.bKeyStatus.fill(0);
-  o.ubKeyID = 0;
-  o.ubKeyUnused.fill(0);
-  o.ubOwnerProfile = 0;
-  o.ubOwnerCivGroup = 0;
-  o.ubOwnershipUnused.fill(0);
+  (<_OBJECTTYPE>o).sharedBuffer.fill(0);
   o.usAttachItem.fill(0);
   o.bAttachStatus.fill(0);
   o.fFlags = 0;
@@ -249,6 +357,52 @@ export function resetObjectType(o: OBJECTTYPE) {
   o.ubImprintID = 0;
   o.ubWeight = 0;
   o.fUsed = 0;
+}
+
+export const OBJECT_TYPE_SIZE = 36;
+
+export function readObjectType(o: OBJECTTYPE, buffer: Buffer, offset: number = 0): number {
+  o.usItem = buffer.readUInt16LE(offset); offset += 2;
+  o.ubNumberOfObjects = buffer.readUInt8(offset++);
+  offset++; // padding
+
+  buffer.copy((<_OBJECTTYPE>o).sharedBuffer, 0, offset);
+  offset += OBJECT_TYPE_SHARED_BUFFER_SIZE;
+
+  offset = readUIntArray(o.usAttachItem, buffer, offset, 2);
+  offset = readIntArray(o.bAttachStatus, buffer, offset, 1);
+
+  o.fFlags = buffer.readInt8(offset++);
+  o.ubMission = buffer.readUInt8(offset++);
+  o.bTrap = buffer.readInt8(offset++);
+  o.ubImprintID = buffer.readUInt8(offset++);
+  o.ubWeight = buffer.readUInt8(offset++);
+  o.fUsed = buffer.readUInt8(offset++);
+  offset += 2; // padding
+
+  return offset;
+}
+
+export function writeObjectType(o: OBJECTTYPE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt16LE(o.usItem, offset);
+  offset = buffer.writeUInt8(o.ubNumberOfObjects, offset);
+  buffer.fill(0, offset, offset + 1); offset++; // padding
+
+  (<_OBJECTTYPE>o).sharedBuffer.copy(buffer, offset);
+  offset += OBJECT_TYPE_SHARED_BUFFER_SIZE;
+
+  offset = writeUIntArray(o.usAttachItem, buffer, offset, 2);
+  offset = writeIntArray(o.bAttachStatus, buffer, offset, 1);
+
+  offset = buffer.writeInt8(o.fFlags, offset);
+  offset = buffer.writeUInt8(o.ubMission, offset);
+  offset = buffer.writeInt8(o.bTrap, offset);
+  offset = buffer.writeUInt8(o.ubImprintID, offset);
+  offset = buffer.writeUInt8(o.ubWeight, offset);
+  offset = buffer.writeUInt8(o.fUsed, offset);
+  buffer.fill(0, offset, offset + 2); offset += 2; // padding
+
+  return offset;
 }
 
 /*

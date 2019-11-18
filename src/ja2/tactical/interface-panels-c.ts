@@ -1496,7 +1496,7 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
         pStr = swprintf(gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
         SetRegionFastHelpText(gTEAM_BarsRegions[cnt], pStr);
       } else {
-        GetMoraleString(gpSMCurrentMerc, pMoraleStr);
+        pMoraleStr = GetMoraleString(gpSMCurrentMerc);
         pStr = swprintf(TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
         SetRegionFastHelpText(gSM_SELMERCBarsRegion, pStr);
       }
@@ -2839,7 +2839,7 @@ export function RenderTEAMPanel(fDirty: boolean): void {
               pStr = swprintf(gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
               SetRegionFastHelpText(gTEAM_BarsRegions[cnt], pStr);
             } else {
-              GetMoraleString(pSoldier, pMoraleStr);
+              pMoraleStr = GetMoraleString(pSoldier);
               pStr = swprintf(TacticalStr[Enum335.MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
               SetRegionFastHelpText(gTEAM_BarsRegions[cnt], pStr);
             }

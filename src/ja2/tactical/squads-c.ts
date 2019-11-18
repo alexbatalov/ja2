@@ -119,7 +119,7 @@ export function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValu
     if (Squad[bSquadValue][bCounter] == null) {
       // check if squad empty, if not check sector x,y,z are the same as this guys
       if (SquadIsEmpty(bSquadValue) == false) {
-        GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
+        ({ sX, sY, bZ } = GetLocationOfSquad(bSquadValue));
 
         // if not same, return false
         if ((pCharacter.value.sSectorX != sX) || (pCharacter.value.sSectorY != sY) || (pCharacter.value.bSectorZ != bZ)) {
@@ -917,20 +917,24 @@ export function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-export function GetLocationOfSquad(sX: Pointer<INT16>, sY: Pointer<INT16>, bZ: Pointer<INT8>, bSquadValue: INT8): void {
+export function GetLocationOfSquad(bSquadValue: INT8): { sX: INT16, sY: INT16, bZ: INT8 } {
+  let sX: INT16;
+  let sY: INT16;
+  let bZ: INT8;
+
   // run through list of guys, once valid merc found, get his sector x and y and z
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[bSquadValue][iCounter]) {
       // valid guy
-      sX.value = Squad[bSquadValue][iCounter].value.sSectorX;
-      sY.value = Squad[bSquadValue][iCounter].value.sSectorY;
-      bZ.value = Squad[bSquadValue][iCounter].value.bSectorZ;
+      sX = Squad[bSquadValue][iCounter].sSectorX;
+      sY = Squad[bSquadValue][iCounter].sSectorY;
+      bZ = Squad[bSquadValue][iCounter].bSectorZ;
     }
   }
 
-  return;
+  return { sX, sY, bZ };
 }
 
 export function IsThisSquadOnTheMove(bSquadValue: INT8): boolean {

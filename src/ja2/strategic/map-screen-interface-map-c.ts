@@ -730,24 +730,34 @@ export function DrawMap(): UINT32 {
   return true;
 }
 
-export function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
+export function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16): { sX: INT16, sY: INT16 } {
+  let sX: INT16;
+  let sY: INT16;
+
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   if (fZoomFlag) {
-    psX.value = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
-    psY.value = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
+    sX = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
+    sY = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
   } else {
-    psX.value = (sMapX * MAP_GRID_X) + MAP_VIEW_START_X;
-    psY.value = (sMapY * MAP_GRID_Y) + MAP_VIEW_START_Y;
+    sX = (sMapX * MAP_GRID_X) + MAP_VIEW_START_X;
+    sY = (sMapY * MAP_GRID_Y) + MAP_VIEW_START_Y;
   }
+
+  return { sX, sY };
 }
 
-function GetScreenXYFromMapXYStationary(sMapX: INT16, sMapY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
+function GetScreenXYFromMapXYStationary(sMapX: INT16, sMapY: INT16): { sX: INT16, sY: INT16 } {
+  let sX: INT16;
+  let sY: INT16;
+
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   //(MAP_VIEW_START_X+((iCount+1)*MAP_GRID_X)*2-iZoomX));
-  psX.value = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - (iZoomX) + MAP_VIEW_START_X;
-  psY.value = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - (iZoomY) + MAP_VIEW_START_Y;
+  sX = ((sMapX + sXTempOff) * MAP_GRID_X) * 2 - (iZoomX) + MAP_VIEW_START_X;
+  sY = ((sMapY + sYTempOff) * MAP_GRID_Y) * 2 - (iZoomY) + MAP_VIEW_START_Y;
+
+  return { sX, sY };
 }
 
 function ShowTownText(): void {
@@ -1057,7 +1067,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   if (fZoomFlag)
     ShadeMapElemZoomIn(sMapX, sMapY, iColor);
   else {
-    GetScreenXYFromMapXY(sMapX, sMapY, addressof(sScreenX), addressof(sScreenY));
+    ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(sMapX, sMapY));
 
     // compensate for original BIG_MAP blit being done at MAP_VIEW_START_X + 1
     sScreenX += 1;
@@ -1230,7 +1240,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   iY = sMapY;
 
   // trabslate to screen co-ords for zoomed
-  GetScreenXYFromMapXYStationary(((iX)), ((iY)), addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary(((iX)), ((iY))));
 
   // shift left by one sector
   iY = sScreenY - MAP_GRID_Y;
@@ -1882,7 +1892,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X)), addressof(sX), addressof(sY));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
@@ -2225,7 +2235,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X)), addressof(sX), addressof(sY));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
@@ -2593,7 +2603,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
       iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     } else {
-      GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X)), addressof(sX), addressof(sY));
+      ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
       iY = sY - MAP_GRID_Y;
       iX = sX - MAP_GRID_X;
     }
@@ -3236,7 +3246,7 @@ export function RestoreBackgroundForMapGrid(sMapX: INT16, sMapY: INT16): void {
     RestoreExternBackgroundRect(sX, sY, DMAP_GRID_X, DMAP_GRID_Y);
   } else {
     // get screen coords from map values
-    GetScreenXYFromMapXYStationary(sMapX, sMapY, addressof(sX), addressof(sY));
+    ({ sX, sY } = GetScreenXYFromMapXYStationary(sMapX, sMapY));
 
     // is this on the screen?
     if ((sX > MapScreenRect.iLeft) && (sX < MapScreenRect.iRight) && (sY > MapScreenRect.iTop) && (sY < MapScreenRect.iBottom)) {
@@ -3469,7 +3479,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
 
           BltVideoObject(guiSAVEBUFFER, hIconHandle, iCounter, iX, iY, VO_BLT_SRCTRANSPARENCY, null);
         } else {
-          GetScreenXYFromMapXYStationary(((iX)), ((iY)), addressof(sXPosition), addressof(sYPosition));
+          ({ sX: sXPosition, sY: sYPosition } = GetScreenXYFromMapXYStationary(((iX)), ((iY))));
 
           iY = sYPosition - MAP_GRID_Y + sOffsetY;
           iX = sXPosition - MAP_GRID_X + sOffsetX;
@@ -3905,11 +3915,11 @@ function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
   UnLockVideoSurface(guiSAVEBUFFER);
 
   if (fZoomFlag) {
-    GetScreenXYFromMapXYStationary((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
+    ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((sMapX), (sMapY)));
     // when zoomed, the x,y returned is the CENTER of the map square in question
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, sScreenX - MAP_GRID_ZOOM_X / 4, sScreenY - MAP_GRID_ZOOM_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
   } else {
-    GetScreenXYFromMapXY((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
+    ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((sMapX), (sMapY)));
     // when not zoomed, the x,y returned is the top left CORNER of the map square in question
     BltVideoObject(guiSAVEBUFFER, hHandle, 1, sScreenX + MAP_GRID_X / 4, sScreenY + MAP_GRID_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
   }
@@ -3924,12 +3934,12 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   let ubLineCnt: UINT8 = 0;
 
   if (fZoomFlag) {
-    GetScreenXYFromMapXYStationary((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
+    ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((sMapX), (sMapY)));
 
     // set coordinates for start of mine text
     sScreenY += MAP_GRID_ZOOM_Y / 2 + 1; // slightly below
   } else {
-    GetScreenXYFromMapXY((sMapX), (sMapY), addressof(sScreenX), addressof(sScreenY));
+    ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((sMapX), (sMapY)));
 
     // set coordinates for start of mine text
     sScreenX += MAP_GRID_X / 2; // centered around middle of mine square
@@ -4040,7 +4050,7 @@ function BlitTownGridMarkers(): void {
     // skip Orta/Tixa until found
     if (((fFoundOrta != false) || (pTownNamesList[iCounter] != Enum135.ORTA)) && ((pTownNamesList[iCounter] != Enum135.TIXA) || (fFoundTixa != false))) {
       if (fZoomFlag) {
-        GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), addressof(sScreenX), addressof(sScreenY));
+        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X)));
         sScreenX -= MAP_GRID_X - 1;
         sScreenY -= MAP_GRID_Y;
 
@@ -4048,7 +4058,7 @@ function BlitTownGridMarkers(): void {
         sHeight = 2 * MAP_GRID_Y;
       } else {
         // get location on screen
-        GetScreenXYFromMapXY((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), addressof(sScreenX), addressof(sScreenY));
+        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X)));
         sWidth = MAP_GRID_X - 1;
         sHeight = MAP_GRID_Y;
 
@@ -4105,7 +4115,7 @@ function BlitMineGridMarkers(): void {
 
   for (iCounter = 0; iCounter < Enum179.MAX_NUMBER_OF_MINES; iCounter++) {
     if (fZoomFlag) {
-      GetScreenXYFromMapXYStationary((gMineLocation[iCounter].sSectorX), (gMineLocation[iCounter].sSectorY), addressof(sScreenX), addressof(sScreenY));
+      ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((gMineLocation[iCounter].sSectorX), (gMineLocation[iCounter].sSectorY)));
       sScreenX -= MAP_GRID_X;
       sScreenY -= MAP_GRID_Y;
 
@@ -4113,7 +4123,7 @@ function BlitMineGridMarkers(): void {
       sHeight = 2 * MAP_GRID_Y;
     } else {
       // get location on screen
-      GetScreenXYFromMapXY((gMineLocation[iCounter].sSectorX), (gMineLocation[iCounter].sSectorY), addressof(sScreenX), addressof(sScreenY));
+      ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((gMineLocation[iCounter].sSectorX), (gMineLocation[iCounter].sSectorY)));
       sWidth = MAP_GRID_X;
       sHeight = MAP_GRID_Y;
     }
@@ -5300,7 +5310,7 @@ function ShadeUndergroundMapElem(sSectorX: INT16, sSectorY: INT16): boolean {
   let sScreenX: INT16;
   let sScreenY: INT16;
 
-  GetScreenXYFromMapXY(sSectorX, sSectorY, addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(sSectorX, sSectorY));
 
   sScreenX += 1;
 
@@ -5572,12 +5582,12 @@ function ShowSAMSitesOnStrategicMap(): void {
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
       UnLockVideoSurface(guiSAVEBUFFER);
 
-      GetScreenXYFromMapXYStationary(sSectorX, sSectorY, addressof(sX), addressof(sY));
+      ({ sX, sY } = GetScreenXYFromMapXYStationary(sSectorX, sSectorY));
       sX -= 8;
       sY -= 10;
       ubVidObjIndex = 0;
     } else {
-      GetScreenXYFromMapXY(sSectorX, sSectorY, addressof(sX), addressof(sY));
+      ({ sX, sY } = GetScreenXYFromMapXY(sSectorX, sSectorY));
       sX += 5;
       sY += 3;
       ubVidObjIndex = 1;
@@ -5655,7 +5665,7 @@ function BlitSAMGridMarkers(): void {
     }
 
     if (fZoomFlag) {
-      GetScreenXYFromMapXYStationary(gpSamSectorX[iCounter], gpSamSectorY[iCounter], addressof(sScreenX), addressof(sScreenY));
+      ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary(gpSamSectorX[iCounter], gpSamSectorY[iCounter]));
       sScreenX -= MAP_GRID_X;
       sScreenY -= MAP_GRID_Y;
 
@@ -5663,7 +5673,7 @@ function BlitSAMGridMarkers(): void {
       sHeight = 2 * MAP_GRID_Y;
     } else {
       // get location on screen
-      GetScreenXYFromMapXY(gpSamSectorX[iCounter], gpSamSectorY[iCounter], addressof(sScreenX), addressof(sScreenY));
+      ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(gpSamSectorX[iCounter], gpSamSectorY[iCounter]));
       sWidth = MAP_GRID_X;
       sHeight = MAP_GRID_Y;
     }
@@ -5833,12 +5843,12 @@ function DrawOrta(): void {
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
     UnLockVideoSurface(guiSAVEBUFFER);
 
-    GetScreenXYFromMapXYStationary(ORTA_SECTOR_X, ORTA_SECTOR_Y, addressof(sX), addressof(sY));
+    ({ sX, sY } = GetScreenXYFromMapXYStationary(ORTA_SECTOR_X, ORTA_SECTOR_Y));
     sX += -MAP_GRID_X + 2;
     sY += -MAP_GRID_Y - 6;
     ubVidObjIndex = 0;
   } else {
-    GetScreenXYFromMapXY(ORTA_SECTOR_X, ORTA_SECTOR_Y, addressof(sX), addressof(sY));
+    ({ sX, sY } = GetScreenXYFromMapXY(ORTA_SECTOR_X, ORTA_SECTOR_Y));
     sX += +2;
     sY += -3;
     ubVidObjIndex = 1;
@@ -5862,12 +5872,12 @@ function DrawTixa(): void {
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
     UnLockVideoSurface(guiSAVEBUFFER);
 
-    GetScreenXYFromMapXYStationary(TIXA_SECTOR_X, TIXA_SECTOR_Y, addressof(sX), addressof(sY));
+    ({ sX, sY } = GetScreenXYFromMapXYStationary(TIXA_SECTOR_X, TIXA_SECTOR_Y));
     sX += -MAP_GRID_X + 3;
     sY += -MAP_GRID_Y + 6;
     ubVidObjIndex = 0;
   } else {
-    GetScreenXYFromMapXY(TIXA_SECTOR_X, TIXA_SECTOR_Y, addressof(sX), addressof(sY));
+    ({ sX, sY } = GetScreenXYFromMapXY(TIXA_SECTOR_X, TIXA_SECTOR_Y));
     sY += +2;
     ubVidObjIndex = 1;
   }
@@ -5882,7 +5892,7 @@ function DrawBullseye(): void {
   let sY: INT16;
   let hHandle: HVOBJECT;
 
-  GetScreenXYFromMapXY(gsMercArriveSectorX, gsMercArriveSectorY, addressof(sX), addressof(sY));
+  ({ sX, sY } = GetScreenXYFromMapXY(gsMercArriveSectorX, gsMercArriveSectorY));
   sY -= 2;
 
   // draw the bullseye in that sector
@@ -5894,7 +5904,7 @@ function HideExistenceOfUndergroundMapSector(ubSectorX: UINT8, ubSectorY: UINT8)
   let sScreenX: INT16;
   let sScreenY: INT16;
 
-  GetScreenXYFromMapXY(ubSectorX, ubSectorY, addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY(ubSectorX, ubSectorY));
 
   // fill it with near black
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, sScreenX + 1, sScreenY, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y - 1, gusUndergroundNearBlack);
