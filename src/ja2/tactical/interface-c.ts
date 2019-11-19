@@ -410,11 +410,11 @@ export function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
 export function CreateCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
     case Enum215.SM_PANEL:
-      CreateSMPanelButtons(fInterfacePanelDirty);
+      CreateSMPanelButtons();
       break;
 
     case Enum215.TEAM_PANEL:
-      CreateTEAMPanelButtons(fInterfacePanelDirty);
+      CreateTEAMPanelButtons();
       break;
   }
 }
@@ -442,11 +442,11 @@ export function ToggleTacticalPanels(): void {
 export function RemoveCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
     case Enum215.SM_PANEL:
-      RemoveSMPanelButtons(fInterfacePanelDirty);
+      RemoveSMPanelButtons();
       break;
 
     case Enum215.TEAM_PANEL:
-      RemoveTEAMPanelButtons(fInterfacePanelDirty);
+      RemoveTEAMPanelButtons();
       break;
   }
 }

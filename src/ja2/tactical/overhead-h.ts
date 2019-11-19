@@ -99,7 +99,7 @@ export interface TacticalStatusType {
   fGoingToEnterDemo: boolean;
   fNOTDOLASTDEMO: boolean;
   fMultiplayer: boolean;
-  fCivGroupHostile: boolean[] /* [NUM_CIV_GROUPS] */;
+  fCivGroupHostile: UINT8[] /* BOOLEAN[NUM_CIV_GROUPS] */;
   ubLastBattleSectorX: UINT8;
   ubLastBattleSectorY: UINT8;
   fLastBattleWon: boolean;
@@ -201,7 +201,7 @@ export function createTacticalStatusType(): TacticalStatusType {
     fGoingToEnterDemo: false,
     fNOTDOLASTDEMO: false,
     fMultiplayer: false,
-    fCivGroupHostile: createArray(Enum246.NUM_CIV_GROUPS, false),
+    fCivGroupHostile: createArray(Enum246.NUM_CIV_GROUPS, 0),
     ubLastBattleSectorX: 0,
     ubLastBattleSectorY: 0,
     fLastBattleWon: false,

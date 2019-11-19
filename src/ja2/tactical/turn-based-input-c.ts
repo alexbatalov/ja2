@@ -2717,7 +2717,6 @@ function CreateNextCivType(): void {
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
     let iNewIndex: INT8;
 
-    memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
     MercCreateStruct.ubProfile = NO_PROFILE;
     MercCreateStruct.sSectorX = gWorldSectorX;
     MercCreateStruct.sSectorY = gWorldSectorY;
@@ -2733,7 +2732,7 @@ function CreateNextCivType(): void {
 
     MercCreateStruct.bTeam = CIV_TEAM;
     MercCreateStruct.sInsertionGridNo = usMapPos;
-    RandomizeNewSoldierStats(addressof(MercCreateStruct));
+    RandomizeNewSoldierStats(MercCreateStruct);
 
     if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
       AddSoldierToSector(iNewIndex);
@@ -2767,7 +2766,6 @@ function CreateCow(): void {
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
     let iNewIndex: INT8;
 
-    memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
     MercCreateStruct.ubProfile = NO_PROFILE;
     MercCreateStruct.sSectorX = gWorldSectorX;
     MercCreateStruct.sSectorY = gWorldSectorY;
@@ -2776,7 +2774,7 @@ function CreateCow(): void {
     // MercCreateStruct.bTeam				= SOLDIER_CREATE_AUTO_TEAM;
     MercCreateStruct.bTeam = CIV_TEAM;
     MercCreateStruct.sInsertionGridNo = usMapPos;
-    RandomizeNewSoldierStats(addressof(MercCreateStruct));
+    RandomizeNewSoldierStats(MercCreateStruct);
 
     if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
       AddSoldierToSector(iNewIndex);
@@ -2796,7 +2794,6 @@ function CreatePlayerControlledCow(): void {
   if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY)) && GetMouseMapPos(addressof(usMapPos))) {
     let iNewIndex: INT8;
 
-    memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
     MercCreateStruct.ubProfile = 12;
     MercCreateStruct.sSectorX = gWorldSectorX;
     MercCreateStruct.sSectorY = gWorldSectorY;
@@ -2806,7 +2803,7 @@ function CreatePlayerControlledCow(): void {
     MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
     MercCreateStruct.fPlayerMerc = true;
 
-    RandomizeNewSoldierStats(addressof(MercCreateStruct));
+    RandomizeNewSoldierStats(MercCreateStruct);
 
     if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
       AddSoldierToSector(iNewIndex);
@@ -2867,7 +2864,6 @@ function CreatePlayerControlledMonster(): void {
     let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
     let iNewIndex: INT8;
 
-    memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
     MercCreateStruct.ubProfile = NO_PROFILE;
     MercCreateStruct.sSectorX = gWorldSectorX;
     MercCreateStruct.sSectorY = gWorldSectorY;
@@ -2881,7 +2877,7 @@ function CreatePlayerControlledMonster(): void {
       MercCreateStruct.bBodyType = Enum194.ADULTFEMALEMONSTER;
     MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
     MercCreateStruct.sInsertionGridNo = usMapPos;
-    RandomizeNewSoldierStats(addressof(MercCreateStruct));
+    RandomizeNewSoldierStats(MercCreateStruct);
 
     if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
       AddSoldierToSector(iNewIndex);

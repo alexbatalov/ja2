@@ -86,4 +86,6 @@ export const enum Enum216 {
   PLAYER_TURN_MESSAGE,
 }
 
+export let guiPORTRAITICONS: UINT32;
+
 }

@@ -50,9 +50,19 @@ const PG_INDIVIDUAL_MERGED = 0x01;
 export interface PLAYERGROUP {
   ubProfileID: UINT8; // SAVE THIS VALUE ONLY.  The others are temp (for quick access)
   ubID: UINT8; // index in the Menptr array
-  pSoldier: Pointer<SOLDIERTYPE>; // direct access to the soldier pointer
+  pSoldier: SOLDIERTYPE; // direct access to the soldier pointer
   bFlags: UINT8; // flags referring to individual player soldiers
   next: PLAYERGROUP | null /* Pointer<PLAYERGROUP> */; // next player in list
+}
+
+export function createPlayerGroup(): PLAYERGROUP {
+  return {
+    ubProfileID: 0,
+    ubID: 0,
+    pSoldier: <SOLDIERTYPE><unknown>null,
+    bFlags: 0,
+    next: null,
+  };
 }
 
 export interface ENEMYGROUP {
@@ -66,6 +76,21 @@ export interface ENEMYGROUP {
   ubTroopsInBattle: UINT8; // number of soldiers currently in battle.
   ubElitesInBattle: UINT8; // number of elite soldiers currently in battle.
   bPadding: INT8[] /* [20] */;
+}
+
+export function createEnemyGroup(): ENEMYGROUP {
+  return {
+    ubNumTroops: 0,
+    ubNumElites: 0,
+    ubNumAdmins: 0,
+    ubLeaderProfileID: 0,
+    ubPendingReinforcements: 0,
+    ubAdminsInBattle: 0,
+    ubIntention: 0,
+    ubTroopsInBattle: 0,
+    ubElitesInBattle: 0,
+    bPadding: createArray(20, 0),
+  };
 }
 
 // NOTE:  ALL FLAGS ARE CLEARED WHENEVER A GROUP ARRIVES IN A SECTOR, OR ITS WAYPOINTS ARE
@@ -116,7 +141,7 @@ export interface GROUP {
   uiTraverseTime: UINT32; // the total traversal time from the previous sector to the next sector.
   fRestAtNight: boolean; // set when the group is permitted to rest between 2200 and 0600 when moving
   fWaypointsCancelled: boolean; // set when groups waypoints have been removed.
-  pWaypoints: Pointer<WAYPOINT>; // a list of all of the waypoints in the groups movement.
+  pWaypoints: WAYPOINT | null; // a list of all of the waypoints in the groups movement.
   ubTransportationMask: UINT8; // the mask combining all of the groups transportation methods.
   uiFlags: UINT32; // various conditions that apply to the group
   ubCreatedSectorID: UINT8; // used for debugging strategic AI for keeping track of the sector ID a group was created in.
@@ -124,10 +149,48 @@ export interface GROUP {
   bPadding: INT8[] /* [29] */; //***********************************************//
 
   /* union { */
-  pPlayerList: Pointer<PLAYERGROUP>; // list of players in the group
-  pEnemyGroup: Pointer<ENEMYGROUP>; // a structure containing general enemy info
+  pPlayerList: PLAYERGROUP | null; // list of players in the group
+  pEnemyGroup: ENEMYGROUP | null; // a structure containing general enemy info
   /* } */
   next: GROUP | null /* Pointer<GROUP> */; // next group
+}
+
+export function createGroup(): GROUP {
+  return {
+    fDebugGroup: false,
+    fPlayer: false,
+    fVehicle: false,
+    fPersistant: false,
+    ubGroupID: 0,
+    ubGroupSize: 0,
+    ubSectorX: 0,
+    ubSectorY: 0,
+    ubSectorZ: 0,
+    ubNextX: 0,
+    ubNextY: 0,
+    ubPrevX: 0,
+    ubPrevY: 0,
+    ubOriginalSector: 0,
+    fBetweenSectors: false,
+    ubMoveType: 0,
+    ubNextWaypointID: 0,
+    ubFatigueLevel: 0,
+    ubRestAtFatigueLevel: 0,
+    ubRestToFatigueLevel: 0,
+    uiArrivalTime: 0,
+    uiTraverseTime: 0,
+    fRestAtNight: false,
+    fWaypointsCancelled: false,
+    pWaypoints: null,
+    ubTransportationMask: 0,
+    uiFlags: 0,
+    ubCreatedSectorID: 0,
+    ubSectorIDOfLastReassignment: 0,
+    bPadding: createArray(29, 0),
+    pPlayerList: null,
+    pEnemyGroup: null,
+    next: null,
+  };
 }
 
 }

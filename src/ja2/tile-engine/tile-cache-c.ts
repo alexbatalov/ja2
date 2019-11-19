@@ -46,7 +46,7 @@ export function InitTileCache(): boolean {
         gpTileCacheStructInfo[cnt].Filename = sprintf("TILECACHE\\%s", FileInfo.zFileName);
 
         // Get root name
-        GetRootName(gpTileCacheStructInfo[cnt].zRootName, gpTileCacheStructInfo[cnt].Filename);
+        gpTileCacheStructInfo[cnt].zRootName = GetRootName(gpTileCacheStructInfo[cnt].Filename);
 
         // Load struc data....
         gpTileCacheStructInfo[cnt].pStructureFileRef = LoadStructureFile(gpTileCacheStructInfo[cnt].Filename);
@@ -147,7 +147,7 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
       gpTileCache[cnt].sHits = 1;
 
       // Get root name
-      GetRootName(gpTileCache[cnt].zRootName, cFilename);
+      gpTileCache[cnt].zRootName = GetRootName(cFilename);
 
       gpTileCache[cnt].sStructRefID = FindCacheStructDataIndex(gpTileCache[cnt].zRootName);
 
@@ -268,26 +268,30 @@ export function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, 
   }
 }
 
-export function GetRootName(pDestStr: Pointer<string> /* Pointer<INT8> */, pSrcStr: string /* Pointer<INT8> */): void {
+export function GetRootName(pSrcStr: string /* Pointer<INT8> */): string {
+  let pDestStr: string;
+
   // Remove path and extension
   let cTempFilename: string /* INT8[120] */;
-  let cEndOfName: string /* STR */;
+  let cEndOfName: number /* STR */;
 
   // Remove path
   cTempFilename = pSrcStr;
-  cEndOfName = strrchr(cTempFilename, '\\');
-  if (cEndOfName != null) {
+  cEndOfName = cTempFilename.lastIndexOf('\\');
+  if (cEndOfName != -1) {
     cEndOfName++;
-    pDestStr = cEndOfName;
+    pDestStr = cTempFilename.substring(cEndOfName);
   } else {
     pDestStr = cTempFilename;
   }
 
   // Now remove extension...
-  cEndOfName = strchr(pDestStr, '.');
-  if (cEndOfName != null) {
-    cEndOfName.value = '\0';
+  cEndOfName = pDestStr.indexOf('.');
+  if (cEndOfName != -1) {
+    pDestStr = pDestStr.substring(0, cEndOfName);
   }
+
+  return pDestStr;
 }
 
 }

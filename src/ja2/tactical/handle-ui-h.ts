@@ -167,4 +167,12 @@ export const enum Enum207 {
 
 export type UIKEYBOARD_HOOK = (pInputEvent: InputAtom) => boolean;
 
+export let gfUISelectiveTargetFound: boolean;
+export let gusUISelectiveTargetID: UINT16;
+export let guiUISelectiveTargetFlags: UINT32;
+
+export let gfUIFullTargetFound: boolean;
+export let gusUIFullTargetID: UINT16;
+export let guiUIFullTargetFlags: UINT32;
+
 }

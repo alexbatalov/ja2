@@ -128,6 +128,29 @@ export function createRottingCorpseDefinition(): ROTTING_CORPSE_DEFINITION {
   };
 }
 
+export function copyRottingCorpseDefinition(destination: ROTTING_CORPSE_DEFINITION, source: ROTTING_CORPSE_DEFINITION) {
+  destination.ubType = source.ubType;
+  destination.ubBodyType = source.ubBodyType;
+  destination.sGridNo = source.sGridNo;
+  destination.dXPos = source.dXPos;
+  destination.dYPos = source.dYPos;
+  destination.sHeightAdjustment = source.sHeightAdjustment;
+  destination.HeadPal = source.HeadPal;
+  destination.PantsPal = source.PantsPal;
+  destination.VestPal = source.VestPal;
+  destination.SkinPal = source.SkinPal;
+  destination.bDirection = source.bDirection;
+  destination.uiTimeOfDeath = source.uiTimeOfDeath;
+  destination.usFlags = source.usFlags;
+  destination.bLevel = source.bLevel;
+  destination.bVisible = source.bVisible;
+  destination.bNumServicingCrows = source.bNumServicingCrows;
+  destination.ubProfile = source.ubProfile;
+  destination.fHeadTaken = source.fHeadTaken;
+  destination.ubAIWarningValue = source.ubAIWarningValue;
+  copyArray(destination.ubFiller, source.ubFiller);
+}
+
 export interface ROTTING_CORPSE {
   def: ROTTING_CORPSE_DEFINITION;
   fActivated: boolean;

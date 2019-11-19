@@ -57,10 +57,30 @@ export interface EV_S_CHANGESTATE {
   fForce: boolean;
 }
 
+export function createEvSChangeState(): EV_S_CHANGESTATE {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    usNewState: 0,
+    sXPos: 0,
+    sYPos: 0,
+    usStartingAniCode: 0,
+    fForce: false,
+  };
+}
+
 export interface EV_S_CHANGEDEST {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usNewDestination: UINT16;
+}
+
+export function createEvSChangeDest(): EV_S_CHANGEDEST {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    usNewDestination: 0,
+  };
 }
 
 export interface EV_S_SETPOSITION {
@@ -70,11 +90,29 @@ export interface EV_S_SETPOSITION {
   dNewYPos: FLOAT;
 }
 
+export function createEvSSetPosition(): EV_S_SETPOSITION {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    dNewXPos: 0,
+    dNewYPos: 0,
+  };
+}
+
 export interface EV_S_GETNEWPATH {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   sDestGridNo: INT16;
   usMovementAnim: UINT16;
+}
+
+export function createEvSGetNewPath(): EV_S_GETNEWPATH {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    sDestGridNo: 0,
+    usMovementAnim: 0,
+  };
 }
 
 export interface EV_S_BEGINTURN {
@@ -96,10 +134,26 @@ export interface EV_S_SETDIRECTION {
   usNewDirection: UINT16;
 }
 
+export function createEVSSetDirection(): EV_S_SETDIRECTION {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    usNewDirection: 0,
+  };
+}
+
 export interface EV_S_SETDESIREDDIRECTION {
   usSoldierID: UINT16;
   uiUniqueId: UINT32;
   usDesiredDirection: UINT16;
+}
+
+export function createEvSSetDesiredDirection(): EV_S_SETDESIREDDIRECTION {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    usDesiredDirection: 0,
+  };
 }
 
 export interface EV_S_BEGINFIREWEAPON {
@@ -108,6 +162,16 @@ export interface EV_S_BEGINFIREWEAPON {
   sTargetGridNo: INT16;
   bTargetLevel: INT8;
   bTargetCubeLevel: INT8;
+}
+
+export function createEvSBeginFireWeapon(): EV_S_BEGINFIREWEAPON {
+  return {
+    usSoldierID: 0,
+    uiUniqueId: 0,
+    sTargetGridNo: 0,
+    bTargetLevel: 0,
+    bTargetCubeLevel: 0,
+  };
 }
 
 export interface EV_S_FIREWEAPON {

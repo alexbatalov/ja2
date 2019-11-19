@@ -78,8 +78,8 @@ export const SOLDIER_LOOK_NEXT_TURNSOLDIER = 0x80000000;
 #define	SOLDIER_TRAIT_MARTIALARTS		0x0800
 #define	SOLDIER_TRAIT_KNIFING				0x1000
 */
-export const HAS_SKILL_TRAIT = (s: Pointer<SOLDIERTYPE>, t: number) => (s.value.ubSkillTrait1 == t || s.value.ubSkillTrait2 == t);
-export const NUM_SKILL_TRAITS = (s: Pointer<SOLDIERTYPE>, t: number) => ((s.value.ubSkillTrait1 == t) ? ((s.value.ubSkillTrait2 == t) ? 2 : 1) : ((s.value.ubSkillTrait2 == t) ? 1 : 0));
+export const HAS_SKILL_TRAIT = (s: SOLDIERTYPE, t: number) => (s.ubSkillTrait1 == t || s.ubSkillTrait2 == t);
+export const NUM_SKILL_TRAITS = (s: SOLDIERTYPE, t: number) => ((s.ubSkillTrait1 == t) ? ((s.ubSkillTrait2 == t) ? 2 : 1) : ((s.ubSkillTrait2 == t) ? 1 : 0));
 
 export const SOLDIER_QUOTE_SAID_IN_SHIT = 0x0001;
 export const SOLDIER_QUOTE_SAID_LOW_BREATH = 0x0002;
@@ -124,7 +124,7 @@ const BLOODTIME = 5;
 const FOOTPRINTTIME = 2;
 export const MIN_BLEEDING_THRESHOLD = 12; // you're OK while <4 Yellow life bars
 
-const BANDAGED = (s: Pointer<SOLDIERTYPE>) => (s.value.bLifeMax - s.value.bLife - s.value.bBleeding);
+const BANDAGED = (s: SOLDIERTYPE) => (s.bLifeMax - s.bLife - s.bBleeding);
 
 // amount of time a stats is to be displayed differently, due to change
 export const CHANGE_STAT_RECENTLY_DURATION = 60000;
@@ -259,7 +259,7 @@ export const SOLDIER_CLASS_MILITIA = (bSoldierClass: number) => ((bSoldierClass 
 // This macro should be used whenever we want to see if someone is neutral
 // IF WE ARE CONSIDERING ATTACKING THEM.  Creatures & bloodcats will attack neutrals
 // but they can't attack empty vehicles!!
-export const CONSIDERED_NEUTRAL = (me: Pointer<SOLDIERTYPE>, them: Pointer<SOLDIERTYPE>) => ((them.value.bNeutral) && (me.value.bTeam != CREATURE_TEAM || (them.value.uiStatusFlags & SOLDIER_VEHICLE)));
+export const CONSIDERED_NEUTRAL = (me: SOLDIERTYPE, them: SOLDIERTYPE) => ((them.bNeutral) && (me.bTeam != CREATURE_TEAM || (them.uiStatusFlags & SOLDIER_VEHICLE)));
 
 export interface KEY_ON_RING {
   ubKeyID: UINT8;
@@ -310,13 +310,13 @@ export interface SOLDIERTYPE {
 
   bOldLife: INT8; // life at end of last turn, recorded for monster AI
   // attributes
-  bInSector: UINT8;
+  bInSector: boolean /* UINT8 */;
   bFlashPortraitFrame: INT8;
   sFractLife: INT16; // fraction of life pts (in hundreths)
   bBleeding: INT8; // blood loss control variable
   bBreath: INT8; // current breath value
   bBreathMax: INT8; // max breath, affected by fatigue/sleep
-  bStealthMode: INT8;
+  bStealthMode: boolean /* INT8 */;
 
   sBreathRed: INT16; // current breath value
   fDelayedMovement: boolean;
@@ -338,7 +338,7 @@ export interface SOLDIERTYPE {
 
   bVisible: INT8; // to render or not to render...
 
-  bActive: INT8;
+  bActive: boolean /* INT8 */;
 
   bTeam: INT8; // Team identifier
 
@@ -365,7 +365,7 @@ export interface SOLDIERTYPE {
   bOldOverTerrainType: INT8;
 
   bCollapsed: INT8; // collapsed due to being out of APs
-  bBreathCollapsed: INT8; // collapsed due to being out of APs
+  bBreathCollapsed: boolean /* INT8 */; // collapsed due to being out of APs
   ubDesiredHeight: UINT8;
   usPendingAnimation: UINT16;
   ubPendingStanceChange: UINT8;
@@ -448,7 +448,7 @@ export interface SOLDIERTYPE {
   fFlashLocator: boolean;
   sLocatorFrame: INT16;
   fShowLocator: boolean;
-  fFlashPortrait: boolean;
+  fFlashPortrait: UINT8 /* boolean */;
   bMechanical: INT8;
   bLifeMax: INT8; // maximum life for this merc
 
@@ -478,7 +478,7 @@ export interface SOLDIERTYPE {
   bMarksmanship: INT8;
   bExplosive: INT8;
   pThrowParams: Pointer<THROW_PARAMS>;
-  fTurningFromPronePosition: boolean;
+  fTurningFromPronePosition: UINT8 /* boolean */;
   bReverse: INT8;
   pLevelNode: Pointer<LEVELNODE>;
   pExternShadowLevelNode: Pointer<LEVELNODE>;
@@ -502,8 +502,8 @@ export interface SOLDIERTYPE {
   sBlackList: INT16;
   bAimTime: INT8;
   bShownAimTime: INT8;
-  bPathStored: INT8; // good for AI to reduct redundancy
-  bHasKeys: INT8; // allows AI controlled dudes to open locked doors
+  bPathStored: boolean /* INT8 */; // good for AI to reduct redundancy
+  bHasKeys: boolean /* INT8 */; // allows AI controlled dudes to open locked doors
 
   // UNBLIT BACKGROUND
   pBackGround: Pointer<UINT16>;
@@ -545,7 +545,7 @@ export interface SOLDIERTYPE {
   bActionInProgress: INT8;
   bAlertStatus: INT8;
   bOppCnt: INT8;
-  bNeutral: INT8;
+  bNeutral: boolean /* INT8 */;
   bNewSituation: INT8;
   bNextTargetLevel: INT8;
   bOrders: INT8;
@@ -579,7 +579,7 @@ export interface SOLDIERTYPE {
   bInterruptDuelPts: INT8;
   bPassedLastInterrupt: INT8;
   bIntStartAPs: INT8;
-  bMoved: INT8;
+  bMoved: boolean /* INT8 */;
   bHunting: INT8;
   ubLastCall: UINT8;
   ubCaller: UINT8;
@@ -890,13 +890,13 @@ export function createSoldierType(): SOLDIERTYPE {
     pTempObject: null,
     pKeyRing: null,
     bOldLife: 0,
-    bInSector: 0,
+    bInSector: false,
     bFlashPortraitFrame: 0,
     sFractLife: 0,
     bBleeding: 0,
     bBreath: 0,
     bBreathMax: 0,
-    bStealthMode: 0,
+    bStealthMode: false,
     sBreathRed: 0,
     fDelayedMovement: false,
     fReloading: false,
@@ -912,7 +912,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sWeightCarriedAtTurnStart: 0,
     name: "",
     bVisible: 0,
-    bActive: 0,
+    bActive: false,
     bTeam: 0,
     ubGroupID: 0,
     fBetweenSectors: false,
@@ -931,7 +931,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bOverTerrainType: 0,
     bOldOverTerrainType: 0,
     bCollapsed: 0,
-    bBreathCollapsed: 0,
+    bBreathCollapsed: false,
     ubDesiredHeight: 0,
     usPendingAnimation: 0,
     ubPendingStanceChange: 0,
@@ -997,7 +997,7 @@ export function createSoldierType(): SOLDIERTYPE {
     fFlashLocator: false,
     sLocatorFrame: 0,
     fShowLocator: false,
-    fFlashPortrait: false,
+    fFlashPortrait: 0,
     bMechanical: 0,
     bLifeMax: 0,
     iFaceIndex: 0,
@@ -1021,7 +1021,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bMarksmanship: 0,
     bExplosive: 0,
     pThrowParams: null,
-    fTurningFromPronePosition: false,
+    fTurningFromPronePosition: 0,
     bReverse: 0,
     pLevelNode: null,
     pExternShadowLevelNode: null,
@@ -1041,8 +1041,8 @@ export function createSoldierType(): SOLDIERTYPE {
     sBlackList: 0,
     bAimTime: 0,
     bShownAimTime: 0,
-    bPathStored: 0,
-    bHasKeys: 0,
+    bPathStored: false,
+    bHasKeys: false,
     pBackGround: null,
     pZBackground: null,
     usUnblitX: 0,
@@ -1105,7 +1105,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bInterruptDuelPts: 0,
     bPassedLastInterrupt: 0,
     bIntStartAPs: 0,
-    bMoved: 0,
+    bMoved: false,
     bHunting: 0,
     ubLastCall: 0,
     ubCaller: 0,

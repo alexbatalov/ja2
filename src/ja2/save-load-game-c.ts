@@ -2588,7 +2588,7 @@ function LoadTacticalStatusFromSavedGame(hFile: HWFILE): boolean {
   return true;
 }
 
-export function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): boolean {
+export function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: SOLDIERTYPE, pSourceInfo: SOLDIERTYPE): boolean {
   // Copy the old soldier information over to the new structure
   memcpy(pDestSourceInfo, pSourceInfo, sizeof(SOLDIERTYPE));
 

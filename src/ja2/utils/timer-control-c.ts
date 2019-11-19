@@ -46,7 +46,7 @@ export let giTimerAirRaidUpdate: INT32 = 0;
 let giTimerCustomizable: INT32 = 0;
 export let giTimerTeamTurnUpdate: INT32 = 0;
 
-export let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK = null;
+export let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK | null = null;
 
 // Clock Callback event ID
 let gTimerID: MMRESULT;

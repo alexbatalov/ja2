@@ -134,7 +134,7 @@ export function SetRaisedObjectFlag(cFilename: string /* Pointer<char> */, pTile
   // Loop through array of RAISED objecttype imagery and
   // set global value...
   if ((pTileSurf.value.fType >= Enum313.DEBRISWOOD && pTileSurf.value.fType <= Enum313.DEBRISWEEDS) || pTileSurf.value.fType == Enum313.DEBRIS2MISC || pTileSurf.value.fType == Enum313.ANOTHERDEBRIS) {
-    GetRootName(cRootFile, cFilename);
+    cRootFile = GetRootName(cFilename);
     while (ubRaisedObjectFiles[cnt][0] != '1') {
       if (stricmp(ubRaisedObjectFiles[cnt], cRootFile) == 0) {
         pTileSurf.value.bRaisedObjectType = true;

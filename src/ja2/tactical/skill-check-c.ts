@@ -1,15 +1,15 @@
 namespace ja2 {
 
-export function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveStrength(pSoldier: SOLDIERTYPE): INT8 {
   let bBandaged: INT8;
   let iEffStrength: INT32;
 
   // Effective strength is:
   // 1/2 full strength
   // plus 1/2 strength scaled according to how hurt we are
-  bBandaged = pSoldier.value.bLifeMax - pSoldier.value.bLife - pSoldier.value.bBleeding;
-  iEffStrength = pSoldier.value.bStrength / 2;
-  iEffStrength += (pSoldier.value.bStrength / 2) * (pSoldier.value.bLife + bBandaged / 2) / (pSoldier.value.bLifeMax);
+  bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
+  iEffStrength = pSoldier.bStrength / 2;
+  iEffStrength += (pSoldier.bStrength / 2) * (pSoldier.bLife + bBandaged / 2) / (pSoldier.bLifeMax);
 
   // ATE: Make sure at least 2...
   iEffStrength = Math.max(iEffStrength, 2);
@@ -17,65 +17,65 @@ export function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffStrength;
 }
 
-export function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveWisdom(pSoldier: SOLDIERTYPE): INT8 {
   let iEffWisdom: INT32;
 
-  iEffWisdom = pSoldier.value.bWisdom;
+  iEffWisdom = pSoldier.bWisdom;
 
   iEffWisdom = EffectStatForBeingDrunk(pSoldier, iEffWisdom);
 
   return iEffWisdom;
 }
 
-export function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveAgility(pSoldier: SOLDIERTYPE): INT8 {
   let iEffAgility: INT32;
 
-  iEffAgility = pSoldier.value.bAgility;
+  iEffAgility = pSoldier.bAgility;
 
   iEffAgility = EffectStatForBeingDrunk(pSoldier, iEffAgility);
 
-  if (pSoldier.value.sWeightCarriedAtTurnStart > 100) {
-    iEffAgility = (iEffAgility * 100) / pSoldier.value.sWeightCarriedAtTurnStart;
+  if (pSoldier.sWeightCarriedAtTurnStart > 100) {
+    iEffAgility = (iEffAgility * 100) / pSoldier.sWeightCarriedAtTurnStart;
   }
 
   return iEffAgility;
 }
 
-export function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMechanical(pSoldier: SOLDIERTYPE): INT8 {
   let iEffMechanical: INT32;
 
-  iEffMechanical = pSoldier.value.bMechanical;
+  iEffMechanical = pSoldier.bMechanical;
 
   iEffMechanical = EffectStatForBeingDrunk(pSoldier, iEffMechanical);
 
   return iEffMechanical;
 }
 
-export function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveExplosive(pSoldier: SOLDIERTYPE): INT8 {
   let iEffExplosive: INT32;
 
-  iEffExplosive = pSoldier.value.bExplosive;
+  iEffExplosive = pSoldier.bExplosive;
 
   iEffExplosive = EffectStatForBeingDrunk(pSoldier, iEffExplosive);
 
   return iEffExplosive;
 }
 
-export function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMedical(pSoldier: SOLDIERTYPE): INT8 {
   let iEffMedical: INT32;
 
-  iEffMedical = pSoldier.value.bMedical;
+  iEffMedical = pSoldier.bMedical;
 
   iEffMedical = EffectStatForBeingDrunk(pSoldier, iEffMedical);
 
   return iEffMedical;
 }
 
-export function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveLeadership(pSoldier: SOLDIERTYPE): INT8 {
   let iEffLeadership: INT32;
   let bDrunkLevel: INT8;
 
-  iEffLeadership = pSoldier.value.bLeadership;
+  iEffLeadership = pSoldier.bLeadership;
 
   // if we are drunk, effect leader ship in a +ve way...
   bDrunkLevel = GetDrunkLevel(pSoldier);
@@ -87,7 +87,7 @@ export function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return iEffLeadership;
 }
 
-export function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveExpLevel(pSoldier: SOLDIERTYPE): INT8 {
   let iEffExpLevel: INT32;
   let bDrunkLevel: INT8;
   let iExpModifier: INT32[] /* [] */ = [
@@ -98,14 +98,14 @@ export function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     0, // Hung
   ];
 
-  iEffExpLevel = pSoldier.value.bExpLevel;
+  iEffExpLevel = pSoldier.bExpLevel;
 
   bDrunkLevel = GetDrunkLevel(pSoldier);
 
   iEffExpLevel = iEffExpLevel + iExpModifier[bDrunkLevel];
 
-  if (pSoldier.value.ubProfile != NO_PROFILE) {
-    if ((gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.CLAUSTROPHOBIC) && pSoldier.value.bActive && pSoldier.value.bInSector && gbWorldSectorZ > 0) {
+  if (pSoldier.ubProfile != NO_PROFILE) {
+    if ((gMercProfiles[pSoldier.ubProfile].bPersonalityTrait == Enum270.CLAUSTROPHOBIC) && pSoldier.bActive && pSoldier.bInSector && gbWorldSectorZ > 0) {
       // claustrophobic!
       iEffExpLevel--;
     }
@@ -119,40 +119,40 @@ export function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-export function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveMarksmanship(pSoldier: SOLDIERTYPE): INT8 {
   let iEffMarksmanship: INT32;
 
-  iEffMarksmanship = pSoldier.value.bMarksmanship;
+  iEffMarksmanship = pSoldier.bMarksmanship;
 
   iEffMarksmanship = EffectStatForBeingDrunk(pSoldier, iEffMarksmanship);
 
   return iEffMarksmanship;
 }
 
-export function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function EffectiveDexterity(pSoldier: SOLDIERTYPE): INT8 {
   let iEffDexterity: INT32;
 
-  iEffDexterity = pSoldier.value.bDexterity;
+  iEffDexterity = pSoldier.bDexterity;
 
   iEffDexterity = EffectStatForBeingDrunk(pSoldier, iEffDexterity);
 
   return iEffDexterity;
 }
 
-function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+function GetPenaltyForFatigue(pSoldier: SOLDIERTYPE): UINT8 {
   let ubPercentPenalty: UINT8;
 
-  if (pSoldier.value.bBreathMax >= 85)
+  if (pSoldier.bBreathMax >= 85)
     ubPercentPenalty = 0;
-  else if (pSoldier.value.bBreathMax >= 70)
+  else if (pSoldier.bBreathMax >= 70)
     ubPercentPenalty = 10;
-  else if (pSoldier.value.bBreathMax >= 50)
+  else if (pSoldier.bBreathMax >= 50)
     ubPercentPenalty = 25;
-  else if (pSoldier.value.bBreathMax >= 30)
+  else if (pSoldier.bBreathMax >= 30)
     ubPercentPenalty = 50;
-  else if (pSoldier.value.bBreathMax >= 15)
+  else if (pSoldier.bBreathMax >= 15)
     ubPercentPenalty = 75;
-  else if (pSoldier.value.bBreathMax > 0)
+  else if (pSoldier.bBreathMax > 0)
     ubPercentPenalty = 90;
   else
     ubPercentPenalty = 100;
@@ -160,16 +160,17 @@ function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   return ubPercentPenalty;
 }
 
-export function ReducePointsForFatigue(pSoldier: Pointer<SOLDIERTYPE>, pusPoints: Pointer<UINT16>): void {
-  pusPoints.value -= (pusPoints.value * GetPenaltyForFatigue(pSoldier)) / 100;
+export function ReducePointsForFatigue(pSoldier: SOLDIERTYPE, usPoints: UINT16): UINT16 {
+  usPoints -= (usPoints * GetPenaltyForFatigue(pSoldier)) / 100;
+  return usPoints;
 }
 
-export function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: INT32): INT32 {
+export function GetSkillCheckPenaltyForFatigue(pSoldier: SOLDIERTYPE, iSkill: INT32): INT32 {
   // use only half the full effect of fatigue for skill checks
   return ((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2;
 }
 
-export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: INT8): INT32 {
+export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT8): INT32 {
   let iSkill: INT32;
   let iChance: INT32;
   let iReportChance: INT32;
@@ -177,7 +178,7 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
   let iMadeItBy: INT32;
   let bSlot: INT8;
   let iLoop: INT32;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
   let bBuddyIndex: INT8;
   let fForceDamnSound: boolean = false;
 
@@ -213,7 +214,7 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
         // this should never happen, but might as well check...
         iSkill = 0;
       }
-      iSkill = iSkill * pSoldier.value.inv[bSlot].bStatus[0] / 100;
+      iSkill = iSkill * pSoldier.inv[bSlot].bStatus[0] / 100;
       break;
     case Enum255.ATTACHING_DETONATOR_CHECK:
     case Enum255.ATTACHING_REMOTE_DETONATOR_CHECK:
@@ -356,12 +357,12 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
   iRoll = PreRandom(100);
   iMadeItBy = iChance - iRoll;
   if (iMadeItBy < 0) {
-    if ((pSoldier.value.bLastSkillCheck == bReason) && (pSoldier.value.sGridNo == pSoldier.value.sSkillCheckGridNo)) {
-      pSoldier.value.ubSkillCheckAttempts++;
-      if (pSoldier.value.ubSkillCheckAttempts > 2) {
+    if ((pSoldier.bLastSkillCheck == bReason) && (pSoldier.sGridNo == pSoldier.sSkillCheckGridNo)) {
+      pSoldier.ubSkillCheckAttempts++;
+      if (pSoldier.ubSkillCheckAttempts > 2) {
         if (iChance == 0) {
           // do we realize that we just can't do this?
-          if ((100 - (pSoldier.value.ubSkillCheckAttempts - 2) * 20) < EffectiveWisdom(pSoldier)) {
+          if ((100 - (pSoldier.ubSkillCheckAttempts - 2) * 20) < EffectiveWisdom(pSoldier)) {
             // say "I can't do this" quote
             TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_DEFINITE_CANT_DO);
             return iMadeItBy;
@@ -369,9 +370,9 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
         }
       }
     } else {
-      pSoldier.value.bLastSkillCheck = bReason;
-      pSoldier.value.ubSkillCheckAttempts = 1;
-      pSoldier.value.sSkillCheckGridNo = pSoldier.value.sGridNo;
+      pSoldier.bLastSkillCheck = bReason;
+      pSoldier.ubSkillCheckAttempts = 1;
+      pSoldier.sSkillCheckGridNo = pSoldier.sGridNo;
     }
 
     if (fForceDamnSound || Random(100) < 40) {
@@ -393,10 +394,10 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
     if (iRoll < iChance) {
       // If a buddy of this merc is standing around nearby, they'll make a positive comment.
       iLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[iLoop]; iLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; iLoop++, pTeamSoldier++) {
+      for (pTeamSoldier = MercPtrs[iLoop]; iLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; iLoop++, pTeamSoldier = MercPtrs[iLoop]) {
         if (OK_INSECTOR_MERC(pTeamSoldier)) {
-          bBuddyIndex = WhichBuddy(pTeamSoldier.value.ubProfile, pSoldier.value.ubProfile);
-          if (bBuddyIndex >= 0 && SpacesAway(pSoldier.value.sGridNo, pTeamSoldier.value.sGridNo) < 15) {
+          bBuddyIndex = WhichBuddy(pTeamSoldier.ubProfile, pSoldier.ubProfile);
+          if (bBuddyIndex >= 0 && SpacesAway(pSoldier.sGridNo, pTeamSoldier.sGridNo) < 15) {
             switch (bBuddyIndex) {
               case 0:
                 // buddy #1 did something good!
@@ -421,7 +422,7 @@ export function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanc
   return iMadeItBy;
 }
 
-export function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: boolean): INT8 {
+export function CalcTrapDetectLevel(pSoldier: SOLDIERTYPE, fExamining: boolean): INT8 {
   // return the level of trap which the guy is able to detect
 
   let bDetectLevel: INT8;
@@ -441,7 +442,7 @@ export function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: 
   }
 
   // if substantially bleeding, or still in serious shock, randomly lower value
-  if ((pSoldier.value.bBleeding > 20) || (pSoldier.value.bShock > 1)) {
+  if ((pSoldier.bBleeding > 20) || (pSoldier.bShock > 1)) {
     bDetectLevel -= PreRandom(3);
   }
 

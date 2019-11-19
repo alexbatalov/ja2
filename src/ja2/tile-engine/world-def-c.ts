@@ -391,7 +391,7 @@ export function BuildTileShadeTables(): void {
       {
         fForceRebuildForSlot = false;
 
-        GetRootName(cRootFile, TileSurfaceFilenames[uiLoop]);
+        cRootFile = GetRootName(TileSurfaceFilenames[uiLoop]);
 
         if (strcmp(cRootFile, "grass2") == 0) {
           fForceRebuildForSlot = true;

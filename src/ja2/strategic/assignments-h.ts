@@ -4,8 +4,8 @@ namespace ja2 {
 
 // this distinguishes whether we're only looking for patients healable THIS HOUR (those that have been on their assignment
 // long enough), or those that will be healable EVER (regardless of whether they're getting healed during this hour)
-export const HEALABLE_EVER = 0;
-export const HEALABLE_THIS_HOUR = 1;
+export const HEALABLE_EVER = false;
+export const HEALABLE_THIS_HOUR = true;
 
 // merc collapses from fatigue if max breath drops to this.  Can't go any lower!
 export const BREATHMAX_ABSOLUTE_MINIMUM = 10;
@@ -74,8 +74,15 @@ export const enum Enum118 {
 }
 
 export interface TOWN_TRAINER_TYPE {
-  pSoldier: Pointer<SOLDIERTYPE>;
+  pSoldier: SOLDIERTYPE;
   sTrainingPts: INT16;
+}
+
+export function createTownTrainerType(): TOWN_TRAINER_TYPE {
+  return {
+    pSoldier: <SOLDIERTYPE><unknown>undefined,
+    sTrainingPts: 0,
+  };
 }
 
 // can character do this assignment?

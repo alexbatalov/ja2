@@ -323,7 +323,7 @@ export let guiMapBorderEtaPopUp: UINT32;
 export let guiMapBorderHeliSectors: UINT32;
 
 // list of map sectors that player isn't allowed to even highlight
-let sBadSectorsList: boolean[][] /* [WORLD_MAP_X][WORLD_MAP_X] */;
+let sBadSectorsList: boolean[][] /* [WORLD_MAP_X][WORLD_MAP_X] */ = createArrayFrom(WORLD_MAP_X, () => createArray(WORLD_MAP_X, false));
 
 let sBaseSectorList: INT16[] /* [] */ = [
   // NOTE: These co-ordinates must match the top left corner of the 3x3 town tiles cutouts in Interface/MilitiaMaps.sti!
@@ -549,7 +549,7 @@ function HandleShowingOfEnemiesWithMilitiaOn(): void {
   return;
 }
 
-export function DrawMap(): UINT32 {
+export function DrawMap(): boolean {
   let hSrcVSurface: HVSURFACE;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -1453,7 +1453,7 @@ export function ShutDownPalettesForMap(): void {
   return;
 }
 
-export function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, fTacticalTraversal: boolean): void {
+export function PlotPathForCharacter(pCharacter: SOLDIERTYPE, sX: INT16, sY: INT16, fTacticalTraversal: boolean): void {
   // will plot a path for this character
 
   // is cursor allowed here?..if not..don't build path
@@ -1462,45 +1462,45 @@ export function PlotPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16
   }
 
   // is the character in transit?..then leave
-  if (pCharacter.value.bAssignment == Enum117.IN_TRANSIT) {
+  if (pCharacter.bAssignment == Enum117.IN_TRANSIT) {
     // leave
     return;
   }
 
-  if (pCharacter.value.bSectorZ != 0) {
-    if (pCharacter.value.bAssignment >= Enum117.ON_DUTY) {
+  if (pCharacter.bSectorZ != 0) {
+    if (pCharacter.bAssignment >= Enum117.ON_DUTY) {
       // not on the surface, character won't move until they reach surface..info player of this fact
-      MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, "%s %s", pCharacter.value.name, gsUndergroundString[0]);
+      MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, "%s %s", pCharacter.name, gsUndergroundString[0]);
     } else // squad
     {
-      MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, "%s %s", pLongAssignmentStrings[pCharacter.value.bAssignment], gsUndergroundString[0]);
+      MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, "%s %s", pLongAssignmentStrings[pCharacter.bAssignment], gsUndergroundString[0]);
     }
     return;
   }
 
-  if ((pCharacter.value.bAssignment == Enum117.VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if ((pCharacter.bAssignment == Enum117.VEHICLE) || (pCharacter.uiStatusFlags & SOLDIER_VEHICLE)) {
     SetUpMvtGroupForVehicle(pCharacter);
   }
 
   // make sure we are at the beginning
-  pCharacter.value.pMercPath = MoveToBeginningOfPathList(pCharacter.value.pMercPath);
+  pCharacter.pMercPath = MoveToBeginningOfPathList(pCharacter.pMercPath);
 
   // will plot a path from current position to sX, sY
   // get last sector in characters list, build new path, remove tail section, move to beginning of list, and append onto old list
-  pCharacter.value.pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.value.pMercPath);
+  pCharacter.pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.pMercPath);
 
   // move to beginning of list
-  pCharacter.value.pMercPath = MoveToBeginningOfPathList(pCharacter.value.pMercPath);
+  pCharacter.pMercPath = MoveToBeginningOfPathList(pCharacter.pMercPath);
 
   // check if in vehicle, if so, copy path to vehicle
-  if ((pCharacter.value.bAssignment == Enum117.VEHICLE) || (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if ((pCharacter.bAssignment == Enum117.VEHICLE) || (pCharacter.uiStatusFlags & SOLDIER_VEHICLE)) {
     MoveCharactersPathToVehicle(pCharacter);
   } else {
     CopyPathToCharactersSquadIfInOne(pCharacter);
   }
 }
 
-export function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
+export function PlotATemporaryPathForCharacter(pCharacter: SOLDIERTYPE, sX: INT16, sY: INT16): void {
   // make sure we're at the beginning
   pTempCharacterPath = MoveToBeginningOfPathList(pTempCharacterPath);
 
@@ -1519,9 +1519,9 @@ export function PlotATemporaryPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>,
 }
 
 // clear out character path list, after and including this sector
-export function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): UINT32 {
+export function ClearPathAfterThisSectorForCharacter(pCharacter: SOLDIERTYPE, sX: INT16, sY: INT16): UINT32 {
   let iOrigLength: INT32 = 0;
-  let pVehicle: Pointer<VEHICLETYPE> = null;
+  let pVehicle: VEHICLETYPE | null = null;
 
   iOrigLength = GetLengthOfMercPath(pCharacter);
 
@@ -1532,7 +1532,7 @@ export function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIER
 
   // if we're clearing everything beyond the current sector, that's quite different.  Since we're basically cancelling
   // his movement completely, we must also make sure his next X,Y are changed and he officially "returns" to his sector
-  if ((sX == pCharacter.value.sSectorX) && (sY == pCharacter.value.sSectorY)) {
+  if ((sX == pCharacter.sSectorX) && (sY == pCharacter.sSectorY)) {
     // if we're in confirm map move mode, cancel that (before new UI messages are issued)
     EndConfirmMapMoveMode();
 
@@ -1544,25 +1544,25 @@ export function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIER
     // be canceled.
 
     // if a vehicle
-    if (pCharacter.value.uiStatusFlags & SOLDIER_VEHICLE) {
-      pVehicle = addressof(pVehicleList[pCharacter.value.bVehicleID]);
+    if (pCharacter.uiStatusFlags & SOLDIER_VEHICLE) {
+      pVehicle = pVehicleList[pCharacter.bVehicleID];
     }
     // or in a vehicle
-    else if (pCharacter.value.bAssignment == Enum117.VEHICLE) {
-      pVehicle = addressof(pVehicleList[pCharacter.value.iVehicleId]);
+    else if (pCharacter.bAssignment == Enum117.VEHICLE) {
+      pVehicle = pVehicleList[pCharacter.iVehicleId];
     } else {
       // foot soldier
-      pCharacter.value.pMercPath = ClearStrategicPathListAfterThisSector(pCharacter.value.pMercPath, sX, sY, pCharacter.value.ubGroupID);
+      pCharacter.pMercPath = ClearStrategicPathListAfterThisSector(pCharacter.pMercPath, sX, sY, pCharacter.ubGroupID);
     }
 
     // if there's an associated vehicle structure
     if (pVehicle != null) {
       // do it for the vehicle, too
-      pVehicle.value.pMercPath = ClearStrategicPathListAfterThisSector(pVehicle.value.pMercPath, sX, sY, pVehicle.value.ubMovementGroup);
+      pVehicle.pMercPath = ClearStrategicPathListAfterThisSector(pVehicle.pMercPath, sX, sY, pVehicle.ubMovementGroup);
     }
 
     if (GetLengthOfMercPath(pCharacter) < iOrigLength) {
-      CopyPathToAllSelectedCharacters(pCharacter.value.pMercPath);
+      CopyPathToAllSelectedCharacters(pCharacter.pMercPath);
       // path WAS actually shortened
       return Enum158.PATH_SHORTENED;
     } else {
@@ -1572,19 +1572,19 @@ export function ClearPathAfterThisSectorForCharacter(pCharacter: Pointer<SOLDIER
   }
 }
 
-export function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function CancelPathForCharacter(pCharacter: SOLDIERTYPE): void {
   // clear out character's entire path list, he and his squad will stay/return to his current sector.
-  pCharacter.value.pMercPath = ClearStrategicPathList(pCharacter.value.pMercPath, pCharacter.value.ubGroupID);
+  pCharacter.pMercPath = ClearStrategicPathList(pCharacter.pMercPath, pCharacter.ubGroupID);
   // NOTE: This automatically calls RemoveGroupWaypoints() internally for valid movement groups
 
   // This causes the group to effectively reverse directions (even if they've never actually left), so handle that.
   // They are going to return to their current X,Y sector.
-  RebuildWayPointsForGroupPath(pCharacter.value.pMercPath, pCharacter.value.ubGroupID);
+  RebuildWayPointsForGroupPath(pCharacter.pMercPath, pCharacter.ubGroupID);
   //	GroupReversingDirectionsBetweenSectors( GetGroup( pCharacter->ubGroupID ), ( UINT8 )( pCharacter->sSectorX ), ( UINT8 )( pCharacter->sSectorY ), FALSE );
 
   // if he's in a vehicle, clear out the vehicle, too
-  if (pCharacter.value.bAssignment == Enum117.VEHICLE) {
-    CancelPathForVehicle(addressof(pVehicleList[pCharacter.value.iVehicleId]), true);
+  if (pCharacter.bAssignment == Enum117.VEHICLE) {
+    CancelPathForVehicle(pVehicleList[pCharacter.iVehicleId], true);
   } else {
     // display "travel route canceled" message
     MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pMapPlotStrings[3]);
@@ -1597,10 +1597,10 @@ export function CancelPathForCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   fCharacterInfoPanelDirty = true; // to update ETA
 }
 
-export function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyReversed: boolean): void {
+export function CancelPathForVehicle(pVehicle: VEHICLETYPE, fAlreadyReversed: boolean): void {
   // we're clearing everything beyond the *current* sector, that's quite different.  Since we're basically cancelling
   // his movement completely, we must also make sure his next X,Y are changed and he officially "returns" to his sector
-  pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
+  pVehicle.pMercPath = ClearStrategicPathList(pVehicle.pMercPath, pVehicle.ubMovementGroup);
   // NOTE: This automatically calls RemoveGroupWaypoints() internally for valid movement groups
 
   // if we already reversed one of the passengers, flag will be TRUE,
@@ -1608,7 +1608,7 @@ export function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyRev
   if (!fAlreadyReversed) {
     // This causes the group to effectively reverse directions (even if they've never actually left), so handle that.
     // They are going to return to their current X,Y sector.
-    RebuildWayPointsForGroupPath(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
+    RebuildWayPointsForGroupPath(pVehicle.pMercPath, pVehicle.ubMovementGroup);
     //		GroupReversingDirectionsBetweenSectors( GetGroup( pVehicle->ubMovementGroup ), ( UINT8 ) ( pVehicle->sSectorX ), ( UINT8 ) ( pVehicle->sSectorY ), FALSE );
   }
 
@@ -1623,39 +1623,39 @@ export function CancelPathForVehicle(pVehicle: Pointer<VEHICLETYPE>, fAlreadyRev
   fCharacterInfoPanelDirty = true; // to update ETA
 }
 
-function CancelPathForGroup(pGroup: Pointer<GROUP>): void {
+function CancelPathForGroup(pGroup: GROUP): void {
   let iVehicleId: INT32;
 
   // if it's the chopper, but player can't redirect it
-  if (pGroup.value.fPlayer && IsGroupTheHelicopterGroup(pGroup) && (CanHelicopterFly() == false)) {
+  if (pGroup.fPlayer && IsGroupTheHelicopterGroup(pGroup) && (CanHelicopterFly() == false)) {
     // explain & ignore
     ExplainWhySkyriderCantFly();
     return;
   }
 
   // is it a non-vehicle group?
-  if ((pGroup.value.fPlayer) && (pGroup.value.fVehicle == false)) {
-    if (pGroup.value.pPlayerList) {
-      if (pGroup.value.pPlayerList.value.pSoldier) {
+  if ((pGroup.fPlayer) && (pGroup.fVehicle == false)) {
+    if (pGroup.pPlayerList) {
+      if (pGroup.pPlayerList.value.pSoldier) {
         // clearing one merc should be enough, it copies changes to his squad on its own
-        CancelPathForCharacter(pGroup.value.pPlayerList.value.pSoldier);
+        CancelPathForCharacter(pGroup.pPlayerList.value.pSoldier);
       }
     }
   }
   // is it a vehicle group?
-  else if (pGroup.value.fVehicle) {
-    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
+  else if (pGroup.fVehicle) {
+    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.ubGroupID);
 
     // must be valid!
     Assert(iVehicleId != -1);
     if (iVehicleId == -1)
       return;
 
-    CancelPathForVehicle(addressof(pVehicleList[iVehicleId]), false);
+    CancelPathForVehicle(pVehicleList[iVehicleId], false);
   }
 }
 
-function CopyPathToCharactersSquadIfInOne(pCharacter: Pointer<SOLDIERTYPE>): void {
+function CopyPathToCharactersSquadIfInOne(pCharacter: SOLDIERTYPE): void {
   let bSquad: INT8 = 0;
 
   // check if on a squad, if so, do same thing for all characters
@@ -1670,7 +1670,7 @@ function CopyPathToCharactersSquadIfInOne(pCharacter: Pointer<SOLDIERTYPE>): voi
   }
 }
 
-export function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function DisplaySoldierPath(pCharacter: SOLDIERTYPE): void {
   let pPath: PathStPtr = null;
 
   /* ARM: Hopefully no longer required once using GetSoldierMercPathPtr() ???
@@ -1691,7 +1691,7 @@ export function DisplaySoldierPath(pCharacter: Pointer<SOLDIERTYPE>): void {
   return;
 }
 
-export function DisplaySoldierTempPath(pCharacter: Pointer<SOLDIERTYPE>): void {
+export function DisplaySoldierTempPath(pCharacter: SOLDIERTYPE): void {
   // now render temp route
   TracePathRoute(false, true, pTempCharacterPath);
 
@@ -1773,7 +1773,7 @@ export function PlotATemporaryPathForHelicopter(sX: INT16, sY: INT16): void {
 
 // clear out helicopter path list, after and including this sector
 export function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UINT32 {
-  let pVehicle: Pointer<VEHICLETYPE> = null;
+  let pVehicle: VEHICLETYPE;
   let iOrigLength: INT32 = 0;
 
   // clear out helicopter path list, after and including this sector
@@ -1782,16 +1782,16 @@ export function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UIN
     return Enum158.ABORT_PLOTTING;
   }
 
-  pVehicle = addressof(pVehicleList[iHelicopterVehicleId]);
+  pVehicle = pVehicleList[iHelicopterVehicleId];
 
-  iOrigLength = GetLengthOfPath(pVehicle.value.pMercPath);
+  iOrigLength = GetLengthOfPath(pVehicle.pMercPath);
   if (!iOrigLength) {
     // no previous path, nothing to do, and we didn't shorten it
     return Enum158.ABORT_PLOTTING;
   }
 
   // are we clearing everything beyond the helicopter's CURRENT sector?
-  if ((sX == pVehicle.value.sSectorX) && (sY == pVehicle.value.sSectorY)) {
+  if ((sX == pVehicle.sSectorX) && (sY == pVehicle.sSectorY)) {
     // if we're in confirm map move mode, cancel that (before new UI messages are issued)
     EndConfirmMapMoveMode();
 
@@ -1801,9 +1801,9 @@ export function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UIN
   {
     // if the clicked sector is along current route, this will repath only as far as it.  If not, the entire path will
     // be canceled.
-    pVehicle.value.pMercPath = ClearStrategicPathListAfterThisSector(pVehicle.value.pMercPath, sX, sY, pVehicle.value.ubMovementGroup);
+    pVehicle.pMercPath = ClearStrategicPathListAfterThisSector(pVehicle.pMercPath, sX, sY, pVehicle.ubMovementGroup);
 
-    if (GetLengthOfPath(pVehicle.value.pMercPath) < iOrigLength) {
+    if (GetLengthOfPath(pVehicle.pMercPath) < iOrigLength) {
       // really shortened!
       return Enum158.PATH_SHORTENED;
     } else {
@@ -3137,28 +3137,28 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   return false;
 }
 
+// simply check if we want to refresh the screen to display path
+/* static */ let DisplayThePotentialPathForHelicopter__fOldShowAirCraft: boolean = false;
+/* static */ let DisplayThePotentialPathForHelicopter__sOldMapX: INT16;
+/* static */ let DisplayThePotentialPathForHelicopter__sOldMapY: INT16;
 export function DisplayThePotentialPathForHelicopter(sMapX: INT16, sMapY: INT16): void {
-  // simply check if we want to refresh the screen to display path
-  /* static */ let fOldShowAirCraft: boolean = false;
-  /* static */ let sOldMapX: INT16;
-  /* static */ let sOldMapY: INT16;
   let iDifference: INT32 = 0;
 
-  if (fOldShowAirCraft != fShowAircraftFlag) {
-    fOldShowAirCraft = fShowAircraftFlag;
+  if (DisplayThePotentialPathForHelicopter__fOldShowAirCraft != fShowAircraftFlag) {
+    DisplayThePotentialPathForHelicopter__fOldShowAirCraft = fShowAircraftFlag;
     giPotHeliPathBaseTime = GetJA2Clock();
 
-    sOldMapX = sMapX;
-    sOldMapY = sMapY;
+    DisplayThePotentialPathForHelicopter__sOldMapX = sMapX;
+    DisplayThePotentialPathForHelicopter__sOldMapY = sMapY;
     fTempPathAlreadyDrawn = false;
     fDrawTempHeliPath = false;
   }
 
-  if ((sMapX != sOldMapX) || (sMapY != sOldMapY)) {
+  if ((sMapX != DisplayThePotentialPathForHelicopter__sOldMapX) || (sMapY != DisplayThePotentialPathForHelicopter__sOldMapY)) {
     giPotHeliPathBaseTime = GetJA2Clock();
 
-    sOldMapX = sMapX;
-    sOldMapY = sMapY;
+    DisplayThePotentialPathForHelicopter__sOldMapX = sMapX;
+    DisplayThePotentialPathForHelicopter__sOldMapY = sMapY;
 
     // path was plotted and we moved, re draw map..to clean up mess
     if (fTempPathAlreadyDrawn) {
@@ -3199,7 +3199,9 @@ export function SetUpBadSectorsList(): void {
   // initalizes all sectors to highlighable and then the ones non highlightable are marked as such
   let bY: INT8;
 
-  memset(addressof(sBadSectorsList), 0, sizeof(sBadSectorsList));
+  for (let i = 0; i < sBadSectorsList.length; i++) {
+    sBadSectorsList[i].fill(false);
+  }
 
   // the border regions
   for (bY = 0; bY < WORLD_MAP_X; bY++) {
@@ -3666,7 +3668,7 @@ export function DisplayPositionOfHelicopter(): void {
   let minY: UINT16;
   let maxX: UINT16;
   let maxY: UINT16;
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP;
   let hHandle: HVOBJECT;
   let iNumberOfPeopleInHelicopter: INT32 = 0;
   let sString: string /* CHAR16[4] */;
@@ -3689,10 +3691,10 @@ export function DisplayPositionOfHelicopter(): void {
       pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
       // this came up in one bug report!
-      Assert(pGroup.value.uiTraverseTime != -1);
+      Assert(pGroup.uiTraverseTime != -1);
 
-      if ((pGroup.value.uiTraverseTime > 0) && (pGroup.value.uiTraverseTime != 0xffffffff)) {
-        flRatio = ((pGroup.value.uiTraverseTime + GetWorldTotalMin()) - pGroup.value.uiArrivalTime) / pGroup.value.uiTraverseTime;
+      if ((pGroup.uiTraverseTime > 0) && (pGroup.uiTraverseTime != 0xffffffff)) {
+        flRatio = ((pGroup.uiTraverseTime + GetWorldTotalMin()) - pGroup.uiArrivalTime) / pGroup.uiTraverseTime;
       }
 
       /*
@@ -3709,10 +3711,10 @@ export function DisplayPositionOfHelicopter(): void {
       //			if( !fZoomFlag )
       {
         // grab min and max locations to interpolate sub sector position
-        minX = MAP_VIEW_START_X + MAP_GRID_X * (pGroup.value.ubSectorX);
-        maxX = MAP_VIEW_START_X + MAP_GRID_X * (pGroup.value.ubNextX);
-        minY = MAP_VIEW_START_Y + MAP_GRID_Y * (pGroup.value.ubSectorY);
-        maxY = MAP_VIEW_START_Y + MAP_GRID_Y * (pGroup.value.ubNextY);
+        minX = MAP_VIEW_START_X + MAP_GRID_X * (pGroup.ubSectorX);
+        maxX = MAP_VIEW_START_X + MAP_GRID_X * (pGroup.ubNextX);
+        minY = MAP_VIEW_START_Y + MAP_GRID_Y * (pGroup.ubSectorY);
+        maxY = MAP_VIEW_START_Y + MAP_GRID_Y * (pGroup.ubNextY);
       }
       /*
                               else
@@ -3759,9 +3761,9 @@ export function DisplayPositionOfHelicopter(): void {
         y += 3;
       }
 
-      AssertMsg((x >= 0) && (x < 640), FormatString("DisplayPositionOfHelicopter: Invalid x = %d.  At %d,%d.  Next %d,%d.  Min/Max X = %d/%d", x, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minX, maxX));
+      AssertMsg((x >= 0) && (x < 640), FormatString("DisplayPositionOfHelicopter: Invalid x = %d.  At %d,%d.  Next %d,%d.  Min/Max X = %d/%d", x, pGroup.ubSectorX, pGroup.ubSectorY, pGroup.ubNextX, pGroup.ubNextY, minX, maxX));
 
-      AssertMsg((y >= 0) && (y < 480), FormatString("DisplayPositionOfHelicopter: Invalid y = %d.  At %d,%d.  Next %d,%d.  Min/Max Y = %d/%d", y, pGroup.value.ubSectorX, pGroup.value.ubSectorY, pGroup.value.ubNextX, pGroup.value.ubNextY, minY, maxY));
+      AssertMsg((y >= 0) && (y < 480), FormatString("DisplayPositionOfHelicopter: Invalid y = %d.  At %d,%d.  Next %d,%d.  Min/Max Y = %d/%d", y, pGroup.ubSectorX, pGroup.ubSectorY, pGroup.ubNextX, pGroup.ubNextY, minY, maxY));
 
       // clip blits to mapscreen region
       ClipBlitsToMapViewRegion();
@@ -3842,7 +3844,7 @@ function DisplayDestinationOfHelicopter(): void {
 export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClickedSectorY: INT16): boolean {
   let iDeltaTime: INT32 = 0;
   let fIgnoreClick: boolean = false;
-  let pGroup: Pointer<GROUP> = null;
+  let pGroup: GROUP;
   let fHelicopterOverNextSector: boolean = false;
   let flRatio: FLOAT = 0.0;
   let sSectorX: INT16;
@@ -3869,12 +3871,12 @@ export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClicked
   pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
   Assert(pGroup);
 
-  if (pGroup.value.fBetweenSectors) {
+  if (pGroup.fBetweenSectors) {
     // this came up in one bug report!
-    Assert(pGroup.value.uiTraverseTime != -1);
+    Assert(pGroup.uiTraverseTime != -1);
 
-    if ((pGroup.value.uiTraverseTime > 0) && (pGroup.value.uiTraverseTime != 0xffffffff)) {
-      flRatio = (pGroup.value.uiTraverseTime - pGroup.value.uiArrivalTime + GetWorldTotalMin()) / pGroup.value.uiTraverseTime;
+    if ((pGroup.uiTraverseTime > 0) && (pGroup.uiTraverseTime != 0xffffffff)) {
+      flRatio = (pGroup.uiTraverseTime - pGroup.uiArrivalTime + GetWorldTotalMin()) / pGroup.uiTraverseTime;
     }
 
     // if more than halfway there, the chopper appears more over the next sector, not over its current one(!)
@@ -3885,8 +3887,8 @@ export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClicked
 
   if (fHelicopterOverNextSector) {
     // use the next sector's coordinates
-    sSectorX = pGroup.value.ubNextX;
-    sSectorY = pGroup.value.ubNextY;
+    sSectorX = pGroup.ubNextX;
+    sSectorY = pGroup.ubNextY;
   } else {
     // use current sector's coordinates
     sSectorX = pVehicleList[iHelicopterVehicleId].sSectorX;
@@ -3958,24 +3960,24 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
 
   // display associated town name, followed by "mine"
   wString = swprintf("%s %s", pTownNames[GetTownAssociatedWithMine(GetMineIndexForSector(sMapX, sMapY))], pwMineStrings[0]);
-  AdjustXForLeftMapEdge(wString, addressof(sScreenX));
+  sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
   mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
   ubLineCnt++;
 
   // check if mine is empty (abandoned) or running out
   if (gMineStatus[ubMineIndex].fEmpty) {
     wString = swprintf("%s", pwMineStrings[5]);
-    AdjustXForLeftMapEdge(wString, addressof(sScreenX));
+    sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
     mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fShutDown) {
     wString = swprintf("%s", pwMineStrings[6]);
-    AdjustXForLeftMapEdge(wString, addressof(sScreenX));
+    sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
     mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fRunningOut) {
     wString = swprintf("%s", pwMineStrings[7]);
-    AdjustXForLeftMapEdge(wString, addressof(sScreenX));
+    sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
     mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
@@ -4003,7 +4005,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
       wString += wSubString;
     }
 
-    AdjustXForLeftMapEdge(wString, addressof(sScreenX));
+    sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
     mprintf((sScreenX - StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
@@ -4011,19 +4013,21 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   SetFontDestBuffer(FRAME_BUFFER, MAP_VIEW_START_X, MAP_VIEW_START_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT + 7, false);
 }
 
-function AdjustXForLeftMapEdge(wString: string /* STR16 */, psX: Pointer<INT16>): void {
+function AdjustXForLeftMapEdge(wString: string /* STR16 */, sX: INT16): INT16 {
   let sStartingX: INT16;
   let sPastEdge: INT16;
 
   if (fZoomFlag)
     // it's ok to cut strings off in zoomed mode
-    return;
+    return sX;
 
-  sStartingX = psX.value - (StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2);
+  sStartingX = sX - (StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2);
   sPastEdge = (MAP_VIEW_START_X + 23) - sStartingX;
 
   if (sPastEdge > 0)
-    psX.value += sPastEdge;
+    sX += sPastEdge;
+
+  return sX;
 }
 
 function BlitTownGridMarkers(): void {
@@ -4345,7 +4349,7 @@ export function RemoveMilitiaPopUpBox(): void {
 
 export function DrawMilitiaPopUpBox(): boolean {
   let hVObject: HVOBJECT;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   if (!fShowMilitia) {
     sSelectedMilitiaTown = 0;
@@ -4391,9 +4395,9 @@ export function DrawMilitiaPopUpBox(): boolean {
   ShowHighLightedSectorOnMilitiaMap();
 
   hVObject = GetVideoObject(guiMilitia);
-  pTrav = addressof(hVObject.value.pETRLEObject[0]);
+  pTrav = hVObject.value.pETRLEObject[0];
 
-  InvalidateRegion(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, MAP_MILITIA_BOX_POS_X + pTrav.value.usWidth, MAP_MILITIA_BOX_POS_Y + pTrav.value.usHeight);
+  InvalidateRegion(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, MAP_MILITIA_BOX_POS_X + pTrav.usWidth, MAP_MILITIA_BOX_POS_Y + pTrav.usHeight);
 
   // set the text for the militia map sector info buttons
   SetMilitiaMapButtonsText();
@@ -4613,17 +4617,17 @@ function MilitiaRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void 
   }
 }
 
+/* static */ let CreateDestroyMilitiaSectorButtons__fCreated: boolean = false;
+/* static */ let CreateDestroyMilitiaSectorButtons__sOldSectorValue: INT16 = -1;
 export function CreateDestroyMilitiaSectorButtons(): void {
-  /* static */ let fCreated: boolean = false;
-  /* static */ let sOldSectorValue: INT16 = -1;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let iCounter: INT32 = 0;
   let hVObject: HVOBJECT;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
-  if (sOldSectorValue == sSectorMilitiaMapSector && fShowMilitia && sSelectedMilitiaTown && !fCreated && sSectorMilitiaMapSector != -1) {
-    fCreated = true;
+  if (CreateDestroyMilitiaSectorButtons__sOldSectorValue == sSectorMilitiaMapSector && fShowMilitia && sSelectedMilitiaTown && !CreateDestroyMilitiaSectorButtons__fCreated && sSectorMilitiaMapSector != -1) {
+    CreateDestroyMilitiaSectorButtons__fCreated = true;
 
     // given sector..place down the 3 buttons
 
@@ -4649,7 +4653,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
       SpecifyButtonDownTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
 
       hVObject = GetVideoObject(guiMilitia);
-      pTrav = addressof(hVObject.value.pETRLEObject[0]);
+      pTrav = hVObject.value.pETRLEObject[0];
 
       SetButtonFastHelpText(giMapMilitiaButton[iCounter], pMilitiaButtonsHelpText[iCounter]);
     }
@@ -4662,9 +4666,9 @@ export function CreateDestroyMilitiaSectorButtons(): void {
 
     // ste the fact that the buttons were in fact created
     fMilitiaMapButtonsCreated = true;
-  } else if (fCreated && (sOldSectorValue != sSectorMilitiaMapSector || !fShowMilitia || !sSelectedMilitiaTown || sSectorMilitiaMapSector == -1)) {
-    sOldSectorValue = sSectorMilitiaMapSector;
-    fCreated = false;
+  } else if (CreateDestroyMilitiaSectorButtons__fCreated && (CreateDestroyMilitiaSectorButtons__sOldSectorValue != sSectorMilitiaMapSector || !fShowMilitia || !sSelectedMilitiaTown || sSectorMilitiaMapSector == -1)) {
+    CreateDestroyMilitiaSectorButtons__sOldSectorValue = sSectorMilitiaMapSector;
+    CreateDestroyMilitiaSectorButtons__fCreated = false;
 
     // the militia box left click region
     //	MSYS_RemoveRegion( &gMapScreenMilitiaRegion );
@@ -4686,7 +4690,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
     fMilitiaMapButtonsCreated = false;
   }
 
-  sOldSectorValue = sSectorMilitiaMapSector;
+  CreateDestroyMilitiaSectorButtons__sOldSectorValue = sSectorMilitiaMapSector;
 }
 
 function SetMilitiaMapButtonsText(): void {
@@ -5320,7 +5324,7 @@ function ShadeUndergroundMapElem(sSectorX: INT16, sSectorY: INT16): boolean {
 }
 
 function ShadeSubLevelsNotVisited(): void {
-  let pNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
+  let pNode: UNDERGROUND_SECTORINFO | null = gpUndergroundSectorInfoHead;
 
   // obtain the 16-bit version of the same color used in the mine STIs
   gusUndergroundNearBlack = Get16BPPColor(FROMRGB(2, 2, 0));
@@ -5328,12 +5332,12 @@ function ShadeSubLevelsNotVisited(): void {
   // run through all (real & possible) underground sectors
   while (pNode) {
     // if the sector is on the currently displayed sublevel, and has never been visited
-    if (pNode.value.ubSectorZ == iCurrentMapSectorZ && !pNode.value.fVisited) {
+    if (pNode.ubSectorZ == iCurrentMapSectorZ && !pNode.fVisited) {
       // remove that portion of the "mine" graphics from view
-      HideExistenceOfUndergroundMapSector(pNode.value.ubSectorX, pNode.value.ubSectorY);
+      HideExistenceOfUndergroundMapSector(pNode.ubSectorX, pNode.ubSectorY);
     }
 
-    pNode = pNode.value.next;
+    pNode = pNode.next;
   }
 }
 
@@ -5441,7 +5445,7 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
   let iFirstId: INT32 = 0;
   let iLastId: INT32 = 0;
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   // to speed it up a little?
   iFirstId = gTacticalStatus.Team[OUR_TEAM].bFirstID;
@@ -5449,35 +5453,35 @@ function CanMercsScoutThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
 
   for (iCounter = iFirstId; iCounter <= iLastId; iCounter++) {
     // get the soldier
-    pSoldier = addressof(Menptr[iCounter]);
+    pSoldier = Menptr[iCounter];
 
     // is the soldier active
-    if (pSoldier.value.bActive == false) {
+    if (pSoldier.bActive == false) {
       continue;
     }
 
     // vehicles can't scout!
-    if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+    if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
       continue;
     }
 
     // POWs, dead guys, guys in transit, sleeping, and really hurt guys can't scout!
-    if ((pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.fMercAsleep == true) || (pSoldier.value.bLife < OKLIFE)) {
+    if ((pSoldier.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.fMercAsleep == true) || (pSoldier.bLife < OKLIFE)) {
       continue;
     }
 
     // don't count mercs aboard Skyrider
-    if ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId == iHelicopterVehicleId)) {
+    if ((pSoldier.bAssignment == Enum117.VEHICLE) && (pSoldier.iVehicleId == iHelicopterVehicleId)) {
       continue;
     }
 
     // mercs on the move can't scout
-    if (pSoldier.value.fBetweenSectors) {
+    if (pSoldier.fBetweenSectors) {
       continue;
     }
 
     // is he here?
-    if ((pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ)) {
+    if ((pSoldier.sSectorX == sSectorX) && (pSoldier.sSectorY == sSectorY) && (pSoldier.bSectorZ == bSectorZ)) {
       return true;
     }
   }

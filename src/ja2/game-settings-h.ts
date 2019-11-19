@@ -54,7 +54,7 @@ export interface GAME_SETTINGS {
   ubSpeechVolume: UINT8;
 
   // The following are set from the status of the toggle boxes in the Options Screen
-  fOptions: UINT8[] /* [NUM_ALL_GAME_OPTIONS] */;
+  fOptions: boolean[] /* UINT8[NUM_ALL_GAME_OPTIONS] */;
 
   zVersionNumber: string /* CHAR8[14] */;
 

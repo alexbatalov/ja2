@@ -64,6 +64,46 @@ export function createBasicSoldierCreateStruct(): BASIC_SOLDIERCREATE_STRUCT {
   };
 }
 
+export function copyBasicSoldierCreateStruct(destination: BASIC_SOLDIERCREATE_STRUCT, source: BASIC_SOLDIERCREATE_STRUCT) {
+  destination.fDetailedPlacement = source.fDetailedPlacement;
+  destination.usStartingGridNo = source.usStartingGridNo;
+  destination.bTeam = source.bTeam;
+  destination.bRelativeAttributeLevel = source.bRelativeAttributeLevel;
+  destination.bRelativeEquipmentLevel = source.bRelativeEquipmentLevel;
+  destination.bDirection = source.bDirection;
+  destination.bOrders = source.bOrders;
+  destination.bAttitude = source.bAttitude;
+  destination.bBodyType = source.bBodyType;
+  copyArray(destination.sPatrolGrid, source.sPatrolGrid);
+  destination.bPatrolCnt = source.bPatrolCnt;
+  destination.fOnRoof = source.fOnRoof;
+  destination.ubSoldierClass = source.ubSoldierClass;
+  destination.ubCivilianGroup = source.ubCivilianGroup;
+  destination.fPriorityExistance = source.fPriorityExistance;
+  destination.fHasKeys = source.fHasKeys;
+  copyArray(destination.PADDINGSLOTS, source.PADDINGSLOTS);
+}
+
+export function resetBasicSoldierCreateStruct(o: BASIC_SOLDIERCREATE_STRUCT) {
+  o.fDetailedPlacement = false;
+  o.usStartingGridNo = 0;
+  o.bTeam = 0;
+  o.bRelativeAttributeLevel = 0;
+  o.bRelativeEquipmentLevel = 0;
+  o.bDirection = 0;
+  o.bOrders = 0;
+  o.bAttitude = 0;
+  o.bBodyType = 0;
+  o.sPatrolGrid.fill(0);
+  o.bPatrolCnt = 0;
+  o.fOnRoof = false;
+  o.ubSoldierClass = 0;
+  o.ubCivilianGroup = 0;
+  o.fPriorityExistance = false;
+  o.fHasKeys = false;
+  o.PADDINGSLOTS.fill(0);
+}
+
 export interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.
@@ -172,7 +212,7 @@ export function createSoldierCreateStruct(): SOLDIERCREATE_STRUCT {
     bWisdom: 0,
     bMorale: 0,
     bAIMorale: 0,
-    Inv: createArrayFrom(NUM_INV_SLOTS, createObjectType),
+    Inv: createArrayFrom(Enum261.NUM_INV_SLOTS, createObjectType),
     HeadPal: "",
     PantsPal: "",
     VestPal: "",
@@ -195,6 +235,114 @@ export function createSoldierCreateStruct(): SOLDIERCREATE_STRUCT {
     fHasKeys: false,
     bPadding: createArray(115, 0),
   };
+}
+
+export function copySoldierCreateStruct(destination: SOLDIERCREATE_STRUCT, source: SOLDIERCREATE_STRUCT) {
+  destination.fStatic = source.fStatic;
+  destination.ubProfile = source.ubProfile;
+  destination.fPlayerMerc = source.fPlayerMerc;
+  destination.fPlayerPlan = source.fPlayerPlan;
+  destination.fCopyProfileItemsOver = source.fCopyProfileItemsOver;
+  destination.sSectorX = source.sSectorX;
+  destination.sSectorY = source.sSectorY;
+  destination.bDirection = source.bDirection;
+  destination.sInsertionGridNo = source.sInsertionGridNo;
+  destination.bTeam = source.bTeam;
+  destination.bBodyType = source.bBodyType;
+  destination.bAttitude = source.bAttitude;
+  destination.bOrders = source.bOrders;
+  destination.bLifeMax = source.bLifeMax;
+  destination.bLife = source.bLife;
+  destination.bAgility = source.bAgility;
+  destination.bDexterity = source.bDexterity;
+  destination.bExpLevel = source.bExpLevel;
+  destination.bMarksmanship = source.bMarksmanship;
+  destination.bMedical = source.bMedical;
+  destination.bMechanical = source.bMechanical;
+  destination.bExplosive = source.bExplosive;
+  destination.bLeadership = source.bLeadership;
+  destination.bStrength = source.bStrength;
+  destination.bWisdom = source.bWisdom;
+  destination.bMorale = source.bMorale;
+  destination.bAIMorale = source.bAIMorale;
+
+  for (let i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
+    copyObjectType(destination.Inv[i], source.Inv[i]);
+  }
+
+  destination.HeadPal = source.HeadPal;
+  destination.PantsPal = source.PantsPal;
+  destination.VestPal = source.VestPal;
+  destination.SkinPal = source.SkinPal;
+  destination.MiscPal = source.MiscPal;
+  copyArray(destination.sPatrolGrid, source.sPatrolGrid);
+  destination.bPatrolCnt = source.bPatrolCnt;
+  destination.fVisible = source.fVisible;
+  destination.name = source.name;
+  destination.ubSoldierClass = source.ubSoldierClass;
+  destination.fOnRoof = source.fOnRoof;
+  destination.bSectorZ = source.bSectorZ;
+  destination.pExistingSoldier = source.pExistingSoldier;
+  destination.fUseExistingSoldier = source.fUseExistingSoldier;
+  destination.ubCivilianGroup = source.ubCivilianGroup;
+  destination.fKillSlotIfOwnerDies = source.fKillSlotIfOwnerDies;
+  destination.ubScheduleID = source.ubScheduleID;
+  destination.fUseGivenVehicle = source.fUseGivenVehicle;
+  destination.bUseGivenVehicleID = source.bUseGivenVehicleID;
+  destination.fHasKeys = source.fHasKeys;
+  copyArray(destination.bPadding, source.bPadding);
+}
+
+export function resetSoldierCreateStruct(o: SOLDIERCREATE_STRUCT) {
+  o.fStatic = false;
+  o.ubProfile = 0;
+  o.fPlayerMerc = false;
+  o.fPlayerPlan = false;
+  o.fCopyProfileItemsOver = false;
+  o.sSectorX = 0;
+  o.sSectorY = 0;
+  o.bDirection = 0;
+  o.sInsertionGridNo = 0;
+  o.bTeam = 0;
+  o.bBodyType = 0;
+  o.bAttitude = 0;
+  o.bOrders = 0;
+  o.bLifeMax = 0;
+  o.bLife = 0;
+  o.bAgility = 0;
+  o.bDexterity = 0;
+  o.bExpLevel = 0;
+  o.bMarksmanship = 0;
+  o.bMedical = 0;
+  o.bMechanical = 0;
+  o.bExplosive = 0;
+  o.bLeadership = 0;
+  o.bStrength = 0;
+  o.bWisdom = 0;
+  o.bMorale = 0;
+  o.bAIMorale = 0;
+  o.Inv.forEach(resetObjectType);
+  o.HeadPal = "";
+  o.PantsPal = "";
+  o.VestPal = "";
+  o.SkinPal = "";
+  o.MiscPal = "";
+  o.sPatrolGrid.fill(0);
+  o.bPatrolCnt = 0;
+  o.fVisible = false;
+  o.name = "";
+  o.ubSoldierClass = 0;
+  o.fOnRoof = false;
+  o.bSectorZ = 0;
+  o.pExistingSoldier = null;
+  o.fUseExistingSoldier = false;
+  o.ubCivilianGroup = 0;
+  o.fKillSlotIfOwnerDies = false;
+  o.ubScheduleID = 0;
+  o.fUseGivenVehicle = false;
+  o.bUseGivenVehicleID = 0;
+  o.fHasKeys = false;
+  o.bPadding.fill(0);
 }
 
 // These following functions are currently used exclusively by the editor.

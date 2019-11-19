@@ -43,31 +43,31 @@ let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = [
   0,
 ];
 
-export function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
-  pCreateStruct.value.bLifeMax = Random(50) + 50;
-  pCreateStruct.value.bLife = pCreateStruct.value.bLifeMax;
-  pCreateStruct.value.bAgility = Random(50) + 50;
-  pCreateStruct.value.bDexterity = Random(50) + 50;
-  pCreateStruct.value.bExpLevel = 1 + Random(4);
+export function RandomizeNewSoldierStats(pCreateStruct: SOLDIERCREATE_STRUCT): void {
+  pCreateStruct.bLifeMax = Random(50) + 50;
+  pCreateStruct.bLife = pCreateStruct.bLifeMax;
+  pCreateStruct.bAgility = Random(50) + 50;
+  pCreateStruct.bDexterity = Random(50) + 50;
+  pCreateStruct.bExpLevel = 1 + Random(4);
 
   // Randomize skills (for now)
-  pCreateStruct.value.bMarksmanship = Random(50) + 50;
-  pCreateStruct.value.bMedical = Random(50) + 50;
-  pCreateStruct.value.bMechanical = Random(50) + 50;
-  pCreateStruct.value.bExplosive = Random(50) + 50;
-  pCreateStruct.value.bLeadership = Random(50) + 50;
-  pCreateStruct.value.bStrength = Random(50) + 50;
-  pCreateStruct.value.bWisdom = Random(50) + 50;
-  pCreateStruct.value.bAttitude = Random(Enum242.MAXATTITUDES);
-  pCreateStruct.value.bOrders = Enum241.FARPATROL;
-  pCreateStruct.value.bMorale = 50;
-  pCreateStruct.value.bAIMorale = Enum244.MORALE_FEARLESS;
+  pCreateStruct.bMarksmanship = Random(50) + 50;
+  pCreateStruct.bMedical = Random(50) + 50;
+  pCreateStruct.bMechanical = Random(50) + 50;
+  pCreateStruct.bExplosive = Random(50) + 50;
+  pCreateStruct.bLeadership = Random(50) + 50;
+  pCreateStruct.bStrength = Random(50) + 50;
+  pCreateStruct.bWisdom = Random(50) + 50;
+  pCreateStruct.bAttitude = Random(Enum242.MAXATTITUDES);
+  pCreateStruct.bOrders = Enum241.FARPATROL;
+  pCreateStruct.bMorale = 50;
+  pCreateStruct.bAIMorale = Enum244.MORALE_FEARLESS;
 }
 
 export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
   let Soldier: SOLDIERTYPE = createSoldierType();
   let cnt: INT32;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
   let fGuyAvail: boolean = false;
   let bLastTeamID: UINT8;
   let ubVehicleID: UINT8 = 0;
@@ -83,7 +83,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   }
 
   // Some values initialized here but could be changed before going to the common one
-  InitSoldierStruct(addressof(Soldier));
+  InitSoldierStruct(Soldier);
 
   Soldier.uiUniqueSoldierIdValue = guiCurrentUniqueSoldierId;
 
@@ -92,9 +92,9 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   // OK, CHECK IF WE HAVE A VALID PROFILE ID!
   if (pCreateStruct.value.ubProfile != NO_PROFILE) {
     // We have a merc created by profile, do this!
-    TacticalCopySoldierFromProfile(addressof(Soldier), pCreateStruct);
+    TacticalCopySoldierFromProfile(Soldier, pCreateStruct);
   } else {
-    TacticalCopySoldierFromCreateStruct(addressof(Soldier), pCreateStruct);
+    TacticalCopySoldierFromCreateStruct(Soldier, pCreateStruct);
   }
 
   // If we are NOT creating an existing soldier ( ie, this is not from a save game ), create soldier normally
@@ -168,7 +168,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
 
     // Copy the items over for thew soldier, only if we have a valid profile id!
     if (pCreateStruct.value.ubProfile != NO_PROFILE)
-      CopyProfileItems(addressof(Soldier), pCreateStruct);
+      CopyProfileItems(Soldier, pCreateStruct);
 
     // Given team, get an ID for this guy!
 
@@ -185,8 +185,8 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
       bLastTeamID = gTacticalStatus.Team[Soldier.bTeam].bLastID;
 
       // look for all mercs on the same team,
-      for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier++) {
-        if (!pTeamSoldier.value.bActive) {
+      for (pTeamSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+        if (!pTeamSoldier.bActive) {
           fGuyAvail = true;
           break;
         }
@@ -205,10 +205,10 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
 
     // LOAD MERC's FACE!
     if (pCreateStruct.value.ubProfile != NO_PROFILE && Soldier.bTeam == OUR_TEAM) {
-      Soldier.iFaceIndex = InitSoldierFace(addressof(Soldier));
+      Soldier.iFaceIndex = InitSoldierFace(Soldier);
     }
 
-    Soldier.bActionPoints = CalcActionPoints(addressof(Soldier));
+    Soldier.bActionPoints = CalcActionPoints(Soldier);
     Soldier.bInitialActionPoints = Soldier.bActionPoints;
     Soldier.bSide = gTacticalStatus.Team[Soldier.bTeam].bSide;
     Soldier.bActive = true;
@@ -301,13 +301,13 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
           if (!fSecondFaceItem) {
             // Don't check for compatibility...  automatically assume there are no head positions filled.
             fSecondFaceItem = true;
-            memcpy(addressof(Soldier.inv[Enum261.HEAD1POS]), addressof(Soldier.inv[i]), sizeof(OBJECTTYPE));
-            memset(addressof(Soldier.inv[i]), 0, sizeof(OBJECTTYPE));
+            copyObjectType(Soldier.inv[Enum261.HEAD1POS], Soldier.inv[i]);
+            resetObjectType(Soldier.inv[i]);
           } else {
             // if there is a second item, compare it to the first one we already added.
             if (CompatibleFaceItem(Soldier.inv[Enum261.HEAD1POS].usItem, Soldier.inv[i].usItem)) {
-              memcpy(addressof(Soldier.inv[Enum261.HEAD2POS]), addressof(Soldier.inv[i]), sizeof(OBJECTTYPE));
-              memset(addressof(Soldier.inv[i]), 0, sizeof(OBJECTTYPE));
+              copyObjectType(Soldier.inv[Enum261.HEAD2POS], Soldier.inv[i]);
+              resetObjectType(Soldier.inv[i]);
               break;
             }
           }
@@ -317,9 +317,9 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
       if (guiCurrentScreen != Enum26.AUTORESOLVE_SCREEN) {
         // also, if an army guy has camouflage, roll to determine whether they start camouflaged
         if (Soldier.bTeam == ENEMY_TEAM) {
-          i = FindObj(addressof(Soldier), Enum225.CAMOUFLAGEKIT);
+          i = FindObj(Soldier, Enum225.CAMOUFLAGEKIT);
 
-          if (i != NO_SLOT && Random(5) < SoldierDifficultyLevel(addressof(Soldier))) {
+          if (i != NO_SLOT && Random(5) < SoldierDifficultyLevel(Soldier)) {
             // start camouflaged
             Soldier.bCamo = 100;
           }
@@ -347,7 +347,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
         break;
 
       case Enum194.BLOODCAT:
-        AssignCreatureInventory(addressof(Soldier));
+        AssignCreatureInventory(Soldier);
         Soldier.bNormalSmell = NORMAL_HUMAN_SMELL_STRENGTH;
         Soldier.uiStatusFlags |= SOLDIER_ANIMAL;
         break;
@@ -360,7 +360,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
       case Enum194.INFANT_MONSTER:
       case Enum194.QUEENMONSTER:
 
-        AssignCreatureInventory(addressof(Soldier));
+        AssignCreatureInventory(Soldier);
         Soldier.ubCaller = NOBODY;
         if (!gfEditMode) {
           Soldier.bOrders = Enum241.FARPATROL;
@@ -430,7 +430,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
           // Add vehicle to list....
           Soldier.bVehicleID = AddVehicleToList(Soldier.sSectorX, Soldier.sSectorY, Soldier.bSectorZ, ubVehicleID);
         }
-        SetVehicleValuesIntoSoldierType(addressof(Soldier));
+        SetVehicleValuesIntoSoldierType(Soldier);
         break;
 
       default:
@@ -492,75 +492,75 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     return MercPtrs[Soldier.ubID];
   } else {
     // We are creating a dynamically allocated soldier for autoresolve.
-    let pSoldier: Pointer<SOLDIERTYPE>;
+    let pSoldier: SOLDIERTYPE;
     let ubSectorID: UINT8;
     ubSectorID = GetAutoResolveSectorID();
-    pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
+    pSoldier = createSoldierType();
     if (!pSoldier)
       return null;
     memcpy(pSoldier, addressof(Soldier), sizeof(SOLDIERTYPE));
-    pSoldier.value.ubID = 255;
-    pSoldier.value.sSectorX = SECTORX(ubSectorID);
-    pSoldier.value.sSectorY = SECTORY(ubSectorID);
-    pSoldier.value.bSectorZ = 0;
+    pSoldier.ubID = 255;
+    pSoldier.sSectorX = SECTORX(ubSectorID);
+    pSoldier.sSectorY = SECTORY(ubSectorID);
+    pSoldier.bSectorZ = 0;
     pubID.value = 255;
     return pSoldier;
   }
 }
 
-function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): boolean {
+function TacticalCopySoldierFromProfile(pSoldier: SOLDIERTYPE, pCreateStruct: SOLDIERCREATE_STRUCT): boolean {
   let ubProfileIndex: UINT8;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
 
-  ubProfileIndex = pCreateStruct.value.ubProfile;
-  pProfile = addressof(gMercProfiles[ubProfileIndex]);
+  ubProfileIndex = pCreateStruct.ubProfile;
+  pProfile = gMercProfiles[ubProfileIndex];
 
-  SET_PALETTEREP_ID(pSoldier.value.HeadPal, pProfile.value.HAIR);
-  SET_PALETTEREP_ID(pSoldier.value.VestPal, pProfile.value.VEST);
-  SET_PALETTEREP_ID(pSoldier.value.SkinPal, pProfile.value.SKIN);
-  SET_PALETTEREP_ID(pSoldier.value.PantsPal, pProfile.value.PANTS);
+  SET_PALETTEREP_ID(pSoldier.HeadPal, pProfile.HAIR);
+  SET_PALETTEREP_ID(pSoldier.VestPal, pProfile.VEST);
+  SET_PALETTEREP_ID(pSoldier.SkinPal, pProfile.SKIN);
+  SET_PALETTEREP_ID(pSoldier.PantsPal, pProfile.PANTS);
 
   // Set profile index!
-  pSoldier.value.ubProfile = ubProfileIndex;
-  pSoldier.value.ubScheduleID = pCreateStruct.value.ubScheduleID;
-  pSoldier.value.bHasKeys = pCreateStruct.value.fHasKeys;
+  pSoldier.ubProfile = ubProfileIndex;
+  pSoldier.ubScheduleID = pCreateStruct.ubScheduleID;
+  pSoldier.bHasKeys = pCreateStruct.fHasKeys;
 
-  pSoldier.value.name = pProfile.value.zNickname;
+  pSoldier.name = pProfile.zNickname;
 
-  pSoldier.value.bLife = pProfile.value.bLife;
-  pSoldier.value.bLifeMax = pProfile.value.bLifeMax;
-  pSoldier.value.bAgility = pProfile.value.bAgility;
-  pSoldier.value.bLeadership = pProfile.value.bLeadership;
-  pSoldier.value.bDexterity = pProfile.value.bDexterity;
-  pSoldier.value.bStrength = pProfile.value.bStrength;
-  pSoldier.value.bWisdom = pProfile.value.bWisdom;
-  pSoldier.value.bExpLevel = pProfile.value.bExpLevel;
-  pSoldier.value.bMarksmanship = pProfile.value.bMarksmanship;
-  pSoldier.value.bMedical = pProfile.value.bMedical;
-  pSoldier.value.bMechanical = pProfile.value.bMechanical;
-  pSoldier.value.bExplosive = pProfile.value.bExplosive;
-  pSoldier.value.bScientific = pProfile.value.bScientific;
+  pSoldier.bLife = pProfile.bLife;
+  pSoldier.bLifeMax = pProfile.bLifeMax;
+  pSoldier.bAgility = pProfile.bAgility;
+  pSoldier.bLeadership = pProfile.bLeadership;
+  pSoldier.bDexterity = pProfile.bDexterity;
+  pSoldier.bStrength = pProfile.bStrength;
+  pSoldier.bWisdom = pProfile.bWisdom;
+  pSoldier.bExpLevel = pProfile.bExpLevel;
+  pSoldier.bMarksmanship = pProfile.bMarksmanship;
+  pSoldier.bMedical = pProfile.bMedical;
+  pSoldier.bMechanical = pProfile.bMechanical;
+  pSoldier.bExplosive = pProfile.bExplosive;
+  pSoldier.bScientific = pProfile.bScientific;
 
-  pSoldier.value.bVocalVolume = MIDVOLUME;
-  pSoldier.value.uiAnimSubFlags = pProfile.value.uiBodyTypeSubFlags;
-  pSoldier.value.ubBodyType = pProfile.value.ubBodyType;
-  pSoldier.value.ubCivilianGroup = pProfile.value.ubCivilianGroup;
+  pSoldier.bVocalVolume = MIDVOLUME;
+  pSoldier.uiAnimSubFlags = pProfile.uiBodyTypeSubFlags;
+  pSoldier.ubBodyType = pProfile.ubBodyType;
+  pSoldier.ubCivilianGroup = pProfile.ubCivilianGroup;
   // OK set initial duty
   //  pSoldier->bAssignment=ON_DUTY;
 
-  pSoldier.value.bOldAssignment = NO_ASSIGNMENT;
-  pSoldier.value.ubSkillTrait1 = pProfile.value.bSkillTrait;
-  pSoldier.value.ubSkillTrait2 = pProfile.value.bSkillTrait2;
+  pSoldier.bOldAssignment = NO_ASSIGNMENT;
+  pSoldier.ubSkillTrait1 = pProfile.bSkillTrait;
+  pSoldier.ubSkillTrait2 = pProfile.bSkillTrait2;
 
-  pSoldier.value.bOrders = pCreateStruct.value.bOrders;
-  pSoldier.value.bAttitude = pCreateStruct.value.bAttitude;
-  pSoldier.value.bDirection = pCreateStruct.value.bDirection;
-  pSoldier.value.bPatrolCnt = pCreateStruct.value.bPatrolCnt;
-  memcpy(pSoldier.value.usPatrolGrid, pCreateStruct.value.sPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+  pSoldier.bOrders = pCreateStruct.bOrders;
+  pSoldier.bAttitude = pCreateStruct.bAttitude;
+  pSoldier.bDirection = pCreateStruct.bDirection;
+  pSoldier.bPatrolCnt = pCreateStruct.bPatrolCnt;
+  copyArray(pSoldier.usPatrolGrid, pCreateStruct.sPatrolGrid);
 
   if (HAS_SKILL_TRAIT(pSoldier, Enum269.CAMOUFLAGED)) {
     // set camouflaged to 100 automatically
-    pSoldier.value.bCamo = 100;
+    pSoldier.bCamo = 100;
   }
   return true;
 }
@@ -581,7 +581,7 @@ const enum Enum267 {
   NUMHEADS,
 }
 
-function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
+function ChooseHairColor(pSoldier: SOLDIERTYPE, skin: INT32): INT32 {
   let iRandom: INT32;
   let hair: INT32 = 0;
   iRandom = Random(100);
@@ -598,7 +598,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
         hair = Enum267.BLACKHEAD;
       } else {
         hair = Enum267.WHITEHEAD;
-        if (pSoldier.value.ubBodyType == Enum194.REGFEMALE || pSoldier.value.ubBodyType == Enum194.MINICIV || pSoldier.value.ubBodyType == Enum194.DRESSCIV || pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) {
+        if (pSoldier.ubBodyType == Enum194.REGFEMALE || pSoldier.ubBodyType == Enum194.MINICIV || pSoldier.ubBodyType == Enum194.DRESSCIV || pSoldier.ubBodyType == Enum194.HATKIDCIV || pSoldier.ubBodyType == Enum194.KIDCIV) {
           hair = Random(Enum267.NUMHEADS - 1) + 1;
         }
       }
@@ -611,7 +611,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
         hair = Enum267.BLACKHEAD;
       } else {
         hair = Enum267.WHITEHEAD;
-        if (pSoldier.value.ubBodyType == Enum194.REGFEMALE || pSoldier.value.ubBodyType == Enum194.MINICIV || pSoldier.value.ubBodyType == Enum194.DRESSCIV || pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) {
+        if (pSoldier.ubBodyType == Enum194.REGFEMALE || pSoldier.ubBodyType == Enum194.MINICIV || pSoldier.ubBodyType == Enum194.DRESSCIV || pSoldier.ubBodyType == Enum194.HATKIDCIV || pSoldier.ubBodyType == Enum194.KIDCIV) {
           hair = Random(2) + 1;
         }
       }
@@ -621,7 +621,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
         hair = Enum267.BLACKHEAD;
       } else {
         hair = Enum267.WHITEHEAD;
-        if (pSoldier.value.ubBodyType == Enum194.REGFEMALE || pSoldier.value.ubBodyType == Enum194.MINICIV || pSoldier.value.ubBodyType == Enum194.DRESSCIV || pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) {
+        if (pSoldier.ubBodyType == Enum194.REGFEMALE || pSoldier.ubBodyType == Enum194.MINICIV || pSoldier.ubBodyType == Enum194.DRESSCIV || pSoldier.ubBodyType == Enum194.HATKIDCIV || pSoldier.ubBodyType == Enum194.KIDCIV) {
           hair = Enum267.BLACKHEAD;
         }
       }
@@ -630,7 +630,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
       AssertMsg(0, "Skin type not accounted for.");
       break;
   }
-  if (pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+  if (pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
     if (Chance(50)) {
       hair = Enum267.WHITEHEAD;
     }
@@ -638,7 +638,7 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
   return hair;
 }
 
-function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClass: UINT8): void {
+function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8): void {
   let skin: INT32;
   let hair: INT32;
   let fMercClothingScheme: boolean;
@@ -648,16 +648,16 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   skin = Random(Enum266.NUMSKINS);
   switch (skin) {
     case Enum266.PINKSKIN:
-      SET_PALETTEREP_ID(pSoldier.value.SkinPal, "PINKSKIN");
+      SET_PALETTEREP_ID(pSoldier.SkinPal, "PINKSKIN");
       break;
     case Enum266.TANSKIN:
-      SET_PALETTEREP_ID(pSoldier.value.SkinPal, "TANSKIN");
+      SET_PALETTEREP_ID(pSoldier.SkinPal, "TANSKIN");
       break;
     case Enum266.DARKSKIN:
-      SET_PALETTEREP_ID(pSoldier.value.SkinPal, "DARKSKIN");
+      SET_PALETTEREP_ID(pSoldier.SkinPal, "DARKSKIN");
       break;
     case Enum266.BLACKSKIN:
-      SET_PALETTEREP_ID(pSoldier.value.SkinPal, "BLACKSKIN");
+      SET_PALETTEREP_ID(pSoldier.SkinPal, "BLACKSKIN");
       break;
     default:
       AssertMsg(0, "Skin type not accounted for.");
@@ -668,19 +668,19 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   hair = ChooseHairColor(pSoldier, skin);
   switch (hair) {
     case Enum267.BROWNHEAD:
-      SET_PALETTEREP_ID(pSoldier.value.HeadPal, "BROWNHEAD");
+      SET_PALETTEREP_ID(pSoldier.HeadPal, "BROWNHEAD");
       break;
     case Enum267.BLACKHEAD:
-      SET_PALETTEREP_ID(pSoldier.value.HeadPal, "BLACKHEAD");
+      SET_PALETTEREP_ID(pSoldier.HeadPal, "BLACKHEAD");
       break;
     case Enum267.WHITEHEAD:
-      SET_PALETTEREP_ID(pSoldier.value.HeadPal, "WHITEHEAD");
+      SET_PALETTEREP_ID(pSoldier.HeadPal, "WHITEHEAD");
       break;
     case Enum267.BLONDEHEAD:
-      SET_PALETTEREP_ID(pSoldier.value.HeadPal, "BLONDHEAD");
+      SET_PALETTEREP_ID(pSoldier.HeadPal, "BLONDHEAD");
       break;
     case Enum267.REDHEAD:
-      SET_PALETTEREP_ID(pSoldier.value.HeadPal, "REDHEAD");
+      SET_PALETTEREP_ID(pSoldier.HeadPal, "REDHEAD");
       break;
     default:
       AssertMsg(0, "Hair type not accounted for.");
@@ -690,39 +690,39 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   // OK, After skin, hair we could have a forced color scheme.. use here if so
   switch (ubSoldierClass) {
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "YELLOWVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "GREENPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ELITE:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLACKSHIRT");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BLACKPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "BLACKPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ARMY:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "REDVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "GREENPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "GREENVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BEIGEPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_REG_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "JEANVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BEIGEPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLUEVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BEIGEPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_MINER:
-      SET_PALETTEREP_ID(pSoldier.value.VestPal, "greyVEST");
-      SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BEIGEPANTS");
-      pSoldier.value.ubSoldierClass = ubSoldierClass;
+      SET_PALETTEREP_ID(pSoldier.VestPal, "greyVEST");
+      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.ubSoldierClass = ubSoldierClass;
       return;
   }
 
@@ -730,9 +730,9 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   // merc clothing scheme is much larger and general and is an exclusive superset
   // of the civilian clothing scheme which means the civilians will choose the
   // merc clothing scheme often ( actually 60% of the time ).
-  if (!pSoldier.value.PantsPal[0] || !pSoldier.value.VestPal[0]) {
+  if (!pSoldier.PantsPal[0] || !pSoldier.VestPal[0]) {
     fMercClothingScheme = true;
-    if (pSoldier.value.bTeam == CIV_TEAM && Random(100) < 40) {
+    if (pSoldier.bTeam == CIV_TEAM && Random(100) < 40) {
       // 40% chance of using cheezy civilian colors
       fMercClothingScheme = false;
     }
@@ -740,42 +740,42 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
     {
       if (Random(100) < 30) {
         // 30% chance that the civilian will choose a gaudy yellow shirt with pants.
-        SET_PALETTEREP_ID(pSoldier.value.VestPal, "GYELLOWSHIRT");
+        SET_PALETTEREP_ID(pSoldier.VestPal, "GYELLOWSHIRT");
         switch (Random(3)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.value.PantsPal, "TANPANTS");
+            SET_PALETTEREP_ID(pSoldier.PantsPal, "TANPANTS");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BEIGEPANTS");
+            SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.value.PantsPal, "GREENPANTS");
+            SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
             break;
         }
       } else {
         // 70% chance that the civilian will choose jeans with a shirt.
-        SET_PALETTEREP_ID(pSoldier.value.PantsPal, "JEANPANTS");
+        SET_PALETTEREP_ID(pSoldier.PantsPal, "JEANPANTS");
         switch (Random(7)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "WHITEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLACKSHIRT");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "PURPLESHIRT");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "PURPLESHIRT");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLUEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
             break;
           case 4:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BROWNVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
             break;
           case 5:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "JEANVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
             break;
           case 6:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "REDVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
             break;
         }
       }
@@ -784,65 +784,65 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
     // MERC COLORS
     switch (Random(3)) {
       case 0:
-        SET_PALETTEREP_ID(pSoldier.value.PantsPal, "GREENPANTS");
+        SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
         switch (Random(4)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "YELLOWVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "WHITEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BROWNVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "GREENVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
             break;
         }
         break;
       case 1:
-        SET_PALETTEREP_ID(pSoldier.value.PantsPal, "TANPANTS");
+        SET_PALETTEREP_ID(pSoldier.PantsPal, "TANPANTS");
         switch (Random(8)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "YELLOWVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "WHITEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLACKSHIRT");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLUEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
             break;
           case 4:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BROWNVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
             break;
           case 5:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "GREENVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
             break;
           case 6:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "JEANVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
             break;
           case 7:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "REDVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
             break;
         }
         break;
       case 2:
-        SET_PALETTEREP_ID(pSoldier.value.PantsPal, "BLUEPANTS");
+        SET_PALETTEREP_ID(pSoldier.PantsPal, "BLUEPANTS");
         switch (Random(4)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "YELLOWVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "WHITEVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "REDVEST");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.value.VestPal, "BLACKSHIRT");
+            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
             break;
         }
         break;
@@ -850,46 +850,46 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   }
 }
 
-function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): boolean {
-  pSoldier.value.ubProfile = NO_PROFILE;
+function TacticalCopySoldierFromCreateStruct(pSoldier: SOLDIERTYPE, pCreateStruct: SOLDIERCREATE_STRUCT): boolean {
+  pSoldier.ubProfile = NO_PROFILE;
 
   // Randomize attributes
-  pSoldier.value.bLife = pCreateStruct.value.bLife;
-  pSoldier.value.bLifeMax = pCreateStruct.value.bLifeMax;
-  pSoldier.value.bAgility = pCreateStruct.value.bAgility;
-  pSoldier.value.bDexterity = pCreateStruct.value.bDexterity;
-  pSoldier.value.bExpLevel = pCreateStruct.value.bExpLevel;
+  pSoldier.bLife = pCreateStruct.bLife;
+  pSoldier.bLifeMax = pCreateStruct.bLifeMax;
+  pSoldier.bAgility = pCreateStruct.bAgility;
+  pSoldier.bDexterity = pCreateStruct.bDexterity;
+  pSoldier.bExpLevel = pCreateStruct.bExpLevel;
 
-  pSoldier.value.bMarksmanship = pCreateStruct.value.bMarksmanship;
-  pSoldier.value.bMedical = pCreateStruct.value.bMedical;
-  pSoldier.value.bMechanical = pCreateStruct.value.bMechanical;
-  pSoldier.value.bExplosive = pCreateStruct.value.bExplosive;
-  pSoldier.value.bLeadership = pCreateStruct.value.bLeadership;
-  pSoldier.value.bStrength = pCreateStruct.value.bStrength;
-  pSoldier.value.bWisdom = pCreateStruct.value.bWisdom;
+  pSoldier.bMarksmanship = pCreateStruct.bMarksmanship;
+  pSoldier.bMedical = pCreateStruct.bMedical;
+  pSoldier.bMechanical = pCreateStruct.bMechanical;
+  pSoldier.bExplosive = pCreateStruct.bExplosive;
+  pSoldier.bLeadership = pCreateStruct.bLeadership;
+  pSoldier.bStrength = pCreateStruct.bStrength;
+  pSoldier.bWisdom = pCreateStruct.bWisdom;
 
-  pSoldier.value.bAttitude = pCreateStruct.value.bAttitude;
-  pSoldier.value.bOrders = pCreateStruct.value.bOrders;
-  pSoldier.value.bMorale = pCreateStruct.value.bMorale;
-  pSoldier.value.bAIMorale = pCreateStruct.value.bAIMorale;
-  pSoldier.value.bVocalVolume = MIDVOLUME;
-  pSoldier.value.ubBodyType = pCreateStruct.value.bBodyType;
-  pSoldier.value.ubCivilianGroup = pCreateStruct.value.ubCivilianGroup;
+  pSoldier.bAttitude = pCreateStruct.bAttitude;
+  pSoldier.bOrders = pCreateStruct.bOrders;
+  pSoldier.bMorale = pCreateStruct.bMorale;
+  pSoldier.bAIMorale = pCreateStruct.bAIMorale;
+  pSoldier.bVocalVolume = MIDVOLUME;
+  pSoldier.ubBodyType = pCreateStruct.bBodyType;
+  pSoldier.ubCivilianGroup = pCreateStruct.ubCivilianGroup;
 
-  pSoldier.value.ubScheduleID = pCreateStruct.value.ubScheduleID;
-  pSoldier.value.bHasKeys = pCreateStruct.value.fHasKeys;
-  pSoldier.value.ubSoldierClass = pCreateStruct.value.ubSoldierClass;
+  pSoldier.ubScheduleID = pCreateStruct.ubScheduleID;
+  pSoldier.bHasKeys = pCreateStruct.fHasKeys;
+  pSoldier.ubSoldierClass = pCreateStruct.ubSoldierClass;
 
-  if (pCreateStruct.value.fVisible) {
-    pSoldier.value.HeadPal = pCreateStruct.value.HeadPal;
-    pSoldier.value.PantsPal = pCreateStruct.value.PantsPal;
-    pSoldier.value.VestPal = pCreateStruct.value.VestPal;
-    pSoldier.value.SkinPal = pCreateStruct.value.SkinPal;
+  if (pCreateStruct.fVisible) {
+    pSoldier.HeadPal = pCreateStruct.HeadPal;
+    pSoldier.PantsPal = pCreateStruct.PantsPal;
+    pSoldier.VestPal = pCreateStruct.VestPal;
+    pSoldier.SkinPal = pCreateStruct.SkinPal;
   }
 
   // KM:  March 25, 1999
   // Assign nightops traits to enemies/militia
-  if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE || pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE_MILITIA) {
+  if (pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE || pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE_MILITIA) {
     let iChance: INT32;
     let ubProgress: UINT8;
 
@@ -904,12 +904,12 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
     }
 
     if (Chance(iChance)) {
-      pSoldier.value.ubSkillTrait1 = Enum269.NIGHTOPS;
+      pSoldier.ubSkillTrait1 = Enum269.NIGHTOPS;
       if (ubProgress >= 40 && Chance(30)) {
-        pSoldier.value.ubSkillTrait2 = Enum269.NIGHTOPS;
+        pSoldier.ubSkillTrait2 = Enum269.NIGHTOPS;
       }
     }
-  } else if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ARMY || pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
+  } else if (pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_ARMY || pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
     let iChance: INT32;
     let ubProgress: UINT8;
 
@@ -924,9 +924,9 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
     }
 
     if (Chance(iChance)) {
-      pSoldier.value.ubSkillTrait1 = Enum269.NIGHTOPS;
+      pSoldier.ubSkillTrait1 = Enum269.NIGHTOPS;
       if (ubProgress >= 50 && Chance(20)) {
-        pSoldier.value.ubSkillTrait2 = Enum269.NIGHTOPS;
+        pSoldier.ubSkillTrait2 = Enum269.NIGHTOPS;
       }
     }
   }
@@ -934,104 +934,103 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
   // KM:  November 10, 1997
   // Adding patrol points
   // CAUTION:  CONVERTING SIGNED TO UNSIGNED though the values should never be negative.
-  pSoldier.value.bPatrolCnt = pCreateStruct.value.bPatrolCnt;
-  memcpy(pSoldier.value.usPatrolGrid, pCreateStruct.value.sPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+  pSoldier.bPatrolCnt = pCreateStruct.bPatrolCnt;
+  copyArray(pSoldier.usPatrolGrid, pCreateStruct.sPatrolGrid);
 
   // Kris:  November 10, 1997
   // Expanded the default names based on team.
-  switch (pCreateStruct.value.bTeam) {
+  switch (pCreateStruct.bTeam) {
     case ENEMY_TEAM:
-      pSoldier.value.name = TacticalStr[Enum335.ENEMY_TEAM_MERC_NAME];
+      pSoldier.name = TacticalStr[Enum335.ENEMY_TEAM_MERC_NAME];
       break;
     case MILITIA_TEAM:
-      pSoldier.value.name = TacticalStr[Enum335.MILITIA_TEAM_MERC_NAME];
+      pSoldier.name = TacticalStr[Enum335.MILITIA_TEAM_MERC_NAME];
       break;
     case CIV_TEAM:
-      if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
-        pSoldier.value.name = TacticalStr[Enum335.CIV_TEAM_MINER_NAME];
+      if (pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
+        pSoldier.name = TacticalStr[Enum335.CIV_TEAM_MINER_NAME];
       } else {
-        pSoldier.value.name = TacticalStr[Enum335.CIV_TEAM_MERC_NAME];
+        pSoldier.name = TacticalStr[Enum335.CIV_TEAM_MERC_NAME];
       }
       break;
     case CREATURE_TEAM:
-      if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
-        pSoldier.value.name = gzLateLocalizedString[36];
+      if (pSoldier.ubBodyType == Enum194.BLOODCAT) {
+        pSoldier.name = gzLateLocalizedString[36];
       } else {
-        pSoldier.value.name = TacticalStr[Enum335.CREATURE_TEAM_MERC_NAME];
+        pSoldier.name = TacticalStr[Enum335.CREATURE_TEAM_MERC_NAME];
         break;
       }
       break;
   }
 
   // Generate colors for soldier based on the body type.
-  GeneratePaletteForSoldier(pSoldier, pCreateStruct.value.ubSoldierClass);
+  GeneratePaletteForSoldier(pSoldier, pCreateStruct.ubSoldierClass);
 
   // Copy item info over
-  memcpy(pSoldier.value.inv, pCreateStruct.value.Inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
+  for (let i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
+    copyObjectType(pSoldier.inv[i], pCreateStruct.Inv[i]);
+  }
 
   return true;
 }
 
-function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
-  // Memset values
-  memset(pSoldier, 0, sizeof(SOLDIERTYPE));
-
+function InitSoldierStruct(pSoldier: SOLDIERTYPE): void {
   // Set default values
-  pSoldier.value.bVisible = -1;
-  pSoldier.value.iFaceIndex = -1;
+  pSoldier.bVisible = -1;
+  pSoldier.iFaceIndex = -1;
 
   // Set morale default
-  pSoldier.value.bMorale = DEFAULT_MORALE;
+  pSoldier.bMorale = DEFAULT_MORALE;
 
-  pSoldier.value.ubAttackerID = NOBODY;
-  pSoldier.value.ubPreviousAttackerID = NOBODY;
-  pSoldier.value.ubNextToPreviousAttackerID = NOBODY;
+  pSoldier.ubAttackerID = NOBODY;
+  pSoldier.ubPreviousAttackerID = NOBODY;
+  pSoldier.ubNextToPreviousAttackerID = NOBODY;
 
   // Set AI Delay!
-  pSoldier.value.uiAIDelay = 100;
+  pSoldier.uiAIDelay = 100;
 
-  pSoldier.value.iLight = -1;
-  pSoldier.value.iFaceIndex = -1;
+  pSoldier.iLight = -1;
+  pSoldier.iFaceIndex = -1;
 
   // Set update time to new speed
-  pSoldier.value.ubDesiredHeight = NO_DESIRED_HEIGHT;
-  pSoldier.value.bViewRange = NORMAL_VIEW_RANGE;
-  pSoldier.value.bInSector = false;
-  pSoldier.value.sGridNo = NO_MAP_POS;
-  pSoldier.value.iMuzFlash = -1;
-  pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-  pSoldier.value.usPendingAnimation2 = NO_PENDING_ANIMATION;
-  pSoldier.value.ubPendingStanceChange = NO_PENDING_STANCE;
-  pSoldier.value.ubPendingDirection = NO_PENDING_DIRECTION;
-  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
-  pSoldier.value.bLastRenderVisibleValue = -1;
-  pSoldier.value.bBreath = 99;
-  pSoldier.value.bBreathMax = 100;
-  pSoldier.value.bActive = true;
-  pSoldier.value.fShowLocator = false;
-  pSoldier.value.sLastTarget = NOWHERE;
-  pSoldier.value.sAbsoluteFinalDestination = NOWHERE;
-  pSoldier.value.sZLevelOverride = -1;
-  pSoldier.value.ubServicePartner = NOBODY;
-  pSoldier.value.ubAttackingHand = Enum261.HANDPOS;
-  pSoldier.value.usAnimState = Enum193.STANDING;
-  pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
-  pSoldier.value.bMoved = false;
-  pSoldier.value.ubRobotRemoteHolderID = NOBODY;
-  pSoldier.value.sNoiseGridno = NOWHERE;
-  pSoldier.value.ubPrevSectorID = 255;
-  pSoldier.value.bNextPatrolPnt = 1;
-  pSoldier.value.bCurrentCivQuote = -1;
-  pSoldier.value.bCurrentCivQuoteDelta = 0;
-  pSoldier.value.uiBattleSoundID = NO_SAMPLE;
-  pSoldier.value.ubXRayedBy = NOBODY;
-  pSoldier.value.uiXRayActivatedTime = 0;
-  pSoldier.value.bBulletsLeft = 0;
-  pSoldier.value.bVehicleUnderRepairID = -1;
+  pSoldier.ubDesiredHeight = NO_DESIRED_HEIGHT;
+  pSoldier.bViewRange = NORMAL_VIEW_RANGE;
+  pSoldier.bInSector = false;
+  pSoldier.sGridNo = NO_MAP_POS;
+  pSoldier.iMuzFlash = -1;
+  pSoldier.usPendingAnimation = NO_PENDING_ANIMATION;
+  pSoldier.usPendingAnimation2 = NO_PENDING_ANIMATION;
+  pSoldier.ubPendingStanceChange = NO_PENDING_STANCE;
+  pSoldier.ubPendingDirection = NO_PENDING_DIRECTION;
+  pSoldier.ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.bLastRenderVisibleValue = -1;
+  pSoldier.bBreath = 99;
+  pSoldier.bBreathMax = 100;
+  pSoldier.bActive = true;
+  pSoldier.fShowLocator = false;
+  pSoldier.sLastTarget = NOWHERE;
+  pSoldier.sAbsoluteFinalDestination = NOWHERE;
+  pSoldier.sZLevelOverride = -1;
+  pSoldier.ubServicePartner = NOBODY;
+  pSoldier.ubAttackingHand = Enum261.HANDPOS;
+  pSoldier.usAnimState = Enum193.STANDING;
+  pSoldier.bInterruptDuelPts = NO_INTERRUPT;
+  pSoldier.bMoved = false;
+  pSoldier.ubRobotRemoteHolderID = NOBODY;
+  pSoldier.sNoiseGridno = NOWHERE;
+  pSoldier.ubPrevSectorID = 255;
+  pSoldier.bNextPatrolPnt = 1;
+  pSoldier.bCurrentCivQuote = -1;
+  pSoldier.bCurrentCivQuoteDelta = 0;
+  pSoldier.uiBattleSoundID = NO_SAMPLE;
+  pSoldier.ubXRayedBy = NOBODY;
+  pSoldier.uiXRayActivatedTime = 0;
+  pSoldier.bBulletsLeft = 0;
+  pSoldier.bVehicleUnderRepairID = -1;
 }
 
 export function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: boolean): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // Check range of index given
   if (usSoldierIndex < 0 || usSoldierIndex > TOTAL_SOLDIERS - 1) {
@@ -1054,21 +1053,21 @@ export function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVeh
   return TacticalRemoveSoldierPointer(pSoldier, fRemoveVehicle);
 }
 
-export function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: boolean): boolean {
-  if (!pSoldier.value.bActive)
+export function TacticalRemoveSoldierPointer(pSoldier: SOLDIERTYPE, fRemoveVehicle: boolean): boolean {
+  if (!pSoldier.bActive)
     return false;
 
-  if (pSoldier.value.ubScheduleID) {
-    DeleteSchedule(pSoldier.value.ubScheduleID);
+  if (pSoldier.ubScheduleID) {
+    DeleteSchedule(pSoldier.ubScheduleID);
   }
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE && fRemoveVehicle) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE && fRemoveVehicle) {
     // remove this vehicle from the list
-    RemoveVehicleFromList(pSoldier.value.bVehicleID);
+    RemoveVehicleFromList(pSoldier.bVehicleID);
   }
 
   // Handle crow leave....
-  if (pSoldier.value.ubBodyType == Enum194.CROW) {
+  if (pSoldier.ubBodyType == Enum194.CROW) {
     HandleCrowLeave(pSoldier);
   }
 
@@ -1077,25 +1076,25 @@ export function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRe
     RemoveCharacterFromSquads(pSoldier);
 
     // remove the soldier from the interface panel
-    RemovePlayerFromTeamSlotGivenMercID(pSoldier.value.ubID);
+    RemovePlayerFromTeamSlotGivenMercID(pSoldier.ubID);
 
     // Check if a guy exists here
     // Does another soldier exist here?
-    if (pSoldier.value.bActive) {
+    if (pSoldier.bActive) {
       RemoveSoldierFromGridNo(pSoldier);
 
       // Delete shadow of crow....
-      if (pSoldier.value.pAniTile != null) {
-        DeleteAniTile(pSoldier.value.pAniTile);
-        pSoldier.value.pAniTile = null;
+      if (pSoldier.pAniTile != null) {
+        DeleteAniTile(pSoldier.pAniTile);
+        pSoldier.pAniTile = null;
       }
 
-      if (!(pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP)) {
+      if (!(pSoldier.uiStatusFlags & SOLDIER_OFF_MAP)) {
         // Decrement men in sector number!
-        RemoveManFromTeam(pSoldier.value.bTeam);
+        RemoveManFromTeam(pSoldier.bTeam);
       } // people specified off-map have already been removed from their team count
 
-      pSoldier.value.bActive = false;
+      pSoldier.bActive = false;
 
       // Delete!
       DeleteSoldier(pSoldier);
@@ -1190,7 +1189,7 @@ export function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
 // Used to generate a detailed placement from a basic placement.  This assumes that the detailed placement
 // doesn't exist, meaning there are no static attributes.  This is called when you wish to convert a basic
 // placement into a detailed placement just before creating a soldier.
-export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: SOLDIERCREATE_STRUCT, bp: BASIC_SOLDIERCREATE_STRUCT): void {
   let bBaseAttribute: INT8;
   let ubSoldierClass: UINT8;
   let ubDiffFactor: UINT8;
@@ -1200,54 +1199,54 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
 
   if (!pp || !bp)
     return;
-  pp.value.fStatic = false;
-  pp.value.ubProfile = NO_PROFILE;
-  pp.value.sInsertionGridNo = bp.value.usStartingGridNo;
-  pp.value.fPlayerMerc = false;
-  pp.value.fPlayerPlan = false;
-  pp.value.fCopyProfileItemsOver = false;
-  pp.value.bTeam = bp.value.bTeam;
-  pp.value.ubSoldierClass = bp.value.ubSoldierClass;
-  pp.value.ubCivilianGroup = bp.value.ubCivilianGroup;
-  pp.value.ubScheduleID = 0;
-  pp.value.sSectorX = gWorldSectorX;
-  pp.value.sSectorY = gWorldSectorY;
-  pp.value.bSectorZ = gbWorldSectorZ;
-  pp.value.fHasKeys = bp.value.fHasKeys;
+  pp.fStatic = false;
+  pp.ubProfile = NO_PROFILE;
+  pp.sInsertionGridNo = bp.usStartingGridNo;
+  pp.fPlayerMerc = false;
+  pp.fPlayerPlan = false;
+  pp.fCopyProfileItemsOver = false;
+  pp.bTeam = bp.bTeam;
+  pp.ubSoldierClass = bp.ubSoldierClass;
+  pp.ubCivilianGroup = bp.ubCivilianGroup;
+  pp.ubScheduleID = 0;
+  pp.sSectorX = gWorldSectorX;
+  pp.sSectorY = gWorldSectorY;
+  pp.bSectorZ = gbWorldSectorZ;
+  pp.fHasKeys = bp.fHasKeys;
 
   // Choose a body type randomly if none specified.
-  if (bp.value.bBodyType < 0) {
-    switch (bp.value.bTeam) {
+  if (bp.bBodyType < 0) {
+    switch (bp.bTeam) {
       case OUR_TEAM:
       case ENEMY_TEAM:
       case MILITIA_TEAM:
         switch (Random(4)) {
           case 0:
-            pp.value.bBodyType = Enum194.REGMALE;
+            pp.bBodyType = Enum194.REGMALE;
             break;
           case 1:
-            pp.value.bBodyType = Enum194.BIGMALE;
+            pp.bBodyType = Enum194.BIGMALE;
             break;
           case 2:
-            pp.value.bBodyType = Enum194.STOCKYMALE;
+            pp.bBodyType = Enum194.STOCKYMALE;
             break;
           case 3:
-            pp.value.bBodyType = Enum194.REGFEMALE;
+            pp.bBodyType = Enum194.REGFEMALE;
             break;
         }
         break;
       case CIV_TEAM:
-        if (pp.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
+        if (pp.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
           switch (Random(3)) {
             // only strong and fit men can be miners.
             case 0:
-              pp.value.bBodyType = Enum194.REGMALE;
+              pp.bBodyType = Enum194.REGMALE;
               break;
             case 1:
-              pp.value.bBodyType = Enum194.BIGMALE;
+              pp.bBodyType = Enum194.BIGMALE;
               break;
             case 2:
-              pp.value.bBodyType = Enum194.MANCIV;
+              pp.bBodyType = Enum194.MANCIV;
               break;
           }
         } else {
@@ -1255,40 +1254,40 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
           iRandom = Random(100);
           if (iRandom < 8) {
             // 8% chance FATCIV
-            pp.value.bBodyType = Enum194.FATCIV;
+            pp.bBodyType = Enum194.FATCIV;
           } else if (iRandom < 38) {
             // 30% chance MANCIV
-            pp.value.bBodyType = Enum194.MANCIV;
+            pp.bBodyType = Enum194.MANCIV;
           } else if (iRandom < 57) {
             // 19% chance MINICIV
-            pp.value.bBodyType = Enum194.MINICIV;
+            pp.bBodyType = Enum194.MINICIV;
           } else if (iRandom < 76) {
             // 19% chance DRESSCIV
-            pp.value.bBodyType = Enum194.DRESSCIV;
+            pp.bBodyType = Enum194.DRESSCIV;
           } else if (iRandom < 88) {
             // 12% chance HATKIDCIV
-            pp.value.bBodyType = Enum194.HATKIDCIV;
+            pp.bBodyType = Enum194.HATKIDCIV;
           } else {
             // 12% chance KIDCIV
-            pp.value.bBodyType = Enum194.KIDCIV;
+            pp.bBodyType = Enum194.KIDCIV;
           }
         }
         break;
     }
   } else {
-    pp.value.bBodyType = bp.value.bBodyType;
+    pp.bBodyType = bp.bBodyType;
   }
 
   // Pass over mandatory information specified from the basic placement
-  pp.value.bOrders = bp.value.bOrders;
-  pp.value.bAttitude = bp.value.bAttitude;
-  pp.value.bDirection = bp.value.bDirection;
+  pp.bOrders = bp.bOrders;
+  pp.bAttitude = bp.bAttitude;
+  pp.bDirection = bp.bDirection;
 
   // determine this soldier's soldier class
-  if (bp.value.bTeam == CREATURE_TEAM) {
+  if (bp.bTeam == CREATURE_TEAM) {
     ubSoldierClass = Enum262.SOLDIER_CLASS_CREATURE;
   } else {
-    ubSoldierClass = bp.value.ubSoldierClass;
+    ubSoldierClass = bp.ubSoldierClass;
   }
 
   ubDiffFactor = CalcDifficultyModifier(ubSoldierClass);
@@ -1314,7 +1313,7 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
   }
 
   // Adjust level and statistics for Linda's prespecified relative attribute level
-  switch (bp.value.bRelativeAttributeLevel) {
+  switch (bp.bRelativeAttributeLevel) {
     // NOTE: bStatsModifier already includes the bExpLevelModifier since it's based on the level itself!
     case 0:
       bExpLevelModifier += -1;
@@ -1338,73 +1337,73 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
       break;
 
     default:
-      AssertMsg(false, FormatString("Invalid bRelativeAttributeLevel = %d", bp.value.bRelativeAttributeLevel));
+      AssertMsg(false, FormatString("Invalid bRelativeAttributeLevel = %d", bp.bRelativeAttributeLevel));
       break;
   }
 
   // Set the experience level based on the soldier class and exp level modifier or relative attribute level
   switch (ubSoldierClass) {
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-      pp.value.bExpLevel = 2 + bExpLevelModifier;
+      pp.bExpLevel = 2 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_ARMY:
-      pp.value.bExpLevel = 4 + bExpLevelModifier;
+      pp.bExpLevel = 4 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_ELITE:
-      pp.value.bExpLevel = 6 + bExpLevelModifier;
+      pp.bExpLevel = 6 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
-      pp.value.bExpLevel = 2 + bExpLevelModifier;
+      pp.bExpLevel = 2 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_REG_MILITIA:
-      pp.value.bExpLevel = 4 + bExpLevelModifier;
+      pp.bExpLevel = 4 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
-      pp.value.bExpLevel = 6 + bExpLevelModifier;
+      pp.bExpLevel = 6 + bExpLevelModifier;
       break;
     case Enum262.SOLDIER_CLASS_MINER:
-      pp.value.bExpLevel = bp.value.bRelativeAttributeLevel; // avg 2 (1-4)
+      pp.bExpLevel = bp.bRelativeAttributeLevel; // avg 2 (1-4)
       break;
 
     case Enum262.SOLDIER_CLASS_CREATURE:
-      switch (bp.value.bBodyType) {
+      switch (bp.bBodyType) {
         case Enum194.LARVAE_MONSTER:
-          pp.value.bExpLevel = 1 + bExpLevelModifier;
+          pp.bExpLevel = 1 + bExpLevelModifier;
           break;
         case Enum194.INFANT_MONSTER:
-          pp.value.bExpLevel = 2 + bExpLevelModifier;
+          pp.bExpLevel = 2 + bExpLevelModifier;
           break;
         case Enum194.YAF_MONSTER:
         case Enum194.YAM_MONSTER:
-          pp.value.bExpLevel = (3 + Random(2) + bExpLevelModifier); // 3-4
+          pp.bExpLevel = (3 + Random(2) + bExpLevelModifier); // 3-4
           break;
         case Enum194.ADULTFEMALEMONSTER:
         case Enum194.AM_MONSTER:
-          pp.value.bExpLevel = (5 + Random(2) + bExpLevelModifier); // 5-6
+          pp.bExpLevel = (5 + Random(2) + bExpLevelModifier); // 5-6
           break;
         case Enum194.QUEENMONSTER:
-          pp.value.bExpLevel = 7 + bExpLevelModifier;
+          pp.bExpLevel = 7 + bExpLevelModifier;
           break;
 
         case Enum194.BLOODCAT:
-          pp.value.bExpLevel = 5 + bExpLevelModifier;
+          pp.bExpLevel = 5 + bExpLevelModifier;
           if (SECTOR(gWorldSectorX, gWorldSectorY) == Enum123.SEC_I16) {
-            pp.value.bExpLevel += gGameOptions.ubDifficultyLevel;
+            pp.bExpLevel += gGameOptions.ubDifficultyLevel;
           }
           break;
       }
       break;
 
     default:
-      pp.value.bExpLevel = bp.value.bRelativeAttributeLevel; // avg 2 (1-4)
+      pp.bExpLevel = bp.bRelativeAttributeLevel; // avg 2 (1-4)
       ubSoldierClass = Enum262.SOLDIER_CLASS_NONE;
       break;
   }
 
-  pp.value.bExpLevel = Math.max(1, pp.value.bExpLevel); // minimum exp. level of 1
-  pp.value.bExpLevel = Math.min(9, pp.value.bExpLevel); // maximum exp. level of 9
+  pp.bExpLevel = Math.max(1, pp.bExpLevel); // minimum exp. level of 1
+  pp.bExpLevel = Math.min(9, pp.bExpLevel); // maximum exp. level of 9
 
-  ubStatsLevel = pp.value.bExpLevel + bStatsModifier;
+  ubStatsLevel = pp.bExpLevel + bStatsModifier;
   ubStatsLevel = Math.max(0, ubStatsLevel); // minimum stats level of 0
   ubStatsLevel = Math.min(9, ubStatsLevel); // maximum stats level of 9
 
@@ -1413,37 +1412,37 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
 
   // Roll soldier's statistics and skills
   // Stat range is currently 49-99, bell-curved around a range of 16 values dependent on the stats level
-  pp.value.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bLife = pp.value.bLifeMax;
-  pp.value.bAgility = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bDexterity = (bBaseAttribute + Random(9) + Random(8));
+  pp.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
+  pp.bLife = pp.bLifeMax;
+  pp.bAgility = (bBaseAttribute + Random(9) + Random(8));
+  pp.bDexterity = (bBaseAttribute + Random(9) + Random(8));
 
-  pp.value.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bMedical = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bMechanical = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bExplosive = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bLeadership = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bStrength = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bWisdom = (bBaseAttribute + Random(9) + Random(8));
-  pp.value.bMorale = (bBaseAttribute + Random(9) + Random(8));
+  pp.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+  pp.bMedical = (bBaseAttribute + Random(9) + Random(8));
+  pp.bMechanical = (bBaseAttribute + Random(9) + Random(8));
+  pp.bExplosive = (bBaseAttribute + Random(9) + Random(8));
+  pp.bLeadership = (bBaseAttribute + Random(9) + Random(8));
+  pp.bStrength = (bBaseAttribute + Random(9) + Random(8));
+  pp.bWisdom = (bBaseAttribute + Random(9) + Random(8));
+  pp.bMorale = (bBaseAttribute + Random(9) + Random(8));
 
   // CJC: now calculate the REAL experience level if in the really upper end
-  ReduceHighExpLevels(addressof(pp.value.bExpLevel));
+  pp.bExpLevel = ReduceHighExpLevels(pp.bExpLevel);
 
-  pp.value.fVisible = 0;
+  pp.fVisible = false;
 
-  pp.value.fOnRoof = bp.value.fOnRoof;
+  pp.fOnRoof = bp.fOnRoof;
 
-  pp.value.ubSoldierClass = ubSoldierClass;
+  pp.ubSoldierClass = ubSoldierClass;
 
   // Transfer over the patrol points.
-  pp.value.bPatrolCnt = bp.value.bPatrolCnt;
-  memcpy(pp.value.sPatrolGrid, bp.value.sPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+  pp.bPatrolCnt = bp.bPatrolCnt;
+  copyArray(pp.sPatrolGrid, bp.sPatrolGrid);
 
   // If it is a detailed placement, don't do this yet, as detailed placements may have their
   // own equipment.
-  if (!bp.value.fDetailedPlacement && ubSoldierClass != Enum262.SOLDIER_CLASS_NONE && ubSoldierClass != Enum262.SOLDIER_CLASS_CREATURE && ubSoldierClass != Enum262.SOLDIER_CLASS_MINER)
-    GenerateRandomEquipment(pp, ubSoldierClass, bp.value.bRelativeEquipmentLevel);
+  if (!bp.fDetailedPlacement && ubSoldierClass != Enum262.SOLDIER_CLASS_NONE && ubSoldierClass != Enum262.SOLDIER_CLASS_CREATURE && ubSoldierClass != Enum262.SOLDIER_CLASS_MINER)
+    GenerateRandomEquipment(pp, ubSoldierClass, bp.bRelativeEquipmentLevel);
 }
 
 // Used exclusively by the editor when the user wishes to change a basic placement into a detailed placement.
@@ -1451,159 +1450,159 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDI
 // are defaulted to -1.  When an attribute is made to be static, that value in replaced by the new static value.
 // This information is NOT compatible with TacticalCreateSoldier.  Before doing so, you must first convert the
 // static detailed placement to a regular detailed placement.
-export function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: SOLDIERCREATE_STRUCT, bp: BASIC_SOLDIERCREATE_STRUCT): void {
   let i: INT32;
   if (!spp || !bp)
     return;
-  memset(spp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  spp.value.fStatic = true;
-  spp.value.ubProfile = NO_PROFILE;
-  spp.value.sInsertionGridNo = bp.value.usStartingGridNo;
-  spp.value.fPlayerMerc = false;
-  spp.value.fPlayerPlan = false;
-  spp.value.fCopyProfileItemsOver = false;
-  spp.value.bTeam = bp.value.bTeam;
-  spp.value.ubSoldierClass = bp.value.ubSoldierClass;
-  spp.value.ubCivilianGroup = bp.value.ubCivilianGroup;
-  spp.value.ubScheduleID = 0;
-  spp.value.sSectorX = gWorldSectorX;
-  spp.value.sSectorY = gWorldSectorY;
-  spp.value.bSectorZ = gbWorldSectorZ;
-  spp.value.fHasKeys = bp.value.fHasKeys;
+  resetSoldierCreateStruct(spp);
+  spp.fStatic = true;
+  spp.ubProfile = NO_PROFILE;
+  spp.sInsertionGridNo = bp.usStartingGridNo;
+  spp.fPlayerMerc = false;
+  spp.fPlayerPlan = false;
+  spp.fCopyProfileItemsOver = false;
+  spp.bTeam = bp.bTeam;
+  spp.ubSoldierClass = bp.ubSoldierClass;
+  spp.ubCivilianGroup = bp.ubCivilianGroup;
+  spp.ubScheduleID = 0;
+  spp.sSectorX = gWorldSectorX;
+  spp.sSectorY = gWorldSectorY;
+  spp.bSectorZ = gbWorldSectorZ;
+  spp.fHasKeys = bp.fHasKeys;
 
   // Pass over mandatory information specified from the basic placement
-  spp.value.bOrders = bp.value.bOrders;
-  spp.value.bAttitude = bp.value.bAttitude;
-  spp.value.bDirection = bp.value.bDirection;
+  spp.bOrders = bp.bOrders;
+  spp.bAttitude = bp.bAttitude;
+  spp.bDirection = bp.bDirection;
 
   // Only creatures have mandatory body types specified.
-  if (spp.value.bTeam == CREATURE_TEAM)
-    spp.value.bBodyType = bp.value.bBodyType;
+  if (spp.bTeam == CREATURE_TEAM)
+    spp.bBodyType = bp.bBodyType;
   else
-    spp.value.bBodyType = -1;
+    spp.bBodyType = -1;
 
   // Set up all possible static values.
   // By setting them all to -1, that signifies that the attribute isn't static.
   // The static placement needs to be later *regenerated* in order to create a valid soldier.
-  spp.value.bExpLevel = -1;
-  spp.value.bLifeMax = -1;
-  spp.value.bLife = -1;
-  spp.value.bAgility = -1;
-  spp.value.bDexterity = -1;
-  spp.value.bMarksmanship = -1;
-  spp.value.bMedical = -1;
-  spp.value.bMechanical = -1;
-  spp.value.bExplosive = -1;
-  spp.value.bLeadership = -1;
-  spp.value.bStrength = -1;
-  spp.value.bWisdom = -1;
-  spp.value.bMorale = -1;
+  spp.bExpLevel = -1;
+  spp.bLifeMax = -1;
+  spp.bLife = -1;
+  spp.bAgility = -1;
+  spp.bDexterity = -1;
+  spp.bMarksmanship = -1;
+  spp.bMedical = -1;
+  spp.bMechanical = -1;
+  spp.bExplosive = -1;
+  spp.bLeadership = -1;
+  spp.bStrength = -1;
+  spp.bWisdom = -1;
+  spp.bMorale = -1;
 
-  spp.value.fVisible = 0;
+  spp.fVisible = false;
 
-  spp.value.fOnRoof = bp.value.fOnRoof;
+  spp.fOnRoof = bp.fOnRoof;
 
   // Transfer over the patrol points.
-  spp.value.bPatrolCnt = bp.value.bPatrolCnt;
-  memcpy(spp.value.sPatrolGrid, bp.value.sPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+  spp.bPatrolCnt = bp.bPatrolCnt;
+  copyArray(spp.sPatrolGrid, bp.sPatrolGrid);
 
   // Starts with nothing
   for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
-    memset(addressof(spp.value.Inv[i]), 0, sizeof(OBJECTTYPE));
-    spp.value.Inv[i].usItem = NOTHING;
-    spp.value.Inv[i].fFlags |= OBJECT_UNDROPPABLE;
+    resetObjectType(spp.Inv[i]);
+    spp.Inv[i].usItem = NOTHING;
+    spp.Inv[i].fFlags |= OBJECT_UNDROPPABLE;
   }
 }
 
 // When you are ready to generate a soldier with a static detailed placement slot, this function will generate
 // the proper detailed placement slot given the static detailed placement and it's accompanying basic placement.
 // For the purposes of merc editing, the static detailed placement is preserved.
-export function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
+export function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: SOLDIERCREATE_STRUCT, spp: SOLDIERCREATE_STRUCT, bp: BASIC_SOLDIERCREATE_STRUCT): void {
   let i: INT32;
 
-  memset(pp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  pp.value.fOnRoof = spp.value.fOnRoof = bp.value.fOnRoof;
-  pp.value.fStatic = false;
-  pp.value.ubSoldierClass = bp.value.ubSoldierClass;
+  resetSoldierCreateStruct(pp);
+  pp.fOnRoof = spp.fOnRoof = bp.fOnRoof;
+  pp.fStatic = false;
+  pp.ubSoldierClass = bp.ubSoldierClass;
   // Generate the new placement
-  pp.value.ubProfile = spp.value.ubProfile;
-  if (pp.value.ubProfile != NO_PROFILE) {
+  pp.ubProfile = spp.ubProfile;
+  if (pp.ubProfile != NO_PROFILE) {
     // Copy over team
-    pp.value.bTeam = bp.value.bTeam;
+    pp.bTeam = bp.bTeam;
 
-    pp.value.bDirection = bp.value.bDirection;
-    pp.value.sInsertionGridNo = bp.value.usStartingGridNo;
+    pp.bDirection = bp.bDirection;
+    pp.sInsertionGridNo = bp.usStartingGridNo;
 
     // ATE: Copy over sector coordinates from profile to create struct
-    pp.value.sSectorX = gMercProfiles[pp.value.ubProfile].sSectorX;
-    pp.value.sSectorY = gMercProfiles[pp.value.ubProfile].sSectorY;
-    pp.value.bSectorZ = gMercProfiles[pp.value.ubProfile].bSectorZ;
+    pp.sSectorX = gMercProfiles[pp.ubProfile].sSectorX;
+    pp.sSectorY = gMercProfiles[pp.ubProfile].sSectorY;
+    pp.bSectorZ = gMercProfiles[pp.ubProfile].bSectorZ;
 
-    pp.value.ubScheduleID = spp.value.ubScheduleID;
+    pp.ubScheduleID = spp.ubScheduleID;
 
-    pp.value.bOrders = bp.value.bOrders;
-    pp.value.bAttitude = bp.value.bAttitude;
-    pp.value.bDirection = bp.value.bDirection;
-    pp.value.bPatrolCnt = bp.value.bPatrolCnt;
-    memcpy(pp.value.sPatrolGrid, bp.value.sPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
-    pp.value.fHasKeys = bp.value.fHasKeys;
-    pp.value.ubCivilianGroup = bp.value.ubCivilianGroup;
+    pp.bOrders = bp.bOrders;
+    pp.bAttitude = bp.bAttitude;
+    pp.bDirection = bp.bDirection;
+    pp.bPatrolCnt = bp.bPatrolCnt;
+    copyArray(pp.sPatrolGrid, bp.sPatrolGrid);
+    pp.fHasKeys = bp.fHasKeys;
+    pp.ubCivilianGroup = bp.ubCivilianGroup;
 
     return; // done
   }
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  pp.value.ubScheduleID = spp.value.ubScheduleID;
+  pp.ubScheduleID = spp.ubScheduleID;
   // Replace any of the new placement's attributes with static attributes.
-  if (spp.value.bExpLevel != -1)
-    pp.value.bExpLevel = spp.value.bExpLevel;
-  if (spp.value.bLife != -1)
-    pp.value.bLife = spp.value.bLife;
-  if (spp.value.bLifeMax != -1)
-    pp.value.bLifeMax = spp.value.bLifeMax;
-  if (spp.value.bMarksmanship != -1)
-    pp.value.bMarksmanship = spp.value.bMarksmanship;
-  if (spp.value.bStrength != -1)
-    pp.value.bStrength = spp.value.bStrength;
-  if (spp.value.bAgility != -1)
-    pp.value.bAgility = spp.value.bAgility;
-  if (spp.value.bDexterity != -1)
-    pp.value.bDexterity = spp.value.bDexterity;
-  if (spp.value.bWisdom != -1)
-    pp.value.bWisdom = spp.value.bWisdom;
-  if (spp.value.bLeadership != -1)
-    pp.value.bLeadership = spp.value.bLeadership;
-  if (spp.value.bExplosive != -1)
-    pp.value.bExplosive = spp.value.bExplosive;
-  if (spp.value.bMedical != -1)
-    pp.value.bMedical = spp.value.bMedical;
-  if (spp.value.bMechanical != -1)
-    pp.value.bMechanical = spp.value.bMechanical;
-  if (spp.value.bMorale != -1)
-    pp.value.bMorale = spp.value.bMorale;
+  if (spp.bExpLevel != -1)
+    pp.bExpLevel = spp.bExpLevel;
+  if (spp.bLife != -1)
+    pp.bLife = spp.bLife;
+  if (spp.bLifeMax != -1)
+    pp.bLifeMax = spp.bLifeMax;
+  if (spp.bMarksmanship != -1)
+    pp.bMarksmanship = spp.bMarksmanship;
+  if (spp.bStrength != -1)
+    pp.bStrength = spp.bStrength;
+  if (spp.bAgility != -1)
+    pp.bAgility = spp.bAgility;
+  if (spp.bDexterity != -1)
+    pp.bDexterity = spp.bDexterity;
+  if (spp.bWisdom != -1)
+    pp.bWisdom = spp.bWisdom;
+  if (spp.bLeadership != -1)
+    pp.bLeadership = spp.bLeadership;
+  if (spp.bExplosive != -1)
+    pp.bExplosive = spp.bExplosive;
+  if (spp.bMedical != -1)
+    pp.bMedical = spp.bMedical;
+  if (spp.bMechanical != -1)
+    pp.bMechanical = spp.bMechanical;
+  if (spp.bMorale != -1)
+    pp.bMorale = spp.bMorale;
 
-  pp.value.fVisible = spp.value.fVisible;
-  if (spp.value.fVisible) {
-    pp.value.HeadPal = spp.value.HeadPal;
-    pp.value.PantsPal = spp.value.PantsPal;
-    pp.value.VestPal = spp.value.VestPal;
-    pp.value.SkinPal = spp.value.SkinPal;
+  pp.fVisible = spp.fVisible;
+  if (spp.fVisible) {
+    pp.HeadPal = spp.HeadPal;
+    pp.PantsPal = spp.PantsPal;
+    pp.VestPal = spp.VestPal;
+    pp.SkinPal = spp.SkinPal;
   }
 
   // This isn't perfect, however, it blindly brings over the items from the static
   // detailed placement.  Due to the order of things, other items would
   for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
     // copy over static items and empty slots that are droppable (signifies a forced empty slot)
-    if (spp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
-      memcpy(addressof(pp.value.Inv[i]), addressof(spp.value.Inv[i]), sizeof(OBJECTTYPE));
+    if (spp.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
+      copyObjectType(pp.Inv[i], spp.Inv[i]);
       // memcpy( pp->Inv, spp->Inv, sizeof( OBJECTTYPE ) * NUM_INV_SLOTS );
       // return;
     }
   }
   if (!gGameOptions.fGunNut) {
-    ReplaceExtendedGuns(pp, bp.value.ubSoldierClass);
+    ReplaceExtendedGuns(pp, bp.ubSoldierClass);
   }
-  if (bp.value.ubSoldierClass != Enum262.SOLDIER_CLASS_NONE && bp.value.ubSoldierClass != Enum262.SOLDIER_CLASS_CREATURE && bp.value.ubSoldierClass != Enum262.SOLDIER_CLASS_MINER) {
-    GenerateRandomEquipment(pp, bp.value.ubSoldierClass, bp.value.bRelativeEquipmentLevel);
+  if (bp.ubSoldierClass != Enum262.SOLDIER_CLASS_NONE && bp.ubSoldierClass != Enum262.SOLDIER_CLASS_CREATURE && bp.ubSoldierClass != Enum262.SOLDIER_CLASS_MINER) {
+    GenerateRandomEquipment(pp, bp.ubSoldierClass, bp.bRelativeEquipmentLevel);
   }
 }
 
@@ -1611,171 +1610,172 @@ export function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlace
 // by the editor upon exiting the editor into the game, to update the existing soldiers with new information.
 // This gives flexibility of testing mercs.  Upon entering the editor again, this call will reset all the
 // mercs to their original states.
-export function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp: Pointer<SOLDIERCREATE_STRUCT>): void {
+export function UpdateSoldierWithStaticDetailedInformation(s: SOLDIERTYPE, spp: SOLDIERCREATE_STRUCT): void {
   // First, check to see if the soldier has a profile.  If so, then it'll extract the information
   // and update the soldier with the profile information instead.  This has complete override
   // authority.
-  if (spp.value.ubProfile != NO_PROFILE) {
+  if (spp.ubProfile != NO_PROFILE) {
     TacticalCopySoldierFromProfile(s, spp);
-    UpdateStaticDetailedPlacementWithProfileInformation(spp, spp.value.ubProfile);
-    SetSoldierAnimationSurface(s, s.value.usAnimState);
+    UpdateStaticDetailedPlacementWithProfileInformation(spp, spp.ubProfile);
+    SetSoldierAnimationSurface(s, s.usAnimState);
     CreateSoldierPalettes(s);
     return;
   }
 
-  switch (spp.value.ubSoldierClass) {
+  switch (spp.ubSoldierClass) {
     // If the soldier is an administrator, then
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
     case Enum262.SOLDIER_CLASS_ARMY:
     case Enum262.SOLDIER_CLASS_ELITE:
-      GeneratePaletteForSoldier(s, spp.value.ubSoldierClass);
+      GeneratePaletteForSoldier(s, spp.ubSoldierClass);
       break;
   }
 
-  if (spp.value.bExpLevel != -1) {
+  if (spp.bExpLevel != -1) {
     // We have a static experience level, so generate all of the soldier's attributes.
     let bBaseAttribute: INT8;
-    s.value.bExpLevel = spp.value.bExpLevel;
+    s.bExpLevel = spp.bExpLevel;
     // Set the minimum base attribute
-    bBaseAttribute = 49 + (4 * s.value.bExpLevel);
+    bBaseAttribute = 49 + (4 * s.bExpLevel);
 
     // Roll enemy's combat statistics, taking bExpLevel into account.
     // Stat range is currently 40-99, slightly bell-curved around the bExpLevel
-    s.value.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bLife = s.value.bLifeMax;
-    s.value.bAgility = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bDexterity = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bMedical = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bMechanical = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bExplosive = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bLeadership = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bStrength = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bWisdom = (bBaseAttribute + Random(9) + Random(8));
-    s.value.bMorale = (bBaseAttribute + Random(9) + Random(8));
+    s.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
+    s.bLife = s.bLifeMax;
+    s.bAgility = (bBaseAttribute + Random(9) + Random(8));
+    s.bDexterity = (bBaseAttribute + Random(9) + Random(8));
+    s.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+    s.bMedical = (bBaseAttribute + Random(9) + Random(8));
+    s.bMechanical = (bBaseAttribute + Random(9) + Random(8));
+    s.bExplosive = (bBaseAttribute + Random(9) + Random(8));
+    s.bLeadership = (bBaseAttribute + Random(9) + Random(8));
+    s.bStrength = (bBaseAttribute + Random(9) + Random(8));
+    s.bWisdom = (bBaseAttribute + Random(9) + Random(8));
+    s.bMorale = (bBaseAttribute + Random(9) + Random(8));
   }
   // Replace any soldier attributes with any static values in the detailed placement.
-  if (spp.value.bLife != -1)
-    s.value.bLife = spp.value.bLife;
-  if (spp.value.bLifeMax != -1)
-    s.value.bLifeMax = spp.value.bLifeMax;
-  if (spp.value.bMarksmanship != -1)
-    s.value.bMarksmanship = spp.value.bMarksmanship;
-  if (spp.value.bStrength != -1)
-    s.value.bStrength = spp.value.bStrength;
-  if (spp.value.bAgility != -1)
-    s.value.bAgility = spp.value.bAgility;
-  if (spp.value.bDexterity != -1)
-    s.value.bDexterity = spp.value.bDexterity;
-  if (spp.value.bWisdom != -1)
-    s.value.bWisdom = spp.value.bWisdom;
-  if (spp.value.bLeadership != -1)
-    s.value.bLeadership = spp.value.bLeadership;
-  if (spp.value.bExplosive != -1)
-    s.value.bExplosive = spp.value.bExplosive;
-  if (spp.value.bMedical != -1)
-    s.value.bMedical = spp.value.bMedical;
-  if (spp.value.bMechanical != -1)
-    s.value.bMechanical = spp.value.bMechanical;
-  if (spp.value.bMorale != -1)
-    s.value.bMorale = spp.value.bMorale;
+  if (spp.bLife != -1)
+    s.bLife = spp.bLife;
+  if (spp.bLifeMax != -1)
+    s.bLifeMax = spp.bLifeMax;
+  if (spp.bMarksmanship != -1)
+    s.bMarksmanship = spp.bMarksmanship;
+  if (spp.bStrength != -1)
+    s.bStrength = spp.bStrength;
+  if (spp.bAgility != -1)
+    s.bAgility = spp.bAgility;
+  if (spp.bDexterity != -1)
+    s.bDexterity = spp.bDexterity;
+  if (spp.bWisdom != -1)
+    s.bWisdom = spp.bWisdom;
+  if (spp.bLeadership != -1)
+    s.bLeadership = spp.bLeadership;
+  if (spp.bExplosive != -1)
+    s.bExplosive = spp.bExplosive;
+  if (spp.bMedical != -1)
+    s.bMedical = spp.bMedical;
+  if (spp.bMechanical != -1)
+    s.bMechanical = spp.bMechanical;
+  if (spp.bMorale != -1)
+    s.bMorale = spp.bMorale;
 
   // life can't exceed the life max.
-  if (s.value.bLife > s.value.bLifeMax)
-    s.value.bLife = s.value.bLifeMax;
+  if (s.bLife > s.bLifeMax)
+    s.bLife = s.bLifeMax;
 
-  s.value.ubScheduleID = spp.value.ubScheduleID;
+  s.ubScheduleID = spp.ubScheduleID;
 
   // Copy over the current inventory list.
-  memcpy(s.value.inv, spp.value.Inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
+  for (let i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
+    copyObjectType(s.inv[i], spp.Inv[i]);
+  }
 }
 
 // In the case of setting a profile ID in order to extract a soldier from the profile array, we
 // also want to copy that information to the static detailed placement, for editor viewing purposes.
-function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIERCREATE_STRUCT>, ubProfile: UINT8): void {
+function UpdateStaticDetailedPlacementWithProfileInformation(spp: SOLDIERCREATE_STRUCT, ubProfile: UINT8): void {
   let cnt: UINT32;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
 
-  spp.value.ubProfile = ubProfile;
+  spp.ubProfile = ubProfile;
 
-  pProfile = addressof(gMercProfiles[ubProfile]);
+  pProfile = gMercProfiles[ubProfile];
 
-  SET_PALETTEREP_ID(spp.value.HeadPal, pProfile.value.HAIR);
-  SET_PALETTEREP_ID(spp.value.VestPal, pProfile.value.VEST);
-  SET_PALETTEREP_ID(spp.value.SkinPal, pProfile.value.SKIN);
-  SET_PALETTEREP_ID(spp.value.PantsPal, pProfile.value.PANTS);
+  SET_PALETTEREP_ID(spp.HeadPal, pProfile.HAIR);
+  SET_PALETTEREP_ID(spp.VestPal, pProfile.VEST);
+  SET_PALETTEREP_ID(spp.SkinPal, pProfile.SKIN);
+  SET_PALETTEREP_ID(spp.PantsPal, pProfile.PANTS);
 
-  spp.value.name = pProfile.value.zNickname;
+  spp.name = pProfile.zNickname;
 
-  spp.value.bLife = pProfile.value.bLife;
-  spp.value.bLifeMax = pProfile.value.bLifeMax;
-  spp.value.bAgility = pProfile.value.bAgility;
-  spp.value.bLeadership = pProfile.value.bLeadership;
-  spp.value.bDexterity = pProfile.value.bDexterity;
-  spp.value.bStrength = pProfile.value.bStrength;
-  spp.value.bWisdom = pProfile.value.bWisdom;
-  spp.value.bExpLevel = pProfile.value.bExpLevel;
-  spp.value.bMarksmanship = pProfile.value.bMarksmanship;
-  spp.value.bMedical = pProfile.value.bMedical;
-  spp.value.bMechanical = pProfile.value.bMechanical;
-  spp.value.bExplosive = pProfile.value.bExplosive;
+  spp.bLife = pProfile.bLife;
+  spp.bLifeMax = pProfile.bLifeMax;
+  spp.bAgility = pProfile.bAgility;
+  spp.bLeadership = pProfile.bLeadership;
+  spp.bDexterity = pProfile.bDexterity;
+  spp.bStrength = pProfile.bStrength;
+  spp.bWisdom = pProfile.bWisdom;
+  spp.bExpLevel = pProfile.bExpLevel;
+  spp.bMarksmanship = pProfile.bMarksmanship;
+  spp.bMedical = pProfile.bMedical;
+  spp.bMechanical = pProfile.bMechanical;
+  spp.bExplosive = pProfile.bExplosive;
 
-  spp.value.bBodyType = pProfile.value.ubBodyType;
+  spp.bBodyType = pProfile.ubBodyType;
 
   // Copy over inv if we want to
   for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
-    CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(spp.value.Inv[cnt]));
+    CreateItems(pProfile.inv[cnt], pProfile.bInvStatus[cnt], pProfile.bInvNumber[cnt], spp.Inv[cnt]);
   }
 }
 
 // When the editor modifies the soldier's relative attribute level,
 // this function is called to update that information.
-export function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bRelativeAttributeLevel: INT8): void {
+export function ModifySoldierAttributesWithNewRelativeLevel(s: SOLDIERTYPE, bRelativeAttributeLevel: INT8): void {
   let bBaseAttribute: INT8;
   // Set the experience level based on the relative attribute level
   // NOTE OF WARNING: THIS CURRENTLY IGNORES THE ENEMY CLASS (ADMIN/REG/ELITE) FOR CALCULATING LEVEL & ATTRIBUTES
 
   // Rel level 0: Lvl 1, 1: Lvl 2-3, 2: Lvl 4-5, 3: Lvl 6-7, 4: Lvl 8-9
-  s.value.bExpLevel = (2 * bRelativeAttributeLevel + Random(2));
+  s.bExpLevel = (2 * bRelativeAttributeLevel + Random(2));
 
-  s.value.bExpLevel = Math.max(1, s.value.bExpLevel); // minimum level of 1
-  s.value.bExpLevel = Math.min(9, s.value.bExpLevel); // maximum level of 9
+  s.bExpLevel = Math.max(1, s.bExpLevel); // minimum level of 1
+  s.bExpLevel = Math.min(9, s.bExpLevel); // maximum level of 9
 
   // Set the minimum base attribute
-  bBaseAttribute = 49 + (4 * s.value.bExpLevel);
+  bBaseAttribute = 49 + (4 * s.bExpLevel);
 
   // Roll enemy's combat statistics, taking bExpLevel into account.
   // Stat range is currently 40-99, slightly bell-curved around the bExpLevel
-  s.value.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bLife = s.value.bLifeMax;
-  s.value.bAgility = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bDexterity = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bMedical = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bMechanical = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bExplosive = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bLeadership = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bStrength = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bWisdom = (bBaseAttribute + Random(9) + Random(8));
-  s.value.bMorale = (bBaseAttribute + Random(9) + Random(8));
+  s.bLifeMax = (bBaseAttribute + Random(9) + Random(8));
+  s.bLife = s.bLifeMax;
+  s.bAgility = (bBaseAttribute + Random(9) + Random(8));
+  s.bDexterity = (bBaseAttribute + Random(9) + Random(8));
+  s.bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+  s.bMedical = (bBaseAttribute + Random(9) + Random(8));
+  s.bMechanical = (bBaseAttribute + Random(9) + Random(8));
+  s.bExplosive = (bBaseAttribute + Random(9) + Random(8));
+  s.bLeadership = (bBaseAttribute + Random(9) + Random(8));
+  s.bStrength = (bBaseAttribute + Random(9) + Random(8));
+  s.bWisdom = (bBaseAttribute + Random(9) + Random(8));
+  s.bMorale = (bBaseAttribute + Random(9) + Random(8));
 }
 
-export function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
+export function ForceSoldierProfileID(pSoldier: SOLDIERTYPE, ubProfileID: UINT8): void {
   let CreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
 
-  memset(addressof(CreateStruct), 0, sizeof(CreateStruct));
   CreateStruct.ubProfile = ubProfileID;
 
-  TacticalCopySoldierFromProfile(pSoldier, addressof(CreateStruct));
+  TacticalCopySoldierFromProfile(pSoldier, CreateStruct);
 
   // Delete face and re-create
   DeleteSoldierFace(pSoldier);
 
   // Init face
-  pSoldier.value.iFaceIndex = InitSoldierFace(pSoldier);
+  pSoldier.iFaceIndex = InitSoldierFace(pSoldier);
 
   // Update animation, palettes
-  SetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
+  SetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   // Re-Create palettes
   CreateSoldierPalettes(pSoldier);
@@ -1809,7 +1809,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
         MercPtrs[i].value.sGridNo = NOWHERE;
 
         // Allocate and copy the soldier
-        pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
+        pSoldier = createSoldierType();
         if (!pSoldier)
           return null;
         memcpy(pSoldier, MercPtrs[i], sizeof(SOLDIERTYPE));
@@ -1834,16 +1834,14 @@ export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ADMINISTRATOR);
   }
 
-  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), Enum262.SOLDIER_CLASS_ADMINISTRATOR);
-  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), Enum262.SOLDIER_CLASS_ADMINISTRATOR);
+  bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, Enum262.SOLDIER_CLASS_ADMINISTRATOR);
+  bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, Enum262.SOLDIER_CLASS_ADMINISTRATOR);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = Enum241.SEEKENEMY;
   bp.bAttitude = Random(Enum242.MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
-  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
   pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
@@ -1864,16 +1862,14 @@ export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ARMY);
   }
 
-  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), Enum262.SOLDIER_CLASS_ARMY);
-  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), Enum262.SOLDIER_CLASS_ARMY);
+  bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, Enum262.SOLDIER_CLASS_ARMY);
+  bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, Enum262.SOLDIER_CLASS_ARMY);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = Enum241.SEEKENEMY;
   bp.bAttitude = Random(Enum242.MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
-  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
   pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
@@ -1894,24 +1890,21 @@ export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ELITE);
   }
 
-  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
-
-  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), Enum262.SOLDIER_CLASS_ELITE);
-  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), Enum262.SOLDIER_CLASS_ELITE);
+  bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, Enum262.SOLDIER_CLASS_ELITE);
+  bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, Enum262.SOLDIER_CLASS_ELITE);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = Enum241.SEEKENEMY;
   bp.bAttitude = Random(Enum242.MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ELITE;
-  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
 
   // SPECIAL!  Certain events in the game can cause profiled NPCs to become enemies.  The two cases are
   // adding Mike and Iggy.  We will only add one NPC in any given combat and the conditions for setting
   // the associated facts are done elsewhere.  There is also another place where NPCs can get added, which
   // is in AddPlacementToWorld() used for inserting defensive enemies.
   // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
-  OkayToUpgradeEliteToSpecialProfiledEnemy(addressof(pp));
+  OkayToUpgradeEliteToSpecialProfiledEnemy(pp);
 
   pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
@@ -1927,17 +1920,15 @@ export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYP
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
 
-  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), ubMilitiaClass);
-  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), ubMilitiaClass);
+  bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, ubMilitiaClass);
+  bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, ubMilitiaClass);
   bp.bTeam = MILITIA_TEAM;
   bp.ubSoldierClass = ubMilitiaClass;
   bp.bOrders = Enum241.STATIONARY;
   bp.bAttitude = Random(Enum242.MAXATTITUDES);
   // bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = -1;
-  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
   return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
@@ -1950,20 +1941,18 @@ export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIER
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_CREATURE);
   }
 
-  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), Enum262.SOLDIER_CLASS_CREATURE);
-  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), Enum262.SOLDIER_CLASS_CREATURE);
+  bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, Enum262.SOLDIER_CLASS_CREATURE);
+  bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, Enum262.SOLDIER_CLASS_CREATURE);
   bp.bTeam = CREATURE_TEAM;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_CREATURE;
   bp.bOrders = Enum241.SEEKENEMY;
   bp.bAttitude = Enum242.AGGRESSIVE;
   bp.bBodyType = bCreatureBodyType;
-  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
   return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
-export function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
+export function RandomizeRelativeLevel(bRelLevel: INT8, ubSoldierClass: UINT8): INT8 {
   let ubLocationModifier: UINT8;
   let bRollModifier: INT8;
   let bRoll: INT8;
@@ -2008,33 +1997,33 @@ export function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass
   switch (bAdjustedRoll) {
     case 0:
       // bad
-      pbRelLevel.value = 0;
+      bRelLevel = 0;
       break;
     case 1:
     case 2:
       // poor
-      pbRelLevel.value = 1;
+      bRelLevel = 1;
       break;
     case 3:
     case 4:
     case 5:
     case 6:
       // average
-      pbRelLevel.value = 2;
+      bRelLevel = 2;
       break;
     case 7:
     case 8:
       // good
-      pbRelLevel.value = 3;
+      bRelLevel = 3;
       break;
     case 9:
       // great
-      pbRelLevel.value = 4;
+      bRelLevel = 4;
       break;
 
     default:
       Assert(false);
-      pbRelLevel.value = 2;
+      bRelLevel = 2;
       break;
   }
 
@@ -2051,6 +2040,8 @@ export function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass
                   }
           }
   */
+
+  return bRelLevel;
 }
 
 // This function shouldn't be called outside of tactical
@@ -2072,7 +2063,6 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
     if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY))) {
       GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
 
-      memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
       MercCreateStruct.bTeam = bTeam;
       MercCreateStruct.ubProfile = ubProfileID;
       MercCreateStruct.sSectorX = sSectorX;
@@ -2080,7 +2070,7 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
       MercCreateStruct.bSectorZ = gbWorldSectorZ;
       MercCreateStruct.sInsertionGridNo = usMapPos;
 
-      RandomizeNewSoldierStats(addressof(MercCreateStruct));
+      RandomizeNewSoldierStats(MercCreateStruct);
 
       if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
         AddSoldierToSector(ubID);
@@ -2092,94 +2082,94 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   }
 }
 
-function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
+function CopyProfileItems(pSoldier: SOLDIERTYPE, pCreateStruct: SOLDIERCREATE_STRUCT): void {
   let cnt: UINT32;
   let cnt2: UINT32;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pProfile: MERCPROFILESTRUCT;
   let Obj: OBJECTTYPE = createObjectType();
   let uiMoneyLeft: UINT32;
   let uiMoneyLimitInSlot: UINT32;
   let bSlot: INT8;
 
-  pProfile = addressof(gMercProfiles[pCreateStruct.value.ubProfile]);
+  pProfile = gMercProfiles[pCreateStruct.ubProfile];
 
   // Copy over inv if we want to
-  if (pCreateStruct.value.fCopyProfileItemsOver || pSoldier.value.bTeam != OUR_TEAM) {
-    if (pCreateStruct.value.fPlayerMerc) {
+  if (pCreateStruct.fCopyProfileItemsOver || pSoldier.bTeam != OUR_TEAM) {
+    if (pCreateStruct.fPlayerMerc) {
       // do some special coding to put stuff in the profile in better-looking
       // spots
-      memset(pSoldier.value.inv, 0, Enum261.NUM_INV_SLOTS * sizeof(OBJECTTYPE));
+      pSoldier.inv.forEach(resetObjectType);
       for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
-        if (pProfile.value.inv[cnt] != NOTHING) {
-          CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(Obj));
+        if (pProfile.inv[cnt] != NOTHING) {
+          CreateItems(pProfile.inv[cnt], pProfile.bInvStatus[cnt], pProfile.bInvNumber[cnt], Obj);
           if (Item[Obj.usItem].fFlags & ITEM_ATTACHMENT) {
             // try to find the appropriate item to attach to!
             for (cnt2 = 0; cnt2 < Enum261.NUM_INV_SLOTS; cnt2++) {
-              if (pSoldier.value.inv[cnt2].usItem != NOTHING && ValidAttachment(Obj.usItem, pSoldier.value.inv[cnt2].usItem)) {
-                AttachObject(null, addressof(pSoldier.value.inv[cnt2]), addressof(Obj));
+              if (pSoldier.inv[cnt2].usItem != NOTHING && ValidAttachment(Obj.usItem, pSoldier.inv[cnt2].usItem)) {
+                AttachObject(null, pSoldier.inv[cnt2], Obj);
                 break;
               }
             }
             if (cnt2 == Enum261.NUM_INV_SLOTS) {
               // oh well, couldn't find anything to attach to!
-              AutoPlaceObject(pSoldier, addressof(Obj), false);
+              AutoPlaceObject(pSoldier, Obj, false);
             }
           } else {
-            AutoPlaceObject(pSoldier, addressof(Obj), false);
+            AutoPlaceObject(pSoldier, Obj, false);
           }
         }
       }
-      pProfile.value.usOptionalGearCost = 0;
+      pProfile.usOptionalGearCost = 0;
     } else {
       for (cnt = 0; cnt < Enum261.NUM_INV_SLOTS; cnt++) {
-        if (pProfile.value.inv[cnt] != NOTHING) {
-          if (Item[pProfile.value.inv[cnt]].usItemClass == IC_KEY) {
+        if (pProfile.inv[cnt] != NOTHING) {
+          if (Item[pProfile.inv[cnt]].usItemClass == IC_KEY) {
             // since keys depend on 2 values, they pretty much have to be hardcoded.
             // and if a case isn't handled here it's better to not give any key than
             // to provide one which doesn't work and would confuse everything.
-            switch (pCreateStruct.value.ubProfile) {
+            switch (pCreateStruct.ubProfile) {
               case Enum268.BREWSTER:
-                if (pProfile.value.inv[cnt] >= Enum225.KEY_1 && pProfile.value.inv[cnt] <= Enum225.KEY_32) {
-                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 19);
+                if (pProfile.inv[cnt] >= Enum225.KEY_1 && pProfile.inv[cnt] <= Enum225.KEY_32) {
+                  CreateKeyObject(pSoldier.inv[cnt], pProfile.bInvNumber[cnt], 19);
                 } else {
-                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  resetObjectType(pSoldier.inv[cnt]);
                 }
                 break;
               case Enum268.SKIPPER:
-                if (pProfile.value.inv[cnt] >= Enum225.KEY_1 && pProfile.value.inv[cnt] <= Enum225.KEY_32) {
-                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 11);
+                if (pProfile.inv[cnt] >= Enum225.KEY_1 && pProfile.inv[cnt] <= Enum225.KEY_32) {
+                  CreateKeyObject(pSoldier.inv[cnt], pProfile.bInvNumber[cnt], 11);
                 } else {
-                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  resetObjectType(pSoldier.inv[cnt]);
                 }
                 break;
               case Enum268.DOREEN:
-                if (pProfile.value.inv[cnt] >= Enum225.KEY_1 && pProfile.value.inv[cnt] <= Enum225.KEY_32) {
-                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 32);
+                if (pProfile.inv[cnt] >= Enum225.KEY_1 && pProfile.inv[cnt] <= Enum225.KEY_32) {
+                  CreateKeyObject(pSoldier.inv[cnt], pProfile.bInvNumber[cnt], 32);
                 } else {
-                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  resetObjectType(pSoldier.inv[cnt]);
                 }
                 break;
               default:
-                memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                resetObjectType(pSoldier.inv[cnt]);
                 break;
             }
           } else {
-            CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(pSoldier.value.inv[cnt]));
+            CreateItems(pProfile.inv[cnt], pProfile.bInvStatus[cnt], pProfile.bInvNumber[cnt], pSoldier.inv[cnt]);
           }
-          if (pProfile.value.inv[cnt] == Enum225.ROCKET_RIFLE || pProfile.value.inv[cnt] == Enum225.AUTO_ROCKET_RIFLE) {
-            pSoldier.value.inv[cnt].ubImprintID = pSoldier.value.ubProfile;
+          if (pProfile.inv[cnt] == Enum225.ROCKET_RIFLE || pProfile.inv[cnt] == Enum225.AUTO_ROCKET_RIFLE) {
+            pSoldier.inv[cnt].ubImprintID = pSoldier.ubProfile;
           }
           if (gubItemDroppableFlag[cnt]) {
-            if (pProfile.value.ubInvUndroppable & gubItemDroppableFlag[cnt]) {
-              pSoldier.value.inv[cnt].fFlags |= OBJECT_UNDROPPABLE;
+            if (pProfile.ubInvUndroppable & gubItemDroppableFlag[cnt]) {
+              pSoldier.inv[cnt].fFlags |= OBJECT_UNDROPPABLE;
             }
           }
         } else {
-          memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+          resetObjectType(pSoldier.inv[cnt]);
         }
       }
-      if (pProfile.value.uiMoney > 0) {
-        uiMoneyLeft = pProfile.value.uiMoney;
+      if (pProfile.uiMoney > 0) {
+        uiMoneyLeft = pProfile.uiMoney;
         bSlot = FindEmptySlotWithin(pSoldier, Enum261.BIGPOCK1POS, Enum261.SMALLPOCK8POS);
 
         // add in increments of
@@ -2189,13 +2179,13 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             uiMoneyLimitInSlot /= 2;
           }
 
-          CreateItem(Enum225.MONEY, 100, addressof(pSoldier.value.inv[bSlot]));
+          CreateItem(Enum225.MONEY, 100, pSoldier.inv[bSlot]);
           if (uiMoneyLeft > uiMoneyLimitInSlot) {
             // fill pocket with money
-            pSoldier.value.inv[bSlot].uiMoneyAmount = uiMoneyLimitInSlot;
+            pSoldier.inv[bSlot].uiMoneyAmount = uiMoneyLimitInSlot;
             uiMoneyLeft -= uiMoneyLimitInSlot;
           } else {
-            pSoldier.value.inv[bSlot].uiMoneyAmount = uiMoneyLeft;
+            pSoldier.inv[bSlot].uiMoneyAmount = uiMoneyLeft;
             // done!
             break;
           }
@@ -2212,15 +2202,15 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
 // the associated facts are done elsewhere.  The function will set the profile for the SOLDIERCREATE_STRUCT
 // and the rest will be handled automatically so long the ubProfile field doesn't get changed.
 // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
-export function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
+export function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: SOLDIERCREATE_STRUCT): void {
   if (!gfProfiledEnemyAdded && gubEnemyEncounterCode != Enum164.ENEMY_ENCOUNTER_CODE && gubEnemyEncounterCode != Enum164.ENEMY_INVASION_CODE) {
-    if (gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] == 1 && !pp.value.fOnRoof) {
+    if (gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] == 1 && !pp.fOnRoof) {
       gubFact[Enum170.FACT_MIKE_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
-      pp.value.ubProfile = Enum268.MIKE;
+      pp.ubProfile = Enum268.MIKE;
       gfProfiledEnemyAdded = true;
-    } else if (gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] == 1 && !pp.value.fOnRoof) {
+    } else if (gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] == 1 && !pp.fOnRoof) {
       gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
-      pp.value.ubProfile = Enum268.IGGY;
+      pp.ubProfile = Enum268.IGGY;
       gfProfiledEnemyAdded = true;
     }
   }
@@ -2228,12 +2218,12 @@ export function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREA
 
 export function TrashAllSoldiers(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   cnt = 0;
 
-  for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; pSoldier++, cnt++) {
-    if (pSoldier.value.bActive) {
+  for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive) {
       // Delete from world
       TacticalRemoveSoldier(cnt);
     }
@@ -2298,7 +2288,7 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
   fValue = Math.sqrt((sRows * sRows) + (sCols * sCols));
 
-  if (fmod(fValue, 1.0) >= 0.50) {
+  if (fValue % 1.0 >= 0.50) {
     ubDistance = (1 + fValue);
   } else {
     ubDistance = fValue;
@@ -2307,7 +2297,7 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   return ubDistance;
 }
 
-function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
+function ReduceHighExpLevels(bExpLevel: INT8): INT8 {
   let ubRoll: UINT8;
   // important: must reset these to 0 by default for logic to work!
   let ubChanceLvl8: UINT8 = 0;
@@ -2322,7 +2312,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   switch (gGameOptions.ubDifficultyLevel) {
     case Enum9.DIF_LEVEL_EASY:
       // max level: 6
-      switch (pbExpLevel.value) {
+      switch (bExpLevel) {
         case 6:
           ubChanceLvl6 = 25;
           ubChanceLvl5 = 100;
@@ -2343,7 +2333,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
 
     case Enum9.DIF_LEVEL_MEDIUM:
       // max level: 7
-      switch (pbExpLevel.value) {
+      switch (bExpLevel) {
         case 7:
           ubChanceLvl7 = 25;
           ubChanceLvl6 = 100;
@@ -2361,7 +2351,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
 
     case Enum9.DIF_LEVEL_HARD:
       // max level: 8
-      switch (pbExpLevel.value) {
+      switch (bExpLevel) {
         case 8:
           ubChanceLvl8 = 25;
           ubChanceLvl7 = 100;
@@ -2377,14 +2367,16 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   ubRoll = Random(100);
 
   if (ubRoll < ubChanceLvl8)
-    pbExpLevel.value = 8;
+    bExpLevel = 8;
   else if (ubRoll < ubChanceLvl7)
-    pbExpLevel.value = 7;
+    bExpLevel = 7;
   else if (ubRoll < ubChanceLvl6)
-    pbExpLevel.value = 6;
+    bExpLevel = 6;
   else if (ubRoll < ubChanceLvl5)
-    pbExpLevel.value = 5;
+    bExpLevel = 5;
   // else leave it alone
+
+  return bExpLevel;
 }
 
 }

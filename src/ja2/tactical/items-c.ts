@@ -2203,7 +2203,7 @@ function PerformAttachmentComboMerge(pObj: OBJECTTYPE, bAttachmentComboMerge: IN
   pObj.bStatus[0] = (uiStatusTotal / bNumStatusContributors);
 }
 
-export function AttachObject(pSoldier: SOLDIERTYPE, pTargetObj: OBJECTTYPE, pAttachment: OBJECTTYPE): boolean {
+export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYPE, pAttachment: OBJECTTYPE): boolean {
   let bAttachPos: INT8;
   let bSecondAttachPos: INT8; //, bAbility, bSuccess;
   let usResult: UINT16;
@@ -3534,7 +3534,7 @@ function RenumberAttachments(pObj: OBJECTTYPE): void {
   }
 }
 
-export function RemoveAttachment(pObj: OBJECTTYPE, bAttachPos: INT8, pNewObj: OBJECTTYPE): boolean {
+export function RemoveAttachment(pObj: OBJECTTYPE, bAttachPos: INT8, pNewObj: OBJECTTYPE | null): boolean {
   let bGrenade: INT8;
 
   if (!pObj) {
