@@ -35,13 +35,6 @@ const OPT_DONE_BTN_Y = OPT_SAVE_BTN_Y;
 
 const OPT_GAP_BETWEEN_TOGGLE_BOXES = 31; // 40
 
-// Text
-const OPT_TOGGLE_BOX_FIRST_COL_TEXT_X = OPT_TOGGLE_BOX_FIRST_COLUMN_X + OPT_SPACE_BETWEEN_TEXT_AND_TOGGLE_BOX; // 350
-const OPT_TOGGLE_BOX_FIRST_COL_TEXT_Y = OPT_TOGGLE_BOX_FIRST_COLUMN_START_Y; // 100
-
-const OPT_TOGGLE_BOX_SECOND_TEXT_X = OPT_TOGGLE_BOX_SECOND_COLUMN_X + OPT_SPACE_BETWEEN_TEXT_AND_TOGGLE_BOX; // 350
-const OPT_TOGGLE_BOX_SECOND_TEXT_Y = OPT_TOGGLE_BOX_SECOND_COLUMN_START_Y; // 100
-
 // toggle boxes
 const OPT_SPACE_BETWEEN_TEXT_AND_TOGGLE_BOX = 30; // 220
 const OPT_TOGGLE_TEXT_OFFSET_Y = 2; // 3
@@ -53,6 +46,13 @@ const OPT_TOGGLE_BOX_SECOND_COLUMN_X = 428; // OPT_TOGGLE_BOX_TEXT_X + OPT_SPACE
 const OPT_TOGGLE_BOX_SECOND_COLUMN_START_Y = OPT_TOGGLE_BOX_FIRST_COLUMN_START_Y;
 
 const OPT_TOGGLE_BOX_TEXT_WIDTH = OPT_TOGGLE_BOX_SECOND_COLUMN_X - OPT_TOGGLE_BOX_FIRST_COLUMN_X - 20;
+
+// Text
+const OPT_TOGGLE_BOX_FIRST_COL_TEXT_X = OPT_TOGGLE_BOX_FIRST_COLUMN_X + OPT_SPACE_BETWEEN_TEXT_AND_TOGGLE_BOX; // 350
+const OPT_TOGGLE_BOX_FIRST_COL_TEXT_Y = OPT_TOGGLE_BOX_FIRST_COLUMN_START_Y; // 100
+
+const OPT_TOGGLE_BOX_SECOND_TEXT_X = OPT_TOGGLE_BOX_SECOND_COLUMN_X + OPT_SPACE_BETWEEN_TEXT_AND_TOGGLE_BOX; // 350
+const OPT_TOGGLE_BOX_SECOND_TEXT_Y = OPT_TOGGLE_BOX_SECOND_COLUMN_START_Y; // 100
 
 // Slider bar defines
 const OPT_GAP_BETWEEN_SLIDER_BARS = 60;
@@ -134,7 +134,7 @@ let giGotoLoadBtnImage: INT32;
 let guiQuitButton: UINT32;
 let giQuitBtnImage: INT32;
 
-export let guiDoneButton: UINT32;
+let guiDoneButton: UINT32;
 let giDoneBtnImage: INT32;
 
 // checkbox to toggle tracking mode on or off
@@ -579,7 +579,7 @@ function GetOptionsScreenUserInput(): void {
   let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while (DequeueEvent(Event)) {
     // HOOK INTO MOUSE HOOKS
@@ -604,15 +604,15 @@ function GetOptionsScreenUserInput(): void {
         break;
     }
 
-    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(Event) && Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
           SetOptionsExitScreen(guiPreviousOptionScreen);
           break;
 
         // Enter the save game screen
-        case 's':
-        case 'S':
+        case 's'.charCodeAt(0):
+        case 'S'.charCodeAt(0):
           // if the save game button isnt disabled
           if (ButtonList[guiOptGotoSaveGameBtn].uiFlags & BUTTON_ENABLED) {
             SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
@@ -621,8 +621,8 @@ function GetOptionsScreenUserInput(): void {
           break;
 
         // Enter the Load game screen
-        case 'l':
-        case 'L':
+        case 'l'.charCodeAt(0):
+        case 'L'.charCodeAt(0):
           SetOptionsExitScreen(Enum26.SAVE_LOAD_SCREEN);
           gfSaveGame = false;
           break;
@@ -807,7 +807,7 @@ function MusicSliderChangeCallBack(iNewValue: INT32): void {
   MusicSetVolume(iNewValue);
 }
 
-export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect): boolean {
   // reset exit mode
   gfExitOptionsDueToMessageBox = true;
 
@@ -818,14 +818,14 @@ export function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: string /* P
   return giOptionsMessageBox != -1;
 }
 
-function DoOptionsMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+function DoOptionsMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): boolean {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 639, 479);
 
   // reset exit mode
   gfExitOptionsDueToMessageBox = true;
 
   // do message box and return
-  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
+  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, CenteringRect);
 
   // send back return state
   return giOptionsMessageBox != -1;

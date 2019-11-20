@@ -3,8 +3,8 @@ namespace ja2 {
 const MAIN_PAGE_BUTTON_TEXT_WIDTH = 95;
 
 // main page buttons
-let giIMPMainPageButton: INT32[] /* [6] */;
-let giIMPMainPageButtonImage: INT32[] /* [6] */;
+let giIMPMainPageButton: INT32[] /* [6] */ = createArray(6, 0);
+let giIMPMainPageButtonImage: INT32[] /* [6] */ = createArray(6, 0);
 
 // mouse regions for not entablable warning
 let pIMPMainPageMouseRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);

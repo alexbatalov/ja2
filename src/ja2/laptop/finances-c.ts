@@ -100,8 +100,8 @@ let guiLastPageLoaded: UINT32 = 0;
 let guiLastPageInRecordsList: UINT32 = 0;
 
 // finance screen buttons
-let giFinanceButton: INT32[] /* [4] */;
-let giFinanceButtonImage: INT32[] /* [4] */;
+let giFinanceButton: INT32[] /* [4] */ = createArray(4, 0);
+let giFinanceButtonImage: INT32[] /* [4] */ = createArray(4, 0);
 
 export function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, iAmount: INT32): UINT32 {
   // adds transaction to player's book(Financial List), returns unique id number of it

@@ -771,7 +771,7 @@ function BtnBobbyRAcceptOrderCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
-export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: BobbyRayPurchaseStruct[], fJustDisplayTitles: boolean, iOrderNum: INT32): void {
+export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: BobbyRayPurchaseStruct[] | null, fJustDisplayTitles: boolean, iOrderNum: INT32): void {
   let i: UINT16;
   let j: UINT16;
   let sText: string /* wchar_t[400] */;
@@ -1061,10 +1061,9 @@ function SelectConfirmOrderRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32)
   }
 }
 
+/* static */ let CreateDestroyBobbyRDropDown__usHeight: UINT16;
+/* static */ let CreateDestroyBobbyRDropDown__fMouseRegionsCreated: boolean = false;
 function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
-  /* static */ let usHeight: UINT16;
-  /* static */ let fMouseRegionsCreated: boolean = false;
-
   switch (ubDropDownAction) {
     case Enum69.BR_DROP_DOWN_NO_ACTION: {
     } break;
@@ -1077,12 +1076,12 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       let usTemp: UINT16;
       let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT());
 
-      if (fMouseRegionsCreated) {
+      if (CreateDestroyBobbyRDropDown__fMouseRegionsCreated) {
         gubDropDownAction = Enum69.BR_DROP_DOWN_DESTROY;
 
         break;
       }
-      fMouseRegionsCreated = true;
+      CreateDestroyBobbyRDropDown__fMouseRegionsCreated = true;
 
       usPosX = BOBBYR_CITY_START_LOCATION_X;
       usPosY = BOBBYR_CITY_START_LOCATION_Y;
@@ -1139,7 +1138,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
     case Enum69.BR_DROP_DOWN_DESTROY: {
       let i: UINT8;
 
-      if (!fMouseRegionsCreated)
+      if (!CreateDestroyBobbyRDropDown__fMouseRegionsCreated)
         break;
 
       for (i = 0; i < BOBBYR_NUM_DISPLAYED_CITIES; i++)
@@ -1174,7 +1173,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       //			}
 
       gfReDrawBobbyOrder = true;
-      fMouseRegionsCreated = false;
+      CreateDestroyBobbyRDropDown__fMouseRegionsCreated = false;
       gubDropDownAction = Enum69.BR_DROP_DOWN_NO_ACTION;
     } break;
 
@@ -1192,7 +1191,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       //
       // Place the border around the background
       //
-      usHeight = BOBBYR_SCROLL_AREA_HEIGHT;
+      CreateDestroyBobbyRDropDown__usHeight = BOBBYR_SCROLL_AREA_HEIGHT;
 
       hImageHandle = GetVideoObject(guiDropDownBorder);
 
@@ -1202,12 +1201,12 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
         // TOP ROW
         BltVideoObject(FRAME_BUFFER, hImageHandle, 1, i + BOBBYR_CITY_START_LOCATION_X, usPosY + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
         // BOTTOM ROW
-        BltVideoObject(FRAME_BUFFER, hImageHandle, 6, i + BOBBYR_CITY_START_LOCATION_X, usHeight - 10 + 6 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+        BltVideoObject(FRAME_BUFFER, hImageHandle, 6, i + BOBBYR_CITY_START_LOCATION_X, CreateDestroyBobbyRDropDown__usHeight - 10 + 6 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       }
 
       // blit the left and right row of images
       usPosX = 0;
-      for (i = 10; i < usHeight - 10; i += 10) {
+      for (i = 10; i < CreateDestroyBobbyRDropDown__usHeight - 10; i += 10) {
         BltVideoObject(FRAME_BUFFER, hImageHandle, 3, usPosX + BOBBYR_CITY_START_LOCATION_X, i + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
         BltVideoObject(FRAME_BUFFER, hImageHandle, 4, usPosX + BOBBYR_DROP_DOWN_WIDTH - 4 + BOBBYR_CITY_START_LOCATION_X, i + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       }
@@ -1218,9 +1217,9 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       // top right
       BltVideoObject(FRAME_BUFFER, hImageHandle, 2, BOBBYR_DROP_DOWN_WIDTH - 10 + BOBBYR_CITY_START_LOCATION_X, usPosY + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       // bottom left
-      BltVideoObject(FRAME_BUFFER, hImageHandle, 5, 0 + BOBBYR_CITY_START_LOCATION_X, usHeight - 10 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hImageHandle, 5, 0 + BOBBYR_CITY_START_LOCATION_X, CreateDestroyBobbyRDropDown__usHeight - 10 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
       // bottom right
-      BltVideoObject(FRAME_BUFFER, hImageHandle, 7, BOBBYR_DROP_DOWN_WIDTH - 10 + BOBBYR_CITY_START_LOCATION_X, usHeight - 10 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hImageHandle, 7, BOBBYR_DROP_DOWN_WIDTH - 10 + BOBBYR_CITY_START_LOCATION_X, CreateDestroyBobbyRDropDown__usHeight - 10 + BOBBYR_CITY_START_LOCATION_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       DrawSelectedCity(gbSelectedCity);
 

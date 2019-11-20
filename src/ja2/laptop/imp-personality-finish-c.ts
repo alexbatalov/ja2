@@ -16,8 +16,8 @@ let fExitIMPPerFinAtOk: boolean = false;
 let fCreateFinishOkButton: boolean = false;
 
 // buttons
-let giIMPPersonalityFinishButton: UINT32[] /* [2] */;
-let giIMPPersonalityFinishButtonImage: UINT32[] /* [2] */;
+let giIMPPersonalityFinishButton: UINT32[] /* [2] */ = createArray(2, 0);
+let giIMPPersonalityFinishButtonImage: UINT32[] /* [2] */ = createArray(2, 0);
 
 export function EnterIMPPersonalityFinish(): void {
   // reset states

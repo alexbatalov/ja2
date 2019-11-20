@@ -809,7 +809,7 @@ function GetHelpScreenUserInput(): void {
   let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while (DequeueEvent(Event)) {
     // HOOK INTO MOUSE HOOKS

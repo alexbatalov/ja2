@@ -1,11 +1,11 @@
 namespace ja2 {
 
-let giIMPPersonalityQuizButton: UINT32[] /* [2] */;
-let giIMPPersonalityQuizButtonImage: UINT32[] /* [2] */;
+let giIMPPersonalityQuizButton: UINT32[] /* [2] */ = createArray(2, 0);
+let giIMPPersonalityQuizButtonImage: UINT32[] /* [2] */ = createArray(2, 0);
 
 // these are the buttons for the current question
-let giIMPPersonalityQuizAnswerButton: INT32[] /* [10] */;
-let giIMPPersonalityQuizAnswerButtonImage: INT32[] /* [10] */;
+let giIMPPersonalityQuizAnswerButton: INT32[] /* [10] */ = createArray(10, 0);
+let giIMPPersonalityQuizAnswerButtonImage: INT32[] /* [10] */ = createArray(10, 0);
 
 let giPreviousQuestionButton: INT32;
 let giNextQuestionButton: INT32;
@@ -1303,7 +1303,7 @@ function HandleIMPQuizKeyBoard(): void {
   let MousePos: POINT = createPoint();
   let fSkipFrame: boolean = false;
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while ((DequeueEvent(InputEvent) == true)) {
     if (fSkipFrame == false) {

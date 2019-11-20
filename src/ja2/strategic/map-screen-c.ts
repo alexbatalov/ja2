@@ -3450,7 +3450,7 @@ function HandleMapUI(): UINT32 {
         if (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) != (sMapX + (sMapY * MAP_WORLD_X))) {
           sX = (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) % MAP_WORLD_X);
           sY = (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) / MAP_WORLD_X);
-          GetCursorPos(addressof(MousePos));
+          GetCursorPos(MousePos);
           RestoreBackgroundForMapGrid(sX, sY);
           // fMapPanelDirty = TRUE;
         }
@@ -3696,7 +3696,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   while (DequeueEvent(InputEvent))
   //		while( DequeueSpecificEvent( &InputEvent, KEY_DOWN ) )		// doesn't work for some reason
   {
-    GetCursorPos(addressof(MousePos));
+    GetCursorPos(MousePos);
 
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
@@ -4594,7 +4594,7 @@ export function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<
     return false;
   }
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   if (fZoomFlag) {
     if (MousePos.x > MAP_GRID_X + MAP_VIEW_START_X)
@@ -6376,7 +6376,7 @@ function IsCursorWithInRegion(sLeft: INT16, sRight: INT16, sTop: INT16, sBottom:
   let MousePos: POINT = createPoint();
 
   // get cursor position
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   // is it within region?
 

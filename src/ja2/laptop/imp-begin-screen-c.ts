@@ -38,8 +38,8 @@ let uiNickNameCharacterPosition: UINT32 = 0;
 let bGenderFlag: INT8 = -1;
 
 // IMP begin page buttons
-let giIMPBeginScreenButton: INT32[] /* [1] */;
-let giIMPBeginScreenButtonImage: INT32[] /* [1] */;
+let giIMPBeginScreenButton: INT32[] /* [1] */ = createArray(1, 0);
+let giIMPBeginScreenButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
 // current mode of entering text we are in, ie FULL or Nick name?
 let ubTextEnterMode: UINT8 = 0;
@@ -284,7 +284,7 @@ function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
   let MousePos: POINT = createPoint();
 
   // get the current curosr position, might just need it.
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   // handle input events
   while (DequeueEvent(InputEvent)) {
@@ -307,7 +307,7 @@ switch(InputEvent.usEvent)
               break;
            }
            */
-    if (!HandleTextInput(addressof(InputEvent)) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT)) {
+    if (!HandleTextInput(InputEvent) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT)) {
       switch (InputEvent.usParam) {
         case ((ENTER)):
           // check to see if gender was highlighted..if so, select it
@@ -465,48 +465,48 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
   return;
 }
 
+/* static */ let DisplayFullNameStringCursor__uiBaseTime: UINT32 = 0;
+/* static */ let DisplayFullNameStringCursor__iCurrentState: UINT32 = 0;
+/* static */ let DisplayFullNameStringCursor__fIncrement: boolean = true;
 function DisplayFullNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   let uiDestPitchBYTES: UINT32;
-  /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  /* static */ let iCurrentState: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
-  /* static */ let fIncrement: boolean = true;
 
-  if (uiBaseTime == 0) {
-    uiBaseTime = GetJA2Clock();
+  if (DisplayFullNameStringCursor__uiBaseTime == 0) {
+    DisplayFullNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   // get difference
-  uiDeltaTime = GetJA2Clock() - uiBaseTime;
+  uiDeltaTime = GetJA2Clock() - DisplayFullNameStringCursor__uiBaseTime;
 
   // if difference is long enough, rotate colors
   if (uiDeltaTime > MIN_GLOW_DELTA) {
-    if (iCurrentState == 10) {
+    if (DisplayFullNameStringCursor__iCurrentState == 10) {
       // start rotating downward
-      fIncrement = false;
+      DisplayFullNameStringCursor__fIncrement = false;
     }
-    if (iCurrentState == 0) {
+    if (DisplayFullNameStringCursor__iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = true;
+      DisplayFullNameStringCursor__fIncrement = true;
     }
     // if increment upward, increment iCurrentState
-    if (fIncrement) {
-      iCurrentState++;
+    if (DisplayFullNameStringCursor__fIncrement) {
+      DisplayFullNameStringCursor__iCurrentState++;
     } else {
       // else downwards
-      iCurrentState--;
+      DisplayFullNameStringCursor__iCurrentState--;
     }
     // reset basetime to current clock
-    uiBaseTime = GetJA2Clock();
+    DisplayFullNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(true, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() - 2, Get16BPPColor(FROMRGB(GlowColorsList[DisplayFullNameStringCursor__iCurrentState][0], GlowColorsList[DisplayFullNameStringCursor__iCurrentState][1], GlowColorsList[DisplayFullNameStringCursor__iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1 - 2);
 
@@ -515,48 +515,48 @@ function DisplayFullNameStringCursor(): void {
   return;
 }
 
+/* static */ let DisplayNickNameStringCursor__uiBaseTime: UINT32 = 0;
+/* static */ let DisplayNickNameStringCursor__iCurrentState: UINT32 = 0;
+/* static */ let DisplayNickNameStringCursor__fIncrement: boolean = true;
 function DisplayNickNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   let uiDestPitchBYTES: UINT32;
-  /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
-  /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: boolean = true;
 
-  if (uiBaseTime == 0) {
-    uiBaseTime = GetJA2Clock();
+  if (DisplayNickNameStringCursor__uiBaseTime == 0) {
+    DisplayNickNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   // get difference
-  uiDeltaTime = GetJA2Clock() - uiBaseTime;
+  uiDeltaTime = GetJA2Clock() - DisplayNickNameStringCursor__uiBaseTime;
 
   // if difference is long enough, rotate colors
   if (uiDeltaTime > MIN_GLOW_DELTA) {
-    if (iCurrentState == 10) {
+    if (DisplayNickNameStringCursor__iCurrentState == 10) {
       // start rotating downward
-      fIncrement = false;
+      DisplayNickNameStringCursor__fIncrement = false;
     }
-    if (iCurrentState == 0) {
+    if (DisplayNickNameStringCursor__iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = true;
+      DisplayNickNameStringCursor__fIncrement = true;
     }
     // if increment upward, increment iCurrentState
-    if (fIncrement) {
-      iCurrentState++;
+    if (DisplayNickNameStringCursor__fIncrement) {
+      DisplayNickNameStringCursor__iCurrentState++;
     } else {
       // else downwards
-      iCurrentState--;
+      DisplayNickNameStringCursor__iCurrentState--;
     }
     // reset basetime to current clock
-    uiBaseTime = GetJA2Clock();
+    DisplayNickNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(true, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[DisplayNickNameStringCursor__iCurrentState][0], GlowColorsList[DisplayNickNameStringCursor__iCurrentState][1], GlowColorsList[DisplayNickNameStringCursor__iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT() + 1);
 
@@ -617,48 +617,48 @@ function DisplayPlayerNickNameString(): void {
   return;
 }
 
+/* static */ let DisplayMaleGlowCursor__uiBaseTime: UINT32 = 0;
+/* static */ let DisplayMaleGlowCursor__iCurrentState: UINT32 = 0;
+/* static */ let DisplayMaleGlowCursor__fIncrement: boolean = true;
 function DisplayMaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   let uiDestPitchBYTES: UINT32;
-  /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: boolean = true;
   let pDestBuf: Pointer<UINT8>;
 
-  if (uiBaseTime == 0) {
-    uiBaseTime = GetJA2Clock();
+  if (DisplayMaleGlowCursor__uiBaseTime == 0) {
+    DisplayMaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
   // get difference
-  uiDeltaTime = GetJA2Clock() - uiBaseTime;
+  uiDeltaTime = GetJA2Clock() - DisplayMaleGlowCursor__uiBaseTime;
 
   // if difference is long enough, rotate colors
   if (uiDeltaTime > MIN_GLOW_DELTA) {
-    if (iCurrentState == 10) {
+    if (DisplayMaleGlowCursor__iCurrentState == 10) {
       // start rotating downward
-      fIncrement = false;
+      DisplayMaleGlowCursor__fIncrement = false;
     }
-    if (iCurrentState == 0) {
+    if (DisplayMaleGlowCursor__iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = true;
+      DisplayMaleGlowCursor__fIncrement = true;
     }
     // if increment upward, increment iCurrentState
-    if (fIncrement) {
-      iCurrentState++;
+    if (DisplayMaleGlowCursor__fIncrement) {
+      DisplayMaleGlowCursor__iCurrentState++;
     } else {
       // else downwards
-      iCurrentState--;
+      DisplayMaleGlowCursor__iCurrentState--;
     }
     // reset basetime to current clock
-    uiBaseTime = GetJA2Clock();
+    DisplayMaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
-  RectangleDraw(true, MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  RectangleDraw(true, MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[DisplayMaleGlowCursor__iCurrentState][0], GlowColorsList[DisplayMaleGlowCursor__iCurrentState][1], GlowColorsList[DisplayMaleGlowCursor__iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 
@@ -667,48 +667,48 @@ function DisplayMaleGlowCursor(): void {
   return;
 }
 
+/* static */ let DisplayFemaleGlowCursor__uiBaseTime: UINT32 = 0;
+/* static */ let DisplayFemaleGlowCursor__iCurrentState: UINT32 = 0;
+/* static */ let DisplayFemaleGlowCursor__fIncrement: boolean = true;
 function DisplayFemaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   let uiDestPitchBYTES: UINT32;
-  /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: boolean = true;
   let pDestBuf: Pointer<UINT8>;
 
-  if (uiBaseTime == 0) {
-    uiBaseTime = GetJA2Clock();
+  if (DisplayFemaleGlowCursor__uiBaseTime == 0) {
+    DisplayFemaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
   // get difference
-  uiDeltaTime = GetJA2Clock() - uiBaseTime;
+  uiDeltaTime = GetJA2Clock() - DisplayFemaleGlowCursor__uiBaseTime;
 
   // if difference is long enough, rotate colors
   if (uiDeltaTime > MIN_GLOW_DELTA) {
-    if (iCurrentState == 10) {
+    if (DisplayFemaleGlowCursor__iCurrentState == 10) {
       // start rotating downward
-      fIncrement = false;
+      DisplayFemaleGlowCursor__fIncrement = false;
     }
-    if (iCurrentState == 0) {
+    if (DisplayFemaleGlowCursor__iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = true;
+      DisplayFemaleGlowCursor__fIncrement = true;
     }
     // if increment upward, increment iCurrentState
-    if (fIncrement) {
-      iCurrentState++;
+    if (DisplayFemaleGlowCursor__fIncrement) {
+      DisplayFemaleGlowCursor__iCurrentState++;
     } else {
       // else downwards
-      iCurrentState--;
+      DisplayFemaleGlowCursor__iCurrentState--;
     }
     // reset basetime to current clock
-    uiBaseTime = GetJA2Clock();
+    DisplayFemaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
-  RectangleDraw(true, FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  RectangleDraw(true, FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[DisplayFemaleGlowCursor__iCurrentState][0], GlowColorsList[DisplayFemaleGlowCursor__iCurrentState][1], GlowColorsList[DisplayFemaleGlowCursor__iCurrentState][2])), pDestBuf);
 
   InvalidateRegion(FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 

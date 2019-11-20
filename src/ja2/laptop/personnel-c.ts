@@ -192,11 +192,11 @@ let guiSliderPosition: UINT32;
 // the transfer funds string
 let sTransferString: string /* CHAR16[32] */ = '';
 
-let giPersonnelATMSideButton: INT32[] /* [NUMBER_ATM_BUTTONS] */;
-let giPersonnelATMSideButtonImage: INT32[] /* [NUMBER_ATM_BUTTONS] */;
+let giPersonnelATMSideButton: INT32[] /* [NUMBER_ATM_BUTTONS] */ = createArray(Enum107.NUMBER_ATM_BUTTONS, 0);
+let giPersonnelATMSideButtonImage: INT32[] /* [NUMBER_ATM_BUTTONS] */ = createArray(Enum107.NUMBER_ATM_BUTTONS, 0);
 
-let iNumberPadButtons: INT32[] /* [10] */;
-let iNumberPadButtonsImages: INT32[] /* [10] */;
+let iNumberPadButtons: INT32[] /* [10] */ = createArray(10, 0);
+let iNumberPadButtonsImages: INT32[] /* [10] */ = createArray(10, 0);
 
 let pAtmSideButtonPts: POINT[] /* [] */ = [
   createPointFrom(533, 155),
@@ -246,18 +246,18 @@ let guiDEPARTEDTEAM: UINT32;
 let guiCURRENTTEAM: UINT32;
 let guiPersonnelInventory: UINT32;
 
-let giPersonnelButton: INT32[] /* [6] */;
-let giPersonnelButtonImage: INT32[] /* [6] */;
-let giPersonnelInventoryButtons: INT32[] /* [2] */;
-let giPersonnelInventoryButtonsImages: INT32[] /* [2] */;
+let giPersonnelButton: INT32[] /* [6] */ = createArray(6, 0);
+let giPersonnelButtonImage: INT32[] /* [6] */ = createArray(6, 0);
+let giPersonnelInventoryButtons: INT32[] /* [2] */ = createArray(2, 0);
+let giPersonnelInventoryButtonsImages: INT32[] /* [2] */ = createArray(2, 0);
 let iStartPersonId: INT32; // iId of the person who is leftmost on the display
 let iLastPersonId: INT32;
-let giDepartedButtonImage: INT32[] /* [2] */;
-let giDepartedButton: INT32[] /* [2] */;
+let giDepartedButtonImage: INT32[] /* [2] */ = createArray(2, 0);
+let giDepartedButton: INT32[] /* [2] */ = createArray(2, 0);
 
 // buttons for ATM
-let giPersonnelATMStartButton: INT32[] /* [3] */;
-let giPersonnelATMStartButtonImage: INT32[] /* [3] */;
+let giPersonnelATMStartButton: INT32[] /* [3] */ = createArray(3, 0);
+let giPersonnelATMStartButtonImage: INT32[] /* [3] */ = createArray(3, 0);
 let giPersonnelATMButton: INT32;
 let giPersonnelATMButtonImage: INT32;
 
@@ -4649,7 +4649,7 @@ function HandleSliderBarClickCallback(pRegion: MOUSE_REGION, iReason: INT32): vo
     }
 
     // find the x,y on the slider bar
-    GetCursorPos(addressof(MousePos));
+    GetCursorPos(MousePos);
 
     // get the subregion sizes
     sSizeOfEachSubRegion = ((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
@@ -5347,7 +5347,7 @@ function HandlePersonnelKeyboard(): void {
   let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0'.charCodeAt(0)) && (InputEvent.usParam <= '9'.charCodeAt(0))) {

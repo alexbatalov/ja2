@@ -21,8 +21,8 @@ const CURSOR_Y = IMP_PLAYER_ACTIVATION_STRING_Y - 5;
 const CURSOR_HEIGHT = () => GetFontHeight(FONT14ARIAL()) + 6;
 
 // IMP homepage buttons
-let giIMPHomePageButton: INT32[] /* [1] */;
-let giIMPHomePageButtonImage: INT32[] /* [1] */;
+let giIMPHomePageButton: INT32[] /* [1] */ = createArray(1, 0);
+let giIMPHomePageButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
 // the player activation string
 let pPlayerActivationString: string /* CHAR16[32] */;
@@ -129,48 +129,48 @@ function DisplayPlayerActivationString(): void {
   return;
 }
 
+/* static */ let DisplayActivationStringCursor__uiBaseTime: UINT32 = 0;
+/* static */ let DisplayActivationStringCursor__iCurrentState: UINT32 = 0;
+/* static */ let DisplayActivationStringCursor__fIncrement: boolean = true;
 function DisplayActivationStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   let uiDestPitchBYTES: UINT32;
-  /* static */ let uiBaseTime: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
   let pDestBuf: Pointer<UINT8>;
-  /* static */ let iCurrentState: UINT32 = 0;
-  /* static */ let fIncrement: boolean = true;
 
-  if (uiBaseTime == 0) {
-    uiBaseTime = GetJA2Clock();
+  if (DisplayActivationStringCursor__uiBaseTime == 0) {
+    DisplayActivationStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   // get difference
-  uiDeltaTime = GetJA2Clock() - uiBaseTime;
+  uiDeltaTime = GetJA2Clock() - DisplayActivationStringCursor__uiBaseTime;
 
   // if difference is long enough, rotate colors
   if (uiDeltaTime > MIN_GLOW_DELTA) {
-    if (iCurrentState == 10) {
+    if (DisplayActivationStringCursor__iCurrentState == 10) {
       // start rotating downward
-      fIncrement = false;
+      DisplayActivationStringCursor__fIncrement = false;
     }
-    if (iCurrentState == 0) {
+    if (DisplayActivationStringCursor__iCurrentState == 0) {
       // rotate colors upward
-      fIncrement = true;
+      DisplayActivationStringCursor__fIncrement = true;
     }
     // if increment upward, increment iCurrentState
-    if (fIncrement) {
-      iCurrentState++;
+    if (DisplayActivationStringCursor__fIncrement) {
+      DisplayActivationStringCursor__iCurrentState++;
     } else {
       // else downwards
-      iCurrentState--;
+      DisplayActivationStringCursor__iCurrentState--;
     }
     // reset basetime to current clock
-    uiBaseTime = GetJA2Clock();
+    DisplayActivationStringCursor__uiBaseTime = GetJA2Clock();
   }
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(true, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(true, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT(), Get16BPPColor(FROMRGB(GlowColorsList[DisplayActivationStringCursor__iCurrentState][0], GlowColorsList[DisplayActivationStringCursor__iCurrentState][1], GlowColorsList[DisplayActivationStringCursor__iCurrentState][2])), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -184,7 +184,7 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
   let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while (DequeueEvent(InputEvent) == true) {
     // HOOK INTO MOUSE HOOKS
@@ -205,7 +205,7 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
                     break;
 }
 */
-    if (!HandleTextInput(addressof(InputEvent)) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT || InputEvent.usEvent == KEY_UP)) {
+    if (!HandleTextInput(InputEvent) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT || InputEvent.usEvent == KEY_UP)) {
       switch (InputEvent.usParam) {
         case ((ENTER)):
           if ((InputEvent.usEvent == KEY_UP)) {

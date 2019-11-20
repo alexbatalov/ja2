@@ -218,6 +218,22 @@ export function writeStringNL(string: string, buffer: Buffer, offset: number, le
   return offset + length;
 }
 
+export function readBooleanArray(arr: boolean[], buffer: Buffer, offset: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    arr[i] = Boolean(buffer.readUInt8(offset++));
+  }
+  return offset;
+}
+
+export function writeBooleanArray(arr: boolean[], buffer: Buffer, offset: number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    offset = buffer.writeUInt8(Number(arr[i]), offset);
+  }
+  return offset;
+}
+
 export function readIntArray(arr: number[], buffer: Buffer, offset: number, byteLength: number): number {
   const arrayLength = arr.length;
   for (let i = 0; i < arrayLength; i++) {
@@ -250,6 +266,27 @@ export function writeUIntArray(arr: number[], buffer: Buffer, offset: number, by
     offset = buffer.writeUIntLE(arr[i], offset, byteLength);
   }
   return offset;
+}
+
+export function readObjectArray<T>(arr: T[], buffer: Buffer, offset: number, readFn: (o: T, buffer: Buffer, offset: number) => number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    offset = readFn(arr[i], buffer, offset);
+  }
+  return offset;
+}
+
+export function writeObjectArray<T>(arr: T[], buffer: Buffer, offset: number, writeFn: (o: T, buffer: Buffer, offset: number) => number): number {
+  const arrayLength = arr.length;
+  for (let i = 0; i < arrayLength; i++) {
+    offset = writeFn(arr[i], buffer, offset);
+  }
+  return offset;
+}
+
+export function writePadding(buffer: Buffer, offset: number, length: number) {
+  buffer.fill(0, offset, offset + length);
+  return offset + length;
 }
 
 }

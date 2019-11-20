@@ -52,8 +52,8 @@ const enum Enum82 {
 }
 
 // the page flipping buttons
-let giHistoryButton: INT32[] /* [2] */;
-let giHistoryButtonImage: INT32[] /* [2] */;
+let giHistoryButton: INT32[] /* [2] */ = createArray(2, 0);
+let giHistoryButtonImage: INT32[] /* [2] */ = createArray(2, 0);
 let fInHistoryMode: boolean = false;
 
 // current page displayed

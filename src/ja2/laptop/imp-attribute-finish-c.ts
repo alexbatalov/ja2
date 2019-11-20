@@ -1,8 +1,8 @@
 namespace ja2 {
 
 // buttons
-let giIMPAttributeFinishButtonImage: INT32[] /* [2] */;
-let giIMPAttributeFinishButton: INT32[] /* [2] */;
+let giIMPAttributeFinishButtonImage: INT32[] /* [2] */ = createArray(2, 0);
+let giIMPAttributeFinishButton: INT32[] /* [2] */ = createArray(2, 0);
 
 export function EnterIMPAttributeFinish(): void {
   // create the needed buttons

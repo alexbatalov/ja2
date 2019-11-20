@@ -2,8 +2,8 @@ namespace ja2 {
 
 const IMP_MERC_FILE = "IMP.dat";
 
-let giIMPConfirmButton: UINT32[] /* [2] */;
-let giIMPConfirmButtonImage: UINT32[] /* [2] */;
+let giIMPConfirmButton: UINT32[] /* [2] */ = createArray(2, 0);
+let giIMPConfirmButtonImage: UINT32[] /* [2] */ = createArray(2, 0);
 let fNoAlreadySelected: boolean = false;
 let uiEyeXPositions: UINT16[] /* [] */ = [
   8,

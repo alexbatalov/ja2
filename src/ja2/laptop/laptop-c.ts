@@ -368,7 +368,7 @@ let giCurrentRegion: INT32 = Enum92.NO_REGION;
 let giOldRegion: INT32 = Enum92.NO_REGION;
 
 // used for global variables that need to be saved
-export let LaptopSaveInfo: LaptopSaveInfoStruct;
+export let LaptopSaveInfo: LaptopSaveInfoStruct = createLaptopSaveInfoStruct();
 
 export let fReDrawScreenFlag: boolean = false;
 export let fPausedReDrawScreenFlag: boolean = false; // used in the handler functions to redraw the screen, after the current frame
@@ -403,7 +403,7 @@ function GetLaptopKeyboardInput(): void {
   let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   fTabHandled = false;
 
@@ -486,7 +486,7 @@ export function LaptopScreenInit(): boolean {
   GameInitPersonnel();
 
   // init program states
-  memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
+  gLaptopProgramStates.fill(Enum94.LAPTOP_PROGRAM_MINIMIZED);
 
   gfAtLeastOneMercWasHired = false;
 
@@ -508,11 +508,11 @@ export function InitLaptopAndLaptopScreens(): boolean {
   return true;
 }
 
-export function DrawLapTopIcons(): UINT32 {
+export function DrawLapTopIcons(): boolean {
   return true;
 }
 
-export function DrawLapTopText(): UINT32 {
+export function DrawLapTopText(): boolean {
   // show balance
   DisplayPlayersBalanceToDate();
 
@@ -530,7 +530,7 @@ export function LaptopScreenShutdown(): boolean {
   return true;
 }
 
-function EnterLaptop(): INT32 {
+function EnterLaptop(): boolean {
   // Create, load, initialize data -- just entered the laptop.
 
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
@@ -670,10 +670,10 @@ function EnterLaptop(): INT32 {
   fFirstTimeInLaptop = true;
 
   // reset all bookmark visits
-  memset(addressof(LaptopSaveInfo.fVisitedBookmarkAlready), 0, sizeof(LaptopSaveInfo.fVisitedBookmarkAlready));
+  LaptopSaveInfo.fVisitedBookmarkAlready.fill(false);
 
   // init program states
-  memset(addressof(gLaptopProgramStates), Enum94.LAPTOP_PROGRAM_MINIMIZED, sizeof(gLaptopProgramStates));
+  gLaptopProgramStates.fill(Enum94.LAPTOP_PROGRAM_MINIMIZED);
 
   // turn the power on
   fPowerLightOn = true;
@@ -1510,7 +1510,7 @@ export function LaptopScreenHandle(): UINT32 {
       // RectangleDraw( TRUE, SrcRect2.iLeft, SrcRect2.iTop, SrcRect2.iRight, SrcRect2.iBottom, Get16BPPColor( FROMRGB( 100, 255, 0 ) ), pDestBuf );
       // UnLockVideoSurface( FRAME_BUFFER );
 
-      BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(DstRect), addressof(SrcRect2));
+      BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, DstRect, SrcRect2);
       InvalidateScreen();
       // gfPrintFrameBuffer = TRUE;
       RefreshScreen(null);
@@ -1530,7 +1530,7 @@ export function LaptopScreenHandle(): UINT32 {
   RestoreBackgroundRects();
 
   // lock cursor to screen
-  RestrictMouseCursor(addressof(LaptopScreenRect));
+  RestrictMouseCursor(LaptopScreenRect);
 
   // handle animated cursors
   HandleAnimatedCursors();
@@ -1699,7 +1699,7 @@ function RenderLaptopPanel(): UINT32 {
   return 0;
 }
 
-function ExitLaptopMode(uiMode: UINT32): UINT32 {
+function ExitLaptopMode(uiMode: UINT32): boolean {
   // Deallocate the previous mode that you were in.
 
   switch (uiMode) {
@@ -1830,8 +1830,8 @@ function ExitLaptopMode(uiMode: UINT32): UINT32 {
   return true;
 }
 
-function CreateLaptopButtons(): UINT32 {
-  memset(giLapTopButton, -1, sizeof(giLapTopButton));
+function CreateLaptopButtons(): boolean {
+  giLapTopButton.fill(-1);
 
   /*giLapTopButtonImage[ON_BUTTON]=  LoadButtonImage( "LAPTOP\\button.sti" ,-1,1,-1,0,-1 );
   giLapTopButton[ON_BUTTON] = QuickCreateButton( giLapTopButtonImage[ON_BUTTON], ON_X, ON_Y,
@@ -2089,7 +2089,7 @@ export function LeaveLapTopScreen(): boolean {
         // RectangleDraw( TRUE, SrcRect2.iLeft, SrcRect2.iTop, SrcRect2.iRight, SrcRect2.iBottom, Get16BPPColor( FROMRGB( 100, 255, 0 ) ), pDestBuf );
         // UnLockVideoSurface( FRAME_BUFFER );
 
-        BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(DstRect), addressof(SrcRect2));
+        BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, DstRect, SrcRect2);
         InvalidateScreen();
         // gfPrintFrameBuffer = TRUE;
         RefreshScreen(null);
@@ -2103,7 +2103,7 @@ function HandleExit(): boolean {
   //	static BOOLEAN fSentImpWarningAlready = FALSE;
 
   // remind player about IMP
-  if (LaptopSaveInfo.gfNewGameLaptop != 0) {
+  if (LaptopSaveInfo.gfNewGameLaptop != false) {
     if (!AnyMercsHired()) {
       // AddEmail(0,1, GAME_HELP, GetWorldTotalMin( ) );
       // fExitingLaptopFlag = FALSE;
@@ -2112,7 +2112,7 @@ function HandleExit(): boolean {
   }
 
   // new game, send email
-  if (LaptopSaveInfo.gfNewGameLaptop != 0) {
+  if (LaptopSaveInfo.gfNewGameLaptop != false) {
     // Set an event to send this email ( day 2 8:00-12:00 )
     if ((LaptopSaveInfo.fIMPCompletedFlag == false) && (LaptopSaveInfo.fSentImpWarningAlready == false)) {
       AddFutureDayStrategicEvent(Enum132.EVENT_HAVENT_MADE_IMP_CHARACTER_EMAIL, (8 + Random(4)) * 60, 0, 1);
@@ -2546,7 +2546,7 @@ function PersonnelRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void
 
 function CheckIfMouseLeaveScreen(): void {
   let MousePos: POINT = createPoint();
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
   if ((MousePos.x > LAPTOP_SCREEN_LR_X) || (MousePos.x < LAPTOP_UL_X) || (MousePos.y < LAPTOP_UL_Y) || (MousePos.y > LAPTOP_SCREEN_LR_Y)) {
     guiCurrentLapTopCursor = Enum97.LAPTOP_PANEL_CURSOR;
   }
@@ -2584,7 +2584,7 @@ function DrawButtonText(): void {
 
 function InitBookMarkList(): void {
   // sets bookmark list to -1
-  memset(LaptopSaveInfo.iBookMarkList, -1, sizeof(LaptopSaveInfo.iBookMarkList));
+  LaptopSaveInfo.iBookMarkList.fill(-1);
   return;
 }
 
@@ -2801,25 +2801,25 @@ function DeleteBookmark(): void {
   DeleteVideoObjectFromIndex(guiDOWNLOADBOT);
 }
 
+/* static */ let ScrollDisplayText__iBaseTime: INT32 = 0;
+/* static */ let ScrollDisplayText__sCurX: INT16;
 function ScrollDisplayText(iY: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let sCurX: INT16;
   let sY: INT16 = iY;
 
   // if we are just enetering, set basetime to current clock value
-  if (iBaseTime == 0)
-    iBaseTime = GetJA2Clock();
+  if (ScrollDisplayText__iBaseTime == 0)
+    ScrollDisplayText__iBaseTime = GetJA2Clock();
 
   // long enough time has passed, shift string
-  if (GetJA2Clock() - iBaseTime > SCROLL_DIFFERENCE) {
+  if (GetJA2Clock() - ScrollDisplayText__iBaseTime > SCROLL_DIFFERENCE) {
     // reset postion, if scrolled too far
-    if (sCurX < SCROLL_MIN)
-      sCurX = BOOK_X + BOOK_WIDTH;
+    if (ScrollDisplayText__sCurX < SCROLL_MIN)
+      ScrollDisplayText__sCurX = BOOK_X + BOOK_WIDTH;
     else
-      sCurX--;
+      ScrollDisplayText__sCurX--;
 
     // reset base time
-    iBaseTime = GetJA2Clock();
+    ScrollDisplayText__iBaseTime = GetJA2Clock();
   }
 
   // font stuff
@@ -2828,7 +2828,7 @@ function ScrollDisplayText(iY: INT32): void {
   SetFontBackground(FONT_BLACK);
 
   // print the scrolling string for bookmarks
-  mprintf(sCurX, iY, pBookmarkTitle[1]);
+  mprintf(ScrollDisplayText__sCurX, iY, pBookmarkTitle[1]);
 
   // reset buffer
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
@@ -3409,9 +3409,6 @@ function DisplayPlayersBalanceToDate(): void {
   let sX: INT16;
   let sY: INT16;
 
-  // initialize string
-  memset(sString, 0, sizeof(sString));
-
   // font stuff
   SetFont(FONT10ARIAL());
   SetFontForeground(142);
@@ -3579,20 +3576,20 @@ export function LapTopScreenCallBack(pRegion: MOUSE_REGION, iReason: INT32): voi
   return;
 }
 
-export function DoLapTopMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK | null): boolean {
   let pCenteringRect: SGPRect = createSGPRectFrom(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y);
 
   // reset exit mode
   fExitDueToMessageBox = true;
 
   // do message box and return
-  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(pCenteringRect));
+  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
   // send back return state
   return iLaptopMessageBox != -1;
 }
 
-export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect): boolean {
   // reset exit mode
   fExitDueToMessageBox = true;
 
@@ -3603,13 +3600,13 @@ export function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: string
   return iLaptopMessageBox != -1;
 }
 
-export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): boolean {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
   // reset exit mode
   fExitDueToMessageBox = true;
 
   // do message box and return
-  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
+  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, CenteringRect);
 
   // send back return state
   return iLaptopMessageBox != -1;
@@ -3668,8 +3665,9 @@ function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: strin
   return true;
 }
 
+/* static */ let DisplayTitleBarMaximizeGraphic__ubCount: INT8;
+/* static */ let DisplayTitleBarMaximizeGraphic__LastRect: SGPRect = createSGPRect();
 function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTopLeftX: UINT16, usTopLeftY: UINT16, usTopRightX: UINT16): boolean {
-  /* static */ let ubCount: INT8;
   let sPosX: INT16;
   let sPosY: INT16;
   let sPosRightX: INT16;
@@ -3678,7 +3676,6 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
   let sHeight: INT16;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
-  /* static */ let LastRect: SGPRect = createSGPRect();
   let dTemp: FLOAT;
 
   if (fInit) {
@@ -3687,20 +3684,20 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
 
     gfTitleBarSurfaceAlreadyActive = true;
     if (fForward) {
-      ubCount = 1;
+      DisplayTitleBarMaximizeGraphic__ubCount = 1;
     } else {
-      ubCount = NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS - 1;
+      DisplayTitleBarMaximizeGraphic__ubCount = NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS - 1;
     }
   }
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosX = (usTopLeftX + dTemp * ubCount);
+  sPosX = (usTopLeftX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosRightX = (usTopRightX + dTemp * ubCount);
+  sPosRightX = (usTopRightX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosY = (usTopLeftY + dTemp * ubCount);
+  sPosY = (usTopLeftY + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   sPosBottomY = LAPTOP_TITLE_BAR_HEIGHT;
 
@@ -3710,7 +3707,7 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
   SrcRect.iBottom = LAPTOP_TITLE_BAR_HEIGHT;
 
   // if its the last fram, bit the tittle bar to the final position
-  if (ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
+  if (DisplayTitleBarMaximizeGraphic__ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
     DestRect.iLeft = LAPTOP_TITLE_BAR_TOP_LEFT_X;
     DestRect.iTop = LAPTOP_TITLE_BAR_TOP_LEFT_Y;
     DestRect.iRight = LAPTOP_TITLE_BAR_TOP_RIGHT_X;
@@ -3724,55 +3721,55 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
 
   if (fForward) {
     // Restore the old rect
-    if (ubCount > 1) {
-      sWidth = (LastRect.iRight - LastRect.iLeft);
-      sHeight = (LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, sWidth, sHeight);
+    if (DisplayTitleBarMaximizeGraphic__ubCount > 1) {
+      sWidth = (DisplayTitleBarMaximizeGraphic__LastRect.iRight - DisplayTitleBarMaximizeGraphic__LastRect.iLeft);
+      sHeight = (DisplayTitleBarMaximizeGraphic__LastRect.iBottom - DisplayTitleBarMaximizeGraphic__LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, DisplayTitleBarMaximizeGraphic__LastRect.iLeft, DisplayTitleBarMaximizeGraphic__LastRect.iTop, sWidth, sHeight);
     }
 
     // Save rectangle
-    if (ubCount > 0) {
+    if (DisplayTitleBarMaximizeGraphic__ubCount > 0) {
       sWidth = (DestRect.iRight - DestRect.iLeft);
       sHeight = (DestRect.iBottom - DestRect.iTop);
       BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, sWidth, sHeight);
     }
   } else {
     // Restore the old rect
-    if (ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS - 1) {
-      sWidth = (LastRect.iRight - LastRect.iLeft);
-      sHeight = (LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, sWidth, sHeight);
+    if (DisplayTitleBarMaximizeGraphic__ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS - 1) {
+      sWidth = (DisplayTitleBarMaximizeGraphic__LastRect.iRight - DisplayTitleBarMaximizeGraphic__LastRect.iLeft);
+      sHeight = (DisplayTitleBarMaximizeGraphic__LastRect.iBottom - DisplayTitleBarMaximizeGraphic__LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, DisplayTitleBarMaximizeGraphic__LastRect.iLeft, DisplayTitleBarMaximizeGraphic__LastRect.iTop, sWidth, sHeight);
     }
 
     // Save rectangle
-    if (ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
+    if (DisplayTitleBarMaximizeGraphic__ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
       sWidth = (DestRect.iRight - DestRect.iLeft);
       sHeight = (DestRect.iBottom - DestRect.iTop);
       BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, sWidth, sHeight);
     }
   }
 
-  BltStretchVideoSurface(FRAME_BUFFER, guiTitleBarSurface, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect));
+  BltStretchVideoSurface(FRAME_BUFFER, guiTitleBarSurface, 0, 0, VO_BLT_SRCTRANSPARENCY, SrcRect, DestRect);
 
   InvalidateRegion(DestRect.iLeft, DestRect.iTop, DestRect.iRight, DestRect.iBottom);
-  InvalidateRegion(LastRect.iLeft, LastRect.iTop, LastRect.iRight, LastRect.iBottom);
+  InvalidateRegion(DisplayTitleBarMaximizeGraphic__LastRect.iLeft, DisplayTitleBarMaximizeGraphic__LastRect.iTop, DisplayTitleBarMaximizeGraphic__LastRect.iRight, DisplayTitleBarMaximizeGraphic__LastRect.iBottom);
 
-  LastRect = DestRect;
+  DisplayTitleBarMaximizeGraphic__LastRect = DestRect;
 
   if (fForward) {
-    if (ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
+    if (DisplayTitleBarMaximizeGraphic__ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
       gfTitleBarSurfaceAlreadyActive = false;
       return true;
     } else {
-      ubCount++;
+      DisplayTitleBarMaximizeGraphic__ubCount++;
       return false;
     }
   } else {
-    if (ubCount == 0) {
+    if (DisplayTitleBarMaximizeGraphic__ubCount == 0) {
       gfTitleBarSurfaceAlreadyActive = false;
       return true;
     } else {
-      ubCount--;
+      DisplayTitleBarMaximizeGraphic__ubCount--;
       return false;
     }
   }
@@ -4018,10 +4015,9 @@ function ExitLaptopDone(): boolean {
   }
 }
 
+/* static */ let CreateDestroyMinimizeButtonForCurrentMode__fAlreadyCreated: boolean = false;
 function CreateDestroyMinimizeButtonForCurrentMode(): void {
   // will create the minimize button
-
-  /* static */ let fAlreadyCreated: boolean = false;
   // check to see if created, if so, do nothing
 
   // check current mode
@@ -4038,14 +4034,14 @@ function CreateDestroyMinimizeButtonForCurrentMode(): void {
     fCreateMinimizeButton = false;
   }
 
-  if ((fAlreadyCreated == false) && (fCreateMinimizeButton == true)) {
+  if ((CreateDestroyMinimizeButtonForCurrentMode__fAlreadyCreated == false) && (fCreateMinimizeButton == true)) {
     // not created, create
-    fAlreadyCreated = true;
+    CreateDestroyMinimizeButtonForCurrentMode__fAlreadyCreated = true;
     CreateMinimizeButtonForCurrentMode();
     CreateMinimizeRegionsForLaptopProgramIcons();
-  } else if ((fAlreadyCreated == true) && (fCreateMinimizeButton == false)) {
+  } else if ((CreateDestroyMinimizeButtonForCurrentMode__fAlreadyCreated == true) && (fCreateMinimizeButton == false)) {
     // created and must be destroyed
-    fAlreadyCreated = false;
+    CreateDestroyMinimizeButtonForCurrentMode__fAlreadyCreated = false;
     DestroyMinimizeButtonForCurrentMode();
     DestroyMinimizeRegionsForLaptopProgramIcons();
   } else {
@@ -4266,7 +4262,7 @@ function DrawDeskTopBackground(): boolean {
   pSrcBuf = LockVideoSurface(guiDESKTOP, addressof(uiSrcPitchBYTES));
 
   // blit .pcx for the background onto desktop
-  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, LAPTOP_SCREEN_UL_X - 2, LAPTOP_SCREEN_UL_Y - 3, addressof(clip));
+  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, LAPTOP_SCREEN_UL_X - 2, LAPTOP_SCREEN_UL_Y - 3, clip);
 
   // release surfaces
   UnLockVideoSurface(guiDESKTOP);
@@ -4321,8 +4317,8 @@ export function PrintBalance(): void {
 
 export function PrintNumberOnTeam(): void {
   let pString: string /* CHAR16[32] */;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
   let usPosX: UINT16;
@@ -4338,10 +4334,10 @@ export function PrintNumberOnTeam(): void {
   // grab number on team
   pSoldier = MercPtrs[0];
 
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.value.bTeam].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     pTeamSoldier = MercPtrs[cnt];
 
-    if ((pTeamSoldier.value.bActive) && (!(pTeamSoldier.value.uiStatusFlags & SOLDIER_VEHICLE))) {
+    if ((pTeamSoldier.bActive) && (!(pTeamSoldier.uiStatusFlags & SOLDIER_VEHICLE))) {
       iCounter++;
     }
   }
@@ -4446,7 +4442,7 @@ export function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT3
     fTabHandled = true;
   }
 
-  else if ((usEvent == KEY_DOWN) && (usParam == 'b')) {
+  else if ((usEvent == KEY_DOWN) && (usParam == 'b'.charCodeAt(0))) {
     if (CHEATER_CHEAT_LEVEL()) {
       if ((usKeyState & ALT_DOWN))
         LaptopSaveInfo.fBobbyRSiteCanBeAccessed = true;
@@ -4456,18 +4452,18 @@ export function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT3
     }
   }
 
-  else if ((usEvent == KEY_DOWN) && (usParam == 'x')) {
+  else if ((usEvent == KEY_DOWN) && (usParam == 'x'.charCodeAt(0))) {
     if ((usKeyState & ALT_DOWN)) {
       HandleShortCutExitState();
     }
     // LeaveLapTopScreen( );
   }
-      if ((usEvent == KEY_DOWN) && ((usParam == 'h') || (usParam == 'H'))) {
+      if ((usEvent == KEY_DOWN) && ((usParam == 'h'.charCodeAt(0)) || (usParam == 'H'.charCodeAt(0)))) {
     ShouldTheHelpScreenComeUp(Enum17.HELP_SCREEN_LAPTOP, true);
   }
 
   // adding money
-  else if ((usEvent == KEY_DOWN) && (usParam == '=')) {
+  else if ((usEvent == KEY_DOWN) && (usParam == '='.charCodeAt(0))) {
     if (CHEATER_CHEAT_LEVEL()) {
       AddTransactionToPlayersBook(Enum80.ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), 100000);
       MarkButtonsDirty();
@@ -4475,7 +4471,7 @@ export function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT3
   }
 
   // subtracting money
-  else if ((usEvent == KEY_DOWN) && (usParam == '-')) {
+  else if ((usEvent == KEY_DOWN) && (usParam == '-'.charCodeAt(0))) {
     if (CHEATER_CHEAT_LEVEL()) {
       AddTransactionToPlayersBook(Enum80.ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), -10000);
       MarkButtonsDirty();
@@ -4660,10 +4656,10 @@ function CreateDestroyMouseRegionForNewMailIcon(): void {
   if (fCreated == false) {
     fCreated = true;
     MSYS_DefineRegion(gNewMailIconRegion, LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == false));
 
     MSYS_DefineRegion(gNewFileIconRegion, LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
+    CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == false));
   } else {
     fCreated = false;
     MSYS_RemoveRegion(gNewMailIconRegion);
@@ -4825,16 +4821,16 @@ function HandleAltTabKeyInLaptop(): void {
 }
 
 // display the 2 second book mark instruction
+/* static */ let DisplayWebBookMarkNotify__fOldShow: boolean = false;
 function DisplayWebBookMarkNotify(): void {
-  /* static */ let fOldShow: boolean = false;
   let hLapTopIconHandle: HVOBJECT;
 
   // handle the timer for this thing
   HandleWebBookMarkNotifyTimer();
 
   // are we about to start showing box? or did we just stop?
-  if (((fOldShow == false) || (fReDrawBookMarkInfo)) && (fShowBookmarkInfo == true)) {
-    fOldShow = true;
+  if (((DisplayWebBookMarkNotify__fOldShow == false) || (fReDrawBookMarkInfo)) && (fShowBookmarkInfo == true)) {
+    DisplayWebBookMarkNotify__fOldShow = true;
     fReDrawBookMarkInfo = false;
 
     // show background objects
@@ -4869,9 +4865,9 @@ function DisplayWebBookMarkNotify(): void {
 
     // invalidate region
     InvalidateRegion(DOWNLOAD_X, DOWNLOAD_Y, DOWNLOAD_X + 150, DOWNLOAD_Y + 100);
-  } else if ((fOldShow == true) && (fShowBookmarkInfo == false)) {
+  } else if ((DisplayWebBookMarkNotify__fOldShow == true) && (fShowBookmarkInfo == false)) {
     // MSYS_RemoveRegion( &gLapTopScreenRegion );
-    fOldShow = false;
+    DisplayWebBookMarkNotify__fOldShow = false;
     fPausedReDrawScreenFlag = true;
   }
 
@@ -4880,23 +4876,23 @@ function DisplayWebBookMarkNotify(): void {
   return;
 }
 
+/* static */ let HandleWebBookMarkNotifyTimer__iBaseTime: INT32 = 0;
+/* static */ let HandleWebBookMarkNotifyTimer__fOldShowBookMarkInfo: boolean = false;
 function HandleWebBookMarkNotifyTimer(): void {
-  /* static */ let iBaseTime: INT32 = 0;
   let iDifference: INT32 = 0;
-  /* static */ let fOldShowBookMarkInfo: boolean = false;
 
   // check if maxing or mining?
   if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
-    fOldShowBookMarkInfo |= fShowBookmarkInfo;
+    HandleWebBookMarkNotifyTimer__fOldShowBookMarkInfo = HandleWebBookMarkNotifyTimer__fOldShowBookMarkInfo || fShowBookmarkInfo;
     fShowBookmarkInfo = false;
     return;
   }
 
   // if we were going to show this pop up, but were delayed, then do so now
-  fShowBookmarkInfo |= fOldShowBookMarkInfo;
+  fShowBookmarkInfo = fShowBookmarkInfo || HandleWebBookMarkNotifyTimer__fOldShowBookMarkInfo;
 
   // reset old flag
-  fOldShowBookMarkInfo = false;
+  HandleWebBookMarkNotifyTimer__fOldShowBookMarkInfo = false;
 
   // if current mode is too low, then reset
   if (guiCurrentLaptopMode < Enum95.LAPTOP_MODE_WWW) {
@@ -4910,23 +4906,23 @@ function HandleWebBookMarkNotifyTimer(): void {
 
   // check if flag false, is so, leave
   if (fShowBookmarkInfo == false) {
-    iBaseTime = 0;
+    HandleWebBookMarkNotifyTimer__iBaseTime = 0;
     return;
   }
 
   // check if this is the first time in here
-  if (iBaseTime == 0) {
-    iBaseTime = GetJA2Clock();
+  if (HandleWebBookMarkNotifyTimer__iBaseTime == 0) {
+    HandleWebBookMarkNotifyTimer__iBaseTime = GetJA2Clock();
     return;
   }
 
-  iDifference = GetJA2Clock() - iBaseTime;
+  iDifference = GetJA2Clock() - HandleWebBookMarkNotifyTimer__iBaseTime;
 
   fReDrawBookMarkInfo = true;
 
   if (iDifference > DISPLAY_TIME_FOR_WEB_BOOKMARK_NOTIFY) {
     // waited long enough, stop showing
-    iBaseTime = 0;
+    HandleWebBookMarkNotifyTimer__iBaseTime = 0;
     fShowBookmarkInfo = false;
   }
 
@@ -4964,20 +4960,27 @@ export function ClearOutTempLaptopFiles(): void {
 export function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
   let uiSize: UINT32;
+  let buffer: Buffer;
 
   // Save The laptop information
-  FileWrite(hFile, addressof(LaptopSaveInfo), sizeof(LaptopSaveInfoStruct), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(LaptopSaveInfoStruct)) {
+  buffer = Buffer.allocUnsafe(LAPTOP_SAVE_INFO_STRUCT_SIZE);
+  writeLaptopSaveInfoStruct(LaptopSaveInfo, buffer);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, LAPTOP_SAVE_INFO_STRUCT_SIZE);
+  if (uiNumBytesWritten != LAPTOP_SAVE_INFO_STRUCT_SIZE) {
     return false;
   }
 
   // If there is anything in the Bobby Ray Orders on Delivery
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderUsed) {
     // Allocate memory for the information
-    uiSize = sizeof(BobbyRayOrderStruct) * LaptopSaveInfo.usNumberOfBobbyRayOrderItems;
+    uiSize = BOBBY_RAY_PURCHASE_STRUCT_SIZE * LaptopSaveInfo.usNumberOfBobbyRayOrderItems;
 
     // Load The laptop information
-    FileWrite(hFile, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, uiSize, addressof(uiNumBytesWritten));
+    buffer = Buffer.allocUnsafe(uiSize);
+    writeObjectArray(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, buffer, 0, writeBobbyRayOrderStruct);
+
+    uiNumBytesWritten = FileWrite(hFile, buffer, uiSize);
     if (uiNumBytesWritten != uiSize) {
       return false;
     }
@@ -4986,10 +4989,13 @@ export function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
   // If there is any Insurance Payouts in progress
   if (LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
     // Allocate memory for the information
-    uiSize = sizeof(LIFE_INSURANCE_PAYOUT) * LaptopSaveInfo.ubNumberLifeInsurancePayouts;
+    uiSize = LAST_HIRED_MERC_STRUCT_SIZE * LaptopSaveInfo.ubNumberLifeInsurancePayouts;
 
     // Load The laptop information
-    FileWrite(hFile, LaptopSaveInfo.pLifeInsurancePayouts, uiSize, addressof(uiNumBytesWritten));
+    buffer = Buffer.allocUnsafe(uiSize);
+    writeObjectArray(LaptopSaveInfo.pLifeInsurancePayouts, buffer, 0, writeLifeInsurancePayout);
+
+    uiNumBytesWritten = FileWrite(hFile, buffer, uiSize);
     if (uiNumBytesWritten != uiSize) {
       return false;
     }
@@ -5001,6 +5007,7 @@ export function SaveLaptopInfoToSavedGame(hFile: HWFILE): boolean {
 export function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiSize: UINT32;
+  let buffer: Buffer;
 
   // if there is memory allocated for the BobbyR orders
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderItems) {
@@ -5008,9 +5015,7 @@ export function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
     //			Assert( 0 );	//Should never happen
 
     // Free the memory
-    if (LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray)
-      MemFree(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray);
-    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = null;
+    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = <BobbyRayOrderStruct[]><unknown>null;
   }
 
   // if there is memory allocated for life insurance payouts
@@ -5019,50 +5024,58 @@ export function LoadLaptopInfoFromSavedGame(hFile: HWFILE): boolean {
       Assert(0); // Should never happen
 
     // Free the memory
-    MemFree(LaptopSaveInfo.pLifeInsurancePayouts);
-    LaptopSaveInfo.pLifeInsurancePayouts = null;
+    LaptopSaveInfo.pLifeInsurancePayouts = <LIFE_INSURANCE_PAYOUT[]><unknown>null;
   }
 
   // Load The laptop information
-  FileRead(hFile, addressof(LaptopSaveInfo), sizeof(LaptopSaveInfoStruct), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(LaptopSaveInfoStruct)) {
+  buffer = Buffer.allocUnsafe(LAPTOP_SAVE_INFO_STRUCT_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, LAPTOP_SAVE_INFO_STRUCT_SIZE);
+  if (uiNumBytesRead != LAPTOP_SAVE_INFO_STRUCT_SIZE) {
     return false;
   }
+
+  readLaptopSaveInfoStruct(LaptopSaveInfo, buffer);
 
   // If there is anything in the Bobby Ray Orders on Delivery
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderUsed) {
     // Allocate memory for the information
-    uiSize = sizeof(BobbyRayOrderStruct) * LaptopSaveInfo.usNumberOfBobbyRayOrderItems;
+    uiSize = BOBBY_RAY_ORDER_STRUCT_SIZE * LaptopSaveInfo.usNumberOfBobbyRayOrderItems;
 
-    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = MemAlloc(uiSize);
+    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = createArrayFrom(LaptopSaveInfo.usNumberOfBobbyRayOrderItems, createBobbyRayOrderStruct);
     Assert(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray);
 
     // Load The laptop information
-    FileRead(hFile, LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, uiSize, addressof(uiNumBytesRead));
+    buffer = Buffer.allocUnsafe(uiSize);
+    uiNumBytesRead = FileRead(hFile, buffer, uiSize);
     if (uiNumBytesRead != uiSize) {
       return false;
     }
+
+    readObjectArray(LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray, buffer, 0, readBobbyRayOrderStruct);
   } else {
     LaptopSaveInfo.usNumberOfBobbyRayOrderItems = 0;
-    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = null;
+    LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray = <BobbyRayOrderStruct[]><unknown>null;
   }
 
   // If there is any Insurance Payouts in progress
   if (LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
     // Allocate memory for the information
-    uiSize = sizeof(LIFE_INSURANCE_PAYOUT) * LaptopSaveInfo.ubNumberLifeInsurancePayouts;
+    uiSize = LIFE_INSURANCE_PAYOUT_SIZE * LaptopSaveInfo.ubNumberLifeInsurancePayouts;
 
-    LaptopSaveInfo.pLifeInsurancePayouts = MemAlloc(uiSize);
+    LaptopSaveInfo.pLifeInsurancePayouts = createArrayFrom(LaptopSaveInfo.ubNumberLifeInsurancePayouts, createLifeInsurancePayout);
     Assert(LaptopSaveInfo.pLifeInsurancePayouts);
 
     // Load The laptop information
-    FileRead(hFile, LaptopSaveInfo.pLifeInsurancePayouts, uiSize, addressof(uiNumBytesRead));
+    buffer = Buffer.allocUnsafe(uiSize);
+    uiNumBytesRead = FileRead(hFile, buffer, uiSize);
     if (uiNumBytesRead != uiSize) {
       return false;
     }
+
+    readObjectArray(LaptopSaveInfo.pLifeInsurancePayouts, buffer, 0, readLifeInsurancePayout);
   } else {
     LaptopSaveInfo.ubNumberLifeInsurancePayouts = 0;
-    LaptopSaveInfo.pLifeInsurancePayouts = null;
+    LaptopSaveInfo.pLifeInsurancePayouts = <LIFE_INSURANCE_PAYOUT[]><unknown>null;
   }
 
   return true;

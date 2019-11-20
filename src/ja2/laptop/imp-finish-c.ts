@@ -4,8 +4,8 @@ namespace ja2 {
 const ANIMATE_MIN_TIME = 200;
 
 // buttons
-let giIMPFinishButton: INT32[] /* [6] */;
-let giIMPFinishButtonImage: INT32[] /* [6] */;
+let giIMPFinishButton: INT32[] /* [6] */ = createArray(6, 0);
+let giIMPFinishButtonImage: INT32[] /* [6] */ = createArray(6, 0);
 
 // we are in fact done
 export let fFinishedCharGeneration: boolean = false;
@@ -203,11 +203,11 @@ function BtnIMPFinishDoneCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
+/* static */ let BtnIMPFinishPersonalityCallback__fAnimateFlag: boolean = false;
+/* static */ let BtnIMPFinishPersonalityCallback__uiBaseTime: UINT32 = 0;
+/* static */ let BtnIMPFinishPersonalityCallback__fState: boolean = false;
 function BtnIMPFinishPersonalityCallback(btn: GUI_BUTTON, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
-  /* static */ let fAnimateFlag: boolean = false;
-  /* static */ let uiBaseTime: UINT32 = 0;
-  /* static */ let fState: boolean = 0;
   let iDifference: INT32 = 0;
 
   if (!(btn.uiFlags & BUTTON_ENABLED))
@@ -215,33 +215,33 @@ function BtnIMPFinishPersonalityCallback(btn: GUI_BUTTON, reason: INT32): void {
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= (BUTTON_CLICKED_ON);
-    uiBaseTime = GetJA2Clock();
+    BtnIMPFinishPersonalityCallback__uiBaseTime = GetJA2Clock();
     SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[23]);
-    fAnimateFlag = true;
+    BtnIMPFinishPersonalityCallback__fAnimateFlag = true;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
       fButtonPendingFlag = true;
-      uiBaseTime = 0;
-      fAnimateFlag = false;
+      BtnIMPFinishPersonalityCallback__uiBaseTime = 0;
+      BtnIMPFinishPersonalityCallback__fAnimateFlag = false;
       SpecifyButtonText(giIMPFinishButton[2], pImpButtonText[2]);
     }
   }
 
   // get amount of time between callbacks
-  iDifference = GetJA2Clock() - uiBaseTime;
+  iDifference = GetJA2Clock() - BtnIMPFinishPersonalityCallback__uiBaseTime;
 
-  if (fAnimateFlag) {
+  if (BtnIMPFinishPersonalityCallback__fAnimateFlag) {
     if (iDifference > ANIMATE_MIN_TIME) {
-      uiBaseTime = GetJA2Clock();
-      if (fState) {
+      BtnIMPFinishPersonalityCallback__uiBaseTime = GetJA2Clock();
+      if (BtnIMPFinishPersonalityCallback__fState) {
         SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 1, 33, 23, false);
 
-        fState = false;
+        BtnIMPFinishPersonalityCallback__fState = false;
       } else {
         SpecifyButtonIcon(giIMPFinishButton[2], guiANALYSE, 0, 33, 23, false);
 
-        fState = true;
+        BtnIMPFinishPersonalityCallback__fState = true;
       }
     }
   }

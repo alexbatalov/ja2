@@ -146,7 +146,7 @@ export function RenderBobbyRShipments(): void {
 
   if (giBobbyRShipmentSelectedShipment != -1 && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fActive && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fDisplayedInShipmentPage) {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], FALSE );
-    DisplayPurchasedItems(false, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, addressof(gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0]), false, giBobbyRShipmentSelectedShipment);
+    DisplayPurchasedItems(false, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase, false, giBobbyRShipmentSelectedShipment);
   } else {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], TRUE );
     DisplayPurchasedItems(false, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, null, true, giBobbyRShipmentSelectedShipment);

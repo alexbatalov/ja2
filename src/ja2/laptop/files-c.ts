@@ -56,9 +56,9 @@ let fWaitAFrame: boolean = false;
 export let fNewFilesInFileViewer: boolean = false;
 
 // graphics handles
-export let guiTITLE: UINT32;
+let guiTITLE: UINT32;
 let guiFileBack: UINT32;
-export let guiTOP: UINT32;
+let guiTOP: UINT32;
 let guiHIGHLIGHT: UINT32;
 
 // currewnt page of multipage files we are on
@@ -99,8 +99,8 @@ let usProfileIdsForTerroristFiles: UINT16[] /* [] */ = [
   112, // elgin
 ];
 // buttons for next and previous pages
-let giFilesPageButtons: UINT32[] /* [2] */;
-let giFilesPageButtonsImage: UINT32[] /* [2] */;
+let giFilesPageButtons: UINT32[] /* [2] */ = createArray(2, 0);
+let giFilesPageButtonsImage: UINT32[] /* [2] */ = createArray(2, 0);
 
 // the previous and next pages buttons
 
@@ -631,6 +631,7 @@ function FilesBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   }
 }
 
+/* static */ let DisplayFormattedText__iOldMessageCode: INT32 = 0;
 function DisplayFormattedText(): boolean {
   let pFilesList: FilesUnit = <FilesUnit>pFilesListHead;
 
@@ -650,7 +651,6 @@ function DisplayFormattedText(): boolean {
   let uiSecondTempPicture: UINT32;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let usFreeSpace: INT16 = 0;
-  /* static */ let iOldMessageCode: INT32 = 0;
 
   fWaitAFrame = false;
 

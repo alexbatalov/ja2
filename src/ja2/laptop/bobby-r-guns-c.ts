@@ -42,10 +42,10 @@ const BOBBYR_PREVIOUS_BUTTON_Y = LAPTOP_SCREEN_WEB_UL_Y + 340; // BOBBYR_HOME_BU
 const BOBBYR_NEXT_BUTTON_X = LAPTOP_SCREEN_UL_X + 412; // BOBBYR_ORDER_FORM_X + BOBBYR_ORDER_FORM_WIDTH + 5
 const BOBBYR_NEXT_BUTTON_Y = BOBBYR_PREVIOUS_BUTTON_Y; // BOBBYR_PREVIOUS_BUTTON_Y
 
+const BOBBYR_CATALOGUE_BUTTON_WIDTH = 56; // 75
 const BOBBYR_CATALOGUE_BUTTON_START_X = BOBBYR_PREVIOUS_BUTTON_X + 92; // LAPTOP_SCREEN_UL_X + 93 - BOBBYR_CATALOGUE_BUTTON_WIDTH/2
 const BOBBYR_CATALOGUE_BUTTON_GAP = (318 - NUM_CATALOGUE_BUTTONS * BOBBYR_CATALOGUE_BUTTON_WIDTH) / (NUM_CATALOGUE_BUTTONS + 1) + BOBBYR_CATALOGUE_BUTTON_WIDTH + 1; // 80
 const BOBBYR_CATALOGUE_BUTTON_Y = LAPTOP_SCREEN_WEB_UL_Y + 340;
-const BOBBYR_CATALOGUE_BUTTON_WIDTH = 56; // 75
 
 const BOBBYR_HOME_BUTTON_X = 120;
 const BOBBYR_HOME_BUTTON_Y = 400 + LAPTOP_SCREEN_WEB_DELTA_Y;
@@ -106,7 +106,7 @@ const BOBBYR_ORDER_SUBTOTAL_Y = BOBBYR_ORDER_FORM_Y + 2; // BOBBYR_HOME_BUTTON_Y
 const BOBBYR_PERCENT_FUNTCIONAL_X = BOBBYR_ORDER_SUBTOTAL_X;
 const BOBBYR_PERCENT_FUNTCIONAL_Y = BOBBYR_ORDER_SUBTOTAL_Y + 15;
 
-export let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
+export let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */ = createArrayFrom(MAX_PURCHASE_AMOUNT, createBobbyRayPurchaseStruct);
 
 // BobbyRayOrderStruct *BobbyRayOrdersOnDeliveryArray=NULL;
 // UINT8	usNumberOfBobbyRayOrderItems = 0;
@@ -131,13 +131,13 @@ let gubNumItemsOnScreen: UINT8;
 let gubNumPages: UINT8;
 
 let gfBigImageMouseRegionCreated: boolean;
-let gusItemNumberForItemsOnScreen: UINT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
+let gusItemNumberForItemsOnScreen: UINT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */ = createArray(BOBBYR_NUM_WEAPONS_ON_PAGE, 0);
 
 let gfOnUsedPage: boolean;
 
 let gusOldItemNumOnTopOfPage: UINT16 = 65535;
 
-let guiBobbyRPageMenu: UINT32[] /* [NUM_CATALOGUE_BUTTONS] */;
+let guiBobbyRPageMenu: UINT32[] /* [NUM_CATALOGUE_BUTTONS] */ = createArray(NUM_CATALOGUE_BUTTONS, 0);
 let guiBobbyRPageMenuImage: INT32;
 
 let guiBobbyRPreviousPage: UINT32;
@@ -165,13 +165,13 @@ let guiTempCurrentMode: UINT32;
 export function GameInitBobbyRGuns(): void {
   guiTempCurrentMode = 0;
 
-  memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
+  BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
 }
 
 function EnterInitBobbyRGuns(): void {
   guiTempCurrentMode = 0;
 
-  memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
+  BobbyRayPurchases.forEach(resetBobbyRayPurchaseStruct);
 }
 
 export function EnterBobbyRGuns(): boolean {
@@ -204,7 +204,7 @@ export function EnterBobbyRGuns(): boolean {
                   gusCurWeaponIndex = (UINT8)giCurrentSubPage;
   */
   // Draw menu bar
-  InitBobbyMenuBar(IC_GUN);
+  InitBobbyMenuBar();
 
   // render once
   RenderBobbyRGuns();
@@ -447,7 +447,7 @@ export function DisplayItemInfo(uiItemClass: UINT32): boolean {
   let usItemIndex: UINT16;
   let sDollarTemp: string /* wchar_t[60] */;
   let sTemp: string /* wchar_t[60] */;
-  let pItemNumbers: INT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
+  let pItemNumbers: INT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */ = createArray(BOBBYR_NUM_WEAPONS_ON_PAGE, 0);
 
   PosY = BOBBYR_GRID_PIC_Y;
   usTextPosY = BOBBYR_ITEM_DESC_START_Y;
@@ -698,25 +698,25 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): boolean {
   let sCenY: INT16;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
-  let pItem: Pointer<INVTYPE>;
+  let pTrav: ETRLEObject;
+  let pItem: INVTYPE;
   let uiImage: UINT32;
   let hPixHandle: HVOBJECT;
 
   PosX = BOBBYR_GRID_PIC_X;
 
-  pItem = addressof(Item[usIndex]);
+  pItem = Item[usIndex];
   LoadTileGraphicForItem(pItem, addressof(uiImage));
 
   hPixHandle = GetVideoObject(uiImage);
-  pTrav = addressof(hPixHandle.value.pETRLEObject[0]);
+  pTrav = hPixHandle.value.pETRLEObject[0];
 
   // center picture in frame
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
   //	sCenX = PosX + ( abs( BOBBYR_GRID_PIC_WIDTH - usWidth ) / 2 );
   //	sCenY = PosY + 8;
-  sCenX = PosX + (Math.abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.value.sOffsetX;
+  sCenX = PosX + (Math.abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
   sCenY = PosY + 8;
 
   // blt the shadow of the item
@@ -1069,7 +1069,7 @@ export function SetFirstLastPagesForUsed(): void {
     gubNumPages += 1;
 }
 
-function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbers: Pointer<INT16>): void {
+function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbers: INT16[]): void {
   let i: UINT8;
   let zItemName: string /* CHAR16[SIZE_ITEM_NAME] */;
   let ubItemCount: UINT8 = 0;
@@ -1090,9 +1090,9 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
       if (ubItemCount != 0) {
         zItemName = swprintf("%s %d %s", BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_1], ubItemCount, BobbyRText[Enum350.BOBBYR_GUNS_NUM_GUNS_THAT_USE_AMMO_2]);
       } else
-        zItemName[0] = '\0';
+        zItemName = '';
     } else
-      zItemName[0] = '\0';
+      zItemName = '';
 
     SetRegionFastHelpText(gSelectedBigImageRegion[i], zItemName);
     SetRegionHelpEndCallback(gSelectedBigImageRegion[i], BobbyrRGunsHelpTextDoneCallBack);
@@ -1360,7 +1360,7 @@ function DisableBobbyRButtons(): void {
   */
 }
 
-function CalcFirstIndexForPage(pInv: Pointer<STORE_INVENTORY>, uiItemClass: UINT32): void {
+function CalcFirstIndexForPage(pInv: STORE_INVENTORY[], uiItemClass: UINT32): void {
   let i: UINT16;
   let usNumItems: UINT16 = 0;
 

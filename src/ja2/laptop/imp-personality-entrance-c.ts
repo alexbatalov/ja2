@@ -1,8 +1,8 @@
 namespace ja2 {
 
 // IMP personality entrance buttons
-let giIMPPersonalityEntranceButton: INT32[] /* [1] */;
-let giIMPPersonalityEntranceButtonImage: INT32[] /* [1] */;
+let giIMPPersonalityEntranceButton: INT32[] /* [1] */ = createArray(1, 0);
+let giIMPPersonalityEntranceButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
 export function EnterIMPPersonalityEntrance(): void {
   // create buttons needed

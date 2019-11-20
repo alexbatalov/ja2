@@ -124,30 +124,30 @@ const enum Enum68 {
 // Toc menu mouse regions
 let gSelectedPolicyTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_POLICY_TOC_BUTTONS] */ = createArrayFrom(NUM_AIM_POLICY_TOC_BUTTONS, createMouseRegion);
 
-let guiPoliciesAgreeButton: UINT32[] /* [2] */;
+let guiPoliciesAgreeButton: UINT32[] /* [2] */ = createArray(2, 0);
 let guiPoliciesButtonImage: INT32;
 
-let guiPoliciesMenuButton: UINT32[] /* [AIM_POLICY_MENU_BUTTON_AMOUNT] */;
+let guiPoliciesMenuButton: UINT32[] /* [AIM_POLICY_MENU_BUTTON_AMOUNT] */ = createArray(AIM_POLICY_MENU_BUTTON_AMOUNT, 0);
 let guiPoliciesMenuButtonImage: INT32;
 
-export let guiBottomButton: UINT32;
-export let guiBottomButton2: UINT32;
-export let gubCurPageNum: UINT8;
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
+let gubCurPageNum: UINT8;
 let gfInPolicyToc: boolean = false;
 let gfInAgreementPage: boolean = false;
 let gfAimPolicyMenuBarLoaded: boolean = false;
-export let guiContentButton: UINT32;
+let guiContentButton: UINT32;
 let gfExitingPolicesAgreeButton: boolean;
 let gubPoliciesAgreeButtonDown: UINT8;
 let gubAimPolicyMenuButtonDown: UINT8 = 255;
 let gfExitingAimPolicy: boolean;
-let AimPoliciesSubPagesVisitedFlag: boolean[] /* [NUM_AIM_POLICY_PAGES] */;
+let AimPoliciesSubPagesVisitedFlag: boolean[] /* [NUM_AIM_POLICY_PAGES] */ = createArray(NUM_AIM_POLICY_PAGES, false);
 
 export function GameInitAimPolicies(): void {
 }
 
 export function EnterInitAimPolicies(): void {
-  memset(addressof(AimPoliciesSubPagesVisitedFlag), 0, NUM_AIM_POLICY_PAGES);
+  AimPoliciesSubPagesVisitedFlag.fill(false);
 }
 
 export function EnterAimPolicies(): boolean {
@@ -599,10 +599,11 @@ function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber:
   return usNumPixels;
 }
 
+/* static */ let BtnPoliciesAgreeButtonCallback__fOnPage: boolean = true;
 function BtnPoliciesAgreeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let ubRetValue: UINT8;
-  /* static */ let fOnPage: boolean = true;
-  if (fOnPage) {
+
+  if (BtnPoliciesAgreeButtonCallback__fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       btn.uiFlags |= BUTTON_CLICKED_ON;
@@ -615,7 +616,7 @@ function BtnPoliciesAgreeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
         btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
         // Agree
-        fOnPage = false;
+        BtnPoliciesAgreeButtonCallback__fOnPage = false;
         if (ubRetValue == 1) {
           gubCurPageNum++;
           ChangingAimPoliciesSubPage(gubCurPageNum);
@@ -626,7 +627,7 @@ function BtnPoliciesAgreeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
           guiCurrentLaptopMode = Enum95.LAPTOP_MODE_AIM;
         }
         InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
-        fOnPage = true;
+        BtnPoliciesAgreeButtonCallback__fOnPage = true;
         gubPoliciesAgreeButtonDown = 255;
       }
     }
@@ -638,10 +639,11 @@ function BtnPoliciesAgreeButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
+/* static */ let BtnPoliciesMenuButtonCallback__fOnPage: boolean = true;
 function BtnPoliciesMenuButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
   let ubRetValue: UINT8;
-  /* static */ let fOnPage: boolean = true;
-  if (fOnPage) {
+
+  if (BtnPoliciesMenuButtonCallback__fOnPage) {
     ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       btn.uiFlags |= BUTTON_CLICKED_ON;
@@ -681,17 +683,17 @@ function BtnPoliciesMenuButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
             gubCurPageNum++;
             ChangingAimPoliciesSubPage(gubCurPageNum);
 
-            fOnPage = false;
+            BtnPoliciesMenuButtonCallback__fOnPage = false;
             if (gfInPolicyToc) {
               ExitAimPolicyTocMenu();
             }
-            fOnPage = true;
+            BtnPoliciesMenuButtonCallback__fOnPage = true;
           }
         }
         InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
         ResetAimPolicyButtons();
         DisableAimPolicyButton();
-        fOnPage = true;
+        BtnPoliciesMenuButtonCallback__fOnPage = true;
       }
     }
     if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {

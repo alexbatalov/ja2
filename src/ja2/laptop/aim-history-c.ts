@@ -24,9 +24,9 @@ const AIM_HISTORY_TEXT_X = IMAGE_OFFSET_X + 149;
 const AIM_HISTORY_TEXT_Y = AIM_SYMBOL_Y + AIM_SYMBOL_SIZE_Y + 45;
 const AIM_HISTORY_TEXT_WIDTH = AIM_SYMBOL_WIDTH;
 
+const AIM_HISTORY_SUBTITLE_Y = 150 + LAPTOP_SCREEN_WEB_DELTA_Y;
 const AIM_HISTORY_PARAGRAPH_X = LAPTOP_SCREEN_UL_X + 20;
 const AIM_HISTORY_PARAGRAPH_Y = AIM_HISTORY_SUBTITLE_Y + 18;
-const AIM_HISTORY_SUBTITLE_Y = 150 + LAPTOP_SCREEN_WEB_DELTA_Y;
 const AIM_HISTORY_PARAGRAPH_WIDTH = 460;
 
 const AIM_HISTORY_CONTENTBUTTON_X = 259;
@@ -38,19 +38,19 @@ const AIM_HISTORY_TOC_GAP_Y = 25;
 
 const AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS = 8;
 
-export let guiBottomButton: UINT32;
-export let guiBottomButton2: UINT32;
-export let guiContentButton: UINT32;
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
+let guiContentButton: UINT32;
 
-export let gubCurPageNum: UINT8;
+let gubCurPageNum: UINT8;
 let gfInToc: boolean = false;
 let gubAimHistoryMenuButtonDown: UINT8 = 255;
 let gfExitingAimHistory: boolean;
-let AimHistorySubPagesVisitedFlag: boolean[] /* [NUM_AIM_HISTORY_PAGES] */;
+let AimHistorySubPagesVisitedFlag: boolean[] /* [NUM_AIM_HISTORY_PAGES] */ = createArray(NUM_AIM_HISTORY_PAGES, false);
 
 let gSelectedHistoryTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_HISTORY_PAGES] */ = createArrayFrom(NUM_AIM_HISTORY_PAGES, createMouseRegion);
 
-let guiHistoryMenuButton: UINT32[] /* [AIM_HISTORY_MENU_BUTTON_AMOUNT] */;
+let guiHistoryMenuButton: UINT32[] /* [AIM_HISTORY_MENU_BUTTON_AMOUNT] */ = createArray(AIM_HISTORY_MENU_BUTTON_AMOUNT, 0);
 let guiHistoryMenuButtonImage: INT32;
 
 // These enums represent which paragraph they are located in the AimHist.edt file
@@ -82,7 +82,7 @@ export function GameInitAimHistory(): void {
 }
 
 export function EnterInitAimHistory(): void {
-  memset(addressof(AimHistorySubPagesVisitedFlag), 0, NUM_AIM_HISTORY_PAGES);
+  AimHistorySubPagesVisitedFlag.fill(false);
 }
 
 export function EnterAimHistory(): boolean {
@@ -239,11 +239,11 @@ function ExitAimHistoryMenuBar(): boolean {
   return true;
 }
 
+/* static */ let SelectHistoryMenuButtonsRegionCallBack__fOnPage: boolean = true;
 function SelectHistoryMenuButtonsRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let rValue: UINT8;
-  /* static */ let fOnPage: boolean = true;
 
-  if (fOnPage) {
+  if (SelectHistoryMenuButtonsRegionCallBack__fOnPage) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       rValue = MSYS_GetRegionUserData(pRegion, 0);
@@ -270,11 +270,11 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: MOUSE_REGION, iReason: 
           gubCurPageNum++;
           ChangingAimHistorySubPage(gubCurPageNum);
 
-          fOnPage = false;
+          SelectHistoryMenuButtonsRegionCallBack__fOnPage = false;
           if (gfInToc) {
             ExitTocMenu();
           }
-          fOnPage = true;
+          SelectHistoryMenuButtonsRegionCallBack__fOnPage = true;
           //					RenderAimHistory();
         }
       }

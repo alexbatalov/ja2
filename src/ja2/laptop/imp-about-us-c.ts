@@ -1,8 +1,8 @@
 namespace ja2 {
 
 // IMP AboutUs buttons
-let giIMPAboutUsButton: INT32[] /* [1] */;
-let giIMPAboutUsButtonImage: INT32[] /* [1] */;
+let giIMPAboutUsButton: INT32[] /* [1] */ = createArray(1, 0);
+let giIMPAboutUsButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 ;
 
 export function EnterIMPAboutUs(): void {

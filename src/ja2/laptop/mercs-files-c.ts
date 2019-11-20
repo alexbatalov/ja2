@@ -301,7 +301,8 @@ function BtnMercHireButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
         gfJustHiredAMercMerc = true;
 
         // Display a popup msg box telling the user when and where the merc will arrive
-        DisplayPopUpBoxExplainingMercArrivalLocationAndTime(GetMercIDFromMERCArray(gubCurMercIndex));
+        GetMercIDFromMERCArray(gubCurMercIndex)
+        DisplayPopUpBoxExplainingMercArrivalLocationAndTime();
       }
 
       InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
@@ -318,15 +319,15 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   let hPortraitHandle: HVOBJECT;
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
-  let pMerc: Pointer<MERCPROFILESTRUCT>;
+  let pMerc: MERCPROFILESTRUCT;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
   // Portrait Frame
   hPortraitHandle = GetVideoObject(guiPortraitBox);
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  pMerc = addressof(gMercProfiles[ubMercID]);
+  pMerc = gMercProfiles[ubMercID];
 
   // See if the merc is currently hired
   pSoldier = FindSoldierByProfileID(ubMercID, true);
@@ -366,13 +367,13 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
-  else if (pMerc.value.bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+  else if (pMerc.bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
     DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL(), 145, pPOWStrings[0], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
 
   // if the merc is hired already, say it
-  else if (!IsMercHireable(ubMercID) && pMerc.value.bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET || pMerc.value.bMercStatus > 0) {
+  else if (!IsMercHireable(ubMercID) && pMerc.bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET || pMerc.bMercStatus > 0) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, MERC_FACE_X, MERC_FACE_Y, MERC_FACE_X + MERC_FACE_WIDTH, MERC_FACE_Y + MERC_FACE_HEIGHT);
     DisplayWrappedString(MERC_FACE_X, MERC_FACE_Y + MERC_PORTRAIT_TEXT_OFFSET_Y, MERC_FACE_WIDTH, 2, FONT14ARIAL(), 145, MercInfo[Enum341.MERC_FILES_ALREADY_HIRED], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }
@@ -400,7 +401,7 @@ function LoadAndDisplayMercBio(ubMercID: UINT8): void {
   // load and display the merc's additioanl info (if any)
   uiStartLoc = MERC_BIO_SIZE * ubMercID + MERC_BIO_INFO_TEXT_SIZE;
   sText = LoadEncryptedDataFromFile(MERCBIOFILE, uiStartLoc, MERC_BIO_ADD_INFO_TEXT_SIZE);
-  if (sText[0] != 0) {
+  if (sText != '') {
     DrawTextToScreen(MercInfo[Enum341.MERC_FILES_ADDITIONAL_INFO], MERC_ADD_BIO_TITLE_X, MERC_ADD_BIO_TITLE_Y, 0, MERC_TITLE_FONT(), MERC_TITLE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     DisplayWrappedString(MERC_ADD_BIO_TEXT_X, MERC_ADD_BIO_TEXT_Y, MERC_BIO_WIDTH, 2, MERC_BIO_FONT(), MERC_BIO_COLOR, sText, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
@@ -481,8 +482,6 @@ function MercFilesHireMerc(ubMercID: UINT8): boolean {
   let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let bReturnCode: INT8;
 
-  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
-
   // if the ALT key is down
   if (gfKeyState[ALT] && CHEATER_CHEAT_LEVEL()) {
     // set the merc to be hireable
@@ -521,7 +520,7 @@ function MercFilesHireMerc(ubMercID: UINT8): boolean {
   //	LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = HireMercStruct.ubProfileID;
   //	LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = HireMercStruct.uiTimeTillMercArrives;
 
-  bReturnCode = HireMerc(addressof(HireMercStruct));
+  bReturnCode = HireMerc(HireMercStruct);
   // already have 20 mercs on the team
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     DoLapTopMessageBox(Enum24.MSG_BOX_LAPTOP_DEFAULT, MercInfo[Enum341.MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], Enum26.LAPTOP_SCREEN, MSG_BOX_FLAG_OK, null);

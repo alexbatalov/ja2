@@ -59,12 +59,12 @@ export let fFirstIMPAttribTime: boolean = true;
 export let fReviewStats: boolean = false;
 
 // buttons
-let giIMPAttributeSelectionButton: UINT32[] /* [1] */;
-let giIMPAttributeSelectionButtonImage: UINT32[] /* [1] */;
+let giIMPAttributeSelectionButton: UINT32[] /* [1] */ = createArray(1, 0);
+let giIMPAttributeSelectionButtonImage: UINT32[] /* [1] */ = createArray(1, 0);
 
 // slider buttons
-let giIMPAttributeSelectionSliderButton: UINT32[] /* [20] */;
-let giIMPAttributeSelectionSliderButtonImage: UINT32[] /* [20] */;
+let giIMPAttributeSelectionSliderButton: UINT32[] /* [20] */ = createArray(20, 0);
+let giIMPAttributeSelectionSliderButtonImage: UINT32[] /* [20] */ = createArray(20, 0);
 
 // mouse regions
 let pSliderRegions: MOUSE_REGION[] /* [10] */ = createArrayFrom(10, createMouseRegion);
@@ -1037,6 +1037,9 @@ function DestroySlideBarMouseRegions(): void {
   return;
 }
 
+/* static */ let SliderRegionButtonCallback__sOldX: INT16 = -1;
+/* static */ let SliderRegionButtonCallback__sOldY: INT16 = -1;
+/* static */ let SliderRegionButtonCallback__iAttribute: INT32 = -1;
 function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   let iCurrentAttributeValue: INT32 = 0;
   let iNewAttributeValue: INT32 = 0;
@@ -1044,9 +1047,6 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
   let iCounter: INT32 = 0;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  /* static */ let sOldX: INT16 = -1;
-  /* static */ let sOldY: INT16 = -1;
-  /* static */ let iAttribute: INT32 = -1;
   let iNewValue: INT32 = 0;
   let iCurrentValue: INT32 = 0;
   let sNewX: INT16 = -1;
@@ -1065,31 +1065,31 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     }
 
     // check to see if we have moved
-    if (MSYS_GetRegionUserData(pRegion, 0) != iAttribute) {
+    if (MSYS_GetRegionUserData(pRegion, 0) != SliderRegionButtonCallback__iAttribute) {
       // different regions
-      iAttribute = MSYS_GetRegionUserData(pRegion, 0);
-      sOldX = -1;
-      sOldY = -1;
+      SliderRegionButtonCallback__iAttribute = MSYS_GetRegionUserData(pRegion, 0);
+      SliderRegionButtonCallback__sOldX = -1;
+      SliderRegionButtonCallback__sOldY = -1;
       return;
     }
 
-    uiBarToReRender = iAttribute;
+    uiBarToReRender = SliderRegionButtonCallback__iAttribute;
 
-    giCurrentlySelectedStat = iAttribute;
+    giCurrentlySelectedStat = SliderRegionButtonCallback__iAttribute;
     gpCurrentScrollBox = pRegion;
 
     // get new attribute value x
     sNewX = pRegion.MouseXPos;
 
     // sOldX has been reset, set to sNewX
-    if (sOldX == -1) {
-      sOldX = sNewX;
+    if (SliderRegionButtonCallback__sOldX == -1) {
+      SliderRegionButtonCallback__sOldX = sNewX;
       return;
     }
     // check against old x
-    if (sNewX != sOldX) {
+    if (sNewX != SliderRegionButtonCallback__sOldX) {
       // get old stat value
-      iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+      iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
       sNewX = sNewX - (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
       iNewValue = (sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
 
@@ -1104,17 +1104,17 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
         // positive, increment stat
         iCounter = iNewValue - iCurrentAttributeValue;
         for (iCounter; iCounter > 0; iCounter--) {
-          IncrementStat(iAttribute);
+          IncrementStat(SliderRegionButtonCallback__iAttribute);
         }
       } else {
         // negative, decrement stat
         iCounter = iCurrentAttributeValue - iNewValue;
         for (iCounter; iCounter > 0; iCounter--) {
-          DecrementStat(iAttribute);
+          DecrementStat(SliderRegionButtonCallback__iAttribute);
         }
       }
 
-      sOldX = sNewX;
+      SliderRegionButtonCallback__sOldX = sNewX;
     }
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (fSlideIsActive) {
@@ -1131,11 +1131,11 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     // which region are we in?
 
     // get attribute
-    iAttribute = MSYS_GetRegionUserData(pRegion, 0);
-    uiBarToReRender = iAttribute;
+    SliderRegionButtonCallback__iAttribute = MSYS_GetRegionUserData(pRegion, 0);
+    uiBarToReRender = SliderRegionButtonCallback__iAttribute;
 
     // get value of attribute
-    iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+    iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
 
     // set the new attribute value based on position of mouse click
     iNewAttributeValue = ((sX - SKILL_SLIDE_START_X) * 50) / BASE_SKILL_PIXEL_UNIT_SIZE;
@@ -1155,7 +1155,7 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     if (iAttributeDelta > 0) {
       // decrement
       for (iCounter = 0; iCounter < iAttributeDelta; iCounter++) {
-        DecrementStat(iAttribute);
+        DecrementStat(SliderRegionButtonCallback__iAttribute);
       }
     } else {
       // increment attribute
@@ -1163,7 +1163,7 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
         if (iCurrentAttributeValue == 0) {
           iCounter = 0;
         }
-        IncrementStat(iAttribute);
+        IncrementStat(SliderRegionButtonCallback__iAttribute);
       }
     }
 
@@ -1176,11 +1176,11 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     sY = pRegion.MouseYPos;
 
     // get attribute
-    iAttribute = MSYS_GetRegionUserData(pRegion, 0);
-    uiBarToReRender = iAttribute;
+    SliderRegionButtonCallback__iAttribute = MSYS_GetRegionUserData(pRegion, 0);
+    uiBarToReRender = SliderRegionButtonCallback__iAttribute;
 
     // get value of attribute
-    iCurrentAttributeValue = GetCurrentAttributeValue(iAttribute);
+    iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
 
     // get the boxes bounding x
     sNewX = ((iCurrentAttributeValue - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50 + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;

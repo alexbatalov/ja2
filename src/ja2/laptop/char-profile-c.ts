@@ -54,11 +54,11 @@ export let iAddExplosives: INT32 = 0;
 export let iAddMechanical: INT32 = 0;
 
 // IMP global buttons
-let giIMPButton: INT32[] /* [1] */;
-let giIMPButtonImage: INT32[] /* [1] */;
+let giIMPButton: INT32[] /* [1] */ = createArray(1, 0);
+let giIMPButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
 // visted subpages
-let fVisitedIMPSubPages: boolean[] /* [IMP_NUM_PAGES] */;
+let fVisitedIMPSubPages: boolean[] /* [IMP_NUM_PAGES] */ = createArray(Enum71.IMP_NUM_PAGES, false);
 
 export function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;

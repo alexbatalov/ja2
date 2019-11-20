@@ -90,11 +90,11 @@ const BOBBY_R_USED_PURCHASE_OFFSET = 1000;
 const BOBBYR_UNDERCONSTRUCTION_ANI_DELAY = 150;
 const BOBBYR_UNDERCONSTRUCTION_NUM_FRAMES = 5;
 
+const BOBBYR_UNDERCONSTRUCTION_WIDTH = 414;
 const BOBBYR_UNDERCONSTRUCTION_X = LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X - BOBBYR_UNDERCONSTRUCTION_WIDTH) / 2;
 const BOBBYR_UNDERCONSTRUCTION_Y = 175;
 const BOBBYR_UNDERCONSTRUCTION1_Y = 378;
 
-const BOBBYR_UNDERCONSTRUCTION_WIDTH = 414;
 const BOBBYR_UNDERCONSTRUCTION_HEIGHT = 64;
 
 const BOBBYR_UNDER_CONSTRUCTION_TEXT_X = LAPTOP_SCREEN_UL_X;
@@ -439,40 +439,41 @@ BOOLEAN WebPageTileBackground(UINT8 ubNumX, UINT8 ubNumY, UINT16 usWidth, UINT16
 }
 */
 
+/* static */ let HandleBobbyRUnderConstructionAni__uiLastTime: UINT32 = 1;
+/* static */ let HandleBobbyRUnderConstructionAni__usCount: UINT16 = 0;
 function HandleBobbyRUnderConstructionAni(fReset: boolean): void {
   let hPixHandle: HVOBJECT;
-  /* static */ let uiLastTime: UINT32 = 1;
-  /* static */ let usCount: UINT16 = 0;
+
   let uiCurTime: UINT32 = GetJA2Clock();
 
   if (LaptopSaveInfo.fBobbyRSiteCanBeAccessed)
     return;
 
   if (fReset)
-    usCount = 1;
+    HandleBobbyRUnderConstructionAni__usCount = 1;
 
   if (fShowBookmarkInfo) {
     fReDrawBookMarkInfo = true;
   }
 
-  if (((uiCurTime - uiLastTime) > BOBBYR_UNDERCONSTRUCTION_ANI_DELAY) || (fReDrawScreenFlag)) {
+  if (((uiCurTime - HandleBobbyRUnderConstructionAni__uiLastTime) > BOBBYR_UNDERCONSTRUCTION_ANI_DELAY) || (fReDrawScreenFlag)) {
     // The undercontsruction graphic
     hPixHandle = GetVideoObject(guiUnderConstructionImage);
-    BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, HandleBobbyRUnderConstructionAni__usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-    BltVideoObject(FRAME_BUFFER, hPixHandle, usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, HandleBobbyRUnderConstructionAni__usCount, BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     DrawTextToScreen(BobbyRaysFrontText[Enum351.BOBBYR_UNDER_CONSTRUCTION], BOBBYR_UNDER_CONSTRUCTION_TEXT_X, BOBBYR_UNDER_CONSTRUCTION_TEXT_Y, BOBBYR_UNDER_CONSTRUCTION_TEXT_WIDTH, FONT16ARIAL(), BOBBIES_SENTENCE_COLOR, BOBBIES_SIGN_BACKCOLOR, false, CENTER_JUSTIFIED | INVALIDATE_TEXT);
 
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
     InvalidateRegion(BOBBYR_UNDERCONSTRUCTION_X, BOBBYR_UNDERCONSTRUCTION1_Y, BOBBYR_UNDERCONSTRUCTION_X + BOBBYR_UNDERCONSTRUCTION_WIDTH, BOBBYR_UNDERCONSTRUCTION1_Y + BOBBYR_UNDERCONSTRUCTION_HEIGHT);
 
-    uiLastTime = GetJA2Clock();
+    HandleBobbyRUnderConstructionAni__uiLastTime = GetJA2Clock();
 
-    usCount++;
+    HandleBobbyRUnderConstructionAni__usCount++;
 
-    if (usCount >= BOBBYR_UNDERCONSTRUCTION_NUM_FRAMES)
-      usCount = 0;
+    if (HandleBobbyRUnderConstructionAni__usCount >= BOBBYR_UNDERCONSTRUCTION_NUM_FRAMES)
+      HandleBobbyRUnderConstructionAni__usCount = 0;
   }
 }
 
@@ -494,7 +495,7 @@ function InitBobbyRayNewInventory(): boolean {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
-  memset(LaptopSaveInfo.BobbyRayInventory, 0, sizeof(STORE_INVENTORY) * Enum225.MAXITEMS);
+  LaptopSaveInfo.BobbyRayInventory.forEach(resetStoreInventory);
 
   // add all the NEW items he can ever sell into his possible inventory list, for now in order by item #
   for (i = 0; i < Enum225.MAXITEMS; i++) {
@@ -507,7 +508,7 @@ function InitBobbyRayNewInventory(): boolean {
 
   if (usBobbyrIndex > 1) {
     // sort this list by object category, and by ascending price within each category
-    qsort(LaptopSaveInfo.BobbyRayInventory, usBobbyrIndex, sizeof(STORE_INVENTORY), BobbyRayItemQsortCompare);
+    LaptopSaveInfo.BobbyRayInventory.sort(BobbyRayItemQsortCompare);
   }
 
   // remember how many entries in the list are valid
@@ -522,7 +523,7 @@ function InitBobbyRayUsedInventory(): boolean {
   let i: UINT16;
   let usBobbyrIndex: UINT16 = 0;
 
-  memset(LaptopSaveInfo.BobbyRayUsedInventory, 0, sizeof(STORE_INVENTORY) * Enum225.MAXITEMS);
+  LaptopSaveInfo.BobbyRayUsedInventory.forEach(resetStoreInventory);
 
   // add all the NEW items he can ever sell into his possible inventory list, for now in order by item #
   for (i = 0; i < Enum225.MAXITEMS; i++) {
@@ -539,7 +540,7 @@ function InitBobbyRayUsedInventory(): boolean {
 
   if (usBobbyrIndex > 1) {
     // sort this list by object category, and by ascending price within each category
-    qsort(LaptopSaveInfo.BobbyRayUsedInventory, usBobbyrIndex, sizeof(STORE_INVENTORY), BobbyRayItemQsortCompare);
+    LaptopSaveInfo.BobbyRayUsedInventory.sort(BobbyRayItemQsortCompare);
   }
 
   // remember how many entries in the list are valid
@@ -556,7 +557,7 @@ export function DailyUpdateOfBobbyRaysNewInventory(): void {
   let fPrevElig: boolean;
 
   // simulate other buyers by reducing the current quantity on hand
-  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayInventory, Enum112.BOBBY_RAY_NEW);
+  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayInventory, Boolean(Enum112.BOBBY_RAY_NEW));
 
   // loop through all items BR can stock to see what needs reordering
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_NEW]; i++) {
@@ -602,7 +603,7 @@ export function DailyUpdateOfBobbyRaysUsedInventory(): void {
   let fPrevElig: boolean;
 
   // simulate other buyers by reducing the current quantity on hand
-  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayUsedInventory, Enum112.BOBBY_RAY_USED);
+  SimulateBobbyRayCustomer(LaptopSaveInfo.BobbyRayUsedInventory, Boolean(Enum112.BOBBY_RAY_USED));
 
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Enum112.BOBBY_RAY_USED]; i++) {
     // if the used item isn't already on order
@@ -650,7 +651,7 @@ function HowManyBRItemsToOrder(usItemIndex: UINT16, ubCurrentlyOnHand: UINT8, ub
   Assert(ubBobbyRayNewUsed < Enum112.BOBBY_RAY_LISTS);
 
   // decide if he can get stock for this item (items are reordered an entire batch at a time)
-  if (ItemTransactionOccurs(-1, usItemIndex, DEALER_BUYING, ubBobbyRayNewUsed)) {
+  if (ItemTransactionOccurs(-1, usItemIndex, DEALER_BUYING, Boolean(ubBobbyRayNewUsed))) {
     if (ubBobbyRayNewUsed == Enum112.BOBBY_RAY_NEW) {
       ubItemsOrdered = HowManyItemsToReorder(StoreInventory[usItemIndex][ubBobbyRayNewUsed], ubCurrentlyOnHand);
     } else {
@@ -676,18 +677,18 @@ function OrderBobbyRItem(usItemIndex: UINT16): void {
 
 export function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   let sInventorySlot: INT16;
-  let pInventoryArray: Pointer<STORE_INVENTORY>;
+  let pInventoryArray: STORE_INVENTORY[];
   let fUsed: boolean;
   let ubItemQuality: UINT8;
 
   if (usItemIndex >= BOBBY_R_USED_PURCHASE_OFFSET) {
     usItemIndex -= BOBBY_R_USED_PURCHASE_OFFSET;
     pInventoryArray = LaptopSaveInfo.BobbyRayUsedInventory;
-    fUsed = Enum112.BOBBY_RAY_USED;
+    fUsed = Boolean(Enum112.BOBBY_RAY_USED);
     ubItemQuality = 20 + Random(60);
   } else {
     pInventoryArray = LaptopSaveInfo.BobbyRayInventory;
-    fUsed = Enum112.BOBBY_RAY_NEW;
+    fUsed = Boolean(Enum112.BOBBY_RAY_NEW);
     ubItemQuality = 100;
   }
 
@@ -705,10 +706,10 @@ export function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   pInventoryArray[sInventorySlot].ubQtyOnOrder = 0;
 }
 
-export function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: boolean): INT16 {
+export function GetInventorySlotForItem(pInventoryArray: STORE_INVENTORY[], usItemIndex: UINT16, fUsed: boolean): INT16 {
   let i: INT16;
 
-  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
+  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Number(fUsed)]; i++) {
     // if we have some of this item in stock
     if (pInventoryArray[i].usItemIndex == usItemIndex) {
       return i;
@@ -719,12 +720,12 @@ export function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY
   return -1;
 }
 
-function SimulateBobbyRayCustomer(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: boolean): void {
+function SimulateBobbyRayCustomer(pInventoryArray: STORE_INVENTORY[], fUsed: boolean): void {
   let i: INT16;
   let ubItemsSold: UINT8;
 
   // loop through all items BR can stock to see what gets sold
-  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
+  for (i = 0; i < LaptopSaveInfo.usInventoryListLength[Number(fUsed)]; i++) {
     // if we have some of this item in stock
     if (pInventoryArray[i].ubQtyOnHand > 0) {
       ubItemsSold = HowManyItemsAreSold(-1, pInventoryArray[i].usItemIndex, pInventoryArray[i].ubQtyOnHand, fUsed);

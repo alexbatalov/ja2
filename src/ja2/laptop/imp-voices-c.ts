@@ -8,8 +8,8 @@ let iLastVoice: INT32 = 2;
 
 let uiVocVoiceSound: UINT32 = 0;
 // buttons needed for the IMP Voices screen
-let giIMPVoicesButton: INT32[] /* [3] */;
-let giIMPVoicesButtonImage: INT32[] /* [3] */;
+let giIMPVoicesButton: INT32[] /* [3] */ = createArray(3, 0);
+let giIMPVoicesButtonImage: INT32[] /* [3] */ = createArray(3, 0);
 
 // hacks to be removeed later
 let fVoiceAVisited: boolean = false;

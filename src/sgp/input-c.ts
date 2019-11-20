@@ -704,7 +704,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
     }
   }
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
   uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
 
   if (ufKeyState == true) {
@@ -828,7 +828,7 @@ function DisableDoubleClk(): void {
 export function GetMousePos(Point: Pointer<SGPPoint>): void {
   let MousePos: POINT = createPoint();
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   Point.value.iX = MousePos.x;
   Point.value.iY = MousePos.y;
@@ -1285,7 +1285,7 @@ function HandleSingleClicksAndButtonRepeats(): void {
       let uiTmpLParam: UINT32;
       let MousePos: POINT = createPoint();
 
-      GetCursorPos(addressof(MousePos));
+      GetCursorPos(MousePos);
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
       QueueEvent(LEFT_BUTTON_REPEAT, 0, uiTmpLParam);
       guiLeftButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
@@ -1300,7 +1300,7 @@ function HandleSingleClicksAndButtonRepeats(): void {
       let uiTmpLParam: UINT32;
       let MousePos: POINT = createPoint();
 
-      GetCursorPos(addressof(MousePos));
+      GetCursorPos(MousePos);
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
       QueueEvent(RIGHT_BUTTON_REPEAT, 0, uiTmpLParam);
       guiRightButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;

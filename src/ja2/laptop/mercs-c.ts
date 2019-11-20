@@ -136,7 +136,7 @@ let guiMercBackGround: UINT32;
 let guiMercVideoFaceBackground: UINT32;
 let guiMercVideoPopupBackground: UINT32;
 
-let gubMercArray: UINT8[] /* [NUMBER_OF_MERCS] */;
+let gubMercArray: UINT8[] /* [NUMBER_OF_MERCS] */ = createArray(NUMBER_OF_MERCS, 0);
 export let gubCurMercIndex: UINT8;
 
 let iMercPopUpBox: INT32 = -1;

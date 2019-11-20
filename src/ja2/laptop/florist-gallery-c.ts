@@ -43,7 +43,7 @@ const FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y = 9;
 const FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y = FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y + 17;
 const FLOR_GALLERY_FLOWER_DESC_OFFSET_Y = FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y + 15;
 
-let guiFlowerImages: UINT32[] /* [3] */;
+let guiFlowerImages: UINT32[] /* [3] */ = createArray(3, 0);
 
 export let guiCurrentlySelectedFlower: UINT32 = 0;
 
@@ -52,21 +52,21 @@ let gubCurNumberOfFlowers: UINT8 = 0;
 let gubPrevNumberOfFlowers: UINT8 = 0;
 let gfRedrawFloristGallery: boolean = false;
 
-let FloristGallerySubPagesVisitedFlag: boolean[] /* [4] */;
+let FloristGallerySubPagesVisitedFlag: boolean[] /* [4] */ = createArray(4, false);
 
 // Floral buttons
-export let guiGalleryButtonImage: INT32;
-export let guiGalleryButton: UINT32[] /* [FLOR_GALLERY_NUMBER_FLORAL_BUTTONS] */;
+let guiGalleryButtonImage: INT32;
+let guiGalleryButton: UINT32[] /* [FLOR_GALLERY_NUMBER_FLORAL_BUTTONS] */ = createArray(FLOR_GALLERY_NUMBER_FLORAL_BUTTONS, 0);
 
 // Next Previous buttons
 let guiFloralGalleryButtonImage: INT32;
-let guiFloralGalleryButton: UINT32[] /* [2] */;
+let guiFloralGalleryButton: UINT32[] /* [2] */ = createArray(2, 0);
 
 function GameInitFloristGallery(): void {
 }
 
 export function EnterInitFloristGallery(): void {
-  memset(addressof(FloristGallerySubPagesVisitedFlag), 0, 4);
+  FloristGallerySubPagesVisitedFlag.fill(false);
 }
 
 export function EnterFloristGallery(): boolean {
@@ -299,7 +299,7 @@ function DisplayFloralDescriptions(): boolean {
     // Display Flower Price
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
     sTemp = LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
-    swscanf(sTemp, "%hu", addressof(usPrice));
+    usPrice = parseInt(sTemp, 10);
     sTemp = swprintf("$%d.00 %s", usPrice, pMessageStrings[Enum333.MSG_USDOLLAR_ABBREVIATION]);
     DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT(), FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 

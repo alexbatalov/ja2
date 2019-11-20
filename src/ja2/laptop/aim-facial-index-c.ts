@@ -1,8 +1,5 @@
 namespace ja2 {
 
-export let gubCurrentSortMode: UINT8;
-export let gubCurrentListMode: UINT8;
-
 let guiMugShotBorder: UINT32;
 let guiAimFiFace: UINT32[] /* [MAX_NUMBER_MERCS] */;
 
@@ -222,7 +219,7 @@ function SelectMercFaceMoveRegionCallBack(pRegion: MOUSE_REGION, reason: INT32):
 function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): boolean {
   let hMugShotBorderHandle: HVOBJECT;
   let hFaceHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], true);
 
@@ -252,7 +249,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   }
 
   // else if the merc is currently a POW or, the merc was fired as a pow
-  else if (gMercProfiles[AimMercArray[ubMercID]].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+  else if (gMercProfiles[AimMercArray[ubMercID]].bMercStatus == MERC_FIRED_AS_A_POW || (pSoldier && pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
     ShadowVideoSurfaceRect(FRAME_BUFFER, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, usPosX + 48 + AIM_FI_FACE_OFFSET, usPosY + 43 + AIM_FI_FACE_OFFSET);
     DrawTextToScreen(pPOWStrings[0], (usPosX + AIM_FI_AWAY_TEXT_OFFSET_X), (usPosY + AIM_FI_AWAY_TEXT_OFFSET_Y), AIM_FI_AWAY_TEXT_OFFSET_WIDTH, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
   }

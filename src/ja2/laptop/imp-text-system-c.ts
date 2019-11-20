@@ -8,7 +8,7 @@ const IMP_IDENT_WIDTH = 96;
 
 let fInitialized: boolean = false;
 
-let iIMPTextRecordLengths: INT32[] /* [300] */;
+let iIMPTextRecordLengths: INT32[] /* [300] */ = createArray(300, 0);
 
 // the length of persona questions
 let iIMPQuestionLengths: INT32[] /* [25] */ = [
@@ -57,9 +57,6 @@ function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT1
 
   // load the string
   sString = LoadEncryptedDataFromFile("BINARYDATA\\IMPText.EDT", ((sIMPTextRecordNumber)*IMP_SEEK_AMOUNT), IMP_SEEK_AMOUNT);
-
-  // null put last char
-  sString[sString.length] = 0;
 
   if (uiFlags == 0) {
     uiFlags = LEFT_JUSTIFIED;
@@ -279,7 +276,7 @@ export function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
 
   // handle any female specifc questions
   if (fCharacterIsMale == false) {
-    OffSetQuestionForFemaleSpecificQuestions(addressof(iOffset));
+    iOffset = OffSetQuestionForFemaleSpecificQuestions(iOffset);
   }
 
   // how many answers are there?
@@ -352,7 +349,7 @@ export function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
   return;
 }
 
-function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>): void {
+function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: INT32): INT32 {
   let iExtraOffSet: INT32 = 0;
   let fOffSet: boolean = true;
   let iCounter: INT32 = 0;
@@ -380,10 +377,12 @@ function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>
   }
 
   if (fOffSet) {
-    iCurrentOffset.value = Enum88.IMP_CON_3 - (Enum88.IMP_QUESTION_1 - 3);
+    iCurrentOffset = Enum88.IMP_CON_3 - (Enum88.IMP_QUESTION_1 - 3);
 
-    iCurrentOffset.value += iExtraOffSet;
+    iCurrentOffset += iExtraOffSet;
   }
+
+  return iCurrentOffset;
 }
 
 }

@@ -1053,7 +1053,7 @@ function HandleFloristOrderKeyBoardInput(): void {
   let InputEvent: InputAtom = createInputAtom();
 
   while (DequeueEvent(InputEvent) == true) {
-    if (!HandleTextInput(addressof(InputEvent)) && InputEvent.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(InputEvent) && InputEvent.usEvent == KEY_DOWN) {
       let ubTextFieldID: UINT8;
       switch (InputEvent.usParam) {
         case ENTER:

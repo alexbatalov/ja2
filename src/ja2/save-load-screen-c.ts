@@ -626,7 +626,7 @@ function GetSaveLoadScreenUserInput(): void {
   let bActiveTextField: INT8;
   /* static */ let fWasCtrlHeldDownLastFrame: boolean = false;
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {

@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
+export let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */ = createArray(MAX_NUMBER_MERCS, 0);
 
 let gCurrentAimPage: UINT8[] /* [NUM_AIM_SCREENS] */ = [
   Enum95.LAPTOP_MODE_AIM,
@@ -118,8 +118,8 @@ let guiPolicies: UINT32;
 let guiHistory: UINT32;
 let guiLinks: UINT32;
 let guiWarning: UINT32;
-export let guiBottomButton: UINT32;
-export let guiBottomButton2: UINT32;
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
 let guiFlowerAdvertisement: UINT32;
 let guiAdForAdsImages: UINT32;
 let guiInsuranceAdImages: UINT32;
@@ -542,7 +542,7 @@ function BtnAimBottomButtonsCallback(btn: GUI_BUTTON, reason: INT32): void {
   DisableAimButton();
 }
 
-function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): void {
+function ResetAimButtons(Buttons: UINT32[], uNumberOfButtons: UINT16): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < uNumberOfButtons; cnt++) {
@@ -559,13 +559,12 @@ export function DisableAimButton(): void {
   }
 }
 
+/* static */ let HandleAdAndWarningArea__ubPreviousAdvertisment: UINT8;
 function HandleAdAndWarningArea(fInit: boolean, fRedraw: boolean): void {
-  /* static */ let ubPreviousAdvertisment: UINT8;
-
   if (fInit)
     gubCurrentAdvertisment = Enum62.AIM_AD_WARNING_BOX;
   else {
-    if (ubPreviousAdvertisment == Enum62.AIM_AD_DONE) {
+    if (HandleAdAndWarningArea__ubPreviousAdvertisment == Enum62.AIM_AD_DONE) {
       gubCurrentAdvertisment = GetNextAimAd(gubCurrentAdvertisment);
 
       fInit = true;
@@ -627,55 +626,55 @@ function HandleAdAndWarningArea(fInit: boolean, fRedraw: boolean): void {
   switch (gubCurrentAdvertisment) {
     case Enum62.AIM_AD_WARNING_BOX:
       MSYS_DisableRegion(gSelectedBannerRegion);
-      ubPreviousAdvertisment = DrawWarningBox(fInit, fRedraw);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DrawWarningBox(fInit, fRedraw);
       break;
 
     case Enum62.AIM_AD_FLOWER_SHOP:
-      ubPreviousAdvertisment = DisplayFlowerAd(fInit, fRedraw);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DisplayFlowerAd(fInit, fRedraw);
       break;
 
     case Enum62.AIM_AD_FOR_ADS:
       // disable the region because only certain banners will be 'clickable'
       MSYS_DisableRegion(gSelectedBannerRegion);
-      ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FOR_ADS_DELAY, AIM_AD_FOR_ADS__NUM_SUBIMAGES, guiAdForAdsImages);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FOR_ADS_DELAY, AIM_AD_FOR_ADS__NUM_SUBIMAGES, guiAdForAdsImages);
       break;
 
     case Enum62.AIM_AD_INSURANCE_AD:
       MSYS_EnableRegion(gSelectedBannerRegion);
-      ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_INSURANCE_AD_DELAY, AIM_AD_INSURANCE_AD__NUM_SUBIMAGES, guiInsuranceAdImages);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_INSURANCE_AD_DELAY, AIM_AD_INSURANCE_AD__NUM_SUBIMAGES, guiInsuranceAdImages);
       break;
 
     case Enum62.AIM_AD_FUNERAL_ADS:
       MSYS_EnableRegion(gSelectedBannerRegion);
-      ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FUNERAL_AD_DELAY, AIM_AD_FUNERAL_AD__NUM_SUBIMAGES, guiFuneralAdImages);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FUNERAL_AD_DELAY, AIM_AD_FUNERAL_AD__NUM_SUBIMAGES, guiFuneralAdImages);
       break;
 
     case Enum62.AIM_AD_BOBBY_RAY_AD:
       MSYS_EnableRegion(gSelectedBannerRegion);
       //			ubPreviousAdvertisment = DisplayAd( fInit, fRedraw, AIM_AD_BOBBYR_AD_DELAY, AIM_AD_BOBBYR_AD__NUM_SUBIMAGES, guiBobbyRAdImages );
-      ubPreviousAdvertisment = DisplayBobbyRAd(fInit, fRedraw);
+      HandleAdAndWarningArea__ubPreviousAdvertisment = DisplayBobbyRAd(fInit, fRedraw);
       break;
   }
 }
 
-function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): boolean {
-  /* static */ let uiLastTime: UINT32;
-  /* static */ let ubSubImage: UINT8 = 0;
-  /* static */ let ubCount: UINT8 = 0;
+/* static */ let DisplayFlowerAd__uiLastTime: UINT32;
+/* static */ let DisplayFlowerAd__ubSubImage: UINT8 = 0;
+/* static */ let DisplayFlowerAd__ubCount: UINT8 = 0;
+function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): UINT8 {
   let uiCurTime: UINT32 = GetJA2Clock();
 
   if (fInit) {
-    uiLastTime = 0;
-    ubSubImage = 0;
-    ubCount = 0;
+    DisplayFlowerAd__uiLastTime = 0;
+    DisplayFlowerAd__ubSubImage = 0;
+    DisplayFlowerAd__ubCount = 0;
     MSYS_EnableRegion(gSelectedBannerRegion);
   }
 
-  if (((uiCurTime - uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
+  if (((uiCurTime - DisplayFlowerAd__uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
     let hAdHandle: HVOBJECT;
 
-    if (ubSubImage == AIM_FLOWER_NUM_SUBIMAGES) {
-      if (ubCount == 0 || fRedraw) {
+    if (DisplayFlowerAd__ubSubImage == AIM_FLOWER_NUM_SUBIMAGES) {
+      if (DisplayFlowerAd__ubCount == 0 || fRedraw) {
         // Blit the blue sky frame with text on top
         hAdHandle = GetVideoObject(guiFlowerAdvertisement);
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
@@ -694,32 +693,32 @@ function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): boolean {
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
       }
 
-      uiLastTime = GetJA2Clock();
+      DisplayFlowerAd__uiLastTime = GetJA2Clock();
 
-      ubCount++;
-      if (ubCount > 40) {
+      DisplayFlowerAd__ubCount++;
+      if (DisplayFlowerAd__ubCount > 40) {
         return Enum62.AIM_AD_DONE;
       } else
         return Enum62.AIM_AD_NOT_DONE;
     } else {
       hAdHandle = GetVideoObject(guiFlowerAdvertisement);
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, DisplayFlowerAd__ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
       fReDrawNewMailFlag = true;
 
-      ubSubImage++;
+      DisplayFlowerAd__ubSubImage++;
     }
 
-    uiLastTime = GetJA2Clock();
+    DisplayFlowerAd__uiLastTime = GetJA2Clock();
     InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
   }
   return Enum62.AIM_AD_NOT_DONE;
 }
 
-function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
-  /* static */ let uiLastTime: UINT32;
-  /* static */ let ubSubImage: UINT8 = 0;
+/* static */ let DrawWarningBox__uiLastTime: UINT32;
+/* static */ let DrawWarningBox__ubSubImage: UINT8 = 0;
+function DrawWarningBox(fInit: boolean, fRedraw: boolean): UINT8 {
   let uiCurTime: UINT32 = GetJA2Clock();
 
   if (fInit || fRedraw) {
@@ -744,10 +743,10 @@ function DrawWarningBox(fInit: boolean, fRedraw: boolean): boolean {
     fReDrawNewMailFlag = true;
 
     if (fInit)
-      uiLastTime = uiCurTime;
+      DrawWarningBox__uiLastTime = uiCurTime;
   }
 
-  if ((uiCurTime - uiLastTime) > AIM_WARNING_TIME)
+  if ((uiCurTime - DrawWarningBox__uiLastTime) > AIM_WARNING_TIME)
     return Enum62.AIM_AD_DONE;
   else {
     return Enum62.AIM_AD_NOT_DONE;
@@ -769,24 +768,24 @@ function SelectBannerRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
   }
 }
 
-function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOfSubImages: UINT16, uiAdImageIdentifier: UINT32): boolean {
-  /* static */ let uiLastTime: UINT32;
-  /* static */ let ubSubImage: UINT8 = 0;
-  /* static */ let ubCount: UINT8 = 0;
+/* static */ let DisplayAd__uiLastTime: UINT32;
+/* static */ let DisplayAd__ubSubImage: UINT8 = 0;
+/* static */ let DisplayAd__ubCount: UINT8 = 0;
+function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOfSubImages: UINT16, uiAdImageIdentifier: UINT32): UINT8 {
   let uiCurTime: UINT32 = GetJA2Clock();
   let ubRetVal: UINT8 = 0;
 
   if (fInit) {
-    uiLastTime = 0;
-    ubSubImage = 0;
-    ubCount = 0;
+    DisplayAd__uiLastTime = 0;
+    DisplayAd__ubSubImage = 0;
+    DisplayAd__ubCount = 0;
   }
 
-  if (((uiCurTime - uiLastTime) > usDelay) || fRedraw) {
+  if (((uiCurTime - DisplayAd__uiLastTime) > usDelay) || fRedraw) {
     let hAdHandle: HVOBJECT;
 
-    if (ubSubImage == 0) {
-      if (ubCount == 0 || fRedraw) {
+    if (DisplayAd__ubSubImage == 0) {
+      if (DisplayAd__ubCount == 0 || fRedraw) {
         // Blit the ad
         hAdHandle = GetVideoObject(uiAdImageIdentifier);
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
@@ -797,21 +796,21 @@ function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOf
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
       }
 
-      uiLastTime = GetJA2Clock();
+      DisplayAd__uiLastTime = GetJA2Clock();
 
       // display first frame longer then rest
-      ubCount++;
-      if (ubCount > 12) {
-        ubCount = 0;
-        ubSubImage++;
+      DisplayAd__ubCount++;
+      if (DisplayAd__ubCount > 12) {
+        DisplayAd__ubCount = 0;
+        DisplayAd__ubSubImage++;
       }
 
       ubRetVal = Enum62.AIM_AD_NOT_DONE;
-    } else if (ubSubImage == usNumberOfSubImages - 1) {
-      if (ubCount == 0 || fRedraw) {
+    } else if (DisplayAd__ubSubImage == usNumberOfSubImages - 1) {
+      if (DisplayAd__ubCount == 0 || fRedraw) {
         // Blit the ad
         hAdHandle = GetVideoObject(uiAdImageIdentifier);
-        BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
+        BltVideoObject(FRAME_BUFFER, hAdHandle, DisplayAd__ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
         // redraw new mail warning, and create new mail button, if nessacary
         fReDrawNewMailFlag = true;
@@ -819,27 +818,27 @@ function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOf
         InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
       }
 
-      uiLastTime = GetJA2Clock();
+      DisplayAd__uiLastTime = GetJA2Clock();
 
       // display first frame longer then rest
-      ubCount++;
-      if (ubCount > 12) {
+      DisplayAd__ubCount++;
+      if (DisplayAd__ubCount > 12) {
         ubRetVal = Enum62.AIM_AD_DONE;
       }
     } else {
       hAdHandle = GetVideoObject(uiAdImageIdentifier);
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, DisplayAd__ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
       // redraw new mail warning, and create new mail button, if nessacary
       fReDrawNewMailFlag = true;
 
-      ubSubImage++;
+      DisplayAd__ubSubImage++;
     }
 
     // if the add it to have text on it, then put the text on it.
-    HandleTextOnAimAdd(ubSubImage);
+    HandleTextOnAimAdd(DisplayAd__ubSubImage);
 
-    uiLastTime = GetJA2Clock();
+    DisplayAd__uiLastTime = GetJA2Clock();
     InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
   }
   return ubRetVal;
@@ -891,62 +890,62 @@ function HandleTextOnAimAdd(ubCurSubImage: UINT8): void {
   }
 }
 
-function DisplayBobbyRAd(fInit: boolean, fRedraw: boolean): boolean {
-  /* static */ let uiLastTime: UINT32;
-  /* static */ let ubSubImage: UINT8 = 0;
-  /* static */ let ubDuckCount: UINT8 = 0;
-  /* static */ let ubCount: UINT8 = 0;
+/* static */ let DisplayBobbyRAd__uiLastTime: UINT32;
+/* static */ let DisplayBobbyRAd__ubSubImage: UINT8 = 0;
+/* static */ let DisplayBobbyRAd__ubDuckCount: UINT8 = 0;
+/* static */ let DisplayBobbyRAd__ubCount: UINT8 = 0;
+function DisplayBobbyRAd(fInit: boolean, fRedraw: boolean): UINT8 {
   let uiCurTime: UINT32 = GetJA2Clock();
   let ubRetVal: UINT8 = 0;
   let usDelay: UINT16 = AIM_AD_BOBBYR_AD_DELAY;
 
   if (fInit) {
-    ubDuckCount = 0;
-    uiLastTime = 0;
-    ubSubImage = 0;
-    ubCount = 0;
+    DisplayBobbyRAd__ubDuckCount = 0;
+    DisplayBobbyRAd__uiLastTime = 0;
+    DisplayBobbyRAd__ubSubImage = 0;
+    DisplayBobbyRAd__ubCount = 0;
   }
 
-  if (((uiCurTime - uiLastTime) > usDelay) || fRedraw) {
+  if (((uiCurTime - DisplayBobbyRAd__uiLastTime) > usDelay) || fRedraw) {
     let hAdHandle: HVOBJECT;
 
     // Loop through the first 6 images twice, then start into the later ones
     hAdHandle = GetVideoObject(guiBobbyRAdImages);
 
     // if we are still looping through the first 6 animations
-    if (ubDuckCount < 2) {
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
+    if (DisplayBobbyRAd__ubDuckCount < 2) {
+      BltVideoObject(FRAME_BUFFER, hAdHandle, DisplayBobbyRAd__ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-      ubSubImage++;
+      DisplayBobbyRAd__ubSubImage++;
 
       InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
 
       // if we do the first set of images
-      if (ubSubImage > AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES) {
-        ubDuckCount++;
+      if (DisplayBobbyRAd__ubSubImage > AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES) {
+        DisplayBobbyRAd__ubDuckCount++;
 
-        if (ubDuckCount < 2)
-          ubSubImage = 0;
+        if (DisplayBobbyRAd__ubDuckCount < 2)
+          DisplayBobbyRAd__ubSubImage = 0;
         else
-          ubSubImage = AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES + 1;
+          DisplayBobbyRAd__ubSubImage = AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES + 1;
       }
       ubRetVal = Enum62.AIM_AD_NOT_DONE;
     }
 
     else {
       // Blit the ad
-      BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hAdHandle, DisplayBobbyRAd__ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-      ubSubImage++;
+      DisplayBobbyRAd__ubSubImage++;
 
-      if (ubSubImage >= AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 1) {
+      if (DisplayBobbyRAd__ubSubImage >= AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 1) {
         // display last frame longer then rest
-        ubCount++;
-        if (ubCount > 12) {
+        DisplayBobbyRAd__ubCount++;
+        if (DisplayBobbyRAd__ubCount > 12) {
           ubRetVal = Enum62.AIM_AD_DONE;
         }
 
-        ubSubImage = AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 1;
+        DisplayBobbyRAd__ubSubImage = AIM_AD_BOBBYR_AD__NUM_SUBIMAGES - 1;
       }
 
       // redraw new mail warning, and create new mail button, if nessacary
@@ -956,9 +955,9 @@ function DisplayBobbyRAd(fInit: boolean, fRedraw: boolean): boolean {
     }
 
     // if the add it to have text on it, then put the text on it.
-    HandleTextOnAimAdd(ubSubImage);
+    HandleTextOnAimAdd(DisplayBobbyRAd__ubSubImage);
 
-    uiLastTime = GetJA2Clock();
+    DisplayBobbyRAd__uiLastTime = GetJA2Clock();
     InvalidateRegion(AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y);
   }
 

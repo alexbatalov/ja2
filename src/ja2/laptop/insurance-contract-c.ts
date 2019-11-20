@@ -86,7 +86,7 @@ let gubNumberofDisplayedInsuranceGrids: UINT8;
 
 let gfChangeInsuranceFormButtons: boolean = false;
 
-let gubInsuranceMercArray: UINT8[] /* [20] */;
+let gubInsuranceMercArray: UINT8[] /* [20] */ = createArray(20, 0);
 export let gsCurrentInsuranceMercIndex: INT16;
 let gsMaxPlayersOnTeam: INT16;
 
@@ -768,10 +768,9 @@ function DisableInsuranceContractNextPreviousbuttons(): void {
     EnableButton(guiInsContractPrevBackButton);
 }
 
+/* static */ let CreateDestroyInsuranceContractFormButtons__fButtonsCreated: boolean = false;
 function CreateDestroyInsuranceContractFormButtons(fCreate: boolean): void {
-  /* static */ let fButtonsCreated: boolean = false;
-
-  if (fCreate && !fButtonsCreated) {
+  if (fCreate && !CreateDestroyInsuranceContractFormButtons__fButtonsCreated) {
     // place the 3 accept buttons for the different forms
 
     // The accept button image
@@ -798,10 +797,10 @@ function CreateDestroyInsuranceContractFormButtons(fCreate: boolean): void {
       MSYS_SetBtnUserData(guiInsuranceAcceptClearForm3Button, 0, 0);
     }
 
-    fButtonsCreated = true;
+    CreateDestroyInsuranceContractFormButtons__fButtonsCreated = true;
   }
 
-  if (fButtonsCreated && !fCreate) {
+  if (CreateDestroyInsuranceContractFormButtons__fButtonsCreated && !fCreate) {
     // the accept image
     UnloadButtonImage(guiInsuranceAcceptClearForm1ButtonImage);
 
@@ -820,7 +819,7 @@ function CreateDestroyInsuranceContractFormButtons(fCreate: boolean): void {
       RemoveButton(guiInsuranceAcceptClearForm3Button);
     }
 
-    fButtonsCreated = false;
+    CreateDestroyInsuranceContractFormButtons__fButtonsCreated = false;
   }
 }
 

@@ -940,7 +940,7 @@ function GetUserInput(): void {
   let MousePos: POINT = createPoint();
   let ubPanelMercShouldUse: UINT8 = WhichPanelShouldTalkingMercUse(giSelectedMercCurrentQuote);
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   while (DequeueEvent(Event)) {
     if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {

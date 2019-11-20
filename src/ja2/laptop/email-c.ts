@@ -179,21 +179,21 @@ let pScreenMask: MOUSE_REGION = createMouseRegion();
 let pDeleteScreenMask: MOUSE_REGION = createMouseRegion();
 
 // the email info struct to speed up email
-let pEmailPageInfo: EmailPageInfoStruct[] /* [MAX_NUMBER_EMAIL_PAGES] */;
+let pEmailPageInfo: EmailPageInfoStruct[] /* [MAX_NUMBER_EMAIL_PAGES] */ = createArrayFrom(MAX_NUMBER_EMAIL_PAGES, createEmailPageInfoStruct);
 
 // buttons
-let giMessageButton: INT32[] /* [MAX_BUTTON_COUNT] */;
-let giMessageButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */;
-let giDeleteMailButton: INT32[] /* [2] */;
-let giDeleteMailButtonImage: INT32[] /* [2] */;
-let giSortButton: INT32[] /* [4] */;
-let giSortButtonImage: INT32[] /* [4] */;
-let giNewMailButton: INT32[] /* [1] */;
-let giNewMailButtonImage: INT32[] /* [1] */;
-let giMailMessageButtons: INT32[] /* [3] */;
-let giMailMessageButtonsImage: INT32[] /* [3] */;
-let giMailPageButtons: INT32[] /* [2] */;
-let giMailPageButtonsImage: INT32[] /* [2] */;
+let giMessageButton: INT32[] /* [MAX_BUTTON_COUNT] */ = createArray(MAX_BUTTON_COUNT, 0);
+let giMessageButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */ = createArray(MAX_BUTTON_COUNT, 0);
+let giDeleteMailButton: INT32[] /* [2] */ = createArray(2, 0);
+let giDeleteMailButtonImage: INT32[] /* [2] */ = createArray(2, 0);
+let giSortButton: INT32[] /* [4] */ = createArray(4, 0);
+let giSortButtonImage: INT32[] /* [4] */ = createArray(4, 0);
+let giNewMailButton: INT32[] /* [1] */ = createArray(1, 0);
+let giNewMailButtonImage: INT32[] /* [1] */ = createArray(1, 0);
+let giMailMessageButtons: INT32[] /* [3] */ = createArray(3, 0);
+let giMailMessageButtonsImage: INT32[] /* [3] */ = createArray(3, 0);
+let giMailPageButtons: INT32[] /* [2] */ = createArray(2, 0);
+let giMailPageButtonsImage: INT32[] /* [2] */ = createArray(2, 0);
 
 // mouse regions
 let pEmailMoveRegions: MOUSE_REGION[] /* [NEXT_BUTTON + 1] */ = createArrayFrom(Enum72.NEXT_BUTTON + 1, createMouseRegion);
@@ -388,18 +388,19 @@ export function ExitEmail(): void {
   DestroyMailScreenButtons();
 }
 
+/* static */ let HandleEmail__fEmailListBeenDrawAlready: boolean = false;
 export function HandleEmail(): void {
   let iViewerY: INT32 = 0;
-  /* static */ let fEmailListBeenDrawAlready: boolean = false;
+
   // RenderButtonsFastHelp( );
 
   // check if email message record list needs to be updated
   UpDateMessageRecordList();
 
   // does email list need to be draw, or can be drawn
-  if (((!fDisplayMessageFlag) && (!fNewMailFlag) && (!fDeleteMailFlag)) && (fEmailListBeenDrawAlready == false)) {
+  if (((!fDisplayMessageFlag) && (!fNewMailFlag) && (!fDeleteMailFlag)) && (HandleEmail__fEmailListBeenDrawAlready == false)) {
     DisplayEmailList();
-    fEmailListBeenDrawAlready = true;
+    HandleEmail__fEmailListBeenDrawAlready = true;
   }
   // if the message flag, show message
   else if ((fDisplayMessageFlag) && (fReDrawMessageFlag)) {
@@ -408,7 +409,7 @@ export function HandleEmail(): void {
 
     // this simply redraws message without button manipulation
     iViewerY = DisplayEmailMessage(GetEmailMessage(giMessageId));
-    fEmailListBeenDrawAlready = false;
+    HandleEmail__fEmailListBeenDrawAlready = false;
   } else if ((fDisplayMessageFlag) && (!fOldDisplayMessageFlag)) {
     // redisplay list
     DisplayEmailList();
@@ -416,7 +417,7 @@ export function HandleEmail(): void {
     // this simply redraws message with button manipulation
     iViewerY = DisplayEmailMessage(GetEmailMessage(giMessageId));
     AddDeleteRegionsToMessageRegion(iViewerY);
-    fEmailListBeenDrawAlready = false;
+    HandleEmail__fEmailListBeenDrawAlready = false;
   }
 
   // not displaying anymore?
@@ -1677,19 +1678,18 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
   }
 }
 
+/* static */ let CreateDestroyNewMailButton__fOldNewMailFlag: boolean = false;
 export function CreateDestroyNewMailButton(): void {
-  /* static */ let fOldNewMailFlag: boolean = false;
-
   // check if we are video conferencing, if so, do nothing
   if (gubVideoConferencingMode != 0) {
     return;
   }
 
-  if ((fNewMailFlag) && (!fOldNewMailFlag)) {
+  if ((fNewMailFlag) && (!CreateDestroyNewMailButton__fOldNewMailFlag)) {
     // create new mail dialog box button
 
     // set old flag (stating button has been created)
-    fOldNewMailFlag = true;
+    CreateDestroyNewMailButton__fOldNewMailFlag = true;
 
     // load image and setup button
     giNewMailButtonImage[0] = LoadButtonImage("LAPTOP\\YesNoButtons.sti", -1, 0, -1, 1, -1);
@@ -1703,9 +1703,9 @@ export function CreateDestroyNewMailButton(): void {
     MSYS_AddRegion(pScreenMask);
     MarkAButtonDirty(giNewMailButton[0]);
     fReDrawScreenFlag = true;
-  } else if ((!fNewMailFlag) && (fOldNewMailFlag)) {
+  } else if ((!fNewMailFlag) && (CreateDestroyNewMailButton__fOldNewMailFlag)) {
     // reset old flag
-    fOldNewMailFlag = false;
+    CreateDestroyNewMailButton__fOldNewMailFlag = false;
 
     // remove the button
     RemoveButton(giNewMailButton[0]);
@@ -1722,9 +1722,10 @@ export function CreateDestroyNewMailButton(): void {
   }
 }
 
+/* static */ let DisplayNewMailBox__fOldNewMailFlag: boolean = false;
 export function DisplayNewMailBox(): boolean {
   let hHandle: HVOBJECT;
-  /* static */ let fOldNewMailFlag: boolean = false;
+
   // will display a new mail box whenever new mail has arrived
 
   // check if we are video conferencing, if so, do nothing
@@ -1733,8 +1734,8 @@ export function DisplayNewMailBox(): boolean {
   }
 
   // just stopped displaying box, reset old flag
-  if ((!fNewMailFlag) && (fOldNewMailFlag)) {
-    fOldNewMailFlag = false;
+  if ((!fNewMailFlag) && (DisplayNewMailBox__fOldNewMailFlag)) {
+    DisplayNewMailBox__fOldNewMailFlag = false;
     return false;
   }
 
@@ -1783,7 +1784,7 @@ export function DisplayNewMailBox(): boolean {
   // redraw icons
 
   // set box as displayed
-  fOldNewMailFlag = true;
+  DisplayNewMailBox__fOldNewMailFlag = true;
 
   // return
   return true;
@@ -1996,11 +1997,11 @@ function BtnDeleteYesback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
+/* static */ let CreateDestroyNextPreviousRegions__fCreated: boolean = false;
 function CreateDestroyNextPreviousRegions(): void {
-  /* static */ let fCreated: boolean = false;
-  if (fCreated) {
+  if (CreateDestroyNextPreviousRegions__fCreated) {
     // destroy already create next, previous mouse regions
-    fCreated = false;
+    CreateDestroyNextPreviousRegions__fCreated = false;
 
     RemoveButton(giMailPageButtons[1]);
     UnloadButtonImage(giMailPageButtonsImage[1]);
@@ -2009,7 +2010,7 @@ function CreateDestroyNextPreviousRegions(): void {
     UnloadButtonImage(giMailPageButtonsImage[0]);
   } else {
     // create uncreated mouse regions
-    fCreated = true;
+    CreateDestroyNextPreviousRegions__fCreated = true;
 
     CreateNextPreviousEmailPageButtons();
 
@@ -2041,13 +2042,13 @@ function ReDraw(): void {
   }
 }
 
+/* static */ let CreateDestroyDeleteNoticeMailButton__fOldDeleteMailFlag: boolean = false;
 export function CreateDestroyDeleteNoticeMailButton(): void {
-  /* static */ let fOldDeleteMailFlag: boolean = false;
-  if ((fDeleteMailFlag) && (!fOldDeleteMailFlag)) {
+  if ((fDeleteMailFlag) && (!CreateDestroyDeleteNoticeMailButton__fOldDeleteMailFlag)) {
     // confirm delete email buttons
 
     // YES button
-    fOldDeleteMailFlag = true;
+    CreateDestroyDeleteNoticeMailButton__fOldDeleteMailFlag = true;
     giDeleteMailButtonImage[0] = LoadButtonImage("LAPTOP\\YesNoButtons.sti", -1, 0, -1, 1, -1);
     giDeleteMailButton[0] = QuickCreateButton(giDeleteMailButtonImage[0], NEW_BTN_X + 1, NEW_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnDeleteYesback);
 
@@ -2065,9 +2066,9 @@ export function CreateDestroyDeleteNoticeMailButton(): void {
 
     // force update
     fReDrawScreenFlag = true;
-  } else if ((!fDeleteMailFlag) && (fOldDeleteMailFlag)) {
+  } else if ((!fDeleteMailFlag) && (CreateDestroyDeleteNoticeMailButton__fOldDeleteMailFlag)) {
     // clear out the buttons and screen mask
-    fOldDeleteMailFlag = false;
+    CreateDestroyDeleteNoticeMailButton__fOldDeleteMailFlag = false;
     RemoveButton(giDeleteMailButton[0]);
     UnloadButtonImage(giDeleteMailButtonImage[0]);
     RemoveButton(giDeleteMailButton[1]);

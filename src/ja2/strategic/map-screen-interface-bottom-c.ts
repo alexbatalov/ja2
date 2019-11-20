@@ -722,7 +722,7 @@ function MapScreenMessageScrollBarCallBack(pRegion: MOUSE_REGION, iReason: INT32
     // region is supposed to be disabled if there aren't enough messages to scroll.  Formulas assume this
     if (ubNumMessages > MAX_MESSAGES_ON_MAP_BOTTOM) {
       // where is the mouse?
-      GetCursorPos(addressof(MousePos));
+      GetCursorPos(MousePos);
 
       ubMouseYOffset = MousePos.y - MESSAGE_SCROLL_AREA_START_Y;
 

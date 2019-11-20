@@ -1896,10 +1896,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string | null /* S
   return true;
 }
 
+/* static */ let BtnPopUpOkButtonCallback__fInCallback: boolean = true;
 function BtnPopUpOkButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fInCallback: boolean = true;
-
-  if (fInCallback) {
+  if (BtnPopUpOkButtonCallback__fInCallback) {
     if (!(btn.uiFlags & BUTTON_ENABLED))
       return;
 
@@ -1911,7 +1910,7 @@ function BtnPopUpOkButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
       let ubCurPageNum: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       btn.uiFlags &= (~BUTTON_CLICKED_ON);
-      fInCallback = false;
+      BtnPopUpOkButtonCallback__fInCallback = false;
 
       //			gfStopMercFromTalking = TRUE;
 
@@ -1927,7 +1926,7 @@ function BtnPopUpOkButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
           gubVideoConferencingMode = Enum65.AIM_VIDEO_HIRE_MERC_MODE;
       }
 
-      fInCallback = true;
+      BtnPopUpOkButtonCallback__fInCallback = true;
 
       InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
     }
@@ -2059,8 +2058,8 @@ function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): boolean {
   return true;
 }
 
+/* static */ let DisplayTalkingMercFaceForVideoPopUp__fWasTheMercTalking: boolean = false;
 function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
-  /* static */ let fWasTheMercTalking: boolean = false;
   let fIsTheMercTalking: boolean;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
@@ -2116,8 +2115,8 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
   // if the text the merc is saying is really short, extend the time that it is on the screen
   if ((GetJA2Clock() - guiTimeThatMercStartedTalking) > usAimMercSpeechDuration) {
     // if the merc just stopped talking
-    if (fWasTheMercTalking && !fIsTheMercTalking) {
-      fWasTheMercTalking = false;
+    if (DisplayTalkingMercFaceForVideoPopUp__fWasTheMercTalking && !fIsTheMercTalking) {
+      DisplayTalkingMercFaceForVideoPopUp__fWasTheMercTalking = false;
 
       gfRedrawScreen = true;
       guiMercAttitudeTime = GetJA2Clock();
@@ -2125,7 +2124,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): boolean {
       StopMercTalking();
     }
   } else if (fIsTheMercTalking) {
-    fWasTheMercTalking = fIsTheMercTalking;
+    DisplayTalkingMercFaceForVideoPopUp__fWasTheMercTalking = fIsTheMercTalking;
   }
 
   return fIsTheMercTalking;
@@ -2345,8 +2344,9 @@ function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): boolean {
   return false;
 }
 
+/* static */ let HandleVideoDistortion__uiStaticNoiseSound: UINT32 = NO_SAMPLE;
+/* static */ let HandleVideoDistortion__uiCurTime: UINT32 = 0;
 function HandleVideoDistortion(): void {
-  /* static */ let uiStaticNoiseSound: UINT32 = NO_SAMPLE;
   let ubOldMode: UINT8 = gubCurrentStaticMode;
 
   // if we are just entering the contact page, display a snowy background
@@ -2354,23 +2354,22 @@ function HandleVideoDistortion(): void {
     DisplaySnowBackground();
 
     // if it is time to start playing another sound
-    if (uiStaticNoiseSound == NO_SAMPLE) {
-      uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static4.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+    if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+      HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static4.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
     }
   } else {
     switch (gubCurrentStaticMode) {
       case Enum67.VC_NO_STATIC: {
-        /* static */ let uiCurTime: UINT32 = 0;
         let ubNum: UINT8;
 
         // if the sound is playing, stop it
-        if (uiStaticNoiseSound != NO_SAMPLE) {
-          SoundStop(uiStaticNoiseSound);
-          uiStaticNoiseSound = NO_SAMPLE;
+        if (HandleVideoDistortion__uiStaticNoiseSound != NO_SAMPLE) {
+          SoundStop(HandleVideoDistortion__uiStaticNoiseSound);
+          HandleVideoDistortion__uiStaticNoiseSound = NO_SAMPLE;
         }
 
         // DECIDE WHICH ONE TO BLIT NEXT
-        if ((GetJA2Clock() - uiCurTime) > 2500) {
+        if ((GetJA2Clock() - HandleVideoDistortion__uiCurTime) > 2500) {
           ubNum = Random(200); // 125;
 
           if (ubNum < 15)
@@ -2391,7 +2390,7 @@ function HandleVideoDistortion(): void {
           else if (ubNum < 100)
             gubCurrentStaticMode = Enum67.VC_TRANS_SNOW_IN;
 
-          uiCurTime = GetJA2Clock();
+          HandleVideoDistortion__uiCurTime = GetJA2Clock();
         }
       } break;
 
@@ -2399,8 +2398,8 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayDistortionLine(Enum67.VC_FUZZY_LINE, guiFuzzLine, VC_NUM_FUZZ_LINES);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static1.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static1.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
 
@@ -2408,8 +2407,8 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayDistortionLine(Enum67.VC_STRAIGHTLINE, guiStraightLine, VC_NUM_STRAIGHT_LINES);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static5.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static5.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
 
@@ -2417,8 +2416,8 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayDistortionLine(Enum67.VC_BW_SNOW, guiBWSnow, 5);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static6.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static6.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
 
@@ -2426,8 +2425,8 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayPixelatedImage(4);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static3.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static3.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
 
@@ -2435,8 +2434,8 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_OUT, guiTransSnow, 7, false);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static5.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static5.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
 
@@ -2444,58 +2443,58 @@ function HandleVideoDistortion(): void {
         gubCurrentStaticMode = DisplayTransparentSnow(Enum67.VC_TRANS_SNOW_IN, guiTransSnow, 7, true);
 
         // if it is time to start playing another sound
-        if (uiStaticNoiseSound == NO_SAMPLE) {
-          uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static4.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
+        if (HandleVideoDistortion__uiStaticNoiseSound == NO_SAMPLE) {
+          HandleVideoDistortion__uiStaticNoiseSound = PlayJA2SampleFromFile("LAPTOP\\static4.wav", RATE_11025, LOWVOLUME, 1, MIDDLEPAN);
         }
         break;
     }
 
     if (ubOldMode != gubCurrentStaticMode) {
-      uiStaticNoiseSound = NO_SAMPLE;
+      HandleVideoDistortion__uiStaticNoiseSound = NO_SAMPLE;
     }
   }
 }
 
 // returns true when done. else false
+/* static */ let DisplayTransparentSnow__bCount: INT8 = 0;
+/* static */ let DisplayTransparentSnow__uiLastTime: UINT32 = 0;
 function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8, bForward: boolean): UINT8 {
   let hFuzzLineHandle: HVOBJECT;
-  /* static */ let bCount: INT8 = 0;
   let uiCurrentTime: UINT32 = 0;
-  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
-  if ((uiCurrentTime - uiLastTime) > 100) {
+  if ((uiCurrentTime - DisplayTransparentSnow__uiLastTime) > 100) {
     if (bForward) {
-      if (bCount > ubMaxImages - 1)
-        bCount = 0;
+      if (DisplayTransparentSnow__bCount > ubMaxImages - 1)
+        DisplayTransparentSnow__bCount = 0;
       else
-        bCount++;
+        DisplayTransparentSnow__bCount++;
     } else {
-      if (bCount <= 0)
-        bCount = ubMaxImages - 1;
+      if (DisplayTransparentSnow__bCount <= 0)
+        DisplayTransparentSnow__bCount = ubMaxImages - 1;
       else
-        bCount--;
+        DisplayTransparentSnow__bCount--;
     }
-    uiLastTime = uiCurrentTime;
+    DisplayTransparentSnow__uiLastTime = uiCurrentTime;
   }
 
-  if (bCount >= ubMaxImages)
-    bCount = ubMaxImages - 1;
+  if (DisplayTransparentSnow__bCount >= ubMaxImages)
+    DisplayTransparentSnow__bCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
   hFuzzLineHandle = GetVideoObject(uiImageIdentifier);
-  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, DisplayTransparentSnow__bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   if (bForward) {
-    if (bCount == ubMaxImages - 1) {
-      bCount = 0;
+    if (DisplayTransparentSnow__bCount == ubMaxImages - 1) {
+      DisplayTransparentSnow__bCount = 0;
       return Enum67.VC_BW_SNOW;
     } else
       return ubMode;
   } else {
-    if (bCount == 0) {
-      bCount = 0;
+    if (DisplayTransparentSnow__bCount == 0) {
+      DisplayTransparentSnow__bCount = 0;
       return Enum67.VC_NO_STATIC;
     } else
       return ubMode;
@@ -2503,31 +2502,31 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
 }
 
 // returns true when done. else false
+/* static */ let DisplayDistortionLine__ubCount: UINT8 = 255;
+/* static */ let DisplayDistortionLine__uiLastTime: UINT32 = 0;
 function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8): UINT8 {
   let hFuzzLineHandle: HVOBJECT;
-  /* static */ let ubCount: UINT8 = 255;
   let uiCurrentTime: UINT32 = 0;
-  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
-  if ((uiCurrentTime - uiLastTime) > VC_CONTACT_FUZZY_LINE_TIME) {
-    if (ubCount >= ubMaxImages - 1)
-      ubCount = 0;
+  if ((uiCurrentTime - DisplayDistortionLine__uiLastTime) > VC_CONTACT_FUZZY_LINE_TIME) {
+    if (DisplayDistortionLine__ubCount >= ubMaxImages - 1)
+      DisplayDistortionLine__ubCount = 0;
     else
-      ubCount++;
-    uiLastTime = uiCurrentTime;
+      DisplayDistortionLine__ubCount++;
+    DisplayDistortionLine__uiLastTime = uiCurrentTime;
   }
 
-  if (ubCount >= ubMaxImages)
-    ubCount = ubMaxImages - 1;
+  if (DisplayDistortionLine__ubCount >= ubMaxImages)
+    DisplayDistortionLine__ubCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
   hFuzzLineHandle = GetVideoObject(uiImageIdentifier);
-  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, DisplayDistortionLine__ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, null);
 
-  if (ubCount == ubMaxImages - 1) {
-    ubCount = 0;
+  if (DisplayDistortionLine__ubCount == ubMaxImages - 1) {
+    DisplayDistortionLine__ubCount = 0;
     if (ubMode == Enum67.VC_BW_SNOW)
       return Enum67.VC_TRANS_SNOW_OUT;
     else
@@ -2536,26 +2535,26 @@ function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxIm
     return ubMode;
 }
 
+/* static */ let DisplayPixelatedImage__ubCount: UINT8 = 255;
+/* static */ let DisplayPixelatedImage__uiLastTime: UINT32 = 0;
 function DisplayPixelatedImage(ubMaxImages: UINT8): UINT8 {
-  /* static */ let ubCount: UINT8 = 255;
   let uiCurrentTime: UINT32 = 0;
-  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
-  if ((uiCurrentTime - uiLastTime) > VC_CONTACT_FUZZY_LINE_TIME) {
-    if (ubCount >= ubMaxImages - 1)
-      ubCount = 0;
+  if ((uiCurrentTime - DisplayPixelatedImage__uiLastTime) > VC_CONTACT_FUZZY_LINE_TIME) {
+    if (DisplayPixelatedImage__ubCount >= ubMaxImages - 1)
+      DisplayPixelatedImage__ubCount = 0;
     else
-      ubCount++;
-    uiLastTime = uiCurrentTime;
+      DisplayPixelatedImage__ubCount++;
+    DisplayPixelatedImage__uiLastTime = uiCurrentTime;
   }
 
   //	PixelateVideoObjectRect(  FRAME_BUFFER, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X+AIM_MEMBER_VIDEO_FACE_WIDTH-1, AIM_MEMBER_VIDEO_FACE_Y+AIM_MEMBER_VIDEO_FACE_HEIGHT-1);
   ShadowVideoSurfaceRect(FRAME_BUFFER, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH - 1, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT - 1);
 
-  if (ubCount == ubMaxImages - 1) {
-    ubCount = 0;
+  if (DisplayPixelatedImage__ubCount == ubMaxImages - 1) {
+    DisplayPixelatedImage__ubCount = 0;
     return Enum67.VC_NO_STATIC;
   } else
     return Enum67.VC_PIXELATE;
@@ -2636,9 +2635,9 @@ function BtnXToCloseVideoConfButtonCallback(btn: GUI_BUTTON, reason: INT32): voi
   }
 }
 
+/* static */ let InitDeleteVideoConferencePopUp__fXRegionActive: boolean = false;
+/* static */ let InitDeleteVideoConferencePopUp__fVideoConferenceCreated: boolean = false;
 function InitDeleteVideoConferencePopUp(): boolean {
-  /* static */ let fXRegionActive: boolean = false;
-  /* static */ let fVideoConferenceCreated: boolean = false;
   let i: UINT8;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -2660,11 +2659,11 @@ function InitDeleteVideoConferencePopUp(): boolean {
   // if the video conferencing is currently displayed, put the 'x' to close it in the top right corner
   // and disable the ability to click on the BIG face to go to different screen
   if ((gubVideoConferencingMode != Enum65.AIM_VIDEO_NOT_DISPLAYED_MODE) && (gubVideoConferencingMode != Enum65.AIM_VIDEO_POPUP_MODE)) {
-    if (!fXRegionActive) {
+    if (!InitDeleteVideoConferencePopUp__fXRegionActive) {
       giXToCloseVideoConfButton = QuickCreateButton(giXToCloseVideoConfButtonImage, AIM_MEMBER_VIDEO_CONF_XCLOSE_X, AIM_MEMBER_VIDEO_CONF_XCLOSE_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), BtnXToCloseVideoConfButtonCallback);
       SetButtonCursor(giXToCloseVideoConfButton, Enum317.CURSOR_LAPTOP_SCREEN);
       SpecifyDisabledButtonStyle(giXToCloseVideoConfButton, Enum29.DISABLED_STYLE_NONE);
-      fXRegionActive = true;
+      InitDeleteVideoConferencePopUp__fXRegionActive = true;
 
       MSYS_DisableRegion(gSelectedFaceRegion);
     }
@@ -2688,9 +2687,9 @@ function InitDeleteVideoConferencePopUp(): boolean {
 
     gfVideoFaceActive = false;
 
-    if (fXRegionActive) {
+    if (InitDeleteVideoConferencePopUp__fXRegionActive) {
       RemoveButton(giXToCloseVideoConfButton);
-      fXRegionActive = false;
+      InitDeleteVideoConferencePopUp__fXRegionActive = false;
     }
 
     MSYS_DisableRegion(gSelectedShutUpMercRegion);
@@ -2704,7 +2703,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
       EnableDisableCurrentVideoConferenceButtons(false);
     }
 
-    fVideoConferenceCreated = false;
+    InitDeleteVideoConferencePopUp__fVideoConferenceCreated = false;
 
     fNewMailFlag = gfIsNewMailFlagSet;
     gfIsNewMailFlagSet = false;
@@ -2758,7 +2757,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
     guiLastHandleMercTime = 0;
     gfHangUpMerc = false;
 
-    fVideoConferenceCreated = true;
+    InitDeleteVideoConferencePopUp__fVideoConferenceCreated = true;
   }
 
   // The screen in which you first contact the merc, you have the option to hang up or goto hire merc screen
@@ -3037,6 +3036,7 @@ function DeleteVideoConfPopUp(): boolean {
   return true;
 }
 
+/* static */ let HandleCurrentVideoConfMode__ubCurMode: UINT8 = 0;
 function HandleCurrentVideoConfMode(): boolean {
   switch (gubVideoConferencingMode) {
     // The video conference is not displayed
@@ -3062,18 +3062,17 @@ function HandleCurrentVideoConfMode(): boolean {
 
     // The opening animation of the vc (fuzzy screen, then goes to black)
     case Enum65.AIM_VIDEO_INIT_MODE: {
-      /* static */ let ubCurMode: UINT8 = 0;
       let fDone: boolean;
 
-      if (ubCurMode == 0) {
+      if (HandleCurrentVideoConfMode__ubCurMode == 0) {
         fDone = DisplayBlackBackground(10);
         if (fDone)
-          ubCurMode = 1;
+          HandleCurrentVideoConfMode__ubCurMode = 1;
       } else
         fDone = DisplaySnowBackground();
 
-      if (fDone && ubCurMode) {
-        ubCurMode = 0;
+      if (fDone && HandleCurrentVideoConfMode__ubCurMode) {
+        HandleCurrentVideoConfMode__ubCurMode = 0;
 
         gubVideoConferencingMode = WillMercAcceptCall();
       }
@@ -3140,11 +3139,12 @@ function HandleCurrentVideoConfMode(): boolean {
   return true;
 }
 
+/* static */ let EnableDisableCurrentVideoConferenceButtons__fCreated: boolean = false;
 function EnableDisableCurrentVideoConferenceButtons(fEnable: boolean): boolean {
   let i: INT8;
-  /* static */ let fCreated: boolean = false;
+
   if (!fEnable) {
-    if (fCreated) {
+    if (EnableDisableCurrentVideoConferenceButtons__fCreated) {
       // enable buttons behind the acknowlegde button
 
       for (i = 0; i < 3; i++)
@@ -3156,10 +3156,10 @@ function EnableDisableCurrentVideoConferenceButtons(fEnable: boolean): boolean {
       for (i = 0; i < 2; i++)
         EnableButton(giAuthorizeButton[i]);
 
-      fCreated = false;
+      EnableDisableCurrentVideoConferenceButtons__fCreated = false;
     }
   } else {
-    if (!fCreated) {
+    if (!EnableDisableCurrentVideoConferenceButtons__fCreated) {
       // disable buttons behind the acknowlegde button
       for (i = 0; i < 3; i++)
         DisableButton(giContractLengthButton[i]);
@@ -3170,7 +3170,7 @@ function EnableDisableCurrentVideoConferenceButtons(fEnable: boolean): boolean {
       for (i = 0; i < 2; i++)
         DisableButton(giAuthorizeButton[i]);
 
-      fCreated = true;
+      EnableDisableCurrentVideoConferenceButtons__fCreated = true;
     }
   }
   return true;
@@ -3288,6 +3288,7 @@ export function DisableNewMailMessage(): boolean {
 }
 
 /* static */ let DisplayMovingTitleBar__ubCount: UINT8;
+/* static */ let DisplayMovingTitleBar__LastRect: SGPRect = createSGPRect();
 function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -3297,7 +3298,6 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   let usHeight: UINT16;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
-  /* static */ let LastRect: SGPRect = createSGPRect();
   let usTemp: FLOAT;
 
   if (fForward) {
@@ -3343,9 +3343,9 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   if (fForward) {
     // Restore the old rect
     if (DisplayMovingTitleBar__ubCount > 2) {
-      usWidth = (LastRect.iRight - LastRect.iLeft);
-      usHeight = (LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
+      usWidth = (DisplayMovingTitleBar__LastRect.iRight - DisplayMovingTitleBar__LastRect.iLeft);
+      usHeight = (DisplayMovingTitleBar__LastRect.iBottom - DisplayMovingTitleBar__LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, DisplayMovingTitleBar__LastRect.iLeft, DisplayMovingTitleBar__LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
@@ -3357,9 +3357,9 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   } else {
     // Restore the old rect
     if (DisplayMovingTitleBar__ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 2) {
-      usWidth = (LastRect.iRight - LastRect.iLeft);
-      usHeight = (LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
+      usWidth = (DisplayMovingTitleBar__LastRect.iRight - DisplayMovingTitleBar__LastRect.iLeft);
+      usHeight = (DisplayMovingTitleBar__LastRect.iBottom - DisplayMovingTitleBar__LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, DisplayMovingTitleBar__LastRect.iLeft, DisplayMovingTitleBar__LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
@@ -3373,9 +3373,9 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
   BltStretchVideoSurface(FRAME_BUFFER, guiVideoTitleBar, 0, 0, VO_BLT_SRCTRANSPARENCY, SrcRect, DestRect);
 
   InvalidateRegion(DestRect.iLeft, DestRect.iTop, DestRect.iRight, DestRect.iBottom);
-  InvalidateRegion(LastRect.iLeft, LastRect.iTop, LastRect.iRight, LastRect.iBottom);
+  InvalidateRegion(DisplayMovingTitleBar__LastRect.iLeft, DisplayMovingTitleBar__LastRect.iTop, DisplayMovingTitleBar__LastRect.iRight, DisplayMovingTitleBar__LastRect.iBottom);
 
-  LastRect = DestRect;
+  DisplayMovingTitleBar__LastRect = DestRect;
 
   if (fForward) {
     DisplayMovingTitleBar__ubCount++;

@@ -2,7 +2,6 @@ namespace ja2 {
 
 const SQUARE_STEP = 8;
 
-export let guiExitScreen: UINT32;
 export let gfFadeInitialized: boolean = false;
 let gbFadeValue: INT8;
 let gsFadeLimit: INT16;

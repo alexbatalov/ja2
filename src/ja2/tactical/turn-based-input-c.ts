@@ -938,7 +938,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   let usMapPos: UINT16;
   let fGoodCheatLevelKey: boolean = false;
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   GetMouseMapPos(addressof(usMapPos));
 

@@ -51,8 +51,8 @@ let gfHomePageActive: boolean = false; // Specifies whether or not the home page
 // Buttons
 
 // Graphic for button
-export let guiGalleryButtonImage: INT32;
-export let guiGalleryButton: UINT32;
+let guiGalleryButtonImage: INT32;
+let guiGalleryButton: UINT32;
 
 // link to the flower home page by clicking on the flower title
 let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION = createMouseRegion();

@@ -1272,7 +1272,7 @@ export function RefreshScreen(DummyVariable: Pointer<void>): void {
   // Get the current mouse position
   //
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   //

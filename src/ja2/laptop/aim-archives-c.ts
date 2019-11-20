@@ -74,8 +74,8 @@ const AIM_ALUMNI_POPUP_NAME_Y = AIM_ALUMNI_FACE_PANEL_Y + 20;
 const AIM_ALUMNI_POPUP_DESC_X = AIM_POPUP_X + 8;
 const AIM_ALUMNI_POPUP_DESC_Y = AIM_ALUMNI_FACE_PANEL_Y + AIM_ALUMNI_FACE_PANEL_HEIGHT + 5;
 
-const AIM_ALUMNI_DONE_X = AIM_POPUP_X + AIM_POPUP_WIDTH - AIM_ALUMNI_DONE_WIDTH - 7;
 const AIM_ALUMNI_DONE_WIDTH = 36;
+const AIM_ALUMNI_DONE_X = AIM_POPUP_X + AIM_POPUP_WIDTH - AIM_ALUMNI_DONE_WIDTH - 7;
 const AIM_ALUMNI_DONE_HEIGHT = 16;
 
 const AIM_ALUMNI_NAME_SIZE = 80 * 2;
@@ -89,22 +89,22 @@ let guiOldAim: UINT32;
 let guiPageButtons: UINT32;
 let guiAlumniPopUp: UINT32;
 let guiPopUpPic: UINT32;
-export let guiDoneButton: UINT32;
+let guiDoneButton: UINT32;
 
 let gubPageNum: UINT8;
 let gunAlumniButtonDown: UINT8 = 255;
 let gfExitingAimArchives: boolean;
 let gubDrawOldMerc: UINT8;
-let gfDrawPopUpBox: UINT8 = false;
+let gfDrawPopUpBox: boolean = false;
 let gfDestroyPopUpBox: boolean;
 let gfFaceMouseRegionsActive: boolean;
 // BOOLEAN		gfDestroyDoneRegion;
 let gfReDrawScreen: boolean = false;
 
 let AimArchivesSubPagesVisitedFlag: boolean[] /* [3] */ = [
-  0,
-  0,
-  0,
+  false,
+  false,
+  false,
 ];
 
 // Mouse Regions
@@ -115,7 +115,7 @@ let gMercAlumniFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_OLD_MERCS_ON_PAGE
 // Done region
 let gDoneRegion: MOUSE_REGION = createMouseRegion();
 
-let guiAlumniPageButton: UINT32[] /* [3] */;
+let guiAlumniPageButton: UINT32[] /* [3] */ = createArray(3, 0);
 let guiAlumniPageButtonImage: INT32;
 
 export function GameInitAimArchives(): void {
@@ -125,7 +125,7 @@ export function EnterInitAimArchives(): void {
   gfDrawPopUpBox = false;
   gfDestroyPopUpBox = false;
 
-  memset(addressof(AimArchivesSubPagesVisitedFlag), 0, 3);
+  AimArchivesSubPagesVisitedFlag.fill(false);
   AimArchivesSubPagesVisitedFlag[0] = true;
 }
 
@@ -561,20 +561,19 @@ function RemoveAimAlumniFaceRegion(): void {
   gfFaceMouseRegionsActive = false;
 }
 
+/* static */ let CreateDestroyDoneMouseRegion__DoneRegionCreated: boolean = false;
 function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
-  /* static */ let DoneRegionCreated: boolean = false;
-
-  if ((!DoneRegionCreated) && (usPosY != 0)) {
+  if ((!CreateDestroyDoneMouseRegion__DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;
     MSYS_DefineRegion(gDoneRegion, AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, Enum317.CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
     // Add region
     MSYS_AddRegion(gDoneRegion);
-    DoneRegionCreated = true;
+    CreateDestroyDoneMouseRegion__DoneRegionCreated = true;
   }
 
-  if (DoneRegionCreated && usPosY == 0) {
+  if (CreateDestroyDoneMouseRegion__DoneRegionCreated && usPosY == 0) {
     MSYS_RemoveRegion(gDoneRegion);
-    DoneRegionCreated = false;
+    CreateDestroyDoneMouseRegion__DoneRegionCreated = false;
     //		gfDestroyDoneRegion = FALSE;
   }
 }

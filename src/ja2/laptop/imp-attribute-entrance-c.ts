@@ -1,8 +1,8 @@
 namespace ja2 {
 
 // the buttons
-let giIMPAttributeEntranceButtonImage: UINT32[] /* [1] */;
-let giIMPAttributeEntranceButton: UINT32[] /* [1] */;
+let giIMPAttributeEntranceButtonImage: UINT32[] /* [1] */ = createArray(1, 0);
+let giIMPAttributeEntranceButton: UINT32[] /* [1] */ = createArray(1, 0);
 
 export function EnterIMPAttributeEntrance(): void {
   CreateIMPAttributeEntranceButtons();

@@ -481,14 +481,14 @@ function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
 }
 
 function SortMercArray(): boolean {
-  qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(UINT8), QsortCompare);
+  AimMercArray.sort(QsortCompare);
 
   return true;
 }
 
-function QsortCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  let Num1: UINT8 = pNum1.value;
-  let Num2: UINT8 = pNum2.value;
+function QsortCompare(pNum1: number, pNum2: number): INT32 {
+  let Num1: UINT8 = pNum1;
+  let Num2: UINT8 = pNum2;
 
   switch (gubCurrentSortMode) {
     // Price						INT16	uiWeeklySalary

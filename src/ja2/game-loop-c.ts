@@ -89,7 +89,7 @@ export function GameLoop(): void {
   let MousePos: POINT = createPoint();
   let uiOldScreen: UINT32 = guiCurrentScreen;
 
-  GetCursorPos(addressof(MousePos));
+  GetCursorPos(MousePos);
   // Hook into mouse stuff for MOVEMENT MESSAGES
   MouseSystemHook(MOUSE_POS, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
   MusicPoll(false);

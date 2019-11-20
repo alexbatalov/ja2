@@ -166,7 +166,7 @@ export interface TacticalStatusType {
   fSomeoneHit: boolean;
   ubPaddingSmall: UINT8;
   uiTimeSinceLastOpplistDecay: UINT32;
-  bMercArrivingQuoteBeingUsed: INT8;
+  bMercArrivingQuoteBeingUsed: boolean /* INT8 */;
   ubEnemyKilledOnAttackKiller: UINT8;
   fCountingDownForGuideDescription: boolean;
   bGuideDescriptionCountDown: INT8;
@@ -268,7 +268,7 @@ export function createTacticalStatusType(): TacticalStatusType {
     fSomeoneHit: false,
     ubPaddingSmall: 0,
     uiTimeSinceLastOpplistDecay: 0,
-    bMercArrivingQuoteBeingUsed: 0,
+    bMercArrivingQuoteBeingUsed: false,
     ubEnemyKilledOnAttackKiller: 0,
     fCountingDownForGuideDescription: false,
     bGuideDescriptionCountDown: 0,

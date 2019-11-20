@@ -5,8 +5,8 @@ export let iCurrentPortrait: INT32 = 0;
 let iLastPicture: INT32 = 7;
 
 // buttons needed for the IMP portrait screen
-let giIMPPortraitButton: INT32[] /* [3] */;
-let giIMPPortraitButtonImage: INT32[] /* [3] */;
+let giIMPPortraitButton: INT32[] /* [3] */ = createArray(3, 0);
+let giIMPPortraitButtonImage: INT32[] /* [3] */ = createArray(3, 0);
 
 // redraw protrait screen
 let fReDrawPortraitScreenFlag: boolean = false;
