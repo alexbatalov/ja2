@@ -203,7 +203,7 @@ export function TerrainFill(iMapIndex: UINT32): void {
   if (guiSearchType == CurrentPaste)
     return;
 
-  ConvertGridNoToXY(iMapIndex, addressof(sX), addressof(sY));
+  ({ sX, sY } = ConvertGridNoToXY(iMapIndex));
 
   count = 0;
 

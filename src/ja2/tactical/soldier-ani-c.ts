@@ -63,7 +63,7 @@ let gClimbUpRoofDistGoingLower: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = [
 ];
 
 export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): boolean {
-  let SFireWeapon: EV_S_FIREWEAPON;
+  let SFireWeapon: EV_S_FIREWEAPON = createEvSFireWeapon();
 
   let sNewAniFrame: UINT16;
   let anAniFrame: UINT16;
@@ -271,7 +271,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
           SFireWeapon.sTargetGridNo = pSoldier.value.sTargetGridNo;
           SFireWeapon.bTargetLevel = pSoldier.value.bTargetLevel;
           SFireWeapon.bTargetCubeLevel = pSoldier.value.bTargetCubeLevel;
-          AddGameEvent(Enum319.S_FIREWEAPON, 0, addressof(SFireWeapon));
+          AddGameEvent(Enum319.S_FIREWEAPON, 0, SFireWeapon);
           break;
 
         case 431:
@@ -411,7 +411,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
             let sYPos: INT16;
 
             usNewGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(pSoldier.value.bDirection));
-            ConvertGridNoToCenterCellXY(usNewGridNo, addressof(sXPos), addressof(sYPos));
+            ({ sX: sXPos, sY: sYPos } = ConvertGridNoToCenterCellXY(usNewGridNo));
             LightSpritePosition(pSoldier.value.iMuzFlash, (sXPos / CELL_X_SIZE), (sYPos / CELL_Y_SIZE));
 
             // Start count
@@ -825,7 +825,7 @@ export function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): bool
             sTempGridNo = NewGridNo(pSoldier.value.sGridNo, (DirectionInc(pSoldier.value.bDirection)));
 
             // Get center XY
-            ConvertGridNoToCenterCellXY(sTempGridNo, addressof(sNewX), addressof(sNewY));
+            ({ sX: sNewX, sY: sNewY } = ConvertGridNoToCenterCellXY(sTempGridNo));
 
             // Set position
             EVENT_SetSoldierPosition(pSoldier, sNewX, sNewY);

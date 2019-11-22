@@ -100,7 +100,7 @@ export function CallEldinTo(sGridNo: INT16): void {
           CancelAIAction(pSoldier, true);
           pSoldier.value.bNextAction = Enum289.AI_ACTION_GET_CLOSER;
           pSoldier.value.usNextActionData = sGridNo;
-          RESETTIMECOUNTER(pSoldier.value.AICounter, 100);
+          pSoldier.value.AICounter = RESETTIMECOUNTER(100);
         }
         // otherwise let AI handle this normally
         //				SetNewSituation( pSoldier );

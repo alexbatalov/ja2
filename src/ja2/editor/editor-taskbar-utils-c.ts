@@ -143,7 +143,7 @@ function CreateEditorBuffers(): void {
   // create buffer for the transition slot for merc items.  This slot contains the newly
   // selected item graphic in it's inventory size version.  This buffer is then scaled down
   // into the associated merc inventory panel slot buffer which is approximately 20% smaller.
-  GetCurrentVideoSettings(addressof(usUselessWidth), addressof(usUselessHeight), addressof(ubBitDepth));
+  ({ usWidth: usUselessWidth, usHeight: usUselessHeight, ubBitDepth } = GetCurrentVideoSettings());
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = 60;
   vs_desc.usHeight = 25;

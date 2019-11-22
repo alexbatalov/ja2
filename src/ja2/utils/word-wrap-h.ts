@@ -27,4 +27,11 @@ export interface WRAPPED_STRING {
   pNextWrappedString: WRAPPED_STRING | null /* Pointer<WRAPPED_STRING> */;
 }
 
+export function createWrappedString(): WRAPPED_STRING {
+  return {
+    sString: '',
+    pNextWrappedString: null,
+  };
+}
+
 }

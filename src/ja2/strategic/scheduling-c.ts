@@ -516,7 +516,7 @@ export function BumpAnyExistingMerc(sGridNo: INT16): boolean {
     return false;
   }
 
-  ConvertGridNoToCellXY(sNewGridNo, addressof(sCellX), addressof(sCellY));
+  ({ sCellX, sCellY } = ConvertGridNoToCellXY(sNewGridNo));
   EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
   return true;
@@ -554,7 +554,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
     case Enum171.SCHEDULE_ACTION_CLOSEDOOR:
       PerformActionOnDoorAdjacentToGridNo(pSchedule.value.ubAction[index], pSchedule.value.usData1[index]);
       BumpAnyExistingMerc(pSchedule.value.usData2[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData2[index], addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSchedule.value.usData2[index]));
 
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       if (GridNoOnEdgeOfMap(pSchedule.value.usData2[index], addressof(bDirection))) {
@@ -569,7 +569,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       break;
     case Enum171.SCHEDULE_ACTION_GRIDNO:
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSchedule.value.usData1[index]));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
@@ -580,7 +580,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
         break;
       }
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSchedule.value.usData1[index]));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       MoveSoldierFromAwayToMercSlot(pSoldier);
       pSoldier.value.bInSector = true;
@@ -589,7 +589,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       break;
     case Enum171.SCHEDULE_ACTION_WAKE:
       BumpAnyExistingMerc(pSoldier.value.sInitialGridNo);
-      ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo, addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSoldier.value.sInitialGridNo;
@@ -598,19 +598,19 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       pSoldier.value.fAIFlags |= AI_ASLEEP;
       // check for someone else in the location
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSchedule.value.usData1[index]));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
     case Enum171.SCHEDULE_ACTION_LEAVESECTOR:
       sGridNo = FindNearestEdgePoint(pSoldier.value.sGridNo);
       BumpAnyExistingMerc(sGridNo);
-      ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, addressof(bDirection));
       BumpAnyExistingMerc(sGridNo);
-      ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
+      ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       // ok, that tells us where the civ will return

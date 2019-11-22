@@ -127,8 +127,8 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
     let sX2: INT16;
     let sY2: INT16;
 
-    CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(gsStartRestrictedY), 640, 320);
-    CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(gsStartRestrictedX), addressof(sY2), 640, 320);
+    ({ sX1, sY1, sX2, sY2: gsStartRestrictedY } = CalculateRestrictedMapCoords(Enum245.NORTH, 640, 320));
+    ({ sX1, sY1, sX2: gsStartRestrictedX, sY2: sY2 } = CalculateRestrictedMapCoords(Enum245.WEST, 640, 320));
   }
 
   // Copy over shade tables from main tileset
@@ -243,7 +243,7 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sY: INT16;
 
   // Get Screen position of guy.....
-  GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), addressof(sWorldScreenX), addressof(sWorldScreenY));
+  ({ sScreenX: sWorldScreenX, sScreenY: sWorldScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE)));
 
   sWorldScreenX = gsStartRestrictedX + (sWorldScreenX / 5) + 5;
   sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.value.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.value.sGridNo].sHeight / 5) - 8;
@@ -842,16 +842,16 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
     // OK, blacken out edges of smaller maps...
     if (gMapInformation.ubRestrictedScrollID != 0) {
-      CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      ({ sX1, sY1, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.NORTH, sEndXS, sEndYS));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      ({ sX1, sY1, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.WEST, sEndXS, sEndYS));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(Enum245.SOUTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      ({ sX1, sY1, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.SOUTH, sEndXS, sEndYS));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(Enum245.EAST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
+      ({ sX1, sY1, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.EAST, sEndXS, sEndYS));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
     }
 
@@ -871,7 +871,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
       let ubBitDepth: UINT8;
 
       // Update saved buffer - do for the viewport size ony!
-      GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+      ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
 
       pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
       pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
@@ -917,7 +917,7 @@ function RenderOverheadOverlays(): void {
     if (!pSoldier.value.bActive || !pSoldier.value.bInSector)
       continue;
     // Soldier is here.  Calculate his screen position based on his current gridno.
-    GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo, addressof(sX), addressof(sY));
+    ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo));
     // Now, draw his "doll"
 
     // adjust for position.
@@ -999,7 +999,7 @@ function RenderOverheadOverlays(): void {
         continue;
       }
 
-      GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo, addressof(sX), addressof(sY));
+      ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo));
 
       // adjust for position.
       // sX += 2;
@@ -1249,7 +1249,7 @@ function ClickOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
     sWorldScreenY = (gusMouseYPos - gsStartRestrictedY) * 5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
+    ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     SetRenderCenter(uiCellX, uiCellY);
 
@@ -1262,16 +1262,21 @@ function ClickOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
 function MoveOverheadRegionCallback(reg: MOUSE_REGION, reason: INT32): void {
 }
 
-function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  GetWorldXYAbsoluteScreenXY((CenterX(sGridNo) / CELL_X_SIZE), (CenterY(sGridNo) / CELL_Y_SIZE), psScreenX, psScreenY);
-  psScreenX.value /= 5;
-  psScreenY.value /= 5;
+function GetOverheadScreenXYFromGridNo(sGridNo: INT16): { sScreenX: INT16, sScreenY: INT16 } {
+  let sScreenX: INT16;
+  let sScreenY: INT16;
 
-  psScreenX.value += 5;
-  psScreenY.value += 5;
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((CenterX(sGridNo) / CELL_X_SIZE), (CenterY(sGridNo) / CELL_Y_SIZE)));
+  sScreenX /= 5;
+  sScreenY /= 5;
+
+  sScreenX += 5;
+  sScreenY += 5;
 
   // Subtract the height....
   //*psScreenY -= gpWorldLevelData[ sGridNo ].sHeight / 5;
+
+  return { sScreenX, sScreenY };
 }
 
 export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
@@ -1286,7 +1291,7 @@ export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
     sWorldScreenY = gsStartRestrictedY + (gusMouseYPos - 8) * 5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
+    ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1294,7 +1299,7 @@ export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
 
-    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
+    ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1317,7 +1322,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     sWorldScreenY = gsStartRestrictedY + (gusMouseYPos)*5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
+    ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1325,7 +1330,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
 
-    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
+    ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
     (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1336,40 +1341,47 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
   }
 }
 
-export function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, psY1: Pointer<INT16>, psX2: Pointer<INT16>, psY2: Pointer<INT16>, sEndXS: INT16, sEndYS: INT16): void {
+export function CalculateRestrictedMapCoords(bDirection: INT8, sEndXS: INT16, sEndYS: INT16): { sX1: INT16, sY1: INT16, sX2: INT16, sY2: INT16 } {
+  let sX1: INT16 = 0;
+  let sY1: INT16 = 0;
+  let sX2: INT16 = 0;
+  let sY2: INT16 = 0;
+
   switch (bDirection) {
     case Enum245.NORTH:
 
-      psX1.value = 0;
-      psX2.value = sEndXS;
-      psY1.value = 0;
-      psY2.value = (Math.abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
+      sX1 = 0;
+      sX2 = sEndXS;
+      sY1 = 0;
+      sY2 = (Math.abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
       break;
 
     case Enum245.WEST:
 
-      psX1.value = 0;
-      psX2.value = (Math.abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
-      psY1.value = 0;
-      psY2.value = sEndYS;
+      sX1 = 0;
+      sX2 = (Math.abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
+      sY1 = 0;
+      sY2 = sEndYS;
       break;
 
     case Enum245.SOUTH:
 
-      psX1.value = 0;
-      psX2.value = sEndXS;
-      psY1.value = (NORMAL_MAP_SCREEN_HEIGHT - Math.abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
-      psY2.value = sEndYS;
+      sX1 = 0;
+      sX2 = sEndXS;
+      sY1 = (NORMAL_MAP_SCREEN_HEIGHT - Math.abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
+      sY2 = sEndYS;
       break;
 
     case Enum245.EAST:
 
-      psX1.value = (NORMAL_MAP_SCREEN_WIDTH - Math.abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
-      psX2.value = sEndXS;
-      psY1.value = 0;
-      psY2.value = sEndYS;
+      sX1 = (NORMAL_MAP_SCREEN_WIDTH - Math.abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
+      sX2 = sEndXS;
+      sY1 = 0;
+      sY2 = sEndYS;
       break;
   }
+
+  return { sX1, sX2, sY1, sY2 };
 }
 
 function CalculateRestrictedScaleFactors(pScaleX: Pointer<INT16>, pScaleY: Pointer<INT16>): void {

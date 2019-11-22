@@ -439,7 +439,7 @@ let gBottomLeftWorldLimitX: INT16;
 let gBottomLeftWorldLimitY: INT16;
 let gBottomRightWorldLimitX: INT16;
 let gBottomRightWorldLimitY: INT16;
-let Slide: INT16;
+export let gCenterWorldX: INT16;
 export let gCenterWorldY: INT16;
 export let gsTLX: INT16;
 export let gsTLY: INT16;
@@ -1121,7 +1121,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     }
 
                     // Calculate guy's position
-                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+                    ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
                     sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
                     sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
@@ -1168,7 +1168,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
                     dOffsetX -= CELL_Y_SIZE;
 
-                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+                    ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
                     sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + SHORT_ROUND(dTempX_S);
                     sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + SHORT_ROUND(dTempY_S);
@@ -1438,7 +1438,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
                   // Calculate guy's position
-                  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+                  ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
                   sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
                   sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
@@ -2585,7 +2585,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   // This checking sequence just validates the values!
   if (ScrollFlags & SCROLL_LEFT) {
-    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2600,7 +2600,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_RIGHT) {
-    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
@@ -2614,7 +2614,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_UP) {
-    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, -sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
@@ -2628,7 +2628,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_DOWN) {
-    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
@@ -2643,19 +2643,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_UPLEFT) {
     // Check up
-    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, -sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fUpOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     // Check left
-    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fLeftOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     if (fLeftOK && fUpOK) {
-      FromScreenToCellCoordinates(-sScrollXStep, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, -sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2666,7 +2666,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fUpOK) {
       fAGoodMove = true;
 
-      FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, -sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2676,7 +2676,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fLeftOK) {
       fAGoodMove = true;
 
-      FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, 0));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2688,19 +2688,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_UPRIGHT) {
     // Check up
-    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, -sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fUpOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     // Check right
-    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fRightOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     if (fUpOK && fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, -sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2711,7 +2711,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fUpOK) {
       fAGoodMove = true;
 
-      FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, -sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2721,7 +2721,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fRightOK) {
       fAGoodMove = true;
 
-      FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, 0));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2733,20 +2733,20 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_DOWNLEFT) {
     // Check down......
-    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fDownOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     // Check left.....
-    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fLeftOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     if (fLeftOK && fDownOK) {
       fAGoodMove = true;
-      FromScreenToCellCoordinates(-sScrollXStep, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2754,7 +2754,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWNLEFT, sScrollXStep, sScrollYStep);
       }
     } else if (fLeftOK) {
-      FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(-sScrollXStep, 0));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2763,7 +2763,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_LEFT, sScrollXStep, sScrollYStep);
       }
     } else if (fDownOK) {
-      FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2776,19 +2776,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_DOWNRIGHT) {
     // Check right
-    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, 0));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fRightOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     // Check down
-    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+    ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, sScrollYStep));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fDownOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, false, fCheckOnly);
 
     if (fDownOK && fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2797,7 +2797,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWNRIGHT, sScrollXStep, sScrollYStep);
       }
     } else if (fDownOK) {
-      FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(0, sScrollYStep));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -2806,7 +2806,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWN, sScrollXStep, sScrollYStep);
       }
     } else if (fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
+      ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScrollXStep, 0));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = true;
@@ -3094,11 +3094,11 @@ export function InitRenderParams(ubRestrictionID: UINT8): void {
   gCenterWorldY = (WORLD_COLS) / 2 * CELL_Y_SIZE;
 
   // Convert Bounding box into screen coords
-  FromCellToScreenCoordinates(gTopLeftWorldLimitX, gTopLeftWorldLimitY, addressof(gsTLX), addressof(gsTLY));
-  FromCellToScreenCoordinates(gTopRightWorldLimitX, gTopRightWorldLimitY, addressof(gsTRX), addressof(gsTRY));
-  FromCellToScreenCoordinates(gBottomLeftWorldLimitX, gBottomLeftWorldLimitY, addressof(gsBLX), addressof(gsBLY));
-  FromCellToScreenCoordinates(gBottomRightWorldLimitX, gBottomRightWorldLimitY, addressof(gsBRX), addressof(gsBRY));
-  FromCellToScreenCoordinates(gCenterWorldX, gCenterWorldY, addressof(gsCX), addressof(gsCY));
+  ({ sScreenX: gsTLX, sScreenY: gsTLY } = FromCellToScreenCoordinates(gTopLeftWorldLimitX, gTopLeftWorldLimitY));
+  ({ sScreenX: gsTRX, sScreenY: gsTRY } = FromCellToScreenCoordinates(gTopRightWorldLimitX, gTopRightWorldLimitY));
+  ({ sScreenX: gsBLX, sScreenY: gsBLY } = FromCellToScreenCoordinates(gBottomLeftWorldLimitX, gBottomLeftWorldLimitY));
+  ({ sScreenX: gsBRX, sScreenY: gsBRY } = FromCellToScreenCoordinates(gBottomRightWorldLimitX, gBottomRightWorldLimitY));
+  ({ sScreenX: gsCX, sScreenY: gsCY } = FromCellToScreenCoordinates(gCenterWorldX, gCenterWorldY));
 
   // Adjust for interface height tabbing!
   gsTLY += ROOF_LEVEL_HEIGHT;
@@ -3191,7 +3191,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   sDistToCenterY = sTempRenderCenterY - gCenterWorldY;
 
   // From render center in world coords, convert to render center in "screen" coords
-  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, addressof(sScreenCenterX), addressof(sScreenCenterY));
+  ({ sScreenX: sScreenCenterX, sScreenY: sScreenCenterY } = FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY));
 
   // Subtract screen center
   sScreenCenterX += gsCX;
@@ -3294,7 +3294,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       if (fOutTop) {
         // Adjust screen coordinates on the Y!
         CorrectRenderCenter(sScreenCenterX, (gsTLY + sY_S), addressof(sNewScreenX), addressof(sNewScreenY));
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+        ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3304,7 +3304,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       if (fOutBottom) {
         // OK, Ajust this since we get rounding errors in our two different calculations.
         CorrectRenderCenter(sScreenCenterX, (gsBLY - sY_S - 50), addressof(sNewScreenX), addressof(sNewScreenY));
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+        ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3313,7 +3313,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
       if (fOutLeft) {
         CorrectRenderCenter((gsTLX + sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+        ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3322,7 +3322,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
       if (fOutRight) {
         CorrectRenderCenter((gsTRX - sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+        ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -5676,7 +5676,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
 
         // Caluluate zvalue
         // Look for anything less than struct layer!
-        GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M, addressof(sWorldX), addressof(sZLevel));
+        ({ sScreenX: sWorldX, sScreenY: sZLevel } = GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M));
 
         sZLevel += gsRenderHeight;
 
@@ -5762,7 +5762,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   gsStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
-  FromScreenToCellCoordinates(gsStartPointX_S, gsStartPointY_S, addressof(sTempPosX_W), addressof(sTempPosY_W));
+  ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(gsStartPointX_S, gsStartPointY_S));
 
   // c) World start point is Render center minus this distance
   gsStartPointX_W = sRenderCenterX_W - sTempPosX_W;
@@ -5786,7 +5786,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   sOffsetX_W = Math.abs(gsStartPointX_W) - (Math.abs((gsStartPointX_M * CELL_X_SIZE)));
   sOffsetY_W = Math.abs(gsStartPointY_W) - (Math.abs((gsStartPointY_M * CELL_Y_SIZE)));
 
-  FromCellToScreenCoordinates(sOffsetX_W, sOffsetY_W, addressof(sOffsetX_S), addressof(sOffsetY_S));
+  ({ sScreenX: sOffsetX_S, sScreenY: sOffsetY_S } = FromCellToScreenCoordinates(sOffsetX_W, sOffsetY_W));
 
   if (gsStartPointY_W < 0) {
     gsStartPointY_S += 0; //(sOffsetY_S/2);
@@ -5815,7 +5815,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   gsLStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - LARGER_VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
-  FromScreenToCellCoordinates(gsLStartPointX_S, gsLStartPointY_S, addressof(sTempPosX_W), addressof(sTempPosY_W));
+  ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(gsLStartPointX_S, gsLStartPointY_S));
 
   // c) World start point is Render center minus this distance
   gsLStartPointX_W = sRenderCenterX_W - sTempPosX_W;

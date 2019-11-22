@@ -581,10 +581,12 @@ export function RestoreVideoManager(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): void {
-  usWidth.value = gusScreenWidth;
-  usHeight.value = gusScreenHeight;
-  ubBitDepth.value = gubScreenPixelDepth;
+export function GetCurrentVideoSettings(): { usWidth: UINT16, usHeight: UINT16, ubBitDepth: UINT8 } {
+  return {
+    usWidth: gusScreenWidth,
+    usHeight: gusScreenHeight,
+    ubBitDepth: gubScreenPixelDepth,
+  };
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -821,7 +823,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
   let sShiftY: INT16;
   let uiCountY: INT32;
 
-  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+  ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
   usHeight = (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y);
 
   StripRegions[0].left = gsVIEWPORT_START_X;

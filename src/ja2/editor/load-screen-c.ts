@@ -876,7 +876,7 @@ function FDlgDwnCallback(butn: GUI_BUTTON, reason: INT32): void {
 }
 
 function ExtractFilenameFromFields(): boolean {
-  Get16BitStringFromField(0, gzFilename);
+  gzFilename = Get16BitStringFromField(0);
   return ValidFilename();
 }
 

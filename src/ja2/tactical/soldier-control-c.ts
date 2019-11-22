@@ -163,6 +163,8 @@ let guipPaletteReplacements: Pointer<PaletteReplacementType> = null;
 
 export let gfGetNewPathThroughPeople: boolean = false;
 
+let gpPaletteSubRanges: Pointer<PaletteSubRangeType>;
+
 function HandleVehicleMovementSound(pSoldier: SOLDIERTYPE, fOn: boolean): void {
   let pVehicle: VEHICLETYPE = pVehicleList[pSoldier.bVehicleID];
 
@@ -450,8 +452,6 @@ export function DoNinjaAttack(pSoldier: SOLDIERTYPE): void {
     let iFaceIndex: INT32;
 
     // Play sound!
-    memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
     spParms.uiSpeed = RATE_11025;
     spParms.uiVolume = CalculateSpeechVolume(HIGHVOLUME);
 
@@ -464,12 +464,12 @@ export function DoNinjaAttack(pSoldier: SOLDIERTYPE): void {
     spParms.uiPriority = GROUP_PLAYER;
 
     if (pSoldier.usAnimState == Enum193.NINJA_SPINKICK) {
-      uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP2.WAV", addressof(spParms));
+      uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP2.WAV", spParms);
     } else {
       if (Random(2) == 0) {
-        uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP3.WAV", addressof(spParms));
+        uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP3.WAV", spParms);
       } else {
-        uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP1.WAV", addressof(spParms));
+        uiSoundID = SoundPlay("BATTLESNDS\\033_CHOP1.WAV", spParms);
       }
     }
 
@@ -831,7 +831,7 @@ export function ReevaluateEnemyStance(pSoldier: SOLDIERTYPE, usAnimState: UINT16
 
           if (iClosestEnemy != NOBODY) {
             // Change to fire ready animation
-            ConvertGridNoToXY(MercPtrs[iClosestEnemy].value.sGridNo, addressof(sTargetXPos), addressof(sTargetYPos));
+            ({ sX: sTargetXPos, sY: sTargetYPos } = ConvertGridNoToXY(MercPtrs[iClosestEnemy].value.sGridNo));
 
             pSoldier.fDontChargeReadyAPs = true;
 
@@ -1655,7 +1655,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
   SetSoldierAniSpeed(pSoldier);
 
   // Reset counters
-  RESETTIMECOUNTER(pSoldier.UpdateCounter, pSoldier.sAniDelay);
+  pSoldier.UpdateCounter = RESETTIMECOUNTER(pSoldier.sAniDelay);
 
   // Adjust to new animation frame ( the first one )
   AdjustToNextAnimationFrame(pSoldier);
@@ -2128,7 +2128,7 @@ export function EVENT_FireSoldierWeapon(pSoldier: SOLDIERTYPE, sTargetGridNo: IN
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Starting attack, bullets left %d", pSoldier.bBulletsLeft));
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sTargetGridNo, addressof(sTargetXPos), addressof(sTargetYPos));
+  ({ sX: sTargetXPos, sY: sTargetYPos } = ConvertGridNoToXY(sTargetGridNo));
 
   // Change to fire animation
   // Ready weapon
@@ -4372,7 +4372,7 @@ function AdjustAniSpeed(pSoldier: SOLDIERTYPE): void {
     }
   }
 
-  RESETTIMECOUNTER(pSoldier.UpdateCounter, pSoldier.sAniDelay);
+  pSoldier.UpdateCounter = RESETTIMECOUNTER(pSoldier.sAniDelay);
 }
 
 function CalculateSoldierAniSpeed(pSoldier: SOLDIERTYPE, pStatsSoldier: SOLDIERTYPE): void {
@@ -4512,7 +4512,7 @@ export function SetSoldierAniSpeed(pSoldier: SOLDIERTYPE): void {
   if ((gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) || gTacticalStatus.fAutoBandageMode) {
     if (((pSoldier.bVisible == -1 && pSoldier.bVisible == pSoldier.bLastRenderVisibleValue) || gTacticalStatus.fAutoBandageMode) && pSoldier.usAnimState != Enum193.MONSTER_UP) {
       pSoldier.sAniDelay = 0;
-      RESETTIMECOUNTER(pSoldier.UpdateCounter, pSoldier.sAniDelay);
+      pSoldier.UpdateCounter = RESETTIMECOUNTER(pSoldier.sAniDelay);
       return;
     }
   }
@@ -5589,8 +5589,6 @@ export function InternalDoMercBattleSound(pSoldier: SOLDIERTYPE, ubBattleSoundID
   }
 
   // Play sound!
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiSpeed = RATE_11025;
   // spParms.uiVolume = CalculateSpeechVolume( pSoldier->bVocalVolume );
 
@@ -5878,7 +5876,7 @@ export function GetDirectionFromGridNo(sGridNo: INT16, pSoldier: SOLDIERTYPE): I
   let sXPos: INT16;
   let sYPos: INT16;
 
-  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
 
   return GetDirectionFromXY(sXPos, sYPos, pSoldier);
 }
@@ -5889,8 +5887,8 @@ export function GetDirectionToGridNoFromGridNo(sGridNoDest: INT16, sGridNoSrc: I
   let sXPos: INT16;
   let sYPos: INT16;
 
-  ConvertGridNoToXY(sGridNoSrc, addressof(sXPos), addressof(sYPos));
-  ConvertGridNoToXY(sGridNoDest, addressof(sXPos2), addressof(sYPos2));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNoSrc));
+  ({ sX: sXPos2, sY: sYPos2 } = ConvertGridNoToXY(sGridNoDest));
 
   return atan8(sXPos2, sYPos2, sXPos, sYPos);
 }
@@ -5899,7 +5897,7 @@ export function GetDirectionFromXY(sXPos: INT16, sYPos: INT16, pSoldier: SOLDIER
   let sXPos2: INT16;
   let sYPos2: INT16;
 
-  ConvertGridNoToXY(pSoldier.sGridNo, addressof(sXPos2), addressof(sYPos2));
+  ({ sX: sXPos2, sY: sYPos2 } = ConvertGridNoToXY(pSoldier.sGridNo));
 
   return atan8(sXPos2, sYPos2, sXPos, sYPos);
 }
@@ -6154,7 +6152,7 @@ function SendSoldierDestinationEvent(pSoldier: SOLDIERTYPE, usNewDestination: UI
 
 function SendSoldierSetDirectionEvent(pSoldier: SOLDIERTYPE, usNewDirection: UINT16): void {
   // Sent event for position update
-  let SSetDirection: EV_S_SETDIRECTION = createEVSSetDirection();
+  let SSetDirection: EV_S_SETDIRECTION = createEvSSetDirection();
 
   SSetDirection.usSoldierID = pSoldier.ubID;
   SSetDirection.usNewDirection = usNewDirection;
@@ -7760,7 +7758,7 @@ function SoldierBleed(pSoldier: SOLDIERTYPE, fBandagedBleed: boolean): void {
   if ((pSoldier.bInSector && guiCurrentScreen == Enum26.GAME_SCREEN) || guiCurrentScreen != Enum26.GAME_SCREEN) {
     pSoldier.fFlashPortrait = 1;
     pSoldier.bFlashPortraitFrame = FLASH_PORTRAIT_STARTSHADE;
-    RESETTIMECOUNTER(pSoldier.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
+    pSoldier.PortraitFlashCounter = RESETTIMECOUNTER(FLASH_PORTRAIT_DELAY);
 
     // If we are in mapscreen, set this person as selected
     if (guiCurrentScreen == Enum26.MAP_SCREEN) {
@@ -8425,7 +8423,7 @@ export function PlayerSoldierStartTalking(pSoldier: Pointer<SOLDIERTYPE>, ubTarg
   // Deduct points from our guy....
   DeductPoints(pSoldier, sAPCost, 0);
 
-  ConvertGridNoToXY(pTSoldier.value.sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(pTSoldier.value.sGridNo));
 
   // Get direction from mouse pos
   sFacingDir = GetDirectionFromXY(sXPos, sYPos, pSoldier);
@@ -8649,7 +8647,7 @@ export function HandleSoldierTakeDamageFeedback(pSoldier: SOLDIERTYPE): void {
   // Flash portrait....
   pSoldier.fFlashPortrait = 1;
   pSoldier.bFlashPortraitFrame = FLASH_PORTRAIT_STARTSHADE;
-  RESETTIMECOUNTER(pSoldier.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
+  pSoldier.PortraitFlashCounter = RESETTIMECOUNTER(FLASH_PORTRAIT_DELAY);
 }
 
 export function HandleSystemNewAISituation(pSoldier: SOLDIERTYPE, fResetABC: boolean): void {

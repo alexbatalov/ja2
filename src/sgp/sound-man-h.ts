@@ -92,8 +92,8 @@ export interface SOUNDTAG {
   uiPriority: UINT32;
   pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void;
   pData: Pointer<void>;
-  EOSCallback: (a: Pointer<void>) => void;
-  pCallbackData: Pointer<void>;
+  EOSCallback: ((a: any) => void) | null;
+  pCallbackData: any;
   uiTimeStamp: UINT32;
   fLooping: boolean;
   hFile: HWFILE;
@@ -113,21 +113,32 @@ export interface SOUNDPARMS {
   uiPan: UINT32;
   uiLoop: UINT32;
   uiPriority: UINT32;
-  EOSCallback: (a: Pointer<void>) => void;
-  pCallbackData: Pointer<void>;
+  EOSCallback: (a: any) => void;
+  pCallbackData: any;
 }
 
 export function createSoundParams(): SOUNDPARMS {
   return {
-    uiSpeed: 0,
-    uiPitchBend: 0,
-    uiVolume: 0,
-    uiPan: 0,
-    uiLoop: 0,
-    uiPriority: 0,
-    EOSCallback: null,
-    pCallbackData: null,
+    uiSpeed: 0xFFFFFFFF,
+    uiPitchBend: 0xFFFFFFFF,
+    uiVolume: 0xFFFFFFFF,
+    uiPan: 0xFFFFFFFF,
+    uiLoop: 0xFFFFFFFF,
+    uiPriority: 0xFFFFFFFF,
+    EOSCallback: <(a: any) => void><unknown>0xFFFFFFFF,
+    pCallbackData: 0xFFFFFFFF,
   };
+}
+
+export function resetSoundParams(o: SOUNDPARMS) {
+  o.uiSpeed = 0xFFFFFFFF;
+  o.uiPitchBend = 0xFFFFFFFF;
+  o.uiVolume = 0xFFFFFFFF;
+  o.uiPan = 0xFFFFFFFF;
+  o.uiLoop = 0xFFFFFFFF;
+  o.uiPriority = 0xFFFFFFFF;
+  o.EOSCallback = <(a: any) => void><unknown>0xFFFFFFFF;
+  o.pCallbackData = 0xFFFFFFFF;
 }
 
 // Structure definition for 3D sound parameters being passed down to
@@ -138,8 +149,8 @@ export interface SOUND3DPARMS {
   uiVolume: UINT32; // volume at distance zero
   uiLoop: UINT32;
   uiPriority: UINT32;
-  EOSCallback: (a: Pointer<void>) => void;
-  pCallbackData: Pointer<void>;
+  EOSCallback: ((a: any) => void) | null;
+  pCallbackData: any;
 
   Pos: SOUND3DPOS; // NOT optional, MUST be set
 }
@@ -161,6 +172,21 @@ export interface RANDOMPARMS {
 
   uiPriority: UINT32;
   uiMaxInstances: UINT32;
+}
+
+export function createRandomParams(): RANDOMPARMS {
+  return {
+    uiTimeMin: 0xFFFFFFFF,
+    uiTimeMax: 0xFFFFFFFF,
+    uiSpeedMin: 0xFFFFFFFF,
+    uiSpeedMax: 0xFFFFFFFF,
+    uiVolMin: 0xFFFFFFFF,
+    uiVolMax: 0xFFFFFFFF,
+    uiPanMin: 0xFFFFFFFF,
+    uiPanMax: 0xFFFFFFFF,
+    uiPriority: 0xFFFFFFFF,
+    uiMaxInstances: 0xFFFFFFFF,
+  };
 }
 
 // Structure definition for parameters to the random 3D sample playing

@@ -1577,7 +1577,7 @@ function AddHelicopterToMaps(fAdd: boolean, ubSite: UINT8): void {
     SetRenderFlags(RENDER_FLAG_FULL);
 
     // ATE: If any mercs here, bump them off!
-    ConvertGridNoToXY(sGridNo, addressof(sCentreGridX), addressof(sCentreGridY));
+    ({ sX: sCentreGridX, sY: sCentreGridY } = ConvertGridNoToXY(sGridNo));
 
     for (sGridY = sCentreGridY - 5; sGridY < sCentreGridY + 5; sGridY++) {
       for (sGridX = sCentreGridX - 5; sGridX < sCentreGridX + 5; sGridX++) {

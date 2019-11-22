@@ -507,7 +507,7 @@ export function ExecuteUndoList(): boolean {
       // Turn on this flag so that the following code, when executed, doesn't attempt to
       // add lights to the undo list.  That would cause problems...
       gfIgnoreUndoCmdsForLights = true;
-      ConvertGridNoToXY(iUndoMapIndex, addressof(sX), addressof(sY));
+      ({ sX, sY } = ConvertGridNoToXY(iUndoMapIndex));
       if (!gpTileUndoStack.value.pData.value.ubLightRadius)
         RemoveLight(sX, sY);
       else

@@ -2149,7 +2149,7 @@ function SetupTacticalTraversalInformation(): void {
     if (guiAdjacentTraverseTime <= 5) {
       // Determine 'mirror' gridno...
       // Convert to absolute xy
-      GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), addressof(sScreenX), addressof(sScreenY));
+      ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE)));
 
       // Get 'mirror', depending on what direction...
       switch (gubTacticalDirection) {
@@ -2168,7 +2168,7 @@ function SetupTacticalTraversalInformation(): void {
       }
 
       // Convert into a gridno again.....
-      GetFromAbsoluteScreenXYWorldXY(addressof(sWorldX), addressof(sWorldY), sScreenX, sScreenY);
+      ({ uiCellX: sWorldX, uiCellY: sWorldY } = GetFromAbsoluteScreenXYWorldXY(sScreenX, sScreenY));
       sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(sWorldY, sWorldX);
 
       // Save this gridNo....
@@ -2379,10 +2379,10 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
     return false;
 
   // get world absolute XY
-  ConvertGridNoToXY(pSoldier.value.sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(pSoldier.value.sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos));
 
   // Check direction
   switch (bExitDirection) {

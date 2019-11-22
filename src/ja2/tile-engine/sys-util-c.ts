@@ -19,7 +19,7 @@ export function InitializeGameVideoObjects(): boolean {
   let ubBitDepth: UINT8;
 
   // Create render buffer
-  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+  ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = usWidth;
   vs_desc.usHeight = usHeight;

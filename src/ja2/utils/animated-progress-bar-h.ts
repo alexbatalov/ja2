@@ -47,4 +47,51 @@ export interface PROGRESSBAR {
   rLastActual: DOUBLE;
 }
 
+export function createProgressBar(): PROGRESSBAR {
+  return {
+    ubProgressBarID: 0,
+
+    usBarLeft: 0,
+    usBarTop: 0,
+    usBarRight: 0,
+    usBarBottom: 0,
+
+    fPanel: false,
+
+    usPanelLeft: 0,
+    usPanelTop: 0,
+    usPanelRight: 0,
+    usPanelBottom: 0,
+
+    usColor: 0,
+    usLtColor: 0,
+    usDkColor: 0,
+
+    swzTitle: '',
+    usTitleFont: 0,
+
+    ubTitleFontForeColor: 0,
+    ubTitleFontShadowColor: 0,
+
+    usMsgFont: 0,
+
+    ubMsgFontForeColor: 0,
+    ubMsgFontShadowColor: 0,
+
+    ubRelativeStartPercentage: 0,
+    ubRelativeEndPercentage: 0,
+
+    ubColorFillRed: 0,
+    ubColorFillGreen: 0,
+    ubColorFillBlue: 0,
+
+    rStart: 0,
+    rEnd: 0,
+
+    fDisplayText: false,
+    fUseSaveBuffer: false,
+    rLastActual: 0,
+  };
+}
+
 }

@@ -1082,7 +1082,7 @@ export function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
   let sCentreGridY: INT16;
   let bDirLoop: INT8;
 
-  ConvertGridNoToXY(sCentreGridNo, addressof(sCentreGridX), addressof(sCentreGridY));
+  ({ sX: sCentreGridX, sY: sCentreGridY } = ConvertGridNoToXY(sCentreGridNo));
   for (sGridY = sCentreGridY - LOCAL_RADIUS; sGridY < sCentreGridY + LOCAL_RADIUS; sGridY++) {
     for (sGridX = sCentreGridX - LOCAL_RADIUS; sGridX < sCentreGridX + LOCAL_RADIUS; sGridX++) {
       usGridNo = MAPROWCOLTOPOS(sGridY, sGridX);
@@ -1117,7 +1117,7 @@ export function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRad
   let sCentreGridY: INT16;
   let bDirLoop: INT8;
 
-  ConvertGridNoToXY(sCentreGridNo, addressof(sCentreGridX), addressof(sCentreGridY));
+  ({ sX: sCentreGridX, sY: sCentreGridY } = ConvertGridNoToXY(sCentreGridNo));
   if (bRadius == 0) {
     // one tile check only
     for (bDirLoop = 0; bDirLoop < MAXDIR; bDirLoop++) {

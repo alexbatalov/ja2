@@ -218,7 +218,7 @@ export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Point
 
       // OK, re-set writeframes ( in a radius )
       // Get XY
-      ConvertGridNoToXY(cnt, addressof(sX), addressof(sY));
+      ({ sX, sY } = ConvertGridNoToXY(cnt));
       SetRecalculateWireFrameFlagRadius(sX, sY, 2);
     }
   }

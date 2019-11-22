@@ -370,7 +370,7 @@ export function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   PauseGame();
   LockPauseState(20);
 
-  ConvertGridNoToCenterCellXY(sGridNoSweetSpot, addressof(sX), addressof(sY));
+  ({ sX, sY } = ConvertGridNoToCenterCellXY(sGridNoSweetSpot));
 
   gsHeliXPos = sX - (2 * CELL_X_SIZE);
   gsHeliYPos = sY - (10 * CELL_Y_SIZE);
@@ -651,7 +651,7 @@ export function HandleHeliDrop(): void {
             let sX: INT16;
             let sY: INT16;
 
-            ConvertGridNoToCenterCellXY(gsGridNoSweetSpot, addressof(sX), addressof(sY));
+            ({ sX, sY } = ConvertGridNoToCenterCellXY(gsGridNoSweetSpot));
 
             gsHeliXPos = sX - (2 * CELL_X_SIZE);
             gsHeliYPos = sY - (10 * CELL_Y_SIZE);

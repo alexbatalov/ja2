@@ -228,9 +228,7 @@ export function DeleteAllAmbients(): void {
 }
 
 export function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
-  let rpParms: RANDOMPARMS;
-
-  memset(addressof(rpParms), 0xff, sizeof(RANDOMPARMS));
+  let rpParms: RANDOMPARMS = createRandomParams();
 
   rpParms.uiTimeMin = gAmbData[uiAmbientID].uiMinTime;
   rpParms.uiTimeMax = gAmbData[uiAmbientID].uiMaxTime;
@@ -238,19 +236,17 @@ export function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
   rpParms.uiVolMax = CalculateSoundEffectsVolume(gAmbData[uiAmbientID].uiVol);
   rpParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlayRandom(gAmbData[uiAmbientID].zFilename, addressof(rpParms));
+  return SoundPlayRandom(gAmbData[uiAmbientID].zFilename, rpParms);
 }
 
 function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], addressof(spParms));
+  return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], spParms);
 }
 
 function SetSteadyStateAmbience(ubAmbience: UINT8): boolean {

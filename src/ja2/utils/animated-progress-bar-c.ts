@@ -6,7 +6,7 @@ let rActual: DOUBLE;
 
 const MAX_PROGRESSBARS = 4;
 
-let pBar: Pointer<PROGRESSBAR>[] /* [MAX_PROGRESSBARS] */;
+let pBar: (PROGRESSBAR | null)[] /* Pointer<PROGRESSBAR>[MAX_PROGRESSBARS] */ = createArray(MAX_PROGRESSBARS, <PROGRESSBAR><unknown>null);
 
 let gfUseLoadScreenProgressBar: boolean = false;
 let gusLeftmostShaded: UINT16 = 0;
@@ -26,37 +26,35 @@ export function RemoveLoadingScreenProgressBar(): void {
 // This creates a single progress bar given the coordinates without a panel (containing a title and background).
 // A panel is automatically created if you specify a title using SetProgressBarTitle
 export function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): boolean {
-  let pNew: Pointer<PROGRESSBAR>;
+  let pNew: PROGRESSBAR;
   // Allocate new progress bar
-  pNew = MemAlloc(sizeof(PROGRESSBAR));
+  pNew = createProgressBar();
   Assert(pNew);
 
   if (pBar[ubProgressBarID])
     RemoveProgressBar(ubProgressBarID);
 
-  memset(pNew, 0, sizeof(PROGRESSBAR));
-
   pBar[ubProgressBarID] = pNew;
-  pNew.value.ubProgressBarID = ubProgressBarID;
+  pNew.ubProgressBarID = ubProgressBarID;
   // Assign coordinates
-  pNew.value.usBarLeft = usLeft;
-  pNew.value.usBarTop = usTop;
-  pNew.value.usBarRight = usRight;
-  pNew.value.usBarBottom = usBottom;
+  pNew.usBarLeft = usLeft;
+  pNew.usBarTop = usTop;
+  pNew.usBarRight = usRight;
+  pNew.usBarBottom = usBottom;
   // Init default data
-  pNew.value.fPanel = false;
-  pNew.value.usMsgFont = FONT12POINT1();
-  pNew.value.ubMsgFontForeColor = FONT_BLACK;
-  pNew.value.ubMsgFontShadowColor = 0;
-  SetRelativeStartAndEndPercentage(pNew.value.ubProgressBarID, 0, 100, null);
-  pNew.value.swzTitle = null;
+  pNew.fPanel = false;
+  pNew.usMsgFont = FONT12POINT1();
+  pNew.ubMsgFontForeColor = FONT_BLACK;
+  pNew.ubMsgFontShadowColor = 0;
+  SetRelativeStartAndEndPercentage(pNew.ubProgressBarID, 0, 100, '');
+  pNew.swzTitle = '';
 
   // Default the progress bar's color to be red
-  pNew.value.ubColorFillRed = 150;
-  pNew.value.ubColorFillGreen = 0;
-  pNew.value.ubColorFillBlue = 0;
+  pNew.ubColorFillRed = 150;
+  pNew.ubColorFillGreen = 0;
+  pNew.ubColorFillBlue = 0;
 
-  pNew.value.fDisplayText = false;
+  pNew.fDisplayText = false;
 
   return true;
 }
@@ -64,64 +62,59 @@ export function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop:
 // You may also define a panel to go in behind the progress bar.  You can now assign a title to go with
 // the panel.
 export function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): void {
-  let pCurr: Pointer<PROGRESSBAR>;
+  let pCurr: PROGRESSBAR | null;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
 
-  pCurr.value.fPanel = true;
-  pCurr.value.usPanelLeft = usLeft;
-  pCurr.value.usPanelTop = usTop;
-  pCurr.value.usPanelRight = usRight;
-  pCurr.value.usPanelBottom = usBottom;
-  pCurr.value.usColor = Get16BPPColor(FROMRGB(r, g, b));
+  pCurr.fPanel = true;
+  pCurr.usPanelLeft = usLeft;
+  pCurr.usPanelTop = usTop;
+  pCurr.usPanelRight = usRight;
+  pCurr.usPanelBottom = usBottom;
+  pCurr.usColor = Get16BPPColor(FROMRGB(r, g, b));
   // Calculate the slightly lighter and darker versions of the same rgb color
-  pCurr.value.usLtColor = Get16BPPColor(FROMRGB(Math.min(255, (r * 1.33)), Math.min(255, (g * 1.33)), Math.min(255, (b * 1.33))));
-  pCurr.value.usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
+  pCurr.usLtColor = Get16BPPColor(FROMRGB(Math.min(255, (r * 1.33)), Math.min(255, (g * 1.33)), Math.min(255, (b * 1.33))));
+  pCurr.usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
 }
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
 // panel and vertically centered from the top of the panel, to the top of the progress bar.
 export function SetProgressBarTitle(ubID: UINT32, pString: string /* Pointer<UINT16> */, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
-  let pCurr: Pointer<PROGRESSBAR>;
+  let pCurr: PROGRESSBAR | null;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
-  if (pCurr.value.swzTitle) {
-    MemFree(pCurr.value.swzTitle);
-    pCurr.value.swzTitle = null;
+  if (pCurr.swzTitle) {
+    pCurr.swzTitle = '';
   }
   if (pString && pString.length) {
-    pCurr.value.swzTitle = MemAlloc(sizeof(UINT16) * (pString.length + 1));
-    pCurr.value.swzTitle = pString;
+    pCurr.swzTitle = pString;
   }
-  pCurr.value.usTitleFont = usFont;
-  pCurr.value.ubTitleFontForeColor = ubForeColor;
-  pCurr.value.ubTitleFontShadowColor = ubShadowColor;
+  pCurr.usTitleFont = usFont;
+  pCurr.ubTitleFontForeColor = ubForeColor;
+  pCurr.ubTitleFontShadowColor = ubShadowColor;
 }
 
 // Unless you set up the attributes, any text you pass to SetRelativeStartAndEndPercentage will
 // default to FONT12POINT1 in a black color.
 export function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
-  let pCurr: Pointer<PROGRESSBAR>;
+  let pCurr: PROGRESSBAR | null;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
-  pCurr.value.usMsgFont = usFont;
-  pCurr.value.ubMsgFontForeColor = ubForeColor;
-  pCurr.value.ubMsgFontShadowColor = ubShadowColor;
+  pCurr.usMsgFont = usFont;
+  pCurr.ubMsgFontForeColor = ubForeColor;
+  pCurr.ubMsgFontShadowColor = ubShadowColor;
 }
 
 // When finished, the progress bar needs to be removed.
 export function RemoveProgressBar(ubID: UINT8): void {
   Assert(ubID < MAX_PROGRESSBARS);
   if (pBar[ubID]) {
-    if (pBar[ubID].value.swzTitle)
-      MemFree(pBar[ubID].value.swzTitle);
-    MemFree(pBar[ubID]);
     pBar[ubID] = null;
     return;
   }
@@ -135,7 +128,7 @@ export function RemoveProgressBar(ubID: UINT8): void {
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
 export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: string /* Pointer<UINT16> */): void {
-  let pCurr: Pointer<PROGRESSBAR>;
+  let pCurr: PROGRESSBAR | null;
   let usStartX: UINT16;
   let usStartY: UINT16;
 
@@ -144,45 +137,45 @@ export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UI
   if (!pCurr)
     return;
 
-  pCurr.value.rStart = uiRelStartPerc * 0.01;
-  pCurr.value.rEnd = uiRelEndPerc * 0.01;
+  pCurr.rStart = uiRelStartPerc * 0.01;
+  pCurr.rEnd = uiRelEndPerc * 0.01;
 
   // Render the entire panel now, as it doesn't need update during the normal rendering
-  if (pCurr.value.fPanel) {
+  if (pCurr.fPanel) {
     // Draw panel
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft, pCurr.value.usPanelTop, pCurr.value.usPanelRight, pCurr.value.usPanelBottom, pCurr.value.usLtColor);
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft + 1, pCurr.value.usPanelTop + 1, pCurr.value.usPanelRight, pCurr.value.usPanelBottom, pCurr.value.usDkColor);
-    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usPanelLeft + 1, pCurr.value.usPanelTop + 1, pCurr.value.usPanelRight - 1, pCurr.value.usPanelBottom - 1, pCurr.value.usColor);
-    InvalidateRegion(pCurr.value.usPanelLeft, pCurr.value.usPanelTop, pCurr.value.usPanelRight, pCurr.value.usPanelBottom);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usPanelLeft, pCurr.usPanelTop, pCurr.usPanelRight, pCurr.usPanelBottom, pCurr.usLtColor);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usPanelLeft + 1, pCurr.usPanelTop + 1, pCurr.usPanelRight, pCurr.usPanelBottom, pCurr.usDkColor);
+    ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usPanelLeft + 1, pCurr.usPanelTop + 1, pCurr.usPanelRight - 1, pCurr.usPanelBottom - 1, pCurr.usColor);
+    InvalidateRegion(pCurr.usPanelLeft, pCurr.usPanelTop, pCurr.usPanelRight, pCurr.usPanelBottom);
     // Draw title
 
-    if (pCurr.value.swzTitle) {
-      usStartX = pCurr.value.usPanelLeft + // left position
-                 (pCurr.value.usPanelRight - pCurr.value.usPanelLeft) / 2 - // + half width
-                 StringPixLength(pCurr.value.swzTitle, pCurr.value.usTitleFont) / 2; // - half string width
-      usStartY = pCurr.value.usPanelTop + 3;
-      SetFont(pCurr.value.usTitleFont);
-      SetFontForeground(pCurr.value.ubTitleFontForeColor);
-      SetFontShadow(pCurr.value.ubTitleFontShadowColor);
+    if (pCurr.swzTitle) {
+      usStartX = pCurr.usPanelLeft + // left position
+                 (pCurr.usPanelRight - pCurr.usPanelLeft) / 2 - // + half width
+                 StringPixLength(pCurr.swzTitle, pCurr.usTitleFont) / 2; // - half string width
+      usStartY = pCurr.usPanelTop + 3;
+      SetFont(pCurr.usTitleFont);
+      SetFontForeground(pCurr.ubTitleFontForeColor);
+      SetFontShadow(pCurr.ubTitleFontShadowColor);
       SetFontBackground(0);
-      mprintf(usStartX, usStartY, pCurr.value.swzTitle);
+      mprintf(usStartX, usStartY, pCurr.swzTitle);
     }
   }
 
-  if (pCurr.value.fDisplayText) {
+  if (pCurr.fDisplayText) {
     // Draw message
     if (str) {
-      if (pCurr.value.fUseSaveBuffer) {
-        let usFontHeight: UINT16 = GetFontHeight(pCurr.value.usMsgFont);
+      if (pCurr.fUseSaveBuffer) {
+        let usFontHeight: UINT16 = GetFontHeight(pCurr.usMsgFont);
 
-        RestoreExternBackgroundRect(pCurr.value.usBarLeft, pCurr.value.usBarBottom, (pCurr.value.usBarRight - pCurr.value.usBarLeft), (usFontHeight + 3));
+        RestoreExternBackgroundRect(pCurr.usBarLeft, pCurr.usBarBottom, (pCurr.usBarRight - pCurr.usBarLeft), (usFontHeight + 3));
       }
 
-      SetFont(pCurr.value.usMsgFont);
-      SetFontForeground(pCurr.value.ubMsgFontForeColor);
-      SetFontShadow(pCurr.value.ubMsgFontShadowColor);
+      SetFont(pCurr.usMsgFont);
+      SetFontForeground(pCurr.ubMsgFontForeColor);
+      SetFontShadow(pCurr.ubMsgFontShadowColor);
       SetFontBackground(0);
-      mprintf(pCurr.value.usBarLeft, pCurr.value.usBarBottom + 3, str);
+      mprintf(pCurr.usBarLeft, pCurr.usBarBottom + 3, str);
     }
   }
 }
@@ -194,7 +187,7 @@ export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   /* static */ let uiLastTime: UINT32 = 0;
   let uiCurTime: UINT32 = GetJA2Clock();
   let rActual: DOUBLE;
-  let pCurr: Pointer<PROGRESSBAR> = null;
+  let pCurr: PROGRESSBAR | null = null;
   // UINT32 r, g;
   let end: INT32;
 
@@ -205,20 +198,20 @@ export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
     return;
 
   if (pCurr) {
-    rActual = pCurr.value.rStart + (pCurr.value.rEnd - pCurr.value.rStart) * uiPercentage * 0.01;
+    rActual = pCurr.rStart + (pCurr.rEnd - pCurr.rStart) * uiPercentage * 0.01;
 
-    if (rActual - pCurr.value.rLastActual < 0.01) {
+    if (rActual - pCurr.rLastActual < 0.01) {
       return;
     }
 
-    pCurr.value.rLastActual = ((rActual * 100) * 0.01);
+    pCurr.rLastActual = ((rActual * 100) * 0.01);
 
-    end = (pCurr.value.usBarLeft + 2.0 + rActual * (pCurr.value.usBarRight - pCurr.value.usBarLeft - 4));
-    if (end < pCurr.value.usBarLeft + 2 || end > pCurr.value.usBarRight - 2) {
+    end = (pCurr.usBarLeft + 2.0 + rActual * (pCurr.usBarRight - pCurr.usBarLeft - 4));
+    if (end < pCurr.usBarLeft + 2 || end > pCurr.usBarRight - 2) {
       return;
     }
     if (gfUseLoadScreenProgressBar) {
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft, pCurr.value.usBarTop, end, pCurr.value.usBarBottom, Get16BPPColor(FROMRGB(pCurr.value.ubColorFillRed, pCurr.value.ubColorFillGreen, pCurr.value.ubColorFillBlue)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usBarLeft, pCurr.usBarTop, end, pCurr.usBarBottom, Get16BPPColor(FROMRGB(pCurr.ubColorFillRed, pCurr.ubColorFillGreen, pCurr.ubColorFillBlue)));
       // if( pCurr->usBarRight > gusLeftmostShaded )
       //{
       //	ShadowVideoSurfaceRect( FRAME_BUFFER, gusLeftmostShaded+1, pCurr->usBarTop, end, pCurr->usBarBottom );
@@ -226,12 +219,12 @@ export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
       //}
     } else {
       // Border edge of the progress bar itself in gray
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft, pCurr.value.usBarTop, pCurr.value.usBarRight, pCurr.value.usBarBottom, Get16BPPColor(FROMRGB(160, 160, 160)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usBarLeft, pCurr.usBarTop, pCurr.usBarRight, pCurr.usBarBottom, Get16BPPColor(FROMRGB(160, 160, 160)));
       // Interior of progress bar in black
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft + 2, pCurr.value.usBarTop + 2, pCurr.value.usBarRight - 2, pCurr.value.usBarBottom - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.value.usBarLeft + 2, pCurr.value.usBarTop + 2, end, pCurr.value.usBarBottom - 2, Get16BPPColor(FROMRGB(72, 155, 24)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usBarLeft + 2, pCurr.usBarTop + 2, pCurr.usBarRight - 2, pCurr.usBarBottom - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pCurr.usBarLeft + 2, pCurr.usBarTop + 2, end, pCurr.usBarBottom - 2, Get16BPPColor(FROMRGB(72, 155, 24)));
     }
-    InvalidateRegion(pCurr.value.usBarLeft, pCurr.value.usBarTop, pCurr.value.usBarRight, pCurr.value.usBarBottom);
+    InvalidateRegion(pCurr.usBarLeft, pCurr.usBarTop, pCurr.usBarRight, pCurr.usBarBottom);
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
     RefreshScreen(null);
@@ -245,7 +238,7 @@ export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
 }
 
 export function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
-  let pCurr: Pointer<PROGRESSBAR> = null;
+  let pCurr: PROGRESSBAR | null = null;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
@@ -253,13 +246,13 @@ export function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorF
   if (pCurr == null)
     return;
 
-  pCurr.value.ubColorFillRed = ubColorFillRed;
-  pCurr.value.ubColorFillGreen = ubColorFillGreen;
-  pCurr.value.ubColorFillBlue = ubColorFillBlue;
+  pCurr.ubColorFillRed = ubColorFillRed;
+  pCurr.ubColorFillGreen = ubColorFillGreen;
+  pCurr.ubColorFillBlue = ubColorFillBlue;
 }
 
 function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: boolean, fUseSaveBuffer: boolean, fSaveScreenToFrameBuffer: boolean): void {
-  let pCurr: Pointer<PROGRESSBAR> = null;
+  let pCurr: PROGRESSBAR | null = null;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
@@ -267,16 +260,16 @@ function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: boolean, fUseS
   if (pCurr == null)
     return;
 
-  pCurr.value.fDisplayText = fDisplayText;
+  pCurr.fDisplayText = fDisplayText;
 
-  pCurr.value.fUseSaveBuffer = fUseSaveBuffer;
+  pCurr.fUseSaveBuffer = fUseSaveBuffer;
 
   // if we are to use the save buffer, blit the portion of the screen to the save buffer
   if (fSaveScreenToFrameBuffer) {
-    let usFontHeight: UINT16 = GetFontHeight(pCurr.value.usMsgFont) + 3;
+    let usFontHeight: UINT16 = GetFontHeight(pCurr.usMsgFont) + 3;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr.value.usBarLeft, pCurr.value.usBarBottom, (pCurr.value.usBarRight - pCurr.value.usBarLeft), usFontHeight);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr.usBarLeft, pCurr.usBarBottom, (pCurr.usBarRight - pCurr.usBarLeft), usFontHeight);
   }
 }
 

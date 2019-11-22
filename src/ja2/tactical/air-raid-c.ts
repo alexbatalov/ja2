@@ -360,7 +360,7 @@ function AirRaidStart(): void {
   gfFadingRaidIn = true;
 
   // Setup start time....
-  RESETTIMECOUNTER(giTimerAirRaidQuote, AIR_RAID_SAY_QUOTE_TIME);
+  giTimerAirRaidQuote = RESETTIMECOUNTER(AIR_RAID_SAY_QUOTE_TIME);
 
   gubAirRaidMode = Enum192.AIR_RAID_LOOK_FOR_DIVE;
 
@@ -394,7 +394,7 @@ function AirRaidLookForDive(): void {
     SayQuoteFromAnyBodyInSector(Enum202.QUOTE_AIR_RAID);
 
     // Update timer
-    RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
+    giTimerAirRaidDiveStarted = RESETTIMECOUNTER(AIR_RAID_DIVE_INTERVAL);
 
     giNumTurnsSinceLastDive = 0;
 
@@ -487,14 +487,14 @@ function BeginBombing(): void {
   gsDiveX = CenterX(sGridNo);
   gsDiveY = CenterY(sGridNo);
 
-  RESETTIMECOUNTER(giTimerAirRaidUpdate, RAID_DELAY);
+  giTimerAirRaidUpdate = RESETTIMECOUNTER(RAID_DELAY);
 
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
     iSoundStartDelay = 0;
   } else {
     iSoundStartDelay = TIME_FROM_BOMB_SOUND_TO_ATTACK_DELAY;
   }
-  RESETTIMECOUNTER(giTimerAirRaidDiveStarted, iSoundStartDelay);
+  giTimerAirRaidDiveStarted = RESETTIMECOUNTER(iSoundStartDelay);
 
   giNumTurnsSinceDiveStarted = 0;
 
@@ -532,7 +532,7 @@ function BeginDive(): void {
   gsDiveX = CenterX(sGridNo);
   gsDiveY = CenterY(sGridNo);
 
-  RESETTIMECOUNTER(giTimerAirRaidUpdate, RAID_DELAY);
+  giTimerAirRaidUpdate = RESETTIMECOUNTER(RAID_DELAY);
   giNumTurnsSinceDiveStarted = 0;
 
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -540,7 +540,7 @@ function BeginDive(): void {
   } else {
     iSoundStartDelay = TIME_FROM_DIVE_SOUND_TO_ATTACK_DELAY;
   }
-  RESETTIMECOUNTER(giTimerAirRaidDiveStarted, iSoundStartDelay);
+  giTimerAirRaidDiveStarted = RESETTIMECOUNTER(iSoundStartDelay);
 
   // Get direction....
   gubDiveDirection = GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
@@ -611,7 +611,7 @@ function DoDive(): void {
     }
 
     if (TIMECOUNTERDONE(giTimerAirRaidUpdate, RAID_DELAY)) {
-      RESETTIMECOUNTER(giTimerAirRaidUpdate, RAID_DELAY);
+      giTimerAirRaidUpdate = RESETTIMECOUNTER(RAID_DELAY);
 
       // Move Towards target....
       sTargetX = CenterX(gsDiveTargetLocation);
@@ -768,7 +768,7 @@ function DoBombing(): void {
     }
 
     if (TIMECOUNTERDONE(giTimerAirRaidUpdate, RAID_DELAY)) {
-      RESETTIMECOUNTER(giTimerAirRaidUpdate, RAID_DELAY);
+      giTimerAirRaidUpdate = RESETTIMECOUNTER(RAID_DELAY);
 
       // Move Towards target....
       sTargetX = CenterX(gsDiveTargetLocation);
@@ -947,7 +947,7 @@ export function HandleAirRaid(): void {
         case Enum192.AIR_RAID_END_DIVE:
 
           giNumTurnsSinceLastDive = 0;
-          RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
+          giTimerAirRaidDiveStarted = RESETTIMECOUNTER(AIR_RAID_DIVE_INTERVAL);
 
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {
             // Free up attacker...
@@ -960,7 +960,7 @@ export function HandleAirRaid(): void {
 
         case Enum192.AIR_RAID_END_BOMBING:
 
-          RESETTIMECOUNTER(giTimerAirRaidDiveStarted, AIR_RAID_DIVE_INTERVAL);
+          giTimerAirRaidDiveStarted = RESETTIMECOUNTER(AIR_RAID_DIVE_INTERVAL);
           giNumTurnsSinceLastDive = 0;
 
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {

@@ -664,7 +664,7 @@ export function ExecuteOverhead(): boolean {
             pSoldier.value.sDamageX += 1;
             pSoldier.value.sDamageY -= 1;
 
-            RESETTIMECOUNTER(pSoldier.value.DamageCounter, DAMAGE_DISPLAY_DELAY);
+            pSoldier.value.DamageCounter = RESETTIMECOUNTER(DAMAGE_DISPLAY_DELAY);
           }
 
           if (pSoldier.value.bDisplayDamageCount >= 8) {
@@ -689,7 +689,7 @@ export function ExecuteOverhead(): boolean {
         // Checkout fading
         if (pSoldier.value.fBeginFade) {
           if (TIMECOUNTERDONE(pSoldier.value.FadeCounter, NEW_FADE_DELAY)) {
-            RESETTIMECOUNTER(pSoldier.value.FadeCounter, NEW_FADE_DELAY);
+            pSoldier.value.FadeCounter = RESETTIMECOUNTER(NEW_FADE_DELAY);
 
             // Fade out....
             if (pSoldier.value.fBeginFade == 1) {
@@ -816,7 +816,7 @@ export function ExecuteOverhead(): boolean {
             pSoldier.value.uiStatusFlags &= (~SOLDIER_RECHECKLIGHT);
           }
 
-          RESETTIMECOUNTER(pSoldier.value.UpdateCounter, pSoldier.value.sAniDelay);
+          pSoldier.value.UpdateCounter = RESETTIMECOUNTER(pSoldier.value.sAniDelay);
 
           fNoAPsForPendingAction = false;
 
@@ -2208,7 +2208,7 @@ export function InternalLocateGridNo(sGridNo: UINT16, fForce: boolean): void {
   let sNewCenterWorldX: INT16;
   let sNewCenterWorldY: INT16;
 
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sNewCenterWorldX), addressof(sNewCenterWorldY));
+  ({ sX: sNewCenterWorldX, sY: sNewCenterWorldY } = ConvertGridNoToCenterCellXY(sGridNo));
 
   // FIRST CHECK IF WE ARE ON SCREEN
   if (GridNoOnScreen(sGridNo) && !fForce) {
@@ -5630,7 +5630,7 @@ export function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, pp
       if (pTarget.value.bLife >= OKLIFE && !(pTarget.value.bCollapsed) && !AM_A_ROBOT(pTarget) && (bReason == REASON_NORMAL_ATTACK)) {
         // OK, sturn towards the prick
         // Change to fire ready animation
-        ConvertGridNoToXY(pSoldier.value.sGridNo, addressof(sTargetXPos), addressof(sTargetYPos));
+        ({ sX: sTargetXPos, sY: sTargetYPos } = ConvertGridNoToXY(pSoldier.value.sGridNo));
 
         pTarget.value.fDontChargeReadyAPs = true;
         // Ready weapon

@@ -222,7 +222,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     dMyY = pMe.value.dYPos;
 
     pMe.value.sGridNo = sMyGridNo; // but pretend I'm standing at sMyGridNo
-    ConvertGridNoToCenterCellXY(sMyGridNo, addressof(sTempX), addressof(sTempY));
+    ({ sX: sTempX, sY: sTempY } = ConvertGridNoToCenterCellXY(sMyGridNo));
     pMe.value.dXPos = sTempX;
     pMe.value.dYPos = sTempY;
   }
@@ -234,7 +234,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     dHisY = pHim.value.dYPos;
 
     pHim.value.sGridNo = sHisGridNo; // but pretend he's standing at sHisGridNo
-    ConvertGridNoToCenterCellXY(sHisGridNo, addressof(sTempX), addressof(sTempY));
+    ({ sX: sTempX, sY: sTempY } = ConvertGridNoToCenterCellXY(sHisGridNo));
     pHim.value.dXPos = sTempX;
     pHim.value.dYPos = sTempY;
   }
@@ -279,7 +279,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     // put him at sHisGridNo if necessary!
     if (pHim.value.sGridNo != sHisGridNo) {
       pHim.value.sGridNo = sHisGridNo;
-      ConvertGridNoToCenterCellXY(sHisGridNo, addressof(sTempX), addressof(sTempY));
+      ({ sX: sTempX, sY: sTempY } = ConvertGridNoToCenterCellXY(sHisGridNo));
       pHim.value.dXPos = sTempX;
       pHim.value.dYPos = sTempY;
     }
@@ -1741,8 +1741,8 @@ export function FindNearestEdgePoint(sGridNo: INT16): INT16 {
   let sClosestDist: INT16 = 0x7FFF;
   let sTempDist: INT16;
 
-  ConvertGridNoToXY(sGridNo, addressof(sGridX), addressof(sGridY));
-  GetWorldXYAbsoluteScreenXY(sGridX, sGridY, addressof(sScreenX), addressof(sScreenY));
+  ({ sX: sGridX, sY: sGridY } = ConvertGridNoToXY(sGridNo));
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY(sGridX, sGridY));
 
   sMaxScreenX = gsBRX - gsTLX;
   sMaxScreenY = gsBRY - gsTLY;

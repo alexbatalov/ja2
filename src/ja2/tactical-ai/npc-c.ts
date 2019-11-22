@@ -1431,7 +1431,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
         // turn before speech?
         if (pQuotePtr.value.sActionData <= -Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC) {
           pSoldier = FindSoldierByProfileID(ubNPC, false);
-          ZEROTIMECOUNTER(pSoldier.value.AICounter);
+          pSoldier.value.AICounter = ZEROTIMECOUNTER();
           if (pSoldier.value.bNextAction == Enum289.AI_ACTION_WAIT) {
             pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
             pSoldier.value.usNextActionData = 0;
@@ -1570,7 +1570,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
         // Action before movement?
         if (pQuotePtr.value.sActionData < 0 && pQuotePtr.value.sActionData > -Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC) {
           pSoldier = FindSoldierByProfileID(ubNPC, false);
-          ZEROTIMECOUNTER(pSoldier.value.AICounter);
+          pSoldier.value.AICounter = ZEROTIMECOUNTER();
           if (pSoldier.value.bNextAction == Enum289.AI_ACTION_WAIT) {
             pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
             pSoldier.value.usNextActionData = 0;
@@ -1578,7 +1578,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           NPCDoAction(ubNPC,  - (pQuotePtr.value.sActionData), ubRecordNum);
         } else if (pQuotePtr.value.usGoToGridno == NO_MOVE && pQuotePtr.value.sActionData > 0) {
           pSoldier = FindSoldierByProfileID(ubNPC, false);
-          ZEROTIMECOUNTER(pSoldier.value.AICounter);
+          pSoldier.value.AICounter = ZEROTIMECOUNTER();
           if (pSoldier.value.bNextAction == Enum289.AI_ACTION_WAIT) {
             pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
             pSoldier.value.usNextActionData = 0;

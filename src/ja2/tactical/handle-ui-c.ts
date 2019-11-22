@@ -1904,7 +1904,7 @@ function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       if (gUITargetReady) {
         // Move to proper stance + direction!
         // Convert our grid-not into an XY
-        ConvertGridNoToXY(usMapPos, addressof(sTargetXPos), addressof(sTargetYPos));
+        ({ sX: sTargetXPos, sY: sTargetYPos } = ConvertGridNoToXY(usMapPos));
 
         // UNReady weapon
         SoldierReadyWeapon(pSoldier, sTargetXPos, sTargetYPos, true);
@@ -2595,7 +2595,7 @@ export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   }
 
   GetMouseMapPos(addressof(usMapPos));
-  ConvertGridNoToXY(usMapPos, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(usMapPos));
 
   puiCursorFlags.value = 0;
 
@@ -3683,13 +3683,13 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
   let sXPos: INT16;
   let sYPos: INT16;
 
-  ConvertGridNoToCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sCellX: sXPos, sCellY: sYPos } = ConvertGridNoToCellXY(sGridNo));
 
   // Get 'TRUE' merc position
   sOffsetX = sXPos - gsRenderCenterX;
   sOffsetY = sYPos - gsRenderCenterY;
 
-  FromCellToScreenCoordinates(sOffsetX, sOffsetY, addressof(sTempX_S), addressof(sTempY_S));
+  ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
   sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
@@ -3913,7 +3913,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         sScreenY -= 50;
       }
 
-      if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
+      if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
         fAtLeastOne = true;
       }
     }
@@ -3940,7 +3940,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         sScreenY -= 50;
       }
 
-      if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
+      if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
         // Adjust this guy's flag...
         pSoldier.value.uiStatusFlags |= SOLDIER_MULTI_SELECTED;
       }

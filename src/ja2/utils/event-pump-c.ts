@@ -118,27 +118,27 @@ export let gubEncryptionArray4: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3
 
 // GLobals used here, for each event structure used,
 // Used as globals for stack reasons
-let EPlaySound: EV_E_PLAYSOUND;
+let EPlaySound: EV_E_PLAYSOUND = createEvEPlaySound();
 
-let SChangeState: EV_S_CHANGESTATE;
-let SChangeDest: EV_S_CHANGEDEST;
-let SSetPosition: EV_S_SETPOSITION;
-let SGetNewPath: EV_S_GETNEWPATH;
-let SBeginTurn: EV_S_BEGINTURN;
-let SChangeStance: EV_S_CHANGESTANCE;
-let SSetDirection: EV_S_SETDIRECTION;
-let SSetDesiredDirection: EV_S_SETDESIREDDIRECTION;
-let SBeginFireWeapon: EV_S_BEGINFIREWEAPON;
-let SFireWeapon: EV_S_FIREWEAPON;
+let SChangeState: EV_S_CHANGESTATE = createEvSChangeState();
+let SChangeDest: EV_S_CHANGEDEST = createEvSChangeDest();
+let SSetPosition: EV_S_SETPOSITION = createEvSSetPosition();
+let SGetNewPath: EV_S_GETNEWPATH = createEvSGetNewPath();
+let SBeginTurn: EV_S_BEGINTURN = createEvSBeginTurn();
+let SChangeStance: EV_S_CHANGESTANCE = createEvSChangeStance();
+let SSetDirection: EV_S_SETDIRECTION = createEvSSetDirection();
+let SSetDesiredDirection: EV_S_SETDESIREDDIRECTION = createEvSSetDesiredDirection();
+let SBeginFireWeapon: EV_S_BEGINFIREWEAPON = createEvSBeginFireWeapon();
+let SFireWeapon: EV_S_FIREWEAPON = createEvSFireWeapon();
 let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
-let SStructureHit: EV_S_STRUCTUREHIT;
-let SWindowHit: EV_S_WINDOWHIT;
-let SMiss: EV_S_MISS;
-let SNoise: EV_S_NOISE;
-let SStopMerc: EV_S_STOP_MERC;
-let SUpdateNetworkSoldier: EV_S_SENDPATHTONETWORK;
+let SStructureHit: EV_S_STRUCTUREHIT = createEvSStructureHit();
+let SWindowHit: EV_S_WINDOWHIT = createEvSWindowHit();
+let SMiss: EV_S_MISS = createEvSMiss();
+let SNoise: EV_S_NOISE = createEvSNoise();
+let SStopMerc: EV_S_STOP_MERC = createEvSStopMerc();
+let SUpdateNetworkSoldier: EV_S_SENDPATHTONETWORK = createEvSSendPathToNetwork();
 
-export function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
+export function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: any): boolean {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
@@ -157,11 +157,11 @@ export function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR):
     return false;
 }
 
-function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): boolean {
+function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: any): boolean {
   return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
 }
 
-function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, ubQueueID: UINT8): boolean {
+function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: any, ubQueueID: UINT8): boolean {
   let uiDataSize: UINT32;
 
   // Check range of Event ui
@@ -175,91 +175,91 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
   switch (uiEvent) {
     case Enum319.E_PLAYSOUND:
 
-      uiDataSize = sizeof(EV_E_PLAYSOUND);
+      uiDataSize = EV_E_PLAYSOUND_SIZE;
       break;
 
     case Enum319.S_CHANGESTATE:
 
-      uiDataSize = sizeof(EV_S_CHANGESTATE);
+      uiDataSize = EV_S_CHANGESTATE_SIZE;
       break;
 
     case Enum319.S_CHANGEDEST:
 
-      uiDataSize = sizeof(EV_S_CHANGEDEST);
+      uiDataSize = EV_S_CHANGEDEST_SIZE;
       break;
 
     case Enum319.S_SETPOSITION:
 
-      uiDataSize = sizeof(EV_S_SETPOSITION);
+      uiDataSize = EV_S_SETPOSITION_SIZE;
       break;
 
     case Enum319.S_GETNEWPATH:
 
-      uiDataSize = sizeof(EV_S_GETNEWPATH);
+      uiDataSize = EV_S_GETNEWPATH_SIZE;
       break;
 
     case Enum319.S_BEGINTURN:
 
-      uiDataSize = sizeof(EV_S_BEGINTURN);
+      uiDataSize = EV_S_BEGINTURN_SIZE;
       break;
 
     case Enum319.S_CHANGESTANCE:
 
-      uiDataSize = sizeof(EV_S_CHANGESTANCE);
+      uiDataSize = EV_S_CHANGESTANCE_SIZE;
       break;
 
     case Enum319.S_SETDIRECTION:
 
-      uiDataSize = sizeof(EV_S_SETDIRECTION);
+      uiDataSize = EV_S_SETDIRECTION_SIZE;
       break;
 
     case Enum319.S_SETDESIREDDIRECTION:
 
-      uiDataSize = sizeof(EV_S_SETDESIREDDIRECTION);
+      uiDataSize = EV_S_SETDESIREDDIRECTION_SIZE;
       break;
 
     case Enum319.S_FIREWEAPON:
 
-      uiDataSize = sizeof(EV_S_FIREWEAPON);
+      uiDataSize = EV_S_FIREWEAPON_SIZE;
       break;
 
     case Enum319.S_BEGINFIREWEAPON:
 
-      uiDataSize = sizeof(EV_S_BEGINFIREWEAPON);
+      uiDataSize = EV_S_BEGINFIREWEAPON_SIZE;
       // Delay this event
       break;
 
     case Enum319.S_WEAPONHIT:
 
-      uiDataSize = sizeof(EV_S_WEAPONHIT);
+      uiDataSize = EV_S_WEAPONHIT_SIZE;
       break;
 
     case Enum319.S_STRUCTUREHIT:
-      uiDataSize = sizeof(EV_S_STRUCTUREHIT);
+      uiDataSize = EV_S_STRUCTUREHIT_SIZE;
       break;
 
     case Enum319.S_WINDOWHIT:
-      uiDataSize = sizeof(EV_S_STRUCTUREHIT);
+      uiDataSize = EV_S_STRUCTUREHIT_SIZE;
       break;
 
     case Enum319.S_MISS:
-      uiDataSize = sizeof(EV_S_MISS);
+      uiDataSize = EV_S_MISS_SIZE;
       break;
 
     case Enum319.S_NOISE:
-      uiDataSize = sizeof(EV_S_NOISE);
+      uiDataSize = EV_S_NOISE_SIZE;
       break;
 
     case Enum319.S_STOP_MERC:
-      uiDataSize = sizeof(EV_S_STOP_MERC);
+      uiDataSize = EV_S_STOP_MERC_SIZE;
       break;
 
     case Enum319.S_SENDPATHTONETWORK:
-      uiDataSize = sizeof(EV_S_SENDPATHTONETWORK);
+      uiDataSize = EV_S_SENDPATHTONETWORK_SIZE;
       break;
 
     case Enum319.S_UPDATENETWORKSOLDIER:
-      uiDataSize = sizeof(EV_S_UPDATENETWORKSOLDIER);
+      uiDataSize = EV_S_UPDATENETWORKSOLDIER_SIZE;
       break;
 
     default:
@@ -278,7 +278,7 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
 }
 
 export function DequeAllGameEvents(fExecute: boolean): boolean {
-  let pEvent: Pointer<EVENT>;
+  let pEvent: EVENT;
   let uiQueueSize: UINT32;
   let cnt: UINT32;
   let fCompleteLoop: boolean = false;
@@ -286,14 +286,14 @@ export function DequeAllGameEvents(fExecute: boolean): boolean {
 
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == false) {
+    if ((pEvent = RemoveEvent(0, PRIMARY_EVENT_QUEUE)) === undefined) {
       return false;
     }
 
     if (fExecute) {
       // Check if event has a delay and add to secondary queue if so
-      if (pEvent.value.usDelay > 0) {
-        AddGameEventToQueue(pEvent.value.uiEvent, pEvent.value.usDelay, pEvent.value.pData, SECONDARY_EVENT_QUEUE);
+      if (pEvent.usDelay > 0) {
+        AddGameEventToQueue(pEvent.uiEvent, pEvent.usDelay, pEvent.pData, SECONDARY_EVENT_QUEUE);
       } else {
         ExecuteGameEvent(pEvent);
       }
@@ -308,18 +308,18 @@ export function DequeAllGameEvents(fExecute: boolean): boolean {
   uiQueueSize = EventQueueSize(SECONDARY_EVENT_QUEUE);
 
   for (cnt = 0; cnt < uiQueueSize; cnt++) {
-    if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == false) {
+    if ((pEvent = PeekEvent(cnt, SECONDARY_EVENT_QUEUE)) === undefined) {
       return false;
     }
 
     // Check time
-    if ((GetJA2Clock() - pEvent.value.TimeStamp) > pEvent.value.usDelay) {
+    if ((GetJA2Clock() - pEvent.TimeStamp) > pEvent.usDelay) {
       if (fExecute) {
         ExecuteGameEvent(pEvent);
       }
 
       // FLag as expired
-      pEvent.value.uiFlags = EVENT_EXPIRED;
+      pEvent.uiFlags = EVENT_EXPIRED;
     }
   }
 
@@ -327,13 +327,13 @@ export function DequeAllGameEvents(fExecute: boolean): boolean {
     uiQueueSize = EventQueueSize(SECONDARY_EVENT_QUEUE);
 
     for (cnt = 0; cnt < uiQueueSize; cnt++) {
-      if (PeekEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE) == false) {
+      if ((pEvent = PeekEvent(cnt, SECONDARY_EVENT_QUEUE)) === undefined) {
         return false;
       }
 
       // Check time
-      if (pEvent.value.uiFlags & EVENT_EXPIRED) {
-        RemoveEvent(addressof(pEvent), cnt, SECONDARY_EVENT_QUEUE);
+      if (pEvent.uiFlags & EVENT_EXPIRED) {
+        pEvent = RemoveEvent(cnt, SECONDARY_EVENT_QUEUE);
         FreeEvent(pEvent);
         // Restart loop
         break;
@@ -349,21 +349,21 @@ export function DequeAllGameEvents(fExecute: boolean): boolean {
 }
 
 export function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
-  let pEvent: Pointer<EVENT>;
+  let pEvent: EVENT;
   let fCompleteLoop: boolean = false;
 
   // Dequeue all events on the demand queue (only)
 
   while (EventQueueSize(DEMAND_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, DEMAND_EVENT_QUEUE) == false) {
+    if ((pEvent = RemoveEvent(0, DEMAND_EVENT_QUEUE)) === undefined) {
       return false;
     }
 
     if (fExecute) {
       // Check if event has a delay and add to secondary queue if so
-      if (pEvent.value.usDelay > 0) {
-        AddGameEventToQueue(pEvent.value.uiEvent, pEvent.value.usDelay, pEvent.value.pData, SECONDARY_EVENT_QUEUE);
+      if (pEvent.usDelay > 0) {
+        AddGameEventToQueue(pEvent.uiEvent, pEvent.usDelay, pEvent.pData, SECONDARY_EVENT_QUEUE);
       } else {
         ExecuteGameEvent(pEvent);
       }
@@ -376,14 +376,14 @@ export function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
   return true;
 }
 
-function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
+function ExecuteGameEvent(pEvent: EVENT): boolean {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Switch on event type
-  switch (pEvent.value.uiEvent) {
+  switch (pEvent.uiEvent) {
     case Enum319.E_PLAYSOUND:
 
-      memcpy(addressof(EPlaySound), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvEPlaySound(EPlaySound, pEvent.pData);
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Play Sound");
       PlayJA2Sample(EPlaySound.usIndex, EPlaySound.usRate, EPlaySound.ubVolume, EPlaySound.ubLoops, EPlaySound.uiPan);
@@ -391,7 +391,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_CHANGESTATE:
 
-      memcpy(addressof(SChangeState), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSChangeState(SChangeState, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SChangeState.usSoldierID) == false) {
@@ -412,7 +412,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_CHANGEDEST:
 
-      memcpy(addressof(SChangeDest), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSChangeDest(SChangeDest, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SChangeDest.usSoldierID) == false) {
@@ -433,7 +433,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_SETPOSITION:
 
-      memcpy(addressof(SSetPosition), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSSetPosition(SSetPosition, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SSetPosition.usSoldierID) == false) {
@@ -454,7 +454,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_GETNEWPATH:
 
-      memcpy(addressof(SGetNewPath), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSGetNewPath(SGetNewPath, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SGetNewPath.usSoldierID) == false) {
@@ -474,7 +474,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_BEGINTURN:
 
-      memcpy(addressof(SBeginTurn), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSBeginTurn(SBeginTurn, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SBeginTurn.usSoldierID) == false) {
@@ -495,7 +495,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_CHANGESTANCE:
 
-      memcpy(addressof(SChangeStance), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSChangeStance(SChangeStance, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SChangeStance.usSoldierID) == false) {
@@ -515,7 +515,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_SETDIRECTION:
 
-      memcpy(addressof(SSetDirection), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSSetDirection(SSetDirection, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SSetDirection.usSoldierID) == false) {
@@ -536,7 +536,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_SETDESIREDDIRECTION:
 
-      memcpy(addressof(SSetDesiredDirection), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSSetDesiredDirection(SSetDesiredDirection, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SSetDesiredDirection.usSoldierID) == false) {
@@ -557,7 +557,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_BEGINFIREWEAPON:
 
-      memcpy(addressof(SBeginFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSBeginFireWeapon(SBeginFireWeapon, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SBeginFireWeapon.usSoldierID) == false) {
@@ -582,7 +582,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_FIREWEAPON:
 
-      memcpy(addressof(SFireWeapon), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSFireWeapon(SFireWeapon, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SFireWeapon.usSoldierID) == false) {
@@ -606,41 +606,41 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
     case Enum319.S_WEAPONHIT:
 
-      memcpy(addressof(SWeaponHit), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSWeaponHit(SWeaponHit, pEvent.pData);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: WeaponHit %d Damage", SWeaponHit.sDamage));
       WeaponHit(SWeaponHit.usSoldierID, SWeaponHit.usWeaponIndex, SWeaponHit.sDamage, SWeaponHit.sBreathLoss, SWeaponHit.usDirection, SWeaponHit.sXPos, SWeaponHit.sYPos, SWeaponHit.sZPos, SWeaponHit.sRange, SWeaponHit.ubAttackerID, SWeaponHit.fHit, SWeaponHit.ubSpecial, SWeaponHit.ubLocation);
       break;
 
     case Enum319.S_STRUCTUREHIT:
 
-      memcpy(addressof(SStructureHit), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSStructureHit(SStructureHit, pEvent.pData);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: StructureHit"));
       StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, true);
       break;
 
     case Enum319.S_WINDOWHIT:
 
-      memcpy(addressof(SWindowHit), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSWindowHit(SWindowHit, pEvent.pData);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: WindowHit"));
       WindowHit(SWindowHit.sGridNo, SWindowHit.usStructureID, SWindowHit.fBlowWindowSouth, SWindowHit.fLargeForce);
       break;
 
     case Enum319.S_MISS:
 
-      memcpy(addressof(SMiss), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSMiss(SMiss, pEvent.pData);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Shot Miss ( obsolete )"));
       // ShotMiss( SMiss.ubAttackerID );
       break;
 
     case Enum319.S_NOISE:
-      memcpy(addressof(SNoise), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSNoise(SNoise, pEvent.pData);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Noise from %d at %d/%d, type %d volume %d", SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubNoiseType, SNoise.ubVolume));
       OurNoise(SNoise.ubNoiseMaker, SNoise.sGridNo, SNoise.bLevel, SNoise.ubTerrType, SNoise.ubVolume, SNoise.ubNoiseType);
       break;
 
     case Enum319.S_STOP_MERC:
 
-      memcpy(addressof(SStopMerc), pEvent.value.pData, pEvent.value.uiDataSize);
+      copyEvSStopMerc(SStopMerc, pEvent.pData);
 
       // Get soldier pointer from ID
       if (GetSoldier(addressof(pSoldier), SStopMerc.usSoldierID) == false) {
@@ -669,10 +669,10 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): boolean {
 
 export function ClearEventQueue(): boolean {
   // clear out the event queue
-  let pEvent: Pointer<EVENT>;
+  let pEvent: EVENT;
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     // Get Event
-    if (RemoveEvent(addressof(pEvent), 0, PRIMARY_EVENT_QUEUE) == false) {
+    if ((pEvent = RemoveEvent(0, PRIMARY_EVENT_QUEUE)) === undefined) {
       return false;
     }
   }

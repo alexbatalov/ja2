@@ -32,10 +32,11 @@ export function FilenameForBPP(pFilename: string /* STR */): string {
   return pDestination;
 }
 
-export function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: string /* SGPFILENAME */): boolean {
+export function CreateSGPPaletteFromCOLFile(pPalette: SGPPaletteEntry[], ColFile: string /* SGPFILENAME */): boolean {
   let hFileHandle: HWFILE;
-  let bColHeader: BYTE[] /* [8] */;
+  let bColHeader: BYTE[] /* [8] */ = createArray(8, 0);
   let cnt: UINT32;
+  let buffer: Buffer;
 
   // See if files exists, if not, return error
   if (!FileExists(ColFile)) {
@@ -52,13 +53,16 @@ export function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, 
   }
 
   // Skip header
-  FileRead(hFileHandle, bColHeader, sizeof(bColHeader), null);
+  buffer = Buffer.allocUnsafe(8);
+  FileRead(hFileHandle, buffer, 8);
 
   // Read in a palette entry at a time
+  buffer = Buffer.allocUnsafe(3);
   for (cnt = 0; cnt < 256; cnt++) {
-    FileRead(hFileHandle, addressof(pPalette[cnt].peRed), sizeof(UINT8), null);
-    FileRead(hFileHandle, addressof(pPalette[cnt].peGreen), sizeof(UINT8), null);
-    FileRead(hFileHandle, addressof(pPalette[cnt].peBlue), sizeof(UINT8), null);
+    FileRead(hFileHandle, buffer, 3);
+    pPalette[cnt].peRed = buffer.readUInt8(0);
+    pPalette[cnt].peGreen = buffer.readUInt8(1);
+    pPalette[cnt].peBlue = buffer.readUInt8(2);
   }
 
   // Close file
@@ -104,12 +108,14 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
   return true;
 }
 
-export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<string> /* Pointer<INT16> */, usWidth: UINT16, uiFont: INT32): boolean {
+export function WrapString(pStr: string /* Pointer<INT16> */, usWidth: UINT16, uiFont: INT32): { pStr: string, pStr2: string } {
+  let pStr2: string = '';
+
   let Cur: UINT32;
   let uiLet: UINT32;
   let uiNewLet: UINT32;
   let uiHyphenLet: UINT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
   let fLineSplit: boolean = false;
   let hFont: HVOBJECT;
@@ -117,14 +123,14 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
   // CHECK FOR WRAP
   Cur = 0;
   uiLet = 0;
-  curletter = pStr;
+  curletter = 0;
 
   // GET FONT
   hFont = GetFontObject(uiFont);
 
   // LOOP FORWARDS AND COUNT
-  while ((curletter.value) != 0) {
-    transletter = GetIndex(curletter.value);
+  while (curletter < pStr.length) {
+    transletter = GetIndex(pStr.charCodeAt(curletter));
     Cur += GetWidth(hFont, transletter);
 
     if (Cur > usWidth) {
@@ -132,14 +138,13 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
       // Generate second string, and exit upon completion.
       uiHyphenLet = uiLet; // Save the hyphen location as it won't change.
       uiNewLet = uiLet;
-      while ((curletter.value) != 0) {
-        if ((curletter.value) == 32) {
+      while (curletter >= 0) {
+        if (pStr.charCodeAt(curletter) == 32) {
           // Split Line!
           fLineSplit = true;
 
-          pStr[uiNewLet] = '\0';
-
-          pStr2 = addressof(pStr[uiNewLet + 1]);
+          pStr2 = pStr.substring(uiNewLet + 1);
+          pStr = pStr.substring(0, uiNewLet);
         }
 
         if (fLineSplit)
@@ -150,8 +155,8 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
       }
       if (!fLineSplit) {
         // We completed the check for a space, but failed, so use the hyphen method.
-        pStr2 = swprintf("-%s", addressof(pStr[uiHyphenLet]));
-        pStr[uiHyphenLet] = '/0';
+        pStr2 = swprintf("-%s", pStr.substring(uiHyphenLet));
+        pStr = pStr.substring(0, uiHyphenLet);
         fLineSplit = true; // hyphen method
         break;
       }
@@ -164,81 +169,7 @@ export function WrapString(pStr: string /* Pointer<INT16> */, pStr2: Pointer<str
     curletter++;
   }
 
-  return fLineSplit;
-}
-
-function IfWinNT(): boolean {
-  let OsVerInfo: OSVERSIONINFO;
-
-  OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-  GetVersionEx(addressof(OsVerInfo));
-
-  if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
-    return true;
-  else
-    return false;
-}
-
-function IfWin95(): boolean {
-  let OsVerInfo: OSVERSIONINFO;
-
-  OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-
-  GetVersionEx(addressof(OsVerInfo));
-
-  if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-    return true;
-  else
-    return false;
-}
-
-function HandleLimitedNumExecutions(): void {
-  // Get system directory
-  let hFileHandle: HWFILE;
-  let ubSysDir: string /* UINT8[512] */;
-  let bNumRuns: INT8;
-
-  GetSystemDirectory(ubSysDir, sizeof(ubSysDir));
-
-  // Append filename
-  ubSysDir += "\\winaese.dll";
-
-  // Open file and check # runs...
-  if (FileExists(ubSysDir)) {
-    // Open and read
-    if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_READ, false)) == 0) {
-      return;
-    }
-
-    // Read value
-    FileRead(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), null);
-
-    // Close file
-    FileClose(hFileHandle);
-
-    if (bNumRuns <= 0) {
-      // Fail!
-      SET_ERROR("Error 1054: Cannot execute - contact Sir-Tech Software.");
-      return;
-    }
-  } else {
-    bNumRuns = 10;
-  }
-
-  // OK, decrement # runs...
-  bNumRuns--;
-
-  // Open and write
-  if ((hFileHandle = FileOpen(ubSysDir, FILE_ACCESS_WRITE, false)) == 0) {
-    return;
-  }
-
-  // Write value
-  FileWrite(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), null);
-
-  // Close file
-  FileClose(hFileHandle);
+  return { pStr, pStr2 };
 }
 
 export let gCheckFilenames: string[] /* SGPFILENAME[] */ = [

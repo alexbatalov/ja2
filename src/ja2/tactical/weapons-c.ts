@@ -679,7 +679,7 @@ export function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetG
     }
   } else {
     // GET TARGET XY VALUES
-    ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
+    ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
     // fire at centre of tile
     dTargetX = sXMapPos;
@@ -812,7 +812,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
   fGonnaHit = uiDiceRoll <= uiHitChance;
 
   // GET TARGET XY VALUES
-  ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
   // ATE; Moved a whole blotch if logic code for finding target positions to a function
   // so other places can use it
@@ -1035,7 +1035,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
   DeductPoints(pSoldier, sAPCost, 0);
 
   // GET TARGET XY VALUES
-  ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
   // See if a guy is here!
   pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.value.bTargetLevel);
@@ -1096,7 +1096,6 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
       }
 
       // Send event for getting hit
-      memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
       SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
       SWeaponHit.uiUniqueId = pTargetSoldier.value.uiUniqueSoldierIdValue;
       SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
@@ -1109,7 +1108,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
       SWeaponHit.ubAttackerID = pSoldier.value.ubID;
       SWeaponHit.fHit = true;
       SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-      AddGameEvent(Enum319.S_WEAPONHIT, 20, addressof(SWeaponHit));
+      AddGameEvent(Enum319.S_WEAPONHIT, 20, SWeaponHit);
     } else {
       // if it was another team shooting at someone under our control
       if ((pSoldier.value.bTeam != Menptr[pTargetSoldier.value.ubID].bTeam)) {
@@ -1219,7 +1218,7 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
     // sprintf( gDebugStr, "Hit Chance: %d %d", (int)uiHitChance, uiDiceRoll );
 
     // GET TARGET XY VALUES
-    ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
+    ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
     if (fStealing) {
       if (pTargetSoldier.value.inv[Enum261.HANDPOS].usItem != NOTHING) {
@@ -1321,7 +1320,6 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
         iImpact = HTHImpact(pSoldier, pTargetSoldier, (iHitChance - iDiceRoll), false);
 
         // Send event for getting hit
-        memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
         SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
         SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
         SWeaponHit.sDamage = iImpact;
@@ -1333,7 +1331,7 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
         SWeaponHit.ubAttackerID = pSoldier.value.ubID;
         SWeaponHit.fHit = true;
         SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-        AddGameEvent(Enum319.S_WEAPONHIT, 20, addressof(SWeaponHit));
+        AddGameEvent(Enum319.S_WEAPONHIT, 20, SWeaponHit);
       } else {
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - missed in HTH attack"));
         FreeUpAttacker(pSoldier.value.ubID);

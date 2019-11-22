@@ -21,19 +21,29 @@ interface RGBValues {
   b: INT8;
 }
 
+function createRGBValues(): RGBValues {
+  return {
+    r: 0,
+    g: 0,
+    b: 0,
+  };
+}
+
 export function MapUtilScreenInit(): boolean {
   return true;
 }
 
+/* static */ let MapUtilScreenHandle__fNewMap: boolean = true;
+/* static */ let MapUtilScreenHandle__sFileNum: INT16 = 0;
+/* static */ let MapUtilScreenHandle__FListNode: Pointer<FDLG_LIST>;
+/* static */ let MapUtilScreenHandle__sFiles: INT16 = 0;
+/* static */ let MapUtilScreenHandle__sCurFile: INT16 = 0;
+/* static */ let MapUtilScreenHandle__FileList: Pointer<FDLG_LIST> = null;
+/* static */ let MapUtilScreenHandle__p24BitDest: Pointer<UINT8> = null;
+/* static */ let MapUtilScreenHandle__p24BitValues: RGBValues[] /* Pointer<RGBValues> */ = <RGBValues[]><unknown>null;
 export function MapUtilScreenHandle(): UINT32 {
-  /* static */ let fNewMap: INT16 = true;
-  /* static */ let sFileNum: INT16 = 0;
   let InputEvent: InputAtom = createInputAtom();
   let FileInfo: GETFILESTRUCT;
-  /* static */ let FListNode: Pointer<FDLG_LIST>;
-  /* static */ let sFiles: INT16 = 0;
-  /* static */ let sCurFile: INT16 = 0;
-  /* static */ let FileList: Pointer<FDLG_LIST> = null;
   let zFilename: string /* INT8[260] */;
   let zFilename2: string /* INT8[260] */;
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
@@ -45,9 +55,6 @@ export function MapUtilScreenHandle(): UINT32 {
   let pDestBuf: Pointer<UINT16>;
   let pSrcBuf: Pointer<UINT16>;
   let pDataPtr: Pointer<UINT8>;
-
-  /* static */ let p24BitDest: Pointer<UINT8> = null;
-  /* static */ let p24BitValues: Pointer<RGBValues> = null;
 
   let uiRGBColor: UINT32;
 
@@ -91,11 +98,11 @@ export function MapUtilScreenHandle(): UINT32 {
   // Zero out area!
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, (640), (480), Get16BPPColor(FROMRGB(0, 0, 0)));
 
-  if (fNewMap) {
-    fNewMap = false;
+  if (MapUtilScreenHandle__fNewMap) {
+    MapUtilScreenHandle__fNewMap = false;
 
     // Create render buffer
-    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+    ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = 88;
     vs_desc.usHeight = 44;
@@ -107,20 +114,20 @@ export function MapUtilScreenHandle(): UINT32 {
 
     // USING BRET's STUFF FOR LOOPING FILES/CREATING LIST, hence AddToFDlgList.....
     if (GetFileFirst("MAPS\\*.dat", addressof(FileInfo))) {
-      FileList = AddToFDlgList(FileList, addressof(FileInfo));
-      sFiles++;
+      MapUtilScreenHandle__FileList = AddToFDlgList(MapUtilScreenHandle__FileList, addressof(FileInfo));
+      MapUtilScreenHandle__sFiles++;
       while (GetFileNext(addressof(FileInfo))) {
-        FileList = AddToFDlgList(FileList, addressof(FileInfo));
-        sFiles++;
+        MapUtilScreenHandle__FileList = AddToFDlgList(MapUtilScreenHandle__FileList, addressof(FileInfo));
+        MapUtilScreenHandle__sFiles++;
       }
       GetFileClose(addressof(FileInfo));
     }
 
-    FListNode = FileList;
+    MapUtilScreenHandle__FListNode = MapUtilScreenHandle__FileList;
 
     // Allocate 24 bit Surface
-    p24BitValues = MemAlloc(MINIMAP_X_SIZE * MINIMAP_Y_SIZE * sizeof(RGBValues));
-    p24BitDest = p24BitValues;
+    MapUtilScreenHandle__p24BitValues = createArrayFrom(MINIMAP_X_SIZE * MINIMAP_Y_SIZE, createRGBValues);
+    MapUtilScreenHandle__p24BitDest = MapUtilScreenHandle__p24BitValues;
 
     // Allocate 8-bit surface
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -135,12 +142,12 @@ export function MapUtilScreenHandle(): UINT32 {
   }
 
   // OK, we are here, now loop through files
-  if (sCurFile == sFiles || FListNode == null) {
+  if (MapUtilScreenHandle__sCurFile == MapUtilScreenHandle__sFiles || MapUtilScreenHandle__FListNode == null) {
     gfProgramIsRunning = false;
     return Enum26.MAPUTILITY_SCREEN;
   }
 
-  zFilename = sprintf("%s", FListNode.value.FileInfo.zFileName);
+  zFilename = sprintf("%s", MapUtilScreenHandle__FListNode.value.FileInfo.zFileName);
 
   // OK, load maps and do overhead shrinkage of them...
   if (!LoadWorld(zFilename)) {
@@ -163,10 +170,10 @@ export function MapUtilScreenHandle(): UINT32 {
 
   // Adjust if we are using a restricted map...
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    CalculateRestrictedMapCoords(Enum245.NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sTop), 640, 320);
-    CalculateRestrictedMapCoords(Enum245.SOUTH, addressof(sX1), addressof(sBottom), addressof(sX2), addressof(sY2), 640, 320);
-    CalculateRestrictedMapCoords(Enum245.WEST, addressof(sX1), addressof(sY1), addressof(sLeft), addressof(sY2), 640, 320);
-    CalculateRestrictedMapCoords(Enum245.EAST, addressof(sRight), addressof(sY1), addressof(sX2), addressof(sY2), 640, 320);
+    ({ sX1, sY1, sX2, sY2: sTop } = CalculateRestrictedMapCoords(Enum245.NORTH, 640, 320));
+    ({ sX1, sY1: sBottom, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.SOUTH, 640, 320));
+    ({ sX1, sY1, sX2: sLeft, sY2 } = CalculateRestrictedMapCoords(Enum245.WEST, 640, 320));
+    ({ sX1: sRight, sY1, sX2, sY2 } = CalculateRestrictedMapCoords(Enum245.EAST, 640, 320));
 
     gdXStep = (sRight - sLeft) / 88;
     gdYStep = (sBottom - sTop) / 44;
@@ -227,9 +234,9 @@ export function MapUtilScreenHandle(): UINT32 {
       // Write into dest!
       pDestBuf[(iY * (uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
 
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].r = bAvR;
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].g = bAvG;
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].b = bAvB;
+      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].r = bAvR;
+      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].g = bAvG;
+      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].b = bAvB;
 
       // Increment
       dY += gdYStep;
@@ -248,7 +255,7 @@ export function MapUtilScreenHandle(): UINT32 {
   // QUantize!
   pDataPtr = LockVideoSurface(gi8BitMiniMap, addressof(uiSrcPitchBYTES));
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  QuantizeImage(pDataPtr, p24BitDest, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
+  QuantizeImage(pDataPtr, MapUtilScreenHandle__p24BitDest, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
   SetVideoSurfacePalette(ghvSurface, pPalette);
   // Blit!
   Blt8BPPDataTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, ghvSurface, pDataPtr, 300, 360);
@@ -276,7 +283,7 @@ export function MapUtilScreenHandle(): UINT32 {
   // Remove extension
   for (cnt = zFilename.length - 1; cnt >= 0; cnt--) {
     if (zFilename[cnt] == '.') {
-      zFilename[cnt] = '\0';
+      zFilename = zFilename.substring(0, cnt);
     }
   }
 
@@ -302,8 +309,8 @@ export function MapUtilScreenHandle(): UINT32 {
   }
 
   // Set next
-  FListNode = FListNode.value.pNext;
-  sCurFile++;
+  MapUtilScreenHandle__FListNode = MapUtilScreenHandle__FListNode.value.pNext;
+  MapUtilScreenHandle__sCurFile++;
 
   return Enum26.MAPUTILITY_SCREEN;
 }

@@ -655,7 +655,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           // Convert these to screen corrdinates
-          FromCellToScreenCoordinates(sCellX, sCellY, addressof(sScreenX), addressof(sScreenY));
+          ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
 
           // Check for Below...
           if (sScreenX > (WORLD_TILE_Y / 2)) {
@@ -667,7 +667,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           // Convert these to screen corrdinates
-          FromCellToScreenCoordinates(sCellX, sCellY, addressof(sScreenX), addressof(sScreenY));
+          ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
 
           // Check for Below...
           if (sScreenX <= (WORLD_TILE_Y / 2)) {

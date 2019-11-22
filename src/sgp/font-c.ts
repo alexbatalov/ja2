@@ -1037,7 +1037,7 @@ export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: 
 
   //	FontDestBPP=0;
 
-  GetCurrentVideoSettings(addressof(uiRight), addressof(uiBottom), addressof(uiPixelDepth));
+  ({ usWidth, usHeight, ubBitDepth: uiPixelDepth } = GetCurrentVideoSettings());
   FontDestRegion.iLeft = 0;
   FontDestRegion.iTop = 0;
   FontDestRegion.iRight = uiRight;

@@ -285,7 +285,7 @@ function PickABoxer(): boolean {
           SetSoldierNonNeutral(pBoxer);
           RecalculateOppCntsDueToNoLongerNeutral(pBoxer);
           CancelAIAction(pBoxer, true);
-          RESETTIMECOUNTER(pBoxer.value.AICounter, 0);
+          pBoxer.value.AICounter = RESETTIMECOUNTER(0);
           gfBoxerFought[uiLoop] = true;
           // improve stats based on the # of rests these guys have had
           pBoxer.value.bStrength = Math.min(100, pBoxer.value.bStrength += gubBoxersRests * 5);

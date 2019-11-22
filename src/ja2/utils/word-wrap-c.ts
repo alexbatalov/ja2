@@ -6,16 +6,15 @@ function UseSingleCharWordsForWordWrap(fUseSingleCharWords: boolean): void {
   gfUseSingleCharWordsForWordWrap = fUseSingleCharWords;
 }
 
-function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: string /* STR16 */, ...args: any[]): Pointer<WRAPPED_STRING> {
-  let FirstWrappedString: WRAPPED_STRING;
-  let pWrappedString: Pointer<WRAPPED_STRING> = null;
+function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: string /* STR16 */, ...args: any[]): WRAPPED_STRING | null {
+  let FirstWrappedString: WRAPPED_STRING = createWrappedString();
+  let pWrappedString: WRAPPED_STRING;
   let TempString: string /* wchar_t[1024] */;
   //	wchar_t         pNullString[2];
   let usCurIndex: INT16;
   let usEndIndex: INT16;
   let usDestIndex: INT16;
   let DestString: string /* wchar_t[1024] */;
-  let argptr: va_list;
   let fDone: boolean = false;
   let usCurrentWidthPixels: UINT16 = 0;
   //	UINT16					usCurrentLineWidthPixels=0;
@@ -27,51 +26,46 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
   //  pNullString[0]=L' ';
   //	pNullString[1]=0;
 
-  memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
-
   pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
   if (pString == null)
-    return false;
+    return null;
 
-  va_start(argptr, pString); // Set up variable argument pointer
-  vswprintf(TempString, pString, argptr); // process string (get output str)
-  va_end(argptr);
+  TempString = swprintf(pString, ...args); // process string (get output str)
 
   usCurIndex = usEndIndex = usDestIndex = 0;
-  OneChar[1] = '\0';
+  OneChar = '';
+
+  DestString = '';
 
   while (!fDone) {
     fNewLine = false;
 
-    DestString[usDestIndex] = TempString[usCurIndex];
+    DestString += TempString[usCurIndex];
 
     // If the new char is a newline character
-    if (DestString[usDestIndex] == NEWLINE_CHAR) {
-      DestString[usDestIndex] = TempString[usCurIndex] = 0;
+    if (DestString.charCodeAt(usDestIndex) == NEWLINE_CHAR) {
+      TempString = TempString.substring(0, usCurIndex);
+
       fNewLine = true;
     }
 
     // Get the next char
-    OneChar[0] = TempString[usCurIndex];
+    OneChar = TempString[usCurIndex];
 
     usCurrentWidthPixels += WFStringPixLength(OneChar, ulFont);
 
     // If we are at the end of the string
-    if (TempString[usCurIndex] == 0) {
+    if (usCurIndex === TempString.length - 1) {
       // get to next WrappedString structure
-      pWrappedString = addressof(FirstWrappedString);
-      while (pWrappedString.value.pNextWrappedString != null)
-        pWrappedString = pWrappedString.value.pNextWrappedString;
+      pWrappedString = FirstWrappedString;
+      while (pWrappedString.pNextWrappedString != null)
+        pWrappedString = pWrappedString.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
-      if (pWrappedString.value.pNextWrappedString.value.sString == null)
-        return null;
-
-      pWrappedString.value.pNextWrappedString.value.sString = DestString;
-      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+      pWrappedString.pNextWrappedString = createWrappedString();
+      pWrappedString.pNextWrappedString.sString = DestString;
+      pWrappedString.pNextWrappedString.pNextWrappedString = null;
 
       return FirstWrappedString.pNextWrappedString;
     }
@@ -82,23 +76,19 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
     }
 
     if (fNewLine) {
-      // End the current line
-      DestString[usDestIndex + 1] = '\0';
-
       // get to next WrappedString structure
-      pWrappedString = addressof(FirstWrappedString);
-      while (pWrappedString.value.pNextWrappedString != null)
-        pWrappedString = pWrappedString.value.pNextWrappedString;
+      pWrappedString = FirstWrappedString;
+      while (pWrappedString.pNextWrappedString != null)
+        pWrappedString = pWrappedString.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
-
-      // Copy the string into the new struct
-      pWrappedString.value.pNextWrappedString.value.sString = DestString;
-      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+      pWrappedString.pNextWrappedString = createWrappedString();
+      pWrappedString.pNextWrappedString.sString = DestString;
+      pWrappedString.pNextWrappedString.pNextWrappedString = null;
 
       fNewLine = false;
+
+      DestString = '';
 
       usCurrentWidthPixels = 0;
       usDestIndex = 0;
@@ -114,9 +104,9 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
   return FirstWrappedString.pNextWrappedString;
 }
 
-export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: string /* STR16 */, ...args: any[]): Pointer<WRAPPED_STRING> {
-  let FirstWrappedString: WRAPPED_STRING;
-  let pWrappedString: Pointer<WRAPPED_STRING> = null;
+export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: string /* STR16 */, ...args: any[]): WRAPPED_STRING | null {
+  let FirstWrappedString: WRAPPED_STRING = createWrappedString();
+  let pWrappedString: WRAPPED_STRING;
   let TempString: string /* wchar_t[1024] */;
   let pNullString: string /* wchar_t[2] */;
   let usCurIndex: INT16;
@@ -124,7 +114,6 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
   let usDestIndex: INT16;
   let pCurrentStringLoc: string /* STR16 */;
   let DestString: string /* wchar_t[1024] */;
-  let argptr: va_list;
   let fDone: boolean = false;
   let usCurrentWidthPixels: UINT16 = 0;
   let usCurrentLineWidthPixels: UINT16 = 0;
@@ -133,22 +122,18 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
   let fTheStringIsToLong: boolean = false;
   let iCounter: INT32 = 0;
   let iErrorCount: INT32 = 0;
-  pNullString[0] = ' ';
-  pNullString[1] = 0;
-
-  memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
+  pNullString = ' ';
 
   pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
   if (pString == null)
-    return false;
+    return null;
 
-  va_start(argptr, pString); // Set up variable argument pointer
-  vswprintf(TempString, pString, argptr); // process string (get output str)
-  va_end(argptr);
+  TempString = swprintf(pString, ...args); // process string (get output str)
 
   usCurIndex = usEndIndex = usDestIndex = 0;
-  OneChar[1] = '\0';
+
+  DestString = '';
 
   while (!fDone) {
     // Kris:
@@ -162,30 +147,26 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
     fNewLine = false;
 
-    DestString[usDestIndex] = TempString[usCurIndex];
-    if (DestString[usDestIndex] == NEWLINE_CHAR) {
-      DestString[usDestIndex] = TempString[usCurIndex] = 0;
+    DestString += TempString[usCurIndex];
+    if (DestString.charCodeAt(usDestIndex) == NEWLINE_CHAR) {
+      TempString = TempString.substring(0, usCurIndex);
       fNewLine = true;
     }
-    OneChar[0] = TempString[usCurIndex];
+    OneChar = TempString[usCurIndex];
 
     usCurrentWidthPixels += WFStringPixLength(OneChar, ulFont);
 
     // If we are at the end of the string
-    if (TempString[usCurIndex] == 0) {
+    if (usCurIndex === TempString.length - 1) {
       // get to next WrappedString structure
-      pWrappedString = addressof(FirstWrappedString);
-      while (pWrappedString.value.pNextWrappedString != null)
-        pWrappedString = pWrappedString.value.pNextWrappedString;
+      pWrappedString = FirstWrappedString;
+      while (pWrappedString.pNextWrappedString != null)
+        pWrappedString = pWrappedString.pNextWrappedString;
 
       // allocate memory for the string
-      pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-      pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
-      if (pWrappedString.value.pNextWrappedString.value.sString == null)
-        return null;
-
-      pWrappedString.value.pNextWrappedString.value.sString = DestString;
-      pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+      pWrappedString.pNextWrappedString = createWrappedString();
+      pWrappedString.pNextWrappedString.sString = DestString;
+      pWrappedString.pNextWrappedString.pNextWrappedString = null;
 
       return FirstWrappedString.pNextWrappedString;
     }
@@ -194,11 +175,11 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
     {
       // if an error has occured, and the string is too long
       if (fTheStringIsToLong)
-        DestString[usDestIndex] = ' ';
+        DestString = DestString.substring(0, usDestIndex) + ' ';
 
       // Go back to begining of word
       while ((DestString[usDestIndex] != ' ') && (usCurIndex > 0)) {
-        OneChar[0] = DestString[usDestIndex];
+        OneChar = DestString[usDestIndex];
 
         usCurrentWidthPixels -= WFStringPixLength(OneChar, ulFont);
 
@@ -211,37 +192,33 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
         usEndIndex = 0;
 
       // put next line into temp buffer
-      DestString[usEndIndex] = 0;
+      DestString = DestString.substring(0, usEndIndex);
 
       // get to next WrappedString structure
-      pWrappedString = addressof(FirstWrappedString);
-      while (pWrappedString.value.pNextWrappedString != null)
-        pWrappedString = pWrappedString.value.pNextWrappedString;
+      pWrappedString = FirstWrappedString;
+      while (pWrappedString.pNextWrappedString != null)
+        pWrappedString = pWrappedString.pNextWrappedString;
 
       if (DestString.length != 0) {
         // allocate memory for the string
-        pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-        pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
-        if (pWrappedString.value.pNextWrappedString.value.sString == null)
-          return null;
-
-        pWrappedString.value.pNextWrappedString.value.sString = DestString;
-        pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+        pWrappedString.pNextWrappedString = createWrappedString();
+        pWrappedString.pNextWrappedString.sString = DestString;
+        pWrappedString.pNextWrappedString.pNextWrappedString = null;
 
         usCurrentWidthPixels = 0;
         usDestIndex = 0;
         usCurIndex++;
         usEndIndex = usCurIndex;
 
-        pCurrentStringLoc = addressof(TempString[usEndIndex]);
+        pCurrentStringLoc = TempString.substring(usEndIndex);
         // if last line, put line into string structure
         if (WFStringPixLength(pCurrentStringLoc, ulFont) < usLineWidthPixels) {
           // run until end of DestString
           DestString = pCurrentStringLoc;
           iCounter = 0;
-          while (DestString[iCounter] != 0) {
-            if (DestString[iCounter] == NEWLINE_CHAR) {
-              DestString[iCounter] = 0;
+          while (iCounter < DestString.length) {
+            if (DestString.charCodeAt(iCounter) == NEWLINE_CHAR) {
+              DestString = DestString.substring(0, iCounter);
               fNewLine = true;
               break;
             }
@@ -249,43 +226,39 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
           }
 
           // get to next WrappedString structure
-          pWrappedString = addressof(FirstWrappedString);
-          while (pWrappedString.value.pNextWrappedString != null)
-            pWrappedString = pWrappedString.value.pNextWrappedString;
+          pWrappedString = FirstWrappedString;
+          while (pWrappedString.pNextWrappedString != null)
+            pWrappedString = pWrappedString.pNextWrappedString;
 
           // allocate memory for the string
-          pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-          pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((DestString.length + 2) * 2);
-          if (pWrappedString.value.pNextWrappedString.value.sString == null)
-            return null;
-
-          pWrappedString.value.pNextWrappedString.value.sString = DestString;
-          pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+          pWrappedString.pNextWrappedString = createWrappedString();
+          pWrappedString.pNextWrappedString.sString = DestString;
+          pWrappedString.pNextWrappedString.pNextWrappedString = null;
           if (fNewLine) {
-            pWrappedString = addressof(FirstWrappedString);
-            while (pWrappedString.value.pNextWrappedString != null)
-              pWrappedString = pWrappedString.value.pNextWrappedString;
+            pWrappedString = FirstWrappedString;
+            while (pWrappedString.pNextWrappedString != null)
+              pWrappedString = pWrappedString.pNextWrappedString;
 
             // allocate memory for the string
-            pWrappedString.value.pNextWrappedString = MemAlloc(sizeof(WRAPPED_STRING));
-            pWrappedString.value.pNextWrappedString.value.sString = MemAlloc((pNullString.length + 2) * 2);
-            pWrappedString.value.pNextWrappedString.value.sString = pNullString;
-            pWrappedString.value.pNextWrappedString.value.pNextWrappedString = null;
+            pWrappedString.pNextWrappedString = createWrappedString();
+            pWrappedString.pNextWrappedString.sString = pNullString;
+            pWrappedString.pNextWrappedString.pNextWrappedString = null;
           }
 
           fDone = true;
         }
         usCurIndex--;
         usDestIndex = -1;
+        DestString = '';
       } else {
         let zText: string /* CHAR[1024] */;
 
-        zText = sprintf("LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, addressof(TempString[usCurIndex]), usLineWidthPixels);
+        zText = sprintf("LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, TempString.substring(usCurIndex), usLineWidthPixels);
 
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zText);
 
         // error
-        usLineWidthPixels = 1 + WFStringPixLength(addressof(TempString[usCurIndex]), ulFont);
+        usLineWidthPixels = 1 + WFStringPixLength(TempString[usCurIndex], ulFont);
 
         pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
@@ -293,6 +266,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
         usCurIndex--;
         usDestIndex--;
+        DestString = DestString.substring(0, usDestIndex);
       }
     }
     usCurIndex++;
@@ -308,8 +282,8 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 //
 
 export function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: string /* STR16 */, ubBackGroundColor: UINT8, fDirty: boolean, uiFlags: UINT32): UINT16 {
-  let pFirstWrappedString: Pointer<WRAPPED_STRING>;
-  let pTempWrappedString: Pointer<WRAPPED_STRING>;
+  let pFirstWrappedString: WRAPPED_STRING | null;
+  let pTempWrappedString: WRAPPED_STRING | null;
   let uiCounter: UINT16 = 0;
   let usLineWidthIfWordIsWiderThenWidth: UINT16 = 0;
   let usHeight: UINT16;
@@ -328,13 +302,11 @@ export function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UI
     usWidth = usLineWidthIfWordIsWiderThenWidth;
 
   while (pFirstWrappedString != null) {
-    DrawTextToScreen(pFirstWrappedString.value.sString, usPosX, usPosY, usWidth, uiFont, ubColor, ubBackGroundColor, fDirty, uiFlags);
+    DrawTextToScreen(pFirstWrappedString.sString, usPosX, usPosY, usWidth, uiFont, ubColor, ubBackGroundColor, fDirty, uiFlags);
 
     pTempWrappedString = pFirstWrappedString;
-    pFirstWrappedString = pTempWrappedString.value.pNextWrappedString;
-    MemFree(pTempWrappedString.value.sString);
-    pTempWrappedString.value.sString = null;
-    MemFree(pTempWrappedString);
+    pFirstWrappedString = pTempWrappedString.pNextWrappedString;
+    pTempWrappedString.sString = '';
     pTempWrappedString = null;
 
     uiCounter++;
@@ -345,16 +317,14 @@ export function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UI
   return uiCounter * (WFGetFontHeight(uiFont) + ubGap);
 }
 
-function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
-  let pTempWrappedString: Pointer<WRAPPED_STRING>;
+function DeleteWrappedString(pWrappedString: WRAPPED_STRING | null): UINT16 {
+  let pTempWrappedString: WRAPPED_STRING | null;
   let uiCounter: UINT16 = 0;
 
   while (pWrappedString != null) {
     pTempWrappedString = pWrappedString;
-    pWrappedString = pTempWrappedString.value.pNextWrappedString;
-    MemFree(pTempWrappedString.value.sString);
-    pTempWrappedString.value.sString = null;
-    MemFree(pTempWrappedString);
+    pWrappedString = pTempWrappedString.pNextWrappedString;
+    pTempWrappedString.sString = '';
     pTempWrappedString = null;
 
     uiCounter++;
@@ -374,8 +344,8 @@ function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
 //			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
 
 export function DrawTextToScreen(pStr: string /* STR16 */, usLocX: UINT16, usLocY: UINT16, usWidth: UINT16, ulFont: UINT32, ubColor: UINT8, ubBackGroundColor: UINT8, fDirty: boolean, ulFlags: UINT32): boolean {
-  let usPosX: UINT16;
-  let usPosY: UINT16;
+  let usPosX: UINT16 = <UINT16><unknown>undefined;
+  let usPosY: UINT16 = <UINT16><unknown>undefined;
   let usFontHeight: UINT16 = 0;
   let usStringWidth: UINT16 = 0;
 
@@ -399,7 +369,7 @@ export function DrawTextToScreen(pStr: string /* STR16 */, usLocX: UINT16, usLoc
 
   if (USE_WINFONTS()) {
     let Color: COLORVAL = FROMRGB(255, 255, 255);
-    SetWinFontForeColor(GET_WINFONT(), addressof(Color));
+    SetWinFontForeColor(GET_WINFONT(), Color);
   } else {
     SetFontForeground(ubColor);
     SetFontBackground(ubBackGroundColor);
@@ -467,24 +437,24 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
 
   do {
     // each character goes towards building a new word
-    if (pString[usSourceCounter] != TEXT_SPACE && pString[usSourceCounter] != 0) {
-      zWordString[usDestCounter++] = pString[usSourceCounter];
+    if (pString.charCodeAt(usSourceCounter) != TEXT_SPACE && usSourceCounter < pString.length) {
+      zWordString += pString[usSourceCounter];
     } else {
       // we hit a space (or end of record), so this is the END of a word!
 
       // is this a special CODE?
-      if (zWordString[0] >= TEXT_CODE_NEWLINE && zWordString[0] <= TEXT_CODE_DEFCOLOR) {
-        switch (zWordString[0]) {
+      if (zWordString.charCodeAt(0) >= TEXT_CODE_NEWLINE && zWordString.charCodeAt(0) <= TEXT_CODE_DEFCOLOR) {
+        switch (zWordString.charCodeAt(0)) {
           case TEXT_CODE_CENTER:
 
             if (usJustification != CENTER_JUSTIFIED) {
               usJustification = CENTER_JUSTIFIED;
 
               // erase this word string we've been building - it was just a code
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // erase the line string, we're starting from scratch
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // reset the line length - we're starting from scratch
               usLineLengthPixels = 0;
@@ -518,10 +488,10 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalPosX = usPosX;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // reset the line length
               usLineLengthPixels = 0;
@@ -564,10 +534,10 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalPosX = usPosX;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset the line length
             usLineLengthPixels = 0;
@@ -608,10 +578,10 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold ON
               uiLocalFont = FONT10ARIALBOLD();
@@ -646,7 +616,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // new by Ian Nov 30th, 1998
 
@@ -662,7 +632,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
 
               */
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold OFF
               uiLocalFont = uiFont;
@@ -692,8 +662,8 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
             }
 
             // the new color value is the next character in the word
-            if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = zWordString[1];
+            if (zWordString.charCodeAt(1) != TEXT_SPACE && zWordString.charCodeAt(1) < 256)
+              ubLocalColor = zWordString.charCodeAt(1);
 
             ubLocalColor = 184;
             ;
@@ -708,10 +678,10 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset dest char counter
             usDestCounter = 0;
@@ -744,10 +714,10 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // change color back to default color
             ubLocalColor = ubColor;
@@ -758,17 +728,11 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
         } // end of switch of CODES
       } else // not a special character
       {
-        // terminate the string TEMPORARILY
-        zWordString[usDestCounter] = 0;
-
         // get the length (in pixels) of this word
         usWordLengthPixels = WFStringPixLength(zWordString, uiLocalFont);
 
         // add a space (in case we add another word to it)
-        zWordString[usDestCounter++] = 32;
-
-        // RE-terminate the string
-        zWordString[usDestCounter] = 0;
+        zWordString += ' ';
 
         // can we fit it onto the length of our "line" ?
         if ((usLineLengthPixels + usWordLengthPixels) < usWidth) {
@@ -826,7 +790,7 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
         }
       } // end of this word was NOT a special code
     }
-  } while (pString[usSourceCounter++] != 0);
+  } while (usSourceCounter++ < pString.length);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
   zLineString += "";
@@ -952,24 +916,24 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
     // last page is not true, YET!
     fOnLastPageFlag.value = false;
     // each character goes towards building a new word
-    if (pString[usSourceCounter] != TEXT_SPACE && pString[usSourceCounter] != 0) {
-      zWordString[usDestCounter++] = pString[usSourceCounter];
+    if (pString.charCodeAt(usSourceCounter) != TEXT_SPACE && usSourceCounter < pString.length) {
+      zWordString += pString[usSourceCounter];
     } else {
       // we hit a space (or end of record), so this is the END of a word!
 
       // is this a special CODE?
-      if (zWordString[0] >= TEXT_CODE_NEWLINE && zWordString[0] <= TEXT_CODE_DEFCOLOR) {
-        switch (zWordString[0]) {
+      if (zWordString.charCodeAt(0) >= TEXT_CODE_NEWLINE && zWordString.charCodeAt(0) <= TEXT_CODE_DEFCOLOR) {
+        switch (zWordString.charCodeAt(0)) {
           case TEXT_CODE_CENTER:
 
             if (usJustification != CENTER_JUSTIFIED) {
               usJustification = CENTER_JUSTIFIED;
 
               // erase this word string we've been building - it was just a code
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // erase the line string, we're starting from scratch
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // reset the line length - we're starting from scratch
               usLineLengthPixels = 0;
@@ -991,10 +955,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalPosX = usPosX;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // reset the line length
               usLineLengthPixels = 0;
@@ -1025,10 +989,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalPosX = usPosX;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset the line length
             usLineLengthPixels = 0;
@@ -1057,10 +1021,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold ON
               uiLocalFont = FONT10ARIALBOLD();
@@ -1083,10 +1047,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold OFF
               uiLocalFont = uiFont;
@@ -1104,8 +1068,8 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
             DrawTextToScreen(zLineString, usLocalPosX, usPosY, usLocalWidth, uiLocalFont, ubLocalColor, ubBackGroundColor, fDirty, usJustification);
 
             // the new color value is the next character in the word
-            if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = zWordString[1];
+            if (zWordString.charCodeAt(1) != TEXT_SPACE && zWordString.charCodeAt(1) < 256)
+              ubLocalColor = zWordString.charCodeAt(1);
 
             ubLocalColor = 184;
             ;
@@ -1120,10 +1084,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset dest char counter
             usDestCounter = 0;
@@ -1144,10 +1108,10 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // change color back to default color
             ubLocalColor = ubColor;
@@ -1158,17 +1122,11 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
         } // end of switch of CODES
       } else // not a special character
       {
-        // terminate the string TEMPORARILY
-        zWordString[usDestCounter] = 0;
-
         // get the length (in pixels) of this word
         usWordLengthPixels = WFStringPixLength(zWordString, uiLocalFont);
 
         // add a space (in case we add another word to it)
-        zWordString[usDestCounter++] = 32;
-
-        // RE-terminate the string
-        zWordString[usDestCounter] = 0;
+        zWordString += ' ';
 
         // can we fit it onto the length of our "line" ?
         if ((usLineLengthPixels + usWordLengthPixels) < usWidth) {
@@ -1212,7 +1170,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
         }
       } // end of this word was NOT a special code
     }
-  } while (pString[usSourceCounter++] != 0);
+  } while (usSourceCounter++ < pString.length);
 
   // terminate the entire paragraph with a null string (null character guaranteed)
   zLineString += "";
@@ -1250,24 +1208,24 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
 
   do {
     // each character goes towards building a new word
-    if (pString[usSourceCounter] != TEXT_SPACE && pString[usSourceCounter] != 0) {
-      zWordString[usDestCounter++] = pString[usSourceCounter];
+    if (pString.charCodeAt(usSourceCounter) != TEXT_SPACE && usSourceCounter < pString.length) {
+      zWordString += pString[usSourceCounter];
     } else {
       // we hit a space (or end of record), so this is the END of a word!
 
       // is this a special CODE?
-      if (zWordString[0] >= TEXT_CODE_NEWLINE && zWordString[0] <= TEXT_CODE_DEFCOLOR) {
-        switch (zWordString[0]) {
+      if (zWordString.charCodeAt(0) >= TEXT_CODE_NEWLINE && zWordString.charCodeAt(0) <= TEXT_CODE_DEFCOLOR) {
+        switch (zWordString.charCodeAt(0)) {
           case TEXT_CODE_CENTER:
 
             if (usJustification != CENTER_JUSTIFIED) {
               usJustification = CENTER_JUSTIFIED;
 
               // erase this word string we've been building - it was just a code
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // erase the line string, we're starting from scratch
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // reset the line length - we're starting from scratch
               usLineLengthPixels = 0;
@@ -1286,10 +1244,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
               usLocalPosX = usPosX;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // reset the line length
               usLineLengthPixels = 0;
@@ -1317,10 +1275,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
             usLocalPosX = usPosX;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset the line length
             usLineLengthPixels = 0;
@@ -1345,10 +1303,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold ON
               uiLocalFont = FONT10ARIALBOLD();
@@ -1368,10 +1326,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
               usLocalWidth -= usLineLengthPixels;
 
               // erase line string
-              memset(zLineString, 0, sizeof(zLineString));
+              zLineString = '';
 
               // erase word string
-              memset(zWordString, 0, sizeof(zWordString));
+              zWordString = '';
 
               // turn bold OFF
               uiLocalFont = uiFont;
@@ -1386,8 +1344,8 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
           case TEXT_CODE_NEWCOLOR:
 
             // the new color value is the next character in the word
-            if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = zWordString[1];
+            if (zWordString.charCodeAt(1) != TEXT_SPACE && zWordString.charCodeAt(1) < 256)
+              ubLocalColor = zWordString.charCodeAt(1);
 
             ubLocalColor = 184;
             ;
@@ -1402,10 +1360,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // reset dest char counter
             usDestCounter = 0;
@@ -1423,10 +1381,10 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
             usLocalWidth -= usLineLengthPixels;
 
             // erase line string
-            memset(zLineString, 0, sizeof(zLineString));
+            zLineString = '';
 
             // erase word string
-            memset(zWordString, 0, sizeof(zWordString));
+            zWordString = '';
 
             // change color back to default color
             ubLocalColor = ubColor;
@@ -1437,17 +1395,11 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
         } // end of switch of CODES
       } else // not a special character
       {
-        // terminate the string TEMPORARILY
-        zWordString[usDestCounter] = 0;
-
         // get the length (in pixels) of this word
         usWordLengthPixels = WFStringPixLength(zWordString, uiLocalFont);
 
         // add a space (in case we add another word to it)
-        zWordString[usDestCounter++] = 32;
-
-        // RE-terminate the string
-        zWordString[usDestCounter] = 0;
+        zWordString += ' ';
 
         // can we fit it onto the length of our "line" ?
         if ((usLineLengthPixels + usWordLengthPixels) <= usWidth) {
@@ -1490,7 +1442,7 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
         }
       } // end of this word was NOT a special code
     }
-  } while (pString[usSourceCounter++] != 0);
+  } while (usSourceCounter++ < pString.length);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -1542,10 +1494,10 @@ function ShadowText(uiDestVSurface: UINT32, pString: string /* STR16 */, uiFont:
 }
 
 // for email
-export function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32): RecordPtr {
+export function GetFirstRecordOnThisPage(RecordList: Record | null, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32): Record | null {
   // get the first record on this page - build pages up until this point
 
-  let CurrentRecord: RecordPtr = null;
+  let CurrentRecord: Record | null = null;
 
   let iCurrentPositionOnThisPage: INT32 = 0;
   let iCurrentPage: INT32 = 0;
@@ -1560,12 +1512,12 @@ export function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, 
   // while we are not on the current page
   while (iCurrentPage < iPage) {
     // build record list to this point
-    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.value.pRecord, 0, 0, 0)) <= iPageSize) {
+    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.pRecord, 0, false, 0)) <= iPageSize) {
       // still room on this page
-      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.value.pRecord, 0, 0, 0);
+      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usWidth, ubGap, uiFont, 0, CurrentRecord.pRecord, 0, false, 0);
 
       // next record
-      CurrentRecord = CurrentRecord.value.Next;
+      CurrentRecord = CurrentRecord.Next;
 
       // check if we have gone too far?
       if (CurrentRecord == null) {
@@ -1584,15 +1536,15 @@ export function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, 
 }
 
 // for file viewer
-export function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32, WidthList: FileRecordWidthPtr): FileStringPtr {
+export function GetFirstStringOnThisPage(RecordList: FileString | null, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32, WidthList: FileRecordWidth): FileString | null {
   // get the first record on this page - build pages up until this point
 
-  let CurrentRecord: FileStringPtr = null;
+  let CurrentRecord: FileString | null = null;
 
   let iCurrentPositionOnThisPage: INT32 = 0;
   let iCurrentPage: INT32 = 0;
   let iCounter: INT32 = 0;
-  let pWidthList: FileRecordWidthPtr = WidthList;
+  let pWidthList: FileRecordWidth | null = WidthList;
   let usCurrentWidth: UINT16 = usWidth;
 
   // null record list, nothing to do
@@ -1608,41 +1560,41 @@ export function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT
     pWidthList = WidthList;
 
     while (pWidthList) {
-      if (iCounter == pWidthList.value.iRecordNumber) {
-        usCurrentWidth = pWidthList.value.iRecordWidth;
+      if (iCounter == pWidthList.iRecordNumber) {
+        usCurrentWidth = pWidthList.iRecordWidth;
         //				iCurrentPositionOnThisPage += pWidthList->iRecordHeightAdjustment;
 
-        if (pWidthList.value.iRecordHeightAdjustment == iPageSize) {
+        if (pWidthList.iRecordHeightAdjustment == iPageSize) {
           if (iCurrentPositionOnThisPage != 0)
             iCurrentPositionOnThisPage += iPageSize - iCurrentPositionOnThisPage;
         } else
-          iCurrentPositionOnThisPage += pWidthList.value.iRecordHeightAdjustment;
+          iCurrentPositionOnThisPage += pWidthList.iRecordHeightAdjustment;
       }
-      pWidthList = pWidthList.value.Next;
+      pWidthList = pWidthList.Next;
     }
 
     // build record list to this point
-    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord.value.pString, 0, 0, 0)) < iPageSize) {
+    while ((iCurrentPositionOnThisPage + IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, (<FileString>CurrentRecord).pString, 0, false, 0)) < iPageSize) {
       // still room on this page
-      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, CurrentRecord.value.pString, 0, 0, 0);
+      iCurrentPositionOnThisPage += IanWrappedStringHeight(0, 0, usCurrentWidth, ubGap, uiFont, 0, (<FileString>CurrentRecord).pString, 0, false, 0);
 
       // next record
-      CurrentRecord = CurrentRecord.value.Next;
+      CurrentRecord = (<FileString>CurrentRecord).Next;
       iCounter++;
 
       usCurrentWidth = usWidth;
       pWidthList = WidthList;
       while (pWidthList) {
-        if (iCounter == pWidthList.value.iRecordNumber) {
-          usCurrentWidth = pWidthList.value.iRecordWidth;
+        if (iCounter == pWidthList.iRecordNumber) {
+          usCurrentWidth = pWidthList.iRecordWidth;
 
-          if (pWidthList.value.iRecordHeightAdjustment == iPageSize) {
+          if (pWidthList.iRecordHeightAdjustment == iPageSize) {
             if (iCurrentPositionOnThisPage != 0)
               iCurrentPositionOnThisPage += iPageSize - iCurrentPositionOnThisPage;
           } else
-            iCurrentPositionOnThisPage += pWidthList.value.iRecordHeightAdjustment;
+            iCurrentPositionOnThisPage += pWidthList.iRecordHeightAdjustment;
         }
-        pWidthList = pWidthList.value.Next;
+        pWidthList = pWidthList.Next;
       }
     }
 
@@ -1657,7 +1609,7 @@ export function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT
   return CurrentRecord;
 }
 
-export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidthToFitIn: UINT32, uiFont: UINT32): boolean {
+export function ReduceStringLength(pString: string /* STR16 */, uiWidthToFitIn: UINT32, uiFont: UINT32): string {
   let OneChar: string /* wchar_t[2] */;
   let zTemp: string /* UINT16[1024] */;
   let zStrDots: string /* wchar_t[16] */;
@@ -1670,13 +1622,12 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
 
   uiStringPixWidth = WFStringPixLength(pString, uiFont);
 
-  OneChar[1] = '\0';
-  zTemp[0] = '\0';
+  zTemp = '';
 
   // if the string is wider then the loaction
   if (uiStringPixWidth <= uiWidthToFitIn) {
     // leave
-    return true;
+    return pString;
   }
 
   // addd the '...' to the string
@@ -1691,7 +1642,7 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
   // loop through and add each character, 1 at a time
   while (!fDone) {
     // get the next char
-    OneChar[0] = pString[uiSrcStringCntr];
+    OneChar = pString[uiSrcStringCntr];
 
     // get the width of the character
     uiOneCharWidth = StringPixLength(OneChar, uiFont);
@@ -1718,7 +1669,7 @@ export function ReduceStringLength(pString: Pointer<string> /* STR16 */, uiWidth
   // combine the temp string and the '...' to form the finished string
   pString = swprintf("%s%s", zTemp, zStrDots);
 
-  return true;
+  return pString;
 }
 
 }

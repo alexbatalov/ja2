@@ -200,7 +200,7 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
   let centerX: INT16;
   let centerY: INT16;
 
-  ConvertGridNoToXY(sMapIndex, addressof(centerX), addressof(centerY));
+  ({ sX: centerX, sY: centerY } = ConvertGridNoToXY(sMapIndex));
 
   for (y = centerY - ubRadius; y <= centerY + ubRadius; y++) {
     for (x = centerX - ubRadius; x <= centerX + ubRadius; x++) {

@@ -2342,7 +2342,7 @@ function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function ExtractTempFilename(): void {
   let str: string /* UINT16[40] */;
-  Get16BitStringFromField(1, str);
+  str = Get16BitStringFromField(1);
   if (wcscmp(gszTempFilename, str)) {
     gszTempFilename = str;
     gfRenderSummary = true;

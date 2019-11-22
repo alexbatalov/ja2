@@ -235,7 +235,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   eInfo.sWidth = (eInfo.sNumItems > 12) ? ((eInfo.sNumItems + 1) / 2) * 60 : 360;
   eInfo.sHeight = 80;
   // Create item buffer
-  GetCurrentVideoSettings(addressof(usUselessWidth), addressof(usUselessHeight), addressof(ubBitDepth));
+  ({ usWidth: usUselessWidth, usHeight: usUselessHeight, ubBitDepth } = GetCurrentVideoSettings());
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = eInfo.sWidth;
   vs_desc.usHeight = eInfo.sHeight;

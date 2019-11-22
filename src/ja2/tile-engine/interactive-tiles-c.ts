@@ -303,7 +303,7 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   sOffsetX = sXPos - gsRenderCenterX;
   sOffsetY = sYPos - gsRenderCenterY;
 
-  FromCellToScreenCoordinates(sOffsetX, sOffsetY, addressof(sTempX_S), addressof(sTempY_S));
+  ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
   if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
     pTrav = addressof(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo.value.pETRLEObject[pNode.value.pAniTile.value.sCurrentFrame]);
@@ -378,7 +378,7 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   }
 
   // Get World XY From gridno
-  ConvertGridNoToCellXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sCellX: sXMapPos, sCellY: sYMapPos } = ConvertGridNoToCellXY(sGridNo));
 
   // Set mouse stuff
   sScreenX = gusMouseXPos;
@@ -391,7 +391,7 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
       GetLevelNodeScreenRect(pNode, addressof(aRect), sXMapPos, sYMapPos, sGridNo);
 
       // Make sure we are always on guy if we are on same gridno
-      if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
+      if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
         // OK refine it!
         if (RefinePointCollisionOnStruct(sGridNo, sScreenX, sScreenY, aRect.iLeft, aRect.iBottom, pNode)) {
           // Do some additional checks here!

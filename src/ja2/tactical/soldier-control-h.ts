@@ -1406,4 +1406,8 @@ export const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHe
 export const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
 const PTR_PRONE = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_PRONE);
 
+// VARIABLES FOR PALETTE REPLACEMENTS FOR HAIR, ETC
+export let gubpNumReplacementsPerRange: Pointer<UINT8>;
+export let gpPalRep: PaletteReplacementType[] /* Pointer<PaletteReplacementType> */;
+
 }

@@ -179,7 +179,7 @@ export function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pM
           GetSoldierScreenRect(pSoldier, addressof(aRect));
 
           // Get XY From gridno
-          ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+          ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo));
 
           // Get screen XY pos from map XY
           // Be carefull to convert to cell cords
@@ -189,7 +189,7 @@ export function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pM
           sScreenX = gusMouseXPos;
           sScreenY = gusMouseYPos;
 
-          if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
+          if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
             fInScreenRect = true;
           }
 
@@ -410,7 +410,7 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): boolean 
 
   do {
     do {
-      GetScreenXYGridNo(iXTrav, iYTrav, addressof(sMapPos));
+      sMapPos = GetScreenXYGridNo(iXTrav, iYTrav);
 
       if (sMapPos == sGridNo) {
         return true;
@@ -517,7 +517,7 @@ export function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: P
   dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
   dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
-  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+  ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
   // pTrav = &(gAnimSurfaceDatabase[ usAnimSurface ].hVideoObject->pETRLEObject[ pSoldier->usAniFrame ] );
 
@@ -566,7 +566,7 @@ export function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreen
   dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
   dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
-  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+  ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
   sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
   sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
@@ -596,10 +596,10 @@ export function GridNoOnScreen(sGridNo: INT16): boolean {
     sAllowance = 40;
   }
 
-  ConvertGridNoToXY(sGridNo, addressof(sNewCenterWorldX), addressof(sNewCenterWorldY));
+  ({ sX: sNewCenterWorldX, sY: sNewCenterWorldY } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sNewCenterWorldX), (sNewCenterWorldY), addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY((sNewCenterWorldX), (sNewCenterWorldY)));
 
   // ATE: OK, here, adjust the top value so that it's a tile and a bit over, because of our mercs!
   if (sWorldX >= gsTopLeftWorldX && sWorldX <= gsBottomRightWorldX && sWorldY >= (gsTopLeftWorldY + sAllowance) && sWorldY <= (gsBottomRightWorldY + 20)) {
@@ -638,14 +638,14 @@ export function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT
   sY = CenterY(sGridNo);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sX / CELL_X_SIZE), (sY / CELL_Y_SIZE), addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY((sX / CELL_X_SIZE), (sY / CELL_Y_SIZE)));
 
   // Find the diustance from render center to true world center
   sDistToCenterX = gsRenderCenterX - gCenterWorldX;
   sDistToCenterY = gsRenderCenterY - gCenterWorldY;
 
   // From render center in world coords, convert to render center in "screen" coords
-  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, addressof(sScreenCenterX), addressof(sScreenCenterY));
+  ({ sScreenX: sScreenCenterX, sScreenY: sScreenCenterY } = FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY));
 
   // Subtract screen center
   sScreenCenterX += gsCX;
@@ -693,7 +693,7 @@ export function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, addressof(aRect));
 
-  if (IsPointInScreenRect(sX, sY, addressof(aRect))) {
+  if (IsPointInScreenRect(sX, sY, aRect)) {
     return true;
   }
 
@@ -781,7 +781,7 @@ export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Po
   // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
   dOffsetX -= CELL_Y_SIZE;
 
-  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+  ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
   sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;

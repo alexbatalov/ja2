@@ -139,7 +139,7 @@ export function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       return;
     } else {
       // Reset counter!
-      RESETTIMECOUNTER(pSoldier.value.AICounter, pSoldier.value.uiAIDelay);
+      pSoldier.value.AICounter = RESETTIMECOUNTER(pSoldier.value.uiAIDelay);
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "%s waiting %d from %d", pSoldier->name, pSoldier->AICounter, uiCurrTime ) );
     }
     //#endif
@@ -1508,7 +1508,7 @@ export function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         // probably an action set as a next-action in the realtime prior to combat
         // do nothing
       } else {
-        RESETTIMECOUNTER(pSoldier.value.AICounter, pSoldier.value.usActionData);
+        pSoldier.value.AICounter = RESETTIMECOUNTER(pSoldier.value.usActionData);
         if (pSoldier.value.ubProfile != NO_PROFILE) {
           // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "%s waiting %d from %d", pSoldier->name, pSoldier->AICounter, GetJA2Clock() ) );
         }
@@ -2096,7 +2096,7 @@ export function SetNewSituation(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       if (!(gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.uiFlags & REALTIME)) {
         // reset delay if necessary!
-        RESETTIMECOUNTER(pSoldier.value.AICounter, Random(1000));
+        pSoldier.value.AICounter = RESETTIMECOUNTER(Random(1000));
       }
     }
   }

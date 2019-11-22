@@ -1831,7 +1831,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
     let sY: INT16;
 
     // DO wireframes as well
-    ConvertGridNoToXY(sGridNo, addressof(sX), addressof(sY));
+    ({ sX, sY } = ConvertGridNoToXY(sGridNo));
     SetRecalculateWireFrameFlagRadius(sX, sY, ubRadius);
     CalculateWorldWireFrameTiles(false);
 

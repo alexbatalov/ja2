@@ -414,29 +414,25 @@ export function ShutdownJA2Sound(): boolean {
 export function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlay(szSoundEffects[usNum], addressof(spParms));
+  return SoundPlay(szSoundEffects[usNum], spParms);
 }
 
 export function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlayStreamedFile(szSoundEffects[usNum], addressof(spParms));
+  return SoundPlayStreamedFile(szSoundEffects[usNum], spParms);
 }
 
 export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
@@ -444,23 +440,19 @@ export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UIN
 
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlay(szFileName, addressof(spParms));
+  return SoundPlay(szFileName, spParms);
 }
 
 export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS = createSoundParams();
-
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -469,25 +461,21 @@ export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, us
   spParms.uiPriority = GROUP_PLAYER;
   spParms.EOSCallback = EndsCallback;
 
-  return SoundPlayStreamedFile(szFileName, addressof(spParms));
+  return SoundPlayStreamedFile(szFileName, spParms);
 }
 
 export function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlay(szAmbientEffects[usNum], addressof(spParms));
+  return SoundPlay(szAmbientEffects[usNum], spParms);
 }
 
 function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT32): UINT32 {
-  let rpParms: RANDOMPARMS;
-
-  memset(addressof(rpParms), 0xff, sizeof(RANDOMPARMS));
+  let rpParms: RANDOMPARMS = createRandomParams();
 
   rpParms.uiTimeMin = uiTimeMin;
   rpParms.uiTimeMax = uiTimeMax;
@@ -495,7 +483,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
   rpParms.uiVolMax = CalculateSoundEffectsVolume(AmbientVols[usNum]);
   rpParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlayRandom(szAmbientEffects[usNum], addressof(rpParms));
+  return SoundPlayRandom(szAmbientEffects[usNum], rpParms);
 }
 
 export function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: boolean): UINT32 {
@@ -547,10 +535,10 @@ export function SoundDir(sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
+  ({ sX: sWorldX, sY: sWorldY } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -597,10 +585,10 @@ export function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
+  ({ sX: sWorldX, sY: sWorldY } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -625,7 +613,7 @@ export function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
 }
 
 function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
-  memset(addressof(gDelayedSoundParms), 0xff, sizeof(SOUNDPARMS));
+  resetSoundParams(gDelayedSoundParms);
 
   gDelayedSoundParms.uiSpeed = usRate;
   gDelayedSoundParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -642,7 +630,7 @@ function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ub
 }
 
 function DelayedSoundTimerCallback(): void {
-  SoundPlay(szSoundEffects[guiDelayedSoundNum], addressof(gDelayedSoundParms));
+  SoundPlay(szSoundEffects[guiDelayedSoundNum], gDelayedSoundParms);
 }
 
 /////////////////////////////////////////////////////////
@@ -811,10 +799,10 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
+  ({ sX: sWorldX, sY: sWorldY } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -865,10 +853,10 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
+  ({ sX: sWorldX, sY: sWorldY } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;

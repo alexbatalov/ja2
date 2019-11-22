@@ -1033,8 +1033,8 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(sSrcGridNo));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1115,8 +1115,8 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   let sEndGridNo: INT16;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(sSrcGridNo));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1163,8 +1163,8 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(sSrcGridNo));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1253,8 +1253,8 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   let sSrcY: INT16;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(sSrcGridNo));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1382,7 +1382,7 @@ export function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo
   let sSrcX: INT16;
   let sSrcY: INT16;
 
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo));
 
   dAngle = FindBestAngleForTrajectory(pSoldier.value.sGridNo, sGridNo, GET_SOLDIER_THROW_HEIGHT(pSoldier.value.bLevel), ubHeight, dForce, pItem, psGridNo);
 
@@ -1548,8 +1548,8 @@ export function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERT
   CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), psFinalGridNo, fArmed);
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1704,8 +1704,8 @@ export function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>
   CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), addressof(sFinalGridNo), fArmed);
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
+  ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
+  ({ sX: sSrcX, sY: sSrcY } = ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo));
 
   // OK, get direction normal
   vDirNormal.x = (sDestX - sSrcX);

@@ -2533,7 +2533,7 @@ function LightCalcRect(iLight: INT32): boolean {
     }
   }
 
-  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), addressof(sDummy), addressof(sYValue));
+  ({ sScreenX: sDummy, sScreenY: sYValue } = FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE)));
 
   LightMapLeft[iLight] = MaxRect.iLeft;
   LightMapTop[iLight] = MaxRect.iTop;
@@ -2543,14 +2543,14 @@ function LightCalcRect(iLight: INT32): boolean {
   LightHeight[iLight] = -sYValue;
   LightYOffset[iLight] = sYValue;
 
-  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), addressof(sDummy), addressof(sYValue));
+  ({ sScreenX: sDummy, sScreenY: sYValue } = FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE)));
   LightHeight[iLight] += sYValue;
 
-  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), addressof(sXValue), addressof(sDummy));
+  ({ sScreenX: sXValue, sScreenY: sDummy } = FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE)));
   LightWidth[iLight] = -sXValue;
   LightXOffset[iLight] = sXValue;
 
-  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), addressof(sXValue), addressof(sDummy));
+  ({ sScreenX: sXValue, sScreenY: sDummy } = FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE)));
   LightWidth[iLight] += sXValue;
 
   LightHeight[iLight] += WORLD_TILE_X * 2;

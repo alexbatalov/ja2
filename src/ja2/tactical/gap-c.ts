@@ -175,8 +175,6 @@ export function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList
 export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
-  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
   spParms.uiSpeed = usRate;
   spParms.uiVolume = ((ubVolume / HIGHVOLUME) * GetSpeechVolume());
   spParms.uiLoop = ubLoops;
@@ -187,7 +185,7 @@ export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate
   if (pData != null)
     AudioGapListInit(zSoundFile, pData);
 
-  return SoundPlayStreamedFile(zSoundFile, addressof(spParms));
+  return SoundPlayStreamedFile(zSoundFile, spParms);
 }
 
 }

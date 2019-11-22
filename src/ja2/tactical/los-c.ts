@@ -1335,7 +1335,7 @@ export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pStartSoldier.value.sGridNo].sHeight);
   dEndZPos = dStartZPos;
 
-  ConvertGridNoToXY(sEndGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sEndGridNo));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1400,7 +1400,7 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIE
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
   }
 
-  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1453,7 +1453,7 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERT
     return false;
   }
 
-  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1496,7 +1496,7 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SO
     dEndZPos += WALL_HEIGHT_UNITS;
   }
 
-  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1526,7 +1526,7 @@ export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLev
   // add in ground height
   dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sStartGridNo].sHeight);
 
-  ConvertGridNoToXY(sStartGridNo, addressof(sStartXPos), addressof(sStartYPos));
+  ({ sX: sStartXPos, sY: sStartYPos } = ConvertGridNoToXY(sStartGridNo));
   sStartXPos = sStartXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sStartYPos = sStartYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1534,7 +1534,7 @@ export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLev
   // add in ground height
   dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sEndGridNo].sHeight);
 
-  ConvertGridNoToXY(sEndGridNo, addressof(sEndXPos), addressof(sEndYPos));
+  ({ sX: sEndXPos, sY: sEndYPos } = ConvertGridNoToXY(sEndGridNo));
   sEndXPos = sEndXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sEndYPos = sEndYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -2556,7 +2556,7 @@ export function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDI
     }
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
-    ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+    ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
     sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
     sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -2635,7 +2635,7 @@ export function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOL
     }
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
-    ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+    ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
     sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
     sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 

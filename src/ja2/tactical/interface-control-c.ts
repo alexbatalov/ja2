@@ -454,7 +454,7 @@ export function RenderTopmostTacticalInterface(): void {
             sOffsetX = (MercPtrs[cnt].value.sPlannedTargetX - gsRenderCenterX);
             sOffsetY = (MercPtrs[cnt].value.sPlannedTargetY - gsRenderCenterY);
 
-            FromCellToScreenCoordinates(sOffsetX, sOffsetY, addressof(sTempX_S), addressof(sTempY_S));
+            ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
             sX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
             sY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;

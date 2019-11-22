@@ -38,7 +38,7 @@ export let giTimerIntervals: INT32[] /* [NUMTIMERS] */ = [
 ];
 
 // TIMER COUNTERS
-export let giTimerCounters: INT32[] /* [NUMTIMERS] */;
+export let giTimerCounters: INT32[] /* [NUMTIMERS] */ = createArray(Enum386.NUMTIMERS, 0);
 
 export let giTimerAirRaidQuote: INT32 = 0;
 export let giTimerAirRaidDiveStarted: INT32 = 0;
@@ -49,22 +49,22 @@ export let giTimerTeamTurnUpdate: INT32 = 0;
 export let gpCustomizableTimerCallback: CUSTOMIZABLE_TIMER_CALLBACK | null = null;
 
 // Clock Callback event ID
-let gTimerID: MMRESULT;
+let gTimerID: number;
 
 // GLOBALS FOR CALLBACK
 let gCNT: UINT32;
-let gPSOLDIER: Pointer<SOLDIERTYPE>;
+let gPSOLDIER: SOLDIERTYPE;
 
 // GLobal for displaying time diff ( DIAG )
 let guiClockDiff: UINT32 = 0;
 let guiClockStart: UINT32 = 0;
 
+/* static */ let TimeProc__fInFunction: boolean = false;
 function TimeProc(uID: UINT32, uMsg: UINT32, dwUser: number, dw1: number, dw2: number): void {
-  /* static */ let fInFunction: boolean = false;
   // SOLDIERTYPE		*pSoldier;
 
-  if (!fInFunction) {
-    fInFunction = true;
+  if (!TimeProc__fInFunction) {
+    TimeProc__fInFunction = true;
 
     guiBaseJA2NoPauseClock += BASETIMESLICE;
 
@@ -76,13 +76,13 @@ function TimeProc(uID: UINT32, uMsg: UINT32, dwUser: number, dw1: number, dw2: n
       }
 
       // Update some specialized countdown timers...
-      UPDATETIMECOUNTER(giTimerAirRaidQuote);
-      UPDATETIMECOUNTER(giTimerAirRaidDiveStarted);
-      UPDATETIMECOUNTER(giTimerAirRaidUpdate);
-      UPDATETIMECOUNTER(giTimerTeamTurnUpdate);
+      giTimerAirRaidQuote = UPDATETIMECOUNTER(giTimerAirRaidQuote);
+      giTimerAirRaidDiveStarted = UPDATETIMECOUNTER(giTimerAirRaidDiveStarted);
+      giTimerAirRaidUpdate = UPDATETIMECOUNTER(giTimerAirRaidUpdate);
+      giTimerTeamTurnUpdate = UPDATETIMECOUNTER(giTimerTeamTurnUpdate);
 
       if (gpCustomizableTimerCallback) {
-        UPDATETIMECOUNTER(giTimerCustomizable);
+        giTimerCustomizable = UPDATETIMECOUNTER(giTimerCustomizable);
       }
 
       // If mapscreen...
@@ -90,8 +90,8 @@ function TimeProc(uID: UINT32, uMsg: UINT32, dwUser: number, dw1: number, dw2: n
         // IN Mapscreen, loop through player's team.....
         for (gCNT = gTacticalStatus.Team[gbPlayerNum].bFirstID; gCNT <= gTacticalStatus.Team[gbPlayerNum].bLastID; gCNT++) {
           gPSOLDIER = MercPtrs[gCNT];
-          UPDATETIMECOUNTER(gPSOLDIER.value.PortraitFlashCounter);
-          UPDATETIMECOUNTER(gPSOLDIER.value.PanelAnimateCounter);
+          gPSOLDIER.PortraitFlashCounter = UPDATETIMECOUNTER(gPSOLDIER.PortraitFlashCounter);
+          gPSOLDIER.PanelAnimateCounter = UPDATETIMECOUNTER(gPSOLDIER.PanelAnimateCounter);
         }
       } else {
         // Set update flags for soldiers
@@ -100,28 +100,26 @@ function TimeProc(uID: UINT32, uMsg: UINT32, dwUser: number, dw1: number, dw2: n
           gPSOLDIER = MercSlots[gCNT];
 
           if (gPSOLDIER != null) {
-            UPDATETIMECOUNTER(gPSOLDIER.value.UpdateCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.DamageCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.ReloadCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.FlashSelCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.BlinkSelCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.PortraitFlashCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.AICounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.FadeCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.NextTileCounter);
-            UPDATETIMECOUNTER(gPSOLDIER.value.PanelAnimateCounter);
+            gPSOLDIER.UpdateCounter = UPDATETIMECOUNTER(gPSOLDIER.UpdateCounter);
+            gPSOLDIER.DamageCounter = UPDATETIMECOUNTER(gPSOLDIER.DamageCounter);
+            gPSOLDIER.ReloadCounter = UPDATETIMECOUNTER(gPSOLDIER.ReloadCounter);
+            gPSOLDIER.FlashSelCounter = UPDATETIMECOUNTER(gPSOLDIER.FlashSelCounter);
+            gPSOLDIER.BlinkSelCounter = UPDATETIMECOUNTER(gPSOLDIER.BlinkSelCounter);
+            gPSOLDIER.PortraitFlashCounter = UPDATETIMECOUNTER(gPSOLDIER.PortraitFlashCounter);
+            gPSOLDIER.AICounter = UPDATETIMECOUNTER(gPSOLDIER.AICounter);
+            gPSOLDIER.FadeCounter = UPDATETIMECOUNTER(gPSOLDIER.FadeCounter);
+            gPSOLDIER.NextTileCounter = UPDATETIMECOUNTER(gPSOLDIER.NextTileCounter);
+            gPSOLDIER.PanelAnimateCounter = UPDATETIMECOUNTER(gPSOLDIER.PanelAnimateCounter);
           }
         }
       }
     }
 
-    fInFunction = false;
+    TimeProc__fInFunction = false;
   }
 }
 
 export function InitializeJA2Clock(): boolean {
-  let mmResult: MMRESULT;
-  let tc: TIMECAPS;
   let cnt: INT32;
 
   // Init timer delays
@@ -129,15 +127,8 @@ export function InitializeJA2Clock(): boolean {
     giTimerCounters[cnt] = giTimerIntervals[cnt];
   }
 
-  // First get timer resolutions
-  mmResult = timeGetDevCaps(addressof(tc), sizeof(tc));
-
-  if (mmResult != TIMERR_NOERROR) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not get timer properties");
-  }
-
   // Set timer at lowest resolution. Could use middle of lowest/highest, we'll see how this performs first
-  gTimerID = timeSetEvent(BASETIMESLICE, BASETIMESLICE, TimeProc, 0, TIME_PERIODIC);
+  gTimerID = setInterval(TimeProc, BASETIMESLICE);
 
   if (!gTimerID) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
@@ -149,46 +140,7 @@ export function InitializeJA2Clock(): boolean {
 export function ShutdownJA2Clock(): void {
   // Make sure we kill the timer
 
-  timeKillEvent(gTimerID);
-}
-
-function InitializeJA2TimerCallback(uiDelay: UINT32, TimerProc: LPTIMECALLBACK, uiUser: UINT32): UINT32 {
-  let mmResult: MMRESULT;
-  let tc: TIMECAPS;
-  let TimerID: MMRESULT;
-
-  // First get timer resolutions
-  mmResult = timeGetDevCaps(addressof(tc), sizeof(tc));
-
-  if (mmResult != TIMERR_NOERROR) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not get timer properties");
-  }
-
-  // Set timer at lowest resolution. Could use middle of lowest/highest, we'll see how this performs first
-  TimerID = timeSetEvent(uiDelay, uiDelay, TimerProc, uiUser, TIME_PERIODIC);
-
-  if (!TimerID) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
-  }
-
-  return TimerID;
-}
-
-function RemoveJA2TimerCallback(uiTimer: UINT32): void {
-  timeKillEvent(uiTimer);
-}
-
-function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UINT32): UINT32 {
-  switch (uiCallbackID) {
-    case Enum385.ITEM_LOCATOR_CALLBACK:
-
-      return InitializeJA2TimerCallback(uiDelay, FlashItem, uiUser);
-      break;
-  }
-
-  // invalid callback id
-  Assert(false);
-  return 0;
+  clearInterval(gTimerID);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +161,7 @@ export function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: C
     }
   }
 
-  RESETTIMECOUNTER(giTimerCustomizable, iDelay);
+  giTimerCustomizable = RESETTIMECOUNTER(iDelay);
   gpCustomizableTimerCallback = pCallback;
 }
 

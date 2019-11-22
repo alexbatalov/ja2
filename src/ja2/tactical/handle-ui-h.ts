@@ -175,4 +175,5 @@ export let gfUIFullTargetFound: boolean;
 export let gusUIFullTargetID: UINT16;
 export let guiUIFullTargetFlags: UINT32;
 
+export let gfUIBodyHitLocation: boolean;
 }

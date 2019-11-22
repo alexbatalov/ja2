@@ -1137,7 +1137,7 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
       // unauthorized!
       // make guard run to block guard room
       CancelAIAction(pSoldier, true);
-      RESETTIMECOUNTER(pSoldier.value.AICounter, 0);
+      pSoldier.value.AICounter = RESETTIMECOUNTER(0);
       pSoldier.value.bNextAction = Enum289.AI_ACTION_RUN;
       pSoldier.value.usNextActionData = 13250;
     }
@@ -3800,7 +3800,7 @@ export function DoorOpeningNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 }
 
 export function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType: UINT8, ubVolume: UINT8, ubNoiseType: UINT8): void {
-  let SNoise: EV_S_NOISE;
+  let SNoise: EV_S_NOISE = createEvSNoise();
 
   SNoise.ubNoiseMaker = ubNoiseMaker;
   SNoise.sGridNo = sGridNo;
@@ -3811,7 +3811,7 @@ export function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubT
 
   if (gTacticalStatus.ubAttackBusyCount) {
     // delay these events until the attack is over!
-    AddGameEvent(Enum319.S_NOISE, DEMAND_EVENT_DELAY, addressof(SNoise));
+    AddGameEvent(Enum319.S_NOISE, DEMAND_EVENT_DELAY, SNoise);
   } else {
     // AddGameEvent( S_NOISE, 0, &SNoise );
 

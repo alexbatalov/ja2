@@ -771,7 +771,7 @@ function GetSaveLoadScreenUserInput(): void {
           if (gfSaveGame) {
             bActiveTextField = GetActiveFieldID();
             if (bActiveTextField && bActiveTextField != -1) {
-              Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
+              gzGameDescTextField = Get16BitStringFromField(bActiveTextField);
               SetActiveField(0);
 
               DestroySaveLoadTextInputBoxes();
@@ -812,7 +812,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
 
     bActiveTextField = GetActiveFieldID();
     if (bActiveTextField && bActiveTextField != -1) {
-      Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
+      gzGameDescTextField = Get16BitStringFromField(bActiveTextField);
     }
 
     // if there is save game in the slot, ask for confirmation before overwriting
@@ -1083,7 +1083,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       DrawTextToScreen(zDateString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
       // if the sector string exceeds the width, and the ...
-      ReduceStringLength(zLocationString, SLG_SECTOR_WIDTH, uiFont);
+      zLocationString = ReduceStringLength(zLocationString, SLG_SECTOR_WIDTH, uiFont);
 
       // The Sector
       DrawTextToScreen(zLocationString, (usPosX + SLG_SECTOR_OFFSET_X), (usPosY + SLG_SECTOR_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -1340,7 +1340,7 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
         } else {
           bActiveTextField = GetActiveFieldID();
           if (bActiveTextField && bActiveTextField != -1) {
-            Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
+            gzGameDescTextField = Get16BitStringFromField(bActiveTextField);
             SetActiveField(0);
 
             DestroySaveLoadTextInputBoxes();

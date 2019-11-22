@@ -437,7 +437,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   if (uiRestoreBuffer == FACE_AUTO_RESTORE_BUFFER) {
     // BUILD A BUFFER
-    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+    ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
     // OK, ignore screen widths, height, only use BPP
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = pFace.usFaceWidth;
@@ -456,7 +456,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   if (uiDisplayBuffer == FACE_AUTO_DISPLAY_BUFFER) {
     // BUILD A BUFFER
-    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+    ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
     // OK, ignore screen widths, height, only use BPP
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = pFace.usFaceWidth;
@@ -1594,13 +1594,13 @@ export function HandleAutoFaces(): void {
         if (pSoldier.fGettingHit && pSoldier.fFlashPortrait == FLASH_PORTRAIT_STOP) {
           pSoldier.fFlashPortrait = 1;
           pSoldier.bFlashPortraitFrame = FLASH_PORTRAIT_STARTSHADE;
-          RESETTIMECOUNTER(pSoldier.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
+          pSoldier.PortraitFlashCounter = RESETTIMECOUNTER(FLASH_PORTRAIT_DELAY);
           fRerender = true;
         }
         if (pSoldier.fFlashPortrait == FLASH_PORTRAIT_START) {
           // Loop through flash values
           if (TIMECOUNTERDONE(pSoldier.PortraitFlashCounter, FLASH_PORTRAIT_DELAY)) {
-            RESETTIMECOUNTER(pSoldier.PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
+            pSoldier.PortraitFlashCounter = RESETTIMECOUNTER(FLASH_PORTRAIT_DELAY);
             pSoldier.bFlashPortraitFrame++;
 
             if (pSoldier.bFlashPortraitFrame > FLASH_PORTRAIT_ENDSHADE) {

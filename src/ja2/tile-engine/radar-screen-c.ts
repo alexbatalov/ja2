@@ -250,7 +250,7 @@ export function RenderRadarScreen(): void {
   sDistToCenterY = gsRenderCenterY - gCenterWorldY;
 
   // From render center in world coords, convert to render center in "screen" coords
-  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, addressof(sScreenCenterX), addressof(sScreenCenterY));
+  ({ sScreenX: sScreenCenterX, sScreenY: sScreenCenterY } = FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY));
 
   // Subtract screen center
   sScreenCenterX += gsCX;
@@ -322,8 +322,8 @@ export function RenderRadarScreen(): void {
         continue;
       }
 
-      ConvertGridNoToXY(pInventoryPoolList[iItemNumber].sGridNo, addressof(sXSoldPos), addressof(sYSoldPos));
-      GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, addressof(sXSoldScreen), addressof(sYSoldScreen));
+      ({ sX: sXSoldPos, sY: sYSoldPos } = ConvertGridNoToXY(pInventoryPoolList[iItemNumber].sGridNo));
+      ({ sScreenX: sXSoldScreen, sScreenY: sYSoldScreen } = GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos));
 
       // get radar x and y postion
       sXSoldRadar = (sXSoldScreen * gdScaleX);
@@ -372,8 +372,8 @@ export function RenderRadarScreen(): void {
 
         // Get FULL screen coordinate for guy's position
         // Getxy from gridno
-        ConvertGridNoToXY(pSoldier.value.sGridNo, addressof(sXSoldPos), addressof(sYSoldPos));
-        GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, addressof(sXSoldScreen), addressof(sYSoldScreen));
+        ({ sX: sXSoldPos, sY: sYSoldPos } = ConvertGridNoToXY(pSoldier.value.sGridNo));
+        ({ sScreenX: sXSoldScreen, sScreenY: sYSoldScreen } = GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos));
 
         sXSoldRadar = (sXSoldScreen * gdScaleX);
         sYSoldRadar = (sYSoldScreen * gdScaleY);
@@ -472,7 +472,7 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
   // sScreenY += gsCY;
 
   // Convert these into world coordinates
-  FromScreenToCellCoordinates(sScreenX, sScreenY, addressof(sTempX_W), addressof(sTempY_W));
+  ({ sCellX: sTempX_W, sCellY: sTempY_W } = FromScreenToCellCoordinates(sScreenX, sScreenY));
 
   // Adjust these to world center
   sNewCenterWorldX = (gCenterWorldX + sTempX_W);

@@ -113,23 +113,23 @@ function DeleteWinFont(iFont: INT32): void {
   }
 }
 
-export function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
+export function SetWinFontForeColor(iFont: INT32, pColor: COLORVAL): void {
   let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != null) {
-    pWinFont.value.ForeColor = (pColor.value);
+    pWinFont.value.ForeColor = pColor;
   }
 }
 
-function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
+function SetWinFontBackColor(iFont: INT32, pColor: COLORVAL): void {
   let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
 
   if (pWinFont != null) {
-    pWinFont.value.BackColor = (pColor.value);
+    pWinFont.value.BackColor = pColor;
   }
 }
 

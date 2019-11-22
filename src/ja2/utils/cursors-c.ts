@@ -1258,12 +1258,12 @@ function BltJA2CursorData(): void {
   }
 }
 
+/* static */ let DrawMouseText__fShow: boolean = false;
+/* static */ let DrawMouseText__fHoldInvalid: boolean = true;
 function DrawMouseText(): void {
   let pStr: string /* INT16[512] */;
   let sX: INT16;
   let sY: INT16;
-  /* static */ let fShow: boolean = false;
-  /* static */ let fHoldInvalid: boolean = true;
 
   // EnterMutex(MOUSE_BUFFER_MUTEX, __LINE__, __FILE__);
 
@@ -1316,26 +1316,26 @@ function DrawMouseText(): void {
   {
     if (gfUIDisplayActionPoints) {
       if (gfUIDisplayActionPointsInvalid) {
-        if (!fHoldInvalid) {
+        if (!DrawMouseText__fHoldInvalid) {
           if (COUNTERDONE(Enum386.INVALID_AP_HOLD)) {
             RESETCOUNTER(Enum386.INVALID_AP_HOLD);
             RESETCOUNTER(Enum386.CURSORFLASH);
 
-            fShow = !fShow;
-            fHoldInvalid = !fHoldInvalid;
+            DrawMouseText__fShow = !DrawMouseText__fShow;
+            DrawMouseText__fHoldInvalid = !DrawMouseText__fHoldInvalid;
           }
         } else {
           if (COUNTERDONE(Enum386.CURSORFLASH)) {
             RESETCOUNTER(Enum386.CURSORFLASH);
             RESETCOUNTER(Enum386.INVALID_AP_HOLD);
 
-            fShow = !fShow;
-            fHoldInvalid = !fHoldInvalid;
+            DrawMouseText__fShow = !DrawMouseText__fShow;
+            DrawMouseText__fHoldInvalid = !DrawMouseText__fHoldInvalid;
           }
         }
       } else {
-        fShow = true;
-        fHoldInvalid = false;
+        DrawMouseText__fShow = true;
+        DrawMouseText__fHoldInvalid = false;
       }
 
       // Set dest for gprintf to be different
@@ -1351,7 +1351,7 @@ function DrawMouseText(): void {
 
       SetFont(TINYFONT1());
 
-      if (fShow) {
+      if (DrawMouseText__fShow) {
         if (gfUIDisplayActionPointsInvalid) {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(141);
@@ -1385,21 +1385,21 @@ function DrawMouseText(): void {
 }
 
 export function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
-  let pCurData: Pointer<CursorData>;
-  let pCurImage: Pointer<CursorImage>;
+  let pCurData: CursorData;
+  let pCurImage: CursorImage;
   let cnt: UINT32;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
-    pCurData = addressof(CursorDatabase[uiCursorIndex]);
+    pCurData = CursorDatabase[uiCursorIndex];
 
-    for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-      pCurImage = addressof(pCurData.value.Composites[cnt]);
+    for (cnt = 0; cnt < pCurData.usNumComposites; cnt++) {
+      pCurImage = pCurData.Composites[cnt];
 
-      if (CursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & ANIMATED_CURSOR) {
-        pCurImage.value.uiCurrentFrame++;
+      if (CursorFileDatabase[pCurImage.uiFileIndex].ubFlags & ANIMATED_CURSOR) {
+        pCurImage.uiCurrentFrame++;
 
-        if (pCurImage.value.uiCurrentFrame == CursorFileDatabase[pCurImage.value.uiFileIndex].ubNumberOfFrames) {
-          pCurImage.value.uiCurrentFrame = 0;
+        if (pCurImage.uiCurrentFrame == CursorFileDatabase[pCurImage.uiFileIndex].ubNumberOfFrames) {
+          pCurImage.uiCurrentFrame = 0;
         }
       }
     }
@@ -1407,17 +1407,17 @@ export function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
 }
 
 function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
-  let pCurData: Pointer<CursorData>;
+  let pCurData: CursorData;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
-    pCurData = addressof(CursorDatabase[uiCursorIndex]);
+    pCurData = CursorDatabase[uiCursorIndex];
 
-    if ((pCurData.value.bFlags & (CURSOR_TO_FLASH | CURSOR_TO_FLASH2))) {
-      pCurData.value.bFlashIndex = !pCurData.value.bFlashIndex;
+    if ((pCurData.bFlags & (CURSOR_TO_FLASH | CURSOR_TO_FLASH2))) {
+      pCurData.bFlashIndex = Number(!pCurData.bFlashIndex);
 
       // Should we play a sound?
-      if (pCurData.value.bFlags & (CURSOR_TO_PLAY_SOUND)) {
-        if (pCurData.value.bFlashIndex) {
+      if (pCurData.bFlags & (CURSOR_TO_PLAY_SOUND)) {
+        if (pCurData.bFlashIndex) {
           PlayJA2Sample(Enum330.TARGET_OUT_OF_RANGE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
         }
       }

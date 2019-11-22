@@ -160,38 +160,8 @@ export function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-export function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
-  let uiAmount: UINT32;
-  let hList: HLIST;
-  let pList: Pointer<ListHeader>;
-
-  // check to see if the queue has more than 1
-  // element to be created and that the size > 1
-
-  if ((uiNum_items > 0) && (uiSiz_each > 0))
-    uiAmount = uiNum_items * uiSiz_each;
-  else {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Requested queue items and size have to be >0");
-    return 0;
-  }
-
-  // allocate the list memory
-  if ((hList = MemAlloc(uiAmount + sizeof(ListHeader))) == 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not allocate queue container memory");
-    return 0;
-  }
-
-  pList = hList;
-  // initialize the list structure
-
-  pList.value.uiMax_size = uiAmount + sizeof(ListHeader);
-  pList.value.uiTotal_items = 0;
-  pList.value.uiSiz_of_elem = uiSiz_each;
-  pList.value.uiTail = pList.value.uiHead = sizeof(ListHeader);
-
-  // return the pointer to memory
-
-  return hList;
+export function CreateList(uiNum_items: UINT32): HLIST {
+  return [];
 }
 
 //*****************************************************************************
@@ -455,12 +425,7 @@ export function DeleteQueue(hQueue: HQUEUE): boolean {
 //
 //*****************************************************************************
 export function DeleteList(hList: HLIST): boolean {
-  if (hList == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
-    return false;
-  }
-  // free the memory assigned to the list
-  MemFree(hList);
+  hList.length = 0;
   return true;
 }
 //*****************************************************************************
@@ -589,46 +554,8 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): boolean {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-export function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
-  let pTemp_cont: Pointer<ListHeader>;
-  let pvoid: Pointer<void>;
-  let uiOffsetSrc: UINT32;
-  let pbyte: Pointer<BYTE>;
-
-  // cannot check for invalid handle , only 0
-  if (hList == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
-    return false;
-  }
-  if (pdata == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Memory fo Data to be removed from list is NULL");
-    return false;
-  }
-
-  // assign to temporary variables
-  pTemp_cont = hList;
-
-  // if theres no elements to peek return error
-  if (pTemp_cont.value.uiTotal_items == 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There is nothing in the list");
-    return false;
-  }
-  if (uiPos >= pTemp_cont.value.uiTotal_items) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There is no item at this position");
-    return false;
-  }
-
-  // copy the element pointed to by uiHead
-  uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-  if (uiOffsetSrc >= pTemp_cont.value.uiMax_size)
-    uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - pTemp_cont.value.uiMax_size);
-
-  pbyte = hList;
-  pbyte += uiOffsetSrc;
-  pvoid = pbyte;
-  memmove(pdata, pvoid, pTemp_cont.value.uiSiz_of_elem);
-
-  return true;
+export function PeekList(hList: HLIST, uiPos: UINT32): any {
+  return hList[uiPos];
 }
 
 //*****************************************************************************
@@ -1086,13 +1013,7 @@ export function QueueSize(hQueue: HQUEUE): UINT32 {
 //
 //*****************************************************************************
 export function ListSize(hList: HLIST): UINT32 {
-  let pTemp_cont: Pointer<ListHeader>;
-  if (hList == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
-    return 0;
-  }
-  pTemp_cont = hList;
-  return pTemp_cont.value.uiTotal_items;
+  return hList.length;
 }
 //*****************************************************************************
 //
@@ -1132,147 +1053,8 @@ function OrdListSize(hOrdList: HORDLIST): UINT32 {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-export function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
-  let pTemp_cont: Pointer<ListHeader>;
-  let uiMax_size: UINT32;
-  let uiSize_of_each: UINT32;
-  let uiTotal: UINT32;
-  let uiNew_size: UINT32;
-  let uiHead: UINT32;
-  let uiTail: UINT32;
-  let pvoid: Pointer<void>;
-  let pbyte: Pointer<BYTE>;
-  let uiOffsetSrc: UINT32;
-  let uiOffsetDst: UINT32;
-  let uiFinalLoc: UINT32 = 0;
-  let fTail_check: boolean = false;
-
-  // check for invalid handle = 0
-  if (hList == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the list");
-    return null;
-  }
-
-  // check for data = NULL
-  if (pdata == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return null;
-  }
-  // check for a 0 or negative position passed in
-  if (uiPos < 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return null;
-  }
-
-  // assign some temporary variables
-
-  pTemp_cont = hList;
-  if (uiPos > pTemp_cont.value.uiTotal_items) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There are not enough elements in the list");
-    return null;
-  }
-  uiTotal = pTemp_cont.value.uiTotal_items;
-  uiSize_of_each = pTemp_cont.value.uiSiz_of_elem;
-  uiMax_size = pTemp_cont.value.uiMax_size;
-  uiHead = pTemp_cont.value.uiHead;
-  uiTail = pTemp_cont.value.uiTail;
-  uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-  if (uiOffsetSrc >= uiMax_size)
-    uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - uiMax_size);
-  if (uiTail == uiOffsetSrc)
-    fTail_check = true;
-  // copy appropriate blocks
-  if (((uiTail + uiSize_of_each) <= uiMax_size) && ((uiTail > uiHead) || ((uiTail == uiHead) && (uiHead == sizeof(ListHeader))))) {
-    uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-    uiOffsetDst = uiOffsetSrc + pTemp_cont.value.uiSiz_of_elem;
-    if (fTail_check == false) {
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return null;
-      }
-    }
-    if (fTail_check == false)
-      pTemp_cont.value.uiTail += uiSize_of_each;
-    uiFinalLoc = uiOffsetSrc;
-  }
-
-  if ((((uiTail + uiSize_of_each) <= uiMax_size) && (uiTail < uiHead)) || (((uiTail + uiSize_of_each) > uiMax_size) && (uiHead >= (sizeof(ListHeader) + uiSize_of_each)))) {
-    uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-
-    if (uiOffsetSrc >= uiMax_size) {
-      uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - uiMax_size);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy(hList, uiOffsetDst, uiOffsetSrc, uiTail - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return null;
-      }
-      uiFinalLoc = uiOffsetSrc;
-    } else {
-      uiOffsetSrc = sizeof(ListHeader);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return null;
-      }
-
-      uiOffsetSrc = uiMax_size - uiSize_of_each;
-      uiOffsetDst = sizeof(ListHeader);
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiSize_of_each) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return null;
-      }
-      uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, (uiMax_size - uiSize_of_each) - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return null;
-      }
-    }
-    pTemp_cont.value.uiTail += uiSize_of_each;
-    uiFinalLoc = uiOffsetSrc;
-  } // end if
-
-  if ((((uiTail + uiSize_of_each) <= uiMax_size) && (uiTail == uiHead) && (uiHead >= (sizeof(ListHeader) + uiSize_of_each))) || (((uiTail + uiSize_of_each) > uiMax_size) && (uiHead == sizeof(ListHeader)))) {
-    // need to resize the container
-    uiNew_size = uiMax_size + (uiMax_size - sizeof(ListHeader));
-    pTemp_cont.value.uiMax_size = uiNew_size;
-    if ((hList = MemRealloc(hList, uiNew_size)) == null) {
-      DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not resize list container memory");
-      return null;
-    }
-    pTemp_cont = hList;
-    if (do_copy(hList, sizeof(ListHeader), uiMax_size, uiHead - sizeof(ListHeader)) == false) {
-      DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy list container memory");
-      return null;
-    }
-    pTemp_cont.value.uiTail = uiMax_size + (uiHead - sizeof(ListHeader));
-
-    // now make place for the actual element
-
-    uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-    uiOffsetDst = uiOffsetSrc + pTemp_cont.value.uiSiz_of_elem;
-    if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == false) {
-      DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-      return null;
-    }
-    pTemp_cont.value.uiTail += uiSize_of_each;
-    uiFinalLoc = uiOffsetSrc;
-  }
-
-  // finally insert data at position uiFinalLoc
-
-  pbyte = hList;
-  if (uiFinalLoc == 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This should never happen! report this problem!");
-    return null;
-  }
-  pbyte += uiFinalLoc;
-  pvoid = pbyte;
-
-  memmove(pvoid, pdata, pTemp_cont.value.uiSiz_of_elem);
-  pTemp_cont.value.uiTotal_items++;
-  if (fTail_check == true)
-    pTemp_cont.value.uiTail += pTemp_cont.value.uiSiz_of_elem;
+export function AddtoList(hList: HLIST, pdata: any, uiPos: UINT32): HLIST {
+  hList.splice(uiPos, 0, pdata);
   return hList;
 }
 
@@ -1292,114 +1074,10 @@ export function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HL
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-export function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): boolean {
-  let pTemp_cont: Pointer<ListHeader>;
-  let uiMax_size: UINT32;
-  let uiSize_of_each: UINT32;
-  let uiTotal: UINT32;
-  let uiHead: UINT32;
-  let uiTail: UINT32;
-  let uiOffsetSrc: UINT32;
-  let uiOffsetDst: UINT32;
-  let uiFinalLoc: UINT32 = 0;
-  let fTail_check: boolean = false;
-
-  // check for invalid handle = 0
-  if (hList == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid handle to the list");
-    return false;
-  }
-
-  // check for data = NULL
-  if (pdata == null) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return false;
-  }
-  // check for a 0 or negative position passed in
-  if (uiPos < 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Data to be pushed onto list is NULL");
-    return false;
-  }
-
-  // assign some temporary variables
-  pTemp_cont = hList;
-
-  if (uiPos >= pTemp_cont.value.uiTotal_items) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Cannot delete at the specified position");
-    return false;
-  }
-  if (pTemp_cont.value.uiTotal_items == 0) {
-    DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There are no elements in the list to remove");
-    return false;
-  }
-
-  uiTotal = pTemp_cont.value.uiTotal_items;
-  uiSize_of_each = pTemp_cont.value.uiSiz_of_elem;
-  uiMax_size = pTemp_cont.value.uiMax_size;
-  uiHead = pTemp_cont.value.uiHead;
-  uiTail = pTemp_cont.value.uiTail;
-
-  // copy appropriate blocks
-  if ((uiTail > uiHead) || ((uiTail == uiHead) && (uiHead == sizeof(ListHeader)))) {
-    uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-    uiOffsetDst = uiOffsetSrc + pTemp_cont.value.uiSiz_of_elem;
-    if (do_copy_data(hList, pdata, uiOffsetSrc, uiSize_of_each) == false) {
-      DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data from list");
-      return false;
-    }
-    if (do_copy(hList, uiOffsetDst, uiOffsetSrc, uiTail - uiOffsetSrc) == false) {
-      DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not remove the data the list");
-      return false;
-    }
-    pTemp_cont.value.uiTail -= uiSize_of_each;
-    pTemp_cont.value.uiTotal_items--;
-  }
-
-  if ((uiTail < uiHead) || ((uiTail == uiHead) && (uiHead <= (sizeof(ListHeader) + uiSize_of_each)))) {
-    uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-
-    if (uiOffsetSrc >= uiMax_size) {
-      uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - uiMax_size);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy_data(hList, pdata, uiOffsetSrc, uiSize_of_each) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data from list");
-        return false;
-      }
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return false;
-      }
-      uiFinalLoc = uiOffsetSrc;
-    } else {
-      uiOffsetSrc = sizeof(ListHeader);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiTail - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return false;
-      }
-
-      uiOffsetSrc = uiMax_size - uiSize_of_each;
-      uiOffsetDst = sizeof(ListHeader);
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, uiSize_of_each) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return false;
-      }
-      uiOffsetSrc = pTemp_cont.value.uiHead + (uiPos * pTemp_cont.value.uiSiz_of_elem);
-      uiOffsetDst = uiOffsetSrc + uiSize_of_each;
-      if (do_copy_data(hList, pdata, uiOffsetSrc, uiSize_of_each) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy the data from list");
-        return false;
-      }
-      if (do_copy(hList, uiOffsetSrc, uiOffsetDst, (uiMax_size - uiSize_of_each) - uiOffsetSrc) == false) {
-        DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not store the data in list");
-        return false;
-      }
-    }
-    pTemp_cont.value.uiTail -= uiSize_of_each;
-    pTemp_cont.value.uiTotal_items--;
-  } // end if
-
-  return true;
+export function RemfromList(hList: HLIST, uiPos: UINT32): any {
+  const o = hList[uiPos];
+  hList.splice(uiPos, 1);
+  return o;
 }
 
 //*****************************************************************************

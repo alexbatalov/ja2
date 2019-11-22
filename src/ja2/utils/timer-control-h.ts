@@ -55,12 +55,12 @@ export const UPDATECOUNTER = (c: number) => ((giTimerCounters[c] - BASETIMESLICE
 export const RESETCOUNTER = (c: number) => (giTimerCounters[c] = giTimerIntervals[c]);
 export const COUNTERDONE = (c: number) => (giTimerCounters[c] == 0) ? true : false;
 
-export const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
-export const RESETTIMECOUNTER = (c, d) => (c = d);
+export const UPDATETIMECOUNTER = (c: number) => ((c - BASETIMESLICE) < 0) ? 0 : (c - BASETIMESLICE);
+export const RESETTIMECOUNTER = (d: number) => (d);
 
 export const TIMECOUNTERDONE = (c: number, d: number) => (c == 0) ? true : false;
 
 export const SYNCTIMECOUNTER = () => {};
-export const ZEROTIMECOUNTER = (c) => (c = 0);
+export const ZEROTIMECOUNTER = () => (0);
 
 }

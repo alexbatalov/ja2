@@ -77,7 +77,7 @@ export function ChangeO3SectorStatue(fFromExplosion: boolean): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 
   // Redo movement costs....
-  ConvertGridNoToXY(13830, addressof(sX), addressof(sY));
+  ({ sX, sY } = ConvertGridNoToXY(13830));
 
   RecompileLocalMovementCostsFromRadius(13830, 5);
 }

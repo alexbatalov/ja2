@@ -780,7 +780,7 @@ function PutDownMercPiece(iPlacement: INT32): void {
     PickUpMercPiece(iPlacement);
   sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 4, addressof(ubDirection));
   if (sGridNo != NOWHERE) {
-    ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
+    ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
     EVENT_SetSoldierPosition(pSoldier, sCellX, sCellY);
     EVENT_SetSoldierDirection(pSoldier, ubDirection);
     pSoldier.value.ubInsertionDirection = pSoldier.value.bDirection;

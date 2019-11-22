@@ -69,18 +69,18 @@ export function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
   if (sGridNo.value < 0)
     return false; // entry point is non-existant
 
-  ConvertGridNoToXY(sGridNo.value, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo.value));
 
   sTopLimit = 80;
   sBottomLimit = gsBRY - gsTLY - 40;
 
   // Get screen coordinates for current gridno
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos));
 
   if (sWorldY < sTopLimit) {
-    GetFromAbsoluteScreenXYWorldXY(addressof(iNewMapX), addressof(iNewMapY), sWorldX, sTopLimit);
+    ({ uiCellX: iNewMapX, uiCellY: iNewMapY } = GetFromAbsoluteScreenXYWorldXY(sWorldX, sTopLimit));
   } else if (sWorldY > sBottomLimit) {
-    GetFromAbsoluteScreenXYWorldXY(addressof(iNewMapX), addressof(iNewMapY), sWorldX, sBottomLimit);
+    ({ uiCellX: iNewMapX, uiCellY: iNewMapY } = GetFromAbsoluteScreenXYWorldXY(sWorldX, sBottomLimit));
   } else {
     return false; // already valid
   }

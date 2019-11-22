@@ -582,7 +582,7 @@ function UpdateSaveBufferWithBackbuffer(): boolean {
   let ubBitDepth: UINT8;
 
   // Update saved buffer - do for the viewport size ony!
-  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+  ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
 
   pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
   pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));

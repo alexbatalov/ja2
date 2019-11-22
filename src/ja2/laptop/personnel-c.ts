@@ -1933,7 +1933,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
 
         // shorten if needed
         if (StringPixLength(sString, FONT10ARIAL()) > (171 - 75)) {
-          ReduceStringLength(sString, (171 - 75), FONT10ARIAL());
+          sString = ReduceStringLength(sString, (171 - 75), FONT10ARIAL());
         }
 
         // print name
@@ -1968,7 +1968,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
 
           // shorten if needed
           if (StringPixLength(sString, FONT10ARIAL()) > (171 - 75)) {
-            ReduceStringLength(sString, (171 - 75), FONT10ARIAL());
+            sString = ReduceStringLength(sString, (171 - 75), FONT10ARIAL());
           }
 
           // print name

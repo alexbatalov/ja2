@@ -38,8 +38,32 @@ interface SLIDER {
   ubSliderWidth: UINT8;
   ubSliderHeight: UINT8;
 
-  pNext: Pointer<SLIDER>;
-  pPrev: Pointer<SLIDER>;
+  pNext: SLIDER | null;
+  pPrev: SLIDER | null;
+}
+
+function createSlider(): SLIDER {
+  return {
+    uiSliderID: 0,
+    ubStyle: 0,
+    usPosX: 0,
+    usPosY: 0,
+    usWidth: 0,
+    usHeight: 0,
+    usNumberOfIncrements: 0,
+    SliderChangeCallback: <SLIDER_CHANGE_CALLBACK><unknown>null,
+    usCurrentIncrement: 0,
+    usBackGroundColor: 0,
+    ScrollAreaMouseRegion: createMouseRegion(),
+    uiSliderBoxImage: 0,
+    usCurrentSliderBoxPosition: 0,
+    LastRect: createSGPRect(),
+    uiFlags: 0,
+    ubSliderWidth: 0,
+    ubSliderHeight: 0,
+    pNext: null,
+    pPrev: null,
+  };
 }
 
 // ddd
@@ -50,13 +74,13 @@ interface SLIDER {
 //
 ///////////////////////////////////////////////////
 
-let pSliderHead: Pointer<SLIDER> = null;
+let pSliderHead: SLIDER | null = null;
 let guiCurrentSliderID: UINT32 = 1;
 
 let gfSliderInited: boolean = false;
 
 let gfCurrentSliderIsAnchored: boolean = false; // if true, the current selected slider mouse button is down
-let gpCurrentSlider: Pointer<SLIDER> = null;
+let gpCurrentSlider: SLIDER | null = null;
 
 let guiSliderBoxImage: UINT32 = 0;
 // ggg
@@ -91,8 +115,8 @@ export function InitSlider(): boolean {
 }
 
 export function ShutDownSlider(): void {
-  let pRemove: Pointer<SLIDER> = null;
-  let pTemp: Pointer<SLIDER> = null;
+  let pRemove: SLIDER | null = null;
+  let pTemp: SLIDER | null = null;
 
   AssertMsg(gfSliderInited, "Trying to ShutDown the Slider System when it was never inited");
 
@@ -100,20 +124,20 @@ export function ShutDownSlider(): void {
   pTemp = pSliderHead;
   while (pTemp) {
     pRemove = pTemp;
-    pTemp = pTemp.value.pNext;
-    RemoveSliderBar(pRemove.value.uiSliderID);
+    pTemp = pTemp.pNext;
+    RemoveSliderBar(pRemove.uiSliderID);
 
     // Report an error
   }
 
   // if so report an errror
-  gfSliderInited = 0;
+  gfSliderInited = false;
   DeleteVideoObjectFromIndex(guiSliderBoxImage);
 }
 
 export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usNumberOfIncrements: UINT16, sPriority: INT8, SliderChangeCallback: SLIDER_CHANGE_CALLBACK, uiFlags: UINT32): INT32 {
-  let pTemp: Pointer<SLIDER> = null;
-  let pNewSlider: Pointer<SLIDER> = null;
+  let pTemp: SLIDER | null = null;
+  let pNewSlider: SLIDER;
   let iNewID: INT32 = 0;
   let cnt: UINT32 = 0;
   let usIncrementWidth: UINT16 = 0;
@@ -124,26 +148,22 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
   if (ubStyle >= Enum329.NUM_SLIDER_STYLES)
     return -1;
 
-  pNewSlider = MemAlloc(sizeof(SLIDER));
-  if (pNewSlider == null) {
-    return -1;
-  }
-  memset(pNewSlider, 0, sizeof(SLIDER));
+  pNewSlider = createSlider();
 
   // Assign the settings to the current slider
-  pNewSlider.value.ubStyle = ubStyle;
-  pNewSlider.value.usPosX = usPosX;
-  pNewSlider.value.usPosY = usPosY;
+  pNewSlider.ubStyle = ubStyle;
+  pNewSlider.usPosX = usPosX;
+  pNewSlider.usPosY = usPosY;
   //	pNewSlider->usWidth = usWidth;
-  pNewSlider.value.usNumberOfIncrements = usNumberOfIncrements;
-  pNewSlider.value.SliderChangeCallback = SliderChangeCallback;
-  pNewSlider.value.usCurrentIncrement = 0;
-  pNewSlider.value.usBackGroundColor = Get16BPPColor(FROMRGB(255, 255, 255));
-  pNewSlider.value.uiFlags = uiFlags;
+  pNewSlider.usNumberOfIncrements = usNumberOfIncrements;
+  pNewSlider.SliderChangeCallback = SliderChangeCallback;
+  pNewSlider.usCurrentIncrement = 0;
+  pNewSlider.usBackGroundColor = Get16BPPColor(FROMRGB(255, 255, 255));
+  pNewSlider.uiFlags = uiFlags;
 
   // Get a new Identifier for the slider
   // Temp just increment for now
-  pNewSlider.value.uiSliderID = guiCurrentSliderID;
+  pNewSlider.uiSliderID = guiCurrentSliderID;
 
   // increment counter
   guiCurrentSliderID++;
@@ -153,32 +173,32 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
   //
 
   // add the region
-  usPosX = pNewSlider.value.usPosX;
-  usPosY = pNewSlider.value.usPosY;
+  usPosX = pNewSlider.usPosX;
+  usPosY = pNewSlider.usPosY;
 
   // Add the last one, the width will be whatever is left over
   switch (ubStyle) {
     case Enum329.SLIDER_VERTICAL_STEEL:
 
-      pNewSlider.value.uiFlags |= SLIDER_VERTICAL;
-      pNewSlider.value.usWidth = STEEL_SLIDER_WIDTH;
-      pNewSlider.value.usHeight = usWidth;
-      pNewSlider.value.ubSliderWidth = STEEL_SLIDER_WIDTH;
-      pNewSlider.value.ubSliderHeight = STEEL_SLIDER_HEIGHT;
+      pNewSlider.uiFlags |= SLIDER_VERTICAL;
+      pNewSlider.usWidth = STEEL_SLIDER_WIDTH;
+      pNewSlider.usHeight = usWidth;
+      pNewSlider.ubSliderWidth = STEEL_SLIDER_WIDTH;
+      pNewSlider.ubSliderHeight = STEEL_SLIDER_HEIGHT;
 
-      MSYS_DefineRegion(pNewSlider.value.ScrollAreaMouseRegion, (usPosX - pNewSlider.value.usWidth / 2), usPosY, (usPosX + pNewSlider.value.usWidth / 2), (pNewSlider.value.usPosY + pNewSlider.value.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(pNewSlider.ScrollAreaMouseRegion, (usPosX - pNewSlider.usWidth / 2), usPosY, (usPosX + pNewSlider.usWidth / 2), (pNewSlider.usPosY + pNewSlider.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(pNewSlider.ScrollAreaMouseRegion, 1, pNewSlider.uiSliderID);
       break;
 
     case Enum329.SLIDER_DEFAULT_STYLE:
     default:
 
-      pNewSlider.value.uiFlags |= SLIDER_HORIZONTAL;
-      pNewSlider.value.usWidth = usWidth;
-      pNewSlider.value.usHeight = DEFUALT_SLIDER_SIZE;
+      pNewSlider.uiFlags |= SLIDER_HORIZONTAL;
+      pNewSlider.usWidth = usWidth;
+      pNewSlider.usHeight = DEFUALT_SLIDER_SIZE;
 
-      MSYS_DefineRegion(pNewSlider.value.ScrollAreaMouseRegion, usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.value.usPosX + pNewSlider.value.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(pNewSlider.ScrollAreaMouseRegion, usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.usPosX + pNewSlider.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(pNewSlider.ScrollAreaMouseRegion, 1, pNewSlider.uiSliderID);
       break;
   }
 
@@ -192,36 +212,36 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
   // if its the first time in
   if (pSliderHead == null) {
     pSliderHead = pNewSlider;
-    pNewSlider.value.pNext = null;
+    pNewSlider.pNext = null;
   } else {
-    while (pTemp.value.pNext != null) {
-      pTemp = pTemp.value.pNext;
+    while ((<SLIDER>pTemp).pNext != null) {
+      pTemp = (<SLIDER>pTemp).pNext;
     }
 
-    pTemp.value.pNext = pNewSlider;
-    pNewSlider.value.pPrev = pTemp;
-    pNewSlider.value.pNext = null;
+    (<SLIDER>pTemp).pNext = pNewSlider;
+    pNewSlider.pPrev = pTemp;
+    pNewSlider.pNext = null;
   }
 
   CalculateNewSliderBoxPosition(pNewSlider);
 
-  return pNewSlider.value.uiSliderID;
+  return pNewSlider.uiSliderID;
 }
 
 export function RenderAllSliderBars(): void {
-  let pTemp: Pointer<SLIDER> = null;
+  let pTemp: SLIDER | null = null;
 
   // set the currently selectd slider bar
   if (gfLeftButtonState && gpCurrentSlider != null) {
     let usPosY: UINT16 = 0;
 
-    if (gusMouseYPos < gpCurrentSlider.value.usPosY)
+    if (gusMouseYPos < gpCurrentSlider.usPosY)
       usPosY = 0;
     else
-      usPosY = gusMouseYPos - gpCurrentSlider.value.usPosY;
+      usPosY = gusMouseYPos - gpCurrentSlider.usPosY;
 
     // if the mouse
-    CalculateNewSliderIncrement(gpCurrentSlider.value.uiSliderID, usPosY);
+    CalculateNewSliderIncrement(gpCurrentSlider.uiSliderID, usPosY);
   } else {
     gpCurrentSlider = null;
   }
@@ -231,69 +251,69 @@ export function RenderAllSliderBars(): void {
   while (pTemp) {
     RenderSelectedSliderBar(pTemp);
 
-    pTemp = pTemp.value.pNext;
+    pTemp = pTemp.pNext;
   }
 }
 
-function RenderSelectedSliderBar(pSlider: Pointer<SLIDER>): void {
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+function RenderSelectedSliderBar(pSlider: SLIDER): void {
+  if (pSlider.uiFlags & SLIDER_VERTICAL) {
   } else {
     // display the background ( the bar )
-    OptDisplayLine((pSlider.value.usPosX + 1), (pSlider.value.usPosY - 1), (pSlider.value.usPosX + pSlider.value.usWidth - 1), (pSlider.value.usPosY - 1), pSlider.value.usBackGroundColor);
-    OptDisplayLine(pSlider.value.usPosX, pSlider.value.usPosY, (pSlider.value.usPosX + pSlider.value.usWidth), pSlider.value.usPosY, pSlider.value.usBackGroundColor);
-    OptDisplayLine((pSlider.value.usPosX + 1), (pSlider.value.usPosY + 1), (pSlider.value.usPosX + pSlider.value.usWidth - 1), (pSlider.value.usPosY + 1), pSlider.value.usBackGroundColor);
+    OptDisplayLine((pSlider.usPosX + 1), (pSlider.usPosY - 1), (pSlider.usPosX + pSlider.usWidth - 1), (pSlider.usPosY - 1), pSlider.usBackGroundColor);
+    OptDisplayLine(pSlider.usPosX, pSlider.usPosY, (pSlider.usPosX + pSlider.usWidth), pSlider.usPosY, pSlider.usBackGroundColor);
+    OptDisplayLine((pSlider.usPosX + 1), (pSlider.usPosY + 1), (pSlider.usPosX + pSlider.usWidth - 1), (pSlider.usPosY + 1), pSlider.usBackGroundColor);
 
     // invalidate the area
-    InvalidateRegion(pSlider.value.usPosX, pSlider.value.usPosY - 2, pSlider.value.usPosX + pSlider.value.usWidth + 1, pSlider.value.usPosY + 2);
+    InvalidateRegion(pSlider.usPosX, pSlider.usPosY - 2, pSlider.usPosX + pSlider.usWidth + 1, pSlider.usPosY + 2);
   }
 
   RenderSliderBox(pSlider);
 }
 
-function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
+function RenderSliderBox(pSlider: SLIDER): void {
   let hPixHandle: HVOBJECT;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
 
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+  if (pSlider.uiFlags & SLIDER_VERTICAL) {
     // fill out the settings for the current dest and source rects
     SrcRect.iLeft = 0;
     SrcRect.iTop = 0;
-    SrcRect.iRight = pSlider.value.ubSliderWidth;
-    SrcRect.iBottom = pSlider.value.ubSliderHeight;
+    SrcRect.iRight = pSlider.ubSliderWidth;
+    SrcRect.iBottom = pSlider.ubSliderHeight;
 
-    DestRect.iLeft = pSlider.value.usPosX - pSlider.value.ubSliderWidth / 2;
-    DestRect.iTop = pSlider.value.usCurrentSliderBoxPosition - pSlider.value.ubSliderHeight / 2;
-    DestRect.iRight = DestRect.iLeft + pSlider.value.ubSliderWidth;
-    DestRect.iBottom = DestRect.iTop + pSlider.value.ubSliderHeight;
+    DestRect.iLeft = pSlider.usPosX - pSlider.ubSliderWidth / 2;
+    DestRect.iTop = pSlider.usCurrentSliderBoxPosition - pSlider.ubSliderHeight / 2;
+    DestRect.iRight = DestRect.iLeft + pSlider.ubSliderWidth;
+    DestRect.iBottom = DestRect.iTop + pSlider.ubSliderHeight;
 
     // If it is not the first time to render the slider
-    if (!(pSlider.value.LastRect.iLeft == 0 && pSlider.value.LastRect.iRight == 0)) {
+    if (!(pSlider.LastRect.iLeft == 0 && pSlider.LastRect.iRight == 0)) {
       // Restore the old rect
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, pSlider.value.ubSliderWidth, pSlider.value.ubSliderHeight);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider.LastRect.iLeft, pSlider.LastRect.iTop, pSlider.ubSliderWidth, pSlider.ubSliderHeight);
 
       // invalidate the old area
-      InvalidateRegion(pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, pSlider.value.LastRect.iRight, pSlider.value.LastRect.iBottom);
+      InvalidateRegion(pSlider.LastRect.iLeft, pSlider.LastRect.iTop, pSlider.LastRect.iRight, pSlider.LastRect.iBottom);
     }
 
     // Blit the new rect
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, pSlider.value.ubSliderWidth, pSlider.value.ubSliderHeight);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, pSlider.ubSliderWidth, pSlider.ubSliderHeight);
   } else {
     // fill out the settings for the current dest and source rects
     SrcRect.iLeft = 0;
     SrcRect.iTop = 0;
-    SrcRect.iRight = pSlider.value.ubSliderWidth;
-    SrcRect.iBottom = pSlider.value.ubSliderHeight;
+    SrcRect.iRight = pSlider.ubSliderWidth;
+    SrcRect.iBottom = pSlider.ubSliderHeight;
 
-    DestRect.iLeft = pSlider.value.usCurrentSliderBoxPosition;
-    DestRect.iTop = pSlider.value.usPosY - DEFUALT_SLIDER_SIZE;
-    DestRect.iRight = DestRect.iLeft + pSlider.value.ubSliderWidth;
-    DestRect.iBottom = DestRect.iTop + pSlider.value.ubSliderHeight;
+    DestRect.iLeft = pSlider.usCurrentSliderBoxPosition;
+    DestRect.iTop = pSlider.usPosY - DEFUALT_SLIDER_SIZE;
+    DestRect.iRight = DestRect.iLeft + pSlider.ubSliderWidth;
+    DestRect.iBottom = DestRect.iTop + pSlider.ubSliderHeight;
 
     // If it is not the first time to render the slider
-    if (!(pSlider.value.LastRect.iLeft == 0 && pSlider.value.LastRect.iRight == 0)) {
+    if (!(pSlider.LastRect.iLeft == 0 && pSlider.LastRect.iRight == 0)) {
       // Restore the old rect
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, 8, 15);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider.LastRect.iLeft, pSlider.LastRect.iTop, 8, 15);
     }
 
     // save the new rect
@@ -301,35 +321,35 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
   }
 
   // Save the new rect location
-  pSlider.value.LastRect = DestRect;
+  pSlider.LastRect = DestRect;
 
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+  if (pSlider.uiFlags & SLIDER_VERTICAL) {
     // display the slider box
     hPixHandle = GetVideoObject(guiSliderBoxImage);
-    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.LastRect.iLeft, pSlider.LastRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
 
     // invalidate the area
-    InvalidateRegion(pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, pSlider.value.LastRect.iRight, pSlider.value.LastRect.iBottom);
+    InvalidateRegion(pSlider.LastRect.iLeft, pSlider.LastRect.iTop, pSlider.LastRect.iRight, pSlider.LastRect.iBottom);
   } else {
     // display the slider box
     hPixHandle = GetVideoObject(guiSliderBoxImage);
-    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.usCurrentSliderBoxPosition, pSlider.value.usPosY - DEFUALT_SLIDER_SIZE, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.usCurrentSliderBoxPosition, pSlider.usPosY - DEFUALT_SLIDER_SIZE, VO_BLT_SRCTRANSPARENCY, null);
 
     // invalidate the area
-    InvalidateRegion(pSlider.value.usCurrentSliderBoxPosition, pSlider.value.usPosY - DEFUALT_SLIDER_SIZE, pSlider.value.usCurrentSliderBoxPosition + 9, pSlider.value.usPosY + DEFUALT_SLIDER_SIZE);
+    InvalidateRegion(pSlider.usCurrentSliderBoxPosition, pSlider.usPosY - DEFUALT_SLIDER_SIZE, pSlider.usCurrentSliderBoxPosition + 9, pSlider.usPosY + DEFUALT_SLIDER_SIZE);
   }
 }
 
 export function RemoveSliderBar(uiSliderID: UINT32): void {
-  let pTemp: Pointer<SLIDER> = null;
-  let pNodeToRemove: Pointer<SLIDER> = null;
+  let pTemp: SLIDER | null = null;
+  let pNodeToRemove: SLIDER | null = null;
   //	UINT32	cnt;
 
   pTemp = pSliderHead;
 
   // Get the required slider
-  while (pTemp && pTemp.value.uiSliderID != uiSliderID) {
-    pTemp = pTemp.value.pNext;
+  while (pTemp && pTemp.uiSliderID != uiSliderID) {
+    pTemp = pTemp.pNext;
   }
 
   // if we could not find the required slider
@@ -341,29 +361,28 @@ export function RemoveSliderBar(uiSliderID: UINT32): void {
   pNodeToRemove = pTemp;
 
   if (pTemp == pSliderHead)
-    pSliderHead = pSliderHead.value.pNext;
+    pSliderHead = pSliderHead.pNext;
 
   // Detach the node.
-  if (pTemp.value.pNext)
-    pTemp.value.pNext.value.pPrev = pTemp.value.pPrev;
+  if (pTemp.pNext)
+    pTemp.pNext.pPrev = pTemp.pPrev;
 
-  if (pTemp.value.pPrev)
-    pTemp.value.pPrev.value.pNext = pTemp.value.pNext;
+  if (pTemp.pPrev)
+    pTemp.pPrev.pNext = pTemp.pNext;
 
-  MSYS_RemoveRegion(pNodeToRemove.value.ScrollAreaMouseRegion);
+  MSYS_RemoveRegion(pNodeToRemove.ScrollAreaMouseRegion);
 
   // if its the last node
   if (pNodeToRemove == pSliderHead)
     pSliderHead = null;
 
   // Remove the slider node
-  MemFree(pNodeToRemove);
   pNodeToRemove = null;
 }
 
 function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): void {
   let uiSelectedSlider: UINT32;
-  let pSlider: Pointer<SLIDER> = null;
+  let pSlider: SLIDER | null = null;
 
   // if we already have an anchored slider bar
   if (gpCurrentSlider != null)
@@ -383,7 +402,7 @@ function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): v
         gpCurrentSlider = pSlider;
       }
 
-      if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+      if (pSlider.uiFlags & SLIDER_VERTICAL) {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
@@ -401,7 +420,7 @@ function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): v
       // set the currently selectd slider bar
       //			gpCurrentSlider = pSlider;
 
-      if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+      if (pSlider.uiFlags & SLIDER_VERTICAL) {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
@@ -421,7 +440,7 @@ function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): v
       // set the currently selectd slider bar
       //			gpCurrentSlider = pSlider;
 
-      if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+      if (pSlider.uiFlags & SLIDER_VERTICAL) {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
       } else {
         CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
@@ -432,7 +451,7 @@ function SelectedSliderMovementCallBack(pRegion: MOUSE_REGION, reason: INT32): v
 
 function SelectedSliderButtonCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let uiSelectedSlider: UINT32;
-  let pSlider: Pointer<SLIDER> = null;
+  let pSlider: SLIDER | null = null;
 
   // if we already have an anchored slider bar
   if (gpCurrentSlider != null)
@@ -453,7 +472,7 @@ function SelectedSliderButtonCallBack(pRegion: MOUSE_REGION, iReason: INT32): vo
                     }
     */
 
-    if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+    if (pSlider.uiFlags & SLIDER_VERTICAL) {
       CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
     } else {
       CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
@@ -472,7 +491,7 @@ function SelectedSliderButtonCallBack(pRegion: MOUSE_REGION, iReason: INT32): vo
                     }
     */
 
-    if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+    if (pSlider.uiFlags & SLIDER_VERTICAL) {
       CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeYPos);
     } else {
       CalculateNewSliderIncrement(uiSelectedSlider, pRegion.RelativeXPos);
@@ -485,7 +504,7 @@ function SelectedSliderButtonCallBack(pRegion: MOUSE_REGION, iReason: INT32): vo
 
 function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   let dNewIncrement: FLOAT = 0.0;
-  let pSlider: Pointer<SLIDER>;
+  let pSlider: SLIDER | null;
   let usOldIncrement: UINT16;
   let fLastSpot: boolean = false;
   let fFirstSpot: boolean = false;
@@ -494,38 +513,38 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   if (pSlider == null)
     return;
 
-  usOldIncrement = pSlider.value.usCurrentIncrement;
+  usOldIncrement = pSlider.usCurrentIncrement;
 
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
-    if (usPos >= (pSlider.value.usHeight * .99))
+  if (pSlider.uiFlags & SLIDER_VERTICAL) {
+    if (usPos >= (pSlider.usHeight * .99))
       fLastSpot = true;
 
-    if (usPos <= (pSlider.value.usHeight * .01))
+    if (usPos <= (pSlider.usHeight * .01))
       fFirstSpot = true;
 
     // pSlider->usNumberOfIncrements
     if (fFirstSpot)
       dNewIncrement = 0;
     else if (fLastSpot)
-      dNewIncrement = pSlider.value.usNumberOfIncrements;
+      dNewIncrement = pSlider.usNumberOfIncrements;
     else
-      dNewIncrement = (usPos / pSlider.value.usHeight) * pSlider.value.usNumberOfIncrements;
+      dNewIncrement = (usPos / pSlider.usHeight) * pSlider.usNumberOfIncrements;
   } else {
-    dNewIncrement = (usPos / pSlider.value.usWidth) * pSlider.value.usNumberOfIncrements;
+    dNewIncrement = (usPos / pSlider.usWidth) * pSlider.usNumberOfIncrements;
   }
 
-  pSlider.value.usCurrentIncrement = (dNewIncrement + .5);
+  pSlider.usCurrentIncrement = (dNewIncrement + .5);
 
   CalculateNewSliderBoxPosition(pSlider);
 
   // if the the new value is different
-  if (usOldIncrement != pSlider.value.usCurrentIncrement) {
-    if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+  if (usOldIncrement != pSlider.usCurrentIncrement) {
+    if (pSlider.uiFlags & SLIDER_VERTICAL) {
       // Call the call back for the slider
-      ((pSlider.value.SliderChangeCallback).value)(pSlider.value.usNumberOfIncrements - pSlider.value.usCurrentIncrement);
+      pSlider.SliderChangeCallback(pSlider.usNumberOfIncrements - pSlider.usCurrentIncrement);
     } else {
       // Call the call back for the slider
-      ((pSlider.value.SliderChangeCallback).value)(pSlider.value.usCurrentIncrement);
+      pSlider.SliderChangeCallback(pSlider.usCurrentIncrement);
     }
   }
 }
@@ -545,50 +564,50 @@ function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: 
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
+function CalculateNewSliderBoxPosition(pSlider: SLIDER): void {
   let usMaxPos: UINT16;
 
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
+  if (pSlider.uiFlags & SLIDER_VERTICAL) {
     // if the box is in the last position
-    if (pSlider.value.usCurrentIncrement >= (pSlider.value.usNumberOfIncrements)) {
-      pSlider.value.usCurrentSliderBoxPosition = pSlider.value.usPosY + pSlider.value.usHeight; // - pSlider->ubSliderHeight / 2;	// - minus box width
+    if (pSlider.usCurrentIncrement >= (pSlider.usNumberOfIncrements)) {
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosY + pSlider.usHeight; // - pSlider->ubSliderHeight / 2;	// - minus box width
     }
 
     // else if the box is in the first position
-    else if (pSlider.value.usCurrentIncrement == 0) {
-      pSlider.value.usCurrentSliderBoxPosition = pSlider.value.usPosY; // - pSlider->ubSliderHeight / 2;
+    else if (pSlider.usCurrentIncrement == 0) {
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosY; // - pSlider->ubSliderHeight / 2;
     } else {
-      pSlider.value.usCurrentSliderBoxPosition = pSlider.value.usPosY + ((pSlider.value.usHeight / pSlider.value.usNumberOfIncrements) * pSlider.value.usCurrentIncrement);
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosY + ((pSlider.usHeight / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
     }
 
-    usMaxPos = pSlider.value.usPosY + pSlider.value.usHeight; // - pSlider->ubSliderHeight//2 + 1;
+    usMaxPos = pSlider.usPosY + pSlider.usHeight; // - pSlider->ubSliderHeight//2 + 1;
 
     // if the box is past the edge, move it back
-    if (pSlider.value.usCurrentSliderBoxPosition > usMaxPos)
-      pSlider.value.usCurrentSliderBoxPosition = usMaxPos;
+    if (pSlider.usCurrentSliderBoxPosition > usMaxPos)
+      pSlider.usCurrentSliderBoxPosition = usMaxPos;
   } else {
     // if the box is in the last position
-    if (pSlider.value.usCurrentIncrement == (pSlider.value.usNumberOfIncrements)) {
-      pSlider.value.usCurrentSliderBoxPosition = pSlider.value.usPosX + pSlider.value.usWidth - 8 + 1; // - minus box width
+    if (pSlider.usCurrentIncrement == (pSlider.usNumberOfIncrements)) {
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosX + pSlider.usWidth - 8 + 1; // - minus box width
     } else {
-      pSlider.value.usCurrentSliderBoxPosition = pSlider.value.usPosX + ((pSlider.value.usWidth / pSlider.value.usNumberOfIncrements) * pSlider.value.usCurrentIncrement);
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosX + ((pSlider.usWidth / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
     }
-    usMaxPos = pSlider.value.usPosX + pSlider.value.usWidth - 8 + 1;
+    usMaxPos = pSlider.usPosX + pSlider.usWidth - 8 + 1;
 
     // if the box is past the edge, move it back
-    if (pSlider.value.usCurrentSliderBoxPosition > usMaxPos)
-      pSlider.value.usCurrentSliderBoxPosition = usMaxPos;
+    if (pSlider.usCurrentSliderBoxPosition > usMaxPos)
+      pSlider.usCurrentSliderBoxPosition = usMaxPos;
   }
 }
 
-function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
-  let pTemp: Pointer<SLIDER> = null;
+function GetSliderFromID(uiSliderID: UINT32): SLIDER | null {
+  let pTemp: SLIDER | null = null;
 
   pTemp = pSliderHead;
 
   // Get the required slider
-  while (pTemp && pTemp.value.uiSliderID != uiSliderID) {
-    pTemp = pTemp.value.pNext;
+  while (pTemp && pTemp.uiSliderID != uiSliderID) {
+    pTemp = pTemp.pNext;
   }
 
   // if we couldnt find the right slider
@@ -599,19 +618,19 @@ function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
 }
 
 export function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
-  let pSlider: Pointer<SLIDER> = null;
+  let pSlider: SLIDER | null = null;
 
   pSlider = GetSliderFromID(uiSliderID);
   if (pSlider == null)
     return;
 
-  if (uiNewValue >= pSlider.value.usNumberOfIncrements)
+  if (uiNewValue >= pSlider.usNumberOfIncrements)
     return;
 
-  if (pSlider.value.uiFlags & SLIDER_VERTICAL)
-    pSlider.value.usCurrentIncrement = pSlider.value.usNumberOfIncrements - uiNewValue;
+  if (pSlider.uiFlags & SLIDER_VERTICAL)
+    pSlider.usCurrentIncrement = pSlider.usNumberOfIncrements - uiNewValue;
   else
-    pSlider.value.usCurrentIncrement = uiNewValue;
+    pSlider.usCurrentIncrement = uiNewValue;
 
   CalculateNewSliderBoxPosition(pSlider);
 }

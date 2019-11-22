@@ -169,40 +169,48 @@ export let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORL
   ],
 ];
 
-export function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  psScreenX.value = (2 * sCellX) - (2 * sCellY);
-  psScreenY.value = sCellX + sCellY;
+export function FromCellToScreenCoordinates(sCellX: INT16, sCellY: INT16): { sScreenX: INT16, sScreenY: INT16 } {
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+
+  sScreenX = (2 * sCellX) - (2 * sCellY);
+  sScreenY = sCellX + sCellY;
+
+  return { sScreenX, sScreenY };
 }
 
-export function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): void {
-  psCellX.value = ((sScreenX + (2 * sScreenY)) / 4);
-  psCellY.value = ((2 * sScreenY) - sScreenX) / 4;
+export function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16): { sCellX: INT16, sCellY: INT16 } {
+  let sCellX: INT16;
+  let sCellY: INT16;
+
+  sCellX = ((sScreenX + (2 * sScreenY)) / 4);
+  sCellY = ((2 * sScreenY) - sScreenX) / 4;
+
+  return { sCellX, sCellY };
 }
 
 // These two functions take into account that our world is projected and attached
 // to the screen (0,0) in a specific way, and we MUSt take that into account then
 // determining screen coords
 
-export function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreenX: Pointer<FLOAT>, pdScreenY: Pointer<FLOAT>): void {
+export function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT): { dScreenX: FLOAT, dScreenY: FLOAT } {
   let dScreenX: FLOAT;
   let dScreenY: FLOAT;
 
   dScreenX = (2 * dCellX) - (2 * dCellY);
   dScreenY = dCellX + dCellY;
 
-  pdScreenX.value = dScreenX;
-  pdScreenY.value = dScreenY;
+  return { dScreenX, dScreenY };
 }
 
-function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCellX: Pointer<FLOAT>, pdCellY: Pointer<FLOAT>): void {
+function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT): { dCellX: FLOAT, dCellY: FLOAT } {
   let dCellX: FLOAT;
   let dCellY: FLOAT;
 
   dCellX = ((dScreenX + (2 * dScreenY)) / 4);
   dCellY = ((2 * dScreenY) - dScreenX) / 4;
 
-  pdCellX.value = dCellX;
-  pdCellY.value = dCellY;
+  return { dCellX, dCellY };
 }
 
 export function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
@@ -263,7 +271,7 @@ export function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<
     // sOffsetY -= 50;
   }
 
-  FromScreenToCellCoordinates(sOffsetX, sOffsetY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+  ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sOffsetX, sOffsetY));
 
   // World start point is Render center plus this distance
   sStartPointX_W = gsRenderCenterX + sTempPosX_W;
@@ -352,7 +360,10 @@ export function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer
   return true;
 }
 
-function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Pointer<INT16>, psWorldY: Pointer<INT16>): void {
+function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16): { sWorldX: INT16, sWorldY: INT16 } {
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+
   let sOffsetX: INT16;
   let sOffsetY: INT16;
   let sTempPosX_W: INT16;
@@ -364,7 +375,7 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Poin
   sOffsetX = sScreenX - (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
   sOffsetY = sScreenY - (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
 
-  FromScreenToCellCoordinates(sOffsetX, sOffsetY, addressof(sTempPosX_W), addressof(sTempPosY_W));
+  ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sOffsetX, sOffsetY));
 
   // World start point is Render center plus this distance
   sStartPointX_W = gsRenderCenterX + sTempPosX_W;
@@ -373,31 +384,38 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Poin
   // Determine Start block and render offsets
   // Find start block
   // Add adjustment for render origin as well
-  (psWorldX.value) = sStartPointX_W;
-  (psWorldY.value) = sStartPointY_W;
+  sWorldX = sStartPointX_W;
+  sWorldY = sStartPointY_W;
+
+  return { sWorldX, sWorldY };
 }
 
-function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Pointer<INT16>, psWorldCellY: Pointer<INT16>): void {
+function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16): { sWorldX: INT16, sWorldY: INT16 } {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  GetScreenXYWorldCoords(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
+  ({ sWorldX, sWorldY } = GetScreenXYWorldCoords(sScreenX, sScreenY));
 
   // Find start block
-  (psWorldCellX.value) = (sWorldX / CELL_X_SIZE);
-  (psWorldCellY.value) = (sWorldY / CELL_Y_SIZE);
+  sWorldX = (sWorldX / CELL_X_SIZE);
+  sWorldY = (sWorldY / CELL_Y_SIZE);
+
+  return { sWorldX, sWorldY };
 }
 
-export function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<INT16>): void {
+export function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16): INT16 {
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  GetScreenXYWorldCell(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
+  ({ sWorldX, sWorldY } = GetScreenXYWorldCell(sScreenX, sScreenY));
 
-  psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
+  return MAPROWCOLTOPOS(sWorldY, sWorldX);
 }
 
-export function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWorldScreenX: Pointer<INT16>, psWorldScreenY: Pointer<INT16>): void {
+export function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32): { sScreenX: INT16, sScreenY: INT16 } {
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+
   let sScreenCenterX: INT16;
   let sScreenCenterY: INT16;
   let sDistToCenterY: INT16;
@@ -415,11 +433,16 @@ export function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT3
   sScreenCenterY = sDistToCenterX + sDistToCenterY;
 
   // Subtract screen center
-  psWorldScreenX.value = sScreenCenterX + gsCX - gsTLX;
-  psWorldScreenY.value = sScreenCenterY + gsCY - gsTLY;
+  sScreenX = sScreenCenterX + gsCX - gsTLX;
+  sScreenY = sScreenCenterY + gsCY - gsTLY;
+
+  return { sScreenX, sScreenY };
 }
 
-export function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCellY: Pointer<INT32>, sWorldScreenX: INT16, sWorldScreenY: INT16): void {
+export function GetFromAbsoluteScreenXYWorldXY(sWorldScreenX: INT16, sWorldScreenY: INT16): { uiCellX: INT32, uiCellY: INT32 } {
+  let uiCellX: INT32;
+  let uiCellY: INT32;
+
   let sWorldCenterX: INT16;
   let sWorldCenterY: INT16;
   let sDistToCenterY: INT16;
@@ -437,13 +460,15 @@ export function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psW
   sWorldCenterY = ((2 * sDistToCenterY) - sDistToCenterX) / 4;
 
   // Goto center again
-  psWorldCellX.value = sWorldCenterX + gCenterWorldX;
-  psWorldCellY.value = sWorldCenterY + gCenterWorldY;
+  uiCellX = sWorldCenterX + gCenterWorldX;
+  uiCellY = sWorldCenterY + gCenterWorldY;
+
+  return { uiCellX, uiCellY };
 }
 
 // UTILITY FUNTIONS
 
-export function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
+export function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): boolean {
   let sMod: INT16;
   let sPropMod: INT16;
 
@@ -498,7 +523,10 @@ export function DirectionInc(sDirection: INT16): INT16 {
   return DirIncrementer[sDirection];
 }
 
-export function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): boolean {
+export function CellXYToScreenXY(sCellX: INT16, sCellY: INT16): { sScreenX: INT16, sScreenY: INT16 } {
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+
   let sDeltaCellX: INT16;
   let sDeltaCellY: INT16;
   let sDeltaScreenX: INT16;
@@ -507,33 +535,48 @@ export function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer
   sDeltaCellX = sCellX - gsRenderCenterX;
   sDeltaCellY = sCellY - gsRenderCenterY;
 
-  FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY, addressof(sDeltaScreenX), addressof(sDeltaScreenY));
+  ({ sScreenX: sDeltaScreenX, sScreenY: sDeltaScreenY } = FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY));
 
-  sScreenX.value = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
-  sScreenY.value = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
+  sScreenX = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
+  sScreenY = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
 
-  return true;
+  return { sScreenX, sScreenY };
 }
 
-export function ConvertGridNoToXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  sYPos.value = sGridNo / WORLD_COLS;
-  sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
+export function ConvertGridNoToXY(sGridNo: INT16): { sX: INT16, sY: INT16 } {
+  let sX: INT16;
+  let sY: INT16;
+
+  sY = sGridNo / WORLD_COLS;
+  sX = (sGridNo - (sY * WORLD_COLS));
+
+  return { sX, sY };
 }
 
-export function ConvertGridNoToCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  sYPos.value = (sGridNo / WORLD_COLS);
-  sXPos.value = sGridNo - (sYPos.value * WORLD_COLS);
+export function ConvertGridNoToCellXY(sGridNo: INT16): { sCellX: INT16, sCellY: INT16 } {
+  let sCellX: INT16;
+  let sCellY: INT16;
 
-  sYPos.value = (sYPos.value * CELL_Y_SIZE);
-  sXPos.value = (sXPos.value * CELL_X_SIZE);
+  sCellY = (sGridNo / WORLD_COLS);
+  sCellX = sGridNo - (sCellY * WORLD_COLS);
+
+  sCellY = (sCellY * CELL_Y_SIZE);
+  sCellX = (sCellX * CELL_X_SIZE);
+
+  return { sCellX, sCellY };
 }
 
-export function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPos: Pointer<INT16>): void {
-  sYPos.value = (sGridNo / WORLD_COLS);
-  sXPos.value = (sGridNo - (sYPos.value * WORLD_COLS));
+export function ConvertGridNoToCenterCellXY(sGridNo: INT16): { sX: INT16, sY: INT16 } {
+  let sX: INT16;
+  let sY: INT16;
 
-  sYPos.value = (sYPos.value * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
-  sXPos.value = (sXPos.value * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  sY = (sGridNo / WORLD_COLS);
+  sX = (sGridNo - (sY * WORLD_COLS));
+
+  sY = (sY * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+  sX = (sX * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+
+  return { sX, sY };
 }
 
 export function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
@@ -544,10 +587,10 @@ export function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 
   let sYPos2: INT16;
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo1, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo1));
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
+  ({ sX: sXPos2, sY: sYPos2 } = ConvertGridNoToXY(sGridNo2));
 
   uiDist = Math.sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
 
@@ -561,16 +604,16 @@ export function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: IN
   let sYPos2: INT16;
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo1, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo1));
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
+  ({ sX: sXPos2, sY: sYPos2 } = ConvertGridNoToXY(sGridNo2));
 
   return (Math.sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
 
-export function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): boolean {
-  if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
+export function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: SGPRect): boolean {
+  if ((sXPos >= pRect.iLeft) && (sXPos <= pRect.iRight) && (sYPos >= pRect.iTop) && (sYPos <= pRect.iBottom)) {
     return true;
   } else {
     return false;
@@ -840,10 +883,10 @@ export function GridNoOnVisibleWorldTile(sGridNo: INT16): boolean {
   let sYMapPos: INT16;
 
   // Check for valid gridno...
-  ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 20 && sWorldY < (gsBLY - gsTLY - 20)) {
     return true;
@@ -862,10 +905,10 @@ function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): boolean {
   let sYMapPos: INT16;
 
   // Check for valid gridno...
-  ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+  ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 40 && sWorldY < (gsBLY - gsTLY - 20)) {
     return true;

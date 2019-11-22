@@ -11,7 +11,7 @@ export function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGrid
   pSoldier.value.fDelayedMovement = bValue;
   pSoldier.value.sDelayedMovementCauseGridNo = sCauseGridNo;
 
-  RESETTIMECOUNTER(pSoldier.value.NextTileCounter, NEXT_TILE_CHECK_DELAY);
+  pSoldier.value.NextTileCounter = RESETTIMECOUNTER(NEXT_TILE_CHECK_DELAY);
 
   // ATE: Now update realtime movement speed....
   // check if guy exists here...
@@ -318,7 +318,7 @@ export function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 
   if (pSoldier.value.fDelayedMovement) {
     if (TIMECOUNTERDONE(pSoldier.value.NextTileCounter, NEXT_TILE_CHECK_DELAY)) {
-      RESETTIMECOUNTER(pSoldier.value.NextTileCounter, NEXT_TILE_CHECK_DELAY);
+      pSoldier.value.NextTileCounter = RESETTIMECOUNTER(NEXT_TILE_CHECK_DELAY);
 
       // Get direction from gridno...
       bCauseDirection = GetDirectionToGridNoFromGridNo(pSoldier.value.sGridNo, pSoldier.value.sDelayedMovementCauseGridNo);

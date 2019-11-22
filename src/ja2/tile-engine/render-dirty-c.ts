@@ -440,7 +440,7 @@ export function UpdateSaveBuffer(): boolean {
   let ubBitDepth: UINT8;
 
   // Update saved buffer - do for the viewport size ony!
-  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
+  ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
 
   pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
   pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
@@ -654,7 +654,7 @@ function RecountVideoOverlays(): void {
   }
 }
 
-export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>): INT32 {
+export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: VIDEO_OVERLAY_DESC): INT32 {
   let iBlitterIndex: UINT32;
   let iBackIndex: UINT32;
   let uiStringLength: UINT16;
@@ -662,17 +662,17 @@ export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDE
 
   if (uiFlags & VOVERLAY_DIRTYBYTEXT) {
     // Get dims by supplied text
-    if (pTopmostDesc.value.pzText == null) {
+    if (pTopmostDesc.pzText == null) {
       return -1;
     }
 
-    uiStringLength = StringPixLength(pTopmostDesc.value.pzText, pTopmostDesc.value.uiFontID);
-    uiStringHeight = GetFontHeight(pTopmostDesc.value.uiFontID);
+    uiStringLength = StringPixLength(pTopmostDesc.pzText, pTopmostDesc.uiFontID);
+    uiStringHeight = GetFontHeight(pTopmostDesc.uiFontID);
 
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.sLeft, pTopmostDesc.sTop, (pTopmostDesc.sLeft + uiStringLength), (pTopmostDesc.sTop + uiStringHeight));
   } else {
     // Register background
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, pTopmostDesc.value.sRight, pTopmostDesc.value.sBottom);
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.sLeft, pTopmostDesc.sTop, pTopmostDesc.sRight, pTopmostDesc.sBottom);
   }
 
   if (iBackIndex == -1) {
@@ -690,11 +690,11 @@ export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDE
   gVideoOverlays[iBlitterIndex].fAllocated = 2;
   gVideoOverlays[iBlitterIndex].uiBackground = iBackIndex;
   gVideoOverlays[iBlitterIndex].pBackground = addressof(gBackSaves[iBackIndex]);
-  gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc.value.BltCallback;
+  gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc.BltCallback;
 
   // Update blitter info
   // Set update flags to zero since we are forcing all updates
-  pTopmostDesc.value.uiFlags = 0;
+  pTopmostDesc.uiFlags = 0;
   UpdateVideoOverlay(pTopmostDesc, iBlitterIndex, true);
 
   // Set disabled flag to true
@@ -743,7 +743,7 @@ export function RemoveVideoOverlay(iVideoOverlay: INT32): void {
   }
 }
 
-export function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterIndex: UINT32, fForceAll: boolean): boolean {
+export function UpdateVideoOverlay(pTopmostDesc: VIDEO_OVERLAY_DESC, iBlitterIndex: UINT32, fForceAll: boolean): boolean {
   let uiFlags: UINT32;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
@@ -753,35 +753,35 @@ export function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iB
       return false;
     }
 
-    uiFlags = pTopmostDesc.value.uiFlags;
+    uiFlags = pTopmostDesc.uiFlags;
 
     if (fForceAll) {
-      gVideoOverlays[iBlitterIndex].uiFontID = pTopmostDesc.value.uiFontID;
-      gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.value.sX;
-      gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.value.sY;
-      gVideoOverlays[iBlitterIndex].ubFontBack = pTopmostDesc.value.ubFontBack;
-      gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc.value.ubFontFore;
+      gVideoOverlays[iBlitterIndex].uiFontID = pTopmostDesc.uiFontID;
+      gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.sX;
+      gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.sY;
+      gVideoOverlays[iBlitterIndex].ubFontBack = pTopmostDesc.ubFontBack;
+      gVideoOverlays[iBlitterIndex].ubFontFore = pTopmostDesc.ubFontFore;
 
-      if (pTopmostDesc.value.pzText != null) {
-        gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.value.pzText;
+      if (pTopmostDesc.pzText != null) {
+        gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.pzText;
       }
     } else {
       if (uiFlags & VOVERLAY_DESC_TEXT) {
-        if (pTopmostDesc.value.pzText != null) {
-          gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.value.pzText;
+        if (pTopmostDesc.pzText != null) {
+          gVideoOverlays[iBlitterIndex].zText = pTopmostDesc.pzText;
         }
       }
 
       if (uiFlags & VOVERLAY_DESC_DISABLED) {
-        gVideoOverlays[iBlitterIndex].fDisabled = pTopmostDesc.value.fDisabled;
-        DisableBackgroundRect(gVideoOverlays[iBlitterIndex].uiBackground, pTopmostDesc.value.fDisabled);
+        gVideoOverlays[iBlitterIndex].fDisabled = pTopmostDesc.fDisabled;
+        DisableBackgroundRect(gVideoOverlays[iBlitterIndex].uiBackground, pTopmostDesc.fDisabled);
       }
 
       // If position has changed and flags are of type that use dirty rects, adjust
       if ((uiFlags & VOVERLAY_DESC_POSITION)) {
         if (gVideoOverlays[iBlitterIndex].uiFlags & VOVERLAY_DIRTYBYTEXT) {
           // Get dims by supplied text
-          if (pTopmostDesc.value.pzText == null) {
+          if (pTopmostDesc.pzText == null) {
             return false;
           }
 
@@ -792,9 +792,9 @@ export function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iB
           // Remove background
           FreeBackgroundRectPending(gVideoOverlays[iBlitterIndex].uiBackground);
 
-          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.value.sLeft, pTopmostDesc.value.sTop, (pTopmostDesc.value.sLeft + uiStringLength), (pTopmostDesc.value.sTop + uiStringHeight));
-          gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.value.sX;
-          gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.value.sY;
+          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, null, pTopmostDesc.sLeft, pTopmostDesc.sTop, (pTopmostDesc.sLeft + uiStringLength), (pTopmostDesc.sTop + uiStringHeight));
+          gVideoOverlays[iBlitterIndex].sX = pTopmostDesc.sX;
+          gVideoOverlays[iBlitterIndex].sY = pTopmostDesc.sY;
         }
       }
     }

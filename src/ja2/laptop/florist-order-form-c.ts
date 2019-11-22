@@ -413,8 +413,8 @@ export function ExitFloristOrderForm(): void {
   RemoveButton(guiFlowerOrderGalleryButton);
 
   // Store the text fields
-  Get16BitStringFromField(1, gsSentimentTextField);
-  Get16BitStringFromField(2, gsNameTextField);
+  gsSentimentTextField = Get16BitStringFromField(1);
+  gsNameTextField = Get16BitStringFromField(2);
   gbCurrentlySelectedCard = -1;
 
   DestroyFlowerOrderTextInputBoxes();
@@ -868,10 +868,10 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
 
       // if its the personel sentiment field
       if (ubTextFieldID == 1) {
-        Get16BitStringFromField(ubTextFieldID, gsSentimentTextField);
+        gsSentimentTextField = Get16BitStringFromField(ubTextFieldID);
       } else if (ubTextFieldID == 2) {
         // else its the name field
-        Get16BitStringFromField(ubTextFieldID, gsNameTextField);
+        gsNameTextField = Get16BitStringFromField(ubTextFieldID);
       }
 
       SetActiveField(0);
@@ -895,7 +895,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
 
       // disable the text entry fields
       //			DisableAllTextFields();
-      Get16BitStringFromField(1, gsSentimentTextField);
+      gsSentimentTextField = Get16BitStringFromField(1);
       KillTextInputMode();
 
       // disable the clear order and accept order buttons, (their rendering interferes with the drop down graphics)
@@ -1062,10 +1062,10 @@ function HandleFloristOrderKeyBoardInput(): void {
 
           // if its the personel sentiment field
           if (ubTextFieldID == 1) {
-            Get16BitStringFromField(ubTextFieldID, gsSentimentTextField);
+            gsSentimentTextField = Get16BitStringFromField(ubTextFieldID);
           } else if (ubTextFieldID == 2) {
             // else its the name field
-            Get16BitStringFromField(ubTextFieldID, gsNameTextField);
+            gsNameTextField = Get16BitStringFromField(ubTextFieldID);
           }
 
           SetActiveField(0);

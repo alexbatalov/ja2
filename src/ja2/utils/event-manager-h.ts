@@ -6,7 +6,18 @@ export interface EVENT {
   usDelay: UINT16;
   uiEvent: UINT32;
   uiDataSize: UINT32;
-  pData: Pointer<BYTE>;
+  pData: any;
+}
+
+export function createEvent(): EVENT {
+  return {
+    TimeStamp: 0,
+    uiFlags: 0,
+    usDelay: 0,
+    uiEvent: 0,
+    uiDataSize: 0,
+    pData: undefined,
+  };
 }
 
 export const PRIMARY_EVENT_QUEUE = 0;

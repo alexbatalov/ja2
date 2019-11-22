@@ -1246,7 +1246,7 @@ function DisplayFactList(): void {
       sTemp = FactDescText[usLoop1];
 
       if (StringPixLength(sTemp, QUEST_DBS_FONT_DYNAMIC_TEXT()) > QUEST_DBS_SECOND_TITLE_COL_WIDTH) {
-        ReduceStringLength(sTemp, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT());
+        sTemp = ReduceStringLength(sTemp, QUEST_DBS_SECOND_TITLE_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT());
       }
 
       //			DisplayWrappedString( QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_STATIC_TEXT, FactDescText[ usLoop1 ], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
@@ -2181,7 +2181,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string /* ST
       gfRedrawQuestDebugSystem = true;
 
       // get the striong from the text field
-      Get16BitStringFromField(0, zText);
+      zText = Get16BitStringFromField(0);
 
       // if the text is not null
       if (zText[0] != '\0') {

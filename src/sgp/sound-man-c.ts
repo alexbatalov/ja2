@@ -207,7 +207,7 @@ export function ShutdownSoundManager(): void {
 //
 //*******************************************************************************
 
-export function SoundPlay(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlay(pFilename: string /* STR */, pParms: SOUNDPARMS): UINT32 {
   let uiSample: UINT32;
   let uiChannel: UINT32;
 
@@ -246,7 +246,7 @@ export function SoundPlay(pFilename: string /* STR */, pParms: Pointer<SOUNDPARM
 //						If an error occured, SOUND_ERROR will be returned
 //
 //*******************************************************************************
-export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>): UINT32 {
+export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: SOUNDPARMS): UINT32 {
   let uiChannel: UINT32;
   let hRealFileHandle: HANDLE;
   let pFileHandlefileName: string /* CHAR8[128] */;
@@ -311,7 +311,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: Point
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-export function SoundPlayRandom(pFilename: string /* STR */, pParms: Pointer<RANDOMPARMS>): UINT32 {
+export function SoundPlayRandom(pFilename: string /* STR */, pParms: RANDOMPARMS): UINT32 {
   let uiSample: UINT32;
   let uiTicks: UINT32;
 
@@ -319,49 +319,49 @@ export function SoundPlayRandom(pFilename: string /* STR */, pParms: Pointer<RAN
     if ((uiSample = SoundLoadSample(pFilename)) != NO_SAMPLE) {
       pSampleList[uiSample].uiFlags |= (SAMPLE_RANDOM | SAMPLE_LOCKED);
 
-      if (pParms.value.uiTimeMin == SOUND_PARMS_DEFAULT)
+      if (pParms.uiTimeMin == SOUND_PARMS_DEFAULT)
         return SOUND_ERROR;
       else
-        pSampleList[uiSample].uiTimeMin = pParms.value.uiTimeMin;
+        pSampleList[uiSample].uiTimeMin = pParms.uiTimeMin;
 
-      if (pParms.value.uiTimeMax == SOUND_PARMS_DEFAULT)
-        pSampleList[uiSample].uiTimeMax = pParms.value.uiTimeMin;
+      if (pParms.uiTimeMax == SOUND_PARMS_DEFAULT)
+        pSampleList[uiSample].uiTimeMax = pParms.uiTimeMin;
       else
-        pSampleList[uiSample].uiTimeMax = pParms.value.uiTimeMax;
+        pSampleList[uiSample].uiTimeMax = pParms.uiTimeMax;
 
-      pSampleList[uiSample].uiSpeedMin = pParms.value.uiSpeedMin;
+      pSampleList[uiSample].uiSpeedMin = pParms.uiSpeedMin;
 
-      pSampleList[uiSample].uiSpeedMax = pParms.value.uiSpeedMax;
+      pSampleList[uiSample].uiSpeedMax = pParms.uiSpeedMax;
 
-      if (pParms.value.uiVolMin == SOUND_PARMS_DEFAULT)
+      if (pParms.uiVolMin == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiVolMin = guiSoundDefaultVolume;
       else
-        pSampleList[uiSample].uiVolMin = pParms.value.uiVolMin;
+        pSampleList[uiSample].uiVolMin = pParms.uiVolMin;
 
-      if (pParms.value.uiVolMax == SOUND_PARMS_DEFAULT)
+      if (pParms.uiVolMax == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiVolMax = guiSoundDefaultVolume;
       else
-        pSampleList[uiSample].uiVolMax = pParms.value.uiVolMax;
+        pSampleList[uiSample].uiVolMax = pParms.uiVolMax;
 
-      if (pParms.value.uiPanMin == SOUND_PARMS_DEFAULT)
+      if (pParms.uiPanMin == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiPanMin = 64;
       else
-        pSampleList[uiSample].uiPanMin = pParms.value.uiPanMin;
+        pSampleList[uiSample].uiPanMin = pParms.uiPanMin;
 
-      if (pParms.value.uiPanMax == SOUND_PARMS_DEFAULT)
+      if (pParms.uiPanMax == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiPanMax = 64;
       else
-        pSampleList[uiSample].uiPanMax = pParms.value.uiPanMax;
+        pSampleList[uiSample].uiPanMax = pParms.uiPanMax;
 
-      if (pParms.value.uiMaxInstances == SOUND_PARMS_DEFAULT)
+      if (pParms.uiMaxInstances == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiMaxInstances = 1;
       else
-        pSampleList[uiSample].uiMaxInstances = pParms.value.uiMaxInstances;
+        pSampleList[uiSample].uiMaxInstances = pParms.uiMaxInstances;
 
-      if (pParms.value.uiPriority == SOUND_PARMS_DEFAULT)
+      if (pParms.uiPriority == SOUND_PARMS_DEFAULT)
         pSampleList[uiSample].uiPriority = PRIORITY_RANDOM;
       else
-        pSampleList[uiSample].uiPriority = pParms.value.uiPriority;
+        pSampleList[uiSample].uiPriority = pParms.uiPriority;
 
       pSampleList[uiSample].uiInstances = 0;
 
@@ -384,7 +384,7 @@ export function SoundPlayRandom(pFilename: string /* STR */, pParms: Pointer<RAN
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-function SoundStreamCallback(pFilename: string /* STR */, pParms: Pointer<SOUNDPARMS>, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void, pData: Pointer<void>): UINT32 {
+function SoundStreamCallback(pFilename: string /* STR */, pParms: SOUNDPARMS, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: any) => void, pData: any): UINT32 {
   let uiChannel: UINT32;
   let uiSoundID: UINT32;
 
@@ -991,15 +991,13 @@ function SoundStartRandom(uiSample: UINT32): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
   if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
-    memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
-
     //		spParms.uiSpeed=pSampleList[uiSample].uiSpeedMin+Random(pSampleList[uiSample].uiSpeedMax-pSampleList[uiSample].uiSpeedMin);
     spParms.uiVolume = pSampleList[uiSample].uiVolMin + Random(pSampleList[uiSample].uiVolMax - pSampleList[uiSample].uiVolMin);
     spParms.uiPan = pSampleList[uiSample].uiPanMin + Random(pSampleList[uiSample].uiPanMax - pSampleList[uiSample].uiPanMin);
     spParms.uiLoop = 1;
     spParms.uiPriority = pSampleList[uiSample].uiPriority;
 
-    if ((uiSoundID = SoundStartSample(uiSample, uiChannel, addressof(spParms))) != SOUND_ERROR) {
+    if ((uiSoundID = SoundStartSample(uiSample, uiChannel, spParms)) != SOUND_ERROR) {
       pSampleList[uiSample].uiTimeNext = GetTickCount() + pSampleList[uiSample].uiTimeMin + Random(pSampleList[uiSample].uiTimeMax - pSampleList[uiSample].uiTimeMin);
       pSampleList[uiSample].uiInstances++;
       return uiSoundID;
@@ -1813,7 +1811,7 @@ function SoundGetFreeChannel(): UINT32 {
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
+function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: SOUNDPARMS | null): UINT32 {
   let uiSoundID: UINT32;
   let AILString: string /* CHAR8[200] */;
 
@@ -1847,45 +1845,45 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
       AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, uiSpeed);
     }
   } else {
-    if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT)) {
-      Assert((pParms.value.uiSpeed > 0) && (pParms.value.uiSpeed <= 60000));
-      AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, pParms.value.uiSpeed);
+    if ((pParms != null) && (pParms.uiSpeed != SOUND_PARMS_DEFAULT)) {
+      Assert((pParms.uiSpeed > 0) && (pParms.uiSpeed <= 60000));
+      AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, pParms.uiSpeed);
     }
   }
 
-  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.uiPitchBend != SOUND_PARMS_DEFAULT)) {
     let uiRate: UINT32 = AIL_sample_playback_rate(pSoundList[uiChannel].hMSS);
-    let uiBend: UINT32 = uiRate * pParms.value.uiPitchBend / 100;
+    let uiBend: UINT32 = uiRate * pParms.uiPitchBend / 100;
     AIL_set_sample_playback_rate(pSoundList[uiChannel].hMSS, uiRate + (Random(uiBend * 2) - uiBend));
   }
 
-  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
-    AIL_set_sample_volume(pSoundList[uiChannel].hMSS, pParms.value.uiVolume);
+  if ((pParms != null) && (pParms.uiVolume != SOUND_PARMS_DEFAULT))
+    AIL_set_sample_volume(pSoundList[uiChannel].hMSS, pParms.uiVolume);
   else
     AIL_set_sample_volume(pSoundList[uiChannel].hMSS, guiSoundDefaultVolume);
 
-  if ((pParms != null) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
-    AIL_set_sample_loop_count(pSoundList[uiChannel].hMSS, pParms.value.uiLoop);
+  if ((pParms != null) && (pParms.uiLoop != SOUND_PARMS_DEFAULT)) {
+    AIL_set_sample_loop_count(pSoundList[uiChannel].hMSS, pParms.uiLoop);
 
     // If looping infinately, lock the sample so it can't be unloaded
     // and mark it as a looping sound
-    if (pParms.value.uiLoop == 0) {
+    if (pParms.uiLoop == 0) {
       pSampleList[uiSample].uiFlags |= SAMPLE_LOCKED;
       pSoundList[uiChannel].fLooping = true;
     }
   }
 
-  if ((pParms != null) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
-    AIL_set_sample_pan(pSoundList[uiChannel].hMSS, pParms.value.uiPan);
+  if ((pParms != null) && (pParms.uiPan != SOUND_PARMS_DEFAULT))
+    AIL_set_sample_pan(pSoundList[uiChannel].hMSS, pParms.uiPan);
 
-  if ((pParms != null) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
-    pSoundList[uiChannel].uiPriority = pParms.value.uiPriority;
+  if ((pParms != null) && (pParms.uiPriority != SOUND_PARMS_DEFAULT))
+    pSoundList[uiChannel].uiPriority = pParms.uiPriority;
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
-    pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
-    pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
+  if ((pParms != null) && (pParms.EOSCallback != SOUND_PARMS_DEFAULT)) {
+    pSoundList[uiChannel].EOSCallback = pParms.EOSCallback;
+    pSoundList[uiChannel].pCallbackData = pParms.pCallbackData;
   } else {
     pSoundList[uiChannel].EOSCallback = null;
     pSoundList[uiChannel].pCallbackData = null;
@@ -1914,7 +1912,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
+function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms: SOUNDPARMS | null): UINT32 {
   let uiSoundID: UINT32;
   let uiSpeed: UINT32;
   let AILString: string /* CHAR8[200] */;
@@ -1933,43 +1931,43 @@ function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms
     return SOUND_ERROR;
   }
 
-  if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
-    uiSpeed = pParms.value.uiSpeed;
+  if ((pParms != null) && (pParms.uiSpeed != SOUND_PARMS_DEFAULT))
+    uiSpeed = pParms.uiSpeed;
   else
     uiSpeed = AIL_stream_playback_rate(pSoundList[uiChannel].hMSSStream);
 
-  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
-    let uiBend: UINT32 = uiSpeed * pParms.value.uiPitchBend / 100;
+  if ((pParms != null) && (pParms.uiPitchBend != SOUND_PARMS_DEFAULT)) {
+    let uiBend: UINT32 = uiSpeed * pParms.uiPitchBend / 100;
     uiSpeed += (Random(uiBend * 2) - uiBend);
   }
 
   AIL_set_stream_playback_rate(pSoundList[uiChannel].hMSSStream, uiSpeed);
 
-  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
-    AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, pParms.value.uiVolume);
+  if ((pParms != null) && (pParms.uiVolume != SOUND_PARMS_DEFAULT))
+    AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, pParms.uiVolume);
   else
     AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, guiSoundDefaultVolume);
 
   if (pParms != null) {
-    if (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)
-      AIL_set_stream_loop_count(pSoundList[uiChannel].hMSSStream, pParms.value.uiLoop);
+    if (pParms.uiLoop != SOUND_PARMS_DEFAULT)
+      AIL_set_stream_loop_count(pSoundList[uiChannel].hMSSStream, pParms.uiLoop);
   }
 
-  if ((pParms != null) && (pParms.value.uiPan != SOUND_PARMS_DEFAULT))
-    AIL_set_stream_pan(pSoundList[uiChannel].hMSSStream, pParms.value.uiPan);
+  if ((pParms != null) && (pParms.uiPan != SOUND_PARMS_DEFAULT))
+    AIL_set_stream_pan(pSoundList[uiChannel].hMSSStream, pParms.uiPan);
 
   AIL_start_stream(pSoundList[uiChannel].hMSSStream);
 
   uiSoundID = SoundGetUniqueID();
   pSoundList[uiChannel].uiSoundID = uiSoundID;
   if (pParms)
-    pSoundList[uiChannel].uiPriority = pParms.value.uiPriority;
+    pSoundList[uiChannel].uiPriority = pParms.uiPriority;
   else
     pSoundList[uiChannel].uiPriority = SOUND_PARMS_DEFAULT;
 
-  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
-    pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
-    pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
+  if ((pParms != null) && (pParms.EOSCallback != SOUND_PARMS_DEFAULT)) {
+    pSoundList[uiChannel].EOSCallback = pParms.EOSCallback;
+    pSoundList[uiChannel].pCallbackData = pParms.pCallbackData;
   } else {
     pSoundList[uiChannel].EOSCallback = null;
     pSoundList[uiChannel].pCallbackData = null;

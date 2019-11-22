@@ -70,7 +70,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
         }
 
         // Get XY from Gridno
-        ConvertGridNoToCenterCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
+        ({ sX: sXPos, sY: sYPos } = ConvertGridNoToCenterCellXY(sGridNo));
 
         EVENT_SetSoldierPosition(pPlanSoldier, sXPos, sYPos);
         EVENT_SetSoldierDestination(pPlanSoldier, sGridNo);
@@ -110,7 +110,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
     sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, true, (gpUIPlannedSoldier.value.bShownAimTime / 2));
 
     // Get XY from Gridno
-    ConvertGridNoToCenterCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
+    ({ sX: sXPos, sY: sYPos } = ConvertGridNoToCenterCellXY(sGridNo));
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, false)) {

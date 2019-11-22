@@ -156,7 +156,7 @@ export function ExtractAndUpdateMapInfo(): void {
     gMapInformation.ubRestrictedScrollID = temp;
 
   // set up fields for exitgrid information
-  Get16BitStringFromField(7, str);
+  str = Get16BitStringFromField(7);
   if (str[0] >= 'a' && str[0] <= 'z')
     str[0] -= 32; // uppercase it!
   if (str[0] >= 'A' && str[0] <= 'Z' && str[1] >= '0' && str[1] <= '9') {

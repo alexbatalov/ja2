@@ -224,11 +224,11 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): boolean {
   // Get XY values
   {
     // Get XY locations for gridno.
-    ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+    ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo));
 
     // Get screen XY pos from map XY
     // Be carefull to convert to cell cords
-    CellXYToScreenXY(((sXMapPos * CELL_X_SIZE)), ((sYMapPos * CELL_Y_SIZE)), addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = CellXYToScreenXY(((sXMapPos * CELL_X_SIZE)), ((sYMapPos * CELL_Y_SIZE))));
 
     // First get mouse xy screen location
     sX = sScreenX;
@@ -1050,7 +1050,7 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
   }
 }
 
-export function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): boolean {
+export function TalkingMenuGiveItem(ubNPC: UINT8, pObject: OBJECTTYPE, bInvPos: INT8): boolean {
   if (SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) == false) {
     return false;
   }
@@ -1271,7 +1271,7 @@ export function HandleWaitTimerForNPCTrigger(): void {
 }
 
 export function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   // OK, Move to gridNo!
 
   // Shotdown any panel we had up...
@@ -1284,39 +1284,39 @@ export function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuot
   }
 
   // zap any delay in this soldier
-  ZEROTIMECOUNTER(pSoldier.value.AICounter);
-  if (pSoldier.value.bNextAction == Enum289.AI_ACTION_WAIT) {
-    pSoldier.value.bNextAction = Enum289.AI_ACTION_NONE;
-    pSoldier.value.usNextActionData = 0;
+  pSoldier.AICounter = ZEROTIMECOUNTER();
+  if (pSoldier.bNextAction == Enum289.AI_ACTION_WAIT) {
+    pSoldier.bNextAction = Enum289.AI_ACTION_NONE;
+    pSoldier.usNextActionData = 0;
   }
 
   // if player controlled, set under AI control flag
-  if (pSoldier.value.bTeam == gbPlayerNum) {
-    pSoldier.value.uiStatusFlags |= SOLDIER_PCUNDERAICONTROL;
+  if (pSoldier.bTeam == gbPlayerNum) {
+    pSoldier.uiStatusFlags |= SOLDIER_PCUNDERAICONTROL;
   }
 
   // OK, set in motion!
-  pSoldier.value.bNextAction = Enum289.AI_ACTION_WALK;
+  pSoldier.bNextAction = Enum289.AI_ACTION_WALK;
 
   // Set dest!
-  pSoldier.value.usNextActionData = usGridNo;
+  pSoldier.usNextActionData = usGridNo;
 
   // UNless he's has a pending action, delete what he was doing!
   // Cancel anything he was doing
-  if (pSoldier.value.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
+  if (pSoldier.bAction != Enum289.AI_ACTION_PENDING_ACTION) {
     CancelAIAction(pSoldier, true);
   }
   // Go for it!
 
   // Set flags to do stuff once there...
-  pSoldier.value.ubQuoteRecord = (ubQuoteNum + 1);
-  pSoldier.value.ubQuoteActionID = ActionIDForMovementRecord(ubTargetNPC, ubQuoteNum);
+  pSoldier.ubQuoteRecord = (ubQuoteNum + 1);
+  pSoldier.ubQuoteActionID = ActionIDForMovementRecord(ubTargetNPC, ubQuoteNum);
 
   // Set absolute dest
-  pSoldier.value.sAbsoluteFinalDestination = usGridNo;
+  pSoldier.sAbsoluteFinalDestination = usGridNo;
 
   // handle this guy's AI right away so that we can get him moving
-  pSoldier.value.fAIFlags |= AI_HANDLE_EVERY_FRAME;
+  pSoldier.fAIFlags |= AI_HANDLE_EVERY_FRAME;
 }
 
 export function HandleNPCClosePanel(): void {

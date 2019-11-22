@@ -1156,7 +1156,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       pSoldier.value.fFlashLocator = false;
     } else {
       if (TIMECOUNTERDONE(pSoldier.value.BlinkSelCounter, 80)) {
-        RESETTIMECOUNTER(pSoldier.value.BlinkSelCounter, 80);
+        pSoldier.value.BlinkSelCounter = RESETTIMECOUNTER(80);
 
         //	pSoldier->fShowLocator = !pSoldier->fShowLocator;
 
@@ -2488,7 +2488,7 @@ export function HandleTopMessages(): void {
     if (gTacticalStatus.ubTopMessageType == Enum216.COMPUTER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.COMPUTER_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.MILITIA_INTERRUPT_MESSAGE || gTacticalStatus.ubTopMessageType == Enum216.AIR_RAID_TURN_MESSAGE) {
       // OK, update timer.....
       if (TIMECOUNTERDONE(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS)) {
-        RESETTIMECOUNTER(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+        giTimerTeamTurnUpdate = RESETTIMECOUNTER(PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
         // Update counter....
         if (gTacticalStatus.usTactialTurnLimitCounter < gTacticalStatus.usTactialTurnLimitMax) {
@@ -2510,7 +2510,7 @@ export function HandleTopMessages(): void {
             gTacticalStatus.uiTactialTurnLimitClock = 0;
 
             if (TIMECOUNTERDONE(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS)) {
-              RESETTIMECOUNTER(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+              giTimerTeamTurnUpdate = RESETTIMECOUNTER(PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
               if (gTacticalStatus.fTactialTurnLimitStartedBeep) {
                 if ((GetJA2Clock() - gTopMessage.uiTimeSinceLastBeep) > PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS) {
@@ -2723,7 +2723,7 @@ export function InitPlayerUIBar(fInterrupt: boolean): void {
   gTacticalStatus.fTactialTurnLimitStartedBeep = false;
 
   // RESET COIUNTER...
-  RESETTIMECOUNTER(giTimerTeamTurnUpdate, PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+  giTimerTeamTurnUpdate = RESETTIMECOUNTER(PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
   // OK, set value
   if (fInterrupt != true) {
@@ -3101,13 +3101,13 @@ export function RenderTopmostMultiPurposeLocator(): void {
     return;
   }
 
-  ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo, addressof(sX), addressof(sY));
+  ({ sX, sY } = ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo));
 
   dOffsetX = (sX - gsRenderCenterX);
   dOffsetY = (sY - gsRenderCenterY);
 
   // Calculate guy's position
-  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+  ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
   sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
   sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;

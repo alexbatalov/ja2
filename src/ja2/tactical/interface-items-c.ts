@@ -1704,7 +1704,8 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, 
         pStr = swprintf("%s", ShortItemNames[pObject.value.usAttachItem[ubStatusIndex - RENDER_ITEM_ATTACHMENT1]]);
       }
 
-      fLineSplit = WrapString(pStr, pStr2, WORD_WRAP_INV_WIDTH, ITEM_FONT());
+      ({ pStr, pStr2 } = WrapString(pStr, WORD_WRAP_INV_WIDTH, ITEM_FONT()));
+      fLineSplit = pStr2 !== '';
 
       ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(sX, sY, sWidth, sHeight, ITEM_FONT(), pStr));
       sFontY = sY + 1;

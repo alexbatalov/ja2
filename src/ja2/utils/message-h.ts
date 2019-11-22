@@ -13,6 +13,21 @@ export interface ScrollStringSt {
   pPrev: ScrollStringSt | null /* Pointer<ScrollStringSt> */;
 }
 
+export function createScrollStringSt(): ScrollStringSt {
+  return {
+    pString16: '',
+    iVideoOverlay: 0,
+    uiFont: 0,
+    usColor: 0,
+    uiFlags: 0,
+    fBeginningOfNewString: false,
+    uiTimeOfLastUpdate: 0,
+    uiPadding: createArray(5, 0),
+    pNext: null,
+    pPrev: null,
+  };
+}
+
 export const MSG_INTERFACE = 0;
 export const MSG_DIALOG = 1;
 const MSG_CHAT = 2;
@@ -30,8 +45,6 @@ export const MSG_SKULL_UI_FEEDBACK = 11;
 export const MSG_FONT_RED = FONT_MCOLOR_RED;
 export const MSG_FONT_YELLOW = FONT_MCOLOR_LTYELLOW;
 const MSG_FONT_WHITE = FONT_MCOLOR_WHITE;
-
-export type ScrollStringStPtr = Pointer<ScrollStringSt>;
 
 /* unused functions, written by Mr. Carter, so don't expect these to work...
 UINT8 GetTheRelativePositionOfCurrentMessage( void );

@@ -2045,7 +2045,7 @@ export function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ
   Corpse.ubBodyType = pSoldier.value.ubBodyType;
   Corpse.sGridNo = sGridNo;
 
-  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
 
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));

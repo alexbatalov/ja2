@@ -3315,7 +3315,7 @@ export function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
 }
 
 export function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
-  RESETTIMECOUNTER(MercPtrs[ubID].value.FlashSelCounter, FLASH_SELECTOR_DELAY);
+  MercPtrs[ubID].value.FlashSelCounter = RESETTIMECOUNTER(FLASH_SELECTOR_DELAY);
 
   // LocateSoldier( ubID, FALSE );	// IC - this is already being done outside of this function :)
   MercPtrs[ubID].value.fFlashLocator = true;
@@ -3404,7 +3404,7 @@ export function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void 
     pSoldier.value.fClosePanelToDie = true;
     pSoldier.value.ubClosePanelFrame = 0;
     pSoldier.value.ubDeadPanelFrame = 0;
-    RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
+    pSoldier.value.PanelAnimateCounter = RESETTIMECOUNTER(160);
   }
 
   if (pSoldier.value.fClosePanel) {
@@ -3424,7 +3424,7 @@ export function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void 
           }
         }
       }
-      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
+      pSoldier.value.PanelAnimateCounter = RESETTIMECOUNTER(160);
     }
   }
 
@@ -3467,7 +3467,7 @@ export function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void 
         }
         HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier);
       }
-      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
+      pSoldier.value.PanelAnimateCounter = RESETTIMECOUNTER(160);
     }
   }
 
@@ -3498,7 +3498,7 @@ export function HandlePanelFaceAnimations(pSoldier: Pointer<SOLDIERTYPE>): void 
           RestoreExternBackgroundRect(pSoldier.value.sPanelFaceX, pSoldier.value.sPanelFaceY, TM_FACE_WIDTH, TM_FACE_HEIGHT);
         }
       }
-      RESETTIMECOUNTER(pSoldier.value.PanelAnimateCounter, 160);
+      pSoldier.value.PanelAnimateCounter = RESETTIMECOUNTER(160);
     }
   }
 
@@ -3788,7 +3788,7 @@ export function RenderTownIDString(): void {
   SetFontBackground(FONT_BLACK);
 
   zTownIDString = GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, true);
-  ReduceStringLength(zTownIDString, 80, COMPFONT());
+  zTownIDString = ReduceStringLength(zTownIDString, 80, COMPFONT());
   ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT(), zTownIDString));
   mprintf(sFontX, sFontY, "%s", zTownIDString);
 }

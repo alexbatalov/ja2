@@ -2818,13 +2818,13 @@ export function RenderTopmostFlashingItems(): void {
           let sYPos: INT16;
           let iBack: INT32;
 
-          ConvertGridNoToCenterCellXY(pItemPool.value.sGridNo, addressof(sX), addressof(sY));
+          ({ sX, sY } = ConvertGridNoToCenterCellXY(pItemPool.value.sGridNo));
 
           dOffsetX = (sX - gsRenderCenterX);
           dOffsetY = (sY - gsRenderCenterY);
 
           // Calculate guy's position
-          FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
+          ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
           sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
           sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[pItemPool.value.sGridNo].sHeight;

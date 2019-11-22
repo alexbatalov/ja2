@@ -557,7 +557,7 @@ export function HandleRightClickOnMerc(iMapIndex: INT32): void {
   let sCellX: INT16;
   let sCellY: INT16;
 
-  ConvertGridNoToCellXY(iMapIndex, addressof(sCellX), addressof(sCellY));
+  ({ sCellX, sCellY } = ConvertGridNoToCellXY(iMapIndex));
 
   sThisMercID = IsMercHere(iMapIndex);
 
@@ -1210,12 +1210,12 @@ export function DisplayWayPoints(): void {
       continue;
 
     // Convert it's location to screen coordinates
-    ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
+    ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(sGridNo));
 
     dOffsetX = (sXMapPos * CELL_X_SIZE) - gsRenderCenterX;
     dOffsetY = (sYMapPos * CELL_Y_SIZE) - gsRenderCenterY;
 
-    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(ScrnX), addressof(ScrnY));
+    ({ dScreenX: ScrnX, dScreenY: ScrnY } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
     sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
     sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
@@ -3312,12 +3312,12 @@ function RenderCurrentSchedule(): void {
       continue;
 
     // Convert it's location to screen coordinates
-    ConvertGridNoToXY(iMapIndex, addressof(sXMapPos), addressof(sYMapPos));
+    ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToXY(iMapIndex));
 
     dOffsetX = (sXMapPos * CELL_X_SIZE) - gsRenderCenterX;
     dOffsetY = (sYMapPos * CELL_Y_SIZE) - gsRenderCenterY;
 
-    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(ScrnX), addressof(ScrnY));
+    ({ dScreenX: ScrnX, dScreenY: ScrnY } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
     sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
     sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;

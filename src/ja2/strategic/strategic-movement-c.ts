@@ -1087,7 +1087,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 
   // 1st gridno
   Corpse.sGridNo = 14319;
-  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(Corpse.sGridNo));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 
@@ -1096,7 +1096,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 
   // 2nd gridno
   Corpse.sGridNo = 9835;
-  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(Corpse.sGridNo));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 
@@ -1105,7 +1105,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 
   // 3rd gridno
   Corpse.sGridNo = 11262;
-  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
+  ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(Corpse.sGridNo));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 

@@ -1855,7 +1855,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       if (pSoldier.value.sSectorX != gWorldSectorX || pSoldier.value.sSectorY != gWorldSectorY || pSoldier.value.bSectorZ != gbWorldSectorZ || pSoldier.value.fBetweenSectors) {
         zTownIDString = GetSectorIDString(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, false);
 
-        ReduceStringLength(zTownIDString, 64, BLOCKFONT2());
+        zTownIDString = ReduceStringLength(zTownIDString, 64, BLOCKFONT2());
 
         ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 68), 73, 9, BLOCKFONT2(), "%s", zTownIDString));
         mprintf(sFontX, sFontY, "%s", zTownIDString);

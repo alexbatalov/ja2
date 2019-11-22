@@ -1112,7 +1112,7 @@ function DrawSubject(iCounter: INT32, pSubject: string /* STR16 */, fRead: boole
   if (fRead) {
     // if the subject will be too long, cap it, and add the '...'
     if (StringPixLength(pTempSubject, MESSAGE_FONT()) >= SUBJECT_WIDTH - 10) {
-      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, MESSAGE_FONT());
+      pTempSubject = ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, MESSAGE_FONT());
     }
 
     // display string subject
@@ -1120,7 +1120,7 @@ function DrawSubject(iCounter: INT32, pSubject: string /* STR16 */, fRead: boole
   } else {
     // if the subject will be too long, cap it, and add the '...'
     if (StringPixLength(pTempSubject, FONT10ARIALBOLD()) >= SUBJECT_WIDTH - 10) {
-      ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, FONT10ARIALBOLD());
+      pTempSubject = ReduceStringLength(pTempSubject, SUBJECT_WIDTH - 10, FONT10ARIALBOLD());
     }
 
     // display string subject

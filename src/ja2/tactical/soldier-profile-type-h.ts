@@ -309,7 +309,7 @@ export interface MERCPROFILESTRUCT {
   bLearnToLikeCount: INT8;
   bLearnToHateCount: INT8;
   ubLastDateSpokenTo: UINT8;
-  bLastQuoteSaidWasSpecial: UINT8;
+  bLastQuoteSaidWasSpecial: boolean /* UINT8 */;
   bSectorZ: INT8;
   usStrategicInsertionData: UINT16;
   bFriendlyOrDirectDefaultResponseUsedRecently: INT8;
@@ -505,7 +505,7 @@ export function createMercProfileStruct(): MERCPROFILESTRUCT {
     bLearnToLikeCount: 0,
     bLearnToHateCount: 0,
     ubLastDateSpokenTo: 0,
-    bLastQuoteSaidWasSpecial: 0,
+    bLastQuoteSaidWasSpecial: false,
     bSectorZ: 0,
     usStrategicInsertionData: 0,
     bFriendlyOrDirectDefaultResponseUsedRecently: 0,
@@ -713,7 +713,7 @@ export function readMercProfileStruct(o:  MERCPROFILESTRUCT, buffer: Buffer, off
   o.bLearnToLikeCount = buffer.readInt8(offset++);
   o.bLearnToHateCount = buffer.readInt8(offset++);
   o.ubLastDateSpokenTo = buffer.readUInt8(offset++);
-  o.bLastQuoteSaidWasSpecial = buffer.readUInt8(offset++);
+  o.bLastQuoteSaidWasSpecial = Boolean(buffer.readUInt8(offset++));
   o.bSectorZ = buffer.readInt8(offset++);
   o.usStrategicInsertionData = buffer.readUInt16LE(offset); offset += 2;
   o.bFriendlyOrDirectDefaultResponseUsedRecently = buffer.readInt8(offset++);
@@ -920,7 +920,7 @@ export function writeMercProfileStruct(o: MERCPROFILESTRUCT, buffer: Buffer, off
   offset = buffer.writeInt8(o.bLearnToLikeCount, offset);
   offset = buffer.writeInt8(o.bLearnToHateCount, offset);
   offset = buffer.writeUInt8(o.ubLastDateSpokenTo, offset);
-  offset = buffer.writeUInt8(o.bLastQuoteSaidWasSpecial, offset);
+  offset = buffer.writeUInt8(Number(o.bLastQuoteSaidWasSpecial), offset);
   offset = buffer.writeInt8(o.bSectorZ, offset);
   offset = buffer.writeUInt16LE(o.usStrategicInsertionData, offset);
   offset = buffer.writeInt8(o.bFriendlyOrDirectDefaultResponseUsedRecently, offset);
