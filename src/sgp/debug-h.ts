@@ -16,25 +16,21 @@ namespace ja2 {
 const INVALID_TOPIC = 0xffff;
 const MAX_TOPICS_ALLOTED = 1024;
 
-export const PROFILE = (x) => {
-  guiProfileStart = GetTickCount();
-  guiExecutions = x;
-  for (giProfileCount = 0; giProfileCount < x; giProfileCount++);
-};
+export function Assert(condition: any): asserts condition {
+  AssertMsg(condition, 'Should be unreachable');
+}
 
-const PROFILE_REPORT = () => {
-  guiProfileTime = (GetTickCount() - guiProfileStart);
-  _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, guiProfileTime / guiExecutions);
-};
-
-export const Assert = (a: any) => {};
-export const AssertMsg = (a: any, b: string) => {};
+export function AssertMsg(condition: any, msg: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg);
+  }
+}
 
 //*******************************************************************************************
 
 // Moved these out of the defines - debug mgr always initialized
-export const InitializeDebugManager = () => DbgInitialize();
-export const ShutdownDebugManager = () => DbgShutdown();
+export const InitializeDebugManager = () => {};
+export const ShutdownDebugManager = () => {};
 
 //*******************************************************************************************
 // Release Mode
