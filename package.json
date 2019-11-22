@@ -7,7 +7,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^12.7.12",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   },
   "repository": {
     "type": "git",
