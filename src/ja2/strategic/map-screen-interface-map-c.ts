@@ -264,7 +264,7 @@ const HELI_SHADOW_ICON_WIDTH = 19;
 const HELI_SHADOW_ICON_HEIGHT = 11;
 
 // the militia box buttons and images
-let giMapMilitiaButtonImage: INT32[] /* [5] */;
+let giMapMilitiaButtonImage: INT32[] /* [5] */ = createArray(5, 0);
 let giMapMilitiaButton: INT32[] /* [5] */ = [
   -1,
   -1,
@@ -311,10 +311,10 @@ export let gsHighlightSectorY: INT16 = -1;
 export let iCurrentMapSectorZ: INT32 = 0;
 
 // the palettes
-let pMapLTRedPalette: Pointer<UINT16>;
-let pMapDKRedPalette: Pointer<UINT16>;
-let pMapLTGreenPalette: Pointer<UINT16>;
-let pMapDKGreenPalette: Pointer<UINT16>;
+let pMapLTRedPalette: UINT16[] | null;
+let pMapDKRedPalette: UINT16[] | null;
+let pMapLTGreenPalette: UINT16[] | null;
+let pMapDKGreenPalette: UINT16[] | null;
 
 // the map border eta pop up
 export let guiMapBorderEtaPopUp: UINT32;
@@ -375,7 +375,7 @@ let gpSamSectorY: INT16[] /* [] */ = [
 // map region
 export let MapScreenRect: SGPRect = createSGPRectFrom((MAP_VIEW_START_X + MAP_GRID_X - 2), (MAP_VIEW_START_Y + MAP_GRID_Y - 1), MAP_VIEW_START_X + MAP_VIEW_WIDTH - 1 + MAP_GRID_X, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 10 + MAP_GRID_Y);
 
-export let gOldClipRect: SGPRect = createSGPRect();
+let gOldClipRect: SGPRect = createSGPRect();
 
 // screen region
 let FullScreenRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
@@ -859,7 +859,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   let ubCounter: UINT8 = 0;
   let ubIconPosition: UINT8 = 0;
   let hIconHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
 
@@ -867,7 +867,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   while (gCharactersList[ubCounter].fValid) {
     pSoldier = MercPtrs[gCharactersList[ubCounter].usSolID];
 
-    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && ((pSoldier.value.bAssignment < Enum117.ON_DUTY) || ((pSoldier.value.bAssignment == Enum117.VEHICLE) && (pSoldier.value.iVehicleId != iHelicopterVehicleId))) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
+    if (!(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.sSectorX == sMapX) && (pSoldier.sSectorY == sMapY) && (pSoldier.bSectorZ == iCurrentMapSectorZ) && ((pSoldier.bAssignment < Enum117.ON_DUTY) || ((pSoldier.bAssignment == Enum117.VEHICLE) && (pSoldier.iVehicleId != iHelicopterVehicleId))) && (pSoldier.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.ubGroupID))) {
       DrawMapBoxIcon(hIconHandle, SMALL_YELLOW_BOX, sMapX, sMapY, ubIconPosition);
       ubIconPosition++;
     }
@@ -881,7 +881,7 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let ubCounter: UINT8;
   let ubIconPosition: UINT8;
   let hIconHandle: HVOBJECT;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
   ubCounter = 0;
@@ -894,9 +894,9 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
 
     // given number of on duty members, find number of assigned chars
     // start at beginning of list, look for people who are in sector and assigned
-    if (!(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.value.sSectorX == sMapX) && (pSoldier.value.sSectorY == sMapY) && (pSoldier.value.bSectorZ == iCurrentMapSectorZ) && (pSoldier.value.bAssignment >= Enum117.ON_DUTY) && (pSoldier.value.bAssignment != Enum117.VEHICLE) && (pSoldier.value.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.value.ubGroupID))) {
+    if (!(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && (pSoldier.sSectorX == sMapX) && (pSoldier.sSectorY == sMapY) && (pSoldier.bSectorZ == iCurrentMapSectorZ) && (pSoldier.bAssignment >= Enum117.ON_DUTY) && (pSoldier.bAssignment != Enum117.VEHICLE) && (pSoldier.bAssignment != Enum117.IN_TRANSIT) && (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.bLife > 0) && (!PlayerIDGroupInMotion(pSoldier.ubGroupID))) {
       // skip mercs inside the helicopter if we're showing airspace level - they show up inside chopper icon instead
-      if (!fShowAircraftFlag || (pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
+      if (!fShowAircraftFlag || (pSoldier.bAssignment != Enum117.VEHICLE) || (pSoldier.iVehicleId != iHelicopterVehicleId)) {
         DrawMapBoxIcon(hIconHandle, SMALL_DULL_YELLOW_BOX, sMapX, sMapY, ubIconPosition);
         ubIconPosition++;
       }
@@ -911,7 +911,7 @@ function ShowVehicles(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let ubCounter: UINT8;
   let ubIconPosition: UINT8;
   let hIconHandle: HVOBJECT;
-  let pVehicleSoldier: Pointer<SOLDIERTYPE>;
+  let pVehicleSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
   ubCounter = 0;
@@ -930,7 +930,7 @@ function ShowVehicles(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
 
           // this skips the chopper, which has no soldier
           if (pVehicleSoldier) {
-            if (pVehicleSoldier.value.bTeam == gbPlayerNum) {
+            if (pVehicleSoldier.bTeam == gbPlayerNum) {
               DrawMapBoxIcon(hIconHandle, SMALL_WHITE_BOX, sMapX, sMapY, ubIconPosition);
               ubIconPosition++;
             }
@@ -1021,7 +1021,7 @@ function ShowTeamAndVehicles(fShowFlags: INT32): void {
   for (sMapX = 1; sMapX < MAP_WORLD_X - 1; sMapX++) {
     for (sMapY = 1; sMapY < MAP_WORLD_Y - 1; sMapY++) {
       // don't show mercs/vehicles currently in this sector if player is contemplating retreating from THIS sector
-      if (!fContemplatingRetreating || (sMapX != gpBattleGroup.value.ubSectorX) || (sMapY != gpBattleGroup.value.ubSectorY)) {
+      if (!fContemplatingRetreating || (sMapX != (<GROUP>gpBattleGroup).ubSectorX) || (sMapY != (<GROUP>gpBattleGroup).ubSectorY)) {
         if (fShowFlags & SHOW_TEAMMATES) {
           iIconOffset = ShowOnDutyTeam(sMapX, sMapY);
           iIconOffset = ShowAssignedTeam(sMapX, sMapY, iIconOffset);
@@ -1120,7 +1120,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
-        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // now blit
         // Blt8BPPDataSubTo16BPPBuffer( pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf,uiSrcPitchBYTES, sScreenX, sScreenY, &clip);
@@ -1146,7 +1146,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
-        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // now blit
         // Blt8BPPDataSubTo16BPPBuffer( pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf,uiSrcPitchBYTES, sScreenX , sScreenY , &clip);
@@ -1172,7 +1172,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
-        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // now blit
         // Blt8BPPDataSubTo16BPPBuffer( pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf,uiSrcPitchBYTES, sScreenX , sScreenY , &clip);
@@ -1198,7 +1198,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
-        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // now blit
         // Blt8BPPDataSubTo16BPPBuffer( pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf,uiSrcPitchBYTES, sScreenX , sScreenY , &clip);
@@ -1319,7 +1319,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
-        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // unlock source and dest buffers
         UnLockVideoSurface(guiBIGMAP);
@@ -1342,7 +1342,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
-        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // unlock source and dest buffers
         UnLockVideoSurface(guiBIGMAP);
@@ -1365,7 +1365,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
-        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // unlock source and dest buffers
         UnLockVideoSurface(guiBIGMAP);
@@ -1388,7 +1388,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
 
         // now blit
-        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, addressof(clip));
+        Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
         // unlock source and dest buffers
         UnLockVideoSurface(guiBIGMAP);
@@ -1440,11 +1440,6 @@ export function InitializePalettesForMap(): boolean {
 }
 
 export function ShutDownPalettesForMap(): void {
-  MemFree(pMapLTRedPalette);
-  MemFree(pMapDKRedPalette);
-  MemFree(pMapLTGreenPalette);
-  MemFree(pMapDKGreenPalette);
-
   pMapLTRedPalette = null;
   pMapDKRedPalette = null;
   pMapLTGreenPalette = null;
@@ -1636,9 +1631,9 @@ function CancelPathForGroup(pGroup: GROUP): void {
   // is it a non-vehicle group?
   if ((pGroup.fPlayer) && (pGroup.fVehicle == false)) {
     if (pGroup.pPlayerList) {
-      if (pGroup.pPlayerList.value.pSoldier) {
+      if (pGroup.pPlayerList.pSoldier) {
         // clearing one merc should be enough, it copies changes to his squad on its own
-        CancelPathForCharacter(pGroup.pPlayerList.value.pSoldier);
+        CancelPathForCharacter(pGroup.pPlayerList.pSoldier);
       }
     }
   }
@@ -2457,13 +2452,12 @@ function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY:
   return;
 }
 
+/* static */ let TraceCharAnimatedRoute__pCurrentNode: PathStPtr = null;
+/* static */ let TraceCharAnimatedRoute__bCurrentChar: INT8 = -1;
+/* static */ let TraceCharAnimatedRoute__fUpDateFlag: boolean = false;
+/* static */ let TraceCharAnimatedRoute__fPauseFlag: boolean = true;
+/* static */ let TraceCharAnimatedRoute__ubCounter: UINT8 = 1;
 function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpDate: boolean): boolean {
-  /* static */ let pCurrentNode: PathStPtr = null;
-  /* static */ let bCurrentChar: INT8 = -1;
-  /* static */ let fUpDateFlag: boolean = false;
-  /* static */ let fPauseFlag: boolean = true;
-  /* static */ let ubCounter: UINT8 = 1;
-
   let hMapHandle: HVOBJECT;
   let fSpeedFlag: boolean = false;
   let fUpDate: boolean = false;
@@ -2496,15 +2490,15 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   // if any nodes have been deleted, reset current node to beginning of the list
   if (fDeletedNode) {
     fDeletedNode = false;
-    pCurrentNode = null;
+    TraceCharAnimatedRoute__pCurrentNode = null;
   }
 
   // Valid path?
   if (pPath == null) {
     return false;
   } else {
-    if (pCurrentNode == null) {
-      pCurrentNode = pPath;
+    if (TraceCharAnimatedRoute__pCurrentNode == null) {
+      TraceCharAnimatedRoute__pCurrentNode = pPath;
     }
   }
 
@@ -2518,11 +2512,11 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   iDifference = GetJA2Clock() - giAnimateRouteBaseTime;
 
   // if pause flag, check time, if time passed, reset, continue on, else return
-  if (fPauseFlag) {
+  if (TraceCharAnimatedRoute__fPauseFlag) {
     if (iDifference < PAUSE_DELAY) {
       return false;
     } else {
-      fPauseFlag = false;
+      TraceCharAnimatedRoute__fPauseFlag = false;
       giAnimateRouteBaseTime = GetJA2Clock();
     }
   }
@@ -2530,12 +2524,12 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   // if is checkflag and change in status, return TRUE;
   if (!fForceUpDate) {
     if (iDifference < ARROW_DELAY) {
-      if (!fUpDateFlag)
+      if (!TraceCharAnimatedRoute__fUpDateFlag)
         return false;
     } else {
       // sufficient time, update base time
       giAnimateRouteBaseTime = GetJA2Clock();
-      fUpDateFlag = !fUpDateFlag;
+      TraceCharAnimatedRoute__fUpDateFlag = !TraceCharAnimatedRoute__fUpDateFlag;
 
       if (fCheckFlag)
         return true;
@@ -2548,7 +2542,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   pTempNode = pPath;
 
   while (pTempNode) {
-    if (pTempNode == pCurrentNode) {
+    if (pTempNode == TraceCharAnimatedRoute__pCurrentNode) {
       // not deleted
       // reset pause flag
       break;
@@ -2558,10 +2552,10 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
 
   // if deleted, restart at beginnning
   if (pTempNode == null) {
-    pCurrentNode = pPath;
+    TraceCharAnimatedRoute__pCurrentNode = pPath;
 
     // set pause flag
-    if (!pCurrentNode)
+    if (!TraceCharAnimatedRoute__pCurrentNode)
       return false;
   }
 
@@ -2569,12 +2563,12 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   hMapHandle = GetVideoObject(guiMAPCURSORS);
 
   // Handle drawing of arrow
-  pNode = pCurrentNode;
-  if ((!pNode.value.pPrev) && (ubCounter == 1) && (fForceUpDate)) {
-    ubCounter = 0;
+  pNode = TraceCharAnimatedRoute__pCurrentNode;
+  if ((!pNode.value.pPrev) && (TraceCharAnimatedRoute__ubCounter == 1) && (fForceUpDate)) {
+    TraceCharAnimatedRoute__ubCounter = 0;
     return false;
-  } else if ((ubCounter == 1) && (fForceUpDate)) {
-    pNode = pCurrentNode.value.pPrev;
+  } else if ((TraceCharAnimatedRoute__ubCounter == 1) && (fForceUpDate)) {
+    pNode = TraceCharAnimatedRoute__pCurrentNode.value.pPrev;
   }
   if (pNode.value.pNext)
     pNextNode = pNode.value.pNext;
@@ -2638,7 +2632,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       if (pPastNode.value.uiSectorId + WORLD_MAP_X == pNode.value.uiSectorId) {
         if (fZoomFlag) {
           iDirection = S_TO_N_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_NORTH_ARROW;
@@ -2648,7 +2642,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += NORTH_OFFSET_Y * 2;
         } else {
           iDirection = S_TO_N_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_NORTH_ARROW;
@@ -2661,7 +2655,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if (pPastNode.value.uiSectorId - WORLD_MAP_X == pNode.value.uiSectorId) {
         if (fZoomFlag) {
           iDirection = N_TO_S_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_SOUTH_ARROW;
@@ -2671,7 +2665,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += SOUTH_OFFSET_Y * 2;
         } else {
           iDirection = N_TO_S_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_SOUTH_ARROW;
@@ -2683,7 +2677,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if (pPastNode.value.uiSectorId + 1 == pNode.value.uiSectorId) {
         if (fZoomFlag) {
           iDirection = E_TO_W_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_WEST_ARROW;
@@ -2693,7 +2687,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += WEST_OFFSET_Y * 2;
         } else {
           iDirection = E_TO_W_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_WEST_ARROW;
@@ -2705,7 +2699,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else {
         if (fZoomFlag) {
           iDirection = W_TO_E_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_EAST_ARROW;
@@ -2715,7 +2709,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += EAST_OFFSET_Y * 2;
         } else {
           iDirection = W_TO_E_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_EAST_ARROW;
@@ -2729,7 +2723,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       if ((iDeltaA == -1) && (iDeltaB == 1)) {
         if (fZoomFlag) {
           iDirection = WEST_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_WEST_ARROW;
@@ -2740,7 +2734,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += WEST_OFFSET_Y * 2;
         } else {
           iDirection = WEST_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_WEST_ARROW;
@@ -2753,7 +2747,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == 1) && (iDeltaB == -1)) {
         if (fZoomFlag) {
           iDirection = EAST_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_EAST_ARROW;
           else
             iArrow = ZOOM_EAST_ARROW;
@@ -2762,7 +2756,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += EAST_OFFSET_Y * 2;
         } else {
           iDirection = EAST_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_EAST_ARROW;
@@ -2775,7 +2769,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == -WORLD_MAP_X) && (iDeltaB == WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = NORTH_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_NORTH_ARROW;
@@ -2786,7 +2780,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += NORTH_OFFSET_Y * 2;
         } else {
           iDirection = NORTH_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_NORTH_ARROW;
@@ -2799,7 +2793,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == WORLD_MAP_X) && (iDeltaB == -WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = SOUTH_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_SOUTH_ARROW;
@@ -2810,7 +2804,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += SOUTH_OFFSET_Y * 2;
         } else {
           iDirection = SOUTH_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_SOUTH_ARROW;
@@ -2823,7 +2817,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == -WORLD_MAP_X) && (iDeltaB == -1)) {
         if (fZoomFlag) {
           iDirection = N_TO_E_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_EAST_ARROW;
@@ -2834,7 +2828,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += EAST_OFFSET_Y * 2;
         } else {
           iDirection = N_TO_E_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_EAST_ARROW;
@@ -2847,7 +2841,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == WORLD_MAP_X) && (iDeltaB == 1)) {
         if (fZoomFlag) {
           iDirection = S_TO_W_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_WEST_ARROW;
@@ -2858,7 +2852,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += WEST_OFFSET_Y * 2;
         } else {
           iDirection = S_TO_W_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_WEST_ARROW;
@@ -2871,7 +2865,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == 1) && (iDeltaB == -WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = E_TO_S_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_SOUTH_ARROW;
@@ -2882,7 +2876,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += SOUTH_OFFSET_Y * 2;
         } else {
           iDirection = E_TO_S_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_SOUTH_ARROW;
@@ -2895,7 +2889,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == -1) && (iDeltaB == WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = W_TO_N_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_NORTH_ARROW;
@@ -2906,7 +2900,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += NORTH_OFFSET_Y * 2;
         } else {
           iDirection = W_TO_N_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_NORTH_ARROW;
@@ -2919,7 +2913,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == -1) && (iDeltaB == -WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = W_TO_S_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_SOUTH_ARROW;
@@ -2930,7 +2924,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += (SOUTH_OFFSET_Y + WEST_TO_SOUTH_OFFSET_Y) * 2;
         } else {
           iDirection = W_TO_S_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_SOUTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_SOUTH_ARROW;
@@ -2942,7 +2936,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
         if (fZoomFlag) {
           iDirection = N_TO_W_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_WEST_ARROW;
@@ -2953,7 +2947,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += WEST_OFFSET_Y * 2;
         } else {
           iDirection = N_TO_W_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_WEST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_WEST_ARROW;
@@ -2966,7 +2960,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == WORLD_MAP_X) && (iDeltaB == -1)) {
         if (fZoomFlag) {
           iDirection = S_TO_E_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_EAST_ARROW;
@@ -2976,7 +2970,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += EAST_OFFSET_Y * 2;
         } else {
           iDirection = S_TO_E_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_EAST_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_EAST_ARROW;
@@ -2988,7 +2982,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       } else if ((iDeltaA == 1) && (iDeltaB == WORLD_MAP_X)) {
         if (fZoomFlag) {
           iDirection = E_TO_N_ZOOM_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = ZOOM_W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = ZOOM_Y_NORTH_ARROW;
@@ -2998,7 +2992,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowY += (NORTH_OFFSET_Y + EAST_TO_NORTH_OFFSET_Y) * 2;
         } else {
           iDirection = E_TO_N_LINE;
-          if (!ubCounter)
+          if (!TraceCharAnimatedRoute__ubCounter)
             iArrow = W_NORTH_ARROW;
           else if (fSpeedFlag)
             iArrow = Y_NORTH_ARROW;
@@ -3053,7 +3047,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
       if (iDeltaB == -1) {
         iDirection = GREEN_X_EAST;
-        if (!ubCounter)
+        if (!TraceCharAnimatedRoute__ubCounter)
           iArrow = W_EAST_ARROW;
         else if (fSpeedFlag)
           iArrow = Y_EAST_ARROW;
@@ -3065,7 +3059,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
         // iX+=RED_EAST_OFF_X;
       } else if (iDeltaB == 1) {
         iDirection = GREEN_X_WEST;
-        if (!ubCounter)
+        if (!TraceCharAnimatedRoute__ubCounter)
           iArrow = W_WEST_ARROW;
         else if (fSpeedFlag)
           iArrow = Y_WEST_ARROW;
@@ -3077,7 +3071,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
         // iX+=RED_WEST_OFF_X;
       } else if (iDeltaB == WORLD_MAP_X) {
         iDirection = GREEN_X_NORTH;
-        if (!ubCounter)
+        if (!TraceCharAnimatedRoute__ubCounter)
           iArrow = W_NORTH_ARROW;
         else if (fSpeedFlag)
           iArrow = Y_NORTH_ARROW;
@@ -3089,7 +3083,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
         // iY+=RED_NORTH_OFF_Y;
       } else {
         iDirection = GREEN_X_SOUTH;
-        if (!ubCounter)
+        if (!TraceCharAnimatedRoute__ubCounter)
           iArrow = W_SOUTH_ARROW;
         else if (fSpeedFlag)
           iArrow = Y_SOUTH_ARROW;
@@ -3102,10 +3096,10 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
     }
   }
   if (fNextNode) {
-    if (!ubCounter) {
-      pCurrentNode = pCurrentNode.value.pNext;
-      if (!pCurrentNode)
-        fPauseFlag = true;
+    if (!TraceCharAnimatedRoute__ubCounter) {
+      TraceCharAnimatedRoute__pCurrentNode = TraceCharAnimatedRoute__pCurrentNode.value.pNext;
+      if (!TraceCharAnimatedRoute__pCurrentNode)
+        TraceCharAnimatedRoute__fPauseFlag = true;
     }
   }
   if ((iDirection != -1) && (iArrow != -1)) {
@@ -3120,16 +3114,16 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           InvalidateRegion(iArrowX, iArrowY, iArrowX + 2 * MAP_GRID_X, iArrowY + 2 * MAP_GRID_Y);
         }
       }
-      if (ubCounter == 1)
-        ubCounter = 0;
+      if (TraceCharAnimatedRoute__ubCounter == 1)
+        TraceCharAnimatedRoute__ubCounter = 0;
       else
-        ubCounter = 1;
+        TraceCharAnimatedRoute__ubCounter = 1;
       return true;
     }
-    if (ubCounter == 1)
-      ubCounter = 0;
+    if (TraceCharAnimatedRoute__ubCounter == 1)
+      TraceCharAnimatedRoute__ubCounter = 0;
     else
-      ubCounter = 1;
+      TraceCharAnimatedRoute__ubCounter = 1;
   }
   // move to next arrow
 
@@ -3536,6 +3530,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 }
 
+/* static */ let DisplayDistancesForHelicopter__sOldYPosition: INT16 = 0;
 export function DisplayDistancesForHelicopter(): void {
   // calculate the distance travelled, the proposed distance, and total distance one can go
   // display these on screen
@@ -3549,7 +3544,6 @@ export function DisplayDistancesForHelicopter(): void {
   let sMapX: INT16;
   let sMapY: INT16;
   let sYPosition: INT16 = 0;
-  /* static */ let sOldYPosition: INT16 = 0;
   let sNumSafeSectors: INT16;
   let sNumUnSafeSectors: INT16;
   let uiTripCost: UINT32;
@@ -3560,11 +3554,11 @@ export function DisplayDistancesForHelicopter(): void {
     sYPosition = MAP_HELICOPTER_ETA_POPUP_Y;
   }
 
-  if ((sOldYPosition != 0) && (sOldYPosition != sYPosition)) {
-    RestoreExternBackgroundRect(MAP_HELICOPTER_ETA_POPUP_X, sOldYPosition, MAP_HELICOPTER_ETA_POPUP_WIDTH + 20, MAP_HELICOPTER_ETA_POPUP_HEIGHT);
+  if ((DisplayDistancesForHelicopter__sOldYPosition != 0) && (DisplayDistancesForHelicopter__sOldYPosition != sYPosition)) {
+    RestoreExternBackgroundRect(MAP_HELICOPTER_ETA_POPUP_X, DisplayDistancesForHelicopter__sOldYPosition, MAP_HELICOPTER_ETA_POPUP_WIDTH + 20, MAP_HELICOPTER_ETA_POPUP_HEIGHT);
   }
 
-  sOldYPosition = sYPosition;
+  DisplayDistancesForHelicopter__sOldYPosition = sYPosition;
 
   // blit in background
   hHandle = GetVideoObject(guiMapBorderHeliSectors);
@@ -3652,14 +3646,14 @@ export function DisplayDistancesForHelicopter(): void {
   ({ sX, sY } = FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (MAP_HELICOPTER_ETA_POPUP_Y + 5 + 5 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT()));
   mprintf(sX, (sYPosition + 5 + 5 * GetFontHeight(MAP_FONT())), sString);
 
-  InvalidateRegion(MAP_HELICOPTER_ETA_POPUP_X, sOldYPosition, MAP_HELICOPTER_ETA_POPUP_X + MAP_HELICOPTER_ETA_POPUP_WIDTH + 20, sOldYPosition + MAP_HELICOPTER_ETA_POPUP_HEIGHT);
+  InvalidateRegion(MAP_HELICOPTER_ETA_POPUP_X, DisplayDistancesForHelicopter__sOldYPosition, MAP_HELICOPTER_ETA_POPUP_X + MAP_HELICOPTER_ETA_POPUP_WIDTH + 20, DisplayDistancesForHelicopter__sOldYPosition + MAP_HELICOPTER_ETA_POPUP_HEIGHT);
   return;
 }
 
 // grab position of helicopter and blt to screen
+/* static */ let DisplayPositionOfHelicopter__sOldMapX: INT16 = 0;
+/* static */ let DisplayPositionOfHelicopter__sOldMapY: INT16 = 0;
 export function DisplayPositionOfHelicopter(): void {
-  /* static */ let sOldMapX: INT16 = 0;
-  /* static */ let sOldMapY: INT16 = 0;
   //	INT16 sX =0, sY = 0;
   let flRatio: FLOAT = 0.0;
   let x: UINT32;
@@ -3673,13 +3667,13 @@ export function DisplayPositionOfHelicopter(): void {
   let iNumberOfPeopleInHelicopter: INT32 = 0;
   let sString: string /* CHAR16[4] */;
 
-  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
-  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
+  AssertMsg((DisplayPositionOfHelicopter__sOldMapX >= 0) && (DisplayPositionOfHelicopter__sOldMapX < 640), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapX = %d", DisplayPositionOfHelicopter__sOldMapX));
+  AssertMsg((DisplayPositionOfHelicopter__sOldMapY >= 0) && (DisplayPositionOfHelicopter__sOldMapY < 480), FormatString("DisplayPositionOfHelicopter: Invalid sOldMapY = %d", DisplayPositionOfHelicopter__sOldMapY));
 
   // restore background on map where it is
-  if (sOldMapX != 0) {
-    RestoreExternBackgroundRect(sOldMapX, sOldMapY, HELI_ICON_WIDTH, HELI_ICON_HEIGHT);
-    sOldMapX = 0;
+  if (DisplayPositionOfHelicopter__sOldMapX != 0) {
+    RestoreExternBackgroundRect(DisplayPositionOfHelicopter__sOldMapX, DisplayPositionOfHelicopter__sOldMapY, HELI_ICON_WIDTH, HELI_ICON_HEIGHT);
+    DisplayPositionOfHelicopter__sOldMapX = 0;
   }
 
   if (iHelicopterVehicleId != -1) {
@@ -3786,17 +3780,17 @@ export function DisplayPositionOfHelicopter(): void {
       RestoreClipRegionToFullScreen();
 
       // now store the old stuff
-      sOldMapX = x;
-      sOldMapY = y;
+      DisplayPositionOfHelicopter__sOldMapX = x;
+      DisplayPositionOfHelicopter__sOldMapY = y;
     }
   }
 
   return;
 }
 
+/* static */ let DisplayDestinationOfHelicopter__sOldMapX: INT16 = 0;
+/* static */ let DisplayDestinationOfHelicopter__sOldMapY: INT16 = 0;
 function DisplayDestinationOfHelicopter(): void {
-  /* static */ let sOldMapX: INT16 = 0;
-  /* static */ let sOldMapY: INT16 = 0;
   let sSector: INT16;
   let sMapX: INT16;
   let sMapY: INT16;
@@ -3804,13 +3798,13 @@ function DisplayDestinationOfHelicopter(): void {
   let y: UINT32;
   let hHandle: HVOBJECT;
 
-  AssertMsg((sOldMapX >= 0) && (sOldMapX < 640), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", sOldMapX));
-  AssertMsg((sOldMapY >= 0) && (sOldMapY < 480), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapY = %d", sOldMapY));
+  AssertMsg((DisplayDestinationOfHelicopter__sOldMapX >= 0) && (DisplayDestinationOfHelicopter__sOldMapX < 640), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", DisplayDestinationOfHelicopter__sOldMapX));
+  AssertMsg((DisplayDestinationOfHelicopter__sOldMapY >= 0) && (DisplayDestinationOfHelicopter__sOldMapY < 480), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapY = %d", DisplayDestinationOfHelicopter__sOldMapY));
 
   // restore background on map where it is
-  if (sOldMapX != 0) {
-    RestoreExternBackgroundRect(sOldMapX, sOldMapY, HELI_SHADOW_ICON_WIDTH, HELI_SHADOW_ICON_HEIGHT);
-    sOldMapX = 0;
+  if (DisplayDestinationOfHelicopter__sOldMapX != 0) {
+    RestoreExternBackgroundRect(DisplayDestinationOfHelicopter__sOldMapX, DisplayDestinationOfHelicopter__sOldMapY, HELI_SHADOW_ICON_WIDTH, HELI_SHADOW_ICON_HEIGHT);
+    DisplayDestinationOfHelicopter__sOldMapX = 0;
   }
 
   // if helicopter is going somewhere
@@ -3836,8 +3830,8 @@ function DisplayDestinationOfHelicopter(): void {
     RestoreClipRegionToFullScreen();
 
     // now store the old stuff
-    sOldMapX = x;
-    sOldMapY = y;
+    DisplayDestinationOfHelicopter__sOldMapX = x;
+    DisplayDestinationOfHelicopter__sOldMapY = y;
   }
 }
 
@@ -4408,13 +4402,13 @@ export function DrawMilitiaPopUpBox(): boolean {
   return true;
 }
 
+/* static */ let CreateDestroyMilitiaPopUPRegions__sOldTown: INT16 = 0;
 export function CreateDestroyMilitiaPopUPRegions(): void {
-  /* static */ let sOldTown: INT16 = 0;
   let iCounter: INT32 = 0;
 
   // create destroy militia pop up regions for mapscreen militia pop up box
   if (sSelectedMilitiaTown != 0) {
-    sOldTown = sSelectedMilitiaTown;
+    CreateDestroyMilitiaPopUPRegions__sOldTown = sSelectedMilitiaTown;
   }
 
   if (fShowMilitia && sSelectedMilitiaTown && !gfMilitiaPopupCreated) {
@@ -4435,7 +4429,7 @@ export function CreateDestroyMilitiaPopUPRegions(): void {
     }
 
     // handle the shutdown of the panel...there maybe people on the cursor, distribute them evenly over all the sectors
-    HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sOldTown);
+    HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(CreateDestroyMilitiaPopUPRegions__sOldTown);
 
     DeleteMilitiaPanelBottomButton();
 

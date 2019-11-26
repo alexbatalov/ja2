@@ -3,8 +3,8 @@ namespace ja2 {
 // mvt modifier
 //#define FOOT_MVT_MODIFIER 2
 
-let gusPlottedPath: UINT16[] /* [256] */;
-let gusMapPathingData: UINT16[] /* [256] */;
+let gusPlottedPath: UINT16[] /* [256] */ = createArray(256, 0);
+let gusMapPathingData: UINT16[] /* [256] */ = createArray(256, 0);
 let gusPathDataSize: UINT16;
 let gfPlotToAvoidPlayerInfuencedSectors: boolean = false;
 
@@ -27,9 +27,41 @@ interface path_t {
   pathNdx: INT16; // 2
 }
 
+function createPathT(): path_t {
+  return {
+    nextLink: 0,
+    prevLink: 0,
+    location: 0,
+    costSoFar: 0,
+    costToGo: 0,
+    pathNdx: 0,
+  };
+}
+
+function resetPathT(o: path_t) {
+  o.nextLink = 0;
+  o.prevLink = 0;
+  o.location = 0;
+  o.costSoFar = 0;
+  o.costToGo = 0;
+  o.pathNdx = 0;
+}
+
 interface trail_t {
   nextLink: number;
   diStratDelta: number;
+}
+
+function createTrailT(): trail_t {
+  return {
+    nextLink: 0,
+    diStratDelta: 0,
+  };
+}
+
+function resetTrailT(o: trail_t) {
+  o.nextLink = 0;
+  o.diStratDelta = 0;
 }
 
 const MAXTRAILTREE = (4096);
@@ -44,83 +76,97 @@ const MAP_LENGTH = MAP_WIDTH *MAP_WIDTH;
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 type TRAILCELLTYPE = UINT32;
 
-/* static */ let pathQB: path_t[] /* [MAXpathQ] */;
-/* static */ let totAPCostB: UINT16[] /* [MAXpathQ] */;
-/* static */ export let gusPathShown: UINT16;
-/* static */ export let gusAPtsToMove: UINT16;
-/* static */ let gusMapMovementCostsB: UINT16[][] /* [MAP_LENGTH][MAXDIR] */;
-/* static */ let trailCostB: TRAILCELLTYPE[] /* [MAP_LENGTH] */;
-/* static */ let trailStratTreeB: trail_t[] /* [MAXTRAILTREE] */;
+/* static */ let pathQB: path_t[] /* [MAXpathQ] */ = createArrayFrom(MAXpathQ, createPathT);
+/* static */ let totAPCostB: UINT16[] /* [MAXpathQ] */ = createArray(MAXpathQ, 0);
+/* static */ let gusPathShown: UINT16;
+/* static */ let gusAPtsToMove: UINT16;
+/* static */ let gusMapMovementCostsB: UINT16[][] /* [MAP_LENGTH][MAXDIR] */ = createArrayFrom(MAP_LENGTH, () => createArray(MAXDIR, 0));
+/* static */ let trailCostB: TRAILCELLTYPE[] /* [MAP_LENGTH] */ = createArray(MAP_LENGTH, 0);
+/* static */ let trailStratTreeB: trail_t[] /* [MAXTRAILTREE] */ = createArrayFrom(MAXTRAILTREE, createTrailT);
 let trailStratTreedxB: number = 0;
 
 const QHEADNDX = (0);
-const QPOOLNDX = () => (MAXpathQ - 1);
+const QPOOLNDX = (MAXpathQ - 1);
 
 const pathQNotEmpty = () => (pathQB[QHEADNDX].nextLink != QHEADNDX);
-const pathFound = () => (pathQB[pathQB[QHEADNDX].nextLink].location == sDestination);
-const pathNotYetFound = () => (!pathFound());
+const pathFound = (sDestination: number) => (pathQB[pathQB[QHEADNDX].nextLink].location == sDestination);
+const pathNotYetFound = (sDestination: number) => (!pathFound(sDestination));
 
-const REMQUENODE = (ndx) => {
+const REMQUENODE = (ndx: number) => {
   pathQB[pathQB[ndx].prevLink].nextLink = pathQB[ndx].nextLink;
   pathQB[pathQB[ndx].nextLink].prevLink = pathQB[ndx].prevLink;
 };
 
-const INSQUENODEPREV = (newNode, curNode) => {
+const INSQUENODEPREV = (newNode: number, curNode: number) => {
   pathQB[newNode].nextLink = curNode;
   pathQB[newNode].prevLink = pathQB[curNode].prevLink;
   pathQB[pathQB[curNode].prevLink].nextLink = newNode;
   pathQB[curNode].prevLink = newNode;
 };
 
-const INSQUENODE = (newNode, curNode) => {
+const INSQUENODE = (newNode: number, curNode: number) => {
   pathQB[newNode].prevLink = curNode;
-  pathQB[newNode].NextLink = pathQB[curNode].nextLink;
+  pathQB[newNode].nextLink = pathQB[curNode].nextLink;
   pathQB[pathQB[curNode].nextLink].prevLink = newNode;
   pathQB[curNode].nextLink = newNode;
 };
 
-const DELQUENODE = (ndx) => {
+const DELQUENODE = (ndx: number) => {
   REMQUENODE(ndx);
-  INSQUENODEPREV(ndx, QPOOLNDX());
+  INSQUENODEPREV(ndx, QPOOLNDX);
   pathQB[ndx].location = -1;
 };
 
 const NEWQUENODE = () => {
-  if (queRequests < QPOOLNDX())
+  let qNewNdx: number;
+  if (queRequests < QPOOLNDX)
     qNewNdx = queRequests++;
   else {
-    qNewNdx = pathQB[QPOOLNDX()].nextLink;
+    qNewNdx = pathQB[QPOOLNDX].nextLink;
     REMQUENODE(qNewNdx);
   }
+  return qNewNdx;
 };
 
-const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
-const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATEn = () => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
-const ESTIMATE = () => ESTIMATE1();
+const FLATCOST = 1;
 
-const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = Math.abs(iDestY - locY)), (dx = Math.abs(iDestX - locX)), ESTIMATE());
+const ESTIMATE0 = (dx: number, dy: number) => ((dx > dy) ? (dx) : (dy));
+const ESTIMATE1 = (dx: number, dy: number) => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATE2 = (dx: number, dy: number) => FLATCOST * ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATEn = (dx: number, dy: number) => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
+const ESTIMATE = (dx: number, dy: number) => ESTIMATE1(dx, dy);
+
+const REMAININGCOST = (iDestX: INT32, iDestY: INT32, ndx: number) => {
+  const locY = pathQB[ndx].location / MAP_WIDTH;
+  const locX = pathQB[ndx].location % MAP_WIDTH;
+  const dy = Math.abs(iDestY - locY);
+  const dx = Math.abs(iDestX - locX);
+  return ESTIMATE(dx, dy);
+};
 
 const MAXCOST = (99900);
 const TOTALCOST = (ndx: number) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
 const XLOC = (a: number) => (a % MAP_WIDTH);
 const YLOC = (a: number) => (a / MAP_WIDTH);
 const LEGDISTANCE = (a: number, b: number) => (Math.abs(XLOC(b) - XLOC(a)) + Math.abs(YLOC(b) - YLOC(a)));
-const FARTHER = (ndx: number, NDX: number) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
+const FARTHER = (ndx: number, NDX: number, sDestination: number) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
 
 const FLAT_STRATEGIC_TRAVEL_TIME = 60;
 
-const QUESEARCH = (ndx, NDX) => {
+const QUESEARCH = (ndx: number, sDestination: number) => {
   let k: INT32 = TOTALCOST(ndx);
+  let NDX: INT32;
+
   NDX = pathQB[QHEADNDX].nextLink;
   while (NDX && (k > TOTALCOST(NDX)))
     NDX = pathQB[NDX].nextLink;
-  while (NDX && (k == TOTALCOST(NDX)) && FARTHER(ndx, NDX))
+  while (NDX && (k == TOTALCOST(NDX)) && FARTHER(ndx, NDX, sDestination))
     NDX = pathQB[NDX].nextLink;
+
+  return NDX;
 };
 
-export let queRequests: INT32;
+let queRequests: INT32;
 
 let diStratDelta: INT16[] /* [8] */ = [
   -MAP_WIDTH, // N
@@ -135,6 +181,7 @@ let diStratDelta: INT16[] /* [8] */ = [
 
 // this will find if a shortest strategic path
 
+/* static */ let FindStratPath__fPreviousPlotDirectPath: boolean = false; // don't save
 export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): INT32 {
   let iCnt: INT32;
   let ndx: INT32;
@@ -156,38 +203,37 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
   let sOrigination: INT16;
   let iCounter: INT16 = 0;
   let fPlotDirectPath: boolean = false;
-  /* static */ let fPreviousPlotDirectPath: boolean = false; // don't save
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP | null;
 
   // ******** Fudge by Bret (for now), curAPcost is never initialized in this function, but should be!
   // so this is just to keep things happy!
 
   // for player groups only!
   pGroup = GetGroup(sMvtGroupNumber);
-  if (pGroup.value.fPlayer) {
+  if (pGroup.fPlayer) {
     // if player is holding down SHIFT key, find the shortest route instead of the quickest route!
     if (_KeyDown(SHIFT)) {
       fPlotDirectPath = true;
     }
 
-    if (fPlotDirectPath != fPreviousPlotDirectPath) {
+    if (fPlotDirectPath != FindStratPath__fPreviousPlotDirectPath) {
       // must redraw map to erase the previous path...
       fMapPanelDirty = true;
-      fPreviousPlotDirectPath = fPlotDirectPath;
+      FindStratPath__fPreviousPlotDirectPath = fPlotDirectPath;
     }
   }
 
   queRequests = 2;
 
   // initialize the ai data structures
-  memset(trailStratTreeB, 0, sizeof(trailStratTreeB));
-  memset(trailCostB, 255, sizeof(trailCostB));
+  trailStratTreeB.forEach(resetTrailT);
+  trailCostB.fill(255);
 
   // memset(trailCostB,255*PATHFACTOR,MAP_LENGTH);
-  memset(pathQB, 0, sizeof(pathQB));
+  pathQB.forEach(resetPathT);
 
   // FOLLOWING LINE COMMENTED OUT ON MARCH 7/97 BY IC
-  memset(gusMapPathingData, (sStart), sizeof(gusMapPathingData));
+  gusMapPathingData.fill(sStart);
   trailStratTreedxB = 0;
 
   // set up common info
@@ -205,8 +251,8 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
   pathQB[QHEADNDX].prevLink = 1;
   pathQB[QHEADNDX].costSoFar = MAXCOST;
 
-  pathQB[QPOOLNDX()].nextLink = QPOOLNDX();
-  pathQB[QPOOLNDX()].prevLink = QPOOLNDX();
+  pathQB[QPOOLNDX].nextLink = QPOOLNDX;
+  pathQB[QPOOLNDX].prevLink = QPOOLNDX;
 
   // setup first path record
   pathQB[1].nextLink = QHEADNDX;
@@ -214,7 +260,7 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
   pathQB[1].location = sOrigination;
   pathQB[1].pathNdx = 0;
   pathQB[1].costSoFar = 0;
-  pathQB[1].costToGo = REMAININGCOST(1);
+  pathQB[1].costToGo = REMAININGCOST(iDestX, iDestY, 1);
 
   trailStratTreedxB = 0;
   trailCostB[sOrigination] = 0;
@@ -314,13 +360,13 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
       // if (_KeyDown(CTRL_DOWN) && nextCost < TRAVELCOST_VEINEND)
       newTotCost = curCost + nextCost;
       if (newTotCost < trailCostB[newLoc]) {
-        NEWQUENODE();
+        qNewNdx = NEWQUENODE();
 
         if (qNewNdx == QHEADNDX) {
           return 0;
         }
 
-        if (qNewNdx == QPOOLNDX()) {
+        if (qNewNdx == QPOOLNDX) {
           return 0;
         }
 
@@ -336,16 +382,16 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
 
         pathQB[qNewNdx].location = newLoc;
         pathQB[qNewNdx].costSoFar = newTotCost;
-        pathQB[qNewNdx].costToGo = REMAININGCOST(qNewNdx);
+        pathQB[qNewNdx].costToGo = REMAININGCOST(iDestX, iDestY, qNewNdx);
         trailCostB[newLoc] = newTotCost;
         // do a sorted que insert of the new path
-        QUESEARCH(qNewNdx, insertNdx);
+        insertNdx = QUESEARCH(qNewNdx, sDestination);
         INSQUENODEPREV(qNewNdx, insertNdx);
       }
     }
-  } while (pathQNotEmpty() && pathNotYetFound());
+  } while (pathQNotEmpty() && pathNotYetFound(sDestination));
   // work finished. Did we find a path?
-  if (pathFound()) {
+  if (pathFound(sDestination)) {
     let z: INT16;
     let _z: INT16;
     let _nextLink: INT16; //,tempgrid;
@@ -381,32 +427,32 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
   return 0;
 }
 
-export function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): PathStPtr {
+export function BuildAStrategicPath(pPath: PathSt | null, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: boolean): PathSt | null {
   let iCurrentSectorNum: INT32;
   let iDelta: INT32 = 0;
   let iPathLength: INT32;
   let iCount: INT32 = 0;
-  let pNode: PathStPtr = null;
-  let pNewNode: PathStPtr = null;
-  let pDeleteNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
+  let pNewNode: PathSt | null = null;
+  let pDeleteNode: PathSt | null = null;
   let fFlag: boolean = false;
-  let pHeadOfPathList: PathStPtr = pPath;
+  let pHeadOfPathList: PathSt | null = pPath;
   let iOldDelta: INT32 = 0;
   iCurrentSectorNum = iStartSectorNum;
 
   if (pNode == null) {
     // start new path list
-    pNode = MemAlloc(sizeof(PathSt));
+    pNode = createPathSt();
     /*
        if ( _KeyDown( CTRL ))
                      pNode->fSpeed=SLOW_MVT;
              else
     */
-    pNode.value.fSpeed = NORMAL_MVT;
-    pNode.value.uiSectorId = iStartSectorNum;
-    pNode.value.pNext = null;
-    pNode.value.pPrev = null;
-    pNode.value.uiEta = GetWorldTotalMin();
+    pNode.fSpeed = NORMAL_MVT;
+    pNode.uiSectorId = iStartSectorNum;
+    pNode.pNext = null;
+    pNode.pPrev = null;
+    pNode.uiEta = GetWorldTotalMin();
     pHeadOfPathList = pNode;
   }
 
@@ -438,14 +484,13 @@ export function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iE
       // intersected previous node, delete path to date
       if (!pNode)
         return null;
-      while (pNode.value.pNext)
-        pNode = pNode.value.pNext;
+      while (pNode.pNext)
+        pNode = pNode.pNext;
       // start backing up
-      while (pNode.value.uiSectorId != iStartSectorNum) {
+      while (pNode.uiSectorId != iStartSectorNum) {
         pDeleteNode = pNode;
-        pNode = pNode.value.pPrev;
-        pNode.value.pNext = null;
-        MemFree(pDeleteNode);
+        pNode = <PathSt>pNode.pPrev;
+        pNode.pNext = null;
       }
       return null;
     }
@@ -472,22 +517,21 @@ export function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iE
     pHeadOfPathList = pNode;
     if (!pNode)
       return null;
-    while (pNode.value.pNext)
-      pNode = pNode.value.pNext;
+    while (pNode.pNext)
+      pNode = pNode.pNext;
   }
 
   pNode = pHeadOfPathList;
 
   if (!pNode)
     return null;
-  while (pNode.value.pNext)
-    pNode = pNode.value.pNext;
+  while (pNode.pNext)
+    pNode = pNode.pNext;
 
-  if (!pNode.value.pPrev) {
-    MemFree(pNode);
+  if (!pNode.pPrev) {
     pHeadOfPathList = null;
     pPath = pHeadOfPathList;
-    return false;
+    return null;
   }
 
   /*
@@ -503,53 +547,53 @@ export function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iE
   return pPath;
 }
 
-function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): boolean {
-  let pNode: PathStPtr = null;
-  let pTempNode: PathStPtr = null;
-  let pHeadOfList: PathStPtr = pPath;
+function AddSectorToPathList(pPath: PathSt | null, uiSectorNum: UINT16): boolean {
+  let pNode: PathSt | null = null;
+  let pTempNode: PathSt | null = null;
+  let pHeadOfList: PathSt | null = pPath;
   pNode = pPath;
 
   if (uiSectorNum < MAP_WORLD_X - 1)
     return false;
 
   if (pNode == null) {
-    pNode = MemAlloc(sizeof(PathSt));
+    pNode = createPathSt();
 
     // Implement EtaCost Array as base EtaCosts of sectors
     // pNode->uiEtaCost=EtaCost[uiSectorNum];
-    pNode.value.uiSectorId = uiSectorNum;
-    pNode.value.uiEta = GetWorldTotalMin();
-    pNode.value.pNext = null;
-    pNode.value.pPrev = null;
+    pNode.uiSectorId = uiSectorNum;
+    pNode.uiEta = GetWorldTotalMin();
+    pNode.pNext = null;
+    pNode.pPrev = null;
     /*
          if ( _KeyDown( CTRL ))
                    pNode->fSpeed=SLOW_MVT;
                else
     */
-    pNode.value.fSpeed = NORMAL_MVT;
+    pNode.fSpeed = NORMAL_MVT;
 
     return true;
   } else {
     // if (pNode->uiSectorId==uiSectorNum)
     //	  return FALSE;
-    while (pNode.value.pNext) {
+    while (pNode.pNext) {
       //  if (pNode->uiSectorId==uiSectorNum)
       //	  return FALSE;
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
 
-    pTempNode = MemAlloc(sizeof(PathSt));
-    pTempNode.value.uiEta = 0;
-    pNode.value.pNext = pTempNode;
-    pTempNode.value.uiSectorId = uiSectorNum;
-    pTempNode.value.pPrev = pNode;
-    pTempNode.value.pNext = null;
+    pTempNode = createPathSt();
+    pTempNode.uiEta = 0;
+    pNode.pNext = pTempNode;
+    pTempNode.uiSectorId = uiSectorNum;
+    pTempNode.pPrev = pNode;
+    pTempNode.pNext = null;
     /*
           if ( _KeyDown( CTRL ))
            pTempNode->fSpeed=SLOW_MVT;
           else
     */
-    pTempNode.value.fSpeed = NORMAL_MVT;
+    pTempNode.fSpeed = NORMAL_MVT;
     pNode = pTempNode;
   }
   pPath = pHeadOfList;
@@ -689,11 +733,11 @@ void SetThisMercsSectorXYToTheseValues( SOLDIERTYPE *pSoldier ,INT16 sX, INT16 s
 }
 */
 
-export function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: PathStPtr): PathStPtr {
+export function AppendStrategicPath(pNewSection: PathSt | null, pHeadOfPathList: PathSt | null): PathSt | null {
   // will append a new section onto the end of the head of list, then return the head of the new list
 
-  let pNode: PathStPtr = pHeadOfPathList;
-  let pPastNode: PathStPtr = null;
+  let pNode: PathSt | null = pHeadOfPathList;
+  let pPastNode: PathSt | null = null;
   // move to end of original section
 
   if (pNewSection == null) {
@@ -703,21 +747,21 @@ export function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: Pat
   // is there in fact a list to append to
   if (pNode) {
     // move to tail of old list
-    while (pNode.value.pNext) {
+    while (pNode.pNext) {
       // next node in list
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
 
     // make sure the 2 are not the same
 
-    if (pNode.value.uiSectorId == pNewSection.value.uiSectorId) {
+    if (pNode.uiSectorId == pNewSection.uiSectorId) {
       // are the same, remove head of new list
       pNewSection = RemoveHeadFromStrategicPath(pNewSection);
     }
 
     // append onto old list
-    pNode.value.pNext = pNewSection;
-    pNewSection.value.pPrev = pNode;
+    pNode.pNext = pNewSection;
+    (<PathSt>pNewSection).pPrev = pNode;
   } else {
     // head of list becomes head of new section
     pHeadOfPathList = pNewSection;
@@ -727,10 +771,10 @@ export function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: Pat
   return pHeadOfPathList;
 }
 
-export function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathStPtr {
+export function ClearStrategicPathList(pHeadOfPath: PathSt | null, sMvtGroup: INT16): PathSt | null {
   // will clear out a strategic path and return head of list as NULL
-  let pNode: PathStPtr = pHeadOfPath;
-  let pDeleteNode: PathStPtr = pHeadOfPath;
+  let pNode: PathSt | null = pHeadOfPath;
+  let pDeleteNode: PathSt | null = pHeadOfPath;
 
   // is there in fact a path?
   if (pNode == null) {
@@ -739,19 +783,13 @@ export function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16)
   }
 
   // clear list
-  while (pNode.value.pNext) {
+  while (pNode.pNext) {
     // set up delete node
     pDeleteNode = pNode;
 
     // move to next node
-    pNode = pNode.value.pNext;
-
-    // delete delete node
-    MemFree(pDeleteNode);
+    pNode = pNode.pNext;
   }
-
-  // clear out last node
-  MemFree(pNode);
 
   pNode = null;
   pDeleteNode = null;
@@ -764,10 +802,10 @@ export function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16)
   return pNode;
 }
 
-export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16, sY: INT16, sMvtGroup: INT16): PathStPtr {
+export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathSt | null, sX: INT16, sY: INT16, sMvtGroup: INT16): PathSt | null {
   // will clear out a strategic path and return head of list as NULL
-  let pNode: PathStPtr = pHeadOfPath;
-  let pDeleteNode: PathStPtr = pHeadOfPath;
+  let pNode: PathSt | null = pHeadOfPath;
+  let pDeleteNode: PathSt | null = pHeadOfPath;
   let sSector: INT16 = 0;
   let sCurrentSector: INT16 = -1;
 
@@ -784,16 +822,16 @@ export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX
   pNode = MoveToEndOfPathList(pNode);
 
   // get current sector value
-  sCurrentSector = pNode.value.uiSectorId;
+  sCurrentSector = (<PathSt>pNode).uiSectorId;
 
   // move through list
   while ((pNode) && (sSector != sCurrentSector)) {
     // next value
-    pNode = pNode.value.pPrev;
+    pNode = pNode.pPrev;
 
     // get current sector value
     if (pNode != null) {
-      sCurrentSector = pNode.value.uiSectorId;
+      sCurrentSector = pNode.uiSectorId;
     }
   }
 
@@ -804,7 +842,7 @@ export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX
   }
 
   // we want to KEEP the target sector, not delete it, so advance to the next sector
-  pNode = pNode.value.pNext;
+  pNode = pNode.pNext;
 
   // is nothing left?
   if (pNode == null) {
@@ -813,9 +851,9 @@ export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX
   }
 
   // if we're NOT about to clear the head (there's a previous entry)
-  if (pNode.value.pPrev) {
+  if (pNode.pPrev) {
     // set next for tail to NULL
-    pNode.value.pPrev.value.pNext = null;
+    pNode.pPrev.pNext = null;
   } else {
     // clear head, return NULL
     pHeadOfPath = ClearStrategicPathList(pHeadOfPath, sMvtGroup);
@@ -824,32 +862,28 @@ export function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX
   }
 
   // clear list
-  while (pNode.value.pNext) {
+  while (pNode.pNext) {
     // set up delete node
     pDeleteNode = pNode;
 
     // move to next node
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
 
     // check if we are clearing the head of the list
     if (pDeleteNode == pHeadOfPath) {
       // null out head
       pHeadOfPath = null;
     }
-
-    // delete delete node
-    MemFree(pDeleteNode);
   }
 
   // clear out last node
-  MemFree(pNode);
   pNode = null;
   pDeleteNode = null;
 
   return pHeadOfPath;
 }
 
-export function MoveToBeginningOfPathList(pList: PathStPtr): PathStPtr {
+export function MoveToBeginningOfPathList(pList: PathSt | null): PathSt | null {
   // move to beginning of this list
 
   // no list, return
@@ -858,14 +892,14 @@ export function MoveToBeginningOfPathList(pList: PathStPtr): PathStPtr {
   }
 
   // move to beginning of list
-  while (pList.value.pPrev) {
-    pList = pList.value.pPrev;
+  while (pList.pPrev) {
+    pList = pList.pPrev;
   }
 
   return pList;
 }
 
-function MoveToEndOfPathList(pList: PathStPtr): PathStPtr {
+function MoveToEndOfPathList(pList: PathSt | null): PathSt | null {
   // move to end of list
 
   // no list, return
@@ -874,44 +908,41 @@ function MoveToEndOfPathList(pList: PathStPtr): PathStPtr {
   }
 
   // move to beginning of list
-  while (pList.value.pNext) {
-    pList = pList.value.pNext;
+  while (pList.pNext) {
+    pList = pList.pNext;
   }
 
   return pList;
 }
 
-function RemoveTailFromStrategicPath(pHeadOfList: PathStPtr): PathStPtr {
+function RemoveTailFromStrategicPath(pHeadOfList: PathSt | null): PathSt | null {
   // remove the tail section from the strategic path
-  let pNode: PathStPtr = pHeadOfList;
-  let pLastNode: PathStPtr = pHeadOfList;
+  let pNode: PathSt | null = pHeadOfList;
+  let pLastNode: PathSt | null = pHeadOfList;
 
   if (pNode == null) {
     // no list, leave
     return null;
   }
 
-  while (pNode.value.pNext) {
+  while (pNode.pNext) {
     pLastNode = pNode;
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
   }
 
   // end of list
 
   // set next to null
-  pLastNode.value.pNext = null;
-
-  // now remove old last node
-  MemFree(pNode);
+  (<PathSt>pLastNode).pNext = null;
 
   // return head of new list
   return pHeadOfList;
 }
 
-export function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
+export function RemoveHeadFromStrategicPath(pList: PathSt | null): PathSt | null {
   // move to head of list
-  let pNode: PathStPtr = pList;
-  let pNewHead: PathStPtr = pList;
+  let pNode: PathSt | null = pList;
+  let pNewHead: PathSt | null = pList;
 
   // check if there is a list
   if (pNode == null) {
@@ -920,19 +951,16 @@ export function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
   }
 
   // move to head of list
-  while (pNode.value.pPrev) {
+  while (pNode.pPrev) {
     // back one node
-    pNode = pNode.value.pPrev;
+    pNode = pNode.pPrev;
   }
 
   // set up new head
-  pNewHead = pNode.value.pNext;
+  pNewHead = pNode.pNext;
   if (pNewHead) {
-    pNewHead.value.pPrev = null;
+    pNewHead.pPrev = null;
   }
-
-  // free old head
-  MemFree(pNode);
 
   pNode = null;
 
@@ -940,12 +968,12 @@ export function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
   return pNewHead;
 }
 
-function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT16): PathStPtr {
+function RemoveSectorFromStrategicPathList(pList: PathSt | null, sX: INT16, sY: INT16): PathSt | null {
   // find sector sX, sY ...then remove it
   let sSector: INT16 = 0;
   let sCurrentSector: INT16 = -1;
-  let pNode: PathStPtr = pList;
-  let pPastNode: PathStPtr = pList;
+  let pNode: PathSt | null = pList;
+  let pPastNode: PathSt | null = pList;
 
   // get sector value
   sSector = sX + (sY * MAP_WORLD_X);
@@ -956,7 +984,7 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
   }
 
   // get current sector value
-  sCurrentSector = pNode.value.uiSectorId;
+  sCurrentSector = pNode.uiSectorId;
 
   // move to end of list
   pNode = MoveToEndOfPathList(pNode);
@@ -967,10 +995,10 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
     pPastNode = pNode;
 
     // next value
-    pNode = pNode.value.pPrev;
+    pNode = pNode.pPrev;
 
     // get current sector value
-    sCurrentSector = pNode.value.uiSectorId;
+    sCurrentSector = (<PathSt>pNode).uiSectorId;
   }
 
   // no list left, sector not found
@@ -979,29 +1007,27 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
   }
 
   // sector found...remove it
-  pPastNode.value.pNext = pNode.value.pNext;
-
-  // remove node
-  MemFree(pNode);
+  Assert(pPastNode);
+  pPastNode.pNext = <PathSt>pNode.pNext;
 
   // set up prev for next
-  pPastNode.value.pNext.value.pPrev = pPastNode;
+  pPastNode.pNext.pPrev = pPastNode;
 
   pPastNode = MoveToBeginningOfPathList(pPastNode);
 
   return pPastNode;
 }
 
-export function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT16 {
+export function GetLastSectorIdInCharactersPath(pCharacter: SOLDIERTYPE): INT16 {
   // will return the last sector of the current path, or the current sector if there's no path
-  let sLastSector: INT16 = (pCharacter.value.sSectorX) + (pCharacter.value.sSectorY) * (MAP_WORLD_X);
-  let pNode: PathStPtr = null;
+  let sLastSector: INT16 = (pCharacter.sSectorX) + (pCharacter.sSectorY) * (MAP_WORLD_X);
+  let pNode: PathSt | null = null;
 
   pNode = GetSoldierMercPathPtr(pCharacter);
 
   while (pNode) {
-    sLastSector = (pNode.value.uiSectorId);
-    pNode = pNode.value.pNext;
+    sLastSector = (pNode.uiSectorId);
+    pNode = pNode.pNext;
   }
 
   return sLastSector;
@@ -1010,7 +1036,7 @@ export function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>
 // get id of last sector in vehicle path list
 export function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   let sLastSector: INT16 = -1;
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   if ((iId >= ubNumberOfVehicles) || (iId < 0)) {
     return sLastSector;
@@ -1026,16 +1052,16 @@ export function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   pNode = pVehicleList[iId].pMercPath;
 
   while (pNode) {
-    sLastSector = (pNode.value.uiSectorId);
-    pNode = pNode.value.pNext;
+    sLastSector = (pNode.uiSectorId);
+    pNode = pNode.pNext;
   }
 
   return sLastSector;
 }
 
-export function CopyPaths(pSourcePath: PathStPtr, pDestPath: PathStPtr): PathStPtr {
-  let pDestNode: PathStPtr = pDestPath;
-  let pCurNode: PathStPtr = pSourcePath;
+export function CopyPaths(pSourcePath: PathSt | null, pDestPath: PathSt | null): PathSt {
+  let pDestNode: PathSt | null = pDestPath;
+  let pCurNode: PathSt | null = pSourcePath;
   // copies path from source to dest
 
   // NULL out dest path
@@ -1044,56 +1070,57 @@ export function CopyPaths(pSourcePath: PathStPtr, pDestPath: PathStPtr): PathStP
 
   // start list off
   if (pCurNode != null) {
-    pDestNode = MemAlloc(sizeof(PathSt));
+    pDestNode = createPathSt();
 
     // set next and prev nodes
-    pDestNode.value.pPrev = null;
-    pDestNode.value.pNext = null;
+    pDestNode.pPrev = null;
+    pDestNode.pNext = null;
 
     // copy sector value and times
-    pDestNode.value.uiSectorId = pCurNode.value.uiSectorId;
-    pDestNode.value.uiEta = pCurNode.value.uiEta;
-    pDestNode.value.fSpeed = pCurNode.value.fSpeed;
+    pDestNode.uiSectorId = pCurNode.uiSectorId;
+    pDestNode.uiEta = pCurNode.uiEta;
+    pDestNode.fSpeed = pCurNode.fSpeed;
 
-    pCurNode = pCurNode.value.pNext;
+    pCurNode = pCurNode.pNext;
   }
 
   while (pCurNode != null) {
-    pDestNode.value.pNext = MemAlloc(sizeof(PathSt));
+    Assert(pDestNode);
+    pDestNode.pNext = createPathSt();
 
     // set next's previous to current
-    pDestNode.value.pNext.value.pPrev = pDestNode;
+    pDestNode.pNext.pPrev = pDestNode;
 
     // set next's next to null
-    pDestNode.value.pNext.value.pNext = null;
+    pDestNode.pNext.pNext = null;
 
     // increment ptr
-    pDestNode = pDestNode.value.pNext;
+    pDestNode = pDestNode.pNext;
 
     // copy sector value and times
-    pDestNode.value.uiSectorId = pCurNode.value.uiSectorId;
-    pDestNode.value.uiEta = pCurNode.value.uiEta;
-    pDestNode.value.fSpeed = pCurNode.value.fSpeed;
+    pDestNode.uiSectorId = pCurNode.uiSectorId;
+    pDestNode.uiEta = pCurNode.uiEta;
+    pDestNode.fSpeed = pCurNode.fSpeed;
 
-    pCurNode = pCurNode.value.pNext;
+    pCurNode = pCurNode.pNext;
   }
 
   // move back to beginning fo list
   pDestNode = MoveToBeginningOfPathList(pDestNode);
 
   // return to head of path
-  return pDestNode;
+  return <PathSt>pDestNode;
 }
 
-function GetStrategicMvtSpeed(pCharacter: Pointer<SOLDIERTYPE>): INT32 {
+function GetStrategicMvtSpeed(pCharacter: SOLDIERTYPE): INT32 {
   // will return the strategic speed of the character
   let iSpeed: INT32;
 
   // avg of strength and agility * percentage health..very simple..replace later
 
-  iSpeed = ((pCharacter.value.bAgility + pCharacter.value.bStrength) / 2);
-  iSpeed *= ((pCharacter.value.bLife));
-  iSpeed /= pCharacter.value.bLifeMax;
+  iSpeed = ((pCharacter.bAgility + pCharacter.bStrength) / 2);
+  iSpeed *= ((pCharacter.bLife));
+  iSpeed /= pCharacter.bLifeMax;
 
   return iSpeed;
 }
@@ -1309,13 +1336,13 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath )
 }
 */
 
-export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16): void {
+export function RebuildWayPointsForGroupPath(pHeadOfPath: PathSt | null, sMvtGroup: INT16): void {
   let iDelta: INT32 = 0;
   let iOldDelta: INT32 = 0;
   let fFirstNode: boolean = true;
-  let pNode: PathStPtr = pHeadOfPath;
-  let pGroup: Pointer<GROUP> = null;
-  let wp: Pointer<WAYPOINT> = null;
+  let pNode: PathSt | null = pHeadOfPath;
+  let pGroup: GROUP;
+  let wp: WAYPOINT | null = null;
 
   if ((sMvtGroup == -1) || (sMvtGroup == 0)) {
     // invalid group...leave
@@ -1330,7 +1357,7 @@ export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: 
 
   RemoveGroupWaypoints(sMvtGroup);
 
-  if (pGroup.value.fPlayer) {
+  if (pGroup.fPlayer) {
     // update the destination(s) in the team list
     fTeamPanelDirty = true;
 
@@ -1343,26 +1370,26 @@ export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: 
   }
 
   // if group has no path planned at all
-  if ((pNode == null) || (pNode.value.pNext == null)) {
+  if ((pNode == null) || (pNode.pNext == null)) {
     // and it's a player group, and it's between sectors
     // NOTE: AI groups never reverse direction between sectors, Kris cheats & teleports them back to their current sector!
-    if (pGroup.value.fPlayer && pGroup.value.fBetweenSectors) {
+    if (pGroup.fPlayer && pGroup.fBetweenSectors) {
       // send the group right back to its current sector by reversing directions
-      GroupReversingDirectionsBetweenSectors(pGroup, pGroup.value.ubSectorX, pGroup.value.ubSectorY, false);
+      GroupReversingDirectionsBetweenSectors(pGroup, pGroup.ubSectorX, pGroup.ubSectorY, false);
     }
 
     return;
   }
 
   // if we're currently between sectors
-  if (pGroup.value.fBetweenSectors) {
+  if (pGroup.fBetweenSectors) {
     // figure out which direction we're already going in  (Otherwise iOldDelta starts at 0)
-    iOldDelta = CALCULATE_STRATEGIC_INDEX(pGroup.value.ubNextX, pGroup.value.ubNextY) - CALCULATE_STRATEGIC_INDEX(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
+    iOldDelta = CALCULATE_STRATEGIC_INDEX(pGroup.ubNextX, pGroup.ubNextY) - CALCULATE_STRATEGIC_INDEX(pGroup.ubSectorX, pGroup.ubSectorY);
   }
 
   // build a brand new list of waypoints, one for initial direction, and another for every "direction change" thereafter
-  while (pNode.value.pNext) {
-    iDelta = pNode.value.pNext.value.uiSectorId - pNode.value.uiSectorId;
+  while (pNode.pNext) {
+    iDelta = pNode.pNext.uiSectorId - pNode.uiSectorId;
     Assert(iDelta != 0); // same sector should never repeat in the path list
 
     // Waypoints are only added at "pivot points" - whenever there is a change in orthogonal direction.
@@ -1370,13 +1397,13 @@ export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: 
     // added as a waypoint.  This is what we want - for stationary mercs, the first node in a path is the CURRENT sector.
     if ((iOldDelta != 0) && (iDelta != iOldDelta)) {
       // add this strategic sector as a waypoint
-      AddWaypointStrategicIDToPGroup(pGroup, pNode.value.uiSectorId);
+      AddWaypointStrategicIDToPGroup(pGroup, pNode.uiSectorId);
     }
 
     // remember this delta
     iOldDelta = iDelta;
 
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
     fFirstNode = false;
   }
 
@@ -1384,28 +1411,28 @@ export function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: 
   Assert(!fFirstNode);
 
   // the final destination sector - always add a waypoint for it
-  AddWaypointStrategicIDToPGroup(pGroup, pNode.value.uiSectorId);
+  AddWaypointStrategicIDToPGroup(pGroup, pNode.uiSectorId);
 
   // at this point, the final sector in the path must be identical to this group's last waypoint
   wp = GetFinalWaypoint(pGroup);
   AssertMsg(wp, "Path exists, but no waypoints were added!  AM-0");
-  AssertMsg(pNode.value.uiSectorId == CALCULATE_STRATEGIC_INDEX(wp.value.x, wp.value.y), "Last waypoint differs from final path sector!  AM-0");
+  AssertMsg(pNode.uiSectorId == CALCULATE_STRATEGIC_INDEX(wp.x, wp.y), "Last waypoint differs from final path sector!  AM-0");
 
   // see if we've already reached the first sector in the path (we never actually left the sector and reversed back to it)
-  if (pGroup.value.uiArrivalTime == GetWorldTotalMin()) {
+  if (pGroup.uiArrivalTime == GetWorldTotalMin()) {
     // never really left.  Must set check for battle TRUE in order for HandleNonCombatGroupArrival() to run!
-    GroupArrivedAtSector(pGroup.value.ubGroupID, true, true);
+    GroupArrivedAtSector(pGroup.ubGroupID, true, true);
   }
 }
 
 // clear strategic movement (mercpaths and waypoints) for this soldier, and his group (including its vehicles)
-export function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let pGroup: Pointer<GROUP> = null;
+export function ClearMvtForThisSoldierAndGang(pSoldier: SOLDIERTYPE): void {
+  let pGroup: GROUP | null = null;
 
   // check if valid grunt
   Assert(pSoldier);
 
-  pGroup = GetGroup(pSoldier.value.ubGroupID);
+  pGroup = GetGroup(pSoldier.ubGroupID);
   Assert(pGroup);
 
   // clear their strategic movement (mercpaths and waypoints)
@@ -1413,7 +1440,7 @@ export function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): v
 }
 
 export function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   // build the path
   pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE */);
@@ -1434,7 +1461,7 @@ export function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sS
 }
 
 function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   // build the path
   pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, false /*, FALSE*/);
@@ -1458,7 +1485,7 @@ function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX
 }
 
 export function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   // init sectors with soldiers in them
   InitSectorsWithSoldiersList();
@@ -1495,7 +1522,7 @@ export function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGro
 }
 
 export function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): boolean {
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   // init sectors with soldiers in them
   InitSectorsWithSoldiersList();
@@ -1548,20 +1575,20 @@ BOOLEAN MoveGroupToOriginalSector( UINT8 ubGroupID )
 }
 */
 
-export function GetLengthOfPath(pHeadPath: PathStPtr): INT32 {
+export function GetLengthOfPath(pHeadPath: PathSt | null): INT32 {
   let iLength: INT32 = 0;
-  let pNode: PathStPtr = pHeadPath;
+  let pNode: PathSt | null = pHeadPath;
 
   while (pNode) {
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
     iLength++;
   }
 
   return iLength;
 }
 
-export function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  let pNode: PathStPtr = null;
+export function GetLengthOfMercPath(pSoldier: SOLDIERTYPE): INT32 {
+  let pNode: PathSt | null = null;
   let iLength: INT32 = 0;
 
   pNode = GetSoldierMercPathPtr(pSoldier);
@@ -1569,110 +1596,110 @@ export function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   return iLength;
 }
 
-function CheckIfPathIsEmpty(pHeadPath: PathStPtr): boolean {
+function CheckIfPathIsEmpty(pHeadPath: PathSt | null): boolean {
   // no path
   if (pHeadPath == null) {
     return true;
   }
 
   // nothing next either
-  if (pHeadPath.value.pNext == null) {
+  if (pHeadPath.pNext == null) {
     return true;
   }
 
   return false;
 }
 
-export function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
-  let pMercPath: PathStPtr = null;
+export function GetSoldierMercPathPtr(pSoldier: SOLDIERTYPE): PathSt | null {
+  let pMercPath: PathSt | null = null;
 
   Assert(pSoldier);
 
   // IN a vehicle?
-  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-    pMercPath = pVehicleList[pSoldier.value.iVehicleId].pMercPath;
+  if (pSoldier.bAssignment == Enum117.VEHICLE) {
+    pMercPath = pVehicleList[pSoldier.iVehicleId].pMercPath;
   }
   // IS a vehicle?
-  else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    pMercPath = pVehicleList[pSoldier.value.bVehicleID].pMercPath;
+  else if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+    pMercPath = pVehicleList[pSoldier.bVehicleID].pMercPath;
   } else // a person
   {
-    pMercPath = pSoldier.value.pMercPath;
+    pMercPath = pSoldier.pMercPath;
   }
 
   return pMercPath;
 }
 
-export function GetGroupMercPathPtr(pGroup: Pointer<GROUP>): PathStPtr {
-  let pMercPath: PathStPtr = null;
+export function GetGroupMercPathPtr(pGroup: GROUP): PathSt | null {
+  let pMercPath: PathSt | null = null;
   let iVehicledId: INT32 = -1;
 
   Assert(pGroup);
 
   // must be a player group!
-  Assert(pGroup.value.fPlayer);
+  Assert(pGroup.fPlayer);
 
-  if (pGroup.value.fVehicle) {
-    iVehicledId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
+  if (pGroup.fVehicle) {
+    iVehicledId = GivenMvtGroupIdFindVehicleId(pGroup.ubGroupID);
     Assert(iVehicledId != -1);
 
     pMercPath = pVehicleList[iVehicledId].pMercPath;
   } else {
     // value returned will be NULL if there's nobody in the group!
-    if (pGroup.value.pPlayerList && pGroup.value.pPlayerList.value.pSoldier) {
-      pMercPath = pGroup.value.pPlayerList.value.pSoldier.value.pMercPath;
+    if (pGroup.pPlayerList && pGroup.pPlayerList.pSoldier) {
+      pMercPath = pGroup.pPlayerList.pSoldier.pMercPath;
     }
   }
 
   return pMercPath;
 }
 
-export function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function GetSoldierGroupId(pSoldier: SOLDIERTYPE): UINT8 {
   let ubGroupId: UINT8 = 0;
 
   // IN a vehicle?
-  if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-    ubGroupId = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
+  if (pSoldier.bAssignment == Enum117.VEHICLE) {
+    ubGroupId = pVehicleList[pSoldier.iVehicleId].ubMovementGroup;
   }
   // IS a vehicle?
-  else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    ubGroupId = pVehicleList[pSoldier.value.bVehicleID].ubMovementGroup;
+  else if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+    ubGroupId = pVehicleList[pSoldier.bVehicleID].ubMovementGroup;
   } else // a person
   {
-    ubGroupId = pSoldier.value.ubGroupID;
+    ubGroupId = pSoldier.ubGroupID;
   }
 
   return ubGroupId;
 }
 
 // clears this groups strategic movement (mercpaths and waypoints), include those in the vehicle structs(!)
-export function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>): void {
-  let pPlayer: Pointer<PLAYERGROUP> = null;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+export function ClearMercPathsAndWaypointsForAllInGroup(pGroup: GROUP): void {
+  let pPlayer: PLAYERGROUP | null = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
-  pPlayer = pGroup.value.pPlayerList;
+  pPlayer = pGroup.pPlayerList;
   while (pPlayer) {
-    pSoldier = pPlayer.value.pSoldier;
+    pSoldier = pPlayer.pSoldier;
 
     if (pSoldier != null) {
       ClearPathForSoldier(pSoldier);
     }
 
-    pPlayer = pPlayer.value.next;
+    pPlayer = pPlayer.next;
   }
 
   // if it's a vehicle
-  if (pGroup.value.fVehicle) {
+  if (pGroup.fVehicle) {
     let iVehicleId: INT32 = -1;
-    let pVehicle: Pointer<VEHICLETYPE> = null;
+    let pVehicle: VEHICLETYPE;
 
-    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
+    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.ubGroupID);
     Assert(iVehicleId != -1);
 
-    pVehicle = addressof(pVehicleList[iVehicleId]);
+    pVehicle = pVehicleList[iVehicleId];
 
     // clear the path for that vehicle
-    pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
+    pVehicle.pMercPath = ClearStrategicPathList(pVehicle.pMercPath, pVehicle.ubMovementGroup);
   }
 
   // clear the waypoints for this group too - no mercpath = no waypoints!
@@ -1682,77 +1709,77 @@ export function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>):
 }
 
 // clears the contents of the soldier's mercpPath, as well as his vehicle path if he is a / or is in a vehicle
-function ClearPathForSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
-  let pVehicle: Pointer<VEHICLETYPE> = null;
+function ClearPathForSoldier(pSoldier: SOLDIERTYPE): void {
+  let pVehicle: VEHICLETYPE | null = null;
 
   // clear the soldier's mercpath
-  pSoldier.value.pMercPath = ClearStrategicPathList(pSoldier.value.pMercPath, pSoldier.value.ubGroupID);
+  pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, pSoldier.ubGroupID);
 
   // if a vehicle
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    pVehicle = addressof(pVehicleList[pSoldier.value.bVehicleID]);
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+    pVehicle = pVehicleList[pSoldier.bVehicleID];
   }
   // or in a vehicle
-  else if (pSoldier.value.bAssignment == Enum117.VEHICLE) {
-    pVehicle = addressof(pVehicleList[pSoldier.value.iVehicleId]);
+  else if (pSoldier.bAssignment == Enum117.VEHICLE) {
+    pVehicle = pVehicleList[pSoldier.iVehicleId];
   }
 
   // if there's an associate vehicle structure
   if (pVehicle != null) {
     // clear its mercpath, too
-    pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
+    pVehicle.pMercPath = ClearStrategicPathList(pVehicle.pMercPath, pVehicle.ubMovementGroup);
   }
 }
 
-export function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): void {
-  let pPlayer: Pointer<PLAYERGROUP> = null;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+export function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: GROUP, ubSectorX: UINT8, ubSectorY: UINT8): void {
+  let pPlayer: PLAYERGROUP | null = null;
+  let pSoldier: SOLDIERTYPE | null = null;
 
-  pPlayer = pGroup.value.pPlayerList;
+  pPlayer = pGroup.pPlayerList;
   while (pPlayer) {
-    pSoldier = pPlayer.value.pSoldier;
+    pSoldier = pPlayer.pSoldier;
 
     if (pSoldier != null) {
-      AddSectorToFrontOfMercPath(addressof(pSoldier.value.pMercPath), ubSectorX, ubSectorY);
+      pSoldier.pMercPath = AddSectorToFrontOfMercPath(pSoldier.pMercPath, ubSectorX, ubSectorY);
     }
 
-    pPlayer = pPlayer.value.next;
+    pPlayer = pPlayer.next;
   }
 
   // if it's a vehicle
-  if (pGroup.value.fVehicle) {
+  if (pGroup.fVehicle) {
     let iVehicleId: INT32 = -1;
-    let pVehicle: Pointer<VEHICLETYPE> = null;
+    let pVehicle: VEHICLETYPE;
 
-    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
+    iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.ubGroupID);
     Assert(iVehicleId != -1);
 
-    pVehicle = addressof(pVehicleList[iVehicleId]);
+    pVehicle = pVehicleList[iVehicleId];
 
     // add it to that vehicle's path
-    AddSectorToFrontOfMercPath(addressof(pVehicle.value.pMercPath), ubSectorX, ubSectorY);
+    pVehicle.pMercPath = AddSectorToFrontOfMercPath(pVehicle.pMercPath, ubSectorX, ubSectorY);
   }
 }
 
-function AddSectorToFrontOfMercPath(ppMercPath: Pointer<PathStPtr>, ubSectorX: UINT8, ubSectorY: UINT8): void {
-  let pNode: PathStPtr = null;
+function AddSectorToFrontOfMercPath(pMercPath: PathSt | null, ubSectorX: UINT8, ubSectorY: UINT8): PathSt {
+  let pNode: PathSt;
 
   // allocate and hang a new node at the front of the path list
-  pNode = MemAlloc(sizeof(PathSt));
+  pNode = createPathSt();
 
-  pNode.value.uiSectorId = CALCULATE_STRATEGIC_INDEX(ubSectorX, ubSectorY);
-  pNode.value.pNext = ppMercPath.value;
-  pNode.value.pPrev = null;
-  pNode.value.uiEta = GetWorldTotalMin();
-  pNode.value.fSpeed = NORMAL_MVT;
+  pNode.uiSectorId = CALCULATE_STRATEGIC_INDEX(ubSectorX, ubSectorY);
+  pNode.pNext = pMercPath;
+  pNode.pPrev = null;
+  pNode.uiEta = GetWorldTotalMin();
+  pNode.fSpeed = NORMAL_MVT;
 
   // if path wasn't null
-  if (ppMercPath.value != null) {
+  if (pMercPath != null) {
     // hang the previous pointer of the old head to the new head
-    (ppMercPath.value).value.pPrev = pNode;
+    pMercPath.pPrev = pNode;
   }
 
-  ppMercPath.value = pNode;
+  return pNode;
 }
 
 }

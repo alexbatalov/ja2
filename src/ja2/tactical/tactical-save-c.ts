@@ -237,7 +237,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
           let pMapName: string /* INT8[128] */;
 
           // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
-          GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, sMapX, sMapY, 0);
+          pMapName = GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, sMapX, sMapY, 0);
           FileDelete(pMapName);
 
           // turn off the flag
@@ -305,7 +305,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
         let pMapName: string /* INT8[128] */;
 
         // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
-        GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
+        pMapName = GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode.value.ubSectorX, TempNode.value.ubSectorY, TempNode.value.ubSectorZ);
         FileDelete(pMapName);
 
         // turn off the flag
@@ -332,7 +332,7 @@ export function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: 
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
 
-  GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Open the file for writing, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -375,7 +375,7 @@ export function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
   let zMapName: string /* CHAR8[128] */;
   let uiNumberOfItems: UINT32 = 0;
 
-  GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -411,18 +411,21 @@ export function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
   return true;
 }
 
-export function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pSizeOfData: Pointer<UINT32>, fIfEmptyCreate: boolean): boolean {
+export function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fIfEmptyCreate: boolean): UINT32 {
+  let pSizeOfData: UINT32;
+
   let uiNumBytesRead: UINT32 = 0;
   let hFile: HWFILE;
   let zMapName: string /* CHAR8[128] */;
   let uiNumberOfItems: UINT32 = 0;
+  let buffer: Buffer;
 
-  GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Check if the file DOESNT exists
   if (!FileExistsNoDB(zMapName)) {
     if (fIfEmptyCreate) {
-      let TempWorldItems: WORLDITEM[] /* [10] */;
+      let TempWorldItems: WORLDITEM[] /* [10] */ = createArrayFrom(10, createWorldItem);
       let uiNumberOfItems: UINT32 = 10;
       let uiNumBytesWritten: UINT32 = 0;
 
@@ -430,34 +433,38 @@ export function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16
       hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
       if (hFile == 0) {
         // Error opening item modification file
-        return false;
-      }
-
-      memset(TempWorldItems, 0, (sizeof(WORLDITEM) * 10));
-
-      // write the the number of item in the maps item file
-      FileWrite(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(UINT32)) {
-        // Error Writing size of array to disk
-        FileClose(hFile);
-        return false;
+        return -1;
       }
 
       // write the the number of item in the maps item file
-      FileWrite(hFile, TempWorldItems, uiNumberOfItems * sizeof(WORLDITEM), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != uiNumberOfItems * sizeof(WORLDITEM)) {
+      buffer = Buffer.allocUnsafe(4);
+      buffer.writeUInt32LE(uiNumberOfItems, 0);
+
+      uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+      if (uiNumBytesWritten != 4) {
         // Error Writing size of array to disk
         FileClose(hFile);
-        return false;
+        return -1;
+      }
+
+      // write the the number of item in the maps item file
+      buffer = Buffer.allocUnsafe(uiNumberOfItems * WORLD_ITEM_SIZE);
+      writeObjectArray(TempWorldItems, buffer, 0, writeWorldItem);
+
+      uiNumBytesWritten = FileWrite(hFile, buffer, uiNumberOfItems * WORLD_ITEM_SIZE);
+      if (uiNumBytesWritten != uiNumberOfItems * WORLD_ITEM_SIZE) {
+        // Error Writing size of array to disk
+        FileClose(hFile);
+        return -1;
       }
 
       // Close the file
       FileClose(hFile);
     } else {
       // the file doesnt exist
-      pSizeOfData.value = 0;
+      pSizeOfData = 0;
 
-      return true;
+      return pSizeOfData;
     }
   }
 
@@ -465,31 +472,34 @@ export function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16
   hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (hFile == 0) {
     // Error opening map modification file
-    return false;
+    return -1;
   }
 
   // Load the size of the World ITem table
-  FileRead(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     // Error Writing size of array to disk
     FileClose(hFile);
-    return false;
+    return -1;
   }
 
-  pSizeOfData.value = uiNumberOfItems;
+  uiNumberOfItems = buffer.readUInt32LE(0);
+
+  pSizeOfData = uiNumberOfItems;
 
   FileClose(hFile);
 
-  return true;
+  return pSizeOfData;
 }
 
-export function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItemsToAdd: UINT32, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8, fReplaceEntireFile: boolean): boolean {
+export function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItemsToAdd: UINT32, pObject: OBJECTTYPE[], ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8, fReplaceEntireFile: boolean): boolean {
   let uiNumberOfItems: UINT32 = 0;
   let pWorldItems: Pointer<WORLDITEM>;
   let cnt: UINT32;
   let uiLoop1: UINT32 = 0;
 
-  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), true)) {
+  if ((uiNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, true)) === -1) {
     // Errror getting the numbers of the items from the sector
     return false;
   }
@@ -950,7 +960,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
   let sNewGridNo: INT16;
 
   // Get the number of items from the file
-  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), true)) {
+  if ((uiNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, true)) === -1) {
     // Error getting the numbers of the items from the sector
     return false;
   }
@@ -1033,7 +1043,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
 function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let zMapName: string /* CHAR8[128] */;
 
-  GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(uiType, sMapX, sMapY, bMapZ);
 
   // Save the map temp file to the saved game file
   if (!SaveFilesToSavedGame(zMapName, hFile))
@@ -1045,7 +1055,7 @@ function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMa
 function RetrieveTempFileFromSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean {
   let zMapName: string /* CHAR8[128] */;
 
-  GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(uiType, sMapX, sMapY, bMapZ);
 
   // Load the map temp file from the saved game file
   if (!LoadFilesFromSavedGame(zMapName, hFile))
@@ -1098,7 +1108,7 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
           sprintf( zMapName, "%s\\r_%s", MAPS_DIR, zTempName);
   */
 
-  GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+ zMapName = GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Open the file for writing, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -1156,7 +1166,7 @@ function DeleteTempItemMapFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): boolean
 
           sprintf( zMapName, "%s\\r_%s", MAPS_DIR, zTempName);
   */
-  GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+ zMapName = GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -1189,7 +1199,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
 
           sprintf( zMapName, "%s\\r_%s", MAPS_DIR, zTempName);
   */
-  GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+ zMapName = GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -1288,14 +1298,14 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
   return true;
 }
 
-export function AddWorldItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItems: UINT32, pWorldItem: Pointer<WORLDITEM>, fOverWrite: boolean): boolean {
+export function AddWorldItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItems: UINT32, pWorldItem: WORLDITEM[], fOverWrite: boolean): boolean {
   let uiLoop: UINT32;
   let fLoop: boolean = fOverWrite;
 
   for (uiLoop = 0; uiLoop < uiNumberOfItems; uiLoop++) {
     // If the item exists
     if (pWorldItem[uiLoop].fExists) {
-      AddItemsToUnLoadedSector(sMapX, sMapY, bMapZ, pWorldItem[uiLoop].sGridNo, 1, addressof(pWorldItem[uiLoop].o), pWorldItem[uiLoop].ubLevel, pWorldItem[uiLoop].usFlags, pWorldItem[uiLoop].bRenderZHeightAboveLevel, pWorldItem[uiLoop].bVisible, fLoop);
+      AddItemsToUnLoadedSector(sMapX, sMapY, bMapZ, pWorldItem[uiLoop].sGridNo, 1, pWorldItem[uiLoop].o, pWorldItem[uiLoop].ubLevel, pWorldItem[uiLoop].usFlags, pWorldItem[uiLoop].bRenderZHeightAboveLevel, pWorldItem[uiLoop].bVisible, fLoop);
 
       fLoop = false;
     }
@@ -1526,7 +1536,7 @@ export function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT
 
   if (fFileLoaded) {
     // Get the number of items from the file
-    if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), true)) {
+    if ((uiNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, true)) === -1) {
       // Error getting the numbers of the items from the sector
       return false;
     }
@@ -1773,7 +1783,7 @@ export function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16,
           //add the 'r' for 'Rotting Corpses' to the front of the map name
           sprintf( zMapName, "%s\\r_%s", MAPS_DIR, zTempName);
   */
-  GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+ zMapName = GetMapTempFileName(SF_ROTTING_CORPSE_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // CHECK TO SEE if the file exist
   if (FileExists(zMapName)) {
@@ -2367,11 +2377,13 @@ export function JA2EncryptedFileWrite(hFile: HWFILE, pDest: Buffer, uiBytesToWri
   return uiBytesWritten;
 }
 
-export function GetMapTempFileName(uiType: UINT32, pMapName: Pointer<string> /* STR */, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+export function GetMapTempFileName(uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): string {
+  let pMapName: string;
+
   let zTempName: string /* CHAR[512] */;
 
   // Convert the current sector location into a file name
-  GetMapFileName(sMapX, sMapY, bMapZ, zTempName, false, false);
+  zTempName = GetMapFileName(sMapX, sMapY, bMapZ, false, false);
 
   switch (uiType) {
     case SF_ITEM_TEMP_FILE_EXISTS:
@@ -2423,6 +2435,8 @@ export function GetMapTempFileName(uiType: UINT32, pMapName: Pointer<string> /* 
       Assert(0);
       break;
   }
+
+  return pMapName;
 }
 
 export function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): UINT32 {
@@ -2481,7 +2495,7 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
   fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, bMapZ, addressof(uiTotalNumberOfRealItems));
   Assert(fReturn);
 
-  fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiTotalNumberOfItems), false);
+  fReturn = (uiTotalNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, false)) !== -1;
   Assert(fReturn);
 
   if (uiTotalNumberOfItems > 0) {

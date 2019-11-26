@@ -11,14 +11,14 @@ let gfYesNoPromptIsForContinue: boolean = false; // this flag remembers whether 
 let giTotalCostOfTraining: INT32 = 0;
 
 // the completed list of sector soldiers for training militia
-let giListOfMercsInSectorsCompletedMilitiaTraining: INT32[] /* [SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST] */;
-export let pMilitiaTrainerSoldier: Pointer<SOLDIERTYPE> = null;
+let giListOfMercsInSectorsCompletedMilitiaTraining: INT32[] /* [SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST] */ = createArray(SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST, 0);
+export let pMilitiaTrainerSoldier: SOLDIERTYPE | null = null;
 
 // note that these sector values are STRATEGIC INDEXES, not 0-255!
-let gsUnpaidStrategicSector: INT16[] /* [MAX_CHARACTER_COUNT] */;
+let gsUnpaidStrategicSector: INT16[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, 0);
 
-export function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16): void {
-  let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
+export function TownMilitiaTrainingCompleted(pTrainer: SOLDIERTYPE, sMapX: INT16, sMapY: INT16): void {
+  let pSectorInfo: SECTORINFO = SectorInfo[SECTOR(sMapX, sMapY)];
   let ubMilitiaTrained: UINT8 = 0;
   let fFoundOne: boolean;
   let sNeighbourX: INT16;
@@ -163,44 +163,44 @@ function MilitiaRankToSoldierClass(ubRank: UINT8): INT8 {
 }
 
 function StrategicAddMilitiaToSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
-  let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
+  let pSectorInfo: SECTORINFO = SectorInfo[SECTOR(sMapX, sMapY)];
 
-  pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
+  pSectorInfo.ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
 
   // update the screen display
   fMapPanelDirty = true;
 }
 
 function StrategicPromoteMilitiaInSector(sMapX: INT16, sMapY: INT16, ubCurrentRank: UINT8, ubHowMany: UINT8): void {
-  let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
+  let pSectorInfo: SECTORINFO = SectorInfo[SECTOR(sMapX, sMapY)];
 
   // damn well better have that many around to promote!
-  Assert(pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] >= ubHowMany);
+  Assert(pSectorInfo.ubNumberOfCivsAtLevel[ubCurrentRank] >= ubHowMany);
 
   // KM : July 21, 1999 patch fix
-  if (pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] < ubHowMany) {
+  if (pSectorInfo.ubNumberOfCivsAtLevel[ubCurrentRank] < ubHowMany) {
     return;
   }
 
-  pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank] -= ubHowMany;
-  pSectorInfo.value.ubNumberOfCivsAtLevel[ubCurrentRank + 1] += ubHowMany;
+  pSectorInfo.ubNumberOfCivsAtLevel[ubCurrentRank] -= ubHowMany;
+  pSectorInfo.ubNumberOfCivsAtLevel[ubCurrentRank + 1] += ubHowMany;
 
   // update the screen display
   fMapPanelDirty = true;
 }
 
 export function StrategicRemoveMilitiaFromSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
-  let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
+  let pSectorInfo: SECTORINFO = SectorInfo[SECTOR(sMapX, sMapY)];
 
   // damn well better have that many around to remove!
-  Assert(pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] >= ubHowMany);
+  Assert(pSectorInfo.ubNumberOfCivsAtLevel[ubRank] >= ubHowMany);
 
   // KM : July 21, 1999 patch fix
-  if (pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] < ubHowMany) {
+  if (pSectorInfo.ubNumberOfCivsAtLevel[ubRank] < ubHowMany) {
     return;
   }
 
-  pSectorInfo.value.ubNumberOfCivsAtLevel[ubRank] -= ubHowMany;
+  pSectorInfo.ubNumberOfCivsAtLevel[ubRank] -= ubHowMany;
 
   // update the screen display
   fMapPanelDirty = true;
@@ -374,7 +374,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
   return true;
 }
 
-export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: SOLDIERTYPE): void {
   let sString: string /* CHAR16[128] */;
   let pCenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y);
   let iNumberOfSectors: INT32 = 0;
@@ -409,7 +409,7 @@ export function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer
   if (guiCurrentScreen == Enum26.MAP_SCREEN) {
     DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, PayMilitiaTrainingYesNoBoxCallback);
   } else {
-    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, PayMilitiaTrainingYesNoBoxCallback, addressof(pCenteringRect));
+    DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, PayMilitiaTrainingYesNoBoxCallback, pCenteringRect);
   }
 
   return;
@@ -423,15 +423,15 @@ function DoContinueMilitiaTrainingMessageBox(sSectorX: INT16, sSectorY: INT16, s
   }
 }
 
-export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: SOLDIERTYPE): void {
   let sString: string /* CHAR16[128] */;
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
   let sStringB: string /* CHAR16[128] */;
   let bTownId: INT8;
 
-  sSectorX = pSoldier.value.sSectorX;
-  sSectorY = pSoldier.value.sSectorY;
+  sSectorX = pSoldier.sSectorX;
+  sSectorY = pSoldier.sSectorY;
 
   Assert(SectorInfo[SECTOR(sSectorX, sSectorY)].fMilitiaTrainingPaid == false);
 
@@ -528,7 +528,8 @@ function CantTrainMilitiaOkBoxCallback(bExitValue: UINT8): void {
 function MilitiaTrainingRejected(): void {
   if (gfYesNoPromptIsForContinue) {
     // take all mercs in that sector off militia training
-    ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier.value.sSectorX, pMilitiaTrainerSoldier.value.sSectorY);
+    Assert(pMilitiaTrainerSoldier);
+    ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier.sSectorX, pMilitiaTrainerSoldier.sSectorY);
   } else {
     // take all mercs in unpaid sectors EVERYWHERE off militia training
     ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(0);
@@ -642,17 +643,17 @@ export function IsSAMSiteFullOfMilitia(sSectorX: INT16, sSectorY: INT16): boolea
   return true;
 }
 
-function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLDIERTYPE>): void {
+function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: SOLDIERTYPE): void {
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
   let bSectorZ: INT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
 
   // get the sector values
-  sSectorX = pTrainer.value.sSectorX;
-  sSectorY = pTrainer.value.sSectorY;
-  bSectorZ = pTrainer.value.bSectorZ;
+  sSectorX = pTrainer.sSectorX;
+  sSectorY = pTrainer.sSectorY;
+  bSectorZ = pTrainer.bSectorZ;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // valid character?
@@ -661,14 +662,14 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
       continue;
     }
 
-    pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+    pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
     // valid soldier?
-    if (pSoldier.value.bActive == false) {
+    if (pSoldier.bActive == false) {
       continue;
     }
 
-    if ((pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) && (pSoldier.value.sSectorX == sSectorX) && (pSoldier.value.sSectorY == sSectorY) && (pSoldier.value.bSectorZ == bSectorZ)) {
+    if ((pSoldier.bAssignment == Enum117.TRAIN_TOWN) && (pSoldier.sSectorX == sSectorX) && (pSoldier.sSectorY == sSectorY) && (pSoldier.bSectorZ == bSectorZ)) {
       // done assignment
       AssignmentDone(pSoldier, false, false);
     }
@@ -677,21 +678,21 @@ function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLD
   return;
 }
 
-export function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier: SOLDIERTYPE): void {
   let iCounter: INT32 = 0;
   let sSector: INT16 = 0;
   let sCurrentSector: INT16 = 0;
-  let pCurrentSoldier: Pointer<SOLDIERTYPE> = null;
+  let pCurrentSoldier: SOLDIERTYPE;
 
   // get the sector value
-  sSector = pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X;
+  sSector = pSoldier.sSectorX + pSoldier.sSectorY * MAP_WORLD_X;
 
   while (giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] != -1) {
     // get the current soldier
-    pCurrentSoldier = addressof(Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]]);
+    pCurrentSoldier = Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]];
 
     // get the current sector value
-    sCurrentSector = pCurrentSoldier.value.sSectorX + pCurrentSoldier.value.sSectorY * MAP_WORLD_X;
+    sCurrentSector = pCurrentSoldier.sSectorX + pCurrentSoldier.sSectorY * MAP_WORLD_X;
 
     // is the merc's sector already in the list?
     if (sCurrentSector == sSector) {
@@ -705,7 +706,7 @@ export function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(p
   }
 
   // add merc to the list
-  giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] = pSoldier.value.ubID;
+  giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] = pSoldier.ubID;
 
   return;
 }
@@ -722,17 +723,17 @@ export function ClearSectorListForCompletedTrainingOfMilitia(): void {
 }
 
 export function HandleContinueOfTownTraining(): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
   let fContinueEventPosted: boolean = false;
 
   while (giListOfMercsInSectorsCompletedMilitiaTraining[iCounter] != -1) {
     // get the soldier
-    pSoldier = addressof(Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]]);
+    pSoldier = Menptr[giListOfMercsInSectorsCompletedMilitiaTraining[iCounter]];
 
-    if (pSoldier.value.bActive) {
+    if (pSoldier.bActive) {
       fContinueEventPosted = true;
-      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA, pSoldier.value.ubProfile, 0, 0, 0, 0);
+      SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA, pSoldier.ubProfile, 0, 0, 0, 0);
 
       // now set all of these peoples assignment done too
       // HandleInterfaceMessageForContinuingTrainingMilitia( pSoldier );
@@ -763,9 +764,9 @@ export function HandleContinueOfTownTraining(): void {
 function BuildListOfUnpaidTrainableSectors(): void {
   let iCounter: INT32 = 0;
   let iCounterB: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
-  memset(gsUnpaidStrategicSector, 0, sizeof(INT16) * MAX_CHARACTER_COUNT);
+  gsUnpaidStrategicSector.fill(0);
 
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -773,12 +774,12 @@ function BuildListOfUnpaidTrainableSectors(): void {
       if (gCharactersList[iCounter].fValid) {
         // selected?
         if ((fSelectedListOfMercsForMapScreen[iCounter] == true) || (iCounter == bSelectedAssignChar)) {
-          pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
+          pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
           if (CanCharacterTrainMilitia(pSoldier) == true) {
-            if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
+            if (SectorInfo[SECTOR(pSoldier.sSectorX, pSoldier.sSectorY)].fMilitiaTrainingPaid == false) {
               // check to see if this sector is a town and needs equipment
-              gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+              gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.sSectorX, pSoldier.sSectorY);
             }
           }
         }
@@ -786,13 +787,13 @@ function BuildListOfUnpaidTrainableSectors(): void {
     }
   } else {
     // handle for tactical
-    pSoldier = addressof(Menptr[gusUIFullTargetID]);
+    pSoldier = Menptr[gusUIFullTargetID];
     iCounter = 0;
 
     if (CanCharacterTrainMilitia(pSoldier) == true) {
-      if (SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)].fMilitiaTrainingPaid == false) {
+      if (SectorInfo[SECTOR(pSoldier.sSectorX, pSoldier.sSectorY)].fMilitiaTrainingPaid == false) {
         // check to see if this sector is a town and needs equipment
-        gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+        gsUnpaidStrategicSector[iCounter] = CALCULATE_STRATEGIC_INDEX(pSoldier.sSectorX, pSoldier.sSectorY);
       }
     }
   }
@@ -850,7 +851,7 @@ function ContinueTrainingInThisSector(): void {
   Assert(pMilitiaTrainerSoldier);
 
   // pay up in the sector where pMilitiaTrainerSoldier is
-  ubSector = SECTOR(pMilitiaTrainerSoldier.value.sSectorX, pMilitiaTrainerSoldier.value.sSectorY);
+  ubSector = SECTOR(pMilitiaTrainerSoldier.sSectorX, pMilitiaTrainerSoldier.sSectorY);
   PayForTrainingInSector(ubSector);
 }
 
@@ -869,16 +870,16 @@ function PayForTrainingInSector(ubSector: UINT8): void {
 
 function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
   let iCounter: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
-    pSoldier = addressof(Menptr[iCounter]);
+    pSoldier = Menptr[iCounter];
 
-    if (pSoldier.value.bActive) {
-      if (pSoldier.value.bAssignment == Enum117.TRAIN_TOWN) {
-        if ((SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY) == ubSector) && (pSoldier.value.bSectorZ == 0)) {
-          pSoldier.value.fDoneAssignmentAndNothingToDoFlag = false;
-          pSoldier.value.usQuoteSaidExtFlags &= ~SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
+    if (pSoldier.bActive) {
+      if (pSoldier.bAssignment == Enum117.TRAIN_TOWN) {
+        if ((SECTOR(pSoldier.sSectorX, pSoldier.sSectorY) == ubSector) && (pSoldier.bSectorZ == 0)) {
+          pSoldier.fDoneAssignmentAndNothingToDoFlag = false;
+          pSoldier.usQuoteSaidExtFlags &= ~SOLDIER_QUOTE_SAID_DONE_ASSIGNMENT;
         }
       }
     }
@@ -931,13 +932,15 @@ export function MilitiaTrainingAllowedInTown(bTownId: INT8): boolean {
   }
 }
 
-export function BuildMilitiaPromotionsString(str: Pointer<string> /* Pointer<UINT16> */): void {
+export function BuildMilitiaPromotionsString(): string {
+  let str: string;
+
   let pStr: string /* UINT16[256] */;
   let fAddSpace: boolean = false;
   str = "";
 
   if (!gbMilitiaPromotions) {
-    return;
+    return str;
   }
   if (gbGreenToElitePromotions > 1) {
     pStr = swprintf(gzLateLocalizedString[22], gbGreenToElitePromotions);
@@ -982,6 +985,8 @@ export function BuildMilitiaPromotionsString(str: Pointer<string> /* Pointer<UIN
   gbGreenToRegPromotions = 0;
   gbRegToElitePromotions = 0;
   gbMilitiaPromotions = 0;
+
+  return str;
 }
 
 }

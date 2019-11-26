@@ -242,7 +242,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
   let Path2: UINT8;
   let ubRoomNo: UINT8;
   let fCheckForRooms: boolean = false;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let fHiddenStructVisible: boolean;
   let ubMovementCost: UINT8;
   let fTravelCostObs: boolean;
@@ -529,8 +529,8 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
               // OK, look for corpses...
               LookForAndMayCommentOnSeeingCorpse(pSoldier, marker, ubLevel);
 
-              if (GetItemPool(marker, addressof(pItemPool), ubLevel)) {
-                itemVisible = pItemPool.value.bVisible;
+              if ((pItemPool = GetItemPool(marker, ubLevel))) {
+                itemVisible = pItemPool.bVisible;
 
                 if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, fShowLocators)) {
                   SetRenderFlags(RENDER_FLAG_FULL);

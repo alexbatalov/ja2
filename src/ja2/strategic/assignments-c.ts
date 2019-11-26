@@ -182,7 +182,7 @@ const HIGH_ACTIVITY_LEVEL = 12;
 */
 
 // a list of which sectors have characters
-let fSectorsWithSoldiers: boolean[][] /* [MAP_WORLD_X * MAP_WORLD_Y][4] */;
+let fSectorsWithSoldiers: boolean[][] /* [MAP_WORLD_X * MAP_WORLD_Y][4] */ = createArrayFrom(MAP_WORLD_X * MAP_WORLD_Y, () => createArray(4, false));
 
 /*
 // auto sleep mercs
@@ -5462,7 +5462,7 @@ function BeginRemoveMercFromContract(pSoldier: SOLDIERTYPE): void {
 function MercDismissConfirmCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     // Setup history code
-    gpDismissSoldier.value.ubLeaveHistoryCode = Enum83.HISTORY_MERC_FIRED;
+    gpDismissSoldier.ubLeaveHistoryCode = Enum83.HISTORY_MERC_FIRED;
 
     BeginRemoveMercFromContract(gpDismissSoldier);
   }
@@ -6999,7 +6999,7 @@ export function SetTacticalPopUpAssignmentBoxXY(): void {
   pSoldier = GetSelectedAssignSoldier(false);
 
   // grab soldier's x,y screen position
-  GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
+  ({ sScreenX: sX, sScreenY: sY } = GetSoldierScreenPos(pSoldier));
 
   if (sX < 0) {
     sX = 0;

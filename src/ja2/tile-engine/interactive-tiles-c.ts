@@ -139,7 +139,7 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
   let pNewStructure: Pointer<STRUCTURE>;
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let fDidMissingQuote: boolean = false;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
@@ -171,7 +171,7 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
     }
 
     // LOOK for item pool here...
-    if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
+    if ((pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel))) {
       // Update visiblity....
       if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
         let fDoHumm: boolean = true;
@@ -183,7 +183,7 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
         }
 
         // Look for ownership here....
-        if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
+        if (gWorldItems[pItemPool.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
           fDoHumm = false;
           TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_NOTHING, 500);
         }
@@ -196,8 +196,8 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
 
         // ATE: Check now many things in pool.....
         if (!fDidMissingQuote) {
-          if (pItemPool.value.pNext != null) {
-            if (pItemPool.value.pNext.value.pNext != null) {
+          if (pItemPool.pNext != null) {
+            if (pItemPool.pNext.pNext != null) {
               fDoHumm = false;
 
               TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_COOL1, 500);

@@ -2090,7 +2090,7 @@ function BltVSurfaceUsingDDBlt(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE
 //
 // If the 2 images are not 16 Bpp, it returns false.
 //
-export function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, SrcRect: Pointer<SGPRect>, DestRect: Pointer<SGPRect>): boolean {
+export function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, SrcRect: SGPRect, DestRect: SGPRect): boolean {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 

@@ -60,7 +60,7 @@ export let fShowMapInventoryPool: boolean = false;
 let guiMapInventoryPoolBackground: UINT32;
 
 // inventory pool list
-export let pInventoryPoolList: Pointer<WORLDITEM> = null;
+export let pInventoryPoolList: WORLDITEM[] = <WORLDITEM[]><unknown>null;
 
 // current page of inventory
 export let iCurrentInventoryPoolPage: INT32 = 0;
@@ -77,21 +77,21 @@ let uiNumberOfUnSeenItems: UINT32 = 0;
 // the inventory slots
 let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */ = createArrayFrom(MAP_INVENTORY_POOL_SLOT_COUNT, createMouseRegion);
 let MapInventoryPoolMask: MOUSE_REGION = createMouseRegion();
-export let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
+export let fMapInventoryItemCompatable: boolean[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */ = createArray(MAP_INVENTORY_POOL_SLOT_COUNT, false);
 let fChangedInventorySlots: boolean = false;
 
 // the unseen items list...have to save this
-let pUnSeenItems: Pointer<WORLDITEM> = null;
+let pUnSeenItems: WORLDITEM[] = <WORLDITEM[]><unknown>null;
 
 // save list to write to temp file
-let pSaveList: Pointer<WORLDITEM> = null;
+let pSaveList: WORLDITEM[] = <WORLDITEM[]><unknown>null;
 
 export let giFlashHighlightedItemBaseTime: INT32 = 0;
 export let giCompatibleItemBaseTime: INT32 = 0;
 
 // the buttons and images
-let guiMapInvenButtonImage: UINT32[] /* [3] */;
-let guiMapInvenButton: UINT32[] /* [3] */;
+let guiMapInvenButtonImage: UINT32[] /* [3] */ = createArray(3, 0);
+let guiMapInvenButton: UINT32[] /* [3] */ = createArray(3, 0);
 
 let gfCheckForCursorOverMapSectorInventoryItem: boolean = false;
 
@@ -179,7 +179,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
   let sX: INT16;
   let sY: INT16;
   let hHandle: HVOBJECT;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let sString: string /* CHAR16[64] */;
   let sWidth: INT16 = 0;
   let sHeight: INT16 = 0;
@@ -191,19 +191,19 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
     return false;
   }
 
-  hHandle = GetVideoObject(GetInterfaceGraphicForItem(addressof(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
+  hHandle = GetVideoObject(GetInterfaceGraphicForItem(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem]));
 
-  pTrav = addressof(hHandle.value.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
+  pTrav = hHandle.value.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
 
   // set sx and sy
   sX = (MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS)));
   sY = (MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
 
   // CENTER IN SLOT!
-  sCenX = sX + (Math.abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.value.sOffsetX;
-  sCenY = sY + (Math.abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.value.sOffsetY;
+  sCenX = sX + (Math.abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.sOffsetX;
+  sCenY = sY + (Math.abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.sOffsetY;
 
   if (fMapInventoryItemCompatable[iCurrentSlot]) {
     sOutLine = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -215,7 +215,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, false);
 
-  INVRenderItem(guiSAVEBUFFER, null, addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (sX + 7), sY, 60, 25, DIRTYLEVEL2, null, 0, fOutLine, sOutLine); // 67
+  INVRenderItem(guiSAVEBUFFER, null, pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o, (sX + 7), sY, 60, 25, DIRTYLEVEL2, null, 0, fOutLine, sOutLine); // 67
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
@@ -227,7 +227,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
 
   // now draw bar for condition
   // Display ststus
-  DrawItemUIBarEx(addressof(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
+  DrawItemUIBarEx(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o, 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
   //
   // if the item is not reachable, or if the selected merc is not in the current sector
@@ -283,7 +283,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
   // run through list of items in slots and update help text for mouse regions
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     if (pInventoryPoolList[iCounter + iFirstSlotOnPage].o.ubNumberOfObjects > 0) {
-      pStr = GetHelpTextForItem(addressof(pInventoryPoolList[iCounter + iFirstSlotOnPage].o), null);
+      pStr = GetHelpTextForItem(pInventoryPoolList[iCounter + iFirstSlotOnPage].o, null);
       SetRegionFastHelpText(MapInventoryPoolSlots[iCounter], pStr);
 
       /*
@@ -308,9 +308,8 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
 }
 
 // create and remove buttons for inventory
+/* static */ let CreateDestroyMapInventoryPoolButtons__fCreated: boolean = false;
 export function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean): void {
-  /* static */ let fCreated: boolean = false;
-
   /* player can leave items underground, no?
           if( iCurrentMapSectorZ )
           {
@@ -318,7 +317,7 @@ export function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean
           }
   */
 
-  if ((fShowMapInventoryPool) && (fCreated == false)) {
+  if ((fShowMapInventoryPool) && (CreateDestroyMapInventoryPoolButtons__fCreated == false)) {
     if ((gWorldSectorX == sSelMapX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == iCurrentMapSectorZ)) {
       // handle all reachable before save
       HandleAllReachAbleItemsInTheSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -327,7 +326,7 @@ export function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean
     // destroy buttons for map border
     DeleteMapBorderButtons();
 
-    fCreated = true;
+    CreateDestroyMapInventoryPoolButtons__fCreated = true;
 
     // also create the inventory slot
     CreateMapInventoryPoolSlots();
@@ -342,13 +341,13 @@ export function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: boolean
 
     fMapPanelDirty = true;
     fMapScreenBottomDirty = true;
-  } else if ((fShowMapInventoryPool == false) && (fCreated == true)) {
+  } else if ((fShowMapInventoryPool == false) && (CreateDestroyMapInventoryPoolButtons__fCreated == true)) {
     // check fi we are in fact leaving mapscreen
     if (fExitFromMapScreen == false) {
       // recreate mapborder buttons
       CreateButtonsForMapBorder();
     }
-    fCreated = false;
+    CreateDestroyMapInventoryPoolButtons__fCreated = false;
 
     // destroy the map inventory slots
     DestroyMapInventoryPoolSlots();
@@ -397,13 +396,13 @@ function ClearUpTempUnSeenList(): void {
 
   // build the list based on this
   pSaveList = pUnSeenItems;
-  pUnSeenItems = null;
+  pUnSeenItems = <WORLDITEM[]><unknown>null;
 
   return;
 }
 
 function SaveSeenAndUnseenItems(): void {
-  let pSeenItemsList: Pointer<WORLDITEM> = null;
+  let pSeenItemsList: WORLDITEM[] = <WORLDITEM[]><unknown>null;
   let iCounter: INT32 = 0;
   let iItemCount: INT32 = 0;
   let iTotalNumberItems: INT32 = 0;
@@ -413,13 +412,13 @@ function SaveSeenAndUnseenItems(): void {
 
   // if there are seen items, build a temp world items list of them and save them
   if (iTotalNumberItems > 0) {
-    pSeenItemsList = MemAlloc((sizeof(WORLDITEM) * (iTotalNumberItems)));
+    pSeenItemsList = createArrayFrom(iTotalNumberItems, createWorldItem);
 
     // copy
     for (iCounter = 0; iCounter < iTotalNumberOfSlots; iCounter++) {
       if (pInventoryPoolList[iCounter].o.ubNumberOfObjects > 0) {
         // copy object stuff
-        memcpy(addressof(pSeenItemsList[iItemCount]), addressof(pInventoryPoolList[iCounter]), sizeof(WORLDITEM));
+        copyWorldItem(pSeenItemsList[iItemCount], pInventoryPoolList[iCounter]);
 
         // check if item actually lives at a gridno
         // if not, check predicessor, iItemCount is not 0
@@ -464,13 +463,13 @@ function SaveSeenAndUnseenItems(): void {
   // now clear out seen list
   if (pSeenItemsList != null) {
     MemFree(pSeenItemsList);
-    pSeenItemsList = null;
+    pSeenItemsList = <WORLDITEM[]><unknown>null;
   }
 
   // clear out unseen list
   if (pSaveList != null) {
     MemFree(pSaveList);
-    pSaveList = null;
+    pSaveList = <WORLDITEM[]><unknown>null;
   }
 
   uiNumberOfUnSeenItems = 0;
@@ -559,7 +558,7 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
   let sGridNo: INT16 = 0;
   let iOldNumberOfObjects: INT32 = 0;
   let sDistanceFromObject: INT16 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let sString: string /* CHAR16[128] */;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
@@ -617,7 +616,7 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
 
       // if in battle inform player they will have to do this in tactical
       //			if( ( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) ) )
-      if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
+      if (!CanPlayerUseSectorInventory(Menptr[gCharactersList[bSelectedInfoChar].usSolID])) {
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[3], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
@@ -627,9 +626,9 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
       // check if this is the loaded sector, if so, then notify player, can't do anything
       if ((sSelMapX == gWorldSectorX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == iCurrentMapSectorZ)) {
         // notify
-        pSoldier = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
+      pSoldier = Menptr[gCharactersList[bSelectedInfoChar].usSolID];
 
-        sDistanceFromObject = PythSpacesAway(sObjectSourceGridNo, pSoldier.value.sGridNo);
+        sDistanceFromObject = PythSpacesAway(sObjectSourceGridNo, pSoldier.sGridNo);
 
         /*	if( sDistanceFromObject > MAX_DISTANCE_TO_PICKUP_ITEM )
                 {
@@ -641,21 +640,21 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
                 */
       }
 
-      BeginInventoryPoolPtr(addressof(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o));
+      BeginInventoryPoolPtr(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o);
     } else {
       // if in battle inform player they will have to do this in tactical
       //			if( ( gTacticalStatus.fEnemyInSector ) ||( ( sSelMapX == gWorldSectorX ) && ( sSelMapY == gWorldSectorY ) && ( iCurrentMapSectorZ == gbWorldSectorZ ) && ( gTacticalStatus.uiFlags & INCOMBAT ) ) )
-      if (!CanPlayerUseSectorInventory(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]))) {
+      if (!CanPlayerUseSectorInventory(Menptr[gCharactersList[bSelectedInfoChar].usSolID])) {
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pMapInventoryErrorString[4], Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
         return;
       }
 
       usOldItemIndex = pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.usItem;
-      usNewItemIndex = gpItemPointer.value.usItem;
+      usNewItemIndex = gpItemPointer.usItem;
       iOldNumberOfObjects = pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o.ubNumberOfObjects;
 
       // Else, try to place here
-      if (PlaceObjectInInventoryStash(addressof(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o), gpItemPointer)) {
+      if (PlaceObjectInInventoryStash(pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].o, gpItemPointer)) {
         // set as reachable and set gridno
         pInventoryPoolList[(iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT) + iCounter].usFlags |= WORLD_ITEM_REACHABLE;
 
@@ -679,7 +678,7 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
         } else {
           // update ptr
           // now set the cursor
-          guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
+          guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.value.usItem]);
           gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
           fMapInventoryItem = true;
@@ -725,11 +724,11 @@ function DestroyMapInventoryButtons(): void {
 
 function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
   let iSize: INT32 = 0;
-  let pTempList: Pointer<OBJECTTYPE> = null;
+  let pTempList: OBJECTTYPE[];
   let uiItemCount: UINT32 = 0;
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
-  let pTotalSectorList: Pointer<WORLDITEM> = null;
+  let pTotalSectorList: WORLDITEM[] = <WORLDITEM[]><unknown>null;
   let iCounter: INT32 = 0;
   let uiTotalNumberOfSeenItems: UINT32 = 0;
 
@@ -746,9 +745,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   iTotalNumberOfSlots = iSize;
 
   // allocate space for list
-  pInventoryPoolList = MemAlloc(sizeof(WORLDITEM) * iSize);
-
-  memset(pInventoryPoolList, 0, sizeof(WORLDITEM) * iSize);
+  pInventoryPoolList = createArrayFrom(iSize, createWorldItem);
 
   iLastInventoryPoolPage = ((iTotalNumberOfSlots - 1) / MAP_INVENTORY_POOL_SLOT_COUNT);
 
@@ -767,9 +764,9 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
                                               gWorldItems[ iCounter ].o.usItem != SWITCH &&
                                               gWorldItems[ iCounter ].o.bTrap <= 0 )
       */
-      if (IsMapScreenWorldItemVisibleInMapInventory(addressof(gWorldItems[iCounter]))) {
+      if (IsMapScreenWorldItemVisibleInMapInventory(gWorldItems[iCounter])) {
         // one more item
-        memcpy(addressof(pInventoryPoolList[uiItemCount]), addressof(gWorldItems[iCounter]), sizeof(WORLDITEM));
+        copyWorldItem(pInventoryPoolList[uiItemCount], gWorldItems[iCounter]);
         uiItemCount++;
       }
     }
@@ -778,7 +775,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
 
     // now allocate space for all the unseen items
     if (guiNumWorldItems > uiItemCount) {
-      pUnSeenItems = MemAlloc((guiNumWorldItems - uiItemCount) * sizeof(WORLDITEM));
+      pUnSeenItems = createArrayFrom(guiNumWorldItems - uiItemCount, createWorldItem);
 
       uiItemCount = 0;
 
@@ -787,9 +784,9 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
         //				if( ( gWorldItems[ iCounter ].bVisible  != 1 ) &&
         //						( gWorldItems[ iCounter ].o.ubNumberOfObjects > 0 ) &&
         //							gWorldItems[ iCounter ].fExists )
-        if (IsMapScreenWorldItemInvisibleInMapInventory(addressof(gWorldItems[iCounter]))) {
+        if (IsMapScreenWorldItemInvisibleInMapInventory(gWorldItems[iCounter])) {
           // one more item
-          memcpy(addressof(pUnSeenItems[uiItemCount]), addressof(gWorldItems[iCounter]), sizeof(WORLDITEM));
+          copyWorldItem(pUnSeenItems[uiItemCount], gWorldItems[iCounter]);
 
           uiItemCount++;
         }
@@ -801,7 +798,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   } else {
     // not loaded, load
     // get total number, visable and invisible
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), false);
+    fReturn = (uiTotalNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), false)) !== -1;
     Assert(fReturn);
 
     fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
@@ -809,7 +806,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
 
     if (uiTotalNumberOfRealItems > 0) {
       // allocate space for the list
-      pTotalSectorList = MemAlloc(sizeof(WORLDITEM) * uiTotalNumberOfItems);
+      pTotalSectorList = createArrayFrom(uiTotalNumberOfItems, createWorldItem);
 
       // now load into mem
       LoadWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), pTotalSectorList);
@@ -830,9 +827,9 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "The %d item in the list is NOT valid. Please send save.  DF 1.", iCounter);
       }
 
-      if (IsMapScreenWorldItemVisibleInMapInventory(addressof(pTotalSectorList[iCounter]))) {
+      if (IsMapScreenWorldItemVisibleInMapInventory(pTotalSectorList[iCounter])) {
         // one more item
-        memcpy(addressof(pInventoryPoolList[uiItemCount]), addressof(pTotalSectorList[iCounter]), sizeof(WORLDITEM));
+        copyWorldItem(pInventoryPoolList[uiItemCount], pTotalSectorList[iCounter]);
 
         uiItemCount++;
       }
@@ -842,7 +839,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
 
     // now allocate space for all the unseen items
     if (uiTotalNumberOfRealItems > uiItemCount) {
-      pUnSeenItems = MemAlloc((uiTotalNumberOfRealItems - uiItemCount) * sizeof(WORLDITEM));
+      pUnSeenItems = createArrayFrom(uiTotalNumberOfRealItems - uiItemCount, createWorldItem);
 
       uiItemCount = 0;
 
@@ -853,9 +850,9 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
                                                         ( pTotalSectorList[ iCounter].o.ubNumberOfObjects > 0 ) &&
                                                                 pTotalSectorList[ iCounter].fExists )
         */
-        if (IsMapScreenWorldItemInvisibleInMapInventory(addressof(pTotalSectorList[iCounter]))) {
+        if (IsMapScreenWorldItemInvisibleInMapInventory(pTotalSectorList[iCounter])) {
           // one more item
-          memcpy(addressof(pUnSeenItems[uiItemCount]), addressof(pTotalSectorList[iCounter]), sizeof(WORLDITEM));
+          copyWorldItem(pUnSeenItems[uiItemCount], pTotalSectorList[iCounter]);
 
           uiItemCount++;
         }
@@ -878,13 +875,13 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   SortSectorInventory(pInventoryPoolList, uiTotalNumberOfSeenItems);
 }
 
-function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUnSeenItems: INT32, pSeenItemsList: Pointer<WORLDITEM>, pUnSeenItemsList: Pointer<WORLDITEM>): void {
+function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUnSeenItems: INT32, pSeenItemsList: WORLDITEM[], pUnSeenItemsList: WORLDITEM[]): void {
   let iTotalNumberOfItems: INT32 = 0;
   let iCurrentItem: INT32 = 0;
   let iCounter: INT32 = 0;
   let iRemainder: INT32 = 0;
   let uiTotalNumberOfVisibleItems: UINT32 = 0;
-  let pTotalList: Pointer<WORLDITEM> = null;
+  let pTotalList: WORLDITEM[];
 
   // clear out the list
   TrashWorldItems();
@@ -900,22 +897,17 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
   }
 
   // allocate space for items
-  pTotalList = MemAlloc(sizeof(WORLDITEM) * iTotalNumberOfItems);
-
-  for (iCounter = 0; iCounter < iTotalNumberOfItems; iCounter++) {
-    // clear out the structure
-    memset(addressof(pTotalList[iCounter]), 0, sizeof(WORLDITEM));
-  }
+  pTotalList = createArrayFrom(iTotalNumberOfItems, createWorldItem);
 
   // place seen items in the world
   for (iCounter = 0; iCounter < iNumberSeenItems; iCounter++) {
-    memcpy(addressof(pTotalList[iCurrentItem]), addressof(pSeenItemsList[iCounter]), sizeof(WORLDITEM));
+    copyWorldItem(pTotalList[iCurrentItem], pSeenItemsList[iCounter]);
     iCurrentItem++;
   }
 
   // now store the unseen item list
   for (iCounter = 0; iCounter < iNumberUnSeenItems; iCounter++) {
-    memcpy(addressof(pTotalList[iCurrentItem]), addressof(pUnSeenItemsList[iCounter]), sizeof(WORLDITEM));
+    copyWorldItem(pTotalList[iCurrentItem], pUnSeenItemsList[iCounter]);
     iCurrentItem++;
   }
 
@@ -933,15 +925,12 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
   MemFree(pTotalList);
 
   // reset total list
-  pTotalList = null;
+  pTotalList = <WORLDITEM[]><unknown>null;
 
   return;
 }
 
 function ReSizeStashListByThisAmount(iNumberOfItems: INT32): void {
-  let iSizeOfList: INT32 = iTotalNumberOfSlots;
-  let pOldList: Pointer<WORLDITEM>;
-
   // no items added, leave
   if (iNumberOfItems == 0) {
     return;
@@ -949,22 +938,8 @@ function ReSizeStashListByThisAmount(iNumberOfItems: INT32): void {
 
   iTotalNumberOfSlots += iNumberOfItems;
 
-  pOldList = MemAlloc(sizeof(WORLDITEM) * iSizeOfList);
-  memset(pOldList, 0, sizeof(WORLDITEM) * iSizeOfList);
-
-  memcpy(pOldList, pInventoryPoolList, sizeof(WORLDITEM) * iSizeOfList);
-
   // rebuild stash
-  pInventoryPoolList = MemRealloc(pInventoryPoolList, sizeof(WORLDITEM) * iTotalNumberOfSlots);
-
-  // set new mem to 0
-  memset(pInventoryPoolList, 0, sizeof(WORLDITEM) * iTotalNumberOfSlots);
-
-  // copy old info over
-  memcpy(pInventoryPoolList, pOldList, sizeof(WORLDITEM) * iSizeOfList);
-
-  // free memeory
-  MemFree(pOldList);
+  pInventoryPoolList = pInventoryPoolList.concat(createArrayFrom(iNumberOfItems, createWorldItem));
 
   return;
 }
@@ -978,7 +953,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
   // get # of items in sector that are visible to the player
   let uiTotalNumberOfItems: UINT32 = 0;
   let uiTotalNumberOfRealItems: UINT32 = 0;
-  let pTotalSectorList: Pointer<WORLDITEM> = null;
+  let pTotalSectorList: WORLDITEM[] = <WORLDITEM[]><unknown>null;
   let uiItemCount: UINT32 = 0;
   let iCounter: INT32 = 0;
   let fReturn: boolean = true;
@@ -990,7 +965,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     for (iCounter = 0; (iCounter) < uiTotalNumberOfItems; iCounter++) {
       // if visible to player, then state fact
       //			if( gWorldItems[ iCounter ].bVisible == 1 && gWorldItems[ iCounter ].fExists )
-      if (IsMapScreenWorldItemVisibleInMapInventory(addressof(gWorldItems[iCounter]))) {
+      if (IsMapScreenWorldItemVisibleInMapInventory(gWorldItems[iCounter])) {
         // add it
         if (fCountStacksAsOne) {
           uiItemCount++;
@@ -1004,12 +979,12 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
     Assert(fReturn);
 
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfItems), false);
+    fReturn = (uiTotalNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), false)) !== -1;
     Assert(fReturn);
 
     if (uiTotalNumberOfItems > 0) {
       // allocate space for the list
-      pTotalSectorList = MemAlloc(sizeof(WORLDITEM) * uiTotalNumberOfItems);
+      pTotalSectorList = createArrayFrom(uiTotalNumberOfItems, createWorldItem);
 
       // now load into mem
       LoadWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), pTotalSectorList);
@@ -1019,7 +994,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     for (iCounter = 0; (iCounter) < uiTotalNumberOfRealItems; iCounter++) {
       // if visible to player, then state fact
       //			if( pTotalSectorList[ iCounter ].bVisible == 1 && pTotalSectorList[ iCounter ].fExists )
-      if (IsMapScreenWorldItemVisibleInMapInventory(addressof(pTotalSectorList[iCounter]))) {
+      if (IsMapScreenWorldItemVisibleInMapInventory(pTotalSectorList[iCounter])) {
         // add it
         if (fCountStacksAsOne) {
           uiItemCount++;
@@ -1031,15 +1006,14 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
 
     // if anything was alloced, then get rid of it
     if (pTotalSectorList != null) {
-      MemFree(pTotalSectorList);
-      pTotalSectorList = null;
+      pTotalSectorList = <WORLDITEM[]><unknown>null;
     }
   }
 
   return uiItemCount;
 }
 
-function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
+function BeginInventoryPoolPtr(pInventorySlot: OBJECTTYPE): void {
   let fOk: boolean = false;
 
   // If not null return
@@ -1051,22 +1025,22 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
 
   if (_KeyDown(SHIFT)) {
     // Remove all from soldier's slot
-    fOk = RemoveObjectFromStashSlot(pInventorySlot, addressof(gItemPointer));
+    fOk = RemoveObjectFromStashSlot(pInventorySlot, gItemPointer);
   } else {
-    GetObjFromInventoryStashSlot(pInventorySlot, addressof(gItemPointer));
+    GetObjFromInventoryStashSlot(pInventorySlot, gItemPointer);
     fOk = (gItemPointer.ubNumberOfObjects == 1);
   }
 
   if (fOk) {
     // Dirty interface
     fMapPanelDirty = true;
-    gpItemPointer = addressof(gItemPointer);
+    gpItemPointer = gItemPointer;
 
     gpItemPointerSoldier = null;
 
     // now set the cursor
-    guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
-    gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
+    guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
+    gusExternVoSubIndex = Item[gpItemPointer.usItem].ubGraphicNum;
 
     fMapInventoryItem = true;
     MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
@@ -1080,57 +1054,57 @@ function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
 }
 
 // get this item out of the stash slot
-function GetObjFromInventoryStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
+function GetObjFromInventoryStashSlot(pInventorySlot: OBJECTTYPE, pItemPtr: OBJECTTYPE): boolean {
   // item ptr
   if (!pItemPtr) {
     return false;
   }
 
   // if there are only one item in slot, just copy
-  if (pInventorySlot.value.ubNumberOfObjects == 1) {
-    memcpy(pItemPtr, pInventorySlot, sizeof(OBJECTTYPE));
+  if (pInventorySlot.ubNumberOfObjects == 1) {
+    copyObjectType(pItemPtr, pInventorySlot);
     DeleteObj(pInventorySlot);
   } else {
     // take one item
-    pItemPtr.value.usItem = pInventorySlot.value.usItem;
+    pItemPtr.usItem = pInventorySlot.usItem;
 
     // find first unempty slot
-    pItemPtr.value.bStatus[0] = pInventorySlot.value.bStatus[0];
-    pItemPtr.value.ubNumberOfObjects = 1;
-    pItemPtr.value.ubWeight = CalculateObjectWeight(pItemPtr);
+    pItemPtr.bStatus[0] = pInventorySlot.bStatus[0];
+    pItemPtr.ubNumberOfObjects = 1;
+    pItemPtr.ubWeight = CalculateObjectWeight(pItemPtr);
     RemoveObjFrom(pInventorySlot, 0);
-    pInventorySlot.value.ubWeight = CalculateObjectWeight(pInventorySlot);
+    pInventorySlot.ubWeight = CalculateObjectWeight(pInventorySlot);
   }
 
   return true;
 }
 
-function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
+function RemoveObjectFromStashSlot(pInventorySlot: OBJECTTYPE, pItemPtr: OBJECTTYPE): boolean {
   if (!pInventorySlot) {
     return false;
   }
 
-  if (pInventorySlot.value.ubNumberOfObjects == 0) {
+  if (pInventorySlot.ubNumberOfObjects == 0) {
     return false;
   } else {
-    memcpy(pItemPtr, pInventorySlot, sizeof(OBJECTTYPE));
+    copyObjectType(pItemPtr, pInventorySlot);
     DeleteObj(pInventorySlot);
     return true;
   }
 }
 
-function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): boolean {
+function PlaceObjectInInventoryStash(pInventorySlot: OBJECTTYPE, pItemPtr: OBJECTTYPE): boolean {
   let ubNumberToDrop: UINT8;
   let ubSlotLimit: UINT8;
   let ubLoop: UINT8;
 
   // if there is something there, swap it, if they are of the same type and stackable then add to the count
 
-  ubSlotLimit = Item[pItemPtr.value.usItem].ubPerPocket;
+  ubSlotLimit = Item[pItemPtr.usItem].ubPerPocket;
 
-  if (pInventorySlot.value.ubNumberOfObjects == 0) {
+  if (pInventorySlot.ubNumberOfObjects == 0) {
     // placement in an empty slot
-    ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
+    ubNumberToDrop = pItemPtr.ubNumberOfObjects;
 
     if (ubNumberToDrop > ubSlotLimit && ubSlotLimit != 0) {
       // drop as many as possible into pocket
@@ -1139,15 +1113,15 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
 
     // could be wrong type of object for slot... need to check...
     // but assuming it isn't
-    memcpy(pInventorySlot, pItemPtr, sizeof(OBJECTTYPE));
+    copyObjectType(pInventorySlot, pItemPtr);
 
-    if (ubNumberToDrop != pItemPtr.value.ubNumberOfObjects) {
+    if (ubNumberToDrop != pItemPtr.ubNumberOfObjects) {
       // in the InSlot copy, zero out all the objects we didn't drop
-      for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.value.ubNumberOfObjects; ubLoop++) {
-        pInventorySlot.value.bStatus[ubLoop] = 0;
+      for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.ubNumberOfObjects; ubLoop++) {
+        pInventorySlot.bStatus[ubLoop] = 0;
       }
     }
-    pInventorySlot.value.ubNumberOfObjects = ubNumberToDrop;
+    pInventorySlot.ubNumberOfObjects = ubNumberToDrop;
 
     // remove a like number of objects from pObj
     RemoveObjs(pItemPtr, ubNumberToDrop);
@@ -1155,14 +1129,14 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
     // replacement/reloading/merging/stacking
 
     // placement in an empty slot
-    ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
+    ubNumberToDrop = pItemPtr.ubNumberOfObjects;
 
-    if (pItemPtr.value.usItem == pInventorySlot.value.usItem) {
-      if (pItemPtr.value.usItem == Enum225.MONEY) {
+    if (pItemPtr.usItem == pInventorySlot.usItem) {
+      if (pItemPtr.usItem == Enum225.MONEY) {
         // always allow money to be combined!
         // average out the status values using a weighted average...
-        pInventorySlot.value.bStatus[0] = ((pInventorySlot.value.bMoneyStatus * pInventorySlot.value.uiMoneyAmount + pItemPtr.value.bMoneyStatus * pItemPtr.value.uiMoneyAmount) / (pInventorySlot.value.uiMoneyAmount + pItemPtr.value.uiMoneyAmount));
-        pInventorySlot.value.uiMoneyAmount += pItemPtr.value.uiMoneyAmount;
+        pInventorySlot.bStatus[0] = ((pInventorySlot.bMoneyStatus * pInventorySlot.uiMoneyAmount + pItemPtr.bMoneyStatus * pItemPtr.uiMoneyAmount) / (pInventorySlot.uiMoneyAmount + pItemPtr.uiMoneyAmount));
+        pInventorySlot.uiMoneyAmount += pItemPtr.uiMoneyAmount;
 
         DeleteObj(pItemPtr);
       } else if (ubSlotLimit < 2) {
@@ -1170,8 +1144,8 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
         SwapObjs(pItemPtr, pInventorySlot);
       } else {
         // stacking
-        if (ubNumberToDrop > ubSlotLimit - pInventorySlot.value.ubNumberOfObjects) {
-          ubNumberToDrop = ubSlotLimit - pInventorySlot.value.ubNumberOfObjects;
+        if (ubNumberToDrop > ubSlotLimit - pInventorySlot.ubNumberOfObjects) {
+          ubNumberToDrop = ubSlotLimit - pInventorySlot.ubNumberOfObjects;
         }
 
         StackObjs(pItemPtr, pInventorySlot, ubNumberToDrop);
@@ -1183,19 +1157,19 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
   return true;
 }
 
-export function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): boolean {
+export function AutoPlaceObjectInInventoryStash(pItemPtr: OBJECTTYPE): boolean {
   let ubNumberToDrop: UINT8;
   let ubSlotLimit: UINT8;
   let ubLoop: UINT8;
-  let pInventorySlot: Pointer<OBJECTTYPE>;
+  let pInventorySlot: OBJECTTYPE;
 
   // if there is something there, swap it, if they are of the same type and stackable then add to the count
-  pInventorySlot = addressof(pInventoryPoolList[iTotalNumberOfSlots].o);
+  pInventorySlot = pInventoryPoolList[iTotalNumberOfSlots].o;
 
   // placement in an empty slot
-  ubNumberToDrop = pItemPtr.value.ubNumberOfObjects;
+  ubNumberToDrop = pItemPtr.ubNumberOfObjects;
 
-  ubSlotLimit = ItemSlotLimit(pItemPtr.value.usItem, Enum261.BIGPOCK1POS);
+  ubSlotLimit = ItemSlotLimit(pItemPtr.usItem, Enum261.BIGPOCK1POS);
 
   if (ubNumberToDrop > ubSlotLimit && ubSlotLimit != 0) {
     // drop as many as possible into pocket
@@ -1204,15 +1178,15 @@ export function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): 
 
   // could be wrong type of object for slot... need to check...
   // but assuming it isn't
-  memcpy(pInventorySlot, pItemPtr, sizeof(OBJECTTYPE));
+  copyObjectType(pInventorySlot, pItemPtr);
 
-  if (ubNumberToDrop != pItemPtr.value.ubNumberOfObjects) {
+  if (ubNumberToDrop != pItemPtr.ubNumberOfObjects) {
     // in the InSlot copy, zero out all the objects we didn't drop
-    for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.value.ubNumberOfObjects; ubLoop++) {
-      pInventorySlot.value.bStatus[ubLoop] = 0;
+    for (ubLoop = ubNumberToDrop; ubLoop < pItemPtr.ubNumberOfObjects; ubLoop++) {
+      pInventorySlot.bStatus[ubLoop] = 0;
     }
   }
-  pInventorySlot.value.ubNumberOfObjects = ubNumberToDrop;
+  pInventorySlot.ubNumberOfObjects = ubNumberToDrop;
 
   // remove a like number of objects from pObj
   RemoveObjs(pItemPtr, ubNumberToDrop);
@@ -1512,9 +1486,9 @@ export function HandleFlashForHighLightedItem(): void {
   }
 }
 
+/* static */ let HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted: boolean = false;
 function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
-  /* static */ let fItemWasHighLighted: boolean = false;
+  let pSoldier: SOLDIERTYPE | null = null;
 
   if (iCurrentSlot == -1) {
     giCompatibleItemBaseTime = 0;
@@ -1529,10 +1503,10 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
   if (giCompatibleItemBaseTime == 0) {
     giCompatibleItemBaseTime = GetJA2Clock();
 
-    if (fItemWasHighLighted == true) {
+    if (HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted == true) {
       fTeamPanelDirty = true;
       fMapPanelDirty = true;
-      fItemWasHighLighted = false;
+      HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted = false;
     }
   }
 
@@ -1547,13 +1521,13 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
   if (fShowInventoryFlag) {
     // check if any compatable items in the soldier inventory matches with this item
     if (gfCheckForCursorOverMapSectorInventoryItem) {
-      pSoldier = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
+      pSoldier = Menptr[gCharactersList[bSelectedInfoChar].usSolID];
       if (pSoldier) {
         if (HandleCompatibleAmmoUIForMapScreen(pSoldier, iCurrentSlot + (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
           if (GetJA2Clock() - giCompatibleItemBaseTime > 100) {
-            if (fItemWasHighLighted == false) {
+            if (HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted == false) {
               fTeamPanelDirty = true;
-              fItemWasHighLighted = true;
+              HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted = true;
             }
           }
         }
@@ -1569,8 +1543,8 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
     if (gfCheckForCursorOverMapSectorInventoryItem) {
       if (HandleCompatibleAmmoUIForMapInventory(pSoldier, iCurrentSlot, (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
         if (GetJA2Clock() - giCompatibleItemBaseTime > 100) {
-          if (fItemWasHighLighted == false) {
-            fItemWasHighLighted = true;
+          if (HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted == false) {
+            HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted = true;
             fMapPanelDirty = true;
           }
         }
@@ -1603,8 +1577,8 @@ function HandleMapSectorInventory(): void {
 }
 
 // CJC look here to add/remove checks for the sector inventory
-export function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
-  if (pWorldItem.value.bVisible == 1 && pWorldItem.value.fExists && pWorldItem.value.o.usItem != Enum225.SWITCH && pWorldItem.value.o.usItem != Enum225.ACTION_ITEM && pWorldItem.value.o.bTrap <= 0) {
+export function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: WORLDITEM): boolean {
+  if (pWorldItem.bVisible == true && pWorldItem.fExists && pWorldItem.o.usItem != Enum225.SWITCH && pWorldItem.o.usItem != Enum225.ACTION_ITEM && pWorldItem.o.bTrap <= 0) {
     return true;
   }
 
@@ -1612,8 +1586,8 @@ export function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: Pointer<WO
 }
 
 // CJC look here to add/remove checks for the sector inventory
-function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: Pointer<WORLDITEM>): boolean {
-  if (pWorldItem.value.fExists && !IsMapScreenWorldItemVisibleInMapInventory(pWorldItem)) {
+function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: WORLDITEM): boolean {
+  if (pWorldItem.fExists && !IsMapScreenWorldItemVisibleInMapInventory(pWorldItem)) {
     return true;
   }
 
@@ -1648,28 +1622,28 @@ function CheckGridNoOfItemsInMapScreenMapInventory(): void {
   }
 }
 
-function SortSectorInventory(pInventory: Pointer<WORLDITEM>, uiSizeOfArray: UINT32): void {
-  qsort(pInventory, uiSizeOfArray, sizeof(WORLDITEM), MapScreenSectorInventoryCompare);
+function SortSectorInventory(pInventory: WORLDITEM[], uiSizeOfArray: UINT32): void {
+  pInventory.sort(MapScreenSectorInventoryCompare);
 }
 
-function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  let pFirst: Pointer<WORLDITEM> = pNum1;
-  let pSecond: Pointer<WORLDITEM> = pNum2;
+function MapScreenSectorInventoryCompare(pNum1: WORLDITEM, pNum2: WORLDITEM): INT32 {
+  let pFirst: WORLDITEM = pNum1;
+  let pSecond: WORLDITEM = pNum2;
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = pFirst.value.o.usItem;
-  usItem2Index = pSecond.value.o.usItem;
+  usItem1Index = pFirst.o.usItem;
+  usItem2Index = pSecond.o.usItem;
 
-  ubItem1Quality = pFirst.value.o.bStatus[0];
-  ubItem2Quality = pSecond.value.o.bStatus[0];
+  ubItem1Quality = pFirst.o.bStatus[0];
+  ubItem2Quality = pSecond.o.bStatus[0];
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
 
-function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): boolean {
+function CanPlayerUseSectorInventory(pSelectedSoldier: SOLDIERTYPE): boolean {
   let sSectorX: INT16;
   let sSectorY: INT16;
   let sSectorZ: INT16;

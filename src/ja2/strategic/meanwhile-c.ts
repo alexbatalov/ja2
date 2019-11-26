@@ -51,6 +51,16 @@ interface NPC_SAVE_INFO {
   sGridNo: INT16;
 }
 
+function createNpcSaveInfo(): NPC_SAVE_INFO {
+  return {
+    ubProfile: 0,
+    sX: 0,
+    sY: 0,
+    sZ: 0,
+    sGridNo: 0,
+  };
+}
+
 // BEGIN SERALIZATION
 export let gCurrentMeanwhileDef: MEANWHILE_DEFINITION = createMeanwhileDefinition();
 export let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */ = createArrayFrom(Enum160.NUM_MEANWHILES, createMeanwhileDefinition);
@@ -65,7 +75,7 @@ let gsOldSelectedSectorY: INT16;
 let gsOldSelectedSectorZ: INT16;
 
 let guiOldScreen: UINT32;
-let gNPCSaveData: NPC_SAVE_INFO[] /* [MAX_MEANWHILE_PROFILES] */;
+let gNPCSaveData: NPC_SAVE_INFO[] /* [MAX_MEANWHILE_PROFILES] */ = createArrayFrom(MAX_MEANWHILE_PROFILES, createNpcSaveInfo);
 let guiNumNPCSaves: UINT32 = 0;
 let gfReloadingScreenFromMeanwhile: boolean = false;
 let gsOldCurInterfacePanel: INT16 = 0;
@@ -152,7 +162,7 @@ function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
 
 // is this flag set?
 function GetMeanWhileFlag(ubMeanwhileID: UINT8): boolean {
-  let uiTrue: UINT32 = false;
+  let uiTrue: UINT32 = 0;
   switch (ubMeanwhileID) {
     case Enum160.END_OF_PLAYERS_FIRST_BATTLE:
       uiTrue = (uiMeanWhileFlags & END_OF_PLAYERS_FIRST_BATTLE_FLAG);
@@ -239,20 +249,20 @@ function RecountNPCSaves(): void {
   }
 }
 
-export function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
+export function ScheduleMeanwhileEvent(pMeanwhileDef: MEANWHILE_DEFINITION, uiTime: UINT32): void {
   // event scheduled to happen before, ignore
-  if (GetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID) == true) {
+  if (GetMeanWhileFlag(pMeanwhileDef.ubMeanwhileID) == true) {
     return;
   }
 
   // set the meanwhile flag for this event
-  SetMeanWhileFlag(pMeanwhileDef.value.ubMeanwhileID);
+  SetMeanWhileFlag(pMeanwhileDef.ubMeanwhileID);
 
   // set the id value
-  ubCurrentMeanWhileId = pMeanwhileDef.value.ubMeanwhileID;
+  ubCurrentMeanWhileId = pMeanwhileDef.ubMeanwhileID;
 
   // Copy definiaiotn structure into position in global array....
-  memcpy(addressof(gMeanwhileDef[pMeanwhileDef.value.ubMeanwhileID]), pMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+  copyMeanWhileDefinition(gMeanwhileDef[pMeanwhileDef.ubMeanwhileID], pMeanwhileDef);
 
   // A meanwhile.. poor elliot!
   // increment his slapped count...
@@ -262,14 +272,14 @@ export function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITI
     gMercProfiles[Enum268.ELLIOT].bNPCData++;
   }
 
-  AddStrategicEvent(Enum132.EVENT_MEANWHILE, uiTime, pMeanwhileDef.value.ubMeanwhileID);
+  AddStrategicEvent(Enum132.EVENT_MEANWHILE, uiTime, pMeanwhileDef.ubMeanwhileID);
 }
 
 export function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
   let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
-  memcpy(addressof(gCurrentMeanwhileDef), addressof(gMeanwhileDef[ubMeanwhileID]), sizeof(MEANWHILE_DEFINITION));
+  copyMeanWhileDefinition(gCurrentMeanwhileDef, gMeanwhileDef[ubMeanwhileID]);
 
   gfMeanwhileTryingToStart = true;
   PauseGame();
@@ -521,7 +531,7 @@ function BeginMeanwhileCallBack(bExitValue: UINT8): void {
 }
 
 export function AreInMeanwhile(): boolean {
-  let curr: Pointer<STRATEGICEVENT>;
+  let curr: STRATEGICEVENT | null;
 
   // KM:  April 6, 1999
   // Tactical traversal needs to take precedence over meanwhile events.  When tactically traversing, we
@@ -537,14 +547,14 @@ export function AreInMeanwhile(): boolean {
   // scenes have precedence over a new battle if they occur in the same second.
   curr = gpEventList;
   while (curr) {
-    if (curr.value.uiTimeStamp == GetWorldTotalSeconds()) {
-      if (curr.value.ubCallbackID == Enum132.EVENT_MEANWHILE) {
+    if (curr.uiTimeStamp == GetWorldTotalSeconds()) {
+      if (curr.ubCallbackID == Enum132.EVENT_MEANWHILE) {
         return true;
       }
     } else {
       return false;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 
   return false;
@@ -593,7 +603,7 @@ function ProcessImplicationsOfMeanwhile(): void {
         sSectorX = 4;
         sSectorY = MAP_ROW_E;
       } else {
-        Assert(0);
+        Assert(false);
       }
       gMercProfiles[Enum268.MADLAB].sSectorX = sSectorX;
       gMercProfiles[Enum268.MADLAB].sSectorY = sSectorY;
@@ -739,13 +749,13 @@ function LocateMeanWhileGrid(): void {
 }
 
 export function LocateToMeanwhileCharacter(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (gfInMeanwhile) {
     pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, false);
 
     if (pSoldier != null) {
-      LocateSoldier(pSoldier.value.ubID, false);
+      LocateSoldier(pSoldier.ubID, 0);
     }
   }
 }
@@ -772,7 +782,7 @@ export function HandleCreatureRelease(): void {
   MeanwhileDef.ubMeanwhileID = Enum160.CREATURES;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
@@ -821,7 +831,7 @@ export function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): vo
     MeanwhileDef.ubMeanwhileID = ubId;
 
     // schedule the event
-    ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+    ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
   }
 }
 
@@ -844,7 +854,7 @@ export function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   MeanwhileDef.ubMeanwhileID = Enum160.LOST_TOWN;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
@@ -891,7 +901,7 @@ export function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void 
     MeanwhileDef.ubMeanwhileID = ubId;
 
     // schedule the event
-    ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+    ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
   }
 }
 
@@ -922,7 +932,7 @@ export function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   MeanwhileDef.ubMeanwhileID = Enum160.FLOWERS;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleOutskirtsOfMedunaMeanwhileScene(): void {
@@ -945,7 +955,7 @@ export function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = Enum160.OUTSKIRTS_MEDUNA;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleKillChopperMeanwhileScene(): void {
@@ -968,7 +978,7 @@ export function HandleKillChopperMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = Enum160.KILL_CHOPPER;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleScientistAWOLMeanwhileScene(): void {
@@ -991,7 +1001,7 @@ export function HandleScientistAWOLMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = Enum160.AWOL_SCIENTIST;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 function HandleInterrogationMeanwhileScene(): void {
@@ -1014,7 +1024,7 @@ function HandleInterrogationMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = Enum160.INTERROGATION;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 function HandleFirstBattleVictory(): void {
@@ -1038,7 +1048,7 @@ function HandleFirstBattleVictory(): void {
   MeanwhileDef.ubMeanwhileID = ubId;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 function HandleDelayedFirstBattleVictory(): void {
@@ -1067,7 +1077,7 @@ function HandleDelayedFirstBattleVictory(): void {
   MeanwhileDef.ubMeanwhileID = ubId;
 
   // schedule the event
-  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
+  ScheduleMeanwhileEvent(MeanwhileDef, uiTime);
 }
 
 export function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: boolean): void {

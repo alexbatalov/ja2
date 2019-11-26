@@ -380,7 +380,7 @@ export function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: GRO
 
 // Appends a waypoint to the end of the list.  Waypoint MUST be on the
 // same horizontal or vertical level as the last waypoint added.
-export function AddWaypointToPGroup(pGroup: GROUP, ubSectorX: UINT8, ubSectorY: UINT8): boolean // Same, but overloaded
+export function AddWaypointToPGroup(pGroup: GROUP | null, ubSectorX: UINT8, ubSectorY: UINT8): boolean // Same, but overloaded
 {
   let pWay: WAYPOINT | null;
   let ubNumAlignedAxes: UINT8 = 0;
@@ -683,7 +683,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: GROUP, pInitiatingBatt
   // ATE; Changed alogrithm here...
   // We first loop through the group and save ubID's ov valid guys to talk....
   // ( Can't if sleeping, unconscious, and EPC, etc....
-  let ubMercsInGroup: UINT8[] /* [20] */ = [ 0 ];
+  let ubMercsInGroup: UINT8[] /* [20] */ = createArray(20, 0);
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
   let pSoldier: SOLDIERTYPE;
@@ -937,7 +937,7 @@ function DeployGroupToSector(pGroup: GROUP): void {
 // at the next sector during a move and the area is clear.
 export function CalculateNextMoveIntention(pGroup: GROUP): void {
   let i: INT32;
-  let wp: WAYPOINT;
+  let wp: WAYPOINT | null;
 
   Assert(pGroup);
 
@@ -1968,11 +1968,9 @@ export function RemovePGroup(pGroup: GROUP): void {
     while (pGroup.pPlayerList) {
       pPlayer = pGroup.pPlayerList;
       pGroup.pPlayerList = pGroup.pPlayerList.next;
-      MemFree(pPlayer);
     }
   } else {
     RemoveGroupFromStrategicAILists(pGroup.ubGroupID);
-    MemFree(pGroup.pEnemyGroup);
   }
 
   // clear the unique group ID
@@ -1985,9 +1983,6 @@ export function RemovePGroup(pGroup: GROUP): void {
   }
 
   uniqueIDMask[index] -= mask;
-
-  MemFree(pGroup);
-  pGroup = null;
 }
 
 export function RemoveAllGroups(): void {
@@ -2569,7 +2564,7 @@ export function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountE
 
   if (gpBattleGroup) {
     // Assert( gfPreBattleInterfaceActive );
-    sBattleSector = SECTOR(gpBattleGroup.value.ubSectorX, gpBattleGroup.value.ubSectorY);
+    sBattleSector = SECTOR(gpBattleGroup.ubSectorX, gpBattleGroup.ubSectorY);
   }
 
   // debug only
@@ -2727,7 +2722,7 @@ export function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8,
   if (pGroup.fPlayer == true) {
     pPlayer = pGroup.pPlayerList;
     while (pPlayer) {
-      pPlayer.pSoldier.value.fBetweenSectors = true;
+      pPlayer.pSoldier.fBetweenSectors = true;
       pPlayer = pPlayer.next;
     }
   }
@@ -2739,6 +2734,7 @@ export function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolea
   let pGroup: GROUP | null = null;
   let uiNumberOfGroups: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
+  let buffer: Buffer;
 
   pGroup = gpGroupList;
 
@@ -2749,8 +2745,11 @@ export function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolea
   }
 
   // Save the number of movement groups to the saved game file
-  uiNumBytesWritten = FileWrite(hFile, addressof(uiNumberOfGroups), sizeof(UINT32));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiNumberOfGroups, 0);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
@@ -2758,10 +2757,13 @@ export function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolea
   pGroup = gpGroupList;
 
   // Loop through the linked lists and add each node
+  buffer = Buffer.allocUnsafe(GROUP_SIZE);
   while (pGroup) {
     // Save each node in the LL
-    uiNumBytesWritten = FileWrite(hFile, pGroup, sizeof(GROUP));
-    if (uiNumBytesWritten != sizeof(GROUP)) {
+    writeGroup(pGroup, buffer);
+
+    uiNumBytesWritten = FileWrite(hFile, buffer, GROUP_SIZE);
+    if (uiNumBytesWritten != GROUP_SIZE) {
       // Error Writing group node to disk
       return false;
     }
@@ -2793,8 +2795,11 @@ export function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): boolea
   }
 
   // Save the unique id mask
-  uiNumBytesWritten = FileWrite(hFile, uniqueIDMask, sizeof(UINT32) * 8);
-  if (uiNumBytesWritten != sizeof(UINT32) * 8) {
+  buffer = Buffer.allocUnsafe(4 * 8);
+  writeUIntArray(uniqueIDMask, buffer, 0, 4);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4 * 8);
+  if (uiNumBytesWritten != 4 * 8) {
     // Error Writing size of L.L. to disk
     return false;
   }
@@ -2816,31 +2821,38 @@ export function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boo
   let ubNumEnemyGroupsEmpty: UINT8 = 0;
   let ubNumPlayerGroupsFull: UINT8 = 0;
   let ubNumEnemyGroupsFull: UINT8 = 0;
+  let buffer: Buffer;
 
   // delete the existing group list
   while (gpGroupList)
     RemoveGroupFromList(gpGroupList);
 
   // load the number of nodes in the list
-  uiNumBytesRead = FileRead(hFile, addressof(uiNumberOfGroups), sizeof(UINT32));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
 
+  uiNumberOfGroups = buffer.readUInt32LE(0);
+
   pGroup = gpGroupList;
 
   // loop through all the nodes and add them to the LL
+  buffer = Buffer.allocUnsafe(GROUP_SIZE);
   for (cnt = 0; cnt < uiNumberOfGroups; cnt++) {
     // allocate memory for the node
     pTemp = createGroup();
 
     // Read in the node
-    uiNumBytesRead = FileRead(hFile, pTemp, sizeof(GROUP));
-    if (uiNumBytesRead != sizeof(GROUP)) {
+    uiNumBytesRead = FileRead(hFile, buffer, GROUP_SIZE);
+    if (uiNumBytesRead != GROUP_SIZE) {
       // Error Writing size of L.L. to disk
       return false;
     }
+
+    readGroup(pTemp, buffer);
 
     //
     // Add either the pointer or the linked list.
@@ -2875,11 +2887,14 @@ export function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boo
   }
 
   // Load the unique id mask
-  uiNumBytesRead = FileRead(hFile, uniqueIDMask, sizeof(UINT32) * 8);
+  buffer = Buffer.allocUnsafe(4 * 8);
+  uiNumBytesRead = FileRead(hFile, buffer, 4 * 8);
+
+  readUIntArray(uniqueIDMask, buffer, 0, 4);
 
   //@@@ TEMP!
   // Rebuild the uniqueIDMask as a very old bug broke the uniqueID assignments in extremely rare cases.
-  memset(uniqueIDMask, 0, sizeof(UINT32) * 8);
+  uniqueIDMask.fill(0);
   pGroup = gpGroupList;
   while (pGroup) {
     if (pGroup.fPlayer) {
@@ -2905,7 +2920,7 @@ export function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boo
     pGroup = pGroup.next;
   }
 
-  if (uiNumBytesRead != sizeof(UINT32) * 8) {
+  if (uiNumBytesRead != 4 * 8) {
     return false;
   }
 
@@ -2918,6 +2933,7 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
   let pTemp: PLAYERGROUP | null = null;
   let uiNumBytesWritten: UINT32 = 0;
   let uiProfileID: UINT32;
+  let buffer: Buffer;
 
   pTemp = pGroup.pPlayerList;
 
@@ -2926,9 +2942,13 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
     pTemp = pTemp.next;
   }
 
+  buffer = Buffer.allocUnsafe(4);
+
   // Save the number of nodes in the list
-  uiNumBytesWritten = FileWrite(hFile, addressof(uiNumberOfNodesInList), sizeof(UINT32));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer.writeUInt32LE(uiNumberOfNodesInList, 0);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
@@ -2939,8 +2959,10 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
   while (pTemp) {
     // Save the ubProfile ID for this node
     uiProfileID = pTemp.ubProfileID;
-    uiNumBytesWritten = FileWrite(hFile, addressof(uiProfileID), sizeof(UINT32));
-    if (uiNumBytesWritten != sizeof(UINT32)) {
+    buffer.writeUInt32LE(uiProfileID, 0);
+
+    uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+    if (uiNumBytesWritten != 4) {
       // Error Writing size of L.L. to disk
       return false;
     }
@@ -2961,17 +2983,22 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
   let cnt: UINT32 = 0;
   let sTempID: INT16;
   let pTempGroup: GROUP = pGroup;
+  let buffer: Buffer;
 
   //	pTemp = pGroup;
 
   //	pHead = *pGroup->pPlayerList;
 
+  buffer = Buffer.allocUnsafe(4);
+
   // Load the number of nodes in the player list
-  uiNumBytesRead = FileRead(hFile, addressof(uiNumberOfNodes), sizeof(UINT32));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
+
+  uiNumberOfNodes = buffer.readUInt32LE(0);
 
   // loop through all the nodes and set them up
   for (cnt = 0; cnt < uiNumberOfNodes; cnt++) {
@@ -2979,11 +3006,13 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
     pTemp = createPlayerGroup();
 
     // Load the ubProfile ID for this node
-    uiNumBytesRead = FileRead(hFile, addressof(uiProfileID), sizeof(UINT32));
-    if (uiNumBytesRead != sizeof(UINT32)) {
+    uiNumBytesRead = FileRead(hFile, buffer, 4);
+    if (uiNumBytesRead != 4) {
       // Error Writing size of L.L. to disk
       return false;
     }
+
+    uiProfileID = buffer.readUInt32LE(0);
 
     // Set up the current node
     pTemp.ubProfileID = uiProfileID;
@@ -3015,10 +3044,14 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: GROUP): boolean {
 // Saves the enemy group struct to the saved game struct
 function SaveEnemyGroupStruct(hFile: HWFILE, pGroup: GROUP): boolean {
   let uiNumBytesWritten: UINT32 = 0;
+  let buffer: Buffer;
 
   // Save the enemy struct info to the saved game file
-  uiNumBytesWritten = FileWrite(hFile, pGroup.pEnemyGroup, sizeof(ENEMYGROUP));
-  if (uiNumBytesWritten != sizeof(ENEMYGROUP)) {
+  buffer = Buffer.allocUnsafe(ENEMY_GROUP_SIZE);
+  writeEnemyGroup(<ENEMYGROUP>pGroup.pEnemyGroup, buffer);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, ENEMY_GROUP_SIZE);
+  if (uiNumBytesWritten != ENEMY_GROUP_SIZE) {
     // Error Writing size of L.L. to disk
     return false;
   }
@@ -3030,16 +3063,21 @@ function SaveEnemyGroupStruct(hFile: HWFILE, pGroup: GROUP): boolean {
 function LoadEnemyGroupStructFromSavedGame(hFile: HWFILE, pGroup: GROUP): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let pEnemyGroup: ENEMYGROUP;
+  let buffer: Buffer;
 
   // Alllocate memory for the enemy struct
   pEnemyGroup = createEnemyGroup();
 
   // Load the enemy struct
-  uiNumBytesRead = FileRead(hFile, pEnemyGroup, sizeof(ENEMYGROUP));
-  if (uiNumBytesRead != sizeof(ENEMYGROUP)) {
+  buffer = Buffer.allocUnsafe(ENEMY_GROUP_SIZE);
+
+  uiNumBytesRead = FileRead(hFile, buffer, ENEMY_GROUP_SIZE);
+  if (uiNumBytesRead != ENEMY_GROUP_SIZE) {
     // Error Writing size of L.L. to disk
     return false;
   }
+
+  readEnemyGroup(pEnemyGroup, buffer);
 
   // Assign the struct to the group list
   pGroup.pEnemyGroup = pEnemyGroup;
@@ -3094,6 +3132,7 @@ function SaveWayPointList(hFile: HWFILE, pGroup: GROUP): boolean {
   let uiNumberOfWayPoints: UINT32 = 0;
   let uiNumBytesWritten: UINT32 = 0;
   let pWayPoints: WAYPOINT | null = pGroup.pWaypoints;
+  let buffer: Buffer;
 
   // loop trhough and count all the node in the waypoint list
   while (pWayPoints != null) {
@@ -3102,24 +3141,30 @@ function SaveWayPointList(hFile: HWFILE, pGroup: GROUP): boolean {
   }
 
   // Save the number of waypoints
-  uiNumBytesWritten = FileWrite(hFile, addressof(uiNumberOfWayPoints), sizeof(UINT32));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiNumberOfWayPoints, 0);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
 
   if (uiNumberOfWayPoints) {
+    buffer = Buffer.allocUnsafe(WAYPOINT_SIZE);
+
     pWayPoints = pGroup.pWaypoints;
     for (cnt = 0; cnt < uiNumberOfWayPoints; cnt++) {
       // Save the waypoint node
-      uiNumBytesWritten = FileWrite(hFile, pWayPoints, sizeof(WAYPOINT));
-      if (uiNumBytesWritten != sizeof(WAYPOINT)) {
+      writeWaypoint(<WAYPOINT>pWayPoints, buffer);
+      uiNumBytesWritten = FileWrite(hFile, buffer, WAYPOINT_SIZE);
+      if (uiNumBytesWritten != WAYPOINT_SIZE) {
         // Error Writing size of L.L. to disk
         return false;
       }
 
       // Advance to the next waypoint
-      pWayPoints = pWayPoints.next;
+      pWayPoints = (<WAYPOINT>pWayPoints).next;
     }
   }
 
@@ -3130,40 +3175,48 @@ function LoadWayPointList(hFile: HWFILE, pGroup: GROUP): boolean {
   let cnt: UINT32 = 0;
   let uiNumberOfWayPoints: UINT32 = 0;
   let uiNumBytesRead: UINT32 = 0;
-  let pWayPoints: Pointer<WAYPOINT> = pGroup.pWaypoints;
-  let pTemp: Pointer<WAYPOINT> = null;
+  let pWayPoints: WAYPOINT | null = pGroup.pWaypoints;
+  let pTemp: WAYPOINT;
+  let buffer: Buffer;
 
   // Load the number of waypoints
-  uiNumBytesRead = FileRead(hFile, addressof(uiNumberOfWayPoints), sizeof(UINT32));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     // Error Writing size of L.L. to disk
     return false;
   }
 
+  uiNumberOfWayPoints = buffer.readUInt32LE(0);
+
   if (uiNumberOfWayPoints) {
+    buffer = Buffer.allocUnsafe(WAYPOINT_SIZE);
+
     pWayPoints = pGroup.pWaypoints;
     for (cnt = 0; cnt < uiNumberOfWayPoints; cnt++) {
       // Allocate memory for the node
       pTemp = createWaypoint();
 
       // Load the waypoint node
-      uiNumBytesRead = FileRead(hFile, pTemp, sizeof(WAYPOINT));
-      if (uiNumBytesRead != sizeof(WAYPOINT)) {
+      uiNumBytesRead = FileRead(hFile, buffer, WAYPOINT_SIZE);
+      if (uiNumBytesRead != WAYPOINT_SIZE) {
         // Error Writing size of L.L. to disk
         return false;
       }
 
-      pTemp.value.next = null;
+      readWaypoint(pTemp, buffer);
+
+      pTemp.next = null;
 
       // if its the first node
-      if (cnt == 0) {
+      if (!pWayPoints) {
         pGroup.pWaypoints = pTemp;
         pWayPoints = pTemp;
       } else {
-        pWayPoints.value.next = pTemp;
+        pWayPoints.next = pTemp;
 
         // Advance to the next waypoint
-        pWayPoints = pWayPoints.value.next;
+        pWayPoints = pWayPoints.next;
       }
     }
   } else
@@ -3357,7 +3410,7 @@ export function ResetMovementForEnemyGroupsInLocation(ubSectorX: UINT8, ubSector
   let sSectorY: INT16;
   let sSectorZ: INT16;
 
-  GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
+  ({ sSectorX, sSectorY, sSectorZ } = GetCurrentBattleSectorXYZ());
   pGroup = gpGroupList;
   while (pGroup) {
     next = pGroup.next;

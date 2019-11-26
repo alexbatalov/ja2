@@ -2061,7 +2061,7 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
     usMapPos = MAPROWCOLTOPOS(sGridY, sGridX);
     // Get Grid Coordinates of mouse
     if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY))) {
-      GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
+      ({ sSectorX, sSectorY } = GetCurrentWorldSector());
 
       MercCreateStruct.bTeam = bTeam;
       MercCreateStruct.ubProfile = ubProfileID;
@@ -2240,8 +2240,7 @@ function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
   let fSuccess: boolean;
 
   // where is all this taking place?
-  fSuccess = GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
-  Assert(fSuccess);
+  ({ sSectorX, sSectorY, sSectorZ } = GetCurrentBattleSectorXYZ());
 
   // ignore sSectorZ - treat any underground enemies as if they were on the surface!
   bTownId = GetTownIdForSector(sSectorX, sSectorY);

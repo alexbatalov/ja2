@@ -389,7 +389,7 @@ export function RenderTopmostTacticalInterface(): void {
   let sTempY_S: INT16;
   let sTempX_S: INT16;
   let usMapPos: UINT16;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   if (gfRerenderInterfaceFromHelpText == true) {
     fInterfacePanelDirty = DIRTYLEVEL2;
@@ -516,8 +516,8 @@ export function RenderTopmostTacticalInterface(): void {
         let sDamageY: INT16;
 
         if (pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bVisible != -1) {
-          GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
-          GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
+          ({ sScreenX: sMercScreenX, sScreenY: sMercScreenY } = GetSoldierScreenPos(pSoldier));
+          ({ sOffsetX, sOffsetY } = GetSoldierAnimOffsets(pSoldier));
 
           if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
             sDamageX = sMercScreenX + pSoldier.value.sDamageX - pSoldier.value.sBoundingBoxOffsetX;
@@ -576,7 +576,7 @@ export function RenderTopmostTacticalInterface(): void {
     if (gfUIOverItemPool) {
       if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
         // Check if we are over an item pool
-        if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
+        if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, pSoldier.value.bLevel))) {
           let pStructure: Pointer<STRUCTURE> = null;
           let sIntTileGridNo: INT16;
           let bZLevel: INT8 = 0;
@@ -606,7 +606,7 @@ export function RenderTopmostTacticalInterface(): void {
           }
 
           // Check if we are over an item pool
-          if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), bCheckLevel)) {
+          if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, bCheckLevel))) {
             let pStructure: Pointer<STRUCTURE> = null;
             let sIntTileGridNo: INT16;
             let bZLevel: INT8 = 0;

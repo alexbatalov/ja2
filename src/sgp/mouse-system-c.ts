@@ -750,7 +750,7 @@ export function MSYS_AddRegion(region: MOUSE_REGION): INT32 {
 //	Removes a region from the list, disables it, then calls the callback functions for
 //	de-initialization.
 //
-export function MSYS_RemoveRegion(region: MOUSE_REGION): void {
+export function MSYS_RemoveRegion(region: MOUSE_REGION | null): void {
   if (!region) {
       return;
     AssertMsg(0, "Attempting to remove a NULL region.");

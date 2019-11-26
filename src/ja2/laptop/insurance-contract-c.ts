@@ -1245,11 +1245,11 @@ function GetTimeRemainingOnSoldiersContract(pSoldier: SOLDIERTYPE): UINT32 {
   //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) / 1440 );
 }
 
-export function PurchaseOrExtendInsuranceForSoldier(pSoldier: SOLDIERTYPE, uiInsuranceLength: UINT32): void {
+export function PurchaseOrExtendInsuranceForSoldier(pSoldier: SOLDIERTYPE | null, uiInsuranceLength: UINT32): void {
   let iAmountOfMoneyTransfer: INT32 = -1;
 
   if (pSoldier == null)
-    AssertMsg(0, "Soldier pointer is NULL!");
+    AssertMsg(false, "Soldier pointer is NULL!");
 
   // if the user doesnt have insruance already,
   if (!(pSoldier.usLifeInsurance)) {

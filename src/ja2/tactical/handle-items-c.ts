@@ -1173,7 +1173,7 @@ function HandleAutoPlaceFail(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, 
 }
 
 export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<boolean>): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pItemPoolToDelete: Pointer<ITEM_POOL> = null;
   let Object: OBJECTTYPE = createObjectType();
   let cnt: INT32 = 0;
@@ -1188,7 +1188,7 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
   if (iItemIndex == ITEM_PICKUP_ACTION_ALL || iItemIndex == ITEM_PICKUP_SELECTION) {
     // DO all pickup!
     // LOOP THROUGH LIST TO FIND NODE WE WANT
-    GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel);
+    pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel);
 
     while (pItemPool) {
       if (ItemPoolOKForPickup(pSoldier, pItemPool, bZLevel)) {
@@ -1205,9 +1205,9 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
         cnt++;
 
         if (fPickup) {
-          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool.value.iItemIndex, false, addressof(fSaidBoobyTrapQuote))) {
+          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool.iItemIndex, false, addressof(fSaidBoobyTrapQuote))) {
             // Make copy of item
-            memcpy(addressof(Object), addressof(gWorldItems[pItemPool.value.iItemIndex].o), sizeof(OBJECTTYPE));
+            memcpy(addressof(Object), addressof(gWorldItems[pItemPool.iItemIndex].o), sizeof(OBJECTTYPE));
 
             if (ItemIsCool(addressof(Object))) {
               fShouldSayCoolQuote = true;
@@ -1218,17 +1218,17 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
               bTempFrequency = Object.bFrequency;
               gpTempSoldier = pSoldier;
               DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, TacticalStr[Enum335.ACTIVATE_SWITCH_PROMPT], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, null);
-              pItemPool = pItemPool.value.pNext;
+              pItemPool = pItemPool.pNext;
             } else {
               if (!AutoPlaceObject(pSoldier, addressof(Object), true)) {
                 // check to see if the object has been swapped with one in inventory
-                if (Object.usItem != gWorldItems[pItemPool.value.iItemIndex].o.usItem || Object.ubNumberOfObjects != gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects) {
+                if (Object.usItem != gWorldItems[pItemPool.iItemIndex].o.usItem || Object.ubNumberOfObjects != gWorldItems[pItemPool.iItemIndex].o.ubNumberOfObjects) {
                   // copy back because item changed, and we must make sure the item pool reflects this.
-                  memcpy(addressof(gWorldItems[pItemPool.value.iItemIndex].o), addressof(Object), sizeof(OBJECTTYPE));
+                  memcpy(addressof(gWorldItems[pItemPool.iItemIndex].o), addressof(Object), sizeof(OBJECTTYPE));
                 }
 
                 pItemPoolToDelete = pItemPool;
-                pItemPool = pItemPool.value.pNext;
+                pItemPool = pItemPool.pNext;
                 fFailedAutoPlace = true;
                 // continue, to try and place ay others...
                 continue;
@@ -1253,8 +1253,8 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
               */
 
               // pItemPoolToDelete = pItemPool;
-              iItemIndexToDelete = pItemPool.value.iItemIndex;
-              pItemPool = pItemPool.value.pNext;
+              iItemIndexToDelete = pItemPool.iItemIndex;
+              pItemPool = pItemPool.pNext;
               RemoveItemFromPool(sGridNo, iItemIndexToDelete, pSoldier.value.bLevel);
             }
           } else {
@@ -1262,10 +1262,10 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
             break;
           }
         } else {
-          pItemPool = pItemPool.value.pNext;
+          pItemPool = pItemPool.pNext;
         }
       } else {
-        pItemPool = pItemPool.value.pNext;
+        pItemPool = pItemPool.pNext;
       }
     }
 
@@ -1360,11 +1360,11 @@ export function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
 }
 
 export function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let usNum: UINT16;
 
   // Draw menu if more than one item!
-  if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel))) {
     // OK, if an enemy, go directly ( skip menu )
     if (pSoldier.value.bTeam != gbPlayerNum) {
       SoldierGetItemFromWorld(pSoldier, iItemIndex, sGridNo, bZLevel, null);
@@ -1403,9 +1403,9 @@ export function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemInd
           if ((usNum = GetNumOkForDisplayItemsInPool(pItemPool, bZLevel)) == 1) {
             // Find first OK item....
             while (!ItemPoolOKForDisplay(pItemPool, bZLevel)) {
-              pItemPool = pItemPool.value.pNext;
+              pItemPool = pItemPool.pNext;
             }
-            SoldierGetItemFromWorld(pSoldier, pItemPool.value.iItemIndex, sGridNo, bZLevel, null);
+            SoldierGetItemFromWorld(pSoldier, pItemPool.iItemIndex, sGridNo, bZLevel, null);
           } else {
             if (usNum != 0) {
               // Freeze guy!
@@ -1502,7 +1502,7 @@ export function AddItemToPoolAndGetIndex(sGridNo: INT16, pObject: Pointer<OBJECT
 }
 
 export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): Pointer<OBJECTTYPE> {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pItemPoolTemp: Pointer<ITEM_POOL>;
   let iWorldItem: INT32;
   let pStructure: Pointer<STRUCTURE>;
@@ -1660,7 +1660,7 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
   iWorldItem = AddItemToWorld(psGridNo.value, pObject, ubLevel, usFlags, bRenderZHeightAboveLevel, bVisible);
 
   // Check for and existing pool on the object layer
-  if (GetItemPool(psGridNo.value, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(psGridNo.value, ubLevel))) {
     // Add to exitsing pool
     // Add graphic
     pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), psGridNo.value, ubLevel);
@@ -1674,11 +1674,11 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
     pItemPool = MemAlloc(sizeof(ITEM_POOL));
 
     // Set Next to NULL
-    pItemPool.value.pNext = null;
+    pItemPool.pNext = null;
     // Set Item index
-    pItemPool.value.iItemIndex = iWorldItem;
+    pItemPool.iItemIndex = iWorldItem;
     // Get a link back!
-    pItemPool.value.pLevelNode = pNode;
+    pItemPool.pLevelNode = pNode;
 
     if (pItemPoolTemp) {
       // Get last item in list
@@ -1689,7 +1689,7 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
       pItemPoolTemp.value.pNext = pItemPool;
     }
     // Set Previous of new one
-    pItemPool.value.pPrev = pItemPoolTemp;
+    pItemPool.pPrev = pItemPoolTemp;
   } else {
     pNode = AddItemGraphicToWorld(addressof(Item[pObject.value.usItem]), psGridNo.value, ubLevel);
 
@@ -1699,20 +1699,20 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
     pNode.value.pItemPool = pItemPool;
 
     // Set prev to NULL
-    pItemPool.value.pPrev = null;
+    pItemPool.pPrev = null;
     // Set next to NULL
-    pItemPool.value.pNext = null;
+    pItemPool.pNext = null;
     // Set Item index
-    pItemPool.value.iItemIndex = iWorldItem;
+    pItemPool.iItemIndex = iWorldItem;
     // Get a link back!
-    pItemPool.value.pLevelNode = pNode;
+    pItemPool.pLevelNode = pNode;
 
     // Set flag to indicate item pool presence
     gpWorldLevelData[psGridNo.value].uiFlags |= MAPELEMENT_ITEMPOOL_PRESENT;
   }
 
   // Set visible!
-  pItemPool.value.bVisible = bVisible;
+  pItemPool.bVisible = bVisible;
 
   // If bbisible is true, render makered world
   if (bVisible == 1 && GridNoOnScreen((psGridNo.value))) {
@@ -1722,15 +1722,15 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
   }
 
   // Set flahs timer
-  pItemPool.value.bFlashColor = false;
-  pItemPool.value.sGridNo = psGridNo.value;
-  pItemPool.value.ubLevel = ubLevel;
-  pItemPool.value.usFlags = usFlags;
-  pItemPool.value.bVisible = bVisible;
-  pItemPool.value.bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
+  pItemPool.bFlashColor = false;
+  pItemPool.sGridNo = psGridNo.value;
+  pItemPool.ubLevel = ubLevel;
+  pItemPool.usFlags = usFlags;
+  pItemPool.bVisible = bVisible;
+  pItemPool.bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
 
   // ATE: Get head of pool again....
-  if (GetItemPool(psGridNo.value, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(psGridNo.value, ubLevel))) {
     AdjustItemPoolVisibility(pItemPool);
   }
 
@@ -1742,19 +1742,19 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: Pointer
 }
 
 function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): boolean {
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolTemp: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
+  let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
 
   // Check for an existing pool on the object layer
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != null) {
-      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.iItemIndex == iItemIndex) {
         return true;
       }
-      pItemPoolTemp = pItemPoolTemp.value.pNext;
+      pItemPoolTemp = pItemPoolTemp.pNext;
     }
   }
 
@@ -1762,22 +1762,22 @@ function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8)
 }
 
 export function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8, piItemIndex: Pointer<INT32>): boolean {
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolTemp: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
+  let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
 
   // Check for an existing pool on the object layer
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     // LOOP THROUGH LIST TO FIND ITEM WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != null) {
-      if (gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem == usItem) {
+      if (gWorldItems[pItemPoolTemp.iItemIndex].o.usItem == usItem) {
         if (piItemIndex) {
-          piItemIndex.value = pItemPoolTemp.value.iItemIndex;
+          piItemIndex.value = pItemPoolTemp.iItemIndex;
         }
         return true;
       }
-      pItemPoolTemp = pItemPoolTemp.value.pNext;
+      pItemPoolTemp = pItemPoolTemp.pNext;
     }
   }
 
@@ -1785,19 +1785,19 @@ export function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel
 }
 
 function GetItemOfClassTypeInPool(sGridNo: INT16, uiItemClass: UINT32, ubLevel: UINT8): INT32 {
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolTemp: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
+  let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
 
   // Check for an existing pool on the object layer
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != null) {
-      if (Item[gWorldItems[pItemPoolTemp.value.iItemIndex].o.usItem].usItemClass & uiItemClass) {
-        return pItemPoolTemp.value.iItemIndex;
+      if (Item[gWorldItems[pItemPoolTemp.iItemIndex].o.usItem].usItemClass & uiItemClass) {
+        return pItemPoolTemp.iItemIndex;
       }
-      pItemPoolTemp = pItemPoolTemp.value.pNext;
+      pItemPoolTemp = pItemPoolTemp.pNext;
     }
   }
 
@@ -1805,19 +1805,19 @@ function GetItemOfClassTypeInPool(sGridNo: INT16, uiItemClass: UINT32, ubLevel: 
 }
 
 function GetItemPoolForIndex(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): Pointer<ITEM_POOL> {
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolTemp: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
+  let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
 
   // Check for an existing pool on the object layer
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != null) {
-      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.iItemIndex == iItemIndex) {
         return pItemPoolTemp;
       }
-      pItemPoolTemp = pItemPoolTemp.value.pNext;
+      pItemPoolTemp = pItemPoolTemp.pNext;
     }
   }
 
@@ -1851,22 +1851,22 @@ function DoesItemPoolContainAllHiddenItems(pItemPool: Pointer<ITEM_POOL>): boole
 }
 
 function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: boolean, bZLevel: INT8): boolean {
-  let pItemPool: Pointer<ITEM_POOL> = null;
-  let pHeadItemPool: Pointer<ITEM_POOL> = null;
+  let pItemPool: ITEM_POOL | null = null;
+  let pHeadItemPool: ITEM_POOL | null = null;
   let fFound: boolean = false;
 
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     pHeadItemPool = pItemPool;
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     while (pItemPool != null) {
-      if (gWorldItems[pItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.usItem != Enum225.OWNERSHIP) {
+      if (gWorldItems[pItemPool.iItemIndex].bVisible == HIDDEN_ITEM && gWorldItems[pItemPool.iItemIndex].o.usItem != Enum225.OWNERSHIP) {
         fFound = true;
 
-        gWorldItems[pItemPool.value.iItemIndex].bVisible = INVISIBLE;
+        gWorldItems[pItemPool.iItemIndex].bVisible = INVISIBLE;
       }
 
-      pItemPool = pItemPool.value.pNext;
+      pItemPool = pItemPool.pNext;
     }
   }
 
@@ -1879,14 +1879,14 @@ function LookForHiddenItems(sGridNo: INT16, ubLevel: INT8, fSetLocator: boolean,
 }
 
 export function GetZLevelOfItemPoolGivenStructure(sGridNo: INT16, ubLevel: UINT8, pStructure: Pointer<STRUCTURE>): INT8 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   if (pStructure == null) {
     return 0;
   }
 
   // OK, check if this struct contains items....
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel) == true) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     return GetLargestZLevelOfItemPool(pItemPool);
   }
   return 0;
@@ -1932,27 +1932,27 @@ function DoesItemPoolContainAllItemsOfZeroZLevel(pItemPool: Pointer<ITEM_POOL>):
 }
 
 function RemoveItemPool(sGridNo: INT16, ubLevel: UINT8): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   // Check for and existing pool on the object layer
-  while (GetItemPool(sGridNo, addressof(pItemPool), ubLevel) == true) {
-    RemoveItemFromPool(sGridNo, pItemPool.value.iItemIndex, ubLevel);
+  while ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
+    RemoveItemFromPool(sGridNo, pItemPool.iItemIndex, ubLevel);
   }
 }
 
 export function RemoveAllUnburiedItems(sGridNo: INT16, ubLevel: UINT8): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   // Check for and existing pool on the object layer
-  GetItemPool(sGridNo, addressof(pItemPool), ubLevel);
+  pItemPool = GetItemPool(sGridNo, ubLevel);
 
   while (pItemPool) {
-    if (gWorldItems[pItemPool.value.iItemIndex].bVisible == BURIED) {
-      pItemPool = pItemPool.value.pNext;
+    if (gWorldItems[pItemPool.iItemIndex].bVisible == BURIED) {
+      pItemPool = pItemPool.pNext;
     } else {
-      RemoveItemFromPool(sGridNo, pItemPool.value.iItemIndex, ubLevel);
+      RemoveItemFromPool(sGridNo, pItemPool.iItemIndex, ubLevel);
       // get new start pointer
-      GetItemPool(sGridNo, addressof(pItemPool), ubLevel);
+      pItemPool = GetItemPool(sGridNo, ubLevel);
     }
   }
 }
@@ -2139,23 +2139,23 @@ function AdjustItemPoolVisibility(pItemPool: Pointer<ITEM_POOL>): void {
 }
 
 export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8): boolean {
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pItemPoolTemp: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
+  let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
   let pObject: Pointer<LEVELNODE>;
 
   // Check for and existing pool on the object layer
-  if (GetItemPool(sGridNo, addressof(pItemPool), ubLevel)) {
+  if ((pItemPool = GetItemPool(sGridNo, ubLevel))) {
     // REMOVE FROM LIST
 
     // LOOP THROUGH LIST TO FIND NODE WE WANT
     pItemPoolTemp = pItemPool;
     while (pItemPoolTemp != null) {
-      if (pItemPoolTemp.value.iItemIndex == iItemIndex) {
+      if (pItemPoolTemp.iItemIndex == iItemIndex) {
         fItemFound = true;
         break;
       }
-      pItemPoolTemp = pItemPoolTemp.value.pNext;
+      pItemPoolTemp = pItemPoolTemp.pNext;
     }
 
     if (!fItemFound) {
@@ -2164,26 +2164,26 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
     }
 
     // REMOVE GRAPHIC
-    RemoveItemGraphicFromWorld(addressof(Item[gWorldItems[iItemIndex].o.usItem]), sGridNo, ubLevel, pItemPoolTemp.value.pLevelNode);
+    RemoveItemGraphicFromWorld(addressof(Item[gWorldItems[iItemIndex].o.usItem]), sGridNo, ubLevel, pItemPoolTemp.pLevelNode);
 
     // IF WE ARE LOCATIONG STILL, KILL LOCATOR!
-    if (pItemPoolTemp.value.bFlashColor != 0) {
+    if (pItemPoolTemp.bFlashColor != 0) {
       // REMOVE TIMER!
       RemoveFlashItemSlot(pItemPoolTemp);
     }
 
     // REMOVE PREV
-    if (pItemPoolTemp.value.pPrev != null) {
-      pItemPoolTemp.value.pPrev.value.pNext = pItemPoolTemp.value.pNext;
+    if (pItemPoolTemp.pPrev != null) {
+      pItemPoolTemp.pPrev.value.pNext = pItemPoolTemp.pNext;
     }
 
     // REMOVE NEXT
-    if (pItemPoolTemp.value.pNext != null) {
-      pItemPoolTemp.value.pNext.value.pPrev = pItemPoolTemp.value.pPrev;
+    if (pItemPoolTemp.pNext != null) {
+      pItemPoolTemp.pNext.value.pPrev = pItemPoolTemp.pPrev;
     }
 
     // IF THIS NODE WAS THE HEAD, SET ANOTHER AS HEAD AT THIS GRIDNO
-    if (pItemPoolTemp.value.pPrev == null) {
+    if (pItemPoolTemp.pPrev == null) {
       // WE'RE HEAD
       if (ubLevel == 0) {
         pObject = gpWorldLevelData[sGridNo].pStructHead;
@@ -2196,7 +2196,7 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
       while (pObject != null) {
         if (pObject.value.uiFlags & LEVELNODE_ITEM) {
           // ADJUST TO NEXT GUY FOR HEAD
-          pObject.value.pItemPool = pItemPoolTemp.value.pNext;
+          pObject.value.pItemPool = pItemPoolTemp.pNext;
           fItemFound = true;
         }
         pObject = pObject.value.pNext;
@@ -2209,13 +2209,13 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
     }
 
     // Find any structure with flag set as having items on top.. if this one did...
-    if (pItemPoolTemp.value.bRenderZHeightAboveLevel > 0) {
+    if (pItemPoolTemp.bRenderZHeightAboveLevel > 0) {
       let pStructure: Pointer<STRUCTURE>;
       let pTempPool: Pointer<ITEM_POOL>;
 
       // Check if an item pool exists here....
-      if (!GetItemPool(pItemPoolTemp.value.sGridNo, addressof(pTempPool), pItemPoolTemp.value.ubLevel)) {
-        pStructure = FindStructure(pItemPoolTemp.value.sGridNo, STRUCTURE_HASITEMONTOP);
+      if ((pTempPool = GetItemPool(pItemPoolTemp.sGridNo, pItemPoolTemp.ubLevel)) === null) {
+        pStructure = FindStructure(pItemPoolTemp.sGridNo, STRUCTURE_HASITEMONTOP);
 
         if (pStructure != null) {
           // Remove...
@@ -2242,20 +2242,22 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
 
 export function MoveItemPools(sStartPos: INT16, sEndPos: INT16): boolean {
   // note, only works between locations on the ground
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let TempWorldItem: WORLDITEM = createWorldItem();
 
   // While there is an existing pool
-  while (GetItemPool(sStartPos, addressof(pItemPool), 0)) {
-    memcpy(addressof(TempWorldItem), addressof(gWorldItems[pItemPool.value.iItemIndex]), sizeof(WORLDITEM));
-    RemoveItemFromPool(sStartPos, pItemPool.value.iItemIndex, 0);
+  while ((pItemPool = GetItemPool(sStartPos, 0))) {
+    memcpy(addressof(TempWorldItem), addressof(gWorldItems[pItemPool.iItemIndex]), sizeof(WORLDITEM));
+    RemoveItemFromPool(sStartPos, pItemPool.iItemIndex, 0);
     AddItemToPool(sEndPos, addressof(TempWorldItem.o), -1, TempWorldItem.ubLevel, TempWorldItem.usFlags, TempWorldItem.bRenderZHeightAboveLevel);
   }
   return true;
 }
 
-export function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_POOL>>, ubLevel: UINT8): boolean {
-  let pObject: Pointer<LEVELNODE>;
+export function GetItemPool(usMapPos: UINT16, ubLevel: UINT8): ITEM_POOL | null {
+  let pItemPool: ITEM_POOL | null;
+
+  let pObject: LEVELNODE | null;
 
   if (ubLevel == 0) {
     pObject = gpWorldLevelData[usMapPos].pStructHead;
@@ -2263,24 +2265,22 @@ export function GetItemPool(usMapPos: UINT16, ppItemPool: Pointer<Pointer<ITEM_P
     pObject = gpWorldLevelData[usMapPos].pOnRoofHead;
   }
 
-  (ppItemPool.value) = null;
-
   // LOOP THORUGH OBJECT LAYER
   while (pObject != null) {
-    if (pObject.value.uiFlags & LEVELNODE_ITEM) {
-      (ppItemPool.value) = pObject.value.pItemPool;
+    if (pObject.uiFlags & LEVELNODE_ITEM) {
+      pItemPool = pObject.pItemPool;
 
       // DEF added the check because pObject->pItemPool was NULL which was causing problems
-      if (ppItemPool.value)
-        return true;
+      if (pItemPool)
+        return pItemPool;
       else
-        return false;
+        return null;
     }
 
-    pObject = pObject.value.pNext;
+    pObject = pObject.pNext;
   }
 
-  return false;
+  return null;
 }
 
 export function NotifySoldiersToLookforItems(): void {
@@ -3703,12 +3703,12 @@ export function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: 
 }
 
 export function MineSpottedDialogueCallBack(): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   // ATE: REALLY IMPORTANT - ALL CALLBACK ITEMS SHOULD UNLOCK
   gTacticalStatus.fLockItemLocators = false;
 
-  GetItemPool(gsBoobyTrapGridNo, addressof(pItemPool), gbBoobyTrapLevel);
+  pItemPool = GetItemPool(gsBoobyTrapGridNo, gbBoobyTrapLevel);
 
   guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
@@ -3811,29 +3811,29 @@ function TestPotentialOwner(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CheckForPickedOwnership(): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let ubProfile: UINT8;
   let ubCivGroup: UINT8;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let ubLoop: UINT8;
 
   // LOOP THROUGH LIST TO FIND NODE WE WANT
-  GetItemPool(gsTempGridno, addressof(pItemPool), gpTempSoldier.value.bLevel);
+  pItemPool = GetItemPool(gsTempGridno, gpTempSoldier.value.bLevel);
 
   while (pItemPool) {
-    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
-      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile != NO_PROFILE) {
-        ubProfile = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerProfile;
+    if (gWorldItems[pItemPool.iItemIndex].o.usItem == Enum225.OWNERSHIP) {
+      if (gWorldItems[pItemPool.iItemIndex].o.ubOwnerProfile != NO_PROFILE) {
+        ubProfile = gWorldItems[pItemPool.iItemIndex].o.ubOwnerProfile;
         pSoldier = FindSoldierByProfileID(ubProfile, false);
         if (pSoldier) {
           TestPotentialOwner(pSoldier);
         }
       }
-      if (gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup != Enum246.NON_CIV_GROUP) {
-        ubCivGroup = gWorldItems[pItemPool.value.iItemIndex].o.ubOwnerCivGroup;
+      if (gWorldItems[pItemPool.iItemIndex].o.ubOwnerCivGroup != Enum246.NON_CIV_GROUP) {
+        ubCivGroup = gWorldItems[pItemPool.iItemIndex].o.ubOwnerCivGroup;
         if (ubCivGroup == Enum246.HICKS_CIV_GROUP && CheckFact(Enum170.FACT_HICKS_MARRIED_PLAYER_MERC, 0)) {
           // skip because hicks appeased
-          pItemPool = pItemPool.value.pNext;
+          pItemPool = pItemPool.pNext;
           continue;
         }
         for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
@@ -3844,7 +3844,7 @@ function CheckForPickedOwnership(): void {
         }
       }
     }
-    pItemPool = pItemPool.value.pNext;
+    pItemPool = pItemPool.pNext;
   }
 }
 

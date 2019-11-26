@@ -2655,7 +2655,7 @@ function LightLoadCachedTemplate(pFilename: string /* STR */): INT32 {
   return LightLoad(pFilename);
 }
 
-export function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
+export function LightGetColors(pPal: SGPPaletteEntry[]): UINT8 {
   if (pPal != null)
     memcpy(pPal, addressof(gpOrigLights[0]), sizeof(SGPPaletteEntry) * gubNumLightColors);
 

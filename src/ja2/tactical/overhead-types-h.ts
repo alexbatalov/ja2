@@ -159,8 +159,8 @@ export const FIRE_WEAPON_SLEEP_DART_SPECIAL = 6;
 export const FIRE_WEAPON_BLINDED_BY_SPIT_SPECIAL = 7;
 export const FIRE_WEAPON_TOSSED_OBJECT_SPECIAL = 8;
 
-export const NO_INTERRUPTS = 0;
-const ALLOW_INTERRUPTS = 1;
+export const NO_INTERRUPTS = false;
+const ALLOW_INTERRUPTS = true;
 
 export const SIGHT_LOOK = 0x1;
 //#define SIGHT_SEND      0x2   // no longer needed using LOCAL OPPLISTs

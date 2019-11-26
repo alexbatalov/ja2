@@ -1161,7 +1161,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   let fBlastEffect: boolean = true;
   let sNewGridNo: INT16;
   let fBloodEffect: boolean = false;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pItemPoolNext: Pointer<ITEM_POOL>;
   let uiRoll: UINT32;
 
@@ -1294,14 +1294,14 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
 
     // NB radius can be 0 so cannot divide it by 2 here
     if (!fStunEffect && (uiDist * 2 <= pExplosive.value.ubRadius)) {
-      GetItemPool(sGridNo, addressof(pItemPool), bLevel);
+      pItemPool = GetItemPool(sGridNo, bLevel);
 
       while (pItemPool) {
-        pItemPoolNext = pItemPool.value.pNext;
+        pItemPoolNext = pItemPool.pNext;
 
-        if (DamageItemOnGround(addressof(gWorldItems[pItemPool.value.iItemIndex].o), sGridNo, bLevel, (sWoundAmt * 2), ubOwner)) {
+        if (DamageItemOnGround(gWorldItems[pItemPool.iItemIndex].o, sGridNo, bLevel, (sWoundAmt * 2), ubOwner)) {
           // item was destroyed
-          RemoveItemFromPool(sGridNo, pItemPool.value.iItemIndex, bLevel);
+          RemoveItemFromPool(sGridNo, pItemPool.iItemIndex, bLevel);
         }
         pItemPool = pItemPoolNext;
       }

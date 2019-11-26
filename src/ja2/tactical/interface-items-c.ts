@@ -1352,9 +1352,9 @@ export function ResetCompatibleItemArray(): void {
   }
 }
 
-export function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: boolean): boolean {
+export function HandleCompatibleAmmoUI(pSoldier: SOLDIERTYPE, bInvPos: INT8, fOn: boolean): boolean {
   let cnt: INT32;
-  let pTestObject: Pointer<OBJECTTYPE>;
+  let pTestObject: OBJECTTYPE | null;
   let fFound: boolean = false;
 
   // if we are in the shopkeeper interface
@@ -1383,10 +1383,10 @@ export function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: 
       }
     } else {
       if (fOn) {
-        pTestObject = addressof(pSoldier.value.inv[bInvPos]);
+        pTestObject = pSoldier.inv[bInvPos];
         gpHighLightedItemObject = pTestObject;
       } else {
-        pTestObject = addressof(pSoldier.value.inv[bInvPos]);
+        pTestObject = pSoldier.inv[bInvPos];
         gpHighLightedItemObject = null;
         gubSkiDirtyLevel = Enum253.SKI_DIRTY_LEVEL1;
       }
@@ -1397,7 +1397,7 @@ export function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: 
     if (bInvPos == NO_SLOT) {
       pTestObject = null;
     } else {
-      pTestObject = addressof(pSoldier.value.inv[bInvPos]);
+      pTestObject = pSoldier.inv[bInvPos];
     }
   }
 
@@ -1793,7 +1793,7 @@ export function InitKeyItemDescriptionBox(pSoldier: SOLDIERTYPE, ubPosition: UIN
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function InternalInitItemDescriptionBox(pObject: OBJECTTYPE, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: SOLDIERTYPE): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let ubString: string /* UINT8[48] */;
   let cnt: INT32;
@@ -1833,7 +1833,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
     MSYS_AddRegion(gInvDesc);
   }
   // Add region
-  if ((Item[pObject.value.usItem].usItemClass & IC_GUN) && pObject.value.usItem != Enum225.ROCKET_LAUNCHER) {
+  if ((Item[pObject.usItem].usItemClass & IC_GUN) && pObject.usItem != Enum225.ROCKET_LAUNCHER) {
     // Add button
     //    if( guiCurrentScreen != MAP_SCREEN )
     // if( guiCurrentItemDescriptionScreen != MAP_SCREEN )
@@ -1841,7 +1841,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
     ubString = FilenameForBPP("INTERFACE\\infobox.sti");
     sForeColour = ITEMDESC_AMMO_FORE;
 
-    switch (pObject.value.ubGunAmmoType) {
+    switch (pObject.ubGunAmmoType) {
       case Enum286.AMMO_AP:
       case Enum286.AMMO_SUPER_AP:
         // sForeColour = ITEMDESC_FONTAPFORE;
@@ -2043,8 +2043,8 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
   }
   // store attachments that item originally had
   for (cnt = 0; cnt < MAX_ATTACHMENTS; cnt++) {
-    gusOriginalAttachItem[cnt] = pObject.value.usAttachItem[cnt];
-    gbOriginalAttachStatus[cnt] = pObject.value.bAttachStatus[cnt];
+    gusOriginalAttachItem[cnt] = pObject.usAttachItem[cnt];
+    gbOriginalAttachStatus[cnt] = pObject.bAttachStatus[cnt];
   }
 
   if ((gpItemPointer != null) && (gfItemDescHelpTextOffset == false) && (CheckFact(Enum170.FACT_ATTACHED_ITEM_BEFORE, 0) == false)) {
@@ -2054,7 +2054,7 @@ export function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX:
       gItemDescHelpText.iYPosition[cnt] += gsInvDescY;
     }
 
-    if (!(Item[pObject.value.usItem].fFlags & ITEM_HIDDEN_ADDON) && (ValidAttachment(gpItemPointer.value.usItem, pObject.value.usItem) || ValidLaunchable(gpItemPointer.value.usItem, pObject.value.usItem) || ValidMerge(gpItemPointer.value.usItem, pObject.value.usItem))) {
+    if (!(Item[pObject.usItem].fFlags & ITEM_HIDDEN_ADDON) && (ValidAttachment(gpItemPointer.value.usItem, pObject.usItem) || ValidLaunchable(gpItemPointer.value.usItem, pObject.usItem) || ValidMerge(gpItemPointer.value.usItem, pObject.usItem))) {
       SetUpFastHelpListRegions(gItemDescHelpText.iXPosition, gItemDescHelpText.iYPosition, gItemDescHelpText.iWidth, gItemDescHelpText.sString1, NUM_INV_HELPTEXT_ENTRIES);
     } else {
       SetUpFastHelpListRegions(gItemDescHelpText.iXPosition, gItemDescHelpText.iYPosition, gItemDescHelpText.iWidth, gItemDescHelpText.sString2, NUM_INV_HELPTEXT_ENTRIES);
@@ -4452,31 +4452,31 @@ export function DeleteKeyRingPopup(): void {
   FreeMouseCursor();
 }
 
-export function GetInterfaceGraphicForItem(pItem: Pointer<INVTYPE>): UINT32 {
+export function GetInterfaceGraphicForItem(pItem: INVTYPE): UINT32 {
   // CHECK SUBCLASS
-  if (pItem.value.ubGraphicType == 0) {
+  if (pItem.ubGraphicType == 0) {
     return guiGUNSM;
-  } else if (pItem.value.ubGraphicType == 1) {
+  } else if (pItem.ubGraphicType == 1) {
     return guiP1ITEMS;
-  } else if (pItem.value.ubGraphicType == 2) {
+  } else if (pItem.ubGraphicType == 2) {
     return guiP2ITEMS;
   } else {
     return guiP3ITEMS;
   }
 }
 
-export function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
+export function GetTileGraphicForItem(pItem: INVTYPE): UINT16 {
   let usIndex: UINT16;
 
   // CHECK SUBCLASS
-  if (pItem.value.ubGraphicType == 0) {
-    usIndex = GetTileIndexFromTypeSubIndex(Enum313.GUNS, (pItem.value.ubGraphicNum + 1));
-  } else if (pItem.value.ubGraphicType == 1) {
-    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P1ITEMS, (pItem.value.ubGraphicNum + 1));
-  } else if (pItem.value.ubGraphicType == 2) {
-    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P2ITEMS, (pItem.value.ubGraphicNum + 1));
+  if (pItem.ubGraphicType == 0) {
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.GUNS, (pItem.ubGraphicNum + 1));
+  } else if (pItem.ubGraphicType == 1) {
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P1ITEMS, (pItem.ubGraphicNum + 1));
+  } else if (pItem.ubGraphicType == 2) {
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P2ITEMS, (pItem.ubGraphicNum + 1));
   } else {
-    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P3ITEMS, (pItem.value.ubGraphicNum + 1));
+    usIndex = GetTileIndexFromTypeSubIndex(Enum313.P3ITEMS, (pItem.ubGraphicNum + 1));
   }
   return usIndex;
 }

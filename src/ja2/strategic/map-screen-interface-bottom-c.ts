@@ -77,14 +77,14 @@ let guiMAPBOTTOMPANEL: UINT32;
 let guiSliderBar: UINT32;
 
 // buttons
-let guiMapMessageScrollButtons: UINT32[] /* [2] */;
-export let guiMapBottomExitButtons: UINT32[] /* [3] */;
-let guiMapBottomTimeButtons: UINT32[] /* [2] */;
+let guiMapMessageScrollButtons: UINT32[] /* [2] */ = createArray(2, 0);
+export let guiMapBottomExitButtons: UINT32[] /* [3] */ = createArray(3, 0);
+let guiMapBottomTimeButtons: UINT32[] /* [2] */ = createArray(2, 0);
 
 // buttons images
-let guiMapMessageScrollButtonsImage: UINT32[] /* [2] */;
-let guiMapBottomExitButtonsImage: UINT32[] /* [3] */;
-let guiMapBottomTimeButtonsImage: UINT32[] /* [2] */;
+let guiMapMessageScrollButtonsImage: UINT32[] /* [2] */ = createArray(2, 0);
+let guiMapBottomExitButtonsImage: UINT32[] /* [3] */ = createArray(3, 0);
+let guiMapBottomTimeButtonsImage: UINT32[] /* [2] */ = createArray(2, 0);
 
 // mouse regions
 let gMapMessageScrollBarRegion: MOUSE_REGION = createMouseRegion();
@@ -159,7 +159,7 @@ export function RenderMapScreenInterfaceBottom(): void {
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, null);
 
     if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == true) {
-      GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, bFilename, true, true);
+      bFilename = GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, true, true);
       LoadRadarScreenBitmap(bFilename);
     } else {
       ClearOutRadarMapImage();
@@ -452,9 +452,8 @@ function BtnTimeCompressLessMapScreenCallback(btn: GUI_BUTTON, reason: INT32): v
   }
 }
 
+/* static */ let BtnMessageDownMapScreenCallback__iLastRepeatScrollTime: INT32 = 0;
 function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let iLastRepeatScrollTime: INT32 = 0;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -469,7 +468,7 @@ function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
 
     btn.uiFlags |= (BUTTON_CLICKED_ON);
 
-    iLastRepeatScrollTime = 0;
+    BtnMessageDownMapScreenCallback__iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -483,11 +482,11 @@ function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
       MapScreenMsgScrollDown(1);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    if (GetJA2Clock() - iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
+    if (GetJA2Clock() - BtnMessageDownMapScreenCallback__iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
       // down a line
       MapScreenMsgScrollDown(1);
 
-      iLastRepeatScrollTime = GetJA2Clock();
+      BtnMessageDownMapScreenCallback__iLastRepeatScrollTime = GetJA2Clock();
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -503,7 +502,7 @@ function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
 
     btn.uiFlags |= (BUTTON_CLICKED_ON);
 
-    iLastRepeatScrollTime = 0;
+    BtnMessageDownMapScreenCallback__iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -517,18 +516,17 @@ function BtnMessageDownMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
       MapScreenMsgScrollDown(MAX_MESSAGES_ON_MAP_BOTTOM);
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_REPEAT) {
-    if (GetJA2Clock() - iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
+    if (GetJA2Clock() - BtnMessageDownMapScreenCallback__iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
       // down a page
       MapScreenMsgScrollDown(MAX_MESSAGES_ON_MAP_BOTTOM);
 
-      iLastRepeatScrollTime = GetJA2Clock();
+      BtnMessageDownMapScreenCallback__iLastRepeatScrollTime = GetJA2Clock();
     }
   }
 }
 
+/* static */ let BtnMessageUpMapScreenCallback__iLastRepeatScrollTime: INT32 = 0;
 function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let iLastRepeatScrollTime: INT32 = 0;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -543,7 +541,7 @@ function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
       fMapScreenBottomDirty = true;
     }
 
-    iLastRepeatScrollTime = 0;
+    BtnMessageUpMapScreenCallback__iLastRepeatScrollTime = 0;
   }
 
   else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -559,11 +557,11 @@ function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
       MapScreenMsgScrollUp(1);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    if (GetJA2Clock() - iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
+    if (GetJA2Clock() - BtnMessageUpMapScreenCallback__iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
       // up a line
       MapScreenMsgScrollUp(1);
 
-      iLastRepeatScrollTime = GetJA2Clock();
+      BtnMessageUpMapScreenCallback__iLastRepeatScrollTime = GetJA2Clock();
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -579,7 +577,7 @@ function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
 
     btn.uiFlags |= (BUTTON_CLICKED_ON);
 
-    iLastRepeatScrollTime = 0;
+    BtnMessageUpMapScreenCallback__iLastRepeatScrollTime = 0;
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -593,11 +591,11 @@ function BtnMessageUpMapScreenCallback(btn: GUI_BUTTON, reason: INT32): void {
       MapScreenMsgScrollUp(MAX_MESSAGES_ON_MAP_BOTTOM);
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_REPEAT) {
-    if (GetJA2Clock() - iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
+    if (GetJA2Clock() - BtnMessageUpMapScreenCallback__iLastRepeatScrollTime >= MESSAGE_BTN_SCROLL_TIME) {
       // up a page
       MapScreenMsgScrollUp(MAX_MESSAGES_ON_MAP_BOTTOM);
 
-      iLastRepeatScrollTime = GetJA2Clock();
+      BtnMessageUpMapScreenCallback__iLastRepeatScrollTime = GetJA2Clock();
     }
   }
 }
@@ -630,11 +628,11 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   }
 }
 
+/* static */ let DisplayCompressMode__usColor: UINT8 = FONT_LTGREEN;
 function DisplayCompressMode(): void {
   let sX: INT16;
   let sY: INT16;
-  let sString: string /* CHAR16[128] */;
-  /* static */ let usColor: UINT8 = FONT_LTGREEN;
+  let sString: string /* CHAR16[128] */ = <string><unknown>undefined;
 
   // get compress speed
   if (giTimeCompressMode != Enum130.NOT_USING_TIME_COMPRESSION) {
@@ -650,20 +648,20 @@ function DisplayCompressMode(): void {
   SetFont(COMPFONT());
 
   if (GetJA2Clock() - guiCompressionStringBaseTime >= PAUSE_GAME_TIMER) {
-    if (usColor == FONT_LTGREEN) {
-      usColor = FONT_WHITE;
+    if (DisplayCompressMode__usColor == FONT_LTGREEN) {
+      DisplayCompressMode__usColor = FONT_WHITE;
     } else {
-      usColor = FONT_LTGREEN;
+      DisplayCompressMode__usColor = FONT_LTGREEN;
     }
 
     guiCompressionStringBaseTime = GetJA2Clock();
   }
 
   if ((giTimeCompressMode != 0) && (GamePaused() == false)) {
-    usColor = FONT_LTGREEN;
+    DisplayCompressMode__usColor = FONT_LTGREEN;
   }
 
-  SetFontForeground(usColor);
+  SetFontForeground(DisplayCompressMode__usColor);
   SetFontBackground(FONT_BLACK);
   ({ sX, sY } = FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT()));
   mprintf(sX, sY, sString);
@@ -1058,9 +1056,9 @@ function DisplayCurrentBalanceForMapBottom(): void {
   return;
 }
 
+/* static */ let CreateDestroyMouseRegionMasksForTimeCompressionButtons__fCreated: boolean = false;
 export function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
   let fDisabled: boolean = false;
-  /* static */ let fCreated: boolean = false;
 
   // allowed to time compress?
   if (AllowedToTimeCompress() == false) {
@@ -1073,7 +1071,7 @@ export function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
   }
 
   // check if disabled and not created, create
-  if ((fDisabled) && (fCreated == false)) {
+  if ((fDisabled) && (CreateDestroyMouseRegionMasksForTimeCompressionButtons__fCreated == false)) {
     // mask over compress more button
     MSYS_DefineRegion(gTimeCompressionMask[0], 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
@@ -1083,13 +1081,13 @@ export function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
     // mask over pause game button
     MSYS_DefineRegion(gTimeCompressionMask[2], 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
-    fCreated = true;
-  } else if ((fDisabled == false) && (fCreated)) {
+    CreateDestroyMouseRegionMasksForTimeCompressionButtons__fCreated = true;
+  } else if ((fDisabled == false) && (CreateDestroyMouseRegionMasksForTimeCompressionButtons__fCreated)) {
     // created and no longer need to disable
     MSYS_RemoveRegion(gTimeCompressionMask[0]);
     MSYS_RemoveRegion(gTimeCompressionMask[1]);
     MSYS_RemoveRegion(gTimeCompressionMask[2]);
-    fCreated = false;
+    CreateDestroyMouseRegionMasksForTimeCompressionButtons__fCreated = false;
   }
 }
 
@@ -1099,9 +1097,9 @@ function CompressMaskClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void 
   }
 }
 
+/* static */ let DisplayProjectedDailyMineIncome__iOldRate: INT32 = -1;
 function DisplayProjectedDailyMineIncome(): void {
   let iRate: INT32 = 0;
-  /* static */ let iOldRate: INT32 = -1;
   let sString: string /* CHAR16[128] */;
   let sFontX: INT16;
   let sFontY: INT16;
@@ -1109,8 +1107,8 @@ function DisplayProjectedDailyMineIncome(): void {
   // grab the rate from the financial system
   iRate = GetProjectedTotalDailyIncome();
 
-  if (iRate != iOldRate) {
-    iOldRate = iRate;
+  if (iRate != DisplayProjectedDailyMineIncome__iOldRate) {
+    DisplayProjectedDailyMineIncome__iOldRate = iRate;
     fMapScreenBottomDirty = true;
 
     // if screen was not dirtied, leave
@@ -1158,7 +1156,7 @@ export function CommonTimeCompressionChecks(): boolean {
 }
 
 export function AnyUsableRealMercenariesOnTeam(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
 
@@ -1167,9 +1165,9 @@ export function AnyUsableRealMercenariesOnTeam(): boolean {
 
   // get number of mercs on team who are not vehicles or robot, POWs or EPCs
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = addressof(Menptr[iCounter]);
+    pSoldier = Menptr[iCounter];
 
-    if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC)) {
+    if ((pSoldier.bActive) && (pSoldier.bLife > 0) && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW) && (pSoldier.bAssignment != Enum117.ASSIGNMENT_DEAD) && (pSoldier.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__EPC)) {
       return true;
     }
   }

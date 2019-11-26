@@ -1,7 +1,7 @@
 namespace ja2 {
 
-export let gubQuest: UINT8[] /* [MAX_QUESTS] */;
-export let gubFact: UINT8[] /* [NUM_FACTS] */; // this has to be updated when we figure out how many facts we have
+export let gubQuest: UINT8[] /* [MAX_QUESTS] */ = createArray(MAX_QUESTS, 0);
+export let gubFact: boolean[] /* UINT8[NUM_FACTS] */ = createArray(NUM_FACTS, false); // this has to be updated when we figure out how many facts we have
 
 let gsFoodQuestSectorX: INT16;
 let gsFoodQuestSectorY: INT16;
@@ -24,10 +24,10 @@ export function SetFactFalse(usFact: UINT16): void {
 }
 
 function CheckForNewShipment(): boolean {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
-    if (GetItemPool(BOBBYR_SHIPPING_DEST_GRIDNO, addressof(pItemPool), 0)) {
+    if ((pItemPool = GetItemPool(BOBBYR_SHIPPING_DEST_GRIDNO, 0))) {
       return !(ITEMPOOL_VISIBLE(pItemPool));
     }
   }
@@ -35,11 +35,11 @@ function CheckForNewShipment(): boolean {
 }
 
 function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: boolean): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   // is the NPC is wounded at all?
   pSoldier = FindSoldierByProfileID(ubProfileID, false);
-  if (pSoldier && pSoldier.value.bLife < pSoldier.value.bLifeMax) {
+  if (pSoldier && pSoldier.bLife < pSoldier.bLifeMax) {
     if (fByPlayerOnly) {
       if (gMercProfiles[ubProfileID].ubMiscFlags & PROFILE_MISC_FLAG_WOUNDEDBYPLAYER) {
         return true;
@@ -55,11 +55,11 @@ function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: boolean): boolean {
 }
 
 function CheckNPCInOkayHealth(ubProfileID: UINT8): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   // is the NPC at better than half health?
   pSoldier = FindSoldierByProfileID(ubProfileID, false);
-  if (pSoldier && pSoldier.value.bLife > (pSoldier.value.bLifeMax / 2) && pSoldier.value.bLife > 30) {
+  if (pSoldier && pSoldier.bLife > (pSoldier.bLifeMax / 2) && pSoldier.bLife > 30) {
     return true;
   } else {
     return false;
@@ -67,11 +67,11 @@ function CheckNPCInOkayHealth(ubProfileID: UINT8): boolean {
 }
 
 function CheckNPCBleeding(ubProfileID: UINT8): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   // the NPC is wounded...
   pSoldier = FindSoldierByProfileID(ubProfileID, false);
-  if (pSoldier && pSoldier.value.bLife > 0 && pSoldier.value.bBleeding > 0) {
+  if (pSoldier && pSoldier.bLife > 0 && pSoldier.bBleeding > 0) {
     return true;
   } else {
     return false;
@@ -79,28 +79,28 @@ function CheckNPCBleeding(ubProfileID: UINT8): boolean {
 }
 
 function CheckNPCWithin(ubFirstNPC: UINT8, ubSecondNPC: UINT8, ubMaxDistance: UINT8): boolean {
-  let pFirstNPC: Pointer<SOLDIERTYPE>;
-  let pSecondNPC: Pointer<SOLDIERTYPE>;
+  let pFirstNPC: SOLDIERTYPE | null;
+  let pSecondNPC: SOLDIERTYPE | null;
 
   pFirstNPC = FindSoldierByProfileID(ubFirstNPC, false);
   pSecondNPC = FindSoldierByProfileID(ubSecondNPC, false);
   if (!pFirstNPC || !pSecondNPC) {
     return false;
   }
-  return PythSpacesAway(pFirstNPC.value.sGridNo, pSecondNPC.value.sGridNo) <= ubMaxDistance;
+  return PythSpacesAway(pFirstNPC.sGridNo, pSecondNPC.sGridNo) <= ubMaxDistance;
 }
 
 function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): boolean {
   // NB ONLY WORKS IF ON DIFFERENT TEAMS
-  let pNPC: Pointer<SOLDIERTYPE>;
-  let pGuy: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
+  let pGuy: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubNPC, false);
   pGuy = FindSoldierByProfileID(ubGuy, false);
   if (!pNPC || !pGuy) {
     return false;
   }
-  if (pNPC.value.bOppList[pGuy.value.ubID] == SEEN_CURRENTLY) {
+  if (pNPC.bOppList[pGuy.ubID] == SEEN_CURRENTLY) {
     return true;
   } else {
     return false;
@@ -108,26 +108,26 @@ function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): boolean {
 }
 
 function CheckNPCAt(ubNPC: UINT8, sGridNo: INT16): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubNPC, false);
   if (!pNPC) {
     return false;
   }
-  return pNPC.value.sGridNo == sGridNo;
+  return pNPC.sGridNo == sGridNo;
 }
 
 function CheckNPCIsEnemy(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  if (pNPC.value.bSide == gbPlayerNum || pNPC.value.bNeutral) {
-    if (pNPC.value.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
+  if (pNPC.bSide == gbPlayerNum || pNPC.bNeutral) {
+    if (pNPC.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
       // although the soldier is NOW the same side, this civ group could be set to "will become hostile"
-      return gTacticalStatus.fCivGroupHostile[pNPC.value.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE;
+      return gTacticalStatus.fCivGroupHostile[pNPC.ubCivilianGroup] >= CIV_GROUP_WILL_BECOME_HOSTILE;
     } else {
       return false;
     }
@@ -136,8 +136,8 @@ function CheckNPCIsEnemy(ubProfileID: UINT8): boolean {
   }
 }
 
-function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+function CheckIfMercIsNearNPC(pMerc: SOLDIERTYPE, ubProfileId: UINT8): boolean {
+  let pNPC: SOLDIERTYPE | null;
   let sGridNo: INT16;
 
   // no merc nearby?
@@ -149,10 +149,10 @@ function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): 
   if (pNPC == null) {
     return false;
   }
-  sGridNo = pNPC.value.sGridNo;
+  sGridNo = pNPC.sGridNo;
 
   // is the merc and NPC close enough?
-  if (PythSpacesAway(sGridNo, pMerc.value.sGridNo) <= 9) {
+  if (PythSpacesAway(sGridNo, pMerc.sGridNo) <= 9) {
     return true;
   }
 
@@ -162,21 +162,21 @@ function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): 
 function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
   let bNumber: INT8 = 0;
   let uiLoop: UINT32;
-  let pNPC: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
+  let pSoldier: SOLDIERTYPE | null;
   let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
-    return false;
+    return 0;
   }
-  sGridNo = pNPC.value.sGridNo;
+  sGridNo = pNPC.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife > 0 && pSoldier.value.bLife < pSoldier.value.bLifeMax && pSoldier.value.bAssignment != Enum117.ASSIGNMENT_HOSPITAL) {
-      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= HOSPITAL_PATIENT_DISTANCE) {
+    if (pSoldier && pSoldier.bTeam == gbPlayerNum && pSoldier.bLife > 0 && pSoldier.bLife < pSoldier.bLifeMax && pSoldier.bAssignment != Enum117.ASSIGNMENT_HOSPITAL) {
+      if (PythSpacesAway(sGridNo, pSoldier.sGridNo) <= HOSPITAL_PATIENT_DISTANCE) {
         bNumber++;
       }
     }
@@ -188,21 +188,21 @@ function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
 function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
   let bNumber: INT8 = 0;
   let uiLoop: UINT32;
-  let pNPC: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
+  let pSoldier: SOLDIERTYPE | null;
   let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
-    return false;
+    return 0;
   }
-  sGridNo = pNPC.value.sGridNo;
+  sGridNo = pNPC.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
-      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= ubMaxDist) {
+    if (pSoldier && pSoldier.bTeam == gbPlayerNum && pSoldier.bLife >= OKLIFE) {
+      if (PythSpacesAway(sGridNo, pSoldier.sGridNo) <= ubMaxDist) {
         bNumber++;
       }
     }
@@ -212,7 +212,7 @@ function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
 }
 
 function CheckNPCIsEPC(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   if (gMercProfiles[ubProfileID].bMercStatus == MERC_IS_DEAD) {
     return false;
@@ -222,45 +222,45 @@ function CheckNPCIsEPC(ubProfileID: UINT8): boolean {
   if (!pNPC) {
     return false;
   }
-  return pNPC.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC;
+  return pNPC.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC;
 }
 
 export function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
-  if (!pNPC || (gubWorldRoomInfo[pNPC.value.sGridNo] != ubRoomID)) {
+  if (!pNPC || (gubWorldRoomInfo[pNPC.sGridNo] != ubRoomID)) {
     return false;
   }
   return true;
 }
 
 function NPCInRoomRange(ubProfileID: UINT8, ubRoomID1: UINT8, ubRoomID2: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
-  if (!pNPC || (gubWorldRoomInfo[pNPC.value.sGridNo] < ubRoomID1) || (gubWorldRoomInfo[pNPC.value.sGridNo] > ubRoomID2)) {
+  if (!pNPC || (gubWorldRoomInfo[pNPC.sGridNo] < ubRoomID1) || (gubWorldRoomInfo[pNPC.sGridNo] > ubRoomID2)) {
     return false;
   }
   return true;
 }
 
 function PCInSameRoom(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
   let ubRoom: UINT8;
   let bLoop: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  ubRoom = gubWorldRoomInfo[pNPC.value.sGridNo];
+  ubRoom = gubWorldRoomInfo[pNPC.sGridNo];
 
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pSoldier = MercPtrs[bLoop];
-    if (pSoldier && pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (gubWorldRoomInfo[pSoldier.value.sGridNo] == ubRoom) {
+    if (pSoldier && pSoldier.bActive && pSoldier.bInSector) {
+      if (gubWorldRoomInfo[pSoldier.sGridNo] == ubRoom) {
         return true;
       }
     }
@@ -270,31 +270,31 @@ function PCInSameRoom(ubProfileID: UINT8): boolean {
 }
 
 function CheckTalkerStrong(): boolean {
-  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum) {
-    return gpSrcSoldier.value.bStrength >= 84;
-  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum) {
-    return gpDestSoldier.value.bStrength >= 84;
+  if (gpSrcSoldier && gpSrcSoldier.bTeam == gbPlayerNum) {
+    return gpSrcSoldier.bStrength >= 84;
+  } else if (gpDestSoldier && gpDestSoldier.bTeam == gbPlayerNum) {
+    return gpDestSoldier.bStrength >= 84;
   }
   return false;
 }
 
 function CheckTalkerFemale(): boolean {
-  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum && gpSrcSoldier.value.ubProfile != NO_PROFILE) {
-    return gMercProfiles[gpSrcSoldier.value.ubProfile].bSex == Enum272.FEMALE;
-  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum && gpDestSoldier.value.ubProfile != NO_PROFILE) {
-    return gMercProfiles[gpDestSoldier.value.ubProfile].bSex == Enum272.FEMALE;
+  if (gpSrcSoldier && gpSrcSoldier.bTeam == gbPlayerNum && gpSrcSoldier.ubProfile != NO_PROFILE) {
+    return gMercProfiles[gpSrcSoldier.ubProfile].bSex == Enum272.FEMALE;
+  } else if (gpDestSoldier && gpDestSoldier.bTeam == gbPlayerNum && gpDestSoldier.ubProfile != NO_PROFILE) {
+    return gMercProfiles[gpDestSoldier.ubProfile].bSex == Enum272.FEMALE;
   }
   return false;
 }
 
 function CheckTalkerUnpropositionedFemale(): boolean {
-  if (gpSrcSoldier && gpSrcSoldier.value.bTeam == gbPlayerNum && gpSrcSoldier.value.ubProfile != NO_PROFILE) {
-    if (!(gMercProfiles[gpSrcSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
-      return gMercProfiles[gpSrcSoldier.value.ubProfile].bSex == Enum272.FEMALE;
+  if (gpSrcSoldier && gpSrcSoldier.bTeam == gbPlayerNum && gpSrcSoldier.ubProfile != NO_PROFILE) {
+    if (!(gMercProfiles[gpSrcSoldier.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
+      return gMercProfiles[gpSrcSoldier.ubProfile].bSex == Enum272.FEMALE;
     }
-  } else if (gpDestSoldier && gpDestSoldier.value.bTeam == gbPlayerNum && gpDestSoldier.value.ubProfile != NO_PROFILE) {
-    if (!(gMercProfiles[gpDestSoldier.value.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
-      return gMercProfiles[gpDestSoldier.value.ubProfile].bSex == Enum272.FEMALE;
+  } else if (gpDestSoldier && gpDestSoldier.bTeam == gbPlayerNum && gpDestSoldier.ubProfile != NO_PROFILE) {
+    if (!(gMercProfiles[gpDestSoldier.ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
+      return gMercProfiles[gpDestSoldier.ubProfile].bSex == Enum272.FEMALE;
     }
   }
   return false;
@@ -303,22 +303,22 @@ function CheckTalkerUnpropositionedFemale(): boolean {
 function NumMalesPresent(ubProfileID: UINT8): INT8 {
   let bNumber: INT8 = 0;
   let uiLoop: UINT32;
-  let pNPC: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
+  let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
-    return false;
+    return 0;
   }
-  sGridNo = pNPC.value.sGridNo;
+  sGridNo = pNPC.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
-      if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= 8) {
+    if (pSoldier && pSoldier.bTeam == gbPlayerNum && pSoldier.bLife >= OKLIFE) {
+      if (pSoldier.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        if (PythSpacesAway(sGridNo, pSoldier.sGridNo) <= 8) {
           bNumber++;
         }
       }
@@ -330,22 +330,22 @@ function NumMalesPresent(ubProfileID: UINT8): INT8 {
 
 function FemalePresent(ubProfileID: UINT8): boolean {
   let uiLoop: UINT32;
-  let pNPC: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
+  let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  sGridNo = pNPC.value.sGridNo;
+  sGridNo = pNPC.sGridNo;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLife >= OKLIFE) {
-      if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.FEMALE) {
-        if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= 10) {
+    if (pSoldier && pSoldier.bTeam == gbPlayerNum && pSoldier.bLife >= OKLIFE) {
+      if (pSoldier.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.ubProfile].bSex == Enum272.FEMALE) {
+        if (PythSpacesAway(sGridNo, pSoldier.sGridNo) <= 10) {
           return true;
         }
       }
@@ -357,12 +357,12 @@ function FemalePresent(ubProfileID: UINT8): boolean {
 
 function CheckPlayerHasHead(): boolean {
   let bLoop: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pSoldier = MercPtrs[bLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bLife > 0) {
+    if (pSoldier.bActive && pSoldier.bLife > 0) {
       if (FindObjInObjRange(pSoldier, Enum225.HEAD_2, Enum225.HEAD_7) != NO_SLOT) {
         return true;
       }
@@ -373,12 +373,12 @@ function CheckPlayerHasHead(): boolean {
 }
 
 function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   pSoldier = FindSoldierByProfileID(ubProfileID, true);
 
   if (pSoldier) {
-    if (pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ) {
+    if (pSoldier.sSectorX == sSectorX && pSoldier.sSectorY == sSectorY && pSoldier.bSectorZ == bSectorZ) {
       return true;
     }
   } else if (gMercProfiles[ubProfileID].sSectorX == sSectorX && gMercProfiles[ubProfileID].sSectorY == sSectorY && gMercProfiles[ubProfileID].bSectorZ == bSectorZ) {
@@ -390,13 +390,13 @@ function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bS
 
 function AIMMercWithin(sGridNo: INT16, sDistance: INT16): boolean {
   let uiLoop: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
 
-    if (pSoldier && (pSoldier.value.bTeam == gbPlayerNum) && (pSoldier.value.bLife >= OKLIFE) && (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
-      if (PythSpacesAway(sGridNo, pSoldier.value.sGridNo) <= sDistance) {
+    if (pSoldier && (pSoldier.bTeam == gbPlayerNum) && (pSoldier.bLife >= OKLIFE) && (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC)) {
+      if (PythSpacesAway(sGridNo, pSoldier.sGridNo) <= sDistance) {
         return true;
       }
     }
@@ -406,13 +406,13 @@ function AIMMercWithin(sGridNo: INT16, sDistance: INT16): boolean {
 }
 
 function CheckNPCCowering(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  return (pNPC.value.uiStatusFlags & SOLDIER_COWERING) != 0;
+  return (pNPC.uiStatusFlags & SOLDIER_COWERING) != 0;
 }
 
 function CountBartenders(): UINT8 {
@@ -428,23 +428,23 @@ function CountBartenders(): UINT8 {
 }
 
 function CheckNPCIsUnderFire(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  return pNPC.value.bUnderFire != 0;
+  return pNPC.bUnderFire != 0;
 }
 
 function NPCHeardShot(ubProfileID: UINT8): boolean {
-  let pNPC: Pointer<SOLDIERTYPE>;
+  let pNPC: SOLDIERTYPE | null;
 
   pNPC = FindSoldierByProfileID(ubProfileID, false);
   if (!pNPC) {
     return false;
   }
-  return pNPC.value.ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT;
+  return Boolean(pNPC.ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT);
 }
 
 function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): boolean {
@@ -562,7 +562,7 @@ export function CheckFact(usFact: UINT16, ubProfileID: UINT8): boolean {
       gubFact[Enum170.FACT_BRENDA_DEAD] = (gMercProfiles[85].bMercStatus == MERC_IS_DEAD);
       break;
     case Enum170.FACT_NPC_IS_ENEMY:
-      gubFact[Enum170.FACT_NPC_IS_ENEMY] = CheckNPCIsEnemy(ubProfileID) || gMercProfiles[ubProfileID].ubMiscFlags2 & PROFILE_MISC_FLAG2_NEEDS_TO_SAY_HOSTILE_QUOTE;
+      gubFact[Enum170.FACT_NPC_IS_ENEMY] = CheckNPCIsEnemy(ubProfileID) || Boolean(gMercProfiles[ubProfileID].ubMiscFlags2 & PROFILE_MISC_FLAG2_NEEDS_TO_SAY_HOSTILE_QUOTE);
       break;
       /*
 case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
@@ -645,10 +645,10 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = (gMercProfiles[Enum268.SLAY].sSectorX == gWorldSectorX && gMercProfiles[Enum268.SLAY].sSectorY == gWorldSectorY && gMercProfiles[Enum268.SLAY].bSectorZ == gbWorldSectorZ);
       break;
     case Enum170.FACT_SLAY_HIRED_AND_WORKED_FOR_48_HOURS:
-      gubFact[usFact] = ((gMercProfiles[Enum268.SLAY].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gMercProfiles[Enum268.SLAY].usTotalDaysServed > 1));
+      gubFact[usFact] = (Boolean(gMercProfiles[Enum268.SLAY].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gMercProfiles[Enum268.SLAY].usTotalDaysServed > 1));
       break;
     case Enum170.FACT_SHANK_IN_SQUAD_BUT_NOT_SPEAKING:
-      gubFact[usFact] = ((FindSoldierByProfileID(Enum268.SHANK, true) != null) && (gMercProfiles[Enum268.SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == null || gpSrcSoldier.value.ubProfile != Enum268.SHANK));
+      gubFact[usFact] = ((FindSoldierByProfileID(Enum268.SHANK, true) != null) && Boolean(gMercProfiles[Enum268.SHANK].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) && (gpSrcSoldier == null || gpSrcSoldier.ubProfile != Enum268.SHANK));
       break;
     case Enum170.FACT_SHANK_NOT_IN_SECTOR:
       gubFact[usFact] = (FindSoldierByProfileID(Enum268.SHANK, false) == null);
@@ -675,13 +675,13 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       gubFact[usFact] = IsHisMineAtMaxProduction(ubProfileID);
       break;
     case Enum170.FACT_DYNAMO_IN_J9:
-      gubFact[usFact] = CheckNPCSector(Enum268.DYNAMO, 9, MAP_ROW_J, 0) && NumEnemiesInAnySector(9, 10, 0);
+      gubFact[usFact] = CheckNPCSector(Enum268.DYNAMO, 9, MAP_ROW_J, 0) && Boolean(NumEnemiesInAnySector(9, 10, 0));
       break;
     case Enum170.FACT_DYNAMO_ALIVE:
       gubFact[usFact] = (gMercProfiles[Enum268.DYNAMO].bMercStatus != MERC_IS_DEAD);
       break;
     case Enum170.FACT_DYNAMO_SPEAKING_OR_NEARBY:
-      gubFact[usFact] = (gpSrcSoldier != null && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO || (CheckNPCWithin(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier.value.ubProfile, Enum268.DYNAMO))));
+      gubFact[usFact] = (gpSrcSoldier != null && (gpSrcSoldier.ubProfile == Enum268.DYNAMO || (CheckNPCWithin(gpSrcSoldier.ubProfile, Enum268.DYNAMO, 10) && CheckGuyVisible(gpSrcSoldier.ubProfile, Enum268.DYNAMO))));
       break;
     case Enum170.FACT_JOHN_EPC:
       gubFact[usFact] = CheckNPCIsEPC(Enum268.JOHN);
@@ -717,10 +717,10 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_PLAYER_BEEN_TO_K4: {
-      let pUnderGroundSector: Pointer<UNDERGROUND_SECTORINFO>;
+      let pUnderGroundSector: UNDERGROUND_SECTORINFO;
 
-      pUnderGroundSector = FindUnderGroundSector(4, MAP_ROW_K, 1);
-      gubFact[usFact] = pUnderGroundSector.value.fVisited;
+      pUnderGroundSector = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(4, MAP_ROW_K, 1);
+      gubFact[usFact] = pUnderGroundSector.fVisited;
     } break;
     case Enum170.FACT_WARDEN_DEAD:
       gubFact[usFact] = (gMercProfiles[Enum268.WARDEN].bMercStatus == MERC_IS_DEAD);
@@ -767,7 +767,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_SPEAKER_AIM_OR_AIM_NEARBY:
-      gubFact[usFact] = gpDestSoldier && AIMMercWithin(gpDestSoldier.value.sGridNo, 10);
+      gubFact[usFact] = gpDestSoldier !== null && AIMMercWithin(gpDestSoldier.sGridNo, 10);
       break;
 
     case Enum170.FACT_MALE_SPEAKING_FEMALE_PRESENT:
@@ -860,11 +860,11 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_PC_HAS_CONRADS_RECRUIT_OPINION:
-      gubFact[usFact] = (gpDestSoldier && (CalcDesireToTalk(gpDestSoldier.value.ubProfile, gubSrcSoldierProfile, Enum296.APPROACH_RECRUIT) >= 50));
+      gubFact[usFact] = (gpDestSoldier !== null && (CalcDesireToTalk(gpDestSoldier.ubProfile, gubSrcSoldierProfile, Enum296.APPROACH_RECRUIT) >= 50));
       break;
 
     case Enum170.FACT_NPC_HOSTILE_OR_PISSED_OFF:
-      gubFact[usFact] = CheckNPCIsEnemy(ubProfileID) || (gMercProfiles[ubProfileID].ubMiscFlags3 & PROFILE_MISC_FLAG3_NPC_PISSED_OFF);
+      gubFact[usFact] = CheckNPCIsEnemy(ubProfileID) || Boolean(gMercProfiles[ubProfileID].ubMiscFlags3 & PROFILE_MISC_FLAG3_NPC_PISSED_OFF);
       break;
 
     case Enum170.FACT_TONY_IN_BUILDING:
@@ -872,7 +872,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_SHANK_SPEAKING:
-      gubFact[usFact] = (gpSrcSoldier && gpSrcSoldier.value.ubProfile == Enum268.SHANK);
+      gubFact[usFact] = (gpSrcSoldier !== null && gpSrcSoldier.ubProfile == Enum268.SHANK);
       break;
 
     case Enum170.FACT_ROCKET_RIFLE_EXISTS:
@@ -989,7 +989,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_DYNAMO_NOT_SPEAKER:
-      gubFact[usFact] = !(gpSrcSoldier != null && (gpSrcSoldier.value.ubProfile == Enum268.DYNAMO));
+      gubFact[usFact] = !(gpSrcSoldier != null && (gpSrcSoldier.ubProfile == Enum268.DYNAMO));
       break;
 
     case Enum170.FACT_PABLO_BRIBED:
@@ -1005,7 +1005,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case 245: // Can dimitri be recruited? should be true if already true, OR if Miguel has been recruited already
-      gubFact[usFact] = (gubFact[usFact] || FindSoldierByProfileID(Enum268.MIGUEL, true));
+      gubFact[usFact] = (gubFact[usFact] || FindSoldierByProfileID(Enum268.MIGUEL, true) !== null);
       /*
                       case FACT_:
                               gubFact[usFact] = ;
@@ -1058,8 +1058,8 @@ export function InternalEndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT1
 };
 
 export function InitQuestEngine(): void {
-  memset(gubQuest, 0, sizeof(gubQuest));
-  memset(gubFact, 0, sizeof(gubFact));
+  gubQuest.fill(0);
+  gubFact.fill(false);
 
   // semi-hack to make the letter quest start right away
   CheckForQuests(1);
@@ -1097,15 +1097,20 @@ export function CheckForQuests(uiDay: UINT32): void {
 
 export function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
   // Save all the states if the Quests
-  FileWrite(hFile, gubQuest, MAX_QUESTS, addressof(uiNumBytesWritten));
+  buffer = Buffer.allocUnsafe(MAX_QUESTS);
+  writeUIntArray(gubQuest, buffer, 0, 1);
+  uiNumBytesWritten = FileWrite(hFile, buffer, MAX_QUESTS);
   if (uiNumBytesWritten != MAX_QUESTS) {
     return false;
   }
 
   // Save all the states for the facts
-  FileWrite(hFile, gubFact, NUM_FACTS, addressof(uiNumBytesWritten));
+  buffer = Buffer.allocUnsafe(NUM_FACTS);
+  writeBooleanArray(gubFact, buffer, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, NUM_FACTS);
   if (uiNumBytesWritten != NUM_FACTS) {
     return false;
   }
@@ -1115,18 +1120,25 @@ export function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
 
 export function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // Save all the states if the Quests
-  FileRead(hFile, gubQuest, MAX_QUESTS, addressof(uiNumBytesRead));
+  buffer = Buffer.allocUnsafe(MAX_QUESTS);
+  uiNumBytesRead = FileRead(hFile, buffer, MAX_QUESTS);
   if (uiNumBytesRead != MAX_QUESTS) {
     return false;
   }
 
+  readUIntArray(gubQuest, buffer, 0, 1);
+
   // Save all the states for the facts
-  FileRead(hFile, gubFact, NUM_FACTS, addressof(uiNumBytesRead));
+  buffer = Buffer.allocUnsafe(NUM_FACTS);
+  uiNumBytesRead = FileRead(hFile, buffer, NUM_FACTS);
   if (uiNumBytesRead != NUM_FACTS) {
     return false;
   }
+
+  readBooleanArray(gubFact, buffer, 0);
 
   return true;
 }

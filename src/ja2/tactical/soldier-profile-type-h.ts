@@ -312,9 +312,9 @@ export interface MERCPROFILESTRUCT {
   bLastQuoteSaidWasSpecial: boolean /* UINT8 */;
   bSectorZ: INT8;
   usStrategicInsertionData: UINT16;
-  bFriendlyOrDirectDefaultResponseUsedRecently: INT8;
-  bRecruitDefaultResponseUsedRecently: INT8;
-  bThreatenDefaultResponseUsedRecently: INT8;
+  bFriendlyOrDirectDefaultResponseUsedRecently: boolean /* INT8 */;
+  bRecruitDefaultResponseUsedRecently: boolean /* INT8 */;
+  bThreatenDefaultResponseUsedRecently: boolean /* INT8 */;
   bNPCData: INT8; // NPC specific
   iBalance: INT32;
   sTrueSalary: INT16; // for use when the person is working for us for free but has a positive salary value
@@ -508,9 +508,9 @@ export function createMercProfileStruct(): MERCPROFILESTRUCT {
     bLastQuoteSaidWasSpecial: false,
     bSectorZ: 0,
     usStrategicInsertionData: 0,
-    bFriendlyOrDirectDefaultResponseUsedRecently: 0,
-    bRecruitDefaultResponseUsedRecently: 0,
-    bThreatenDefaultResponseUsedRecently: 0,
+    bFriendlyOrDirectDefaultResponseUsedRecently: false,
+    bRecruitDefaultResponseUsedRecently: false,
+    bThreatenDefaultResponseUsedRecently: false,
     bNPCData: 0,
     iBalance: 0,
     sTrueSalary: 0,
@@ -716,9 +716,9 @@ export function readMercProfileStruct(o:  MERCPROFILESTRUCT, buffer: Buffer, off
   o.bLastQuoteSaidWasSpecial = Boolean(buffer.readUInt8(offset++));
   o.bSectorZ = buffer.readInt8(offset++);
   o.usStrategicInsertionData = buffer.readUInt16LE(offset); offset += 2;
-  o.bFriendlyOrDirectDefaultResponseUsedRecently = buffer.readInt8(offset++);
-  o.bRecruitDefaultResponseUsedRecently = buffer.readInt8(offset++);
-  o.bThreatenDefaultResponseUsedRecently = buffer.readInt8(offset++);
+  o.bFriendlyOrDirectDefaultResponseUsedRecently = Boolean(buffer.readInt8(offset++));
+  o.bRecruitDefaultResponseUsedRecently = Boolean(buffer.readInt8(offset++));
+  o.bThreatenDefaultResponseUsedRecently = Boolean(buffer.readInt8(offset++));
   o.bNPCData = buffer.readInt8(offset++);
   o.iBalance = buffer.readInt32LE(offset); offset += 4;
   o.sTrueSalary = buffer.readInt16LE(offset); offset += 2;
@@ -923,9 +923,9 @@ export function writeMercProfileStruct(o: MERCPROFILESTRUCT, buffer: Buffer, off
   offset = buffer.writeUInt8(Number(o.bLastQuoteSaidWasSpecial), offset);
   offset = buffer.writeInt8(o.bSectorZ, offset);
   offset = buffer.writeUInt16LE(o.usStrategicInsertionData, offset);
-  offset = buffer.writeInt8(o.bFriendlyOrDirectDefaultResponseUsedRecently, offset);
-  offset = buffer.writeInt8(o.bRecruitDefaultResponseUsedRecently, offset);
-  offset = buffer.writeInt8(o.bThreatenDefaultResponseUsedRecently, offset);
+  offset = buffer.writeInt8(Number(o.bFriendlyOrDirectDefaultResponseUsedRecently), offset);
+  offset = buffer.writeInt8(Number(o.bRecruitDefaultResponseUsedRecently), offset);
+  offset = buffer.writeInt8(Number(o.bThreatenDefaultResponseUsedRecently), offset);
   offset = buffer.writeInt8(o.bNPCData, offset);
   offset = buffer.writeInt32LE(o.iBalance, offset);
   offset = buffer.writeInt16LE(o.sTrueSalary, offset);

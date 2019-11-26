@@ -16,7 +16,7 @@ export interface WORLDITEM {
   usFlags: UINT16;
   bRenderZHeightAboveLevel: INT8;
 
-  bVisible: INT8;
+  bVisible: boolean /* INT8 */;
 
   // This is the chance associated with an item or a trap not-existing in the world.  The reason why
   // this is reversed (10 meaning item has 90% chance of appearing, is because the order that the map
@@ -35,10 +35,64 @@ export function createWorldItem(): WORLDITEM {
     usFlags: 0,
     bRenderZHeightAboveLevel: 0,
 
-    bVisible: 0,
+    bVisible: false,
 
     ubNonExistChance: 0,
   };
+}
+
+export function resetWorldItem(o: WORLDITEM) {
+  o.fExists = false;
+  o.sGridNo = 0;
+  o.ubLevel = 0;
+  resetObjectType(o.o);
+  o.usFlags = 0;
+  o.bRenderZHeightAboveLevel = 0;
+  o.bVisible = false;
+  o.ubNonExistChance = 0;
+}
+
+export function copyWorldItem(destination: WORLDITEM, source: WORLDITEM) {
+  destination.fExists = source.fExists;
+  destination.sGridNo = source.sGridNo;
+  destination.ubLevel = source.ubLevel;
+  copyObjectType(destination.o, source.o);
+  destination.usFlags = source.usFlags;
+  destination.bRenderZHeightAboveLevel = source.bRenderZHeightAboveLevel;
+  destination.bVisible = source.bVisible;
+  destination.ubNonExistChance = source.ubNonExistChance;
+}
+
+export const WORLD_ITEM_SIZE = 52;
+
+export function readWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0): number {
+  o.fExists = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.sGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.ubLevel = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  offset = readObjectType(o.o, buffer, offset);
+  o.usFlags = buffer.readUInt16LE(offset); offset += 2;
+  o.bRenderZHeightAboveLevel = buffer.readUInt8(offset++);
+  o.bVisible = Boolean(buffer.readUInt8(offset++));
+  o.ubNonExistChance = buffer.readUInt8(offset++);
+  offset += 3;
+  return offset;
+}
+
+export function writeWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(Number(o.fExists), offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeInt16LE(o.sGridNo, offset);
+  offset = buffer.writeUInt8(o.ubLevel, offset);
+  offset = writePadding(buffer, offset, 3);
+  offset = writeObjectType(o.o, buffer, offset);
+  offset = buffer.writeUInt16LE(o.usFlags, offset);
+  offset = buffer.writeUInt8(o.bRenderZHeightAboveLevel, offset);
+  offset = buffer.writeUInt8(Number(o.bVisible), offset);
+  offset = buffer.writeUInt8(o.ubNonExistChance, offset);
+  offset = writePadding(buffer, offset, 3);
+  return offset;
 }
 
 export interface WORLDBOMB {

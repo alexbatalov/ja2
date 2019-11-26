@@ -63,6 +63,41 @@ export interface TOWN_LOYALTY {
   filler: BYTE[] /* [19] */; // reserved for expansion
 }
 
+export function createTownLoyalty(): TOWN_LOYALTY {
+  return {
+    ubRating: 0,
+    sChange: 0,
+    fStarted: false,
+    UNUSEDubRebelSentiment: 0,
+    fLiberatedAlready: false,
+    filler: createArray(19, 0),
+  };
+}
+
+export const TOWN_LOYALTY_SIZE = 26;
+
+export function readTownLoyalty(o: TOWN_LOYALTY, buffer: Buffer, offset: number = 0): number {
+  o.ubRating = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sChange = buffer.readInt16LE(offset); offset += 2;
+  o.fStarted = Boolean(buffer.readUInt8(offset++));
+  o.UNUSEDubRebelSentiment = buffer.readUInt8(offset++);
+  o.fLiberatedAlready = Boolean(buffer.readUInt8(offset++));
+  offset = readUIntArray(o.filler, buffer, offset, 1);
+  return offset
+}
+
+export function writeTownLoyalty(o: TOWN_LOYALTY, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubRating, offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeInt16LE(o.sChange, offset);
+  offset = buffer.writeUInt8(Number(o.fStarted), offset);
+  offset = buffer.writeUInt8(o.UNUSEDubRebelSentiment, offset);
+  offset = buffer.writeUInt8(Number(o.fLiberatedAlready), offset);
+  offset = writeUIntArray(o.filler, buffer, offset, 1);
+  return offset;
+}
+
 /* Delayed loyalty effects elimininated.  Sep.12/98.  ARM
 // delayed town loyalty event
 void HandleDelayedTownLoyaltyEvent( UINT32 uiValue );

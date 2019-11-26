@@ -186,4 +186,11 @@ export function copyArray<T>(destination: T[], source: T[]) {
   }
 }
 
+export function copyObjectArray<T>(destination: T[], source: T[], copyFn: (destination: T, source: T) => void) {
+  const arrayLength = source.length;
+  for (let i = 0; i < arrayLength; i++) {
+    copyFn(destination[i], source[i]);
+  }
+}
+
 }

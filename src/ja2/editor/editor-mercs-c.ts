@@ -503,7 +503,7 @@ export function AddMercToWorld(iMapIndex: INT32): void {
     let sSectorY: INT16;
     let pNode: Pointer<SOLDIERINITNODE>;
 
-    GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
+    ({ sSectorX, sSectorY } = GetCurrentWorldSector());
 
     // Set up some general information.
     gTempBasicPlacement.fDetailedPlacement = false;
@@ -3447,7 +3447,7 @@ export function PasteMercPlacement(iMapIndex: INT32): void {
     let sSectorY: INT16;
     let pNode: Pointer<SOLDIERINITNODE>;
 
-    GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
+    ({ sSectorX, sSectorY } = GetCurrentWorldSector());
 
     // Set up some general information.
     // gTempBasicPlacement.fDetailedPlacement = TRUE;

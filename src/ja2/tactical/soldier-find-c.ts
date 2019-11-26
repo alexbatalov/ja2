@@ -433,7 +433,7 @@ function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGP
   //		ETRLEObject *pTrav;
   //		UINT32 usHeight, usWidth;
 
-  GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
+  ({ sScreenX: sMercScreenX, sScreenY: sMercScreenY } = GetSoldierScreenPos(pSoldier));
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
@@ -479,23 +479,31 @@ export function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Poi
   psWidth.value = pSoldier.value.sBoundingBoxWidth;
 }
 
-export function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
+export function GetSoldierAnimOffsets(pSoldier: SOLDIERTYPE): { sOffsetX: INT16, sOffsetY: INT16 } {
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+
   let usAnimSurface: UINT16;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    sOffsetX.value = 0;
-    sOffsetY.value = 0;
+    sOffsetX = 0;
+    sOffsetY = 0;
 
-    return;
+    return { sOffsetX, sOffsetY };
   }
 
-  sOffsetX.value = pSoldier.value.sBoundingBoxOffsetX;
-  sOffsetY.value = pSoldier.value.sBoundingBoxOffsetY;
+  sOffsetX = pSoldier.sBoundingBoxOffsetX;
+  sOffsetY = pSoldier.sBoundingBoxOffsetY;
+
+  return { sOffsetX, sOffsetY };
 }
 
-export function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
+export function GetSoldierScreenPos(pSoldier: SOLDIERTYPE): { sScreenX: INT16, sScreenY: INT16 } {
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+
   let sMercScreenX: INT16;
   let sMercScreenY: INT16;
   let dOffsetX: FLOAT;
@@ -505,17 +513,17 @@ export function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: P
   let usAnimSurface: UINT16;
   //		ETRLEObject *pTrav;
 
-  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
+  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    psScreenX.value = 0;
-    psScreenY.value = 0;
-    return;
+    sScreenX = 0;
+    sScreenY = 0;
+    return { sScreenX, sScreenY };
   }
 
   // Get 'TRUE' merc position
-  dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
-  dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
+  dOffsetX = pSoldier.dXPos - gsRenderCenterX;
+  dOffsetY = pSoldier.dYPos - gsRenderCenterY;
 
   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
@@ -527,7 +535,7 @@ export function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: P
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
   sMercScreenY -= gsRenderWorldOffsetY;
-  sMercScreenY -= gpWorldLevelData[pSoldier.value.sGridNo].sHeight;
+  sMercScreenY -= gpWorldLevelData[pSoldier.sGridNo].sHeight;
 
   // Adjust for render height
   sMercScreenY += gsRenderHeight;
@@ -535,13 +543,15 @@ export function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: P
   // Add to start position of dest buffer
   // sMercScreenX += pTrav->sOffsetX;
   // sMercScreenY += pTrav->sOffsetY;
-  sMercScreenX += pSoldier.value.sBoundingBoxOffsetX;
-  sMercScreenY += pSoldier.value.sBoundingBoxOffsetY;
+  sMercScreenX += pSoldier.sBoundingBoxOffsetX;
+  sMercScreenY += pSoldier.sBoundingBoxOffsetY;
 
-  sMercScreenY -= pSoldier.value.sHeightAdjustment;
+  sMercScreenY -= pSoldier.sHeightAdjustment;
 
-  psScreenX.value = sMercScreenX;
-  psScreenY.value = sMercScreenY;
+  sScreenX = sMercScreenX;
+  sScreenY = sMercScreenY;
+
+  return { sScreenX, sScreenY };
 }
 
 // THE TRUE SCREN RECT DOES NOT TAKE THE OFFSETS OF BUDDY INTO ACCOUNT!

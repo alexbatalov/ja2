@@ -464,6 +464,184 @@ export interface SECTORINFO {
   bPadding: INT8[] /* [41] */;
 }
 
+export function createSectorInfo(): SECTORINFO {
+  return {
+    uiFlags: 0,
+    ubInvestigativeState: 0,
+    ubGarrisonID: 0,
+    ubPendingReinforcements: 0,
+    fMilitiaTrainingPaid: false,
+    ubMilitiaTrainingPercentDone: 0,
+    ubMilitiaTrainingHundredths: 0,
+    fPlayer: createArray(4, false),
+    ubNumTroops: 0,
+    ubNumElites: 0,
+    ubNumAdmins: 0,
+    ubNumCreatures: 0,
+    ubTroopsInBattle: 0,
+    ubElitesInBattle: 0,
+    ubAdminsInBattle: 0,
+    ubCreaturesInBattle: 0,
+    bLastKnownEnemies: 0,
+    ubDayOfLastCreatureAttack: 0,
+    uiFacilitiesFlags: 0,
+    ubTraversability: createArray(5, 0),
+    bNameId: 0,
+    bUSUSED: 0,
+    bBloodCats: 0,
+    bBloodCatPlacements: 0,
+    UNUSEDbSAMCondition: 0,
+    ubTravelRating: 0,
+    ubNumberOfCivsAtLevel: createArray(Enum126.MAX_MILITIA_LEVELS, 0),
+    usUNUSEDMilitiaLevels: 0,
+    ubUNUSEDNumberOfJoeBlowCivilians: 0,
+    uiTimeCurrentSectorWasLastLoaded: 0,
+    ubUNUSEDNumberOfEnemiesThoughtToBeHere: 0,
+    uiTimeLastPlayerLiberated: 0,
+    fSurfaceWasEverPlayerControlled: false,
+    bFiller1: 0,
+    bFiller2: 0,
+    bFiller3: 0,
+    uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer: 0,
+    bPadding: createArray(41, 0),
+  };
+}
+
+export function resetSectorInfo(o: SECTORINFO) {
+  o.uiFlags = 0;
+  o.ubInvestigativeState = 0;
+  o.ubGarrisonID = 0;
+  o.ubPendingReinforcements = 0;
+  o.fMilitiaTrainingPaid = false;
+  o.ubMilitiaTrainingPercentDone = 0;
+  o.ubMilitiaTrainingHundredths = 0;
+  o.fPlayer.fill(false);
+  o.ubNumTroops = 0;
+  o.ubNumElites = 0;
+  o.ubNumAdmins = 0;
+  o.ubNumCreatures = 0;
+  o.ubTroopsInBattle = 0;
+  o.ubElitesInBattle = 0;
+  o.ubAdminsInBattle = 0;
+  o.ubCreaturesInBattle = 0;
+  o.bLastKnownEnemies = 0;
+  o.ubDayOfLastCreatureAttack = 0;
+  o.uiFacilitiesFlags = 0;
+  o.ubTraversability.fill(0);
+  o.bNameId = 0;
+  o.bUSUSED = 0;
+  o.bBloodCats = 0;
+  o.bBloodCatPlacements = 0;
+  o.UNUSEDbSAMCondition = 0;
+  o.ubTravelRating = 0;
+  o.ubNumberOfCivsAtLevel.fill(0);
+  o.usUNUSEDMilitiaLevels = 0;
+  o.ubUNUSEDNumberOfJoeBlowCivilians = 0;
+  o.uiTimeCurrentSectorWasLastLoaded = 0;
+  o.ubUNUSEDNumberOfEnemiesThoughtToBeHere = 0;
+  o.uiTimeLastPlayerLiberated = 0;
+  o.fSurfaceWasEverPlayerControlled = false;
+  o.bFiller1 = 0;
+  o.bFiller2 = 0;
+  o.bFiller3 = 0;
+  o.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = 0;
+  o.bPadding.fill(0);
+}
+
+export const SECTOR_INFO_SIZE = 116;
+
+export function readSectorInfo(o: SECTORINFO, buffer: Buffer, offset: number = 0): number {
+  o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.ubInvestigativeState = buffer.readUInt8(offset++);
+  o.ubGarrisonID = buffer.readUInt8(offset++);
+  o.ubPendingReinforcements = buffer.readInt8(offset++);
+  o.fMilitiaTrainingPaid = Boolean(buffer.readUInt8(offset++));
+  o.ubMilitiaTrainingPercentDone = buffer.readUInt8(offset++);
+  o.ubMilitiaTrainingHundredths = buffer.readUInt8(offset++);
+  offset = readBooleanArray(o.fPlayer, buffer, offset);
+  o.ubNumTroops = buffer.readUInt8(offset++);
+  o.ubNumElites = buffer.readUInt8(offset++);
+  o.ubNumAdmins = buffer.readUInt8(offset++);
+  o.ubNumCreatures = buffer.readUInt8(offset++);
+  o.ubTroopsInBattle = buffer.readUInt8(offset++);
+  o.ubElitesInBattle = buffer.readUInt8(offset++);
+  o.ubAdminsInBattle = buffer.readUInt8(offset++);
+  o.ubCreaturesInBattle = buffer.readUInt8(offset++);
+  o.bLastKnownEnemies = buffer.readInt8(offset++);
+  offset++; // padding
+  o.ubDayOfLastCreatureAttack = buffer.readUInt32LE(offset); offset += 4;
+  o.uiFacilitiesFlags = buffer.readUInt32LE(offset); offset += 4
+  offset = readUIntArray(o.ubTraversability, buffer, offset, 1);
+  o.bNameId = buffer.readInt8(offset++);
+  o.bUSUSED = buffer.readInt8(offset++);
+  o.bBloodCats = buffer.readInt8(offset++);
+  o.bBloodCatPlacements = buffer.readInt8(offset++);
+  o.UNUSEDbSAMCondition = buffer.readInt8(offset++);
+  o.ubTravelRating = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubNumberOfCivsAtLevel, buffer, offset, 1);
+  o.usUNUSEDMilitiaLevels = buffer.readUInt16LE(offset); offset += 2;
+  o.ubUNUSEDNumberOfJoeBlowCivilians = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.uiTimeCurrentSectorWasLastLoaded = buffer.readUInt32LE(offset); offset += 4;
+  o.ubUNUSEDNumberOfEnemiesThoughtToBeHere = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.uiTimeLastPlayerLiberated = buffer.readUInt32LE(offset); offset += 4;
+  o.fSurfaceWasEverPlayerControlled = Boolean(buffer.readUInt8(offset++));
+  o.bFiller1 = buffer.readUInt8(offset++);
+  o.bFiller2 = buffer.readUInt8(offset++);
+  o.bFiller3 = buffer.readUInt8(offset++);
+  o.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = buffer.readUInt32LE(offset); offset += 4;
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+  offset += 3; // padding
+  return offset;
+}
+
+export function writeSectorInfo(o: SECTORINFO, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeUInt8(o.ubInvestigativeState, offset);
+  offset = buffer.writeUInt8(o.ubGarrisonID, offset);
+  offset = buffer.writeInt8(o.ubPendingReinforcements, offset);
+  offset = buffer.writeUInt8(Number(o.fMilitiaTrainingPaid), offset);
+  offset = buffer.writeUInt8(o.ubMilitiaTrainingPercentDone, offset);
+  offset = buffer.writeUInt8(o.ubMilitiaTrainingHundredths, offset);
+  offset = writeBooleanArray(o.fPlayer, buffer, offset);
+  offset = buffer.writeUInt8(o.ubNumTroops, offset);
+  offset = buffer.writeUInt8(o.ubNumElites, offset);
+  offset = buffer.writeUInt8(o.ubNumAdmins, offset);
+  offset = buffer.writeUInt8(o.ubNumCreatures, offset);
+  offset = buffer.writeUInt8(o.ubTroopsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubElitesInBattle, offset);
+  offset = buffer.writeUInt8(o.ubAdminsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubCreaturesInBattle, offset);
+  offset = buffer.writeInt8(o.bLastKnownEnemies, offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeUInt32LE(o.ubDayOfLastCreatureAttack, offset);
+  offset = buffer.writeUInt32LE(o.uiFacilitiesFlags, offset);
+  offset = writeUIntArray(o.ubTraversability, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bNameId, offset);
+  offset = buffer.writeInt8(o.bUSUSED, offset);
+  offset = buffer.writeInt8(o.bBloodCats, offset);
+  offset = buffer.writeInt8(o.bBloodCatPlacements, offset);
+  offset = buffer.writeInt8(o.UNUSEDbSAMCondition, offset);
+  offset = buffer.writeUInt8(o.ubTravelRating, offset);
+  offset = writeUIntArray(o.ubNumberOfCivsAtLevel, buffer, offset, 1);
+  offset = buffer.writeUInt16LE(o.usUNUSEDMilitiaLevels, offset);
+  offset = buffer.writeUInt8(o.ubUNUSEDNumberOfJoeBlowCivilians, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeCurrentSectorWasLastLoaded, offset);
+  offset = buffer.writeUInt8(o.ubUNUSEDNumberOfEnemiesThoughtToBeHere, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeLastPlayerLiberated, offset);
+  offset = buffer.writeUInt8(Number(o.fSurfaceWasEverPlayerControlled), offset);
+  offset = buffer.writeUInt8(o.bFiller1, offset);
+  offset = buffer.writeUInt8(o.bFiller2, offset);
+  offset = buffer.writeUInt8(o.bFiller3, offset);
+  offset = buffer.writeUInt32LE(o.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 3);
+  return offset;
+}
+
 const NO_ADJACENT_SECTOR = 0x00;
 export const NORTH_ADJACENT_SECTOR = 0x01;
 export const EAST_ADJACENT_SECTOR = 0x02;
@@ -482,7 +660,7 @@ export interface UNDERGROUND_SECTORINFO {
   ubNumAdmins: UINT8;
   ubNumCreatures: UINT8;
 
-  fVisited: UINT8;
+  fVisited: boolean /* UINT8 */;
   ubTravelRating: INT8; // Represents how travelled a sector is.  Typically, the higher the travel rating,
                         // the more people go near it.  A travel rating of 0 means there are never people
                         // around.  This value is used for determining how often items would "vanish" from
@@ -499,6 +677,85 @@ export interface UNDERGROUND_SECTORINFO {
 
   uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer: UINT32;
   bPadding: INT8[] /* [36] */;
+}
+
+export function createUndergroundSectorInfo(): UNDERGROUND_SECTORINFO {
+  return {
+    uiFlags: 0,
+    ubSectorX: 0,
+    ubSectorY: 0,
+    ubSectorZ: 0,
+    ubNumElites: 0,
+    ubNumTroops: 0,
+    ubNumAdmins: 0,
+    ubNumCreatures: 0,
+    fVisited: false,
+    ubTravelRating: 0,
+    uiTimeCurrentSectorWasLastLoaded: 0,
+    next: null,
+    ubAdjacentSectors: 0,
+    ubCreatureHabitat: 0,
+    ubElitesInBattle: 0,
+    ubTroopsInBattle: 0,
+    ubAdminsInBattle: 0,
+    ubCreaturesInBattle: 0,
+    uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer: 0,
+    bPadding: createArray(36, 0),
+  };
+}
+
+export const UNDERGROUND_SECTOR_INFO_SIZE = 72;
+
+export function readUndergroundSectorInfo(o: UNDERGROUND_SECTORINFO, buffer: Buffer, offset: number = 0): number {
+  o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.ubSectorX = buffer.readUInt8(offset++);
+  o.ubSectorY = buffer.readUInt8(offset++);
+  o.ubSectorZ = buffer.readUInt8(offset++);
+  o.ubNumElites = buffer.readUInt8(offset++);
+  o.ubNumTroops = buffer.readUInt8(offset++);
+  o.ubNumAdmins = buffer.readUInt8(offset++);
+  o.ubNumCreatures = buffer.readUInt8(offset++);
+  o.fVisited = Boolean(buffer.readUInt8(offset++));
+  o.ubTravelRating = buffer.readInt8(offset++);
+  offset += 3; // padding
+  o.uiTimeCurrentSectorWasLastLoaded = buffer.readUInt32LE(offset); offset += 4;
+  o.next = null; offset += 4; // pointer
+  o.ubAdjacentSectors = buffer.readUInt8(offset++);
+  o.ubCreatureHabitat = buffer.readUInt8(offset++);
+  o.ubElitesInBattle = buffer.readUInt8(offset++);
+  o.ubTroopsInBattle = buffer.readUInt8(offset++);
+  o.ubAdminsInBattle = buffer.readUInt8(offset++);
+  o.ubCreaturesInBattle = buffer.readUInt8(offset++);
+  offset += 2; // padding
+  o.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer = buffer.readUInt32LE(offset); offset += 4;
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeUndergroundSectorInfo(o: UNDERGROUND_SECTORINFO, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeUInt8(o.ubSectorX, offset);
+  offset = buffer.writeUInt8(o.ubSectorY, offset);
+  offset = buffer.writeUInt8(o.ubSectorZ, offset);
+  offset = buffer.writeUInt8(o.ubNumElites, offset);
+  offset = buffer.writeUInt8(o.ubNumTroops, offset);
+  offset = buffer.writeUInt8(o.ubNumAdmins, offset);
+  offset = buffer.writeUInt8(o.ubNumCreatures, offset);
+  offset = buffer.writeUInt8(Number(o.fVisited), offset);
+  offset = buffer.writeInt8(o.ubTravelRating, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeCurrentSectorWasLastLoaded, offset);
+  offset = writePadding(buffer, offset, 4); // pointer
+  offset = buffer.writeUInt8(o.ubAdjacentSectors, offset);
+  offset = buffer.writeUInt8(o.ubCreatureHabitat, offset);
+  offset = buffer.writeUInt8(o.ubElitesInBattle, offset);
+  offset = buffer.writeUInt8(o.ubTroopsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubAdminsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubCreaturesInBattle, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeUInt32LE(o.uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+  return offset;
 }
 
 }

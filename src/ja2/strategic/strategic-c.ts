@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
+export let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */ = createArrayFrom(MAP_WORLD_X * MAP_WORLD_Y, createStrategicMapElement);
 
 export function HandleStrategicDeath(pSoldier: SOLDIERTYPE): boolean {
   // add the guy to the dead list

@@ -547,7 +547,7 @@ export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiCnt: UINT32;
 
   // get the name of the map
-  GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // delete file the file.
   FileDelete(zMapName);
@@ -614,7 +614,7 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let zMapName: string /* CHAR8[128] */;
   let bLevel: INT8;
 
-  GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Open the file for reading, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);

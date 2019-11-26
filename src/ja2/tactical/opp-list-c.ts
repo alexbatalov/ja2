@@ -987,7 +987,7 @@ export function InitOpplistForDoorOpening(): void {
   InitSightArrays();
 }
 
-export function AllTeamsLookForAll(ubAllowInterrupts: UINT8): void {
+export function AllTeamsLookForAll(ubAllowInterrupts: boolean): void {
   let uiLoop: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
@@ -1587,7 +1587,7 @@ PopMessage(tempstr);
                 EnterCombatMode(pSoldier.value.bTeam);
 
                 LocateSoldier(pSoldier.value.ubID, true);
-                GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
+                ({ sScreenX: sX, sScreenY: sY } = GetSoldierScreenPos(pSoldier));
                 // begin quote
                 BeginCivQuote(pSoldier, Enum201.CIV_QUOTE_HICKS_SEE_US_AT_NIGHT, 0, sX, sY);
               }

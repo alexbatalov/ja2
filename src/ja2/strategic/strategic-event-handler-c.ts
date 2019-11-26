@@ -9,6 +9,7 @@ let guiPabloExtraDaysBribed: UINT32 = 0;
 
 export let gubCambriaMedicalObjects: UINT8;
 
+/* static */ let BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes: UINT8 = 0;
 export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let i: UINT8;
   let j: UINT8;
@@ -21,12 +22,11 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   let usTotalNumberOfItemTypes: UINT16;
   let uiCount: UINT32 = 0;
   let uiStolenCount: UINT32 = 0;
-  /* static */ let ubShipmentsSinceNoBribes: UINT8 = 0;
   let uiChanceOfTheft: UINT32;
   let fPablosStoleSomething: boolean = false;
   let fPablosStoleLastItem: boolean = false;
-  let pObject: Pointer<OBJECTTYPE> = null;
-  let pStolenObject: Pointer<OBJECTTYPE> = null;
+  let pObject: OBJECTTYPE[] = <OBJECTTYPE[]><unknown>undefined;
+  let pStolenObject: OBJECTTYPE[] = <OBJECTTYPE[]><unknown>undefined;
   let fThisShipmentIsFromJohnKulba: boolean = false; // if it is, dont add an email
   let ubItemsDelivered: UINT8;
   let ubTempNumItems: UINT8;
@@ -94,12 +94,8 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   // if we are NOT currently in the right sector
   if (!fSectorLoaded) {
     // build an array of objects to be added
-    pObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
-    pStolenObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
-    if (pObject == null || pStolenObject == null)
-      return;
-    memset(pObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
-    memset(pStolenObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
+    pObject = createArrayFrom(usNumberOfItems, createObjectType);
+    pStolenObject = createArrayFrom(usNumberOfItems, createObjectType);
   }
 
   // check for potential theft
@@ -107,12 +103,12 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     uiChanceOfTheft = 0;
   } else if (CheckFact(Enum170.FACT_PABLOS_BRIBED, 0)) {
     // Since Pacos has some money, reduce record of # of shipments since last bribed...
-    ubShipmentsSinceNoBribes /= 2;
+    BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes /= 2;
     uiChanceOfTheft = 0;
   } else {
-    ubShipmentsSinceNoBribes++;
+    BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes++;
     // this chance might seem high but it's only applied at most to every second item
-    uiChanceOfTheft = 12 + Random(4 * ubShipmentsSinceNoBribes);
+    uiChanceOfTheft = 12 + Random(4 * BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes);
   }
 
   uiCount = 0;
@@ -121,7 +117,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     usItem = gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].usItemIndex;
 
     // Create the item
-    CreateItem(usItem, gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].bItemQuality, addressof(Object));
+    CreateItem(usItem, gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].bItemQuality, Object);
 
     // if it's a gun
     if (Item[usItem].usItemClass == IC_GUN) {
@@ -157,7 +153,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;
             }
-            AddItemToPool(usMapPos, addressof(Object), -1, 0, 0, 0);
+            AddItemToPool(usMapPos, Object, -1, 0, 0, 0);
           } else {
             // record # delivered for later addition...
             ubItemsDelivered++;
@@ -165,7 +161,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
         }
       } else {
         if (j > 1 && !fPablosStoleLastItem && uiChanceOfTheft > 0 && Random(100) < (uiChanceOfTheft + j)) {
-          memcpy(addressof(pStolenObject[uiStolenCount]), addressof(Object), sizeof(OBJECTTYPE));
+          copyObjectType(pStolenObject[uiStolenCount], Object);
           uiStolenCount++;
           fPablosStoleSomething = true;
           fPablosStoleLastItem = true;
@@ -182,7 +178,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;
             }
-            memcpy(addressof(pObject[uiCount]), addressof(Object), sizeof(OBJECTTYPE));
+            copyObjectType(pObject[uiCount], Object);
             uiCount++;
           } else {
             ubItemsDelivered++;
@@ -194,22 +190,22 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     if (gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].ubNumberPurchased == 1 && ubItemsDelivered == 1) {
       // the item in Object will be the item to deliver
       if (fSectorLoaded) {
-        AddItemToPool(usStandardMapPos, addressof(Object), -1, 0, 0, 0);
+        AddItemToPool(usStandardMapPos, Object, -1, 0, 0, 0);
       } else {
-        memcpy(addressof(pObject[uiCount]), addressof(Object), sizeof(OBJECTTYPE));
+        copyObjectType(pObject[uiCount], Object);
         uiCount++;
       }
     } else {
       while (ubItemsDelivered) {
         // treat 0s as 1s :-)
         ubTempNumItems = Math.min(ubItemsDelivered, Math.max(1, Item[usItem].ubPerPocket));
-        CreateItems(usItem, gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, addressof(Object));
+        CreateItems(usItem, gpNewBobbyrShipments[ubOrderID].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, Object);
 
         // stack as many as possible
         if (fSectorLoaded) {
-          AddItemToPool(usStandardMapPos, addressof(Object), -1, 0, 0, 0);
+          AddItemToPool(usStandardMapPos, Object, -1, 0, 0, 0);
         } else {
-          memcpy(addressof(pObject[uiCount]), addressof(Object), sizeof(OBJECTTYPE));
+          copyObjectType(pObject[uiCount], Object);
           uiCount++;
         }
 
@@ -233,10 +229,8 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
         // return;
       }
     }
-    MemFree(pObject);
-    MemFree(pStolenObject);
-    pObject = null;
-    pStolenObject = null;
+    pObject = <OBJECTTYPE[]><unknown>null;
+    pStolenObject = <OBJECTTYPE[]><unknown>null;
   }
 
   if (fPablosStoleSomething) {
@@ -295,7 +289,7 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
   let uiNumWorldItems: UINT32;
   let uiLoop: UINT32;
   let fOk: boolean;
-  let pTemp: Pointer<WORLDITEM>;
+  let pTemp: WORLDITEM[];
   let ubLoop: UINT8;
   let Object: OBJECTTYPE = createObjectType();
 
@@ -315,31 +309,31 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
       switch (Random(10)) {
         case 0:
           // 1 in 10 chance of a badly damaged gas mask
-          CreateItem(Enum225.GASMASK, (20 + Random(10)), addressof(Object));
+          CreateItem(Enum225.GASMASK, (20 + Random(10)), Object);
           break;
         case 1:
         case 2:
           // 2 in 10 chance of a battered Desert Eagle
-          CreateItem(Enum225.DESERTEAGLE, (40 + Random(10)), addressof(Object));
+          CreateItem(Enum225.DESERTEAGLE, (40 + Random(10)), Object);
           break;
         case 3:
         case 4:
         case 5:
           // 3 in 10 chance of a stun grenade
-          CreateItem(Enum225.STUN_GRENADE, (70 + Random(10)), addressof(Object));
+          CreateItem(Enum225.STUN_GRENADE, (70 + Random(10)), Object);
           break;
         case 6:
         case 7:
         case 8:
         case 9:
           // 4 in 10 chance of two 38s!
-          CreateItems(Enum225.SW38, (90 + Random(10)), 2, addressof(Object));
+          CreateItems(Enum225.SW38, (90 + Random(10)), 2, Object);
           break;
       }
       if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
-        AddItemToPool(BOBBYR_SHIPPING_DEST_GRIDNO, addressof(Object), -1, 0, 0, 0);
+        AddItemToPool(BOBBYR_SHIPPING_DEST_GRIDNO, Object, -1, 0, 0, 0);
       } else {
-        AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, 1, addressof(Object), 0, 0, 0, -1, false);
+        AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, BOBBYR_SHIPPING_DEST_GRIDNO, 1, [Object], 0, 0, 0, -1, false);
       }
     }
   } else if (uiReason == Enum170.FACT_PACKAGE_DAMAGED) {
@@ -355,11 +349,11 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
     MoveItemPools(sStartGridNo, BOBBYR_SHIPPING_DEST_GRIDNO);
   } else {
     // otherwise load the saved items from the item file and change the records of their locations
-    fOk = GetNumberOfWorldItemsFromTempItemFile(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, addressof(uiNumWorldItems), false);
+    fOk = (uiNumWorldItems = GetNumberOfWorldItemsFromTempItemFile(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, false)) !== -1;
     if (!fOk) {
       return;
     }
-    pTemp = MemAlloc(sizeof(WORLDITEM) * uiNumWorldItems);
+    pTemp = createArrayFrom(uiNumWorldItems, createWorldItem);
     if (!pTemp) {
       return;
     }
@@ -564,7 +558,7 @@ export function HandleNPCSystemEvent(uiEvent: UINT32): void {
       case Enum213.NPC_ACTION_ADD_JOEY_TO_WORLD:
         // If Joey is not dead, escorted, or already delivered
         if (gMercProfiles[Enum268.JOEY].bMercStatus != MERC_IS_DEAD && !CheckFact(Enum170.FACT_JOEY_ESCORTED, 0) && gMercProfiles[Enum268.JOEY].sSectorX == 4 && gMercProfiles[Enum268.JOEY].sSectorY == MAP_ROW_D && gMercProfiles[Enum268.JOEY].bSectorZ == 1) {
-          let pJoey: Pointer<SOLDIERTYPE>;
+          let pJoey: SOLDIERTYPE | null;
 
           pJoey = FindSoldierByProfileID(Enum268.JOEY, false);
           if (pJoey) {
@@ -808,24 +802,24 @@ export function RemoveAssassin(ubProfile: UINT8): void {
 
 export function CheckForMissingHospitalSupplies(): void {
   let uiLoop: UINT32;
-  let pItemPool: Pointer<ITEM_POOL>;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pItemPool: ITEM_POOL | null;
+  let pObj: OBJECTTYPE;
   let ubMedicalObjects: UINT8 = 0;
 
   for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
     // loop through all items, look for ownership
     if (gWorldItems[uiLoop].fExists && gWorldItems[uiLoop].o.usItem == Enum225.OWNERSHIP && gWorldItems[uiLoop].o.ubOwnerCivGroup == Enum246.DOCTORS_CIV_GROUP) {
-      GetItemPool(gWorldItems[uiLoop].sGridNo, addressof(pItemPool), 0);
+      pItemPool = GetItemPool(gWorldItems[uiLoop].sGridNo, 0);
       while (pItemPool) {
-        pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+        pObj = gWorldItems[pItemPool.iItemIndex].o;
 
-        if (pObj.value.bStatus[0] > 60) {
-          if (pObj.value.usItem == Enum225.FIRSTAIDKIT || pObj.value.usItem == Enum225.MEDICKIT || pObj.value.usItem == Enum225.REGEN_BOOSTER || pObj.value.usItem == Enum225.ADRENALINE_BOOSTER) {
+        if (pObj.bStatus[0] > 60) {
+          if (pObj.usItem == Enum225.FIRSTAIDKIT || pObj.usItem == Enum225.MEDICKIT || pObj.usItem == Enum225.REGEN_BOOSTER || pObj.usItem == Enum225.ADRENALINE_BOOSTER) {
             ubMedicalObjects++;
           }
         }
 
-        pItemPool = pItemPool.value.pNext;
+        pItemPool = pItemPool.pNext;
       }
     }
   }
@@ -857,7 +851,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   let fSectorLoaded: boolean = false;
   let Object: OBJECTTYPE = createObjectType();
   let uiCount: UINT32 = 0;
-  let pObject: Pointer<OBJECTTYPE> = null;
+  let pObject: OBJECTTYPE[] = <OBJECTTYPE[]><unknown>null;
   let usNumberOfItems: UINT16 = 0;
   let usItem: UINT16;
   let ubItemsDelivered: UINT8;
@@ -892,29 +886,26 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   // if we are NOT currently in the right sector
   if (!fSectorLoaded) {
     // build an array of objects to be added
-    pObject = MemAlloc(sizeof(OBJECTTYPE) * usNumberOfItems);
-    if (pObject == null)
-      return;
-    memset(pObject, 0, sizeof(OBJECTTYPE) * usNumberOfItems);
+    pObject = createArrayFrom(usNumberOfItems, createObjectType);
   }
 
   uiCount = 0;
 
   // loop through the number of purchases
-  for (i = 0; i < gpNewBobbyrShipments.value.ubNumberPurchases; i++) {
+  for (i = 0; i < gpNewBobbyrShipments[ubOrderNum].ubNumberPurchases; i++) {
     ubItemsDelivered = gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].ubNumberPurchased;
     usItem = gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].usItemIndex;
 
     while (ubItemsDelivered) {
       // treat 0s as 1s :-)
       ubTempNumItems = Math.min(ubItemsDelivered, Math.max(1, Item[usItem].ubPerPocket));
-      CreateItems(usItem, gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, addressof(Object));
+      CreateItems(usItem, gpNewBobbyrShipments[ubOrderNum].BobbyRayPurchase[i].bItemQuality, ubTempNumItems, Object);
 
       // stack as many as possible
       if (fSectorLoaded) {
-        AddItemToPool(MEDUNA_ITEM_DROP_OFF_GRIDNO, addressof(Object), -1, 0, 0, 0);
+        AddItemToPool(MEDUNA_ITEM_DROP_OFF_GRIDNO, Object, -1, 0, 0, 0);
       } else {
-        memcpy(addressof(pObject[uiCount]), addressof(Object), sizeof(OBJECTTYPE));
+        copyObjectType(pObject[uiCount], Object);
         uiCount++;
       }
 
@@ -931,8 +922,7 @@ function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
       // error
       Assert(0);
     }
-    MemFree(pObject);
-    pObject = null;
+    pObject = <OBJECTTYPE[]><unknown>null;
   }
 
   // mark that the shipment has arrived

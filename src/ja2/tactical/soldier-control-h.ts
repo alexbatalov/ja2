@@ -210,9 +210,19 @@ export const NO_SLOT = -1;
 export interface PathSt {
   uiSectorId: UINT32;
   uiEta: UINT32;
-  fSpeed: boolean;
-  pNext: Pointer<PathSt>;
-  pPrev: Pointer<PathSt>;
+  fSpeed: UINT8 /* boolean */;
+  pNext: PathSt | null;
+  pPrev: PathSt | null;
+}
+
+export function createPathSt(): PathSt {
+  return {
+    uiSectorId: 0,
+    uiEta: 0,
+    fSpeed: 0,
+    pNext: null,
+    pPrev: null,
+  };
 }
 
 export type PathStPtr = Pointer<PathSt>;
@@ -580,7 +590,7 @@ export interface SOLDIERTYPE {
   bPassedLastInterrupt: INT8;
   bIntStartAPs: INT8;
   bMoved: boolean /* INT8 */;
-  bHunting: INT8;
+  bHunting: boolean /* INT8 */;
   ubLastCall: UINT8;
   ubCaller: UINT8;
   sCallerGridNo: INT16;
@@ -613,7 +623,7 @@ export interface SOLDIERTYPE {
   pForcedShade: Pointer<UINT16>;
 
   bDisplayDamageCount: INT8;
-  fDisplayDamage: INT8;
+  fDisplayDamage: boolean /* INT8 */;
   sDamage: INT16;
   sDamageX: INT16;
   sDamageY: INT16;
@@ -835,7 +845,7 @@ export interface SOLDIERTYPE {
   ubReasonCantFinishMove: UINT8;
 
   sLocationOfFadeStart: INT16;
-  bUseExitGridForReentryDirection: UINT8;
+  bUseExitGridForReentryDirection: boolean /* UINT8 */;
 
   uiTimeSinceLastSpoke: UINT32;
   ubContractRenewalQuoteCode: UINT8;
@@ -1106,7 +1116,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bPassedLastInterrupt: 0,
     bIntStartAPs: 0,
     bMoved: false,
-    bHunting: 0,
+    bHunting: false,
     ubLastCall: 0,
     ubCaller: 0,
     sCallerGridNo: 0,
@@ -1133,7 +1143,7 @@ export function createSoldierType(): SOLDIERTYPE {
     fForceShade: false,
     pForcedShade: null,
     bDisplayDamageCount: 0,
-    fDisplayDamage: 0,
+    fDisplayDamage: false,
     sDamage: 0,
     sDamageX: 0,
     sDamageY: 0,
@@ -1319,7 +1329,7 @@ export function createSoldierType(): SOLDIERTYPE {
     ubMiscSoldierFlags: 0,
     ubReasonCantFinishMove: 0,
     sLocationOfFadeStart: 0,
-    bUseExitGridForReentryDirection: 0,
+    bUseExitGridForReentryDirection: false,
     uiTimeSinceLastSpoke: 0,
     ubContractRenewalQuoteCode: 0,
     sPreTraversalGridNo: 0,

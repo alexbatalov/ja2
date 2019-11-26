@@ -43,8 +43,6 @@ export const enum Enum130 {
 export const STARTING_TIME = ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY); // 1am
 export const FIRST_ARRIVAL_DELAY = ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)); // 7am ( 6hours later)
 
-export const WORLDTIMESTR = () => gswzWorldTimeStr;
-
 export const enum Enum131 {
   WARPTIME_NO_PROCESSING_OF_EVENTS,
   WARPTIME_PROCESS_EVENTS_NORMALLY,

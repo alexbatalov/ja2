@@ -1,9 +1,9 @@
 namespace ja2 {
 
-export let gStrategicStatus: STRATEGIC_STATUS;
+export let gStrategicStatus: STRATEGIC_STATUS = createStrategicStatus();
 
 export function InitStrategicStatus(): void {
-  memset(addressof(gStrategicStatus), 0, sizeof(STRATEGIC_STATUS));
+  resetStrategicStatus(gStrategicStatus);
   // Add special non-zero start conditions here...
 
   InitArmyGunTypes();
@@ -11,10 +11,13 @@ export function InitStrategicStatus(): void {
 
 export function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
   // Save the Strategic Status structure to the saved game file
-  FileWrite(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(STRATEGIC_STATUS)) {
+  buffer = Buffer.allocUnsafe(STRATEGIC_STATUS_SIZE);
+  writeStrategicStatus(gStrategicStatus, buffer);
+  uiNumBytesWritten = FileWrite(hFile, buffer, STRATEGIC_STATUS_SIZE);
+  if (uiNumBytesWritten != STRATEGIC_STATUS_SIZE) {
     return false;
   }
 
@@ -23,12 +26,16 @@ export function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // Load the Strategic Status structure from the saved game file
-  FileRead(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(STRATEGIC_STATUS)) {
+  buffer = Buffer.allocUnsafe(STRATEGIC_STATUS_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, STRATEGIC_STATUS_SIZE);
+  if (uiNumBytesRead != STRATEGIC_STATUS_SIZE) {
     return false;
   }
+
+  readStrategicStatus(gStrategicStatus, buffer);
 
   return true;
 }
@@ -101,11 +108,11 @@ export function MercThinksBadReputationTooHigh(ubProfileID: UINT8): boolean {
 }
 
 // only meaningful for already hired mercs
-export function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function MercThinksHisMoraleIsTooLow(pSoldier: SOLDIERTYPE): boolean {
   let bRepTolerance: INT8;
   let bMoraleTolerance: INT8;
 
-  bRepTolerance = gMercProfiles[pSoldier.value.ubProfile].bReputationTolerance;
+  bRepTolerance = gMercProfiles[pSoldier.ubProfile].bReputationTolerance;
 
   // if he couldn't care less what it is
   if (bRepTolerance == 101) {
@@ -117,7 +124,7 @@ export function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): boo
   // above 50, morale is GOOD, never below tolerance then
   bMoraleTolerance = (100 - bRepTolerance) / 2;
 
-  if (pSoldier.value.bMorale < bMoraleTolerance) {
+  if (pSoldier.bMorale < bMoraleTolerance) {
     // too low - sorry
     return true;
   } else {

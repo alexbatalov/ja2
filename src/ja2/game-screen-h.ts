@@ -1,6 +1,6 @@
 namespace ja2 {
 
-const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
+export const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
 export type MODAL_HOOK = () => void;
 

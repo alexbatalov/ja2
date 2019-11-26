@@ -155,7 +155,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
   let uiLowestRange: INT32 = 999999;
   let leftmost: INT32;
   let fFound: boolean = false;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
@@ -174,7 +174,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (GetItemPool(sGridNo, addressof(pItemPool), bLevel)) {
+        if ((pItemPool = GetItemPool(sGridNo, bLevel))) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {

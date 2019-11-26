@@ -51,6 +51,19 @@ export interface ARMY_COMPOSITION {
   bPadding: INT8[] /* [10] */;
 }
 
+export function createArmyComposition(): ARMY_COMPOSITION {
+  return {
+    iReadability: 0,
+    bPriority: 0,
+    bElitePercentage: 0,
+    bTroopPercentage: 0,
+    bAdminPercentage: 0,
+    bDesiredPopulation: 0,
+    bStartPopulation: 0,
+    bPadding: createArray(10, 0),
+  };
+}
+
 export function createArmyCompositionFrom(iReadability: INT32, bPriority: INT8, bElitePercentage: INT8, bTroopPercentage: INT8, bAdminPercentage: INT8, bDesiredPopulation: INT8, bStartPopulation: INT8, bPadding: INT8[]): ARMY_COMPOSITION {
   return {
     iReadability,
@@ -64,6 +77,45 @@ export function createArmyCompositionFrom(iReadability: INT32, bPriority: INT8, 
   };
 }
 
+export function copyArmyComposition(destination: ARMY_COMPOSITION, source: ARMY_COMPOSITION) {
+  destination.iReadability = source.iReadability;
+  destination.bPriority = source.bPriority;
+  destination.bElitePercentage = source.bElitePercentage;
+  destination.bTroopPercentage = source.bTroopPercentage;
+  destination.bAdminPercentage = source.bAdminPercentage;
+  destination.bDesiredPopulation = source.bDesiredPopulation;
+  destination.bStartPopulation = source.bStartPopulation;
+  copyArray(destination.bPadding, source.bPadding);
+}
+
+export const ARMY_COMPOSITION_SIZE = 20;
+
+export function readArmyComposition(o: ARMY_COMPOSITION, buffer: Buffer, offset: number = 0): number {
+  o.iReadability = buffer.readInt32LE(offset); offset += 4;
+  o.bPriority = buffer.readInt8(offset++);
+  o.bElitePercentage = buffer.readInt8(offset++);
+  o.bTroopPercentage = buffer.readInt8(offset++);
+  o.bAdminPercentage = buffer.readInt8(offset++);
+  o.bDesiredPopulation = buffer.readInt8(offset++);
+  o.bStartPopulation = buffer.readInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
+export function writeArmyComposition(o: ARMY_COMPOSITION, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeInt32LE(o.iReadability, offset);
+  offset = buffer.writeInt8(o.bPriority, offset);
+  offset = buffer.writeInt8(o.bElitePercentage, offset);
+  offset = buffer.writeInt8(o.bTroopPercentage, offset);
+  offset = buffer.writeInt8(o.bAdminPercentage, offset);
+  offset = buffer.writeInt8(o.bDesiredPopulation, offset);
+  offset = buffer.writeInt8(o.bStartPopulation, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
 // Defines the patrol groups -- movement groups.
 export interface PATROL_GROUP {
   bSize: INT8;
@@ -74,6 +126,19 @@ export interface PATROL_GROUP {
   bWeight: INT8;
   ubPendingGroupID: UINT8;
   bPadding: INT8[] /* [10] */;
+}
+
+export function createPatrolGroup(): PATROL_GROUP {
+  return {
+    bSize: 0,
+    bPriority: 0,
+    ubSectorID: createArray(4, 0),
+    bFillPermittedAfterDayMod100: 0,
+    ubGroupID: 0,
+    bWeight: 0,
+    ubPendingGroupID: 0,
+    bPadding: createArray(10, 0),
+  };
 }
 
 export function createPatrolGroupFrom(bSize: INT8, bPriority: INT8, ubSectorID: UINT8[], bFillPermittedAfterDayMod100: INT8, ubGroupID: UINT8, bWeight: INT8, ubPendingGroupID: UINT8, bPadding: INT8[]): PATROL_GROUP {
@@ -89,6 +154,45 @@ export function createPatrolGroupFrom(bSize: INT8, bPriority: INT8, ubSectorID: 
   };
 }
 
+export function copyPatrolGroup(destination: PATROL_GROUP, source: PATROL_GROUP) {
+  destination.bSize = source.bSize;
+  destination.bPriority = source.bPriority;
+  copyArray(destination.ubSectorID, source.ubSectorID);
+  destination.bFillPermittedAfterDayMod100 = source.bFillPermittedAfterDayMod100;
+  destination.ubGroupID = source.ubGroupID;
+  destination.bWeight = source.bWeight;
+  destination.ubPendingGroupID = source.ubPendingGroupID;
+  copyArray(destination.bPadding, source.bPadding);
+}
+
+export const PATROL_GROUP_SIZE = 20;
+
+export function readPatrolGroup(o: PATROL_GROUP, buffer: Buffer, offset: number = 0): number {
+  o.bSize = buffer.readInt8(offset++);
+  o.bPriority = buffer.readInt8(offset++);
+  offset = readUIntArray(o.ubSectorID, buffer, offset, 1);
+  o.bFillPermittedAfterDayMod100 = buffer.readInt8(offset++);
+  o.ubGroupID = buffer.readUInt8(offset++);
+  o.bWeight = buffer.readInt8(offset++);
+  o.ubPendingGroupID = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
+export function writePatrolGroup(o: PATROL_GROUP, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeInt8(o.bSize, offset);
+  offset = buffer.writeInt8(o.bPriority, offset);
+  offset = writeUIntArray(o.ubSectorID, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bFillPermittedAfterDayMod100, offset);
+  offset = buffer.writeUInt8(o.ubGroupID, offset);
+  offset = buffer.writeInt8(o.bWeight, offset);
+  offset = buffer.writeUInt8(o.ubPendingGroupID, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
 // Defines all stationary defence forces.
 export interface GARRISON_GROUP {
   ubSectorID: UINT8;
@@ -96,6 +200,16 @@ export interface GARRISON_GROUP {
   bWeight: INT8;
   ubPendingGroupID: UINT8;
   bPadding: INT8[] /* [10] */;
+}
+
+export function createGarrisonGroup(): GARRISON_GROUP {
+  return {
+    ubSectorID: 0,
+    ubComposition: 0,
+    bWeight: 0,
+    ubPendingGroupID: 0,
+    bPadding: createArray(10, 0),
+  };
 }
 
 export function createGarrisonGroupFrom(ubSectorID: UINT8, ubComposition: UINT8, bWeight: INT8, ubPendingGroupID: UINT8, bPadding: INT8[]): GARRISON_GROUP {
@@ -106,6 +220,36 @@ export function createGarrisonGroupFrom(ubSectorID: UINT8, ubComposition: UINT8,
     ubPendingGroupID,
     bPadding,
   };
+}
+
+export function copyGarrisonGroup(destination: GARRISON_GROUP, source: GARRISON_GROUP) {
+  destination.ubSectorID = source.ubSectorID;
+  destination.ubComposition = source.ubComposition;
+  destination.bWeight = source.bWeight;
+  destination.ubPendingGroupID = source.ubPendingGroupID;
+  copyArray(destination.bPadding, source.bPadding);
+}
+
+export const GARRISON_GROUP_SIZE = 14;
+
+export function readGarrisonGroup(o: GARRISON_GROUP, buffer: Buffer, offset: number = 0): number {
+  o.ubSectorID = buffer.readUInt8(offset++);
+  o.ubComposition = buffer.readUInt8(offset++);
+  o.bWeight = buffer.readInt8(offset++);
+  o.ubPendingGroupID = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
+export function writeGarrisonGroup(o: GARRISON_GROUP, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubSectorID, offset);
+  offset = buffer.writeUInt8(o.ubComposition, offset);
+  offset = buffer.writeInt8(o.bWeight, offset);
+  offset = buffer.writeUInt8(o.ubPendingGroupID, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
 }
 
 }

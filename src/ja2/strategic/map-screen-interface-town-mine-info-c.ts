@@ -15,8 +15,8 @@ let bCurrentTownMineSectorY: INT8 = 0;
 let bCurrentTownMineSectorZ: INT8 = 0;
 
 // inventory button
-let guiMapButtonInventoryImage: UINT32[] /* [2] */;
-let guiMapButtonInventory: UINT32[] /* [2] */;
+let guiMapButtonInventoryImage: UINT32[] /* [2] */ = createArray(2, 0);
+let guiMapButtonInventory: UINT32[] /* [2] */ = createArray(2, 0);
 
 let sTotalButtonWidth: UINT16 = 0;
 
@@ -36,16 +36,16 @@ export function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   CreateDestroyTownInfoBox();
 }
 
+/* static */ let CreateDestroyTownInfoBox__fCreated: boolean = false;
 export function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
-  /* static */ let fCreated: boolean = false;
   let pDimensions: SGPRect = createSGPRect();
   let pPosition: SGPPoint = createSGPPoint();
   let sButtonX: INT16 = 0;
   let sButtonY: INT16 = 0;
   let bTownId: INT8 = 0;
 
-  if ((fCreated == false) && (fShowTownInfo == true)) {
+  if ((CreateDestroyTownInfoBox__fCreated == false) && (fShowTownInfo == true)) {
     // create pop up box
     CreateTownInfoBox();
 
@@ -130,8 +130,8 @@ export function CreateDestroyTownInfoBox(): void {
     // now position box
     PositionTownMineInfoBox();
 
-    fCreated = true;
-  } else if ((fCreated == true) && (fShowTownInfo == false)) {
+    CreateDestroyTownInfoBox__fCreated = true;
+  } else if ((CreateDestroyTownInfoBox__fCreated == true) && (fShowTownInfo == false)) {
     // get box size
     GetBoxSize(ghTownMineBox, pDimensions);
 
@@ -148,7 +148,7 @@ export function CreateDestroyTownInfoBox(): void {
     // restore background
     RestoreExternBackgroundRect(pPosition.iX, pPosition.iY, (pDimensions.iRight - pDimensions.iLeft), (pDimensions.iBottom - pDimensions.iTop + 3));
 
-    fCreated = false;
+    CreateDestroyTownInfoBox__fCreated = false;
   }
 
   return;
@@ -594,7 +594,7 @@ function AddInventoryButtonForMapPopUpBox(): void {
   let pPosition: SGPPoint = createSGPPoint();
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiObject: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let sWidthA: INT16 = 0;
   let sWidthB: INT16 = 0;
   let sTotalBoxWidth: INT16 = 0;
@@ -607,12 +607,12 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   // Calculate smily face positions...
   hHandle = GetVideoObject(uiObject);
-  pTrav = addressof(hHandle.value.pETRLEObject[0]);
+  pTrav = hHandle.value.pETRLEObject[0];
 
-  sWidthA = pTrav.value.usWidth;
+  sWidthA = pTrav.usWidth;
 
-  pTrav = addressof(hHandle.value.pETRLEObject[1]);
-  sWidthB = pTrav.value.usWidth;
+  pTrav = hHandle.value.pETRLEObject[1];
+  sWidthB = pTrav.usWidth;
 
   sTotalBoxWidth = sTotalButtonWidth;
 
@@ -703,7 +703,7 @@ function MinWidthOfTownMineInfoBox(): void {
   let sWidthB: INT16 = 0;
   let sTotalBoxWidth: INT16 = 0;
   let uiObject: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\mapinvbtns.sti");
@@ -711,12 +711,12 @@ function MinWidthOfTownMineInfoBox(): void {
 
   // Calculate smily face positions...
   hHandle = GetVideoObject(uiObject);
-  pTrav = addressof(hHandle.value.pETRLEObject[0]);
+  pTrav = hHandle.value.pETRLEObject[0];
 
-  sWidthA = pTrav.value.usWidth;
+  sWidthA = pTrav.usWidth;
 
-  pTrav = addressof(hHandle.value.pETRLEObject[1]);
-  sWidthB = pTrav.value.usWidth;
+  pTrav = hHandle.value.pETRLEObject[1];
+  sWidthB = pTrav.usWidth;
 
   sTotalBoxWidth = sWidthA + sWidthB;
   sTotalButtonWidth = sTotalBoxWidth;

@@ -1332,8 +1332,8 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
       pSoldier.fDisplayDamage = true;
       pSoldier.bDisplayDamageCount = 0;
 
-      GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
-      GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
+      ({ sScreenX: sMercScreenX, sScreenY: sMercScreenY } = GetSoldierScreenPos(pSoldier));
+      ({ sOffsetX, sOffsetY } = GetSoldierAnimOffsets(pSoldier));
       pSoldier.sDamageX = sOffsetX;
       pSoldier.sDamageY = sOffsetY;
     }

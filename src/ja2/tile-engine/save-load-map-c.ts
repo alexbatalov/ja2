@@ -25,7 +25,7 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\m_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
   // Open the file for writing, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -69,7 +69,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\m_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -477,7 +477,7 @@ export function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSect
   // add the 'v' for 'reVeiled Map' to the front of the map name
   //	sprintf( zMapName, "%s\\v_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
   // Open the file for writing, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -515,7 +515,7 @@ export function LoadRevealedStatusArrayFromRevealedTempFile(): boolean {
   // add the 'v' for 'reVeiled Map' to the front of the map name
   //	sprintf( zMapName, "%s\\v_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_REVEALED_STATUS_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -759,7 +759,7 @@ export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, s
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\m_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, ubSectorZ);
+  zMapName = GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, sSectorX, sSectorY, ubSectorZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -860,7 +860,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: boo
   let pStructure: Pointer<STRUCTURE>;
   let pBase: Pointer<STRUCTURE>;
   let fStatusOnTheMap: boolean;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let sBaseGridNo: INT16 = uiMapIndex;
 
   pStructure = FindStructure(uiMapIndex, STRUCTURE_OPENABLE);
@@ -888,7 +888,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: boo
     // Adjust visiblity of any item pools here....
     // ATE: Nasty bug here - use base gridno for structure for items!
     // since items always drop to base gridno in AddItemToPool
-    if (GetItemPool(sBaseGridNo, addressof(pItemPool), 0)) {
+    if ((pItemPool = GetItemPool(sBaseGridNo, 0))) {
       if (fOpened) {
         // We are open, make un-hidden if so....
         SetItemPoolVisibilityOn(pItemPool, ANY_VISIBILITY_VALUE, false);
@@ -921,7 +921,7 @@ export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, 
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\m_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, zMapName, usSectorX, usSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS, usSectorX, usSectorY, bSectorZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {

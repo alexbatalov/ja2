@@ -45,6 +45,24 @@ export function createWaypoint(): WAYPOINT {
   };
 }
 
+export const WAYPOINT_SIZE = 8;
+
+export function readWaypoint(o: WAYPOINT, buffer: Buffer, offset: number = 0): number {
+  o.x = buffer.readUInt8(offset++);
+  o.y = buffer.readUInt8(offset++);
+  offset += 2; // padding
+  o.next = null; offset += 4; // pointer
+  return offset;
+}
+
+export function writeWaypoint(o: WAYPOINT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.x, offset);
+  offset = buffer.writeUInt8(o.y, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pointer
+  return offset;
+}
+
 const PG_INDIVIDUAL_MERGED = 0x01;
 
 export interface PLAYERGROUP {
@@ -91,6 +109,36 @@ export function createEnemyGroup(): ENEMYGROUP {
     ubElitesInBattle: 0,
     bPadding: createArray(20, 0),
   };
+}
+
+export const ENEMY_GROUP_SIZE = 29;
+
+export function readEnemyGroup(o: ENEMYGROUP, buffer: Buffer, offset: number = 0): number {
+  o.ubNumTroops = buffer.readUInt8(offset++);
+  o.ubNumElites = buffer.readUInt8(offset++);
+  o.ubNumAdmins = buffer.readUInt8(offset++);
+  o.ubLeaderProfileID = buffer.readUInt8(offset++);
+  o.ubPendingReinforcements = buffer.readUInt8(offset++);
+  o.ubAdminsInBattle = buffer.readUInt8(offset++);
+  o.ubIntention = buffer.readUInt8(offset++);
+  o.ubTroopsInBattle = buffer.readUInt8(offset++);
+  o.ubElitesInBattle = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeEnemyGroup(o: ENEMYGROUP, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubNumTroops, offset);
+  offset = buffer.writeUInt8(o.ubNumElites, offset);
+  offset = buffer.writeUInt8(o.ubNumAdmins, offset);
+  offset = buffer.writeUInt8(o.ubLeaderProfileID, offset);
+  offset = buffer.writeUInt8(o.ubPendingReinforcements, offset);
+  offset = buffer.writeUInt8(o.ubAdminsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubIntention, offset);
+  offset = buffer.writeUInt8(o.ubTroopsInBattle, offset);
+  offset = buffer.writeUInt8(o.ubElitesInBattle, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+  return offset;
 }
 
 // NOTE:  ALL FLAGS ARE CLEARED WHENEVER A GROUP ARRIVES IN A SECTOR, OR ITS WAYPOINTS ARE
@@ -191,6 +239,90 @@ export function createGroup(): GROUP {
     pEnemyGroup: null,
     next: null,
   };
+}
+
+export const GROUP_SIZE = 84;
+
+export function readGroup(o: GROUP, buffer: Buffer, offset: number = 0): number {
+  o.fDebugGroup = Boolean(buffer.readUInt8(offset++));
+  o.fPlayer = Boolean(buffer.readUInt8(offset++));
+  o.fVehicle = Boolean(buffer.readUInt8(offset++));
+  o.fPersistant = Boolean(buffer.readUInt8(offset++));
+  o.ubGroupID = buffer.readUInt8(offset++);
+  o.ubGroupSize = buffer.readUInt8(offset++);
+  o.ubSectorX = buffer.readUInt8(offset++);
+  o.ubSectorY = buffer.readUInt8(offset++);
+  o.ubSectorZ = buffer.readUInt8(offset++);
+  o.ubNextX = buffer.readUInt8(offset++);
+  o.ubNextY = buffer.readUInt8(offset++);
+  o.ubPrevX = buffer.readUInt8(offset++);
+  o.ubPrevY = buffer.readUInt8(offset++);
+  o.ubOriginalSector = buffer.readUInt8(offset++);
+  o.fBetweenSectors = Boolean(buffer.readUInt8(offset++));
+  o.ubMoveType = buffer.readUInt8(offset++);
+  o.ubNextWaypointID = buffer.readUInt8(offset++);
+  o.ubFatigueLevel = buffer.readUInt8(offset++);
+  o.ubRestAtFatigueLevel = buffer.readUInt8(offset++);
+  o.ubRestToFatigueLevel = buffer.readUInt8(offset++);
+  o.uiArrivalTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiTraverseTime = buffer.readUInt32LE(offset); offset += 4;
+  o.fRestAtNight = Boolean(buffer.readUInt8(offset++));
+  o.fWaypointsCancelled = Boolean(buffer.readUInt8(offset++));
+  offset += 2; // padding
+  o.pWaypoints = null; offset += 4; // pointer
+  o.ubTransportationMask = buffer.readUInt8(offset++);
+  offset += 3; // padding;
+  o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.ubCreatedSectorID = buffer.readUInt8(offset++);
+  o.ubSectorIDOfLastReassignment = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+  offset += 1; // padding
+
+  o.pPlayerList = null;
+  o.pEnemyGroup = null;
+  offset += 4; // pointer
+
+  o.next = null; offset += 4; // pointer
+  return offset;
+}
+
+export function writeGroup(o: GROUP, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(Number(o.fDebugGroup), offset);
+  offset = buffer.writeUInt8(Number(o.fPlayer), offset);
+  offset = buffer.writeUInt8(Number(o.fVehicle), offset);
+  offset = buffer.writeUInt8(Number(o.fPersistant), offset);
+  offset = buffer.writeUInt8(o.ubGroupID, offset);
+  offset = buffer.writeUInt8(o.ubGroupSize, offset);
+  offset = buffer.writeUInt8(o.ubSectorX, offset);
+  offset = buffer.writeUInt8(o.ubSectorY, offset);
+  offset = buffer.writeUInt8(o.ubSectorZ, offset);
+  offset = buffer.writeUInt8(o.ubNextX, offset);
+  offset = buffer.writeUInt8(o.ubNextY, offset);
+  offset = buffer.writeUInt8(o.ubPrevX, offset);
+  offset = buffer.writeUInt8(o.ubPrevY, offset);
+  offset = buffer.writeUInt8(o.ubOriginalSector, offset);
+  offset = buffer.writeUInt8(Number(o.fBetweenSectors), offset);
+  offset = buffer.writeUInt8(o.ubMoveType, offset);
+  offset = buffer.writeUInt8(o.ubNextWaypointID, offset);
+  offset = buffer.writeUInt8(o.ubFatigueLevel, offset);
+  offset = buffer.writeUInt8(o.ubRestAtFatigueLevel, offset);
+  offset = buffer.writeUInt8(o.ubRestToFatigueLevel, offset);
+  offset = buffer.writeUInt32LE(o.uiArrivalTime, offset);
+  offset = buffer.writeUInt32LE(o.uiTraverseTime, offset);
+  offset = buffer.writeUInt8(Number(o.fRestAtNight), offset);
+  offset = buffer.writeUInt8(Number(o.fWaypointsCancelled), offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pWaypoints
+  offset = buffer.writeUInt8(o.ubTransportationMask, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeUInt8(o.ubCreatedSectorID, offset);
+  offset = buffer.writeUInt8(o.ubSectorIDOfLastReassignment, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writePadding(buffer, offset, 4); // pPlayerList, pEnemyGroup
+  offset = writePadding(buffer, offset, 4); // next
+  return offset;
 }
 
 }

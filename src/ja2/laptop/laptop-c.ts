@@ -4373,7 +4373,7 @@ export function PrintDate(): void {
 
   SetFontShadow(NO_SHADOW);
 
-  mprintf(30 + (70 - StringPixLength(WORLDTIMESTR(), FONT10ARIAL())) / 2, 433, WORLDTIMESTR());
+  mprintf(30 + (70 - StringPixLength(gswzWorldTimeStr, FONT10ARIAL())) / 2, 433, gswzWorldTimeStr);
 
   SetFontShadow(DEFAULT_SHADOW);
 

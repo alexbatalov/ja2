@@ -2,23 +2,23 @@ namespace ja2 {
 
 let uiContractTimeMode: UINT32 = 0;
 
-let pLeaveSoldier: Pointer<SOLDIERTYPE> = null;
+let pLeaveSoldier: SOLDIERTYPE | null = null;
 
 export let fEnterMapDueToContract: boolean = false;
 export let ubQuitType: UINT8 = 0;
 let gfFirstMercSayQuote: boolean = false;
 
-export let pContractReHireSoldier: Pointer<SOLDIERTYPE> = null;
+export let pContractReHireSoldier: SOLDIERTYPE | null = null;
 
 export let gubContractLength: UINT8 = 0; // used when extending a mercs insurance contract
-let gpInsuranceSoldier: Pointer<SOLDIERTYPE> = null;
+let gpInsuranceSoldier: SOLDIERTYPE | null = null;
 
 // The values need to be saved!
-let ContractRenewalList: CONTRACT_NEWAL_LIST_NODE[] /* [20] */;
+let ContractRenewalList: CONTRACT_NEWAL_LIST_NODE[] /* [20] */ = createArrayFrom(20, createContractRenewalListNode);
 let ubNumContractRenewals: UINT8 = 0;
 // end
 let ubCurrentContractRenewal: UINT8 = 0;
-let ubCurrentContractRenewalInProgress: UINT8 = false;
+let ubCurrentContractRenewalInProgress: boolean = false;
 export let gfContractRenewalSquenceOn: boolean = false;
 export let gfInContractMenuFromRenewSequence: boolean = false;
 
@@ -28,14 +28,21 @@ const AIRPORT_Y = 2;
 
 export function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
-  FileWrite(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(ContractRenewalList)) {
+  buffer = Buffer.allocUnsafe(20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  for (let i = 0; i < 20; i++) {
+    writeContractRenewalListNode(ContractRenewalList[i], buffer, i * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  }
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  if (uiNumBytesWritten != 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE) {
     return false;
   }
 
-  FileWrite(hFile, addressof(ubNumContractRenewals), sizeof(ubNumContractRenewals), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(ubNumContractRenewals)) {
+  buffer.writeUInt8(ubNumContractRenewals, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+  if (uiNumBytesWritten != 1) {
     return false;
   }
 
@@ -44,23 +51,31 @@ export function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
-  FileRead(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(ContractRenewalList)) {
+  buffer = Buffer.allocUnsafe(20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  if (uiNumBytesRead != CONTRACT_RENEWAL_LIST_NODE_SIZE) {
     return false;
   }
 
-  FileRead(hFile, addressof(ubNumContractRenewals), sizeof(ubNumContractRenewals), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(ubNumContractRenewals)) {
+  for (let i = 0; i < 20; i++) {
+    readContractRenewalListNode(ContractRenewalList[i], buffer, i * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  }
+
+  uiNumBytesRead = FileRead(hFile, buffer, 1);
+  if (uiNumBytesRead != 1) {
     return false;
   }
+
+  ubNumContractRenewals = buffer.readUInt8(0);
 
   return true;
 }
 
 export function BeginContractRenewalSequence(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let fFoundAtLeastOne: boolean = false;
 
   if (ubNumContractRenewals > 0) {
@@ -69,7 +84,7 @@ export function BeginContractRenewalSequence(): void {
       pSoldier = FindSoldierByProfileID(ContractRenewalList[cnt].ubProfileID, false); // Steve Willis, 80
 
       if (pSoldier) {
-        if ((pSoldier.value.bActive == false) || (pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+        if ((pSoldier.bActive == false) || (pSoldier.bLife == 0) || (pSoldier.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
           // no
           continue;
         }
@@ -88,7 +103,7 @@ export function BeginContractRenewalSequence(): void {
 
       // Start at first one....
       ubCurrentContractRenewal = 0;
-      ubCurrentContractRenewalInProgress = 0;
+      ubCurrentContractRenewalInProgress = false;
 
       PauseGame();
       LockPauseState(7);
@@ -101,7 +116,7 @@ export function BeginContractRenewalSequence(): void {
 }
 
 export function HandleContractRenewalSequence(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (gfContractRenewalSquenceOn) {
     // Should we stop now?
@@ -125,7 +140,7 @@ export function HandleContractRenewalSequence(): void {
       // Double check contract situation....
       if (ContractIsExpiring(pSoldier)) {
         // Set this one in motion!
-        ubCurrentContractRenewalInProgress = 1;
+        ubCurrentContractRenewalInProgress = true;
 
         // Handle start here...
 
@@ -135,24 +150,24 @@ export function HandleContractRenewalSequence(): void {
           HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_LEAVING_ALSUCO_SOON);
 
           // Do special dialogue event...
-          SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTRACT_NOGO_TO_RENEW, pSoldier.value.ubID, 0, 0, 0, 0);
+          SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTRACT_NOGO_TO_RENEW, pSoldier.ubID, 0, 0, 0, 0);
         } else {
           // OK check what dialogue to play
           // If we have not used this one before....
-          if (pSoldier.value.ubContractRenewalQuoteCode == SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED) {
+          if (pSoldier.ubContractRenewalQuoteCode == SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED) {
             SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
             HandleImportantMercQuote(pSoldier, Enum202.QUOTE_CONTRACTS_OVER);
             SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
           }
           // Else if we have said 89 already......
-          else if (pSoldier.value.ubContractRenewalQuoteCode == SOLDIER_CONTRACT_RENEW_QUOTE_89_USED) {
+          else if (pSoldier.ubContractRenewalQuoteCode == SOLDIER_CONTRACT_RENEW_QUOTE_89_USED) {
             SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
             HandleImportantMercQuote(pSoldier, Enum202.QUOTE_MERC_LEAVING_ALSUCO_SOON);
             SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, Enum26.MAP_SCREEN, 0, 0, 0);
           }
 
           // Do special dialogue event...
-          SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTRACT_WANTS_TO_RENEW, pSoldier.value.ubID, 0, 0, 0, 0);
+          SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CONTRACT_WANTS_TO_RENEW, pSoldier.ubID, 0, 0, 0, 0);
         }
       } else {
         // Skip to next guy!
@@ -174,7 +189,7 @@ function EndCurrentContractRenewal(): void {
 }
 
 export function HandleMercIsWillingToRenew(ubID: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
+  let pSoldier: SOLDIERTYPE = MercPtrs[ubID];
 
   // We wish to lock interface
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
@@ -192,7 +207,7 @@ export function HandleMercIsWillingToRenew(ubID: UINT8): void {
 }
 
 export function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
+  let pSoldier: SOLDIERTYPE = MercPtrs[ubID];
 
   // We wish to lock interface
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, Enum26.MAP_SCREEN, 0, 0, 0);
@@ -208,7 +223,7 @@ export function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
 }
 
 // This is used only to EXTEND the contract of an AIM merc already on the team
-export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: UINT8): boolean {
+export function MercContractHandling(pSoldier: SOLDIERTYPE, ubDesiredAction: UINT8): boolean {
   let iContractCharge: INT32 = 0;
   let iContractLength: INT32 = 0;
   let ubHistoryContractType: UINT8 = 0;
@@ -216,13 +231,13 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
   let iCostOfInsurance: INT32 = 0;
 
   // determins what kind of merc the contract is being extended for (only aim mercs can extend contract)
-  if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
+  if (pSoldier.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
     return false;
 
   switch (ubDesiredAction) {
     case Enum161.CONTRACT_EXTEND_1_DAY:
       // check to see if the merc has enough money
-      iContractCharge = gMercProfiles[pSoldier.value.ubProfile].sSalary;
+      iContractCharge = gMercProfiles[pSoldier.ubProfile].sSalary;
 
       // set the contract length and the charge
       iContractLength = 1;
@@ -232,7 +247,7 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
       break;
 
     case Enum161.CONTRACT_EXTEND_1_WEEK:
-      iContractCharge = gMercProfiles[pSoldier.value.ubProfile].uiWeeklySalary;
+      iContractCharge = gMercProfiles[pSoldier.ubProfile].uiWeeklySalary;
 
       // set the contract length and the charge
       iContractLength = 7;
@@ -242,7 +257,7 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
       break;
 
     case Enum161.CONTRACT_EXTEND_2_WEEK:
-      iContractCharge = gMercProfiles[pSoldier.value.ubProfile].uiBiWeeklySalary;
+      iContractCharge = gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary;
 
       // set the contract length and the charge
       iContractLength = 14;
@@ -278,17 +293,17 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
   //
 
   // set the contract length and the charge
-  pSoldier.value.iTotalContractLength += iContractLength;
+  pSoldier.iTotalContractLength += iContractLength;
   //	pSoldier->iTotalContractCharge = iContractCharge;
-  pSoldier.value.bTypeOfLastContract = ubDesiredAction;
+  pSoldier.bTypeOfLastContract = ubDesiredAction;
 
   // determine the end of the contract
-  pSoldier.value.iEndofContractTime += (iContractLength * 1440);
+  pSoldier.iEndofContractTime += (iContractLength * 1440);
 
-  if ((pSoldier.value.usLifeInsurance) && (pSoldier.value.bAssignment != Enum117.ASSIGNMENT_POW)) //  DEF:  Removed cause they can extend a 1 day contract && ( iContractLength > 1 )
+  if ((pSoldier.usLifeInsurance) && (pSoldier.bAssignment != Enum117.ASSIGNMENT_POW)) //  DEF:  Removed cause they can extend a 1 day contract && ( iContractLength > 1 )
   {
     // check if player can afford insurance, if not, tell them
-    iCostOfInsurance = CalculateInsuranceContractCost(iContractLength, pSoldier.value.ubProfile);
+    iCostOfInsurance = CalculateInsuranceContractCost(iContractLength, pSoldier.ubProfile);
 
     HandleImportantMercQuote(pSoldier, Enum202.QUOTE_ACCEPT_CONTRACT_RENEWAL);
 
@@ -319,8 +334,8 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
   // ATE: Setup when they can be signed again!
   // If they are 2-weeks this can be extended
   // otherwise don't change from current
-  if (pSoldier.value.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
-    pSoldier.value.iTimeCanSignElsewhere = pSoldier.value.iEndofContractTime;
+  if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
+    pSoldier.iTimeCanSignElsewhere = pSoldier.iEndofContractTime;
   }
 
   // ARM: Do not reset because of renewal!  The quote is for early dismissal from *initial* time of hiring
@@ -331,15 +346,15 @@ export function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAc
   //	pSoldier->usMedicalDeposit = gMercProfiles[ pSoldier->ubProfile ].sMedicalDepositAmount;
 
   // add an entry in the finacial page for the extending  of the mercs contract
-  AddTransactionToPlayersBook(ubFinancesContractType, pSoldier.value.ubProfile, GetWorldTotalMin(), -iContractCharge);
+  AddTransactionToPlayersBook(ubFinancesContractType, pSoldier.ubProfile, GetWorldTotalMin(), -iContractCharge);
 
   // add an entry in the history page for the extending of the merc contract
-  AddHistoryToPlayersLog(ubHistoryContractType, pSoldier.value.ubProfile, GetWorldTotalMin(), pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  AddHistoryToPlayersLog(ubHistoryContractType, pSoldier.ubProfile, GetWorldTotalMin(), pSoldier.sSectorX, pSoldier.sSectorY);
 
   return true;
 }
 
-export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean): boolean {
+export function WillMercRenew(pSoldier: SOLDIERTYPE, fSayQuote: boolean): boolean {
   let i: UINT8;
   let bMercID: INT8;
   let fBuddyAround: boolean = false;
@@ -347,13 +362,13 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   let usBuddyQuote: UINT16 = 0;
   let usReasonQuote: UINT16 = 0;
   let fSayPrecedent: boolean = false;
-  let pHated: Pointer<SOLDIERTYPE>;
+  let pHated: SOLDIERTYPE | null;
 
-  if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
+  if (pSoldier.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
     return false;
 
   // does the merc have another contract already lined up?
-  if (pSoldier.value.fSignedAnotherContract) {
+  if (pSoldier.fSignedAnotherContract) {
     // NOTE: Having a buddy around will NOT stop a merc from leaving on another contract (IC's call)
 
     if (fSayQuote == true) {
@@ -367,7 +382,7 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   // find out if the merc has a buddy working for the player
   // loop through the list of people the merc considers buddies
   for (i = 0; i < 5; i++) {
-    bMercID = gMercProfiles[pSoldier.value.ubProfile].bBuddy[i];
+    bMercID = gMercProfiles[pSoldier.ubProfile].bBuddy[i];
 
     if (bMercID < 0)
       continue;
@@ -394,19 +409,19 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   // see if someone the merc hates is on the team
   // loop through the list of people the merc hates
   for (i = 0; i < 2; i++) {
-    bMercID = gMercProfiles[pSoldier.value.ubProfile].bHated[i];
+    bMercID = gMercProfiles[pSoldier.ubProfile].bHated[i];
 
     if (bMercID < 0)
       continue;
 
     if (IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) {
-      if (gMercProfiles[pSoldier.value.ubProfile].bHatedCount[i] == 0) {
+      if (gMercProfiles[pSoldier.ubProfile].bHatedCount[i] == 0) {
         // our tolerance has run out!
         fUnhappy = true;
       } else // else tolerance is > 0, only gripe if in same sector
       {
         pHated = FindSoldierByProfileID(bMercID, true);
-        if (pHated && pHated.value.sSectorX == pSoldier.value.sSectorX && pHated.value.sSectorY == pSoldier.value.sSectorY && pHated.value.bSectorZ == pSoldier.value.bSectorZ) {
+        if (pHated && pHated.sSectorX == pSoldier.sSectorX && pHated.sSectorY == pSoldier.sSectorY && pHated.bSectorZ == pSoldier.bSectorZ) {
           fUnhappy = true;
         }
       }
@@ -425,17 +440,17 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
 
   if (!fUnhappy) {
     // now check for learn to hate
-    bMercID = gMercProfiles[pSoldier.value.ubProfile].bLearnToHate;
+    bMercID = gMercProfiles[pSoldier.ubProfile].bLearnToHate;
 
     if (bMercID >= 0) {
       if (IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) {
-        if (gMercProfiles[pSoldier.value.ubProfile].bLearnToHateCount == 0) {
+        if (gMercProfiles[pSoldier.ubProfile].bLearnToHateCount == 0) {
           // our tolerance has run out!
           fUnhappy = true;
           usReasonQuote = Enum202.QUOTE_LEARNED_TO_HATE_MERC_1_ON_TEAM_WONT_RENEW;
-        } else if (gMercProfiles[pSoldier.value.ubProfile].bLearnToHateCount <= gMercProfiles[pSoldier.value.ubProfile].bLearnToHateTime / 2) {
+        } else if (gMercProfiles[pSoldier.ubProfile].bLearnToHateCount <= gMercProfiles[pSoldier.ubProfile].bLearnToHateTime / 2) {
           pHated = FindSoldierByProfileID(bMercID, true);
-          if (pHated && pHated.value.sSectorX == pSoldier.value.sSectorX && pHated.value.sSectorY == pSoldier.value.sSectorY && pHated.value.bSectorZ == pSoldier.value.bSectorZ) {
+          if (pHated && pHated.sSectorX == pSoldier.sSectorX && pHated.sSectorY == pSoldier.sSectorY && pHated.bSectorZ == pSoldier.bSectorZ) {
             fUnhappy = true;
             usReasonQuote = Enum202.QUOTE_LEARNED_TO_HATE_MERC_1_ON_TEAM_WONT_RENEW;
           }
@@ -447,7 +462,7 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   // happy so far?
   if (!fUnhappy) {
     // check if death rate is too high
-    if (MercThinksDeathRateTooHigh(pSoldier.value.ubProfile)) {
+    if (MercThinksDeathRateTooHigh(pSoldier.ubProfile)) {
       fUnhappy = true;
       usReasonQuote = Enum202.QUOTE_DEATH_RATE_RENEWAL;
     }
@@ -469,16 +484,16 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   if (fSayQuote) {
     if (fUnhappy) {
       if (fBuddyAround) {
-        if (GetMercPrecedentQuoteBitStatus(pSoldier.value.ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote))) == true) {
+        if (GetMercPrecedentQuoteBitStatus(pSoldier.ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote))) == true) {
           fSayPrecedent = true;
         } else {
-          SetMercPrecedentQuoteBitStatus(pSoldier.value.ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote)));
+          SetMercPrecedentQuoteBitStatus(pSoldier.ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote)));
         }
       } else {
-        if (GetMercPrecedentQuoteBitStatus(pSoldier.value.ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote))) == true) {
+        if (GetMercPrecedentQuoteBitStatus(pSoldier.ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote))) == true) {
           fSayPrecedent = true;
         } else {
-          SetMercPrecedentQuoteBitStatus(pSoldier.value.ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote)));
+          SetMercPrecedentQuoteBitStatus(pSoldier.ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote)));
         }
       }
     }
@@ -529,19 +544,19 @@ export function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: boolean
   }
 }
 
-function HandleSoldierLeavingWithLowMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
+function HandleSoldierLeavingWithLowMorale(pSoldier: SOLDIERTYPE): void {
   if (MercThinksHisMoraleIsTooLow(pSoldier)) {
     // this will cause him give us lame excuses for a while until he gets over it
     // 3-6 days (but the first 1-2 days of that are spent "returning" home)
-    gMercProfiles[pSoldier.value.ubProfile].ubDaysOfMoraleHangover = (3 + Random(4));
+    gMercProfiles[pSoldier.ubProfile].ubDaysOfMoraleHangover = (3 + Random(4));
   }
 }
 
-function HandleSoldierLeavingForAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier.value.fSignedAnotherContract) {
+function HandleSoldierLeavingForAnotherContract(pSoldier: SOLDIERTYPE): void {
+  if (pSoldier.fSignedAnotherContract) {
     // merc goes to work elsewhere
-    gMercProfiles[pSoldier.value.ubProfile].bMercStatus = MERC_WORKING_ELSEWHERE;
-    gMercProfiles[pSoldier.value.ubProfile].uiDayBecomesAvailable += 1 + Random(6 + (pSoldier.value.bExpLevel / 2)); // 1-(6 to 11) days
+    gMercProfiles[pSoldier.ubProfile].bMercStatus = MERC_WORKING_ELSEWHERE;
+    gMercProfiles[pSoldier.ubProfile].uiDayBecomesAvailable += 1 + Random(6 + (pSoldier.bExpLevel / 2)); // 1-(6 to 11) days
   }
 }
 
@@ -591,23 +606,23 @@ BOOLEAN SoldierWantsToDelayRenewalOfContract( SOLDIERTYPE *pSoldier )
 */
 
 // this is called once a day (daily update) for every merc working for the player
-export function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CheckIfMercGetsAnotherContract(pSoldier: SOLDIERTYPE): void {
   let uiFullDaysRemaining: UINT32 = 0;
   let iChance: INT32 = 0;
 
   // aim merc?
-  if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
+  if (pSoldier.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC)
     return;
 
   // ATE: check time we have and see if we can accept new contracts....
-  if (GetWorldTotalMin() <= pSoldier.value.iTimeCanSignElsewhere) {
+  if (GetWorldTotalMin() <= pSoldier.iTimeCanSignElsewhere) {
     return;
   }
 
   // if he doesn't already have another contract
-  if (!pSoldier.value.fSignedAnotherContract) {
+  if (!pSoldier.fSignedAnotherContract) {
     // chance depends on how much time he has left in his contract, and his experience level (determines demand)
-    uiFullDaysRemaining = (pSoldier.value.iEndofContractTime - GetWorldTotalMin()) / (24 * 60);
+    uiFullDaysRemaining = (pSoldier.iEndofContractTime - GetWorldTotalMin()) / (24 * 60);
 
     if (uiFullDaysRemaining == 0) {
       // less than a full day left on contract
@@ -625,17 +640,17 @@ export function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): 
     }
 
     // multiply by experience level
-    iChance *= pSoldier.value.bExpLevel;
+    iChance *= pSoldier.bExpLevel;
 
     if (Random(100) < iChance) {
       // B'bye!
-      pSoldier.value.fSignedAnotherContract = true;
+      pSoldier.fSignedAnotherContract = true;
     }
   }
 }
 
 // for ubRemoveType pass in the enum from the .h, 	( MERC_QUIT, MERC_FIRED  )
-export function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: boolean): boolean {
+export function BeginStrategicRemoveMerc(pSoldier: SOLDIERTYPE, fAddRehireButton: boolean): boolean {
   InterruptTime();
   PauseGame();
   LockPauseState(8);
@@ -644,7 +659,7 @@ export function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddReh
   HandleUniqueEventWhenPlayerLeavesTeam(pSoldier);
 
   // IF the soldier is an EPC, don't ask about equipment
-  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
+  if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__EPC) {
     UnEscortEPC(pSoldier);
   } else {
     NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier, fAddRehireButton);
@@ -653,7 +668,7 @@ export function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddReh
   return true;
 }
 
-export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function StrategicRemoveMerc(pSoldier: SOLDIERTYPE): boolean {
   let ubHistoryCode: UINT8 = 0;
 
   if (gfInContractMenuFromRenewSequence) {
@@ -661,20 +676,20 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   // ATE: Determine which HISTORY ENTRY to use...
-  if (pSoldier.value.ubLeaveHistoryCode == 0) {
+  if (pSoldier.ubLeaveHistoryCode == 0) {
     // Default use contract expired reason...
-    pSoldier.value.ubLeaveHistoryCode = Enum83.HISTORY_MERC_CONTRACT_EXPIRED;
+    pSoldier.ubLeaveHistoryCode = Enum83.HISTORY_MERC_CONTRACT_EXPIRED;
   }
 
-  ubHistoryCode = pSoldier.value.ubLeaveHistoryCode;
+  ubHistoryCode = pSoldier.ubLeaveHistoryCode;
 
   // if the soldier is DEAD
-  if (pSoldier.value.bLife <= 0) {
+  if (pSoldier.bLife <= 0) {
     AddCharacterToDeadList(pSoldier);
   }
 
   // else if the merc was fired
-  else if (ubHistoryCode == Enum83.HISTORY_MERC_FIRED || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
+  else if (ubHistoryCode == Enum83.HISTORY_MERC_FIRED || pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
     AddCharacterToFiredList(pSoldier);
   }
 
@@ -683,17 +698,17 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
     AddCharacterToOtherList(pSoldier);
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__NPC) {
+  if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__NPC) {
     SetupProfileInsertionDataForSoldier(pSoldier);
   }
 
   // remove him from the soldier structure
-  if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
+  if (pSoldier.bAssignment >= Enum117.ON_DUTY) {
     // is he/she in a mvt group, if so, remove and destroy the group
-    if (pSoldier.value.ubGroupID) {
-      if (pSoldier.value.bAssignment != Enum117.VEHICLE) {
+    if (pSoldier.ubGroupID) {
+      if (pSoldier.bAssignment != Enum117.VEHICLE) {
         // Can only remove groups if they aren't persistant (not in a squad or vehicle)
-        RemoveGroup(pSoldier.value.ubGroupID);
+        RemoveGroup(pSoldier.ubGroupID);
       } else {
         // remove him from any existing merc slot he could be in
         RemoveMercSlot(pSoldier);
@@ -705,12 +720,12 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   // if the merc is not dead
-  if (gMercProfiles[pSoldier.value.ubProfile].bMercStatus != MERC_IS_DEAD) {
+  if (gMercProfiles[pSoldier.ubProfile].bMercStatus != MERC_IS_DEAD) {
     // Set the status to returning home ( delay the merc for rehire )
-    gMercProfiles[pSoldier.value.ubProfile].bMercStatus = MERC_RETURNING_HOME;
+    gMercProfiles[pSoldier.ubProfile].bMercStatus = MERC_RETURNING_HOME;
 
     // specify how long the merc will continue to be unavailable
-    gMercProfiles[pSoldier.value.ubProfile].uiDayBecomesAvailable = 1 + Random(2); // 1-2 days
+    gMercProfiles[pSoldier.ubProfile].uiDayBecomesAvailable = 1 + Random(2); // 1-2 days
 
     HandleSoldierLeavingWithLowMorale(pSoldier);
     HandleSoldierLeavingForAnotherContract(pSoldier);
@@ -718,13 +733,13 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
 
   // add an entry in the history page for the firing/quiting of the merc
   // ATE: Don't do this if they are already dead!
-  if (!(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
-    AddHistoryToPlayersLog(ubHistoryCode, pSoldier.value.ubProfile, GetWorldTotalMin(), pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  if (!(pSoldier.uiStatusFlags & SOLDIER_DEAD)) {
+    AddHistoryToPlayersLog(ubHistoryCode, pSoldier.ubProfile, GetWorldTotalMin(), pSoldier.sSectorX, pSoldier.sSectorY);
   }
 
   // if the merc was a POW, remember it becuase the merc cant show up in AIM or MERC anymore
-  if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) {
-    gMercProfiles[pSoldier.value.ubProfile].bMercStatus = MERC_FIRED_AS_A_POW;
+  if (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) {
+    gMercProfiles[pSoldier.ubProfile].bMercStatus = MERC_FIRED_AS_A_POW;
   }
 
   // else the merc CAN get his medical deposit back
@@ -734,7 +749,7 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   // remove the merc from the tactical
-  TacticalRemoveSoldier(pSoldier.value.ubID);
+  TacticalRemoveSoldier(pSoldier.ubID);
 
   // Check if we should remove loaded world...
   CheckAndHandleUnloadingOfCurrentWorld();
@@ -756,44 +771,44 @@ export function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return true;
 }
 
-function CalculateMedicalDepositRefund(pSoldier: Pointer<SOLDIERTYPE>): void {
+function CalculateMedicalDepositRefund(pSoldier: SOLDIERTYPE): void {
   let iRefundAmount: INT32 = 0;
 
   // if the merc didnt have any medical deposit, exit
-  if (!gMercProfiles[pSoldier.value.ubProfile].bMedicalDeposit)
+  if (!gMercProfiles[pSoldier.ubProfile].bMedicalDeposit)
     return;
 
   // if the merc is at full health, refund the full medical deposit
-  if (pSoldier.value.bLife == pSoldier.value.bLifeMax) {
+  if (pSoldier.bLife == pSoldier.bLifeMax) {
     // add an entry in the finacial page for the FULL refund of the medical deposit
     // use the medical deposit in pSoldier, not in profile, which goes up with leveling
-    AddTransactionToPlayersBook(Enum80.FULL_MEDICAL_REFUND, pSoldier.value.ubProfile, GetWorldTotalMin(), pSoldier.value.usMedicalDeposit);
+    AddTransactionToPlayersBook(Enum80.FULL_MEDICAL_REFUND, pSoldier.ubProfile, GetWorldTotalMin(), pSoldier.usMedicalDeposit);
 
     // add an email
-    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_REFUND, AIM_MEDICAL_DEPOSIT_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), pSoldier.value.usMedicalDeposit, pSoldier.value.ubProfile);
+    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_REFUND, AIM_MEDICAL_DEPOSIT_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), pSoldier.usMedicalDeposit, pSoldier.ubProfile);
   }
   // else if the merc is a dead, refund NOTHING!!
-  else if (pSoldier.value.bLife <= 0) {
+  else if (pSoldier.bLife <= 0) {
     // add an entry in the finacial page for NO refund of the medical deposit
     // AddTransactionToPlayersBook( NO_MEDICAL_REFUND, pSoldier->ubProfile, GetWorldTotalMin(), 0 );
 
     // add an email
-    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_NO_REFUND, AIM_MEDICAL_DEPOSIT_NO_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), pSoldier.value.usMedicalDeposit, pSoldier.value.ubProfile);
+    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_NO_REFUND, AIM_MEDICAL_DEPOSIT_NO_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), pSoldier.usMedicalDeposit, pSoldier.ubProfile);
   }
   // else the player is injured, refund a partial amount
   else {
     // use the medical deposit in pSoldier, not in profile, which goes up with leveling
-    iRefundAmount = ((pSoldier.value.bLife / pSoldier.value.bLifeMax) * pSoldier.value.usMedicalDeposit + 0.5);
+    iRefundAmount = ((pSoldier.bLife / pSoldier.bLifeMax) * pSoldier.usMedicalDeposit + 0.5);
 
     // add an entry in the finacial page for a PARTIAL refund of the medical deposit
-    AddTransactionToPlayersBook(Enum80.PARTIAL_MEDICAL_REFUND, pSoldier.value.ubProfile, GetWorldTotalMin(), iRefundAmount);
+    AddTransactionToPlayersBook(Enum80.PARTIAL_MEDICAL_REFUND, pSoldier.ubProfile, GetWorldTotalMin(), iRefundAmount);
 
     // add an email
-    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_PARTIAL_REFUND, AIM_MEDICAL_DEPOSIT_PARTIAL_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), iRefundAmount, pSoldier.value.ubProfile);
+    AddEmailWithSpecialData(AIM_MEDICAL_DEPOSIT_PARTIAL_REFUND, AIM_MEDICAL_DEPOSIT_PARTIAL_REFUND_LENGTH, Enum75.AIM_SITE, GetWorldTotalMin(), iRefundAmount, pSoldier.ubProfile);
   }
 }
 
-function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: boolean): void {
+function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: SOLDIERTYPE, fAddRehireButton: boolean): void {
   // will tell player this character is leaving and ask where they want the equipment left
   let sString: string /* CHAR16[1024] */;
   let fInSector: boolean = false;
@@ -805,70 +820,70 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
 
   // GetSectorIDString( pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, zTownIDString, TRUE );
 
-  zShortTownIDString = GetShortSectorString(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  zShortTownIDString = GetShortSectorString(pSoldier.sSectorX, pSoldier.sSectorY);
 
   // Set string for generic button
   gzUserDefinedButton1 = swprintf("%s", zShortTownIDString);
 
   pLeaveSoldier = pSoldier;
 
-  if (pSoldier.value.fSignedAnotherContract == true) {
+  if (pSoldier.fSignedAnotherContract == true) {
     fAddRehireButton = false;
   }
 
-  if (pSoldier.value.fSignedAnotherContract == true) {
+  if (pSoldier.fSignedAnotherContract == true) {
     fAddRehireButton = false;
   }
 
-  if (pSoldier.value.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC) {
+  if (pSoldier.ubWhatKindOfMercAmI != Enum260.MERC_TYPE__AIM_MERC) {
     fAddRehireButton = false;
   }
 
   // if the character is an RPC
-  if (pSoldier.value.ubProfile >= FIRST_RPC && pSoldier.value.ubProfile < FIRST_NPC) {
-    if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-      sString = swprintf(pMercHeLeaveString[4], pSoldier.value.name, zShortTownIDString);
+  if (pSoldier.ubProfile >= FIRST_RPC && pSoldier.ubProfile < FIRST_NPC) {
+    if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+      sString = swprintf(pMercHeLeaveString[4], pSoldier.name, zShortTownIDString);
     } else {
-      sString = swprintf(pMercSheLeaveString[4], pSoldier.value.name, zShortTownIDString);
+      sString = swprintf(pMercSheLeaveString[4], pSoldier.name, zShortTownIDString);
     }
     fInSector = true;
   }
 
   // check if drassen controlled
   else if (StrategicMap[(AIRPORT_X + (MAP_WORLD_X * AIRPORT_Y))].fEnemyControlled == false) {
-    if ((pSoldier.value.sSectorX == AIRPORT_X) && (pSoldier.value.sSectorY == AIRPORT_Y) && (pSoldier.value.bSectorZ == 0)) {
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        sString = swprintf("%s %s", pSoldier.value.name, pMercHeLeaveString[3]);
+    if ((pSoldier.sSectorX == AIRPORT_X) && (pSoldier.sSectorY == AIRPORT_Y) && (pSoldier.bSectorZ == 0)) {
+      if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        sString = swprintf("%s %s", pSoldier.name, pMercHeLeaveString[3]);
       } else {
-        sString = swprintf("%s %s", pSoldier.value.name, pMercSheLeaveString[3]);
+        sString = swprintf("%s %s", pSoldier.name, pMercSheLeaveString[3]);
       }
       fInSector = true;
     } else {
       // Set string for generic button
       gzUserDefinedButton2 = "B13";
 
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        sString = swprintf(pMercHeLeaveString[0], pSoldier.value.name, zShortTownIDString);
+      if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        sString = swprintf(pMercHeLeaveString[0], pSoldier.name, zShortTownIDString);
       } else {
-        sString = swprintf(pMercSheLeaveString[0], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercSheLeaveString[0], pSoldier.name, zShortTownIDString);
       }
     }
   } else {
-    if ((pSoldier.value.sSectorX == OMERTA_LEAVE_EQUIP_SECTOR_X) && (pSoldier.value.sSectorY == OMERTA_LEAVE_EQUIP_SECTOR_Y) && (pSoldier.value.bSectorZ == 0)) {
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        sString = swprintf("%s %s", pSoldier.value.name, pMercHeLeaveString[2]);
+    if ((pSoldier.sSectorX == OMERTA_LEAVE_EQUIP_SECTOR_X) && (pSoldier.sSectorY == OMERTA_LEAVE_EQUIP_SECTOR_Y) && (pSoldier.bSectorZ == 0)) {
+      if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        sString = swprintf("%s %s", pSoldier.name, pMercHeLeaveString[2]);
       } else {
-        sString = swprintf("%s %s", pSoldier.value.name, pMercSheLeaveString[2]);
+        sString = swprintf("%s %s", pSoldier.name, pMercSheLeaveString[2]);
       }
       fInSector = true;
     } else {
       // Set string for generic button
       gzUserDefinedButton2 = "A9";
 
-      if (gMercProfiles[pSoldier.value.ubProfile].bSex == Enum272.MALE) {
-        sString = swprintf(pMercHeLeaveString[1], pSoldier.value.name, zShortTownIDString);
+      if (gMercProfiles[pSoldier.ubProfile].bSex == Enum272.MALE) {
+        sString = swprintf(pMercHeLeaveString[1], pSoldier.name, zShortTownIDString);
       } else {
-        sString = swprintf(pMercSheLeaveString[1], pSoldier.value.name, zShortTownIDString);
+        sString = swprintf(pMercSheLeaveString[1], pSoldier.name, zShortTownIDString);
       }
     }
   }
@@ -884,13 +899,13 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   } else {
     if (fInSector == false) {
       // set up for all otherscreens
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, addressof(pCenteringRect));
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, pCenteringRect);
     } else {
-      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, addressof(pCenteringRect));
+      DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, pCenteringRect);
     }
   }
 
-  if (pSoldier.value.fSignedAnotherContract == true) {
+  if (pSoldier.fSignedAnotherContract == true) {
     // fCurrentMercFired = FALSE;
   }
 }
@@ -903,10 +918,10 @@ function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
 
   if (bExitValue == MSG_BOX_RETURN_OK) {
     // yep (NOTE that this passes the SOLDIER index, not the PROFILE index as the others do)
-    HandleLeavingOfEquipmentInCurrentSector(pLeaveSoldier.value.ubID);
+    HandleLeavingOfEquipmentInCurrentSector(pLeaveSoldier.ubID);
 
     // aim merc will say goodbye when leaving
-    if ((pLeaveSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && (ubQuitType != Enum83.HISTORY_MERC_FIRED)) {
+    if ((pLeaveSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && (ubQuitType != Enum83.HISTORY_MERC_FIRED)) {
       //	TacticalCharacterDialogue( pLeaveSoldier, QUOTE_MERC_LEAVING_ALSUCO_SOON );
     }
   } else if (bExitValue == MSG_BOX_RETURN_CONTRACT) {
@@ -914,18 +929,18 @@ function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
     return;
   } else if (bExitValue == MSG_BOX_RETURN_YES) {
     // yep (NOTE that this passes the SOLDIER index, not the PROFILE index as the others do)
-    HandleLeavingOfEquipmentInCurrentSector(pLeaveSoldier.value.ubID);
+    HandleLeavingOfEquipmentInCurrentSector(pLeaveSoldier.ubID);
 
     // aim merc will say goodbye when leaving
-    if ((pLeaveSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && (ubQuitType != Enum83.HISTORY_MERC_FIRED)) {
+    if ((pLeaveSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) && (ubQuitType != Enum83.HISTORY_MERC_FIRED)) {
       //	TacticalCharacterDialogue( pLeaveSoldier, QUOTE_MERC_LEAVING_ALSUCO_SOON );
     }
   } else {
     // no
     if (StrategicMap[BOBBYR_SHIPPING_DEST_SECTOR_X + (BOBBYR_SHIPPING_DEST_SECTOR_Y * MAP_WORLD_X)].fEnemyControlled == false) {
-      HandleMercLeavingEquipmentInDrassen(pLeaveSoldier.value.ubID);
+      HandleMercLeavingEquipmentInDrassen(pLeaveSoldier.ubID);
     } else {
-      HandleMercLeavingEquipmentInOmerta(pLeaveSoldier.value.ubID);
+      HandleMercLeavingEquipmentInOmerta(pLeaveSoldier.ubID);
     }
   }
 
@@ -936,13 +951,13 @@ function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
   return;
 }
 
-function HandleFiredDeadMerc(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function HandleFiredDeadMerc(pSoldier: SOLDIERTYPE): boolean {
   AddCharacterToDeadList(pSoldier);
 
   return true;
 }
 
-function HandleExtendMercsContract(pSoldier: Pointer<SOLDIERTYPE>): void {
+function HandleExtendMercsContract(pSoldier: SOLDIERTYPE): void {
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     gfEnteringMapScreen = true;
 
@@ -970,17 +985,17 @@ function HandleExtendMercsContract(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // find out is something was said
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
-  let pSoldierWhoWillQuit: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
+  let pSoldierWhoWillQuit: SOLDIERTYPE | null = null;
   let iCounter: INT32 = 0;
   let iNumberOnTeam: INT32 = 0;
-  let ubPotentialMercs: UINT8[] /* [20] */ = [ 0 ];
+  let ubPotentialMercs: UINT8[] /* [20] */ = createArray(20, 0);
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
 
   gfFirstMercSayQuote = false;
 
-  pSoldier = addressof(Menptr[0]);
+  pSoldier = Menptr[0];
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // run through list of grunts whoose contract are up in the next 2 hours
@@ -990,26 +1005,26 @@ export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // is any merc that does not want to stay and only display that quote
   // if they are the only one here....
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = addressof(Menptr[iCounter]);
+    pSoldier = Menptr[iCounter];
 
     // valid soldier?
-    if ((pSoldier.value.bActive == false) || (pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+    if ((pSoldier.bActive == false) || (pSoldier.bLife == 0) || (pSoldier.bAssignment == Enum117.IN_TRANSIT) || (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
       // no
       continue;
     }
 
-    if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
+    if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
       // if the user hasnt renewed yet, and is still leaving today
       if (ContractIsGoingToExpireSoon(pSoldier)) {
         // OK, default value for quote said
-        pSoldier.value.ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED;
+        pSoldier.ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_NOT_USED;
 
         // Add this guy to the renewal list
-        ContractRenewalList[ubNumContractRenewals].ubProfileID = pSoldier.value.ubProfile;
+        ContractRenewalList[ubNumContractRenewals].ubProfileID = pSoldier.ubProfile;
         ubNumContractRenewals++;
 
         if (WillMercRenew(pSoldier, false)) {
-          ubPotentialMercs[ubNumMercs] = pSoldier.value.ubID;
+          ubPotentialMercs[ubNumMercs] = pSoldier.ubID;
           ubNumMercs++;
         } else {
           pSoldierWhoWillQuit = pSoldier;
@@ -1019,7 +1034,7 @@ export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
         AddSoldierToWaitingListQueue(pSoldier);
       }
     } else {
-      if (pSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
+      if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
         // Do nothing here for now...
       }
     }
@@ -1034,7 +1049,7 @@ export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
     AddReasonToWaitingListQueue(Enum154.CONTRACT_EXPIRE_WARNING_REASON);
     TacticalCharacterDialogueWithSpecialEvent(pSoldierWhoWillQuit, 0, DIALOGUE_SPECIAL_EVENT_SHOW_UPDATE_MENU, 0, 0);
 
-    pSoldierWhoWillQuit.value.ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_115_USED;
+    pSoldierWhoWillQuit.ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_115_USED;
   } else {
     // OK, pick one....
     if (ubNumMercs > 0) {
@@ -1056,7 +1071,7 @@ function HandleNotifyPlayerCantAffordInsurance(): void {
   DoScreenIndependantMessageBox(zMarksMapScreenText[9], MSG_BOX_FLAG_OK, null);
 }
 
-function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ubLength: UINT8, iCost: INT32): void {
+function HandleNotifyPlayerCanAffordInsurance(pSoldier: SOLDIERTYPE, ubLength: UINT8, iCost: INT32): void {
   let sString: string /* CHAR16[128] */;
   let sStringA: string /* CHAR16[32] */;
 
@@ -1067,7 +1082,7 @@ function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ub
   sStringA = InsertCommasForDollarFigure(sStringA);
   sStringA = InsertDollarSignInToString(sStringA);
 
-  sString = swprintf(zMarksMapScreenText[10], pSoldier.value.name, sStringA, ubLength);
+  sString = swprintf(zMarksMapScreenText[10], pSoldier.name, sStringA, ubLength);
 
   // Set the length to the global variable ( so we know how long the contract is in the callback )
   gubContractLength = ubLength;
@@ -1095,12 +1110,12 @@ function ExtendMercInsuranceContractCallBack(bExitValue: UINT8): void {
   gpInsuranceSoldier = null;
 }
 
-function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: Pointer<SOLDIERTYPE>): void {
-  switch (pSoldier.value.ubProfile) {
+function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: SOLDIERTYPE): void {
+  switch (pSoldier.ubProfile) {
     // When iggy leaves the players team,
     case Enum268.IGGY:
       // if he is owed money ( ie the player didnt pay him )
-      if (gMercProfiles[pSoldier.value.ubProfile].iBalance < 0) {
+      if (gMercProfiles[pSoldier.ubProfile].iBalance < 0) {
         // iggy is now available to be handled by the enemy
         gubFact[Enum170.FACT_IGGY_AVAILABLE_TO_ARMY] = true;
       }
@@ -1108,20 +1123,20 @@ function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: Pointer<SOLDIERTYPE>): 
   }
 }
 
-export function GetHourWhenContractDone(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
+export function GetHourWhenContractDone(pSoldier: SOLDIERTYPE): UINT32 {
   let uiArriveHour: UINT32;
 
   // Get the arrival hour - that will give us when they arrived....
-  uiArriveHour = ((pSoldier.value.uiTimeSoldierWillArrive) - (((pSoldier.value.uiTimeSoldierWillArrive) / 1440) * 1440)) / 60;
+  uiArriveHour = ((pSoldier.uiTimeSoldierWillArrive) - (((pSoldier.uiTimeSoldierWillArrive) / 1440) * 1440)) / 60;
 
   return uiArriveHour;
 }
 
-function ContractIsExpiring(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function ContractIsExpiring(pSoldier: SOLDIERTYPE): boolean {
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier.value.iEndofContractTime / 1440) <= GetWorldDay()) {
+  if ((pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // See if the hour we are on is the same....
@@ -1134,12 +1149,12 @@ function ContractIsExpiring(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return false;
 }
 
-function ContractIsGoingToExpireSoon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function ContractIsGoingToExpireSoon(pSoldier: SOLDIERTYPE): boolean {
   // get hour contract is going to expire....
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier.value.iEndofContractTime / 1440) <= GetWorldDay()) {
+  if ((pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // If we are <= 2 hours from expiry.

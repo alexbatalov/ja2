@@ -908,7 +908,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let ExitGrid: EXITGRID = createExitGrid();
   let sIntTileGridNo: INT16;
   let fContinue: boolean = true;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   /* static */ let sGridNoForItemsOver: INT16;
   /* static */ let bLevelForItemsOver: INT8;
@@ -934,7 +934,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   if (!UIHandleOnMerc(true)) {
     // Are we over items...
-    if (GetItemPool(usMapPos, addressof(pItemPool), gsInterfaceLevel) && ITEMPOOL_VISIBLE(pItemPool)) {
+    if ((pItemPool = GetItemPool(usMapPos, gsInterfaceLevel)) && ITEMPOOL_VISIBLE(pItemPool)) {
       // Are we already in...
       if (fOverItems) {
         // Is this the same level & gridno...
@@ -3179,14 +3179,14 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
 
 export function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
   let sAPCost: INT16;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
 
   sAPCost = GetAPsToPickupItem(pSoldier, sGridNo);
 
   if (sAPCost == 0) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
   } else {
-    if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
+    if ((pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel))) {
       // if ( !ITEMPOOL_VISIBLE( pItemPool ) )
       {
         //		return( FALSE );
@@ -4376,7 +4376,7 @@ export function BeginDisplayTimedCursor(uiCursorID: UINT32, uiDelay: UINT32): vo
 }
 
 function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16, fUseOKCursor: boolean, fItemsOnlyIfOnIntTiles: boolean): INT8 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let fSetCursor: boolean;
   let uiCursorFlags: UINT32;
   let pIntTile: Pointer<LEVELNODE>;
@@ -4478,7 +4478,7 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
   }
 
   // Check if we are over an item pool
-  if (GetItemPool(sActionGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
+  if ((pItemPool = GetItemPool(sActionGridNo, pSoldier.value.bLevel))) {
     // If we want only on int tiles, and we have no int tiles.. ignore items!
     if (fItemsOnlyIfOnIntTiles && pIntTile == null) {
     } else if (fItemsOnlyIfOnIntTiles && pIntTile != null && (pStructure.value.fFlags & STRUCTURE_HASITEMONTOP)) {

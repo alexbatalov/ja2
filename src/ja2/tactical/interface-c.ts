@@ -1053,8 +1053,8 @@ export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX:
   let sTextBodyTypeYOffset: INT16 = 62;
 
   // Find XY, dims, offsets
-  GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
-  GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
+  ({ sScreenX: sMercScreenX, sScreenY: sMercScreenY } = GetSoldierScreenPos(pSoldier));
+  ({ sOffsetX, sOffsetY } = GetSoldierAnimOffsets(pSoldier));
 
   // OK, first thing to do is subtract offsets ( because GetSoldierScreenPos adds them... )
   sMercScreenX -= sOffsetX;
@@ -1679,7 +1679,7 @@ export function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Poi
   // Locate to guy first.....
   LocateSoldier(pSoldier.value.ubID, false);
   GetSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
-  GetSoldierScreenPos(pSoldier, addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetSoldierScreenPos(pSoldier));
   gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
   gOpenDoorMenu.sY = sScreenY - ((BUTTON_PANEL_HEIGHT - sHeight) / 2);
 

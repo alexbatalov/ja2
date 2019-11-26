@@ -1,7 +1,7 @@
 namespace ja2 {
 
 function DelayEventIfBattleInProgress(pEvent: STRATEGICEVENT): boolean {
-  let pNewEvent: STRATEGICEVENT;
+  let pNewEvent: STRATEGICEVENT | null;
   if (gTacticalStatus.fEnemyInSector) {
     pNewEvent = AddAdvancedStrategicEvent(pEvent.ubEventType, pEvent.ubCallbackID, pEvent.uiTimeStamp + 180 + Random(121), pEvent.uiParam);
     Assert(pNewEvent);

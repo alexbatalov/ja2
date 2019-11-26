@@ -89,6 +89,98 @@ export interface MINE_STATUS_TYPE {
   filler: BYTE[] /* [11] */; // reserved for expansion
 }
 
+export function createMineStatusType(): MINE_STATUS_TYPE {
+  return {
+    ubMineType: 0,
+    filler1: createArray(3, 0),
+    uiMaxRemovalRate: 0,
+    uiRemainingOreSupply: 0,
+    uiOreRunningOutPoint: 0,
+    fEmpty: false,
+    fRunningOut: false,
+    fWarnedOfRunningOut: false,
+    fShutDownIsPermanent: false,
+    fShutDown: false,
+    fPrevInvadedByMonsters: false,
+    fSpokeToHeadMiner: false,
+    fMineHasProducedForPlayer: false,
+    fQueenRetookProducingMine: false,
+    fAttackedHeadMiner: false,
+    usValidDayCreaturesCanInfest: 0,
+    uiTimePlayerProductionStarted: 0,
+    filler: createArray(11, 0),
+  };
+}
+
+export function resetMineStatusType(o: MINE_STATUS_TYPE) {
+  o.ubMineType = 0;
+  o.filler1.fill(0);
+  o.uiMaxRemovalRate = 0;
+  o.uiRemainingOreSupply = 0;
+  o.uiOreRunningOutPoint = 0;
+  o.fEmpty = false;
+  o.fRunningOut = false;
+  o.fWarnedOfRunningOut = false;
+  o.fShutDownIsPermanent = false;
+  o.fShutDown = false;
+  o.fPrevInvadedByMonsters = false;
+  o.fSpokeToHeadMiner = false;
+  o.fMineHasProducedForPlayer = false;
+  o.fQueenRetookProducingMine = false;
+  o.fAttackedHeadMiner = false;
+  o.usValidDayCreaturesCanInfest = 0;
+  o.uiTimePlayerProductionStarted = 0;
+  o.filler.fill(0);
+}
+
+export const MINE_STATUS_TYPE_SIZE = 44;
+
+export function readMineStatusType(o: MINE_STATUS_TYPE, buffer: Buffer, offset: number = 0): number {
+  o.ubMineType = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.filler1, buffer, offset, 1);
+  o.uiMaxRemovalRate = buffer.readUInt32LE(offset); offset += 4;
+  o.uiRemainingOreSupply = buffer.readUInt32LE(offset); offset += 4;
+  o.uiOreRunningOutPoint = buffer.readUInt32LE(offset); offset += 4;
+  o.fEmpty = Boolean(buffer.readUInt8(offset++));
+  o.fRunningOut = Boolean(buffer.readUInt8(offset++));
+  o.fWarnedOfRunningOut = Boolean(buffer.readUInt8(offset++));
+  o.fShutDownIsPermanent = Boolean(buffer.readUInt8(offset++));
+  o.fShutDown = Boolean(buffer.readUInt8(offset++));
+  o.fPrevInvadedByMonsters = Boolean(buffer.readUInt8(offset++));
+  o.fSpokeToHeadMiner = Boolean(buffer.readUInt8(offset++));
+  o.fMineHasProducedForPlayer = Boolean(buffer.readUInt8(offset++));
+  o.fQueenRetookProducingMine = Boolean(buffer.readUInt8(offset++));
+  o.fAttackedHeadMiner = Boolean(buffer.readUInt8(offset++));
+  o.usValidDayCreaturesCanInfest = buffer.readUInt16LE(offset); offset += 2;
+  o.uiTimePlayerProductionStarted = buffer.readUInt32LE(offset); offset += 4;
+  offset = readUIntArray(o.filler, buffer, offset, 1);
+  offset++; // padding;
+  return offset;
+}
+
+export function writeMineStatusType(o: MINE_STATUS_TYPE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubMineType, offset);
+  offset = writeUIntArray(o.filler1, buffer, offset, 1);
+  offset = buffer.writeUInt32LE(o.uiMaxRemovalRate, offset);
+  offset = buffer.writeUInt32LE(o.uiRemainingOreSupply, offset);
+  offset = buffer.writeUInt32LE(o.uiOreRunningOutPoint, offset);
+  offset = buffer.writeUInt8(Number(o.fEmpty), offset);
+  offset = buffer.writeUInt8(Number(o.fRunningOut), offset);
+  offset = buffer.writeUInt8(Number(o.fWarnedOfRunningOut), offset);
+  offset = buffer.writeUInt8(Number(o.fShutDownIsPermanent), offset);
+  offset = buffer.writeUInt8(Number(o.fShutDown), offset);
+  offset = buffer.writeUInt8(Number(o.fPrevInvadedByMonsters), offset);
+  offset = buffer.writeUInt8(Number(o.fSpokeToHeadMiner), offset);
+  offset = buffer.writeUInt8(Number(o.fMineHasProducedForPlayer), offset);
+  offset = buffer.writeUInt8(Number(o.fQueenRetookProducingMine), offset);
+  offset = buffer.writeUInt8(Number(o.fAttackedHeadMiner), offset);
+  offset = buffer.writeUInt16LE(o.usValidDayCreaturesCanInfest, offset);
+  offset = buffer.writeUInt32LE(o.uiTimePlayerProductionStarted, offset);
+  offset = writeUIntArray(o.filler, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 1);
+  return offset;
+}
+
 export interface HEAD_MINER_TYPE {
   usProfileId: UINT16;
   bQuoteNum: INT8[] /* [NUM_HEAD_MINER_STRATEGIC_QUOTES] */;

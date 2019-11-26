@@ -1371,7 +1371,7 @@ export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, us
   let iTempValue: INT32;
   let iValue: INT32;
   let iBestValue: INT32 = 0;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pObj: Pointer<OBJECTTYPE>;
   let pItem: Pointer<INVTYPE>;
   let iItemIndex: INT32;
@@ -1481,12 +1481,12 @@ export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, us
         }
 
         iValue = 0;
-        GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel);
+        pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel);
         switch (bReason) {
           case Enum293.SEARCH_AMMO:
             // we are looking for ammo to match the gun in usItem
             while (pItemPool) {
-              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pObj = addressof(gWorldItems[pItemPool.iItemIndex].o);
               pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass == IC_GUN && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 // maybe this gun has ammo (adjust for whether it is better than ours!)
@@ -1502,14 +1502,14 @@ export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, us
               }
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool.value.iItemIndex;
+                iItemIndex = pItemPool.iItemIndex;
               }
-              pItemPool = pItemPool.value.pNext;
+              pItemPool = pItemPool.pNext;
             }
             break;
           case Enum293.SEARCH_WEAPONS:
             while (pItemPool) {
-              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pObj = addressof(gWorldItems[pItemPool.iItemIndex].o);
               pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == Enum225.ROCKET_RIFLE || pObj.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
@@ -1529,14 +1529,14 @@ export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, us
               }
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool.value.iItemIndex;
+                iItemIndex = pItemPool.iItemIndex;
               }
-              pItemPool = pItemPool.value.pNext;
+              pItemPool = pItemPool.pNext;
             }
             break;
           default:
             while (pItemPool) {
-              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pObj = addressof(gWorldItems[pItemPool.iItemIndex].o);
               pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == Enum225.ROCKET_RIFLE || pObj.value.usItem == Enum225.AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
@@ -1589,9 +1589,9 @@ export function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, us
 
               if (iTempValue > iValue) {
                 iValue = iTempValue;
-                iItemIndex = pItemPool.value.iItemIndex;
+                iItemIndex = pItemPool.iItemIndex;
               }
-              pItemPool = pItemPool.value.pNext;
+              pItemPool = pItemPool.pNext;
             }
             break;
         }

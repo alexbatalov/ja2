@@ -2303,7 +2303,7 @@ export function HandleCheckForExitArrowsInput(fAdjustConfirm: boolean): boolean 
         }
       }
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, str);
-      gubLoneMercAttemptingToAbandonEPCs = false;
+      gubLoneMercAttemptingToAbandonEPCs = 0;
     } else {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.MERC_IS_TOO_FAR_AWAY_STR], MercPtrs[gusSelectedSoldier].value.name);
     }
@@ -2945,7 +2945,7 @@ export function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UIN
   let sAPCost: INT16;
   let sAdjustedGridNo: INT16;
   let pStructure: Pointer<STRUCTURE> = null;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let fIgnoreItems: boolean = false;
 
   if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
@@ -3001,7 +3001,7 @@ export function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UIN
 
     // Check if we are over an item pool
     // ATE: Ignore items will be set if over a switch interactive tile...
-    if (GetItemPool(sActionGridNo, addressof(pItemPool), pSoldier.value.bLevel) && ITEMPOOL_VISIBLE(pItemPool) && !fIgnoreItems) {
+    if ((pItemPool = GetItemPool(sActionGridNo, pSoldier.value.bLevel)) && ITEMPOOL_VISIBLE(pItemPool) && !fIgnoreItems) {
       if (AM_AN_EPC(pSoldier)) {
         // Display message
         // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ NO_PATH ] );
@@ -3011,7 +3011,7 @@ export function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UIN
 
         bZLevel = GetZLevelOfItemPoolGivenStructure(sActionGridNo, pSoldier.value.bLevel, pStructure);
 
-        SoldierPickupItem(pSoldier, pItemPool.value.iItemIndex, sActionGridNo, bZLevel);
+        SoldierPickupItem(pSoldier, pItemPool.iItemIndex, sActionGridNo, bZLevel);
 
         puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
       }
@@ -3063,7 +3063,7 @@ function ExchangeMessageBoxCallBack(bExitValue: UINT8): void {
 
 export function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): INT8 {
   // Look for an item pool
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let fContinue: boolean = true;
   let pSoldier: Pointer<SOLDIERTYPE>;
   let pIntTile: Pointer<LEVELNODE>;
@@ -3121,7 +3121,7 @@ export function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Po
 
       // Check if we are over an item pool, take precedence over that.....
       // EXCEPT FOR SWITCHES!
-      if (GetItemPool(sIntTileGridNo, addressof(pItemPool), pSoldier.value.bLevel) && !(pStructure.value.fFlags & (STRUCTURE_SWITCH | STRUCTURE_ANYDOOR))) {
+      if ((pItemPool = GetItemPool(sIntTileGridNo, pSoldier.value.bLevel)) && !(pStructure.value.fFlags & (STRUCTURE_SWITCH | STRUCTURE_ANYDOOR))) {
         if (AM_AN_EPC(pSoldier)) {
           // Display message
           // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ NO_PATH ] );
@@ -3137,11 +3137,11 @@ export function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Po
 
             if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED)) {
               // puiNewEvent = C_WAIT_FOR_CONFIRM;
-              SoldierPickupItem(pSoldier, pItemPool.value.iItemIndex, sIntTileGridNo, bZLevel);
+              SoldierPickupItem(pSoldier, pItemPool.iItemIndex, sIntTileGridNo, bZLevel);
             } else {
               BeginDisplayTimedCursor(Enum210.OKHANDCURSOR_UICURSOR, 300);
 
-              SoldierPickupItem(pSoldier, pItemPool.value.iItemIndex, sIntTileGridNo, bZLevel);
+              SoldierPickupItem(pSoldier, pItemPool.iItemIndex, sIntTileGridNo, bZLevel);
             }
           }
         }

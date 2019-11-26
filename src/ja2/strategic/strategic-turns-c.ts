@@ -17,7 +17,7 @@ export function SyncStrategicTurnTimes(): void {
 
 export function HandleStrategicTurn(): void {
   let uiTime: UINT32;
-  let uiCheckTime: UINT32;
+  let uiCheckTime: UINT32 = <UINT32><unknown>undefined;
 
   // OK, DO THIS CHECK EVERY ONCE AND A WHILE...
   if (COUNTERDONE(Enum386.STRATEGIC_OVERHEAD)) {

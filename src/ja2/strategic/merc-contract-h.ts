@@ -12,6 +12,27 @@ export interface CONTRACT_NEWAL_LIST_NODE {
   ubFiller: UINT8[] /* [3] */;
 }
 
+export function createContractRenewalListNode(): CONTRACT_NEWAL_LIST_NODE {
+  return {
+    ubProfileID: 0,
+    ubFiller: createArray(3, 0),
+  };
+}
+
+export const CONTRACT_RENEWAL_LIST_NODE_SIZE = 4;
+
+export function readContractRenewalListNode(o: CONTRACT_NEWAL_LIST_NODE, buffer: Buffer, offset: number = 0): number {
+  o.ubProfileID = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubFiller, buffer, offset, 1);
+  return offset;
+}
+
+export function writeContractRenewalListNode(o: CONTRACT_NEWAL_LIST_NODE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubProfileID, offset);
+  offset = writeUIntArray(o.ubFiller, buffer, offset, 1);
+  return offset;
+}
+
 /*
 
 //list of quotes used in renewing a mercs contract

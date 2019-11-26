@@ -700,7 +700,7 @@ function RenderSelectedItemBlownUp(): void {
   let sScreenY: INT16;
   let xp: INT16;
   let yp: INT16;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let szItemName: string /* UINT16[SIZE_ITEM_NAME] */;
   let i: INT32;
   let sWidth: INT16;
@@ -755,18 +755,18 @@ function RenderSelectedItemBlownUp(): void {
 
   // Count the number of items in the current pool, and display that.
   i = 0;
-  GetItemPool(gsItemGridNo, addressof(pItemPool), 0);
+  pItemPool = GetItemPool(gsItemGridNo, 0);
   Assert(pItemPool);
   while (pItemPool) {
     i++;
-    pItemPool = pItemPool.value.pNext;
+    pItemPool = pItemPool.pNext;
   }
   xp = sScreenX;
   yp = sScreenY + 10;
   mprintf(xp, yp, "%d", i);
 
   // If the item is hidden, render a blinking H (just like DG)
-  if (gWorldItems[gpItemPool.value.iItemIndex].bVisible == HIDDEN_ITEM || gWorldItems[gpItemPool.value.iItemIndex].bVisible == BURIED) {
+  if (gWorldItems[gpItemPool.iItemIndex].bVisible == HIDDEN_ITEM || gWorldItems[gpItemPool.iItemIndex].bVisible == BURIED) {
     SetFont(FONT10ARIALBOLD());
     if (GetJA2Clock() % 1000 > 500) {
       SetFontForeground(249);

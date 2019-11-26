@@ -714,11 +714,11 @@ export function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
 }
 
 // This is the link to see if a door exists at a gridno.
-export function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
+export function FindDoorInfoAtGridNo(iMapIndex: INT32): DOOR | null {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex)
-      return addressof(DoorTable[i]);
+      return DoorTable[i];
   }
   return null;
 }
@@ -763,7 +763,7 @@ export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT1
   // add the 'd' for 'Door' to the front of the map name
   //	sprintf( zMapName, "%s\\d_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_DOOR_TABLE_TEMP_FILES_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_DOOR_TABLE_TEMP_FILES_EXISTS, sSectorX, sSectorY, bSectorZ);
 
   // if the file already exists, delete it
   if (FileExists(zMapName)) {
@@ -818,7 +818,7 @@ export function LoadDoorTableFromDoorTableTempFile(): boolean {
   // add the 'd' for 'Door' to the front of the map name
   //	sprintf( zMapName, "%s\\d_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_DOOR_TABLE_TEMP_FILES_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_DOOR_TABLE_TEMP_FILES_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Check to see if the file exists
   if (!FileExists(zMapName)) {
@@ -868,7 +868,7 @@ export function LoadDoorTableFromDoorTableTempFile(): boolean {
 }
 
 // fOpen is True if the door is open, false if it is closed
-export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean, fPerceivedOpen: boolean): boolean {
+export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPerceivedOpen: boolean | undefined): boolean {
   let ubCnt: UINT8;
   let pStructure: Pointer<STRUCTURE>;
   let pBaseStructure: Pointer<STRUCTURE>;
@@ -1488,7 +1488,7 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\ds_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_DOOR_STATUS_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_DOOR_STATUS_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
   // Open the file for writing, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, false);
@@ -1536,7 +1536,7 @@ export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   // add the 'm' for 'Modifed Map' to the front of the map name
   //	sprintf( zMapName, "%s\\ds_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_DOOR_STATUS_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_DOOR_STATUS_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Get rid of the existing door array
   TrashDoorStatusArray();

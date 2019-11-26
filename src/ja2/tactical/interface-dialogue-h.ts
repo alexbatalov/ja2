@@ -23,7 +23,7 @@ export interface NPC_DIALOGUE_TYPE {
   TextRegion: MOUSE_REGION;
   fTextRegionOn: boolean;
   fOnName: boolean;
-  fDirtyLevel: boolean;
+  fDirtyLevel: UINT8 /* boolean */;
   uiSaveBuffer: UINT32;
   fHandled: boolean;
   fHandledTalkingVal: boolean;

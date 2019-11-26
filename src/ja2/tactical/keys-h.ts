@@ -104,7 +104,7 @@ export const DOOR_PERCEIVED_NOTSET = 0x04;
 export const DOOR_BUSY = 0x08;
 export const DOOR_HAS_TIN_CAN = 0x10;
 
-export const DONTSETDOORSTATUS = 2;
+export const DONTSETDOORSTATUS = undefined;
 
 export interface DOOR_STATUS {
   sGridNo: INT16;

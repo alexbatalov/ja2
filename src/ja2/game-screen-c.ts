@@ -1,7 +1,5 @@
 namespace ja2 {
 
-const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
-
 let fDirtyRectangleMode: boolean = false;
 let gpFPSBuffer: Pointer<UINT16> = null;
 // MarkNote
@@ -27,7 +25,7 @@ let gfTacticalIsModal: boolean = false;
 let gTacticalDisableRegion: MOUSE_REGION = createMouseRegion();
 let gfTacticalDisableRegionActive: boolean = false;
 let gbTacticalDisableMode: INT8 = false;
-export let gModalDoneCallback: MODAL_HOOK;
+export let gModalDoneCallback: MODAL_HOOK | null;
 export let gfBeginEndTurn: boolean = false;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
@@ -62,7 +60,7 @@ export function MainGameScreenInit(): boolean {
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   VideoOverlayDesc.pzText = "90";
   VideoOverlayDesc.BltCallback = BlitMFont;
-  giFPSOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
+  giFPSOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), VideoOverlayDesc);
 
   // SECOND, PERIOD COUNTER
   VideoOverlayDesc.sLeft = 30;
@@ -71,7 +69,7 @@ export function MainGameScreenInit(): boolean {
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   VideoOverlayDesc.pzText = "Levelnodes: 100000";
   VideoOverlayDesc.BltCallback = BlitMFont;
-  giCounterPeriodOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
+  giCounterPeriodOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), VideoOverlayDesc);
 
   // register debug topics
   RegisterJA2DebugTopic(TOPIC_JA2, "Reg JA2 Debug");
@@ -599,18 +597,16 @@ export function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
 export function DisableFPSOverlay(fEnable: boolean): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
-  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-
   VideoOverlayDesc.fDisabled = fEnable;
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
-  UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, false);
-  UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, false);
+  UpdateVideoOverlay(VideoOverlayDesc, giFPSOverlay, false);
+  UpdateVideoOverlay(VideoOverlayDesc, giCounterPeriodOverlay, false);
 }
 
 function TacticalScreenLocateToSoldier(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let bLastTeamID: INT16;
   let fPreferedGuyUsed: boolean = false;
 
@@ -628,10 +624,10 @@ function TacticalScreenLocateToSoldier(): void {
     // Set locator to first merc
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
     bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier = MercPtrs[cnt]) {
       if (OK_CONTROLLABLE_MERC(pSoldier) && OK_INTERRUPT_MERC(pSoldier)) {
-        LocateSoldier(pSoldier.value.ubID, 10);
-        SelectSoldier(pSoldier.value.ubID, false, true);
+        LocateSoldier(pSoldier.ubID, 10);
+        SelectSoldier(pSoldier.ubID, false, true);
         break;
       }
     }
@@ -647,7 +643,7 @@ export function EnterMapScreen(): void {
 
 export function UpdateTeamPanelAssignments(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let bLastTeamID: INT16;
 
   // Remove all players
@@ -656,7 +652,7 @@ export function UpdateTeamPanelAssignments(): void {
   // Set locator to first merc
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= bLastTeamID; cnt++, pSoldier = MercPtrs[cnt]) {
     // Setup team interface
     CheckForAndAddMercToTeamPanel(pSoldier);
   }

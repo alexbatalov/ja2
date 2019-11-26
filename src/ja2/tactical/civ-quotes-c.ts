@@ -627,7 +627,7 @@ export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // Determine location...
   // Get location of civ on screen.....
-  GetSoldierScreenPos(pCiv, addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetSoldierScreenPos(pCiv));
   sX = sScreenX;
   sY = sScreenY;
 

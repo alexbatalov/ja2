@@ -59,4 +59,41 @@ export function createScheduleNode(): SCHEDULENODE {
   };
 }
 
+export function copyScheduleNode(destination: SCHEDULENODE, source: SCHEDULENODE) {
+  destination.next = source.next;
+  copyArray(destination.usTime, source.usTime);
+  copyArray(destination.usData1, source.usData1);
+  copyArray(destination.usData2, source.usData2);
+  copyArray(destination.ubAction, source.ubAction);
+  destination.ubScheduleID = source.ubScheduleID;
+  destination.ubSoldierID = source.ubSoldierID;
+  destination.usFlags = source.usFlags;
+}
+
+export const SCHEDULE_NODE_SIZE = 36;
+
+export function readScheduleNode(o: SCHEDULENODE, buffer: Buffer, offset: number = 0): number {
+  o.next = null; offset += 4; // pointer
+  offset = readUIntArray(o.usTime, buffer, offset, 2);
+  offset = readUIntArray(o.usData1, buffer, offset, 2);
+  offset = readUIntArray(o.usData2, buffer, offset, 2);
+  offset = readUIntArray(o.ubAction, buffer, offset, 1);
+  o.ubScheduleID = buffer.readUInt8(offset++);
+  o.ubSoldierID = buffer.readUInt8(offset++);
+  o.usFlags = buffer.readUInt16LE(offset); offset+= 2;
+  return offset;
+}
+
+export function writeScheduleNode(o: SCHEDULENODE, buffer: Buffer, offset: number = 0): number {
+  offset = writePadding(buffer, offset, 4); // pointer
+  offset = writeUIntArray(o.usTime, buffer, offset, 2);
+  offset = writeUIntArray(o.usData1, buffer, offset, 2);
+  offset = writeUIntArray(o.usData2, buffer, offset, 2);
+  offset = writeUIntArray(o.ubAction, buffer, offset, 1);
+  offset = buffer.writeUInt8(o.ubScheduleID, offset);
+  offset = buffer.writeUInt8(o.ubSoldierID, offset);
+  offset = buffer.writeUInt16LE(o.usFlags, offset);
+  return offset;
+}
+
 }

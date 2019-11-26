@@ -887,7 +887,7 @@ export function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
   return psArray[Random(usArraySize)];
 }
 
-export function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
+export function ChooseMapEdgepoints(pMapEdgepointInfo: MAPEDGEPOINTINFO, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
   let psArray: Pointer<INT16> = null;
   let usArraySize: UINT16 = 0;
   let i: INT32 = -1;
@@ -919,9 +919,9 @@ export function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>
       AssertMsg(0, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
       break;
   }
-  pMapEdgepointInfo.value.ubStrategicInsertionCode = ubStrategicInsertionCode;
+  pMapEdgepointInfo.ubStrategicInsertionCode = ubStrategicInsertionCode;
   if (!usArraySize) {
-    pMapEdgepointInfo.value.ubNumPoints = 0;
+    pMapEdgepointInfo.ubNumPoints = 0;
     return;
   }
 

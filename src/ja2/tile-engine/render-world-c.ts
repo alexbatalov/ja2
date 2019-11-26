@@ -487,7 +487,7 @@ export let guiScrollDirection: INT32;
 export let gRenderFlags: UINT32 = 0;
 
 let gClippingRect: SGPRect = createSGPRectFrom(0, 0, 640, 360);
-export let gOldClipRect: SGPRect = createSGPRect();
+let gOldClipRect: SGPRect = createSGPRect();
 export let gsRenderCenterX: INT16;
 export let gsRenderCenterY: INT16;
 export let gsRenderWorldOffsetX: INT16 = -1;

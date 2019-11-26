@@ -13,7 +13,7 @@ function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: 
     // add the 'e' for 'Enemy preserved' to the front of the map name
     //		sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
 
-    GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+    zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
     // Delete the temp file.
     FileDelete(zMapName);
@@ -28,7 +28,7 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
     ReSetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
     // GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
 
-    GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+    zMapName = GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
     // Delete the temp file.
     FileDelete(zMapName);
@@ -70,7 +70,7 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   // add the 'e' for 'Enemy preserved' to the front of the map name
   //	sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
   hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
@@ -154,20 +154,20 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
 
   // get the number of enemies in this sector.
   if (bSectorZ) {
-    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+    let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
       goto("FAIL_LOAD");
     }
-    ubStrategicElites = pSector.value.ubNumElites;
-    ubStrategicTroops = pSector.value.ubNumTroops;
-    ubStrategicAdmins = pSector.value.ubNumAdmins;
-    ubStrategicCreatures = pSector.value.ubNumCreatures;
+    ubStrategicElites = pSector.ubNumElites;
+    ubStrategicTroops = pSector.ubNumTroops;
+    ubStrategicAdmins = pSector.ubNumAdmins;
+    ubStrategicCreatures = pSector.ubNumCreatures;
   } else {
-    let pSector: Pointer<SECTORINFO>;
-    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
-    ubStrategicCreatures = pSector.value.ubNumCreatures;
-    GetNumberOfEnemiesInSector(sSectorX, sSectorY, addressof(ubStrategicAdmins), addressof(ubStrategicTroops), addressof(ubStrategicElites));
+    let pSector: SECTORINFO;
+    pSector = SectorInfo[SECTOR(sSectorX, sSectorY)];
+    ubStrategicCreatures = pSector.ubNumCreatures;
+    ({ ubNumAdmins: ubStrategicAdmins, ubNumTroops: ubStrategicTroops, ubNumElites: ubStrategicElites } = GetNumberOfEnemiesInSector(sSectorX, sSectorY));
   }
 
   for (i = 0; i < slots; i++) {
@@ -409,7 +409,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   // add the 'e' for 'Enemy preserved' to the front of the map name
   //	sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+  zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
 
   // if the file doesnt exist
   if (FileSize(zMapName) == 0) {
@@ -586,7 +586,7 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   // add the 'e' for 'Enemy preserved' to the front of the map name
   //	sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Count the number of enemies ( elites, regulars, admins and creatures ) that are in the temp file.
 
@@ -704,20 +704,20 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
   // get the number of enemies in this sector.
   if (bSectorZ) {
-    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+    let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
       goto("FAIL_LOAD");
     }
-    ubStrategicElites = pSector.value.ubNumElites;
-    ubStrategicTroops = pSector.value.ubNumTroops;
-    ubStrategicAdmins = pSector.value.ubNumAdmins;
-    ubStrategicCreatures = pSector.value.ubNumCreatures;
+    ubStrategicElites = pSector.ubNumElites;
+    ubStrategicTroops = pSector.ubNumTroops;
+    ubStrategicAdmins = pSector.ubNumAdmins;
+    ubStrategicCreatures = pSector.ubNumCreatures;
   } else {
-    let pSector: Pointer<SECTORINFO>;
-    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
-    ubStrategicCreatures = pSector.value.ubNumCreatures;
-    GetNumberOfEnemiesInSector(sSectorX, sSectorY, addressof(ubStrategicAdmins), addressof(ubStrategicTroops), addressof(ubStrategicElites));
+    let pSector: SECTORINFO;
+    pSector = SectorInfo[SECTOR(sSectorX, sSectorY)];
+    ubStrategicCreatures = pSector.ubNumCreatures;
+    ({ ubNumAdmins: ubStrategicAdmins, ubNumTroops: ubStrategicTroops, ubNumElites: ubStrategicElites } = GetNumberOfEnemiesInSector(sSectorX, sSectorY));
   }
 
   for (i = 0; i < slots; i++) {
@@ -888,7 +888,7 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
 
   // add the 'e' for 'Enemy preserved' to the front of the map name
   // sprintf( zMapName, "%s\\c_%s", MAPS_DIR, zTempName);
-  GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
   hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
@@ -1221,11 +1221,11 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
   if (fEnemy) {
     // add the 'e' for 'Enemy preserved' to the front of the map name
     // sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
-    GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+    zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
   } else {
     // add the 'e' for 'Enemy preserved' to the front of the map name
     // sprintf( zMapName, "%s\\c_%s", MAPS_DIR, zTempName);
-    GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, zMapName, sSectorX, sSectorY, bSectorZ);
+    zMapName = GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, sSectorX, sSectorY, bSectorZ);
   }
 
   // Open the file for writing, Create it if it doesnt exist

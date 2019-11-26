@@ -48,9 +48,9 @@ const enum Enum145 {
 }
 
 // waiting list for update box
-let iUpdateBoxWaitingList: INT32[] /* [MAX_CHARACTER_COUNT] */;
+let iUpdateBoxWaitingList: INT32[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, 0);
 
-let pFastHelpMapScreenList: FASTHELPREGION[] /* [MAX_MAPSCREEN_FAST_HELP] */;
+let pFastHelpMapScreenList: FASTHELPREGION[] /* [MAX_MAPSCREEN_FAST_HELP] */ = createArrayFrom(MAX_MAPSCREEN_FAST_HELP, createFastHelpRegion);
 
 // the move menu region
 let gMoveMenuRegion: MOUSE_REGION[] /* [MAX_POPUP_BOX_STRING_COUNT] */ = createArrayFrom(MAX_POPUP_BOX_STRING_COUNT, createMouseRegion);
@@ -144,7 +144,7 @@ export let gMapStatusBarsRegion: MOUSE_REGION = createMouseRegion();
 let MovePosition: SGPPoint = createSGPPointFrom(450, 100);
 
 // which lines are selected? .. for assigning groups of mercs to the same thing
-export let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */;
+export let fSelectedListOfMercsForMapScreen: boolean[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, false);
 export let fResetTimerForFirstEntryIntoMapScreen: boolean = false;
 let iReasonForSoldierUpDate: INT32 = Enum154.NO_REASON_FOR_UPDATE;
 
@@ -155,7 +155,7 @@ export let guiSAMICON: UINT32;
 export let fDisableDueToBattleRoster: boolean = false;
 
 // track old contract times
-let iOldContractTimes: INT32[] /* [MAX_CHARACTER_COUNT] */;
+let iOldContractTimes: INT32[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, 0);
 
 // position of pop up box
 export let giBoxY: INT32 = 0;
@@ -189,8 +189,8 @@ export let guiPOPUPBORDERS: UINT32;
 // the currently selected character arrow
 export let guiSelectedCharArrow: UINT32;
 
-let guiUpdatePanelButtonsImage: INT32[] /* [2] */;
-let guiUpdatePanelButtons: INT32[] /* [2] */;
+let guiUpdatePanelButtonsImage: INT32[] /* [2] */ = createArray(2, 0);
+let guiUpdatePanelButtons: INT32[] /* [2] */ = createArray(2, 0);
 
 // the update panel
 export let guiUpdatePanel: UINT32;
@@ -200,13 +200,13 @@ export let guiUpdatePanelTactical: UINT32;
 let gpLeaveListHead: MERC_LEAVE_ITEM[] /* Pointer<MERC_LEAVE_ITEM>[NUM_LEAVE_LIST_SLOTS] */ = createArray(NUM_LEAVE_LIST_SLOTS, <MERC_LEAVE_ITEM><unknown>null);
 
 // holds ids of mercs who left stuff behind
-let guiLeaveListOwnerProfileId: UINT32[] /* [NUM_LEAVE_LIST_SLOTS] */;
+let guiLeaveListOwnerProfileId: UINT32[] /* [NUM_LEAVE_LIST_SLOTS] */ = createArray(NUM_LEAVE_LIST_SLOTS, 0);;
 
 // flag to reset contract region glow
 export let fResetContractGlow: boolean = false;
 
 // timers for double click
-let giDblClickTimersForMoveBoxMouseRegions: INT32[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
+let giDblClickTimersForMoveBoxMouseRegions: INT32[] /* [MAX_POPUP_BOX_STRING_COUNT] */ = createArray(MAX_POPUP_BOX_STRING_COUNT, 0);;
 
 export let giExitToTactBaseTime: INT32 = 0;
 export let guiSectorLocatorBaseTime: UINT32 = 0;
@@ -363,7 +363,7 @@ export function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAss
 
     pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
-    if (pSoldier.bActive == 0) {
+    if (pSoldier.bActive == false) {
       continue;
     }
 
@@ -388,7 +388,7 @@ export function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSecto
 
     pSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
-    if (pSoldier.bActive == 0) {
+    if (pSoldier.bActive == false) {
       continue;
     }
 
@@ -550,9 +550,8 @@ function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: SOLDIERTYPE): boolean {
   return false;
 }
 
+/* static */ let RestoreBackgroundForAssignmentGlowRegionList__iOldAssignmentLine: INT32 = -1;
 export function RestoreBackgroundForAssignmentGlowRegionList(): void {
-  /* static */ let iOldAssignmentLine: INT32 = -1;
-
   // will restore the background region of the assignment list after a glow has ceased
   // ( a _LOST_MOUSE reason to the assignment region mvt callback handler )
 
@@ -572,7 +571,7 @@ export function RestoreBackgroundForAssignmentGlowRegionList(): void {
     return;
   }
 
-  if (iOldAssignmentLine != giAssignHighLine) {
+  if (RestoreBackgroundForAssignmentGlowRegionList__iOldAssignmentLine != giAssignHighLine) {
     // restore background
     RestoreExternBackgroundRect(66, Y_START - 1, 118 + 1 - 67, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
@@ -580,16 +579,15 @@ export function RestoreBackgroundForAssignmentGlowRegionList(): void {
     fTeamPanelDirty = true;
 
     // set old to current
-    iOldAssignmentLine = giAssignHighLine;
+    RestoreBackgroundForAssignmentGlowRegionList__iOldAssignmentLine = giAssignHighLine;
   }
 
   // leave
   return;
 }
 
+/* static */ let RestoreBackgroundForDestinationGlowRegionList__iOldDestinationLine: INT32 = -1;
 export function RestoreBackgroundForDestinationGlowRegionList(): void {
-  /* static */ let iOldDestinationLine: INT32 = -1;
-
   // will restore the background region of the destinationz list after a glow has ceased
   // ( a _LOST_MOUSE reason to the assignment region mvt callback handler )
 
@@ -597,7 +595,7 @@ export function RestoreBackgroundForDestinationGlowRegionList(): void {
     return;
   }
 
-  if (iOldDestinationLine != giDestHighLine) {
+  if (RestoreBackgroundForDestinationGlowRegionList__iOldDestinationLine != giDestHighLine) {
     // restore background
     RestoreExternBackgroundRect(182, Y_START - 1, 217 + 1 - 182, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
@@ -605,16 +603,15 @@ export function RestoreBackgroundForDestinationGlowRegionList(): void {
     fTeamPanelDirty = true;
 
     // set old to current
-    iOldDestinationLine = giDestHighLine;
+    RestoreBackgroundForDestinationGlowRegionList__iOldDestinationLine = giDestHighLine;
   }
 
   // leave
   return;
 }
 
+/* static */ let RestoreBackgroundForContractGlowRegionList__iOldContractLine: INT32 = -1;
 export function RestoreBackgroundForContractGlowRegionList(): void {
-  /* static */ let iOldContractLine: INT32 = -1;
-
   // will restore the background region of the destinationz list after a glow has ceased
   // ( a _LOST_MOUSE reason to the assignment region mvt callback handler )
 
@@ -622,7 +619,7 @@ export function RestoreBackgroundForContractGlowRegionList(): void {
     return;
   }
 
-  if (iOldContractLine != giContractHighLine) {
+  if (RestoreBackgroundForContractGlowRegionList__iOldContractLine != giContractHighLine) {
     // restore background
     RestoreExternBackgroundRect(222, Y_START - 1, 250 + 1 - 222, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
@@ -630,7 +627,7 @@ export function RestoreBackgroundForContractGlowRegionList(): void {
     fTeamPanelDirty = true;
 
     // set old to current
-    iOldContractLine = giContractHighLine;
+    RestoreBackgroundForContractGlowRegionList__iOldContractLine = giContractHighLine;
 
     // reset color rotation
     fResetContractGlow = true;
@@ -640,9 +637,8 @@ export function RestoreBackgroundForContractGlowRegionList(): void {
   return;
 }
 
+/* static */ let RestoreBackgroundForSleepGlowRegionList__iOldSleepHighLine: INT32 = -1;
 export function RestoreBackgroundForSleepGlowRegionList(): void {
-  /* static */ let iOldSleepHighLine: INT32 = -1;
-
   // will restore the background region of the destinations list after a glow has ceased
   // ( a _LOST_MOUSE reason to the assignment region mvt callback handler )
 
@@ -650,7 +646,7 @@ export function RestoreBackgroundForSleepGlowRegionList(): void {
     return;
   }
 
-  if (iOldSleepHighLine != giSleepHighLine) {
+  if (RestoreBackgroundForSleepGlowRegionList__iOldSleepHighLine != giSleepHighLine) {
     // restore background
     RestoreExternBackgroundRect(123, Y_START - 1, 142 + 1 - 123, (((MAX_CHARACTER_COUNT + 1) * (Y_SIZE() + 2)) + 1));
 
@@ -658,7 +654,7 @@ export function RestoreBackgroundForSleepGlowRegionList(): void {
     fTeamPanelDirty = true;
 
     // set old to current
-    iOldSleepHighLine = giSleepHighLine;
+    RestoreBackgroundForSleepGlowRegionList__iOldSleepHighLine = giSleepHighLine;
 
     // reset color rotation
     fResetContractGlow = true;
@@ -668,19 +664,18 @@ export function RestoreBackgroundForSleepGlowRegionList(): void {
   return;
 }
 
+/* static */ let PlayGlowRegionSound__uiSoundId: UINT32 = 0;
 export function PlayGlowRegionSound(): void {
   // play a new message sound, if there is one playing, do nothing
-  /* static */ let uiSoundId: UINT32 = 0;
-
-  if (uiSoundId != 0) {
+  if (PlayGlowRegionSound__uiSoundId != 0) {
     // is sound playing?..don't play new one
-    if (SoundIsPlaying(uiSoundId) == true) {
+    if (SoundIsPlaying(PlayGlowRegionSound__uiSoundId) == true) {
       return;
     }
   }
 
   // otherwise no sound playing, play one
-  uiSoundId = PlayJA2SampleFromFile("Sounds\\glowclick.wav", RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
+  PlayGlowRegionSound__uiSoundId = PlayJA2SampleFromFile("Sounds\\glowclick.wav", RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
 
   return;
 }
@@ -1128,7 +1123,7 @@ export function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void 
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       if (Menptr[uiMercId].sSectorX != gWorldSectorX || Menptr[uiMercId].sSectorY != gWorldSectorY || Menptr[uiMercId].bSectorZ != gbWorldSectorZ) {
         // Set flag for item...
-        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, Menptr[uiMercId].inv[iCounter], Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, false);
+        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, [Menptr[uiMercId].inv[iCounter]], Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, false);
       } else {
         AddItemToPool(sGridNo, Menptr[uiMercId].inv[iCounter], 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
       }
@@ -1185,7 +1180,7 @@ export function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != OMERTA_LEAVE_EQUIP_SECTOR_X || gWorldSectorY != OMERTA_LEAVE_EQUIP_SECTOR_Y || gbWorldSectorZ != OMERTA_LEAVE_EQUIP_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, pItem.o, 0, WORLD_ITEM_REACHABLE, 0, 1, false);
+      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, [pItem.o], 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
       AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, pItem.o, 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
@@ -1216,7 +1211,7 @@ export function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || gWorldSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || gbWorldSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, pItem.o, 0, WORLD_ITEM_REACHABLE, 0, 1, false);
+      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, [pItem.o], 0, WORLD_ITEM_REACHABLE, 0, 1, false);
     } else {
       AddItemToPool(10433, pItem.o, 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
@@ -2010,9 +2005,8 @@ export function SetUpFastHelpListRegions(iXPosition: INT32[] /* [] */, iYPositio
 }
 
 // handle the actual showing of the interface fast help text
+/* static */ let HandleShowingOfTacticalInterfaceFastHelpText__fTextActive: boolean = false;
 export function HandleShowingOfTacticalInterfaceFastHelpText(): void {
-  /* static */ let fTextActive: boolean = false;
-
   if (fInterfaceFastHelpTextActive) {
     DisplayFastHelpRegions(pFastHelpMapScreenList, giSizeOfInterfaceFastHelpTextList);
 
@@ -2024,9 +2018,9 @@ export function HandleShowingOfTacticalInterfaceFastHelpText(): void {
     gfIgnoreScrolling = true;
 
     // the text is active
-    fTextActive = true;
-  } else if ((fInterfaceFastHelpTextActive == false) && (fTextActive)) {
-    fTextActive = false;
+    HandleShowingOfTacticalInterfaceFastHelpText__fTextActive = true;
+  } else if ((fInterfaceFastHelpTextActive == false) && (HandleShowingOfTacticalInterfaceFastHelpText__fTextActive)) {
+    HandleShowingOfTacticalInterfaceFastHelpText__fTextActive = false;
     UnPauseGame();
     gfIgnoreScrolling = false;
 
@@ -3421,14 +3415,14 @@ function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
   return false;
 }
 
-function FindSquadThatSoldierCanJoin(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function FindSquadThatSoldierCanJoin(pSoldier: SOLDIERTYPE): INT8 {
   // look for a squad that isn't full that can take this character
   let bCounter: INT8 = 0;
 
   // run through the list of squads
   for (bCounter = 0; bCounter < Enum275.NUMBER_OF_SQUADS; bCounter++) {
     // is this squad in this sector
-    if (IsThisSquadInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, bCounter)) {
+    if (IsThisSquadInThisSector(pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ, bCounter)) {
       // does it have room?
       if (IsThisSquadFull(bCounter) == false) {
         // is it doing the same thing as the soldier is (staying or going) ?
@@ -3551,11 +3545,11 @@ function IsThePopUpBoxEmpty(): boolean {
   return fEmpty;
 }
 
-export function AddSoldierToWaitingListQueue(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function AddSoldierToWaitingListQueue(pSoldier: SOLDIERTYPE): void {
   let iSoldierId: INT32 = 0;
 
   // get soldier profile
-  iSoldierId = pSoldier.value.ubID;
+  iSoldierId = pSoldier.ubID;
 
   SpecialCharacterDialogueEvent(DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX, Enum204.UPDATE_BOX_REASON_ADDSOLDIER, iSoldierId, 0, 0, 0);
   return;
@@ -3588,7 +3582,7 @@ export function AddSoldierToUpdateBox(pSoldier: SOLDIERTYPE): void {
     return;
   }
 
-  if (pSoldier.bActive == 0) {
+  if (pSoldier.bActive == false) {
     return;
   }
 
@@ -4695,7 +4689,7 @@ export function CanEntireMovementGroupMercIsInMove(pSoldier: SOLDIERTYPE, pbErro
       pCurrentSoldier = Menptr[gCharactersList[iCounter].usSolID];
 
       // skip inactive grunts
-      if (pCurrentSoldier.bActive == 0) {
+      if (pCurrentSoldier.bActive == false) {
         continue;
       }
 
@@ -5033,8 +5027,8 @@ export function TurnOffSectorLocator(): void {
   fMapPanelDirty = true;
 }
 
+/* static */ let HandleBlitOfSectorLocatorIcon__ubFrame: UINT8 = 0;
 export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubLocatorID: UINT8): void {
-  /* static */ let ubFrame: UINT8 = 0;
   let ubBaseFrame: UINT8 = 0;
   let uiTimer: UINT32 = 0;
   let hHandle: HVOBJECT;
@@ -5063,11 +5057,11 @@ export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, 
     // grab zoomed out icon
     case Enum156.LOCATOR_COLOR_RED:
       ubBaseFrame = 0;
-      ubFrame = (ubFrame % 13);
+      HandleBlitOfSectorLocatorIcon__ubFrame = (HandleBlitOfSectorLocatorIcon__ubFrame % 13);
       break;
     case Enum156.LOCATOR_COLOR_YELLOW:
       ubBaseFrame = 13;
-      ubFrame = (13 + (ubFrame % 13));
+      HandleBlitOfSectorLocatorIcon__ubFrame = (13 + (HandleBlitOfSectorLocatorIcon__ubFrame % 13));
       break;
     default:
       // not supported
@@ -5095,17 +5089,17 @@ export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, 
   // check if enough time has passed to update the frame counter
   if (ANIMATED_BATTLEICON_FRAME_TIME < (uiTimer - guiSectorLocatorBaseTime)) {
     guiSectorLocatorBaseTime = uiTimer;
-    ubFrame++;
+    HandleBlitOfSectorLocatorIcon__ubFrame++;
 
-    if (ubFrame > ubBaseFrame + MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON) {
-      ubFrame = ubBaseFrame;
+    if (HandleBlitOfSectorLocatorIcon__ubFrame > ubBaseFrame + MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON) {
+      HandleBlitOfSectorLocatorIcon__ubFrame = ubBaseFrame;
     }
   }
 
   RestoreExternBackgroundRect((sScreenX + 1), (sScreenY - 1), MAP_GRID_X, MAP_GRID_Y);
 
   // blit object to frame buffer
-  BltVideoObject(FRAME_BUFFER, hHandle, ubFrame, sScreenX, sScreenY, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hHandle, HandleBlitOfSectorLocatorIcon__ubFrame, sScreenX, sScreenY, VO_BLT_SRCTRANSPARENCY, null);
 
   // invalidate region on frame buffer
   InvalidateRegion(sScreenX, sScreenY - 1, sScreenX + MAP_GRID_X, sScreenY + MAP_GRID_Y);

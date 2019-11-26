@@ -91,4 +91,106 @@ export interface STRATEGIC_STATUS {
   bPadding: INT8[] /* [70] */;
 }
 
+export function createStrategicStatus(): STRATEGIC_STATUS {
+  return {
+    uiFlags: 0,
+    ubNumCapturedForRescue: 0,
+    ubHighestProgress: 0,
+    ubStandardArmyGunIndex: createArray(ARMY_GUN_LEVELS, 0),
+    fWeaponDroppedAlready: createArray(Enum225.MAX_WEAPONS, false),
+    ubMercDeaths: 0,
+    uiManDaysPlayed: 0,
+    ubBadReputation: 0,
+    usEnricoEmailFlags: 0,
+    ubInsuranceInvestigationsCnt: 0,
+    ubUnhiredMercDeaths: 0,
+    usPlayerKills: 0,
+    usEnemiesKilled: createArrayFrom(Enum189.NUM_WAYS_ENEMIES_KILLED, () => createArray(Enum188.NUM_ENEMY_RANKS, 0)),
+    usLastDayOfPlayerActivity: 0,
+    ubNumNewSectorsVisitedToday: 0,
+    ubNumberOfDaysOfInactivity: 0,
+    bPadding: createArray(70, 0),
+  };
+}
+
+export function resetStrategicStatus(o: STRATEGIC_STATUS) {
+  o.uiFlags = 0;
+  o.ubNumCapturedForRescue = 0;
+  o.ubHighestProgress = 0;
+  o.ubStandardArmyGunIndex.fill(0);
+  o.fWeaponDroppedAlready.fill(false);
+  o.ubMercDeaths = 0;
+  o.uiManDaysPlayed = 0;
+  o.ubBadReputation = 0;
+  o.usEnricoEmailFlags = 0;
+  o.ubInsuranceInvestigationsCnt = 0;
+  o.ubUnhiredMercDeaths = 0;
+  o.usPlayerKills = 0;
+
+  for (let i = 0; i < o.usEnemiesKilled.length; i++) {
+    o.usEnemiesKilled[i].fill(0);
+  }
+
+  o.usLastDayOfPlayerActivity = 0;
+  o.ubNumNewSectorsVisitedToday = 0;
+  o.ubNumberOfDaysOfInactivity = 0;
+  o.bPadding.fill(0);
+}
+
+export const STRATEGIC_STATUS_SIZE = 192;
+
+export function readStrategicStatus(o: STRATEGIC_STATUS, buffer: Buffer, offset: number = 0): number {
+  o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.ubNumCapturedForRescue = buffer.readUInt8(offset++);
+  o.ubHighestProgress = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubStandardArmyGunIndex, buffer, offset, 1);
+  offset = readBooleanArray(o.fWeaponDroppedAlready, buffer, offset);
+  o.ubMercDeaths = buffer.readUInt8(offset++);
+  o.uiManDaysPlayed = buffer.readUInt32LE(offset); offset += 4;
+  o.ubBadReputation = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usEnricoEmailFlags = buffer.readUInt16LE(offset); offset += 2;
+  o.ubInsuranceInvestigationsCnt = buffer.readUInt8(offset++);
+  o.ubUnhiredMercDeaths = buffer.readUInt8(offset++);
+  o.usPlayerKills = buffer.readUInt16LE(offset); offset += 2;
+
+  for (let i = 0; i < o.usEnemiesKilled.length; i++) {
+    offset = readUIntArray(o.usEnemiesKilled[i], buffer, offset, 2);
+  }
+
+  o.usLastDayOfPlayerActivity = buffer.readUInt16LE(offset); offset += 2;
+  o.ubNumNewSectorsVisitedToday = buffer.readUInt8(offset++);
+  o.ubNumberOfDaysOfInactivity = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
+export function writeStrategicStatus(o: STRATEGIC_STATUS, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeUInt8(o.ubNumCapturedForRescue, offset);
+  offset = buffer.writeUInt8(o.ubHighestProgress, offset);
+  offset = writeUIntArray(o.ubStandardArmyGunIndex, buffer, offset, 1);
+  offset = writeBooleanArray(o.fWeaponDroppedAlready, buffer, offset);
+  offset = buffer.writeUInt8(o.ubMercDeaths, offset);
+  offset = buffer.writeUInt32LE(o.uiManDaysPlayed, offset);
+  offset = buffer.writeUInt8(o.ubBadReputation, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usEnricoEmailFlags, offset);
+  offset = buffer.writeUInt8(o.ubInsuranceInvestigationsCnt, offset);
+  offset = buffer.writeUInt8(o.ubUnhiredMercDeaths, offset);
+  offset = buffer.writeUInt16LE(o.usPlayerKills, offset);
+
+  for (let i = 0; i < o.usEnemiesKilled.length; i++) {
+    offset = writeUIntArray(o.usEnemiesKilled[i], buffer, offset, 2);
+  }
+
+  offset = buffer.writeUInt16LE(o.usLastDayOfPlayerActivity, offset);
+  offset = buffer.writeUInt8(o.ubNumNewSectorsVisitedToday, offset);
+  offset = buffer.writeUInt8(o.ubNumberOfDaysOfInactivity, offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+
+  return offset;
+}
+
 }

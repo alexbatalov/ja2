@@ -5196,7 +5196,7 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
         pSoldier.sDamageX = 0;
         pSoldier.sDamageY = 0;
       } else {
-        GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
+        ({ sOffsetX, sOffsetY } = GetSoldierAnimOffsets(pSoldier));
         pSoldier.sDamageX = sOffsetX;
         pSoldier.sDamageY = sOffsetY;
       }

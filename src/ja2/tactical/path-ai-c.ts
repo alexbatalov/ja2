@@ -80,9 +80,9 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 
 /* static */ let pathQ: Pointer<path_t>;
-/* static */ export let gusPathShown: UINT16;
-/* static */ export let gusAPtsToMove: UINT16;
-/* static */ export let queRequests: INT32;
+/* static */ let gusPathShown: UINT16;
+/* static */ let gusAPtsToMove: UINT16;
+/* static */ let queRequests: INT32;
 /* static */ let iSkipListSize: INT32;
 /* static */ let iClosedListSize: INT32;
 /* static */ let bSkipListLevel: INT8;

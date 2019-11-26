@@ -16,12 +16,12 @@ let gpCurrItemPoolNode: Pointer<IPListNode> = null;
 export let gpItemPool: Pointer<ITEM_POOL> = null;
 
 export function BuildItemPoolList(): void {
-  let temp: Pointer<ITEM_POOL>;
+  let temp: ITEM_POOL | null;
   let tail: Pointer<IPListNode>;
   let i: UINT16;
   KillItemPoolList();
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetItemPool(i, addressof(temp), 0)) {
+    if ((temp = GetItemPool(i, 0))) {
       if (!pIPHead) {
         pIPHead = MemAlloc(sizeof(IPListNode));
         Assert(pIPHead);
@@ -649,15 +649,15 @@ function HideItemCursor(iMapIndex: INT32): void {
 }
 
 function TriggerAtGridNo(sGridNo: INT16): boolean {
-  let pItemPool: Pointer<ITEM_POOL>;
-  if (!GetItemPool(sGridNo, addressof(pItemPool), 0)) {
+  let pItemPool: ITEM_POOL | null;
+  if ((pItemPool = GetItemPool(sGridNo, 0)) === null) {
     return false;
   }
   while (pItemPool) {
-    if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.SWITCH) {
+    if (gWorldItems[pItemPool.iItemIndex].o.usItem == Enum225.SWITCH) {
       return true;
     }
-    pItemPool = pItemPool.value.pNext;
+    pItemPool = pItemPool.pNext;
   }
   return false;
 }
@@ -666,7 +666,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
   let tempObject: OBJECTTYPE = createObjectType();
   let pObject: Pointer<OBJECTTYPE>;
   let pItem: Pointer<INVTYPE>;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let iItemIndex: INT32;
   let bVisibility: INT8 = INVISIBLE;
   let fFound: boolean = false;
@@ -772,15 +772,15 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
     }
   }
 
-  if (!GetItemPool(sGridNo, addressof(pItemPool), 0))
-    Assert(0);
+  if ((pItemPool = GetItemPool(sGridNo, 0)) === null)
+    Assert(false);
   while (pItemPool) {
-    if (addressof((gWorldItems[pItemPool.value.iItemIndex].o) == pObject)) {
+    if (addressof((gWorldItems[pItemPool.iItemIndex].o) == pObject)) {
       fFound = true;
       // ShowSelectedItem();
       break;
     }
-    pItemPool = pItemPool.value.pNext;
+    pItemPool = pItemPool.pNext;
   }
   Assert(fFound);
 
@@ -820,7 +820,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
 }
 
 export function HandleRightClickOnItem(sGridNo: INT16): void {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pIPCurr: Pointer<IPListNode>;
 
   if (gsItemGridNo == sGridNo) {
@@ -829,9 +829,9 @@ export function HandleRightClickOnItem(sGridNo: INT16): void {
     pItemPool = gpItemPool.value.pNext;
     if (!pItemPool) {
       // currently selected item was last node, so select the head node even if it is the same.
-      GetItemPool(sGridNo, addressof(pItemPool), 0);
+      pItemPool = GetItemPool(sGridNo, 0);
     }
-  } else if (!GetItemPool(sGridNo, addressof(pItemPool), 0)) {
+  } else if ((pItemPool = GetItemPool(sGridNo, 0)) === null) {
     // possibly relocate selected item to this gridno?
     return;
   }
@@ -879,7 +879,7 @@ export function DeleteSelectedItem(): void {
     RemoveItemFromPool(sGridNo, gpItemPool.value.iItemIndex, 0);
     gpItemPool = null;
     // determine if there are still any items at this location
-    if (!GetItemPool(sGridNo, addressof(gpItemPool), 0)) {
+    if ((gpItemPool = GetItemPool(sGridNo, 0)) === null) {
       // no items left, so remove the node from the list.
       let pIPPrev: Pointer<IPListNode>;
       let pIPCurr: Pointer<IPListNode>;
@@ -897,7 +897,7 @@ export function DeleteSelectedItem(): void {
           else
             gpCurrItemPoolNode = pIPHead;
           if (gpCurrItemPoolNode) {
-            GetItemPool(gpCurrItemPoolNode.value.sGridNo, addressof(gpItemPool), 0);
+            gpItemPool = GetItemPool(gpCurrItemPoolNode.value.sGridNo, 0);
             Assert(gpItemPool);
           }
           // remove node
@@ -941,7 +941,7 @@ export function SelectNextItemPool(): void {
   else
     gpCurrItemPoolNode = pIPHead;
   // get the item pool at this node's gridno.
-  GetItemPool(gpCurrItemPoolNode.value.sGridNo, addressof(gpItemPool), 0);
+  gpItemPool = GetItemPool(gpCurrItemPoolNode.value.sGridNo, 0);
   MarkMapIndexDirty(gpItemPool.value.sGridNo);
   SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
   if (gsItemGridNo != -1) {
@@ -954,7 +954,7 @@ export function SelectNextItemInPool(): void {
     if (gpItemPool.value.pNext) {
       gpItemPool = gpItemPool.value.pNext;
     } else {
-      GetItemPool(gpItemPool.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(gpItemPool.value.sGridNo, 0);
     }
     SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
     MarkWorldDirty();
@@ -966,7 +966,7 @@ export function SelectPrevItemInPool(): void {
     if (gpItemPool.value.pPrev) {
       gpItemPool = gpItemPool.value.pPrev;
     } else {
-      GetItemPool(gpItemPool.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(gpItemPool.value.sGridNo, 0);
       while (gpItemPool.value.pNext) {
         gpItemPool = gpItemPool.value.pNext;
       }
@@ -1026,7 +1026,7 @@ function SelectNextItemOfType(usItem: UINT16): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(curr.value.sGridNo, 0);
       while (gpItemPool) {
         pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == usItem) {
@@ -1042,7 +1042,7 @@ function SelectNextItemOfType(usItem: UINT16): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+    gpItemPool = GetItemPool(curr.value.sGridNo, 0);
     while (gpItemPool) {
       pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == usItem) {
@@ -1081,7 +1081,7 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(curr.value.sGridNo, 0);
       while (gpItemPool) {
         pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
@@ -1097,7 +1097,7 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+    gpItemPool = GetItemPool(curr.value.sGridNo, 0);
     while (gpItemPool) {
       pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
@@ -1136,7 +1136,7 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(curr.value.sGridNo, 0);
       while (gpItemPool) {
         pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
@@ -1152,7 +1152,7 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+    gpItemPool = GetItemPool(curr.value.sGridNo, 0);
     while (gpItemPool) {
       pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
@@ -1191,7 +1191,7 @@ function SelectNextPressureAction(): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+      gpItemPool = GetItemPool(curr.value.sGridNo, 0);
       while (gpItemPool) {
         pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == Enum225.ACTION_ITEM && pObject.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
@@ -1207,7 +1207,7 @@ function SelectNextPressureAction(): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
+    gpItemPool = GetItemPool(curr.value.sGridNo, 0);
     while (gpItemPool) {
       pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == Enum225.ACTION_ITEM && pObject.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
@@ -1222,19 +1222,19 @@ function SelectNextPressureAction(): void {
 }
 
 function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pIPCurr: Pointer<IPListNode>;
   let num: INT16 = 0;
   pusQuantity.value = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
+    pItemPool = GetItemPool(pIPCurr.value.sGridNo, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem) {
+      if (gWorldItems[pItemPool.iItemIndex].o.usItem == usItem) {
         num++;
-        pusQuantity.value += gWorldItems[pItemPool.value.iItemIndex].o.ubNumberOfObjects;
+        pusQuantity.value += gWorldItems[pItemPool.iItemIndex].o.ubNumberOfObjects;
       }
-      pItemPool = pItemPool.value.pNext;
+      pItemPool = pItemPool.pNext;
     }
     pIPCurr = pIPCurr.value.next;
   }
@@ -1242,17 +1242,17 @@ function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer
 }
 
 function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT16 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pIPCurr: Pointer<IPListNode>;
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
+    pItemPool = GetItemPool(pIPCurr.value.sGridNo, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem && gWorldItems[pItemPool.value.iItemIndex].o.bFrequency == bFrequency) {
+      if (gWorldItems[pItemPool.iItemIndex].o.usItem == usItem && gWorldItems[pItemPool.iItemIndex].o.bFrequency == bFrequency) {
         num++;
       }
-      pItemPool = pItemPool.value.pNext;
+      pItemPool = pItemPool.pNext;
     }
     pIPCurr = pIPCurr.value.next;
   }
@@ -1260,17 +1260,17 @@ function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT
 }
 
 function CountNumberOfPressureActionsInWorld(): UINT16 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pIPCurr: Pointer<IPListNode>;
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
+    pItemPool = GetItemPool(pIPCurr.value.sGridNo, 0);
     while (pItemPool) {
-      if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == Enum225.ACTION_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.bDetonatorType == Enum224.BOMB_PRESSURE) {
+      if (gWorldItems[pItemPool.iItemIndex].o.usItem == Enum225.ACTION_ITEM && gWorldItems[pItemPool.iItemIndex].o.bDetonatorType == Enum224.BOMB_PRESSURE) {
         num++;
       }
-      pItemPool = pItemPool.value.pNext;
+      pItemPool = pItemPool.pNext;
     }
     pIPCurr = pIPCurr.value.next;
   }
@@ -1307,19 +1307,19 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
 }
 
 function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let pIPCurr: Pointer<IPListNode>;
   let num: INT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
+    pItemPool = GetItemPool(pIPCurr.value.sGridNo, 0);
     while (pItemPool) {
-      if (Item[gWorldItems[pItemPool.value.iItemIndex].o.usItem].usItemClass == IC_KEY) {
-        if (gWorldItems[pItemPool.value.iItemIndex].o.ubKeyID == ubKeyID) {
+      if (Item[gWorldItems[pItemPool.iItemIndex].o.usItem].usItemClass == IC_KEY) {
+        if (gWorldItems[pItemPool.iItemIndex].o.ubKeyID == ubKeyID) {
           num++;
         }
       }
-      pItemPool = pItemPool.value.pNext;
+      pItemPool = pItemPool.pNext;
     }
     pIPCurr = pIPCurr.value.next;
   }

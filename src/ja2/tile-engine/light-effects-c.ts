@@ -263,7 +263,7 @@ export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiCnt: UINT32;
 
   // get the name of the map
-  GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // delete file the file.
   FileDelete(zMapName);
@@ -329,7 +329,7 @@ export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
 
-  GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
+  zMapName = GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
   // Open the file for reading, Create it if it doesnt exist
   hFile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);

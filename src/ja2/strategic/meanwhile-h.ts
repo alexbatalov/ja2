@@ -41,4 +41,12 @@ export function createMeanwhileDefinition(): MEANWHILE_DEFINITION {
   };
 }
 
+export function copyMeanWhileDefinition(destination: MEANWHILE_DEFINITION, source: MEANWHILE_DEFINITION) {
+  destination.sSectorX = source.sSectorX;
+  destination.sSectorY = source.sSectorY;
+  destination.usTriggerEvent = source.usTriggerEvent;
+  destination.ubMeanwhileID = source.ubMeanwhileID;
+  destination.ubNPCNumber = source.ubNPCNumber;
+}
+
 }

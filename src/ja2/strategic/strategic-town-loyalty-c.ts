@@ -71,13 +71,13 @@ const DIVISOR_FOR_REBEL_BUILDING_DMG = 2;
 */
 
 // town loyalty table
-export let gTownLoyalty: TOWN_LOYALTY[] /* [NUM_TOWNS] */;
+export let gTownLoyalty: TOWN_LOYALTY[] /* [NUM_TOWNS] */ = createArrayFrom(Enum135.NUM_TOWNS, createTownLoyalty);
 
 // town name and locations arrays, for town theft and what not
-export let pTownNamesList: INT32[] /* [40] */;
-export let pTownLocationsList: INT32[] /* [40] */;
+export let pTownNamesList: INT32[] /* [40] */ = createArray(40, 0);
+export let pTownLocationsList: INT32[] /* [40] */ = createArray(40, 0);
 
-let iTownDistances: INT32[][] /* [NUM_TOWNS][NUM_TOWNS] */;
+let iTownDistances: INT32[][] /* [NUM_TOWNS][NUM_TOWNS] */ = createArrayFrom(Enum135.NUM_TOWNS, () => createArray(Enum135.NUM_TOWNS, 0));
 
 const BASIC_COST_FOR_CIV_MURDER = (10 * GAIN_PTS_PER_LOYALTY_PT);
 
@@ -550,13 +550,13 @@ void UpdateTownLoyaltyBasedOnBadGuysInTown( INT8 bTownId )
 }
 */
 
-export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: boolean): void {
+export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: boolean): void {
   // handle the impact on loyalty of the murder of a civilian
   let bTownId: INT8 = 0;
   let iLoyaltyChange: INT32 = 0;
   let bSeenState: INT8 = 0;
   let iCounter: INT32 = 0;
-  let pCivSoldier: Pointer<SOLDIERTYPE> = null;
+  let pCivSoldier: SOLDIERTYPE;
   let uiChanceFalseAccusal: UINT32 = 0;
   let bKillerTeam: INT8 = 0;
   let fIncrement: boolean = false;
@@ -564,27 +564,27 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
   let uiValue: UINT32 = 0;
 
   // ubAttacker CAN be NOBODY...  Don't treat is as murder if NOBODY killed us...
-  if (pSoldier.value.ubAttackerID == NOBODY) {
+  if (pSoldier.ubAttackerID == NOBODY) {
     return;
   }
 
   // ignore murder of non-civilians!
-  if ((pSoldier.value.bTeam != CIV_TEAM) || (pSoldier.value.ubBodyType == Enum194.CROW)) {
+  if ((pSoldier.bTeam != CIV_TEAM) || (pSoldier.ubBodyType == Enum194.CROW)) {
     return;
   }
 
   // if this is a profiled civilian NPC
-  if (pSoldier.value.ubProfile != NO_PROFILE) {
+  if (pSoldier.ubProfile != NO_PROFILE) {
     // ignore murder of NPCs if they're not loyal to the rebel cause - they're really just enemies in civilian clothing
-    if (gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_TOWN_DOESNT_CARE_ABOUT_DEATH) {
+    if (gMercProfiles[pSoldier.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_TOWN_DOESNT_CARE_ABOUT_DEATH) {
       return;
     }
   }
 
   // if civilian belongs to a civilian group
-  if (pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
+  if (pSoldier.ubCivilianGroup != Enum246.NON_CIV_GROUP) {
     // and it's one that is hostile to the player's cause
-    switch (pSoldier.value.ubCivilianGroup) {
+    switch (pSoldier.ubCivilianGroup) {
       case Enum246.KINGPIN_CIV_GROUP:
       case Enum246.ALMA_MILITARY_CIV_GROUP:
       case Enum246.HICKS_CIV_GROUP:
@@ -594,18 +594,18 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
   }
 
   // set killer team
-  bKillerTeam = Menptr[pSoldier.value.ubAttackerID].bTeam;
+  bKillerTeam = Menptr[pSoldier.ubAttackerID].bTeam;
 
   // if the player did the killing
   if (bKillerTeam == OUR_TEAM) {
-    let pKiller: Pointer<SOLDIERTYPE> = MercPtrs[pSoldier.value.ubAttackerID];
+    let pKiller: SOLDIERTYPE = MercPtrs[pSoldier.ubAttackerID];
 
     // apply morale penalty for killing a civilian!
-    HandleMoraleEvent(pKiller, Enum234.MORALE_KILLED_CIVILIAN, pKiller.value.sSectorX, pKiller.value.sSectorY, pKiller.value.bSectorZ);
+    HandleMoraleEvent(pKiller, Enum234.MORALE_KILLED_CIVILIAN, pKiller.sSectorX, pKiller.sSectorY, pKiller.bSectorZ);
   }
 
   // get town id
-  bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  bTownId = GetTownIdForSector(pSoldier.sSectorX, pSoldier.sSectorY);
 
   // if civilian is NOT in a town
   if (bTownId == Enum135.BLANK_SECTOR) {
@@ -617,9 +617,9 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
     return;
   }
 
-  if ((pSoldier.value.ubBodyType >= Enum194.FATCIV) && (pSoldier.value.ubBodyType <= Enum194.COW)) {
+  if ((pSoldier.ubBodyType >= Enum194.FATCIV) && (pSoldier.ubBodyType <= Enum194.COW)) {
     // adjust value for killer and type
-    iLoyaltyChange = uiPercentLoyaltyDecreaseForCivMurder[pSoldier.value.ubBodyType - Enum194.FATCIV];
+    iLoyaltyChange = uiPercentLoyaltyDecreaseForCivMurder[pSoldier.ubBodyType - Enum194.FATCIV];
   } else {
     iLoyaltyChange = BASIC_COST_FOR_CIV_MURDER;
   }
@@ -642,7 +642,7 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
     }
 
     // killer seen by civ?
-    if (SoldierToSoldierLineOfSightTest(pCivSoldier, MercPtrs[pSoldier.value.ubAttackerID], STRAIGHT_RANGE, true) != 0) {
+    if (SoldierToSoldierLineOfSightTest(pCivSoldier, MercPtrs[pSoldier.ubAttackerID], STRAIGHT_RANGE, true) != 0) {
       bSeenState |= 1;
     }
 
@@ -703,7 +703,7 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
 
     case ENEMY_TEAM:
       // check whose sector this is
-      if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == true) {
+      if (StrategicMap[(pSoldier.sSectorX) + (MAP_WORLD_X * (pSoldier.sSectorY))].fEnemyControlled == true) {
         // enemy soldiers... in enemy controlled sector.  Gain loyalty
         fIncrement = true;
 
@@ -739,12 +739,12 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
 
     case CREATURE_TEAM:
       // killed by a monster - make sure it was one
-      if ((Menptr[pSoldier.value.ubAttackerID].ubBodyType >= Enum194.ADULTFEMALEMONSTER) && (Menptr[pSoldier.value.ubAttackerID].ubBodyType <= Enum194.QUEENMONSTER)) {
+      if ((Menptr[pSoldier.ubAttackerID].ubBodyType >= Enum194.ADULTFEMALEMONSTER) && (Menptr[pSoldier.ubAttackerID].ubBodyType <= Enum194.QUEENMONSTER)) {
         // increase for the extreme horror of being killed by a monster
         iLoyaltyChange *= MULTIPLIER_FOR_MURDER_BY_MONSTER;
 
         // check whose sector this is
-        if (StrategicMap[(pSoldier.value.sSectorX) + (MAP_WORLD_X * (pSoldier.value.sSectorY))].fEnemyControlled == true) {
+        if (StrategicMap[(pSoldier.sSectorX) + (MAP_WORLD_X * (pSoldier.sSectorY))].fEnemyControlled == true) {
           // enemy controlled sector - gain loyalty
           fIncrement = true;
         } else {
@@ -792,22 +792,22 @@ export function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentio
   iLoyaltyChange *= 100;
   iLoyaltyChange /= (100 + (25 * LOYALTY_EVENT_DISTANCE_THRESHOLD));
 
-  AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+  AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
 }
 
 // check town and raise loyalty value for hiring a merc from a town...not a lot of a gain, but some
-export function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function HandleTownLoyaltyForNPCRecruitment(pSoldier: SOLDIERTYPE): void {
   let bTownId: INT8 = 0;
   let uiLoyaltyValue: UINT32 = 0;
   let iRating: INT32 = 0;
 
   // get town id civilian
-  bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  bTownId = GetTownIdForSector(pSoldier.sSectorX, pSoldier.sSectorY);
 
   // is the merc currently in their home town?
-  if (bTownId == gMercProfiles[pSoldier.value.ubProfile].bTown) {
+  if (bTownId == gMercProfiles[pSoldier.ubProfile].bTown) {
     // yep, value of loyalty bonus depends on his importance to this to town
-    uiLoyaltyValue = MULTIPLIER_LOCAL_RPC_HIRED * gMercProfiles[pSoldier.value.ubProfile].bTownAttachment;
+    uiLoyaltyValue = MULTIPLIER_LOCAL_RPC_HIRED * gMercProfiles[pSoldier.ubProfile].bTownAttachment;
 
     // increment town loyalty gain
     IncrementTownLoyalty(bTownId, uiLoyaltyValue);
@@ -819,7 +819,7 @@ export function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE
   return;
 }
 
-function HandleLoyaltyAdjustmentForRobbery(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function HandleLoyaltyAdjustmentForRobbery(pSoldier: SOLDIERTYPE): boolean {
   // not to be implemented at this time
   return false;
 
@@ -843,7 +843,7 @@ function HandleLoyaltyAdjustmentForRobbery(pSoldier: Pointer<SOLDIERTYPE>): bool
 }
 
 // handle loyalty adjustment for dmg inflicted on a building
-function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sPointsDmg: INT16): void {
+function HandleLoyaltyForDemolitionOfBuilding(pSoldier: SOLDIERTYPE, sPointsDmg: INT16): void {
   // find this soldier's team and decrement the loyalty rating for them and for the people who police the sector
   // more penalty for the people who did it, a lesser one for those who should have stopped it
   let sLoyaltyValue: INT16 = 0;
@@ -857,15 +857,15 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
   sPolicingLoyalty = sPointsDmg * MULTIPLIER_FOR_NOT_PREVENTING_BUILDING_DAMAGE;
 
   // get town id
-  bTownId = GetTownIdForSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
+  bTownId = GetTownIdForSector(pSoldier.sSectorX, pSoldier.sSectorY);
 
   // penalize the side that did it
-  if (pSoldier.value.bTeam == OUR_TEAM) {
+  if (pSoldier.bTeam == OUR_TEAM) {
     DecrementTownLoyalty(bTownId, sLoyaltyValue);
-  } else if (pSoldier.value.bTeam == ENEMY_TEAM) {
+  } else if (pSoldier.bTeam == ENEMY_TEAM) {
     // enemy damaged sector, it's their fault
     IncrementTownLoyalty(bTownId, sLoyaltyValue);
-  } else if (pSoldier.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
+  } else if (pSoldier.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // the rebels did it...are they on our side
     if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == false) {
       sLoyaltyValue /= DIVISOR_FOR_REBEL_BUILDING_DMG;
@@ -876,7 +876,7 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sP
   }
 
   // penalize the side that should have stopped it
-  if (StrategicMap[pSoldier.value.sSectorX + pSoldier.value.sSectorY * MAP_WORLD_X].fEnemyControlled == true) {
+  if (StrategicMap[pSoldier.sSectorX + pSoldier.sSectorY * MAP_WORLD_X].fEnemyControlled == true) {
     // enemy should have prevented it, let them suffer a little
     IncrementTownLoyalty(bTownId, sPolicingLoyalty);
   } else {
@@ -891,7 +891,7 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
   // remove random items in sector
   let uiNumberOfItems: UINT32 = 0;
   let iCounter: UINT32 = 0;
-  let pItemList: Pointer<WORLDITEM>;
+  let pItemList: WORLDITEM[];
   let uiNewTotal: UINT32 = 0;
   let wSectorName: string /* CHAR16[128] */;
 
@@ -906,13 +906,13 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
   // if unloaded sector
   if (gWorldSectorX != sSectorX || gWorldSectorY != sSectorY || gbWorldSectorZ != sSectorZ) {
     // if the player has never been there, there's no temp file, and 0 items will get returned, preventing any stealing
-    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, addressof(uiNumberOfItems), false);
+    uiNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, false);
 
     if (uiNumberOfItems == 0) {
       return;
     }
 
-    pItemList = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
+    pItemList = createArrayFrom(uiNumberOfItems, createWorldItem);
 
     // now load items
     LoadWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, pItemList);
@@ -1018,8 +1018,8 @@ export function BuildListOfTownSectors(): void {
   let usSector: UINT16;
 
   // initialize
-  memset(pTownNamesList, Enum135.BLANK_SECTOR, sizeof(pTownNamesList));
-  memset(pTownLocationsList, 0xFF, sizeof(pTownLocationsList));
+  pTownNamesList.fill(Enum135.BLANK_SECTOR);
+  pTownLocationsList.fill(0xFF);
 
   // run through list
   for (iCounterX = 0; iCounterX < MAP_WORLD_X; iCounterX++) {
@@ -1038,10 +1038,16 @@ export function BuildListOfTownSectors(): void {
 
 export function ReadInDistancesBetweenTowns(): void {
   let hFileHandle: HWFILE;
+  let buffer: Buffer;
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, false);
 
-  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS), null);
+  buffer = Buffer.allocUnsafe(4 * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS);
+  FileRead(hFileHandle, buffer, (4 * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS));
+
+  for (let i = 0; i < Enum135.NUM_TOWNS; i++) {
+    readIntArray(iTownDistances[i], buffer, i * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS, 4);
+  }
 
   // close file
   FileClose(hFileHandle);
@@ -1106,10 +1112,16 @@ UINT32 BuildLoyaltyEventValue( INT8 bTownValue, UINT32 uiValue, BOOLEAN fIncreme
 
 export function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
   // Save the Town Loyalty
-  FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
+  buffer = Buffer.allocUnsafe(Enum135.NUM_TOWNS * TOWN_LOYALTY_SIZE);
+  for (let i = 0; i < Enum135.NUM_TOWNS; i++) {
+    writeTownLoyalty(gTownLoyalty[i], buffer, i * TOWN_LOYALTY_SIZE);
+  }
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, TOWN_LOYALTY_SIZE * Enum135.NUM_TOWNS);
+  if (uiNumBytesWritten != TOWN_LOYALTY_SIZE * Enum135.NUM_TOWNS) {
     return false;
   }
 
@@ -1118,11 +1130,17 @@ export function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // Restore the Town Loyalty
-  FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(TOWN_LOYALTY) * Enum135.NUM_TOWNS) {
+  buffer = Buffer.allocUnsafe(Enum135.NUM_TOWNS * TOWN_LOYALTY_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, TOWN_LOYALTY_SIZE * Enum135.NUM_TOWNS);
+  if (uiNumBytesRead != TOWN_LOYALTY_SIZE * Enum135.NUM_TOWNS) {
     return false;
+  }
+
+  for (let i = 0; i < Enum135.NUM_TOWNS; i++) {
+    readTownLoyalty(gTownLoyalty[i], buffer, i * TOWN_LOYALTY_SIZE);
   }
 
   return true;
@@ -1178,7 +1196,7 @@ export function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: 
 }
 
 // is the ENTIRE town under player control?
-export function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
+export function IsTownUnderCompleteControlByPlayer(bTownId: INT8): boolean {
   let iNumber: INT32 = 0;
 
   if (GetTownSectorSize(bTownId) == GetTownSectorsUnderControl(bTownId)) {
@@ -1189,7 +1207,7 @@ export function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
 }
 
 // is the ENTIRE town under enemy control?
-function IsTownUnderCompleteControlByEnemy(bTownId: INT8): INT32 {
+function IsTownUnderCompleteControlByEnemy(bTownId: INT8): boolean {
   let iNumber: INT32 = 0;
 
   if (GetTownSectorsUnderControl(bTownId) == 0) {
@@ -1317,7 +1335,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
   let bTownId: INT8;
   let uiIndex: UINT32;
   let iThisDistance: INT32;
-  let iShortestDistance: INT32[] /* [NUM_TOWNS] */;
+  let iShortestDistance: INT32[] /* [NUM_TOWNS] */ = createArray(Enum135.NUM_TOWNS, 0);
   let iPercentAdjustment: INT32;
   let iDistanceAdjustedLoyalty: INT32;
 
@@ -1499,16 +1517,16 @@ export function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): boolean {
 
 function PlayerStrength(): UINT32 {
   let ubLoop: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let uiStrength: UINT32;
   let uiTotal: UINT32 = 0;
 
   for (ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
-    if (pSoldier.value.bActive) {
-      if (pSoldier.value.bInSector || (pSoldier.value.fBetweenSectors && ((pSoldier.value.ubPrevSectorID % 16) + 1) == gWorldSectorX && ((pSoldier.value.ubPrevSectorID / 16) + 1) == gWorldSectorY && (pSoldier.value.bSectorZ == gbWorldSectorZ))) {
+    if (pSoldier.bActive) {
+      if (pSoldier.bInSector || (pSoldier.fBetweenSectors && ((pSoldier.ubPrevSectorID % 16) + 1) == gWorldSectorX && ((pSoldier.ubPrevSectorID / 16) + 1) == gWorldSectorY && (pSoldier.bSectorZ == gbWorldSectorZ))) {
         // count this person's strength (condition), calculated as life reduced up to half according to maxbreath
-        uiStrength = pSoldier.value.bLife * (pSoldier.value.bBreathMax + 100) / 200;
+        uiStrength = pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200;
         uiTotal += uiStrength;
       }
     }
@@ -1518,15 +1536,15 @@ function PlayerStrength(): UINT32 {
 
 function EnemyStrength(): UINT32 {
   let ubLoop: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let uiStrength: UINT32;
   let uiTotal: UINT32 = 0;
 
   for (ubLoop = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && !pSoldier.value.bNeutral) {
+    if (pSoldier.bActive && pSoldier.bInSector && !pSoldier.bNeutral) {
       // count this person's strength (condition), calculated as life reduced up to half according to maxbreath
-      uiStrength = pSoldier.value.bLife * (pSoldier.value.bBreathMax + 100) / 200;
+      uiStrength = pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200;
       uiTotal += uiStrength;
     }
   }

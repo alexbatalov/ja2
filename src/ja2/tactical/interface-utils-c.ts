@@ -285,7 +285,7 @@ export function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   UnLockVideoSurface(uiBuffer);
 }
 
-export function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -297,21 +297,21 @@ export function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, s
   let sValue: INT16;
 
   if (ubStatus >= DRAW_ITEM_STATUS_ATTACHMENT1) {
-    sValue = pObject.value.bAttachStatus[ubStatus - DRAW_ITEM_STATUS_ATTACHMENT1];
+    sValue = pObject.bAttachStatus[ubStatus - DRAW_ITEM_STATUS_ATTACHMENT1];
   } else {
-    sValue = pObject.value.bStatus[ubStatus];
+    sValue = pObject.bStatus[ubStatus];
   }
 
   // Adjust for ammo, other thingys..
-  if (Item[pObject.value.usItem].usItemClass & IC_AMMO) {
-    sValue = sValue * 100 / Magazine[Item[pObject.value.usItem].ubClassIndex].ubMagSize;
+  if (Item[pObject.usItem].usItemClass & IC_AMMO) {
+    sValue = sValue * 100 / Magazine[Item[pObject.usItem].ubClassIndex].ubMagSize;
 
     if (sValue > 100) {
       sValue = 100;
     }
   }
 
-  if (Item[pObject.value.usItem].usItemClass & IC_KEY) {
+  if (Item[pObject.usItem].usItemClass & IC_KEY) {
     sValue = 100;
   }
 

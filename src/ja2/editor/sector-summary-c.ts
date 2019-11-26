@@ -191,7 +191,7 @@ export function CreateSummaryWindow(): void {
   DisableEditorTaskbar();
   DisableAllTextFields();
 
-  GetCurrentWorldSector(addressof(gsSectorX), addressof(gsSectorY));
+  ({ sSectorX: gsSectorX, sSectorY: gsSectorY } = GetCurrentWorldSector());
   gsSelSectorX = gsSectorX;
   gsSelSectorY = gsSectorY;
   gfSummaryWindowActive = true;

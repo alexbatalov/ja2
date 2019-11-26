@@ -77,8 +77,8 @@ const enum Enum211 {
 // GLOBAL NPC STRUCT
 export let gTalkPanel: NPC_DIALOGUE_TYPE;
 export let gfInTalkPanel: boolean = false;
-export let gpSrcSoldier: Pointer<SOLDIERTYPE> = null;
-export let gpDestSoldier: Pointer<SOLDIERTYPE> = null;
+export let gpSrcSoldier: SOLDIERTYPE | null = null;
+export let gpDestSoldier: SOLDIERTYPE | null = null;
 export let gubSrcSoldierProfile: UINT8;
 let gubNiceNPCProfile: UINT8 = NO_PROFILE;
 let gubNastyNPCProfile: UINT8 = NO_PROFILE;

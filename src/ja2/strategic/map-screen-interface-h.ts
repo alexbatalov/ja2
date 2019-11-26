@@ -10,6 +10,15 @@ export interface FASTHELPREGION {
   iW: INT32;
 }
 
+export function createFastHelpRegion(): FASTHELPREGION {
+  return {
+    FastHelpText: '',
+    iX: 0,
+    iY: 0,
+    iW: 0,
+  };
+}
+
 // String Lengths Defines
 const MAX_NAME_LENGTH = 10;
 const MAX_LOCATION_SIZE = 8;

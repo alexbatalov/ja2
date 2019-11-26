@@ -91,7 +91,7 @@ export function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMap
       LaptopSaveInfo.fBobbyRSiteCanBeAccessed = true;
 
       // If the player has been to Bobbyr when it was down, and we havent already sent email, send him an email
-      if (LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction == Enum99.BOBBYR_BEEN_TO_SITE_ONCE && LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction != Enum99.BOBBYR_ALREADY_SENT_EMAIL) {
+      if (LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction == Enum99.BOBBYR_BEEN_TO_SITE_ONCE) {
         AddEmail(BOBBYR_NOW_OPEN, BOBBYR_NOW_OPEN_LENGTH, Enum75.BOBBY_R, GetWorldTotalMin());
         LaptopSaveInfo.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = Enum99.BOBBYR_ALREADY_SENT_EMAIL;
       }
@@ -333,8 +333,8 @@ void MakePlayerPerceptionOfSectorControlCorrect( INT16 sMapX, INT16 sMapY, INT8 
 */
 
 export function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfile: UINT8, ubNewProfile: UINT8): void {
-  let pGroup: Pointer<GROUP>;
-  let curr: Pointer<PLAYERGROUP>;
+  let pGroup: GROUP | null;
+  let curr: PLAYERGROUP | null;
 
   pGroup = GetGroup(ubGroupID);
 
@@ -342,15 +342,15 @@ export function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfil
     return;
   }
 
-  curr = pGroup.value.pPlayerList;
+  curr = pGroup.pPlayerList;
 
   while (curr) {
-    if (curr.value.ubProfileID == ubOldProfile) {
+    if (curr.ubProfileID == ubOldProfile) {
       // replace and return!
-      curr.value.ubProfileID = ubNewProfile;
+      curr.ubProfileID = ubNewProfile;
       return;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 }
 

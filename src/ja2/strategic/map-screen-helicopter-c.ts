@@ -90,7 +90,7 @@ export let gubPlayerProgressSkyriderLastCommentedOn: UINT8 = 0;
 // skyrider placeholder
 let SoldierSkyRider: SOLDIERTYPE = createSoldierType();
 
-let pSkyRider: Pointer<SOLDIERTYPE>;
+let pSkyRider: SOLDIERTYPE = <SOLDIERTYPE><unknown>null;
 
 export function InitializeHelicopter(): void {
   // must be called whenever a new game starts up!
@@ -99,7 +99,7 @@ export function InitializeHelicopter(): void {
 
   fSkyRiderAvailable = false;
   fSkyRiderSetUp = false;
-  pSkyRider = null;
+  pSkyRider = <SOLDIERTYPE><unknown>null;
   memset(addressof(SoldierSkyRider), 0, sizeof(SoldierSkyRider));
 
   fHelicopterIsAirBorne = false;
@@ -132,7 +132,7 @@ export function InitializeHelicopter(): void {
   gubPlayerProgressSkyriderLastCommentedOn = 0;
 }
 
-function AddSoldierToHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+function AddSoldierToHelicopter(pSoldier: SOLDIERTYPE): boolean {
   // attempt to add soldier to helicopter
   if (iHelicopterVehicleId == -1) {
     // no heli yet
@@ -153,7 +153,7 @@ function AddSoldierToHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   return PutSoldierInVehicle(pSoldier, iHelicopterVehicleId);
 }
 
-export function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function RemoveSoldierFromHelicopter(pSoldier: SOLDIERTYPE): boolean {
   // attempt to add soldier to helicopter
   if (iHelicopterVehicleId == -1) {
     // no heli yet
@@ -170,12 +170,12 @@ export function RemoveSoldierFromHelicopter(pSoldier: Pointer<SOLDIERTYPE>): boo
     return false;
   }
 
-  pSoldier.value.sSectorX = pVehicleList[iHelicopterVehicleId].sSectorX;
-  pSoldier.value.sSectorY = pVehicleList[iHelicopterVehicleId].sSectorY;
-  pSoldier.value.bSectorZ = 0;
+  pSoldier.sSectorX = pVehicleList[iHelicopterVehicleId].sSectorX;
+  pSoldier.sSectorY = pVehicleList[iHelicopterVehicleId].sSectorY;
+  pSoldier.bSectorZ = 0;
 
   // reset between sectors
-  pSoldier.value.fBetweenSectors = false;
+  pSoldier.fBetweenSectors = false;
 
   // remove from the vehicle
   return TakeSoldierOutOfVehicle(pSoldier);
@@ -653,7 +653,7 @@ export function SetUpHelicopterForMovement(): void {
   }
 }
 
-function HeliCharacterDialogue(pSoldier: Pointer<SOLDIERTYPE>, usQuoteNum: UINT16): boolean {
+function HeliCharacterDialogue(pSoldier: SOLDIERTYPE, usQuoteNum: UINT16): boolean {
   // ARM: we could just return, but since various flags are often being set it's safer to honk so it gets fixed right!
   Assert(fSkyRiderAvailable);
 
@@ -721,7 +721,7 @@ export function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
     SoldierSkyRider.ubProfile = Enum268.SKYRIDER;
     SoldierSkyRider.bLife = 80;
 
-    pSkyRider = addressof(SoldierSkyRider);
+    pSkyRider = SoldierSkyRider;
 
     // set up for movement
     SetUpHelicopterForMovement();
@@ -739,13 +739,13 @@ export function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
   // take everyone out of heli and add to movement group
   let iCounter: INT32 = 0;
   let ubGroupId: UINT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let bNewSquad: INT8;
   let fAnyoneAboard: boolean = false;
   let fSuccess: boolean;
-  let ubInsertionCode: UINT8;
+  let ubInsertionCode: UINT8 = <UINT8><unknown>undefined;
   let fInsertionCodeSet: boolean = false;
-  let usInsertionData: UINT16;
+  let usInsertionData: UINT16 = <UINT16><unknown>undefined;;
 
   // put these guys on their own squad (we need to return their group ID, and can only return one, so they need a unique one
   bNewSquad = GetFirstEmptySquad();
@@ -760,8 +760,8 @@ export function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
 
     if (pSoldier != null) {
       // better really be in there!
-      Assert(pSoldier.value.bAssignment == Enum117.VEHICLE);
-      Assert(pSoldier.value.iVehicleId == iHelicopterVehicleId);
+      Assert(pSoldier.bAssignment == Enum117.VEHICLE);
+      Assert(pSoldier.iVehicleId == iHelicopterVehicleId);
 
       fAnyoneAboard = true;
 
@@ -774,12 +774,12 @@ export function MoveAllInHelicopterToFootMovementGroup(): UINT8 {
       // called when buddy is added to a squad. However, the insertion code onlt sets set for
       // the first merc, so the rest are going to use whatever they had previously....
       if (!fInsertionCodeSet) {
-        ubInsertionCode = pSoldier.value.ubStrategicInsertionCode;
-        usInsertionData = pSoldier.value.usStrategicInsertionData;
+        ubInsertionCode = pSoldier.ubStrategicInsertionCode;
+        usInsertionData = pSoldier.usStrategicInsertionData;
         fInsertionCodeSet = true;
       } else {
-        pSoldier.value.ubStrategicInsertionCode = ubInsertionCode;
-        pSoldier.value.usStrategicInsertionData = usInsertionData;
+        pSoldier.ubStrategicInsertionCode = ubInsertionCode;
+        pSoldier.usStrategicInsertionData = usInsertionData;
       }
     }
   }
@@ -915,7 +915,7 @@ function HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode: UINT32): void 
   switch (uiSpecialCode) {
     case (0):
       // do quote 21
-      gpCurrentTalkingFace = addressof(gFacesData[uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE]]);
+      gpCurrentTalkingFace = gFacesData[uiExternalStaticNPCFaces[Enum203.SKYRIDER_EXTERNAL_FACE]];
       gubCurrentTalkingID = Enum268.SKYRIDER;
 
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
@@ -972,56 +972,56 @@ export function CheckAndHandleSkyriderMonologues(): void {
   }
 }
 
+// these don't need to be saved, they merely turn off the highlights after they stop flashing
+/* static */ let HandleAnimationOfSectors__fOldShowDrassenSAMHighLight: boolean = false;
+/* static */ let HandleAnimationOfSectors__fOldShowCambriaHospitalHighLight: boolean = false;
+/* static */ let HandleAnimationOfSectors__fOldShowEstoniRefuelHighLight: boolean = false;
+/* static */ let HandleAnimationOfSectors__fOldShowOtherSAMHighLight: boolean = false;
 export function HandleAnimationOfSectors(): void {
   let fSkipSpeakersLocator: boolean = false;
-  // these don't need to be saved, they merely turn off the highlights after they stop flashing
-  /* static */ let fOldShowDrassenSAMHighLight: boolean = false;
-  /* static */ let fOldShowCambriaHospitalHighLight: boolean = false;
-  /* static */ let fOldShowEstoniRefuelHighLight: boolean = false;
-  /* static */ let fOldShowOtherSAMHighLight: boolean = false;
 
   // find out which mode we are in and animate for that mode
 
   // Drassen SAM site
   if (fShowDrassenSAMHighLight) {
-    fOldShowDrassenSAMHighLight = true;
+    HandleAnimationOfSectors__fOldShowDrassenSAMHighLight = true;
     // Drassen's SAM site is #3
     HandleBlitOfSectorLocatorIcon(SAM_2_X, SAM_2_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = true;
-  } else if (fOldShowDrassenSAMHighLight) {
-    fOldShowDrassenSAMHighLight = false;
+  } else if (HandleAnimationOfSectors__fOldShowDrassenSAMHighLight) {
+    HandleAnimationOfSectors__fOldShowDrassenSAMHighLight = false;
     fMapPanelDirty = true;
   }
 
   // Cambria hospital
   if (fShowCambriaHospitalHighLight) {
-    fOldShowCambriaHospitalHighLight = true;
+    HandleAnimationOfSectors__fOldShowCambriaHospitalHighLight = true;
     HandleBlitOfSectorLocatorIcon(HOSPITAL_SECTOR_X, HOSPITAL_SECTOR_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = true;
-  } else if (fOldShowCambriaHospitalHighLight) {
-    fOldShowCambriaHospitalHighLight = false;
+  } else if (HandleAnimationOfSectors__fOldShowCambriaHospitalHighLight) {
+    HandleAnimationOfSectors__fOldShowCambriaHospitalHighLight = false;
     fMapPanelDirty = true;
   }
 
   // show other SAM sites
   if (fShowOtherSAMHighLight) {
-    fOldShowOtherSAMHighLight = true;
+    HandleAnimationOfSectors__fOldShowOtherSAMHighLight = true;
     HandleBlitOfSectorLocatorIcon(SAM_1_X, SAM_1_Y, 0, Enum156.LOCATOR_COLOR_RED);
     HandleBlitOfSectorLocatorIcon(SAM_3_X, SAM_3_Y, 0, Enum156.LOCATOR_COLOR_RED);
     HandleBlitOfSectorLocatorIcon(SAM_4_X, SAM_4_Y, 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = true;
-  } else if (fOldShowOtherSAMHighLight) {
-    fOldShowOtherSAMHighLight = false;
+  } else if (HandleAnimationOfSectors__fOldShowOtherSAMHighLight) {
+    HandleAnimationOfSectors__fOldShowOtherSAMHighLight = false;
     fMapPanelDirty = true;
   }
 
   // show Estoni site
   if (fShowEstoniRefuelHighLight) {
-    fOldShowEstoniRefuelHighLight = true;
+    HandleAnimationOfSectors__fOldShowEstoniRefuelHighLight = true;
     HandleBlitOfSectorLocatorIcon(ubRefuelList[Enum137.ESTONI_REFUELING_SITE][0], ubRefuelList[Enum137.ESTONI_REFUELING_SITE][1], 0, Enum156.LOCATOR_COLOR_RED);
     fSkipSpeakersLocator = true;
-  } else if (fOldShowEstoniRefuelHighLight) {
-    fOldShowEstoniRefuelHighLight = false;
+  } else if (HandleAnimationOfSectors__fOldShowEstoniRefuelHighLight) {
+    HandleAnimationOfSectors__fOldShowEstoniRefuelHighLight = false;
     fMapPanelDirty = true;
   }
 
@@ -1245,7 +1245,7 @@ INT32 GetTotalCostOfHelicopterTrip( void )
 
 export function HandleHelicopterOnGroundGraphic(): void {
   let ubSite: UINT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   // no worries if underground
   if (gbWorldSectorZ != 0) {
@@ -1276,8 +1276,8 @@ export function HandleHelicopterOnGroundGraphic(): void {
           pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, false);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != null && pSoldier.value.bTeam != gbPlayerNum) {
-            TacticalRemoveSoldier(pSoldier.value.ubID);
+          if (pSoldier != null && pSoldier.bTeam != gbPlayerNum) {
+            TacticalRemoveSoldier(pSoldier.ubID);
           }
         }
       }
@@ -1293,7 +1293,7 @@ export function HandleHelicopterOnGroundGraphic(): void {
 
 export function HandleHelicopterOnGroundSkyriderProfile(): void {
   let ubSite: UINT8 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   // no worries if underground
   if (gbWorldSectorZ != 0) {
@@ -1321,8 +1321,8 @@ export function HandleHelicopterOnGroundSkyriderProfile(): void {
           pSoldier = FindSoldierByProfileID(Enum268.SKYRIDER, false);
 
           // ATE: Don't do this if buddy is on our team!
-          if (pSoldier != null && pSoldier.value.bTeam != gbPlayerNum) {
-            TacticalRemoveSoldier(pSoldier.value.ubID);
+          if (pSoldier != null && pSoldier.bTeam != gbPlayerNum) {
+            TacticalRemoveSoldier(pSoldier.ubID);
           }
         }
       }
@@ -1419,7 +1419,7 @@ BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY )
 }
 */
 
-function HeliCrashSoundStopCallback(pData: Pointer<void>): void {
+function HeliCrashSoundStopCallback(pData: any): void {
   SkyriderDestroyed();
 }
 
@@ -1601,14 +1601,14 @@ function AddHelicopterToMaps(fAdd: boolean, ubSite: UINT8): void {
 }
 
 export function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): boolean {
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP;
 
   // up and about?
   if (fHelicopterAvailable && (iHelicopterVehicleId != -1) && CanHelicopterFly() && fHelicopterIsAirBorne) {
     pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
     // the right sector?
-    if ((sSectorX == pGroup.value.ubSectorX) && (sSectorY == pGroup.value.ubSectorY)) {
+    if ((sSectorX == pGroup.ubSectorX) && (sSectorY == pGroup.ubSectorY)) {
       return true;
     }
   }
@@ -1616,8 +1616,8 @@ export function IsSkyriderIsFlyingInSector(sSectorX: INT16, sSectorY: INT16): bo
   return false;
 }
 
-export function IsGroupTheHelicopterGroup(pGroup: Pointer<GROUP>): boolean {
-  if ((iHelicopterVehicleId != -1) && VehicleIdIsValid(iHelicopterVehicleId) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup != 0) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup == pGroup.value.ubGroupID)) {
+export function IsGroupTheHelicopterGroup(pGroup: GROUP): boolean {
+  if ((iHelicopterVehicleId != -1) && VehicleIdIsValid(iHelicopterVehicleId) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup != 0) && (pVehicleList[iHelicopterVehicleId].ubMovementGroup == pGroup.ubGroupID)) {
     return true;
   }
 
@@ -1630,7 +1630,7 @@ export function GetNumSafeSectorsInPath(): INT16 {
   let uiLocation: UINT32 = 0;
   let uiCount: UINT32 = 0;
   let iHeliSector: INT32 = -1;
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP;
 
   // if the heli is on the move, what is the distance it will move..the length of the merc path, less the first node
   if (CanHelicopterFly() == false) {
@@ -1695,7 +1695,7 @@ export function GetNumUnSafeSectorsInPath(): INT16 {
   let uiLocation: UINT32 = 0;
   let uiCount: UINT32 = 0;
   let iHeliSector: INT32 = -1;
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP;
 
   // if the heli is on the move, what is the distance it will move..the length of the merc path, less the first node
   if (CanHelicopterFly() == false) {
@@ -1843,11 +1843,11 @@ function MakeHeliReturnToBase(): void {
   StopTimeCompression();
 }
 
-export function SoldierAboardAirborneHeli(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function SoldierAboardAirborneHeli(pSoldier: SOLDIERTYPE): boolean {
   Assert(pSoldier);
 
   // if not in a vehicle, or not aboard the helicopter
-  if ((pSoldier.value.bAssignment != Enum117.VEHICLE) || (pSoldier.value.iVehicleId != iHelicopterVehicleId)) {
+  if ((pSoldier.bAssignment != Enum117.VEHICLE) || (pSoldier.iVehicleId != iHelicopterVehicleId)) {
     return false;
   }
 

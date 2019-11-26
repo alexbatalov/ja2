@@ -3009,7 +3009,7 @@ function SaveGeneralInfo(hFile: HWFILE): boolean {
   sGeneralInfo.ubQuitType = ubQuitType;
 
   if (pContractReHireSoldier != null)
-    sGeneralInfo.sContractRehireSoldierID = pContractReHireSoldier.value.ubID;
+    sGeneralInfo.sContractRehireSoldierID = pContractReHireSoldier.ubID;
   else
     sGeneralInfo.sContractRehireSoldierID = -1;
 
@@ -3233,7 +3233,7 @@ function LoadGeneralInfo(hFile: HWFILE): boolean {
   if (sGeneralInfo.sContractRehireSoldierID == -1)
     pContractReHireSoldier = null;
   else
-    pContractReHireSoldier = addressof(Menptr[sGeneralInfo.sContractRehireSoldierID]);
+    pContractReHireSoldier = Menptr[sGeneralInfo.sContractRehireSoldierID];
 
   memcpy(addressof(gGameOptions), addressof(sGeneralInfo.GameOptions), sizeof(GAME_OPTIONS));
 

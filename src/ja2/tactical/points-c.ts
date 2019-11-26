@@ -1277,12 +1277,12 @@ export function DeductAmmo(pSoldier: SOLDIERTYPE, bInvPos: INT8): void {
 }
 
 export function GetAPsToPickupItem(pSoldier: SOLDIERTYPE, usMapPos: UINT16): UINT16 {
-  let pItemPool: ITEM_POOL;
+  let pItemPool: ITEM_POOL | null;
   let sAPCost: UINT16 = 0;
   let sActionGridNo: INT16;
 
   // Check if we are over an item pool
-  if (GetItemPool(usMapPos, addressof(pItemPool), pSoldier.bLevel)) {
+  if ((pItemPool = GetItemPool(usMapPos, pSoldier.bLevel))) {
     // If we are in the same tile, just return pickup cost
     sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, usMapPos);
 

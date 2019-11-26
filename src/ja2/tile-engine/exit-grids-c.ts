@@ -7,50 +7,50 @@ export let gExitGrid: EXITGRID = createExitGridFrom(0, 1, 1, 0);
 
 export let gfOverrideInsertionWithExitGrid: boolean = false;
 
-function ConvertExitGridToINT32(pExitGrid: Pointer<EXITGRID>): INT32 {
+function ConvertExitGridToINT32(pExitGrid: EXITGRID): INT32 {
   let iExitGridInfo: INT32;
-  iExitGridInfo = (pExitGrid.value.ubGotoSectorX - 1) << 28;
-  iExitGridInfo += (pExitGrid.value.ubGotoSectorY - 1) << 24;
-  iExitGridInfo += pExitGrid.value.ubGotoSectorZ << 20;
-  iExitGridInfo += pExitGrid.value.usGridNo & 0x0000ffff;
+  iExitGridInfo = (pExitGrid.ubGotoSectorX - 1) << 28;
+  iExitGridInfo += (pExitGrid.ubGotoSectorY - 1) << 24;
+  iExitGridInfo += pExitGrid.ubGotoSectorZ << 20;
+  iExitGridInfo += pExitGrid.usGridNo & 0x0000ffff;
   return iExitGridInfo;
 }
 
-function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: Pointer<EXITGRID>): void {
+function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: EXITGRID): void {
   // convert the int into 4 unsigned bytes.
-  pExitGrid.value.ubGotoSectorX = (((iExitGridInfo & 0xf0000000) >> 28) + 1);
-  pExitGrid.value.ubGotoSectorY = (((iExitGridInfo & 0x0f000000) >> 24) + 1);
-  pExitGrid.value.ubGotoSectorZ = ((iExitGridInfo & 0x00f00000) >> 20);
-  pExitGrid.value.usGridNo = (iExitGridInfo & 0x0000ffff);
+  pExitGrid.ubGotoSectorX = (((iExitGridInfo & 0xf0000000) >> 28) + 1);
+  pExitGrid.ubGotoSectorY = (((iExitGridInfo & 0x0f000000) >> 24) + 1);
+  pExitGrid.ubGotoSectorZ = ((iExitGridInfo & 0x00f00000) >> 20);
+  pExitGrid.usGridNo = (iExitGridInfo & 0x0000ffff);
 }
 
-export function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): boolean {
-  let pShadow: Pointer<LEVELNODE>;
+export function GetExitGrid(usMapIndex: UINT16, pExitGrid: EXITGRID): boolean {
+  let pShadow: LEVELNODE | null;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
   while (pShadow) {
-    if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
-      ConvertINT32ToExitGrid(pShadow.value.iExitGridInfo, pExitGrid);
+    if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
+      ConvertINT32ToExitGrid(pShadow.iExitGridInfo, pExitGrid);
       return true;
     }
-    pShadow = pShadow.value.pNext;
+    pShadow = pShadow.pNext;
   }
-  pExitGrid.value.ubGotoSectorX = 0;
-  pExitGrid.value.ubGotoSectorY = 0;
-  pExitGrid.value.ubGotoSectorZ = 0;
-  pExitGrid.value.usGridNo = 0;
+  pExitGrid.ubGotoSectorX = 0;
+  pExitGrid.ubGotoSectorY = 0;
+  pExitGrid.ubGotoSectorZ = 0;
+  pExitGrid.usGridNo = 0;
   return false;
 }
 
 export function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
-  let pShadow: Pointer<LEVELNODE>;
+  let pShadow: LEVELNODE | null;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
   while (pShadow) {
-    if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
+    if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
       return true;
     }
-    pShadow = pShadow.value.pNext;
+    pShadow = pShadow.pNext;
   }
   return false;
 }
@@ -69,21 +69,21 @@ export function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Po
   return false;
 }
 
-export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): void {
-  let pShadow: Pointer<LEVELNODE>;
-  let tail: Pointer<LEVELNODE>;
+export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: EXITGRID): void {
+  let pShadow: LEVELNODE | null;
+  let tail: LEVELNODE;
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
   // Search through object layer for an exitgrid
   while (pShadow) {
     tail = pShadow;
-    if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
+    if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
       // we have found an existing exitgrid in this node, so replace it with the new information.
-      pShadow.value.iExitGridInfo = ConvertExitGridToINT32(pExitGrid);
+      pShadow.iExitGridInfo = ConvertExitGridToINT32(pExitGrid);
       // SmoothExitGridRadius( (UINT16)iMapIndex, 0 );
       return;
     }
-    pShadow = pShadow.value.pNext;
+    pShadow = pShadow.pNext;
   }
 
   // Add levelnode
@@ -92,8 +92,8 @@ export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
   // fill in the information for the new exitgrid levelnode.
-  pShadow.value.iExitGridInfo = ConvertExitGridToINT32(pExitGrid);
-  pShadow.value.uiFlags |= (LEVELNODE_EXITGRID | LEVELNODE_HIDDEN);
+  pShadow.iExitGridInfo = ConvertExitGridToINT32(pExitGrid);
+  pShadow.uiFlags |= (LEVELNODE_EXITGRID | LEVELNODE_HIDDEN);
 
   // Add the exit grid to the sector, only if we call ApplyMapChangesToMapTempFile() first.
   if (!gfEditMode && !gfLoadingExitGrids) {
@@ -160,7 +160,7 @@ export function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   }
   ubLookForLevel = (gbWorldSectorZ + bRelativeZLevel);
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGrid(i, addressof(gExitGrid))) {
+    if (GetExitGrid(i, gExitGrid)) {
       if (gExitGrid.ubGotoSectorZ == ubLookForLevel) {
         // found an exit grid leading to the goal sector!
         gfOverrideInsertionWithExitGrid = true;
@@ -179,7 +179,7 @@ export function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   }
 }
 
-export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -212,13 +212,12 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
-  soldier.sGridNo = pSoldier.value.sGridNo;
+  soldier.sGridNo = pSoldier.sGridNo;
 
   // OK, Get an exit grid ( if possible )
-  if (!GetExitGrid(sSweetGridNo, addressof(ExitGrid))) {
+  if (!GetExitGrid(sSweetGridNo, ExitGrid)) {
     return NOWHERE;
   }
 
@@ -236,7 +235,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
   // in the square region.
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
-      sGridNo = pSoldier.value.sGridNo + (WORLD_COLS * cnt1) + cnt2;
+      sGridNo = pSoldier.sGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX) {
         gpWorldLevelData[sGridNo].uiFlags &= (~MAPELEMENT_REACHABLE);
       }
@@ -245,24 +244,24 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((pSoldier.value.sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = ((pSoldier.sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
-      sGridNo = pSoldier.value.sGridNo + (WORLD_COLS * cnt1) + cnt2;
+      sGridNo = pSoldier.sGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
         // ATE: Added this check because for all intensive purposes, cavewalls will be not an OKDEST
         // but we want thenm too...
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
-          if (GetExitGrid(sGridNo, addressof(ExitGrid))) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
+          if (GetExitGrid(sGridNo, ExitGrid)) {
             // Is it the same exitgrid?
             if (ExitGrid.ubGotoSectorX == ubGotoSectorX && ExitGrid.ubGotoSectorY == ubGotoSectorY && ExitGrid.ubGotoSectorZ == ubGotoSectorZ) {
-              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
               if (uiRange < uiLowestRange) {
                 sLowestGridNo = sGridNo;
@@ -289,7 +288,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIER
   }
 }
 
-export function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16, ubRadius: INT8): UINT16 {
+export function FindClosestExitGrid(pSoldier: SOLDIERTYPE, sSrcGridNo: INT16, ubRadius: INT8): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -318,7 +317,7 @@ export function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSrcGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
-        if (GetExitGrid(sGridNo, addressof(ExitGrid))) {
+        if (GetExitGrid(sGridNo, ExitGrid)) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSrcGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {

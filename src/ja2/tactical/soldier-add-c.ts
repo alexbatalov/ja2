@@ -487,7 +487,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   }
 }
 
-export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean, pSrcSoldier: Pointer<SOLDIERTYPE>): UINT16 {
+export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: UINT8 /* boolean */, pSrcSoldier: SOLDIERTYPE): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;

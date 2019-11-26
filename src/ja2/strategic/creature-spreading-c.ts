@@ -71,11 +71,18 @@ const enum Enum128 {
 }
 
 interface CREATURE_DIRECTIVE {
-  next: Pointer<CREATURE_DIRECTIVE>;
-  pLevel: Pointer<UNDERGROUND_SECTORINFO>;
+  next: CREATURE_DIRECTIVE | null;
+  pLevel: UNDERGROUND_SECTORINFO;
 }
 
-let lair: Pointer<CREATURE_DIRECTIVE>;
+function createCreatureDirective(): CREATURE_DIRECTIVE {
+  return {
+    next: null,
+    pLevel: <UNDERGROUND_SECTORINFO><unknown>null,
+  };
+}
+
+let lair: CREATURE_DIRECTIVE | null = null;
 let giHabitatedDistance: INT32 = 0;
 let giPopulationModifier: INT32 = 0;
 let giLairID: INT32 = 0;
@@ -93,120 +100,119 @@ let gubAdultFemalesAttackingTown: UINT8 = 0;
 let gubCreatureBattleCode: UINT8 = Enum129.CREATURE_BATTLE_CODE_NONE;
 export let gubSectorIDOfCreatureAttack: UINT8 = 0;
 
-function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
+function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): CREATURE_DIRECTIVE {
+  let curr: CREATURE_DIRECTIVE;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
-  curr = MemAlloc(sizeof(CREATURE_DIRECTIVE));
+  curr = createCreatureDirective();
   Assert(curr);
   ubSectorX = ((ubSectorID % 16) + 1);
   ubSectorY = ((ubSectorID / 16) + 1);
-  curr.value.pLevel = FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
-  if (!curr.value.pLevel) {
-    AssertMsg(0, FormatString("Could not find underground sector node (%c%db_%d) that should exist.", ubSectorY + 'A' - 1, ubSectorX, ubSectorZ));
-    return 0;
+  curr.pLevel = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
+  if (!curr.pLevel) {
+    AssertMsg(false, FormatString("Could not find underground sector node (%c%db_%d) that should exist.", String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX, ubSectorZ));
   }
 
-  curr.value.pLevel.value.ubCreatureHabitat = ubCreatureHabitat;
-  Assert(curr.value.pLevel);
-  curr.value.next = null;
+  curr.pLevel.ubCreatureHabitat = ubCreatureHabitat;
+  Assert(curr.pLevel);
+  curr.next = null;
   return curr;
 }
 
 function InitLairDrassen(): void {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let curr: CREATURE_DIRECTIVE;
   giLairID = 1;
   // initialize the linked list of lairs
   lair = NewDirective(Enum123.SEC_F13, 3, Enum128.QUEEN_LAIR);
   curr = lair;
-  if (!curr.value.pLevel.value.ubNumCreatures) {
-    curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
+  if (!curr.pLevel.ubNumCreatures) {
+    curr.pLevel.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(Enum123.SEC_G13, 3, Enum128.LAIR);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_G13, 2, Enum128.LAIR_ENTRANCE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_F13, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_E13, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_E13, 1, Enum128.OUTER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_D13, 1, Enum128.MINE_EXIT);
+  curr.next = NewDirective(Enum123.SEC_G13, 3, Enum128.LAIR);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_G13, 2, Enum128.LAIR_ENTRANCE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_F13, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_E13, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_E13, 1, Enum128.OUTER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_D13, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairCambria(): void {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let curr: CREATURE_DIRECTIVE;
   giLairID = 2;
   // initialize the linked list of lairs
   lair = NewDirective(Enum123.SEC_J8, 3, Enum128.QUEEN_LAIR);
   curr = lair;
-  if (!curr.value.pLevel.value.ubNumCreatures) {
-    curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
+  if (!curr.pLevel.ubNumCreatures) {
+    curr.pLevel.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(Enum123.SEC_I8, 3, Enum128.LAIR);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H8, 3, Enum128.LAIR);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H8, 2, Enum128.LAIR_ENTRANCE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H9, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H9, 1, Enum128.OUTER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H8, 1, Enum128.MINE_EXIT);
+  curr.next = NewDirective(Enum123.SEC_I8, 3, Enum128.LAIR);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H8, 3, Enum128.LAIR);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H8, 2, Enum128.LAIR_ENTRANCE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H9, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H9, 1, Enum128.OUTER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H8, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairAlma(): void {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let curr: CREATURE_DIRECTIVE;
   giLairID = 3;
   // initialize the linked list of lairs
   lair = NewDirective(Enum123.SEC_K13, 3, Enum128.QUEEN_LAIR);
   curr = lair;
-  if (!curr.value.pLevel.value.ubNumCreatures) {
-    curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
+  if (!curr.pLevel.ubNumCreatures) {
+    curr.pLevel.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(Enum123.SEC_J13, 3, Enum128.LAIR);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_J13, 2, Enum128.LAIR_ENTRANCE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_J14, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_J14, 1, Enum128.OUTER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_I14, 1, Enum128.MINE_EXIT);
+  curr.next = NewDirective(Enum123.SEC_J13, 3, Enum128.LAIR);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_J13, 2, Enum128.LAIR_ENTRANCE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_J14, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_J14, 1, Enum128.OUTER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_I14, 1, Enum128.MINE_EXIT);
 }
 
 function InitLairGrumm(): void {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let curr: CREATURE_DIRECTIVE;
   giLairID = 4;
   // initialize the linked list of lairs
   lair = NewDirective(Enum123.SEC_G4, 3, Enum128.QUEEN_LAIR);
   curr = lair;
-  if (!curr.value.pLevel.value.ubNumCreatures) {
-    curr.value.pLevel.value.ubNumCreatures = 1; // for the queen.
+  if (!curr.pLevel.ubNumCreatures) {
+    curr.pLevel.ubNumCreatures = 1; // for the queen.
   }
-  curr.value.next = NewDirective(Enum123.SEC_H4, 3, Enum128.LAIR);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H4, 2, Enum128.LAIR_ENTRANCE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H3, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_I3, 2, Enum128.INNER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_I3, 1, Enum128.OUTER_MINE);
-  curr = curr.value.next;
-  curr.value.next = NewDirective(Enum123.SEC_H3, 1, Enum128.MINE_EXIT);
+  curr.next = NewDirective(Enum123.SEC_H4, 3, Enum128.LAIR);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H4, 2, Enum128.LAIR_ENTRANCE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H3, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_I3, 2, Enum128.INNER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_I3, 1, Enum128.OUTER_MINE);
+  curr = curr.next;
+  curr.next = NewDirective(Enum123.SEC_H3, 1, Enum128.MINE_EXIT);
 }
 
 export function InitCreatureQuest(): void {
-  let curr: Pointer<UNDERGROUND_SECTORINFO>;
+  let curr: UNDERGROUND_SECTORINFO;
   let fPlayMeanwhile: boolean = false;
   let i: INT32 = -1;
   let iChosenMine: INT32;
   let iRandom: INT32;
   let iNumMinesInfectible: INT32;
-  let fMineInfectible: boolean[] /* [4] */;
+  let fMineInfectible: boolean[] /* [4] */ = createArray(4, false);
 
   if (giLairID) {
     return; // already active!
@@ -238,7 +244,7 @@ export function InitCreatureQuest(): void {
   // infect the mine that runs out.
 
   // Default them all to infectible
-  memset(fMineInfectible, 1, sizeof(BOOLEAN) * 4);
+  fMineInfectible.fill(true)
 
   if (gMineStatus[Enum174.DRASSEN_MINE].fAttackedHeadMiner || gMineStatus[Enum174.DRASSEN_MINE].uiOreRunningOutPoint || StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(Enum123.SEC_D13)].fEnemyControlled) {
     // If head miner was attacked, ore will/has run out, or enemy controlled
@@ -257,7 +263,7 @@ export function InitCreatureQuest(): void {
     fMineInfectible[3] = false;
   }
 
-  iNumMinesInfectible = fMineInfectible[0] + fMineInfectible[1] + fMineInfectible[2] + fMineInfectible[3];
+  iNumMinesInfectible = Number(fMineInfectible[0]) + Number(fMineInfectible[1]) + Number(fMineInfectible[2]) + Number(fMineInfectible[3]);
 
   if (!iNumMinesInfectible) {
     return;
@@ -281,23 +287,23 @@ export function InitCreatureQuest(): void {
   switch (iChosenMine) {
     case 1: // Drassen
       InitLairDrassen();
-      curr = FindUnderGroundSector(13, 5, 1);
-      curr.value.uiFlags |= SF_PENDING_ALTERNATE_MAP;
+      curr = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(13, 5, 1);
+      curr.uiFlags |= SF_PENDING_ALTERNATE_MAP;
       break;
     case 2: // Cambria
       InitLairCambria();
-      curr = FindUnderGroundSector(9, 8, 1);
-      curr.value.uiFlags |= SF_PENDING_ALTERNATE_MAP; // entrance
+      curr = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(9, 8, 1);
+      curr.uiFlags |= SF_PENDING_ALTERNATE_MAP; // entrance
       break;
     case 3: // Alma's mine
       InitLairAlma();
-      curr = FindUnderGroundSector(14, 10, 1);
-      curr.value.uiFlags |= SF_PENDING_ALTERNATE_MAP;
+      curr = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(14, 10, 1);
+      curr.uiFlags |= SF_PENDING_ALTERNATE_MAP;
       break;
     case 4: // Grumm's mine
       InitLairGrumm();
-      curr = FindUnderGroundSector(4, 8, 2);
-      curr.value.uiFlags |= SF_PENDING_ALTERNATE_MAP;
+      curr = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(4, 8, 2);
+      curr.uiFlags |= SF_PENDING_ALTERNATE_MAP;
       break;
     default:
       return;
@@ -331,18 +337,18 @@ export function InitCreatureQuest(): void {
   }
 }
 
-function AddCreatureToNode(node: Pointer<CREATURE_DIRECTIVE>): void {
-  node.value.pLevel.value.ubNumCreatures++;
+function AddCreatureToNode(node: CREATURE_DIRECTIVE): void {
+  node.pLevel.ubNumCreatures++;
 
-  if (node.value.pLevel.value.uiFlags & SF_PENDING_ALTERNATE_MAP) {
+  if (node.pLevel.uiFlags & SF_PENDING_ALTERNATE_MAP) {
     // there is an alternate map meaning that there is a dynamic opening.  From now on
     // we substitute this map.
-    node.value.pLevel.value.uiFlags &= ~SF_PENDING_ALTERNATE_MAP;
-    node.value.pLevel.value.uiFlags |= SF_USE_ALTERNATE_MAP;
+    node.pLevel.uiFlags &= ~SF_PENDING_ALTERNATE_MAP;
+    node.pLevel.uiFlags |= SF_USE_ALTERNATE_MAP;
   }
 }
 
-function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): boolean {
+function PlaceNewCreature(node: CREATURE_DIRECTIVE | null, iDistance: INT32): boolean {
   if (!node)
     return false;
   // check to see if the creatures are permitted to spread into certain areas.  There are 4 mines (human perspective), and
@@ -355,7 +361,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
     // we have reached the distance limitation for the spreading.  We will determine if
     // the area is populated enough to spread further.  The minimum population must be 4 before
     // spreading is even considered.
-    if (node.value.pLevel.value.ubNumCreatures * 10 - 10 <= Random(60)) {
+    if (node.pLevel.ubNumCreatures * 10 - 10 <= Random(60)) {
       // x<=1   100%
       // x==2		 83%
       // x==3		 67%
@@ -369,13 +375,13 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
   } else if (giHabitatedDistance > iDistance) {
     // we are within the "safe" habitated area of the creature's area of influence.  The chance of
     // increasing the population inside this sector depends on how deep we are within the sector.
-    if (node.value.pLevel.value.ubNumCreatures < MAX_STRATEGIC_TEAM_SIZE || node.value.pLevel.value.ubNumCreatures < 32 && node.value.pLevel.value.ubCreatureHabitat == Enum128.QUEEN_LAIR) {
+    if (node.pLevel.ubNumCreatures < MAX_STRATEGIC_TEAM_SIZE || node.pLevel.ubNumCreatures < 32 && node.pLevel.ubCreatureHabitat == Enum128.QUEEN_LAIR) {
       // there is ALWAYS a chance to habitate an interior sector, though the chances are slim for
       // highly occupied sectors.  This chance is modified by the type of area we are in.
       let iAbsoluteMaxPopulation: INT32;
       let iMaxPopulation: INT32 = -1;
       let iChanceToPopulate: INT32;
-      switch (node.value.pLevel.value.ubCreatureHabitat) {
+      switch (node.pLevel.ubCreatureHabitat) {
         case Enum128.QUEEN_LAIR: // Defend the queen bonus
           iAbsoluteMaxPopulation = 32;
           break;
@@ -398,7 +404,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
           iAbsoluteMaxPopulation = 10;
           break;
         default:
-          Assert(0);
+          Assert(false);
           return false;
       }
 
@@ -423,9 +429,9 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
 
       // The chance to populate a sector is higher for lower populations.  This is calculated on
       // the ratio of current population to the max population.
-      iChanceToPopulate = 100 - node.value.pLevel.value.ubNumCreatures * 100 / iMaxPopulation;
+      iChanceToPopulate = 100 - node.pLevel.ubNumCreatures * 100 / iMaxPopulation;
 
-      if (!node.value.pLevel.value.ubNumCreatures || iChanceToPopulate > Random(100) && iMaxPopulation > node.value.pLevel.value.ubNumCreatures) {
+      if (!node.pLevel.ubNumCreatures || iChanceToPopulate > Random(100) && iMaxPopulation > node.pLevel.ubNumCreatures) {
         AddCreatureToNode(node);
         return true;
       }
@@ -436,7 +442,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
     giHabitatedDistance++;
     return true;
   }
-  if (PlaceNewCreature(node.value.next, iDistance + 1))
+  if (PlaceNewCreature(node.next, iDistance + 1))
     return true;
   return false;
 }
@@ -476,8 +482,8 @@ export function DecayCreatures(): void {
 
 function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   let iRandom: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let MapEdgepointInfo: MAPEDGEPOINTINFO;
+  let pSoldier: SOLDIERTYPE;
+  let MapEdgepointInfo: MAPEDGEPOINTINFO = createMapEdgePointInfo();
   let bDesiredDirection: UINT8 = 0;
   let ubCurrSlot: UINT8 = 0;
 
@@ -502,7 +508,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   }
 
   if (gsCreatureInsertionCode != Enum175.INSERTION_CODE_GRIDNO) {
-    ChooseMapEdgepoints(addressof(MapEdgepointInfo), gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
+    ChooseMapEdgepoints(MapEdgepointInfo, gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
     ubCurrSlot = 0;
   }
   while (ubNumYoungMales || ubNumYoungFemales || ubNumAdultMales || ubNumAdultFemales) {
@@ -534,20 +540,20 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
       Assert(0);
       return;
     }
-    pSoldier.value.ubInsertionDirection = bDesiredDirection;
+    pSoldier.ubInsertionDirection = bDesiredDirection;
     // Setup the position
-    pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
-    pSoldier.value.bHunting = true;
+    pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
+    pSoldier.bHunting = true;
     if (gsCreatureInsertionCode != Enum175.INSERTION_CODE_GRIDNO) {
       if (ubCurrSlot < MapEdgepointInfo.ubNumPoints) {
         // using an edgepoint
-        pSoldier.value.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
+        pSoldier.usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
-        pSoldier.value.ubStrategicInsertionCode = gsCreatureInsertionCode;
+        pSoldier.ubStrategicInsertionCode = gsCreatureInsertionCode;
       }
     } else {
-      pSoldier.value.usStrategicInsertionData = gsCreatureInsertionGridNo;
+      pSoldier.usStrategicInsertionData = gsCreatureInsertionGridNo;
     }
     UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, 0);
   }
@@ -684,7 +690,7 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: boolean): vo
 
 export function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): void {
   // This is the launching point of the creature attack.
-  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let pSector: UNDERGROUND_SECTORINFO | null;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
 
@@ -706,13 +712,13 @@ export function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): v
       CreatureAttackTown(ubSectorID, true);
       return;
     }
-    gubNumCreaturesAttackingTown = pSector.value.ubNumCreatures;
+    gubNumCreaturesAttackingTown = pSector.ubNumCreatures;
     if (!gubNumCreaturesAttackingTown) {
       CreatureAttackTown(ubSectorID, true);
       return;
     }
 
-    pSector.value.ubNumCreatures = 0;
+    pSector.ubNumCreatures = 0;
 
     // Choose one of the town sectors to attack.  Sectors closer to
     // the mine entrance have a greater chance of being chosen.
@@ -789,17 +795,10 @@ function ChooseCreatureQuestStartDay(): void {
   }
 }
 
-function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
-  if ((node.value).value.next)
-    DeleteDirectiveNode(addressof((node.value).value.next));
-  MemFree(node.value);
-  node.value = null;
-}
-
 // Recursively delete all nodes (from the top down).
 export function DeleteCreatureDirectives(): void {
   if (lair)
-    DeleteDirectiveNode(addressof(lair));
+    lair = null;
   giLairID = 0;
 }
 
@@ -812,8 +811,8 @@ function ClearCreatureQuest(): void {
 }
 
 export function EndCreatureQuest(): void {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
-  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let curr: CREATURE_DIRECTIVE | null;
+  let pSector: UNDERGROUND_SECTORINFO | null;
   let i: INT32;
 
   // By setting the lairID to -1, when it comes time to spread creatures,
@@ -826,17 +825,17 @@ export function EndCreatureQuest(): void {
   curr = lair;
   if (curr) {
     // skip first node (there could be other creatures around.
-    curr = curr.value.next;
+    curr = curr.next;
   }
   while (curr) {
-    curr.value.pLevel.value.ubNumCreatures = 0;
-    curr = curr.value.next;
+    curr.pLevel.ubNumCreatures = 0;
+    curr = curr.next;
   }
 
   // Remove the creatures that are trapped underneath Tixa
   pSector = FindUnderGroundSector(9, 10, 2);
   if (pSector) {
-    pSector.value.ubNumCreatures = 0;
+    pSector.ubNumCreatures = 0;
   }
 
   // Also find and nuke all creatures on any surface levels!!!
@@ -848,14 +847,14 @@ export function EndCreatureQuest(): void {
 }
 
 function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT8 {
-  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let pSector: UNDERGROUND_SECTORINFO | null;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
   ubSectorX = SECTORX(ubSectorID);
   ubSectorY = SECTORY(ubSectorID);
   pSector = FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
   if (pSector)
-    return pSector.value.ubNumCreatures;
+    return pSector.ubNumCreatures;
   return 0;
 }
 
@@ -911,7 +910,7 @@ export function MineClearOfMonsters(ubMineIndex: UINT8): boolean {
   return true;
 }
 
-export function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
+export function DetermineCreatureTownComposition(ubNumCreatures: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): { ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8 } {
   let i: INT32;
   let iRandom: INT32;
   let ubYoungMalePercentage: UINT8 = 10;
@@ -931,52 +930,58 @@ export function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYo
   while (i--) {
     iRandom = Random(100);
     if (iRandom < ubYoungMalePercentage)
-      (pubNumYoungMales.value)++;
+      ubNumYoungMales++;
     else if (iRandom < ubYoungFemalePercentage)
-      (pubNumYoungFemales.value)++;
+      ubNumYoungFemales++;
     else if (iRandom < ubAdultMalePercentage)
-      (pubNumAdultMales.value)++;
+      ubNumAdultMales++;
     else
-      (pubNumAdultFemales.value)++;
+      ubNumAdultFemales++;
   }
+
+  return { ubNumYoungMales, ubNumYoungFemales, ubNumAdultMales, ubNumAdultFemales };
 }
 
-export function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatures: Pointer<UINT8>, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
-  let pSector: Pointer<SECTORINFO>;
-  let i: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+export function DetermineCreatureTownCompositionBasedOnTacticalInformation(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): { ubNumCreatures: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8 } {
+  let ubNumCreatures: UINT8;
 
-  pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
-  pubNumCreatures.value = 0;
-  pSector.value.ubNumCreatures = 0;
-  pSector.value.ubCreaturesInBattle = 0;
+  let pSector: SECTORINFO;
+  let i: INT32;
+  let pSoldier: SOLDIERTYPE;
+
+  pSector = SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+  ubNumCreatures = 0;
+  pSector.ubNumCreatures = 0;
+  pSector.ubCreaturesInBattle = 0;
   for (i = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
     pSoldier = MercPtrs[i];
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife) {
-      switch (pSoldier.value.ubBodyType) {
+    if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife) {
+      switch (pSoldier.ubBodyType) {
         case Enum194.ADULTFEMALEMONSTER:
-          (pubNumCreatures.value)++;
-          (pubNumAdultFemales.value)++;
+          ubNumCreatures++;
+          ubNumAdultFemales++;
           break;
         case Enum194.AM_MONSTER:
-          (pubNumCreatures.value)++;
-          (pubNumAdultMales.value)++;
+          ubNumCreatures++;
+          ubNumAdultMales++;
           break;
         case Enum194.YAF_MONSTER:
-          (pubNumCreatures.value)++;
-          (pubNumYoungFemales.value)++;
+          ubNumCreatures++;
+          ubNumYoungFemales++;
           break;
         case Enum194.YAM_MONSTER:
-          (pubNumCreatures.value)++;
-          (pubNumYoungMales.value)++;
+          ubNumCreatures++;
+          ubNumYoungMales++;
           break;
       }
     }
   }
+
+  return { ubNumCreatures, ubNumYoungMales, ubNumYoungFemales, ubNumAdultMales, ubNumAdultFemales };
 }
 
 export function PrepareCreaturesForBattle(): boolean {
-  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let pSector: UNDERGROUND_SECTORINFO | null;
   let i: INT32;
   let iRandom: INT32;
   let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
@@ -1006,7 +1011,7 @@ export function PrepareCreaturesForBattle(): boolean {
     // By default, we only play creature music in the cave levels (the creature levels all consistently
     // have blue lights while human occupied mines have red lights.  We always play creature music
     // when creatures are in the level.
-    if (LColors.value.peBlue)
+    if (LColors[0].peBlue)
       gfUseCreatureMusic = true;
     else
       gfUseCreatureMusic = false;
@@ -1017,12 +1022,12 @@ export function PrepareCreaturesForBattle(): boolean {
     if (!pSector) {
       return false;
     }
-    if (!pSector.value.ubNumCreatures) {
+    if (!pSector.ubNumCreatures) {
       return false;
     }
     gfUseCreatureMusic = true; // creatures are here, so play creature music
-    ubCreatureHabitat = pSector.value.ubCreatureHabitat;
-    ubNumCreatures = pSector.value.ubNumCreatures;
+    ubCreatureHabitat = pSector.ubCreatureHabitat;
+    ubNumCreatures = pSector.ubNumCreatures;
   } else {
     // creatures are attacking a town sector
     gfUseCreatureMusic = true;
@@ -1113,19 +1118,19 @@ export function PrepareCreaturesForBattle(): boolean {
   }
 
   if (gbWorldSectorZ) {
-    let pUndergroundSector: Pointer<UNDERGROUND_SECTORINFO>;
+    let pUndergroundSector: UNDERGROUND_SECTORINFO | null;
     pUndergroundSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pUndergroundSector) {
       // No info?!!!!!
       AssertMsg(0, "Please report underground sector you are in or going to and send save if possible.  KM : 0");
       return false;
     }
-    pUndergroundSector.value.ubCreaturesInBattle = pUndergroundSector.value.ubNumCreatures;
+    pUndergroundSector.ubCreaturesInBattle = pUndergroundSector.ubNumCreatures;
   } else {
-    let pSector: Pointer<SECTORINFO>;
-    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
-    pSector.value.ubNumCreatures = ubNumCreatures;
-    pSector.value.ubCreaturesInBattle = ubNumCreatures;
+    let pSector: SECTORINFO;
+    pSector = SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector.ubNumCreatures = ubNumCreatures;
+    pSector.ubCreaturesInBattle = ubNumCreatures;
   }
 
   switch (gubCreatureBattleCode) {
@@ -1195,26 +1200,37 @@ export function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSect
 
 export function SaveCreatureDirectives(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
-  FileWrite(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(INT32)) {
+  buffer = Buffer.allocUnsafe(4);
+
+  buffer.writeInt32LE(giHabitatedDistance, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     return false;
   }
 
-  FileWrite(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(INT32)) {
+  buffer.writeInt32LE(giPopulationModifier, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     return false;
   }
-  FileWrite(hFile, addressof(giLairID), 4, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(INT32)) {
+
+  buffer.writeInt32LE(giLairID, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     return false;
   }
-  FileWrite(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(BOOLEAN)) {
+
+  buffer.writeUInt8(Number(gfUseCreatureMusic), 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+  if (uiNumBytesWritten != 1) {
     return false;
   }
-  FileWrite(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(INT32)) {
+
+  buffer.writeInt32LE(giDestroyedLairID, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     return false;
   }
 
@@ -1223,30 +1239,45 @@ export function SaveCreatureDirectives(hFile: HWFILE): boolean {
 
 export function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): boolean {
   let uiNumBytesRead: UINT32;
-  FileRead(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(INT32)) {
+  let buffer: Buffer;
+
+  buffer = Buffer.allocUnsafe(4);
+
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
 
-  FileRead(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(INT32)) {
-    return false;
-  }
-  FileRead(hFile, addressof(giLairID), 4, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(INT32)) {
+  giHabitatedDistance = buffer.readInt32LE(0);
+
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
 
-  FileRead(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(BOOLEAN)) {
+  giPopulationModifier = buffer.readInt32LE(0);
+
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
+
+  giLairID = buffer.readInt32LE(0);
+
+  uiNumBytesRead = FileRead(hFile, buffer, 1);
+  if (uiNumBytesRead != 1) {
+    return false;
+  }
+
+  gfUseCreatureMusic = Boolean(buffer.readUInt8(0));
 
   if (uiSavedGameVersion >= 82) {
-    FileRead(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(INT32)) {
+    uiNumBytesRead = FileRead(hFile, buffer, 4);
+    if (uiNumBytesRead != 4) {
       return false;
     }
+
+    giDestroyedLairID = buffer.readInt32LE(0);
   } else {
     giDestroyedLairID = 0;
   }
@@ -1280,8 +1311,8 @@ export function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
 }
 
 export function PlayerGroupIsInACreatureInfestedMine(): boolean {
-  let curr: Pointer<CREATURE_DIRECTIVE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let curr: CREATURE_DIRECTIVE | null;
+  let pSoldier: SOLDIERTYPE;
   let i: INT32;
   let sSectorX: INT16;
   let sSectorY: INT16;
@@ -1296,18 +1327,18 @@ export function PlayerGroupIsInACreatureInfestedMine(): boolean {
   // Lair is active, so look for live soldier in any creature level
   curr = lair;
   while (curr) {
-    sSectorX = curr.value.pLevel.value.ubSectorX;
-    sSectorY = curr.value.pLevel.value.ubSectorY;
-    bSectorZ = curr.value.pLevel.value.ubSectorZ;
+    sSectorX = curr.pLevel.ubSectorX;
+    sSectorY = curr.pLevel.ubSectorY;
+    bSectorZ = curr.pLevel.ubSectorZ;
     // Loop through all the creature directives (mine sectors that are infectible) and
     // see if players are there.
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       pSoldier = MercPtrs[i];
-      if (pSoldier.value.bActive && pSoldier.value.bLife && pSoldier.value.sSectorX == sSectorX && pSoldier.value.sSectorY == sSectorY && pSoldier.value.bSectorZ == bSectorZ && !pSoldier.value.fBetweenSectors) {
+      if (pSoldier.bActive && pSoldier.bLife && pSoldier.sSectorX == sSectorX && pSoldier.sSectorY == sSectorY && pSoldier.bSectorZ == bSectorZ && !pSoldier.fBetweenSectors) {
         return true;
       }
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 
   // Lair is active, but no mercs are in these sectors

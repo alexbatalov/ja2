@@ -187,7 +187,7 @@ export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): voi
 
 export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
   let cnt: UINT32;
-  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPool: ITEM_POOL | null;
   let sX: INT16;
   let sY: INT16;
   let pNode: Pointer<LEVELNODE> = null;
@@ -203,7 +203,7 @@ export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Point
       RemoveRoofIndexFlagsFromTypeRange(cnt, Enum313.FIRSTROOF, Enum313.SECONDSLANTROOF, LEVELNODE_REVEAL);
 
       // Reveal any items if here!
-      if (GetItemPool(cnt, addressof(pItemPool), 0)) {
+      if ((pItemPool = GetItemPool(cnt, 0))) {
         // Set visible! ( only if invisible... )
         if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, true)) {
           if (!fSaidItemSeenQuote) {
