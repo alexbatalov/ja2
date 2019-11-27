@@ -179,7 +179,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                       gRubberBandActive = true;
 
                       // ATE: If we have stopped scrolling.....
-                      if (gfScrollInertia != false) {
+                      if (gfScrollInertia != 0) {
                         SetRenderFlags(RENDER_FLAG_FULL | RENDER_FLAG_CHECKZ);
 
                         // Restore Interface!
@@ -188,7 +188,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                         // Delete Topmost blitters saved areas
                         DeleteVideoOverlaysArea();
 
-                        gfScrollInertia = false;
+                        gfScrollInertia = 0;
                       }
 
                       puiNewEvent.value = Enum207.RB_ON_TERRAIN;

@@ -441,7 +441,7 @@ function SetBackgroundTexture(): void {
     usIndex += gTileTypeStartIndex[gCurrentBackground];
 
     // Set land index
-    if (TypeRangeExistsInLandLayer(cnt, Enum313.FIRSTFLOOR, LASTFLOOR, addressof(Dummy)))
+    if ((Dummy = TypeRangeExistsInLandLayer(cnt, Enum313.FIRSTFLOOR, LASTFLOOR)) !== -1)
       AddLandToTail(cnt, usIndex); // show the land below the floor.
     else
       AddLandToHead(cnt, usIndex); // no floor so no worries.
@@ -2486,9 +2486,9 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
   }
 
   iMapIndex = (iMapY * WORLD_COLS) + iMapX;
-  if (!TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING, addressof(usTmpIndex))) {
+  if ((usTmpIndex = TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING)) === -1) {
     AddObjectToHead(iMapIndex, Enum312.GOODRING1);
-    gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    gpWorldLevelData[iMapIndex].pObjectHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 
   AddLightToUndoList(iMapIndex, 0, 0);
@@ -2583,9 +2583,9 @@ export function ShowLightPositionHandles(): void {
 
       if (!fSoldierLight) {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
-        if (!TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING, addressof(usTmpIndex))) {
+        if ((usTmpIndex = TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING)) === -1) {
           AddObjectToHead(iMapIndex, Enum312.GOODRING1);
-          gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[iMapIndex].pObjectHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
     }

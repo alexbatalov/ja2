@@ -2,7 +2,6 @@ namespace ja2 {
 
 const SHADE_TABLE_DIR = "ShadeTables";
 
-export let TileSurfaceFilenames: string[] /* CHAR8[NUMBEROFTILETYPES][32] */;
 export let gfForceBuildShadeTables: boolean = false;
 
 export function DetermineRGBDistributionSettings(): void {
@@ -12,14 +11,15 @@ export function DetermineRGBDistributionSettings(): void {
   let uiRBitMask: UINT32;
   let uiGBitMask: UINT32;
   let uiBBitMask: UINT32;
-  let uiPrevRBitMask: UINT32;
-  let uiPrevGBitMask: UINT32;
-  let uiPrevBBitMask: UINT32;
+  let uiPrevRBitMask: UINT32 = <UINT32><unknown>undefined;
+  let uiPrevGBitMask: UINT32 = <UINT32><unknown>undefined;
+  let uiPrevBBitMask: UINT32 = <UINT32><unknown>undefined;
   let uiNumBytesRead: UINT32;
   let hfile: HWFILE;
   let fSaveRGBDist: boolean = false;
   let fCleanShadeTable: boolean = false;
   let fLoadedPrevRGBDist: boolean = false;
+  let buffer: Buffer;
 
   // First, determine if we have a file saved.  If not, then this is the first time, and
   // all shade tables will have to be built and saved to disk.  This can be time consuming, adding up to
@@ -48,19 +48,27 @@ export function DetermineRGBDistributionSettings(): void {
     } else {
       hfile = FileOpen("RGBDist.dat", FILE_ACCESS_READ, false);
       if (!hfile) {
-        AssertMsg(0, "Couldn't open RGBDist.dat, even though it exists!");
+        AssertMsg(false, "Couldn't open RGBDist.dat, even though it exists!");
       }
-      FileRead(hfile, addressof(uiPrevRBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
-      FileRead(hfile, addressof(uiPrevGBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
-      FileRead(hfile, addressof(uiPrevBBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+
+      buffer = Buffer.allocUnsafe(4);
+
+      uiNumBytesRead = FileRead(hfile, buffer, 4);
+      uiPrevRBitMask = buffer.readUInt32LE(0);
+
+      uiNumBytesRead = FileRead(hfile, buffer, 4);
+      uiPrevGBitMask = buffer.readUInt32LE(0);
+
+      uiNumBytesRead = FileRead(hfile, buffer, 4);
+      uiPrevBBitMask = buffer.readUInt32LE(0);
+
       fLoadedPrevRGBDist = true;
       FileClose(hfile);
     }
   }
 
-  if (!GetPrimaryRGBDistributionMasks(addressof(uiRBitMask), addressof(uiGBitMask), addressof(uiBBitMask))) {
-    AssertMsg(0, "Failed to extract the current RGB distribution masks.");
-  }
+  ({ usRedMask: uiRBitMask, usGreenMask: uiGBitMask, usBlueMask: uiBBitMask } = GetPrimaryRGBDistributionMasks());
+
   if (fLoadedPrevRGBDist) {
     if (uiRBitMask != uiPrevRBitMask || uiGBitMask != uiPrevGBitMask || uiBBitMask != uiPrevBBitMask) {
       // The user has changed modes since the last time he has played JA2.  This essentially can only happen if:
@@ -85,9 +93,18 @@ export function DetermineRGBDistributionSettings(): void {
     if (!hfile) {
       AssertMsg(0, "Couldn't create RGBDist.dat for writing!");
     }
-    FileWrite(hfile, addressof(uiRBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
-    FileWrite(hfile, addressof(uiGBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
-    FileWrite(hfile, addressof(uiBBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+
+    buffer = Buffer.allocUnsafe(4);
+
+    buffer.writeUInt32LE(uiRBitMask, 0);
+    uiNumBytesRead = FileWrite(hfile, buffer, 4);
+
+    buffer.writeUInt32LE(uiGBitMask, 0);
+    uiNumBytesRead = FileWrite(hfile, buffer, 4);
+
+    buffer.writeUInt32LE(uiBBitMask, 0);
+    uiNumBytesRead = FileWrite(hfile, buffer, 4);
+
     FileClose(hfile);
   }
 
@@ -101,18 +118,17 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let i: INT32;
   let uiNumBytesRead: UINT32;
   let ShadeFileName: string /* UINT8[100] */;
-  let ptr: string /* Pointer<UINT8> */;
+  let ptr: number /* Pointer<UINT8> */;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
   // and should be fixed.  Also assumes that the directory is set to Data\ShadeTables.
   ShadeFileName = TileSurfaceFilenames[uiTileTypeIndex];
-  ptr = strstr(ShadeFileName, ".");
-  if (!ptr) {
+  ptr = ShadeFileName.indexOf(".");
+  if (ptr === -1) {
     return false;
   }
-  ptr++;
-  ptr = "sha";
+  ShadeFileName = ShadeFileName.substring(0, ptr) + '.sha';
 
   hfile = FileOpen(ShadeFileName, FILE_ACCESS_READ, false);
   if (!hfile) {
@@ -126,7 +142,7 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   for (i = 0; i < 16; i++) {
     pObj.value.pShades[i] = MemAlloc(512);
     Assert(pObj.value.pShades[i]);
-    FileRead(hfile, pObj.value.pShades[i], 512, addressof(uiNumBytesRead));
+    uiNumBytesRead = FileRead(hfile, pObj.value.pShades[i], 512);
   }
 
   // The file exists, now make sure the
@@ -139,18 +155,17 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let i: INT32;
   let uiNumBytesWritten: UINT32;
   let ShadeFileName: string /* UINT8[100] */;
-  let ptr: string /* Pointer<UINT8> */;
+  let ptr: number /* Pointer<UINT8> */;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
   // and should be fixed.  Also assumes that the directory is set to Data\ShadeTables.
   ShadeFileName = TileSurfaceFilenames[uiTileTypeIndex];
-  ptr = strstr(ShadeFileName, ".");
-  if (!ptr) {
+  ptr = ShadeFileName.indexOf(".");
+  if (ptr === -1) {
     return false;
   }
-  ptr++;
-  ptr = "sha";
+  ShadeFileName = ShadeFileName.substring(0, ptr) + '.sha';
 
   hfile = FileOpen(ShadeFileName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
   if (!hfile) {
@@ -159,7 +174,7 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
     return false;
   }
   for (i = 0; i < 16; i++) {
-    FileWrite(hfile, pObj.value.pShades[i], 512, addressof(uiNumBytesWritten));
+    uiNumBytesWritten = FileWrite(hfile, pObj.value.pShades[i], 512);
   }
 
   FileClose(hfile);

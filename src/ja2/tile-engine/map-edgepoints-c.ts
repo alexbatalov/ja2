@@ -1,10 +1,10 @@
 namespace ja2 {
 
 // dynamic arrays that contain the valid gridno's for each edge
-export let gps1stNorthEdgepointArray: Pointer<INT16> = null;
-export let gps1stEastEdgepointArray: Pointer<INT16> = null;
-export let gps1stSouthEdgepointArray: Pointer<INT16> = null;
-export let gps1stWestEdgepointArray: Pointer<INT16> = null;
+export let gps1stNorthEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+export let gps1stEastEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+export let gps1stSouthEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+export let gps1stWestEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
 // contains the size for each array
 export let gus1stNorthEdgepointArraySize: UINT16 = 0;
 export let gus1stEastEdgepointArraySize: UINT16 = 0;
@@ -19,10 +19,10 @@ let gus1stSouthEdgepointMiddleIndex: UINT16 = 0;
 let gus1stWestEdgepointMiddleIndex: UINT16 = 0;
 
 // dynamic arrays that contain the valid gridno's for each edge
-let gps2ndNorthEdgepointArray: Pointer<INT16> = null;
-let gps2ndEastEdgepointArray: Pointer<INT16> = null;
-let gps2ndSouthEdgepointArray: Pointer<INT16> = null;
-let gps2ndWestEdgepointArray: Pointer<INT16> = null;
+let gps2ndNorthEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+let gps2ndEastEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+let gps2ndSouthEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
+let gps2ndWestEdgepointArray: INT16[] /* Pointer<INT16> */ = <INT16[]><unknown>null;
 // contains the size for each array
 let gus2ndNorthEdgepointArraySize: UINT16 = 0;
 let gus2ndEastEdgepointArraySize: UINT16 = 0;
@@ -46,18 +46,10 @@ let gsBRGridNo: INT16 = 12635;
 
 export function TrashMapEdgepoints(): void {
   // Primary edgepoints
-  if (gps1stNorthEdgepointArray)
-    MemFree(gps1stNorthEdgepointArray);
-  if (gps1stEastEdgepointArray)
-    MemFree(gps1stEastEdgepointArray);
-  if (gps1stSouthEdgepointArray)
-    MemFree(gps1stSouthEdgepointArray);
-  if (gps1stWestEdgepointArray)
-    MemFree(gps1stWestEdgepointArray);
-  gps1stNorthEdgepointArray = null;
-  gps1stEastEdgepointArray = null;
-  gps1stSouthEdgepointArray = null;
-  gps1stWestEdgepointArray = null;
+  gps1stNorthEdgepointArray = <INT16[]><unknown>null;
+  gps1stEastEdgepointArray = <INT16[]><unknown>null;
+  gps1stSouthEdgepointArray = <INT16[]><unknown>null;
+  gps1stWestEdgepointArray = <INT16[]><unknown>null;
   gus1stNorthEdgepointArraySize = 0;
   gus1stEastEdgepointArraySize = 0;
   gus1stSouthEdgepointArraySize = 0;
@@ -67,18 +59,10 @@ export function TrashMapEdgepoints(): void {
   gus1stSouthEdgepointMiddleIndex = 0;
   gus1stWestEdgepointMiddleIndex = 0;
   // Secondary edgepoints
-  if (gps2ndNorthEdgepointArray)
-    MemFree(gps2ndNorthEdgepointArray);
-  if (gps2ndEastEdgepointArray)
-    MemFree(gps2ndEastEdgepointArray);
-  if (gps2ndSouthEdgepointArray)
-    MemFree(gps2ndSouthEdgepointArray);
-  if (gps2ndWestEdgepointArray)
-    MemFree(gps2ndWestEdgepointArray);
-  gps2ndNorthEdgepointArray = null;
-  gps2ndEastEdgepointArray = null;
-  gps2ndSouthEdgepointArray = null;
-  gps2ndWestEdgepointArray = null;
+  gps2ndNorthEdgepointArray = <INT16[]><unknown>null;
+  gps2ndEastEdgepointArray = <INT16[]><unknown>null;
+  gps2ndSouthEdgepointArray = <INT16[]><unknown>null;
+  gps2ndWestEdgepointArray = <INT16[]><unknown>null;
   gus2ndNorthEdgepointArraySize = 0;
   gus2ndEastEdgepointArraySize = 0;
   gus2ndSouthEdgepointArraySize = 0;
@@ -97,13 +81,12 @@ function ValidateEdgepoints(): void {
   let usValidEdgepoints: UINT16;
   let Soldier: SOLDIERTYPE = createSoldierType();
 
-  memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
 
   // north
   usValidEdgepoints = 0;
   for (i = 0; i < gus1stNorthEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps1stNorthEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps1stNorthEdgepointArray[i])) {
       gps1stNorthEdgepointArray[usValidEdgepoints] = gps1stNorthEdgepointArray[i];
       if (i == gus1stNorthEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -119,7 +102,7 @@ function ValidateEdgepoints(): void {
   // East
   usValidEdgepoints = 0;
   for (i = 0; i < gus1stEastEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps1stEastEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps1stEastEdgepointArray[i])) {
       gps1stEastEdgepointArray[usValidEdgepoints] = gps1stEastEdgepointArray[i];
       if (i == gus1stEastEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -135,7 +118,7 @@ function ValidateEdgepoints(): void {
   // South
   usValidEdgepoints = 0;
   for (i = 0; i < gus1stSouthEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps1stSouthEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps1stSouthEdgepointArray[i])) {
       gps1stSouthEdgepointArray[usValidEdgepoints] = gps1stSouthEdgepointArray[i];
       if (i == gus1stSouthEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -151,7 +134,7 @@ function ValidateEdgepoints(): void {
   // West
   usValidEdgepoints = 0;
   for (i = 0; i < gus1stWestEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps1stWestEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps1stWestEdgepointArray[i])) {
       gps1stWestEdgepointArray[usValidEdgepoints] = gps1stWestEdgepointArray[i];
       if (i == gus1stWestEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -168,7 +151,7 @@ function ValidateEdgepoints(): void {
   // north
   usValidEdgepoints = 0;
   for (i = 0; i < gus2ndNorthEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps2ndNorthEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps2ndNorthEdgepointArray[i])) {
       gps2ndNorthEdgepointArray[usValidEdgepoints] = gps2ndNorthEdgepointArray[i];
       if (i == gus2ndNorthEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -184,7 +167,7 @@ function ValidateEdgepoints(): void {
   // East
   usValidEdgepoints = 0;
   for (i = 0; i < gus2ndEastEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps2ndEastEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps2ndEastEdgepointArray[i])) {
       gps2ndEastEdgepointArray[usValidEdgepoints] = gps2ndEastEdgepointArray[i];
       if (i == gus2ndEastEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -200,7 +183,7 @@ function ValidateEdgepoints(): void {
   // South
   usValidEdgepoints = 0;
   for (i = 0; i < gus2ndSouthEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps2ndSouthEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps2ndSouthEdgepointArray[i])) {
       gps2ndSouthEdgepointArray[usValidEdgepoints] = gps2ndSouthEdgepointArray[i];
       if (i == gus2ndSouthEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -216,7 +199,7 @@ function ValidateEdgepoints(): void {
   // West
   usValidEdgepoints = 0;
   for (i = 0; i < gus2ndWestEdgepointArraySize; i++) {
-    if (VerifyEdgepoint(addressof(Soldier), gps2ndWestEdgepointArray[i])) {
+    if (VerifyEdgepoint(Soldier, gps2ndWestEdgepointArray[i])) {
       gps2ndWestEdgepointArray[usValidEdgepoints] = gps2ndWestEdgepointArray[i];
       if (i == gus2ndWestEdgepointMiddleIndex) {
         // adjust the middle index to the new one.
@@ -355,35 +338,34 @@ function ClassifyEdgepoints(): void {
   let Soldier: SOLDIERTYPE = createSoldierType();
   let sGridNo: INT16 = -1;
 
-  memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
 
   // north
   if (gMapInformation.sNorthGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sNorthGridNo, Enum291.NORTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stNorthEdgepointArray), addressof(gus1stNorthEdgepointMiddleIndex), addressof(gus1stNorthEdgepointArraySize), addressof(gps2ndNorthEdgepointArray), addressof(gus2ndNorthEdgepointMiddleIndex), addressof(gus2ndNorthEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stNorthEdgepointArray), addressof(gus1stNorthEdgepointMiddleIndex), addressof(gus1stNorthEdgepointArraySize), addressof(gps2ndNorthEdgepointArray), addressof(gus2ndNorthEdgepointMiddleIndex), addressof(gus2ndNorthEdgepointArraySize));
     }
   }
   // east
   if (gMapInformation.sEastGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sEastGridNo, Enum291.EAST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stEastEdgepointArray), addressof(gus1stEastEdgepointMiddleIndex), addressof(gus1stEastEdgepointArraySize), addressof(gps2ndEastEdgepointArray), addressof(gus2ndEastEdgepointMiddleIndex), addressof(gus2ndEastEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stEastEdgepointArray), addressof(gus1stEastEdgepointMiddleIndex), addressof(gus1stEastEdgepointArraySize), addressof(gps2ndEastEdgepointArray), addressof(gus2ndEastEdgepointMiddleIndex), addressof(gus2ndEastEdgepointArraySize));
     }
   }
   // south
   if (gMapInformation.sSouthGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sSouthGridNo, Enum291.SOUTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stSouthEdgepointArray), addressof(gus1stSouthEdgepointMiddleIndex), addressof(gus1stSouthEdgepointArraySize), addressof(gps2ndSouthEdgepointArray), addressof(gus2ndSouthEdgepointMiddleIndex), addressof(gus2ndSouthEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stSouthEdgepointArray), addressof(gus1stSouthEdgepointMiddleIndex), addressof(gus1stSouthEdgepointArraySize), addressof(gps2ndSouthEdgepointArray), addressof(gus2ndSouthEdgepointMiddleIndex), addressof(gus2ndSouthEdgepointArraySize));
     }
   }
   // west
   if (gMapInformation.sWestGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sWestGridNo, Enum291.WEST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(addressof(Soldier), sGridNo, addressof(gps1stWestEdgepointArray), addressof(gus1stWestEdgepointMiddleIndex), addressof(gus1stWestEdgepointArraySize), addressof(gps2ndWestEdgepointArray), addressof(gus2ndWestEdgepointMiddleIndex), addressof(gus2ndWestEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stWestEdgepointArray), addressof(gus1stWestEdgepointMiddleIndex), addressof(gus1stWestEdgepointArraySize), addressof(gps2ndWestEdgepointArray), addressof(gus2ndWestEdgepointMiddleIndex), addressof(gus2ndWestEdgepointArraySize));
     }
   }
 }
@@ -391,7 +373,7 @@ function ClassifyEdgepoints(): void {
 export function GenerateMapEdgepoints(): void {
   let i: INT32 = -1;
   let sGridNo: INT16 = -1;
-  let sVGridNo: INT16[] /* [400] */;
+  let sVGridNo: INT16[] /* [400] */ = createArray(400, 0);
   let gubSaveNPCAPBudget: UINT8 = 0;
   let gubSaveNPCDistLimit: UINT8 = 0;
 
@@ -444,7 +426,7 @@ export function GenerateMapEdgepoints(): void {
     }
     if (gus1stNorthEdgepointArraySize) {
       // Allocate and copy over the valid gridnos.
-      gps1stNorthEdgepointArray = MemAlloc(gus1stNorthEdgepointArraySize * sizeof(INT16));
+      gps1stNorthEdgepointArray = createArray(gus1stNorthEdgepointArraySize, 0);
       for (i = 0; i < gus1stNorthEdgepointArraySize; i++)
         gps1stNorthEdgepointArray[i] = sVGridNo[i];
     }
@@ -478,7 +460,7 @@ export function GenerateMapEdgepoints(): void {
     }
     if (gus1stEastEdgepointArraySize) {
       // Allocate and copy over the valid gridnos.
-      gps1stEastEdgepointArray = MemAlloc(gus1stEastEdgepointArraySize * sizeof(INT16));
+      gps1stEastEdgepointArray = createArray(gus1stEastEdgepointArraySize, 0);
       for (i = 0; i < gus1stEastEdgepointArraySize; i++)
         gps1stEastEdgepointArray[i] = sVGridNo[i];
     }
@@ -512,7 +494,7 @@ export function GenerateMapEdgepoints(): void {
     }
     if (gus1stSouthEdgepointArraySize) {
       // Allocate and copy over the valid gridnos.
-      gps1stSouthEdgepointArray = MemAlloc(gus1stSouthEdgepointArraySize * sizeof(INT16));
+      gps1stSouthEdgepointArray = createArray(gus1stSouthEdgepointArraySize, 0);
       for (i = 0; i < gus1stSouthEdgepointArraySize; i++)
         gps1stSouthEdgepointArray[i] = sVGridNo[i];
     }
@@ -546,7 +528,7 @@ export function GenerateMapEdgepoints(): void {
     }
     if (gus1stWestEdgepointArraySize) {
       // Allocate and copy over the valid gridnos.
-      gps1stWestEdgepointArray = MemAlloc(gus1stWestEdgepointArraySize * sizeof(INT16));
+      gps1stWestEdgepointArray = createArray(gus1stWestEdgepointArraySize, 0);
       for (i = 0; i < gus1stWestEdgepointArraySize; i++)
         gps1stWestEdgepointArray[i] = sVGridNo[i];
     }
@@ -583,7 +565,7 @@ export function GenerateMapEdgepoints(): void {
       }
       if (gus2ndNorthEdgepointArraySize) {
         // Allocate and copy over the valid gridnos.
-        gps2ndNorthEdgepointArray = MemAlloc(gus2ndNorthEdgepointArraySize * sizeof(INT16));
+        gps2ndNorthEdgepointArray = createArray(gus2ndNorthEdgepointArraySize, 0);
         for (i = 0; i < gus2ndNorthEdgepointArraySize; i++)
           gps2ndNorthEdgepointArray[i] = sVGridNo[i];
       }
@@ -617,7 +599,7 @@ export function GenerateMapEdgepoints(): void {
       }
       if (gus2ndEastEdgepointArraySize) {
         // Allocate and copy over the valid gridnos.
-        gps2ndEastEdgepointArray = MemAlloc(gus2ndEastEdgepointArraySize * sizeof(INT16));
+        gps2ndEastEdgepointArray = createArray(gus2ndEastEdgepointArraySize, 0);
         for (i = 0; i < gus2ndEastEdgepointArraySize; i++)
           gps2ndEastEdgepointArray[i] = sVGridNo[i];
       }
@@ -651,7 +633,7 @@ export function GenerateMapEdgepoints(): void {
       }
       if (gus2ndSouthEdgepointArraySize) {
         // Allocate and copy over the valid gridnos.
-        gps2ndSouthEdgepointArray = MemAlloc(gus2ndSouthEdgepointArraySize * sizeof(INT16));
+        gps2ndSouthEdgepointArray = createArray(gus2ndSouthEdgepointArraySize, 0);
         for (i = 0; i < gus2ndSouthEdgepointArraySize; i++)
           gps2ndSouthEdgepointArray[i] = sVGridNo[i];
       }
@@ -685,7 +667,7 @@ export function GenerateMapEdgepoints(): void {
       }
       if (gus2ndWestEdgepointArraySize) {
         // Allocate and copy over the valid gridnos.
-        gps2ndWestEdgepointArray = MemAlloc(gus2ndWestEdgepointArraySize * sizeof(INT16));
+        gps2ndWestEdgepointArray = createArray(gus2ndWestEdgepointArraySize, 0);
         for (i = 0; i < gus2ndWestEdgepointArraySize; i++)
           gps2ndWestEdgepointArray[i] = sVGridNo[i];
       }
@@ -710,151 +692,207 @@ export function GenerateMapEdgepoints(): void {
 }
 
 export function SaveMapEdgepoints(fp: HWFILE): void {
+  let sizeBuffer: Buffer;
+  let dataBuffer: Buffer;
+
+  sizeBuffer = Buffer.allocUnsafe(2);
+
   // 1st priority edgepoints -- for common entry -- tactical placement gui uses only these points.
-  FileWrite(fp, addressof(gus1stNorthEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus1stNorthEdgepointMiddleIndex), 2, null);
-  if (gus1stNorthEdgepointArraySize)
-    FileWrite(fp, gps1stNorthEdgepointArray, gus1stNorthEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus1stEastEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus1stEastEdgepointMiddleIndex), 2, null);
-  if (gus1stEastEdgepointArraySize)
-    FileWrite(fp, gps1stEastEdgepointArray, gus1stEastEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus1stSouthEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus1stSouthEdgepointMiddleIndex), 2, null);
-  if (gus1stSouthEdgepointArraySize)
-    FileWrite(fp, gps1stSouthEdgepointArray, gus1stSouthEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus1stWestEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus1stWestEdgepointMiddleIndex), 2, null);
-  if (gus1stWestEdgepointArraySize)
-    FileWrite(fp, gps1stWestEdgepointArray, gus1stWestEdgepointArraySize * sizeof(INT16), null);
-  // 2nd priority edgepoints -- for isolated areas.  Okay to be zero
-  FileWrite(fp, addressof(gus2ndNorthEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus2ndNorthEdgepointMiddleIndex), 2, null);
-  if (gus2ndNorthEdgepointArraySize)
-    FileWrite(fp, gps2ndNorthEdgepointArray, gus2ndNorthEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus2ndEastEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus2ndEastEdgepointMiddleIndex), 2, null);
-  if (gus2ndEastEdgepointArraySize)
-    FileWrite(fp, gps2ndEastEdgepointArray, gus2ndEastEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus2ndSouthEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus2ndSouthEdgepointMiddleIndex), 2, null);
-  if (gus2ndSouthEdgepointArraySize)
-    FileWrite(fp, gps2ndSouthEdgepointArray, gus2ndSouthEdgepointArraySize * sizeof(INT16), null);
-  FileWrite(fp, addressof(gus2ndWestEdgepointArraySize), 2, null);
-  FileWrite(fp, addressof(gus2ndWestEdgepointMiddleIndex), 2, null);
-  if (gus2ndWestEdgepointArraySize)
-    FileWrite(fp, gps2ndWestEdgepointArray, gus2ndWestEdgepointArraySize * sizeof(INT16), null);
-}
+  sizeBuffer.writeUInt16LE(gus1stNorthEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
 
-function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
-  LOADDATA(addressof(gus1stNorthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), hBuffer.value, 2);
+  sizeBuffer.writeUInt16LE(gus1stNorthEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
   if (gus1stNorthEdgepointArraySize) {
-    gps1stNorthEdgepointArray = MemAlloc(gus1stNorthEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stNorthEdgepointArray);
-    LOADDATA(gps1stNorthEdgepointArray, hBuffer.value, gus1stNorthEdgepointArraySize * sizeof(INT16));
+    dataBuffer = Buffer.allocUnsafe(gus1stNorthEdgepointArraySize * 2);
+    writeIntArray(gps1stNorthEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus1stNorthEdgepointArraySize * 2);
   }
-  LOADDATA(addressof(gus1stEastEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), hBuffer.value, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stEastEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stEastEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
   if (gus1stEastEdgepointArraySize) {
-    gps1stEastEdgepointArray = MemAlloc(gus1stEastEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stEastEdgepointArray);
-    LOADDATA(gps1stEastEdgepointArray, hBuffer.value, gus1stEastEdgepointArraySize * sizeof(INT16));
+    dataBuffer = Buffer.allocUnsafe(gus1stEastEdgepointArraySize * 2);
+    writeIntArray(gps1stEastEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus1stEastEdgepointArraySize * 2);
   }
-  LOADDATA(addressof(gus1stSouthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), hBuffer.value, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stSouthEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stSouthEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
   if (gus1stSouthEdgepointArraySize) {
-    gps1stSouthEdgepointArray = MemAlloc(gus1stSouthEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stSouthEdgepointArray);
-    LOADDATA(gps1stSouthEdgepointArray, hBuffer.value, gus1stSouthEdgepointArraySize * sizeof(INT16));
+    dataBuffer = Buffer.allocUnsafe(gus1stSouthEdgepointArraySize * 2);
+    writeIntArray(gps1stSouthEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus1stSouthEdgepointArraySize * 2);
   }
-  LOADDATA(addressof(gus1stWestEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), hBuffer.value, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stWestEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus1stWestEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
   if (gus1stWestEdgepointArraySize) {
-    gps1stWestEdgepointArray = MemAlloc(gus1stWestEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stWestEdgepointArray);
-    LOADDATA(gps1stWestEdgepointArray, hBuffer.value, gus1stWestEdgepointArraySize * sizeof(INT16));
+    dataBuffer = Buffer.allocUnsafe(gus1stWestEdgepointArraySize * 2);
+    writeIntArray(gps1stWestEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus1stWestEdgepointArraySize * 2);
+  }
+  // 2nd priority edgepoints -- for isolated areas.  Okay to be zero
+
+  sizeBuffer.writeUInt16LE(gus2ndNorthEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus2ndNorthEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  if (gus2ndNorthEdgepointArraySize) {
+    dataBuffer = Buffer.allocUnsafe(gus2ndNorthEdgepointArraySize * 2);
+    writeIntArray(gps2ndNorthEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus2ndNorthEdgepointArraySize * 2);
+  }
+
+  sizeBuffer.writeUInt16LE(gus2ndEastEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus2ndEastEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  if (gus2ndEastEdgepointArraySize) {
+    dataBuffer = Buffer.allocUnsafe(gus2ndEastEdgepointArraySize * 2);
+    writeIntArray(gps2ndEastEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus2ndEastEdgepointArraySize * 2);
+  }
+
+  sizeBuffer.writeUInt16LE(gus2ndSouthEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus2ndSouthEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  if (gus2ndSouthEdgepointArraySize) {
+    dataBuffer = Buffer.allocUnsafe(gus2ndSouthEdgepointArraySize * 2);
+    writeIntArray(gps2ndSouthEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus2ndSouthEdgepointArraySize * 2);
+  }
+
+  sizeBuffer.writeUInt16LE(gus2ndWestEdgepointArraySize, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  sizeBuffer.writeUInt16LE(gus2ndWestEdgepointMiddleIndex, 0);
+  FileWrite(fp, sizeBuffer, 2);
+
+  if (gus2ndWestEdgepointArraySize) {
+    dataBuffer = Buffer.allocUnsafe(gus2ndWestEdgepointArraySize * 2);
+    writeIntArray(gps2ndWestEdgepointArray, dataBuffer, 0, 2);
+    FileWrite(fp, dataBuffer, gus2ndWestEdgepointArraySize * 2);
   }
 }
 
-export function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): boolean {
+function OldLoadMapEdgepoints(buffer: Buffer, offset: number): number {
+  gus1stNorthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stNorthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
+  if (gus1stNorthEdgepointArraySize) {
+    gps1stNorthEdgepointArray = createArray(gus1stNorthEdgepointArraySize, 0);
+    offset = readIntArray(gps1stNorthEdgepointArray, buffer, offset, 2)
+  }
+  gus1stEastEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stEastEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
+  if (gus1stEastEdgepointArraySize) {
+    gps1stEastEdgepointArray = createArray(gus1stEastEdgepointArraySize, 0);
+    offset = readIntArray(gps1stEastEdgepointArray, buffer, offset, 2)
+  }
+  gus1stSouthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stSouthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
+  if (gus1stSouthEdgepointArraySize) {
+    gps1stSouthEdgepointArray = createArray(gus1stSouthEdgepointArraySize, 0);
+    offset = readIntArray(gps1stSouthEdgepointArray, buffer, offset, 2)
+  }
+  gus1stWestEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stWestEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
+  if (gus1stWestEdgepointArraySize) {
+    gps1stWestEdgepointArray = createArray(gus1stWestEdgepointArraySize, 0);
+    offset = readIntArray(gps1stWestEdgepointArray, buffer, offset, 2)
+  }
+  return offset;
+}
+
+export function LoadMapEdgepoints(buffer: Buffer, offset: number): { result: boolean, offset: number } {
   TrashMapEdgepoints();
   if (gMapInformation.ubMapVersion < 17) {
     // To prevent invalidation of older maps, which only used one layer of edgepoints, and a UINT8 for
     // containing the size, we will preserve that paradigm, then kill the loaded edgepoints and
     // regenerate them.
-    OldLoadMapEdgepoints(hBuffer);
+    offset = OldLoadMapEdgepoints(buffer, offset);
     TrashMapEdgepoints();
-    return false;
+    return { result: false, offset };
   }
-  LOADDATA(addressof(gus1stNorthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stNorthEdgepointMiddleIndex), hBuffer.value, 2);
+  gus1stNorthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stNorthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus1stNorthEdgepointArraySize) {
-    gps1stNorthEdgepointArray = MemAlloc(gus1stNorthEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stNorthEdgepointArray);
-    LOADDATA(gps1stNorthEdgepointArray, hBuffer.value, gus1stNorthEdgepointArraySize * sizeof(INT16));
+    gps1stNorthEdgepointArray = createArray(gus1stNorthEdgepointArraySize, 0);
+    offset = readIntArray(gps1stNorthEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus1stEastEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stEastEdgepointMiddleIndex), hBuffer.value, 2);
+  gus1stEastEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stEastEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus1stEastEdgepointArraySize) {
-    gps1stEastEdgepointArray = MemAlloc(gus1stEastEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stEastEdgepointArray);
-    LOADDATA(gps1stEastEdgepointArray, hBuffer.value, gus1stEastEdgepointArraySize * sizeof(INT16));
+    gps1stEastEdgepointArray = createArray(gus1stEastEdgepointArraySize, 0);
+    offset = readIntArray(gps1stEastEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus1stSouthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stSouthEdgepointMiddleIndex), hBuffer.value, 2);
+  gus1stSouthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stSouthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus1stSouthEdgepointArraySize) {
-    gps1stSouthEdgepointArray = MemAlloc(gus1stSouthEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stSouthEdgepointArray);
-    LOADDATA(gps1stSouthEdgepointArray, hBuffer.value, gus1stSouthEdgepointArraySize * sizeof(INT16));
+    gps1stSouthEdgepointArray = createArray(gus1stSouthEdgepointArraySize, 0);
+    offset = readIntArray(gps1stSouthEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus1stWestEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus1stWestEdgepointMiddleIndex), hBuffer.value, 2);
+  gus1stWestEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus1stWestEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus1stWestEdgepointArraySize) {
-    gps1stWestEdgepointArray = MemAlloc(gus1stWestEdgepointArraySize * sizeof(INT16));
-    Assert(gps1stWestEdgepointArray);
-    LOADDATA(gps1stWestEdgepointArray, hBuffer.value, gus1stWestEdgepointArraySize * sizeof(INT16));
+    gps1stWestEdgepointArray = createArray(gus1stWestEdgepointArraySize, 0);
+    offset = readIntArray(gps1stWestEdgepointArray, buffer, offset, 2);
   }
 
-  LOADDATA(addressof(gus2ndNorthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus2ndNorthEdgepointMiddleIndex), hBuffer.value, 2);
+  gus2ndNorthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus2ndNorthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus2ndNorthEdgepointArraySize) {
-    gps2ndNorthEdgepointArray = MemAlloc(gus2ndNorthEdgepointArraySize * sizeof(INT16));
-    Assert(gps2ndNorthEdgepointArray);
-    LOADDATA(gps2ndNorthEdgepointArray, hBuffer.value, gus2ndNorthEdgepointArraySize * sizeof(INT16));
+    gps2ndNorthEdgepointArray = createArray(gus2ndNorthEdgepointArraySize, 0);
+    offset = readIntArray(gps2ndNorthEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus2ndEastEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus2ndEastEdgepointMiddleIndex), hBuffer.value, 2);
+  gus2ndEastEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus2ndEastEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus2ndEastEdgepointArraySize) {
-    gps2ndEastEdgepointArray = MemAlloc(gus2ndEastEdgepointArraySize * sizeof(INT16));
-    Assert(gps2ndEastEdgepointArray);
-    LOADDATA(gps2ndEastEdgepointArray, hBuffer.value, gus2ndEastEdgepointArraySize * sizeof(INT16));
+    gps2ndEastEdgepointArray = createArray(gus2ndEastEdgepointArraySize, 0);
+    offset = readIntArray(gps2ndEastEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus2ndSouthEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus2ndSouthEdgepointMiddleIndex), hBuffer.value, 2);
+  gus2ndSouthEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus2ndSouthEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus2ndSouthEdgepointArraySize) {
-    gps2ndSouthEdgepointArray = MemAlloc(gus2ndSouthEdgepointArraySize * sizeof(INT16));
-    Assert(gps2ndSouthEdgepointArray);
-    LOADDATA(gps2ndSouthEdgepointArray, hBuffer.value, gus2ndSouthEdgepointArraySize * sizeof(INT16));
+    gps2ndSouthEdgepointArray = createArray(gus2ndSouthEdgepointArraySize, 0);
+    offset = readIntArray(gps2ndSouthEdgepointArray, buffer, offset, 2);
   }
-  LOADDATA(addressof(gus2ndWestEdgepointArraySize), hBuffer.value, 2);
-  LOADDATA(addressof(gus2ndWestEdgepointMiddleIndex), hBuffer.value, 2);
+  gus2ndWestEdgepointArraySize = buffer.readUInt16LE(offset); offset += 2;
+  gus2ndWestEdgepointMiddleIndex = buffer.readUInt16LE(offset); offset += 2;
   if (gus2ndWestEdgepointArraySize) {
-    gps2ndWestEdgepointArray = MemAlloc(gus2ndWestEdgepointArraySize * sizeof(INT16));
-    Assert(gps2ndWestEdgepointArray);
-    LOADDATA(gps2ndWestEdgepointArray, hBuffer.value, gus2ndWestEdgepointArraySize * sizeof(INT16));
+    gps2ndWestEdgepointArray = createArray(gus2ndWestEdgepointArraySize, 0);
+    offset = readIntArray(gps2ndWestEdgepointArray, buffer, offset, 2);
   }
   if (gMapInformation.ubMapVersion < 22) {
     // regenerate them.
     TrashMapEdgepoints();
-    return false;
+    return { result: false, offset };
   }
 
-  return true;
+  return { result: true, offset };
 }
 
 export function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
-  let psArray: Pointer<INT16> = null;
+  let psArray: INT16[];
   let usArraySize: UINT16 = 0;
   /* static */ let randomVal: INT32 = 0;
 
@@ -878,7 +916,7 @@ export function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
       usArraySize = gus1stWestEdgepointArraySize;
       break;
     default:
-      AssertMsg(0, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
+      AssertMsg(false, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
       break;
   }
   if (!usArraySize) {
@@ -888,12 +926,12 @@ export function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
 }
 
 export function ChooseMapEdgepoints(pMapEdgepointInfo: MAPEDGEPOINTINFO, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
-  let psArray: Pointer<INT16> = null;
+  let psArray: INT16[];
   let usArraySize: UINT16 = 0;
   let i: INT32 = -1;
   let usSlots: UINT16;
   let usCurrSlot: UINT16;
-  let psTempArray: Pointer<INT16> = null;
+  let psTempArray: INT16[];
 
   AssertMsg(ubNumDesiredPoints > 0 && ubNumDesiredPoints <= 32, FormatString("ChooseMapEdgepoints:  Desired points = %d, valid range is 1-32", ubNumDesiredPoints));
   // First validate and get access to the correct array based on strategic direction.
@@ -916,7 +954,7 @@ export function ChooseMapEdgepoints(pMapEdgepointInfo: MAPEDGEPOINTINFO, ubStrat
       usArraySize = gus1stWestEdgepointArraySize;
       break;
     default:
-      AssertMsg(0, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
+      AssertMsg(false, "ChooseMapEdgepoints:  Failed to pass a valid strategic insertion code.");
       break;
   }
   pMapEdgepointInfo.ubStrategicInsertionCode = ubStrategicInsertionCode;
@@ -927,8 +965,8 @@ export function ChooseMapEdgepoints(pMapEdgepointInfo: MAPEDGEPOINTINFO, ubStrat
 
   // JA2 Gold: don't place people in the water.
   // If any of the waypoints is on a water spot, we're going to have to remove it
-  psTempArray = MemAlloc(sizeof(INT16) * usArraySize);
-  memcpy(psTempArray, psArray, sizeof(INT16) * usArraySize);
+  psTempArray = createArray(usArraySize, 0);
+  copyArray(psTempArray, psArray);
   psArray = psTempArray;
   for (i = 0; i < usArraySize; i++) {
     if (GetTerrainType(psArray[i]) == Enum315.MED_WATER || GetTerrainType(psArray[i]) == Enum315.DEEP_WATER) {
@@ -950,31 +988,26 @@ export function ChooseMapEdgepoints(pMapEdgepointInfo: MAPEDGEPOINTINFO, ubStrat
 
   if (ubNumDesiredPoints >= usArraySize) {
     // We don't have enough points for everyone, return them all.
-    pMapEdgepointInfo.value.ubNumPoints = usArraySize;
+    pMapEdgepointInfo.ubNumPoints = usArraySize;
     for (i = 0; i < usArraySize; i++)
-      pMapEdgepointInfo.value.sGridNo[i] = psArray[i];
+      pMapEdgepointInfo.sGridNo[i] = psArray[i];
 
-    // JA2Gold: free the temp array
-    MemFree(psTempArray);
     return;
   }
   // We have more points, so choose them randomly.
   usSlots = usArraySize;
   usCurrSlot = 0;
-  pMapEdgepointInfo.value.ubNumPoints = ubNumDesiredPoints;
+  pMapEdgepointInfo.ubNumPoints = ubNumDesiredPoints;
   for (i = 0; i < usArraySize; i++) {
     if (Random(usSlots) < ubNumDesiredPoints) {
-      pMapEdgepointInfo.value.sGridNo[usCurrSlot++] = psArray[i];
+      pMapEdgepointInfo.sGridNo[usCurrSlot++] = psArray[i];
       ubNumDesiredPoints--;
     }
     usSlots--;
   }
-
-  // JA2Gold: free the temp array
-  MemFree(psTempArray);
 }
 
-let gpReservedGridNos: Pointer<INT16> = null;
+let gpReservedGridNos: INT16[] = <INT16[]><unknown>null;
 let gsReservedIndex: INT16 = 0;
 
 export function BeginMapEdgepointSearch(): void {
@@ -982,7 +1015,7 @@ export function BeginMapEdgepointSearch(): void {
 
   // Create the reserved list
   AssertMsg(!gpReservedGridNos, "Attempting to BeginMapEdgepointSearch that has already been created.");
-  gpReservedGridNos = MemAlloc(20 * sizeof(INT16));
+  gpReservedGridNos = createArray(20, 0);
   Assert(gpReservedGridNos);
   gsReservedIndex = 0;
 
@@ -1004,8 +1037,7 @@ export function BeginMapEdgepointSearch(): void {
 
 export function EndMapEdgepointSearch(): void {
   AssertMsg(gpReservedGridNos, "Attempting to EndMapEdgepointSearch that has already been removed.");
-  MemFree(gpReservedGridNos);
-  gpReservedGridNos = null;
+  gpReservedGridNos = <INT16[]><unknown>null;
   gsReservedIndex = 0;
 }
 
@@ -1013,7 +1045,7 @@ export function EndMapEdgepointSearch(): void {
 export function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
-  let psArray: Pointer<INT16> = null;
+  let psArray: INT16[];
   let sRadius: INT16;
   let sDistance: INT16;
   let sDirection: INT16;
@@ -1030,26 +1062,28 @@ export function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionC
       psArray = gps1stNorthEdgepointArray;
       usArraySize = gus1stNorthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any north mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any north mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_EAST:
       psArray = gps1stEastEdgepointArray;
       usArraySize = gus1stEastEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any east mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any east mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps1stSouthEdgepointArray;
       usArraySize = gus1stSouthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any south mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any south mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_WEST:
       psArray = gps1stWestEdgepointArray;
       usArraySize = gus1stWestEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any west mapedgepoints. LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any west mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
+    default:
+      Assert(false);
   }
   if (!usArraySize) {
     return NOWHERE;
@@ -1135,7 +1169,7 @@ export function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionC
 export function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   let i: INT32;
   let iDirectionLoop: INT32;
-  let psArray: Pointer<INT16> = null;
+  let psArray: INT16[];
   let sRadius: INT16;
   let sDistance: INT16;
   let sDirection: INT16;
@@ -1145,33 +1179,35 @@ export function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertio
 
   if (gsReservedIndex >= 20) {
     // Everything is reserved.
-    AssertMsg(0, "All closest map edgepoints have been reserved.  We should only have 20 soldiers maximum...");
+    AssertMsg(false, "All closest map edgepoints have been reserved.  We should only have 20 soldiers maximum...");
   }
   switch (ubInsertionCode) {
     case Enum175.INSERTION_CODE_NORTH:
       psArray = gps2ndNorthEdgepointArray;
       usArraySize = gus2ndNorthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any isolated north mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated north mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_EAST:
       psArray = gps2ndEastEdgepointArray;
       usArraySize = gus2ndEastEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any isolated east mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated east mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps2ndSouthEdgepointArray;
       usArraySize = gus2ndSouthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any isolated south mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated south mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_WEST:
       psArray = gps2ndWestEdgepointArray;
       usArraySize = gus2ndWestEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(0, FormatString("Sector %c%d level %d doesn't have any isolated west mapedgepoints. KM:1", gWorldSectorY + 'A' - 1, gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated west mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
+    default:
+      Assert(false);
   }
   if (!usArraySize) {
     return NOWHERE;
@@ -1255,7 +1291,7 @@ export function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertio
 }
 
 const EDGE_OF_MAP_SEARCH = 5;
-function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boolean {
+function VerifyEdgepoint(pSoldier: SOLDIERTYPE, sEdgepoint: INT16): boolean {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1266,20 +1302,20 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boo
   let sGridNo: INT16;
   let bDirection: INT8;
 
-  pSoldier.value.sGridNo = sEdgepoint;
+  pSoldier.sGridNo = sEdgepoint;
 
   iSearchRange = EDGE_OF_MAP_SEARCH;
 
   // determine maximum horizontal limits
-  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1295,7 +1331,7 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boo
     }
   }
 
-  FindBestPath(pSoldier, NOWHERE, pSoldier.value.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(pSoldier, NOWHERE, pSoldier.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   // Turn off the "reachable" flag for the current location
   // so we don't consider it
@@ -1322,7 +1358,7 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): boo
   return false;
 }
 
-function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEdgepoint2: INT16): boolean {
+function EdgepointsClose(pSoldier: SOLDIERTYPE, sEdgepoint1: INT16, sEdgepoint2: INT16): boolean {
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
   let sMaxRight: INT16;
@@ -1332,7 +1368,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   let sYOffset: INT16;
   let sGridNo: INT16;
 
-  pSoldier.value.sGridNo = sEdgepoint1;
+  pSoldier.sGridNo = sEdgepoint1;
 
   if (gWorldSectorX == 14 && gWorldSectorY == 9 && !gbWorldSectorZ) {
     // BRUTAL CODE  -- special case map.
@@ -1342,15 +1378,15 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
   }
 
   // determine maximum horizontal limits
-  sMaxLeft = Math.min(iSearchRange, (pSoldier.value.sGridNo % MAXCOL));
+  sMaxLeft = Math.min(iSearchRange, (pSoldier.sGridNo % MAXCOL));
   // NumMessage("sMaxLeft = ",sMaxLeft);
-  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.value.sGridNo % MAXCOL) + 1));
+  sMaxRight = Math.min(iSearchRange, MAXCOL - ((pSoldier.sGridNo % MAXCOL) + 1));
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(iSearchRange, (pSoldier.value.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, (pSoldier.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1366,7 +1402,7 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
     }
   }
 
-  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.value.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
+  if (FindBestPath(pSoldier, sEdgepoint2, pSoldier.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE)) {
     return true;
   }
   return false;
@@ -1375,8 +1411,8 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
 export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   let Soldier: SOLDIERTYPE = createSoldierType();
   let iLoop: INT32;
-  let psEdgepointArray1: Pointer<INT16>;
-  let psEdgepointArray2: Pointer<INT16>;
+  let psEdgepointArray1: INT16[];
+  let psEdgepointArray2: INT16[];
   let iEdgepointArraySize1: INT32;
   let iEdgepointArraySize2: INT32;
   let sClosestSpot1: INT16 = NOWHERE;
@@ -1387,7 +1423,6 @@ export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   let fPrimaryValid: boolean = false;
   let fSecondaryValid: boolean = false;
 
-  memset(addressof(Soldier), 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
   Soldier.sGridNo = sGridNo;
 
@@ -1446,10 +1481,10 @@ export function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   // set the distance limit of the square region
   gubNPCDistLimit = 15;
 
-  if (!sClosestDist1 || FindBestPath(addressof(Soldier), sClosestSpot1, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+  if (!sClosestDist1 || FindBestPath(Soldier, sClosestSpot1, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
     fPrimaryValid = true;
   }
-  if (!sClosestDist2 || FindBestPath(addressof(Soldier), sClosestSpot2, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
+  if (!sClosestDist2 || FindBestPath(Soldier, sClosestSpot2, 0, Enum193.WALKING, NO_COPYROUTE, PATH_THROUGH_PEOPLE)) {
     fSecondaryValid = true;
   }
 

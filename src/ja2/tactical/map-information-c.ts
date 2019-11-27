@@ -12,7 +12,7 @@ export let gdMajorMapVersion: FLOAT = MAJOR_MAP_VERSION;
 
 export let gfWorldLoaded: boolean;
 
-export let gMapInformation: MAPCREATE_STRUCT;
+export let gMapInformation: MAPCREATE_STRUCT = createMapCreateStruct();
 
 // Current minor map version updater.
 const MINOR_MAP_VERSION = 25;
@@ -92,18 +92,23 @@ export function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
 
 export function SaveMapInformation(fp: HWFILE): void {
   let uiBytesWritten: UINT32;
+  let buffer: Buffer;
 
   gMapInformation.ubMapVersion = MINOR_MAP_VERSION;
-  FileWrite(fp, addressof(gMapInformation), sizeof(MAPCREATE_STRUCT), addressof(uiBytesWritten));
+  buffer = Buffer.allocUnsafe(MAP_CREATE_STRUCT_SIZE);
+  writeMapCreateStruct(gMapInformation, buffer);
+  uiBytesWritten = FileWrite(fp, buffer, MAP_CREATE_STRUCT_SIZE);
 }
 
-export function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
-  LOADDATA(addressof(gMapInformation), hBuffer.value, sizeof(MAPCREATE_STRUCT));
+export function LoadMapInformation(buffer: Buffer, offset: number): number {
+  offset = readMapCreateStruct(gMapInformation, buffer, offset);
   // FileRead( hfile, &gMapInformation, sizeof( MAPCREATE_STRUCT ), &uiBytesRead);
 
   // ATE: OK, do some handling here for basement level scroll restrictions
   // Calcuate world scrolling restrictions
   InitRenderParams(gMapInformation.ubRestrictedScrollID);
+
+  return offset;
 }
 
 // This will automatically update obsolete map versions to the new ones.  This will even
@@ -147,26 +152,26 @@ function UpdateOldVersionMap(): void {
     ValidateEntryPointGridNo(addressof(gMapInformation.sIsolatedGridNo));
   }
   if (gMapInformation.ubMapVersion < 21) {
-    let curr: Pointer<SOLDIERINITNODE>;
+    let curr: SOLDIERINITNODE | null;
     // override any item slots being locked if there is no item in that slot.
     // Laymen terms:  If any items slots are locked to be empty, make them empty but available
     // for random item generation.
     gMapInformation.ubMapVersion = 21;
     curr = gSoldierInitHead;
     while (curr) {
-      if (curr.value.pDetailedPlacement) {
+      if (curr.pDetailedPlacement) {
         let i: INT32;
         for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
-          if (!curr.value.pDetailedPlacement.value.Inv[i].usItem) {
-            if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_UNDROPPABLE) {
-              if (curr.value.pDetailedPlacement.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
-                curr.value.pDetailedPlacement.value.Inv[i].fFlags &= ~OBJECT_NO_OVERWRITE;
+          if (!curr.pDetailedPlacement.Inv[i].usItem) {
+            if (curr.pDetailedPlacement.Inv[i].fFlags & OBJECT_UNDROPPABLE) {
+              if (curr.pDetailedPlacement.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
+                curr.pDetailedPlacement.Inv[i].fFlags &= ~OBJECT_NO_OVERWRITE;
               }
             }
           }
         }
       }
-      curr = curr.value.next;
+      curr = curr.next;
     }
   }
   if (gMapInformation.ubMapVersion < 22) {
@@ -175,18 +180,18 @@ function UpdateOldVersionMap(): void {
   }
   if (gMapInformation.ubMapVersion < 23) {
     // Allow map edgepoints to be regenerated as new system has been reenabled.
-    let curr: Pointer<SOLDIERINITNODE>;
+    let curr: SOLDIERINITNODE | null;
     gMapInformation.ubMapVersion = 23;
     if (giCurrentTilesetID == 1) // cave/mine tileset only
     {
      	// convert all civilians to miners which use uniforms and more masculine body types.
       curr = gSoldierInitHead;
       while (curr) {
-        if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM && !curr.value.pDetailedPlacement) {
-          curr.value.pBasicPlacement.value.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
-          curr.value.pBasicPlacement.value.bBodyType = -1;
+        if (curr.pBasicPlacement.bTeam == CIV_TEAM && !curr.pDetailedPlacement) {
+          curr.pBasicPlacement.ubSoldierClass = Enum262.SOLDIER_CLASS_MINER;
+          curr.pBasicPlacement.bBodyType = -1;
         }
-        curr = curr.value.next;
+        curr = curr.next;
       }
     }
   }
@@ -199,28 +204,28 @@ function UpdateOldVersionMap(): void {
 }
 
 function AutoCalculateItemNoOverwriteStatus(): void {
-  let curr: Pointer<SOLDIERINITNODE>;
+  let curr: SOLDIERINITNODE | null;
   let i: INT32;
-  let pItem: Pointer<OBJECTTYPE>;
+  let pItem: OBJECTTYPE;
 
   // Recalculate the "no overwrite" status flag on all items.  There are two different cases:
   // 1)  If detailed placement has item, the item "no overwrite" flag is set
   // 2)  If detailed placement doesn't have item, but item is set to drop (forced empty slot), the "no overwrite" flag is set.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pDetailedPlacement) {
+    if (curr.pDetailedPlacement) {
       for (i = 0; i < Enum261.NUM_INV_SLOTS; i++) {
-        pItem = addressof(curr.value.pDetailedPlacement.value.Inv[i]);
-        if (pItem.value.usItem != Enum225.NONE) {
+        pItem = curr.pDetailedPlacement.Inv[i];
+        if (pItem.usItem != Enum225.NONE) {
           // case 1 (see above)
-          pItem.value.fFlags |= OBJECT_NO_OVERWRITE;
-        } else if (!(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
+          pItem.fFlags |= OBJECT_NO_OVERWRITE;
+        } else if (!(pItem.fFlags & OBJECT_UNDROPPABLE)) {
           // case 2 (see above)
-          pItem.value.fFlags |= OBJECT_NO_OVERWRITE;
+          pItem.fFlags |= OBJECT_NO_OVERWRITE;
         }
       }
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 }
 

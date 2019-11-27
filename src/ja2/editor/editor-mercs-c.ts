@@ -2002,7 +2002,7 @@ export function SpecifyEntryPoint(iMapIndex: UINT32): void {
     AddTopmostToTail(psEntryGridNo.value, Enum312.FIRSTPOINTERS2);
   } else {
     let usDummy: UINT16;
-    if (TypeExistsInTopmostLayer(iMapIndex, Enum313.FIRSTPOINTERS, addressof(usDummy))) {
+    if ((usDummy = TypeExistsInTopmostLayer(iMapIndex, Enum313.FIRSTPOINTERS)) !== -1) {
       AddToUndoList(iMapIndex);
       RemoveAllTopmostsOfTypeRange(iMapIndex, Enum313.FIRSTPOINTERS, Enum313.FIRSTPOINTERS);
       psEntryGridNo.value = -1;

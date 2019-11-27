@@ -5,15 +5,15 @@ let guiMaxTileCacheSize: UINT32 = 50;
 let guiCurTileCacheSize: UINT32 = 0;
 let giDefaultStructIndex: INT32 = -1;
 
-export let gpTileCache: Pointer<TILE_CACHE_ELEMENT> = null;
-let gpTileCacheStructInfo: Pointer<TILE_CACHE_STRUCT> = null;
+export let gpTileCache: TILE_CACHE_ELEMENT[] /* Pointer<TILE_CACHE_ELEMENT> */ = <TILE_CACHE_ELEMENT[]><unknown>null;
+let gpTileCacheStructInfo: TILE_CACHE_STRUCT[] /* Pointer<TILE_CACHE_STRUCT> */ = <TILE_CACHE_STRUCT[]><unknown>null;
 
 export function InitTileCache(): boolean {
   let cnt: UINT32;
   let FileInfo: GETFILESTRUCT;
   let sFiles: INT16 = 0;
 
-  gpTileCache = MemAlloc(sizeof(TILE_CACHE_ELEMENT) * guiMaxTileCacheSize);
+  gpTileCache = createArrayFrom(guiMaxTileCacheSize, createTileCacheElement);
 
   // Zero entries
   for (cnt = 0; cnt < guiMaxTileCacheSize; cnt++) {
@@ -38,7 +38,7 @@ export function InitTileCache(): boolean {
 
     guiNumTileCacheStructs = sFiles;
 
-    gpTileCacheStructInfo = MemAlloc(sizeof(TILE_CACHE_STRUCT) * sFiles);
+    gpTileCacheStructInfo = createArrayFrom(sFiles, createTileCacheStruct);
 
     // Loop through and set filenames
     if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
@@ -51,7 +51,7 @@ export function InitTileCache(): boolean {
         // Load struc data....
         gpTileCacheStructInfo[cnt].pStructureFileRef = LoadStructureFile(gpTileCacheStructInfo[cnt].Filename);
 
-        if (stricmp(gpTileCacheStructInfo[cnt].zRootName, "l_dead1") == 0) {
+        if (gpTileCacheStructInfo[cnt].zRootName.toLowerCase() == "l_dead1") {
           giDefaultStructIndex = cnt;
         }
 
@@ -72,7 +72,7 @@ export function DeleteTileCache(): void {
     // Loop through and delete any entries
     for (cnt = 0; cnt < guiMaxTileCacheSize; cnt++) {
       if (gpTileCache[cnt].pImagery != null) {
-        DeleteTileSurface(gpTileCache[cnt].pImagery);
+        DeleteTileSurface(<TILE_IMAGERY>gpTileCache[cnt].pImagery);
       }
     }
     MemFree(gpTileCache);
@@ -89,7 +89,7 @@ function FindCacheStructDataIndex(cFilename: string /* Pointer<INT8> */): INT16 
   let cnt: UINT32;
 
   for (cnt = 0; cnt < guiNumTileCacheStructs; cnt++) {
-    if (_stricmp(gpTileCacheStructInfo[cnt].zRootName, cFilename) == 0) {
+    if (gpTileCacheStructInfo[cnt].zRootName.toLowerCase() === cFilename.toLowerCase()) {
       return cnt;
     }
   }
@@ -101,11 +101,12 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
   let cnt: UINT32;
   let ubLowestIndex: UINT32 = 0;
   let sMostHits: INT16 = 15000;
+  let pImagery: TILE_IMAGERY | null;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < guiCurTileCacheSize; cnt++) {
     if (gpTileCache[cnt].pImagery != null) {
-      if (_stricmp(gpTileCache[cnt].zName, cFilename) == 0) {
+      if (gpTileCache[cnt].zName.toLowerCase() === cFilename.toLowerCase()) {
         // Found surface, return
         gpTileCache[cnt].sHits++;
         return cnt;
@@ -124,7 +125,7 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
     }
 
     // Bump off lowest index
-    DeleteTileSurface(gpTileCache[ubLowestIndex].pImagery);
+    DeleteTileSurface(<TILE_IMAGERY>gpTileCache[ubLowestIndex].pImagery);
 
     // Decrement
     gpTileCache[ubLowestIndex].sHits = 0;
@@ -139,7 +140,8 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
       // Insert here
       gpTileCache[cnt].pImagery = LoadTileSurface(cFilename);
 
-      if (gpTileCache[cnt].pImagery == null) {
+      pImagery = gpTileCache[cnt].pImagery;
+      if (pImagery == null) {
         return -1;
       }
 
@@ -153,11 +155,11 @@ export function GetCachedTile(cFilename: string /* Pointer<INT8> */): INT32 {
 
       // ATE: Add z-strip info
       if (gpTileCache[cnt].sStructRefID != -1) {
-        AddZStripInfoToVObject(gpTileCache[cnt].pImagery.value.vo, gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, true, 0);
+        AddZStripInfoToVObject(pImagery.vo, <STRUCTURE_FILE_REF>gpTileCacheStructInfo[gpTileCache[cnt].sStructRefID].pStructureFileRef, true, 0);
       }
 
-      if (gpTileCache[cnt].pImagery.value.pAuxData != null) {
-        gpTileCache[cnt].ubNumFrames = gpTileCache[cnt].pImagery.value.pAuxData.value.ubNumberOfFrames;
+      if (pImagery.pAuxData != null) {
+        gpTileCache[cnt].ubNumFrames = pImagery.pAuxData[0].ubNumberOfFrames;
       } else {
         gpTileCache[cnt].ubNumFrames = 1;
       }
@@ -188,7 +190,7 @@ export function RemoveCachedTile(iCachedTile: INT32): boolean {
 
         // Are we at zero?
         if (gpTileCache[cnt].sHits == 0) {
-          DeleteTileSurface(gpTileCache[cnt].pImagery);
+          DeleteTileSurface(<TILE_IMAGERY>gpTileCache[cnt].pImagery);
           gpTileCache[cnt].pImagery = null;
           gpTileCache[cnt].sStructRefID = -1;
           return true;
@@ -202,18 +204,21 @@ export function RemoveCachedTile(iCachedTile: INT32): boolean {
 }
 
 function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
+  let pImagery: TILE_IMAGERY | null;
+
   if (iIndex == -1) {
     return null;
   }
 
-  if (gpTileCache[iIndex].pImagery == null) {
+  pImagery = gpTileCache[iIndex].pImagery;
+  if (pImagery == null) {
     return null;
   }
 
-  return gpTileCache[iIndex].pImagery.value.vo;
+  return pImagery.vo;
 }
 
-function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
+function GetCachedTileStructureRef(iIndex: INT32): STRUCTURE_FILE_REF | null {
   if (iIndex == -1) {
     return null;
   }
@@ -225,7 +230,7 @@ function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
   return gpTileCacheStructInfo[gpTileCache[iIndex].sStructRefID].pStructureFileRef;
 }
 
-export function GetCachedTileStructureRefFromFilename(cFilename: string /* Pointer<INT8> */): Pointer<STRUCTURE_FILE_REF> {
+export function GetCachedTileStructureRefFromFilename(cFilename: string /* Pointer<INT8> */): STRUCTURE_FILE_REF | null {
   let sStructDataIndex: INT16;
 
   // Given filename, look for index
@@ -238,32 +243,32 @@ export function GetCachedTileStructureRefFromFilename(cFilename: string /* Point
   return gpTileCacheStructInfo[sStructDataIndex].pStructureFileRef;
 }
 
-export function CheckForAndAddTileCacheStructInfo(pNode: Pointer<LEVELNODE>, sGridNo: INT16, usIndex: UINT16, usSubIndex: UINT16): void {
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+export function CheckForAndAddTileCacheStructInfo(pNode: LEVELNODE, sGridNo: INT16, usIndex: UINT16, usSubIndex: UINT16): void {
+  let pStructureFileRef: STRUCTURE_FILE_REF | null;
 
   pStructureFileRef = GetCachedTileStructureRef(usIndex);
 
   if (pStructureFileRef != null) {
-    if (!AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode)) {
+    if (!AddStructureToWorld(sGridNo, 0, pStructureFileRef.pDBStructureRef[usSubIndex], pNode)) {
       if (giDefaultStructIndex != -1) {
         pStructureFileRef = gpTileCacheStructInfo[giDefaultStructIndex].pStructureFileRef;
 
         if (pStructureFileRef != null) {
-          AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode);
+          AddStructureToWorld(sGridNo, 0, pStructureFileRef.pDBStructureRef[usSubIndex], pNode);
         }
       }
     }
   }
 }
 
-export function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, usIndex: UINT16): void {
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+export function CheckForAndDeleteTileCacheStructInfo(pNode: LEVELNODE, usIndex: UINT16): void {
+  let pStructureFileRef: STRUCTURE_FILE_REF | null;
 
   if (usIndex >= TILE_CACHE_START_INDEX) {
     pStructureFileRef = GetCachedTileStructureRef((usIndex - TILE_CACHE_START_INDEX));
 
     if (pStructureFileRef != null) {
-      DeleteStructureFromWorld(pNode.value.pStructureData);
+      DeleteStructureFromWorld(pNode.pStructureData);
     }
   }
 }

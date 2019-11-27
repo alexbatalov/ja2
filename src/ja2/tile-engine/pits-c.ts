@@ -24,15 +24,15 @@ export function Add3X3Pit(iMapIndex: INT32): void {
     ExitGrid.ubGotoSectorY = gWorldSectorY;
     ExitGrid.ubGotoSectorZ = (gbWorldSectorZ + 1);
     ExitGrid.usGridNo = iMapIndex;
-    AddExitGridToWorld(iMapIndex + 159, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 1, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 161, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 160, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 160, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 161, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 1, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 159, addressof(ExitGrid));
+    AddExitGridToWorld(iMapIndex + 159, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 1, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 161, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 160, ExitGrid);
+    AddExitGridToWorld(iMapIndex, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 160, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 161, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 1, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 159, ExitGrid);
     RecompileLocalMovementCostsFromRadius(iMapIndex, 2);
   }
 
@@ -76,31 +76,31 @@ export function Add5X5Pit(iMapIndex: INT32): void {
     ExitGrid.ubGotoSectorY = gWorldSectorY;
     ExitGrid.ubGotoSectorZ = (gbWorldSectorZ + 1);
     ExitGrid.usGridNo = iMapIndex;
-    AddExitGridToWorld(iMapIndex + 318, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 158, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 2, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 162, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 322, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 319, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 159, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 1, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 161, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 321, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 320, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 160, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 160, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 320, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 321, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 161, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 1, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 159, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 319, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 322, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 162, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex + 2, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 158, addressof(ExitGrid));
-    AddExitGridToWorld(iMapIndex - 318, addressof(ExitGrid));
+    AddExitGridToWorld(iMapIndex + 318, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 158, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 2, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 162, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 322, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 319, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 159, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 1, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 161, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 321, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 320, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 160, ExitGrid);
+    AddExitGridToWorld(iMapIndex, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 160, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 320, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 321, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 161, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 1, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 159, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 319, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 322, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 162, ExitGrid);
+    AddExitGridToWorld(iMapIndex + 2, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 158, ExitGrid);
+    AddExitGridToWorld(iMapIndex - 318, ExitGrid);
     RecompileLocalMovementCostsFromRadius(iMapIndex, 3);
   }
   MarkWorldDirty();
@@ -179,7 +179,7 @@ export function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT
   let y: INT16;
   let sNewGridNo: INT16;
   let ubID: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   PlayJA2Sample(Enum330.CAVE_COLLAPSE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   for (y = -sRadius; y <= sRadius; y++)
@@ -196,7 +196,7 @@ export function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT
           // Set data to look for exit grid....
           pSoldier = MercPtrs[ubID];
 
-          pSoldier.value.uiPendingActionData4 = sNewGridNo;
+          pSoldier.uiPendingActionData4 = sNewGridNo;
 
           EVENT_InitNewSoldierAnim(pSoldier, Enum193.FALL_INTO_PIT, 0, false);
         }
@@ -205,22 +205,22 @@ export function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT
 }
 
 export function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
+  let pSoldier: SOLDIERTYPE = MercPtrs[ubID];
   let ExitGrid: EXITGRID = createExitGrid();
   let sPitGridNo: INT16;
   // OK, get exit grid...
 
-  sPitGridNo = pSoldier.value.uiPendingActionData4;
+  sPitGridNo = pSoldier.uiPendingActionData4;
 
-  GetExitGrid(sPitGridNo, addressof(ExitGrid));
+  GetExitGrid(sPitGridNo, ExitGrid);
 
   // Given exit grid, make buddy move to next sector....
-  pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
-  pSoldier.value.usStrategicInsertionData = ExitGrid.usGridNo;
+  pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
+  pSoldier.usStrategicInsertionData = ExitGrid.usGridNo;
 
-  pSoldier.value.sSectorX = ExitGrid.ubGotoSectorX;
-  pSoldier.value.sSectorY = ExitGrid.ubGotoSectorY;
-  pSoldier.value.bSectorZ = ExitGrid.ubGotoSectorZ;
+  pSoldier.sSectorX = ExitGrid.ubGotoSectorX;
+  pSoldier.sSectorY = ExitGrid.ubGotoSectorY;
+  pSoldier.bSectorZ = ExitGrid.ubGotoSectorZ;
 
   // Remove from world......
   RemoveSoldierFromTacticalSector(pSoldier, true);

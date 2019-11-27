@@ -95,4 +95,8 @@ export interface SUMMARYFILE {
   ubPadding: UINT8[] /* [164] */; //	164
 }
 
+export function createSummaryFile(): SUMMARYFILE {
+
+}
+
 }

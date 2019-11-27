@@ -1,12 +1,12 @@
 namespace ja2 {
 
 // Room Information
-export let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
-export let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
+export let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */ = createArray(WORLD_MAX, 0);
+export let gubWorldRoomHidden: boolean[] /* UINT8[MAX_ROOMS] */ = createArray(MAX_ROOMS, false);
 
 export function InitRoomDatabase(): boolean {
-  memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
-  memset(gubWorldRoomHidden, true, sizeof(gubWorldRoomHidden));
+  gubWorldRoomInfo.fill(NO_ROOM);
+  gubWorldRoomHidden.fill(true);
   return true;
 }
 
@@ -18,12 +18,12 @@ function SetTileRoomNum(sGridNo: INT16, ubRoomNum: UINT8): void {
   gubWorldRoomInfo[sGridNo] = ubRoomNum;
 }
 
-function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8): void {
+function SetTileRangeRoomNum(pSelectRegion: SGPRect, ubRoomNum: UINT8): void {
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.iTop; cnt1 <= pSelectRegion.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.iLeft; cnt2 <= pSelectRegion.iRight; cnt2++) {
       gubWorldRoomInfo[MAPROWCOLTOPOS(cnt1, cnt2)] = ubRoomNum;
     }
   }
@@ -70,9 +70,9 @@ export function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   //	UINT32 cnt;
   //  ITEM_POOL					*pItemPool;
   //	INT16							sX, sY;
-  let pNode: Pointer<LEVELNODE> = null;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBase: Pointer<STRUCTURE>;
+  let pNode: LEVELNODE | null = null;
+  let pStructure: STRUCTURE | null;
+  let pBase: STRUCTURE | null;
 
   // Set hidden flag, for any roofs
   SetRoofIndexFlagsFromTypeRange(sGridNo, Enum313.FIRSTROOF, Enum313.FOURTHROOF, LEVELNODE_HIDDEN);
@@ -102,37 +102,37 @@ export function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   pStructure = gpWorldLevelData[sGridNo].pStructureHead;
 
   while (pStructure != null) {
-    if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
-      if (((pStructure.value.fFlags & STRUCTURE_OBSTACLE) && !(pStructure.value.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE))) || (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF)) {
-        pBase = FindBaseStructure(pStructure);
+    if (pStructure.sCubeOffset == STRUCTURE_ON_GROUND || (pStructure.fFlags & STRUCTURE_SLANTED_ROOF)) {
+      if (((pStructure.fFlags & STRUCTURE_OBSTACLE) && !(pStructure.fFlags & (STRUCTURE_PERSON | STRUCTURE_CORPSE))) || (pStructure.fFlags & STRUCTURE_SLANTED_ROOF)) {
+        pBase = <STRUCTURE>FindBaseStructure(pStructure);
 
         // Get LEVELNODE for struct and remove!
-        pNode = FindLevelNodeBasedOnStructure(pBase.value.sGridNo, pBase);
+        pNode = FindLevelNodeBasedOnStructure(pBase.sGridNo, pBase);
 
         if (pNode)
-          pNode.value.uiFlags |= LEVELNODE_SHOW_THROUGH;
+          pNode.uiFlags |= LEVELNODE_SHOW_THROUGH;
 
-        if (pStructure.value.fFlags & STRUCTURE_SLANTED_ROOF) {
-          AddSlantRoofFOVSlot(pBase.value.sGridNo);
+        if (pStructure.fFlags & STRUCTURE_SLANTED_ROOF) {
+          AddSlantRoofFOVSlot(pBase.sGridNo);
 
           // Set hidden...
-          pNode.value.uiFlags |= LEVELNODE_HIDDEN;
+          pNode.uiFlags |= LEVELNODE_HIDDEN;
         }
       }
     }
 
-    pStructure = pStructure.value.pNext;
+    pStructure = pStructure.pNext;
   }
 
   gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = false;
 }
 
 export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
-  let pNode: Pointer<LEVELNODE> = null;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBase: Pointer<STRUCTURE>;
+  let pNode: LEVELNODE | null = null;
+  let pStructure: STRUCTURE | null;
+  let pBase: STRUCTURE | null;
   let ubLoop: UINT8;
-  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ppTile: DB_STRUCTURE_TILE[];
   let sGridNo: INT16;
   let usIndex: UINT16;
   let fChanged: boolean = false;
@@ -142,15 +142,15 @@ export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): voi
 
   if (pStructure != null) {
     // We have a slanted roof here ... find base and remove...
-    pBase = FindBaseStructure(pStructure);
+    pBase = <STRUCTURE>FindBaseStructure(pStructure);
 
     // Get LEVELNODE for struct and remove!
-    pNode = FindLevelNodeBasedOnStructure(pBase.value.sGridNo, pBase);
+    pNode = FindLevelNodeBasedOnStructure(pBase.sGridNo, pBase);
 
     // Loop through each gridno and see if revealed....
-    for (ubLoop = 0; ubLoop < pBase.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
-      ppTile = pBase.value.pDBStructureRef.value.ppTile;
-      sGridNo = pBase.value.sGridNo + ppTile[ubLoop].value.sPosRelToBase;
+    for (ubLoop = 0; ubLoop < pBase.pDBStructureRef.pDBStructure.ubNumberOfTiles; ubLoop++) {
+      ppTile = pBase.pDBStructureRef.ppTile;
+      sGridNo = pBase.sGridNo + ppTile[ubLoop].sPosRelToBase;
 
       if (sGridNo < 0 || sGridNo > WORLD_MAX) {
         continue;
@@ -158,9 +158,9 @@ export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): voi
 
       // Given gridno,
       // IF NOT REVEALED AND HIDDEN....
-      if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode.value.uiFlags & LEVELNODE_HIDDEN) {
+      if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode.uiFlags & LEVELNODE_HIDDEN) {
         // Add graphic if one does not already exist....
-        if (!TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
+        if ((usIndex = TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING)) === -1) {
           // Add
           AddRoofToHead(sGridNo, Enum312.SLANTROOFCEILING1);
           fChanged = true;
@@ -170,7 +170,7 @@ export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): voi
       // Revealed?
       if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
         /// Remove any slant roof items if they exist
-        if (TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING, addressof(usIndex))) {
+        if ((usIndex = TypeExistsInRoofLayer(sGridNo, Enum313.SLANTROOFCEILING)) !== -1) {
           RemoveRoof(sGridNo, usIndex);
           fChanged = true;
         }
@@ -185,12 +185,12 @@ export function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): voi
   }
 }
 
-export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: SOLDIERTYPE | null): void {
   let cnt: UINT32;
   let pItemPool: ITEM_POOL | null;
   let sX: INT16;
   let sY: INT16;
-  let pNode: Pointer<LEVELNODE> = null;
+  let pNode: LEVELNODE | null = null;
   let fSaidItemSeenQuote: boolean = false;
 
   //	STRUCTURE					*pStructure;//, *pBase;
@@ -238,12 +238,12 @@ export function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Point
   CalculateWorldWireFrameTiles(false);
 }
 
-function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
+function AddSpecialTileRange(pSelectRegion: SGPRect): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.iTop; cnt1 <= pSelectRegion.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.iLeft; cnt2 <= pSelectRegion.iRight; cnt2++) {
       AddObjectToHead(MAPROWCOLTOPOS(cnt1, cnt2), Enum312.SPECIALTILE_MAPEXIT);
     }
   }
@@ -251,12 +251,12 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
   return true;
 }
 
-function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): boolean {
+function RemoveSpecialTileRange(pSelectRegion: SGPRect): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
 
-  for (cnt1 = pSelectRegion.value.iTop; cnt1 <= pSelectRegion.value.iBottom; cnt1++) {
-    for (cnt2 = pSelectRegion.value.iLeft; cnt2 <= pSelectRegion.value.iRight; cnt2++) {
+  for (cnt1 = pSelectRegion.iTop; cnt1 <= pSelectRegion.iBottom; cnt1++) {
+    for (cnt2 = pSelectRegion.iLeft; cnt2 <= pSelectRegion.iRight; cnt2++) {
       RemoveObject(MAPROWCOLTOPOS(cnt1, cnt2), Enum312.SPECIALTILE_MAPEXIT);
     }
   }

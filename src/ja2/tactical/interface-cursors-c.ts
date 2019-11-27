@@ -192,10 +192,10 @@ export function SetUICursor(uiNewCursor: UINT32): boolean {
   return true;
 }
 
+/* static */ let DrawUICursor__fHideCursor: boolean = false;
 export function DrawUICursor(): boolean {
   let usMapPos: UINT16;
-  /* static */ let fHideCursor: boolean = false;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE;
   let usTileCursor: UINT16;
 
   // RaiseMouseToLevel( (INT8)gsInterfaceLevel );
@@ -229,14 +229,14 @@ export function DrawUICursor(): boolean {
       } else {
         pNode = AddTopmostToTail(gusCurMousePos, GetSnapCursorIndex(gUICursors[guiCurUICursor].usAdditionalData));
       }
-      pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(gUICursors[guiCurUICursor].usAdditionalData));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -254,8 +254,8 @@ export function DrawUICursor(): boolean {
 
         // Put tile on the floor
         AddTopmostToTail(gusTargetDropPos, Enum312.FIRSTPOINTERS14);
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusTargetDropPos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusTargetDropPos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -287,14 +287,14 @@ export function DrawUICursor(): boolean {
         pNode = AddTopmostToTail(gusCurMousePos, GetSnapCursorIndex(usTileCursor));
       }
 
-      pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(usTileCursor));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -343,9 +343,9 @@ export function DrawUICursor(): boolean {
           break;
       }
 
-      fHideCursor = false;
+      DrawUICursor__fHideCursor = false;
 
-      if (!fHideCursor) {
+      if (!DrawUICursor__fHideCursor) {
         MSYS_ChangeRegionCursor(gViewportRegion, gUICursors[guiCurUICursor].usFreeCursorName);
       } else {
         // Hide
@@ -407,10 +407,10 @@ export function HideUICursor(): boolean {
   return true;
 }
 
+/* static */ let DrawSnappingCursor__fShowAP: boolean = true;
 function DrawSnappingCursor(): void {
-  let pNewUIElem: Pointer<LEVELNODE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  /* static */ let fShowAP: boolean = true;
+  let pNewUIElem: LEVELNODE;
+  let pSoldier: SOLDIERTYPE;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     GetSoldier(addressof(pSoldier), gusSelectedSoldier);
@@ -424,63 +424,63 @@ function DrawSnappingCursor(): void {
     case Enum210.NORMAL_SNAPUICURSOR:
 
       AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS1);
-      gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_RUN_UICURSOR:
     case Enum210.CONFIRM_MOVE_RUN_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.GOODRUN1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODRUN1, 0, -WALL_HEIGHT - 8);
       } else {
-        AddUIElem(gusCurMousePos, Enum312.GOODRUN1, 0, 0, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODRUN1, 0, 0);
       }
-      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_WALK_UICURSOR:
     case Enum210.CONFIRM_MOVE_WALK_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.GOODWALK1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODWALK1, 0, -WALL_HEIGHT - 8);
       } else {
-        AddUIElem(gusCurMousePos, Enum312.GOODWALK1, 0, 0, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODWALK1, 0, 0);
       }
-      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_SWAT_UICURSOR:
     case Enum210.CONFIRM_MOVE_SWAT_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.GOODSWAT1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODSWAT1, 0, -WALL_HEIGHT - 8);
       } else {
-        AddUIElem(gusCurMousePos, Enum312.GOODSWAT1, 0, 0, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODSWAT1, 0, 0);
       }
-      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_PRONE_UICURSOR:
     case Enum210.CONFIRM_MOVE_PRONE_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.GOODPRONE1, 0, -WALL_HEIGHT - 8 - 6, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODPRONE1, 0, -WALL_HEIGHT - 8 - 6);
       } else {
-        AddUIElem(gusCurMousePos, Enum312.GOODPRONE1, 0, -6, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.GOODPRONE1, 0, -6);
       }
-      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_VEHICLE_UICURSOR:
     case Enum210.CONFIRM_MOVE_VEHICLE_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.VEHICLEMOVE1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.VEHICLEMOVE1, 0, -WALL_HEIGHT - 8);
       } else {
-        AddUIElem(gusCurMousePos, Enum312.VEHICLEMOVE1, 0, 0, addressof(pNewUIElem));
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.VEHICLEMOVE1, 0, 0);
       }
-      pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.MOVE_REALTIME_UICURSOR:
@@ -489,28 +489,28 @@ function DrawSnappingCursor(): void {
     case Enum210.CANNOT_MOVE_UICURSOR:
 
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, Enum312.BADMARKER1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
-        pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        pNewUIElem = AddUIElem(gusCurMousePos, Enum312.BADMARKER1, 0, -WALL_HEIGHT - 8);
+        pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
         if (gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
 
         AddOnRoofToHead(gusCurMousePos, Enum312.FIRSTPOINTERS14);
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       } else {
         AddTopmostToHead(gusCurMousePos, Enum312.BADMARKER1);
-        gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
         if (gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
       break;
@@ -522,23 +522,23 @@ function DrawSnappingCursor(): void {
       if (COUNTERDONE(Enum386.CURSORFLASH)) {
         RESETCOUNTER(Enum386.CURSORFLASH);
 
-        fShowAP = !fShowAP;
+        DrawSnappingCursor__fShowAP = !DrawSnappingCursor__fShowAP;
       }
     } else {
-      fShowAP = true;
+      DrawSnappingCursor__fShowAP = true;
     }
 
     if (gsInterfaceLevel > 0) {
-      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL - WALL_HEIGHT - 10, addressof(pNewUIElem));
+      pNewUIElem = AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL - WALL_HEIGHT - 10);
     } else {
-      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL, addressof(pNewUIElem));
+      pNewUIElem = AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL);
     }
-    pNewUIElem.value.uiFlags |= LEVELNODE_DISPLAY_AP;
-    pNewUIElem.value.uiAPCost = gsCurrentActionPoints;
-    pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.uiFlags |= LEVELNODE_DISPLAY_AP;
+    pNewUIElem.uiAPCost = gsCurrentActionPoints;
+    pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
-    if (!fShowAP) {
+    if (!DrawSnappingCursor__fShowAP) {
       gfUIDisplayActionPointsBlack = true;
     }
   }
@@ -563,16 +563,16 @@ function StartLooseCursor(sGridNo: INT16, uiCursorID: UINT32): void {
 }
 
 function HandleLooseCursorDraw(): void {
-  let pNewUIElem: Pointer<LEVELNODE>;
+  let pNewUIElem: LEVELNODE;
 
   if ((GetJA2Clock() - guiLooseCursorTimeOfLastUpdate) > LOOSE_CURSOR_DELAY) {
     gfLooseCursorOn = false;
   }
 
   if (gfLooseCursorOn) {
-    AddUIElem(gsLooseCursorGridNo, Enum312.FIRSTPOINTERS4, 0, 0, addressof(pNewUIElem));
-    pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem = AddUIElem(gsLooseCursorGridNo, Enum312.FIRSTPOINTERS4, 0, 0);
+    pNewUIElem.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNewUIElem.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 }
 

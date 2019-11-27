@@ -1,18 +1,18 @@
 namespace ja2 {
 
-export let gTileSurfaceArray: Pointer<TILE_IMAGERY>[] /* [NUMBEROFTILETYPES] */;
-export let gbDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
-export let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
+export let gTileSurfaceArray: TILE_IMAGERY[] /* Pointer<TILE_IMAGERY>[NUMBEROFTILETYPES] */;
+export let gbDefaultSurfaceUsed: boolean[] /* UINT8[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, false);
+export let gbSameAsDefaultSurfaceUsed: boolean[] /* UINT8[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, false);
 
-export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<TILE_IMAGERY> {
+export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMAGERY | null {
   // Add tile surface
-  let pTileSurf: PTILE_IMAGERY = null;
+  let pTileSurf: TILE_IMAGERY;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
   let cStructureFilename: string /* SGPFILENAME */;
   let cEndOfName: string /* STR */;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  let pStructureFileRef: STRUCTURE_FILE_REF | null;
   let fOk: boolean;
 
   hImage = CreateImage(cFilename, IMAGE_ALLDATA);
@@ -25,7 +25,7 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
   VObjectDesc.hImage = hImage;
 
-  hVObject = CreateVideoObject(addressof(VObjectDesc));
+  hVObject = CreateVideoObject(VObjectDesc);
 
   if (hVObject == null) {
     // Report error
@@ -68,28 +68,25 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<
     pStructureFileRef = null;
   }
 
-  pTileSurf = MemAlloc(sizeof(TILE_IMAGERY));
+  pTileSurf = createTileImagery();
 
-  // Set all values to zero
-  memset(pTileSurf, 0, sizeof(TILE_IMAGERY));
+  pTileSurf.vo = hVObject;
+  pTileSurf.pStructureFileRef = pStructureFileRef;
 
-  pTileSurf.value.vo = hVObject;
-  pTileSurf.value.pStructureFileRef = pStructureFileRef;
-
-  if (pStructureFileRef && pStructureFileRef.value.pAuxData != null) {
-    pTileSurf.value.pAuxData = pStructureFileRef.value.pAuxData;
-    pTileSurf.value.pTileLocData = pStructureFileRef.value.pTileLocData;
-  } else if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * sizeof(AuxObjectData)) {
+  if (pStructureFileRef && pStructureFileRef.pAuxData != null) {
+    pTileSurf.pAuxData = pStructureFileRef.pAuxData;
+    pTileSurf.pTileLocData = pStructureFileRef.pTileLocData;
+  } else if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * AUX_OBJECT_DATA_SIZE) {
     // Valid auxiliary data, so make a copy of it for TileSurf
-    pTileSurf.value.pAuxData = MemAlloc(hImage.value.uiAppDataSize);
-    if (pTileSurf.value.pAuxData == null) {
+    pTileSurf.pAuxData = MemAlloc(hImage.value.uiAppDataSize);
+    if (pTileSurf.pAuxData == null) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       return null;
     }
-    memcpy(pTileSurf.value.pAuxData, hImage.value.pAppData, hImage.value.uiAppDataSize);
+    memcpy(pTileSurf.pAuxData, hImage.value.pAppData, hImage.value.uiAppDataSize);
   } else {
-    pTileSurf.value.pAuxData = null;
+    pTileSurf.pAuxData = null;
   }
   // the hImage is no longer needed
   DestroyImage(hImage);
@@ -97,23 +94,21 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): Pointer<
   return pTileSurf;
 }
 
-export function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
-  if (pTileSurf.value.pStructureFileRef != null) {
-    FreeStructureFile(pTileSurf.value.pStructureFileRef);
+export function DeleteTileSurface(pTileSurf: TILE_IMAGERY): void {
+  if (pTileSurf.pStructureFileRef != null) {
+    FreeStructureFile(pTileSurf.pStructureFileRef);
   } else {
     // If a structure file exists, it will free the auxdata.
     // Since there is no structure file in this instance, we
     // free it ourselves.
-    if (pTileSurf.value.pAuxData != null) {
-      MemFree(pTileSurf.value.pAuxData);
+    if (pTileSurf.pAuxData != null) {
     }
   }
 
-  DeleteVideoObject(pTileSurf.value.vo);
-  MemFree(pTileSurf);
+  DeleteVideoObject(pTileSurf.vo);
 }
 
-export function SetRaisedObjectFlag(cFilename: string /* Pointer<char> */, pTileSurf: Pointer<TILE_IMAGERY>): void {
+export function SetRaisedObjectFlag(cFilename: string /* Pointer<char> */, pTileSurf: TILE_IMAGERY): void {
   let cnt: INT32 = 0;
   let cRootFile: string /* CHAR8[128] */;
   let ubRaisedObjectFiles: string[] /* UINT8[][80] */ = [
@@ -133,11 +128,11 @@ export function SetRaisedObjectFlag(cFilename: string /* Pointer<char> */, pTile
 
   // Loop through array of RAISED objecttype imagery and
   // set global value...
-  if ((pTileSurf.value.fType >= Enum313.DEBRISWOOD && pTileSurf.value.fType <= Enum313.DEBRISWEEDS) || pTileSurf.value.fType == Enum313.DEBRIS2MISC || pTileSurf.value.fType == Enum313.ANOTHERDEBRIS) {
+  if ((pTileSurf.fType >= Enum313.DEBRISWOOD && pTileSurf.fType <= Enum313.DEBRISWEEDS) || pTileSurf.fType == Enum313.DEBRIS2MISC || pTileSurf.fType == Enum313.ANOTHERDEBRIS) {
     cRootFile = GetRootName(cFilename);
     while (ubRaisedObjectFiles[cnt][0] != '1') {
-      if (stricmp(ubRaisedObjectFiles[cnt], cRootFile) == 0) {
-        pTileSurf.value.bRaisedObjectType = true;
+      if (ubRaisedObjectFiles[cnt].toLowerCase() == cRootFile.toLowerCase()) {
+        pTileSurf.bRaisedObjectType = true;
       }
 
       cnt++;

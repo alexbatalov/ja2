@@ -2145,12 +2145,16 @@ function GetRGBDistribution(): boolean {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): boolean {
-  RedBitMask.value = gusRedMask;
-  GreenBitMask.value = gusGreenMask;
-  BlueBitMask.value = gusBlueMask;
+export function GetPrimaryRGBDistributionMasks(): { usRedMask: UINT16, usGreenMask: UINT16, usBlueMask: UINT16 } {
+  let usRedMask: UINT16;
+  let usGreenMask: UINT16;
+  let usBlueMask: UINT16;
 
-  return true;
+  usRedMask = gusRedMask;
+  usGreenMask = gusGreenMask;
+  usBlueMask = gusBlueMask;
+
+  return { usRedMask, usGreenMask, usBlueMask };
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

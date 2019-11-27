@@ -1,6 +1,6 @@
 namespace ja2 {
 
-let gpDoorStatus: Pointer<DOOR_STATUS> = null;
+let gpDoorStatus: DOOR_STATUS[] /* Pointer<DOOR_STATUS> */ = <DOOR_STATUS[]><unknown>null;
 let gubNumDoorStatus: UINT8 = 0;
 
 export let KeyTable: KEY[] /* [NUM_KEYS] */ = [
@@ -43,6 +43,8 @@ export let KeyTable: KEY[] /* [NUM_KEYS] */ = [
   createKeyFrom(Enum225.KEY_32, 0, 0, 0),
 ];
 
+KeyTable = KeyTable.concat(createArrayFrom(NUM_KEYS - KeyTable.length, createKey));
+
 // Current number of doors in world.
 export let gubNumDoors: UINT8 = 0;
 
@@ -52,7 +54,7 @@ export let gubNumDoors: UINT8 = 0;
 // the current number (gubNumDoors) will be <= to it.
 let gubMaxDoors: UINT8 = 0;
 
-export let LockTable: LOCK[] /* [NUM_LOCKS] */ = [ 0 ];
+export let LockTable: LOCK[] /* [NUM_LOCKS] */ = createArrayFrom(NUM_LOCKS, createLock);
 
 /*
 LOCK LockTable[NUM_LOCKS] =
@@ -87,13 +89,14 @@ export let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = [
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
 // are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
 // the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
-export let DoorTable: Pointer<DOOR> = null;
+export let DoorTable: DOOR[] /* Pointer<DOOR> */ = <DOOR[]><unknown>null;
 
 export function LoadLockTable(): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let uiBytesToRead: UINT32;
   let pFileName: string /* Pointer<CHAR8> */ = "BINARYDATA\\Locks.bin";
   let hFile: HWFILE;
+  let buffer: Buffer;
 
   // Load the Lock Table
 
@@ -103,8 +106,9 @@ export function LoadLockTable(): boolean {
     return false;
   }
 
-  uiBytesToRead = sizeof(LOCK) * NUM_LOCKS;
-  FileRead(hFile, LockTable, uiBytesToRead, addressof(uiNumBytesRead));
+  uiBytesToRead = LOCK_SIZE * NUM_LOCKS;
+  buffer = Buffer.allocUnsafe(uiBytesToRead);
+  uiNumBytesRead = FileRead(hFile, buffer, uiBytesToRead);
 
   FileClose(hFile);
 
@@ -112,10 +116,12 @@ export function LoadLockTable(): boolean {
     return false;
   }
 
+  readObjectArray(LockTable, buffer, 0, readLock);
+
   return true;
 }
 
-export function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): boolean {
+export function SoldierHasKey(pSoldier: SOLDIERTYPE, ubKeyID: UINT8): boolean {
   if (KeyExistsInKeyRing(pSoldier, ubKeyID, null) || KeyExistsInInventory(pSoldier, ubKeyID)) {
     return true;
   }
@@ -123,19 +129,19 @@ export function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): b
   return false;
 }
 
-export function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubPos: Pointer<UINT8>): boolean {
+export function KeyExistsInKeyRing(pSoldier: SOLDIERTYPE, ubKeyID: UINT8, pubPos: Pointer<UINT8>): boolean {
   // returns the index into the key ring where the key can be found
   let ubLoop: UINT8;
 
-  if (!(pSoldier.value.pKeyRing)) {
+  if (!(pSoldier.pKeyRing)) {
     // no key ring!
     return false;
   }
   for (ubLoop = 0; ubLoop < NUM_KEYS; ubLoop++) {
-    if (pSoldier.value.pKeyRing[ubLoop].ubNumber == 0) {
+    if (pSoldier.pKeyRing[ubLoop].ubNumber == 0) {
       continue;
     }
-    if (pSoldier.value.pKeyRing[ubLoop].ubKeyID == ubKeyID || (ubKeyID == ANYKEY)) {
+    if (pSoldier.pKeyRing[ubLoop].ubKeyID == ubKeyID || (ubKeyID == ANYKEY)) {
       // found it!
       if (pubPos) {
         pubPos.value = ubLoop;
@@ -147,12 +153,12 @@ export function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT
   return false;
 }
 
-function KeyExistsInInventory(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): boolean {
+function KeyExistsInInventory(pSoldier: SOLDIERTYPE, ubKeyID: UINT8): boolean {
   let ubLoop: UINT8;
 
   for (ubLoop = 0; ubLoop < Enum261.NUM_INV_SLOTS; ubLoop++) {
-    if (Item[pSoldier.value.inv[ubLoop].usItem].usItemClass == IC_KEY) {
-      if ((pSoldier.value.inv[ubLoop].ubKeyID == ubKeyID) || (ubKeyID == ANYKEY)) {
+    if (Item[pSoldier.inv[ubLoop].usItem].usItemClass == IC_KEY) {
+      if ((pSoldier.inv[ubLoop].ubKeyID == ubKeyID) || (ubKeyID == ANYKEY)) {
         // there's the key we want!
         return true;
       }
@@ -161,41 +167,41 @@ function KeyExistsInInventory(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): b
   return false;
 }
 
-function ValidKey(pDoor: Pointer<DOOR>, ubKeyID: UINT8): boolean {
-  return pDoor.value.ubLockID == ubKeyID;
+function ValidKey(pDoor: DOOR, ubKeyID: UINT8): boolean {
+  return pDoor.ubLockID == ubKeyID;
 }
 
-function DoLockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): boolean {
+function DoLockDoor(pDoor: DOOR, ubKeyID: UINT8): boolean {
   // if the door is unlocked and this is the right key, lock the door and
   // return true, otherwise return false
-  if (!(pDoor.value.fLocked) && ValidKey(pDoor, ubKeyID)) {
-    pDoor.value.fLocked = true;
+  if (!(pDoor.fLocked) && ValidKey(pDoor, ubKeyID)) {
+    pDoor.fLocked = true;
     return true;
   } else {
     return false;
   }
 }
 
-function DoUnlockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): boolean {
+function DoUnlockDoor(pDoor: DOOR, ubKeyID: UINT8): boolean {
   // if the door is locked and this is the right key, unlock the door and
   // return true, otherwise return false
-  if ((pDoor.value.fLocked) && ValidKey(pDoor, ubKeyID)) {
+  if ((pDoor.fLocked) && ValidKey(pDoor, ubKeyID)) {
     // Play lockpicking
-    PlayJA2Sample((Enum330.UNLOCK_DOOR_1), RATE_11025, SoundVolume(MIDVOLUME, pDoor.value.sGridNo), 1, SoundDir(pDoor.value.sGridNo));
+    PlayJA2Sample((Enum330.UNLOCK_DOOR_1), RATE_11025, SoundVolume(MIDVOLUME, pDoor.sGridNo), 1, SoundDir(pDoor.sGridNo));
 
-    pDoor.value.fLocked = false;
+    pDoor.fLocked = false;
     return true;
   } else {
     return false;
   }
 }
 
-export function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToUnlockDoor(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let ubLoop: UINT8;
   let ubKeyID: UINT8;
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
-    ubKeyID = pDoor.value.ubLockID;
+    ubKeyID = pDoor.ubLockID;
     if (KeyExistsInKeyRing(pSoldier, ubKeyID, null)) {
       // unlock door and move key to front of key ring!
       DoUnlockDoor(pDoor, ubKeyID);
@@ -213,12 +219,12 @@ export function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
   return false;
 }
 
-export function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToLockDoor(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let ubLoop: UINT8;
   let ubKeyID: UINT8;
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
-    ubKeyID = pDoor.value.ubLockID;
+    ubKeyID = pDoor.ubLockID;
     if (KeyExistsInKeyRing(pSoldier, ubKeyID, null)) {
       // lock door and move key to front of key ring!
       DoLockDoor(pDoor, ubKeyID);
@@ -233,7 +239,7 @@ export function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer
   return false;
 }
 
-export function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToCrowbarLock(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let iResult: INT32;
   let bStress: INT8;
   let bSlot: INT8;
@@ -245,145 +251,145 @@ export function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Poin
   }
 
   // generate a noise for thumping on the door
-  MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, gpWorldLevelData[pSoldier.value.sGridNo].ubTerrainID, CROWBAR_DOOR_VOLUME, Enum236.NOISE_DOOR_SMASHING);
+  MakeNoise(pSoldier.ubID, pSoldier.sGridNo, pSoldier.bLevel, gpWorldLevelData[pSoldier.sGridNo].ubTerrainID, CROWBAR_DOOR_VOLUME, Enum236.NOISE_DOOR_SMASHING);
 
-  if (!pDoor.value.fLocked) {
+  if (!pDoor.fLocked) {
     // auto success but no XP
 
     // succeeded! door can never be locked again, so remove from door list...
-    RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+    RemoveDoorInfoFromTable(pDoor.sGridNo);
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
 
     return true;
   }
 
-  if (pDoor.value.ubLockID == LOCK_UNOPENABLE) {
+  if (pDoor.ubLockID == LOCK_UNOPENABLE) {
     // auto failure!
     return false;
   }
 
   // possibly damage crowbar
-  bStress = Math.min(EffectiveStrength(pSoldier), LockTable[pDoor.value.ubLockID].ubSmashDifficulty + 30);
+  bStress = Math.min(EffectiveStrength(pSoldier), LockTable[pDoor.ubLockID].ubSmashDifficulty + 30);
   // reduce crowbar status by random % between 0 and 5%
-  DamageObj(addressof(pSoldier.value.inv[bSlot]), PreRandom(bStress / 20));
+  DamageObj(pSoldier.inv[bSlot], PreRandom(bStress / 20));
 
   // did we succeed?
 
-  if (LockTable[pDoor.value.ubLockID].ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
+  if (LockTable[pDoor.ubLockID].ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
     iResult = SkillCheck(pSoldier, Enum255.OPEN_WITH_CROWBAR, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, Enum255.OPEN_WITH_CROWBAR, (-(LockTable[pDoor.value.ubLockID].ubSmashDifficulty - pDoor.value.bLockDamage)));
+    iResult = SkillCheck(pSoldier, Enum255.OPEN_WITH_CROWBAR, (-(LockTable[pDoor.ubLockID].ubSmashDifficulty - pDoor.bLockDamage)));
   }
 
   if (iResult > 0) {
     // STR GAIN (20) - Pried open a lock
-    StatChange(pSoldier, STRAMT, 20, false);
+    StatChange(pSoldier, STRAMT, 20, 0);
 
     // succeeded! door can never be locked again, so remove from door list...
-    RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+    RemoveDoorInfoFromTable(pDoor.sGridNo);
 
     // Play lock busted sound
-    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
 
     return true;
   } else {
     if (iResult > -10) {
       // STR GAIN - Damaged a lock by prying
-      StatChange(pSoldier, STRAMT, 5, false);
+      StatChange(pSoldier, STRAMT, 5, 0);
 
       // we came close... so do some damage to the lock
-      pDoor.value.bLockDamage += (10 + iResult);
-    } else if (iResult > -40 && pSoldier.value.sGridNo != pSoldier.value.sSkillCheckGridNo) {
+      pDoor.bLockDamage += (10 + iResult);
+    } else if (iResult > -40 && pSoldier.sGridNo != pSoldier.sSkillCheckGridNo) {
       // give token point for effort :-)
-      StatChange(pSoldier, STRAMT, 1, false);
+      StatChange(pSoldier, STRAMT, 1, 0);
     }
 
     return false;
   }
 }
 
-export function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToSmashDoor(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let iResult: INT32;
 
-  let pLock: Pointer<LOCK>;
+  let pLock: LOCK;
 
   // generate a noise for thumping on the door
-  MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, gpWorldLevelData[pSoldier.value.sGridNo].ubTerrainID, SMASHING_DOOR_VOLUME, Enum236.NOISE_DOOR_SMASHING);
+  MakeNoise(pSoldier.ubID, pSoldier.sGridNo, pSoldier.bLevel, gpWorldLevelData[pSoldier.sGridNo].ubTerrainID, SMASHING_DOOR_VOLUME, Enum236.NOISE_DOOR_SMASHING);
 
-  if (!pDoor.value.fLocked) {
+  if (!pDoor.fLocked) {
     // auto success but no XP
 
     // succeeded! door can never be locked again, so remove from door list...
-    RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+    RemoveDoorInfoFromTable(pDoor.sGridNo);
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
 
     return true;
   }
 
-  if (pDoor.value.ubLockID == LOCK_UNOPENABLE) {
+  if (pDoor.ubLockID == LOCK_UNOPENABLE) {
     // auto failure!
     return false;
   }
 
-  pLock = addressof(LockTable[pDoor.value.ubLockID]);
+  pLock = LockTable[pDoor.ubLockID];
 
   // did we succeed?
-  if (pLock.value.ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
+  if (pLock.ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
     iResult = SkillCheck(pSoldier, Enum255.SMASH_DOOR_CHECK, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, Enum255.SMASH_DOOR_CHECK, (-(LockTable[pDoor.value.ubLockID].ubSmashDifficulty - pDoor.value.bLockDamage)));
+    iResult = SkillCheck(pSoldier, Enum255.SMASH_DOOR_CHECK, (-(LockTable[pDoor.ubLockID].ubSmashDifficulty - pDoor.bLockDamage)));
   }
   if (iResult > 0) {
     // STR GAIN (20) - Pried open a lock
-    StatChange(pSoldier, STRAMT, 20, false);
+    StatChange(pSoldier, STRAMT, 20, 0);
 
     // succeeded! door can never be locked again, so remove from door list...
-    RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+    RemoveDoorInfoFromTable(pDoor.sGridNo);
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+    PlayJA2Sample((Enum330.BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
 
     return true;
   } else {
     if (iResult > -10) {
       // STR GAIN - Damaged a lock by prying
-      StatChange(pSoldier, STRAMT, 5, false);
+      StatChange(pSoldier, STRAMT, 5, 0);
 
       // we came close... so do some damage to the lock
-      pDoor.value.bLockDamage += (10 + iResult);
-    } else if (iResult > -40 && pSoldier.value.sGridNo != pSoldier.value.sSkillCheckGridNo) {
+      pDoor.bLockDamage += (10 + iResult);
+    } else if (iResult > -40 && pSoldier.sGridNo != pSoldier.sSkillCheckGridNo) {
       // give token point for effort :-)
-      StatChange(pSoldier, STRAMT, 1, false);
+      StatChange(pSoldier, STRAMT, 1, 0);
     }
     return false;
   }
 }
 
-export function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToPickLock(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let iResult: INT32;
   let bReason: INT8;
-  let pLock: Pointer<LOCK>;
+  let pLock: LOCK;
 
-  if (pDoor.value.ubLockID == LOCK_UNOPENABLE) {
+  if (pDoor.ubLockID == LOCK_UNOPENABLE) {
     // auto failure!
     return false;
   }
 
-  pLock = addressof(LockTable[pDoor.value.ubLockID]);
+  pLock = LockTable[pDoor.ubLockID];
 
   // look up the type of lock to see if it is electronic or not
-  if (pLock.value.ubLockType == LOCK_CARD || pLock.value.ubLockType == LOCK_ELECTRONIC) {
+  if (pLock.ubLockType == LOCK_CARD || pLock.ubLockType == LOCK_ELECTRONIC) {
     bReason = Enum255.ELECTRONIC_LOCKPICKING_CHECK;
   } else {
     bReason = Enum255.LOCKPICKING_CHECK;
@@ -395,22 +401,22 @@ export function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer
 
   // See if we measure up to the task.
   // The difficulty is negated here to make it a skill adjustment
-  if (pLock.value.ubPickDifficulty == OPENING_NOT_POSSIBLE) {
+  if (pLock.ubPickDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
     iResult = SkillCheck(pSoldier, bReason, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, bReason, (-(pLock.value.ubPickDifficulty)));
+    iResult = SkillCheck(pSoldier, bReason, (-(pLock.ubPickDifficulty)));
   }
   if (iResult > 0) {
     // MECHANICAL GAIN:  Picked open a lock
-    StatChange(pSoldier, MECHANAMT, (pLock.value.ubPickDifficulty / 5), false);
+    StatChange(pSoldier, MECHANAMT, (pLock.ubPickDifficulty / 5), 0);
 
     // DEXTERITY GAIN:  Picked open a lock
-    StatChange(pSoldier, DEXTAMT, (pLock.value.ubPickDifficulty / 10), false);
+    StatChange(pSoldier, DEXTAMT, (pLock.ubPickDifficulty / 10), 0);
 
     // succeeded!
-    pDoor.value.fLocked = false;
+    pDoor.fLocked = false;
     return true;
   } else {
     // NOTE: failures are not rewarded, since you can keep trying indefinitely...
@@ -420,20 +426,20 @@ export function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer
   }
 }
 
-export function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToUntrapDoor(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let iResult: INT32;
 
   // See if we measure up to the task.
-  if (pDoor.value.ubTrapID == Enum227.EXPLOSION) {
-    iResult = SkillCheck(pSoldier, Enum255.DISARM_TRAP_CHECK, (pDoor.value.ubTrapLevel * 7));
+  if (pDoor.ubTrapID == Enum227.EXPLOSION) {
+    iResult = SkillCheck(pSoldier, Enum255.DISARM_TRAP_CHECK, (pDoor.ubTrapLevel * 7));
   } else {
-    iResult = SkillCheck(pSoldier, Enum255.DISARM_ELECTRONIC_TRAP_CHECK, (pDoor.value.ubTrapLevel * 7));
+    iResult = SkillCheck(pSoldier, Enum255.DISARM_ELECTRONIC_TRAP_CHECK, (pDoor.ubTrapLevel * 7));
   }
 
   if (iResult > 0) {
     // succeeded!
-    pDoor.value.ubTrapLevel = 0;
-    pDoor.value.ubTrapID = Enum227.NO_TRAP;
+    pDoor.ubTrapLevel = 0;
+    pDoor.ubTrapID = Enum227.NO_TRAP;
     return true;
   } else {
     // trap should REALLY go off now!
@@ -441,22 +447,22 @@ export function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
   }
 }
 
-export function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function ExamineDoorForTraps(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   // Check to see if there is a trap or not on this door
   let bDetectLevel: INT8;
 
-  if (pDoor.value.ubTrapID == Enum227.NO_TRAP) {
+  if (pDoor.ubTrapID == Enum227.NO_TRAP) {
     // No trap!
-    pDoor.value.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
+    pDoor.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
   } else {
-    if (pDoor.value.bPerceivedTrapped == DOOR_PERCEIVED_TRAPPED) {
+    if (pDoor.bPerceivedTrapped == DOOR_PERCEIVED_TRAPPED) {
       return true;
     } else {
       bDetectLevel = CalcTrapDetectLevel(pSoldier, true);
-      if (bDetectLevel < pDoor.value.ubTrapLevel) {
-        pDoor.value.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
+      if (bDetectLevel < pDoor.ubTrapLevel) {
+        pDoor.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
       } else {
-        pDoor.value.bPerceivedTrapped = DOOR_PERCEIVED_TRAPPED;
+        pDoor.bPerceivedTrapped = DOOR_PERCEIVED_TRAPPED;
         return true;
       }
     }
@@ -464,14 +470,14 @@ export function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
   return false;
 }
 
-export function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function HasDoorTrapGoneOff(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   // Check to see if the soldier causes the trap to go off
   let bDetectLevel: INT8;
 
-  if (pDoor.value.ubTrapID != Enum227.NO_TRAP) {
+  if (pDoor.ubTrapID != Enum227.NO_TRAP) {
     // one quick check to see if the guy sees the trap ahead of time!
     bDetectLevel = CalcTrapDetectLevel(pSoldier, false);
-    if (bDetectLevel < pDoor.value.ubTrapLevel) {
+    if (bDetectLevel < pDoor.ubTrapLevel) {
       // trap goes off!
       return true;
     }
@@ -479,9 +485,9 @@ export function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointe
   return false;
 }
 
-export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): void {
-  if (!(DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_SILENT)) {
-    switch (pDoor.value.ubTrapID) {
+export function HandleDoorTrap(pSoldier: SOLDIERTYPE, pDoor: DOOR): void {
+  if (!(DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_SILENT)) {
+    switch (pDoor.ubTrapID) {
       case Enum227.BROTHEL_SIREN:
         ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_TRAP_HAS_GONE_OFF_STR], pDoorTrapStrings[Enum227.SIREN]);
         break;
@@ -489,60 +495,60 @@ export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DO
         ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_TRAP_HAS_GONE_OFF_STR], pDoorTrapStrings[Enum227.ELECTRIC]);
         break;
       default:
-        ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_TRAP_HAS_GONE_OFF_STR], pDoorTrapStrings[pDoor.value.ubTrapID]);
+        ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_TRAP_HAS_GONE_OFF_STR], pDoorTrapStrings[pDoor.ubTrapID]);
         break;
     }
   }
 
   // set trap off
-  switch (pDoor.value.ubTrapID) {
+  switch (pDoor.ubTrapID) {
     case Enum227.EXPLOSION:
       // cause damage as a regular hand grenade
-      IgniteExplosion(NOBODY, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 25, pSoldier.value.sGridNo, Enum225.HAND_GRENADE, 0);
+      IgniteExplosion(NOBODY, CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), 25, pSoldier.sGridNo, Enum225.HAND_GRENADE, 0);
       break;
 
     case Enum227.SIREN:
       // play siren sound effect but otherwise treat as silent alarm, calling
       // available enemies to this location
-      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, pDoor.value.sGridNo), 5, SoundDir(pDoor.value.sGridNo));
+      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, pDoor.sGridNo), 5, SoundDir(pDoor.sGridNo));
     case Enum227.SILENT_ALARM:
       // Get all available enemies running here
-      CallAvailableEnemiesTo(pDoor.value.sGridNo);
+      CallAvailableEnemiesTo(pDoor.sGridNo);
       break;
 
     case Enum227.BROTHEL_SIREN:
-      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, pDoor.value.sGridNo), 5, SoundDir(pDoor.value.sGridNo));
-      CallAvailableKingpinMenTo(pDoor.value.sGridNo);
+      PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, pDoor.sGridNo), 5, SoundDir(pDoor.sGridNo));
+      CallAvailableKingpinMenTo(pDoor.sGridNo);
       // no one is authorized any more!
       gMercProfiles[Enum268.MADAME].bNPCData = 0;
       break;
 
     case Enum227.ELECTRIC:
       // insert electrical sound effect here
-      PlayJA2Sample(Enum330.DOOR_ELECTRICITY, RATE_11025, SoundVolume(MIDVOLUME, pDoor.value.sGridNo), 1, SoundDir(pDoor.value.sGridNo));
+      PlayJA2Sample(Enum330.DOOR_ELECTRICITY, RATE_11025, SoundVolume(MIDVOLUME, pDoor.sGridNo), 1, SoundDir(pDoor.sGridNo));
 
       // Set attacker's ID
-      pSoldier.value.ubAttackerID = pSoldier.value.ubID;
+      pSoldier.ubAttackerID = pSoldier.ubID;
       // Increment  being attacked count
-      pSoldier.value.bBeingAttackedCount++;
+      pSoldier.bBeingAttackedCount++;
       gTacticalStatus.ubAttackBusyCount++;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
-      SoldierTakeDamage(pSoldier, 0, (10 + PreRandom(10)), ((3 + PreRandom(3) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.value.sGridNo, 0, true);
+      SoldierTakeDamage(pSoldier, 0, (10 + PreRandom(10)), ((3 + PreRandom(3) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.sGridNo, 0, true);
       break;
 
     case Enum227.SUPER_ELECTRIC:
       // insert electrical sound effect here
-      PlayJA2Sample(Enum330.DOOR_ELECTRICITY, RATE_11025, SoundVolume(MIDVOLUME, pDoor.value.sGridNo), 1, SoundDir(pDoor.value.sGridNo));
+      PlayJA2Sample(Enum330.DOOR_ELECTRICITY, RATE_11025, SoundVolume(MIDVOLUME, pDoor.sGridNo), 1, SoundDir(pDoor.sGridNo));
 
       // Set attacker's ID
-      pSoldier.value.ubAttackerID = pSoldier.value.ubID;
+      pSoldier.ubAttackerID = pSoldier.ubID;
       // Increment  being attacked count
-      pSoldier.value.bBeingAttackedCount++;
+      pSoldier.bBeingAttackedCount++;
       gTacticalStatus.ubAttackBusyCount++;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
-      SoldierTakeDamage(pSoldier, 0, (20 + PreRandom(20)), ((6 + PreRandom(6) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.value.sGridNo, 0, true);
+      SoldierTakeDamage(pSoldier, 0, (20 + PreRandom(20)), ((6 + PreRandom(6) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor.sGridNo, 0, true);
       break;
 
     default:
@@ -551,7 +557,7 @@ export function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DO
   }
 }
 
-export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+export function AttemptToBlowUpLock(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   let iResult: INT32;
   let bSlot: INT8 = NO_SLOT;
 
@@ -571,7 +577,7 @@ export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
       let sZ: INT16;
 
       // Get gridno
-      sGridNo = pDoor.value.sGridNo;
+      sGridNo = pDoor.sGridNo;
 
       // Get sX, sy;
       sX = CenterX(sGridNo);
@@ -591,58 +597,60 @@ export function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Point
 
       AniParams.zCachedFile = "TILECACHE\\MINIBOOM.STI";
 
-      CreateAnimationTile(addressof(AniParams));
+      CreateAnimationTile(AniParams);
 
       PlayJA2Sample(Enum330.SMALL_EXPLODE_1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 
       // Remove the explosive.....
       bSlot = FindObj(pSoldier, Enum225.SHAPED_CHARGE);
       if (bSlot != NO_SLOT) {
-        RemoveObjs(addressof(pSoldier.value.inv[bSlot]), 1);
+        RemoveObjs(pSoldier.inv[bSlot], 1);
         DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       }
     }
 
     // Not sure if this makes sense, but the explosive is small.
     // Double the damage here as we are damaging a lock rather than a person
-    pDoor.value.bLockDamage += Explosive[Item[Enum225.SHAPED_CHARGE].ubClassIndex].ubDamage * 2;
-    if (pDoor.value.bLockDamage > LockTable[pDoor.value.ubLockID].ubSmashDifficulty) {
+    pDoor.bLockDamage += Explosive[Item[Enum225.SHAPED_CHARGE].ubClassIndex].ubDamage * 2;
+    if (pDoor.bLockDamage > LockTable[pDoor.ubLockID].ubSmashDifficulty) {
       // succeeded! door can never be locked again, so remove from door list...
-      RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+      RemoveDoorInfoFromTable(pDoor.sGridNo);
       // award experience points?
       return true;
     }
   } else {
     bSlot = FindObj(pSoldier, Enum225.SHAPED_CHARGE);
     if (bSlot != NO_SLOT) {
-      RemoveObjs(addressof(pSoldier.value.inv[bSlot]), 1);
+      RemoveObjs(pSoldier.inv[bSlot], 1);
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
     }
 
     // OOPS! ... BOOM!
-    IgniteExplosion(NOBODY, pSoldier.value.sX, pSoldier.value.sY, (gpWorldLevelData[pSoldier.value.sGridNo].sHeight), pSoldier.value.sGridNo, Enum225.SHAPED_CHARGE, 0);
+    IgniteExplosion(NOBODY, pSoldier.sX, pSoldier.sY, (gpWorldLevelData[pSoldier.sGridNo].sHeight), pSoldier.sGridNo, Enum225.SHAPED_CHARGE, 0);
   }
   return false;
 }
 
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.
-export function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadDoorTableFromMap(buffer: Buffer, offset: number): number {
   let cnt: INT32;
 
   TrashDoorTable();
-  LOADDATA(addressof(gubNumDoors), hBuffer.value, 1);
+  gubNumDoors = buffer.readUInt8(offset++);
 
   gubMaxDoors = gubNumDoors;
-  DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
+  DoorTable = createArrayFrom(gubMaxDoors, createDoor);
 
-  LOADDATA(DoorTable, hBuffer.value, sizeof(DOOR) * gubMaxDoors);
+  offset = readObjectArray(DoorTable, buffer, offset, readDoor);
 
   // OK, reset perceived values to nothing...
   for (cnt = 0; cnt < gubNumDoors; cnt++) {
     DoorTable[cnt].bPerceivedLocked = DOOR_PERCEIVED_UNKNOWN;
     DoorTable[cnt].bPerceivedTrapped = DOOR_PERCEIVED_UNKNOWN;
   }
+
+  return offset;
 }
 
 // Saves the existing door information to the map.  Before it actually saves, it'll verify that the
@@ -651,6 +659,7 @@ export function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
 export function SaveDoorTableToMap(fp: HWFILE): void {
   let i: INT32 = 0;
   let uiBytesWritten: UINT32;
+  let buffer: Buffer;
 
   while (i < gubNumDoors) {
     if (!OpenableAtGridNo(DoorTable[i].sGridNo))
@@ -658,39 +667,40 @@ export function SaveDoorTableToMap(fp: HWFILE): void {
     else
       i++;
   }
-  FileWrite(fp, addressof(gubNumDoors), 1, addressof(uiBytesWritten));
-  FileWrite(fp, DoorTable, sizeof(DOOR) * gubNumDoors, addressof(uiBytesWritten));
+
+  buffer = Buffer.allocUnsafe(1);
+  buffer.writeUInt8(gubNumDoors, 0);
+  uiBytesWritten = FileWrite(fp, buffer, 1);
+
+  buffer = Buffer.allocUnsafe(DOOR_SIZE * gubNumDoors);
+  writeObjectArray(DoorTable, buffer, 0, writeDoor);
+  uiBytesWritten = FileWrite(fp, buffer, DOOR_SIZE * gubNumDoors);
 }
 
 // The editor adds locks to the world.  If the gridno already exists, then the currently existing door
 // information is overwritten.
-export function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
+export function AddDoorInfoToTable(pDoor: DOOR): void {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
-    if (DoorTable[i].sGridNo == pDoor.value.sGridNo) {
-      memcpy(addressof(DoorTable[i]), pDoor, sizeof(DOOR));
+    if (DoorTable[i].sGridNo == pDoor.sGridNo) {
+      copyDoor(DoorTable[i], pDoor);
       return;
     }
   }
   // no existing door found, so add a new one.
   if (gubNumDoors < gubMaxDoors) {
-    memcpy(addressof(DoorTable[gubNumDoors]), pDoor, sizeof(DOOR));
+    copyDoor(DoorTable[gubNumDoors], pDoor);
     gubNumDoors++;
   } else {
     // we need to allocate more memory, so add ten more slots.
-    let NewDoorTable: Pointer<DOOR>;
+    let NewDoorTable: DOOR[];
     gubMaxDoors += 10;
     // Allocate new table with max+10 doors.
-    NewDoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
-    // Copy contents of existing door table to new door table.
-    memcpy(NewDoorTable, DoorTable, sizeof(DOOR) * gubNumDoors);
-    // Deallocate the existing door table (possible to not have one).
-    if (DoorTable)
-      MemFree(DoorTable);
+    NewDoorTable = DoorTable.concat(createArrayFrom(10, createDoor));
     // Assign the new door table as the existing door table
     DoorTable = NewDoorTable;
     // Add the new door info to the table.
-    memcpy(addressof(DoorTable[gubNumDoors]), pDoor, sizeof(DOOR));
+    copyDoor(DoorTable[gubNumDoors], pDoor);
     gubNumDoors++;
   }
 }
@@ -705,7 +715,7 @@ export function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
     if (DoorTable[i].sGridNo == iMapIndex) {
       iNumDoorsToCopy = gubNumDoors - i - 1;
       if (iNumDoorsToCopy) {
-        memmove(addressof(DoorTable[i]), addressof(DoorTable[i + 1]), sizeof(DOOR) * iNumDoorsToCopy);
+        DoorTable.copyWithin(i, i + 1);
       }
       gubNumDoors--;
       return;
@@ -726,24 +736,22 @@ export function FindDoorInfoAtGridNo(iMapIndex: INT32): DOOR | null {
 // Upon world deallocation, the door table needs to be deallocated.  Remember, this function
 // resets the values, so make sure you do this before you change gubNumDoors or gubMaxDoors.
 export function TrashDoorTable(): void {
-  if (DoorTable)
-    MemFree(DoorTable);
-  DoorTable = null;
+  DoorTable = <DOOR[]><unknown>null;
   gubNumDoors = 0;
   gubMaxDoors = 0;
 }
 
-export function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
-  if (pDoor.value.fLocked) {
-    pDoor.value.bPerceivedLocked = DOOR_PERCEIVED_LOCKED;
-  } else if (!pDoor.value.fLocked) {
-    pDoor.value.bPerceivedLocked = DOOR_PERCEIVED_UNLOCKED;
+export function UpdateDoorPerceivedValue(pDoor: DOOR): void {
+  if (pDoor.fLocked) {
+    pDoor.bPerceivedLocked = DOOR_PERCEIVED_LOCKED;
+  } else if (!pDoor.fLocked) {
+    pDoor.bPerceivedLocked = DOOR_PERCEIVED_UNLOCKED;
   }
 
-  if (pDoor.value.ubTrapID != Enum227.NO_TRAP) {
-    pDoor.value.bPerceivedTrapped = DOOR_PERCEIVED_TRAPPED;
+  if (pDoor.ubTrapID != Enum227.NO_TRAP) {
+    pDoor.bPerceivedTrapped = DOOR_PERCEIVED_TRAPPED;
   } else {
-    pDoor.value.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
+    pDoor.bPerceivedTrapped = DOOR_PERCEIVED_UNTRAPPED;
   }
 }
 
@@ -752,10 +760,11 @@ export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT1
   let uiSizeToSave: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
   let hFile: HWFILE;
+  let buffer: Buffer;
 
   //	return( TRUE );
 
-  uiSizeToSave = gubNumDoors * sizeof(DOOR);
+  uiSizeToSave = gubNumDoors * DOOR_SIZE;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( sSectorX, sSectorY, bSectorZ, zTempName, FALSE );
@@ -781,8 +790,10 @@ export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT1
   }
 
   // Save the number of doors
-  FileWrite(hFile, addressof(gubNumDoors), sizeof(UINT8), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT8)) {
+  buffer = Buffer.allocUnsafe(1);
+  buffer.writeUInt8(gubNumDoors, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+  if (uiNumBytesWritten != 1) {
     FileClose(hFile);
     return false;
   }
@@ -790,7 +801,9 @@ export function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT1
   // if there are doors to save
   if (uiSizeToSave != 0) {
     // Save the door table
-    FileWrite(hFile, DoorTable, uiSizeToSave, addressof(uiNumBytesWritten));
+    buffer = Buffer.allocUnsafe(uiSizeToSave);
+    writeObjectArray(DoorTable.slice(0, gubNumDoors), buffer, 0, writeDoor)
+    uiNumBytesWritten = FileWrite(hFile, buffer, uiSizeToSave);
     if (uiNumBytesWritten != uiSizeToSave) {
       FileClose(hFile);
       return false;
@@ -809,6 +822,7 @@ export function LoadDoorTableFromDoorTableTempFile(): boolean {
   let uiNumBytesRead: UINT32;
   let hFile: HWFILE;
   let zMapName: string /* CHAR8[128] */;
+  let buffer: Buffer;
 
   //	return( TRUE );
 
@@ -837,29 +851,35 @@ export function LoadDoorTableFromDoorTableTempFile(): boolean {
   }
 
   // Read in the number of doors
-  FileRead(hFile, addressof(gubMaxDoors), sizeof(UINT8), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT8)) {
+  buffer = Buffer.allocUnsafe(1);
+  uiNumBytesRead = FileRead(hFile, buffer, 1);
+  if (uiNumBytesRead != 1) {
     FileClose(hFile);
     return false;
   }
+
+  gubMaxDoors = buffer.readUInt8(0);
 
   gubNumDoors = gubMaxDoors;
 
   // if there is no doors to load
   if (gubNumDoors != 0) {
     // Allocate space for the door table
-    DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
+    DoorTable = createArrayFrom(gubMaxDoors, createDoor);
     if (DoorTable == null) {
       FileClose(hFile);
       return false;
     }
 
     // Read in the number of doors
-    FileRead(hFile, DoorTable, sizeof(DOOR) * gubMaxDoors, addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(DOOR) * gubMaxDoors) {
+    buffer = Buffer.allocUnsafe(DOOR_SIZE * gubMaxDoors);
+    uiNumBytesRead = FileRead(hFile, buffer, DOOR_SIZE * gubMaxDoors);
+    if (uiNumBytesRead != DOOR_SIZE * gubMaxDoors) {
       FileClose(hFile);
       return false;
     }
+
+    readObjectArray(DoorTable, buffer, 0, readDoor);
   }
 
   FileClose(hFile);
@@ -870,8 +890,8 @@ export function LoadDoorTableFromDoorTableTempFile(): boolean {
 // fOpen is True if the door is open, false if it is closed
 export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPerceivedOpen: boolean | undefined): boolean {
   let ubCnt: UINT8;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
 
   // Set the gridno for the door
 
@@ -892,7 +912,7 @@ export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPe
     // Check to see if the user is adding an existing door
     for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
       // if the door is already in the array
-      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.value.sGridNo) {
+      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.sGridNo) {
         // set the status
         // ATE: Don't set if set to DONTSET
         if (fPerceivedOpen != DONTSETDOORSTATUS) {
@@ -926,19 +946,10 @@ export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPe
     gubNumDoorStatus++;
 
     // reallocate memory to hold the new door
-    gpDoorStatus = MemRealloc(gpDoorStatus, sizeof(DOOR_STATUS) * gubNumDoorStatus);
-    if (gpDoorStatus == null)
-      return false;
-  } else {
-    // Set the initial number of doors
-    gubNumDoorStatus = 1;
-
-    gpDoorStatus = MemAlloc(sizeof(DOOR_STATUS));
-    if (gpDoorStatus == null)
-      return false;
+    gpDoorStatus.push(createDoorStatus());
   }
 
-  gpDoorStatus[gubNumDoorStatus - 1].sGridNo = pBaseStructure.value.sGridNo;
+  gpDoorStatus[gubNumDoorStatus - 1].sGridNo = pBaseStructure.sGridNo;
 
   // Init the flags
   gpDoorStatus[gubNumDoorStatus - 1].ubFlags = 0;
@@ -956,15 +967,14 @@ export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPe
   }
 
   // flag the tile as containing a door status
-  gpWorldLevelData[pBaseStructure.value.sGridNo].ubExtFlags[0] |= MAPELEMENT_EXT_DOOR_STATUS_PRESENT;
+  gpWorldLevelData[pBaseStructure.sGridNo].ubExtFlags[0] |= MAPELEMENT_EXT_DOOR_STATUS_PRESENT;
 
   return true;
 }
 
 export function TrashDoorStatusArray(): void {
   if (gpDoorStatus) {
-    MemFree(gpDoorStatus);
-    gpDoorStatus = null;
+    gpDoorStatus = <DOOR_STATUS[]><unknown>null;
   }
 
   gubNumDoorStatus = 0;
@@ -972,8 +982,8 @@ export function TrashDoorStatusArray(): void {
 
 function IsDoorOpen(sGridNo: INT16): boolean {
   let ubCnt: UINT8;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
 
   // Find the base tile for the door structure and use that gridno
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -992,7 +1002,7 @@ function IsDoorOpen(sGridNo: INT16): boolean {
     // Check to see if the user is adding an existing door
     for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
       // if this is the door
-      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.value.sGridNo) {
+      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.sGridNo) {
         if (gpDoorStatus[ubCnt].ubFlags & DOOR_OPEN)
           return true;
         else
@@ -1005,10 +1015,10 @@ function IsDoorOpen(sGridNo: INT16): boolean {
 }
 
 // Returns a doors status value, NULL if not found
-export function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
+export function GetDoorStatus(sGridNo: INT16): DOOR_STATUS | null {
   let ubCnt: UINT8;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
 
   // if there is an array
   if (gpDoorStatus) {
@@ -1027,8 +1037,8 @@ export function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
     // Check to see if the user is adding an existing door
     for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
       // if this is the door
-      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.value.sGridNo) {
-        return addressof(gpDoorStatus[ubCnt]);
+      if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.sGridNo) {
+        return gpDoorStatus[ubCnt];
       }
     }
   }
@@ -1049,9 +1059,9 @@ export function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): bool
     Enum245.SOUTHEAST,
     Enum245.SOUTHWEST,
   ];
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sDistVisible: INT16;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoorStatus: DOOR_STATUS | null;
   let usNewGridNo: INT16;
 
   // Get door
@@ -1065,13 +1075,13 @@ export function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): bool
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // ATE: Ok, lets check for some basic things here!
-    if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {
+    if (pSoldier.bLife >= OKLIFE && pSoldier.sGridNo != NOWHERE && pSoldier.bActive && pSoldier.bInSector) {
       // is he close enough to see that gridno if he turns his head?
       sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, 0);
 
-      if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
+      if (PythSpacesAway(pSoldier.sGridNo, sGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
         if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, sDistVisible, true)) {
@@ -1088,7 +1098,7 @@ export function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): bool
         usNewGridNo = NewGridNo(sGridNo, DirectionInc(bDirs[cnt2]));
         sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, usNewGridNo, 0);
 
-        if (PythSpacesAway(pSoldier.value.sGridNo, usNewGridNo) <= sDistVisible) {
+        if (PythSpacesAway(pSoldier.sGridNo, usNewGridNo) <= sDistVisible) {
           // and we can trace a line of sight to his x,y coordinates?
           // (taking into account we are definitely aware of this guy now)
           if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, sDistVisible, true)) {
@@ -1106,12 +1116,12 @@ export function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: boolean): bool
   return false;
 }
 
-export function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: boolean): boolean {
+export function MercLooksForDoors(pSoldier: SOLDIERTYPE, fUpdateValue: boolean): boolean {
   let cnt: INT32;
   let cnt2: INT32;
   let sDistVisible: INT16;
   let sGridNo: INT16;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoorStatus: DOOR_STATUS;
   let bDirs: INT8[] /* [8] */ = [
     Enum245.NORTH,
     Enum245.SOUTH,
@@ -1126,18 +1136,18 @@ export function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: 
 
   // Loop through all corpses....
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-    pDoorStatus = addressof(gpDoorStatus[cnt]);
+    pDoorStatus = gpDoorStatus[cnt];
 
     if (!InternalIsPerceivedDifferentThanReality(pDoorStatus)) {
       continue;
     }
 
-    sGridNo = pDoorStatus.value.sGridNo;
+    sGridNo = pDoorStatus.sGridNo;
 
     // is he close enough to see that gridno if he turns his head?
     sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, 0);
 
-    if (PythSpacesAway(pSoldier.value.sGridNo, sGridNo) <= sDistVisible) {
+    if (PythSpacesAway(pSoldier.sGridNo, sGridNo) <= sDistVisible) {
       // and we can trace a line of sight to his x,y coordinates?
       // (taking into account we are definitely aware of this guy now)
       if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, sDistVisible, true)) {
@@ -1156,7 +1166,7 @@ export function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: 
     for (cnt2 = 0; cnt2 < 8; cnt2++) {
       usNewGridNo = NewGridNo(sGridNo, DirectionInc(bDirs[cnt2]));
 
-      if (PythSpacesAway(pSoldier.value.sGridNo, usNewGridNo) <= sDistVisible) {
+      if (PythSpacesAway(pSoldier.sGridNo, usNewGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
         if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, sDistVisible, true)) {
@@ -1176,18 +1186,18 @@ export function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: 
   return false;
 }
 
-function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>): void {
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
-  let pNode: Pointer<LEVELNODE>;
+function SyncronizeDoorStatusToStructureData(pDoorStatus: DOOR_STATUS): void {
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
+  let pNode: LEVELNODE | null;
   let sBaseGridNo: INT16 = NOWHERE;
 
   // First look for a door structure here...
-  pStructure = FindStructure(pDoorStatus.value.sGridNo, STRUCTURE_ANYDOOR);
+  pStructure = FindStructure(pDoorStatus.sGridNo, STRUCTURE_ANYDOOR);
 
   if (pStructure) {
-    pBaseStructure = FindBaseStructure(pStructure);
-    sBaseGridNo = pBaseStructure.value.sGridNo;
+    pBaseStructure = <STRUCTURE>FindBaseStructure(pStructure);
+    sBaseGridNo = pBaseStructure.sGridNo;
   } else {
     pBaseStructure = null;
   }
@@ -1195,6 +1205,8 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
   if (pBaseStructure == null) {
     return;
   }
+
+  Assert(pStructure);
 
   pNode = FindLevelNodeBasedOnStructure(sBaseGridNo, pBaseStructure);
   if (!pNode) {
@@ -1206,15 +1218,15 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
   // the struct data value - if not - change ( REGARDLESS of perceived being used or not... )
   //
   // Check for opened...
-  if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
+  if (pDoorStatus.ubFlags & DOOR_OPEN) {
     // IF closed.....
-    if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+    if (!(pStructure.fFlags & STRUCTURE_OPEN)) {
       // Swap!
       SwapStructureForPartner(sBaseGridNo, pBaseStructure);
       RecompileLocalMovementCosts(sBaseGridNo);
     }
   } else {
-    if ((pStructure.value.fFlags & STRUCTURE_OPEN)) {
+    if ((pStructure.fFlags & STRUCTURE_OPEN)) {
       // Swap!
       SwapStructureForPartner(sBaseGridNo, pBaseStructure);
       RecompileLocalMovementCosts(sBaseGridNo);
@@ -1224,10 +1236,10 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
 
 export function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: boolean, fDirty: boolean): void {
   let cnt: INT32;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoorStatus: DOOR_STATUS;
 
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-    pDoorStatus = addressof(gpDoorStatus[cnt]);
+    pDoorStatus = gpDoorStatus[cnt];
 
     // ATE: Make sure door status flag and struct info are syncronized....
     SyncronizeDoorStatusToStructureData(pDoorStatus);
@@ -1236,23 +1248,23 @@ export function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: boolean, fDirt
   }
 }
 
-function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, fUsePerceivedStatus: boolean, fDirty: boolean): void {
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
+function InternalUpdateDoorGraphicFromStatus(pDoorStatus: DOOR_STATUS, fUsePerceivedStatus: boolean, fDirty: boolean): void {
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
   let cnt: INT32;
   let fOpenedGraphic: boolean = false;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
   let fWantToBeOpen: boolean = false;
   let fDifferent: boolean = false;
   let sBaseGridNo: INT16 = NOWHERE;
 
   // OK, look at perceived status and adjust graphic
   // First look for a door structure here...
-  pStructure = FindStructure(pDoorStatus.value.sGridNo, STRUCTURE_ANYDOOR);
+  pStructure = FindStructure(pDoorStatus.sGridNo, STRUCTURE_ANYDOOR);
 
   if (pStructure) {
-    pBaseStructure = FindBaseStructure(pStructure);
-    sBaseGridNo = pBaseStructure.value.sGridNo;
+    pBaseStructure = <STRUCTURE>FindBaseStructure(pStructure);
+    sBaseGridNo = pBaseStructure.sGridNo;
   } else {
     pBaseStructure = null;
   }
@@ -1261,6 +1273,8 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
     return;
   }
 
+  Assert(pStructure);
+
   pNode = FindLevelNodeBasedOnStructure(sBaseGridNo, pBaseStructure);
   if (!pNode) {
     return;
@@ -1268,11 +1282,11 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
 
   // Get status we want to chenge to.....
   if (fUsePerceivedStatus) {
-    if (pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) {
+    if (pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) {
       fWantToBeOpen = true;
     }
   } else {
-    if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
+    if (pDoorStatus.ubFlags & DOOR_OPEN) {
       fWantToBeOpen = true;
     }
   }
@@ -1282,7 +1296,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
   cnt = 0;
   while (gClosedDoorList[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
-    if (pNode.value.usIndex == gClosedDoorList[cnt]) {
+    if (pNode.usIndex == gClosedDoorList[cnt]) {
       fOpenedGraphic = true;
       break;
     }
@@ -1295,7 +1309,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
 
   // OK, we now need to test these things against the true structure data
   // we may need to only adjust the graphic here....
-  if (fWantToBeOpen && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
+  if (fWantToBeOpen && (pStructure.fFlags & STRUCTURE_OPEN)) {
     let fFound: boolean = false;
     // Adjust graphic....
 
@@ -1303,7 +1317,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
     cnt = 0;
     while (gOpenDoorList[cnt] != -1) {
       // IF WE ARE A SHADOW TYPE
-      if (pNode.value.usIndex == gOpenDoorList[cnt]) {
+      if (pNode.usIndex == gOpenDoorList[cnt]) {
         fFound = true;
         break;
       }
@@ -1312,7 +1326,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
 
     // OK, now use opened graphic.
     if (fFound) {
-      pNode.value.usIndex = gClosedDoorList[cnt];
+      pNode.usIndex = gClosedDoorList[cnt];
 
       if (fDirty) {
         InvalidateWorldRedundency();
@@ -1324,7 +1338,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
   }
 
   // If we want to be closed but structure is closed
-  if (!fWantToBeOpen && !(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+  if (!fWantToBeOpen && !(pStructure.fFlags & STRUCTURE_OPEN)) {
     let fFound: boolean = false;
     // Adjust graphic....
 
@@ -1332,7 +1346,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
     cnt = 0;
     while (gClosedDoorList[cnt] != -1) {
       // IF WE ARE A SHADOW TYPE
-      if (pNode.value.usIndex == gClosedDoorList[cnt]) {
+      if (pNode.usIndex == gClosedDoorList[cnt]) {
         fFound = true;
         break;
       }
@@ -1341,7 +1355,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
 
     // OK, now use opened graphic.
     if (fFound) {
-      pNode.value.usIndex = gOpenDoorList[cnt];
+      pNode.usIndex = gOpenDoorList[cnt];
 
       if (fDirty) {
         InvalidateWorldRedundency();
@@ -1355,16 +1369,16 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
   if (fOpenedGraphic && !fWantToBeOpen) {
     // Close the beast!
     fDifferent = true;
-    pNode.value.usIndex = gOpenDoorList[cnt];
+    pNode.usIndex = gOpenDoorList[cnt];
   } else if (!fOpenedGraphic && fWantToBeOpen) {
     // Find the closed door graphic and adjust....
     cnt = 0;
     while (gOpenDoorList[cnt] != -1) {
       // IF WE ARE A SHADOW TYPE
-      if (pNode.value.usIndex == gOpenDoorList[cnt]) {
+      if (pNode.usIndex == gOpenDoorList[cnt]) {
         // Open the beast!
         fDifferent = true;
-        pNode.value.usIndex = gClosedDoorList[cnt];
+        pNode.usIndex = gClosedDoorList[cnt];
         break;
       }
       cnt++;
@@ -1383,22 +1397,22 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
   }
 }
 
-function InternalIsPerceivedDifferentThanReality(pDoorStatus: Pointer<DOOR_STATUS>): boolean {
-  if ((pDoorStatus.value.ubFlags & DOOR_PERCEIVED_NOTSET)) {
+function InternalIsPerceivedDifferentThanReality(pDoorStatus: DOOR_STATUS): boolean {
+  if ((pDoorStatus.ubFlags & DOOR_PERCEIVED_NOTSET)) {
     return true;
   }
 
   // Compare flags....
-  if ((pDoorStatus.value.ubFlags & DOOR_OPEN && pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) || (!(pDoorStatus.value.ubFlags & DOOR_OPEN) && !(pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN))) {
+  if ((pDoorStatus.ubFlags & DOOR_OPEN && pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) || (!(pDoorStatus.ubFlags & DOOR_OPEN) && !(pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN))) {
     return false;
   }
 
   return true;
 }
 
-function InternalUpdateDoorsPerceivedValue(pDoorStatus: Pointer<DOOR_STATUS>): void {
+function InternalUpdateDoorsPerceivedValue(pDoorStatus: DOOR_STATUS): void {
   // OK, look at door, set perceived value the same as actual....
-  if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
+  if (pDoorStatus.ubFlags & DOOR_OPEN) {
     InternalSetDoorPerceivedOpenStatus(pDoorStatus, true);
   } else {
     InternalSetDoorPerceivedOpenStatus(pDoorStatus, false);
@@ -1406,7 +1420,7 @@ function InternalUpdateDoorsPerceivedValue(pDoorStatus: Pointer<DOOR_STATUS>): v
 }
 
 function UpdateDoorStatusPerceivedValue(sGridNo: INT16): boolean {
-  let pDoorStatus: Pointer<DOOR_STATUS> = null;
+  let pDoorStatus: DOOR_STATUS | null = null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
   if (pDoorStatus == null) {
@@ -1419,31 +1433,31 @@ function UpdateDoorStatusPerceivedValue(sGridNo: INT16): boolean {
 }
 
 function IsDoorPerceivedOpen(sGridNo: INT16): boolean {
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoorStatus: DOOR_STATUS | null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
-  if (pDoorStatus && pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) {
+  if (pDoorStatus && pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) {
     return true;
   } else {
     return false;
   }
 }
 
-function InternalSetDoorPerceivedOpenStatus(pDoorStatus: Pointer<DOOR_STATUS>, fPerceivedOpen: boolean): boolean {
+function InternalSetDoorPerceivedOpenStatus(pDoorStatus: DOOR_STATUS, fPerceivedOpen: boolean): boolean {
   if (fPerceivedOpen)
-    pDoorStatus.value.ubFlags |= DOOR_PERCEIVED_OPEN;
+    pDoorStatus.ubFlags |= DOOR_PERCEIVED_OPEN;
   else
-    pDoorStatus.value.ubFlags &= ~DOOR_PERCEIVED_OPEN;
+    pDoorStatus.ubFlags &= ~DOOR_PERCEIVED_OPEN;
 
   // Turn off perceived not set flag....
-  pDoorStatus.value.ubFlags &= ~DOOR_PERCEIVED_NOTSET;
+  pDoorStatus.ubFlags &= ~DOOR_PERCEIVED_NOTSET;
 
   return true;
 }
 
 function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: boolean): boolean {
-  let pDoorStatus: Pointer<DOOR_STATUS> = null;
+  let pDoorStatus: DOOR_STATUS | null = null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
@@ -1455,15 +1469,15 @@ function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: boolean): bo
 }
 
 function SetDoorOpenStatus(sGridNo: INT16, fOpen: boolean): boolean {
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoorStatus: DOOR_STATUS | null;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
   if (pDoorStatus) {
     if (fOpen) {
-      pDoorStatus.value.ubFlags |= DOOR_OPEN;
+      pDoorStatus.ubFlags |= DOOR_OPEN;
     } else {
-      pDoorStatus.value.ubFlags &= ~DOOR_OPEN;
+      pDoorStatus.ubFlags &= ~DOOR_OPEN;
     }
     return true;
   } else {
@@ -1476,6 +1490,7 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
   let ubCnt: UINT8;
+  let buffer: Buffer;
 
   // Turn off any DOOR BUSY flags....
   for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
@@ -1498,8 +1513,10 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
   }
 
   // Save the number of elements in the door array
-  FileWrite(hFile, addressof(gubNumDoorStatus), sizeof(UINT8), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT8)) {
+  buffer = Buffer.allocUnsafe(1);
+  buffer.writeUInt8(gubNumDoorStatus, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 1);
+  if (uiNumBytesWritten != 1) {
     // Error Writing size of array to disk
     FileClose(hFile);
     return false;
@@ -1508,8 +1525,10 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
   // if there is some to save
   if (gubNumDoorStatus != 0) {
     // Save the door array
-    FileWrite(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), addressof(uiNumBytesWritten));
-    if (uiNumBytesWritten != (sizeof(DOOR_STATUS) * gubNumDoorStatus)) {
+    buffer = Buffer.allocUnsafe(DOOR_STATUS_SIZE);
+    writeObjectArray(gpDoorStatus, buffer, 0, writeDoorStatus);
+    uiNumBytesWritten = FileWrite(hFile, buffer, (DOOR_STATUS_SIZE * gubNumDoorStatus));
+    if (uiNumBytesWritten != (DOOR_STATUS_SIZE * gubNumDoorStatus)) {
       // Error Writing size of array to disk
       FileClose(hFile);
       return false;
@@ -1529,6 +1548,7 @@ export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
   let ubLoop: UINT8;
+  let buffer: Buffer;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
@@ -1549,11 +1569,14 @@ export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   }
 
   // Load the number of elements in the door status array
-  FileRead(hFile, addressof(gubNumDoorStatus), sizeof(UINT8), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT8)) {
+  buffer = Buffer.allocUnsafe(1);
+  uiNumBytesRead = FileRead(hFile, buffer, 1);
+  if (uiNumBytesRead != 1) {
     FileClose(hFile);
     return false;
   }
+
+  gubNumDoorStatus = buffer.readUInt8(0);
 
   if (gubNumDoorStatus == 0) {
     FileClose(hFile);
@@ -1561,17 +1584,17 @@ export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
   }
 
   // Allocate space for the door status array
-  gpDoorStatus = MemAlloc(sizeof(DOOR_STATUS) * gubNumDoorStatus);
-  if (gpDoorStatus == null)
-    AssertMsg(0, "Error Allocating memory for the gpDoorStatus");
-  memset(gpDoorStatus, 0, sizeof(DOOR_STATUS) * gubNumDoorStatus);
+  gpDoorStatus = createArrayFrom(gubNumDoorStatus, createDoorStatus);
 
   // Load the number of elements in the door status array
-  FileRead(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != (sizeof(DOOR_STATUS) * gubNumDoorStatus)) {
+  buffer = Buffer.allocUnsafe(DOOR_STATUS_SIZE * gubNumDoorStatus);
+  uiNumBytesRead = FileRead(hFile, buffer, (DOOR_STATUS_SIZE * gubNumDoorStatus));
+  if (uiNumBytesRead != (DOOR_STATUS_SIZE * gubNumDoorStatus)) {
     FileClose(hFile);
     return false;
   }
+
+  readObjectArray(gpDoorStatus, buffer, 0, readDoorStatus);
 
   FileClose(hFile);
 
@@ -1589,10 +1612,13 @@ export function LoadDoorStatusArrayFromDoorStatusTempFile(): boolean {
 
 export function SaveKeyTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32 = 0;
+  let buffer: Buffer;
 
   // Save the KeyTable
-  FileWrite(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(KEY) * NUM_KEYS) {
+  buffer = Buffer.allocUnsafe(KEY_SIZE * NUM_KEYS);
+  writeObjectArray(KeyTable, buffer, 0, writeKey);
+  uiNumBytesWritten = FileWrite(hFile, buffer, KEY_SIZE * NUM_KEYS);
+  if (uiNumBytesWritten != KEY_SIZE * NUM_KEYS) {
     return false;
   }
 
@@ -1601,20 +1627,24 @@ export function SaveKeyTableToSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
+  let buffer: Buffer;
 
   // Load the KeyTable
-  FileRead(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(KEY) * NUM_KEYS) {
+  buffer = Buffer.allocUnsafe(KEY_SIZE * NUM_KEYS);
+  uiNumBytesRead = FileRead(hFile, buffer, KEY_SIZE * NUM_KEYS);
+  if (uiNumBytesRead != KEY_SIZE * NUM_KEYS) {
     return false;
   }
+
+  readObjectArray(KeyTable, buffer, 0, readKey);
 
   return true;
 }
 
 export function ExamineDoorsOnEnteringSector(): void {
   let cnt: INT32;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pDoorStatus: DOOR_STATUS;
+  let pSoldier: SOLDIERTYPE;
   let fOK: boolean = false;
   let bTownId: INT8;
 
@@ -1635,9 +1665,9 @@ export function ExamineDoorsOnEnteringSector(): void {
   // check for civ
   cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive) {
-      if (pSoldier.value.bInSector) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive) {
+      if (pSoldier.bInSector) {
         fOK = true;
         break;
       }
@@ -1647,12 +1677,12 @@ export function ExamineDoorsOnEnteringSector(): void {
   // Let's do it!
   if (fOK) {
     for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-      pDoorStatus = addressof(gpDoorStatus[cnt]);
+      pDoorStatus = gpDoorStatus[cnt];
 
       // Get status of door....
-      if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
+      if (pDoorStatus.ubFlags & DOOR_OPEN) {
         // If open, close!
-        HandleDoorChangeFromGridNo(null, pDoorStatus.value.sGridNo, true);
+        HandleDoorChangeFromGridNo(null, pDoorStatus.sGridNo, true);
       }
     }
   }
@@ -1660,8 +1690,8 @@ export function ExamineDoorsOnEnteringSector(): void {
 
 function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   let cnt: INT32;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pDoorStatus: DOOR_STATUS;
+  let pSoldier: SOLDIERTYPE;
   let fOK: boolean = false;
   let iNumNewMercs: INT32 = 0;
   let bTownId: INT8;
@@ -1685,8 +1715,8 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   }
 
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
       fOK = true;
       break;
     }
@@ -1694,8 +1724,8 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
 
   // Loop through our team now....
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && gbMercIsNewInThisSector[cnt]) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector && gbMercIsNewInThisSector[cnt]) {
       iNumNewMercs++;
     }
   }
@@ -1708,18 +1738,18 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   // Let's do it!
   if (fOK) {
     for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-      pDoorStatus = addressof(gpDoorStatus[cnt]);
+      pDoorStatus = gpDoorStatus[cnt];
 
       // Get status of door....
-      if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
+      if (pDoorStatus.ubFlags & DOOR_OPEN) {
         // If open, close!
         gfSetPerceivedDoorState = true;
 
-        HandleDoorChangeFromGridNo(null, pDoorStatus.value.sGridNo, true);
+        HandleDoorChangeFromGridNo(null, pDoorStatus.sGridNo, true);
 
         gfSetPerceivedDoorState = false;
 
-        AllMercsLookForDoor(pDoorStatus.value.sGridNo, true);
+        AllMercsLookForDoor(pDoorStatus.sGridNo, true);
 
         InternalUpdateDoorGraphicFromStatus(pDoorStatus, true, true);
       }
@@ -1727,34 +1757,34 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   }
 }
 
-export function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: boolean, iDropListSlot: INT32, fUseUnLoaded: boolean): void {
+export function DropKeysInKeyRing(pSoldier: SOLDIERTYPE, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: boolean, iDropListSlot: INT32, fUseUnLoaded: boolean): void {
   let ubLoop: UINT8;
   let ubItem: UINT8;
   let Object: OBJECTTYPE = createObjectType();
 
-  if (!(pSoldier.value.pKeyRing)) {
+  if (!(pSoldier.pKeyRing)) {
     // no key ring!
     return;
   }
   for (ubLoop = 0; ubLoop < NUM_KEYS; ubLoop++) {
-    ubItem = pSoldier.value.pKeyRing[ubLoop].ubKeyID;
+    ubItem = pSoldier.pKeyRing[ubLoop].ubKeyID;
 
-    if (pSoldier.value.pKeyRing[ubLoop].ubNumber > 0) {
-      CreateKeyObject(addressof(Object), pSoldier.value.pKeyRing[ubLoop].ubNumber, ubItem);
+    if (pSoldier.pKeyRing[ubLoop].ubNumber > 0) {
+      CreateKeyObject(Object, pSoldier.pKeyRing[ubLoop].ubNumber, ubItem);
 
       // Zero out entry
-      pSoldier.value.pKeyRing[ubLoop].ubNumber = 0;
-      pSoldier.value.pKeyRing[ubLoop].ubKeyID = INVALID_KEY_NUMBER;
+      pSoldier.pKeyRing[ubLoop].ubNumber = 0;
+      pSoldier.pKeyRing[ubLoop].ubKeyID = INVALID_KEY_NUMBER;
 
       if (fAddToDropList) {
-        AddItemToLeaveIndex(addressof(Object), iDropListSlot);
+        AddItemToLeaveIndex(Object, iDropListSlot);
       } else {
-        if (pSoldier.value.sSectorX != gWorldSectorX || pSoldier.value.sSectorY != gWorldSectorY || pSoldier.value.bSectorZ != gbWorldSectorZ || fUseUnLoaded) {
+        if (pSoldier.sSectorX != gWorldSectorX || pSoldier.sSectorY != gWorldSectorY || pSoldier.bSectorZ != gbWorldSectorZ || fUseUnLoaded) {
           // Set flag for item...
-          AddItemsToUnLoadedSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, sGridNo, 1, addressof(Object), bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, bVisible, false);
+          AddItemsToUnLoadedSector(pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ, sGridNo, 1, [Object], bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, bVisible, false);
         } else {
           // Add to pool
-          AddItemToPool(sGridNo, addressof(Object), bVisible, bLevel, 0, 0);
+          AddItemToPool(sGridNo, Object, bVisible, bLevel, 0, 0);
         }
       }
     }

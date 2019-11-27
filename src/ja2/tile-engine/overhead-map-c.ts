@@ -15,14 +15,29 @@ interface SMALL_TILE_SURF {
   fType: UINT32;
 }
 
+function createSmallTileSurf(): SMALL_TILE_SURF {
+  return {
+    vo: null,
+    fType: 0,
+  };
+}
+
 interface SMALL_TILE_DB {
   vo: HVOBJECT;
   usSubIndex: UINT16;
   fType: UINT32;
 }
 
-let gSmTileSurf: SMALL_TILE_SURF[] /* [NUMBEROFTILETYPES] */;
-let gSmTileDB: SMALL_TILE_DB[] /* [NUMBEROFTILES] */;
+function createSmallTileDb(): SMALL_TILE_DB {
+  return {
+    vo: null,
+    usSubIndex: 0,
+    fType: 0,
+  };
+}
+
+let gSmTileSurf: SMALL_TILE_SURF[] /* [NUMBEROFTILETYPES] */ = createArrayFrom(Enum313.NUMBEROFTILETYPES, createSmallTileSurf);
+let gSmTileDB: SMALL_TILE_DB[] /* [NUMBEROFTILES] */ = createArrayFrom(Enum312.NUMBEROFTILES, createSmallTileDb);
 let gubSmTileNum: UINT8 = 0;
 let gfSmTileLoaded: boolean = false;
 let gfInOverheadMap: boolean = false;
@@ -59,7 +74,7 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = cAdjustedFile;
-    hVObject = CreateVideoObject(addressof(VObjectDesc));
+    hVObject = CreateVideoObject(VObjectDesc);
 
     if (hVObject == null) {
       // TRY loading from default directory
@@ -70,13 +85,13 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
       // LOAD ONE WE KNOW ABOUT!
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = cAdjustedFile;
-      hVObject = CreateVideoObject(addressof(VObjectDesc));
+      hVObject = CreateVideoObject(VObjectDesc);
 
       if (hVObject == null) {
         // LOAD ONE WE KNOW ABOUT!
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         VObjectDesc.ImageFile = "TILESETS\\0\\T\\grass.sti";
-        hVObject = CreateVideoObject(addressof(VObjectDesc));
+        hVObject = CreateVideoObject(VObjectDesc);
       }
     }
 
@@ -220,11 +235,11 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (gpWorldLevelData[sGridNo].pMercHead != null && gpWorldLevelData[sGridNo].pMercHead.value.pSoldier.value.bVisible != -1) {
+        if (gpWorldLevelData[sGridNo].pMercHead != null && (<LEVELNODE>gpWorldLevelData[sGridNo].pMercHead).pSoldier.bVisible != -1) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
-            (ppReturnedSoldier.value) = gpWorldLevelData[sGridNo].pMercHead.value.pSoldier;
+            (ppReturnedSoldier.value) = gpWorldLevelData[sGridNo].pMercHead.pSoldier;
             uiLowestRange = uiRange;
             fFound = true;
           }
@@ -236,17 +251,17 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
   return fFound;
 }
 
-function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
+function DisplayMercNameInOverhead(pSoldier: SOLDIERTYPE): void {
   let sWorldScreenX: INT16;
   let sX: INT16;
   let sWorldScreenY: INT16;
   let sY: INT16;
 
   // Get Screen position of guy.....
-  ({ sScreenX: sWorldScreenX, sScreenY: sWorldScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE)));
+  ({ sScreenX: sWorldScreenX, sScreenY: sWorldScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.sX / CELL_X_SIZE), (pSoldier.sY / CELL_Y_SIZE)));
 
   sWorldScreenX = gsStartRestrictedX + (sWorldScreenX / 5) + 5;
-  sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.value.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.value.sGridNo].sHeight / 5) - 8;
+  sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.sGridNo].sHeight / 5) - 8;
 
   sWorldScreenY += (gsRenderHeight / 5);
 
@@ -256,19 +271,19 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   // Center here....
-  ({ sX, sY } = FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1()));
+  ({ sX, sY } = FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.name, TINYFONT1()));
 
   // OK, selected guy is here...
-  gprintfdirty(sX, sY, pSoldier.value.name);
-  mprintf(sX, sY, pSoldier.value.name);
+  gprintfdirty(sX, sY, pSoldier.name);
+  mprintf(sX, sY, pSoldier.name);
 }
 
+/* static */ let HandleOverheadMap__fFirst: boolean = true;
 export function HandleOverheadMap(): void {
-  /* static */ let fFirst: boolean = true;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
-  if (fFirst) {
-    fFirst = false;
+  if (HandleOverheadMap__fFirst) {
+    HandleOverheadMap__fFirst = false;
   }
 
   gfInOverheadMap = true;
@@ -370,9 +385,9 @@ export function HandleOverheadMap(): void {
 
     if (GetOverheadMouseGridNoForFullSoldiersGridNo(addressof(usMapPos))) {
       if (GetClosestMercInOverheadMap(usMapPos, addressof(pSoldier), 1)) {
-        if (pSoldier.value.bTeam == gbPlayerNum) {
+        if (pSoldier.bTeam == gbPlayerNum) {
           gfUIHandleSelectionAboveGuy = true;
-          gsSelectedGuy = pSoldier.value.ubID;
+          gsSelectedGuy = pSoldier.ubID;
         }
 
         DisplayMercNameInOverhead(pSoldier);
@@ -398,7 +413,7 @@ export function HandleOverheadMap(): void {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
 
-  fInterfacePanelDirty = false;
+  fInterfacePanelDirty = 0;
 }
 
 export function InOverheadMap(): boolean {
@@ -483,7 +498,7 @@ function HandleOverheadUI(): void {
           KillOverheadMap();
           break;
 
-        case ('x'):
+        case ('x'.charCodeAt(0)):
           if ((InputEvent.usKeyState & ALT_DOWN)) {
             HandleShortCutExitState();
           }
@@ -532,7 +547,7 @@ function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
 }
 
 export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: boolean): void {
-  let bXOddFlag: INT8 = 0;
+  let bXOddFlag: boolean /* INT8 */ = false;
   let sModifiedHeight: INT16 = 0;
   let sAnchorPosX_M: INT16;
   let sAnchorPosY_M: INT16;
@@ -549,8 +564,8 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
   let sY: INT16;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  let pNode: Pointer<LEVELNODE>;
-  let pTile: Pointer<SMALL_TILE_DB>;
+  let pNode: LEVELNODE | null;
+  let pTile: SMALL_TILE_DB;
   let sHeight: INT16;
   let hVObject: HVOBJECT;
   let sX1: INT16;
@@ -588,7 +603,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
       sTempPosX_S = sAnchorPosX_S;
       sTempPosY_S = sAnchorPosY_S;
 
-      if (bXOddFlag > 0)
+      if (bXOddFlag)
         sTempPosX_S += 4;
 
       do {
@@ -599,19 +614,19 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
           pNode = gpWorldLevelData[usTileIndex].pLandStart;
           while (pNode != null) {
-            pTile = addressof(gSmTileDB[pNode.value.usIndex]);
+            pTile = gSmTileDB[pNode.usIndex];
 
             sX = sTempPosX_S;
             sY = sTempPosY_S - sHeight + (gsRenderHeight / 5);
 
-            pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
+            pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
 
             // RENDER!
             // BltVideoObjectFromIndex(  FRAME_BUFFER, SGR1, gSmallTileDatabase[ gpWorldLevelData[ usTileIndex ].pLandHead->usIndex ], sX, sY, VO_BLT_SRCTRANSPARENCY, NULL );
             // BltVideoObjectFromIndex(  FRAME_BUFFER, SGR1, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL );
-            Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
+            Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
 
-            pNode = pNode.value.pPrevNode;
+            pNode = pNode.pPrevNode;
           }
         }
 
@@ -624,7 +639,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
         }
       } while (!fEndRenderRow);
 
-      if (bXOddFlag > 0) {
+      if (bXOddFlag) {
         sAnchorPosY_M++;
       } else {
         sAnchorPosX_M++;
@@ -654,7 +669,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
       sTempPosX_S = sAnchorPosX_S;
       sTempPosY_S = sAnchorPosY_S;
 
-      if (bXOddFlag > 0)
+      if (bXOddFlag)
         sTempPosX_S += 4;
 
       do {
@@ -666,15 +681,15 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
           pNode = gpWorldLevelData[usTileIndex].pObjectHead;
           while (pNode != null) {
-            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
+            if (pNode.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
-              if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
-                pTile = addressof(gSmTileDB[pNode.value.usIndex]);
+              if (!(pNode.uiFlags & LEVELNODE_ITEM)) {
+                pTile = gSmTileDB[pNode.usIndex];
 
                 sX = sTempPosX_S;
                 sY = sTempPosY_S;
 
-                if (gTileDatabase[pNode.value.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
+                if (gTileDatabase[pNode.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                   sY -= sModifiedHeight;
                 } else {
                   sY -= sHeight;
@@ -682,46 +697,46 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
                 sY += (gsRenderHeight / 5);
 
-                pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
+                pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
 
                 // RENDER!
-                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
+                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
               }
             }
 
-            pNode = pNode.value.pNext;
+            pNode = pNode.pNext;
           }
 
           pNode = gpWorldLevelData[usTileIndex].pShadowHead;
           while (pNode != null) {
-            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
-              pTile = addressof(gSmTileDB[pNode.value.usIndex]);
+            if (pNode.usIndex < Enum312.NUMBEROFTILES) {
+              pTile = gSmTileDB[pNode.usIndex];
               sX = sTempPosX_S;
               sY = sTempPosY_S - sHeight;
 
               sY += (gsRenderHeight / 5);
 
-              pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
+              pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
 
               // RENDER!
-              Blt8BPPDataTo16BPPBufferShadow(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
+              Blt8BPPDataTo16BPPBufferShadow(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
             }
 
-            pNode = pNode.value.pNext;
+            pNode = pNode.pNext;
           }
 
           pNode = gpWorldLevelData[usTileIndex].pStructHead;
 
           while (pNode != null) {
-            if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
+            if (pNode.usIndex < Enum312.NUMBEROFTILES) {
               // Don't render itempools!
-              if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
-                pTile = addressof(gSmTileDB[pNode.value.usIndex]);
+              if (!(pNode.uiFlags & LEVELNODE_ITEM)) {
+                pTile = gSmTileDB[pNode.usIndex];
 
                 sX = sTempPosX_S;
-                sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5);
+                sY = sTempPosY_S - (gTileDatabase[pNode.usIndex].sOffsetHeight / 5);
 
-                if (gTileDatabase[pNode.value.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
+                if (gTileDatabase[pNode.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                   sY -= sModifiedHeight;
                 } else {
                   sY -= sHeight;
@@ -729,14 +744,14 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
                 sY += (gsRenderHeight / 5);
 
-                pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
+                pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
 
                 // RENDER!
-                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
+                Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
               }
             }
 
-            pNode = pNode.value.pNext;
+            pNode = pNode.pNext;
           }
         }
 
@@ -749,7 +764,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
         }
       } while (!fEndRenderRow);
 
-      if (bXOddFlag > 0) {
+      if (bXOddFlag) {
         sAnchorPosY_M++;
       } else {
         sAnchorPosX_M++;
@@ -782,7 +797,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
         sTempPosX_S = sAnchorPosX_S;
         sTempPosY_S = sAnchorPosY_S;
 
-        if (bXOddFlag > 0)
+        if (bXOddFlag)
           sTempPosX_S += 4;
 
         do {
@@ -793,24 +808,24 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
             pNode = gpWorldLevelData[usTileIndex].pRoofHead;
             while (pNode != null) {
-              if (pNode.value.usIndex < Enum312.NUMBEROFTILES) {
-                if (!(pNode.value.uiFlags & LEVELNODE_HIDDEN)) {
-                  pTile = addressof(gSmTileDB[pNode.value.usIndex]);
+              if (pNode.usIndex < Enum312.NUMBEROFTILES) {
+                if (!(pNode.uiFlags & LEVELNODE_HIDDEN)) {
+                  pTile = gSmTileDB[pNode.usIndex];
 
                   sX = sTempPosX_S;
-                  sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5) - sHeight;
+                  sY = sTempPosY_S - (gTileDatabase[pNode.usIndex].sOffsetHeight / 5) - sHeight;
 
                   sY -= (WALL_HEIGHT / 5);
 
                   sY += (gsRenderHeight / 5);
 
-                  pTile.value.vo.value.pShadeCurrent = gSmTileSurf[pTile.value.fType].vo.value.pShades[pNode.value.ubShadeLevel];
+                  pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
 
                   // RENDER!
-                  Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.value.vo, sX, sY, pTile.value.usSubIndex);
+                  Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
                 }
               }
-              pNode = pNode.value.pNext;
+              pNode = pNode.pNext;
             }
           }
 
@@ -823,7 +838,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
           }
         } while (!fEndRenderRow);
 
-        if (bXOddFlag > 0) {
+        if (bXOddFlag) {
           sAnchorPosY_M++;
         } else {
           sAnchorPosX_M++;
@@ -889,9 +904,9 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
 function RenderOverheadOverlays(): void {
   let uiDestPitchBYTES: UINT32;
-  let pWorldItem: Pointer<WORLDITEM>;
+  let pWorldItem: WORLDITEM;
   let i: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let hVObject: HVOBJECT;
   let sX: INT16;
   let sY: INT16;
@@ -914,10 +929,10 @@ function RenderOverheadOverlays(): void {
   for (i = 0; i < end; i++) {
     // First, check to see if the soldier exists and is in the sector.
     pSoldier = MercPtrs[i];
-    if (!pSoldier.value.bActive || !pSoldier.value.bInSector)
+    if (!pSoldier.bActive || !pSoldier.bInSector)
       continue;
     // Soldier is here.  Calculate his screen position based on his current gridno.
-    ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo));
+    ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pSoldier.sGridNo));
     // Now, draw his "doll"
 
     // adjust for position.
@@ -925,18 +940,18 @@ function RenderOverheadOverlays(): void {
     sY -= 5;
     // sScreenY -= 7;	//height of doll
 
-    if (!gfTacticalPlacementGUIActive && pSoldier.value.bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+    if (!gfTacticalPlacementGUIActive && pSoldier.bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
       continue;
     }
 
-    if (pSoldier.value.sGridNo == NOWHERE) {
+    if (pSoldier.sGridNo == NOWHERE) {
       continue;
     }
 
-    sY -= (GetOffsetLandHeight(pSoldier.value.sGridNo) / 5);
+    sY -= (GetOffsetLandHeight(pSoldier.sGridNo) / 5);
 
     // Adjust for height...
-    sY -= (pSoldier.value.sHeightAdjustment / 5);
+    sY -= (pSoldier.sHeightAdjustment / 5);
 
     sY += (gsRenderHeight / 5);
 
@@ -944,11 +959,11 @@ function RenderOverheadOverlays(): void {
     SetObjectShade(hVObject, 0);
 
     // If on roof....
-    if (pSoldier.value.sHeightAdjustment) {
+    if (pSoldier.sHeightAdjustment) {
       SetObjectShade(hVObject, 1);
     }
 
-    if (pSoldier.value.ubID == gusSelectedSoldier) {
+    if (pSoldier.ubID == gusSelectedSoldier) {
       if (gfRadarCurrentGuyFlash && !gfTacticalPlacementGUIActive) {
         SetObjectShade(hVObject, 2);
       }
@@ -959,9 +974,9 @@ function RenderOverheadOverlays(): void {
     } else
         if (!gfTacticalPlacementGUIActive) {
           // normal
-      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
+      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.bTeam);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sX, sY, (sX + 3), (sY + 9));
-    } else if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+    } else if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
       // vehicle
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 9);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 6), (sY), (sX + 9), (sY + 10));
@@ -974,13 +989,13 @@ function RenderOverheadOverlays(): void {
       // tactical placement selected merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 7);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
-    } else if (gpTacticalPlacementHilightedSoldier == pSoldier && pSoldier.value.uiStatusFlags) {
+    } else if (gpTacticalPlacementHilightedSoldier == pSoldier && pSoldier.uiStatusFlags) {
       // tactical placement hilighted merc
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 8);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, null, (sX - 2), (sY - 2), (sX + 5), (sY + 11));
     } else {
       // normal
-      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.value.bTeam);
+      Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier.bTeam);
       RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sX, sY, (sX + 3), (sY + 9));
     }
     if (ubPassengers) {
@@ -994,24 +1009,24 @@ function RenderOverheadOverlays(): void {
   // ITEMS OVERLAY
   if (!gfTacticalPlacementGUIActive) {
     for (i = 0; i < guiNumWorldItems; i++) {
-      pWorldItem = addressof(gWorldItems[i]);
-      if (!pWorldItem || !pWorldItem.value.fExists || pWorldItem.value.bVisible != VISIBLE && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
+      pWorldItem = gWorldItems[i];
+      if (!pWorldItem || !pWorldItem.fExists || pWorldItem.bVisible != VISIBLE && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
         continue;
       }
 
-      ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo));
+      ({ sScreenX: sX, sScreenY: sY } = GetOverheadScreenXYFromGridNo(pWorldItem.sGridNo));
 
       // adjust for position.
       // sX += 2;
       sY += 6;
-      sY -= (GetOffsetLandHeight(pWorldItem.value.sGridNo) / 5);
+      sY -= (GetOffsetLandHeight(pWorldItem.sGridNo) / 5);
 
       sY += (gsRenderHeight / 5);
 
       if (gfRadarCurrentGuyFlash) {
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
       } else
-        switch (pWorldItem.value.bVisible) {
+        switch (pWorldItem.bVisible) {
           case HIDDEN_ITEM:
             usLineColor = Get16BPPColor(FROMRGB(0, 0, 255));
             break;
@@ -1029,7 +1044,7 @@ function RenderOverheadOverlays(): void {
             break;
         }
 
-      if (gfOverItemPool && gsOveritemPoolGridNo == pWorldItem.value.sGridNo) {
+      if (gfOverItemPool && gsOveritemPoolGridNo == pWorldItem.sGridNo) {
         usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
       }
 
@@ -1384,22 +1399,19 @@ export function CalculateRestrictedMapCoords(bDirection: INT8, sEndXS: INT16, sE
   return { sX1, sX2, sY1, sY2 };
 }
 
-function CalculateRestrictedScaleFactors(pScaleX: Pointer<INT16>, pScaleY: Pointer<INT16>): void {
-}
-
 function CopyOverheadDBShadetablesFromTileset(): void {
   let uiLoop: UINT32;
   let uiLoop2: UINT32;
-  let pTileSurf: PTILE_IMAGERY;
+  let pTileSurf: TILE_IMAGERY;
 
   // Loop through tileset
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
-    pTileSurf = (gTileSurfaceArray[uiLoop]);
+    pTileSurf = gTileSurfaceArray[uiLoop];
 
     gSmTileSurf[uiLoop].vo.value.fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;
 
     for (uiLoop2 = 0; uiLoop2 < HVOBJECT_SHADE_TABLES; uiLoop2++) {
-      gSmTileSurf[uiLoop].vo.value.pShades[uiLoop2] = pTileSurf.value.vo.value.pShades[uiLoop2];
+      gSmTileSurf[uiLoop].vo.value.pShades[uiLoop2] = pTileSurf.vo.value.pShades[uiLoop2];
     }
   }
 }

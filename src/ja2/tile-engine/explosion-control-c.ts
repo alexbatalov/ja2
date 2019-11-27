@@ -50,7 +50,7 @@ let zBlastFilenames: string[] /* CHAR8[][70] */ = [
   "TILECACHE\\MUST_EXP.STI",
 ];
 
-let sBlastSpeeds: string /* CHAR8[] */ = [
+let sBlastSpeeds: INT16[] /* CHAR8[] */ = [
   0,
   80,
   80,
@@ -65,7 +65,7 @@ let sBlastSpeeds: string /* CHAR8[] */ = [
 const BOMB_QUEUE_DELAY = () => (1000 + Random(500));
 
 const MAX_BOMB_QUEUE = 40;
-let gExplosionQueue: ExplosionQueueElement[] /* [MAX_BOMB_QUEUE] */;
+let gExplosionQueue: ExplosionQueueElement[] /* [MAX_BOMB_QUEUE] */ = createArrayFrom(MAX_BOMB_QUEUE, createExplosionQueueElement);
 export let gubElementsOnExplosionQueue: UINT8 = 0;
 export let gfExplosionQueueActive: boolean = false;
 
@@ -77,7 +77,7 @@ let gsTempActionGridNo: INT16 = NOWHERE;
 const NUM_EXPLOSION_SLOTS = 100;
 
 // GLOBAL FOR SMOKE LISTING
-export let gExplosionData: EXPLOSIONTYPE[] /* [NUM_EXPLOSION_SLOTS] */;
+export let gExplosionData: EXPLOSIONTYPE[] /* [NUM_EXPLOSION_SLOTS] */ = createArrayFrom(NUM_EXPLOSION_SLOTS, createExplosionType);
 let guiNumExplosions: UINT32 = 0;
 
 function GetFreeExplosion(): INT32 {
@@ -107,7 +107,7 @@ function RecountExplosions(): void {
 
 // GENERATE EXPLOSION
 export function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, fLocate: boolean, bLevel: INT8): void {
-  let ExpParams: EXPLOSION_PARAMS;
+  let ExpParams: EXPLOSION_PARAMS = createExplosionParams();
 
   // Double check that we are using an explosive!
   if (!(Item[usItem].usItemClass & IC_EXPLOSV)) {
@@ -138,15 +138,15 @@ export function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ
   ExpParams.fLocate = fLocate;
   ExpParams.bLevel = bLevel;
 
-  GenerateExplosion(addressof(ExpParams));
+  GenerateExplosion(ExpParams);
 }
 
 export function IgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, bLevel: INT8): void {
   InternalIgniteExplosion(ubOwner, sX, sY, sZ, sGridNo, usItem, true, bLevel);
 }
 
-export function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
-  let pExplosion: Pointer<EXPLOSIONTYPE>;
+export function GenerateExplosion(pExpParams: EXPLOSION_PARAMS): void {
+  let pExplosion: EXPLOSIONTYPE;
   let uiFlags: UINT32;
   let ubOwner: UINT8;
   let ubTypeID: UINT8;
@@ -159,15 +159,15 @@ export function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
   let bLevel: INT8;
 
   // Assign param values
-  uiFlags = pExpParams.value.uiFlags;
-  ubOwner = pExpParams.value.ubOwner;
-  ubTypeID = pExpParams.value.ubTypeID;
-  sX = pExpParams.value.sX;
-  sY = pExpParams.value.sY;
-  sZ = pExpParams.value.sZ;
-  sGridNo = pExpParams.value.sGridNo;
-  usItem = pExpParams.value.usItem;
-  bLevel = pExpParams.value.bLevel;
+  uiFlags = pExpParams.uiFlags;
+  ubOwner = pExpParams.ubOwner;
+  ubTypeID = pExpParams.ubTypeID;
+  sX = pExpParams.sX;
+  sY = pExpParams.sY;
+  sZ = pExpParams.sZ;
+  sGridNo = pExpParams.sGridNo;
+  usItem = pExpParams.usItem;
+  bLevel = pExpParams.bLevel;
 
   {
     // GET AND SETUP EXPLOSION INFO IN TABLE....
@@ -178,25 +178,25 @@ export function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
     }
 
     // OK, get pointer...
-    pExplosion = addressof(gExplosionData[iIndex]);
+    pExplosion = gExplosionData[iIndex];
 
-    memset(pExplosion, 0, sizeof(EXPLOSIONTYPE));
+    resetExplosionType(pExplosion);
 
     // Setup some data...
-    memcpy(addressof(pExplosion.value.Params), pExpParams, sizeof(EXPLOSION_PARAMS));
-    pExplosion.value.fAllocated = true;
-    pExplosion.value.iID = iIndex;
+    copyExplosionParams(pExplosion.Params, pExpParams);
+    pExplosion.fAllocated = true;
+    pExplosion.iID = iIndex;
 
     GenerateExplosionFromExplosionPointer(pExplosion);
   }
 
   // ATE: Locate to explosion....
-  if (pExpParams.value.fLocate) {
+  if (pExpParams.fLocate) {
     LocateGridNo(sGridNo);
   }
 }
 
-function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE>): void {
+function GenerateExplosionFromExplosionPointer(pExplosion: EXPLOSIONTYPE): void {
   let uiFlags: UINT32;
   let ubOwner: UINT8;
   let ubTypeID: UINT8;
@@ -212,33 +212,31 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // Assign param values
-  uiFlags = pExplosion.value.Params.uiFlags;
-  ubOwner = pExplosion.value.Params.ubOwner;
-  ubTypeID = pExplosion.value.Params.ubTypeID;
-  sX = pExplosion.value.Params.sX;
-  sY = pExplosion.value.Params.sY;
-  sZ = pExplosion.value.Params.sZ;
-  sGridNo = pExplosion.value.Params.sGridNo;
-  usItem = pExplosion.value.Params.usItem;
-  bLevel = pExplosion.value.Params.bLevel;
+  uiFlags = pExplosion.Params.uiFlags;
+  ubOwner = pExplosion.Params.ubOwner;
+  ubTypeID = pExplosion.Params.ubTypeID;
+  sX = pExplosion.Params.sX;
+  sY = pExplosion.Params.sY;
+  sZ = pExplosion.Params.sZ;
+  sGridNo = pExplosion.Params.sGridNo;
+  usItem = pExplosion.Params.usItem;
+  bLevel = pExplosion.Params.bLevel;
 
   // If Z value given is 0 and bLevel > 0, make z heigher
   if (sZ == 0 && bLevel > 0) {
     sZ = ROOF_LEVEL_HEIGHT;
   }
 
-  pExplosion.value.iLightID = -1;
+  pExplosion.iLightID = -1;
 
   // OK, if we are over water.... use water explosion...
   ubTerrainType = GetTerrainType(sGridNo);
 
   // Setup explosion!
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
-
   AniParams.sGridNo = sGridNo;
   AniParams.ubLevelID = ANI_TOPMOST_LEVEL;
   AniParams.sDelay = sBlastSpeeds[ubTypeID];
-  AniParams.sStartFrame = pExplosion.value.sCurrentFrame;
+  AniParams.sStartFrame = pExplosion.sCurrentFrame;
   AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_EXPLOSION;
 
   if (ubTerrainType == Enum315.LOW_WATER || ubTerrainType == Enum315.MED_WATER || ubTerrainType == Enum315.DEEP_WATER) {
@@ -268,20 +266,20 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
   }
   AniParams.uiUserData = usItem;
   AniParams.ubUserData2 = ubOwner;
-  AniParams.uiUserData3 = pExplosion.value.iID;
+  AniParams.uiUserData3 = pExplosion.iID;
 
   AniParams.zCachedFile = zBlastFilenames[ubTypeID];
 
-  CreateAnimationTile(addressof(AniParams));
+  CreateAnimationTile(AniParams);
 
   //  set light source....
-  if (pExplosion.value.iLightID == -1) {
+  if (pExplosion.iLightID == -1) {
     // DO ONLY IF WE'RE AT A GOOD LEVEL
     if (ubAmbientLightLevel >= MIN_AMB_LEVEL_FOR_MERC_LIGHTS) {
-      if ((pExplosion.value.iLightID = LightSpriteCreate("L-R04.LHT", 0)) != (-1)) {
-        LightSpritePower(pExplosion.value.iLightID, true);
+      if ((pExplosion.iLightID = LightSpriteCreate("L-R04.LHT", 0)) != (-1)) {
+        LightSpritePower(pExplosion.iLightID, true);
 
-        LightSpritePosition(pExplosion.value.iLightID, (sX / CELL_X_SIZE), (sY / CELL_Y_SIZE));
+        LightSpritePosition(pExplosion.iLightID, (sX / CELL_X_SIZE), (sY / CELL_Y_SIZE));
       }
     }
   }
@@ -311,9 +309,9 @@ export function RemoveExplosionData(iIndex: INT32): void {
 }
 
 function HandleFencePartnerCheck(sStructGridNo: INT16): void {
-  let pFenceStructure: Pointer<STRUCTURE>;
-  let pFenceBaseStructure: Pointer<STRUCTURE>;
-  let pFenceNode: Pointer<LEVELNODE>;
+  let pFenceStructure: STRUCTURE | null;
+  let pFenceBaseStructure: STRUCTURE;
+  let pFenceNode: LEVELNODE;
   let bFenceDestructionPartner: INT8 = -1;
   let uiFenceType: UINT32;
   let usTileIndex: UINT16;
@@ -322,17 +320,17 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
 
   if (pFenceStructure) {
     // How does our explosion partner look?
-    if (pFenceStructure.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner < 0) {
+    if (pFenceStructure.pDBStructureRef.pDBStructure.bDestructionPartner < 0) {
       // Find level node.....
-      pFenceBaseStructure = FindBaseStructure(pFenceStructure);
+      pFenceBaseStructure = <STRUCTURE>FindBaseStructure(pFenceStructure);
 
       // Get LEVELNODE for struct and remove!
-      pFenceNode = FindLevelNodeBasedOnStructure(pFenceBaseStructure.value.sGridNo, pFenceBaseStructure);
+      pFenceNode = FindLevelNodeBasedOnStructure(pFenceBaseStructure.sGridNo, pFenceBaseStructure);
 
       // Get type from index...
-      uiFenceType = GetTileType(pFenceNode.value.usIndex);
+      uiFenceType = GetTileType(pFenceNode.usIndex);
 
-      bFenceDestructionPartner = -1 * (pFenceBaseStructure.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner);
+      bFenceDestructionPartner = -1 * (pFenceBaseStructure.pDBStructureRef.pDBStructure.bDestructionPartner);
 
       // Get new index
       usTileIndex = GetTileIndexFromTypeSubIndex(uiFenceType, (bFenceDestructionPartner));
@@ -341,26 +339,26 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
       ApplyMapChangesToMapTempFile(true);
 
       // Remove it!
-      RemoveStructFromLevelNode(pFenceBaseStructure.value.sGridNo, pFenceNode);
+      RemoveStructFromLevelNode(pFenceBaseStructure.sGridNo, pFenceNode);
 
       // Add it!
-      AddStructToHead(pFenceBaseStructure.value.sGridNo, (usTileIndex));
+      AddStructToHead(pFenceBaseStructure.sGridNo, (usTileIndex));
 
       ApplyMapChangesToMapTempFile(false);
     }
   }
 }
 
-function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCurrent: Pointer<Pointer<STRUCTURE>>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, fSubSequentMultiTilesTransitionDamage: boolean, ubOwner: UINT8, bLevel: INT8): boolean {
+function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Pointer<Pointer<STRUCTURE>>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, fSubSequentMultiTilesTransitionDamage: boolean, ubOwner: UINT8, bLevel: INT8): UINT8 {
   let sX: INT16;
   let sY: INT16;
-  let pBase: Pointer<STRUCTURE>;
-  let pWallStruct: Pointer<STRUCTURE>;
-  let pAttached: Pointer<STRUCTURE>;
-  let pAttachedBase: Pointer<STRUCTURE>;
-  let pNode: Pointer<LEVELNODE> = null;
-  let pNewNode: Pointer<LEVELNODE> = null;
-  let pAttachedNode: Pointer<LEVELNODE>;
+  let pBase: STRUCTURE;
+  let pWallStruct: STRUCTURE | null;
+  let pAttached: STRUCTURE | null;
+  let pAttachedBase: STRUCTURE | null;
+  let pNode: LEVELNODE;
+  let pNewNode: LEVELNODE | null = null;
+  let pAttachedNode: LEVELNODE | null;
   let sNewGridNo: INT16;
   let sStructGridNo: INT16;
   let sNewIndex: INT16;
@@ -369,10 +367,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   let usTileIndex: UINT16;
   let ubNumberOfTiles: UINT8;
   let ubLoop: UINT8;
-  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ppTile: DB_STRUCTURE_TILE[];
   let bDestructionPartner: INT8 = -1;
   let bDamageReturnVal: INT8;
-  let fContinue: boolean;
+  let fContinue: UINT8 /* boolean */;
   let uiTileType: UINT32;
   let sBaseGridNo: INT16;
   let fExplosive: boolean;
@@ -382,7 +380,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   // an effiecnent check...
   if (DoesO3SectorStatueExistHere(sGridNo) && uiDist <= 1) {
     ChangeO3SectorStatue(true);
-    return true;
+    return 1;
   }
 
   // Get xy
@@ -390,59 +388,59 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   sY = CenterY(sGridNo);
 
   // ATE: Continue if we are only looking for walls
-  if (fOnlyWalls && !(pCurrent.value.fFlags & STRUCTURE_WALLSTUFF)) {
-    return true;
+  if (fOnlyWalls && !(pCurrent.fFlags & STRUCTURE_WALLSTUFF)) {
+    return 1;
   }
 
   if (bLevel > 0) {
-    return true;
+    return 1;
   }
 
   // Is this a corpse?
-  if ((pCurrent.value.fFlags & STRUCTURE_CORPSE) && gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] && sWoundAmt > 10) {
+  if ((pCurrent.fFlags & STRUCTURE_CORPSE) && gGameSettings.fOptions[Enum8.TOPTION_BLOOD_N_GORE] && sWoundAmt > 10) {
     // Spray corpse in a fine mist....
     if (uiDist <= 1) {
       // Remove corpse...
-      VaporizeCorpse(sGridNo, pCurrent.value.usStructureID);
+      VaporizeCorpse(sGridNo, pCurrent.usStructureID);
     }
-  } else if (!(pCurrent.value.fFlags & STRUCTURE_PERSON)) {
+  } else if (!(pCurrent.fFlags & STRUCTURE_PERSON)) {
     // Damage structure!
     if ((bDamageReturnVal = DamageStructure(pCurrent, sWoundAmt, STRUCTURE_DAMAGE_EXPLOSION, sGridNo, sX, sY, NOBODY)) != 0) {
-      fContinue = false;
+      fContinue = 0;
 
-      pBase = FindBaseStructure(pCurrent);
+      pBase = <STRUCTURE>FindBaseStructure(pCurrent);
 
-      sBaseGridNo = pBase.value.sGridNo;
+      sBaseGridNo = pBase.sGridNo;
 
       // if the structure is openable, destroy all items there
-      if (pBase.value.fFlags & STRUCTURE_OPENABLE && !(pBase.value.fFlags & STRUCTURE_DOOR)) {
-        RemoveAllUnburiedItems(pBase.value.sGridNo, bLevel);
+      if (pBase.fFlags & STRUCTURE_OPENABLE && !(pBase.fFlags & STRUCTURE_DOOR)) {
+        RemoveAllUnburiedItems(pBase.sGridNo, bLevel);
       }
 
-      fExplosive = ((pCurrent.value.fFlags & STRUCTURE_EXPLOSIVE) != 0);
+      fExplosive = ((pCurrent.fFlags & STRUCTURE_EXPLOSIVE) != 0);
 
       // Get LEVELNODE for struct and remove!
-      pNode = FindLevelNodeBasedOnStructure(pBase.value.sGridNo, pBase);
+      pNode = FindLevelNodeBasedOnStructure(pBase.sGridNo, pBase);
 
       // ATE: if we have completely destroyed a structure,
       // and this structure should have a in-between explosion partner,
       // make damage code 2 - which means only damaged - the normal explosion
       // spreading will cause it do use the proper peices..
-      if (bDamageReturnVal == 1 && pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner < 0) {
+      if (bDamageReturnVal == 1 && pBase.pDBStructureRef.pDBStructure.bDestructionPartner < 0) {
         bDamageReturnVal = 2;
       }
 
       if (bDamageReturnVal == 1) {
-        fContinue = true;
+        fContinue = 1;
       }
       // Check for a damaged looking graphic...
       else if (bDamageReturnVal == 2) {
-        if (pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner < 0) {
+        if (pBase.pDBStructureRef.pDBStructure.bDestructionPartner < 0) {
           // We swap to another graphic!
           // It's -ve and 1-based, change to +ve, 1 based
-          bDestructionPartner = (-1 * pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner);
+          bDestructionPartner = (-1 * pBase.pDBStructureRef.pDBStructure.bDestructionPartner);
 
-          uiTileType = GetTileType(pNode.value.usIndex);
+          uiTileType = GetTileType(pNode.usIndex);
 
           fContinue = 2;
         }
@@ -450,7 +448,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
       if (fContinue) {
         // Remove the beast!
-        while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pCurrent.value.usStructureID) {
+        while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pCurrent.usStructureID) {
           // the next structure will also be deleted so we had better
           // skip past it!
           (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
@@ -458,14 +456,14 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
         // Replace with explosion debris if there are any....
         // ( and there already sin;t explosion debris there.... )
-        if (pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner > 0) {
+        if (pBase.pDBStructureRef.pDBStructure.bDestructionPartner > 0) {
           // Alrighty add!
 
           // Add to every gridno structure is in
-          ubNumberOfTiles = pBase.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles;
-          ppTile = pBase.value.pDBStructureRef.value.ppTile;
+          ubNumberOfTiles = pBase.pDBStructureRef.pDBStructure.ubNumberOfTiles;
+          ppTile = pBase.pDBStructureRef.ppTile;
 
-          bDestructionPartner = pBase.value.pDBStructureRef.value.pDBStructure.value.bDestructionPartner;
+          bDestructionPartner = pBase.pDBStructureRef.pDBStructure.bDestructionPartner;
 
           // OK, destrcution index is , as default, the partner, until we go over the first set of explsion
           // debris...
@@ -477,12 +475,12 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
           // Free all the non-base tiles; the base tile is at pointer 0
           for (ubLoop = BASE_TILE; ubLoop < ubNumberOfTiles; ubLoop++) {
-            if (!(ppTile[ubLoop].value.fFlags & TILE_ON_ROOF)) {
-              sStructGridNo = pBase.value.sGridNo + ppTile[ubLoop].value.sPosRelToBase;
+            if (!(ppTile[ubLoop].fFlags & TILE_ON_ROOF)) {
+              sStructGridNo = pBase.sGridNo + ppTile[ubLoop].sPosRelToBase;
               // there might be two structures in this tile, one on each level, but we just want to
               // delete one on each pass
 
-              if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+              if ((usObjectIndex = TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS)) === -1) {
                 // Set a flag indicating that the following changes are to go the the maps, temp file
                 ApplyMapChangesToMapTempFile(true);
 
@@ -494,13 +492,13 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           }
 
           // IF we are a wall, add debris for the other side
-          if (pCurrent.value.fFlags & STRUCTURE_WALLSTUFF) {
-            switch (pCurrent.value.ubWallOrientation) {
+          if (pCurrent.fFlags & STRUCTURE_WALLSTUFF) {
+            switch (pCurrent.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
               case Enum314.INSIDE_TOP_LEFT:
 
-                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
-                if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+                sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.SOUTH));
+                if ((usObjectIndex = TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS)) === -1) {
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
 
@@ -513,8 +511,8 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               case Enum314.OUTSIDE_TOP_RIGHT:
               case Enum314.INSIDE_TOP_RIGHT:
 
-                sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
-                if (!TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS, addressof(usObjectIndex))) {
+                sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.EAST));
+                if ((usObjectIndex = TypeRangeExistsInObjectLayer(sStructGridNo, Enum313.FIRSTEXPLDEBRIS, Enum313.SECONDEXPLDEBRIS)) === -1) {
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
 
@@ -527,61 +525,61 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           }
         }
         // Else look for fences, walk along them to change to destroyed peices...
-        else if (pCurrent.value.fFlags & STRUCTURE_FENCE) {
+        else if (pCurrent.fFlags & STRUCTURE_FENCE) {
           // walk along based on orientation
-          switch (pCurrent.value.ubWallOrientation) {
+          switch (pCurrent.ubWallOrientation) {
             case Enum314.OUTSIDE_TOP_RIGHT:
             case Enum314.INSIDE_TOP_RIGHT:
 
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
+              sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.SOUTH));
               HandleFencePartnerCheck(sStructGridNo);
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.NORTH));
+              sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.NORTH));
               HandleFencePartnerCheck(sStructGridNo);
               break;
 
             case Enum314.OUTSIDE_TOP_LEFT:
             case Enum314.INSIDE_TOP_LEFT:
 
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
+              sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.EAST));
               HandleFencePartnerCheck(sStructGridNo);
-              sStructGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.WEST));
+              sStructGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.WEST));
               HandleFencePartnerCheck(sStructGridNo);
               break;
           }
         }
 
         // OK, Check if this is a wall, then search and change other walls based on this
-        if (pCurrent.value.fFlags & STRUCTURE_WALLSTUFF) {
+        if (pCurrent.fFlags & STRUCTURE_WALLSTUFF) {
           // ATE
           // Remove any decals in tile....
           // Use tile database for this as apposed to stuct data
-          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, Enum313.FIRSTWALLDECAL, Enum313.FOURTHWALLDECAL);
-          RemoveAllStructsOfTypeRange(pBase.value.sGridNo, Enum313.FIFTHWALLDECAL, Enum313.EIGTHWALLDECAL);
+          RemoveAllStructsOfTypeRange(pBase.sGridNo, Enum313.FIRSTWALLDECAL, Enum313.FOURTHWALLDECAL);
+          RemoveAllStructsOfTypeRange(pBase.sGridNo, Enum313.FIFTHWALLDECAL, Enum313.EIGTHWALLDECAL);
 
           // Alrighty, now do this
           // Get orientation
           // based on orientation, go either x or y dir
           // check for wall in both _ve and -ve directions
           // if found, replace!
-          switch (pCurrent.value.ubWallOrientation) {
+          switch (pCurrent.ubWallOrientation) {
             case Enum314.OUTSIDE_TOP_LEFT:
             case Enum314.INSIDE_TOP_LEFT:
 
               // Move WEST
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.WEST));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.WEST));
 
-              pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
+              ({ pNode: pNewNode, pStructure: pWallStruct } = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.ubWallOrientation));
 
               if (pNewNode != null) {
-                if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
+                if ((<STRUCTURE>pWallStruct).fFlags & STRUCTURE_WALL) {
+                  if (pCurrent.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 48;
                   } else {
                     sSubIndex = 52;
                   }
 
                   // Replace!
-                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -594,20 +592,20 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in EAST
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.EAST));
 
-              pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
+              ({ pNode: pNewNode, pStructure: pWallStruct } = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.ubWallOrientation));
 
               if (pNewNode != null) {
-                if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
+                if ((<STRUCTURE>pWallStruct).fFlags & STRUCTURE_WALL) {
+                  if (pCurrent.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
                     sSubIndex = 49;
                   } else {
                     sSubIndex = 53;
                   }
 
                   // Replace!
-                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -620,22 +618,22 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // look for attached structures in same tile
-              sNewGridNo = pBase.value.sGridNo;
+              sNewGridNo = pBase.sGridNo;
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_LEFT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
                   // Remove the beast!
-                  while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pAttachedBase.value.usStructureID) {
+                  while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pAttachedBase.usStructureID) {
                     // the next structure will also be deleted so we had better
                     // skip past it!
                     (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
                   }
 
-                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.value.sGridNo, pAttachedBase);
+                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.sGridNo, pAttachedBase);
                   if (pAttachedNode) {
                     ApplyMapChangesToMapTempFile(true);
-                    RemoveStructFromLevelNode(pAttachedBase.value.sGridNo, pAttachedNode);
+                    RemoveStructFromLevelNode(pAttachedBase.sGridNo, pAttachedNode);
                     ApplyMapChangesToMapTempFile(false);
                   } else {
 // error!
@@ -650,15 +648,15 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in SOUTH, looking for attached structures to remove
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.SOUTH));
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_LEFT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
-                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.value.sGridNo, pAttachedBase);
+                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.sGridNo, pAttachedBase);
                   if (pAttachedNode) {
                     ApplyMapChangesToMapTempFile(true);
-                    RemoveStructFromLevelNode(pAttachedBase.value.sGridNo, pAttachedNode);
+                    RemoveStructFromLevelNode(pAttachedBase.sGridNo, pAttachedNode);
                     ApplyMapChangesToMapTempFile(false);
                   } else {
 // error!
@@ -677,20 +675,20 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
             case Enum314.INSIDE_TOP_RIGHT:
 
               // Move in NORTH
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.NORTH));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.NORTH));
 
-              pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
+              ({ pNode: pNewNode, pStructure: pWallStruct } = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.ubWallOrientation));
 
               if (pNewNode != null) {
-                if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+                if ((<STRUCTURE>pWallStruct).fFlags & STRUCTURE_WALL) {
+                  if (pCurrent.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 51;
                   } else {
                     sSubIndex = 55;
                   }
 
                   // Replace!
-                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -703,20 +701,20 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in SOUTH
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.SOUTH));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.SOUTH));
 
-              pNewNode = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.value.ubWallOrientation, addressof(pWallStruct));
+              ({ pNode: pNewNode, pStructure: pWallStruct } = GetWallLevelNodeAndStructOfSameOrientationAtGridno(sNewGridNo, pCurrent.ubWallOrientation));
 
               if (pNewNode != null) {
-                if (pWallStruct.value.fFlags & STRUCTURE_WALL) {
-                  if (pCurrent.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+                if ((<STRUCTURE>pWallStruct).fFlags & STRUCTURE_WALL) {
+                  if (pCurrent.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                     sSubIndex = 50;
                   } else {
                     sSubIndex = 54;
                   }
 
                   // Replace!
-                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.value.usIndex].fType, sSubIndex);
+                  sNewIndex = GetTileIndexFromTypeSubIndex(gTileDatabase[pNewNode.usIndex].fType, sSubIndex);
 
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(true);
@@ -729,15 +727,15 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // looking for attached structures to remove in base tile
-              sNewGridNo = pBase.value.sGridNo;
+              sNewGridNo = pBase.sGridNo;
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_RIGHT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
-                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.value.sGridNo, pAttachedBase);
+                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.sGridNo, pAttachedBase);
                   if (pAttachedNode) {
                     ApplyMapChangesToMapTempFile(true);
-                    RemoveStructFromLevelNode(pAttachedBase.value.sGridNo, pAttachedNode);
+                    RemoveStructFromLevelNode(pAttachedBase.sGridNo, pAttachedNode);
                     ApplyMapChangesToMapTempFile(false);
                   } else {
 // error!
@@ -752,15 +750,15 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
               }
 
               // Move in EAST, looking for attached structures to remove
-              sNewGridNo = NewGridNo(pBase.value.sGridNo, DirectionInc(Enum245.EAST));
+              sNewGridNo = NewGridNo(pBase.sGridNo, DirectionInc(Enum245.EAST));
               pAttached = FindStructure(sNewGridNo, STRUCTURE_ON_RIGHT_WALL);
               while (pAttached) {
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
-                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.value.sGridNo, pAttachedBase);
+                  pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.sGridNo, pAttachedBase);
                   if (pAttachedNode) {
                     ApplyMapChangesToMapTempFile(true);
-                    RemoveStructFromLevelNode(pAttachedBase.value.sGridNo, pAttachedNode);
+                    RemoveStructFromLevelNode(pAttachedBase.sGridNo, pAttachedNode);
                     ApplyMapChangesToMapTempFile(false);
                   } else {
 // error!
@@ -801,9 +799,9 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         // OK, we need to remove the water from the fountain
         // Lots of HARD CODING HERE :(
         // Get tile type
-        uiTileType = GetTileType(pNode.value.usIndex);
+        uiTileType = GetTileType(pNode.usIndex);
         // Check if we are a fountain!
-        if (stricmp(gTilesets[giCurrentTilesetID].TileSurfaceFilenames[uiTileType], "fount1.sti") == 0) {
+        if (gTilesets[giCurrentTilesetID].TileSurfaceFilenames[uiTileType].toLowerCase() == "fount1.sti") {
           // Yes we are!
           // Remove water....
           ApplyMapChangesToMapTempFile(true);
@@ -822,14 +820,14 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         // Remove any interactive tiles we could be over!
         BeginCurInteractiveTileCheck(INTILE_CHECK_SELECTIVE);
 
-        if (pCurrent.value.fFlags & STRUCTURE_WALLSTUFF) {
-          RecompileLocalMovementCostsForWall(pBase.value.sGridNo, pBase.value.ubWallOrientation);
+        if (pCurrent.fFlags & STRUCTURE_WALLSTUFF) {
+          RecompileLocalMovementCostsForWall(pBase.sGridNo, pBase.ubWallOrientation);
         }
 
         // Remove!
         // Set a flag indicating that the following changes are to go the the maps, temp file
         ApplyMapChangesToMapTempFile(true);
-        RemoveStructFromLevelNode(pBase.value.sGridNo, pNode);
+        RemoveStructFromLevelNode(pBase.sGridNo, pNode);
         ApplyMapChangesToMapTempFile(false);
 
         // OK, if we are to swap structures, do it now...
@@ -862,7 +860,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
         }
 
         if (fContinue == 2) {
-          return false;
+          return 0;
         }
       }
 
@@ -874,15 +872,15 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   return 1;
 }
 
-let gStruct: Pointer<STRUCTURE>;
+let gStruct: STRUCTURE | null;
 
-function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, bMultiStructSpecialFlag: INT8, fSubSequentMultiTilesTransitionDamage: boolean, ubOwner: UINT8, bLevel: INT8): void {
-  let pCurrent: Pointer<STRUCTURE>;
-  let pNextCurrent: Pointer<STRUCTURE>;
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
+function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, bMultiStructSpecialFlag: INT8, fSubSequentMultiTilesTransitionDamage: UINT8 /* boolean */, ubOwner: UINT8, bLevel: INT8): void {
+  let pCurrent: STRUCTURE | null;
+  let pNextCurrent: STRUCTURE | null;
+  let pStructure: STRUCTURE | null;
+  let pBaseStructure: STRUCTURE | null;
   let sDesiredLevel: INT16;
-  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ppTile: DB_STRUCTURE_TILE[];
   let ubLoop: UINT8;
   let ubLoop2: UINT8;
   let sNewGridNo: INT16;
@@ -892,7 +890,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
   let fMultiStructure: boolean = false;
   let ubNumberOfTiles: UINT8;
   let fMultiStructSpecialFlag: boolean = false;
-  let fExplodeDamageReturn: boolean = false;
+  let fExplodeDamageReturn: UINT8 /* boolean */ = 0;
 
   // Based on distance away, damage any struct at this gridno
   // OK, loop through structures and damage!
@@ -906,31 +904,31 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
     pBaseStructure = FindBaseStructure(pCurrent);
 
     if (pBaseStructure) {
-      sBaseGridNo = pBaseStructure.value.sGridNo;
-      ubNumberOfTiles = pBaseStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles;
-      fMultiStructure = ((pBaseStructure.value.fFlags & STRUCTURE_MULTI) != 0);
-      ppTile = MemAlloc(sizeof(DB_STRUCTURE_TILE) * ubNumberOfTiles);
-      memcpy(ppTile, pBaseStructure.value.pDBStructureRef.value.ppTile, sizeof(DB_STRUCTURE_TILE) * ubNumberOfTiles);
+      sBaseGridNo = pBaseStructure.sGridNo;
+      ubNumberOfTiles = pBaseStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles;
+      fMultiStructure = ((pBaseStructure.fFlags & STRUCTURE_MULTI) != 0);
+      ppTile = createArrayFrom(ubNumberOfTiles, createDbStructureTile);
+      copyObjectArray(ppTile, pBaseStructure.pDBStructureRef.ppTile, copyDbStructureTile);
 
       if (bMultiStructSpecialFlag == -1) {
         // Set it!
-        bMultiStructSpecialFlag = ((pBaseStructure.value.fFlags & STRUCTURE_SPECIAL) != 0);
+        bMultiStructSpecialFlag = Number((pBaseStructure.fFlags & STRUCTURE_SPECIAL) != 0);
       }
 
-      if (pBaseStructure.value.fFlags & STRUCTURE_EXPLOSIVE) {
+      if (pBaseStructure.fFlags & STRUCTURE_EXPLOSIVE) {
         // ATE: Set hit points to zero....
-        pBaseStructure.value.ubHitPoints = 0;
+        pBaseStructure.ubHitPoints = 0;
       }
     } else {
       fMultiStructure = false;
     }
 
-    pNextCurrent = pCurrent.value.pNext;
+    pNextCurrent = pCurrent.pNext;
     gStruct = pNextCurrent;
 
     // Check level!
-    if (pCurrent.value.sCubeOffset == sDesiredLevel) {
-      fExplodeDamageReturn = ExplosiveDamageStructureAtGridNo(pCurrent, addressof(pNextCurrent), sGridNo, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, 0, ubOwner, bLevel);
+    if (pCurrent.sCubeOffset == sDesiredLevel) {
+      fExplodeDamageReturn = ExplosiveDamageStructureAtGridNo(pCurrent, addressof(pNextCurrent), sGridNo, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, false, ubOwner, bLevel);
 
       // Are we overwritting damage due to multi-tile...?
       if (fExplodeDamageReturn) {
@@ -952,14 +950,13 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
       // ATE: Don't after first attack...
       if (uiDist > 1) {
         if (pBaseStructure) {
-          MemFree(ppTile);
         }
         return;
       }
 
       {
         for (ubLoop = BASE_TILE; ubLoop < ubNumberOfTiles; ubLoop++) {
-          sNewGridNo = sBaseGridNo + ppTile[ubLoop].value.sPosRelToBase;
+          sNewGridNo = sBaseGridNo + ppTile[ubLoop].sPosRelToBase;
 
           // look in adjacent tiles
           for (ubLoop2 = 0; ubLoop2 < Enum245.NUM_WORLD_DIRECTIONS; ubLoop2++) {
@@ -967,7 +964,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
             if (sNewGridNo2 != sNewGridNo && sNewGridNo2 != sGridNo) {
               pStructure = FindStructure(sNewGridNo2, STRUCTURE_MULTI);
               if (pStructure) {
-                fMultiStructSpecialFlag = ((pStructure.value.fFlags & STRUCTURE_SPECIAL) != 0);
+                fMultiStructSpecialFlag = ((pStructure.fFlags & STRUCTURE_SPECIAL) != 0);
 
                 if ((bMultiStructSpecialFlag == fMultiStructSpecialFlag)) {
                   // If we just damaged it, use same damage value....
@@ -992,7 +989,6 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
     }
 
     if (pBaseStructure) {
-      MemFree(ppTile);
     }
 
     pCurrent = pNextCurrent;
@@ -1000,16 +996,16 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
 }
 
 function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: INT16, sWoundAmt: INT16, sBreathAmt: INT16, uiDist: UINT32, usItem: UINT16, sSubsequent: INT16): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sNewWoundAmt: INT16 = 0;
   let ubDirection: UINT8;
 
   pSoldier = MercPtrs[ubPerson]; // someone is here, and they're gonna get hurt
 
-  if (!pSoldier.value.bActive || !pSoldier.value.bInSector || !pSoldier.value.bLife)
+  if (!pSoldier.bActive || !pSoldier.bInSector || !pSoldier.bLife)
     return false;
 
-  if (pSoldier.value.ubMiscSoldierFlags & SOLDIER_MISC_HURT_BY_EXPLOSION) {
+  if (pSoldier.ubMiscSoldierFlags & SOLDIER_MISC_HURT_BY_EXPLOSION) {
     // don't want to damage the guy twice
     return false;
   }
@@ -1027,88 +1023,88 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   }
   EVENT_SoldierGotHit(pSoldier, usItem, sNewWoundAmt, sBreathAmt, ubDirection, uiDist, ubOwner, 0, ANIM_CROUCH, sSubsequent, sBombGridNo);
 
-  pSoldier.value.ubMiscSoldierFlags |= SOLDIER_MISC_HURT_BY_EXPLOSION;
+  pSoldier.ubMiscSoldierFlags |= SOLDIER_MISC_HURT_BY_EXPLOSION;
 
-  if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.value.bTeam != gbPlayerNum) {
+  if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
     ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
   }
 
   return true;
 }
 
-export function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EXPLOSIVETYPE>, sSubsequent: INT16, fRecompileMovementCosts: boolean, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): boolean {
+export function DishOutGasDamage(pSoldier: SOLDIERTYPE, pExplosive: EXPLOSIVETYPE, sSubsequent: INT16, fRecompileMovementCosts: boolean, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): boolean {
   let bPosOfMask: INT8 = NO_SLOT;
 
-  if (!pSoldier.value.bActive || !pSoldier.value.bInSector || !pSoldier.value.bLife || AM_A_ROBOT(pSoldier)) {
+  if (!pSoldier.bActive || !pSoldier.bInSector || !pSoldier.bLife || AM_A_ROBOT(pSoldier)) {
     return fRecompileMovementCosts;
   }
 
-  if (pExplosive.value.ubType == Enum287.EXPLOSV_CREATUREGAS) {
-    if (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
+  if (pExplosive.ubType == Enum287.EXPLOSV_CREATUREGAS) {
+    if (pSoldier.uiStatusFlags & SOLDIER_MONSTER) {
       // unaffected by own gas effects
       return fRecompileMovementCosts;
     }
-    if (sSubsequent && pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_CREATUREGAS) {
+    if (sSubsequent && pSoldier.fHitByGasFlags & Enum264.HIT_BY_CREATUREGAS) {
       // already affected by creature gas this turn
       return fRecompileMovementCosts;
     }
   } else // no gas mask help from creature attacks
          // ATE/CJC: gas stuff
   {
-    if (pExplosive.value.ubType == Enum287.EXPLOSV_TEARGAS) {
+    if (pExplosive.ubType == Enum287.EXPLOSV_TEARGAS) {
       if (AM_A_ROBOT(pSoldier)) {
         return fRecompileMovementCosts;
       }
 
       // ignore whether subsequent or not if hit this turn
-      if (pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_TEARGAS) {
+      if (pSoldier.fHitByGasFlags & Enum264.HIT_BY_TEARGAS) {
         // already affected by creature gas this turn
         return fRecompileMovementCosts;
       }
-    } else if (pExplosive.value.ubType == Enum287.EXPLOSV_MUSTGAS) {
+    } else if (pExplosive.ubType == Enum287.EXPLOSV_MUSTGAS) {
       if (AM_A_ROBOT(pSoldier)) {
         return fRecompileMovementCosts;
       }
 
-      if (sSubsequent && pSoldier.value.fHitByGasFlags & Enum264.HIT_BY_MUSTARDGAS) {
+      if (sSubsequent && pSoldier.fHitByGasFlags & Enum264.HIT_BY_MUSTARDGAS) {
         // already affected by creature gas this turn
         return fRecompileMovementCosts;
       }
     }
 
-    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD1POS].bStatus[0] >= USABLE) {
+    if (pSoldier.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK && pSoldier.inv[Enum261.HEAD1POS].bStatus[0] >= USABLE) {
       bPosOfMask = Enum261.HEAD1POS;
-    } else if (pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK && pSoldier.value.inv[Enum261.HEAD2POS].bStatus[0] >= USABLE) {
+    } else if (pSoldier.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK && pSoldier.inv[Enum261.HEAD2POS].bStatus[0] >= USABLE) {
       bPosOfMask = Enum261.HEAD2POS;
     }
 
     if (bPosOfMask != NO_SLOT) {
-      if (pSoldier.value.inv[bPosOfMask].bStatus[0] < GASMASK_MIN_STATUS) {
+      if (pSoldier.inv[bPosOfMask].bStatus[0] < GASMASK_MIN_STATUS) {
         // GAS MASK reduces breath loss by its work% (it leaks if not at least 70%)
-        sBreathAmt = (sBreathAmt * (100 - pSoldier.value.inv[bPosOfMask].bStatus[0])) / 100;
+        sBreathAmt = (sBreathAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100;
         if (sBreathAmt > 500) {
           // if at least 500 of breath damage got through
           // the soldier within the blast radius is gassed for at least one
           // turn, possibly more if it's tear gas (which hangs around a while)
-          pSoldier.value.uiStatusFlags |= SOLDIER_GASSED;
+          pSoldier.uiStatusFlags |= SOLDIER_GASSED;
         }
 
-        if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
+        if (pSoldier.uiStatusFlags & SOLDIER_PC) {
           if (sWoundAmt > 1) {
-            pSoldier.value.inv[bPosOfMask].bStatus[0] -= Random(4);
-            sWoundAmt = (sWoundAmt * (100 - pSoldier.value.inv[bPosOfMask].bStatus[0])) / 100;
+            pSoldier.inv[bPosOfMask].bStatus[0] -= Random(4);
+            sWoundAmt = (sWoundAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100;
           } else if (sWoundAmt == 1) {
-            pSoldier.value.inv[bPosOfMask].bStatus[0] -= Random(2);
+            pSoldier.inv[bPosOfMask].bStatus[0] -= Random(2);
           }
         }
       } else {
         sBreathAmt = 0;
         if (sWoundAmt > 0) {
           if (sWoundAmt == 1) {
-            pSoldier.value.inv[bPosOfMask].bStatus[0] -= Random(2);
+            pSoldier.inv[bPosOfMask].bStatus[0] -= Random(2);
           } else {
             // use up gas mask
-            pSoldier.value.inv[bPosOfMask].bStatus[0] -= Random(4);
+            pSoldier.inv[bPosOfMask].bStatus[0] -= Random(4);
           }
         }
         sWoundAmt = 0;
@@ -1117,26 +1113,26 @@ export function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Poi
   }
 
   if (sWoundAmt != 0 || sBreathAmt != 0) {
-    switch (pExplosive.value.ubType) {
+    switch (pExplosive.ubType) {
       case Enum287.EXPLOSV_CREATUREGAS:
-        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_CREATUREGAS;
+        pSoldier.fHitByGasFlags |= Enum264.HIT_BY_CREATUREGAS;
         break;
       case Enum287.EXPLOSV_TEARGAS:
-        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_TEARGAS;
+        pSoldier.fHitByGasFlags |= Enum264.HIT_BY_TEARGAS;
         break;
       case Enum287.EXPLOSV_MUSTGAS:
-        pSoldier.value.fHitByGasFlags |= Enum264.HIT_BY_MUSTARDGAS;
+        pSoldier.fHitByGasFlags |= Enum264.HIT_BY_MUSTARDGAS;
         break;
       default:
         break;
     }
     // a gas effect, take damage directly...
     SoldierTakeDamage(pSoldier, ANIM_STAND, sWoundAmt, sBreathAmt, TAKE_DAMAGE_GAS, NOBODY, NOWHERE, 0, true);
-    if (pSoldier.value.bLife >= CONSCIOUSNESS) {
+    if (pSoldier.bLife >= CONSCIOUSNESS) {
       DoMercBattleSound(pSoldier, (Enum259.BATTLE_SOUND_HIT1 + Random(2)));
     }
 
-    if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.value.bTeam != gbPlayerNum) {
+    if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
       ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
     }
   }
@@ -1150,8 +1146,8 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   let sNewBreathAmt: INT16 = 0;
   let sStructDmgAmt: INT16;
   let ubPerson: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pExplosive: Pointer<EXPLOSIVETYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pExplosive: EXPLOSIVETYPE;
   let sX: INT16;
   let sY: INT16;
   let fRecompileMovementCosts: boolean = false;
@@ -1162,7 +1158,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   let sNewGridNo: INT16;
   let fBloodEffect: boolean = false;
   let pItemPool: ITEM_POOL | null;
-  let pItemPoolNext: Pointer<ITEM_POOL>;
+  let pItemPoolNext: ITEM_POOL | null;
   let uiRoll: UINT32;
 
   // Init the variables
@@ -1217,15 +1213,15 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
 
   // OK, here we:
   // Get explosive data from table
-  pExplosive = addressof(Explosive[Item[usItem].ubClassIndex]);
+  pExplosive = Explosive[Item[usItem].ubClassIndex];
 
   uiRoll = PreRandom(100);
 
   // Calculate wound amount
-  sWoundAmt = pExplosive.value.ubDamage + ((pExplosive.value.ubDamage * uiRoll) / 100);
+  sWoundAmt = pExplosive.ubDamage + ((pExplosive.ubDamage * uiRoll) / 100);
 
   // Calculate breath amount ( if stun damage applicable )
-  sBreathAmt = (pExplosive.value.ubStunDamage * 100) + (((pExplosive.value.ubStunDamage / 2) * 100 * uiRoll) / 100);
+  sBreathAmt = (pExplosive.ubStunDamage * 100) + (((pExplosive.ubStunDamage / 2) * 100 * uiRoll) / 100);
 
   // ATE: Make sure guys get pissed at us!
   HandleBuldingDestruction(sGridNo, ubOwner);
@@ -1236,16 +1232,16 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
     // If radius is 5, damage % is (100)/80/60/40/20/10
     // If radius is 8, damage % is (100)/88/75/63/50/37/25/13/6
 
-    if (pExplosive.value.ubRadius == 0) {
+    if (pExplosive.ubRadius == 0) {
       // leave as is, has to be at range 0 here
-    } else if (uiDist < pExplosive.value.ubRadius) {
+    } else if (uiDist < pExplosive.ubRadius) {
       // if radius is 5, go down by 5ths ~ 20%
-      sWoundAmt -= (sWoundAmt * uiDist / pExplosive.value.ubRadius);
-      sBreathAmt -= (sBreathAmt * uiDist / pExplosive.value.ubRadius);
+      sWoundAmt -= (sWoundAmt * uiDist / pExplosive.ubRadius);
+      sBreathAmt -= (sBreathAmt * uiDist / pExplosive.ubRadius);
     } else {
       // at the edge of the explosion, do half the previous damage
-      sWoundAmt = ((sWoundAmt / pExplosive.value.ubRadius) / 2);
-      sBreathAmt = ((sBreathAmt / pExplosive.value.ubRadius) / 2);
+      sWoundAmt = ((sWoundAmt / pExplosive.ubRadius) / 2);
+      sBreathAmt = ((sBreathAmt / pExplosive.ubRadius) / 2);
     }
 
     if (sWoundAmt < 0)
@@ -1255,7 +1251,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       sBreathAmt = 0;
 
     // damage structures
-    if (uiDist <= Math.max(1, (pExplosive.value.ubDamage / 30))) {
+    if (uiDist <= Math.max(1, (pExplosive.ubDamage / 30))) {
       if (Item[usItem].usItemClass & IC_GRENADE) {
         sStructDmgAmt = sWoundAmt / 3;
       } else // most explosives
@@ -1293,7 +1289,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
     }
 
     // NB radius can be 0 so cannot divide it by 2 here
-    if (!fStunEffect && (uiDist * 2 <= pExplosive.value.ubRadius)) {
+    if (!fStunEffect && (uiDist * 2 <= pExplosive.ubRadius)) {
       pItemPool = GetItemPool(sGridNo, bLevel);
 
       while (pItemPool) {
@@ -1519,7 +1515,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   let fTravelCostObs: boolean = false;
   let uiRangeReduce: UINT32;
   let sNewGridNo: INT16;
-  let pBlockingStructure: Pointer<STRUCTURE>;
+  let pBlockingStructure: STRUCTURE | null;
   let fBlowWindowSouth: boolean = false;
   let fReduceRay: boolean = true;
 
@@ -1542,10 +1538,10 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   Blocking = GetBlockingStructureInfo(uiNewSpot, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
 
   if (pBlockingStructure) {
-    if (pBlockingStructure.value.fFlags & STRUCTURE_CAVEWALL) {
+    if (pBlockingStructure.fFlags & STRUCTURE_CAVEWALL) {
       // block completely!
       fTravelCostObs = true;
-    } else if (pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
+    } else if (pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
       // not stopped
       fTravelCostObs = false;
       fReduceRay = false;
@@ -1571,7 +1567,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
           fTravelCostObs = false;
           // Range will be reduced below...
         }
-        if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
+        if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
           fTravelCostObs = false;
           fReduceRay = false;
         }
@@ -1586,7 +1582,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
           fTravelCostObs = false;
           // Range will be reduced below...
         }
-        if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
+        if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
           fTravelCostObs = false;
           fReduceRay = false;
         }
@@ -1602,7 +1598,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         }
 
         if (pBlockingStructure != null) {
-          WindowHit(uiNewSpot, pBlockingStructure.value.usStructureID, fBlowWindowSouth, true);
+          WindowHit(uiNewSpot, pBlockingStructure.usStructureID, fBlowWindowSouth, true);
         }
       }
 
@@ -1611,26 +1607,26 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.WEST));
 
       BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
-      if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
+      if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
         fTravelCostObs = false;
         fReduceRay = false;
       }
       if (BlockingTemp == BLOCKING_TOPRIGHT_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_WINDOW) {
         if (pBlockingStructure != null) {
-          WindowHit(sNewGridNo, pBlockingStructure.value.usStructureID, false, true);
+          WindowHit(sNewGridNo, pBlockingStructure.usStructureID, false, true);
         }
       }
 
       sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.NORTH));
       BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
 
-      if (pBlockingStructure && pBlockingStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity <= 15) {
+      if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
         fTravelCostObs = false;
         fReduceRay = false;
       }
       if (BlockingTemp == BLOCKING_TOPRIGHT_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_WINDOW) {
         if (pBlockingStructure != null) {
-          WindowHit(sNewGridNo, pBlockingStructure.value.usStructureID, false, true);
+          WindowHit(sNewGridNo, pBlockingStructure.usStructureID, false, true);
         }
       }
     }
@@ -1682,7 +1678,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   }
 }
 
-export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: boolean, bLevel: INT8, iSmokeEffectID: INT32): void {
+export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: UINT8 /* boolean */, bLevel: INT8, iSmokeEffectID: INT32): void {
   let uiNewSpot: INT32;
   let uiTempSpot: INT32;
   let uiBranchSpot: INT32;
@@ -1745,7 +1741,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
       // see if this was a different spot & if we should be able to reach
       // this spot
       if (uiNewSpot == uiTempSpot) {
-        ubKeepGoing = false;
+        ubKeepGoing = 0;
       } else {
         // Check if struct is a tree, etc and reduce range...
         GetRayStopInfo(uiNewSpot, ubDir, bLevel, fSmokeEffect, cnt, addressof(uiTempRange), addressof(ubKeepGoing));
@@ -1778,7 +1774,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
 
           while (branchCnt <= ubBranchRange) // end of range loop
           {
-            ubKeepGoing = true;
+            ubKeepGoing = 1;
             uiNewSpot = NewGridNo(uiBranchSpot, DirectionInc(ubBranchDir));
 
             if (uiNewSpot != uiBranchSpot) {
@@ -1873,20 +1869,20 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
 
 function ToggleActionItemsByFrequency(bFrequency: INT8): void {
   let uiWorldBombIndex: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   // Go through all the bombs in the world, and look for remote ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == Enum224.BOMB_REMOTE) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (pObj.bDetonatorType == Enum224.BOMB_REMOTE) {
         // Found a remote bomb, so check to see if it has the same frequency
-        if (pObj.value.bFrequency == bFrequency) {
+        if (pObj.bFrequency == bFrequency) {
           // toggle its active flag
-          if (pObj.value.fFlags & OBJECT_DISABLED_BOMB) {
-            pObj.value.fFlags &= (~OBJECT_DISABLED_BOMB);
+          if (pObj.fFlags & OBJECT_DISABLED_BOMB) {
+            pObj.fFlags &= (~OBJECT_DISABLED_BOMB);
           } else {
-            pObj.value.fFlags |= OBJECT_DISABLED_BOMB;
+            pObj.fFlags |= OBJECT_DISABLED_BOMB;
           }
         }
       }
@@ -1896,19 +1892,19 @@ function ToggleActionItemsByFrequency(bFrequency: INT8): void {
 
 function TogglePressureActionItemsInGridNo(sGridNo: INT16): void {
   let uiWorldBombIndex: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   // Go through all the bombs in the world, and look for remote ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (pObj.bDetonatorType == Enum224.BOMB_PRESSURE) {
         // Found a pressure item
         // toggle its active flag
-        if (pObj.value.fFlags & OBJECT_DISABLED_BOMB) {
-          pObj.value.fFlags &= (~OBJECT_DISABLED_BOMB);
+        if (pObj.fFlags & OBJECT_DISABLED_BOMB) {
+          pObj.fFlags &= (~OBJECT_DISABLED_BOMB);
         } else {
-          pObj.value.fFlags |= OBJECT_DISABLED_BOMB;
+          pObj.fFlags |= OBJECT_DISABLED_BOMB;
         }
       }
     }
@@ -1931,13 +1927,13 @@ function BillyBlocksDoorCallback(): void {
 function HookerInRoom(ubRoom: UINT8): boolean {
   let ubLoop: UINT8;
   let ubTempRoom: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bNeutral && pSoldier.value.ubBodyType == Enum194.MINICIV) {
-      if (InARoom(pSoldier.value.sGridNo, addressof(ubTempRoom)) && ubTempRoom == ubRoom) {
+    if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && pSoldier.bNeutral && pSoldier.ubBodyType == Enum194.MINICIV) {
+      if (InARoom(pSoldier.sGridNo, addressof(ubTempRoom)) && ubTempRoom == ubRoom) {
         return true;
       }
     }
@@ -1946,21 +1942,21 @@ function HookerInRoom(ubRoom: UINT8): boolean {
   return false;
 }
 
-function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
-  let pStructure: Pointer<STRUCTURE>;
+function PerformItemAction(sGridNo: INT16, pObj: OBJECTTYPE): void {
+  let pStructure: STRUCTURE | null;
 
-  switch (pObj.value.bActionValue) {
+  switch (pObj.bActionValue) {
     case Enum191.ACTION_ITEM_OPEN_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
-        if (pStructure.value.fFlags & STRUCTURE_OPEN) {
+        if (pStructure.fFlags & STRUCTURE_OPEN) {
           // it's already open - this MIGHT be an error but probably not
           // because we are basically just ensuring that the door is open
         } else {
-          if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+          if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
             HandleDoorChangeFromGridNo(null, sGridNo, false);
           } else {
-            HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, false);
+            HandleDoorChangeFromGridNo(null, pStructure.sBaseGridNo, false);
           }
           gfExplosionQueueMayHaveChangedSight = true;
         }
@@ -1971,11 +1967,11 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
     case Enum191.ACTION_ITEM_CLOSE_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
-        if (pStructure.value.fFlags & STRUCTURE_OPEN) {
-          if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+        if (pStructure.fFlags & STRUCTURE_OPEN) {
+          if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
             HandleDoorChangeFromGridNo(null, sGridNo, false);
           } else {
-            HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, false);
+            HandleDoorChangeFromGridNo(null, pStructure.sBaseGridNo, false);
           }
           gfExplosionQueueMayHaveChangedSight = true;
         } else {
@@ -1989,10 +1985,10 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
     case Enum191.ACTION_ITEM_TOGGLE_DOOR:
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
-        if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+        if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
           HandleDoorChangeFromGridNo(null, sGridNo, false);
         } else {
-          HandleDoorChangeFromGridNo(null, pStructure.value.sBaseGridNo, false);
+          HandleDoorChangeFromGridNo(null, pStructure.sBaseGridNo, false);
         }
         gfExplosionQueueMayHaveChangedSight = true;
       } else {
@@ -2000,32 +1996,32 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
       break;
     case Enum191.ACTION_ITEM_UNLOCK_DOOR: {
-      let pDoor: Pointer<DOOR>;
+      let pDoor: DOOR | null;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
-        pDoor.value.fLocked = false;
+        pDoor.fLocked = false;
       }
     } break;
     case Enum191.ACTION_ITEM_TOGGLE_LOCK: {
-      let pDoor: Pointer<DOOR>;
+      let pDoor: DOOR | null;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
-        if (pDoor.value.fLocked) {
-          pDoor.value.fLocked = false;
+        if (pDoor.fLocked) {
+          pDoor.fLocked = false;
         } else {
-          pDoor.value.fLocked = true;
+          pDoor.fLocked = true;
         }
       }
     } break;
     case Enum191.ACTION_ITEM_UNTRAP_DOOR: {
-      let pDoor: Pointer<DOOR>;
+      let pDoor: DOOR | null;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
-        pDoor.value.ubTrapLevel = 0;
-        pDoor.value.ubTrapID = Enum227.NO_TRAP;
+        pDoor.ubTrapLevel = 0;
+        pDoor.ubTrapID = Enum227.NO_TRAP;
       }
     } break;
     case Enum191.ACTION_ITEM_SMALL_PIT:
@@ -2177,7 +2173,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
 
       // now zap this object so it won't activate again
-      pObj.value.fFlags &= (~OBJECT_DISABLED_BOMB);
+      pObj.fFlags &= (~OBJECT_DISABLED_BOMB);
       break;
     case Enum191.ACTION_ITEM_SEX:
       // JA2Gold: Disable brothel sex
@@ -2307,7 +2303,7 @@ export function HandleExplosionQueue(): void {
   let uiWorldBombIndex: UINT32;
   let uiCurrentTime: UINT32;
   let sGridNo: INT16;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
   let ubLevel: UINT8;
 
   if (!gfExplosionQueueActive) {
@@ -2321,17 +2317,17 @@ export function HandleExplosionQueue(): void {
 
       // Preliminary assignments:
       uiWorldBombIndex = gExplosionQueue[uiIndex].uiWorldBombIndex;
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
       sGridNo = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo;
       ubLevel = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].ubLevel;
 
-      if (pObj.value.usItem == Enum225.ACTION_ITEM && pObj.value.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
+      if (pObj.usItem == Enum225.ACTION_ITEM && pObj.bActionValue != Enum191.ACTION_ITEM_BLOW_UP) {
         PerformItemAction(sGridNo, pObj);
-      } else if (pObj.value.usBombItem == Enum225.TRIP_KLAXON) {
+      } else if (pObj.usBombItem == Enum225.TRIP_KLAXON) {
         PlayJA2Sample(Enum330.KLAXON_ALARM, RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 5, SoundDir(sGridNo));
         CallAvailableEnemiesTo(sGridNo);
         // RemoveItemFromPool( sGridNo, gWorldBombs[ uiWorldBombIndex ].iItemIndex, 0 );
-      } else if (pObj.value.usBombItem == Enum225.TRIP_FLARE) {
+      } else if (pObj.usBombItem == Enum225.TRIP_FLARE) {
         NewLightEffect(sGridNo, Enum305.LIGHT_FLARE_MARK_1);
         RemoveItemFromPool(sGridNo, gWorldBombs[uiWorldBombIndex].iItemIndex, ubLevel);
       } else {
@@ -2350,11 +2346,11 @@ export function HandleExplosionQueue(): void {
         // BOOM!
 
         // bomb objects only store the SIDE who placed the bomb! :-(
-        if (pObj.value.ubBombOwner > 1) {
-          IgniteExplosion((pObj.value.ubBombOwner - 2), CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj.value.usBombItem, ubLevel);
+        if (pObj.ubBombOwner > 1) {
+          IgniteExplosion((pObj.ubBombOwner - 2), CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj.usBombItem, ubLevel);
         } else {
           // pre-placed
-          IgniteExplosion(NOBODY, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj.value.usBombItem, ubLevel);
+          IgniteExplosion(NOBODY, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj.usBombItem, ubLevel);
         }
       }
 
@@ -2381,7 +2377,7 @@ export function HandleExplosionQueue(): void {
 
     if (gfExplosionQueueMayHaveChangedSight) {
       let ubLoop: UINT8;
-      let pTeamSoldier: Pointer<SOLDIERTYPE>;
+      let pTeamSoldier: SOLDIERTYPE;
 
       // set variable so we may at least have someone to resolve interrupts vs
       gubInterruptProvoker = gubPersonToSetOffExplosions;
@@ -2389,9 +2385,9 @@ export function HandleExplosionQueue(): void {
 
       // call fov code
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          RevealRoofsAndItems(pTeamSoldier, true, false, pTeamSoldier.value.bLevel, false);
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive && pTeamSoldier.bInSector) {
+          RevealRoofsAndItems(pTeamSoldier, true, false, pTeamSoldier.bLevel, false);
         }
       }
 
@@ -2413,28 +2409,28 @@ export function HandleExplosionQueue(): void {
 export function DecayBombTimers(): void {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   uiTimeStamp = GetJA2Clock();
 
   // Go through all the bombs in the world, and look for timed ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (pObj.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.fFlags & OBJECT_DISABLED_BOMB)) {
         // Found a timed bomb, so decay its delay value and see if it goes off
-        pObj.value.bDelay--;
-        if (pObj.value.bDelay == 0) {
+        pObj.bDelay--;
+        if (pObj.bDelay == 0) {
           // put this bomb on the queue
           AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
           // ATE: CC black magic....
-          if (pObj.value.ubBombOwner > 1) {
-            gubPersonToSetOffExplosions = (pObj.value.ubBombOwner - 2);
+          if (pObj.ubBombOwner > 1) {
+            gubPersonToSetOffExplosions = (pObj.ubBombOwner - 2);
           } else {
             gubPersonToSetOffExplosions = NOBODY;
           }
 
-          if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
+          if (pObj.usItem != Enum225.ACTION_ITEM || pObj.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
             uiTimeStamp += BOMB_QUEUE_DELAY();
           }
         }
@@ -2446,22 +2442,22 @@ export function DecayBombTimers(): void {
 export function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   uiTimeStamp = GetJA2Clock();
 
   // Go through all the bombs in the world, and look for remote ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == Enum224.BOMB_REMOTE && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (pObj.bDetonatorType == Enum224.BOMB_REMOTE && !(pObj.fFlags & OBJECT_DISABLED_BOMB)) {
         // Found a remote bomb, so check to see if it has the same frequency
-        if (pObj.value.bFrequency == bFrequency) {
+        if (pObj.bFrequency == bFrequency) {
           gubPersonToSetOffExplosions = ubID;
 
           // put this bomb on the queue
           AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
-          if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
+          if (pObj.usItem != Enum225.ACTION_ITEM || pObj.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
             uiTimeStamp += BOMB_QUEUE_DELAY();
           }
         }
@@ -2504,7 +2500,7 @@ export function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
 export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: boolean, bLevel: INT8): boolean {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
   let fFoundMine: boolean = false;
 
   uiTimeStamp = GetJA2Clock();
@@ -2512,36 +2508,36 @@ export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: bool
   // Go through all the bombs in the world, and look for mines at this location
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].ubLevel == bLevel) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
-        if (fAllBombs || pObj.value.bDetonatorType == Enum224.BOMB_PRESSURE) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (!(pObj.fFlags & OBJECT_DISABLED_BOMB)) {
+        if (fAllBombs || pObj.bDetonatorType == Enum224.BOMB_PRESSURE) {
           if (!fAllBombs && MercPtrs[ubID].value.bTeam != gbPlayerNum) {
             // ignore this unless it is a mine, etc which would have to have been placed by the
             // player, seeing as how the others are all marked as known to the AI.
-            if (!(pObj.value.usItem == Enum225.MINE || pObj.value.usItem == Enum225.TRIP_FLARE || pObj.value.usItem == Enum225.TRIP_KLAXON)) {
+            if (!(pObj.usItem == Enum225.MINE || pObj.usItem == Enum225.TRIP_FLARE || pObj.usItem == Enum225.TRIP_KLAXON)) {
               continue;
             }
           }
 
           // player and militia ignore bombs set by player
-          if (pObj.value.ubBombOwner > 1 && (MercPtrs[ubID].value.bTeam == gbPlayerNum || MercPtrs[ubID].value.bTeam == MILITIA_TEAM)) {
+          if (pObj.ubBombOwner > 1 && (MercPtrs[ubID].value.bTeam == gbPlayerNum || MercPtrs[ubID].value.bTeam == MILITIA_TEAM)) {
             continue;
           }
 
-          if (pObj.value.usItem == Enum225.SWITCH) {
+          if (pObj.usItem == Enum225.SWITCH) {
             // send out a signal to detonate other bombs, rather than this which
             // isn't a bomb but a trigger
-            SetOffBombsByFrequency(ubID, pObj.value.bFrequency);
+            SetOffBombsByFrequency(ubID, pObj.bFrequency);
           } else {
             gubPersonToSetOffExplosions = ubID;
 
             // put this bomb on the queue
             AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
-            if (pObj.value.usItem != Enum225.ACTION_ITEM || pObj.value.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
+            if (pObj.usItem != Enum225.ACTION_ITEM || pObj.bActionValue == Enum191.ACTION_ITEM_BLOW_UP) {
               uiTimeStamp += BOMB_QUEUE_DELAY();
             }
 
-            if (pObj.value.usBombItem != NOTHING && Item[pObj.value.usBombItem].usItemClass & IC_EXPLOSV) {
+            if (pObj.usBombItem != NOTHING && Item[pObj.usBombItem].usItemClass & IC_EXPLOSV) {
               fFoundMine = true;
             }
           }
@@ -2554,21 +2550,21 @@ export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: bool
 
 export function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
   let uiWorldBombIndex: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   // Go through all the bombs in the world, and look for mines at this location
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists && gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].sGridNo == sGridNo) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
 
-      if (pObj.value.usItem == Enum225.SWITCH && (!(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) && pObj.value.bDetonatorType == Enum224.BOMB_SWITCH) {
+      if (pObj.usItem == Enum225.SWITCH && (!(pObj.fFlags & OBJECT_DISABLED_BOMB)) && pObj.bDetonatorType == Enum224.BOMB_SWITCH) {
         // send out a signal to detonate other bombs, rather than this which
         // isn't a bomb but a trigger
 
         // first set attack busy count to 0 in case of a lingering a.b.c. problem...
         gTacticalStatus.ubAttackBusyCount = 0;
 
-        SetOffBombsByFrequency(ubID, pObj.value.bFrequency);
+        SetOffBombsByFrequency(ubID, pObj.bFrequency);
       }
     }
   }
@@ -2578,22 +2574,28 @@ export function SaveExplosionTableToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let uiExplosionCount: UINT32 = 0;
   let uiCnt: UINT32;
+  let buffer: Buffer;
 
   //
   //	Explosion queue Info
   //
 
   // Write the number of explosion queues
-  FileWrite(hFile, addressof(gubElementsOnExplosionQueue), sizeof(UINT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt8(gubElementsOnExplosionQueue, 0);
+  writePadding(buffer, 1, 3);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     FileClose(hFile);
     return false;
   }
 
   // loop through and add all the explosions
+  buffer = Buffer.allocUnsafe(EXPLOSION_QUEUE_ELEMENT_SIZE);
   for (uiCnt = 0; uiCnt < MAX_BOMB_QUEUE; uiCnt++) {
-    FileWrite(hFile, addressof(gExplosionQueue[uiCnt]), sizeof(ExplosionQueueElement), addressof(uiNumBytesWritten));
-    if (uiNumBytesWritten != sizeof(ExplosionQueueElement)) {
+    writeExplosionQueueElement(gExplosionQueue[uiCnt], buffer);
+    uiNumBytesWritten = FileWrite(hFile, buffer, EXPLOSION_QUEUE_ELEMENT_SIZE);
+    if (uiNumBytesWritten != EXPLOSION_QUEUE_ELEMENT_SIZE) {
       FileClose(hFile);
       return false;
     }
@@ -2612,17 +2614,21 @@ export function SaveExplosionTableToSaveGameFile(hFile: HWFILE): boolean {
   }
 
   // Save the number of explosions
-  FileWrite(hFile, addressof(uiExplosionCount), sizeof(UINT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiExplosionCount, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     FileClose(hFile);
     return false;
   }
 
   // loop through and count all the active explosions
+  buffer = Buffer.allocUnsafe(EXPLOSION_TYPE_SIZE);
   for (uiCnt = 0; uiCnt < NUM_EXPLOSION_SLOTS; uiCnt++) {
     if (gExplosionData[uiCnt].fAllocated) {
-      FileWrite(hFile, addressof(gExplosionData[uiCnt]), sizeof(EXPLOSIONTYPE), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(EXPLOSIONTYPE)) {
+      writeExplosionType(gExplosionData[uiCnt], buffer);
+      uiNumBytesWritten = FileWrite(hFile, buffer, EXPLOSION_TYPE_SIZE);
+      if (uiNumBytesWritten != EXPLOSION_TYPE_SIZE) {
         FileClose(hFile);
         return false;
       }
@@ -2636,26 +2642,33 @@ export function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiExplosionCount: UINT32 = 0;
   let uiCnt: UINT32;
+  let buffer: Buffer;
 
   //
   //	Explosion Queue
   //
 
   // Clear the Explosion queue
-  memset(gExplosionQueue, 0, sizeof(ExplosionQueueElement) * MAX_BOMB_QUEUE);
+  gExplosionQueue.forEach(resetExplosionQueueElement);
 
   // Read the number of explosions queue's
-  FileRead(hFile, addressof(gubElementsOnExplosionQueue), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
 
+  gubElementsOnExplosionQueue = buffer.readUInt8(0);
+
   // loop through read all the active explosions fro the file
+  buffer = Buffer.allocUnsafe(EXPLOSION_QUEUE_ELEMENT_SIZE);
   for (uiCnt = 0; uiCnt < MAX_BOMB_QUEUE; uiCnt++) {
-    FileRead(hFile, addressof(gExplosionQueue[uiCnt]), sizeof(ExplosionQueueElement), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(ExplosionQueueElement)) {
+    uiNumBytesRead = FileRead(hFile, buffer, EXPLOSION_QUEUE_ELEMENT_SIZE);
+    if (uiNumBytesRead != EXPLOSION_QUEUE_ELEMENT_SIZE) {
       return false;
     }
+
+    readExplosionQueueElement(gExplosionQueue[uiCnt], buffer);
   }
 
   //
@@ -2663,21 +2676,28 @@ export function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): boolean {
   //
 
   // Load the number of explosions
-  FileRead(hFile, addressof(guiNumExplosions), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
 
+  guiNumExplosions = buffer.readUInt32LE(0);
+
   // loop through and load all the active explosions
+  buffer = Buffer.allocUnsafe(EXPLOSION_TYPE_SIZE);
   for (uiCnt = 0; uiCnt < guiNumExplosions; uiCnt++) {
-    FileRead(hFile, addressof(gExplosionData[uiCnt]), sizeof(EXPLOSIONTYPE), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(EXPLOSIONTYPE)) {
+    uiNumBytesRead = FileRead(hFile, buffer, EXPLOSION_TYPE_SIZE);
+    if (uiNumBytesRead != EXPLOSION_TYPE_SIZE) {
       return false;
     }
+
+    readExplosionType(gExplosionData[uiCnt], buffer);
+
     gExplosionData[uiCnt].iID = uiCnt;
     gExplosionData[uiCnt].iLightID = -1;
 
-    GenerateExplosionFromExplosionPointer(addressof(gExplosionData[uiCnt]));
+    GenerateExplosionFromExplosionPointer(gExplosionData[uiCnt]);
   }
 
   return true;
@@ -2787,23 +2807,23 @@ export function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: 
 // anybody who is an NPC and
 // see if they get angry
 function HandleBuldingDestruction(sGridNo: INT16, ubOwner: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: UINT8;
 
   if (ubOwner == NOBODY) {
     return;
   }
 
-  if (MercPtrs[ubOwner].value.bTeam != gbPlayerNum) {
+  if (MercPtrs[ubOwner].bTeam != gbPlayerNum) {
     return;
   }
 
   cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife && pSoldier.value.bNeutral) {
-      if (pSoldier.value.ubProfile != NO_PROFILE) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife && pSoldier.bNeutral) {
+      if (pSoldier.ubProfile != NO_PROFILE) {
         // ignore if the player is fighting the enemy here and this is a good guy
-        if (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector > 0 && (gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY)) {
+        if (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector > 0 && (gMercProfiles[pSoldier.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_GOODGUY)) {
           continue;
         }
 
@@ -2818,15 +2838,15 @@ function HandleBuldingDestruction(sGridNo: INT16, ubOwner: UINT8): void {
 function FindActiveTimedBomb(): INT32 {
   let uiWorldBombIndex: UINT32;
   let uiTimeStamp: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
 
   uiTimeStamp = GetJA2Clock();
 
   // Go through all the bombs in the world, and look for timed ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
     if (gWorldBombs[uiWorldBombIndex].fExists) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o);
-      if (pObj.value.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.value.fFlags & OBJECT_DISABLED_BOMB)) {
+      pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
+      if (pObj.bDetonatorType == Enum224.BOMB_TIMED && !(pObj.fFlags & OBJECT_DISABLED_BOMB)) {
         return gWorldBombs[uiWorldBombIndex].iItemIndex;
       }
     }

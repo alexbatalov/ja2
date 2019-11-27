@@ -513,12 +513,12 @@ export interface AnimationSurfaceType {
   uiNumDirections: UINT32;
   uiNumFramesPerDir: UINT32;
   hVideoObject: HVOBJECT;
-  Unused: Pointer<void>;
+  Unused: any;
   bUsageCount: INT8;
   bProfile: INT8;
 }
 
-export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string, bStructDataType: CHAR8, ubFlags: UINT8, uiNumDirections: UINT32, uiNumFramesPerDir: UINT32, hVideoObject: HVOBJECT, Unused: Pointer<void>, bUsageCount: INT8, bProfile: INT8): AnimationSurfaceType {
+export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string, bStructDataType: CHAR8, ubFlags: UINT8, uiNumDirections: UINT32, uiNumFramesPerDir: UINT32, hVideoObject: HVOBJECT, Unused: any, bUsageCount: INT8, bProfile: INT8): AnimationSurfaceType {
   return {
     ubName,
     Filename,
@@ -535,10 +535,10 @@ export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string,
 
 export interface AnimationStructureType {
   Filename: string /* CHAR8[50] */;
-  pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  pStructureFileRef: STRUCTURE_FILE_REF | null;
 }
 
-export function createAnimationStructureTypeFrom(Filename: string, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>): AnimationStructureType {
+export function createAnimationStructureTypeFrom(Filename: string, pStructureFileRef: STRUCTURE_FILE_REF | null): AnimationStructureType {
   return {
     Filename,
     pStructureFileRef,

@@ -13,7 +13,7 @@ export const REAL_FILE_LIBRARY_ID = 1022;
 const DB_BITS_FOR_LIBRARY = 10;
 const DB_BITS_FOR_FILE_ID = 22;
 
-export const DB_EXTRACT_LIBRARY = (exp: number) => (exp >> DB_BITS_FOR_FILE_ID);
+export const DB_EXTRACT_LIBRARY = (exp: number) => (exp >>> DB_BITS_FOR_FILE_ID);
 export const DB_EXTRACT_FILE_ID = (exp: number) => (exp & 0x3FFFFF);
 
 export const DB_ADD_LIBRARY_ID = (exp: number) => (exp << DB_BITS_FOR_FILE_ID);

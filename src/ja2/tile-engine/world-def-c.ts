@@ -2,7 +2,7 @@ namespace ja2 {
 
 const SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
 const FORCE_SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => (gubWorldMovementCosts[a][b][c] = d);
-const SET_CURRMOVEMENTCOST = (a, b) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
+const SET_CURRMOVEMENTCOST = (usGridNo: number, a: number, b: number) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
 
 const TEMP_FILE_FOR_TILESET_CHANGE = "jatileS34.dat";
 
@@ -27,20 +27,19 @@ let gzLastLoadedFile: string /* CHAR8[260] */;
 
 export let gCurrentBackground: UINT32 = Enum313.FIRSTTEXTURE;
 
-export let TileSurfaceFilenames: string[] /* CHAR8[NUMBEROFTILETYPES][32] */;
-let gbNewTileSurfaceLoaded: INT8[] /* [NUMBEROFTILETYPES] */;
+export let TileSurfaceFilenames: string[] /* CHAR8[NUMBEROFTILETYPES][32] */ = createArray(Enum313.NUMBEROFTILETYPES, '');
+let gbNewTileSurfaceLoaded: boolean[] /* INT8[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, false);
 
 export function SetAllNewTileSurfacesLoaded(fNew: boolean): void {
-  memset(gbNewTileSurfaceLoaded, fNew, sizeof(gbNewTileSurfaceLoaded));
+  gbNewTileSurfaceLoaded.fill(fNew);
 }
 
 let gfInitAnimateLoading: boolean = false;
 
 // Global Variables
-export let gpWorldLevelData: Pointer<MAP_ELEMENT>;
-let gpDirtyData: Pointer<INT32>;
+export let gpWorldLevelData: MAP_ELEMENT[] /* Pointer<MAP_ELEMENT> */;
 export let gSurfaceMemUsage: UINT32;
-export let gubWorldMovementCosts: UINT8[][][] /* [WORLD_MAX][MAXDIR][2] */;
+export let gubWorldMovementCosts: UINT8[][][] /* [WORLD_MAX][MAXDIR][2] */ = createArrayFrom(WORLD_MAX, () => createArrayFrom(MAXDIR, () => createArray(2, 0)));
 
 // set to nonzero (locs of base gridno of structure are good) to have it defined by structure code
 export let gsRecompileAreaTop: INT16 = 0;
@@ -51,39 +50,39 @@ export let gsRecompileAreaBottom: INT16 = 0;
 // TIMER TESTING STUFF
 
 export function DoorAtGridNo(iMapIndex: UINT32): boolean {
-  let pStruct: Pointer<STRUCTURE>;
+  let pStruct: STRUCTURE | null;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct.value.fFlags & STRUCTURE_ANYDOOR)
+    if (pStruct.fFlags & STRUCTURE_ANYDOOR)
       return true;
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
   return false;
 }
 
 export function OpenableAtGridNo(iMapIndex: UINT32): boolean {
-  let pStruct: Pointer<STRUCTURE>;
+  let pStruct: STRUCTURE | null;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct.value.fFlags & STRUCTURE_OPENABLE)
+    if (pStruct.fFlags & STRUCTURE_OPENABLE)
       return true;
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
   return false;
 }
 
 export function FloorAtGridNo(iMapIndex: UINT32): boolean {
-  let pLand: Pointer<LEVELNODE>;
+  let pLand: LEVELNODE | null;
   let uiTileType: UINT32;
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
   // Look through all objects and Search for type
   while (pLand) {
-    if (pLand.value.usIndex != NO_TILE) {
-      uiTileType = GetTileType(pLand.value.usIndex);
+    if (pLand.usIndex != NO_TILE) {
+      uiTileType = GetTileType(pLand.usIndex);
       if (uiTileType >= Enum313.FIRSTFLOOR && uiTileType <= LASTFLOOR) {
         return true;
       }
-      pLand = pLand.value.pNext;
+      pLand = pLand.pNext;
     }
   }
   return false;
@@ -100,8 +99,8 @@ export function GridNoIndoors(iMapIndex: UINT32): boolean {
 function DOIT(): void {
   //	LEVELNODE *			pLand;
   // LEVELNODE *			pObject;
-  let pStruct: Pointer<LEVELNODE>;
-  let pNewStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
+  let pNewStruct: LEVELNODE | null;
   // LEVELNODE	*			pShadow;
   let uiLoop: UINT32;
 
@@ -110,12 +109,12 @@ function DOIT(): void {
     pStruct = gpWorldLevelData[uiLoop].pStructHead;
 
     while (pStruct != null) {
-      pNewStruct = pStruct.value.pNext;
+      pNewStruct = pStruct.pNext;
 
-      if (pStruct.value.usIndex >= Enum312.DEBRISWOOD1 && pStruct.value.usIndex <= Enum312.DEBRISWEEDS10) {
-        AddObjectToHead(uiLoop, pStruct.value.usIndex);
+      if (pStruct.usIndex >= Enum312.DEBRISWOOD1 && pStruct.usIndex <= Enum312.DEBRISWEEDS10) {
+        AddObjectToHead(uiLoop, pStruct.usIndex);
 
-        RemoveStruct(uiLoop, pStruct.value.usIndex);
+        RemoveStruct(uiLoop, pStruct.usIndex);
       }
 
       pStruct = pNewStruct;
@@ -132,32 +131,26 @@ export function InitializeWorld(): boolean {
   // ProcessTilesetNamesForBPP();
 
   // Memset tileset list
-  memset(TileSurfaceFilenames, '\0', sizeof(TileSurfaceFilenames));
+  TileSurfaceFilenames.fill('');
 
   // ATE: MEMSET LOG HEIGHT VALUES
-  memset(gTileTypeLogicalHeight, 1, sizeof(gTileTypeLogicalHeight));
+  gTileTypeLogicalHeight.fill(1);;
 
   // Memset tile database
-  memset(gTileDatabase, 0, sizeof(gTileDatabase));
+  gTileDatabase.forEach(resetTileElement);
 
   // Init surface list
-  memset(gTileSurfaceArray, 0, sizeof(gTileSurfaceArray));
+  gTileSurfaceArray.fill(<TILE_IMAGERY><unknown>null);;
 
   // Init default surface list
-  memset(gbDefaultSurfaceUsed, 0, sizeof(gbDefaultSurfaceUsed));
+  gbDefaultSurfaceUsed.fill(false);
 
   // Init same surface list
-  memset(gbSameAsDefaultSurfaceUsed, 0, sizeof(gbSameAsDefaultSurfaceUsed));
+  gbSameAsDefaultSurfaceUsed.fill(false);
 
   // Initialize world data
 
-  gpWorldLevelData = MemAlloc(WORLD_MAX * sizeof(MAP_ELEMENT));
-  if (!gpWorldLevelData) {
-    return false;
-  }
-
-  // Zero world
-  memset(gpWorldLevelData, 0, WORLD_MAX * sizeof(MAP_ELEMENT));
+  gpWorldLevelData = createArrayFrom(WORLD_MAX, createMapElement);
 
   // Init room database
   InitRoomDatabase();
@@ -175,10 +168,6 @@ export function DeinitializeWorld(): void {
     MemFree(gpWorldLevelData);
   }
 
-  if (gpDirtyData != null) {
-    MemFree(gpDirtyData);
-  }
-
   DestroyTileSurfaces();
   FreeAllStructureFiles();
 
@@ -192,7 +181,7 @@ function ReloadTilesetSlot(iSlot: INT32): boolean {
   return true;
 }
 
-function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): boolean {
+function LoadTileSurfaces(ppTileSurfaceFilenames: string[] /* [][32] */, ubTilesetID: UINT8): boolean {
   let cTemp: string /* SGPFILENAME */;
   let uiLoop: UINT32;
 
@@ -294,14 +283,14 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
 function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: boolean): boolean {
   // Add tile surface
-  let TileSurf: PTILE_IMAGERY;
+  let TileSurf: TILE_IMAGERY | null;
   let cFileBPP: string /* CHAR8[128] */;
   let cAdjustedFile: string /* CHAR8[128] */;
 
   // Delete the surface first!
   if (gTileSurfaceArray[ubType] != null) {
     DeleteTileSurface(gTileSurfaceArray[ubType]);
-    gTileSurfaceArray[ubType] = null;
+    gTileSurfaceArray[ubType] = <TILE_IMAGERY><unknown>null;
   }
 
   // Adjust flag for same as default used...
@@ -322,7 +311,7 @@ function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, u
   if (TileSurf == null)
     return false;
 
-  TileSurf.value.fType = ubType;
+  TileSurf.fType = ubType;
 
   SetRaisedObjectFlag(cAdjustedFile, TileSurf);
 
@@ -340,6 +329,9 @@ function AddTileSurface(cFilename: string /* Pointer<char> */, ubType: UINT32, u
   return true;
 }
 
+/* static */ let BuildTileShadeTables__ubLastRed: UINT8 = 255;
+/* static */ let BuildTileShadeTables__ubLastGreen: UINT8 = 255;
+/* static */ let BuildTileShadeTables__ubLastBlue: UINT8 = 255;
 export function BuildTileShadeTables(): void {
   let hfile: HWFILE;
   let DataDir: string /* STRING512 */;
@@ -347,10 +339,6 @@ export function BuildTileShadeTables(): void {
   let uiLoop: UINT32;
   let cRootFile: string /* CHAR8[128] */;
   let fForceRebuildForSlot: boolean = false;
-
-  /* static */ let ubLastRed: UINT8 = 255;
-  /* static */ let ubLastGreen: UINT8 = 255;
-  /* static */ let ubLastBlue: UINT8 = 255;
 
   // Set the directory to the shadetable directory
   GetFileManCurrentDirectory(DataDir);
@@ -369,7 +357,7 @@ export function BuildTileShadeTables(): void {
   if (gpLightColors[0].peRed || gpLightColors[0].peGreen || gpLightColors[0].peBlue) {
     // we are, which basically means we force build the shadetables.  However, the one
     // exception is if we are loading another map and the colors are the same.
-    if (gpLightColors[0].peRed != ubLastRed || gpLightColors[0].peGreen != ubLastGreen || gpLightColors[0].peBlue != ubLastBlue) {
+    if (gpLightColors[0].peRed != BuildTileShadeTables__ubLastRed || gpLightColors[0].peGreen != BuildTileShadeTables__ubLastGreen || gpLightColors[0].peBlue != BuildTileShadeTables__ubLastBlue) {
       // Same tileset, but colors are different, so set things up to regenerate the shadetables.
       gfForceBuildShadeTables = true;
     } else {
@@ -381,7 +369,7 @@ export function BuildTileShadeTables(): void {
   if (gfLoadShadeTablesFromTextFile) {
     // Because we're tweaking the RGB values in the text file, always force rebuild the shadetables
     // so that the user can tweak them in the same exe session.
-    memset(gbNewTileSurfaceLoaded, 1, sizeof(gbNewTileSurfaceLoaded));
+    gbNewTileSurfaceLoaded.fill(true);
   }
 
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
@@ -393,12 +381,12 @@ export function BuildTileShadeTables(): void {
 
         cRootFile = GetRootName(TileSurfaceFilenames[uiLoop]);
 
-        if (strcmp(cRootFile, "grass2") == 0) {
+        if (cRootFile === "grass2") {
           fForceRebuildForSlot = true;
         }
 
         RenderProgressBar(0, uiLoop * 100 / Enum313.NUMBEROFTILETYPES);
-        CreateTilePaletteTables(gTileSurfaceArray[uiLoop].value.vo, uiLoop, fForceRebuildForSlot);
+        CreateTilePaletteTables(gTileSurfaceArray[uiLoop].vo, uiLoop, fForceRebuildForSlot);
       }
     }
   }
@@ -406,9 +394,9 @@ export function BuildTileShadeTables(): void {
   // Restore the data directory once we are finished.
   SetFileManCurrentDirectory(DataDir);
 
-  ubLastRed = gpLightColors[0].peRed;
-  ubLastGreen = gpLightColors[0].peGreen;
-  ubLastBlue = gpLightColors[0].peBlue;
+  BuildTileShadeTables__ubLastRed = gpLightColors[0].peRed;
+  BuildTileShadeTables__ubLastGreen = gpLightColors[0].peGreen;
+  BuildTileShadeTables__ubLastBlue = gpLightColors[0].peBlue;
 }
 
 export function DestroyTileShadeTables(): void {
@@ -418,7 +406,7 @@ export function DestroyTileShadeTables(): void {
     if (gTileSurfaceArray[uiLoop] != null) {
 // Don't Delete shade tables if default are still being used...
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild) {
-        DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop].value.vo);
+        DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop].vo);
       }
     }
   }
@@ -430,7 +418,7 @@ function DestroyTileSurfaces(): void {
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
     if (gTileSurfaceArray[uiLoop] != null) {
       DeleteTileSurface(gTileSurfaceArray[uiLoop]);
-      gTileSurfaceArray[uiLoop] = null;
+      gTileSurfaceArray[uiLoop] = <TILE_IMAGERY><unknown>null;
     }
   }
 }
@@ -438,8 +426,8 @@ function DestroyTileSurfaces(): void {
 function CompileWorldTerrainIDs(): void {
   let sGridNo: INT16;
   let sTempGridNo: INT16;
-  let pNode: Pointer<LEVELNODE>;
-  let pTileElement: Pointer<TILE_ELEMENT>;
+  let pNode: LEVELNODE | null;
+  let pTileElement: TILE_ELEMENT;
   let ubLoop: UINT8;
 
   for (sGridNo = 0; sGridNo < WORLD_MAX; sGridNo++) {
@@ -451,25 +439,26 @@ function CompileWorldTerrainIDs(): void {
       if (giCurrentTilesetID == Enum316.TEMP_19) {
         // Get ID
         if (pNode != null) {
-          if (pNode.value.usIndex == Enum312.ANOTHERDEBRIS4 || pNode.value.usIndex == Enum312.ANOTHERDEBRIS6 || pNode.value.usIndex == Enum312.ANOTHERDEBRIS7) {
+          if (pNode.usIndex == Enum312.ANOTHERDEBRIS4 || pNode.usIndex == Enum312.ANOTHERDEBRIS6 || pNode.usIndex == Enum312.ANOTHERDEBRIS7) {
             gpWorldLevelData[sGridNo].ubTerrainID = Enum315.LOW_WATER;
             continue;
           }
         }
       }
 
-      if (pNode == null || pNode.value.usIndex >= Enum312.NUMBEROFTILES || gTileDatabase[pNode.value.usIndex].ubTerrainID == Enum315.NO_TERRAIN) {
+      if (pNode == null || pNode.usIndex >= Enum312.NUMBEROFTILES || gTileDatabase[pNode.usIndex].ubTerrainID == Enum315.NO_TERRAIN) {
         // Try terrain instead!
         pNode = gpWorldLevelData[sGridNo].pLandHead;
       }
-      pTileElement = addressof(gTileDatabase[pNode.value.usIndex]);
-      if (pTileElement.value.ubNumberOfTiles > 1) {
-        for (ubLoop = 0; ubLoop < pTileElement.value.ubNumberOfTiles; ubLoop++) {
-          sTempGridNo = sGridNo + pTileElement.value.pTileLocData[ubLoop].bTileOffsetX + pTileElement.value.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
-          gpWorldLevelData[sTempGridNo].ubTerrainID = pTileElement.value.ubTerrainID;
+      pTileElement = gTileDatabase[(<LEVELNODE>pNode).usIndex];
+      if (pTileElement.ubNumberOfTiles > 1) {
+        Assert(pTileElement.pTileLocData);
+        for (ubLoop = 0; ubLoop < pTileElement.ubNumberOfTiles; ubLoop++) {
+          sTempGridNo = sGridNo + pTileElement.pTileLocData[ubLoop].bTileOffsetX + pTileElement.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
+          gpWorldLevelData[sTempGridNo].ubTerrainID = pTileElement.ubTerrainID;
         }
       } else {
-        gpWorldLevelData[sGridNo].ubTerrainID = pTileElement.value.ubTerrainID;
+        gpWorldLevelData[sGridNo].ubTerrainID = pTileElement.ubTerrainID;
       }
     }
   }
@@ -478,9 +467,9 @@ function CompileWorldTerrainIDs(): void {
 function CompileTileMovementCosts(usGridNo: UINT16): void {
   let ubTerrainID: UINT8;
   let TileElem: TILE_ELEMENT = createTileElement();
-  let pLand: Pointer<LEVELNODE>;
+  let pLand: LEVELNODE | null;
 
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
   let fStructuresOnRoof: boolean;
 
   let ubDirLoop: UINT8;
@@ -492,14 +481,14 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
     // check for land of a different height in adjacent locations
     for (ubDirLoop = 0; ubDirLoop < 8; ubDirLoop++) {
       if (gpWorldLevelData[usGridNo].sHeight != gpWorldLevelData[usGridNo + DirectionInc(ubDirLoop)].sHeight) {
-        SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
+        SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_OBSTACLE);
       }
     }
 
     // check for exit grids
     if (ExitGridAtGridNo(usGridNo)) {
       for (ubDirLoop = 0; ubDirLoop < 8; ubDirLoop++) {
-        SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_EXITGRID);
+        SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_EXITGRID);
       }
       // leave the roof alone, and continue, so that we can get values for the roof if traversable
     }
@@ -520,66 +509,66 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
     if (pLand != null) {
       // Set TEMPORARY cost here
       // Get from tile database
-      TileElem = gTileDatabase[pLand.value.usIndex];
+      TileElem = gTileDatabase[pLand.usIndex];
 
       // Get terrain type
       ubTerrainID = gpWorldLevelData[usGridNo].ubTerrainID; // = GetTerrainType( (INT16)usGridNo );
 
       for (ubDirLoop = 0; ubDirLoop < Enum245.NUM_WORLD_DIRECTIONS; ubDirLoop++) {
-        SET_CURRMOVEMENTCOST(ubDirLoop, gTileTypeMovementCost[ubTerrainID]);
+        SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, gTileTypeMovementCost[ubTerrainID]);
       }
     }
 
     // now consider all structures
-    pStructure = gpWorldLevelData[usGridNo].pStructureHead;
+    pStructure = <STRUCTURE>gpWorldLevelData[usGridNo].pStructureHead;
     fStructuresOnRoof = false;
     do {
-      if (pStructure.value.sCubeOffset == STRUCTURE_ON_GROUND) {
-        if (pStructure.value.fFlags & STRUCTURE_PASSABLE) {
-          if (pStructure.value.fFlags & STRUCTURE_WIREFENCE && pStructure.value.fFlags & STRUCTURE_OPEN) {
+      if (pStructure.sCubeOffset == STRUCTURE_ON_GROUND) {
+        if (pStructure.fFlags & STRUCTURE_PASSABLE) {
+          if (pStructure.fFlags & STRUCTURE_WIREFENCE && pStructure.fFlags & STRUCTURE_OPEN) {
             // prevent movement along the fence but allow in all other directions
-            switch (pStructure.value.ubWallOrientation) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
               case Enum314.INSIDE_TOP_LEFT:
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_NOT_STANDING);
                 break;
 
               case Enum314.OUTSIDE_TOP_RIGHT:
               case Enum314.INSIDE_TOP_RIGHT:
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_NOT_STANDING);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_NOT_STANDING);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_NOT_STANDING);
                 break;
             }
           }
           // all other passable structures do not block movement in any way
-        } else if (pStructure.value.fFlags & STRUCTURE_BLOCKSMOVES) {
-          if ((pStructure.value.fFlags & STRUCTURE_FENCE) && !(pStructure.value.fFlags & STRUCTURE_SPECIAL)) {
+        } else if (pStructure.fFlags & STRUCTURE_BLOCKSMOVES) {
+          if ((pStructure.fFlags & STRUCTURE_FENCE) && !(pStructure.fFlags & STRUCTURE_SPECIAL)) {
             // jumpable!
-            switch (pStructure.value.ubWallOrientation) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
               case Enum314.INSIDE_TOP_LEFT:
                 // can be jumped north and south
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_FENCE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_FENCE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_FENCE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_FENCE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
                 // set values for the tiles EXITED from this location
                 FORCE_SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTH, 0, TRAVELCOST_NONE);
                 SET_MOVEMENTCOST(usGridNo - WORLD_COLS + 1, Enum245.NORTHEAST, 0, TRAVELCOST_OBSTACLE);
@@ -594,14 +583,14 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               case Enum314.OUTSIDE_TOP_RIGHT:
               case Enum314.INSIDE_TOP_RIGHT:
                 // can be jumped east and west
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_FENCE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_FENCE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_FENCE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_FENCE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
                 // set values for the tiles EXITED from this location
                 SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTH, 0, TRAVELCOST_OBSTACLE);
                 SET_MOVEMENTCOST(usGridNo - WORLD_COLS + 1, Enum245.NORTHEAST, 0, TRAVELCOST_OBSTACLE);
@@ -621,46 +610,46 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               default:
                 // corners aren't jumpable
                 for (ubDirLoop = 0; ubDirLoop < Enum245.NUM_WORLD_DIRECTIONS; ubDirLoop++) {
-                  SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
+                  SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_OBSTACLE);
                 }
                 break;
             }
-          } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
+          } else if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_SANDBAG && StructureHeight(pStructure) < 2) {
             for (ubDirLoop = 0; ubDirLoop < Enum245.NUM_WORLD_DIRECTIONS; ubDirLoop++) {
-              SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
+              SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_OBSTACLE);
             }
 
-            if (FindStructure((usGridNo - WORLD_COLS), STRUCTURE_OBSTACLE) == false && FindStructure((usGridNo + WORLD_COLS), STRUCTURE_OBSTACLE) == false) {
+            if (FindStructure((usGridNo - WORLD_COLS), STRUCTURE_OBSTACLE) == null && FindStructure((usGridNo + WORLD_COLS), STRUCTURE_OBSTACLE) == null) {
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.NORTH, 0, TRAVELCOST_FENCE);
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.SOUTH, 0, TRAVELCOST_FENCE);
             }
 
-            if (FindStructure((usGridNo - 1), STRUCTURE_OBSTACLE) == false && FindStructure((usGridNo + 1), STRUCTURE_OBSTACLE) == false) {
+            if (FindStructure((usGridNo - 1), STRUCTURE_OBSTACLE) == null && FindStructure((usGridNo + 1), STRUCTURE_OBSTACLE) == null) {
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.EAST, 0, TRAVELCOST_FENCE);
               FORCE_SET_MOVEMENTCOST(usGridNo, Enum245.WEST, 0, TRAVELCOST_FENCE);
             }
-          } else if ((pStructure.value.fFlags & STRUCTURE_CAVEWALL)) {
+          } else if ((pStructure.fFlags & STRUCTURE_CAVEWALL)) {
             for (ubDirLoop = 0; ubDirLoop < Enum245.NUM_WORLD_DIRECTIONS; ubDirLoop++) {
-              SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_CAVEWALL);
+              SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_CAVEWALL);
             }
           } else {
             for (ubDirLoop = 0; ubDirLoop < Enum245.NUM_WORLD_DIRECTIONS; ubDirLoop++) {
-              SET_CURRMOVEMENTCOST(ubDirLoop, TRAVELCOST_OBSTACLE);
+              SET_CURRMOVEMENTCOST(usGridNo, ubDirLoop, TRAVELCOST_OBSTACLE);
             }
           }
-        } else if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) /*&& (pStructure->fFlags & STRUCTURE_OPEN))*/
+        } else if (pStructure.fFlags & STRUCTURE_ANYDOOR) /*&& (pStructure->fFlags & STRUCTURE_OPEN))*/
         {
          // NB closed doors are treated just like walls, in the section after this
 
-          if (pStructure.value.fFlags & STRUCTURE_DDOOR_LEFT && (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT)) {
+          if (pStructure.fFlags & STRUCTURE_DDOOR_LEFT && (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT)) {
             // double door, left side (as you look on the screen)
-            switch (pStructure.value.ubWallOrientation) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_RIGHT:
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
                   // doorpost
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_CLOSED_W);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
@@ -668,8 +657,8 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   SET_MOVEMENTCOST(usGridNo + 1 + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
                 } else {
                   // door
-                  SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_OPEN_W);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_DOOR_OPEN_W);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_OPEN_W);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_DOOR_OPEN_W);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_OPEN_NW);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_DOOR_OPEN_NW);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_DOOR_OPEN_W_W);
@@ -679,11 +668,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
               case Enum314.INSIDE_TOP_RIGHT:
                 // doorpost
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
                 // door
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_OPEN_HERE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_OPEN_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_OPEN_N);
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_OPEN_N);
                 SET_MOVEMENTCOST(usGridNo - 1, Enum245.NORTHWEST, 0, TRAVELCOST_DOOR_OPEN_E);
@@ -694,15 +683,15 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // door with no orientation specified!?
                 break;
             }
-          } else if (pStructure.value.fFlags & STRUCTURE_DDOOR_RIGHT && (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT)) {
+          } else if (pStructure.fFlags & STRUCTURE_DDOOR_RIGHT && (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT)) {
             // double door, right side (as you look on the screen)
-            switch (pStructure.value.ubWallOrientation) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
                   // doorpost
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N)
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
@@ -711,8 +700,8 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
                 } else {
                   // door
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_DOOR_OPEN_N);
-                  SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_OPEN_N);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_DOOR_OPEN_N);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_OPEN_N);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_OPEN_NW);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_DOOR_OPEN_NW);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_DOOR_OPEN_N_N);
@@ -722,13 +711,13 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
               case Enum314.INSIDE_TOP_LEFT:
                 // doorpost
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_WALL);
                 // corner
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
                 // door
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_OPEN_HERE);
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_DOOR_OPEN_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_OPEN_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_DOOR_OPEN_HERE);
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_OPEN_W);
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_OPEN_W);
                 SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTHWEST, 0, TRAVELCOST_DOOR_OPEN_S);
@@ -738,22 +727,22 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 // door with no orientation specified!?
                 break;
             }
-          } else if (pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR && pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
-            switch (pStructure.value.ubWallOrientation) {
+          } else if (pStructure.fFlags & STRUCTURE_SLIDINGDOOR && pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles > 1) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
               case Enum314.INSIDE_TOP_LEFT:
                 // doorframe post in one corner of each of the tiles
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_DOOR_CLOSED_HERE);
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_DOOR_CLOSED_HERE);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_CLOSED_N);
                 } else {
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_DOOR_CLOSED_N);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
@@ -762,18 +751,18 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
               case Enum314.OUTSIDE_TOP_RIGHT:
               case Enum314.INSIDE_TOP_RIGHT:
                 // doorframe post in one corner of each of the tiles
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
 
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_CLOSED_W);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_CLOSED_W);
                 } else {
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_WALL);
 
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_DOOR_CLOSED_W);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_CLOSED_W);
@@ -783,13 +772,13 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
             }
           } else {
             // standard door
-            switch (pStructure.value.ubWallOrientation) {
+            switch (pStructure.ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
                   // doorframe
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
 
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N);
@@ -801,16 +790,16 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS - 1, Enum245.SOUTHWEST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
 
-                  // SET_CURRMOVEMENTCOST( NORTHEAST, TRAVELCOST_OBSTACLE );
-                  // SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                  // SET_CURRMOVEMENTCOST(usGridNo,  NORTHEAST, TRAVELCOST_OBSTACLE );
+                  // SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
                   // SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                   // SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHWEST, 0, TRAVELCOST_OBSTACLE );
                   // corner
                   // SET_MOVEMENTCOST( usGridNo + 1 ,NORTHEAST, 0, TRAVELCOST_OBSTACLE );
-                } else if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
+                } else if (!(pStructure.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
-                  SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_DOOR_OPEN_N);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_DOOR_OPEN_N);
                   SET_MOVEMENTCOST(usGridNo - 1, Enum245.WEST, 0, TRAVELCOST_DOOR_OPEN_NE);
                   SET_MOVEMENTCOST(usGridNo - 1, Enum245.NORTHWEST, 0, TRAVELCOST_WALL);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_OPEN_N_N);
@@ -819,9 +808,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 break;
 
               case Enum314.INSIDE_TOP_LEFT:
-                SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
-                SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_DOOR_CLOSED_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
 
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_OBSTACLE);
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N);
@@ -834,16 +823,16 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 SET_MOVEMENTCOST(usGridNo + WORLD_COLS + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_OBSTACLE);
 
                 // doorframe
-                // SET_CURRMOVEMENTCOST( NORTHEAST, TRAVELCOST_OBSTACLE );
-                // SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                // SET_CURRMOVEMENTCOST(usGridNo,  NORTHEAST, TRAVELCOST_OBSTACLE );
+                // SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
                 // SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                 // SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHWEST, 0, TRAVELCOST_OBSTACLE );
                 // corner
                 // SET_MOVEMENTCOST( usGridNo + 1 ,NORTHEAST, 0, TRAVELCOST_OBSTACLE );
                 // door
-                if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
-                  SET_CURRMOVEMENTCOST(Enum245.EAST, TRAVELCOST_DOOR_OPEN_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
+                if (!(pStructure.fFlags & STRUCTURE_SLIDINGDOOR)) {
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.EAST, TRAVELCOST_DOOR_OPEN_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
                   SET_MOVEMENTCOST(usGridNo - 1, Enum245.WEST, 0, TRAVELCOST_DOOR_OPEN_E);
                   SET_MOVEMENTCOST(usGridNo - 1, Enum245.SOUTHWEST, 0, TRAVELCOST_DOOR_OPEN_E);
                   SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTHEAST, 0, TRAVELCOST_DOOR_OPEN_S);
@@ -852,11 +841,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 break;
 
               case Enum314.OUTSIDE_TOP_RIGHT:
-                if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
+                if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
                   // doorframe
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
-                  SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
 
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_OBSTACLE);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_CLOSED_W);
@@ -868,16 +857,16 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_OBSTACLE);
                   SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_OBSTACLE);
 
-                  // SET_CURRMOVEMENTCOST( SOUTHWEST, TRAVELCOST_OBSTACLE );
-                  // SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                  // SET_CURRMOVEMENTCOST(usGridNo,  SOUTHWEST, TRAVELCOST_OBSTACLE );
+                  // SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
                   // SET_MOVEMENTCOST( usGridNo + 1, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                   // SET_MOVEMENTCOST( usGridNo + 1, NORTHEAST, 0, TRAVELCOST_OBSTACLE );
                   // corner
                   // SET_MOVEMENTCOST( usGridNo + 1 + WORLD_COLS, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
-                } else if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
+                } else if (!(pStructure.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_DOOR_OPEN_W);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_DOOR_OPEN_W);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_DOOR_OPEN_W);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_DOOR_OPEN_W);
                   SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTH, 0, TRAVELCOST_DOOR_OPEN_SW);
                   SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTHWEST, 0, TRAVELCOST_DOOR_OPEN_SW);
                   SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_DOOR_OPEN_W_W);
@@ -886,9 +875,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                 break;
 
               case Enum314.INSIDE_TOP_RIGHT:
-                SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
-                SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
-                SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_OBSTACLE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_DOOR_CLOSED_HERE);
+                SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_OBSTACLE);
 
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_OBSTACLE);
                 SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_DOOR_CLOSED_W);
@@ -902,17 +891,17 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
                 // doorframe
                 /*
-                SET_CURRMOVEMENTCOST( SOUTHWEST, TRAVELCOST_OBSTACLE );
-                SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                SET_CURRMOVEMENTCOST(usGridNo,  SOUTHWEST, TRAVELCOST_OBSTACLE );
+                SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
                 SET_MOVEMENTCOST( usGridNo + 1,SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                 SET_MOVEMENTCOST( usGridNo + 1,NORTHEAST, 0, TRAVELCOST_OBSTACLE );
                 // corner
                 SET_MOVEMENTCOST( usGridNo - WORLD_COLS,  NORTHWEST, 0, TRAVELCOST_OBSTACLE );
                 */
-                if (!(pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR)) {
+                if (!(pStructure.fFlags & STRUCTURE_SLIDINGDOOR)) {
                   // door
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTH, TRAVELCOST_DOOR_OPEN_HERE);
-                  SET_CURRMOVEMENTCOST(Enum245.SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTH, TRAVELCOST_DOOR_OPEN_HERE);
+                  SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHEAST, TRAVELCOST_DOOR_OPEN_HERE);
                   SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTH, 0, TRAVELCOST_DOOR_OPEN_S);
                   SET_MOVEMENTCOST(usGridNo - WORLD_COLS, Enum245.NORTHEAST, 0, TRAVELCOST_DOOR_OPEN_S);
                   SET_MOVEMENTCOST(usGridNo - 1, Enum245.SOUTHWEST, 0, TRAVELCOST_DOOR_OPEN_E);
@@ -931,9 +920,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
           {
                   case OUTSIDE_TOP_LEFT:
                   case INSIDE_TOP_LEFT:
-                          SET_CURRMOVEMENTCOST( NORTHEAST, TRAVELCOST_OBSTACLE );
-                          SET_CURRMOVEMENTCOST( NORTH, TRAVELCOST_DOOR_CLOSED_HERE );
-                          SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  NORTHEAST, TRAVELCOST_OBSTACLE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  NORTH, TRAVELCOST_DOOR_CLOSED_HERE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
 
                           SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                           SET_MOVEMENTCOST( usGridNo + WORLD_COLS, SOUTH, 0, TRAVELCOST_DOOR_CLOSED_N );
@@ -948,9 +937,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
                   case OUTSIDE_TOP_RIGHT:
                   case INSIDE_TOP_RIGHT:
-                          SET_CURRMOVEMENTCOST( SOUTHWEST, TRAVELCOST_OBSTACLE );
-                          SET_CURRMOVEMENTCOST( WEST, TRAVELCOST_DOOR_CLOSED_HERE );
-                          SET_CURRMOVEMENTCOST( NORTHWEST, TRAVELCOST_OBSTACLE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  SOUTHWEST, TRAVELCOST_OBSTACLE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  WEST, TRAVELCOST_DOOR_CLOSED_HERE );
+                          SET_CURRMOVEMENTCOST(usGridNo,  NORTHWEST, TRAVELCOST_OBSTACLE );
 
                           SET_MOVEMENTCOST( usGridNo + 1, SOUTHEAST, 0, TRAVELCOST_OBSTACLE );
                           SET_MOVEMENTCOST( usGridNo + 1, EAST, 0, TRAVELCOST_DOOR_CLOSED_W );
@@ -968,14 +957,14 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
                           break;
           }
           */
-        } else if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+        } else if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
           // ATE: IF a closed door, set to door value
-          switch (pStructure.value.ubWallOrientation) {
+          switch (pStructure.ubWallOrientation) {
             case Enum314.OUTSIDE_TOP_LEFT:
             case Enum314.INSIDE_TOP_LEFT:
-              SET_CURRMOVEMENTCOST(Enum245.NORTHEAST, TRAVELCOST_WALL);
-              SET_CURRMOVEMENTCOST(Enum245.NORTH, TRAVELCOST_WALL);
-              SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHEAST, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTH, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTH, 0, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + WORLD_COLS, Enum245.SOUTHWEST, 0, TRAVELCOST_WALL);
@@ -989,9 +978,9 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 
             case Enum314.OUTSIDE_TOP_RIGHT:
             case Enum314.INSIDE_TOP_RIGHT:
-              SET_CURRMOVEMENTCOST(Enum245.SOUTHWEST, TRAVELCOST_WALL);
-              SET_CURRMOVEMENTCOST(Enum245.WEST, TRAVELCOST_WALL);
-              SET_CURRMOVEMENTCOST(Enum245.NORTHWEST, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.SOUTHWEST, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.WEST, TRAVELCOST_WALL);
+              SET_CURRMOVEMENTCOST(usGridNo, Enum245.NORTHWEST, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + 1, Enum245.SOUTHEAST, 0, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + 1, Enum245.EAST, 0, TRAVELCOST_WALL);
               SET_MOVEMENTCOST(usGridNo + 1, Enum245.NORTHEAST, 0, TRAVELCOST_WALL);
@@ -1009,11 +998,11 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
           }
         }
       } else {
-        if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE || pStructure.value.fFlags & STRUCTURE_NORMAL_ROOF)) {
+        if (!(pStructure.fFlags & STRUCTURE_PASSABLE || pStructure.fFlags & STRUCTURE_NORMAL_ROOF)) {
           fStructuresOnRoof = true;
         }
       }
-      pStructure = pStructure.value.pNext;
+      pStructure = pStructure.pNext;
     } while (pStructure != null);
 
     // HIGHEST LAYER
@@ -1265,7 +1254,11 @@ export function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation
 export function CompileWorldMovementCosts(): void {
   let usGridNo: UINT16;
 
-  memset(gubWorldMovementCosts, 0, sizeof(gubWorldMovementCosts));
+  for (let i = 0; i < gubWorldMovementCosts.length; i++) {
+    for (let j = 0; j < gubWorldMovementCosts[i].length; j++) {
+      gubWorldMovementCosts[i][j].fill(0);
+    }
+  }
 
   CompileWorldTerrainIDs();
   for (usGridNo = 0; usGridNo < WORLD_MAX; usGridNo++) {
@@ -1282,13 +1275,13 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let uiBytesWritten: UINT32;
   let uiNumWarningsCaught: UINT32 = 0;
   let hfile: HWFILE;
-  let pLand: Pointer<LEVELNODE>;
-  let pObject: Pointer<LEVELNODE>;
-  let pStruct: Pointer<LEVELNODE>;
-  let pShadow: Pointer<LEVELNODE>;
-  let pRoof: Pointer<LEVELNODE>;
-  let pOnRoof: Pointer<LEVELNODE>;
-  let pTailLand: Pointer<LEVELNODE> = null;
+  let pLand: LEVELNODE | null;
+  let pObject: LEVELNODE | null;
+  let pStruct: LEVELNODE | null;
+  let pShadow: LEVELNODE | null;
+  let pRoof: LEVELNODE | null;
+  let pOnRoof: LEVELNODE | null;
+  let pTailLand: LEVELNODE | null = null;
   let usNumExitGrids: UINT16 = 0;
   let usTypeSubIndex: UINT16;
   let LayerCount: UINT8;
@@ -1302,7 +1295,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let ubTest: UINT8 = 1;
   let aFilename: string /* CHAR8[255] */;
   let ubCombine: UINT8;
-  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */ = createArrayFrom(WORLD_MAX, () => createArray(8, 0));
+  let buffer: Buffer;
 
   aFilename = sprintf("MAPS\\%s", puiFilename);
 
@@ -1313,10 +1307,14 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     return false;
   }
 
+  buffer = Buffer.allocUnsafe(4);
+
   // Write JA2 Version ID
-  FileWrite(hfile, addressof(gdMajorMapVersion), sizeof(FLOAT), addressof(uiBytesWritten));
+  buffer.writeFloatLE(gdMajorMapVersion, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 4);
   if (gdMajorMapVersion >= 4.00) {
-    FileWrite(hfile, addressof(gubMinorMapVersion), sizeof(UINT8), addressof(uiBytesWritten));
+    buffer.writeUInt8(gubMinorMapVersion, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
   }
 
   // Write FLAGS FOR WORLD
@@ -1332,21 +1330,25 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     uiFlags |= MAP_AMBIENTLIGHTLEVEL_SAVED;
   uiFlags |= MAP_NPCSCHEDULES_SAVED;
 
-  FileWrite(hfile, addressof(uiFlags), sizeof(INT32), addressof(uiBytesWritten));
+  buffer.writeUInt32LE(uiFlags, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 4);
 
   // Write tileset ID
-  FileWrite(hfile, addressof(giCurrentTilesetID), sizeof(INT32), addressof(uiBytesWritten));
+  buffer.writeInt32LE(giCurrentTilesetID, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 4);
 
   // Write SOLDIER CONTROL SIZE
-  uiSoldierSize = sizeof(SOLDIERTYPE);
-  FileWrite(hfile, addressof(uiSoldierSize), sizeof(INT32), addressof(uiBytesWritten));
+  uiSoldierSize = SOLDIER_TYPE_SIZE;
+  buffer.writeUInt32LE(uiSoldierSize, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 4);
 
   // REMOVE WORLD VISIBILITY TILES
   RemoveWorldWireFrameTiles();
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write out height values
-    FileWrite(hfile, addressof(gpWorldLevelData[cnt].sHeight), sizeof(INT16), addressof(uiBytesWritten));
+    buffer.writeUInt16LE(gpWorldLevelData[cnt].sHeight, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 2);
   }
 
   // Write out # values - we'll have no more than 15 per level!
@@ -1357,7 +1359,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
     while (pLand != null) {
       LayerCount++;
-      pLand = pLand.value.pNext;
+      pLand = pLand.pNext;
     }
     if (LayerCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  Land count too high (%d) for gridno %d."
@@ -1376,21 +1378,22 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     // Combine # of land layers with worlddef flags ( first 4 bits )
     ubCombine = ((LayerCount & 0xf) | ((gpWorldLevelData[cnt].uiFlags & 0xf) << 4));
     // Write combination
-    FileWrite(hfile, addressof(ubCombine), sizeof(ubCombine), addressof(uiBytesWritten));
+    buffer.writeUInt8(ubCombine, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
 
     // Determine # of objects
     pObject = gpWorldLevelData[cnt].pObjectHead;
     ObjectCount = 0;
     while (pObject != null) {
       // DON'T WRITE ANY ITEMS
-      if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pObject.uiFlags & (LEVELNODE_ITEM))) {
         let uiTileType: UINT32;
         // Make sure this isn't a UI Element
-        uiTileType = GetTileType(pObject.value.usIndex);
+        uiTileType = GetTileType(pObject.usIndex);
         if (uiTileType < Enum313.FIRSTPOINTERS)
           ObjectCount++;
       }
-      pObject = pObject.value.pNext;
+      pObject = pObject.pNext;
     }
     if (ObjectCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  Object count too high (%d) for gridno %d."
@@ -1411,10 +1414,10 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     StructCount = 0;
     while (pStruct != null) {
       // DON'T WRITE ANY ITEMS
-      if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pStruct.uiFlags & (LEVELNODE_ITEM))) {
         StructCount++;
       }
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
     }
     if (StructCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  Struct count too high (%d) for gridno %d."
@@ -1432,17 +1435,18 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
     ubCombine = ((ObjectCount & 0xf) | ((StructCount & 0xf) << 4));
     // Write combination
-    FileWrite(hfile, addressof(ubCombine), sizeof(ubCombine), addressof(uiBytesWritten));
+    buffer.writeUInt8(ubCombine, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
 
     // Determine # of shadows
     pShadow = gpWorldLevelData[cnt].pShadowHead;
     ShadowCount = 0;
     while (pShadow != null) {
       // Don't write any shadowbuddys or exit grids
-      if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
+      if (!(pShadow.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         ShadowCount++;
       }
-      pShadow = pShadow.value.pNext;
+      pShadow = pShadow.pNext;
     }
     if (ShadowCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  Shadow count too high (%d) for gridno %d."
@@ -1463,10 +1467,10 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     RoofCount = 0;
     while (pRoof != null) {
       // ATE: Don't save revealed roof info...
-      if (pRoof.value.usIndex != Enum312.SLANTROOFCEILING1) {
+      if (pRoof.usIndex != Enum312.SLANTROOFCEILING1) {
         RoofCount++;
       }
-      pRoof = pRoof.value.pNext;
+      pRoof = pRoof.pNext;
     }
     if (RoofCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  Roof count too high (%d) for gridno %d."
@@ -1484,7 +1488,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
     ubCombine = ((ShadowCount & 0xf) | ((RoofCount & 0xf) << 4));
     // Write combination
-    FileWrite(hfile, addressof(ubCombine), sizeof(ubCombine), addressof(uiBytesWritten));
+    buffer.writeUInt8(ubCombine, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
 
     // Write OnRoof layer
     // Determine # of OnRoofs
@@ -1493,7 +1498,7 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
     while (pOnRoof != null) {
       OnRoofCount++;
-      pOnRoof = pOnRoof.value.pNext;
+      pOnRoof = pOnRoof.pNext;
     }
     if (OnRoofCount > 15) {
       gzErrorCatchString = swprintf("SAVE ABORTED!  OnRoof count too high (%d) for gridno %d."
@@ -1512,13 +1517,15 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     // Write combination of onroof and nothing...
     ubCombine = ((OnRoofCount & 0xf));
     // Write combination
-    FileWrite(hfile, addressof(ubCombine), sizeof(ubCombine), addressof(uiBytesWritten));
+    buffer.writeUInt8(ubCombine, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
   }
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (bCounts[cnt][0] == 0) {
-      FileWrite(hfile, addressof(ubTest), sizeof(UINT8), addressof(uiBytesWritten));
-      FileWrite(hfile, addressof(ubTest), sizeof(UINT8), addressof(uiBytesWritten));
+      buffer.writeUInt8(ubTest, 0);
+      uiBytesWritten = FileWrite(hfile, buffer, 1);
+      uiBytesWritten = FileWrite(hfile, buffer, 1);
     } else {
       // Write land layers
       // Write out land peices backwards so that they are loaded properly
@@ -1526,18 +1533,20 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       // GET TAIL
       while (pLand != null) {
         pTailLand = pLand;
-        pLand = pLand.value.pNext;
+        pLand = pLand.pNext;
       }
 
       while (pTailLand != null) {
         // Write out object type and sub-index
-        uiType = GetTileType(pTailLand.value.usIndex);
+        uiType = GetTileType(pTailLand.usIndex);
         ubType = uiType;
-        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pTailLand.value.usIndex);
-        FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-        FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pTailLand.usIndex);
+        buffer.writeUInt8(ubType, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+        buffer.writeUInt8(ubTypeSubIndex, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
 
-        pTailLand = pTailLand.value.pPrevNode;
+        pTailLand = pTailLand.pPrevNode;
       }
     }
   }
@@ -1547,20 +1556,22 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pObject = gpWorldLevelData[cnt].pObjectHead;
     while (pObject != null) {
       // DON'T WRITE ANY ITEMS
-      if (!(pObject.value.uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pObject.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        uiType = GetTileType(pObject.value.usIndex);
+        uiType = GetTileType(pObject.usIndex);
         // Make sure this isn't a UI Element
         if (uiType < Enum313.FIRSTPOINTERS) {
           // We are writing 2 bytes for the type subindex in the object layer because the
           // ROADPIECES slot contains more than 256 subindices.
           ubType = uiType;
-          usTypeSubIndex = GetTypeSubIndexFromTileIndex(uiType, pObject.value.usIndex);
-          FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-          FileWrite(hfile, addressof(usTypeSubIndex), sizeof(UINT16), addressof(uiBytesWritten));
+          usTypeSubIndex = GetTypeSubIndexFromTileIndex(uiType, pObject.usIndex);
+          buffer.writeUInt8(ubType, 0);
+          uiBytesWritten = FileWrite(hfile, buffer, 1);
+          buffer.writeUInt16LE(usTypeSubIndex, 0);
+          uiBytesWritten = FileWrite(hfile, buffer, 2);
         }
       }
-      pObject = pObject.value.pNext;
+      pObject = pObject.pNext;
     }
   }
 
@@ -1569,16 +1580,18 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pStruct = gpWorldLevelData[cnt].pStructHead;
     while (pStruct != null) {
       // DON'T WRITE ANY ITEMS
-      if (!(pStruct.value.uiFlags & (LEVELNODE_ITEM))) {
+      if (!(pStruct.uiFlags & (LEVELNODE_ITEM))) {
         // Write out object type and sub-index
-        uiType = GetTileType(pStruct.value.usIndex);
+        uiType = GetTileType(pStruct.usIndex);
         ubType = uiType;
-        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pStruct.value.usIndex);
-        FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-        FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pStruct.usIndex);
+        buffer.writeUInt8(ubType, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+        buffer.writeUInt8(ubTypeSubIndex, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
       }
 
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
     }
   }
 
@@ -1587,20 +1600,22 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pShadow = gpWorldLevelData[cnt].pShadowHead;
     while (pShadow != null) {
       // Dont't write any buddys or exit grids
-      if (!(pShadow.value.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
+      if (!(pShadow.uiFlags & (LEVELNODE_BUDDYSHADOW | LEVELNODE_EXITGRID))) {
         // Write out object type and sub-index
         // Write out object type and sub-index
-        uiType = GetTileType(pShadow.value.usIndex);
+        uiType = GetTileType(pShadow.usIndex);
         ubType = uiType;
-        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pShadow.value.usIndex);
-        FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-        FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
-      } else if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pShadow.usIndex);
+        buffer.writeUInt8(ubType, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+        buffer.writeUInt8(ubTypeSubIndex, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+      } else if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
         // count the number of exitgrids
         usNumExitGrids++;
       }
 
-      pShadow = pShadow.value.pNext;
+      pShadow = pShadow.pNext;
     }
   }
 
@@ -1608,16 +1623,18 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pRoof = gpWorldLevelData[cnt].pRoofHead;
     while (pRoof != null) {
       // ATE: Don't save revealed roof info...
-      if (pRoof.value.usIndex != Enum312.SLANTROOFCEILING1) {
+      if (pRoof.usIndex != Enum312.SLANTROOFCEILING1) {
         // Write out object type and sub-index
-        uiType = GetTileType(pRoof.value.usIndex);
+        uiType = GetTileType(pRoof.usIndex);
         ubType = uiType;
-        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pRoof.value.usIndex);
-        FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-        FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
+        ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pRoof.usIndex);
+        buffer.writeUInt8(ubType, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+        buffer.writeUInt8(ubTypeSubIndex, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
       }
 
-      pRoof = pRoof.value.pNext;
+      pRoof = pRoof.pNext;
     }
   }
 
@@ -1626,19 +1643,22 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     pOnRoof = gpWorldLevelData[cnt].pOnRoofHead;
     while (pOnRoof != null) {
       // Write out object type and sub-index
-      uiType = GetTileType(pOnRoof.value.usIndex);
+      uiType = GetTileType(pOnRoof.usIndex);
       ubType = uiType;
-      ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof.value.usIndex);
-      FileWrite(hfile, addressof(ubType), sizeof(UINT8), addressof(uiBytesWritten));
-      FileWrite(hfile, addressof(ubTypeSubIndex), sizeof(UINT8), addressof(uiBytesWritten));
+      ubTypeSubIndex = GetTypeSubIndexFromTileIndexChar(uiType, pOnRoof.usIndex);
+      buffer.writeUInt8(ubType, 0);
+      uiBytesWritten = FileWrite(hfile, buffer, 1);
+      buffer.writeUInt8(ubTypeSubIndex, 0);
+      uiBytesWritten = FileWrite(hfile, buffer, 1);
 
-      pOnRoof = pOnRoof.value.pNext;
+      pOnRoof = pOnRoof.pNext;
     }
   }
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write out room information
-    FileWrite(hfile, addressof(gubWorldRoomInfo[cnt]), sizeof(INT8), addressof(uiBytesWritten));
+    buffer.writeUInt8(gubWorldRoomInfo[cnt], 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
   }
 
   if (uiFlags & MAP_WORLDITEMS_SAVED) {
@@ -1647,9 +1667,12 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   }
 
   if (uiFlags & MAP_AMBIENTLIGHTLEVEL_SAVED) {
-    FileWrite(hfile, addressof(gfBasement), 1, addressof(uiBytesWritten));
-    FileWrite(hfile, addressof(gfCaves), 1, addressof(uiBytesWritten));
-    FileWrite(hfile, addressof(ubAmbientLightLevel), 1, addressof(uiBytesWritten));
+    buffer.writeUInt8(Number(gfBasement), 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
+    buffer.writeUInt8(Number(gfCaves), 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
+    buffer.writeUInt8(ubAmbientLightLevel, 0);
+    uiBytesWritten = FileWrite(hfile, buffer, 1);
   }
 
   if (uiFlags & MAP_WORLDLIGHTS_SAVED) {
@@ -1719,16 +1742,16 @@ function OptimizeMapForShadows(): void {
 
 function SetBlueFlagFlags(): void {
   let cnt: INT32;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode) {
-      if (pNode.value.usIndex == BLUEFLAG_GRAPHIC) {
+      if (pNode.usIndex == BLUEFLAG_GRAPHIC) {
         gpWorldLevelData[cnt].uiFlags |= MAPELEMENT_PLAYER_MINE_PRESENT;
         break;
       }
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
   }
 }
@@ -1762,11 +1785,9 @@ export function InitLoadedWorld(): void {
 
 export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): boolean {
   let dMajorMapVersion: FLOAT;
-  let pSummary: Pointer<SUMMARYFILE>;
+  let pSummary: SUMMARYFILE;
   let hfile: HWFILE;
-  let mapInfo: MAPCREATE_STRUCT;
-  let pBuffer: Pointer<INT8>;
-  let pBufferHead: Pointer<INT8>;
+  let mapInfo: MAPCREATE_STRUCT = createMapCreateStruct();
   let uiFileSize: UINT32;
   let uiFlags: UINT32;
   let uiBytesRead: UINT32;
@@ -1774,11 +1795,13 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   let i: INT32;
   let iTilesetID: INT32;
   let str: string /* UINT16[40] */;
-  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */ = createArrayFrom(WORLD_MAX, () => createArray(8, 0));
   let ubCombine: UINT8;
   let szDirFilename: string /* UINT8[50] */;
   let szFilename: string /* UINT8[40] */;
   let ubMinorMapVersion: UINT8;
+  let buffer: Buffer;
+  let offset: number;
 
   // Make sure the file exists... if not, then return false
   szFilename = pSector;
@@ -1805,9 +1828,8 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
     return false;
 
   uiFileSize = FileGetSize(hfile);
-  pBuffer = MemAlloc(uiFileSize);
-  pBufferHead = pBuffer;
-  FileRead(hfile, pBuffer, uiFileSize, addressof(uiBytesRead));
+  buffer = Buffer.allocUnsafe(uiFileSize);
+  uiBytesRead = FileRead(hfile, buffer, uiFileSize);
   FileClose(hfile);
 
   str = swprintf("Analyzing map %S", szFilename);
@@ -1820,30 +1842,30 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   // RenderProgressBar( 1, 0 );
 
   // clear the summary file info
-  pSummary = MemAlloc(sizeof(SUMMARYFILE));
-  Assert(pSummary);
-  memset(pSummary, 0, sizeof(SUMMARYFILE));
-  pSummary.value.ubSummaryVersion = GLOBAL_SUMMARY_VERSION;
-  pSummary.value.dMajorMapVersion = gdMajorMapVersion;
+  pSummary = createSummaryFile();
+  pSummary.ubSummaryVersion = GLOBAL_SUMMARY_VERSION;
+  pSummary.dMajorMapVersion = gdMajorMapVersion;
+
+  offset = 0;
 
   // skip JA2 Version ID
-  LOADDATA(addressof(dMajorMapVersion), pBuffer, sizeof(FLOAT));
+  dMajorMapVersion = buffer.readFloatLE(offset); offset += 4;
   if (dMajorMapVersion >= 4.00) {
-    LOADDATA(addressof(ubMinorMapVersion), pBuffer, sizeof(UINT8));
+    ubMinorMapVersion = buffer.readUInt8(offset++);
   }
 
   // Read FLAGS FOR WORLD
-  LOADDATA(addressof(uiFlags), pBuffer, sizeof(INT32));
+  uiFlags = buffer.readUInt32LE(offset); offset += 4;
 
   // Read tilesetID
-  LOADDATA(addressof(iTilesetID), pBuffer, sizeof(INT32));
-  pSummary.value.ubTilesetID = iTilesetID;
+  iTilesetID = buffer.readInt32LE(offset); offset += 4;
+  pSummary.ubTilesetID = iTilesetID;
 
   // skip soldier size
-  pBuffer += sizeof(INT32);
+  offset += 4;
 
   // skip height values
-  pBuffer += sizeof(INT16) * WORLD_MAX;
+  offset += 2 * WORLD_MAX;
 
   // read layer counts
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -1852,22 +1874,22 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
       // RenderProgressBar( 1, (cnt / 2560)+1 ); //1 - 10
     }
     // Read combination of land/world flags
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(offset++);
     // split
     bCounts[cnt][0] = (ubCombine & 0xf);
     gpWorldLevelData[cnt].uiFlags |= ((ubCombine & 0xf0) >> 4);
     // Read #objects, structs
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(offset++);
     // split
     bCounts[cnt][1] = (ubCombine & 0xf);
     bCounts[cnt][2] = ((ubCombine & 0xf0) >> 4);
     // Read shadows, roof
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(offset++);
     // split
     bCounts[cnt][3] = (ubCombine & 0xf);
     bCounts[cnt][4] = ((ubCombine & 0xf0) >> 4);
     // Read OnRoof, nothing
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(offset++);
     // split
     bCounts[cnt][5] = (ubCombine & 0xf);
     // bCounts[ cnt ][4] = (UINT8)((ubCombine&0xf0)>>4);
@@ -1879,17 +1901,17 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
       RenderProgressBar(0, (cnt / 320) + 11); // 11 - 90
       // RenderProgressBar( 1, (cnt / 320)+11 ); //11 - 90
     }
-    pBuffer += sizeof(UINT16) * bCounts[cnt][6];
-    pBuffer += bCounts[cnt][1];
+    offset += 2 * bCounts[cnt][6];
+    offset += bCounts[cnt][1];
   }
 
   // extract highest room number
   {
     let ubRoomNum: UINT8;
     for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-      LOADDATA(addressof(ubRoomNum), pBuffer, 1);
-      if (ubRoomNum > pSummary.value.ubNumRooms) {
-        pSummary.value.ubNumRooms = ubRoomNum;
+      ubRoomNum = buffer.readUInt8(offset++);
+      if (ubRoomNum > pSummary.ubNumRooms) {
+        pSummary.ubNumRooms = ubRoomNum;
       }
     }
   }
@@ -1899,19 +1921,19 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
     RenderProgressBar(0, 91);
     // RenderProgressBar( 1, 91 );
     // get number of items (for now)
-    LOADDATA(addressof(temp), pBuffer, 4);
-    pSummary.value.usNumItems = temp;
+    temp = buffer.readUInt32LE(offset); offset += 4;
+    pSummary.usNumItems = temp;
     // Important:  Saves the file position (byte offset) of the position where the numitems
     //            resides.  Checking this value and comparing to usNumItems will ensure validity.
-    if (pSummary.value.usNumItems) {
-      pSummary.value.uiNumItemsPosition = pBuffer - pBufferHead - 4;
+    if (pSummary.usNumItems) {
+      pSummary.uiNumItemsPosition = offset - 4;
     }
     // Skip the contents of the world items.
-    pBuffer += sizeof(WORLDITEM) * pSummary.value.usNumItems;
+    offset += WORLD_ITEM_SIZE * pSummary.usNumItems;
   }
 
   if (uiFlags & MAP_AMBIENTLIGHTLEVEL_SAVED) {
-    pBuffer += 3;
+    offset += 3;
   }
 
   if (uiFlags & MAP_WORLDLIGHTS_SAVED) {
@@ -1919,153 +1941,153 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
     RenderProgressBar(0, 92);
     // RenderProgressBar( 1, 92 );
     // skip number of light palette entries
-    LOADDATA(addressof(ubTemp), pBuffer, 1);
-    pBuffer += sizeof(SGPPaletteEntry) * ubTemp;
+    ubTemp = buffer.readUInt8(offset++);
+    offset += SGP_PALETTE_ENTRY_SIZE * ubTemp;
     // get number of lights
-    LOADDATA(addressof(pSummary.value.usNumLights), pBuffer, 2);
+    pSummary.usNumLights = buffer.readUInt16LE(offset); offset += 2;
     // skip the light loading
-    for (cnt = 0; cnt < pSummary.value.usNumLights; cnt++) {
+    for (cnt = 0; cnt < pSummary.usNumLights; cnt++) {
       let ubStrLen: UINT8;
-      pBuffer += sizeof(LIGHT_SPRITE);
-      LOADDATA(addressof(ubStrLen), pBuffer, 1);
+      offset += LIGHT_SPRITE_SIZE;
+      ubStrLen = buffer.readUInt8(offset++);
       if (ubStrLen) {
-        pBuffer += ubStrLen;
+        offset += ubStrLen;
       }
     }
   }
 
   // read the mapinformation
-  LOADDATA(addressof(mapInfo), pBuffer, sizeof(MAPCREATE_STRUCT));
+  offset = readMapCreateStruct(mapInfo, buffer, offset);
 
-  memcpy(addressof(pSummary.value.MapInfo), addressof(mapInfo), sizeof(MAPCREATE_STRUCT));
+  copyMapCreateStruct(pSummary.MapInfo, mapInfo);
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
-    let pTeam: Pointer<TEAMSUMMARY> = null;
+    let pTeam: TEAMSUMMARY = <TEAMSUMMARY><unknown>undefined;
     let basic: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
     let priority: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
     RenderProgressBar(0, 94);
     // RenderProgressBar( 1, 94 );
 
-    pSummary.value.uiEnemyPlacementPosition = pBuffer - pBufferHead;
+    pSummary.uiEnemyPlacementPosition = offset;
 
-    for (i = 0; i < pSummary.value.MapInfo.ubNumIndividuals; i++) {
-      LOADDATA(addressof(basic), pBuffer, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+    for (i = 0; i < pSummary.MapInfo.ubNumIndividuals; i++) {
+      offset = readBasicSoldierCreateStruct(basic, buffer, offset);
 
       switch (basic.bTeam) {
         case ENEMY_TEAM:
-          pTeam = addressof(pSummary.value.EnemyTeam);
+          pTeam = pSummary.EnemyTeam;
           break;
         case CREATURE_TEAM:
-          pTeam = addressof(pSummary.value.CreatureTeam);
+          pTeam = pSummary.CreatureTeam;
           break;
         case MILITIA_TEAM:
-          pTeam = addressof(pSummary.value.RebelTeam);
+          pTeam = pSummary.RebelTeam;
           break;
         case CIV_TEAM:
-          pTeam = addressof(pSummary.value.CivTeam);
+          pTeam = pSummary.CivTeam;
           break;
       }
       if (basic.bOrders == Enum241.RNDPTPATROL || basic.bOrders == Enum241.POINTPATROL) {
         // make sure the placement has at least one waypoint.
         if (!basic.bPatrolCnt) {
-          pSummary.value.ubEnemiesReqWaypoints++;
+          pSummary.ubEnemiesReqWaypoints++;
         }
       } else if (basic.bPatrolCnt) {
-        pSummary.value.ubEnemiesHaveWaypoints++;
+        pSummary.ubEnemiesHaveWaypoints++;
       }
       if (basic.fPriorityExistance)
-        pTeam.value.ubExistance++;
+        pTeam.ubExistance++;
       switch (basic.bRelativeAttributeLevel) {
         case 0:
-          pTeam.value.ubBadA++;
+          pTeam.ubBadA++;
           break;
         case 1:
-          pTeam.value.ubPoorA++;
+          pTeam.ubPoorA++;
           break;
         case 2:
-          pTeam.value.ubAvgA++;
+          pTeam.ubAvgA++;
           break;
         case 3:
-          pTeam.value.ubGoodA++;
+          pTeam.ubGoodA++;
           break;
         case 4:
-          pTeam.value.ubGreatA++;
+          pTeam.ubGreatA++;
           break;
       }
       switch (basic.bRelativeEquipmentLevel) {
         case 0:
-          pTeam.value.ubBadE++;
+          pTeam.ubBadE++;
           break;
         case 1:
-          pTeam.value.ubPoorE++;
+          pTeam.ubPoorE++;
           break;
         case 2:
-          pTeam.value.ubAvgE++;
+          pTeam.ubAvgE++;
           break;
         case 3:
-          pTeam.value.ubGoodE++;
+          pTeam.ubGoodE++;
           break;
         case 4:
-          pTeam.value.ubGreatE++;
+          pTeam.ubGreatE++;
           break;
       }
       if (basic.fDetailedPlacement) {
         // skip static priority placement
-        LOADDATA(addressof(priority), pBuffer, sizeof(SOLDIERCREATE_STRUCT));
+        offset = readSoldierCreateStruct(priority, buffer, offset);
         if (priority.ubProfile != NO_PROFILE)
-          pTeam.value.ubProfile++;
+          pTeam.ubProfile++;
         else
-          pTeam.value.ubDetailed++;
+          pTeam.ubDetailed++;
         if (basic.bTeam == CIV_TEAM) {
           if (priority.ubScheduleID)
-            pSummary.value.ubCivSchedules++;
+            pSummary.ubCivSchedules++;
           if (priority.bBodyType == Enum194.COW)
-            pSummary.value.ubCivCows++;
+            pSummary.ubCivCows++;
           else if (priority.bBodyType == Enum194.BLOODCAT)
-            pSummary.value.ubCivBloodcats++;
+            pSummary.ubCivBloodcats++;
         }
       }
       if (basic.bTeam == ENEMY_TEAM) {
         switch (basic.ubSoldierClass) {
           case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-            pSummary.value.ubNumAdmins++;
+            pSummary.ubNumAdmins++;
             if (basic.fPriorityExistance)
-              pSummary.value.ubAdminExistance++;
+              pSummary.ubAdminExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary.value.ubAdminProfile++;
+                pSummary.ubAdminProfile++;
               else
-                pSummary.value.ubAdminDetailed++;
+                pSummary.ubAdminDetailed++;
             }
             break;
           case Enum262.SOLDIER_CLASS_ELITE:
-            pSummary.value.ubNumElites++;
+            pSummary.ubNumElites++;
             if (basic.fPriorityExistance)
-              pSummary.value.ubEliteExistance++;
+              pSummary.ubEliteExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary.value.ubEliteProfile++;
+                pSummary.ubEliteProfile++;
               else
-                pSummary.value.ubEliteDetailed++;
+                pSummary.ubEliteDetailed++;
             }
             break;
           case Enum262.SOLDIER_CLASS_ARMY:
-            pSummary.value.ubNumTroops++;
+            pSummary.ubNumTroops++;
             if (basic.fPriorityExistance)
-              pSummary.value.ubTroopExistance++;
+              pSummary.ubTroopExistance++;
             if (basic.fDetailedPlacement) {
               if (priority.ubProfile != NO_PROFILE)
-                pSummary.value.ubTroopProfile++;
+                pSummary.ubTroopProfile++;
               else
-                pSummary.value.ubTroopDetailed++;
+                pSummary.ubTroopDetailed++;
             }
             break;
         }
       } else if (basic.bTeam == CREATURE_TEAM) {
         if (basic.bBodyType == Enum194.BLOODCAT)
-          pTeam.value.ubNumAnimals++;
+          pTeam.ubNumAnimals++;
       }
-      pTeam.value.ubTotal++;
+      pTeam.ubTotal++;
     }
     RenderProgressBar(0, 96);
     // RenderProgressBar( 1, 96 );
@@ -2079,32 +2101,32 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
     RenderProgressBar(0, 98);
     // RenderProgressBar( 1, 98 );
 
-    LOADDATA(addressof(cnt), pBuffer, 2);
+    cnt = buffer.readUInt16LE(offset); offset += 2;
 
     for (i = 0; i < cnt; i++) {
-      LOADDATA(addressof(usMapIndex), pBuffer, 2);
-      LOADDATA(addressof(exitGrid), pBuffer, 5);
+      usMapIndex = buffer.readUInt16LE(offset); offset += 2;
+      offset = readExitGrid(exitGrid, buffer, offset);
       fExitGridFound = false;
-      for (loop = 0; loop < pSummary.value.ubNumExitGridDests; loop++) {
-        if (pSummary.value.ExitGrid[loop].usGridNo == exitGrid.usGridNo && pSummary.value.ExitGrid[loop].ubGotoSectorX == exitGrid.ubGotoSectorX && pSummary.value.ExitGrid[loop].ubGotoSectorY == exitGrid.ubGotoSectorY && pSummary.value.ExitGrid[loop].ubGotoSectorZ == exitGrid.ubGotoSectorZ) {
+      for (loop = 0; loop < pSummary.ubNumExitGridDests; loop++) {
+        if (pSummary.ExitGrid[loop].usGridNo == exitGrid.usGridNo && pSummary.ExitGrid[loop].ubGotoSectorX == exitGrid.ubGotoSectorX && pSummary.ExitGrid[loop].ubGotoSectorY == exitGrid.ubGotoSectorY && pSummary.ExitGrid[loop].ubGotoSectorZ == exitGrid.ubGotoSectorZ) {
           // same destination.
-          pSummary.value.usExitGridSize[loop]++;
+          pSummary.usExitGridSize[loop]++;
           fExitGridFound = true;
           break;
         }
       }
       if (!fExitGridFound) {
         if (loop >= 4) {
-          pSummary.value.fTooManyExitGridDests = true;
+          pSummary.fTooManyExitGridDests = true;
         } else {
-          pSummary.value.ubNumExitGridDests++;
-          pSummary.value.usExitGridSize[loop]++;
-          pSummary.value.ExitGrid[loop].usGridNo = exitGrid.usGridNo;
-          pSummary.value.ExitGrid[loop].ubGotoSectorX = exitGrid.ubGotoSectorX;
-          pSummary.value.ExitGrid[loop].ubGotoSectorY = exitGrid.ubGotoSectorY;
-          pSummary.value.ExitGrid[loop].ubGotoSectorZ = exitGrid.ubGotoSectorZ;
-          if (pSummary.value.ExitGrid[loop].ubGotoSectorX != exitGrid.ubGotoSectorX || pSummary.value.ExitGrid[loop].ubGotoSectorY != exitGrid.ubGotoSectorY) {
-            pSummary.value.fInvalidDest[loop] = true;
+          pSummary.ubNumExitGridDests++;
+          pSummary.usExitGridSize[loop]++;
+          pSummary.ExitGrid[loop].usGridNo = exitGrid.usGridNo;
+          pSummary.ExitGrid[loop].ubGotoSectorX = exitGrid.ubGotoSectorX;
+          pSummary.ExitGrid[loop].ubGotoSectorY = exitGrid.ubGotoSectorY;
+          pSummary.ExitGrid[loop].ubGotoSectorZ = exitGrid.ubGotoSectorZ;
+          if (pSummary.ExitGrid[loop].ubGotoSectorX != exitGrid.ubGotoSectorX || pSummary.ExitGrid[loop].ubGotoSectorY != exitGrid.ubGotoSectorY) {
+            pSummary.fInvalidDest[loop] = true;
           }
         }
       }
@@ -2112,26 +2134,24 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   }
 
   if (uiFlags & MAP_DOORTABLE_SAVED) {
-    let Door: DOOR;
+    let Door: DOOR = createDoor();
 
-    LOADDATA(addressof(pSummary.value.ubNumDoors), pBuffer, 1);
+    pSummary.ubNumDoors = buffer.readUInt8(offset++);
 
-    for (cnt = 0; cnt < pSummary.value.ubNumDoors; cnt++) {
-      LOADDATA(addressof(Door), pBuffer, sizeof(DOOR));
+    for (cnt = 0; cnt < pSummary.ubNumDoors; cnt++) {
+      offset = readDoor(Door, buffer, offset);
 
       if (Door.ubTrapID && Door.ubLockID)
-        pSummary.value.ubNumDoorsLockedAndTrapped++;
+        pSummary.ubNumDoorsLockedAndTrapped++;
       else if (Door.ubLockID)
-        pSummary.value.ubNumDoorsLocked++;
+        pSummary.ubNumDoorsLocked++;
       else if (Door.ubTrapID)
-        pSummary.value.ubNumDoorsTrapped++;
+        pSummary.ubNumDoorsTrapped++;
     }
   }
 
   RenderProgressBar(0, 100);
   // RenderProgressBar( 1, 100 );
-
-  MemFree(pBufferHead);
 
   WriteSectorSummaryUpdate(szFilename, ubLevel, pSummary);
   return true;
@@ -2155,11 +2175,11 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   let ubSubIndex: UINT8;
   let aFilename: string /* CHAR8[50] */;
   let ubCombine: UINT8;
-  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
-  let pBuffer: Pointer<INT8>;
-  let pBufferHead: Pointer<INT8>;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */ = createArrayFrom(WORLD_MAX, () => createArray(8, 0));
   let fGenerateEdgePoints: boolean = false;
   let ubMinorMapVersion: UINT8;
+  let buffer: Buffer;
+  let bufferOffset: number;
 
   LoadShadeTablesFromTextFile();
 
@@ -2191,13 +2211,14 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   // Get the file size and alloc one huge buffer for it.
   // We will use this buffer to transfer all of the data from.
   uiFileSize = FileGetSize(hfile);
-  pBuffer = MemAlloc(uiFileSize);
-  pBufferHead = pBuffer;
-  FileRead(hfile, pBuffer, uiFileSize, addressof(uiBytesRead));
+  buffer = Buffer.allocUnsafe(uiFileSize);
+  uiBytesRead = FileRead(hfile, buffer, uiFileSize);
   FileClose(hfile);
 
+  bufferOffset = 0;
+
   // Read JA2 Version ID
-  LOADDATA(addressof(dMajorMapVersion), pBuffer, sizeof(FLOAT));
+  dMajorMapVersion = buffer.readFloatLE(bufferOffset); bufferOffset += 4;
 
 // FIXME: Language-specific code
 // #ifdef RUSSIAN
@@ -2206,7 +2227,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 //   }
 // #endif
 
-  LOADDATA(addressof(ubMinorMapVersion), pBuffer, sizeof(UINT8));
+  ubMinorMapVersion = buffer.readUInt8(bufferOffset++);
 
   // CHECK FOR NON-COMPATIBLE VERSIONS!
   // CHECK FOR MAJOR MAP VERSION INCOMPATIBLITIES
@@ -2218,22 +2239,22 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   //}
 
   // Read FLAGS FOR WORLD
-  LOADDATA(addressof(uiFlags), pBuffer, sizeof(INT32));
+  uiFlags = buffer.readUInt32LE(bufferOffset); bufferOffset += 4;
 
-  LOADDATA(addressof(iTilesetID), pBuffer, sizeof(INT32));
+  iTilesetID = buffer.readInt32LE(bufferOffset); bufferOffset += 4;
 
   if (LoadMapTileset(iTilesetID) == false) {
     return false;
   }
 
   // Load soldier size
-  LOADDATA(addressof(uiSoldierSize), pBuffer, sizeof(INT32));
+  uiSoldierSize = buffer.readUInt32LE(bufferOffset); bufferOffset += 4;
 
   // FP 0x000010
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Read height values
-    LOADDATA(addressof(gpWorldLevelData[cnt].sHeight), pBuffer, sizeof(INT16));
+    gpWorldLevelData[cnt].sHeight = buffer.readUInt16LE(bufferOffset); bufferOffset += 2;
   }
 
   // FP 0x00c810
@@ -2244,28 +2265,28 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   // Read layer counts
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Read combination of land/world flags
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(bufferOffset++);
 
     // split
     bCounts[cnt][0] = (ubCombine & 0xf);
     gpWorldLevelData[cnt].uiFlags |= ((ubCombine & 0xf0) >> 4);
 
     // Read #objects, structs
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(bufferOffset++);
 
     // split
     bCounts[cnt][1] = (ubCombine & 0xf);
     bCounts[cnt][2] = ((ubCombine & 0xf0) >> 4);
 
     // Read shadows, roof
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(bufferOffset++);
 
     // split
     bCounts[cnt][3] = (ubCombine & 0xf);
     bCounts[cnt][4] = ((ubCombine & 0xf0) >> 4);
 
     // Read OnRoof, nothing
-    LOADDATA(addressof(ubCombine), pBuffer, sizeof(UINT8));
+    ubCombine = buffer.readUInt8(bufferOffset++);
 
     // split
     bCounts[cnt][5] = (ubCombine & 0xf);
@@ -2284,8 +2305,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       cnt = cnt;
     }
     for (cnt2 = 0; cnt2 < bCounts[cnt][0]; cnt2++) {
-      LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-      LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+      ubType = buffer.readUInt8(bufferOffset++);
+      ubSubIndex = buffer.readUInt8(bufferOffset++);
 
       // Get tile index
       usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
@@ -2308,8 +2329,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     for (cnt = 0; cnt < WORLD_MAX; cnt++) {
       // Set objects
       for (cnt2 = 0; cnt2 < bCounts[cnt][1]; cnt2++) {
-        LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-        LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+        ubType = buffer.readUInt8(bufferOffset++);
+        ubSubIndex = buffer.readUInt8(bufferOffset++);
         if (ubType >= Enum313.FIRSTPOINTERS) {
           continue;
         }
@@ -2328,8 +2349,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
         cnt = cnt;
       }
       for (cnt2 = 0; cnt2 < bCounts[cnt][1]; cnt2++) {
-        LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-        LOADDATA(addressof(usTypeSubIndex), pBuffer, sizeof(UINT16));
+        ubType = buffer.readUInt8(bufferOffset++);
+        usTypeSubIndex = buffer.readUInt16LE(bufferOffset); bufferOffset += 2;
         if (ubType >= Enum313.FIRSTPOINTERS) {
           continue;
         }
@@ -2355,8 +2376,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       cnt = cnt;
     }
     for (cnt2 = 0; cnt2 < bCounts[cnt][2]; cnt2++) {
-      LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-      LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+      ubType = buffer.readUInt8(bufferOffset++);
+      ubSubIndex = buffer.readUInt8(bufferOffset++);
 
       // Get tile index
       usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
@@ -2386,8 +2407,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       cnt = cnt;
     }
     for (cnt2 = 0; cnt2 < bCounts[cnt][3]; cnt2++) {
-      LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-      LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+      ubType = buffer.readUInt8(bufferOffset++);
+      ubSubIndex = buffer.readUInt8(bufferOffset++);
 
       // Get tile index
       usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
@@ -2410,8 +2431,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       cnt = cnt;
     }
     for (cnt2 = 0; cnt2 < bCounts[cnt][4]; cnt2++) {
-      LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-      LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+      ubType = buffer.readUInt8(bufferOffset++);
+      ubSubIndex = buffer.readUInt8(bufferOffset++);
 
       // Get tile index
       usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
@@ -2434,8 +2455,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
       cnt = cnt;
     }
     for (cnt2 = 0; cnt2 < bCounts[cnt][5]; cnt2++) {
-      LOADDATA(addressof(ubType), pBuffer, sizeof(UINT8));
-      LOADDATA(addressof(ubSubIndex), pBuffer, sizeof(UINT8));
+      ubType = buffer.readUInt8(bufferOffset++);
+      ubSubIndex = buffer.readUInt8(bufferOffset++);
 
       // Get tile index
       usTileIndex = GetTileIndexFromTypeSubIndex(ubType, ubSubIndex);
@@ -2464,7 +2485,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   gubMaxRoomNumber = 0;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Read room information
-    LOADDATA(addressof(gubWorldRoomInfo[cnt]), pBuffer, sizeof(INT8));
+    gubWorldRoomInfo[cnt] = buffer.readUInt8(bufferOffset++);
     // Got to set the max room number
     if (gubWorldRoomInfo[cnt] > gubMaxRoomNumber)
       gubMaxRoomNumber = gubWorldRoomInfo[cnt];
@@ -2475,10 +2496,10 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   // ATE; Memset this array!
   if (0) {
     // for debugging purposes
-    memset(gubWorldRoomInfo, 0, sizeof(gubWorldRoomInfo));
+    gubWorldRoomInfo.fill(0);
   }
 
-  memset(gubWorldRoomHidden, true, sizeof(gubWorldRoomHidden));
+  gubWorldRoomHidden.fill(true);
 
   SetRelativeStartAndEndPercentage(0, 59, 61, "Loading items...");
   RenderProgressBar(0, 100);
@@ -2486,7 +2507,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   if (uiFlags & MAP_WORLDITEMS_SAVED) {
     // Load out item information
     gfLoadPitsWithoutArming = true;
-    LoadWorldItemsFromMap(addressof(pBuffer));
+    bufferOffset = LoadWorldItemsFromMap(buffer, bufferOffset);
     gfLoadPitsWithoutArming = false;
   }
 
@@ -2495,9 +2516,9 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   if (uiFlags & MAP_AMBIENTLIGHTLEVEL_SAVED) {
     // Ambient light levels are only saved in underground levels
-    LOADDATA(addressof(gfBasement), pBuffer, 1);
-    LOADDATA(addressof(gfCaves), pBuffer, 1);
-    LOADDATA(addressof(ubAmbientLightLevel), pBuffer, 1);
+    gfBasement = Boolean(buffer.readUInt8(bufferOffset++));
+    gfCaves = Boolean(buffer.readUInt8(bufferOffset++));
+    ubAmbientLightLevel = buffer.readUInt8(bufferOffset++);
   } else {
     // We are above ground.
     gfBasement = false;
@@ -2509,7 +2530,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
     }
   }
   if (uiFlags & MAP_WORLDLIGHTS_SAVED) {
-    LoadMapLights(addressof(pBuffer));
+    bufferOffset = LoadMapLights(buffer, bufferOffset);
   } else {
     // Set some default value for lighting
     SetDefaultWorldLightingColors();
@@ -2519,27 +2540,29 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   SetRelativeStartAndEndPercentage(0, 85, 86, "Loading map information...");
   RenderProgressBar(0, 0);
 
-  LoadMapInformation(addressof(pBuffer));
+  bufferOffset = LoadMapInformation(buffer, bufferOffset);
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
     SetRelativeStartAndEndPercentage(0, 86, 87, "Loading placements...");
     RenderProgressBar(0, 0);
-    LoadSoldiersFromMap(addressof(pBuffer));
+    bufferOffset = LoadSoldiersFromMap(buffer, bufferOffset);
   }
   if (uiFlags & MAP_EXITGRIDS_SAVED) {
     SetRelativeStartAndEndPercentage(0, 87, 88, "Loading exit grids...");
     RenderProgressBar(0, 0);
-    LoadExitGrids(addressof(pBuffer));
+    bufferOffset = LoadExitGrids(buffer, bufferOffset);
   }
   if (uiFlags & MAP_DOORTABLE_SAVED) {
     SetRelativeStartAndEndPercentage(0, 89, 90, "Loading door tables...");
     RenderProgressBar(0, 0);
-    LoadDoorTableFromMap(addressof(pBuffer));
+    bufferOffset = LoadDoorTableFromMap(buffer, bufferOffset);
   }
   if (uiFlags & MAP_EDGEPOINTS_SAVED) {
     SetRelativeStartAndEndPercentage(0, 90, 91, "Loading edgepoints...");
     RenderProgressBar(0, 0);
-    if (!LoadMapEdgepoints(addressof(pBuffer)))
+    let result: boolean;
+    ({ result, offset: bufferOffset } = LoadMapEdgepoints(buffer, bufferOffset));
+    if (!result)
       fGenerateEdgePoints = true; // only if the map had the older edgepoint system
   } else {
     fGenerateEdgePoints = true;
@@ -2547,7 +2570,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   if (uiFlags & MAP_NPCSCHEDULES_SAVED) {
     SetRelativeStartAndEndPercentage(0, 91, 92, "Loading NPC schedules...");
     RenderProgressBar(0, 0);
-    LoadSchedules(addressof(pBuffer));
+    LoadSchedules(buffer, bufferOffset);
   }
 
   ValidateAndUpdateMapVersionIfNecessary();
@@ -2606,9 +2629,6 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   gubFilename = puiFilename;
 
-  // Remove this rather large chunk of memory from the system now!
-  MemFree(pBufferHead);
-
   RenderProgressBar(0, 100);
 
   DequeueAllKeyBoardEvents();
@@ -2634,7 +2654,7 @@ export function NewWorld(): boolean {
   // Create world randomly from tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Set land index
-    NewIndex = (rand() % 10);
+    NewIndex = Math.floor(Math.random() * 10);
     AddLandToHead(cnt, NewIndex);
   }
 
@@ -2646,18 +2666,18 @@ export function NewWorld(): boolean {
 }
 
 export function TrashWorld(): void {
-  let pMapTile: Pointer<MAP_ELEMENT>;
-  let pLandNode: Pointer<LEVELNODE>;
-  let pObjectNode: Pointer<LEVELNODE>;
-  let pStructNode: Pointer<LEVELNODE>;
-  let pShadowNode: Pointer<LEVELNODE>;
-  let pMercNode: Pointer<LEVELNODE>;
-  let pRoofNode: Pointer<LEVELNODE>;
-  let pOnRoofNode: Pointer<LEVELNODE>;
-  let pTopmostNode: Pointer<LEVELNODE>;
+  let pMapTile: MAP_ELEMENT;
+  let pLandNode: LEVELNODE | null;
+  let pObjectNode: LEVELNODE | null;
+  let pStructNode: LEVELNODE | null;
+  let pShadowNode: LEVELNODE | null;
+  let pMercNode: LEVELNODE | null;
+  let pRoofNode: LEVELNODE | null;
+  let pOnRoofNode: LEVELNODE | null;
+  let pTopmostNode: LEVELNODE | null;
   //	STRUCTURE			*pStructureNode;
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   if (!gfWorldLoaded)
     return;
@@ -2679,11 +2699,11 @@ export function TrashWorld(): void {
   // cnt = gTacticalStatus.Team[ gbPlayerNum ].bLastID + 1;
   cnt = 0;
 
-  for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; pSoldier++, cnt++) {
-    if (pSoldier.value.bActive) {
-      if (pSoldier.value.bTeam == gbPlayerNum) {
+  for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive) {
+      if (pSoldier.bTeam == gbPlayerNum) {
         // Just delete levelnode
-        pSoldier.value.pLevelNode = null;
+        pSoldier.pLevelNode = null;
       } else {
         // Delete from world
         TacticalRemoveSoldier(cnt);
@@ -2710,67 +2730,59 @@ export function TrashWorld(): void {
 
   // Create world randomly from tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-    pMapTile = addressof(gpWorldLevelData[cnt]);
+    pMapTile = gpWorldLevelData[cnt];
 
     // Free the memory associated with the map tile link lists
-    pLandNode = pMapTile.value.pLandHead;
+    pLandNode = pMapTile.pLandHead;
     while (pLandNode != null) {
-      pMapTile.value.pLandHead = pLandNode.value.pNext;
-      MemFree(pLandNode);
-      pLandNode = pMapTile.value.pLandHead;
+      pMapTile.pLandHead = pLandNode.pNext;
+      pLandNode = pMapTile.pLandHead;
     }
 
-    pObjectNode = pMapTile.value.pObjectHead;
+    pObjectNode = pMapTile.pObjectHead;
     while (pObjectNode != null) {
-      pMapTile.value.pObjectHead = pObjectNode.value.pNext;
-      MemFree(pObjectNode);
-      pObjectNode = pMapTile.value.pObjectHead;
+      pMapTile.pObjectHead = pObjectNode.pNext;
+      pObjectNode = pMapTile.pObjectHead;
     }
 
-    pStructNode = pMapTile.value.pStructHead;
+    pStructNode = pMapTile.pStructHead;
     while (pStructNode != null) {
-      pMapTile.value.pStructHead = pStructNode.value.pNext;
-      MemFree(pStructNode);
-      pStructNode = pMapTile.value.pStructHead;
+      pMapTile.pStructHead = pStructNode.pNext;
+      pStructNode = pMapTile.pStructHead;
     }
 
-    pShadowNode = pMapTile.value.pShadowHead;
+    pShadowNode = pMapTile.pShadowHead;
     while (pShadowNode != null) {
-      pMapTile.value.pShadowHead = pShadowNode.value.pNext;
-      MemFree(pShadowNode);
-      pShadowNode = pMapTile.value.pShadowHead;
+      pMapTile.pShadowHead = pShadowNode.pNext;
+      pShadowNode = pMapTile.pShadowHead;
     }
 
-    pMercNode = pMapTile.value.pMercHead;
+    pMercNode = pMapTile.pMercHead;
     while (pMercNode != null) {
-      pMapTile.value.pMercHead = pMercNode.value.pNext;
-      MemFree(pMercNode);
-      pMercNode = pMapTile.value.pMercHead;
+      pMapTile.pMercHead = pMercNode.pNext;
+      pMercNode = pMapTile.pMercHead;
     }
 
-    pRoofNode = pMapTile.value.pRoofHead;
+    pRoofNode = pMapTile.pRoofHead;
     while (pRoofNode != null) {
-      pMapTile.value.pRoofHead = pRoofNode.value.pNext;
-      MemFree(pRoofNode);
-      pRoofNode = pMapTile.value.pRoofHead;
+      pMapTile.pRoofHead = pRoofNode.pNext;
+      pRoofNode = pMapTile.pRoofHead;
     }
 
-    pOnRoofNode = pMapTile.value.pOnRoofHead;
+    pOnRoofNode = pMapTile.pOnRoofHead;
     while (pOnRoofNode != null) {
-      pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
-      MemFree(pOnRoofNode);
-      pOnRoofNode = pMapTile.value.pOnRoofHead;
+      pMapTile.pOnRoofHead = pOnRoofNode.pNext;
+      pOnRoofNode = pMapTile.pOnRoofHead;
     }
 
-    pTopmostNode = pMapTile.value.pTopmostHead;
+    pTopmostNode = pMapTile.pTopmostHead;
     while (pTopmostNode != null) {
-      pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
-      MemFree(pTopmostNode);
-      pTopmostNode = pMapTile.value.pTopmostHead;
+      pMapTile.pTopmostHead = pTopmostNode.pNext;
+      pTopmostNode = pMapTile.pTopmostHead;
     }
 
-    while (pMapTile.value.pStructureHead != null) {
-      if (DeleteStructureFromWorld(pMapTile.value.pStructureHead) == false) {
+    while (pMapTile.pStructureHead != null) {
+      if (DeleteStructureFromWorld(pMapTile.pStructureHead) == false) {
         // ERROR!!!!!!
         break;
       }
@@ -2778,7 +2790,7 @@ export function TrashWorld(): void {
   }
 
   // Zero world
-  memset(gpWorldLevelData, 0, WORLD_MAX * sizeof(MAP_ELEMENT));
+  gpWorldLevelData.forEach(resetMapElement);
 
   // Set some default flags
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -2795,87 +2807,79 @@ export function TrashWorld(): void {
 }
 
 function TrashMapTile(MapTile: INT16): void {
-  let pMapTile: Pointer<MAP_ELEMENT>;
-  let pLandNode: Pointer<LEVELNODE>;
-  let pObjectNode: Pointer<LEVELNODE>;
-  let pStructNode: Pointer<LEVELNODE>;
-  let pShadowNode: Pointer<LEVELNODE>;
-  let pMercNode: Pointer<LEVELNODE>;
-  let pRoofNode: Pointer<LEVELNODE>;
-  let pOnRoofNode: Pointer<LEVELNODE>;
-  let pTopmostNode: Pointer<LEVELNODE>;
+  let pMapTile: MAP_ELEMENT;
+  let pLandNode: LEVELNODE | null;
+  let pObjectNode: LEVELNODE | null;
+  let pStructNode: LEVELNODE | null;
+  let pShadowNode: LEVELNODE | null;
+  let pMercNode: LEVELNODE | null;
+  let pRoofNode: LEVELNODE | null;
+  let pOnRoofNode: LEVELNODE | null;
+  let pTopmostNode: LEVELNODE | null;
 
-  pMapTile = addressof(gpWorldLevelData[MapTile]);
+  pMapTile = gpWorldLevelData[MapTile];
 
   // Free the memory associated with the map tile link lists
-  pLandNode = pMapTile.value.pLandHead;
+  pLandNode = pMapTile.pLandHead;
   while (pLandNode != null) {
-    pMapTile.value.pLandHead = pLandNode.value.pNext;
-    MemFree(pLandNode);
-    pLandNode = pMapTile.value.pLandHead;
+    pMapTile.pLandHead = pLandNode.pNext;
+    pLandNode = pMapTile.pLandHead;
   }
-  pMapTile.value.pLandHead = pMapTile.value.pLandStart = null;
+  pMapTile.pLandHead = pMapTile.pLandStart = null;
 
-  pObjectNode = pMapTile.value.pObjectHead;
+  pObjectNode = pMapTile.pObjectHead;
   while (pObjectNode != null) {
-    pMapTile.value.pObjectHead = pObjectNode.value.pNext;
-    MemFree(pObjectNode);
-    pObjectNode = pMapTile.value.pObjectHead;
+    pMapTile.pObjectHead = pObjectNode.pNext;
+    pObjectNode = pMapTile.pObjectHead;
   }
-  pMapTile.value.pObjectHead = null;
+  pMapTile.pObjectHead = null;
 
-  pStructNode = pMapTile.value.pStructHead;
+  pStructNode = pMapTile.pStructHead;
   while (pStructNode != null) {
-    pMapTile.value.pStructHead = pStructNode.value.pNext;
-    MemFree(pStructNode);
-    pStructNode = pMapTile.value.pStructHead;
+    pMapTile.pStructHead = pStructNode.pNext;
+    pStructNode = pMapTile.pStructHead;
   }
-  pMapTile.value.pStructHead = null;
+  pMapTile.pStructHead = null;
 
-  pShadowNode = pMapTile.value.pShadowHead;
+  pShadowNode = pMapTile.pShadowHead;
   while (pShadowNode != null) {
-    pMapTile.value.pShadowHead = pShadowNode.value.pNext;
-    MemFree(pShadowNode);
-    pShadowNode = pMapTile.value.pShadowHead;
+    pMapTile.pShadowHead = pShadowNode.pNext;
+    pShadowNode = pMapTile.pShadowHead;
   }
-  pMapTile.value.pShadowHead = null;
+  pMapTile.pShadowHead = null;
 
-  pMercNode = pMapTile.value.pMercHead;
+  pMercNode = pMapTile.pMercHead;
   while (pMercNode != null) {
-    pMapTile.value.pMercHead = pMercNode.value.pNext;
-    MemFree(pMercNode);
-    pMercNode = pMapTile.value.pMercHead;
+    pMapTile.pMercHead = pMercNode.pNext;
+    pMercNode = pMapTile.pMercHead;
   }
-  pMapTile.value.pMercHead = null;
+  pMapTile.pMercHead = null;
 
-  pRoofNode = pMapTile.value.pRoofHead;
+  pRoofNode = pMapTile.pRoofHead;
   while (pRoofNode != null) {
-    pMapTile.value.pRoofHead = pRoofNode.value.pNext;
-    MemFree(pRoofNode);
-    pRoofNode = pMapTile.value.pRoofHead;
+    pMapTile.pRoofHead = pRoofNode.pNext;
+    pRoofNode = pMapTile.pRoofHead;
   }
-  pMapTile.value.pRoofHead = null;
+  pMapTile.pRoofHead = null;
 
-  pOnRoofNode = pMapTile.value.pOnRoofHead;
+  pOnRoofNode = pMapTile.pOnRoofHead;
   while (pOnRoofNode != null) {
-    pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
-    MemFree(pOnRoofNode);
-    pOnRoofNode = pMapTile.value.pOnRoofHead;
+    pMapTile.pOnRoofHead = pOnRoofNode.pNext;
+    pOnRoofNode = pMapTile.pOnRoofHead;
   }
-  pMapTile.value.pOnRoofHead = null;
+  pMapTile.pOnRoofHead = null;
 
-  pTopmostNode = pMapTile.value.pTopmostHead;
+  pTopmostNode = pMapTile.pTopmostHead;
   while (pTopmostNode != null) {
-    pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
-    MemFree(pTopmostNode);
-    pTopmostNode = pMapTile.value.pTopmostHead;
+    pMapTile.pTopmostHead = pTopmostNode.pNext;
+    pTopmostNode = pMapTile.pTopmostHead;
   }
-  pMapTile.value.pTopmostHead = null;
+  pMapTile.pTopmostHead = null;
 
-  while (pMapTile.value.pStructureHead != null) {
-    DeleteStructureFromWorld(pMapTile.value.pStructureHead);
+  while (pMapTile.pStructureHead != null) {
+    DeleteStructureFromWorld(pMapTile.pStructureHead);
   }
-  pMapTile.value.pStructureHead = pMapTile.value.pStructureTail = null;
+  pMapTile.pStructureHead = pMapTile.pStructureTail = null;
 }
 
 export function LoadMapTileset(iTilesetID: INT32): boolean {
@@ -2884,7 +2888,7 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   }
 
   // Init tile surface used values
-  memset(gbNewTileSurfaceLoaded, 0, sizeof(gbNewTileSurfaceLoaded));
+  gbNewTileSurfaceLoaded.fill(false);
 
   if (iTilesetID == giCurrentTilesetID) {
     return true;
@@ -2894,7 +2898,7 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   gSurfaceMemUsage = guiMemTotal;
 
   // LOAD SURFACES
-  if (LoadTileSurfaces(addressof(gTilesets[iTilesetID].TileSurfaceFilenames[0]), iTilesetID) == false) {
+  if (LoadTileSurfaces(gTilesets[iTilesetID].TileSurfaceFilenames, iTilesetID) == false) {
     return false;
   }
 
@@ -2917,34 +2921,6 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   return true;
 }
 
-function SaveMapTileset(iTilesetID: INT32): boolean {
-  //	FILE *hTSet;
-  let hTSet: HWFILE;
-  let zTilesetName: string /* char[65] */;
-  let cnt: number;
-  let uiBytesWritten: UINT32;
-
-  // Are we trying to save the default tileset?
-  if (iTilesetID == 0)
-    return true;
-
-  zTilesetName = sprintf("TSET%04d.SET", iTilesetID);
-
-  // Open file
-  hTSet = FileOpen(zTilesetName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
-
-  if (!hTSet) {
-    return false;
-  }
-
-  // Save current tile set in map file.
-  for (cnt = 0; cnt < Enum313.NUMBEROFTILETYPES; cnt++)
-    FileWrite(hTSet, TileSurfaceFilenames[cnt], 65, addressof(uiBytesWritten));
-  FileClose(hTSet);
-
-  return true;
-}
-
 export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: string /* Pointer<CHAR8> */): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
@@ -2955,34 +2931,34 @@ export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, 
 }
 
 function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: boolean): void {
-  let pTopmost: Pointer<LEVELNODE>;
-  let pTopmostTail: Pointer<LEVELNODE>;
+  let pTopmost: LEVELNODE | null;
+  let pTopmostTail: LEVELNODE;
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
   while (pTopmost != null) {
     // Check if one of the samer type exists!
-    if (pTopmost.value.usIndex == usIndex) {
+    if (pTopmost.usIndex == usIndex) {
       return;
     }
-    pTopmost = pTopmost.value.pNext;
+    pTopmost = pTopmost.pNext;
   }
 
   pTopmostTail = AddTopmostToTail(sGridNo, usIndex);
 
   if (fForced) {
-    pTopmostTail.value.uiFlags |= LEVELNODE_WIREFRAME;
+    pTopmostTail.uiFlags |= LEVELNODE_WIREFRAME;
   }
 }
 
-function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): UINT16 {
-  let pNode: Pointer<LEVELNODE> = null;
+function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: STRUCTURE): UINT16 {
+  let pNode: LEVELNODE | null = null;
   let ubWallOrientation: UINT8;
   let usValue: UINT16 = 0;
   let usSubIndex: UINT16;
-  let pBaseStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: STRUCTURE | null;
 
-  ubWallOrientation = pStructure.value.ubWallOrientation;
+  ubWallOrientation = pStructure.ubWallOrientation;
 
   pBaseStructure = FindBaseStructure(pStructure);
 
@@ -2990,15 +2966,15 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
     // Find levelnode...
     pNode = gpWorldLevelData[sGridNo].pStructHead;
     while (pNode != null) {
-      if (pNode.value.pStructureData == pBaseStructure) {
+      if (pNode.pStructureData == pBaseStructure) {
         break;
       }
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
 
     if (pNode != null) {
       // Get Subindex for this wall...
-      usSubIndex = GetSubIndexFromTileIndex(pNode.value.usIndex);
+      usSubIndex = GetSubIndexFromTileIndex(pNode.usIndex);
 
       // Check for broken peices...
       if (usSubIndex == 48 || usSubIndex == 52) {
@@ -3031,7 +3007,7 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
 
 export function CalculateWorldWireFrameTiles(fForce: boolean): void {
   let cnt: INT32;
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
   let sGridNo: INT16;
   let ubWallOrientation: UINT8;
   let bHiddenVal: INT8;
@@ -3062,12 +3038,12 @@ export function CalculateWorldWireFrameTiles(fForce: boolean): void {
 
       while (pStructure != null) {
         // Check for doors
-        if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+        if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
           // ATE: need this additional check here for hidden doors!
-          if (pStructure.value.fFlags & STRUCTURE_OPENABLE) {
+          if (pStructure.fFlags & STRUCTURE_OPENABLE) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure.value.ubWallOrientation;
+            ubWallOrientation = pStructure.ubWallOrientation;
 
             switch (ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
@@ -3096,10 +3072,10 @@ export function CalculateWorldWireFrameTiles(fForce: boolean): void {
         }
         // Check for windows
         else {
-          if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW) {
+          if (pStructure.fFlags & STRUCTURE_WALLNWINDOW) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure.value.ubWallOrientation;
+            ubWallOrientation = pStructure.ubWallOrientation;
 
             switch (ubWallOrientation) {
               case Enum314.OUTSIDE_TOP_LEFT:
@@ -3127,10 +3103,10 @@ export function CalculateWorldWireFrameTiles(fForce: boolean): void {
           }
 
           // Check for walls
-          if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+          if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
             // Does the gridno we are over have a non-visible tile?
             // Based on orientation
-            ubWallOrientation = pStructure.value.ubWallOrientation;
+            ubWallOrientation = pStructure.ubWallOrientation;
 
             usWireFrameIndex = GetWireframeGraphicNumToUseForWall(cnt, pStructure);
 
@@ -3191,7 +3167,7 @@ export function CalculateWorldWireFrameTiles(fForce: boolean): void {
           }
         }
 
-        pStructure = pStructure.value.pNext;
+        pStructure = pStructure.pNext;
       }
     }
   }
@@ -3207,20 +3183,20 @@ function RemoveWorldWireFrameTiles(): void {
 }
 
 function RemoveWireFrameTiles(sGridNo: INT16): void {
-  let pTopmost: Pointer<LEVELNODE>;
-  let pNewTopmost: Pointer<LEVELNODE>;
-  let pTileElement: Pointer<TILE_ELEMENT>;
+  let pTopmost: LEVELNODE | null;
+  let pNewTopmost: LEVELNODE | null;
+  let pTileElement: TILE_ELEMENT;
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
   while (pTopmost != null) {
-    pNewTopmost = pTopmost.value.pNext;
+    pNewTopmost = pTopmost.pNext;
 
-    if (pTopmost.value.usIndex < Enum312.NUMBEROFTILES) {
-      pTileElement = addressof(gTileDatabase[pTopmost.value.usIndex]);
+    if (pTopmost.usIndex < Enum312.NUMBEROFTILES) {
+      pTileElement = gTileDatabase[pTopmost.usIndex];
 
-      if (pTileElement.value.fType == Enum313.WIREFRAMES) {
-        RemoveTopmost(sGridNo, pTopmost.value.usIndex);
+      if (pTileElement.fType == Enum313.WIREFRAMES) {
+        RemoveTopmost(sGridNo, pTopmost.usIndex);
       }
     }
 
@@ -3229,7 +3205,7 @@ function RemoveWireFrameTiles(sGridNo: INT16): void {
 }
 
 function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
 
   if (!gfBasement) {
     pStructure = FindStructure(sGridNo, STRUCTURE_ROOF);
@@ -3278,7 +3254,7 @@ export function ReloadTileset(ubID: UINT8): void {
 }
 
 function SaveMapLights(hfile: HWFILE): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let fSoldierLight: boolean;
@@ -3287,12 +3263,18 @@ function SaveMapLights(hfile: HWFILE): void {
   let cnt2: UINT16;
   let ubStrLen: UINT8;
   let uiBytesWritten: UINT32;
+  let buffer: Buffer;
 
   ubNumColors = LightGetColors(LColors);
 
   // Save the current light colors!
-  FileWrite(hfile, addressof(ubNumColors), 1, addressof(uiBytesWritten));
-  FileWrite(hfile, LColors, sizeof(SGPPaletteEntry) * ubNumColors, addressof(uiBytesWritten));
+  buffer = Buffer.allocUnsafe(1);
+  buffer.writeUInt8(ubNumColors, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 1);
+
+  buffer = Buffer.allocUnsafe(SGP_PALETTE_ENTRY_SIZE * ubNumColors);
+  writeObjectArray(LColors, buffer, 0, writeSGPPaletteEntry);
+  uiBytesWritten = FileWrite(hfile, buffer, SGP_PALETTE_ENTRY_SIZE * ubNumColors);
 
   // count number of non-merc lights.
   for (cnt = 0; cnt < MAX_LIGHT_SPRITES; cnt++) {
@@ -3301,7 +3283,7 @@ function SaveMapLights(hfile: HWFILE): void {
       fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(addressof(pSoldier), cnt2)) {
-          if (pSoldier.value.iLight == cnt)
+          if (pSoldier.iLight == cnt)
             fSoldierLight = true;
         }
       }
@@ -3311,7 +3293,9 @@ function SaveMapLights(hfile: HWFILE): void {
   }
 
   // save the number of lights.
-  FileWrite(hfile, addressof(usNumLights), 2, addressof(uiBytesWritten));
+  buffer = Buffer.allocUnsafe(2);
+  buffer.writeUInt16LE(usNumLights, 0);
+  uiBytesWritten = FileWrite(hfile, buffer, 2);
 
   for (cnt = 0; cnt < MAX_LIGHT_SPRITES; cnt++) {
     if (LightSprites[cnt].uiFlags & LIGHT_SPR_ACTIVE) {
@@ -3319,30 +3303,38 @@ function SaveMapLights(hfile: HWFILE): void {
       fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
         if (GetSoldier(addressof(pSoldier), cnt2)) {
-          if (pSoldier.value.iLight == cnt)
+          if (pSoldier.iLight == cnt)
             fSoldierLight = true;
         }
       }
       if (!fSoldierLight) {
         // save the light
-        FileWrite(hfile, addressof(LightSprites[cnt]), sizeof(LIGHT_SPRITE), addressof(uiBytesWritten));
+        buffer = Buffer.allocUnsafe(LIGHT_SPRITE_SIZE);
+        writeLightSprite(LightSprites[cnt], buffer);
+        uiBytesWritten = FileWrite(hfile, buffer, LIGHT_SPRITE_SIZE);
 
         ubStrLen = pLightNames[LightSprites[cnt].iTemplate].length + 1;
-        FileWrite(hfile, addressof(ubStrLen), 1, addressof(uiBytesWritten));
-        FileWrite(hfile, pLightNames[LightSprites[cnt].iTemplate], ubStrLen, addressof(uiBytesWritten));
+
+        buffer = Buffer.allocUnsafe(1);
+        buffer.writeUInt8(ubStrLen, 0);
+        uiBytesWritten = FileWrite(hfile, buffer, 1);
+
+        buffer = Buffer.allocUnsafe(ubStrLen);
+        writeStringNL(pLightNames[LightSprites[cnt].iTemplate], buffer, 0, ubStrLen, 'ascii');
+        uiBytesWritten = FileWrite(hfile, buffer, ubStrLen);
       }
     }
   }
 }
 
-function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
+function LoadMapLights(buffer: Buffer, offset: number): number {
   let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let usNumLights: UINT16;
   let cnt: INT32;
   let str: string /* INT8[30] */;
   let ubStrLen: UINT8;
-  let TmpLight: LIGHT_SPRITE;
+  let TmpLight: LIGHT_SPRITE = createLightSprite();
   let iLSprite: INT32;
   let uiHour: UINT32;
   let fPrimeTime: boolean = false;
@@ -3352,10 +3344,10 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   LightReset();
 
   // read in the light colors!
-  LOADDATA(addressof(ubNumColors), hBuffer.value, 1);
-  LOADDATA(LColors, hBuffer.value, sizeof(SGPPaletteEntry) * ubNumColors);
+  ubNumColors = buffer.readUInt8(offset++);
+  offset = readObjectArray(LColors, buffer, offset, readSGPPaletteEntry);
 
-  LOADDATA(addressof(usNumLights), hBuffer.value, 2);
+  usNumLights = buffer.readUInt16LE(offset); offset += 2;
 
   ubNumColors = 1;
 
@@ -3377,14 +3369,14 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   }
 
   for (cnt = 0; cnt < usNumLights; cnt++) {
-    LOADDATA(addressof(TmpLight), hBuffer.value, sizeof(LIGHT_SPRITE));
-    LOADDATA(addressof(ubStrLen), hBuffer.value, 1);
+    offset = readLightSprite(TmpLight, buffer, offset);
+    ubStrLen = buffer.readUInt8(offset++);
 
     if (ubStrLen) {
-      LOADDATA(str, hBuffer.value, ubStrLen);
+      str = readStringNL(buffer, 'ascii', offset, offset + ubStrLen); offset += ubStrLen;
+    } else {
+      str = '';
     }
-
-    str[ubStrLen] = 0;
 
     iLSprite = LightSpriteCreate(str, TmpLight.uiLightType);
     // if this fails, then we will ignore the light.
@@ -3403,10 +3395,12 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
         LightSprites[iLSprite].uiFlags |= LIGHT_NIGHTTIME;
     }
   }
+
+  return offset;
 }
 
 function IsRoofVisibleForWireframe(sMapPos: INT16): boolean {
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
 
   if (!gfBasement) {
     pStructure = FindStructure(sMapPos, STRUCTURE_ROOF);

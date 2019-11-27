@@ -48,7 +48,7 @@ export const FILETIME_SIZE = 8;
 export function CreateFile(lpFileName: string, dwDesiredAccess: number, dwShareMode: number, lpSecurityAttributes: null, dwCreationDisposition: number, dwFlagsAndAttributes: number, hTemplateFile: null): HANDLE {
   let flags = 0;
 
-  switch (dwDesiredAccess) {
+  switch (dwDesiredAccess >>> 0) {
     case GENERIC_WRITE | GENERIC_READ:
       flags |= fs.constants.O_RDWR;
       break;
@@ -62,7 +62,7 @@ export function CreateFile(lpFileName: string, dwDesiredAccess: number, dwShareM
       throw new Error('Should be unreachable');
   }
 
-  switch (dwCreationDisposition) {
+  switch (dwCreationDisposition >>> 0) {
     case CREATE_NEW:
       flags |= (fs.constants.O_CREAT | fs.constants.O_EXCL);
       break;
@@ -82,7 +82,7 @@ export function CreateFile(lpFileName: string, dwDesiredAccess: number, dwShareM
       throw new Error('Should be unreachable');
   }
 
-  switch (dwFlagsAndAttributes) {
+  switch (dwFlagsAndAttributes >>> 0) {
     case FILE_FLAG_RANDOM_ACCESS:
       break;
     default:

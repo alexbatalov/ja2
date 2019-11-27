@@ -3,7 +3,7 @@ namespace ja2 {
 const NUM_SMOKE_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR SMOKE LISTING
-let gSmokeEffectData: SMOKEEFFECT[] /* [NUM_SMOKE_EFFECT_SLOTS] */;
+let gSmokeEffectData: SMOKEEFFECT[] /* [NUM_SMOKE_EFFECT_SLOTS] */ = createArrayFrom(NUM_SMOKE_EFFECT_SLOTS, createSmokeEffect);
 let guiNumSmokeEffects: UINT32 = 0;
 
 function GetFreeSmokeEffect(): INT32 {
@@ -89,7 +89,7 @@ function FromSmokeTypeToWorldFlags(bType: INT8): UINT8 {
 }
 
 export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: UINT8): INT32 {
-  let pSmoke: Pointer<SMOKEEFFECT>;
+  let pSmoke: SMOKEEFFECT;
   let iSmokeIndex: INT32;
   let bSmokeEffectType: INT8 = 0;
   let ubDuration: UINT8 = 0;
@@ -98,18 +98,18 @@ export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubO
   if ((iSmokeIndex = GetFreeSmokeEffect()) == (-1))
     return -1;
 
-  memset(addressof(gSmokeEffectData[iSmokeIndex]), 0, sizeof(SMOKEEFFECT));
+  resetSmokeEffect(gSmokeEffectData[iSmokeIndex]);
 
-  pSmoke = addressof(gSmokeEffectData[iSmokeIndex]);
+  pSmoke = gSmokeEffectData[iSmokeIndex];
 
   // Set some values...
-  pSmoke.value.sGridNo = sGridNo;
-  pSmoke.value.usItem = usItem;
-  pSmoke.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
+  pSmoke.sGridNo = sGridNo;
+  pSmoke.usItem = usItem;
+  pSmoke.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   // Are we indoors?
   if (GetTerrainType(sGridNo) == Enum315.FLAT_FLOOR) {
-    pSmoke.value.bFlags |= SMOKE_EFFECT_INDOORS;
+    pSmoke.bFlags |= SMOKE_EFFECT_INDOORS;
   }
 
   switch (usItem) {
@@ -161,24 +161,24 @@ export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubO
       break;
   }
 
-  pSmoke.value.ubDuration = ubDuration;
-  pSmoke.value.ubRadius = ubStartRadius;
-  pSmoke.value.bAge = 0;
-  pSmoke.value.fAllocated = true;
-  pSmoke.value.bType = bSmokeEffectType;
-  pSmoke.value.ubOwner = ubOwner;
+  pSmoke.ubDuration = ubDuration;
+  pSmoke.ubRadius = ubStartRadius;
+  pSmoke.bAge = 0;
+  pSmoke.fAllocated = true;
+  pSmoke.bType = bSmokeEffectType;
+  pSmoke.ubOwner = ubOwner;
 
-  if (pSmoke.value.bFlags & SMOKE_EFFECT_INDOORS) {
+  if (pSmoke.bFlags & SMOKE_EFFECT_INDOORS) {
     // Duration is increased by 2 turns...indoors
-    pSmoke.value.ubDuration += 3;
+    pSmoke.ubDuration += 3;
   }
 
   if (bLevel) {
-    pSmoke.value.bFlags |= SMOKE_EFFECT_ON_ROOF;
+    pSmoke.bFlags |= SMOKE_EFFECT_ON_ROOF;
   }
 
   // ATE: FALSE into subsequent-- it's the first one!
-  SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, false, bLevel, iSmokeIndex);
+  SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, 0, bLevel, iSmokeIndex);
 
   return iSmokeIndex;
 }
@@ -187,13 +187,13 @@ export function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubO
 // ( Replacement algorithm uses distance away )
 export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
-  let pAniTile: Pointer<ANITILE>;
-  let pSmoke: Pointer<SMOKEEFFECT>;
+  let pAniTile: ANITILE;
+  let pSmoke: SMOKEEFFECT;
   let fDissipating: boolean = false;
 
-  pSmoke = addressof(gSmokeEffectData[iSmokeEffectID]);
+  pSmoke = gSmokeEffectData[iSmokeEffectID];
 
-  if ((pSmoke.value.ubDuration - pSmoke.value.bAge) < 2) {
+  if ((pSmoke.ubDuration - pSmoke.bAge) < 2) {
     fDissipating = true;
     // Remove old one...
     RemoveSmokeEffectFromTile(sGridNo, bLevel);
@@ -205,7 +205,6 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
   }
 
   // OK,  Create anitile....
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = sGridNo;
 
   if (bLevel == 0) {
@@ -292,7 +291,7 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
   }
 
   // Create tile...
-  pAniTile = CreateAnimationTile(addressof(AniParams));
+  pAniTile = <ANITILE>CreateAnimationTile(AniParams);
 
   // Set world flags
   gpWorldLevelData[sGridNo].ubExtFlags[bLevel] |= FromSmokeTypeToWorldFlags(bType);
@@ -304,7 +303,7 @@ export function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo
 }
 
 export function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
-  let pAniTile: Pointer<ANITILE>;
+  let pAniTile: ANITILE | null;
   let ubLevelID: UINT8;
 
   // Get ANI tile...
@@ -330,7 +329,7 @@ export function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
 }
 
 export function DecaySmokeEffects(uiTime: UINT32): void {
-  let pSmoke: Pointer<SMOKEEFFECT>;
+  let pSmoke: SMOKEEFFECT;
   let cnt: UINT32;
   let cnt2: UINT32;
   let fUpdate: boolean = false;
@@ -341,7 +340,7 @@ export function DecaySmokeEffects(uiTime: UINT32): void {
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     if (MercSlots[cnt]) {
       // reset 'hit by gas' flags
-      MercSlots[cnt].value.fHitByGasFlags = 0;
+      MercSlots[cnt].fHitByGasFlags = 0;
     }
   }
 
@@ -352,10 +351,10 @@ export function DecaySmokeEffects(uiTime: UINT32): void {
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
     fSpreadEffect = true;
 
-    pSmoke = addressof(gSmokeEffectData[cnt]);
+    pSmoke = gSmokeEffectData[cnt];
 
-    if (pSmoke.value.fAllocated) {
-      if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
+    if (pSmoke.fAllocated) {
+      if (pSmoke.bFlags & SMOKE_EFFECT_ON_ROOF) {
         bLevel = 1;
       } else {
         bLevel = 0;
@@ -367,22 +366,22 @@ export function DecaySmokeEffects(uiTime: UINT32): void {
         fUpdate = true;
       } else {
         // ATE: Do this every so ofte, to acheive the effect we want...
-        if ((uiTime - pSmoke.value.uiTimeOfLastUpdate) > 10) {
+        if ((uiTime - pSmoke.uiTimeOfLastUpdate) > 10) {
           fUpdate = true;
 
-          usNumUpdates = ((uiTime - pSmoke.value.uiTimeOfLastUpdate) / 10);
+          usNumUpdates = ((uiTime - pSmoke.uiTimeOfLastUpdate) / 10);
         }
       }
 
       if (fUpdate) {
-        pSmoke.value.uiTimeOfLastUpdate = uiTime;
+        pSmoke.uiTimeOfLastUpdate = uiTime;
 
         for (cnt2 = 0; cnt2 < usNumUpdates; cnt2++) {
-          pSmoke.value.bAge++;
+          pSmoke.bAge++;
 
-          if (pSmoke.value.bAge == 1) {
+          if (pSmoke.bAge == 1) {
             // ATE: At least mark for update!
-            pSmoke.value.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
+            pSmoke.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
             fSpreadEffect = false;
           } else {
             fSpreadEffect = true;
@@ -390,48 +389,48 @@ export function DecaySmokeEffects(uiTime: UINT32): void {
 
           if (fSpreadEffect) {
             // if this cloud remains effective (duration not reached)
-            if (pSmoke.value.bAge <= pSmoke.value.ubDuration) {
+            if (pSmoke.bAge <= pSmoke.ubDuration) {
               // ATE: Only mark now and increse radius - actual drawing is done
               // in another pass cause it could
               // just get erased...
-              pSmoke.value.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
+              pSmoke.bFlags |= SMOKE_EFFECT_MARK_FOR_UPDATE;
 
               // calculate the new cloud radius
               // cloud expands by 1 every turn outdoors, and every other turn indoors
 
               // ATE: If radius is < maximun, increase radius, otherwise keep at max
-              if (pSmoke.value.ubRadius < Explosive[Item[pSmoke.value.usItem].ubClassIndex].ubRadius) {
-                pSmoke.value.ubRadius++;
+              if (pSmoke.ubRadius < Explosive[Item[pSmoke.usItem].ubClassIndex].ubRadius) {
+                pSmoke.ubRadius++;
               }
             } else {
               // deactivate tear gas cloud (use last known radius)
-              SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, cnt);
-              pSmoke.value.fAllocated = false;
+              SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, ERASE_SPREAD_EFFECT, bLevel, cnt);
+              pSmoke.fAllocated = false;
               break;
             }
           }
         }
       } else {
         // damage anyone standing in cloud
-        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, REDO_SPREAD_EFFECT, 0, cnt);
+        SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, REDO_SPREAD_EFFECT, 0, cnt);
       }
     }
   }
 
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
-    pSmoke = addressof(gSmokeEffectData[cnt]);
+    pSmoke = gSmokeEffectData[cnt];
 
-    if (pSmoke.value.fAllocated) {
-      if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
+    if (pSmoke.fAllocated) {
+      if (pSmoke.bFlags & SMOKE_EFFECT_ON_ROOF) {
         bLevel = 1;
       } else {
         bLevel = 0;
       }
 
       // if this cloud remains effective (duration not reached)
-      if (pSmoke.value.bFlags & SMOKE_EFFECT_MARK_FOR_UPDATE) {
-        SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, true, bLevel, cnt);
-        pSmoke.value.bFlags &= (~SMOKE_EFFECT_MARK_FOR_UPDATE);
+      if (pSmoke.bFlags & SMOKE_EFFECT_MARK_FOR_UPDATE) {
+        SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, 1, bLevel, cnt);
+        pSmoke.bFlags &= (~SMOKE_EFFECT_MARK_FOR_UPDATE);
       }
     }
   }
@@ -488,34 +487,45 @@ export function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiCount: UINT32;
   let uiCnt: UINT32 = 0;
   let bLevel: INT8;
+  let buffer: Buffer;
 
   // no longer need to load smoke effects.  They are now in temp files
   if (guiSaveGameVersion < 75) {
     // Clear out the old list
-    memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
+    gSmokeEffectData.forEach(resetSmokeEffect);
 
     // Load the Number of Smoke Effects
-    FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(UINT32)) {
+    buffer = Buffer.allocUnsafe(4);
+    uiNumBytesRead = FileRead(hFile, buffer, 4);
+    if (uiNumBytesRead != 4) {
       return false;
     }
+
+    guiNumSmokeEffects = buffer.readUInt32LE(0);
 
     // This is a TEMP hack to allow us to use the saves
     if (guiSaveGameVersion < 37 && guiNumSmokeEffects == 0) {
       // Load the Smoke effect Data
-      FileRead(hFile, gSmokeEffectData, sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
+      buffer = Buffer.allocUnsafe(SMOKE_EFFECT_SIZE);
+      uiNumBytesRead = FileRead(hFile, buffer, SMOKE_EFFECT_SIZE);
+      if (uiNumBytesRead != SMOKE_EFFECT_SIZE) {
         return false;
       }
+
+      readSmokeEffect(gSmokeEffectData[0], buffer);
     }
 
     // loop through and load the list
+    buffer = Buffer.allocUnsafe(SMOKE_EFFECT_SIZE);
     for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
       // Load the Smoke effect Data
-      FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
+      uiNumBytesRead = FileRead(hFile, buffer, SMOKE_EFFECT_SIZE);
+      if (uiNumBytesRead != SMOKE_EFFECT_SIZE) {
         return false;
       }
+
+      readSmokeEffect(gSmokeEffectData[uiCnt], buffer);
+
       // This is a TEMP hack to allow us to use the saves
       if (guiSaveGameVersion < 37)
         break;
@@ -531,7 +541,7 @@ export function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): boolean {
           bLevel = 0;
         }
 
-        SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, true, bLevel, uiCount);
+        SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, 1, bLevel, uiCount);
       }
     }
   }
@@ -545,6 +555,7 @@ export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
   let uiCnt: UINT32;
+  let buffer: Buffer;
 
   // get the name of the map
   zMapName = GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
@@ -574,8 +585,10 @@ export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   }
 
   // Save the Number of Smoke Effects
-  FileWrite(hFile, addressof(uiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiNumSmokeEffects, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     // Close the file
     FileClose(hFile);
 
@@ -583,12 +596,14 @@ export function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   }
 
   // loop through and save the number of smoke effects
+  buffer = Buffer.allocUnsafe(SMOKE_EFFECT_SIZE);
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
     // if the smoke is active
     if (gSmokeEffectData[uiCnt].fAllocated) {
       // Save the Smoke effect Data
-      FileWrite(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(SMOKEEFFECT)) {
+      writeSmokeEffect(gSmokeEffectData[uiCnt], buffer);
+      uiNumBytesWritten = FileWrite(hFile, buffer, SMOKE_EFFECT_SIZE);
+      if (uiNumBytesWritten != SMOKE_EFFECT_SIZE) {
         // Close the file
         FileClose(hFile);
 
@@ -613,6 +628,7 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
   let bLevel: INT8;
+  let buffer: Buffer;
 
   zMapName = GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
@@ -627,20 +643,26 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   ResetSmokeEffects();
 
   // Load the Number of Smoke Effects
-  FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     FileClose(hFile);
     return false;
   }
 
+  guiNumSmokeEffects = buffer.readUInt32LE(0);
+
   // loop through and load the list
+  buffer = Buffer.allocUnsafe(SMOKE_EFFECT_SIZE);
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
     // Load the Smoke effect Data
-    FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
+    uiNumBytesRead = FileRead(hFile, buffer, SMOKE_EFFECT_SIZE);
+    if (uiNumBytesRead != SMOKE_EFFECT_SIZE) {
       FileClose(hFile);
       return false;
     }
+
+    readSmokeEffect(gSmokeEffectData[uiCnt], buffer);
   }
 
   // loop through and apply the smoke effects to the map
@@ -653,7 +675,7 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
         bLevel = 0;
       }
 
-      SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, true, bLevel, uiCount);
+      SpreadEffect(gSmokeEffectData[uiCount].sGridNo, gSmokeEffectData[uiCount].ubRadius, gSmokeEffectData[uiCount].usItem, gSmokeEffectData[uiCount].ubOwner, 1, bLevel, uiCount);
     }
   }
 
@@ -664,18 +686,18 @@ export function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
 
 export function ResetSmokeEffects(): void {
   // Clear out the old list
-  memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
+  gSmokeEffectData.forEach(resetSmokeEffect);
   guiNumSmokeEffects = 0;
 }
 
 export function UpdateSmokeEffectGraphics(): void {
   let uiCnt: UINT32;
-  let pSmoke: Pointer<SMOKEEFFECT>;
+  let pSmoke: SMOKEEFFECT;
   let bLevel: INT8;
 
   // loop through and save the number of smoke effects
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
-    pSmoke = addressof(gSmokeEffectData[uiCnt]);
+    pSmoke = gSmokeEffectData[uiCnt];
 
     // if the smoke is active
     if (gSmokeEffectData[uiCnt].fAllocated) {
@@ -685,9 +707,9 @@ export function UpdateSmokeEffectGraphics(): void {
         bLevel = 0;
       }
 
-      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, ERASE_SPREAD_EFFECT, bLevel, uiCnt);
+      SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, ERASE_SPREAD_EFFECT, bLevel, uiCnt);
 
-      SpreadEffect(pSmoke.value.sGridNo, pSmoke.value.ubRadius, pSmoke.value.usItem, pSmoke.value.ubOwner, true, bLevel, uiCnt);
+      SpreadEffect(pSmoke.sGridNo, pSmoke.ubRadius, pSmoke.usItem, pSmoke.ubOwner, 1, bLevel, uiCnt);
     }
   }
 }

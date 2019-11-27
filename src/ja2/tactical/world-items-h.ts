@@ -16,7 +16,7 @@ export interface WORLDITEM {
   usFlags: UINT16;
   bRenderZHeightAboveLevel: INT8;
 
-  bVisible: boolean /* INT8 */;
+  bVisible: INT8;
 
   // This is the chance associated with an item or a trap not-existing in the world.  The reason why
   // this is reversed (10 meaning item has 90% chance of appearing, is because the order that the map
@@ -35,7 +35,7 @@ export function createWorldItem(): WORLDITEM {
     usFlags: 0,
     bRenderZHeightAboveLevel: 0,
 
-    bVisible: false,
+    bVisible: 0,
 
     ubNonExistChance: 0,
   };
@@ -48,7 +48,7 @@ export function resetWorldItem(o: WORLDITEM) {
   resetObjectType(o.o);
   o.usFlags = 0;
   o.bRenderZHeightAboveLevel = 0;
-  o.bVisible = false;
+  o.bVisible = 0;
   o.ubNonExistChance = 0;
 }
 
@@ -74,7 +74,7 @@ export function readWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0):
   offset = readObjectType(o.o, buffer, offset);
   o.usFlags = buffer.readUInt16LE(offset); offset += 2;
   o.bRenderZHeightAboveLevel = buffer.readUInt8(offset++);
-  o.bVisible = Boolean(buffer.readUInt8(offset++));
+  o.bVisible = buffer.readUInt8(offset++);
   o.ubNonExistChance = buffer.readUInt8(offset++);
   offset += 3;
   return offset;
@@ -98,6 +98,13 @@ export function writeWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0)
 export interface WORLDBOMB {
   fExists: boolean;
   iItemIndex: INT32;
+}
+
+export function createWorldBomb(): WORLDBOMB {
+  return {
+    fExists: false,
+    iItemIndex: 0,
+  };
 }
 
 }

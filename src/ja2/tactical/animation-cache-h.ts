@@ -17,4 +17,10 @@ export function createAnimationSurfaceCacheType(): AnimationSurfaceCacheType {
   };
 }
 
+export function resetAnimationSurfaceCacheType(o: AnimationSurfaceCacheType) {
+  o.usCachedSurfaces = <UINT16[]><unknown>null;
+  o.sCacheHits = <UINT16[]><unknown>null;
+  o.ubCacheSize = 0;
+}
+
 }

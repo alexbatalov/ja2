@@ -23,7 +23,7 @@ let gfUsePreCalcSkips: boolean = false;
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -33,7 +33,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -53,14 +53,14 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -68,10 +68,10 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -289,7 +289,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   // UINT16		*p16BPPPalette;
   // UINT32		uiOffset;
   let usHeight: UINT32;
@@ -334,10 +334,10 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   if (gfUsePreCalcSkips) {
@@ -550,7 +550,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -561,7 +561,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -581,14 +581,14 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -596,10 +596,10 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -826,21 +826,21 @@ export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT1
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let uiLineFlag: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -943,7 +943,7 @@ export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT1
         Blits every second pixel ("Translucents").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -954,7 +954,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -974,14 +974,14 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -989,10 +989,10 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -1222,21 +1222,21 @@ export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UIN
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let uiLineFlag: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -1331,7 +1331,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UIN
         value by Z_SUBLAYERS for every WORLD_TILE_Y lines of pixels blitted.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -1341,7 +1341,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -1364,14 +1364,14 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -1379,10 +1379,10 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -1683,7 +1683,7 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   /* static */ let SrcPtr: Pointer<UINT8>;
   /* static */ let DestPtr: Pointer<UINT8>;
   /* static */ let LineSkip: UINT32;
-  /* static */ let pTrav: Pointer<ETRLEObject>;
+  /* static */ let pTrav: ETRLEObject;
   /* static */ let iTempX: INT32;
   /* static */ let iTempY: INT32;
 
@@ -1692,14 +1692,14 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -1795,7 +1795,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -1805,14 +1805,14 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -1918,7 +1918,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
         transparency is used for the background.
 
         **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubForeground: UINT8, ubBackground: UINT8): boolean {
+export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, ubForeground: UINT8, ubBackground: UINT8): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -1927,7 +1927,7 @@ export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, u
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -1948,14 +1948,14 @@ export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, u
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -1963,10 +1963,10 @@ export function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, u
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -2195,7 +2195,7 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let uiLineFlag: UINT32;
@@ -2206,14 +2206,14 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -2326,7 +2326,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let uiLineFlag: UINT32;
@@ -2337,14 +2337,14 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -2445,7 +2445,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2455,7 +2455,7 @@ export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT1
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -2477,14 +2477,14 @@ export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT1
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -2492,10 +2492,10 @@ export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT1
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -2718,7 +2718,7 @@ export function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT1
         dimensions as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2728,7 +2728,7 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UIN
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -2750,14 +2750,14 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UIN
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -2765,10 +2765,10 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UIN
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -2985,7 +2985,7 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UIN
         buffer as a destination. Clips the brush.
 
 *******************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -2993,7 +2993,7 @@ export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>,
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -3013,14 +3013,14 @@ export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -3028,10 +3028,10 @@ export function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>,
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -3267,7 +3267,7 @@ export function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiD
   let DestPtr: Pointer<UINT8>;
   let pPal8BPP: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -3276,14 +3276,14 @@ export function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -3418,7 +3418,7 @@ export function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPi
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
   let uiZComp: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -3428,14 +3428,14 @@ export function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -3648,7 +3648,7 @@ export function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDest
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -3658,14 +3658,14 @@ export function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -3765,7 +3765,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -3775,14 +3775,14 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -3879,7 +3879,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3889,7 +3889,7 @@ export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDe
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -3910,14 +3910,14 @@ export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -3925,10 +3925,10 @@ export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -4135,7 +4135,7 @@ export function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDe
         dimensions as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4145,7 +4145,7 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, ui
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -4166,14 +4166,14 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -4181,10 +4181,10 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, ui
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -4388,7 +4388,7 @@ export function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, ui
         dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubColor: UINT8): boolean {
+function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, ubColor: UINT8): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4398,7 +4398,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -4419,14 +4419,14 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -4434,10 +4434,10 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -4656,7 +4656,7 @@ export function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestP
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -4666,14 +4666,14 @@ export function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -4771,7 +4771,7 @@ export function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDes
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -4781,14 +4781,14 @@ export function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -4876,7 +4876,7 @@ export function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDes
         must be the same dimensions as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4886,7 +4886,7 @@ export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiD
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -4907,14 +4907,14 @@ export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -4922,10 +4922,10 @@ export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiD
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -5131,7 +5131,7 @@ export function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiD
         must be the same dimensions as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5141,7 +5141,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -5162,14 +5162,14 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -5177,10 +5177,10 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -5393,7 +5393,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -5403,14 +5403,14 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -5520,7 +5520,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let pPal8BPP: Pointer<UINT8>;
@@ -5530,14 +5530,14 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -5635,7 +5635,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5645,7 +5645,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -5666,14 +5666,14 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -5681,10 +5681,10 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -5900,7 +5900,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5910,7 +5910,7 @@ export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT1
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
   let LineSkipZ: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -5931,14 +5931,14 @@ export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT1
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -5946,10 +5946,10 @@ export function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT1
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -6166,7 +6166,7 @@ export function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPi
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -6175,14 +6175,14 @@ export function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -6302,7 +6302,7 @@ export function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPi
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let pPal8BPP: Pointer<UINT8>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -6311,7 +6311,7 @@ export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDe
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -6330,14 +6330,14 @@ export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -6345,10 +6345,10 @@ export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -6583,7 +6583,7 @@ export function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDe
         transparency is used for the background.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usForeground: UINT16, usBackground: UINT16, usShadow: UINT16): boolean {
+export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, usForeground: UINT16, usBackground: UINT16, usShadow: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6591,7 +6591,7 @@ export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>,
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -6611,14 +6611,14 @@ export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -6626,10 +6626,10 @@ export function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>,
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -6987,7 +6987,7 @@ export function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT3
   let ClipY1: INT32;
   let ClipX2: INT32;
   let ClipY2: INT32;
-  let clipregion: Pointer<SGPRect> = null;
+  let clipregion: SGPRect | null = null;
 
   Assert(pDest != null);
   Assert(pSrc != null);
@@ -7002,10 +7002,10 @@ export function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT3
     ClipX2 = 640; // ClippingRect.iRight;
     ClipY2 = 480; // ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -7151,21 +7151,21 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>,
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let uiLineFlag: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -7285,21 +7285,21 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let uiLineFlag: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -7422,7 +7422,7 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -7433,7 +7433,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -7453,14 +7453,14 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -7468,10 +7468,10 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -7705,21 +7705,21 @@ export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let uiLineFlag: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -7826,7 +7826,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -7837,7 +7837,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UI
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -7857,14 +7857,14 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UI
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -7872,10 +7872,10 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UI
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -8104,7 +8104,7 @@ export function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestP
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8113,14 +8113,14 @@ export function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8223,7 +8223,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDes
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8232,14 +8232,14 @@ export function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8340,7 +8340,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8349,14 +8349,14 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8460,7 +8460,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, ui
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8469,14 +8469,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8571,7 +8571,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, u
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8580,14 +8580,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8694,7 +8694,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>,
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -8703,14 +8703,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8818,7 +8818,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let uiLineFlag: UINT32;
@@ -8828,14 +8828,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -8959,7 +8959,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -8968,7 +8968,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -8988,14 +8988,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -9003,10 +9003,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -9221,7 +9221,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16
         254 are shaded instead of blitted.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9229,7 +9229,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -9249,14 +9249,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -9264,10 +9264,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -9469,7 +9469,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>
         NOT updated.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9478,7 +9478,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -9498,14 +9498,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -9513,10 +9513,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -9732,7 +9732,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT
         NOT updated.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -9742,7 +9742,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Poin
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -9762,14 +9762,14 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Poin
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -9777,10 +9777,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Poin
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -10019,7 +10019,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Poin
         NOT updated.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -10028,7 +10028,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -10048,14 +10048,14 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -10063,10 +10063,10 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -10288,7 +10288,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDest
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -10297,14 +10297,14 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -10393,7 +10393,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDest
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10403,7 +10403,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, ui
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -10423,14 +10423,14 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -10438,10 +10438,10 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, ui
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -10654,7 +10654,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDe
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -10663,14 +10663,14 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -10757,7 +10757,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDe
         same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -10767,7 +10767,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, 
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -10787,14 +10787,14 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -10802,10 +10802,10 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, 
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -11008,7 +11008,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, 
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -11018,7 +11018,7 @@ export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiD
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -11038,14 +11038,14 @@ export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -11053,10 +11053,10 @@ export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiD
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -11261,7 +11261,7 @@ export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiD
         updated in this version. The Z-buffer is 16 bit, and must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -11271,7 +11271,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, u
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -11291,14 +11291,14 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -11306,10 +11306,10 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, u
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -11513,7 +11513,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, u
         specified pixel value.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usColor: UINT16): boolean {
+function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, usColor: UINT16): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -11523,7 +11523,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -11543,14 +11543,14 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -11558,10 +11558,10 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -12207,7 +12207,7 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   let DestPtr: Pointer<UINT8>;
   let MaskPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -12216,20 +12216,20 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Get Offsets from Index into structure for mask
   pTrav = addressof(hMaskObject.value.pETRLEObject[usMask]);
-  usMHeight = pTrav.value.usHeight;
-  usMWidth = pTrav.value.usWidth;
-  uiMOffset = pTrav.value.uiDataOffset;
+  usMHeight = pTrav.usHeight;
+  usMWidth = pTrav.usWidth;
+  uiMOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -12530,7 +12530,7 @@ export function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestP
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -12539,14 +12539,14 @@ export function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -12674,7 +12674,7 @@ export function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, ui
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -12683,14 +12683,14 @@ export function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -12827,7 +12827,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let uiDestSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -12836,15 +12836,15 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
   //	iTempX = iX + pTrav->sOffsetX;
-  iTempX = iX + usWidth - pTrav.value.sOffsetX - 1;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + usWidth - pTrav.sOffsetX - 1;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -12978,7 +12978,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
         buffer as a destination. Clips the brush.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -12987,7 +12987,7 @@ export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -13006,14 +13006,14 @@ export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -13021,10 +13021,10 @@ export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -13259,10 +13259,10 @@ export function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>
         Determines whether a given blit will need clipping or not. Returns TRUE/FALSE.
 
 **********************************************************************************************/
-export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let ClipX1: INT32;
@@ -13274,13 +13274,13 @@ export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usInde
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -13288,10 +13288,10 @@ export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usInde
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -13318,7 +13318,7 @@ export function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usInde
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -13327,7 +13327,7 @@ export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiD
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -13346,14 +13346,14 @@ export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -13361,10 +13361,10 @@ export function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiD
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -13744,7 +13744,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -13753,14 +13753,14 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -14356,10 +14356,10 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
         Determines whether a given blit will need clipping or not. Returns TRUE/FALSE.
 
 **********************************************************************************************/
-export function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): CHAR8 {
+export function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let ClipX1: INT32;
@@ -14371,13 +14371,13 @@ export function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: IN
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -14385,10 +14385,10 @@ export function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: IN
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -14431,7 +14431,7 @@ export function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDest
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Pointer<UINT16>;
@@ -14441,14 +14441,14 @@ export function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -14531,7 +14531,7 @@ export function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDest
 }
 
 // ATE New blitter for rendering a differrent color for value 254. Can be transparent if fDoOutline is FALSE
-export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -14539,7 +14539,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, ui
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -14560,14 +14560,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -14575,10 +14575,10 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, ui
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -14775,7 +14775,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, ui
   return true;
 }
 
-export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -14784,7 +14784,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, u
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -14805,14 +14805,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -14820,10 +14820,10 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, u
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -15038,7 +15038,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, u
   return true;
 }
 
-export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: boolean, clipregion: SGPRect | null): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -15047,7 +15047,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Po
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -15069,14 +15069,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Po
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -15084,10 +15084,10 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Po
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -15334,7 +15334,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, 
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Pointer<UINT16>;
@@ -15344,14 +15344,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -15423,7 +15423,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, 
   return true;
 }
 
-export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -15432,7 +15432,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT1
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -15451,14 +15451,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT1
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -15466,10 +15466,10 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT1
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -15705,7 +15705,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDes
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -15714,14 +15714,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -15832,7 +15832,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointe
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let uiLineFlag: UINT32;
@@ -15842,14 +15842,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -15983,7 +15983,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiD
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -15992,14 +15992,14 @@ export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -16118,7 +16118,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiD
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -16127,14 +16127,14 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -16223,7 +16223,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiD
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16233,7 +16233,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>,
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -16253,14 +16253,14 @@ export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -16268,10 +16268,10 @@ export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>,
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -16484,7 +16484,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, u
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -16493,14 +16493,14 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -16587,7 +16587,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, u
         same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16597,7 +16597,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -16617,14 +16617,14 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -16632,10 +16632,10 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -16836,7 +16836,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
         clips brush if it doesn't fit on the viewport.
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -16845,7 +16845,7 @@ export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, 
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -16864,14 +16864,14 @@ export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -16879,10 +16879,10 @@ export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, 
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -17118,7 +17118,7 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDe
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -17127,14 +17127,14 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -17258,7 +17258,7 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDe
         Blits every second pixel ("pixelates").
 
 **********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -17269,7 +17269,7 @@ export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Poin
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -17289,14 +17289,14 @@ export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Poin
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -17304,10 +17304,10 @@ export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Poin
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen

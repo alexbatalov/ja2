@@ -32,11 +32,11 @@ export const ANI_ONROOF_LEVEL = 6;
 export const ANI_TOPMOST_LEVEL = 7;
 
 export interface ANITILE {
-  pNext: Pointer<ANITILE>;
+  pNext: ANITILE | null;
   uiFlags: UINT32; // flags struct
   uiTimeLastUpdate: UINT32; // Stuff for animated tiles
 
-  pLevelNode: Pointer<LEVELNODE>;
+  pLevelNode: LEVELNODE;
   ubLevelID: UINT8;
   sCurrentFrame: INT16;
   sStartFrame: INT16;
@@ -68,6 +68,39 @@ export interface ANITILE {
   bFrameCountAfterStart: INT8;
 }
 
+export function createAnimatedTile(): ANITILE {
+  return {
+    pNext: null,
+    uiFlags: 0,
+    uiTimeLastUpdate: 0,
+    pLevelNode: <LEVELNODE><unknown>null,
+    ubLevelID: 0,
+    sCurrentFrame: 0,
+    sStartFrame: 0,
+    sDelay: 0,
+    usTileType: 0,
+    usNumFrames: 0,
+    usMissAnimationPlayed: 0,
+    ubAttackerMissed: 0,
+    sRelativeX: 0,
+    sRelativeY: 0,
+    sRelativeZ: 0,
+    sGridNo: 0,
+    usTileIndex: 0,
+    usCachedTileSubIndex: 0,
+    sCachedTileID: 0,
+    ubOwner: 0,
+    ubKeyFrame1: 0,
+    uiKeyFrame1Code: 0,
+    ubKeyFrame2: 0,
+    uiKeyFrame2Code: 0,
+    uiUserData: 0,
+    ubUserData2: 0,
+    uiUserData3: 0,
+    bFrameCountAfterStart: 0,
+  };
+}
+
 export interface ANITILE_PARAMS {
   uiFlags: UINT32; // flags struct
   ubLevelID: UINT8; // Level ID for rendering layer
@@ -80,7 +113,7 @@ export interface ANITILE_PARAMS {
   sZ: INT16; // World Z ( optional )
   sGridNo: INT16; // World GridNo
 
-  pGivenLevelNode: Pointer<LEVELNODE>; // Levelnode for existing tile ( optional )
+  pGivenLevelNode: LEVELNODE | null; // Levelnode for existing tile ( optional )
   zCachedFile: string /* CHAR8[100] */; // Filename for cached tile name ( optional )
 
   ubOwner: UINT8; // UBID for the owner

@@ -146,7 +146,7 @@ export function CreateTileDatabase(): void {
   let cnt2: UINT32;
   let ubLoop: UINT8;
   let NumRegions: UINT32;
-  let TileSurf: PTILE_IMAGERY;
+  let TileSurf: TILE_IMAGERY;
   let TileElement: TILE_ELEMENT = createTileElement();
 
   // Loop through all surfaces and tiles and build database
@@ -158,7 +158,7 @@ export function CreateTileDatabase(): void {
       // Build start index list
       gTileTypeStartIndex[cnt1] = gTileDatabaseSize;
 
-      NumRegions = TileSurf.value.vo.value.usNumberOfObjects;
+      NumRegions = TileSurf.vo.value.usNumberOfObjects;
 
       // Check for overflow
       if (NumRegions > gNumTilesPerType[cnt1]) {
@@ -172,16 +172,16 @@ export function CreateTileDatabase(): void {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Type: %s Size: %d Index: %d", gTileSurfaceName[cnt1], gNumTilesPerType[cnt1], gTileDatabaseSize));
 
       for (cnt2 = 0; cnt2 < NumRegions; cnt2++) {
-        memset(addressof(TileElement), 0, sizeof(TileElement));
+        resetTileElement(TileElement);
         TileElement.usRegionIndex = cnt2;
-        TileElement.hTileSurface = TileSurf.value.vo;
+        TileElement.hTileSurface = TileSurf.vo;
         TileElement.sBuddyNum = -1;
 
         // Check for multi-z stuff
-        if (TileSurf.value.vo.value.ppZStripInfo != null) {
+        if (TileSurf.vo.value.ppZStripInfo != null) {
           // Only do this if we are within the # of video objects
-          if (cnt2 < TileSurf.value.vo.value.usNumberOfObjects) {
-            if (TileSurf.value.vo.value.ppZStripInfo[cnt2] != null) {
+          if (cnt2 < TileSurf.vo.value.usNumberOfObjects) {
+            if (TileSurf.vo.value.ppZStripInfo[cnt2] != null) {
               TileElement.uiFlags |= MULTI_Z_TILE;
             }
           } else {
@@ -191,33 +191,34 @@ export function CreateTileDatabase(): void {
         }
 
         // Structure database stuff!
-        if (TileSurf.value.pStructureFileRef != null && TileSurf.value.pStructureFileRef.value.pubStructureData != null) {
-          if (TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2].pDBStructure != null) {
-            TileElement.pDBStructureRef = addressof(TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2]);
+        if (TileSurf.pStructureFileRef != null && TileSurf.pStructureFileRef.pubStructureData != null) {
+          if (TileSurf.pStructureFileRef.pDBStructureRef[cnt2].pDBStructure != null) {
+            TileElement.pDBStructureRef = TileSurf.pStructureFileRef.pDBStructureRef[cnt2];
 
-            if (TileElement.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_HIDDEN) {
+            if (TileElement.pDBStructureRef.pDBStructure.fFlags & STRUCTURE_HIDDEN) {
               // ATE: These are ignored!
               // TileElement.uiFlags |= HIDDEN_TILE;
             }
           }
         }
 
-        TileElement.fType = TileSurf.value.fType;
-        TileElement.ubTerrainID = TileSurf.value.ubTerrainID;
+        TileElement.fType = TileSurf.fType;
+        TileElement.ubTerrainID = TileSurf.ubTerrainID;
         TileElement.usWallOrientation = Enum314.NO_ORIENTATION;
 
-        if (TileSurf.value.pAuxData != null) {
-          if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
+        if (TileSurf.pAuxData != null) {
+          if (TileSurf.pAuxData[cnt2].fFlags & AUX_FULL_TILE) {
             TileElement.ubFullTile = 1;
           }
-          if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_ANIMATED_TILE) {
+          if (TileSurf.pAuxData[cnt2].fFlags & AUX_ANIMATED_TILE) {
             // Allocate Animated tile data
-            AllocateAnimTileData(addressof(TileElement), TileSurf.value.pAuxData[cnt2].ubNumberOfFrames);
+            AllocateAnimTileData(TileElement, TileSurf.pAuxData[cnt2].ubNumberOfFrames);
+            Assert(TileElement.pAnimData);
 
             // Set values into tile element
-            TileElement.pAnimData.value.bCurrentFrame = TileSurf.value.pAuxData[cnt2].ubCurrentFrame;
-            for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-              TileElement.pAnimData.value.pusFrames[ubLoop] = gTileDatabaseSize - TileElement.pAnimData.value.bCurrentFrame + ubLoop;
+            TileElement.pAnimData.bCurrentFrame = TileSurf.pAuxData[cnt2].ubCurrentFrame;
+            for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+              TileElement.pAnimData.pusFrames[ubLoop] = gTileDatabaseSize - TileElement.pAnimData.bCurrentFrame + ubLoop;
             }
 
             /*
@@ -240,14 +241,15 @@ export function CreateTileDatabase(): void {
 
             TileElement.uiFlags |= ANIMATED_TILE;
           }
-          TileElement.usWallOrientation = TileSurf.value.pAuxData[cnt2].ubWallOrientation;
-          if (TileSurf.value.pAuxData[cnt2].ubNumberOfTiles > 0) {
-            TileElement.ubNumberOfTiles = TileSurf.value.pAuxData[cnt2].ubNumberOfTiles;
-            TileElement.pTileLocData = TileSurf.value.pTileLocData + TileSurf.value.pAuxData[cnt2].usTileLocIndex;
+          TileElement.usWallOrientation = TileSurf.pAuxData[cnt2].ubWallOrientation;
+          if (TileSurf.pAuxData[cnt2].ubNumberOfTiles > 0) {
+            Assert(TileSurf.pTileLocData);
+            TileElement.ubNumberOfTiles = TileSurf.pAuxData[cnt2].ubNumberOfTiles;
+            TileElement.pTileLocData = TileSurf.pTileLocData.slice(TileSurf.pAuxData[cnt2].usTileLocIndex, TileSurf.pAuxData[cnt2].usTileLocIndex + TileElement.ubNumberOfTiles);
           }
         }
 
-        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, addressof(TileElement), TileSurf.value.bRaisedObjectType);
+        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, TileElement, TileSurf.bRaisedObjectType);
 
         gTileDatabase[gTileDatabaseSize] = TileElement;
         gTileDatabaseSize++;
@@ -260,10 +262,10 @@ export function CreateTileDatabase(): void {
 
         // Do underflows here
         for (cnt2 = NumRegions; cnt2 < gNumTilesPerType[cnt1]; cnt2++) {
-          memset(addressof(TileElement), 0, sizeof(TileElement));
+          resetTileElement(TileElement);
           TileElement.usRegionIndex = 0;
-          TileElement.hTileSurface = TileSurf.value.vo;
-          TileElement.fType = TileSurf.value.fType;
+          TileElement.hTileSurface = TileSurf.vo;
+          TileElement.fType = TileSurf.fType;
           TileElement.ubFullTile = 0;
           TileElement.sOffsetHeight = 0;
           TileElement.ubFullTile = 0;
@@ -280,7 +282,7 @@ export function CreateTileDatabase(): void {
   gSurfaceMemUsage = guiMemTotal - gSurfaceMemUsage;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Sizes: %d vs %d", gTileDatabaseSize, Enum312.NUMBEROFTILES));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Types: %d", Enum313.NUMBEROFTILETYPES));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Item Mem:		%d", gTileDatabaseSize * sizeof(TILE_ELEMENT)));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Item Mem:		%d", gTileDatabaseSize * TILE_ELEMENT_SIZE));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Database Item Total Mem:		%d", gSurfaceMemUsage));
 }
 
@@ -290,7 +292,7 @@ export function DeallocateTileDatabase(): void {
   for (cnt = 0; cnt < Enum312.NUMBEROFTILES; cnt++) {
     // Check if an existing set of animated tiles are in place, remove if found
     if (gTileDatabase[cnt].pAnimData != null) {
-      FreeAnimTileData(addressof(gTileDatabase[cnt]));
+      FreeAnimTileData(gTileDatabase[cnt]);
     }
   }
 
@@ -306,7 +308,7 @@ export function GetLandHeadType(iMapIndex: INT32): UINT32 {
     return <UINT32><unknown>undefined;
   }
 
-  usIndex = gpWorldLevelData[iMapIndex].pLandHead.value.usIndex;
+  usIndex = (<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).usIndex;
 
   return GetTileType(usIndex);
 }
@@ -322,7 +324,7 @@ export function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT3
 
   if (AnyHeigherLand(iMapIndex, uiNewType, addressof(ubLastHighLevel))) {
     // Check if type exists and get it's index if so
-    if (TypeExistsInLandLayer(iMapIndex, uiNewType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(iMapIndex, uiNewType)) !== -1) {
       // Replace with new index
       return ReplaceLandIndex(iMapIndex, usTempIndex, usIndex);
     } else {
@@ -330,7 +332,7 @@ export function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT3
     }
   } else {
     // Check if type exists and get it's index if so
-    if (TypeExistsInLandLayer(iMapIndex, uiNewType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(iMapIndex, uiNewType)) !== -1) {
       // Replace with new index
       return ReplaceLandIndex(iMapIndex, usTempIndex, usIndex);
     } else {
@@ -372,12 +374,12 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
         if (fReplace) {
           fDoPaste = true;
         } else {
-          if (!TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
+          if ((usTempIndex = TypeExistsInLandLayer(iNewIndex, uiNewType)) === -1) {
             fDoPaste = true;
           }
         }
 
-        if (fDoPaste && ((uiNewType >= Enum313.FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < Enum313.FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, Enum313.FIRSTFLOOR, LASTFLOOR, addressof(Dummy))))) {
+        if (fDoPaste && ((uiNewType >= Enum313.FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < Enum313.FIRSTFLOOR || uiNewType > LASTFLOOR) && (Dummy = TypeRangeExistsInLandLayer(iNewIndex, Enum313.FIRSTFLOOR, LASTFLOOR)) === -1))) {
           SetLandIndex(iNewIndex, usIndex, uiNewType, false);
         }
       }
@@ -389,14 +391,14 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
 
 export function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): boolean {
   let level: UINT8 = 0;
-  let pLand: Pointer<LEVELNODE>;
+  let pLand: LEVELNODE | null;
   let fTileType: UINT32 = 0;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   while (pLand != null) {
-    if (pLand.value.usIndex != NO_TILE) {
-      fTileType = GetTileType(pLand.value.usIndex);
+    if (pLand.usIndex != NO_TILE) {
+      fTileType = GetTileType(pLand.usIndex);
 
       if (fTileType == uiNewType) {
         pubLevel.value = level;
@@ -405,7 +407,7 @@ export function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel:
     }
 
     level++;
-    pLand = pLand.value.pNext;
+    pLand = pLand.pNext;
   }
 
   return false;
@@ -413,13 +415,13 @@ export function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel:
 
 function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
   let level: UINT8 = 0;
-  let pLand: Pointer<LEVELNODE>;
+  let pLand: LEVELNODE | null;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   while (pLand != null) {
     level++;
-    pLand = pLand.value.pNext;
+    pLand = pLand.pNext;
   }
 
   return level;
@@ -518,7 +520,7 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): boolean {
 }
 
 export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
-  let pLand: Pointer<LEVELNODE> = null;
+  let pLand: LEVELNODE | null = null;
   let ubSrcLogHeight: UINT8 = 0;
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
@@ -540,7 +542,7 @@ export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLeve
 
   while (pLand != null) {
     // Get type and height
-    fTileType = GetTileType(pLand.value.usIndex);
+    fTileType = GetTileType(pLand.usIndex);
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
       pubLastLevel.value = level;
@@ -548,7 +550,7 @@ export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLeve
     }
 
     // Advance to next
-    pLand = pLand.value.pNext;
+    pLand = pLand.pNext;
 
     level++;
   }
@@ -558,7 +560,7 @@ export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLeve
 }
 
 function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): boolean {
-  let pLand: Pointer<LEVELNODE> = null;
+  let pLand: LEVELNODE | null = null;
   let ubSrcLogHeight: UINT8;
   let fTileType: UINT32 = 0;
   let level: UINT8 = 0;
@@ -574,7 +576,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
   // Look through all objects and Search for type
   while (pLand != null) {
     // Get type and height
-    fTileType = GetTileType(pLand.value.usIndex);
+    fTileType = GetTileType(pLand.usIndex);
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       pubLastLevel.value = level;
@@ -582,7 +584,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
     }
 
     // Get tile element
-    TileElem = gTileDatabase[pLand.value.usIndex];
+    TileElem = gTileDatabase[pLand.usIndex];
 
     // Get full tile flag
     if (TileElem.ubFullTile && fTileType != uiSrcType) {
@@ -590,7 +592,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
     }
 
     // Advance to next
-    pLand = pLand.value.pNext;
+    pLand = pLand.pNext;
 
     level++;
   }
@@ -613,7 +615,7 @@ export function GetWallOrientation(usIndex: UINT16): UINT16 {
 }
 
 function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): boolean {
-  let pStruct: Pointer<LEVELNODE> = null;
+  let pStruct: LEVELNODE | null = null;
   let level: UINT8 = 0;
   let usCheckWallOrient: UINT16 = 0;
 
@@ -622,7 +624,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
   // Look through all objects and Search for type
 
   while (pStruct != null) {
-    usCheckWallOrient = GetWallOrientation(pStruct.value.usIndex);
+    usCheckWallOrient = GetWallOrientation(pStruct.usIndex);
 
     if (usCheckWallOrient == usWallOrientation) {
       pubLevel.value = level;
@@ -630,7 +632,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
     }
 
     // Advance to next
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
 
     level++;
   }
@@ -645,12 +647,12 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 // first wall encountered -- not that there should be duplicate walls...
 function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   let usCheckWallOrientation: UINT16 = 0;
-  let pStruct: Pointer<LEVELNODE> = null;
+  let pStruct: LEVELNODE | null = null;
   let ubFinalWallOrientation: UINT8 = Enum314.NO_ORIENTATION;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
   while (pStruct != null) {
-    usCheckWallOrientation = GetWallOrientation(pStruct.value.usIndex);
+    usCheckWallOrientation = GetWallOrientation(pStruct.usIndex);
     if (ubFinalWallOrientation == Enum314.NO_ORIENTATION) {
       // Get the first valid orientation.
       ubFinalWallOrientation = usCheckWallOrientation;
@@ -676,38 +678,26 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
           break;
       }
     // Advance to next
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
   // Only one wall, so return it's orienation.
   return ubFinalWallOrientation;
 }
 
-export function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): boolean {
-  pTileElem.value.pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
-
-  if (pTileElem.value.pAnimData == null) {
-    return false;
-  }
-
-  pTileElem.value.pAnimData.value.pusFrames = MemAlloc(sizeof(UINT16) * ubNumFrames);
-
-  if (pTileElem.value.pAnimData.value.pusFrames == null) {
-    return false;
-  }
+export function AllocateAnimTileData(pTileElem: TILE_ELEMENT, ubNumFrames: UINT8): boolean {
+  pTileElem.pAnimData = createTileAnimationData();
+  pTileElem.pAnimData.pusFrames = createArray(ubNumFrames, 0);
 
   // Set # if frames!
-  pTileElem.value.pAnimData.value.ubNumFrames = ubNumFrames;
+  pTileElem.pAnimData.ubNumFrames = ubNumFrames;
 
   return true;
 }
 
-function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {
-  if (pTileElem.value.pAnimData != null) {
-    // Free frames list
-    MemFree(pTileElem.value.pAnimData.value.pusFrames);
-
+function FreeAnimTileData(pTileElem: TILE_ELEMENT): void {
+  if (pTileElem.pAnimData != null) {
     // Free frames
-    MemFree(pTileElem.value.pAnimData);
+    pTileElem.pAnimData = null;
   }
 }
 

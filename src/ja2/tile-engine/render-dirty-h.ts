@@ -19,7 +19,7 @@ export const VOVERLAY_DESC_POSITION = 0x00004000;
 // STRUCTURES
 
 // Callback for topmost blitters
-type OVERLAY_CALLBACK = (a: Pointer<VIDEO_OVERLAY>) => void;
+type OVERLAY_CALLBACK = (a: VIDEO_OVERLAY) => void;
 
 // Struct for backgrounds
 export interface BACKGROUND_SAVE {
@@ -28,8 +28,8 @@ export interface BACKGROUND_SAVE {
   fFreeMemory: boolean;
   fZBuffer: boolean;
   uiFlags: UINT32;
-  pSaveArea: Pointer<INT16>;
-  pZSaveArea: Pointer<INT16>;
+  pSaveArea: Int16Array | null;
+  pZSaveArea: Int16Array | null;
   sLeft: INT16;
   sTop: INT16;
   sRight: INT16;
@@ -40,16 +40,54 @@ export interface BACKGROUND_SAVE {
   fDisabled: boolean;
 }
 
+export function createBackgroundSave(): BACKGROUND_SAVE {
+  return {
+    fAllocated: false,
+    fFilled: false,
+    fFreeMemory: false,
+    fZBuffer: false,
+    uiFlags: 0,
+    pSaveArea: null,
+    pZSaveArea: null,
+    sLeft: 0,
+    sTop: 0,
+    sRight: 0,
+    sBottom: 0,
+    sWidth: 0,
+    sHeight: 0,
+    fPendingDelete: false,
+    fDisabled: false,
+  };
+}
+
+export function resetBackgroundSave(o: BACKGROUND_SAVE) {
+  o.fAllocated = false;
+  o.fFilled = false;
+  o.fFreeMemory = false;
+  o.fZBuffer = false;
+  o.uiFlags = 0;
+  o.pSaveArea = null;
+  o.pZSaveArea = null;
+  o.sLeft = 0;
+  o.sTop = 0;
+  o.sRight = 0;
+  o.sBottom = 0;
+  o.sWidth = 0;
+  o.sHeight = 0;
+  o.fPendingDelete = false;
+  o.fDisabled = false;
+}
+
 // Struct for topmost blitters
 export interface VIDEO_OVERLAY {
   uiFlags: UINT32;
-  fAllocated: boolean;
+  fAllocated: UINT8 /* boolean */;
   fDisabled: boolean;
   fActivelySaving: boolean;
   fDeletionPending: boolean;
   uiBackground: INT32;
-  pBackground: Pointer<BACKGROUND_SAVE>;
-  pSaveArea: Pointer<INT16>;
+  pBackground: BACKGROUND_SAVE | null;
+  pSaveArea: Int16Array | null;
   uiUserData: UINT32[] /* [5] */;
   uiFontID: UINT32;
   sX: INT16;
@@ -59,6 +97,32 @@ export interface VIDEO_OVERLAY {
   zText: string /* INT16[200] */;
   uiDestBuff: UINT32;
   BltCallback: OVERLAY_CALLBACK;
+}
+
+export function createVideoOverlay(): VIDEO_OVERLAY {
+  return {
+    uiFlags: 0,
+    fAllocated: 0,
+    fDisabled: false,
+    fActivelySaving: false,
+    fDeletionPending: false,
+    uiBackground: 0,
+    pBackground: null,
+    pSaveArea: null,
+    uiUserData: createArray(5, 0),
+    uiFontID: 0,
+    sX: 0,
+    sY: 0,
+    ubFontBack: 0,
+    ubFontFore: 0,
+    zText: '',
+    uiDestBuff: 0,
+    BltCallback: <OVERLAY_CALLBACK><unknown>null,
+  };
+}
+
+export function resetVideoOverlay(o: VIDEO_OVERLAY) {
+
 }
 
 // Struct for init topmost blitter
@@ -92,7 +156,7 @@ export function createVideoOverlayDesc(): VIDEO_OVERLAY_DESC {
     ubFontBack: 0,
     ubFontFore: 0,
     pzText: "",
-    BltCallback: null,
+    BltCallback: <OVERLAY_CALLBACK><unknown>null,
   };
 }
 

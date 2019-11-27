@@ -309,32 +309,32 @@ export function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: 
   return true;
 }
 
+/* static */ let GetMouseMapPos__sSameCursorPos: INT16;
+/* static */ let GetMouseMapPos__uiOldFrameNumber: UINT32 = 99999;
 export function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  /* static */ let sSameCursorPos: INT16;
-  /* static */ let uiOldFrameNumber: UINT32 = 99999;
 
   // Check if this is the same frame as before, return already calculated value if so!
-  if (uiOldFrameNumber == guiGameCycleCounter && !guiForceRefreshMousePositionCalculation) {
-    (psMapPos.value) = sSameCursorPos;
+  if (GetMouseMapPos__uiOldFrameNumber == guiGameCycleCounter && !guiForceRefreshMousePositionCalculation) {
+    (psMapPos.value) = GetMouseMapPos__sSameCursorPos;
 
-    if (sSameCursorPos == 0) {
+    if (GetMouseMapPos__sSameCursorPos == 0) {
       return false;
     }
     return true;
   }
 
-  uiOldFrameNumber = guiGameCycleCounter;
+  GetMouseMapPos__uiOldFrameNumber = guiGameCycleCounter;
   guiForceRefreshMousePositionCalculation = false;
 
   if (GetMouseXY(addressof(sWorldX), addressof(sWorldY))) {
     psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
-    sSameCursorPos = (psMapPos.value);
+    GetMouseMapPos__sSameCursorPos = (psMapPos.value);
     return true;
   } else {
     psMapPos.value = 0;
-    sSameCursorPos = (psMapPos.value);
+    GetMouseMapPos__sSameCursorPos = (psMapPos.value);
     return false;
   }
 }

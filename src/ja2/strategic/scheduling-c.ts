@@ -259,7 +259,7 @@ export function PrepareSchedulesForEditorExit(): void {
   PostSchedules();
 }
 
-export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadSchedules(buffer: Buffer, offset: number): number {
   let pSchedule: SCHEDULENODE | null = null;
   let temp: SCHEDULENODE = createScheduleNode();
   let ubNum: UINT8;
@@ -269,10 +269,10 @@ export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     DestroyAllSchedules();
   }
 
-  LOADDATA(addressof(ubNum), hBuffer.value, sizeof(UINT8));
+  ubNum = buffer.readUInt8(offset++);
   gubScheduleID = 1;
   while (ubNum) {
-    LOADDATA(addressof(temp), hBuffer.value, sizeof(SCHEDULENODE));
+    offset = readScheduleNode(temp, buffer, offset);
 
     if (pSchedule) {
       pSchedule.next = createScheduleNode();
@@ -292,6 +292,8 @@ export function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     ubNum--;
   }
   // Schedules are posted when the soldier is added...
+
+  return offset;
 }
 
 export function LoadSchedulesFromSave(hFile: HWFILE): boolean {

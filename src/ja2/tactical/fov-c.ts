@@ -221,15 +221,15 @@ export function ExamineSlantRoofFOVSlots(): void {
   ClearSlantRoofs();
 }
 
-export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, fShowLocators: boolean, ubLevel: UINT8, fForce: boolean): void {
+export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* UINT32 */, fShowLocators: boolean, ubLevel: UINT8, fForce: boolean): void {
   let maincnt: UINT32;
   let markercnt: UINT32;
   let marker: UINT32;
   let tilesLeftToSee: UINT32;
   let cnt: UINT32;
   let prevmarker: UINT32;
-  let Inc: INT32[] /* [6] */;
-  let Dir: INT32[] /* [6] */;
+  let Inc: INT32[] /* [6] */ = createArray(6, 0);
+  let Dir: INT32[] /* [6] */ = createArray(6, 0);
   let itemVisible: INT8 = false;
   let Blocking: INT8;
   let twoMoreTiles: INT8;
@@ -259,21 +259,21 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
   let bStructHeight: INT8;
   let bThroughWindowDirection: INT8;
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_ENEMY) {
+  if (pSoldier.uiStatusFlags & SOLDIER_ENEMY) {
     // pSoldier->needToLookForItems = FALSE;
     return;
   }
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     return;
   }
 
   // Return if this guy has no gridno, has bad life, etc
-  if (pSoldier.value.sGridNo == NOWHERE || !pSoldier.value.bInSector || pSoldier.value.bLife < OKLIFE) {
+  if (pSoldier.sGridNo == NOWHERE || !pSoldier.bInSector || pSoldier.bLife < OKLIFE) {
     return;
   }
 
-  if (pSoldier.value.bBlindedCounter > 0) {
+  if (pSoldier.bBlindedCounter > 0) {
     return;
   }
 
@@ -288,18 +288,18 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
   // OK, look for doors
   MercLooksForDoors(pSoldier, true);
 
-  who = pSoldier.value.ubID;
-  dir = pSoldier.value.bDirection;
+  who = pSoldier.ubID;
+  dir = pSoldier.bDirection;
 
   // NumMessage("good old reveal",dir);
 
   // a gassed merc can only see 1 tile away due to blurred vision
-  if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED) {
+  if (pSoldier.uiStatusFlags & SOLDIER_GASSED) {
     range = 1;
   } else {
-    range = pSoldier.value.bViewRange;
+    range = pSoldier.bViewRange;
     // balance item viewing range between normal and the limit set by opplist-type functions -- CJC
-    range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel), range) + range) / 2;
+    range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel), range) + range) / 2;
   }
 
   BuildSightDir(dir, addressof(Dir[0]), addressof(Dir[1]), addressof(Dir[2]), addressof(Dir[3]), addressof(Dir[4]));
@@ -308,7 +308,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
 
   // create gridno increment for NOVIEW - in other words, no increment!
   Inc[5] = 0;
-  Dir[5] = pSoldier.value.bDirection;
+  Dir[5] = pSoldier.bDirection;
 
   if (dir % 2 == 1) /* even numbers use ViewPath2 */
     Path2 = true;
@@ -324,7 +324,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
   }
 
   for (maincnt = 0; maincnt < MAXVIEWPATHS; maincnt++) {
-    marker = pSoldier.value.sGridNo;
+    marker = pSoldier.sGridNo;
     Blocking = false;
     twoMoreTiles = false;
     tilesLeftToSee = 99;
@@ -401,7 +401,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
       }
 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), addressof(iDoorGridNo));
+        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), addressof(iDoorGridNo));
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
         if (pStructure != null && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
@@ -557,7 +557,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
 
                       if (gTacticalStatus.ubAttackBusyCount > 0 && (gTacticalStatus.uiFlags & INCOMBAT)) {
                         gTacticalStatus.fItemsSeenOnAttack = true;
-                        gTacticalStatus.ubItemsSeenOnAttackSoldier = pSoldier.value.ubID;
+                        gTacticalStatus.ubItemsSeenOnAttackSoldier = pSoldier.ubID;
                         gTacticalStatus.usItemsSeenOnAttackGridNo = (marker);
                       } else {
                         // Display quote!
@@ -634,7 +634,7 @@ export function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UI
               // OK, if we are underground, we don't want to reveal stuff if
               // 1 ) there is a roof over us and
               // 2 ) we are not in a room
-              if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, Enum313.FIRSTROOF, Enum313.FOURTHROOF, addressof(usIndex))) {
+              if (gubWorldRoomInfo[marker] == NO_ROOM && (usIndex = TypeRangeExistsInRoofLayer(marker, Enum313.FIRSTROOF, Enum313.FOURTHROOF)) !== -1) {
                 let i: number = 0;
               } else {
                 gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REVEALED;

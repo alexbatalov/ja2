@@ -56,15 +56,15 @@ export function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
 }
 
 export function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<LEVELNODE>>): boolean {
-  let pShadow: Pointer<LEVELNODE>;
+  let pShadow: LEVELNODE | null;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
   while (pShadow) {
-    if (pShadow.value.uiFlags & LEVELNODE_EXITGRID) {
+    if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
       ppLevelNode.value = pShadow;
       return true;
     }
-    pShadow = pShadow.value.pNext;
+    pShadow = pShadow.pNext;
   }
   return false;
 }
@@ -89,7 +89,7 @@ export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: EXITGRID): void 
   // Add levelnode
   AddShadowToHead(iMapIndex, Enum312.MOCKFLOOR1);
   // Get new node
-  pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
+  pShadow = <LEVELNODE>gpWorldLevelData[iMapIndex].pShadowHead;
 
   // fill in the information for the new exitgrid levelnode.
   pShadow.iExitGridInfo = ConvertExitGridToINT32(pExitGrid);
@@ -103,7 +103,7 @@ export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: EXITGRID): void 
 
 export function RemoveExitGridFromWorld(iMapIndex: INT32): void {
   let usDummy: UINT16;
-  if (TypeExistsInShadowLayer(iMapIndex, Enum313.MOCKFLOOR, addressof(usDummy))) {
+  if ((usDummy = TypeExistsInShadowLayer(iMapIndex, Enum313.MOCKFLOOR)) !== -1) {
     RemoveAllShadowsOfTypeRange(iMapIndex, Enum313.MOCKFLOOR, Enum313.MOCKFLOOR);
   }
 }
@@ -113,11 +113,21 @@ export function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   let usNumSaved: UINT16 = 0;
   let x: UINT16;
   let uiBytesWritten: UINT32;
-  FileWrite(fp, addressof(usNumExitGrids), 2, addressof(uiBytesWritten));
+  let buffer: Buffer;
+
+  buffer = Buffer.allocUnsafe(2);
+  buffer.writeUInt16LE(usNumExitGrids, 2);
+  uiBytesWritten = FileWrite(fp, buffer, 2);
+
+  buffer = Buffer.allocUnsafe(EXIT_GRID_SIZE);
   for (x = 0; x < WORLD_MAX; x++) {
-    if (GetExitGrid(x, addressof(exitGrid))) {
-      FileWrite(fp, addressof(x), 2, addressof(uiBytesWritten));
-      FileWrite(fp, addressof(exitGrid), 5, addressof(uiBytesWritten));
+    if (GetExitGrid(x, exitGrid)) {
+      buffer.writeUInt16LE(x, 0);
+      uiBytesWritten = FileWrite(fp, buffer, 2);
+
+      writeExitGrid(exitGrid, buffer);
+      uiBytesWritten = FileWrite(fp, buffer, 5);
+
       usNumSaved++;
     }
   }
@@ -125,22 +135,23 @@ export function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   Assert(usNumExitGrids == usNumSaved);
 }
 
-export function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadExitGrids(buffer: Buffer, offset: number): number {
   let exitGrid: EXITGRID = createExitGrid();
   let x: UINT16;
   let usNumSaved: UINT16;
   let usMapIndex: UINT16;
   gfLoadingExitGrids = true;
-  LOADDATA(addressof(usNumSaved), hBuffer.value, 2);
+  usNumSaved = buffer.readUInt16LE(offset); offset += 2;
   // FileRead( hfile, &usNumSaved, 2, NULL);
   for (x = 0; x < usNumSaved; x++) {
-    LOADDATA(addressof(usMapIndex), hBuffer.value, 2);
+    usMapIndex = buffer.readUInt16LE(offset); offset += 2;
     // FileRead( hfile, &usMapIndex, 2, NULL);
-    LOADDATA(addressof(exitGrid), hBuffer.value, 5);
+    readExitGrid(exitGrid, buffer, offset); offset += 5;
     // FileRead( hfile, &exitGrid, 5, NULL);
-    AddExitGridToWorld(usMapIndex, addressof(exitGrid));
+    AddExitGridToWorld(usMapIndex, exitGrid);
   }
   gfLoadingExitGrids = false;
+  return offset;
 }
 
 export function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {

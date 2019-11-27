@@ -28,4 +28,24 @@ export function createExitGridFrom(usGridNo: UINT16, ubGotoSectorX: UINT8, ubGot
   };
 }
 
+export const EXIT_GRID_SIZE = 6;
+
+export function readExitGrid(o: EXITGRID, buffer: Buffer, offset: number = 0): number {
+  o.usGridNo = buffer.readUInt16LE(offset); offset += 2;
+  o.ubGotoSectorX = buffer.readUInt8(offset++);
+  o.ubGotoSectorY = buffer.readUInt8(offset++);
+  o.ubGotoSectorZ = buffer.readUInt8(offset++);
+  offset++; // padding
+  return offset;
+}
+
+export function writeExitGrid(o: EXITGRID, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt16LE(o.usGridNo, offset);
+  offset = buffer.writeUInt8(o.ubGotoSectorX, offset);
+  offset = buffer.writeUInt8(o.ubGotoSectorY, offset);
+  offset = buffer.writeUInt8(o.ubGotoSectorZ, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  return offset;
+}
+
 }

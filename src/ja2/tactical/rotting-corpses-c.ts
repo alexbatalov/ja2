@@ -1129,7 +1129,7 @@ function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: STRUCTURE): ROTT
 
   if (pLevelNode != null) {
     // Get our corpse....
-    pCorpse = gRottingCorpse[pLevelNode.pAniTile.value.uiUserData];
+    pCorpse = gRottingCorpse[pLevelNode.pAniTile.uiUserData];
   }
 
   return pCorpse;

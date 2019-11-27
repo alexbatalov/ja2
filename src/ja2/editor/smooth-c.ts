@@ -94,7 +94,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
   pSmoothStruct = gbSmoothStruct;
 
   // Get land index value for given level and adjust according to type
-  if (TypeExistsInLandLayer(gridno, origType, addressof(usTileIndex))) {
+  if ((usTileIndex = TypeExistsInLandLayer(gridno, origType)) !== -1) {
     usOldIndex = GetTypeSubIndexFromTileIndex(origType, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
@@ -113,7 +113,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
 
   // is land height one tile above not the same type?
   if ((gridno - WORLD_COLS) >= 0) {
-    if (!TypeExistsInLandLayer(gridno - WORLD_COLS, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(gridno - WORLD_COLS, origType)) === -1) {
       // no it's not
       temp += 3;
     }
@@ -121,7 +121,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
   // is land height one tile to the right not the same type?
   // (make sure there IS a tile to the right, i.e. check for border)
   if ((gridno + 1) % WORLD_COLS != 0) {
-    if (!TypeExistsInLandLayer(gridno + 1, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(gridno + 1, origType)) === -1) {
       // no it's not
       temp += 5;
     }
@@ -129,7 +129,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
 
   // is land height one tile down not the same type?
   if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-    if (!TypeExistsInLandLayer(gridno + WORLD_COLS, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(gridno + WORLD_COLS, origType)) === -1) {
       // no it's not
       temp += 7;
     }
@@ -137,7 +137,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
 
   // is land height one tile to left not the same type?
   if (gridno % WORLD_COLS != 0) {
-    if (!TypeExistsInLandLayer(gridno - 1, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInLandLayer(gridno - 1, origType)) === -1) {
       // no it's not
       temp += 11;
     }
@@ -237,7 +237,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
   pSmoothStruct = gbSmoothStruct;
 
   // Get Object index value for given level and adjust according to type
-  if (TypeExistsInShadowLayer(gridno, Enum313.EXITTEXTURE, addressof(usTileIndex))) {
+  if ((usTileIndex = TypeExistsInShadowLayer(gridno, Enum313.EXITTEXTURE)) !== -1) {
     usOldIndex = GetTypeSubIndexFromTileIndex(Enum313.EXITTEXTURE, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
@@ -256,7 +256,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
 
   // is Object height one tile above not the same type?
   if ((gridno - WORLD_COLS) >= 0) {
-    if (!TypeExistsInShadowLayer(gridno - WORLD_COLS, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInShadowLayer(gridno - WORLD_COLS, Enum313.EXITTEXTURE)) === -1) {
       // no it's not
       temp += 3;
     }
@@ -264,7 +264,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
   // is Object height one tile to the right not the same type?
   // (make sure there IS a tile to the right, i.e. check for border)
   if ((gridno + 1) % WORLD_COLS != 0) {
-    if (!TypeExistsInShadowLayer(gridno + 1, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInShadowLayer(gridno + 1, Enum313.EXITTEXTURE)) === -1) {
       // no it's not
       temp += 5;
     }
@@ -272,7 +272,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
 
   // is Object height one tile down not the same type?
   if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-    if (!TypeExistsInShadowLayer(gridno + WORLD_COLS, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInShadowLayer(gridno + WORLD_COLS, Enum313.EXITTEXTURE)) === -1) {
       // no it's not
       temp += 7;
     }
@@ -280,7 +280,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
 
   // is Object height one tile to left not the same type?
   if (gridno % WORLD_COLS != 0) {
-    if (!TypeExistsInShadowLayer(gridno - 1, Enum313.EXITTEXTURE, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeExistsInShadowLayer(gridno - 1, Enum313.EXITTEXTURE)) === -1) {
       // no it's not
       temp += 11;
     }
@@ -340,7 +340,7 @@ function SmoothTerrainWorld(uiCheckType: UINT32): void {
   let NewTile: UINT16;
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-    if (TypeExistsInLandLayer(cnt, uiCheckType, addressof(usIndex))) {
+    if ((usIndex = TypeExistsInLandLayer(cnt, uiCheckType)) !== -1) {
       SmoothTerrain(cnt, uiCheckType, addressof(NewTile), true);
 
       if (NewTile != NO_TILE) {
@@ -359,7 +359,7 @@ export function SmoothAllTerrainWorld(): void {
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     for (uiCheckType = Enum313.FIRSTTEXTURE; uiCheckType <= Enum313.SEVENTHTEXTURE; uiCheckType++) {
-      if (TypeExistsInLandLayer(cnt, uiCheckType, addressof(usIndex))) {
+      if ((usIndex = TypeExistsInLandLayer(cnt, uiCheckType)) !== -1) {
         SmoothTerrain(cnt, uiCheckType, addressof(NewTile), true);
 
         if (NewTile != NO_TILE) {
@@ -395,7 +395,7 @@ export function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRa
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
       if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
-        if (TypeExistsInLandLayer(iNewIndex, uiCheckType, addressof(usIndex))) {
+        if ((usIndex = TypeExistsInLandLayer(iNewIndex, uiCheckType)) !== -1) {
           SmoothTerrain(iNewIndex, uiCheckType, addressof(NewTile), fForceSmooth);
 
           if (NewTile != NO_TILE) {
@@ -432,7 +432,7 @@ export function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, f
       for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
         iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
         if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
-          if (TypeExistsInLandLayer(iNewIndex, cnt3, addressof(usIndex))) {
+          if ((usIndex = TypeExistsInLandLayer(iNewIndex, cnt3)) !== -1) {
             SmoothTerrain(iNewIndex, cnt3, addressof(NewTile), fForceSmooth);
             if (NewTile != NO_TILE) {
               // Change tile
@@ -465,7 +465,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
 
   pSmoothStruct = gbSmoothWaterStruct;
   // Get land index value for given level and adjust according to type
-  if (TypeExistsInLandLayer(gridno, origType, addressof(usTileIndex))) {
+  if ((usTileIndex = TypeExistsInLandLayer(gridno, origType)) !== -1) {
     usOldIndex = GetTypeSubIndexFromTileIndex(origType, usTileIndex);
   } else {
     piNewTile.value = NO_TILE;
@@ -482,7 +482,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   }
   // Mask approriate bits in temp for the lookup in the SmoothWaterStruct list
   if ((gridno - WORLD_COLS) >= 0) {
-    if (TypeRangeExistsInLandLayer(gridno - WORLD_COLS, origType, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeRangeExistsInLandLayer(gridno - WORLD_COLS, origType, origType)) !== -1) {
       // no it's not
       temp |= 4;
     }
@@ -490,28 +490,28 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   // is land height one tile to the right not the same type?
   // (make sure there IS a tile to the right, i.e. check for border)
   if ((gridno + 1) % WORLD_COLS != 0) {
-    if (TypeRangeExistsInLandLayer(gridno + 1, origType, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeRangeExistsInLandLayer(gridno + 1, origType, origType)) !== -1) {
       // no it's not
       temp |= 64;
     }
   }
   // is land height one tile down not the same type?
   if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-    if (TypeRangeExistsInLandLayer(gridno + WORLD_COLS, origType, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeRangeExistsInLandLayer(gridno + WORLD_COLS, origType, origType)) !== -1) {
       // no it's not
       temp |= 256;
     }
   }
   // is land height one tile to left not the same type?
   if (gridno % WORLD_COLS != 0) {
-    if (TypeRangeExistsInLandLayer(gridno - 1, origType, origType, addressof(usTempIndex))) {
+    if ((usTempIndex = TypeRangeExistsInLandLayer(gridno - 1, origType, origType)) !== -1) {
       // no it's not
       temp |= 16;
     }
   }
   if ((gridno + 1) % WORLD_COLS != 0) {
     if ((gridno - WORLD_COLS) >= 0) {
-      if (TypeRangeExistsInLandLayer(gridno - WORLD_COLS + 1, origType, origType, addressof(usTempIndex))) {
+      if ((usTempIndex = TypeRangeExistsInLandLayer(gridno - WORLD_COLS + 1, origType, origType)) !== -1) {
         // no it's not
         temp |= 8;
       }
@@ -519,7 +519,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   }
   if (gridno % WORLD_COLS != 0) {
     if ((gridno - WORLD_COLS) >= 0) {
-      if (TypeRangeExistsInLandLayer(gridno - WORLD_COLS - 1, origType, origType, addressof(usTempIndex))) {
+      if ((usTempIndex = TypeRangeExistsInLandLayer(gridno - WORLD_COLS - 1, origType, origType)) !== -1) {
         // no it's not
         temp |= 2;
       }
@@ -527,7 +527,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   }
   if ((gridno + 1) % WORLD_COLS != 0) {
     if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-      if (TypeRangeExistsInLandLayer(gridno + WORLD_COLS + 1, origType, origType, addressof(usTempIndex))) {
+      if ((usTempIndex = TypeRangeExistsInLandLayer(gridno + WORLD_COLS + 1, origType, origType)) !== -1) {
         // no it's not
         temp |= 512;
       }
@@ -535,13 +535,13 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   }
   if (gridno % WORLD_COLS != 0) {
     if ((gridno + WORLD_COLS) < (WORLD_COLS * WORLD_ROWS)) {
-      if (TypeRangeExistsInLandLayer(gridno + WORLD_COLS - 1, origType, origType, addressof(usTempIndex))) {
+      if ((usTempIndex = TypeRangeExistsInLandLayer(gridno + WORLD_COLS - 1, origType, origType)) !== -1) {
         // no it's not
         temp |= 128;
       }
     }
   }
-  if (TypeRangeExistsInLandLayer(gridno, origType, origType, addressof(usTempIndex))) {
+  if ((usTempIndex = TypeRangeExistsInLandLayer(gridno, origType, origType)) !== -1) {
     // no it's not
     temp |= 32;
   }

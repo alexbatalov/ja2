@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let gfWarning: boolean = false;
+export let gfWarning: UINT8 /* boolean */ = 0;
 
 let gfDoFill: boolean = false;
 export let CurrentPaste: UINT16 = NO_TILE;
@@ -339,7 +339,7 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
       AddRoofToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
     } else if ((usUseObjIndex >= Enum313.FIRSTFLOOR) && (usUseObjIndex <= LASTFLOOR)) {
       // Drop a floor on this tile
-      if (TypeExistsInLandLayer(iMapIndex, usUseObjIndex, addressof(usTempIndex)))
+      if ((usTempIndex = TypeExistsInLandLayer(iMapIndex, usUseObjIndex)) !== -1)
         RemoveLand(iMapIndex, usTempIndex);
 
       AddLandToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
@@ -579,7 +579,7 @@ export function PasteTextureCommon(iMapIndex: UINT32): void {
 
     if (CurrentPaste == Enum313.DEEPWATERTEXTURE) {
       // IF WE ARE PASTING DEEP WATER AND WE ARE NOT OVER WATER, IGNORE!
-      if (TypeExistsInLandLayer(iMapIndex, Enum313.REGWATERTEXTURE, addressof(usTileIndex))) {
+      if ((usTileIndex = TypeExistsInLandLayer(iMapIndex, Enum313.REGWATERTEXTURE)) !== -1) {
         if (!gTileDatabase[usTileIndex].ubFullTile) {
           return;
         }
@@ -589,7 +589,7 @@ export function PasteTextureCommon(iMapIndex: UINT32): void {
     }
 
     // Don't draw over floors
-    if (TypeRangeExistsInLandLayer(iMapIndex, Enum313.FIRSTFLOOR, Enum313.FOURTHFLOOR, addressof(usTileIndex))) {
+    if ((usTileIndex = TypeRangeExistsInLandLayer(iMapIndex, Enum313.FIRSTFLOOR, Enum313.FOURTHFLOOR)) !== -1) {
       return;
     }
 
@@ -838,7 +838,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
         if (fReplace) {
           fDoPaste = true;
         } else {
-          if (TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
+          if ((usTempIndex = TypeExistsInLandLayer(iNewIndex, uiNewType)) !== -1) {
             fDoPaste = true;
           }
         }
@@ -894,7 +894,7 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
   let NewTile: UINT16;
 
   // CHECK IF THIS TEXTURE EXISTS!
-  if (TypeExistsInLandLayer(sGridNo, usType, addressof(usIndex))) {
+  if ((usIndex = TypeExistsInLandLayer(sGridNo, usType)) !== -1) {
     if (GetTypeLandLevel(sGridNo, usType, addressof(ubTypeLevel))) {
       // If top-land , do not change
       if (ubTypeLevel != LANDHEAD) {
@@ -953,7 +953,7 @@ export function RaiseWorldLand(): void {
   let cnt: INT32;
   let sTempGridNo: UINT32;
   let pStruct: Pointer<LEVELNODE>;
-  let pTileElement: Pointer<TILE_ELEMENT>;
+  let pTileElement: TILE_ELEMENT;
   let fRaise: boolean;
   let fRaiseSet: boolean;
   let fSomethingRaised: boolean = false;
@@ -980,13 +980,13 @@ export function RaiseWorldLand(): void {
     gpWorldLevelData[cnt].sHeight = 0;
 
     while (pStruct) {
-      pTileElement = addressof(gTileDatabase[pStruct.value.usIndex]);
-      if (pTileElement.value.fType == Enum313.FIRSTCLIFF) {
+      pTileElement = gTileDatabase[pStruct.value.usIndex];
+      if (pTileElement.fType == Enum313.FIRSTCLIFF) {
         fSomethingRaised = true;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
-        if (pTileElement.value.ubNumberOfTiles > 1) {
+        if (pTileElement.ubNumberOfTiles > 1) {
           // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff has %d children", pTileElement->ubNumberOfTiles));
-          for (ubLoop = 0; ubLoop < pTileElement.value.ubNumberOfTiles; ubLoop++) {
+          for (ubLoop = 0; ubLoop < pTileElement.ubNumberOfTiles; ubLoop++) {
             usIndex = pStruct.value.usIndex;
             // need means to turn land raising on and off based on the tile ID and the offset in the
             // tile database when reading into the mapsystem
@@ -994,8 +994,9 @@ export function RaiseWorldLand(): void {
             // presently by CLIFF object/tileset 1
             // so simply detect this tile set and turn off instead of on
             // element 1 is 12 tiles and is unique
+            Assert(pTileElement.pTileLocData);
 
-            sTempGridNo = cnt + pTileElement.value.pTileLocData[ubLoop].bTileOffsetX + pTileElement.value.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
+            sTempGridNo = cnt + pTileElement.pTileLocData[ubLoop].bTileOffsetX + pTileElement.pTileLocData[ubLoop].bTileOffsetY * WORLD_COLS;
             // Check for valid gridno
             if (OutOfBounds(cnt, sTempGridNo)) {
               continue;

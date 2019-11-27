@@ -61,31 +61,50 @@ export const enum Enum315 {
 export interface TILE_IMAGERY {
   vo: HVOBJECT;
   fType: UINT32;
-  pAuxData: Pointer<AuxObjectData>;
-  pTileLocData: Pointer<RelTileLoc>;
-  pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  pAuxData: AuxObjectData[] | null /* Pointer<AuxObjectData> */;
+  pTileLocData: RelTileLoc[] | null /* Pointer<RelTileLoc> */;
+  pStructureFileRef: STRUCTURE_FILE_REF | null /* Pointer<STRUCTURE_FILE_REF> */;
   ubTerrainID: UINT8;
-  bRaisedObjectType: BYTE;
+  bRaisedObjectType: boolean /* BYTE */;
 
   // Reserved for added room and 32-byte boundaries
   bReserved: BYTE[] /* [2] */;
 }
 
-export type PTILE_IMAGERY = Pointer<TILE_IMAGERY>;
+export function createTileImagery(): TILE_IMAGERY {
+  return {
+    vo: null,
+    fType: 0,
+    pAuxData: null,
+    pTileLocData: null,
+    pStructureFileRef: null,
+    ubTerrainID: 0,
+    bRaisedObjectType: false,
+    bReserved: createArray(2, 0),
+  };
+}
 
 export interface TILE_ANIMATION_DATA {
-  pusFrames: Pointer<UINT16>;
+  pusFrames: UINT16[] /* Pointer<UINT16> */;
   bCurrentFrame: INT8;
   ubNumFrames: UINT8;
+}
+
+export function createTileAnimationData(): TILE_ANIMATION_DATA {
+  return {
+    pusFrames: <UINT16[]><unknown>null,
+    bCurrentFrame: 0,
+    ubNumFrames: 0,
+  };
 }
 
 // Tile data element
 export interface TILE_ELEMENT {
   fType: UINT16;
   hTileSurface: HVOBJECT;
-  pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  pDBStructureRef: DB_STRUCTURE_REF | null /* Pointer<DB_STRUCTURE_REF> */;
   uiFlags: UINT32;
-  pTileLocData: Pointer<RelTileLoc>;
+  pTileLocData: RelTileLoc[] | null /* Pointer<RelTileLoc> */;
   usRegionIndex: UINT16;
   sBuddyNum: INT16;
   ubTerrainID: UINT8;
@@ -101,7 +120,7 @@ export interface TILE_ELEMENT {
   ubFullTile: UINT8;
 
   // For animated tiles
-  pAnimData: Pointer<TILE_ANIMATION_DATA>;
+  pAnimData: TILE_ANIMATION_DATA | null /* Pointer<TILE_ANIMATION_DATA> */;
   /*   } */
   /* } */
   // Reserved for added room and 32-byte boundaries
@@ -129,12 +148,25 @@ export function createTileElement(): TILE_ELEMENT {
   };
 }
 
-type PTILE_ELEMENT = Pointer<TILE_ELEMENT>;
-
-interface land_undo_struct {
-  iMapIndex: INT32;
-  ubNumLayers: UINT8;
-  pIndexValues: Pointer<UINT16>;
+export function resetTileElement(o: TILE_ELEMENT) {
+  o.fType = 0;
+  o.hTileSurface = null;
+  o.pDBStructureRef = null;
+  o.uiFlags = 0;
+  o.pTileLocData = null;
+  o.usRegionIndex = 0;
+  o.sBuddyNum = 0;
+  o.ubTerrainID = 0;
+  o.ubNumberOfTiles = 0;
+  o.bZOffsetX = 0;
+  o.bZOffsetY = 0;
+  o.sOffsetHeight = 0;
+  o.usWallOrientation = 0;
+  o.ubFullTile = 0;
+  o.pAnimData = null;
+  o.bReserved.fill(0);
 }
+
+export const TILE_ELEMENT_SIZE = 44;
 
 }

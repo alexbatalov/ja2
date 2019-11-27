@@ -719,7 +719,7 @@ export function InitAnimationSystem(): boolean {
   let cnt1: INT32;
   let cnt2: INT32;
   let sFilename: string /* CHAR8[50] */;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  let pStructureFileRef: STRUCTURE_FILE_REF | null;
 
   if (!LoadAnimationStateInstructions()) {
     return false;
@@ -776,7 +776,7 @@ export function DeInitAnimationSystem(): boolean {
   return true;
 }
 
-function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: boolean): Pointer<STRUCTURE_FILE_REF> {
+function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: boolean): STRUCTURE_FILE_REF | null {
   let bStructDataType: INT8;
 
   if (usSurfaceIndex == INVALID_ANIMATION_SURFACE) {
@@ -799,11 +799,11 @@ function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: U
   return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][bStructDataType].pStructureFileRef;
 }
 
-export function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
+export function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): STRUCTURE_FILE_REF | null {
   return InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, false);
 }
 
-function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF> {
+function GetDefaultStructureRef(usSoldierID: UINT16): STRUCTURE_FILE_REF | null {
   return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][Enum196.DEFAULT_STRUCT].pStructureFileRef;
 }
 

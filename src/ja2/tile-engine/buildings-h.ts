@@ -15,4 +15,18 @@ export interface BUILDING {
   ubNumClimbSpots: UINT8;
 }
 
+export function createBuilding(): BUILDING {
+  return {
+    sUpClimbSpots: createArray(MAX_CLIMBSPOTS_PER_BUILDING, 0),
+    sDownClimbSpots: createArray(MAX_CLIMBSPOTS_PER_BUILDING, 0),
+    ubNumClimbSpots: 0,
+  };
+}
+
+export function resetBuilding(o: BUILDING) {
+  o.sUpClimbSpots.fill(0);
+  o.sDownClimbSpots.fill(0);
+  o.ubNumClimbSpots = 0;
+}
+
 }

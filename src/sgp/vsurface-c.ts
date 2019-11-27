@@ -757,9 +757,8 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
       // We're using pixel formats too -- DB/Wiz
 
       //#ifdef JA2
-      if (!GetPrimaryRGBDistributionMasks(addressof(uiRBitMask), addressof(uiGBitMask), addressof(uiBBitMask))) {
-        return false;
-      }
+      ({ usRedMask: uiRBitMask, usGreenMask: uiGBitMask, usBlueMask: uiBBitMask } = GetPrimaryRGBDistributionMasks());
+
       PixelFormat.dwRBitMask = uiRBitMask;
       PixelFormat.dwGBitMask = uiGBitMask;
       PixelFormat.dwBBitMask = uiBBitMask;

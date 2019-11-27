@@ -1540,7 +1540,7 @@ function AddHeliPeice(sGridNo: INT16, sOStruct: UINT16): void {
   let usDummy: UINT16;
 
   // ATE: Check first if already exists....
-  if (!TypeExistsInStructLayer(sGridNo, sOStruct, addressof(usDummy))) {
+  if ((usDummy = TypeExistsInStructLayer(sGridNo, sOStruct)) === -1) {
     // place in the world
     AddStructToTail(sGridNo, sOStruct);
   }

@@ -3,7 +3,7 @@ namespace ja2 {
 const NUM_LIGHT_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR LIGHT LISTING
-let gLightEffectData: LIGHTEFFECT[] /* [NUM_LIGHT_EFFECT_SLOTS] */;
+let gLightEffectData: LIGHTEFFECT[] /* [NUM_LIGHT_EFFECT_SLOTS] */ = createArrayFrom(NUM_LIGHT_EFFECT_SLOTS, createLightEffect);
 let guiNumLightEffects: UINT32 = 0;
 
 function GetFreeLightEffect(): INT32 {
@@ -31,31 +31,31 @@ function RecountLightEffects(): void {
   }
 }
 
-function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
+function UpdateLightingSprite(pLight: LIGHTEFFECT): void {
   let LightName: string /* CHAR8[20] */;
   // Build light....
 
-  LightName = sprintf("Light%d", pLight.value.bRadius);
+  LightName = sprintf("Light%d", pLight.bRadius);
 
   // Delete old one if one exists...
-  if (pLight.value.iLight != (-1)) {
-    LightSpriteDestroy(pLight.value.iLight);
-    pLight.value.iLight = -1;
+  if (pLight.iLight != (-1)) {
+    LightSpriteDestroy(pLight.iLight);
+    pLight.iLight = -1;
   }
 
   // Effect light.....
-  if ((pLight.value.iLight = LightSpriteCreate(LightName, 0)) == (-1)) {
+  if ((pLight.iLight = LightSpriteCreate(LightName, 0)) == (-1)) {
     // Could not light!
     return;
   }
 
-  LightSpritePower(pLight.value.iLight, true);
+  LightSpritePower(pLight.iLight, true);
   //	LightSpriteFake( pLight->iLight );
-  LightSpritePosition(pLight.value.iLight, (CenterX(pLight.value.sGridNo) / CELL_X_SIZE), (CenterY(pLight.value.sGridNo) / CELL_Y_SIZE));
+  LightSpritePosition(pLight.iLight, (CenterX(pLight.sGridNo) / CELL_X_SIZE), (CenterY(pLight.sGridNo) / CELL_Y_SIZE));
 }
 
 export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
-  let pLight: Pointer<LIGHTEFFECT>;
+  let pLight: LIGHTEFFECT;
   let iLightIndex: INT32;
   let ubDuration: UINT8 = 0;
   let ubStartRadius: UINT8 = 0;
@@ -63,15 +63,15 @@ export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   if ((iLightIndex = GetFreeLightEffect()) == (-1))
     return -1;
 
-  memset(addressof(gLightEffectData[iLightIndex]), 0, sizeof(LIGHTEFFECT));
+  resetLightEffect(gLightEffectData[iLightIndex]);
 
-  pLight = addressof(gLightEffectData[iLightIndex]);
+  pLight = gLightEffectData[iLightIndex];
 
   // Set some values...
-  pLight.value.sGridNo = sGridNo;
-  pLight.value.bType = bType;
-  pLight.value.iLight = -1;
-  pLight.value.uiTimeOfLastUpdate = GetWorldTotalSeconds();
+  pLight.sGridNo = sGridNo;
+  pLight.bType = bType;
+  pLight.iLight = -1;
+  pLight.uiTimeOfLastUpdate = GetWorldTotalSeconds();
 
   switch (bType) {
     case Enum305.LIGHT_FLARE_MARK_1:
@@ -81,10 +81,10 @@ export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
       break;
   }
 
-  pLight.value.ubDuration = ubDuration;
-  pLight.value.bRadius = ubStartRadius;
-  pLight.value.bAge = 0;
-  pLight.value.fAllocated = true;
+  pLight.ubDuration = ubDuration;
+  pLight.bRadius = ubStartRadius;
+  pLight.bAge = 0;
+  pLight.fAllocated = true;
 
   UpdateLightingSprite(pLight);
 
@@ -95,20 +95,20 @@ export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
 }
 
 function RemoveLightEffectFromTile(sGridNo: INT16): void {
-  let pLight: Pointer<LIGHTEFFECT>;
+  let pLight: LIGHTEFFECT;
   let cnt: UINT32;
 
   // Set to unallocated....
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
-    pLight = addressof(gLightEffectData[cnt]);
+    pLight = gLightEffectData[cnt];
 
-    if (pLight.value.fAllocated) {
-      if (pLight.value.sGridNo == sGridNo) {
-        pLight.value.fAllocated = false;
+    if (pLight.fAllocated) {
+      if (pLight.sGridNo == sGridNo) {
+        pLight.fAllocated = false;
 
         // Remove light....
-        if (pLight.value.iLight != (-1)) {
-          LightSpriteDestroy(pLight.value.iLight);
+        if (pLight.iLight != (-1)) {
+          LightSpriteDestroy(pLight.iLight);
         }
         break;
       }
@@ -117,7 +117,7 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
 }
 
 export function DecayLightEffects(uiTime: UINT32): void {
-  let pLight: Pointer<LIGHTEFFECT>;
+  let pLight: LIGHTEFFECT;
   let cnt: UINT32;
   let cnt2: UINT32;
   let fDelete: boolean = false;
@@ -125,29 +125,29 @@ export function DecayLightEffects(uiTime: UINT32): void {
 
   // age all active tear gas clouds, deactivate those that are just dispersing
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
-    pLight = addressof(gLightEffectData[cnt]);
+    pLight = gLightEffectData[cnt];
 
     fDelete = false;
 
-    if (pLight.value.fAllocated) {
+    if (pLight.fAllocated) {
       // ATE: Do this every so ofte, to acheive the effect we want...
-      if ((uiTime - pLight.value.uiTimeOfLastUpdate) > 350) {
-        usNumUpdates = ((uiTime - pLight.value.uiTimeOfLastUpdate) / 350);
+      if ((uiTime - pLight.uiTimeOfLastUpdate) > 350) {
+        usNumUpdates = ((uiTime - pLight.uiTimeOfLastUpdate) / 350);
 
-        pLight.value.uiTimeOfLastUpdate = uiTime;
+        pLight.uiTimeOfLastUpdate = uiTime;
 
         for (cnt2 = 0; cnt2 < usNumUpdates; cnt2++) {
-          pLight.value.bAge++;
+          pLight.bAge++;
 
           // if this cloud remains effective (duration not reached)
-          if (pLight.value.bAge < pLight.value.ubDuration) {
+          if (pLight.bAge < pLight.ubDuration) {
             // calculate the new cloud radius
             // cloud expands by 1 every turn outdoors, and every other turn indoors
-            if ((pLight.value.bAge % 2)) {
-              pLight.value.bRadius--;
+            if ((pLight.bAge % 2)) {
+              pLight.bRadius--;
             }
 
-            if (pLight.value.bRadius == 0) {
+            if (pLight.bRadius == 0) {
               // Delete...
               fDelete = true;
               break;
@@ -161,10 +161,10 @@ export function DecayLightEffects(uiTime: UINT32): void {
         }
 
         if (fDelete) {
-          pLight.value.fAllocated = false;
+          pLight.fAllocated = false;
 
-          if (pLight.value.iLight != (-1)) {
-            LightSpriteDestroy(pLight.value.iLight);
+          if (pLight.iLight != (-1)) {
+            LightSpriteDestroy(pLight.iLight);
           }
         }
 
@@ -222,33 +222,40 @@ export function SaveLightEffectsToSaveGameFile(hFile: HWFILE): boolean {
 export function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let uiCount: UINT32;
+  let buffer: Buffer;
 
   // no longer need to load Light effects.  They are now in temp files
   if (guiSaveGameVersion < 76) {
-    memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
+    gLightEffectData.forEach(resetLightEffect);
 
     // Load the Number of Light Effects
-    FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(UINT32)) {
+    buffer = Buffer.allocUnsafe(4);
+    uiNumBytesRead = FileRead(hFile, buffer, 4);
+    if (uiNumBytesRead != 4) {
       return false;
     }
+
+    guiNumLightEffects = buffer.readUInt32LE(0);
 
     // if there are lights saved.
     if (guiNumLightEffects != 0) {
       // loop through and apply the light effects to the map
+      buffer = Buffer.allocUnsafe(LIGHT_EFFECT_SIZE);
       for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
         // Load the Light effect Data
-        FileRead(hFile, addressof(gLightEffectData[uiCount]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
-        if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
+        uiNumBytesRead = FileRead(hFile, buffer, LIGHT_EFFECT_SIZE);
+        if (uiNumBytesRead != LIGHT_EFFECT_SIZE) {
           return false;
         }
+
+        readLightEffect(gLightEffectData[uiCount], buffer);
       }
     }
 
     // loop through and apply the light effects to the map
     for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
       if (gLightEffectData[uiCount].fAllocated)
-        UpdateLightingSprite(addressof(gLightEffectData[uiCount]));
+        UpdateLightingSprite(gLightEffectData[uiCount]);
     }
   }
 
@@ -261,6 +268,7 @@ export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
   let uiCnt: UINT32;
+  let buffer: Buffer;
 
   // get the name of the map
   zMapName = GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
@@ -290,8 +298,10 @@ export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   }
 
   // Save the Number of Light Effects
-  FileWrite(hFile, addressof(uiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiNumLightEffects, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     // Close the file
     FileClose(hFile);
 
@@ -299,12 +309,14 @@ export function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ:
   }
 
   // loop through and save the number of Light effects
+  buffer = Buffer.allocUnsafe(LIGHT_EFFECT_SIZE);
   for (uiCnt = 0; uiCnt < guiNumLightEffects; uiCnt++) {
     // if the Light is active
     if (gLightEffectData[uiCnt].fAllocated) {
       // Save the Light effect Data
-      FileWrite(hFile, addressof(gLightEffectData[uiCnt]), sizeof(LIGHTEFFECT), addressof(uiNumBytesWritten));
-      if (uiNumBytesWritten != sizeof(LIGHTEFFECT)) {
+      writeLightEffect(gLightEffectData[uiCnt], buffer);
+      uiNumBytesWritten = FileWrite(hFile, buffer, LIGHT_EFFECT_SIZE);
+      if (uiNumBytesWritten != LIGHT_EFFECT_SIZE) {
         // Close the file
         FileClose(hFile);
 
@@ -328,6 +340,7 @@ export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32 = 0;
   let zMapName: string /* CHAR8[128] */;
+  let buffer: Buffer;
 
   zMapName = GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, sMapX, sMapY, bMapZ);
 
@@ -342,26 +355,32 @@ export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
   ResetLightEffects();
 
   // Load the Number of Light Effects
-  FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     FileClose(hFile);
     return false;
   }
 
+  guiNumLightEffects = buffer.readUInt32LE(0);
+
   // loop through and load the list
+  buffer = Buffer.allocUnsafe(LIGHT_EFFECT_SIZE);
   for (uiCnt = 0; uiCnt < guiNumLightEffects; uiCnt++) {
     // Load the Light effect Data
-    FileRead(hFile, addressof(gLightEffectData[uiCnt]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
+    uiNumBytesRead = FileRead(hFile, buffer, LIGHT_EFFECT_SIZE);
+    if (uiNumBytesRead != LIGHT_EFFECT_SIZE) {
       FileClose(hFile);
       return false;
     }
+
+    readLightEffect(gLightEffectData[uiCnt], buffer);
   }
 
   // loop through and apply the light effects to the map
   for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
     if (gLightEffectData[uiCount].fAllocated)
-      UpdateLightingSprite(addressof(gLightEffectData[uiCount]));
+      UpdateLightingSprite(gLightEffectData[uiCount]);
   }
 
   FileClose(hFile);
@@ -371,7 +390,7 @@ export function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMap
 
 export function ResetLightEffects(): void {
   // Clear out the old list
-  memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
+  gLightEffectData.forEach(resetLightEffect);
   guiNumLightEffects = 0;
 }
 

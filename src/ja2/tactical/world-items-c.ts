@@ -1,15 +1,15 @@
 namespace ja2 {
 
 // Global dynamic array of all of the items in a loaded map.
-export let gWorldItems: Pointer<WORLDITEM> = null;
+export let gWorldItems: WORLDITEM[] /* Pointer<WORLDITEM> */ = <WORLDITEM[]><unknown>null;
 export let guiNumWorldItems: UINT32 = 0;
 
-export let gWorldBombs: Pointer<WORLDBOMB> = null;
+export let gWorldBombs: WORLDBOMB[] /* Pointer<WORLDBOMB> */ = <WORLDBOMB[]><unknown>null;
 export let guiNumWorldBombs: UINT32 = 0;
 
 function GetFreeWorldBombIndex(): INT32 {
   let uiCount: UINT32;
-  let newWorldBombs: Pointer<WORLDBOMB>;
+  let newWorldBombs: WORLDBOMB[];
   let uiOldNumWorldBombs: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
@@ -20,13 +20,8 @@ function GetFreeWorldBombIndex(): INT32 {
   uiOldNumWorldBombs = guiNumWorldBombs;
   guiNumWorldBombs += 10;
   // Allocate new table with max+10 items.
-  newWorldBombs = MemRealloc(gWorldBombs, sizeof(WORLDBOMB) * guiNumWorldBombs);
-  if (newWorldBombs == null) {
-    return -1;
-  }
+  newWorldBombs = gWorldBombs.concat(createArrayFrom(10, createWorldBomb));
 
-  // Clear the rest of the new array
-  memset(addressof(newWorldBombs[uiOldNumWorldBombs]), 0, sizeof(WORLDBOMB) * (guiNumWorldBombs - uiOldNumWorldBombs));
   gWorldBombs = newWorldBombs;
 
   // Return uiCount.....
@@ -96,19 +91,19 @@ export function FindPanicBombsAndTriggers(): void {
   // This function searches the bomb table to find panic-trigger-tuned bombs and triggers
 
   let uiBombIndex: UINT32;
-  let pObj: Pointer<OBJECTTYPE>;
-  let pSwitch: Pointer<STRUCTURE>;
+  let pObj: OBJECTTYPE;
+  let pSwitch: STRUCTURE | null;
   let sGridNo: INT16 = NOWHERE;
   let fPanicTriggerIsAlarm: boolean = false;
   let bPanicIndex: INT8;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists) {
-      pObj = addressof(gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o);
-      if (pObj.value.bFrequency == PANIC_FREQUENCY || pObj.value.bFrequency == PANIC_FREQUENCY_2 || pObj.value.bFrequency == PANIC_FREQUENCY_3) {
-        if (pObj.value.usItem == Enum225.SWITCH) {
+      pObj = gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o;
+      if (pObj.bFrequency == PANIC_FREQUENCY || pObj.bFrequency == PANIC_FREQUENCY_2 || pObj.bFrequency == PANIC_FREQUENCY_3) {
+        if (pObj.usItem == Enum225.SWITCH) {
           sGridNo = gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].sGridNo;
-          switch (pObj.value.bFrequency) {
+          switch (pObj.bFrequency) {
             case PANIC_FREQUENCY:
               bPanicIndex = 0;
               break;
@@ -128,7 +123,7 @@ export function FindPanicBombsAndTriggers(): void {
 
           pSwitch = FindStructure(sGridNo, STRUCTURE_SWITCH);
           if (pSwitch) {
-            switch (pSwitch.value.ubWallOrientation) {
+            switch (pSwitch.ubWallOrientation) {
               case Enum314.INSIDE_TOP_LEFT:
               case Enum314.OUTSIDE_TOP_LEFT:
                 sGridNo += DirectionInc(Enum245.SOUTH);
@@ -143,8 +138,8 @@ export function FindPanicBombsAndTriggers(): void {
           }
 
           gTacticalStatus.sPanicTriggerGridNo[bPanicIndex] = sGridNo;
-          gTacticalStatus.ubPanicTolerance[bPanicIndex] = pObj.value.ubTolerance;
-          if (pObj.value.fFlags & OBJECT_ALARM_TRIGGER) {
+          gTacticalStatus.ubPanicTolerance[bPanicIndex] = pObj.ubTolerance;
+          if (pObj.fFlags & OBJECT_ALARM_TRIGGER) {
             gTacticalStatus.bPanicTriggerIsAlarm[bPanicIndex] = true;
           }
           gTacticalStatus.fPanicFlags |= PANIC_TRIGGERS_HERE;
@@ -162,7 +157,7 @@ export function FindPanicBombsAndTriggers(): void {
 
 function GetFreeWorldItemIndex(): INT32 {
   let uiCount: UINT32;
-  let newWorldItems: Pointer<WORLDITEM>;
+  let newWorldItems: WORLDITEM[];
   let uiOldNumWorldItems: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
@@ -173,13 +168,8 @@ function GetFreeWorldItemIndex(): INT32 {
   uiOldNumWorldItems = guiNumWorldItems;
   guiNumWorldItems += 10;
   // Allocate new table with max+10 items.
-  newWorldItems = MemRealloc(gWorldItems, sizeof(WORLDITEM) * guiNumWorldItems);
-  if (newWorldItems == null) {
-    return -1;
-  }
+  newWorldItems = gWorldItems.concat(createArrayFrom(10, createWorldItem));
 
-  // Clear the rest of the new array
-  memset(addressof(newWorldItems[uiOldNumWorldItems]), 0, sizeof(WORLDITEM) * (guiNumWorldItems - uiOldNumWorldItems));
   gWorldItems = newWorldItems;
 
   // Return uiCount.....
@@ -204,7 +194,7 @@ function GetNumUsedWorldItems(): UINT32 {
   return uiNumItems;
 }
 
-export function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
+export function AddItemToWorld(sGridNo: INT16, pObject: OBJECTTYPE, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
   let iItemIndex: UINT32;
   let iReturn: INT32;
 
@@ -224,7 +214,7 @@ export function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubL
   gWorldItems[iItemIndex].bVisible = bVisible;
   gWorldItems[iItemIndex].bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
 
-  memcpy(addressof(gWorldItems[iItemIndex].o), pObject, sizeof(OBJECTTYPE));
+  copyObjectType(gWorldItems[iItemIndex].o, pObject);
 
   // Add a bomb reference if needed
   if (usFlags & WORLD_ITEM_ARMED_BOMB) {
@@ -256,13 +246,11 @@ export function TrashWorldItems(): void {
         RemoveItemFromPool(gWorldItems[i].sGridNo, i, gWorldItems[i].ubLevel);
       }
     }
-    MemFree(gWorldItems);
-    gWorldItems = null;
+    gWorldItems = <WORLDITEM[]><unknown>null;
     guiNumWorldItems = 0;
   }
   if (gWorldBombs) {
-    MemFree(gWorldBombs);
-    gWorldBombs = null;
+    gWorldBombs = <WORLDBOMB[]><unknown>null;
     guiNumWorldBombs = 0;
   }
 }
@@ -271,18 +259,24 @@ export function SaveWorldItemsToMap(fp: HWFILE): void {
   let i: UINT32;
   let uiBytesWritten: UINT32;
   let uiActualNumWorldItems: UINT32;
+  let buffer: Buffer;
 
   uiActualNumWorldItems = GetNumUsedWorldItems();
 
-  FileWrite(fp, addressof(uiActualNumWorldItems), 4, addressof(uiBytesWritten));
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiActualNumWorldItems, 0);
+  uiBytesWritten = FileWrite(fp, buffer, 4);
 
+  buffer = Buffer.allocUnsafe(WORLD_ITEM_SIZE);
   for (i = 0; i < guiNumWorldItems; i++) {
-    if (gWorldItems[i].fExists)
-      FileWrite(fp, addressof(gWorldItems[i]), sizeof(WORLDITEM), addressof(uiBytesWritten));
+    if (gWorldItems[i].fExists) {
+      writeWorldItem(gWorldItems[i], buffer);
+      uiBytesWritten = FileWrite(fp, buffer, WORLD_ITEM_SIZE);
+    }
   }
 }
 
-export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
+export function LoadWorldItemsFromMap(buffer: Buffer, offset: number): number {
   // Start loading itmes...
 
   let i: UINT32;
@@ -295,18 +289,18 @@ export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   TrashWorldItems();
 
   // Read the number of items that were saved in the map.
-  LOADDATA(addressof(uiNumWorldItems), hBuffer.value, 4);
+  uiNumWorldItems = buffer.readUInt32LE(offset); offset += 4;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME && !gfEditMode) {
     // The sector has already been visited.  The items are saved in a different format that will be
     // loaded later on.  So, all we need to do is skip the data entirely.
-    hBuffer.value += sizeof(WORLDITEM) * uiNumWorldItems;
-    return;
+    offset += WORLD_ITEM_SIZE * uiNumWorldItems;
+    return offset;
   } else
     for (i = 0; i < uiNumWorldItems; i++) {
       // Add all of the items to the world indirectly through AddItemToPool, but only if the chance
       // associated with them succeed.
-      LOADDATA(addressof(dummyItem), hBuffer.value, sizeof(WORLDITEM));
+      offset = readWorldItem(dummyItem, buffer, offset);
       if (dummyItem.o.usItem == Enum225.OWNERSHIP) {
         dummyItem.ubNonExistChance = 0;
       }
@@ -365,7 +359,7 @@ export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
         }
 
         else if (dummyItem.bVisible == HIDDEN_ITEM && dummyItem.o.bTrap > 0 && (dummyItem.o.usItem == Enum225.MINE || dummyItem.o.usItem == Enum225.TRIP_FLARE || dummyItem.o.usItem == Enum225.TRIP_KLAXON)) {
-          ArmBomb(addressof(dummyItem.o), Enum224.BOMB_PRESSURE);
+          ArmBomb(dummyItem.o, Enum224.BOMB_PRESSURE);
           dummyItem.usFlags |= WORLD_ITEM_ARMED_BOMB;
           // this is coming from the map so the enemy must know about it.
           gpWorldLevelData[dummyItem.sGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
@@ -375,7 +369,7 @@ export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
           // all armed bombs are buried
           dummyItem.bVisible = BURIED;
         }
-        AddItemToPoolAndGetIndex(dummyItem.sGridNo, addressof(dummyItem.o), dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, addressof(iItemIndex));
+        AddItemToPoolAndGetIndex(dummyItem.sGridNo, dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, addressof(iItemIndex));
         gWorldItems[iItemIndex].ubNonExistChance = dummyItem.ubNonExistChance;
       }
     }
@@ -386,6 +380,8 @@ export function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
       DeleteWorldItemsBelongingToQueenIfThere();
     }
   }
+
+  return offset;
 }
 
 function DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(): void {
@@ -471,15 +467,15 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
 }
 
 // Refresh item pools
-export function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
+export function RefreshWorldItemsIntoItemPools(pItemList: WORLDITEM[], iNumberOfItems: INT32): void {
   let i: INT32;
   let dummyItem: WORLDITEM = createWorldItem();
 
   for (i = 0; i < iNumberOfItems; i++) {
     if (pItemList[i].fExists) {
-      memcpy(addressof(dummyItem), addressof(pItemList[i]), sizeof(WORLDITEM));
+      copyWorldItem(dummyItem, pItemList[i]);
 
-      AddItemToPool(dummyItem.sGridNo, addressof(dummyItem.o), dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel);
+      AddItemToPool(dummyItem.sGridNo, dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel);
     }
   }
 }

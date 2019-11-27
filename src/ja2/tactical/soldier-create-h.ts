@@ -104,6 +104,54 @@ export function resetBasicSoldierCreateStruct(o: BASIC_SOLDIERCREATE_STRUCT) {
   o.PADDINGSLOTS.fill(0);
 }
 
+export const BASIC_SOLDIER_CREATE_STRUCT_SIZE = 52;
+
+export function readBasicSoldierCreateStruct(o: BASIC_SOLDIERCREATE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  o.fDetailedPlacement = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.usStartingGridNo = buffer.readUInt16LE(offset); offset += 2;
+  o.bTeam = buffer.readInt8(offset++);
+  o.bRelativeAttributeLevel = buffer.readInt8(offset++);
+  o.bRelativeEquipmentLevel = buffer.readInt8(offset++);
+  o.bDirection = buffer.readInt8(offset++);
+  o.bOrders = buffer.readInt8(offset++);
+  o.bAttitude = buffer.readInt8(offset++);
+  o.bBodyType = buffer.readInt8(offset++);
+  offset++; // padding
+  offset = readIntArray(o.sPatrolGrid, buffer, offset, 2);
+  o.bPatrolCnt = buffer.readInt8(offset++);
+  o.fOnRoof = Boolean(buffer.readUInt8(offset++));
+  o.ubSoldierClass = buffer.readUInt8(offset++);
+  o.ubCivilianGroup = buffer.readUInt8(offset++);
+  o.fPriorityExistance = Boolean(buffer.readUInt8(offset++));
+  o.fHasKeys = Boolean(buffer.readUInt8(offset++));
+  offset = readIntArray(o.PADDINGSLOTS, buffer, offset, 1);
+  return offset;
+}
+
+export function writeBasicSoldierCreateStruct(o: BASIC_SOLDIERCREATE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(Number(o.fDetailedPlacement), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usStartingGridNo, offset);
+  offset = buffer.writeInt8(o.bTeam, offset);
+  offset = buffer.writeInt8(o.bRelativeAttributeLevel, offset);
+  offset = buffer.writeInt8(o.bRelativeEquipmentLevel, offset);
+  offset = buffer.writeInt8(o.bDirection, offset);
+  offset = buffer.writeInt8(o.bOrders, offset);
+  offset = buffer.writeInt8(o.bAttitude, offset);
+  offset = buffer.writeInt8(o.bBodyType, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writeIntArray(o.sPatrolGrid, buffer, offset, 2);
+  offset = buffer.writeInt8(o.bPatrolCnt, offset);
+  offset = buffer.writeUInt8(Number(o.fOnRoof), offset);
+  offset = buffer.writeUInt8(o.ubSoldierClass, offset);
+  offset = buffer.writeUInt8(o.ubCivilianGroup, offset);
+  offset = buffer.writeUInt8(Number(o.fPriorityExistance), offset);
+  offset = buffer.writeUInt8(Number(o.fHasKeys), offset);
+  offset = writeIntArray(o.PADDINGSLOTS, buffer, offset, 1);
+  return offset;
+}
+
 export interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.
@@ -169,7 +217,7 @@ export interface SOLDIERCREATE_STRUCT {
 
   bSectorZ: INT8;
 
-  pExistingSoldier: Pointer<SOLDIERTYPE>;
+  pExistingSoldier: SOLDIERTYPE | null;
   fUseExistingSoldier: boolean;
   ubCivilianGroup: UINT8;
 
@@ -343,6 +391,122 @@ export function resetSoldierCreateStruct(o: SOLDIERCREATE_STRUCT) {
   o.bUseGivenVehicleID = 0;
   o.fHasKeys = false;
   o.bPadding.fill(0);
+}
+
+export const SOLDIER_CREATE_STRUCT_SIZE = 1040;
+
+export function readSoldierCreateStruct(o: SOLDIERCREATE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  o.fStatic = Boolean(buffer.readUInt8(offset++));
+  o.ubProfile = buffer.readUInt8(offset++);
+  o.fPlayerMerc = Boolean(buffer.readUInt8(offset++));
+  o.fPlayerPlan = Boolean(buffer.readUInt8(offset++));
+  o.fCopyProfileItemsOver = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.sSectorX = buffer.readInt16LE(offset); offset += 2;
+  o.sSectorY = buffer.readInt16LE(offset); offset += 2;
+  o.bDirection = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sInsertionGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.bTeam = buffer.readInt8(offset++);
+  o.bBodyType = buffer.readInt8(offset++);
+  o.bAttitude = buffer.readInt8(offset++);
+  o.bOrders = buffer.readInt8(offset++);
+  o.bLifeMax = buffer.readInt8(offset++);
+  o.bLife = buffer.readInt8(offset++);
+  o.bAgility = buffer.readInt8(offset++);
+  o.bDexterity = buffer.readInt8(offset++);
+  o.bExpLevel = buffer.readInt8(offset++);
+  o.bMarksmanship = buffer.readInt8(offset++);
+  o.bMedical = buffer.readInt8(offset++);
+  o.bMechanical = buffer.readInt8(offset++);
+  o.bExplosive = buffer.readInt8(offset++);
+  o.bLeadership = buffer.readInt8(offset++);
+  o.bStrength = buffer.readInt8(offset++);
+  o.bWisdom = buffer.readInt8(offset++);
+  o.bMorale = buffer.readInt8(offset++);
+  o.bAIMorale = buffer.readInt8(offset++);
+  offset = readObjectArray(o.Inv, buffer, offset, readObjectType);
+  o.HeadPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.PantsPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.VestPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.SkinPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.MiscPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  offset = readIntArray(o.sPatrolGrid, buffer, offset, 2);
+  o.bPatrolCnt = buffer.readInt8(offset++);
+  o.fVisible = Boolean(buffer.readUInt8(offset++));
+  o.name = readStringNL(buffer, 'utf16le', offset, offset + 20); offset += 20;
+  o.ubSoldierClass = buffer.readUInt8(offset++);
+  o.fOnRoof = Boolean(buffer.readUInt8(offset++));
+  o.bSectorZ = buffer.readInt8(offset++);
+  offset++; // padding
+  o.pExistingSoldier = null; offset += 4; // pointer
+  o.fUseExistingSoldier = Boolean(buffer.readUInt8(offset++));
+  o.ubCivilianGroup = buffer.readUInt8(offset++);
+  o.fKillSlotIfOwnerDies = Boolean(buffer.readUInt8(offset++));
+  o.ubScheduleID = buffer.readUInt8(offset++);
+  o.fUseGivenVehicle = Boolean(buffer.readUInt8(offset++));
+  o.bUseGivenVehicleID = buffer.readInt8(offset++);
+  o.fHasKeys = Boolean(buffer.readUInt8(offset++));
+  offset = readIntArray(o.bPadding, buffer, offset, 1);
+  offset += 2; // padding
+  return offset;
+}
+
+export function writeSoldierCreateStruct(o: SOLDIERCREATE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(Number(o.fStatic), offset);
+  offset = buffer.writeUInt8(o.ubProfile, offset);
+  offset = buffer.writeUInt8(Number(o.fPlayerMerc), offset);
+  offset = buffer.writeUInt8(Number(o.fPlayerPlan), offset);
+  offset = buffer.writeUInt8(Number(o.fCopyProfileItemsOver), offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeInt16LE(o.sSectorX, offset);
+  offset = buffer.writeInt16LE(o.sSectorY, offset);
+  offset = buffer.writeInt8(o.bDirection, offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeInt16LE(o.sInsertionGridNo, offset);
+  offset = buffer.writeInt8(o.bTeam, offset);
+  offset = buffer.writeInt8(o.bBodyType, offset);
+  offset = buffer.writeInt8(o.bAttitude, offset);
+  offset = buffer.writeInt8(o.bOrders, offset);
+  offset = buffer.writeInt8(o.bLifeMax, offset);
+  offset = buffer.writeInt8(o.bLife, offset);
+  offset = buffer.writeInt8(o.bAgility, offset);
+  offset = buffer.writeInt8(o.bDexterity, offset);
+  offset = buffer.writeInt8(o.bExpLevel, offset);
+  offset = buffer.writeInt8(o.bMarksmanship, offset);
+  offset = buffer.writeInt8(o.bMedical, offset);
+  offset = buffer.writeInt8(o.bMechanical, offset);
+  offset = buffer.writeInt8(o.bExplosive, offset);
+  offset = buffer.writeInt8(o.bLeadership, offset);
+  offset = buffer.writeInt8(o.bStrength, offset);
+  offset = buffer.writeInt8(o.bWisdom, offset);
+  offset = buffer.writeInt8(o.bMorale, offset);
+  offset = buffer.writeInt8(o.bAIMorale, offset);
+  offset = writeObjectArray(o.Inv, buffer, offset, writeObjectType);
+  offset = writeStringNL(o.HeadPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.PantsPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.VestPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.SkinPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.MiscPal, buffer, offset, 30, 'ascii');
+  offset = writeIntArray(o.sPatrolGrid, buffer, offset, 2);
+  offset = buffer.writeInt8(o.bPatrolCnt, offset);
+  offset = buffer.writeUInt8(Number(o.fVisible), offset);
+  offset = writeStringNL(o.name, buffer, offset, 20, 'utf16le');
+  offset = buffer.writeUInt8(o.ubSoldierClass, offset);
+  offset = buffer.writeUInt8(Number(o.fOnRoof), offset);
+  offset = buffer.writeInt8(o.bSectorZ, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writePadding(buffer, offset, 4); // pExistingSoldier (pointer)
+  offset = buffer.writeUInt8(Number(o.fUseExistingSoldier), offset);
+  offset = buffer.writeUInt8(o.ubCivilianGroup, offset);
+  offset = buffer.writeUInt8(Number(o.fKillSlotIfOwnerDies), offset);
+  offset = buffer.writeUInt8(o.ubScheduleID, offset);
+  offset = buffer.writeUInt8(Number(o.fUseGivenVehicle), offset);
+  offset = buffer.writeInt8(o.bUseGivenVehicleID, offset);
+  offset = buffer.writeUInt8(Number(o.fHasKeys), offset);
+  offset = writeIntArray(o.bPadding, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 2); // padding
+  return offset;
 }
 
 // These following functions are currently used exclusively by the editor.

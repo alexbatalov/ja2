@@ -40,6 +40,18 @@ export const STRUCTURE_ON_ROOF_MAX = PROFILE_Z_SIZE * 2;
 
 export type PROFILE = UINT8[][] /* [PROFILE_X_SIZE][PROFILE_Y_SIZE] */;
 
+export function createProfile(): UINT8[][] {
+  return createArrayFrom(PROFILE_X_SIZE, () => createArray(PROFILE_Y_SIZE, 0));
+}
+
+export function copyProfile(destination: PROFILE, source: PROFILE) {
+  for (let x = 0; x < PROFILE_X_SIZE; x++) {
+    for (let y = 0; y < PROFILE_Y_SIZE; y++) {
+      destination[x][y] = source[x][y];
+    }
+  }
+}
+
 // MAP_ELEMENT may get later:
 // PROFILE *		CombinedLOSProfile;
 // PROFILE *		CombinedProtectionProfile;
@@ -127,6 +139,60 @@ export interface DB_STRUCTURE_TILE {
   bUnused: BYTE[] /* [1] */;
 } // 32 bytes
 
+export function createDbStructureTile(): DB_STRUCTURE_TILE {
+  return {
+    sPosRelToBase: 0,
+    bXPosRelToBase: 0,
+    bYPosRelToBase: 0,
+    Shape: createProfile(),
+    fFlags: 0,
+    ubVehicleHitLocation: 0,
+    bUnused: createArray(1, 0),
+  };
+}
+
+export function copyDbStructureTile(destination: DB_STRUCTURE_TILE, source: DB_STRUCTURE_TILE) {
+  destination.sPosRelToBase = source.sPosRelToBase;
+  destination.bXPosRelToBase = source.bXPosRelToBase;
+  destination.bYPosRelToBase = source.bYPosRelToBase;
+  copyProfile(destination.Shape, source.Shape);
+  destination.fFlags = source.fFlags;
+  destination.ubVehicleHitLocation = source.ubVehicleHitLocation;
+  copyArray(destination.bUnused, source.bUnused);
+}
+
+export const DB_STRUCTURE_TILE_SIZE = 32;
+
+export function readDbStructureTile(o: DB_STRUCTURE_TILE, buffer: Buffer, offset: number = 0): number {
+  o.sPosRelToBase = buffer.readInt16LE(offset); offset += 2;
+  o.bXPosRelToBase = buffer.readInt8(offset++);
+  o.bYPosRelToBase = buffer.readInt8(offset++);
+
+  for (let i = 0; i < o.Shape.length; i++) {
+    offset = readUIntArray(o.Shape[i], buffer, offset, 1);
+  }
+
+  o.fFlags = buffer.readUInt8(offset++);
+  o.ubVehicleHitLocation = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.bUnused, buffer, offset, 1);
+  return offset;
+}
+
+export function writeDbStructureTile(o: DB_STRUCTURE_TILE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeInt16LE(o.sPosRelToBase, offset);
+  offset = buffer.writeInt8(o.bXPosRelToBase, offset);
+  offset = buffer.writeInt8(o.bYPosRelToBase, offset);
+
+  for (let i = 0; i < o.Shape.length; i++) {
+    offset = writeUIntArray(o.Shape[i], buffer, offset, 1);
+  }
+
+  offset = buffer.writeUInt8(o.fFlags, offset);
+  offset = buffer.writeUInt8(o.ubVehicleHitLocation, offset);
+  offset = writeUIntArray(o.bUnused, buffer, offset, 1);
+  return offset;
+}
+
 export const BASE_TILE = 0;
 
 export const NO_PARTNER_STRUCTURE = 0;
@@ -146,17 +212,75 @@ export interface DB_STRUCTURE {
   bUnused: BYTE[] /* [1] */;
 } // 16 bytes
 
+export function createDbStructure(): DB_STRUCTURE {
+  return {
+    ubArmour: 0,
+    ubHitPoints: 0,
+    ubDensity: 0,
+    ubNumberOfTiles: 0,
+    fFlags: 0,
+    usStructureNumber: 0,
+    ubWallOrientation: 0,
+    bDestructionPartner: 0,
+    bPartnerDelta: 0,
+    bZTileOffsetX: 0,
+    bZTileOffsetY: 0,
+    bUnused: createArray(1, 0),
+  };
+}
+
+export const DB_STRUCTURE_SIZE = 16;
+
+export function readDbStructure(o: DB_STRUCTURE, buffer: Buffer, offset: number = 0): number {
+  o.ubArmour = buffer.readUInt8(offset++);
+  o.ubHitPoints = buffer.readUInt8(offset++);
+  o.ubDensity = buffer.readUInt8(offset++);
+  o.ubNumberOfTiles = buffer.readUInt8(offset++);
+  o.fFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.usStructureNumber = buffer.readUInt16LE(offset); offset += 2;
+  o.ubWallOrientation = buffer.readUInt8(offset++);
+  o.bDestructionPartner = buffer.readInt8(offset++);
+  o.bPartnerDelta = buffer.readInt8(offset++);
+  o.bZTileOffsetX = buffer.readInt8(offset++);
+  o.bZTileOffsetY = buffer.readInt8(offset++);
+  offset = readUIntArray(o.bUnused, buffer, offset, 1);
+  return offset;
+}
+
+export function writeDbStructure(o: DB_STRUCTURE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubArmour, offset);
+  offset = buffer.writeUInt8(o.ubHitPoints, offset);
+  offset = buffer.writeUInt8(o.ubDensity, offset);
+  offset = buffer.writeUInt8(o.ubNumberOfTiles, offset);
+  offset = buffer.writeUInt32LE(o.fFlags, offset);
+  offset = buffer.writeUInt16LE(o.usStructureNumber, offset);
+  offset = buffer.writeUInt8(o.ubWallOrientation, offset);
+  offset = buffer.writeInt8(o.bDestructionPartner, offset);
+  offset = buffer.writeInt8(o.bPartnerDelta, offset);
+  offset = buffer.writeInt8(o.bZTileOffsetX, offset);
+  offset = buffer.writeInt8(o.bZTileOffsetY, offset);
+  offset = writeUIntArray(o.bUnused, buffer, offset, 1);
+  return offset;
+}
+
 export interface DB_STRUCTURE_REF {
-  pDBStructure: Pointer<DB_STRUCTURE>;
-  ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>; // dynamic array
+  pDBStructure: DB_STRUCTURE /* Pointer<DB_STRUCTURE> */;
+  ppTile: DB_STRUCTURE_TILE[] /* Pointer<Pointer<DB_STRUCTURE_TILE>> */; // dynamic array
 } // 8 bytes
 
+export function createDbStructureRef(): DB_STRUCTURE_REF {
+  return {
+    pDBStructure: <DB_STRUCTURE><unknown>null,
+    ppTile: <DB_STRUCTURE_TILE[]><unknown>null,
+  };
+}
+
 export interface STRUCTURE {
-  pPrev: Pointer<STRUCTURE>;
-  pNext: Pointer<STRUCTURE>;
+  pPrev: STRUCTURE | null;
+  pNext: STRUCTURE | null;
   sGridNo: INT16;
   usStructureID: UINT16;
-  pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  pDBStructureRef: DB_STRUCTURE_REF;
   /* union { */
   /*   struct { */
   ubHitPoints: UINT8;
@@ -168,23 +292,56 @@ export interface STRUCTURE {
   /* } */
   sCubeOffset: INT16; // height of bottom of object in profile "cubes"
   fFlags: UINT32; // need to have something to indicate base tile/not
-  pShape: Pointer<PROFILE>;
+  pShape: PROFILE | null;
   ubWallOrientation: UINT8;
   ubVehicleHitLocation: UINT8;
   ubStructureHeight: UINT8; // if 0, then unset; otherwise stores height of structure when last calculated
   ubUnused: UINT8[] /* [1] */;
 } // 32 bytes
 
+export function createStructure(): STRUCTURE {
+  return {
+    pPrev: null,
+    pNext: null,
+    sGridNo: 0,
+    usStructureID: 0,
+    pDBStructureRef: <DB_STRUCTURE_REF><unknown>null,
+    ubHitPoints: 0,
+    ubLockStrength: 0,
+    sBaseGridNo: 0,
+    sCubeOffset: 0,
+    fFlags: 0,
+    pShape: null,
+    ubWallOrientation: 0,
+    ubVehicleHitLocation: 0,
+    ubStructureHeight: 0,
+    ubUnused: createArray(1, 0),
+  };
+}
+
 export interface STRUCTURE_FILE_REF {
-  pPrev: Pointer<STRUCTURE_FILE_REF>;
-  pNext: Pointer<STRUCTURE_FILE_REF>;
-  pAuxData: Pointer<AuxObjectData>;
-  pTileLocData: Pointer<RelTileLoc>;
-  pubStructureData: Pointer<UINT8>;
-  pDBStructureRef: Pointer<DB_STRUCTURE_REF>; // dynamic array
+  pPrev: STRUCTURE_FILE_REF | null;
+  pNext: STRUCTURE_FILE_REF | null;
+  pAuxData: AuxObjectData[] /* Pointer<AuxObjectData> */;
+  pTileLocData: RelTileLoc[] /* Pointer<RelTileLoc> */;
+  pubStructureData: Buffer;
+  pDBStructureRef: DB_STRUCTURE_REF[] /* Pointer<DB_STRUCTURE_REF> */; // dynamic array
   usNumberOfStructures: UINT16;
   usNumberOfStructuresStored: UINT16;
 } // 24 bytes
+
+export function createStructureFileRef(): STRUCTURE_FILE_REF {
+  return {
+    pPrev: null,
+    pNext: null,
+    pAuxData: <AuxObjectData[]><unknown>null,
+    pTileLocData: <RelTileLoc[]><unknown>null,
+    pubStructureData: <Buffer><unknown>null,
+    pDBStructureRef: <DB_STRUCTURE_REF[]><unknown>null,
+    usNumberOfStructures: 0,
+    usNumberOfStructuresStored: 0,
+  }
+}
 
 // IMPORTANT THING TO REMEMBER
 //
@@ -213,6 +370,37 @@ export interface STRUCTURE_FILE_HEADER {
   bUnused: UINT8[] /* [3] */;
   usNumberOfImageTileLocsStored: UINT16;
 } // 16 bytes
+
+export function createStructureFileHeader(): STRUCTURE_FILE_HEADER {
+  return {
+    szId: '',
+    usNumberOfStructures: 0,
+    usNumberOfImages: 0,
+    usNumberOfStructuresStored: 0,
+    usStructureDataSize: 0,
+    fFlags: 0,
+    bUnused: createArray(3, 0),
+    usNumberOfImageTileLocsStored: 0,
+  };
+}
+
+export const STRUCTURE_FILE_HEADER_SIZE = 16;
+
+export function readStructureFileHeader(o: STRUCTURE_FILE_HEADER, buffer: Buffer, offset: number = 0): number {
+  o.szId = readStringNL(buffer, 'ascii', offset, offset + 4); offset += 4;
+
+  o.usNumberOfStructures = buffer.readUInt16LE(offset);
+  o.usNumberOfImages = buffer.readUInt16LE(offset);
+  offset += 2; // union
+
+  o.usNumberOfStructuresStored = buffer.readUInt16LE(offset); offset += 2;
+  o.usStructureDataSize = buffer.readUInt16LE(offset); offset += 2;
+  o.fFlags = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.bUnused, buffer, offset, 1);
+  o.usNumberOfImageTileLocsStored = buffer.readUInt16LE(offset); offset += 2;
+
+  return offset;
+}
 
 // "J2SD" = Jagged 2 Structure Data
 export const STRUCTURE_FILE_ID = "J2SD";

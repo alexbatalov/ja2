@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
+export let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */ = createArrayFrom(MAX_AMBIENT_SOUNDS, createAmbientDataStruct);
 export let gsNumAmbData: INT16 = 0;
 
 let gubCurrentSteadyStateAmbience: UINT8 = Enum301.SSA_NONE;
@@ -166,6 +166,7 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
   let zFilename: string /* SGPFILENAME */;
   let hFile: HWFILE;
   let cnt: INT32;
+  let buffer: Buffer;
 
   // BUILD FILENAME
   zFilename = sprintf("AMBIENT\\%d.bad", ubAmbientID);
@@ -177,15 +178,21 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
   }
 
   // READ #
-  if (!FileRead(hFile, addressof(gsNumAmbData), sizeof(INT16), null)) {
+  buffer = Buffer.allocUnsafe(2);
+  if (!FileRead(hFile, buffer, 2)) {
     return false;
   }
 
+  gsNumAmbData = buffer.readInt16LE(0);
+
   // LOOP FOR OTHERS
+  buffer = Buffer.allocUnsafe(AMBIENT_DATA_STRUCT_SIZE);
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
-    if (!FileRead(hFile, addressof(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), null)) {
+    if (!FileRead(hFile, buffer, AMBIENT_DATA_STRUCT_SIZE)) {
       return false;
     }
+
+    readAmbientDataStruct(gAmbData[cnt], buffer);
 
     zFilename = sprintf("AMBIENT\\%s", gAmbData[cnt].zFilename);
     gAmbData[cnt].zFilename = zFilename;
@@ -194,11 +201,6 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): boolean {
   FileClose(hFile);
 
   return true;
-}
-
-function GetAmbientDataPtr(ppAmbData: Pointer<Pointer<AMBIENTDATA_STRUCT>>, pusNumData: Pointer<UINT16>): void {
-  ppAmbData.value = gAmbData;
-  pusNumData.value = gsNumAmbData;
 }
 
 export function StopAmbients(): void {
@@ -267,8 +269,8 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): boolean {
   }
 
   // loop through listing to get num sounds...
-  for (cnt = (fInNight * 4); cnt < (NUM_SOUNDS_PER_TIMEFRAME / 2); cnt++) {
-    if (gSteadyStateAmbientTable[ubAmbience].zSoundNames[cnt][0] == 0) {
+  for (cnt = (Number(fInNight) * 4); cnt < (NUM_SOUNDS_PER_TIMEFRAME / 2); cnt++) {
+    if (gSteadyStateAmbientTable[ubAmbience].zSoundNames[cnt][0] == '') {
       break;
     }
 

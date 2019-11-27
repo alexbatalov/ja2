@@ -9,10 +9,25 @@ interface CUR_INTERACTIVE_TILE {
   sMaxScreenY: INT16;
   sHeighestScreenY: INT16;
   fFound: boolean;
-  pFoundNode: Pointer<LEVELNODE>;
+  pFoundNode: LEVELNODE | null;
   sFoundGridNo: INT16;
   usStructureID: UINT16;
   fStructure: boolean;
+}
+
+function createCurInteractiveTile(): CUR_INTERACTIVE_TILE {
+  return {
+    sGridNo: 0,
+    ubFlags: 0,
+    sTileIndex: 0,
+    sMaxScreenY: 0,
+    sHeighestScreenY: 0,
+    fFound: false,
+    pFoundNode: null,
+    sFoundGridNo: 0,
+    usStructureID: 0,
+    fStructure: false,
+  }
 }
 
 interface INTERACTIVE_TILE_STACK_TYPE {
@@ -21,10 +36,18 @@ interface INTERACTIVE_TILE_STACK_TYPE {
   bCur: INT8;
 }
 
-let gCurIntTileStack: INTERACTIVE_TILE_STACK_TYPE;
+function createInteractiveTileStackType(): INTERACTIVE_TILE_STACK_TYPE {
+  return {
+    bNum: 0,
+    bTiles: createArrayFrom(MAX_INTTILE_STACK, createCurInteractiveTile),
+    bCur: 0,
+  };
+}
+
+let gCurIntTileStack: INTERACTIVE_TILE_STACK_TYPE = createInteractiveTileStackType();
 let gfCycleIntTile: boolean = false;
 
-let gCurIntTile: CUR_INTERACTIVE_TILE;
+let gCurIntTile: CUR_INTERACTIVE_TILE = createCurInteractiveTile();
 let gfOverIntTile: boolean = false;
 
 // Values to determine if we should check or not
@@ -40,15 +63,11 @@ export function InitInteractiveTileManagement(): boolean {
 export function ShutdownInteractiveTileManagement(): void {
 }
 
-function AddInteractiveTile(sGridNo: INT16, pLevelNode: Pointer<LEVELNODE>, uiFlags: UINT32, usType: UINT16): boolean {
-  return true;
-}
-
-export function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): boolean {
-  let pStructure: Pointer<STRUCTURE>;
+export function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: SOLDIERTYPE, ubDirection: UINT8): boolean {
+  let pStructure: STRUCTURE | null;
 
   // ATE: Patch fix: Don't allow if alreay in animation
-  if (pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED) {
+  if (pSoldier.usAnimState == Enum193.OPEN_STRUCT || pSoldier.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.usAnimState == Enum193.BEGIN_OPENSTRUCT || pSoldier.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED) {
     return false;
   }
 
@@ -56,30 +75,30 @@ export function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pS
   if (pStructure == null) {
     return false;
   }
-  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
     // Add soldier event for opening door....
-    pSoldier.value.ubPendingAction = Enum257.MERC_OPENDOOR;
-    pSoldier.value.uiPendingActionData1 = usStructureID;
-    pSoldier.value.sPendingActionData2 = sGridNo;
-    pSoldier.value.bPendingActionData3 = ubDirection;
-    pSoldier.value.ubPendingActionAnimCount = 0;
+    pSoldier.ubPendingAction = Enum257.MERC_OPENDOOR;
+    pSoldier.uiPendingActionData1 = usStructureID;
+    pSoldier.sPendingActionData2 = sGridNo;
+    pSoldier.bPendingActionData3 = ubDirection;
+    pSoldier.ubPendingActionAnimCount = 0;
   } else {
     // Add soldier event for opening door....
-    pSoldier.value.ubPendingAction = Enum257.MERC_OPENSTRUCT;
-    pSoldier.value.uiPendingActionData1 = usStructureID;
-    pSoldier.value.sPendingActionData2 = sGridNo;
-    pSoldier.value.bPendingActionData3 = ubDirection;
-    pSoldier.value.ubPendingActionAnimCount = 0;
+    pSoldier.ubPendingAction = Enum257.MERC_OPENSTRUCT;
+    pSoldier.uiPendingActionData1 = usStructureID;
+    pSoldier.sPendingActionData2 = sGridNo;
+    pSoldier.bPendingActionData3 = ubDirection;
+    pSoldier.ubPendingActionAnimCount = 0;
   }
 
   return true;
 }
 
-export function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): boolean {
+export function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: STRUCTURE | null, psAPCost: Pointer<INT16>, psBPCost: Pointer<INT16>): boolean {
   if (pStructure == null) {
     return false;
   }
-  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
     // For doors, if open, we can safely add APs for closing
     // If closed, we do not know what to do yet...
     // if ( pStructure->fFlags & STRUCTURE_OPEN )
@@ -100,14 +119,14 @@ export function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STR
   return true;
 }
 
-export function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): boolean {
+export function InteractWithInteractiveObject(pSoldier: SOLDIERTYPE, pStructure: STRUCTURE | null, ubDirection: UINT8): boolean {
   let fDoor: boolean = false;
 
   if (pStructure == null) {
     return false;
   }
 
-  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
     fDoor = true;
   }
 
@@ -116,13 +135,13 @@ export function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pS
   return true;
 }
 
-export function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): boolean {
-  let pStructure: Pointer<STRUCTURE>;
+export function SoldierHandleInteractiveObject(pSoldier: SOLDIERTYPE): boolean {
+  let pStructure: STRUCTURE | null;
   let usStructureID: UINT16;
   let sGridNo: INT16;
 
-  sGridNo = pSoldier.value.sPendingActionData2;
-  usStructureID = pSoldier.value.uiPendingActionData1;
+  sGridNo = pSoldier.sPendingActionData2;
+  usStructureID = pSoldier.uiPendingActionData1;
 
   // HANDLE SOLDIER ACTIONS
   pStructure = FindStructureByID(sGridNo, usStructureID);
@@ -134,9 +153,9 @@ export function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): 
   return HandleOpenableStruct(pSoldier, sGridNo, pStructure);
 }
 
-export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  let pStructure: Pointer<STRUCTURE>;
-  let pNewStructure: Pointer<STRUCTURE>;
+export function HandleStructChangeFromGridNo(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
+  let pStructure: STRUCTURE | null;
+  let pNewStructure: STRUCTURE | null;
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
   let pItemPool: ITEM_POOL | null;
@@ -149,7 +168,7 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
   }
 
   // Do sound...
-  if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+  if (!(pStructure.fFlags & STRUCTURE_OPEN)) {
     // Play Opening sound...
     PlayJA2Sample(GetStructureOpenSound(pStructure, false), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   } else {
@@ -158,26 +177,26 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
   }
 
   // ATE: Don't handle switches!
-  if (!(pStructure.value.fFlags & STRUCTURE_SWITCH)) {
-    if (pSoldier.value.bTeam == gbPlayerNum) {
+  if (!(pStructure.fFlags & STRUCTURE_SWITCH)) {
+    if (pSoldier.bTeam == gbPlayerNum) {
       if (sGridNo == BOBBYR_SHIPPING_DEST_GRIDNO && gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X && gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y && gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z && CheckFact(Enum170.FACT_PABLOS_STOLE_FROM_LATEST_SHIPMENT, 0) && !(CheckFact(Enum170.FACT_PLAYER_FOUND_ITEMS_MISSING, 0))) {
         SayQuoteFromNearbyMercInSector(BOBBYR_SHIPPING_DEST_GRIDNO, 3, Enum202.QUOTE_STUFF_MISSING_DRASSEN);
         fDidMissingQuote = true;
       }
-    } else if (pSoldier.value.bTeam == CIV_TEAM) {
-      if (pSoldier.value.ubProfile != NO_PROFILE) {
-        TriggerNPCWithGivenApproach(pSoldier.value.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, false);
+    } else if (pSoldier.bTeam == CIV_TEAM) {
+      if (pSoldier.ubProfile != NO_PROFILE) {
+        TriggerNPCWithGivenApproach(pSoldier.ubProfile, Enum296.APPROACH_DONE_OPEN_STRUCTURE, false);
       }
     }
 
     // LOOK for item pool here...
-    if ((pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel))) {
+    if ((pItemPool = GetItemPool(sGridNo, pSoldier.bLevel))) {
       // Update visiblity....
-      if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+      if (!(pStructure.fFlags & STRUCTURE_OPEN)) {
         let fDoHumm: boolean = true;
         let fDoLocators: boolean = true;
 
-        if (pSoldier.value.bTeam != gbPlayerNum) {
+        if (pSoldier.bTeam != gbPlayerNum) {
           fDoHumm = false;
           fDoLocators = false;
         }
@@ -212,7 +231,7 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
         SetItemPoolVisibilityHidden(pItemPool);
       }
     } else {
-      if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+      if (!(pStructure.fFlags & STRUCTURE_OPEN)) {
         TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DO_BATTLE_SND, Enum259.BATTLE_SOUND_NOTHING, 500);
       }
     }
@@ -226,23 +245,23 @@ export function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGr
   if (pNewStructure != null) {
     RecompileLocalMovementCosts(sGridNo);
     SetRenderFlags(RENDER_FLAG_FULL);
-    if (pNewStructure.value.fFlags & STRUCTURE_SWITCH) {
+    if (pNewStructure.fFlags & STRUCTURE_SWITCH) {
       // just turned a switch on!
-      ActivateSwitchInGridNo(pSoldier.value.ubID, sGridNo);
+      ActivateSwitchInGridNo(pSoldier.ubID, sGridNo);
     }
   }
 }
 
 export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT32 {
-  let pIntNode: Pointer<LEVELNODE>;
-  let pStructure: Pointer<STRUCTURE>;
+  let pIntNode: LEVELNODE | null;
+  let pStructure: STRUCTURE | null;
   let sGridNo: INT16;
 
   // OK, first see if we have an in tile...
   pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
   if (pIntNode != null && pStructure != null) {
-    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
       SetDoorString(sGridNo);
 
       if (fConfirm) {
@@ -251,7 +270,7 @@ export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean)
         return Enum210.NORMALHANDCURSOR_UICURSOR;
       }
     } else {
-      if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
+      if (pStructure.fFlags & STRUCTURE_SWITCH) {
         gzIntTileLocation = gzLateLocalizedString[25];
         gfUIIntTileLocation = true;
       }
@@ -268,8 +287,8 @@ export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean)
 }
 
 export function SetActionModeDoorCursorText(): void {
-  let pIntNode: Pointer<LEVELNODE>;
-  let pStructure: Pointer<STRUCTURE>;
+  let pIntNode: LEVELNODE | null;
+  let pStructure: STRUCTURE | null;
   let sGridNo: INT16;
 
   // If we are over a merc, don't
@@ -281,23 +300,23 @@ export function SetActionModeDoorCursorText(): void {
   pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
   if (pIntNode != null && pStructure != null) {
-    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
       SetDoorString(sGridNo);
     }
   }
 }
 
-function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRect>, sXPos: INT16, sYPos: INT16, sGridNo: INT16): void {
+function GetLevelNodeScreenRect(pNode: LEVELNODE, pRect: SGPRect, sXPos: INT16, sYPos: INT16, sGridNo: INT16): void {
   let sScreenX: INT16;
   let sScreenY: INT16;
   let sOffsetX: INT16;
   let sOffsetY: INT16;
   let sTempX_S: INT16;
   let sTempY_S: INT16;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let TileElem: Pointer<TILE_ELEMENT>;
+  let TileElem: TILE_ELEMENT;
 
   // Get 'TRUE' merc position
   sOffsetX = sXPos - gsRenderCenterX;
@@ -305,23 +324,23 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
 
   ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
-  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
-    pTrav = addressof(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo.value.pETRLEObject[pNode.value.pAniTile.value.sCurrentFrame]);
+  if (pNode.uiFlags & LEVELNODE_CACHEDANITILE) {
+    pTrav = (<TILE_IMAGERY>gpTileCache[pNode.pAniTile.sCachedTileID].pImagery).vo.value.pETRLEObject[pNode.pAniTile.sCurrentFrame];
   } else {
-    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
+    TileElem = gTileDatabase[pNode.usIndex];
 
     // Adjust for current frames and animations....
-    if (TileElem.value.uiFlags & ANIMATED_TILE) {
-      Assert(TileElem.value.pAnimData != null);
-      TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
-    } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
-      if (pNode.value.sCurrentFrame != -1) {
-        Assert(TileElem.value.pAnimData != null);
-        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
+    if (TileElem.uiFlags & ANIMATED_TILE) {
+      Assert(TileElem.pAnimData != null);
+      TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[TileElem.pAnimData.bCurrentFrame]];
+    } else if ((pNode.uiFlags & LEVELNODE_ANIMATION)) {
+      if (pNode.sCurrentFrame != -1) {
+        Assert(TileElem.pAnimData != null);
+        TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[pNode.sCurrentFrame]];
       }
     }
 
-    pTrav = addressof(TileElem.value.hTileSurface.value.pETRLEObject[TileElem.value.usRegionIndex]);
+    pTrav = TileElem.hTileSurface.value.pETRLEObject[TileElem.usRegionIndex];
   }
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
@@ -340,20 +359,20 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   // Adjust for render height
   sScreenY += gsRenderHeight;
 
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  sScreenX += (pTrav.value.sOffsetX - (WORLD_TILE_X / 2));
-  sScreenY += (pTrav.value.sOffsetY - (WORLD_TILE_Y / 2));
+  sScreenX += (pTrav.sOffsetX - (WORLD_TILE_X / 2));
+  sScreenY += (pTrav.sOffsetY - (WORLD_TILE_Y / 2));
 
   // Adjust y offset!
   sScreenY += (WORLD_TILE_Y / 2);
 
-  pRect.value.iLeft = sScreenX;
-  pRect.value.iTop = sScreenY;
-  pRect.value.iBottom = sScreenY + usHeight;
-  pRect.value.iRight = sScreenX + usWidth;
+  pRect.iLeft = sScreenX;
+  pRect.iTop = sScreenY;
+  pRect.iBottom = sScreenY + usHeight;
+  pRect.iRight = sScreenX + usWidth;
 }
 
 export function CompileInteractiveTiles(): void {
@@ -365,7 +384,7 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   let sYMapPos: INT16;
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
 
   // OK, for now, don't allow any interactive tiles on higher interface level!
   if (gsInterfaceLevel > 0) {
@@ -373,7 +392,7 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   }
 
   // Also, don't allow for mercs who are on upper level...
-  if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.bLevel == 1) {
+  if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].bLevel == 1) {
     return;
   }
 
@@ -388,7 +407,7 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
 
   while (pNode != null) {
     {
-      GetLevelNodeScreenRect(pNode, addressof(aRect), sXMapPos, sYMapPos, sGridNo);
+      GetLevelNodeScreenRect(pNode, aRect, sXMapPos, sYMapPos, sGridNo);
 
       // Make sure we are always on guy if we are on same gridno
       if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
@@ -422,14 +441,14 @@ export function LogMouseOverInteractiveTile(sGridNo: INT16): void {
         }
       }
 
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
   }
 }
 
-function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): Pointer<LEVELNODE> {
-  let pNode: Pointer<LEVELNODE> = null;
-  let pStructure: Pointer<STRUCTURE> = null;
+function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): LEVELNODE | null {
+  let pNode: LEVELNODE | null = null;
+  let pStructure: STRUCTURE | null = null;
 
   // OK, Look for our tile!
 
@@ -442,13 +461,13 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): Pointer<LEVE
     pNode = gpWorldLevelData[gCurIntTile.sGridNo].pStructHead;
 
     while (pNode != null) {
-      if (pNode.value.usIndex == gCurIntTile.sTileIndex) {
+      if (pNode.usIndex == gCurIntTile.sTileIndex) {
         if (fRejectItemsOnTop) {
           // get strucuture here...
           if (gCurIntTile.fStructure) {
             pStructure = FindStructureByID(gCurIntTile.sGridNo, gCurIntTile.usStructureID);
             if (pStructure != null) {
-              if (pStructure.value.fFlags & STRUCTURE_HASITEMONTOP) {
+              if (pStructure.fFlags & STRUCTURE_HASITEMONTOP) {
                 return null;
               }
             } else {
@@ -460,19 +479,19 @@ function InternalGetCurInteractiveTile(fRejectItemsOnTop: boolean): Pointer<LEVE
         return pNode;
       }
 
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
     }
   }
 
   return null;
 }
 
-export function GetCurInteractiveTile(): Pointer<LEVELNODE> {
+export function GetCurInteractiveTile(): LEVELNODE | null {
   return InternalGetCurInteractiveTile(true);
 }
 
-export function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNODE> {
-  let pNode: Pointer<LEVELNODE>;
+export function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): LEVELNODE | null {
+  let pNode: LEVELNODE | null;
 
   pNode = GetCurInteractiveTile();
 
@@ -485,9 +504,9 @@ export function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<L
   return pNode;
 }
 
-export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): Pointer<LEVELNODE> {
-  let pNode: Pointer<LEVELNODE>;
-  let pStructure: Pointer<STRUCTURE>;
+export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): LEVELNODE | null {
+  let pNode: LEVELNODE | null;
+  let pStructure: STRUCTURE | null;
 
   ppStructure.value = null;
 
@@ -514,7 +533,7 @@ export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Poi
   return pNode;
 }
 
-export function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
+export function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): LEVELNODE | null {
   return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, true);
 }
 
@@ -534,23 +553,25 @@ export function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
 }
 
 export function EndCurInteractiveTileCheck(): void {
-  let pCurIntTile: Pointer<CUR_INTERACTIVE_TILE>;
+  let pCurIntTile: CUR_INTERACTIVE_TILE = createCurInteractiveTile();
 
   if (gCurIntTile.fFound) {
     // Set our currently cycled guy.....
     if (gfCycleIntTile) {
       // OK, we're over this cycled node
-      pCurIntTile = addressof(gCurIntTileStack.bTiles[gCurIntTileStack.bCur]);
+      pCurIntTile = gCurIntTileStack.bTiles[gCurIntTileStack.bCur];
     } else {
       // OK, we're over this levelnode,
-      pCurIntTile = addressof(gCurIntTile);
+      pCurIntTile = gCurIntTile;
     }
 
-    gCurIntTile.sGridNo = pCurIntTile.value.sFoundGridNo;
-    gCurIntTile.sTileIndex = pCurIntTile.value.pFoundNode.value.usIndex;
+    Assert(pCurIntTile.pFoundNode);
 
-    if (pCurIntTile.value.pFoundNode.value.pStructureData != null) {
-      gCurIntTile.usStructureID = pCurIntTile.value.pFoundNode.value.pStructureData.value.usStructureID;
+    gCurIntTile.sGridNo = pCurIntTile.sFoundGridNo;
+    gCurIntTile.sTileIndex = pCurIntTile.pFoundNode.usIndex;
+
+    if (pCurIntTile.pFoundNode.pStructureData != null) {
+      gCurIntTile.usStructureID = pCurIntTile.pFoundNode.pStructureData.usStructureID;
       gCurIntTile.fStructure = true;
     } else {
       gCurIntTile.fStructure = false;
@@ -565,42 +586,42 @@ export function EndCurInteractiveTileCheck(): void {
   }
 }
 
-function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): boolean {
-  let TileElem: Pointer<TILE_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
+function RefineLogicOnStruct(sGridNo: INT16, pNode: LEVELNODE): boolean {
+  let TileElem: TILE_ELEMENT;
+  let pStructure: STRUCTURE | null;
 
-  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
+  if (pNode.uiFlags & LEVELNODE_CACHEDANITILE) {
     return false;
   }
 
-  TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
+  TileElem = gTileDatabase[pNode.usIndex];
 
   if (gCurIntTile.ubFlags == INTILE_CHECK_SELECTIVE) {
     // See if we are on an interactable tile!
     // Try and get struct data from levelnode pointer
-    pStructure = pNode.value.pStructureData;
+    pStructure = pNode.pStructureData;
 
     // If no data, quit
     if (pStructure == null) {
       return false;
     }
 
-    if (!(pStructure.value.fFlags & (STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP))) {
+    if (!(pStructure.fFlags & (STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP))) {
       return false;
     }
 
-    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.ubBodyType == Enum194.ROBOTNOWEAPON) {
+    if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].ubBodyType == Enum194.ROBOTNOWEAPON) {
       return false;
     }
 
     // If we are a door, we need a different definition of being visible than other structs
-    if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+    if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
       if (!IsDoorVisibleAtGridNo(sGridNo)) {
         return false;
       }
 
       // OK, For a OPENED door, addition requirements are: need to be in 'HAND CURSOR' mode...
-      if (pStructure.value.fFlags & STRUCTURE_OPEN) {
+      if (pStructure.fFlags & STRUCTURE_OPEN) {
         // Are we in hand cursor mode?
         if (gCurrentUIMode != Enum206.HANDCURSOR_MODE && gCurrentUIMode != Enum206.ACTION_MODE) {
           return false;
@@ -615,11 +636,11 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): boolean
       }
     } else {
       // IF we are a switch, reject in another direction...
-      if (pStructure.value.fFlags & STRUCTURE_SWITCH) {
+      if (pStructure.fFlags & STRUCTURE_SWITCH) {
         // Find a new gridno based on switch's orientation...
         let sNewGridNo: INT16 = NOWHERE;
 
-        switch (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubWallOrientation) {
+        switch (pStructure.pDBStructureRef.pDBStructure.ubWallOrientation) {
           case Enum314.OUTSIDE_TOP_LEFT:
           case Enum314.INSIDE_TOP_LEFT:
 
@@ -650,8 +671,8 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): boolean
     }
 
     // Check if it's a hidden struct and we have not revealed anything!
-    if (TileElem.value.uiFlags & HIDDEN_TILE) {
-      if (!IsHiddenStructureVisible(sGridNo, pNode.value.usIndex)) {
+    if (TileElem.uiFlags & HIDDEN_TILE) {
+      if (!IsHiddenStructureVisible(sGridNo, pNode.usIndex)) {
         // Return false
         return false;
       }
@@ -661,28 +682,28 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): boolean
   return true;
 }
 
-function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: Pointer<LEVELNODE>): boolean {
-  let TileElem: Pointer<TILE_ELEMENT>;
+function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: LEVELNODE): boolean {
+  let TileElem: TILE_ELEMENT;
 
-  if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
+  if (pNode.uiFlags & LEVELNODE_CACHEDANITILE) {
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo, pNode.value.pAniTile.value.sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData((<TILE_IMAGERY>gpTileCache[pNode.pAniTile.sCachedTileID].pImagery).vo, pNode.pAniTile.sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   } else {
-    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
+    TileElem = gTileDatabase[pNode.usIndex];
 
     // Adjust for current frames and animations....
-    if (TileElem.value.uiFlags & ANIMATED_TILE) {
-      Assert(TileElem.value.pAnimData != null);
-      TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
-    } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
-      if (pNode.value.sCurrentFrame != -1) {
-        Assert(TileElem.value.pAnimData != null);
-        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
+    if (TileElem.uiFlags & ANIMATED_TILE) {
+      Assert(TileElem.pAnimData != null);
+      TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[TileElem.pAnimData.bCurrentFrame]];
+    } else if ((pNode.uiFlags & LEVELNODE_ANIMATION)) {
+      if (pNode.sCurrentFrame != -1) {
+        Assert(TileElem.pAnimData != null);
+        TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[pNode.sCurrentFrame]];
       }
     }
 
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(TileElem.value.hTileSurface, TileElem.value.usRegionIndex, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData(TileElem.hTileSurface, TileElem.usRegionIndex, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   }
 }
 
@@ -694,7 +715,7 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, us
   let usWidth: UINT32;
   let SrcPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let fDataFound: boolean = false;
   let iTestPos: INT32;
   let iStartPos: INT32;
@@ -703,10 +724,10 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, us
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Calculate test position we are looking for!
   // Calculate from 0, 0 at top left!

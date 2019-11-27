@@ -94,7 +94,7 @@ export function GameLoop(): void {
   MouseSystemHook(MOUSE_POS, MousePos.x, MousePos.y, _LeftButtonDown(), _RightButtonDown());
   MusicPoll(false);
 
-  while (DequeueSpecificEvent(addressof(InputEvent), LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == true) {
+  while (DequeueSpecificEvent(InputEvent, LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == true) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -268,7 +268,7 @@ export function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
   // If we are in the tactical placement gui, we need this flag set so the interface is updated.
   if (gfTacticalPlacementGUIActive) {
     gfTacticalPlacementGUIDirty = true;
-    gfValidLocationsChanged = true;
+    gfValidLocationsChanged = 1;
   }
 
   return;

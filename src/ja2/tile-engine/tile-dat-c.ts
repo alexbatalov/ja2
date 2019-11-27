@@ -722,10 +722,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
       if (uiDatabaseElem == gOpenDoorList[cnt]) {
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
+        Assert(TileElement.pAnimData);
 
-        TileElement.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.pAnimData.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -737,10 +738,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
       if (uiDatabaseElem == gOpenDoorShadowList[cnt]) {
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
+        Assert(TileElement.pAnimData);
 
-        TileElement.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+        TileElement.pAnimData.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
         }
       }
       cnt++;
@@ -753,10 +755,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
       if (uiDatabaseElem == gClosedDoorList[cnt]) {
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
+        Assert(TileElement.pAnimData);
 
-        TileElement.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.pAnimData.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -768,10 +771,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
       if (uiDatabaseElem == gClosedDoorShadowList[cnt]) {
         // Allocate Animated tile data
         AllocateAnimTileData(TileElement, 5);
+        Assert(TileElement.pAnimData);
 
-        TileElement.pAnimData.value.bCurrentFrame = 0;
-        for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-          TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
+        TileElement.pAnimData.bCurrentFrame = 0;
+        for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+          TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem - ubLoop;
         }
       }
       cnt++;
@@ -781,10 +785,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   if (uiDatabaseElem == Enum312.FIRSTMISS1) {
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
+    Assert(TileElement.pAnimData);
 
-    TileElement.pAnimData.value.bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-      TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.pAnimData.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+      TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 
@@ -795,10 +800,11 @@ export function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16
   if (uiDatabaseElem == Enum312.WINDOWSHATTER1 || uiDatabaseElem == Enum312.WINDOWSHATTER6 || uiDatabaseElem == Enum312.WINDOWSHATTER11 || uiDatabaseElem == Enum312.WINDOWSHATTER16) {
     // Allocate Animated tile data
     AllocateAnimTileData(TileElement, 5);
+    Assert(TileElement.pAnimData);
 
-    TileElement.pAnimData.value.bCurrentFrame = 0;
-    for (ubLoop = 0; ubLoop < TileElement.pAnimData.value.ubNumFrames; ubLoop++) {
-      TileElement.pAnimData.value.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
+    TileElement.pAnimData.bCurrentFrame = 0;
+    for (ubLoop = 0; ubLoop < TileElement.pAnimData.ubNumFrames; ubLoop++) {
+      TileElement.pAnimData.pusFrames[ubLoop] = uiDatabaseElem + ubLoop;
     }
   }
 

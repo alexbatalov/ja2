@@ -9,4 +9,13 @@ export interface TILESET {
   MovementCostFnc: TILESET_CALLBACK;
 }
 
+export function createTileset(): TILESET {
+  return {
+    zName: '',
+    TileSurfaceFilenames: createArray(Enum313.NUMBEROFTILETYPES, ''),
+    ubAmbientID: 0,
+    MovementCostFnc: <TILESET_CALLBACK><unknown>null,
+  };
+}
+
 }

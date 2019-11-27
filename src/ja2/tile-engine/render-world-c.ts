@@ -66,9 +66,9 @@ const SHORT_ROUND = (x: number) => (x);
 
 const NUM_ITEM_CYCLE_COLORS = 60;
 
-let us16BPPItemCycleWhiteColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */;
-let us16BPPItemCycleRedColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */;
-let us16BPPItemCycleYellowColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */;
+let us16BPPItemCycleWhiteColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */ = createArray(NUM_ITEM_CYCLE_COLORS, 0);
+let us16BPPItemCycleRedColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */ = createArray(NUM_ITEM_CYCLE_COLORS, 0);
+let us16BPPItemCycleYellowColors: UINT16[] /* [NUM_ITEM_CYCLE_COLORS] */ = createArray(NUM_ITEM_CYCLE_COLORS, 0);
 
 let gsLobOutline: INT16;
 let gsThrowOutline: INT16;
@@ -77,7 +77,7 @@ let gusNormalItemOutlineColor: INT16;
 let gusYellowItemOutlineColor: INT16;
 
 export let gsRenderHeight: INT16 = 0;
-export let gfRenderFullThisFrame: boolean = 0;
+export let gfRenderFullThisFrame: boolean = false;
 
 // UINT8		gubIntTileCheckFlags	 = INTILE_CHECK_FULL;
 let gubIntTileCheckFlags: UINT8 = INTILE_CHECK_SELECTIVE;
@@ -312,7 +312,7 @@ let gubScrollSpeedEndID: UINT8 = 4;
 
 export let gubCurScrollSpeedID: UINT8 = 1;
 
-export let gfDoVideoScroll: boolean = true;
+export let gfDoVideoScroll: UINT8 /* boolean */ = 1;
 let gfDoSubtileScroll: boolean = false;
 
 export let gfScrollPending: boolean = false;
@@ -395,7 +395,7 @@ let gsFastGlowFrames: INT16[] /* [] */ = [
 ];
 
 // The glow frame pointer can be adjusted to use a faster/ slower glow
-let gpGlowFramePointer: Pointer<INT16> = gsGlowFrames;
+let gpGlowFramePointer: INT16[] = gsGlowFrames;
 
 let gScrollDirectionFlags: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = [
   SCROLL_UP | SCROLL_RIGHT,
@@ -456,7 +456,7 @@ export let gdScaleY: DOUBLE;
 
 const FASTMAPROWCOLTOPOS = (r: number, c: number) => ((r) * WORLD_COLS + (c));
 
-export let gfScrollInertia: boolean = false;
+export let gfScrollInertia: UINT8 /* boolean */ = 0;
 
 // GLOBALS FOR CALCULATING STARTING PARAMETERS
 let gsStartPointX_W: INT16;
@@ -507,6 +507,21 @@ interface RenderFXType {
   fMultiZBlitter: boolean;
   fConvertTo16: boolean;
   fObscured: boolean;
+}
+
+function createRenderFXType(): RenderFXType {
+  return {
+    fDynamic: false,
+    fZWrite: false,
+    fZBlitter: false,
+    fShadowBlitter: false,
+    fLinkedListDirection: false,
+    fMerc: false,
+    fCheckForRedundency: false,
+    fMultiZBlitter: false,
+    fConvertTo16: false,
+    fObscured: false,
+  };
 }
 
 function createRenderFXTypeFrom(fDynamic: boolean, fZWrite: boolean, fZBlitter: boolean, fShadowBlitter: boolean, fLinkedListDirection: boolean, fMerc: boolean, fCheckForRedundency: boolean, fMultiZBlitter: boolean, fConvertTo16: boolean, fObscured: boolean): RenderFXType {
@@ -573,12 +588,12 @@ let RenderFXStartIndex: UINT8[] /* [] */ = [
 // void TempRenderTiles(UINT32 uiFlags, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS, UINT8 ubNumLevels, UINT32 *puiLevels );
 
 function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   let sCountX: INT16;
   let sCountY: INT16;
   let uiTile: UINT32;
   let fRerender: boolean = false;
-  let TileElem: Pointer<TILE_ELEMENT>;
+  let TileElem: TILE_ELEMENT;
 
   for (sCountY = sY - sRadius; sCountY < (sY + sRadius + 2); sCountY++)
     for (sCountX = sX - sRadius; sCountX < (sX + sRadius + 2); sCountX++) {
@@ -586,15 +601,15 @@ function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
       pStruct = gpWorldLevelData[uiTile].pStructHead;
 
       while (pStruct != null) {
-        TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
-        switch (TileElem.value.usWallOrientation) {
+        TileElem = gTileDatabase[pStruct.usIndex];
+        switch (TileElem.usWallOrientation) {
           case Enum314.NO_ORIENTATION:
             break;
 
           case Enum314.INSIDE_TOP_RIGHT:
           case Enum314.OUTSIDE_TOP_RIGHT:
             if (sCountX >= sX) {
-              pStruct.value.uiFlags |= LEVELNODE_REVEAL;
+              pStruct.uiFlags |= LEVELNODE_REVEAL;
               fRerender = true;
             }
             break;
@@ -602,12 +617,12 @@ function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
           case Enum314.INSIDE_TOP_LEFT:
           case Enum314.OUTSIDE_TOP_LEFT:
             if (sCountY >= sY) {
-              pStruct.value.uiFlags |= LEVELNODE_REVEAL;
+              pStruct.uiFlags |= LEVELNODE_REVEAL;
               fRerender = true;
             }
             break;
         }
-        pStruct = pStruct.value.pNext;
+        pStruct = pStruct.pNext;
       }
     }
 
@@ -620,12 +635,12 @@ function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
 }
 
 function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   let sCountX: INT16;
   let sCountY: INT16;
   let uiTile: UINT32;
   let fRerender: boolean = false;
-  let TileElem: Pointer<TILE_ELEMENT>;
+  let TileElem: TILE_ELEMENT;
 
   for (sCountY = sY - sRadius; sCountY < (sY + sRadius + 2); sCountY++)
     for (sCountX = sX - sRadius; sCountX < (sX + sRadius + 2); sCountX++) {
@@ -633,15 +648,15 @@ function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
       pStruct = gpWorldLevelData[uiTile].pStructHead;
 
       while (pStruct != null) {
-        TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
-        switch (TileElem.value.usWallOrientation) {
+        TileElem = gTileDatabase[pStruct.usIndex];
+        switch (TileElem.usWallOrientation) {
           case Enum314.NO_ORIENTATION:
             break;
 
           case Enum314.INSIDE_TOP_RIGHT:
           case Enum314.OUTSIDE_TOP_RIGHT:
             if (sCountX >= sX) {
-              pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
+              pStruct.uiFlags &= (~LEVELNODE_REVEAL);
               fRerender = true;
             }
             break;
@@ -649,12 +664,12 @@ function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
           case Enum314.INSIDE_TOP_LEFT:
           case Enum314.OUTSIDE_TOP_LEFT:
             if (sCountY >= sY) {
-              pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
+              pStruct.uiFlags &= (~LEVELNODE_REVEAL);
               fRerender = true;
             }
             break;
         }
-        pStruct = pStruct.value.pNext;
+        pStruct = pStruct.pNext;
       }
     }
 
@@ -667,14 +682,14 @@ function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): boolean {
 }
 
 function ConcealAllWalls(): void {
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < WORLD_MAX; uiCount++) {
     pStruct = gpWorldLevelData[uiCount].pStructHead;
     while (pStruct != null) {
-      pStruct.value.uiFlags &= (~LEVELNODE_REVEAL);
-      pStruct = pStruct.value.pNext;
+      pStruct.uiFlags &= (~LEVELNODE_REVEAL);
+      pStruct = pStruct.pNext;
     }
   }
 }
@@ -711,19 +726,22 @@ export function RenderSetShadows(fShadows: boolean): void {
     gRenderFlags &= (~RENDER_FLAG_SHADOWS);
 }
 
+/* static */ let RenderTiles__ubLevelNodeStartIndex: UINT8[] /* [NUM_RENDER_FX_TYPES] */ = createArray(Enum306.NUM_RENDER_FX_TYPES, 0);
+/* static */ let RenderTiles__iTileMapPos: INT32[] /* [500] */ = createArray(500, 0);
+/* static */ let RenderTiles__RenderFXList: RenderFXType[] /* [NUM_RENDER_FX_TYPES] */ = createArrayFrom(Enum306.NUM_RENDER_FX_TYPES, createRenderFXType);
 function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT32, iStartPointX_S: INT32, iStartPointY_S: INT32, iEndXS: INT32, iEndYS: INT32, ubNumLevels: UINT8, puiLevels: Pointer<UINT32>, psLevelIDs: Pointer<UINT16>): void {
   //#if 0
 
-  let pNode: Pointer<LEVELNODE>; //, *pLand, *pStruct; //*pObject, *pTopmost, *pMerc;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pSelSoldier: Pointer<SOLDIERTYPE>;
+  let pNode: LEVELNODE | null; //, *pLand, *pStruct; //*pObject, *pTopmost, *pMerc;
+  let pSoldier: SOLDIERTYPE | null;
+  let pSelSoldier: SOLDIERTYPE | null;
   let hVObject: HVOBJECT;
-  let pTrav: Pointer<ETRLEObject>;
-  let TileElem: Pointer<TILE_ELEMENT> = null;
+  let pTrav: ETRLEObject;
+  let TileElem: TILE_ELEMENT = <TILE_ELEMENT><unknown>undefined;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8> = null;
   let usAnimSurface: UINT16;
-  let bXOddFlag: INT8 = 0;
+  let bXOddFlag: boolean /* INT8 */ = false;
   let iAnchorPosX_M: INT32;
   let iAnchorPosY_M: INT32;
   let iAnchorPosX_S: INT32;
@@ -772,26 +790,23 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   let fConvertTo16: boolean = false;
   let fBlit16: boolean = false;
   let cnt: UINT32;
-  /* static */ let ubLevelNodeStartIndex: UINT8[] /* [NUM_RENDER_FX_TYPES] */;
   let bItemOutline: boolean;
   let usOutlineColor: UINT16 = 0;
 
-  /* static */ let iTileMapPos: INT32[] /* [500] */;
   let uiMapPosIndex: UINT32;
-  let bBlitClipVal: UINT8;
+  let bBlitClipVal: boolean /* UINT8 */;
   let bItemCount: INT8;
   let bVisibleItemCount: INT8;
   // UINT16			us16BPPIndex;
   let RenderingFX: RenderFXType;
   let fCheckForMouseDetections: boolean = false;
-  /* static */ let RenderFXList: RenderFXType[] /* [NUM_RENDER_FX_TYPES] */;
   let fSaveZ: boolean;
   let sWorldY: INT16;
   let sZOffsetX: INT16 = -1;
   let sZOffsetY: INT16 = -1;
   let fIntensityBlitter: boolean;
   let gsForceSoldierZLevel: INT16;
-  let pCorpse: Pointer<ROTTING_CORPSE> = null;
+  let pCorpse: ROTTING_CORPSE = <ROTTING_CORPSE><unknown>null;
   let fUseTileElem: boolean;
   let uiLevelNodeFlags: UINT32;
   let uiTileElemFlags: UINT32 = 0;
@@ -804,7 +819,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
   let uiSaveBufferPitchBYTES: UINT32;
   let pSaveBuf: Pointer<UINT8>;
-  let pItemPool: Pointer<ITEM_POOL> = null;
+  let pItemPool: ITEM_POOL = <ITEM_POOL><unknown>null;
   let fHiddenTile: boolean = false;
   let uiAniTileFlags: UINT32 = 0;
 
@@ -844,8 +859,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
     fTranslucencyType = true;
 
   for (cnt = 0; cnt < ubNumLevels; cnt++) {
-    ubLevelNodeStartIndex[cnt] = RenderFXStartIndex[psLevelIDs[cnt]];
-    RenderFXList[cnt] = RenderFX[psLevelIDs[cnt]];
+    RenderTiles__ubLevelNodeStartIndex[cnt] = RenderFXStartIndex[psLevelIDs[cnt]];
+    RenderTiles__RenderFXList[cnt] = RenderFX[psLevelIDs[cnt]];
   }
 
   do {
@@ -858,7 +873,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
     // Build tile index list
     do {
-      iTileMapPos[uiMapPosIndex] = FASTMAPROWCOLTOPOS(iTempPosY_M, iTempPosX_M);
+      RenderTiles__iTileMapPos[uiMapPosIndex] = FASTMAPROWCOLTOPOS(iTempPosY_M, iTempPosX_M);
 
       iTempPosX_S += 40;
       iTempPosX_M++;
@@ -884,11 +899,11 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
         fEndRenderRow = false;
         uiMapPosIndex = 0;
 
-        if (bXOddFlag > 0)
+        if (bXOddFlag)
           iTempPosX_S += 20;
 
         do {
-          uiTileIndex = iTileMapPos[uiMapPosIndex];
+          uiTileIndex = RenderTiles__iTileMapPos[uiMapPosIndex];
           uiMapPosIndex++;
 
           // if ( 0 )
@@ -908,15 +923,15 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               // pNode = gpWorldLevelData[ uiTileIndex ].pLevelNodes[ RenderFXStartIndex[ psLevelIDs[ cnt ] ] ];
               // pNode = gpWorldLevelData[ uiTileIndex ].pLevelNodes[ 0 ];
               // pNode=NULL;
-              pNode = gpWorldLevelData[uiTileIndex].pLevelNodes[ubLevelNodeStartIndex[cnt]];
+              pNode = gpWorldLevelData[uiTileIndex].pLevelNodes[RenderTiles__ubLevelNodeStartIndex[cnt]];
             }
 
             bItemCount = 0;
             bVisibleItemCount = 0;
-            pItemPool = null;
+            pItemPool = <ITEM_POOL><unknown>null;
 
             while (pNode != null) {
-              RenderingFX = RenderFXList[cnt];
+              RenderingFX = RenderTiles__RenderFXList[cnt];
 
               fObscured = RenderingFX.fObscured;
               fDynamic = RenderingFX.fDynamic;
@@ -932,7 +947,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               fIntensityBlitter = false;
               fSaveZ = false;
               fWallTile = false;
-              gsForceSoldierZLevel = false;
+              gsForceSoldierZLevel = 0;
               pSoldier = null;
               fUseTileElem = false;
               fMultiTransShadowZBlitter = false;
@@ -940,7 +955,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               fTranslucencyType = true;
               uiAniTileFlags = 0;
 
-              uiLevelNodeFlags = pNode.value.uiFlags;
+              uiLevelNodeFlags = pNode.uiFlags;
 
               if (fCheckForRedundency) {
                 if ((gpWorldLevelData[uiTileIndex].uiFlags & MAPELEMENT_REDUNDENT)) {
@@ -984,17 +999,17 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               if (!fMerc) {
                 if (!(uiLevelNodeFlags & (LEVELNODE_ROTTINGCORPSE | LEVELNODE_CACHEDANITILE))) {
                   if ((uiLevelNodeFlags & LEVELNODE_REVEALTREES)) {
-                    TileElem = addressof(gTileDatabase[pNode.value.usIndex + 2]);
+                    TileElem = gTileDatabase[pNode.usIndex + 2];
                   } else {
-                    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
+                    TileElem = gTileDatabase[pNode.usIndex];
                   }
 
                   // HANDLE INDEPENDANT-PER-TILE ANIMATIONS ( IE: DOORS, EXPLODING THINGS, ETC )
                   if (fDynamic) {
                     if ((uiLevelNodeFlags & LEVELNODE_ANIMATION)) {
-                      if (pNode.value.sCurrentFrame != -1) {
-                        Assert(TileElem.value.pAnimData != null);
-                        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
+                      if (pNode.sCurrentFrame != -1) {
+                        Assert(TileElem.pAnimData != null);
+                        TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[pNode.sCurrentFrame]];
                       }
                     }
                   }
@@ -1013,7 +1028,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     fRenderTile = false;
                 } else {
                   // Set Tile elem flags here!
-                  uiTileElemFlags = TileElem.value.uiFlags;
+                  uiTileElemFlags = TileElem.uiFlags;
                   // Set valid tile elem!
                   fUseTileElem = true;
 
@@ -1024,9 +1039,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                       else if (!(uiTileElemFlags & DYNAMIC_TILE) && !(uiLevelNodeFlags & LEVELNODE_DYNAMIC) && !(uiLevelNodeFlags & LEVELNODE_LASTDYNAMIC))
                       //	else if((TileElem->uiFlags&ANIMATED_TILE) )
                       {
-                        Assert(TileElem.value.pAnimData != null);
-                        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
-                        uiTileElemFlags = TileElem.value.uiFlags;
+                        Assert(TileElem.pAnimData != null);
+                        TileElem = gTileDatabase[TileElem.pAnimData.pusFrames[TileElem.pAnimData.bCurrentFrame]];
+                        uiTileElemFlags = TileElem.uiFlags;
                       }
                     }
                   } else if ((uiTileElemFlags & ANIMATED_TILE) || (uiTileElemFlags & DYNAMIC_TILE) || (uiLevelNodeFlags & LEVELNODE_DYNAMIC)) {
@@ -1090,34 +1105,34 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   }
 
                   if ((uiLevelNodeFlags & LEVELNODE_CACHEDANITILE)) {
-                    hVObject = gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo;
-                    usImageIndex = pNode.value.pAniTile.value.sCurrentFrame;
-                    uiAniTileFlags = pNode.value.pAniTile.value.uiFlags;
+                    hVObject = gpTileCache[pNode.pAniTile.sCachedTileID].pImagery.vo;
+                    usImageIndex = pNode.pAniTile.sCurrentFrame;
+                    uiAniTileFlags = pNode.pAniTile.uiFlags;
 
                     // Position corpse based on it's float position
                     if ((uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE)) {
-                      pCorpse = addressof(gRottingCorpse[pNode.value.pAniTile.value.uiUserData]);
+                      pCorpse = gRottingCorpse[pNode.pAniTile.uiUserData];
 
-                      pShadeTable = pCorpse.value.pShades[pNode.value.ubShadeLevel];
+                      pShadeTable = pCorpse.pShades[pNode.ubShadeLevel];
 
                       // pShadeTable = pCorpse->p16BPPPalette;
 
-                      dOffsetX = pCorpse.value.def.dXPos - gsRenderCenterX;
-                      dOffsetY = pCorpse.value.def.dYPos - gsRenderCenterY;
+                      dOffsetX = pCorpse.def.dXPos - gsRenderCenterX;
+                      dOffsetY = pCorpse.def.dYPos - gsRenderCenterY;
 
                       // OK, if this is a corpse.... stop if not visible
-                      if (pCorpse.value.def.bVisible != 1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+                      if (pCorpse.def.bVisible != 1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
                         // CONTINUE, DONOT RENDER
                         if (!fLinkedListDirection)
-                          pNode = pNode.value.pPrevNode;
+                          pNode = pNode.pPrevNode;
                         else
-                          pNode = pNode.value.pNext;
+                          pNode = pNode.pNext;
 
                         continue;
                       }
                     } else {
-                      dOffsetX = (pNode.value.pAniTile.value.sRelativeX - gsRenderCenterX);
-                      dOffsetY = (pNode.value.pAniTile.value.sRelativeY - gsRenderCenterY);
+                      dOffsetX = (pNode.pAniTile.sRelativeX - gsRenderCenterX);
+                      dOffsetY = (pNode.pAniTile.sRelativeY - gsRenderCenterY);
                     }
 
                     // Calculate guy's position
@@ -1130,40 +1145,40 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     sXPos -= gsRenderWorldOffsetX;
                     sYPos -= gsRenderWorldOffsetY;
                   } else {
-                    hVObject = TileElem.value.hTileSurface;
-                    usImageIndex = TileElem.value.usRegionIndex;
+                    hVObject = TileElem.hTileSurface;
+                    usImageIndex = TileElem.usRegionIndex;
 
                     // ADJUST FOR WORLD MAPELEM HIEGHT
-                    sYPos -= TileElem.value.sOffsetHeight;
+                    sYPos -= TileElem.sOffsetHeight;
 
-                    if ((TileElem.value.uiFlags & IGNORE_WORLD_HEIGHT)) {
+                    if ((TileElem.uiFlags & IGNORE_WORLD_HEIGHT)) {
                       sYPos = sYPos - sModifiedTileHeight;
                       // sYPos -= sTileHeight;
                     }
 
-                    if (!(uiLevelNodeFlags & LEVELNODE_IGNOREHEIGHT) && !(TileElem.value.uiFlags & IGNORE_WORLD_HEIGHT))
+                    if (!(uiLevelNodeFlags & LEVELNODE_IGNOREHEIGHT) && !(TileElem.uiFlags & IGNORE_WORLD_HEIGHT))
                       sYPos -= sTileHeight;
 
                     if (!(uiFlags & TILES_DIRTY)) {
-                      hVObject.value.pShadeCurrent = hVObject.value.pShades[pNode.value.ubShadeLevel];
-                      hVObject.value.pShade8 = ubColorTables[pNode.value.ubShadeLevel];
+                      hVObject.value.pShadeCurrent = hVObject.value.pShades[pNode.ubShadeLevel];
+                      hVObject.value.pShade8 = ubColorTables[pNode.ubShadeLevel];
                     }
                   }
 
                   // ADJUST FOR RELATIVE OFFSETS
                   if (uiLevelNodeFlags & LEVELNODE_USERELPOS) {
-                    sXPos += pNode.value.sRelativeX;
-                    sYPos += pNode.value.sRelativeY;
+                    sXPos += pNode.sRelativeX;
+                    sYPos += pNode.sRelativeY;
                   }
 
                   if (uiLevelNodeFlags & LEVELNODE_USEZ) {
-                    sYPos -= pNode.value.sRelativeZ;
+                    sYPos -= pNode.sRelativeZ;
                   }
 
                   // ADJUST FOR ABSOLUTE POSITIONING
                   if (uiLevelNodeFlags & LEVELNODE_USEABSOLUTEPOS) {
-                    dOffsetX = (pNode.value.sRelativeX - gsRenderCenterX);
-                    dOffsetY = (pNode.value.sRelativeY - gsRenderCenterY);
+                    dOffsetX = (pNode.sRelativeX - gsRenderCenterX);
+                    dOffsetY = (pNode.sRelativeY - gsRenderCenterY);
 
                     // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
                     dOffsetX -= CELL_Y_SIZE;
@@ -1177,7 +1192,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     sXPos -= gsRenderWorldOffsetX;
                     sYPos -= gsRenderWorldOffsetY;
 
-                    sYPos -= pNode.value.sRelativeZ;
+                    sYPos -= pNode.sRelativeZ;
                   }
                 }
 
@@ -1185,42 +1200,42 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                 if (uiLevelNodeFlags & LEVELNODE_ITEM) {
                   // OK set item pool for this location....
                   if (bItemCount == 0) {
-                    pItemPool = pNode.value.pItemPool;
+                    pItemPool = pNode.pItemPool;
                   } else {
-                    pItemPool = pItemPool.value.pNext;
+                    pItemPool = <ITEM_POOL>pItemPool.pNext;
                   }
 
                   if (bItemCount < MAX_RENDERED_ITEMS) {
                     bItemCount++;
 
-                    if (gWorldItems[pItemPool.value.iItemIndex].bVisible == VISIBLE) {
+                    if (gWorldItems[pItemPool.iItemIndex].bVisible == VISIBLE) {
                       bVisibleItemCount++;
                     }
                   }
 
                   // LIMIT RENDERING OF ITEMS TO ABOUT 7, DO NOT RENDER HIDDEN ITEMS TOO!
-                  if (bVisibleItemCount == MAX_RENDERED_ITEMS || (gWorldItems[pItemPool.value.iItemIndex].bVisible != VISIBLE) || (pItemPool.value.usFlags & WORLD_ITEM_DONTRENDER)) {
+                  if (bVisibleItemCount == MAX_RENDERED_ITEMS || (gWorldItems[pItemPool.iItemIndex].bVisible != VISIBLE) || (pItemPool.usFlags & WORLD_ITEM_DONTRENDER)) {
                     if (!(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
                       // CONTINUE, DONOT RENDER
                       if (!fLinkedListDirection)
-                        pNode = pNode.value.pPrevNode;
+                        pNode = pNode.pPrevNode;
                       else
-                        pNode = pNode.value.pNext;
+                        pNode = pNode.pNext;
                       continue;
                     }
                   }
 
-                  if (pItemPool.value.bRenderZHeightAboveLevel > 0) {
-                    sYPos -= pItemPool.value.bRenderZHeightAboveLevel;
+                  if (pItemPool.bRenderZHeightAboveLevel > 0) {
+                    sYPos -= pItemPool.bRenderZHeightAboveLevel;
                   }
                 }
 
                 // If render tile is false...
                 if (!fRenderTile) {
                   if (!fLinkedListDirection)
-                    pNode = pNode.value.pPrevNode;
+                    pNode = pNode.pPrevNode;
                   else
-                    pNode = pNode.value.pNext;
+                    pNode = pNode.pNext;
 
                   continue;
                 }
@@ -1243,12 +1258,12 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   StructZLevel(iTempPosX_M, iTempPosY_M);
 
-                  if (fUseTileElem && (TileElem.value.uiFlags & MULTI_Z_TILE)) {
+                  if (fUseTileElem && (TileElem.uiFlags & MULTI_Z_TILE)) {
                     fMultiZBlitter = true;
                   }
 
                   // ATE: if we are a wall, set flag
-                  if (fUseTileElem && (TileElem.value.uiFlags & WALL_TILE)) {
+                  if (fUseTileElem && (TileElem.uiFlags & WALL_TILE)) {
                     fWallTile = true;
                   }
 
@@ -1262,7 +1277,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   sYPos -= WALL_HEIGHT;
 
                   // ATE: Added for shadows on roofs
-                  if (fUseTileElem && (TileElem.value.uiFlags & ROOFSHADOW_TILE)) {
+                  if (fUseTileElem && (TileElem.uiFlags & ROOFSHADOW_TILE)) {
                     fShadowBlitter = true;
                   }
                   break;
@@ -1343,78 +1358,78 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   // Set flag to set layer as used
                   uiAdditiveLayerUsedFlags |= uiRowFlags;
 
-                  pSoldier = pNode.value.pSoldier;
+                  pSoldier = pNode.pSoldier;
 
                   if (uiRowFlags == TILES_DYNAMIC_MERCS) {
                     // If we are multi-tiled, ignore here
-                    if (pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE_Z) {
-                      pNode = pNode.value.pNext;
+                    if (pSoldier.uiStatusFlags & SOLDIER_MULTITILE_Z) {
+                      pNode = pNode.pNext;
                       continue;
                     }
 
                     // If we are at a higher level, no not do anything unless we are at the highmerc stage
-                    if (pSoldier.value.bLevel > 0) {
-                      pNode = pNode.value.pNext;
+                    if (pSoldier.bLevel > 0) {
+                      pNode = pNode.pNext;
                       continue;
                     }
                   }
 
                   if (uiRowFlags == TILES_DYNAMIC_HIGHMERCS) {
                     // If we are multi-tiled, ignore here
-                    if (pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE_Z) {
-                      pNode = pNode.value.pNext;
+                    if (pSoldier.uiStatusFlags & SOLDIER_MULTITILE_Z) {
+                      pNode = pNode.pNext;
                       continue;
                     }
 
                     // If we are at a lower level, no not do anything unless we are at the highmerc stage
-                    if (pSoldier.value.bLevel == 0) {
-                      pNode = pNode.value.pNext;
+                    if (pSoldier.bLevel == 0) {
+                      pNode = pNode.pNext;
                       continue;
                     }
                   }
 
                   if (uiRowFlags == TILES_DYNAMIC_STRUCT_MERCS) {
                     // If we are not multi-tiled, ignore here
-                    if (!(pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE_Z)) {
+                    if (!(pSoldier.uiStatusFlags & SOLDIER_MULTITILE_Z)) {
                       // If we are at a low level, no not do anything unless we are at the merc stage
-                      if (pSoldier.value.bLevel == 0) {
-                        pNode = pNode.value.pNext;
+                      if (pSoldier.bLevel == 0) {
+                        pNode = pNode.pNext;
                         continue;
                       }
                     }
 
-                    if (pSoldier.value.uiStatusFlags & SOLDIER_MULTITILE_Z) {
+                    if (pSoldier.uiStatusFlags & SOLDIER_MULTITILE_Z) {
                       fSaveZ = true;
                       fMultiTransShadowZBlitter = true;
                       fZBlitter = true;
 
                       // ATE: Use one direction for queen!
-                      if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+                      if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
                         sMultiTransShadowZBlitterIndex = 0;
                       } else {
-                        sMultiTransShadowZBlitterIndex = gOneCDirection[pSoldier.value.bDirection];
+                        sMultiTransShadowZBlitterIndex = gOneCDirection[pSoldier.bDirection];
                       }
                     }
                   }
 
                   // IF we are not active, or are a placeholder for multi-tile animations do nothing
                   // if ( !pSoldier->bActive  )
-                  if (!pSoldier.value.bActive || (uiLevelNodeFlags & LEVELNODE_MERCPLACEHOLDER)) {
-                    pNode = pNode.value.pNext;
+                  if (!pSoldier.bActive || (uiLevelNodeFlags & LEVELNODE_MERCPLACEHOLDER)) {
+                    pNode = pNode.pNext;
                     continue;
                   }
 
                   // Skip if we cannot see the guy!
-                  if (pSoldier.value.bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
-                    pNode = pNode.value.pNext;
+                  if (pSoldier.bLastRenderVisibleValue == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+                    pNode = pNode.pNext;
                     continue;
                   }
 
                   // Get animation surface....
-                  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.value.usAnimState);
+                  usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
                   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-                    pNode = pNode.value.pNext;
+                    pNode = pNode.pNext;
                     continue;
                   }
 
@@ -1422,20 +1437,20 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   {
                     let ubShadeLevel: UINT8;
 
-                    ubShadeLevel = (pNode.value.ubShadeLevel & 0x0f);
+                    ubShadeLevel = (pNode.ubShadeLevel & 0x0f);
                     ubShadeLevel = Math.max(ubShadeLevel - 2, DEFAULT_SHADE_LEVEL);
-                    ubShadeLevel |= (pNode.value.ubShadeLevel & 0x30);
+                    ubShadeLevel |= (pNode.ubShadeLevel & 0x30);
 
-                    if (pSoldier.value.fBeginFade) {
-                      pShadeTable = pSoldier.value.pCurrentShade = pSoldier.value.pShades[pSoldier.value.ubFadeLevel];
+                    if (pSoldier.fBeginFade) {
+                      pShadeTable = pSoldier.pCurrentShade = pSoldier.pShades[pSoldier.ubFadeLevel];
                     } else {
-                      pShadeTable = pSoldier.value.pCurrentShade = pSoldier.value.pShades[ubShadeLevel];
+                      pShadeTable = pSoldier.pCurrentShade = pSoldier.pShades[ubShadeLevel];
                     }
                   }
 
                   // Position guy based on guy's position
-                  dOffsetX = pSoldier.value.dXPos - gsRenderCenterX;
-                  dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
+                  dOffsetX = pSoldier.dXPos - gsRenderCenterX;
+                  dOffsetY = pSoldier.dYPos - gsRenderCenterY;
 
                   // Calculate guy's position
                   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
@@ -1448,13 +1463,13 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   sYPos -= gsRenderWorldOffsetY;
 
                   // Adjust for soldier height
-                  sYPos -= pSoldier.value.sHeightAdjustment;
+                  sYPos -= pSoldier.sHeightAdjustment;
 
                   // Handle shade stuff....
-                  if (!pSoldier.value.fBeginFade) {
+                  if (!pSoldier.fBeginFade) {
                     // Special effect - draw ghost if is seen by a guy in player's team but not current guy
                     // ATE: Todo: setup flag for 'bad-guy' - can releive some checks in renderer
-                    if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
+                    if (!pSoldier.bNeutral && (pSoldier.bSide != gbPlayerNum)) {
                       if (gusSelectedSoldier != NOBODY) {
                         pSelSoldier = MercPtrs[gusSelectedSoldier];
                       } else {
@@ -1465,35 +1480,35 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                       if (gTacticalStatus.ubCurrentTeam == gbPlayerNum) {
                         // Shade differently depending on visiblity
-                        if (pSoldier.value.bLastRenderVisibleValue == 0) {
+                        if (pSoldier.bLastRenderVisibleValue == 0) {
                           bGlowShadeOffset = 10;
                         }
 
                         if (pSelSoldier != null) {
-                          if (pSelSoldier.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) {
-                            if (pSoldier.value.usAnimState != Enum193.CHARIOTS_OF_FIRE && pSoldier.value.usAnimState != Enum193.BODYEXPLODING) {
+                          if (pSelSoldier.bOppList[pSoldier.ubID] != SEEN_CURRENTLY) {
+                            if (pSoldier.usAnimState != Enum193.CHARIOTS_OF_FIRE && pSoldier.usAnimState != Enum193.BODYEXPLODING) {
                               bGlowShadeOffset = 10;
                             }
                           }
                         }
                       }
 
-                      if (pSoldier.value.bLevel == 0) {
-                        pShadeStart = addressof(pSoldier.value.pGlowShades[0]);
+                      if (pSoldier.bLevel == 0) {
+                        pShadeStart = addressof(pSoldier.pGlowShades[0]);
                       } else {
-                        pShadeStart = addressof(pSoldier.value.pShades[20]);
+                        pShadeStart = addressof(pSoldier.pShades[20]);
                       }
 
                       // Set shade
                       // If a bad guy is highlighted
                       if (gfUIHandleSelectionAboveGuy == true && MercPtrs[gsSelectedGuy].value.bSide != gbPlayerNum) {
-                        if (gsSelectedGuy == pSoldier.value.ubID) {
+                        if (gsSelectedGuy == pSoldier.ubID) {
                           pShadeTable = pShadeStart[gsGlowFrames[gsCurrentGlowFrame] + bGlowShadeOffset];
                           gsForceSoldierZLevel = TOPMOST_Z_LEVEL;
                         } else {
                           // Are we dealing with a not-so visible merc?
                           if (bGlowShadeOffset == 10) {
-                            pShadeTable = pSoldier.value.pEffectShades[0];
+                            pShadeTable = pSoldier.pEffectShades[0];
                           }
                         }
                       } else {
@@ -1502,7 +1517,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                         // AI's turn?
                         if (gTacticalStatus.ubCurrentTeam != OUR_TEAM) {
                           // Does he have baton?
-                          if ((pSoldier.value.uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
+                          if ((pSoldier.uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
                             pShadeTable = pShadeStart[gpGlowFramePointer[gsCurrentGlowFrame] + bGlowShadeOffset];
 
                             if (gpGlowFramePointer[gsCurrentGlowFrame] >= 7) {
@@ -1536,21 +1551,21 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   SoldierZLevel(pSoldier, iTempPosX_M, iTempPosY_M);
 
                   if (!(uiFlags & TILES_DIRTY)) {
-                    if (pSoldier.value.fForceShade) {
-                      pShadeTable = pSoldier.value.pForcedShade;
+                    if (pSoldier.fForceShade) {
+                      pShadeTable = pSoldier.pForcedShade;
                     }
                   }
 
                   // check if we are a merc duplicate, if so, only do minimal stuff!
-                  if (pSoldier.value.ubID >= MAX_NUM_SOLDIERS) {
+                  if (pSoldier.ubID >= MAX_NUM_SOLDIERS) {
                     // Shade gray
-                    pShadeTable = pSoldier.value.pEffectShades[1];
+                    pShadeTable = pSoldier.pEffectShades[1];
                   }
 
                   hVObject = gAnimSurfaceDatabase[usAnimSurface].hVideoObject;
 
                   if (hVObject == null) {
-                    pNode = pNode.value.pNext;
+                    pNode = pNode.pNext;
                     continue;
                   }
 
@@ -1562,7 +1577,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     sZLevel += 2;
                   }
 
-                  usImageIndex = pSoldier.value.usAniFrame;
+                  usImageIndex = pSoldier.usAniFrame;
 
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED | BGND_FLAG_MERC;
                   break;
@@ -1579,7 +1594,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                 if (TileElem != null) {
                   // If we are a roof and have SHOW_ALL_ROOFS on, turn off hidden tile check!
-                  if ((TileElem.value.uiFlags & ROOF_TILE) && (gTacticalStatus.uiFlags & SHOW_ALL_ROOFS)) {
+                  if ((TileElem.uiFlags & ROOF_TILE) && (gTacticalStatus.uiFlags & SHOW_ALL_ROOFS)) {
                     // Turn off
                     fHiddenTile = false;
                   }
@@ -1596,14 +1611,14 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   // if ( hVObject->ppZStripInfo != NULL )
                   {
-                    sMultiTransShadowZBlitterIndex = GetCorpseStructIndex(addressof(pCorpse.value.def), true);
+                    sMultiTransShadowZBlitterIndex = GetCorpseStructIndex(pCorpse.def, true);
                     fMultiTransShadowZBlitter = true;
                   }
                 }
 
                 if ((uiLevelNodeFlags & LEVELNODE_LASTDYNAMIC) && !(uiFlags & TILES_DIRTY)) {
                   // Remove flags!
-                  pNode.value.uiFlags &= (~LEVELNODE_LASTDYNAMIC);
+                  pNode.uiFlags &= (~LEVELNODE_LASTDYNAMIC);
                   fZWrite = true;
                 }
 
@@ -1627,9 +1642,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                 // RENDER
                 if (fTileInvisible) {
                 } else if (uiLevelNodeFlags & LEVELNODE_DISPLAY_AP && !(uiFlags & TILES_DIRTY)) {
-                  pTrav = addressof(hVObject.value.pETRLEObject[usImageIndex]);
-                  sXPos += pTrav.value.sOffsetX;
-                  sYPos += pTrav.value.sOffsetY;
+                  pTrav = hVObject.value.pETRLEObject[usImageIndex];
+                  sXPos += pTrav.sOffsetX;
+                  sYPos += pTrav.sOffsetY;
 
                   if (gfUIDisplayActionPointsInvalid) {
                     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1646,8 +1661,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   SetFont(TINYFONT1());
                   SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, false);
-                  ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pNode.value.uiAPCost));
-                  mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pNode.value.uiAPCost);
+                  ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pNode.uiAPCost));
+                  mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pNode.uiAPCost);
                   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
                 } else if ((uiLevelNodeFlags & LEVELNODE_ERASEZ) && !(uiFlags & TILES_DIRTY)) {
                   Zero8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex);
@@ -1686,7 +1701,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   //	bItemOutline = TRUE;
                   //}
 
-                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                   if (bBlitClipVal == false) {
                     if (fZBlit) {
@@ -1701,12 +1716,12 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   } else if (bBlitClipVal == true) {
                     if (fZBlit) {
                       if (fObscuredBlitter) {
-                        Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
+                        Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
                       } else {
-                        Blt8BPPDataTo16BPPBufferOutlineZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
+                        Blt8BPPDataTo16BPPBufferOutlineZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
                       }
                     } else {
-                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
+                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
                     }
                   }
                 }
@@ -1718,28 +1733,28 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     bItemOutline = false;
                   }
 
-                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                   if (fShadowBlitter) {
                     if (bBlitClipVal == false) {
                       Blt8BPPDataTo16BPPBufferShadowZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
                     } else {
-                      Blt8BPPDataTo16BPPBufferShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                      Blt8BPPDataTo16BPPBufferShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                     }
                   } else {
                     if (bBlitClipVal == false) {
                       Blt8BPPDataTo16BPPBufferOutlineZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline);
                     } else if (bBlitClipVal == true) {
-                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
+                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
                     }
                   }
                 } else if (uiFlags & TILES_DIRTY) {
                   if (!(uiLevelNodeFlags & LEVELNODE_LASTDYNAMIC)) {
-                    pTrav = addressof(hVObject.value.pETRLEObject[usImageIndex]);
-                    uiBrushHeight = pTrav.value.usHeight;
-                    uiBrushWidth = pTrav.value.usWidth;
-                    sXPos += pTrav.value.sOffsetX;
-                    sYPos += pTrav.value.sOffsetY;
+                    pTrav = hVObject.value.pETRLEObject[usImageIndex];
+                    uiBrushHeight = pTrav.usHeight;
+                    uiBrushWidth = pTrav.usWidth;
+                    sXPos += pTrav.sOffsetX;
+                    sYPos += pTrav.sOffsetY;
 
                     RegisterBackgroundRect(uiDirtyFlags, null, sXPos, sYPos, (sXPos + uiBrushWidth), (Math.min((sYPos + uiBrushHeight), gsVIEWPORT_WINDOW_END_Y)));
 
@@ -1761,9 +1776,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if (fMultiTransShadowZBlitter) {
                       if (fZBlitter) {
                         if (fObscuredBlitter) {
-                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), sMultiTransShadowZBlitterIndex, pShadeTable);
+                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, sMultiTransShadowZBlitterIndex, pShadeTable);
                         } else {
-                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), sMultiTransShadowZBlitterIndex, pShadeTable);
+                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, sMultiTransShadowZBlitterIndex, pShadeTable);
                         }
                       } else {
                         // Blt8BPPDataTo16BPPBufferTransparentClip((UINT16*)pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect );
@@ -1771,19 +1786,19 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     } else if (fMultiZBlitter) {
                       if (fZBlitter) {
                         if (fObscuredBlitter) {
-                          Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                         } else {
                           if (fWallTile) {
-                            Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransZIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           }
                         }
                       } else {
-                        Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                        Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                       }
                     } else {
-                      bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                      bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                       if (bBlitClipVal == true) {
                         if (fPixelate) {
@@ -1791,22 +1806,22 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             // if(fZWrite)
                             //	Blt8BPPDataTo16BPPBufferTransZClipTranslucent((UINT16*)pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
                             // else
-                            Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           } else {
                             // if(fZWrite)
                             //	Blt8BPPDataTo16BPPBufferTransZClipPixelate((UINT16*)pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
                             // else
-                            Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           }
                         } else if (fMerc) {
                           if (fZBlitter) {
                             if (fZWrite) {
-                              Blt8BPPDataTo16BPPBufferTransShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                              Blt8BPPDataTo16BPPBufferTransShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
                             } else {
                               if (fObscuredBlitter) {
-                                Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                                Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
                               } else {
-                                Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                                Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
                               }
                             }
 
@@ -1814,58 +1829,58 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                               pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                               // BLIT HERE
-                              Blt8BPPDataTo16BPPBufferTransShadowClip(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                              Blt8BPPDataTo16BPPBufferTransShadowClip(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
 
                               UnLockVideoSurface(guiSAVEBUFFER);
 
                               // Turn it off!
-                              pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
+                              pNode.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                             }
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                            Blt8BPPDataTo16BPPBufferTransShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
                           }
                         } else if (fShadowBlitter) {
                           if (fZBlitter) {
                             if (fZWrite)
-                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                             else
-                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           } else {
-                            Blt8BPPDataTo16BPPBufferShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           }
                         } else if (fIntensityBlitter) {
                           if (fZBlitter) {
                             if (fZWrite)
-                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                             else
-                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           } else {
-                            Blt8BPPDataTo16BPPBufferIntensityClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferIntensityClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           }
                         } else if (fZBlitter) {
                           if (fZWrite) {
                             if (fObscuredBlitter) {
-                              Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                             } else {
-                              Blt8BPPDataTo16BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                              Blt8BPPDataTo16BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                             }
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                           }
 
                           if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
                             pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                             // BLIT HERE
-                            Blt8BPPDataTo16BPPBufferTransZClip(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                            Blt8BPPDataTo16BPPBufferTransZClip(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                             UnLockVideoSurface(guiSAVEBUFFER);
 
                             // Turn it off!
-                            pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
+                            pNode.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                           }
                         } else
-                          Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                       } else if (bBlitClipVal == false) {
                         if (fPixelate) {
                           if (fTranslucencyType) {
@@ -1900,7 +1915,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                               UnLockVideoSurface(guiSAVEBUFFER);
 
                               // Turn it off!
-                              pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
+                              pNode.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                             }
                           } else {
                             Blt8BPPDataTo16BPPBufferTransShadow(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
@@ -1945,7 +1960,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             UnLockVideoSurface(guiSAVEBUFFER);
 
                             // Turn it off!
-                            pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
+                            pNode.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                           }
                         } else
                           Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex);
@@ -1955,25 +1970,25 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   {
                     if (fPixelate) {
                       if (fZWrite)
-                        Blt8BPPDataTo8BPPBufferTransZClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                        Blt8BPPDataTo8BPPBufferTransZClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                       else
-                        Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
-                    } else if (BltIsClipped(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect))) {
+                        Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
+                    } else if (BltIsClipped(hVObject, sXPos, sYPos, usImageIndex, gClippingRect)) {
                       if (fMerc) {
-                        Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
+                        Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
                       } else if (fShadowBlitter)
                         if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                         else
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                       else if (fZBlitter) {
                         if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo8BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                         else
-                          Blt8BPPDataTo8BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                          Blt8BPPDataTo8BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                       } else
-                        Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                        Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                     } else {
                       if (fMerc) {
                         Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
@@ -2002,11 +2017,11 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                 // RENDR APS ONTOP OF PLANNED MERC GUY
                 if (fRenderTile && !(uiFlags & TILES_DIRTY)) {
                   if (fMerc) {
-                    if (pSoldier != null && pSoldier.value.ubID >= MAX_NUM_SOLDIERS) {
+                    if (pSoldier != null && pSoldier.ubID >= MAX_NUM_SOLDIERS) {
                       SetFont(TINYFONT1());
                       SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, false);
-                      ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pSoldier.value.ubPlannedUIAPCost));
-                      mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pSoldier.value.ubPlannedUIAPCost);
+                      ({ sX, sY } = VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1(), "%d", pSoldier.ubPlannedUIAPCost));
+                      mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1(), sX, sY, "%d", pSoldier.ubPlannedUIAPCost);
                       SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
                     }
                   }
@@ -2014,9 +2029,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               }
 
               if (!fLinkedListDirection)
-                pNode = pNode.value.pPrevNode;
+                pNode = pNode.pPrevNode;
               else
-                pNode = pNode.value.pNext;
+                pNode = pNode.pNext;
 
               // pNode = NULL;
             }
@@ -2055,7 +2070,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
     }
     //	} while( FALSE );
 
-    if (bXOddFlag > 0) {
+    if (bXOddFlag) {
       iAnchorPosY_M++;
     } else {
       iAnchorPosX_M++;
@@ -2141,8 +2156,8 @@ function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScroll
 // For coordinate transformations
 
 export function RenderWorld(): void {
-  let TileElem: Pointer<TILE_ELEMENT>;
-  let pAnimData: Pointer<TILE_ANIMATION_DATA>;
+  let TileElem: TILE_ELEMENT;
+  let pAnimData: TILE_ANIMATION_DATA | nulls;
   let cnt: UINT32 = 0;
 
   gfRenderFullThisFrame = false;
@@ -2164,16 +2179,16 @@ export function RenderWorld(): void {
     RESETCOUNTER(Enum386.ANIMATETILES);
 
     while (cnt < gusNumAnimatedTiles) {
-      TileElem = addressof(gTileDatabase[gusAnimatedTiles[cnt]]);
+      TileElem = gTileDatabase[gusAnimatedTiles[cnt]];
 
-      pAnimData = TileElem.value.pAnimData;
+      pAnimData = TileElem.pAnimData;
 
       Assert(pAnimData != null);
 
-      pAnimData.value.bCurrentFrame++;
+      pAnimData.bCurrentFrame++;
 
-      if (pAnimData.value.bCurrentFrame >= pAnimData.value.ubNumFrames)
-        pAnimData.value.bCurrentFrame = 0;
+      if (pAnimData.bCurrentFrame >= pAnimData.ubNumFrames)
+        pAnimData.bCurrentFrame = 0;
       cnt++;
     }
   }
@@ -2228,7 +2243,7 @@ export function RenderWorld(): void {
       UpdateSaveBuffer();
   }
 
-  if (gfScrollInertia == false || (gRenderFlags & RENDER_FLAG_NOZ) || (gRenderFlags & RENDER_FLAG_FULL) || (gRenderFlags & RENDER_FLAG_MARKED)) {
+  if (gfScrollInertia == 0 || (gRenderFlags & RENDER_FLAG_NOZ) || (gRenderFlags & RENDER_FLAG_FULL) || (gRenderFlags & RENDER_FLAG_MARKED)) {
     RenderDynamicWorld();
   }
 
@@ -2277,8 +2292,8 @@ export function RenderWorld(): void {
 // Determine WorldIntersectionPoint and the starting block from these
 // Then render away!
 export function RenderStaticWorldRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, fDynamicsToo: boolean): void {
-  let uiLevelFlags: UINT32[] /* [10] */;
-  let sLevelIDs: UINT16[] /* [10] */;
+  let uiLevelFlags: UINT32[] /* [10] */ = createArray(10, 0);
+  let sLevelIDs: UINT16[] /* [10] */ = createArray(10, 0);
 
   // Calculate render starting parameters
   CalcRenderParameters(sLeft, sTop, sRight, sBottom);
@@ -2368,8 +2383,8 @@ export function RenderStaticWorldRect(sLeft: INT16, sTop: INT16, sRight: INT16, 
 }
 
 function RenderStaticWorld(): void {
-  let uiLevelFlags: UINT32[] /* [9] */;
-  let sLevelIDs: UINT16[] /* [9] */;
+  let uiLevelFlags: UINT32[] /* [9] */ = createArray(9, 0);
+  let sLevelIDs: UINT16[] /* [9] */ = createArray(9, 0);
 
   // Calculate render starting parameters
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
@@ -2421,8 +2436,8 @@ function RenderStaticWorld(): void {
 }
 
 function RenderMarkedWorld(): void {
-  let uiLevelFlags: UINT32[] /* [4] */;
-  let sLevelIDs: UINT16[] /* [4] */;
+  let uiLevelFlags: UINT32[] /* [4] */ = createArray(4, 0);
+  let sLevelIDs: UINT16[] /* [4] */ = createArray(4, 0);
 
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
 
@@ -2467,8 +2482,8 @@ function RenderMarkedWorld(): void {
 
 function RenderDynamicWorld(): void {
   let ubNumLevels: UINT8;
-  let uiLevelFlags: UINT32[] /* [10] */;
-  let sLevelIDs: UINT16[] /* [10] */;
+  let uiLevelFlags: UINT32[] /* [10] */ = createArray(10, 0);
+  let sLevelIDs: UINT16[] /* [10] */ = createArray(10, 0);
 
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
 
@@ -2823,6 +2838,8 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   return fAGoodMove;
 }
 
+/* static */ let ScrollWorld__ubOldScrollSpeed: UINT8 = 0;
+/* static */ let ScrollWorld__fFirstTimeInSlideToMode: boolean = true;
 export function ScrollWorld(): void {
   let ScrollFlags: UINT32 = 0;
   let fDoScroll: boolean = false;
@@ -2834,19 +2851,17 @@ export function ScrollWorld(): void {
   let sScrollXStep: INT16 = -1;
   let sScrollYStep: INT16 = -1;
   let fIgnoreInput: boolean = false;
-  /* static */ let ubOldScrollSpeed: UINT8 = 0;
-  /* static */ let fFirstTimeInSlideToMode: boolean = true;
 
   if (gfIgnoreScrollDueToCenterAdjust) {
     //	gfIgnoreScrollDueToCenterAdjust = FALSE;
     return;
   }
 
-  if (gfIgnoreScrolling == 1) {
+  if (gfIgnoreScrolling == true) {
     return;
   }
 
-  if (gfIgnoreScrolling == 2) {
+  if (Number(gfIgnoreScrolling) == 2) {
     fIgnoreInput = true;
   }
 
@@ -2863,14 +2878,14 @@ export function ScrollWorld(): void {
     return;
 
   do {
-    if (gfIgnoreScrolling != 3) {
+    if (Number(gfIgnoreScrolling) != 3) {
       // Check for sliding
       if (gTacticalStatus.sSlideTarget != NOWHERE) {
         // Ignore all input...
         // Check if we have reached out dest!
-        if (fFirstTimeInSlideToMode) {
-          ubOldScrollSpeed = gubCurScrollSpeedID;
-          fFirstTimeInSlideToMode = false;
+        if (ScrollWorld__fFirstTimeInSlideToMode) {
+          ScrollWorld__ubOldScrollSpeed = gubCurScrollSpeedID;
+          ScrollWorld__fFirstTimeInSlideToMode = false;
         }
 
         // Make faster!
@@ -2889,10 +2904,10 @@ export function ScrollWorld(): void {
         }
       } else {
         // Restore old scroll speed
-        if (!fFirstTimeInSlideToMode) {
-          gubCurScrollSpeedID = ubOldScrollSpeed;
+        if (!ScrollWorld__fFirstTimeInSlideToMode) {
+          gubCurScrollSpeedID = ScrollWorld__ubOldScrollSpeed;
         }
-        fFirstTimeInSlideToMode = true;
+        ScrollWorld__fFirstTimeInSlideToMode = true;
       }
     }
 
@@ -3031,7 +3046,7 @@ export function ScrollWorld(): void {
     }
 
     // Check if we have just stopped scrolling!
-    if (gfScrollInertia != false) {
+    if (gfScrollInertia != 0) {
       SetRenderFlags(RENDER_FLAG_FULL | RENDER_FLAG_CHECKZ);
 
       // Restore Interface!
@@ -3041,7 +3056,7 @@ export function ScrollWorld(): void {
       DeleteVideoOverlaysArea();
     }
 
-    gfScrollInertia = false;
+    gfScrollInertia = 0;
     gfScrollPending = false;
 
     if (gfDoSubtileScroll) {
@@ -3293,7 +3308,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
     if (fForceAdjust) {
       if (fOutTop) {
         // Adjust screen coordinates on the Y!
-        CorrectRenderCenter(sScreenCenterX, (gsTLY + sY_S), addressof(sNewScreenX), addressof(sNewScreenY));
+        ({ sNewScreenX, sNewScreenY } = CorrectRenderCenter(sScreenCenterX, (gsTLY + sY_S)));
         ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
@@ -3303,7 +3318,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
       if (fOutBottom) {
         // OK, Ajust this since we get rounding errors in our two different calculations.
-        CorrectRenderCenter(sScreenCenterX, (gsBLY - sY_S - 50), addressof(sNewScreenX), addressof(sNewScreenY));
+        ({ sNewScreenX, sNewScreenY } = CorrectRenderCenter(sScreenCenterX, (gsBLY - sY_S - 50)));
         ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
@@ -3312,7 +3327,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       }
 
       if (fOutLeft) {
-        CorrectRenderCenter((gsTLX + sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
+        ({ sNewScreenX, sNewScreenY } = CorrectRenderCenter((gsTLX + sX_S), sScreenCenterY));
         ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
@@ -3321,7 +3336,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       }
 
       if (fOutRight) {
-        CorrectRenderCenter((gsTRX - sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
+        ({ sNewScreenX, sNewScreenY } = CorrectRenderCenter((gsTRX - sX_S), sScreenCenterY));
         ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sNewScreenX, sNewScreenY));
 
         sTempRenderCenterX = sTempPosX_W;
@@ -3440,7 +3455,7 @@ const Z_STRIP_DELTA_Y = (Z_SUBLAYERS * 10);
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -3450,7 +3465,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -3479,14 +3494,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -3494,10 +3509,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -3837,7 +3852,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -3847,7 +3862,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -3876,14 +3891,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -3891,10 +3906,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -4237,7 +4252,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
         // render at all
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -4248,7 +4263,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -4277,14 +4292,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -4292,10 +4307,10 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -4653,7 +4668,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
   let usHeight: UINT32;
@@ -4663,7 +4678,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -4692,14 +4707,14 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -4707,10 +4722,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -5073,7 +5088,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   return true;
 }
 
-function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16, pSNewX: Pointer<INT16>, pSNewY: Pointer<INT16>): void {
+function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16): { sNewScreenX: INT16, sNewScreenY: INT16 } {
+  let sNewScreenX: INT16;
+  let sNewScreenY: INT16;
+
   let sScreenX: INT16;
   let sScreenY: INT16;
   let sNumXSteps: INT16;
@@ -5102,8 +5120,10 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16, pSNewX: Pointer<I
   sScreenX += ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
   sScreenY += ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
-  pSNewX.value = sScreenX;
-  pSNewY.value = sScreenY;
+  sNewScreenX = sScreenX;
+  sNewScreenY = sScreenY;
+
+  return { sNewScreenX, sNewScreenY };
 }
 
 // Blitter Specs
@@ -5112,7 +5132,7 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16, pSNewX: Pointer<I
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5121,7 +5141,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let LeftSkip: INT32;
@@ -5150,14 +5170,14 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   if (clipregion == null) {
     ClipX1 = ClippingRect.iLeft;
@@ -5165,10 +5185,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
     ClipX2 = ClippingRect.iRight;
     ClipY2 = ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.value.iLeft;
-    ClipY1 = clipregion.value.iTop;
-    ClipX2 = clipregion.value.iRight;
-    ClipY2 = clipregion.value.iBottom;
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
   }
 
   // Calculate rows hanging off each side of the screen
@@ -5510,7 +5530,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
 }
 
 function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16): void {
-  let bXOddFlag: INT8 = 0;
+  let bXOddFlag: boolean /* INT8 */ = false;
   let sAnchorPosX_M: INT16;
   let sAnchorPosY_M: INT16;
   let sAnchorPosX_S: INT16;
@@ -5542,7 +5562,7 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
     sTempPosX_S = sAnchorPosX_S;
     sTempPosY_S = sAnchorPosY_S;
 
-    if (bXOddFlag > 0)
+    if (bXOddFlag)
       sTempPosX_S += 20;
 
     do {
@@ -5591,7 +5611,7 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
       }
     } while (!fEndRenderRow);
 
-    if (bXOddFlag > 0) {
+    if (bXOddFlag) {
       sAnchorPosY_M++;
     } else {
       sAnchorPosX_M++;
@@ -5615,7 +5635,7 @@ function ExamineZBufferRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: I
 }
 
 function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16): void {
-  let bXOddFlag: INT8 = 0;
+  let bXOddFlag: boolean /* INT8 */ = false;
   let sAnchorPosX_M: INT16;
   let sAnchorPosY_M: INT16;
   let sAnchorPosX_S: INT16;
@@ -5633,9 +5653,9 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   let sZLevel: INT16;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  let TileElem: Pointer<TILE_ELEMENT>;
-  let bBlitClipVal: INT8;
-  let pObject: Pointer<LEVELNODE>;
+  let TileElem: TILE_ELEMENT;
+  let bBlitClipVal: boolean /* INT8 */;
+  let pObject: LEVELNODE | null;
 
   // Begin Render Loop
   sAnchorPosX_M = sStartPointX_M;
@@ -5646,7 +5666,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   // Get VObject for firt land peice!
-  TileElem = addressof(gTileDatabase[Enum312.FIRSTTEXTURE1]);
+  TileElem = gTileDatabase[Enum312.FIRSTTEXTURE1];
 
   do {
     fEndRenderRow = false;
@@ -5655,7 +5675,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
     sTempPosX_S = sAnchorPosX_S;
     sTempPosY_S = sAnchorPosY_S;
 
-    if (bXOddFlag > 0)
+    if (bXOddFlag)
       sTempPosX_S += 20;
 
     do {
@@ -5683,7 +5703,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
         sZLevel = (sZLevel * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
 
         if (gpWorldLevelData[usTileIndex].uiFlags & MAPELEMENT_REEVALUATE_REDUNDENCY) {
-          bBlitClipVal = BltIsClippedOrOffScreen(TileElem.value.hTileSurface, sX, sY, TileElem.value.usRegionIndex, addressof(gClippingRect));
+          bBlitClipVal = BltIsClippedOrOffScreen(TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex, gClippingRect);
 
           if (bBlitClipVal == false) {
             // Set flag to not evaluate again!
@@ -5693,7 +5713,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
             // Don't let this happen for roads!
             pObject = gpWorldLevelData[usTileIndex].pObjectHead;
 
-            if (IsTileRedundent(gpZBuffer, sZLevel, TileElem.value.hTileSurface, sX, sY, TileElem.value.usRegionIndex)) {
+            if (IsTileRedundent(gpZBuffer, sZLevel, TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex)) {
               // Mark in the world!
               gpWorldLevelData[usTileIndex].uiFlags |= MAPELEMENT_REDUNDENT;
             } else {
@@ -5715,7 +5735,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
       }
     } while (!fEndRenderRow);
 
-    if (bXOddFlag > 0) {
+    if (bXOddFlag) {
       sAnchorPosY_M++;
     } else {
       sAnchorPosX_M++;
@@ -5857,7 +5877,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   let SrcPtr: Pointer<UINT8>;
   let DestPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -5866,14 +5886,14 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -5979,7 +5999,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   let DestPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
 
@@ -5988,14 +6008,14 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -6087,7 +6107,7 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   let SrcPtr: Pointer<UINT8>;
   let ZPtr: Pointer<UINT8>;
   let LineSkip: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let iTempX: INT32;
   let iTempY: INT32;
   let fHidden: boolean = true;
@@ -6096,14 +6116,14 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
-  usHeight = pTrav.value.usHeight;
-  usWidth = pTrav.value.usWidth;
-  uiOffset = pTrav.value.uiDataOffset;
+  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
 
   // Add to start position of dest buffer
-  iTempX = iX + pTrav.value.sOffsetX;
-  iTempY = iY + pTrav.value.sOffsetY;
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
 
   // Validations
   if (iTempX < 0) {
@@ -6187,7 +6207,7 @@ export function SetMercGlowNormal(): void {
 }
 
 export function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
-  if (gfIgnoreScrolling == 1) {
+  if (gfIgnoreScrolling == true) {
     return;
   }
 
@@ -6214,7 +6234,7 @@ export function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
     DeleteVideoOverlaysArea();
   }
 
-  gfScrollInertia = false;
+  gfScrollInertia = 0;
 }
 
 }

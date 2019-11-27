@@ -59,7 +59,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
     // Remove extension
     for (cnt = zFilename.length - 1; cnt >= 0; cnt--) {
       if (zFilename[cnt] == '.') {
-        zFilename[cnt] = '\0';
+        zFilename = zFilename.substring(cnt);
       }
     }
 
@@ -81,7 +81,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
   }
 
   // Dirty interface
-  fInterfacePanelDirty = true;
+  fInterfacePanelDirty = 1;
 
   return true;
 }
@@ -193,7 +193,7 @@ export function RenderRadarScreen(): void {
   let sBottomRightWorldX: INT16;
   let sBottomRightWorldY: INT16;
 
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   let sXSoldPos: INT16;
   let sYSoldPos: INT16;
@@ -356,23 +356,23 @@ export function RenderRadarScreen(): void {
 
       if (pSoldier != null) {
         // Don't place guys in radar until visible!
-        if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS) && !(pSoldier.value.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED)) {
+        if (pSoldier.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS) && !(pSoldier.ubMiscSoldierFlags & SOLDIER_MISC_XRAYED)) {
           continue;
         }
 
         // Don't render guys if they are dead!
-        if ((pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
+        if ((pSoldier.uiStatusFlags & SOLDIER_DEAD)) {
           continue;
         }
 
         // Don't render crows
-        if (pSoldier.value.ubBodyType == Enum194.CROW) {
+        if (pSoldier.ubBodyType == Enum194.CROW) {
           continue;
         }
 
         // Get FULL screen coordinate for guy's position
         // Getxy from gridno
-        ({ sX: sXSoldPos, sY: sYSoldPos } = ConvertGridNoToXY(pSoldier.value.sGridNo));
+        ({ sX: sXSoldPos, sY: sYSoldPos } = ConvertGridNoToXY(pSoldier.sGridNo));
         ({ sScreenX: sXSoldScreen, sScreenY: sYSoldScreen } = GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos));
 
         sXSoldRadar = (sXSoldScreen * gdScaleX);
@@ -390,32 +390,32 @@ export function RenderRadarScreen(): void {
           // DB Need to add a radar color for 8-bit
 
           // Are we a selected guy?
-          if (pSoldier.value.ubID == gusSelectedSoldier) {
+          if (pSoldier.ubID == gusSelectedSoldier) {
             if (gfRadarCurrentGuyFlash) {
               usLineColor = 0;
             } else {
               // If on roof, make darker....
-              if (pSoldier.value.bLevel > 0) {
+              if (pSoldier.bLevel > 0) {
                 usLineColor = Get16BPPColor(FROMRGB(150, 150, 0));
               } else {
-                usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.value.bTeam].RadarColor);
+                usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.bTeam].RadarColor);
               }
             }
           } else {
-            usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.value.bTeam].RadarColor);
+            usLineColor = Get16BPPColor(gTacticalStatus.Team[pSoldier.bTeam].RadarColor);
 
             // Override civ team with red if hostile...
-            if (pSoldier.value.bTeam == CIV_TEAM && !pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
+            if (pSoldier.bTeam == CIV_TEAM && !pSoldier.bNeutral && (pSoldier.bSide != gbPlayerNum)) {
               usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
             }
 
             // Render different color if an enemy and he's unconscious
-            if (pSoldier.value.bTeam != gbPlayerNum && pSoldier.value.bLife < OKLIFE) {
+            if (pSoldier.bTeam != gbPlayerNum && pSoldier.bLife < OKLIFE) {
               usLineColor = Get16BPPColor(FROMRGB(128, 128, 128));
             }
 
             // If on roof, make darker....
-            if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bLevel > 0) {
+            if (pSoldier.bTeam == gbPlayerNum && pSoldier.bLevel > 0) {
               usLineColor = Get16BPPColor(FROMRGB(150, 150, 0));
             }
           }
@@ -496,15 +496,15 @@ export function ToggleRadarScreenRender(): void {
   return;
 }
 
+/* static */ let CreateDestroyMouseRegionsForSquadList__fCreated: boolean = false;
 function CreateDestroyMouseRegionsForSquadList(): boolean {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
-  /* static */ let fCreated: boolean = false;
   let sCounter: INT16 = 0;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let hHandle: HVOBJECT;
   let uiHandle: UINT32;
 
-  if ((fRenderRadarScreen == false) && (fCreated == false)) {
+  if ((fRenderRadarScreen == false) && (CreateDestroyMouseRegionsForSquadList__fCreated == false)) {
     // create regions
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -538,8 +538,8 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     sSelectedSquadLine = -1;
 
     // set fact regions are created
-    fCreated = true;
-  } else if ((fRenderRadarScreen == true) && (fCreated == true)) {
+    CreateDestroyMouseRegionsForSquadList__fCreated = true;
+  } else if ((fRenderRadarScreen == true) && (CreateDestroyMouseRegionsForSquadList__fCreated == true)) {
     // destroy regions
 
     for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
@@ -547,7 +547,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
     }
 
     // set fact regions are destroyed
-    fCreated = false;
+    CreateDestroyMouseRegionsForSquadList__fCreated = false;
 
     if (guiCurrentScreen == Enum26.GAME_SCREEN) {
       // dirty region

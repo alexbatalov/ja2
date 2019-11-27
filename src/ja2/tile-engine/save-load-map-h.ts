@@ -60,4 +60,32 @@ export function createModifyMap(): MODIFY_MAP {
   };
 }
 
+export function resetModifyMap(o: MODIFY_MAP) {
+  o.usGridNo = 0;
+  o.usImageType = 0;
+  o.usSubImageIndex = 0;
+  o.ubType = 0;
+  o.ubExtra = 0;
+}
+
+export const MODIFY_MAP_SIZE = 8;
+
+export function readModifyMap(o: MODIFY_MAP, buffer: Buffer, offset: number = 0): number {
+  o.usGridNo = buffer.readUInt16LE(offset); offset += 2;
+  o.usImageType = buffer.readUInt16LE(offset); offset += 2;
+  o.usSubImageIndex = buffer.readUInt16LE(offset); offset += 2;
+  o.ubType = buffer.readUInt8(offset++);
+  o.ubExtra = buffer.readUInt8(offset++);
+  return offset;
+}
+
+export function writeModifyMap(o: MODIFY_MAP, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt16LE(o.usGridNo, offset);
+  offset = buffer.writeUInt16LE(o.usImageType, offset);
+  offset = buffer.writeUInt16LE(o.usSubImageIndex, offset);
+  offset = buffer.writeUInt8(o.ubType, offset);
+  offset = buffer.writeUInt8(o.ubExtra, offset);
+  return offset;
+}
+
 }

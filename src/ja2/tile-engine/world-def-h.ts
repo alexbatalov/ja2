@@ -13,14 +13,6 @@ export const CELL_Y_SIZE = 10;
 const WORLD_BASE_HEIGHT = 0;
 export const WORLD_CLIFF_HEIGHT = 80;
 
-// A macro that actually memcpy's over data and increments the pointer automatically
-// based on the size.  Works like a FileRead except with a buffer instead of a file pointer.
-// Used by LoadWorld() and child functions.
-export const LOADDATA = (dst, src, size) => {
-  memcpy(dst, src, size);
-  src += size;
-}
-
 export const LANDHEAD = 0;
 export const MAXDIR = 8;
 
@@ -93,15 +85,15 @@ export const SECOND_LEVEL = 1;
 export const ANY_SMOKE_EFFECT = (MAPELEMENT_EXT_CREATUREGAS | MAPELEMENT_EXT_SMOKE | MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS);
 
 export interface LEVELNODE {
-  pNext: Pointer<LEVELNODE>;
+  pNext: LEVELNODE | null;
   uiFlags: UINT32; // flags struct
 
   ubSumLights: UINT8; // LIGHTING INFO
   ubMaxLights: UINT8; // MAX LIGHTING INFO
 
   /* union { */
-  pPrevNode: Pointer<LEVELNODE>; // FOR LAND, GOING BACKWARDS POINTER
-  pStructureData: Pointer<STRUCTURE>; // STRUCTURE DATA
+  pPrevNode: LEVELNODE | null; // FOR LAND, GOING BACKWARDS POINTER
+  pStructureData: STRUCTURE | null; // STRUCTURE DATA
   iPhysicsObjectID: INT32; // ID FOR PHYSICS ITEM
   uiAPCost: INT32; // FOR AP DISPLAY
   iExitGridInfo: INT32;
@@ -111,7 +103,7 @@ export interface LEVELNODE {
   usIndex: UINT16; // TILE DATABASE INDEX
   sCurrentFrame: INT16; // Stuff for animated tiles for a given tile location ( doors, etc )
   /*   } */
-  pSoldier: Pointer<SOLDIERTYPE>; // POINTER TO SOLDIER
+  pSoldier: SOLDIERTYPE /* Pointer<SOLDIERTYPE> */; // POINTER TO SOLDIER
   /* } */
   /* union { */
   /*   struct { */
@@ -125,10 +117,10 @@ export interface LEVELNODE {
   uiAnimHitLocationFlags: UINT32; // Animation profile flags for soldier placeholders ( prone merc hit location values )
   /*   } */
   /*   struct { */
-  pAniTile: Pointer<ANITILE>;
+  pAniTile: ANITILE /* Pointer<ANITILE> */;
   /*   } */
   /*   struct { */
-  pItemPool: Pointer<ITEM_POOL>; // ITEM POOLS
+  pItemPool: ITEM_POOL /* Pointer<ITEM_POOL> */; // ITEM POOLS
   /*   } */
   /* } */
   sRelativeZ: INT16; // Relative position values
@@ -136,6 +128,35 @@ export interface LEVELNODE {
   ubNaturalShadeLevel: UINT8; // LIGHTING INFO
   ubFakeShadeLevel: UINT8; // LIGHTING INFO
 }
+
+export function createLevelNode(): LEVELNODE {
+  return {
+    pNext: null,
+    uiFlags: 0,
+    ubSumLights: 0,
+    ubMaxLights: 0,
+    pPrevNode: null,
+    pStructureData: null,
+    iPhysicsObjectID: 0,
+    uiAPCost: 0,
+    iExitGridInfo: 0,
+    usIndex: 0,
+    sCurrentFrame: 0,
+    pSoldier: <SOLDIERTYPE><unknown>null,
+    sRelativeX: 0,
+    sRelativeY: 0,
+    iCorpseID: 0,
+    uiAnimHitLocationFlags: 0,
+    pAniTile: <ANITILE><unknown>null,
+    pItemPool: <ITEM_POOL><unknown>null,
+    sRelativeZ: 0,
+    ubShadeLevel: 0,
+    ubNaturalShadeLevel: 0,
+    ubFakeShadeLevel: 0,
+  };
+}
+
+export const LEVEL_NODE_SIZE = 32;
 
 export const LAND_START_INDEX = 1;
 export const OBJECT_START_INDEX = 2;
@@ -149,27 +170,27 @@ export const TOPMOST_START_INDEX = 8;
 export interface MAP_ELEMENT {
   /* union { */
   /*   struct { */
-  pLandHead: Pointer<LEVELNODE>; // 0
-  pLandStart: Pointer<LEVELNODE>; // 1
+  pLandHead: LEVELNODE | null; // 0
+  pLandStart: LEVELNODE | null; // 1
 
-  pObjectHead: Pointer<LEVELNODE>; // 2
+  pObjectHead: LEVELNODE | null; // 2
 
-  pStructHead: Pointer<LEVELNODE>; // 3
+  pStructHead: LEVELNODE | null; // 3
 
-  pShadowHead: Pointer<LEVELNODE>; // 4
+  pShadowHead: LEVELNODE | null; // 4
 
-  pMercHead: Pointer<LEVELNODE>; // 5
+  pMercHead: LEVELNODE | null; // 5
 
-  pRoofHead: Pointer<LEVELNODE>; // 6
+  pRoofHead: LEVELNODE | null; // 6
 
-  pOnRoofHead: Pointer<LEVELNODE>; // 7
+  pOnRoofHead: LEVELNODE | null; // 7
 
-  pTopmostHead: Pointer<LEVELNODE>; // 8
+  pTopmostHead: LEVELNODE | null; // 8
   /*   } */
-  pLevelNodes: Pointer<LEVELNODE>[] /* [9] */;
+  pLevelNodes: (LEVELNODE | null)[] /* [9] */;
   /* } */
-  pStructureHead: Pointer<STRUCTURE>;
-  pStructureTail: Pointer<STRUCTURE>;
+  pStructureHead: STRUCTURE | null;
+  pStructureTail: STRUCTURE | null;
 
   uiFlags: UINT16;
   ubExtFlags: UINT8[] /* [2] */;
@@ -181,6 +202,127 @@ export interface MAP_ELEMENT {
   ubReservedSoldierID: UINT8;
   ubBloodInfo: UINT8;
   ubSmellInfo: UINT8;
+}
+
+class _MAP_ELEMENT implements MAP_ELEMENT {
+  public pLevelNodes: (LEVELNODE | null)[] /* [9] */;
+  public pStructureHead: STRUCTURE | null;
+  public pStructureTail: STRUCTURE | null;
+  public uiFlags: UINT16;
+  public ubExtFlags: UINT8[] /* [2] */;
+  public sSumRealLights: UINT16[] /* [1] */;
+  public sHeight: UINT8;
+  public ubAdjacentSoldierCnt: UINT8;
+  public ubTerrainID: UINT8;
+  public ubReservedSoldierID: UINT8;
+  public ubBloodInfo: UINT8;
+  public ubSmellInfo: UINT8;
+
+  constructor() {
+    this.pLevelNodes = createArray(9, null);
+    this.pStructureHead = null;
+    this.pStructureTail = null;
+    this.uiFlags = 0;
+    this.ubExtFlags = createArray(2, 0);
+    this.sSumRealLights = createArray(1, 0);
+    this.sHeight = 0;
+    this.ubAdjacentSoldierCnt = 0;
+    this.ubTerrainID = 0;
+    this.ubReservedSoldierID = 0;
+    this.ubBloodInfo = 0;
+    this.ubSmellInfo = 0;
+  }
+
+  get pLandHead() {
+    return this.pLevelNodes[0];
+  }
+
+  set pLandHead(value) {
+    this.pLevelNodes[0] = value;
+  }
+
+  get pLandStart() {
+    return this.pLevelNodes[1];
+  }
+
+  set pLandStart(value) {
+    this.pLevelNodes[1] = value;
+  }
+
+  get pObjectHead() {
+    return this.pLevelNodes[2];
+  }
+
+  set pObjectHead(value) {
+    this.pLevelNodes[2] = value;
+  }
+
+  get pStructHead() {
+    return this.pLevelNodes[3];
+  }
+
+  set pStructHead(value) {
+    this.pLevelNodes[3] = value;
+  }
+
+  get pShadowHead() {
+    return this.pLevelNodes[4];
+  }
+
+  set pShadowHead(value) {
+    this.pLevelNodes[4] = value;
+  }
+
+  get pMercHead() {
+    return this.pLevelNodes[5];
+  }
+
+  set pMercHead(value) {
+    this.pLevelNodes[5] = value;
+  }
+
+  get pRoofHead() {
+    return this.pLevelNodes[6];
+  }
+
+  set pRoofHead(value) {
+    this.pLevelNodes[6] = value;
+  }
+
+  get pOnRoofHead() {
+    return this.pLevelNodes[7];
+  }
+
+  set pOnRoofHead(value) {
+    this.pLevelNodes[7] = value;
+  }
+
+  get pTopmostHead() {
+    return this.pLevelNodes[8];
+  }
+
+  set pTopmostHead(value) {
+    this.pLevelNodes[8] = value;
+  }
+}
+
+export function createMapElement(): MAP_ELEMENT {
+  return new _MAP_ELEMENT();
+}
+
+export function resetMapElement(o: MAP_ELEMENT) {
+  o.pLevelNodes.fill(null);
+  o.pStructureHead = null;
+  o.pStructureTail = null;
+  o.uiFlags = 0;
+  o.ubExtFlags.fill(0);
+  o.sSumRealLights.fill(0);
+  o.sHeight = 0;
+  o.ubAdjacentSoldierCnt = 0;
+  o.ubTerrainID = 0;
+  o.ubReservedSoldierID = 0;
+  o.ubBloodInfo = 0;
+  o.ubSmellInfo = 0;
 }
 
 }

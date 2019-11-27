@@ -4,10 +4,10 @@ const DIRTY_QUEUES = 200;
 const BACKGROUND_BUFFERS = 500;
 const VIDEO_OVERLAYS = 100;
 
-let gBackSaves: BACKGROUND_SAVE[] /* [BACKGROUND_BUFFERS] */;
+let gBackSaves: BACKGROUND_SAVE[] /* [BACKGROUND_BUFFERS] */ = createArrayFrom(BACKGROUND_BUFFERS, createBackgroundSave);
 export let guiNumBackSaves: UINT32 = 0;
 
-export let gVideoOverlays: VIDEO_OVERLAY[] /* [VIDEO_OVERLAYS] */;
+export let gVideoOverlays: VIDEO_OVERLAY[] /* [VIDEO_OVERLAYS] */ = createArrayFrom(VIDEO_OVERLAYS, createVideoOverlay);
 let guiNumVideoOverlays: UINT32 = 0;
 
 // BACKGROUND_SAVE	gTopmostSaves[BACKGROUND_BUFFERS];
@@ -114,7 +114,7 @@ function RecountBackgrounds(): void {
   }
 }
 
-export function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): INT32 {
+export function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Int16Array | null, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): INT32 {
   let uiBufSize: UINT32;
   let iBackIndex: INT32;
   let ClipX1: INT32;
@@ -176,7 +176,7 @@ export function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16
   if ((iBackIndex = GetFreeBackgroundBuffer()) == (-1))
     return -1;
 
-  memset(addressof(gBackSaves[iBackIndex]), 0, sizeof(BACKGROUND_SAVE));
+  resetBackgroundSave(gBackSaves[iBackIndex]);
 
   gBackSaves[iBackIndex].fZBuffer = false;
 
@@ -268,14 +268,6 @@ export function EmptyBackgroundRects(): boolean {
       gBackSaves[uiCount].fFilled = false;
 
       if (!(gBackSaves[uiCount].fAllocated) && (gBackSaves[uiCount].fFreeMemory == true)) {
-        if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-          if (gBackSaves[uiCount].pSaveArea != null) {
-            MemFree(gBackSaves[uiCount].pSaveArea);
-          }
-        }
-        if (gBackSaves[uiCount].fZBuffer)
-          MemFree(gBackSaves[uiCount].pZSaveArea);
-
         gBackSaves[uiCount].fZBuffer = false;
         gBackSaves[uiCount].fAllocated = false;
         gBackSaves[uiCount].fFreeMemory = false;
@@ -287,17 +279,6 @@ export function EmptyBackgroundRects(): boolean {
     }
 
     if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SINGLE || gBackSaves[uiCount].fPendingDelete) {
-      if (gBackSaves[uiCount].fFreeMemory == true) {
-        if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
-          if (gBackSaves[uiCount].pSaveArea != null) {
-            MemFree(gBackSaves[uiCount].pSaveArea);
-          }
-        }
-
-        if (gBackSaves[uiCount].fZBuffer)
-          MemFree(gBackSaves[uiCount].pZSaveArea);
-      }
-
       gBackSaves[uiCount].fZBuffer = false;
       gBackSaves[uiCount].fAllocated = false;
       gBackSaves[uiCount].fFreeMemory = false;
@@ -554,7 +535,6 @@ function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 //
 //*****************************************************************************
 export function gprintfdirty(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
@@ -562,9 +542,7 @@ export function gprintfdirty(x: INT16, y: INT16, pFontString: string /* Pointer<
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   if (USE_WINFONTS()) {
     uiStringLength = WinFontStringPixLength(string, GET_WINFONT());
@@ -586,16 +564,13 @@ export function gprintfdirty(x: INT16, y: INT16, pFontString: string /* Pointer<
 }
 
 export function gprintfinvalidate(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   uiStringLength = StringPixLength(string, FontDefault);
   uiStringHeight = GetFontHeight(FontDefault);
@@ -607,16 +582,13 @@ export function gprintfinvalidate(x: INT16, y: INT16, pFontString: string /* Poi
 }
 
 export function gprintfRestore(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT16 {
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   uiStringLength = StringPixLength(string, FontDefault);
   uiStringHeight = GetFontHeight(FontDefault);
@@ -633,7 +605,7 @@ function GetFreeVideoOverlay(): INT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
-    if ((gVideoOverlays[uiCount].fAllocated == false))
+    if ((gVideoOverlays[uiCount].fAllocated == 0))
       return uiCount;
   }
 
@@ -684,12 +656,12 @@ export function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: VIDEO_OVERLA
     return -1;
 
   // Init new blitter
-  memset(addressof(gVideoOverlays[iBlitterIndex]), 0, sizeof(VIDEO_OVERLAY));
+  resetVideoOverlay(gVideoOverlays[iBlitterIndex]);
 
   gVideoOverlays[iBlitterIndex].uiFlags = uiFlags;
   gVideoOverlays[iBlitterIndex].fAllocated = 2;
   gVideoOverlays[iBlitterIndex].uiBackground = iBackIndex;
-  gVideoOverlays[iBlitterIndex].pBackground = addressof(gBackSaves[iBackIndex]);
+  gVideoOverlays[iBlitterIndex].pBackground = gBackSaves[iBackIndex];
   gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc.BltCallback;
 
   // Update blitter info
@@ -738,7 +710,7 @@ export function RemoveVideoOverlay(iVideoOverlay: INT32): void {
       gVideoOverlays[iVideoOverlay].pSaveArea = null;
 
       // Set as not allocated
-      gVideoOverlays[iVideoOverlay].fAllocated = false;
+      gVideoOverlays[iVideoOverlay].fAllocated = 0;
     }
   }
 }
@@ -817,7 +789,7 @@ export function ExecuteVideoOverlays(): void {
         // ATE: Wait a frame before executing!
         if (gVideoOverlays[uiCount].fAllocated == 1) {
           // Call Blit Function
-          ((gVideoOverlays[uiCount].BltCallback).value)(addressof(gVideoOverlays[uiCount]));
+          gVideoOverlays[uiCount].BltCallback(gVideoOverlays[uiCount]);
         } else if (gVideoOverlays[uiCount].fAllocated == 2) {
           gVideoOverlays[uiCount].fAllocated = 1;
         }
@@ -844,7 +816,7 @@ export function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): 
         gVideoOverlays[uiCount].uiDestBuff = uiNewDestBuffer;
 
         // Call Blit Function
-        ((gVideoOverlays[uiCount].BltCallback).value)(addressof(gVideoOverlays[uiCount]));
+        (gVideoOverlays[uiCount].BltCallback)(gVideoOverlays[uiCount]);
 
         gVideoOverlays[uiCount].uiDestBuff = uiOldDestBuffer;
       }
@@ -891,8 +863,7 @@ function AllocateVideoOverlayArea(uiCount: UINT32): void {
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Setting Overlay Actively saving %d %S", uiCount, gVideoOverlays[ uiCount ].zText ) );
 
     // Allocate
-    if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == null) {
-    }
+    gVideoOverlays[uiCount].pSaveArea = new Int16Array(uiBufSize / 2);
   }
 }
 
@@ -1073,19 +1044,19 @@ function SetOverlayUserData(iVideoOverlay: INT32, ubNum: UINT8, uiData: UINT32):
 }
 
 // Common callbacks for topmost blitters
-export function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
+export function BlitMFont(pBlitter: VIDEO_OVERLAY): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
 
-  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(pBlitter.uiDestBuff, addressof(uiDestPitchBYTES));
 
-  SetFont(pBlitter.value.uiFontID);
-  SetFontBackground(pBlitter.value.ubFontBack);
-  SetFontForeground(pBlitter.value.ubFontFore);
+  SetFont(pBlitter.uiFontID);
+  SetFontBackground(pBlitter.ubFontBack);
+  SetFontForeground(pBlitter.ubFontFore);
 
-  mprintf_buffer(pDestBuf, uiDestPitchBYTES, pBlitter.value.uiFontID, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.zText);
+  mprintf_buffer(pDestBuf, uiDestPitchBYTES, pBlitter.uiFontID, pBlitter.sX, pBlitter.sY, pBlitter.zText);
 
-  UnLockVideoSurface(pBlitter.value.uiDestBuff);
+  UnLockVideoSurface(pBlitter.uiDestBuff);
 }
 
 export function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: UINT16, usSrcY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
@@ -1109,15 +1080,13 @@ export function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, us
 export function EnableVideoOverlay(fEnable: boolean, iOverlayIndex: INT32): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
-  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-
   // enable or disable
   VideoOverlayDesc.fDisabled = !fEnable;
 
   // go play with enable/disable state
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
-  UpdateVideoOverlay(addressof(VideoOverlayDesc), iOverlayIndex, false);
+  UpdateVideoOverlay(VideoOverlayDesc, iOverlayIndex, false);
 }
 
 }

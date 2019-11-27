@@ -2,11 +2,11 @@ namespace ja2 {
 
 const ROOF_LOCATION_CHANCE = 8;
 
-export let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */;
-let gBuildings: BUILDING[] /* [MAX_BUILDINGS] */;
+export let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */ = createArray(WORLD_MAX, 0);
+let gBuildings: BUILDING[] /* [MAX_BUILDINGS] */ = createArrayFrom(MAX_BUILDINGS, createBuilding);
 let gubNumberOfBuildings: UINT8;
 
-function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
+function CreateNewBuilding(pubBuilding: Pointer<UINT8>): BUILDING | null {
   if (gubNumberOfBuildings + 1 >= MAX_BUILDINGS) {
     return null;
   }
@@ -16,10 +16,10 @@ function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   gBuildings[gubNumberOfBuildings].ubNumClimbSpots = 0;
   pubBuilding.value = gubNumberOfBuildings;
   // return pointer (have to subtract 1 since we just added 1
-  return addressof(gBuildings[gubNumberOfBuildings]);
+  return gBuildings[gubNumberOfBuildings];
 }
 
-function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
+function GenerateBuilding(sDesiredSpot: INT16): BUILDING | null {
   let uiLoop: UINT32;
   let sTempGridNo: INT16;
   let sNextTempGridNo: INT16;
@@ -37,7 +37,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   let bDesiredOrientation: INT8;
   let bSkipSpots: INT8 = 0;
   let FakeSoldier: SOLDIERTYPE = createSoldierType();
-  let pBuilding: Pointer<BUILDING>;
+  let pBuilding: BUILDING | null;
   let ubBuildingID: UINT8 = 0;
 
   pBuilding = CreateNewBuilding(addressof(ubBuildingID));
@@ -46,7 +46,6 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   }
 
   // set up fake soldier for location testing
-  memset(addressof(FakeSoldier), 0, sizeof(SOLDIERTYPE));
   FakeSoldier.sGridNo = sDesiredSpot;
   FakeSoldier.bLevel = 1;
   FakeSoldier.bTeam = 1;
@@ -194,11 +193,11 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
         } else if (Random(uiChanceIn) == 0) {
           // don't consider people as obstacles
           if (NewOKDestination(addressof(FakeSoldier), sCurrGridNo, false, 0)) {
-            pBuilding.value.sUpClimbSpots[pBuilding.value.ubNumClimbSpots] = sCurrGridNo;
-            pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots] = sRightGridNo;
-            pBuilding.value.ubNumClimbSpots++;
+            pBuilding.sUpClimbSpots[pBuilding.ubNumClimbSpots] = sCurrGridNo;
+            pBuilding.sDownClimbSpots[pBuilding.ubNumClimbSpots] = sRightGridNo;
+            pBuilding.ubNumClimbSpots++;
 
-            if (pBuilding.value.ubNumClimbSpots == MAX_CLIMBSPOTS_PER_BUILDING) {
+            if (pBuilding.ubNumClimbSpots == MAX_CLIMBSPOTS_PER_BUILDING) {
               // gotta stop!
               return pBuilding;
             }
@@ -221,10 +220,10 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
         }
       } else {
         // can't select this spot
-        if ((sPrevGridNo != NOWHERE) && (pBuilding.value.ubNumClimbSpots > 0)) {
-          if (pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots - 1] == sCurrGridNo) {
+        if ((sPrevGridNo != NOWHERE) && (pBuilding.ubNumClimbSpots > 0)) {
+          if (pBuilding.sDownClimbSpots[pBuilding.ubNumClimbSpots - 1] == sCurrGridNo) {
             // unselect previous spot
-            pBuilding.value.ubNumClimbSpots--;
+            pBuilding.ubNumClimbSpots--;
             // overwrote a selected spot so go into automatic selection for later
             uiChanceIn = 1;
           }
@@ -252,7 +251,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   return pBuilding;
 }
 
-export function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
+export function FindBuilding(sGridNo: INT16): BUILDING | null {
   let ubBuildingID: UINT8;
   // UINT8					ubRoomNo;
 
@@ -282,7 +281,7 @@ export function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
     return null;
   }
 
-  return addressof(gBuildings[ubBuildingID]);
+  return gBuildings[ubBuildingID];
 }
 
 function InBuilding(sGridNo: INT16): boolean {
@@ -296,8 +295,8 @@ function GenerateBuildings(): void {
   let uiLoop: UINT32;
 
   // init building structures and variables
-  memset(addressof(gubBuildingInfo), 0, WORLD_MAX * sizeof(UINT8));
-  memset(addressof(gBuildings), 0, MAX_BUILDINGS * sizeof(BUILDING));
+  gubBuildingInfo.fill(0);
+  gBuildings.forEach(resetBuilding);
   gubNumberOfBuildings = 0;
 
   if ((gbWorldSectorZ > 0) || gfEditMode) {
@@ -323,9 +322,9 @@ function GenerateBuildings(): void {
 }
 
 export function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: boolean): INT16 {
-  let pBuilding: Pointer<BUILDING>;
+  let pBuilding: BUILDING | null;
   let ubNumClimbSpots: UINT8;
-  let psClimbSpots: Pointer<INT16>;
+  let psClimbSpots: INT16[];
   let ubLoop: UINT8;
   let sDistance: INT16;
   let sClosestDistance: INT16 = 1000;
@@ -336,16 +335,16 @@ export function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16
     return NOWHERE;
   }
 
-  ubNumClimbSpots = pBuilding.value.ubNumClimbSpots;
+  ubNumClimbSpots = pBuilding.ubNumClimbSpots;
 
   if (fClimbUp) {
-    psClimbSpots = pBuilding.value.sUpClimbSpots;
+    psClimbSpots = pBuilding.sUpClimbSpots;
   } else {
-    psClimbSpots = pBuilding.value.sDownClimbSpots;
+    psClimbSpots = pBuilding.sDownClimbSpots;
   }
 
   for (ubLoop = 0; ubLoop < ubNumClimbSpots; ubLoop++) {
-    if ((WhoIsThere2(pBuilding.value.sUpClimbSpots[ubLoop], 0) == NOBODY) && (WhoIsThere2(pBuilding.value.sDownClimbSpots[ubLoop], 1) == NOBODY)) {
+    if ((WhoIsThere2(pBuilding.sUpClimbSpots[ubLoop], 0) == NOBODY) && (WhoIsThere2(pBuilding.sDownClimbSpots[ubLoop], 1) == NOBODY)) {
       sDistance = PythSpacesAway(sStartGridNo, psClimbSpots[ubLoop]);
       if (sDistance < sClosestDistance) {
         sClosestDistance = sDistance;

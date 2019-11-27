@@ -130,7 +130,7 @@ export interface TacticalStatusType {
   ubArmyGuysKilled: UINT8;
 
   sPanicTriggerGridNo: INT16[] /* [NUM_PANIC_TRIGGERS] */;
-  bPanicTriggerIsAlarm: INT8[] /* [NUM_PANIC_TRIGGERS] */;
+  bPanicTriggerIsAlarm: boolean[] /* INT8[NUM_PANIC_TRIGGERS] */;
   ubPanicTolerance: UINT8[] /* [NUM_PANIC_TRIGGERS] */;
   fAtLeastOneGuyOnMultiSelect: boolean;
   fSaidCreatureFlavourQuote: boolean;
@@ -232,7 +232,7 @@ export function createTacticalStatusType(): TacticalStatusType {
     ubArmyGuysKilled: 0,
 
     sPanicTriggerGridNo: createArray(NUM_PANIC_TRIGGERS, 0),
-    bPanicTriggerIsAlarm: createArray(NUM_PANIC_TRIGGERS, 0),
+    bPanicTriggerIsAlarm: createArray(NUM_PANIC_TRIGGERS, false),
     ubPanicTolerance: createArray(NUM_PANIC_TRIGGERS, 0),
     fAtLeastOneGuyOnMultiSelect: false,
     fSaidCreatureFlavourQuote: false,

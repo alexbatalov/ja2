@@ -121,6 +121,7 @@ export function SaveSoldiersToMap(fp: HWFILE): boolean {
   let i: UINT32;
   let uiBytesWritten: UINT32;
   let curr: SOLDIERINITNODE | null;
+  let buffer: Buffer;
 
   if (!fp)
     return false;
@@ -143,19 +144,25 @@ export function SaveSoldiersToMap(fp: HWFILE): boolean {
     if (!curr)
       return false;
     curr.ubNodeID = i;
-    uiBytesWritten = FileWrite(fp, curr.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+
+    buffer = Buffer.allocUnsafe(BASIC_SOLDIER_CREATE_STRUCT_SIZE);
+    writeBasicSoldierCreateStruct(curr.pBasicPlacement, buffer);
+    uiBytesWritten = FileWrite(fp, buffer, BASIC_SOLDIER_CREATE_STRUCT_SIZE);
 
     if (curr.pBasicPlacement.fDetailedPlacement) {
       if (!curr.pDetailedPlacement)
         return false;
-      uiBytesWritten = FileWrite(fp, curr.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+
+      buffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
+      writeSoldierCreateStruct(curr.pDetailedPlacement, buffer);
+      uiBytesWritten = FileWrite(fp, buffer, SOLDIER_CREATE_STRUCT_SIZE);
     }
     curr = curr.next;
   }
   return true;
 }
 
-export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
+export function LoadSoldiersFromMap(buffer: Buffer, offset: number): number {
   let i: UINT32;
   let ubNumIndividuals: UINT8;
   let tempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
@@ -173,11 +180,11 @@ export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   InitSoldierInitList();
 
   if (ubNumIndividuals > MAX_INDIVIDUALS) {
-    AssertMsg(0, "Corrupt map check failed.  ubNumIndividuals is greater than MAX_INDIVIDUALS.");
-    return false; // too many mercs
+    AssertMsg(false, "Corrupt map check failed.  ubNumIndividuals is greater than MAX_INDIVIDUALS.");
+    return offset; // too many mercs
   }
   if (!ubNumIndividuals) {
-    return true; // no mercs
+    return offset; // no mercs
   }
 
   // Because we are loading the map, we needed to know how many
@@ -188,13 +195,13 @@ export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
   gMapInformation.ubNumIndividuals = 0; // MUST BE CLEARED HERE!!!
 
   for (i = 0; i < ubNumIndividuals; i++) {
-    LOADDATA(addressof(tempBasicPlacement), hBuffer.value, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+    offset = readBasicSoldierCreateStruct(tempBasicPlacement, buffer, offset);
     pNode = AddBasicPlacementToSoldierInitList(tempBasicPlacement);
     pNode.ubNodeID = i;
     if (tempBasicPlacement.fDetailedPlacement) {
       // Add the static detailed placement information in the same newly created node as the basic placement.
       // read static detailed placement from file
-      LOADDATA(addressof(tempDetailedPlacement), hBuffer.value, sizeof(SOLDIERCREATE_STRUCT));
+      offset = readSoldierCreateStruct(tempDetailedPlacement, buffer, offset);
       // allocate memory for new static detailed placement
       pNode.pDetailedPlacement = createSoldierCreateStruct();
       // copy the file information from temp var to node in list.
@@ -214,7 +221,7 @@ export function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): boolean {
     str = sprintf("Sounds\\\\cowmoo%d.wav", Random(3) + 1);
     PlayJA2SampleFromFile(str, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
   }
-  return true;
+  return offset;
 }
 
 // Because soldiers, creatures, etc., maybe added to the game at anytime theoretically, the

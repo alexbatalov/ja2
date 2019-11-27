@@ -271,7 +271,7 @@ export function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, us
 // Video Object Manipulation Functions
 // *******************************************************************************
 
-export function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
+export function CreateVideoObject(VObjectDesc: VOBJECT_DESC): HVOBJECT {
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
   let TempETRLEData: ETRLEData;
