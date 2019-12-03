@@ -16,6 +16,6 @@ export let zTrackingNumber: string /* INT16[16] */ = "Z";
 
 const SAVE_GAME_VERSION = 99;
 
-const guiSavedGameVersion: UINT32 = SAVE_GAME_VERSION;
+export const guiSavedGameVersion: UINT32 = SAVE_GAME_VERSION;
 
 }

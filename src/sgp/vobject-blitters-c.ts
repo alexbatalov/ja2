@@ -12345,8 +12345,8 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
 
 export function SetClippingRect(clip: SGPRect): void {
   Assert(clip != null);
-  Assert(clip.value.iLeft < clip.value.iRight);
-  Assert(clip.value.iTop < clip.value.iBottom);
+  Assert(clip.iLeft < clip.iRight);
+  Assert(clip.iTop < clip.iBottom);
 
   copySGPRect(ClippingRect, clip);
 }
@@ -12391,10 +12391,10 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != null);
   Assert(Pattern != null);
 
-  iLeft = Math.max(ClippingRect.iLeft, area.value.iLeft);
-  iTop = Math.max(ClippingRect.iTop, area.value.iTop);
-  iRight = Math.min(ClippingRect.iRight - 1, area.value.iRight);
-  iBottom = Math.min(ClippingRect.iBottom - 1, area.value.iBottom);
+  iLeft = Math.max(ClippingRect.iLeft, area.iLeft);
+  iTop = Math.max(ClippingRect.iTop, area.iTop);
+  iRight = Math.min(ClippingRect.iRight - 1, area.iRight);
+  iBottom = Math.min(ClippingRect.iBottom - 1, area.iBottom);
 
   DestPtr = (pBuffer + (iTop * (uiDestPitchBYTES / 2)) + iLeft);
   width = iRight - iLeft + 1;
@@ -12458,7 +12458,7 @@ export function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitch
                 of the specified color
 
 *********************************************************************************************/
-function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): boolean {
+function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect, usColor: UINT16): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 1, 0, 1, 0, 1, 0 ],
     [ 0, 1, 0, 1, 0, 1, 0, 1 ],
@@ -12473,7 +12473,7 @@ function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchB
 }
 
 // Uses black hatch color
-export function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
+export function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 1, 0, 1, 0, 1, 0 ],
     [ 0, 1, 0, 1, 0, 1, 0, 1 ],
@@ -12487,7 +12487,7 @@ export function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 
-export function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): boolean {
+export function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect, usColor: UINT16): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 0, 0, 1, 0, 0, 0 ],
     [ 0, 0, 0, 0, 0, 0, 0, 0 ],
@@ -12501,7 +12501,7 @@ export function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, 
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, usColor);
 }
 
-function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): boolean {
+function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
     [ 1, 0, 0, 0, 1, 0, 0, 0 ],
     [ 0, 0, 0, 0, 0, 0, 0, 0 ],

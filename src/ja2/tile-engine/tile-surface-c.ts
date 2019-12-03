@@ -11,7 +11,7 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
   let cStructureFilename: string /* SGPFILENAME */;
-  let cEndOfName: string /* STR */;
+  let cEndOfName: number /* STR */;
   let pStructureFileRef: STRUCTURE_FILE_REF | null;
   let fOk: boolean;
 
@@ -38,17 +38,17 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
   // Load structure data, if any.
   // Start by hacking the image filename into that for the structure data
   cStructureFilename = cFilename;
-  cEndOfName = strchr(cStructureFilename, '.');
-  if (cEndOfName != null) {
+  cEndOfName = cStructureFilename.indexOf('.');
+  if (cEndOfName != -1) {
     cEndOfName++;
-    cEndOfName.value = '\0';
+    cStructureFilename = cStructureFilename.substring(0, cEndOfName);
   } else {
     cStructureFilename += ".";
   }
   cStructureFilename += STRUCTURE_FILE_EXTENSION;
   if (FileExists(cStructureFilename)) {
     pStructureFileRef = LoadStructureFile(cStructureFilename);
-    if (pStructureFileRef == null || hVObject.value.usNumberOfObjects != pStructureFileRef.value.usNumberOfStructures) {
+    if (pStructureFileRef == null || hVObject.value.usNumberOfObjects != pStructureFileRef.usNumberOfStructures) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       SET_ERROR("Structure file error: %s", cStructureFilename);
@@ -84,7 +84,7 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
       DeleteVideoObject(hVObject);
       return null;
     }
-    memcpy(pTileSurf.pAuxData, hImage.value.pAppData, hImage.value.uiAppDataSize);
+    copyObjectArray(pTileSurf.pAuxData, hImage.value.pAppData, copyAuxObjectData);
   } else {
     pTileSurf.pAuxData = null;
   }

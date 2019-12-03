@@ -36,7 +36,7 @@ export const enum Enum292 {
 
 export const MAX_ROAMING_RANGE = WORLD_COLS;
 
-export const PTR_CIV_OR_MILITIA = () => (PTR_CIVILIAN() || (pSoldier.value.bTeam == MILITIA_TEAM));
+export const PTR_CIV_OR_MILITIA = (pSoldier: SOLDIERTYPE) => (PTR_CIVILIAN(pSoldier) || (pSoldier.bTeam == MILITIA_TEAM));
 
 export const REALTIME_AI_DELAY = () => (10000 + Random(1000));
 export const REALTIME_CIV_AI_DELAY = () => (1000 * (gTacticalStatus.Team[MILITIA_TEAM].bMenInSector + gTacticalStatus.Team[CIV_TEAM].bMenInSector) + 5000 + 2000 * Random(3));
@@ -77,7 +77,7 @@ const SHELLS_PER_10TURNS = 13; // max # of shells   firable  in 10 turns
 export const SEE_THRU_COVER_THRESHOLD = 5; // min chance to get through
 
 export interface THREATTYPE {
-  pOpponent: Pointer<SOLDIERTYPE>;
+  pOpponent: SOLDIERTYPE /* Pointer<SOLDIERTYPE> */;
   sGridNo: INT16;
   iValue: INT32;
   iAPs: INT32;
@@ -85,11 +85,22 @@ export interface THREATTYPE {
   iOrigRange: INT32;
 }
 
+export function createThreatType(): THREATTYPE {
+  return {
+    pOpponent: <SOLDIERTYPE><unknown>null,
+    sGridNo: 0,
+    iValue: 0,
+    iAPs: 0,
+    iCertainty: 0,
+    iOrigRange: 0,
+  };
+}
+
 // define for bAimTime for bursting
 export const BURSTING = 5;
 
 export interface ATTACKTYPE {
-  ubPossible: UINT8; // is this attack form possible?  T/F
+  ubPossible: boolean /* UINT8 */; // is this attack form possible?  T/F
   ubOpponent: UINT8; // which soldier is the victim?
   ubAimTime: UINT8; // how many extra APs to spend on aiming
   ubChanceToReallyHit: UINT8; // chance to hit * chance to get through cover
@@ -102,7 +113,7 @@ export interface ATTACKTYPE {
 
 export function createAttackType(): ATTACKTYPE {
   return {
-    ubPossible: 0,
+    ubPossible: false,
     ubOpponent: 0,
     ubAimTime: 0,
     ubChanceToReallyHit: 0,
@@ -112,6 +123,30 @@ export function createAttackType(): ATTACKTYPE {
     ubAPCost: 0,
     bWeaponIn: 0,
   };
+}
+
+export function resetAttackType(o: ATTACKTYPE) {
+  o.ubPossible = false;
+  o.ubOpponent = 0;
+  o.ubAimTime = 0;
+  o.ubChanceToReallyHit = 0;
+  o.iAttackValue = 0;
+  o.sTarget = 0;
+  o.bTargetLevel = 0;
+  o.ubAPCost = 0;
+  o.bWeaponIn = 0;
+}
+
+export function copyAttackType(destination: ATTACKTYPE, source: ATTACKTYPE) {
+  destination.ubPossible = source.ubPossible;
+  destination.ubOpponent = source.ubOpponent;
+  destination.ubAimTime = source.ubAimTime;
+  destination.ubChanceToReallyHit = source.ubChanceToReallyHit;
+  destination.iAttackValue = source.iAttackValue;
+  destination.sTarget = source.sTarget;
+  destination.bTargetLevel = source.bTargetLevel;
+  destination.ubAPCost = source.ubAPCost;
+  destination.bWeaponIn = source.bWeaponIn;
 }
 
 export const enum Enum293 {

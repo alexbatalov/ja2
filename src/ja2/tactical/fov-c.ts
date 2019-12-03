@@ -10,7 +10,7 @@ const NOVIEW = 5;
 const MAXVIEWPATHS = 17;
 const VIEWPATHLENGTH = 13;
 
-let gubGridNoMarkers: UINT8[] /* [WORLD_MAX] */;
+let gubGridNoMarkers: UINT8[] /* [WORLD_MAX] */ = createArray(WORLD_MAX, 0);
 let gubGridNoValue: UINT8 = 254;
 
 let ViewPath: UINT8[][] /* [MAXVIEWPATHS][VIEWPATHLENGTH] */ = [
@@ -137,7 +137,14 @@ interface SLANT_ROOF_FOV_TYPE {
   fAllocated: boolean;
 }
 
-let gSlantRoofData: SLANT_ROOF_FOV_TYPE[] /* [NUM_SLANT_ROOF_SLOTS] */;
+function createSlantRoofFovType(): SLANT_ROOF_FOV_TYPE {
+  return {
+    sGridNo: 0,
+    fAllocated: false,
+  };
+}
+
+let gSlantRoofData: SLANT_ROOF_FOV_TYPE[] /* [NUM_SLANT_ROOF_SLOTS] */ = createArrayFrom(NUM_SLANT_ROOF_SLOTS, createSlantRoofFovType);
 let guiNumSlantRoofs: UINT32 = 0;
 
 function GetFreeSlantRoof(): INT32 {
@@ -193,7 +200,7 @@ function FindSlantRoofSlot(sGridNo: INT16): boolean {
 
 export function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   let iSlantRoofSlot: INT32;
-  let pSlantRoof: Pointer<SLANT_ROOF_FOV_TYPE>;
+  let pSlantRoof: SLANT_ROOF_FOV_TYPE;
 
   // Check if this is a duplicate!
   if (FindSlantRoofSlot(sGridNo)) {
@@ -203,9 +210,9 @@ export function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   iSlantRoofSlot = GetFreeSlantRoof();
 
   if (iSlantRoofSlot != -1) {
-    pSlantRoof = addressof(gSlantRoofData[iSlantRoofSlot]);
-    pSlantRoof.value.sGridNo = sGridNo;
-    pSlantRoof.value.fAllocated = true;
+    pSlantRoof = gSlantRoofData[iSlantRoofSlot];
+    pSlantRoof.sGridNo = sGridNo;
+    pSlantRoof.fAllocated = true;
   }
 }
 
@@ -230,34 +237,33 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
   let prevmarker: UINT32;
   let Inc: INT32[] /* [6] */ = createArray(6, 0);
   let Dir: INT32[] /* [6] */ = createArray(6, 0);
-  let itemVisible: INT8 = false;
+  let itemVisible: INT8 = 0;
   let Blocking: INT8;
   let twoMoreTiles: INT8;
   let markerDir: INT8;
   let nextDir: INT8 = 0;
-  let AlreadySawItem: INT8 = false;
   let who: UINT8; //,itemIndex; // for each square checked
   let dir: UINT8;
   let range: UINT8;
-  let Path2: UINT8;
+  let Path2: boolean /* UINT8 */;
   let ubRoomNo: UINT8;
   let fCheckForRooms: boolean = false;
   let pItemPool: ITEM_POOL | null;
   let fHiddenStructVisible: boolean;
   let ubMovementCost: UINT8;
   let fTravelCostObs: boolean;
-  let fGoneThroughDoor: boolean = false;
-  let fThroughWindow: boolean = false;
+  let fGoneThroughDoor: UINT8 /* boolean */ = 0;
+  let fThroughWindow: UINT8 /* boolean */ = 0;
   let fItemsQuoteSaid: boolean = false;
   let usIndex: UINT16;
   let fRevealItems: boolean = true;
   let fStopRevealingItemsAfterThisTile: boolean = false;
   let bTallestStructureHeight: INT8;
   let iDoorGridNo: INT32;
-  let pStructure: Pointer<STRUCTURE>;
-  let pDummy: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
+  let pDummy: STRUCTURE | null;
   let bStructHeight: INT8;
-  let bThroughWindowDirection: INT8;
+  let bThroughWindowDirection: INT8 = <INT8><unknown>undefined;
 
   if (pSoldier.uiStatusFlags & SOLDIER_ENEMY) {
     // pSoldier->needToLookForItems = FALSE;
@@ -281,7 +287,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
 
   if (gubGridNoValue == 255) {
     // Reset!
-    memset(gubGridNoMarkers, 0, sizeof(gubGridNoMarkers));
+    gubGridNoMarkers.fill(0);
     gubGridNoValue = 1;
   }
 
@@ -325,8 +331,8 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
 
   for (maincnt = 0; maincnt < MAXVIEWPATHS; maincnt++) {
     marker = pSoldier.sGridNo;
-    Blocking = false;
-    twoMoreTiles = false;
+    Blocking = 0;
+    twoMoreTiles = 0;
     tilesLeftToSee = 99;
     fRevealItems = true;
     fStopRevealingItemsAfterThisTile = false;
@@ -403,7 +409,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
         ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), addressof(iDoorGridNo));
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
-        if (pStructure != null && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
+        if (pStructure != null && pStructure.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
           ubMovementCost = TRAVELCOST_FLAT;
         }
@@ -490,7 +496,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
             if (Dir[markerDir] == Enum245.NORTH || Dir[markerDir] == Enum245.SOUTH) {
               if (markercnt <= 1) // Are we right beside it?
               {
-                fThroughWindow = true;
+                fThroughWindow = 1;
                 bThroughWindowDirection = Dir[markerDir];
               }
             }
@@ -500,17 +506,17 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
             if (Dir[markerDir] == Enum245.EAST || Dir[markerDir] == Enum245.WEST) {
               if (markercnt <= 1) // Are we right beside it?
               {
-                fThroughWindow = true;
+                fThroughWindow = 1;
                 bThroughWindowDirection = Dir[markerDir];
               }
             }
           }
 
           if (Blocking == BLOCKING_TOPLEFT_DOOR) {
-            fGoneThroughDoor = true;
+            fGoneThroughDoor = 1;
           }
           if (Blocking == BLOCKING_TOPRIGHT_DOOR) {
-            fGoneThroughDoor = true;
+            fGoneThroughDoor = 1;
           }
 
           // ATE: If we hit this tile, find item always!
@@ -615,13 +621,13 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
 
           // CHECK FOR SLANT ROOF!
           {
-            let pStructure: Pointer<STRUCTURE>;
-            let pBase: Pointer<STRUCTURE>;
+            let pStructure: STRUCTURE | null;
+            let pBase: STRUCTURE;
 
             pStructure = FindStructure(marker, STRUCTURE_SLANTED_ROOF);
 
             if (pStructure != null) {
-              pBase = FindBaseStructure(pStructure);
+              pBase = <STRUCTURE>FindBaseStructure(pStructure);
 
               // ADD TO SLANTED ROOF LIST!
               AddSlantRoofFOVSlot(marker);
@@ -649,7 +655,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
             // CHECK FOR ROOMS
             // if ( fCheckForRooms )
             {
-              if (InAHiddenRoom(marker, addressof(ubRoomNo))) {
+              if ((ubRoomNo = InAHiddenRoom(marker)) !== -1) {
                 RemoveRoomRoof(marker, ubRoomNo, pSoldier);
                 if (ubRoomNo == ROOM_SURROUNDING_BOXING_RING && gWorldSectorX == BOXING_SECTOR_X && gWorldSectorY == BOXING_SECTOR_Y && gbWorldSectorZ == BOXING_SECTOR_Z) {
                   // reveal boxing ring at same time

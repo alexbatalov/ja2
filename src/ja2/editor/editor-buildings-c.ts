@@ -69,8 +69,8 @@ export function KillBuilding(iMapIndex: UINT32): void {
   let fFound: boolean = false;
 
   if (!gfBasement)
-    fFound |= RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
-  fFound |= RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
+    fFound = fFound || RemoveAllRoofsOfTypeRange(iMapIndex, Enum313.FIRSTTEXTURE, LASTITEM);
+  fFound = fFound || RemoveAllLandsOfTypeRange(iMapIndex, Enum313.FIRSTFLOOR, LASTFLOOR);
 
   EraseBuilding(iMapIndex);
   gubWorldRoomInfo[iMapIndex] = 0;
@@ -94,16 +94,16 @@ export function KillBuilding(iMapIndex: UINT32): void {
     RebuildRoof(iMapIndex, 0);
 }
 
-export let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = null;
+export let gpBuildingLayoutList: BUILDINGLAYOUTNODE | null /* Pointer<BUILDINGLAYOUTNODE> */ = null;
 export let gsBuildingLayoutAnchorGridNo: INT16 = -1;
 
 export function DeleteBuildingLayout(): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   // Erases the cursors associated with them.
   RemoveBuildingLayout();
   while (gpBuildingLayoutList) {
     curr = gpBuildingLayoutList;
-    gpBuildingLayoutList = gpBuildingLayoutList.value.next;
+    gpBuildingLayoutList = gpBuildingLayoutList.next;
     MemFree(curr);
   }
   gpBuildingLayoutList = null;
@@ -111,7 +111,7 @@ export function DeleteBuildingLayout(): void {
 }
 
 function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   // First, validate the gridno
   iMapIndex += iOffset;
   if (iMapIndex < 0 && iMapIndex >= WORLD_COLS * WORLD_ROWS)
@@ -130,15 +130,15 @@ function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
   // Now, check to make sure this gridno hasn't already been processed.
   curr = gpBuildingLayoutList;
   while (curr) {
-    if (iMapIndex == curr.value.sGridNo)
+    if (iMapIndex == curr.sGridNo)
       return;
-    curr = curr.value.next;
+    curr = curr.next;
   }
   // Good, it hasn't, so process it and add it to the head of the list.
-  curr = MemAlloc(sizeof(BUILDINGLAYOUTNODE));
+  curr = createBuildingLayoutNode();
   Assert(curr);
-  curr.value.sGridNo = iMapIndex;
-  curr.value.next = gpBuildingLayoutList;
+  curr.sGridNo = iMapIndex;
+  curr.next = gpBuildingLayoutList;
   gpBuildingLayoutList = curr;
 
   // Use recursion to process the remainder.
@@ -157,10 +157,10 @@ export function CopyBuilding(iMapIndex: INT32): void {
     return;
   // Okay, a building does exist here to some undetermined capacity.
   // Allocate the basic structure, then calculate the layout.  The head node is
-  gpBuildingLayoutList = MemAlloc(sizeof(BUILDINGLAYOUTNODE));
+  gpBuildingLayoutList = createBuildingLayoutNode();
   Assert(gpBuildingLayoutList);
-  gpBuildingLayoutList.value.sGridNo = iMapIndex;
-  gpBuildingLayoutList.value.next = null;
+  gpBuildingLayoutList.sGridNo = iMapIndex;
+  gpBuildingLayoutList.next = null;
 
   // Set the anchor point for this building -- this is where the user clicked.
   gsBuildingLayoutAnchorGridNo = iMapIndex;
@@ -179,12 +179,12 @@ export function CopyBuilding(iMapIndex: INT32): void {
 
 // depending on the offset, we will either sort in increasing order, or decreasing order.
 // This will prevent overlapping problems.
-function SortBuildingLayout(iMapIndex): void {
-  let head: Pointer<BUILDINGLAYOUTNODE>;
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
-  let prev: Pointer<BUILDINGLAYOUTNODE>;
-  let prevBest: Pointer<BUILDINGLAYOUTNODE>;
-  let best: Pointer<BUILDINGLAYOUTNODE>;
+function SortBuildingLayout(iMapIndex: INT32): void {
+  let head: BUILDINGLAYOUTNODE | null = null;
+  let curr: BUILDINGLAYOUTNODE | null = null;
+  let prev: BUILDINGLAYOUTNODE | null = null;
+  let prevBest: BUILDINGLAYOUTNODE | null = null;
+  let best: BUILDINGLAYOUTNODE | null = null;
   let iBestIndex: INT32;
   head = null;
   if (iMapIndex < gsBuildingLayoutAnchorGridNo) {
@@ -194,21 +194,21 @@ function SortBuildingLayout(iMapIndex): void {
       curr = gpBuildingLayoutList;
       prev = null;
       while (curr) {
-        if (iBestIndex < curr.value.sGridNo) {
-          iBestIndex = curr.value.sGridNo;
+        if (iBestIndex < curr.sGridNo) {
+          iBestIndex = curr.sGridNo;
           prevBest = prev;
           best = curr;
         }
         prev = curr;
-        curr = curr.value.next;
+        curr = curr.next;
       }
       // detach node from real list
       if (prevBest)
-        prevBest.value.next = best.value.next;
+        prevBest.next = (<BUILDINGLAYOUTNODE>best).next;
       if (best == gpBuildingLayoutList)
-        gpBuildingLayoutList = gpBuildingLayoutList.value.next;
+        gpBuildingLayoutList = gpBuildingLayoutList.next;
       // insert node into temp sorted list
-      best.value.next = head;
+      (<BUILDINGLAYOUTNODE>best).next = head;
       head = best;
     }
   } else {
@@ -218,21 +218,21 @@ function SortBuildingLayout(iMapIndex): void {
       curr = gpBuildingLayoutList;
       prev = null;
       while (curr) {
-        if (iBestIndex > curr.value.sGridNo) {
-          iBestIndex = curr.value.sGridNo;
+        if (iBestIndex > curr.sGridNo) {
+          iBestIndex = curr.sGridNo;
           prevBest = prev;
           best = curr;
         }
         prev = curr;
-        curr = curr.value.next;
+        curr = curr.next;
       }
       // detach node from real list
       if (prevBest)
-        prevBest.value.next = best.value.next;
+        prevBest.next = (<BUILDINGLAYOUTNODE>best).next;
       if (best == gpBuildingLayoutList)
-        gpBuildingLayoutList = gpBuildingLayoutList.value.next;
+        gpBuildingLayoutList = gpBuildingLayoutList.next;
       // insert node into temp sorted list
-      best.value.next = head;
+      (<BUILDINGLAYOUTNODE>best).next = head;
       head = best;
     }
   }
@@ -241,55 +241,55 @@ function SortBuildingLayout(iMapIndex): void {
 }
 
 function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): void {
-  let pSrcMapElement: Pointer<MAP_ELEMENT>;
-  let pNode: Pointer<LEVELNODE>;
+  let pSrcMapElement: MAP_ELEMENT;
+  let pNode: LEVELNODE | null;
   let usType: UINT16;
 
   DeleteStuffFromMapTile(iDstGridNo);
   DeleteAllLandLayers(iDstGridNo);
 
   // Get a pointer to the src mapelement
-  pSrcMapElement = addressof(gpWorldLevelData[iSrcGridNo]);
+  pSrcMapElement = gpWorldLevelData[iSrcGridNo];
 
   // Go through each levelnode, and paste the info into the new gridno
-  pNode = pSrcMapElement.value.pLandHead;
+  pNode = pSrcMapElement.pLandHead;
   while (pNode) {
-    if (pNode == pSrcMapElement.value.pLandStart)
-      gpWorldLevelData[iDstGridNo].pLandStart = AddLandToTail(iDstGridNo, pNode.value.usIndex);
+    if (pNode == pSrcMapElement.pLandStart)
+      gpWorldLevelData[iDstGridNo].pLandStart = AddLandToTail(iDstGridNo, pNode.usIndex);
     else
-      AddLandToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+      AddLandToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pObjectHead;
+  pNode = pSrcMapElement.pObjectHead;
   while (pNode) {
-    AddObjectToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    AddObjectToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pStructHead;
+  pNode = pSrcMapElement.pStructHead;
   while (pNode) {
-    AddStructToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    AddStructToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pShadowHead;
+  pNode = pSrcMapElement.pShadowHead;
   while (pNode) {
-    AddShadowToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    AddShadowToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pRoofHead;
+  pNode = pSrcMapElement.pRoofHead;
   while (pNode) {
-    AddRoofToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    AddRoofToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pOnRoofHead;
+  pNode = pSrcMapElement.pOnRoofHead;
   while (pNode) {
-    AddOnRoofToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    AddOnRoofToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
-  pNode = pSrcMapElement.value.pTopmostHead;
+  pNode = pSrcMapElement.pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex != Enum312.FIRSTPOINTERS1)
-      AddTopmostToTail(iDstGridNo, pNode.value.usIndex);
-    pNode = pNode.value.pNext;
+    if (pNode.usIndex != Enum312.FIRSTPOINTERS1)
+      AddTopmostToTail(iDstGridNo, pNode.usIndex);
+    pNode = pNode.pNext;
   }
   for (usType = Enum313.FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
     HideStructOfGivenType(iDstGridNo, usType, (!fBuildingShowRoofs));
@@ -297,7 +297,7 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
 }
 
 export function MoveBuilding(iMapIndex: INT32): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   let iOffset: INT32;
   if (!gpBuildingLayoutList)
     return;
@@ -306,22 +306,22 @@ export function MoveBuilding(iMapIndex: INT32): void {
   // First time, set the undo gridnos to everything effected.
   curr = gpBuildingLayoutList;
   while (curr) {
-    AddToUndoList(curr.value.sGridNo);
-    AddToUndoList(curr.value.sGridNo + iOffset);
-    curr = curr.value.next;
+    AddToUndoList(curr.sGridNo);
+    AddToUndoList(curr.sGridNo + iOffset);
+    curr = curr.next;
   }
   // Now, move the building
   curr = gpBuildingLayoutList;
   while (curr) {
-    PasteMapElementToNewMapElement(curr.value.sGridNo, curr.value.sGridNo + iOffset);
-    DeleteStuffFromMapTile(curr.value.sGridNo);
-    curr = curr.value.next;
+    PasteMapElementToNewMapElement(curr.sGridNo, curr.sGridNo + iOffset);
+    DeleteStuffFromMapTile(curr.sGridNo);
+    curr = curr.next;
   }
   MarkWorldDirty();
 }
 
 export function PasteBuilding(iMapIndex: INT32): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   let iOffset: INT32;
   if (!gpBuildingLayoutList)
     return;
@@ -330,28 +330,35 @@ export function PasteBuilding(iMapIndex: INT32): void {
   curr = gpBuildingLayoutList;
   // First time, set the undo gridnos to everything effected.
   while (curr) {
-    AddToUndoList(curr.value.sGridNo);
-    AddToUndoList(curr.value.sGridNo + iOffset);
-    curr = curr.value.next;
+    AddToUndoList(curr.sGridNo);
+    AddToUndoList(curr.sGridNo + iOffset);
+    curr = curr.next;
   }
   // Now, paste the building (no smoothing)
   curr = gpBuildingLayoutList;
   while (curr) {
-    PasteMapElementToNewMapElement(curr.value.sGridNo, curr.value.sGridNo + iOffset);
-    curr = curr.value.next;
+    PasteMapElementToNewMapElement(curr.sGridNo, curr.sGridNo + iOffset);
+    curr = curr.next;
   }
   MarkWorldDirty();
 }
 
 interface ROOFNODE {
   iMapIndex: INT32;
-  next: Pointer<ROOFNODE>;
+  next: ROOFNODE | null /* Pointer<ROOFNODE> */;
 }
 
-let gpRoofList: Pointer<ROOFNODE> = null;
+function createRoofNode(): ROOFNODE {
+  return {
+    iMapIndex: 0,
+    next: null,
+  };
+}
+
+let gpRoofList: ROOFNODE | null /* Pointer<ROOFNODE> */ = null;
 
 function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
-  let curr: Pointer<ROOFNODE>;
+  let curr: ROOFNODE | null;
   // First, validate the gridno
   if (iMapIndex < 0 && iMapIndex >= WORLD_COLS * WORLD_ROWS)
     return;
@@ -361,15 +368,15 @@ function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
   // Now, check to make sure this gridno hasn't already been processed.
   curr = gpRoofList;
   while (curr) {
-    if (iMapIndex == curr.value.iMapIndex)
+    if (iMapIndex == curr.iMapIndex)
       return;
-    curr = curr.value.next;
+    curr = curr.next;
   }
   // Good, it hasn't, so process it and add it to the head of the list.
-  curr = MemAlloc(sizeof(ROOFNODE));
+  curr = createRoofNode();
   Assert(curr);
-  curr.value.iMapIndex = iMapIndex;
-  curr.value.next = gpRoofList;
+  curr.iMapIndex = iMapIndex;
+  curr.next = gpRoofList;
   gpRoofList = curr;
 
   RebuildRoofUsingFloorInfo(iMapIndex, usRoofType);
@@ -383,7 +390,7 @@ function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
 
 export function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   let usRoofType: UINT16;
-  let curr: Pointer<ROOFNODE>;
+  let curr: ROOFNODE | null;
   // Not in normal editor mode, then can't do it.
   if (gfBasement || gfCaves)
     return;
@@ -394,10 +401,10 @@ export function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   usRoofType = SelSingleNewRoof[iCurBank].uiObject;
 
   // now start building a linked list of all nodes visited -- start the first node.
-  gpRoofList = MemAlloc(sizeof(ROOFNODE));
+  gpRoofList = createRoofNode();
   Assert(gpRoofList);
-  gpRoofList.value.iMapIndex = iMapIndex;
-  gpRoofList.value.next = 0;
+  gpRoofList.iMapIndex = iMapIndex;
+  gpRoofList.next = null;
   RebuildRoofUsingFloorInfo(iMapIndex, usRoofType);
 
   // Use recursion to process the remainder.
@@ -409,8 +416,7 @@ export function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   // Done, so delete the list.
   while (gpRoofList) {
     curr = gpRoofList;
-    gpRoofList = gpRoofList.value.next;
-    MemFree(curr);
+    gpRoofList = gpRoofList.next;
   }
   gpRoofList = null;
 }
@@ -424,18 +430,18 @@ const enum Enum34 {
   DOOR_LOCKED,
   NUM_DOOR_BUTTONS,
 }
-let iDoorButton: INT32[] /* [NUM_DOOR_BUTTONS] */;
+let iDoorButton: INT32[] /* [NUM_DOOR_BUTTONS] */ = createArray(Enum34.NUM_DOOR_BUTTONS, 0);
 let DoorRegion: MOUSE_REGION = createMouseRegion();
 
 export function InitDoorEditing(iMapIndex: INT32): void {
-  let pDoor: Pointer<DOOR>;
+  let pDoor: DOOR | null;
   if (!DoorAtGridNo(iMapIndex) && !OpenableAtGridNo(iMapIndex))
     return;
   gfEditingDoor = true;
   iDoorMapIndex = iMapIndex;
   DisableEditorTaskbar();
   MSYS_DefineRegion(DoorRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  iDoorButton[Enum34.DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iDoorButton[Enum34.DOOR_BACKGROUND] = CreateTextButton('', 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iDoorButton[Enum34.DOOR_BACKGROUND]);
   SpecifyDisabledButtonStyle(iDoorButton[Enum34.DOOR_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
   iDoorButton[Enum34.DOOR_OKAY] = CreateTextButton("Okay", FONT12POINT1(), FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 330, 195, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), DoorOkayCallback);
@@ -448,25 +454,23 @@ export function InitDoorEditing(iMapIndex: INT32): void {
 
   pDoor = FindDoorInfoAtGridNo(iDoorMapIndex);
   if (pDoor) {
-    if (pDoor.value.fLocked) {
+    if (pDoor.fLocked) {
       ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].uiFlags |= BUTTON_CLICKED_ON;
     }
-    SetInputFieldStringWithNumericStrictValue(0, pDoor.value.ubLockID);
-    SetInputFieldStringWithNumericStrictValue(1, pDoor.value.ubTrapID);
-    SetInputFieldStringWithNumericStrictValue(2, pDoor.value.ubTrapLevel);
+    SetInputFieldStringWithNumericStrictValue(0, pDoor.ubLockID);
+    SetInputFieldStringWithNumericStrictValue(1, pDoor.ubTrapID);
+    SetInputFieldStringWithNumericStrictValue(2, pDoor.ubTrapLevel);
   } else {
     ButtonList[iDoorButton[Enum34.DOOR_LOCKED]].uiFlags |= BUTTON_CLICKED_ON;
   }
 }
 
 export function ExtractAndUpdateDoorInfo(): void {
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
   let num: INT32;
-  let door: DOOR;
+  let door: DOOR = createDoor();
   let fCursor: boolean = false;
   let fCursorExists: boolean = false;
-
-  memset(addressof(door), 0, sizeof(DOOR));
 
   door.sGridNo = iDoorMapIndex;
 
@@ -499,18 +503,18 @@ export function ExtractAndUpdateDoorInfo(): void {
   // Find out if we have a rotating key cursor (we will either add one or remove one)
   pNode = gpWorldLevelData[iDoorMapIndex].pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex == Enum312.ROTATINGKEY1) {
+    if (pNode.usIndex == Enum312.ROTATINGKEY1) {
       fCursorExists = true;
       break;
     }
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
   }
   if (fCursor) {
     // we have a valid door, so add it (or replace existing)
     if (!fCursorExists)
       AddTopmostToHead(iDoorMapIndex, Enum312.ROTATINGKEY1);
     // If the door already exists, the new information will replace it.
-    AddDoorInfoToTable(addressof(door));
+    AddDoorInfoToTable(door);
   } else {
     // if a door exists here, remove it.
     if (fCursorExists)
@@ -520,7 +524,7 @@ export function ExtractAndUpdateDoorInfo(): void {
 }
 
 export function FindNextLockedDoor(): void {
-  let pDoor: Pointer<DOOR>;
+  let pDoor: DOOR | null;
   let i: INT32;
   for (i = iDoorMapIndex + 1; i < WORLD_MAX; i++) {
     pDoor = FindDoorInfoAtGridNo(i);
@@ -583,29 +587,29 @@ function DoorToggleLockedCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 export function AddLockedDoorCursors(): void {
-  let pDoor: Pointer<DOOR>;
+  let pDoor: DOOR;
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
-    pDoor = addressof(DoorTable[i]);
-    AddTopmostToHead(pDoor.value.sGridNo, Enum312.ROTATINGKEY1);
+    pDoor = DoorTable[i];
+    AddTopmostToHead(pDoor.sGridNo, Enum312.ROTATINGKEY1);
   }
 }
 
 export function RemoveLockedDoorCursors(): void {
-  let pDoor: Pointer<DOOR>;
+  let pDoor: DOOR;
   let i: INT32;
-  let pNode: Pointer<LEVELNODE>;
-  let pTemp: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
+  let pTemp: LEVELNODE;
   for (i = 0; i < gubNumDoors; i++) {
-    pDoor = addressof(DoorTable[i]);
-    pNode = gpWorldLevelData[pDoor.value.sGridNo].pTopmostHead;
+    pDoor = DoorTable[i];
+    pNode = gpWorldLevelData[pDoor.sGridNo].pTopmostHead;
     while (pNode) {
-      if (pNode.value.usIndex == Enum312.ROTATINGKEY1) {
+      if (pNode.usIndex == Enum312.ROTATINGKEY1) {
         pTemp = pNode;
-        pNode = pNode.value.pNext;
-        RemoveTopmost(pDoor.value.sGridNo, pTemp.value.usIndex);
+        pNode = pNode.pNext;
+        RemoveTopmost(pDoor.sGridNo, pTemp.usIndex);
       } else
-        pNode = pNode.value.pNext;
+        pNode = pNode.pNext;
     }
   }
 }

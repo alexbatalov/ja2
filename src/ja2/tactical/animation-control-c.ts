@@ -20,10 +20,10 @@ function createAnimationSubTypeFrom(usAnimState: UINT16, usAnimationSurfaces: UI
 }
 
 // Block for anim file
-export let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */;
+export let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */ = createArrayFrom(MAX_ANIMATIONS, () => createArray(MAX_FRAMES_PER_ANIM, 0));
 
 // OK, this array contains definitions for random animations based on bodytype, total # allowed, and what is in their hand....
-export let gRandomAnimDefs: RANDOM_ANI_DEF[][] /* [TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE] */;
+export let gRandomAnimDefs: RANDOM_ANI_DEF[][] /* [TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE] */ = createArrayFrom(Enum194.TOTALBODYTYPES, () => createArrayFrom(MAX_RANDOM_ANIMS_PER_BODYTYPE, createRandomAnimationDefinition));
 
 export let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = [
   // NAME								//AP		//SPEED	  // MOVE	// FLAGS						// HEIGHT
@@ -994,7 +994,7 @@ export let gubAnimSwatSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
 ];
 
 // Really only the first mercs are using any of these values....
-let gubAnimCrawlingSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
+export let gubAnimCrawlSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = [
   createAnimationSpeedDefinitionFrom(0, 0.8), // REGMALE
   createAnimationSpeedDefinitionFrom(20, 0.8), // BIGMALE
   createAnimationSpeedDefinitionFrom(0, 0.8), // STOCKYMALE
@@ -1037,7 +1037,10 @@ export function InitAnimationSurfacesPerBodytype(): void {
       gubAnimSurfaceCorpseID[cnt1][cnt2] = Enum249.NO_CORPSE;
     }
   }
-  memset(gRandomAnimDefs, 0, sizeof(gRandomAnimDefs));
+
+  for (let i = 0; i < gRandomAnimDefs.length; i++) {
+    gRandomAnimDefs[i].forEach(resetRandomAnimationDefinition);
+  }
 
   // REGULAR MALE GUY
   gubAnimSurfaceIndex[Enum194.REGMALE][Enum193.WALKING] = Enum195.RGMBASICWALKING;
@@ -2943,7 +2946,7 @@ export function LoadAnimationStateInstructions(): boolean {
   }
 
   // Read in block
-  if (!FileRead(hFile, gusAnimInst, sizeof(gusAnimInst), addressof(uiBytesRead))) {
+  if ((uiBytesRead = FileRead(hFile, gusAnimInst, sizeof(gusAnimInst))) === -1) {
     return false;
   }
 
@@ -2952,7 +2955,7 @@ export function LoadAnimationStateInstructions(): boolean {
   return true;
 }
 
-export function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): boolean {
+export function IsAnimationValidForBodyType(pSoldier: SOLDIERTYPE, usNewState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // From animation control, get surface
@@ -2967,12 +2970,12 @@ export function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNe
   return true;
 }
 
-export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): boolean {
+export function SubstituteBodyTypeAnimation(pSoldier: SOLDIERTYPE, usTestState: UINT16, pusSubState: Pointer<UINT16>): boolean {
   let fSubFound: boolean = false;
 
   pusSubState.value = usTestState;
 
-  if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+  if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
     switch (usTestState) {
       case Enum193.STANDING:
       case Enum193.WALKING:
@@ -2984,7 +2987,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
     }
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER) {
+  if (pSoldier.ubBodyType == Enum194.LARVAE_MONSTER) {
     switch (usTestState) {
       case Enum193.STANDING:
 
@@ -3001,7 +3004,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
     }
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.CROW) {
+  if (pSoldier.ubBodyType == Enum194.CROW) {
     switch (usTestState) {
       case Enum193.WALKING:
 
@@ -3017,7 +3020,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
     }
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
+  if (pSoldier.ubBodyType == Enum194.BLOODCAT) {
     switch (usTestState) {
       case Enum193.RUNNING:
         pusSubState.value = Enum193.BLOODCAT_RUN;
@@ -3026,7 +3029,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
     }
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.ADULTFEMALEMONSTER || pSoldier.value.ubBodyType == Enum194.AM_MONSTER || pSoldier.value.ubBodyType == Enum194.YAF_MONSTER || pSoldier.value.ubBodyType == Enum194.YAM_MONSTER) {
+  if (pSoldier.ubBodyType == Enum194.ADULTFEMALEMONSTER || pSoldier.ubBodyType == Enum194.AM_MONSTER || pSoldier.ubBodyType == Enum194.YAF_MONSTER || pSoldier.ubBodyType == Enum194.YAM_MONSTER) {
     switch (usTestState) {
       case Enum193.WALKING:
         pusSubState.value = Enum193.ADULTMONSTER_WALKING;
@@ -3040,12 +3043,12 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
     }
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.ROBOTNOWEAPON) {
+  if (pSoldier.ubBodyType == Enum194.ROBOTNOWEAPON) {
     switch (usTestState) {
       case Enum193.STANDING:
 
         // OK, if they are on the CIV_TEAM, sub for no camera moving
-        if (pSoldier.value.bTeam == CIV_TEAM) {
+        if (pSoldier.bTeam == CIV_TEAM) {
           pusSubState.value = Enum193.ROBOT_CAMERA_NOT_MOVING;
           fSubFound = true;
         }
@@ -3086,7 +3089,7 @@ export function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTe
   return fSubFound;
 }
 
-export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<string> /* Pointer<CHAR8> */): INT8 {
+export function GetBodyTypePaletteSubstitutionCode(pSoldier: SOLDIERTYPE | null, ubBodyType: UINT8, zColFilename: Pointer<string> /* Pointer<CHAR8> */): INT8 {
   switch (ubBodyType) {
     case Enum194.REGMALE:
     case Enum194.BIGMALE:
@@ -3095,12 +3098,12 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE
 
       if (pSoldier != null) {
         // Are we on fire?
-        if (pSoldier.value.usAnimState == Enum193.CHARIOTS_OF_FIRE || pSoldier.value.usAnimState == Enum193.BODYEXPLODING) {
+        if (pSoldier.usAnimState == Enum193.CHARIOTS_OF_FIRE || pSoldier.usAnimState == Enum193.BODYEXPLODING) {
           return 0;
         }
 
         // Check for cammo...
-        if (pSoldier.value.bCamo != 0) {
+        if (pSoldier.bCamo != 0) {
           zColFilename = "ANIMS\\camo.COL";
           return 1;
         }
@@ -3145,24 +3148,24 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE
   return -1;
 }
 
-export function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): boolean {
+export function SetSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimState: UINT16): boolean {
   let usAnimSurface: UINT16;
 
   // Delete any structure info!
-  if (pSoldier.value.pLevelNode != null) {
-    DeleteStructureFromWorld(pSoldier.value.pLevelNode.value.pStructureData);
-    pSoldier.value.pLevelNode.value.pStructureData = null;
+  if (pSoldier.pLevelNode != null) {
+    DeleteStructureFromWorld(pSoldier.pLevelNode.pStructureData);
+    pSoldier.pLevelNode.pStructureData = null;
   }
 
   usAnimSurface = LoadSoldierAnimationSurface(pSoldier, usAnimState);
 
   // Add structure info!
-  if (pSoldier.value.pLevelNode != null && !(pSoldier.value.uiStatusFlags & SOLDIER_PAUSEANIMOVE)) {
-    AddMercStructureInfoFromAnimSurface(pSoldier.value.sGridNo, pSoldier, usAnimSurface, usAnimState);
+  if (pSoldier.pLevelNode != null && !(pSoldier.uiStatusFlags & SOLDIER_PAUSEANIMOVE)) {
+    AddMercStructureInfoFromAnimSurface(pSoldier.sGridNo, pSoldier, usAnimSurface, usAnimState);
   }
 
   // Set
-  pSoldier.value.usAnimSurface = usAnimSurface;
+  pSoldier.usAnimSurface = usAnimSurface;
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
     return false;
@@ -3171,14 +3174,14 @@ export function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAni
   return true;
 }
 
-export function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function LoadSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
 
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
 
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's been loaded!
-    if (GetCachedAnimationSurface(pSoldier.value.ubID, addressof(pSoldier.value.AnimCache), usAnimSurface, pSoldier.value.usAnimState) == false) {
+    if (GetCachedAnimationSurface(pSoldier.ubID, pSoldier.AnimCache, usAnimSurface, pSoldier.usAnimState) == false) {
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }
   }
@@ -3197,7 +3200,7 @@ let gusQueenMonsterSpitAnimPerDir: UINT16[] /* [] */ = [
   Enum195.QUEENMONSTERSPIT_NE,
 ];
 
-export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function DetermineSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
   let usAltAnimSurface: UINT16;
   let ubBodyType: UINT8;
@@ -3207,20 +3210,20 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
   let fAdjustedForItem: boolean = false;
   let usNewAnimState: UINT16;
 
-  ubBodyType = pSoldier.value.ubBodyType;
+  ubBodyType = pSoldier.ubBodyType;
 
   if (SubstituteBodyTypeAnimation(pSoldier, usAnimState, addressof(usNewAnimState))) {
     usAnimState = usNewAnimState;
   }
 
-  usAnimSurface = gubAnimSurfaceIndex[pSoldier.value.ubBodyType][usAnimState];
+  usAnimSurface = gubAnimSurfaceIndex[pSoldier.ubBodyType][usAnimState];
 
   // CHECK IF WE CAN DO THIS ANIMATION, IE WE HAVE IT AVAILIBLE
   if (usAnimSurface == INVALID_ANIMATION) {
     // WE SHOULD NOT BE USING THIS ANIMATION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "Invalid Animation File for Body %d, animation %S.", pSoldier.value.ubBodyType, gAnimControl[usAnimState].zAnimStr);
+    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "Invalid Animation File for Body %d, animation %S.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr);
     // Set index to FOUND_INVALID_ANIMATION
-    gubAnimSurfaceIndex[pSoldier.value.ubBodyType][usAnimState] = FOUND_INVALID_ANIMATION;
+    gubAnimSurfaceIndex[pSoldier.ubBodyType][usAnimState] = FOUND_INVALID_ANIMATION;
     return INVALID_ANIMATION_SURFACE;
   }
   if (usAnimSurface == FOUND_INVALID_ANIMATION) {
@@ -3235,44 +3238,44 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
 
     // Assume a target gridno is here.... get direction...
     // ATE: use +2 in gridno because here head is far from body
-    bDir = GetDirectionToGridNoFromGridNo((pSoldier.value.sGridNo + 2), pSoldier.value.sTargetGridNo);
+    bDir = GetDirectionToGridNoFromGridNo((pSoldier.sGridNo + 2), pSoldier.sTargetGridNo);
 
     return gusQueenMonsterSpitAnimPerDir[bDir];
   }
 
   // IF we are not a merc, return
-  if (pSoldier.value.ubBodyType > Enum194.REGFEMALE) {
+  if (pSoldier.ubBodyType > Enum194.REGFEMALE) {
     return usAnimSurface;
   }
 
   // SWITCH TO DIFFERENT AIM ANIMATION FOR BIG GUY!
   if (usAnimSurface == Enum195.BGMSTANDAIM2) {
-    if (pSoldier.value.uiAnimSubFlags & SUB_ANIM_BIGGUYSHOOT2) {
+    if (pSoldier.uiAnimSubFlags & SUB_ANIM_BIGGUYSHOOT2) {
       usAnimSurface = Enum195.BGMSTANDAIM;
     }
   }
 
   // SWITCH TO DIFFERENT STAND ANIMATION FOR BIG GUY!
   if (usAnimSurface == Enum195.BGMSTANDING) {
-    if (pSoldier.value.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
+    if (pSoldier.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
       usAnimSurface = Enum195.BGMTHREATENSTAND;
     }
   }
 
   if (usAnimSurface == Enum195.BGMWALKING) {
-    if (pSoldier.value.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
+    if (pSoldier.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
       usAnimSurface = Enum195.BGMWALK2;
     }
   }
 
   if (usAnimSurface == Enum195.BGMRUNNING) {
-    if (pSoldier.value.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
+    if (pSoldier.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
       usAnimSurface = Enum195.BGMRUN2;
     }
   }
 
   if (usAnimSurface == Enum195.BGMRAISE) {
-    if (pSoldier.value.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
+    if (pSoldier.uiAnimSubFlags & SUB_ANIM_BIGGUYTHREATENSTANCE) {
       usAnimSurface = Enum195.BGMRAISE2;
     }
   }
@@ -3282,7 +3285,7 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
   // CHECK FOR WATER
   if (MercInWater(pSoldier)) {
     // ADJUST BASED ON ITEM IN HAND....
-    usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+    usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
     // Default it to the 1 ( ie: no rifle )
     if (usItem != NOTHING) {
@@ -3294,21 +3297,21 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
     }
 
     // CHANGE BASED ON HIEGHT OF WATER
-    usAltAnimSurface = gubAnimSurfaceMidWaterSubIndex[pSoldier.value.ubBodyType][usAnimState][ubWaterHandIndex];
+    usAltAnimSurface = gubAnimSurfaceMidWaterSubIndex[pSoldier.ubBodyType][usAnimState][ubWaterHandIndex];
 
     if (usAltAnimSurface != INVALID_ANIMATION) {
       usAnimSurface = usAltAnimSurface;
     }
   } else {
     // ADJUST BASED ON ITEM IN HAND....
-    usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+    usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
     if (!(Item[usItem].usItemClass == IC_GUN) && !(Item[usItem].usItemClass == IC_LAUNCHER) || usItem == Enum225.ROCKET_LAUNCHER) {
       if (usAnimState == Enum193.STANDING) {
-        usAnimSurface = gusNothingBreath[pSoldier.value.ubBodyType];
+        usAnimSurface = gusNothingBreath[pSoldier.ubBodyType];
         fAdjustedForItem = true;
       } else {
-        usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.value.ubBodyType][usAnimState];
+        usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.ubBodyType][usAnimState];
 
         if (usAltAnimSurface != INVALID_ANIMATION) {
           usAnimSurface = usAltAnimSurface;
@@ -3319,7 +3322,7 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
       // CHECK FOR HANDGUN
       if ((Item[usItem].usItemClass == IC_GUN || Item[usItem].usItemClass == IC_LAUNCHER) && usItem != Enum225.ROCKET_LAUNCHER) {
         if (!(Item[usItem].fFlags & ITEM_TWO_HANDED)) {
-          usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.value.ubBodyType][usAnimState];
+          usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.ubBodyType][usAnimState];
           if (usAltAnimSurface != INVALID_ANIMATION) {
             usAnimSurface = usAltAnimSurface;
             fAdjustedForItem = true;
@@ -3328,14 +3331,14 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
           // Look for good two pistols sub anim.....
           if (gDoubleHandledSub.usAnimState == usAnimState) {
             // Do we carry two pistols...
-            if (Item[pSoldier.value.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN) {
-              usAnimSurface = gDoubleHandledSub.usAnimationSurfaces[pSoldier.value.ubBodyType];
+            if (Item[pSoldier.inv[Enum261.SECONDHANDPOS].usItem].usItemClass == IC_GUN) {
+              usAnimSurface = gDoubleHandledSub.usAnimationSurfaces[pSoldier.ubBodyType];
               fAdjustedForItem = true;
             }
           }
         }
       } else {
-        usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.value.ubBodyType][usAnimState];
+        usAltAnimSurface = gubAnimSurfaceItemSubIndex[pSoldier.ubBodyType][usAnimState];
 
         if (usAltAnimSurface != INVALID_ANIMATION) {
           usAnimSurface = usAltAnimSurface;
@@ -3347,21 +3350,21 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
     // Based on if we have adjusted for item or not... check for injured status...
     if (fAdjustedForItem) {
       // If life below thresthold for being injured
-      if (pSoldier.value.bLife < INJURED_CHANGE_THREASHOLD) {
+      if (pSoldier.bLife < INJURED_CHANGE_THREASHOLD) {
         // ADJUST FOR INJURED....
         for (cnt = 0; cnt < NUM_INJURED_SUBS; cnt++) {
           if (gNothingInjuredSub[cnt].usAnimState == usAnimState) {
-            usAnimSurface = gNothingInjuredSub[cnt].usAnimationSurfaces[pSoldier.value.ubBodyType];
+            usAnimSurface = gNothingInjuredSub[cnt].usAnimationSurfaces[pSoldier.ubBodyType];
           }
         }
       }
     } else {
       // If life below thresthold for being injured
-      if (pSoldier.value.bLife < INJURED_CHANGE_THREASHOLD) {
+      if (pSoldier.bLife < INJURED_CHANGE_THREASHOLD) {
         // ADJUST FOR INJURED....
         for (cnt = 0; cnt < NUM_INJURED_SUBS; cnt++) {
           if (gRifleInjuredSub[cnt].usAnimState == usAnimState) {
-            usAnimSurface = gRifleInjuredSub[cnt].usAnimationSurfaces[pSoldier.value.ubBodyType];
+            usAnimSurface = gRifleInjuredSub[cnt].usAnimationSurfaces[pSoldier.ubBodyType];
           }
         }
       }
@@ -3370,15 +3373,15 @@ export function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>,
   return usAnimSurface;
 }
 
-export function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
+export function GetSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimState: UINT16): UINT16 {
   let usAnimSurface: UINT16;
 
-  usAnimSurface = pSoldier.value.usAnimSurface;
+  usAnimSurface = pSoldier.usAnimSurface;
 
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's loaded!
     if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
-      ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %S, surface %d not loaded.", pSoldier.value.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
+      ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %S, surface %d not loaded.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
       AnimDebugMsg(FormatString("Surface Database: PROBLEMS!!!!!!"));
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }

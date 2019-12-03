@@ -364,7 +364,7 @@ let gRoadMacros: MACROSTRUCT[] /* [] */ = [
   createMacroStructFrom(Enum54.TE, 0)
 ];
 
-let gsRoadMacroStartIndex: INT16[] /* [NUM_ROAD_MACROS] */;
+let gsRoadMacroStartIndex: INT16[] /* [NUM_ROAD_MACROS] */ = createArray(Enum54.NUM_ROAD_MACROS, 0);
 
 // A simple optimization function that calculates the first index in the large database for
 // the particular macro ID.
@@ -372,9 +372,9 @@ export function InitializeRoadMacros(): void {
   let i: INT16;
   let end: INT16;
   let sMacro: INT16 = 0;
-  end = sizeof(gRoadMacros) / 4;
+  end = gRoadMacros.length;
   for (i = 0; i < end; i++) {
-    if (i >= sizeof(gRoadMacros) / sizeof(MACROSTRUCT)) {
+    if (i >= gRoadMacros.length) {
       i = i;
     }
     if (gRoadMacros[i].sMacroID == sMacro) {
@@ -409,18 +409,18 @@ export function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void 
 export function ReplaceObsoleteRoads(): void {
   let i: INT32;
   let iMacro: INT32;
-  let pObject: Pointer<LEVELNODE>;
+  let pObject: LEVELNODE | null;
   let fRoadExistsAtGridNo: boolean;
   for (i = 0; i < WORLD_MAX; i++) {
     pObject = gpWorldLevelData[i].pObjectHead;
     fRoadExistsAtGridNo = false;
     while (pObject) {
-      if (pObject.value.usIndex >= Enum312.FIRSTROAD1 && pObject.value.usIndex <= Enum312.FIRSTROAD32) {
+      if (pObject.usIndex >= Enum312.FIRSTROAD1 && pObject.usIndex <= Enum312.FIRSTROAD32) {
         fRoadExistsAtGridNo = true;
-        iMacro = pObject.value.usIndex - Enum312.FIRSTROAD1;
+        iMacro = pObject.usIndex - Enum312.FIRSTROAD1;
         PlaceRoadMacroAtGridNo(i, iMacro);
       }
-      pObject = pObject.value.pNext;
+      pObject = pObject.pNext;
     }
     if (fRoadExistsAtGridNo) {
       RemoveAllObjectsOfTypeRange(i, Enum313.FIRSTROAD, Enum313.FIRSTROAD);

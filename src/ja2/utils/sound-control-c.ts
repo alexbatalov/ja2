@@ -449,7 +449,7 @@ export function PlayJA2SampleFromFile(szFileName: string /* STR8 */, usRate: UIN
   return SoundPlay(szFileName, spParms);
 }
 
-export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
+export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK | null): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   let spParms: SOUNDPARMS = createSoundParams();
@@ -459,7 +459,7 @@ export function PlayJA2StreamingSampleFromFile(szFileName: string /* STR8 */, us
   spParms.uiLoop = ubLoops;
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
-  spParms.EOSCallback = EndsCallback;
+  spParms.EOSCallback = <SOUND_STOP_CALLBACK>EndsCallback;
 
   return SoundPlayStreamedFile(szFileName, spParms);
 }
@@ -489,7 +489,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
 export function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: boolean): UINT32 {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
-    if ((MercPtrs[usID].value.bVisible != -1) || !fCheck) {
+    if ((MercPtrs[usID].bVisible != -1) || !fCheck) {
       return PlayJA2Sample(usNum, usRate, CalculateSoundEffectsVolume(ubVolume), ubLoops, uiPan);
     }
   }
@@ -646,13 +646,35 @@ interface POSITIONSND {
   sGridNo: INT16;
   iSoundSampleID: INT32;
   iSoundToPlay: INT32;
-  uiData: UINT32;
+  uiData: SOLDIERTYPE /* UINT32 */;
   fAllocated: boolean;
   fInActive: boolean;
 }
 
+function createPositionSnd(): POSITIONSND {
+  return {
+    uiFlags: 0,
+    sGridNo: 0,
+    iSoundSampleID: 0,
+    iSoundToPlay: 0,
+    uiData: <SOLDIERTYPE><unknown>null,
+    fAllocated: false,
+    fInActive: false,
+  };
+}
+
+function resetPositionSnd(o: POSITIONSND) {
+  o.uiFlags = 0;
+  o.sGridNo = 0;
+  o.iSoundSampleID = 0;
+  o.iSoundToPlay = 0;
+  o.uiData = <SOLDIERTYPE><unknown>null;
+  o.fAllocated = false;
+  o.fInActive = false;
+}
+
 // GLOBAL FOR SMOKE LISTING
-let gPositionSndData: POSITIONSND[] /* [NUM_POSITION_SOUND_EFFECT_SLOTS] */;
+let gPositionSndData: POSITIONSND[] /* [NUM_POSITION_SOUND_EFFECT_SLOTS] */ = createArrayFrom(NUM_POSITION_SOUND_EFFECT_SLOTS, createPositionSnd);
 let guiNumPositionSnds: UINT32 = 0;
 let gfPositionSoundsActive: boolean = false;
 
@@ -681,63 +703,63 @@ function RecountPositionSnds(): void {
   }
 }
 
-export function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundToPlay: UINT32): INT32 {
-  let pPositionSnd: Pointer<POSITIONSND>;
+export function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: SOLDIERTYPE, iSoundToPlay: UINT32): INT32 {
+  let pPositionSnd: POSITIONSND;
   let iPositionSndIndex: INT32;
 
   if ((iPositionSndIndex = GetFreePositionSnd()) == (-1))
     return -1;
 
-  memset(addressof(gPositionSndData[iPositionSndIndex]), 0, sizeof(POSITIONSND));
+  resetPositionSnd(gPositionSndData[iPositionSndIndex]);
 
-  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
+  pPositionSnd = gPositionSndData[iPositionSndIndex];
 
   // Default to inactive
 
   if (gfPositionSoundsActive) {
-    pPositionSnd.value.fInActive = false;
+    pPositionSnd.fInActive = false;
   } else {
-    pPositionSnd.value.fInActive = true;
+    pPositionSnd.fInActive = true;
   }
 
-  pPositionSnd.value.sGridNo = sGridNo;
-  pPositionSnd.value.uiData = uiData;
-  pPositionSnd.value.uiFlags = uiFlags;
-  pPositionSnd.value.fAllocated = true;
-  pPositionSnd.value.iSoundToPlay = iSoundToPlay;
+  pPositionSnd.sGridNo = sGridNo;
+  pPositionSnd.uiData = uiData;
+  pPositionSnd.uiFlags = uiFlags;
+  pPositionSnd.fAllocated = true;
+  pPositionSnd.iSoundToPlay = iSoundToPlay;
 
-  pPositionSnd.value.iSoundSampleID = NO_SAMPLE;
+  pPositionSnd.iSoundSampleID = NO_SAMPLE;
 
   return iPositionSndIndex;
 }
 
 export function DeletePositionSnd(iPositionSndIndex: INT32): void {
-  let pPositionSnd: Pointer<POSITIONSND>;
+  let pPositionSnd: POSITIONSND;
 
-  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
+  pPositionSnd = gPositionSndData[iPositionSndIndex];
 
-  if (pPositionSnd.value.fAllocated) {
+  if (pPositionSnd.fAllocated) {
     // Turn inactive first...
-    pPositionSnd.value.fInActive = true;
+    pPositionSnd.fInActive = true;
 
     // End sound...
-    if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
-      SoundStop(pPositionSnd.value.iSoundSampleID);
+    if (pPositionSnd.iSoundSampleID != NO_SAMPLE) {
+      SoundStop(pPositionSnd.iSoundSampleID);
     }
 
-    pPositionSnd.value.fAllocated = false;
+    pPositionSnd.fAllocated = false;
 
     RecountPositionSnds();
   }
 }
 
 export function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
-  let pPositionSnd: Pointer<POSITIONSND>;
+  let pPositionSnd: POSITIONSND;
 
-  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
+  pPositionSnd = gPositionSndData[iPositionSndIndex];
 
-  if (pPositionSnd.value.fAllocated) {
-    pPositionSnd.value.sGridNo = sGridNo;
+  if (pPositionSnd.fAllocated) {
+    pPositionSnd.sGridNo = sGridNo;
 
     SetPositionSndsVolumeAndPanning();
   }
@@ -745,20 +767,20 @@ export function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): 
 
 export function SetPositionSndsActive(): void {
   let cnt: UINT32;
-  let pPositionSnd: Pointer<POSITIONSND>;
+  let pPositionSnd: POSITIONSND;
 
   gfPositionSoundsActive = true;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = addressof(gPositionSndData[cnt]);
+    pPositionSnd = gPositionSndData[cnt];
 
-    if (pPositionSnd.value.fAllocated) {
-      if (pPositionSnd.value.fInActive) {
-        pPositionSnd.value.fInActive = false;
+    if (pPositionSnd.fAllocated) {
+      if (pPositionSnd.fInActive) {
+        pPositionSnd.fInActive = false;
 
         // Begin sound effect
         // Volume 0
-        pPositionSnd.value.iSoundSampleID = PlayJA2Sample(pPositionSnd.value.iSoundToPlay, RATE_11025, 0, 0, MIDDLEPAN);
+        pPositionSnd.iSoundSampleID = PlayJA2Sample(pPositionSnd.iSoundToPlay, RATE_11025, 0, 0, MIDDLEPAN);
       }
     }
   }
@@ -766,20 +788,20 @@ export function SetPositionSndsActive(): void {
 
 export function SetPositionSndsInActive(): void {
   let cnt: UINT32;
-  let pPositionSnd: Pointer<POSITIONSND>;
+  let pPositionSnd: POSITIONSND;
 
   gfPositionSoundsActive = false;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = addressof(gPositionSndData[cnt]);
+    pPositionSnd = gPositionSndData[cnt];
 
-    if (pPositionSnd.value.fAllocated) {
-      pPositionSnd.value.fInActive = true;
+    if (pPositionSnd.fAllocated) {
+      pPositionSnd.fInActive = true;
 
       // End sound...
-      if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
-        SoundStop(pPositionSnd.value.iSoundSampleID);
-        pPositionSnd.value.iSoundSampleID = NO_SAMPLE;
+      if (pPositionSnd.iSoundSampleID != NO_SAMPLE) {
+        SoundStop(pPositionSnd.iSoundSampleID);
+        pPositionSnd.iSoundSampleID = NO_SAMPLE;
       }
     }
   }
@@ -888,23 +910,23 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
 
 export function SetPositionSndsVolumeAndPanning(): void {
   let cnt: UINT32;
-  let pPositionSnd: Pointer<POSITIONSND>;
+  let pPositionSnd: POSITIONSND;
   let bVolume: INT8;
   let bPan: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = addressof(gPositionSndData[cnt]);
+    pPositionSnd = gPositionSndData[cnt];
 
-    if (pPositionSnd.value.fAllocated) {
-      if (!pPositionSnd.value.fInActive) {
-        if (pPositionSnd.value.iSoundSampleID != NO_SAMPLE) {
-          bVolume = PositionSoundVolume(15, pPositionSnd.value.sGridNo);
+    if (pPositionSnd.fAllocated) {
+      if (!pPositionSnd.fInActive) {
+        if (pPositionSnd.iSoundSampleID != NO_SAMPLE) {
+          bVolume = PositionSoundVolume(15, pPositionSnd.sGridNo);
 
-          if (pPositionSnd.value.uiFlags & POSITION_SOUND_FROM_SOLDIER) {
-            pSoldier = pPositionSnd.value.uiData;
+          if (pPositionSnd.uiFlags & POSITION_SOUND_FROM_SOLDIER) {
+            pSoldier = pPositionSnd.uiData;
 
-            if (pSoldier.value.bVisible == -1) {
+            if (pSoldier.bVisible == -1) {
               // Limit volume,,,
               if (bVolume > 10) {
                 bVolume = 10;
@@ -912,11 +934,11 @@ export function SetPositionSndsVolumeAndPanning(): void {
             }
           }
 
-          SoundSetVolume(pPositionSnd.value.iSoundSampleID, bVolume);
+          SoundSetVolume(pPositionSnd.iSoundSampleID, bVolume);
 
-          bPan = PositionSoundDir(pPositionSnd.value.sGridNo);
+          bPan = PositionSoundDir(pPositionSnd.sGridNo);
 
-          SoundSetPan(pPositionSnd.value.iSoundSampleID, bPan);
+          SoundSetPan(pPositionSnd.iSoundSampleID, bPan);
         }
       }
     }

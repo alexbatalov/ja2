@@ -11,11 +11,11 @@ export function ResetMilitia(): void {
 }
 
 function RemoveMilitiaFromTactical(): void {
-  let curr: SOLDIERINITNODE;
+  let curr: SOLDIERINITNODE | null;
   let i: INT32;
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
-    if (MercPtrs[i].value.bActive) {
-      TacticalRemoveSoldier(MercPtrs[i].value.ubID);
+    if (MercPtrs[i].bActive) {
+      TacticalRemoveSoldier(MercPtrs[i].ubID);
     }
   }
   curr = gSoldierInitHead;

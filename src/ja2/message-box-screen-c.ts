@@ -21,7 +21,7 @@ export let gfInMsgBox: boolean = false;
 
 let gOldCursorLimitRectangle: SGPRect = createSGPRect();
 
-export let gMsgBox: MESSAGE_BOX_STRUCT;
+export let gMsgBox: MESSAGE_BOX_STRUCT = createMessageBoxStruct();
 let gfNewMessageBox: boolean = false;
 let gfStartedFromGameScreen: boolean = false;
 export let gfStartedFromMapScreen: boolean = false;
@@ -50,7 +50,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   let usCursor: UINT16;
   let iId: INT32 = -1;
 
-  GetMousePos(addressof(pOldMousePosition));
+  GetMousePos(pOldMousePosition);
 
   // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
   gfDontOverRideSaveBuffer = true;
@@ -148,10 +148,10 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   }
 
   if (usFlags & MSG_BOX_FLAG_USE_CENTERING_RECT && pCenteringRect != null) {
-    aRect.iTop = pCenteringRect.value.iTop;
-    aRect.iLeft = pCenteringRect.value.iLeft;
-    aRect.iBottom = pCenteringRect.value.iBottom;
-    aRect.iRight = pCenteringRect.value.iRight;
+    aRect.iTop = pCenteringRect.iTop;
+    aRect.iLeft = pCenteringRect.iLeft;
+    aRect.iBottom = pCenteringRect.iBottom;
+    aRect.iRight = pCenteringRect.iRight;
   } else {
     // Use default!
     aRect.iTop = 0;
@@ -201,7 +201,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   vs_desc.usHeight = usTextBoxHeight;
   vs_desc.ubBitDepth = 16;
 
-  if (AddVideoSurface(addressof(vs_desc), addressof(gMsgBox.uiSaveBuffer)) == false) {
+  if (AddVideoSurface(vs_desc, addressof(gMsgBox.uiSaveBuffer)) == false) {
     return -1;
   }
 
@@ -231,7 +231,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   // findout if cursor locked, if so, store old params and store, restore when done
   if (IsCursorRestricted()) {
     fCursorLockedToArea = true;
-    GetRestrictedClipCursor(addressof(MessageBoxRestrictedCursorRegion));
+    GetRestrictedClipCursor(MessageBoxRestrictedCursorRegion);
     FreeMouseCursor();
   }
 
@@ -416,7 +416,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   PauseTime(true);
 
   // Save mouse restriction region...
-  GetRestrictedClipCursor(addressof(gOldCursorLimitRectangle));
+  GetRestrictedClipCursor(gOldCursorLimitRectangle);
   FreeMouseCursor();
 
   gfNewMessageBox = true;
@@ -434,83 +434,78 @@ function MsgBoxClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   //
 }
 
+/* static */ let OKMsgBoxCallback__fLButtonDown: boolean = false;
 function OKMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fLButtonDown: boolean = false;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = true;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
+    OKMsgBoxCallback__fLButtonDown = true;
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && OKMsgBoxCallback__fLButtonDown) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_OK;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = false;
+    OKMsgBoxCallback__fLButtonDown = false;
   }
 }
 
+/* static */ let YESMsgBoxCallback__fLButtonDown: boolean = false;
 function YESMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fLButtonDown: boolean = false;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = true;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
+    YESMsgBoxCallback__fLButtonDown = true;
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && YESMsgBoxCallback__fLButtonDown) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_YES;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = false;
+    YESMsgBoxCallback__fLButtonDown = false;
   }
 }
 
+/* static */ let NOMsgBoxCallback__fLButtonDown: boolean = false;
 function NOMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fLButtonDown: boolean = false;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = true;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
+    NOMsgBoxCallback__fLButtonDown = true;
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && NOMsgBoxCallback__fLButtonDown) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_NO;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = false;
+    NOMsgBoxCallback__fLButtonDown = false;
   }
 }
 
+/* static */ let ContractMsgBoxCallback__fLButtonDown: boolean = false;
 function ContractMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fLButtonDown: boolean = false;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = true;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
+    ContractMsgBoxCallback__fLButtonDown = true;
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && ContractMsgBoxCallback__fLButtonDown) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_CONTRACT;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = false;
+    ContractMsgBoxCallback__fLButtonDown = false;
   }
 }
 
+/* static */ let LieMsgBoxCallback__fLButtonDown: boolean = false;
 function LieMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
-  /* static */ let fLButtonDown: boolean = false;
-
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
-    fLButtonDown = true;
-  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && fLButtonDown) {
+    LieMsgBoxCallback__fLButtonDown = true;
+  } else if ((reason & MSYS_CALLBACK_REASON_LBUTTON_UP) && LieMsgBoxCallback__fLButtonDown) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
     // OK, exit
     gMsgBox.bHandled = MSG_BOX_RETURN_LIE;
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    fLButtonDown = false;
+    LieMsgBoxCallback__fLButtonDown = false;
   }
 }
 
@@ -601,13 +596,13 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   PauseTime(false);
 
   // Restore mouse restriction region...
-  RestrictMouseCursor(addressof(gOldCursorLimitRectangle));
+  RestrictMouseCursor(gOldCursorLimitRectangle);
 
   gfInMsgBox = false;
 
   // Call done callback!
   if (gMsgBox.ExitCallback != null) {
-    ((gMsgBox.ExitCallback).value)(ubExitCode);
+    (gMsgBox.ExitCallback)(ubExitCode);
   }
 
   // if ur in a non gamescreen and DONT want the msg box to use the save buffer, unset gfDontOverRideSaveBuffer in ur callback
@@ -628,14 +623,14 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   gfDontOverRideSaveBuffer = true;
 
   if (fCursorLockedToArea == true) {
-    GetMousePos(addressof(pPosition));
+    GetMousePos(pPosition);
 
     if ((pPosition.iX > MessageBoxRestrictedCursorRegion.iRight) || (pPosition.iX > MessageBoxRestrictedCursorRegion.iLeft) && (pPosition.iY < MessageBoxRestrictedCursorRegion.iTop) && (pPosition.iY > MessageBoxRestrictedCursorRegion.iBottom)) {
       SimulateMouseMovement(pOldMousePosition.iX, pOldMousePosition.iY);
     }
 
     fCursorLockedToArea = false;
-    RestrictMouseCursor(addressof(MessageBoxRestrictedCursorRegion));
+    RestrictMouseCursor(MessageBoxRestrictedCursorRegion);
   }
 
   // Remove region
@@ -785,7 +780,7 @@ export function MessageBoxScreenHandle(): UINT32 {
   // Check for esc
   while (DequeueEvent(InputEvent) == true) {
     if (InputEvent.usEvent == KEY_UP) {
-      if ((InputEvent.usParam == ESC) || (InputEvent.usParam == 'n')) {
+      if ((InputEvent.usParam == ESC) || (InputEvent.usParam == 'n'.charCodeAt(0))) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_YESNO) {
           // Exit messagebox
           gMsgBox.bHandled = MSG_BOX_RETURN_NO;
@@ -804,37 +799,37 @@ export function MessageBoxScreenHandle(): UINT32 {
           gMsgBox.bHandled = MSG_BOX_RETURN_OK;
         }
       }
-      if (InputEvent.usParam == 'o') {
+      if (InputEvent.usParam == 'o'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_OK) {
           // Exit messagebox
           gMsgBox.bHandled = MSG_BOX_RETURN_OK;
         }
       }
-      if (InputEvent.usParam == 'y') {
+      if (InputEvent.usParam == 'y'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_YESNO) {
           // Exit messagebox
           gMsgBox.bHandled = MSG_BOX_RETURN_YES;
         }
       }
-      if (InputEvent.usParam == '1') {
+      if (InputEvent.usParam == '1'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS) {
           // Exit messagebox
           gMsgBox.bHandled = 1;
         }
       }
-      if (InputEvent.usParam == '2') {
+      if (InputEvent.usParam == '2'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS) {
           // Exit messagebox
           gMsgBox.bHandled = 1;
         }
       }
-      if (InputEvent.usParam == '3') {
+      if (InputEvent.usParam == '3'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS) {
           // Exit messagebox
           gMsgBox.bHandled = 1;
         }
       }
-      if (InputEvent.usParam == '4') {
+      if (InputEvent.usParam == '4'.charCodeAt(0)) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS) {
           // Exit messagebox
           gMsgBox.bHandled = 1;

@@ -10,7 +10,7 @@ const HOURS_BETWEEN_STRATEGIC_DECAY = 3;
 const PHOBIC_LIMIT = -20;
 
 // macros
-const SOLDIER_IN_SECTOR = (pSoldier: Pointer<SOLDIERTYPE>, sX: number, sY: number, bZ: number) => (!pSoldier.value.fBetweenSectors && (pSoldier.value.sSectorX == sX) && (pSoldier.value.sSectorY == sY) && (pSoldier.value.bSectorZ == bZ));
+const SOLDIER_IN_SECTOR = (pSoldier: SOLDIERTYPE, sX: number, sY: number, bZ: number) => (!pSoldier.fBetweenSectors && (pSoldier.sSectorX == sX) && (pSoldier.sSectorY == sY) && (pSoldier.bSectorZ == bZ));
 
 let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = [
   // TACTICAL = Short Term Effect, STRATEGIC = Long Term Effect
@@ -53,18 +53,18 @@ let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = [
 
 let gfSomeoneSaidMoraleQuote: boolean = false;
 
-export function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
-    if (pSoldier.value.bMorale > 50) {
+export function GetMoraleModifier(pSoldier: SOLDIERTYPE): INT8 {
+  if (pSoldier.uiStatusFlags & SOLDIER_PC) {
+    if (pSoldier.bMorale > 50) {
       // give +1 at 55, +3 at 65, up to +5 at 95 and above
-      return (pSoldier.value.bMorale - 45) / 10;
+      return (pSoldier.bMorale - 45) / 10;
     } else {
       // give penalties down to -20 at 0 (-2 at 45, -4 by 40...)
-      return (pSoldier.value.bMorale - 50) * 2 / 5;
+      return (pSoldier.bMorale - 50) * 2 / 5;
     }
   } else {
     // use AI morale
-    switch (pSoldier.value.bAIMorale) {
+    switch (pSoldier.bAIMorale) {
       case Enum244.MORALE_HOPELESS:
         return -15;
       case Enum244.MORALE_WORRIED:
@@ -79,62 +79,62 @@ export function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 }
 
-function DecayTacticalMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
+function DecayTacticalMorale(pSoldier: SOLDIERTYPE): void {
   // decay the tactical morale modifier
-  if (pSoldier.value.bTacticalMoraleMod != 0) {
+  if (pSoldier.bTacticalMoraleMod != 0) {
     // decay the modifier!
-    if (pSoldier.value.bTacticalMoraleMod > 0) {
-      pSoldier.value.bTacticalMoraleMod = Math.max(0, pSoldier.value.bTacticalMoraleMod - (8 - pSoldier.value.bTacticalMoraleMod / 10));
+    if (pSoldier.bTacticalMoraleMod > 0) {
+      pSoldier.bTacticalMoraleMod = Math.max(0, pSoldier.bTacticalMoraleMod - (8 - pSoldier.bTacticalMoraleMod / 10));
     } else {
-      pSoldier.value.bTacticalMoraleMod = Math.min(0, pSoldier.value.bTacticalMoraleMod + (6 + pSoldier.value.bTacticalMoraleMod / 10));
+      pSoldier.bTacticalMoraleMod = Math.min(0, pSoldier.bTacticalMoraleMod + (6 + pSoldier.bTacticalMoraleMod / 10));
     }
   }
 }
 
-function DecayStrategicMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
+function DecayStrategicMorale(pSoldier: SOLDIERTYPE): void {
   // decay the modifier!
-  if (pSoldier.value.bStrategicMoraleMod > 0) {
-    pSoldier.value.bStrategicMoraleMod = Math.max(0, pSoldier.value.bStrategicMoraleMod - (8 - pSoldier.value.bStrategicMoraleMod / 10));
+  if (pSoldier.bStrategicMoraleMod > 0) {
+    pSoldier.bStrategicMoraleMod = Math.max(0, pSoldier.bStrategicMoraleMod - (8 - pSoldier.bStrategicMoraleMod / 10));
   } else {
-    pSoldier.value.bStrategicMoraleMod = Math.min(0, pSoldier.value.bStrategicMoraleMod + (6 + pSoldier.value.bStrategicMoraleMod / 10));
+    pSoldier.bStrategicMoraleMod = Math.min(0, pSoldier.bStrategicMoraleMod + (6 + pSoldier.bStrategicMoraleMod / 10));
   }
 }
 
 export function DecayTacticalMoraleModifiers(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let ubLoop: UINT8;
   let ubLoop2: UINT8;
   let fHandleNervous: boolean;
 
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
+  for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier = MercPtrs[ubLoop]) {
     // if the merc is active, in Arulco
     // CJC: decay modifiers while asleep! or POW!
-    if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == Enum117.IN_TRANSIT || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
+    if (pSoldier.bActive && pSoldier.ubProfile != NO_PROFILE && !(pSoldier.bAssignment == Enum117.IN_TRANSIT || pSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
       // only let morale mod decay if it is positive while merc is a POW
-      if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW && pSoldier.value.bTacticalMoraleMod < 0) {
+      if (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW && pSoldier.bTacticalMoraleMod < 0) {
         continue;
       }
 
-      switch (gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait) {
+      switch (gMercProfiles[pSoldier.ubProfile].bPersonalityTrait) {
         case Enum270.CLAUSTROPHOBIC:
-          if (pSoldier.value.bSectorZ > 0) {
+          if (pSoldier.bSectorZ > 0) {
             // underground, no recovery... in fact, if tact morale is high, decay
-            if (pSoldier.value.bTacticalMoraleMod > PHOBIC_LIMIT) {
-              HandleMoraleEvent(pSoldier, Enum234.MORALE_CLAUSTROPHOBE_UNDERGROUND, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+            if (pSoldier.bTacticalMoraleMod > PHOBIC_LIMIT) {
+              HandleMoraleEvent(pSoldier, Enum234.MORALE_CLAUSTROPHOBE_UNDERGROUND, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
             }
             continue;
           }
           break;
         case Enum270.NERVOUS:
-          if (pSoldier.value.bMorale < 50) {
-            if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
-              if (NumberOfPeopleInSquad(pSoldier.value.bAssignment) == 1) {
+          if (pSoldier.bMorale < 50) {
+            if (pSoldier.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.ubGroupID)) {
+              if (NumberOfPeopleInSquad(pSoldier.bAssignment) == 1) {
                 fHandleNervous = true;
               } else {
                 fHandleNervous = false;
               }
-            } else if (pSoldier.value.bActive && pSoldier.value.bInSector) {
+            } else if (pSoldier.bActive && pSoldier.bInSector) {
               if (DistanceToClosestFriend(pSoldier) > NERVOUS_RADIUS) {
                 fHandleNervous = true;
               } else {
@@ -144,7 +144,7 @@ export function DecayTacticalMoraleModifiers(): void {
               // look for anyone else in same sector
               fHandleNervous = true;
               for (ubLoop2 = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubLoop2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop2++) {
-                if (MercPtrs[ubLoop2] != pSoldier && MercPtrs[ubLoop2].value.bActive && MercPtrs[ubLoop2].value.sSectorX == pSoldier.value.sSectorX && MercPtrs[ubLoop2].value.sSectorY == pSoldier.value.sSectorY && MercPtrs[ubLoop2].value.bSectorZ == pSoldier.value.bSectorZ) {
+                if (MercPtrs[ubLoop2] != pSoldier && MercPtrs[ubLoop2].bActive && MercPtrs[ubLoop2].sSectorX == pSoldier.sSectorX && MercPtrs[ubLoop2].sSectorY == pSoldier.sSectorY && MercPtrs[ubLoop2].bSectorZ == pSoldier.bSectorZ) {
                   // found someone!
                   fHandleNervous = false;
                   break;
@@ -153,17 +153,17 @@ export function DecayTacticalMoraleModifiers(): void {
             }
 
             if (fHandleNervous) {
-              if (pSoldier.value.bTacticalMoraleMod == PHOBIC_LIMIT) {
+              if (pSoldier.bTacticalMoraleMod == PHOBIC_LIMIT) {
                 // don't change morale
                 continue;
               }
 
               // alone, no recovery... in fact, if tact morale is high, decay
-              if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_PERSONALITY)) {
+              if (!(pSoldier.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_PERSONALITY)) {
                 TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_PERSONALITY_TRAIT);
-                pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_PERSONALITY;
+                pSoldier.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_PERSONALITY;
               }
-              HandleMoraleEvent(pSoldier, Enum234.MORALE_NERVOUS_ALONE, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+              HandleMoraleEvent(pSoldier, Enum234.MORALE_NERVOUS_ALONE, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
               continue;
             }
           }
@@ -176,16 +176,16 @@ export function DecayTacticalMoraleModifiers(): void {
 }
 
 function DecayStrategicMoraleModifiers(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let ubLoop: UINT8;
 
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
+  for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier = MercPtrs[ubLoop]) {
     // if the merc is active, in Arulco
     // CJC: decay modifiers while asleep! or POW!
-    if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == Enum117.IN_TRANSIT || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
+    if (pSoldier.bActive && pSoldier.ubProfile != NO_PROFILE && !(pSoldier.bAssignment == Enum117.IN_TRANSIT || pSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD)) {
       // only let morale mod decay if it is positive while merc is a POW
-      if (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW && pSoldier.value.bStrategicMoraleMod < 0) {
+      if (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW && pSoldier.bStrategicMoraleMod < 0) {
         continue;
       }
 
@@ -195,49 +195,49 @@ function DecayStrategicMoraleModifiers(): void {
   }
 }
 
-export function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function RefreshSoldierMorale(pSoldier: SOLDIERTYPE): void {
   let iActualMorale: INT32;
 
-  if (pSoldier.value.fMercAsleep) {
+  if (pSoldier.fMercAsleep) {
     // delay this till later!
     return;
   }
 
   // CJC, April 19, 1999: added up to 20% morale boost according to progress
-  iActualMorale = DEFAULT_MORALE + pSoldier.value.bTeamMoraleMod + pSoldier.value.bTacticalMoraleMod + pSoldier.value.bStrategicMoraleMod + (CurrentPlayerProgressPercentage() / 5);
+  iActualMorale = DEFAULT_MORALE + pSoldier.bTeamMoraleMod + pSoldier.bTacticalMoraleMod + pSoldier.bStrategicMoraleMod + (CurrentPlayerProgressPercentage() / 5);
 
   // ATE: Modify morale based on drugs....
-  iActualMorale += ((pSoldier.value.bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
-  iActualMorale += ((pSoldier.value.bDrugEffect[DRUG_TYPE_ALCOHOL] * ALCOHOL_EFFECT_MORALE_MOD) / 100);
+  iActualMorale += ((pSoldier.bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
+  iActualMorale += ((pSoldier.bDrugEffect[DRUG_TYPE_ALCOHOL] * ALCOHOL_EFFECT_MORALE_MOD) / 100);
 
   iActualMorale = Math.min(100, iActualMorale);
   iActualMorale = Math.max(0, iActualMorale);
-  pSoldier.value.bMorale = iActualMorale;
+  pSoldier.bMorale = iActualMorale;
 
   // update mapscreen as needed
   fCharacterInfoPanelDirty = true;
 }
 
-function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMoraleMod: INT8): void {
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+function UpdateSoldierMorale(pSoldier: SOLDIERTYPE, ubType: UINT8, bMoraleMod: INT8): void {
+  let pProfile: MERCPROFILESTRUCT;
   let iMoraleModTotal: INT32;
 
-  if (!pSoldier.value.bActive || (pSoldier.value.bLife < CONSCIOUSNESS) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier) || AM_AN_EPC(pSoldier)) {
+  if (!pSoldier.bActive || (pSoldier.bLife < CONSCIOUSNESS) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier) || AM_AN_EPC(pSoldier)) {
     return;
   }
 
-  if ((pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.value.bAssignment == Enum117.IN_TRANSIT)) {
+  if ((pSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD) || (pSoldier.bAssignment == Enum117.ASSIGNMENT_POW) || (pSoldier.bAssignment == Enum117.IN_TRANSIT)) {
     return;
   }
 
-  if (pSoldier.value.ubProfile == NO_PROFILE) {
+  if (pSoldier.ubProfile == NO_PROFILE) {
     return;
   }
 
-  pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
+  pProfile = gMercProfiles[pSoldier.ubProfile];
 
   if (bMoraleMod > 0) {
-    switch (pProfile.value.bAttitude) {
+    switch (pProfile.bAttitude) {
       case Enum271.ATT_OPTIMIST:
       case Enum271.ATT_AGGRESSIVE:
         bMoraleMod += 1;
@@ -253,7 +253,7 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
       bMoraleMod = 0;
     }
   } else {
-    switch (pProfile.value.bAttitude) {
+    switch (pProfile.bAttitude) {
       case Enum271.ATT_OPTIMIST:
         bMoraleMod += 1;
         break;
@@ -265,9 +265,9 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
       default:
         break;
     }
-    if (pSoldier.value.bLevel == 1) {
+    if (pSoldier.bLevel == 1) {
       bMoraleMod--;
-    } else if (pSoldier.value.bLevel > 5) {
+    } else if (pSoldier.bLevel > 5) {
       bMoraleMod++;
     }
     if (bMoraleMod > 0) {
@@ -277,56 +277,56 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
   }
   // apply change!
   if (ubType == Enum235.TACTICAL_MORALE_EVENT) {
-    iMoraleModTotal = pSoldier.value.bTacticalMoraleMod + bMoraleMod;
+    iMoraleModTotal = pSoldier.bTacticalMoraleMod + bMoraleMod;
     iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier.value.bTacticalMoraleMod = iMoraleModTotal;
-  } else if (gTacticalStatus.fEnemyInSector && !pSoldier.value.bInSector) // delayed strategic
+    pSoldier.bTacticalMoraleMod = iMoraleModTotal;
+  } else if (gTacticalStatus.fEnemyInSector && !pSoldier.bInSector) // delayed strategic
   {
-    iMoraleModTotal = pSoldier.value.bDelayedStrategicMoraleMod + bMoraleMod;
+    iMoraleModTotal = pSoldier.bDelayedStrategicMoraleMod + bMoraleMod;
     iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier.value.bDelayedStrategicMoraleMod = iMoraleModTotal;
+    pSoldier.bDelayedStrategicMoraleMod = iMoraleModTotal;
   } else // strategic
   {
-    iMoraleModTotal = pSoldier.value.bStrategicMoraleMod + bMoraleMod;
+    iMoraleModTotal = pSoldier.bStrategicMoraleMod + bMoraleMod;
     iMoraleModTotal = Math.min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = Math.max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier.value.bStrategicMoraleMod = iMoraleModTotal;
+    pSoldier.bStrategicMoraleMod = iMoraleModTotal;
   }
 
   RefreshSoldierMorale(pSoldier);
 
-  if (!pSoldier.value.fMercAsleep) {
+  if (!pSoldier.fMercAsleep) {
     if (!gfSomeoneSaidMoraleQuote) {
       // Check if we're below a certain value and warn
-      if (pSoldier.value.bMorale < 35) {
+      if (pSoldier.bMorale < 35) {
         // Have we said this quote yet?
-        if (!(pSoldier.value.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_LOW_MORAL)) {
+        if (!(pSoldier.usQuoteSaidFlags & SOLDIER_QUOTE_SAID_LOW_MORAL)) {
           gfSomeoneSaidMoraleQuote = true;
 
           // ATE: Amde it a DELAYED QUOTE - will be delayed by the dialogue Q until it's our turn...
           DelayedTacticalCharacterDialogue(pSoldier, Enum202.QUOTE_STARTING_TO_WHINE);
-          pSoldier.value.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_LOW_MORAL;
+          pSoldier.usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_LOW_MORAL;
         }
       }
     }
   }
 
   // Reset flag!
-  if (pSoldier.value.bMorale > 65) {
-    pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_LOW_MORAL);
+  if (pSoldier.bMorale > 65) {
+    pSoldier.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_LOW_MORAL);
   }
 }
 
-function HandleMoraleEventForSoldier(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8): void {
+function HandleMoraleEventForSoldier(pSoldier: SOLDIERTYPE, bMoraleEvent: INT8): void {
   UpdateSoldierMorale(pSoldier, gbMoraleEvent[bMoraleEvent].ubType, gbMoraleEvent[bMoraleEvent].bChange);
 }
 
-export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
+export function HandleMoraleEvent(pSoldier: SOLDIERTYPE | null, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   let ubLoop: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pTeamSoldier: SOLDIERTYPE;
+  let pProfile: MERCPROFILESTRUCT;
 
   gfSomeoneSaidMoraleQuote = false;
 
@@ -335,7 +335,7 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
   if (pSoldier == null) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d at X=%d, Y=%d,Z=%d", bMoraleEvent, sMapX, sMapY, bMapZ));
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d for %S at X=%d, Y=%d, Z=%d", bMoraleEvent, pSoldier.value.name, sMapX, sMapY, bMapZ));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d for %S at X=%d, Y=%d, Z=%d", bMoraleEvent, pSoldier.name, sMapX, sMapY, bMapZ));
   }
 
   switch (bMoraleEvent) {
@@ -359,7 +359,7 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
       // needs specific soldier!
       Assert(pSoldier);
       // affects the soldier only, should be ignored if tactical morale mod is -20 or less
-      if (pSoldier.value.bTacticalMoraleMod > PHOBIC_LIMIT) {
+      if (pSoldier.bTacticalMoraleMod > PHOBIC_LIMIT) {
         HandleMoraleEventForSoldier(pSoldier, bMoraleEvent);
       }
       break;
@@ -367,8 +367,8 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
     case Enum234.MORALE_BATTLE_WON:
       // affects everyone to varying degrees
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive) {
           if (SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ)) {
             HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_BATTLE_WON);
           } else {
@@ -380,13 +380,13 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
     case Enum234.MORALE_RAN_AWAY:
       // affects everyone to varying degrees
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive) {
           // CJC: adding to SOLDIER_IN_SECTOR check special stuff because the old sector values might
           // be appropriate (because in transit going out of that sector!)
 
-          if (SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ) || (pTeamSoldier.value.fBetweenSectors && ((pTeamSoldier.value.ubPrevSectorID % 16) + 1) == sMapX && ((pTeamSoldier.value.ubPrevSectorID / 16) + 1) == sMapY && (pTeamSoldier.value.bSectorZ == bMapZ))) {
-            switch (gMercProfiles[pTeamSoldier.value.ubProfile].bAttitude) {
+          if (SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ) || (pTeamSoldier.fBetweenSectors && ((pTeamSoldier.ubPrevSectorID % 16) + 1) == sMapX && ((pTeamSoldier.ubPrevSectorID / 16) + 1) == sMapY && (pTeamSoldier.bSectorZ == bMapZ))) {
+            switch (gMercProfiles[pTeamSoldier.ubProfile].bAttitude) {
               case Enum271.ATT_AGGRESSIVE:
                 // double the penalty - these guys REALLY hate running away
                 HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_RAN_AWAY);
@@ -420,8 +420,8 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
     case Enum234.MORALE_DEIDRANNA_KILLED:
       // affects everyone, everywhere
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive) {
           HandleMoraleEventForSoldier(pTeamSoldier, bMoraleEvent);
         }
       }
@@ -432,8 +432,8 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
     case Enum234.MORALE_AIRSTRIKE:
       // affects every in sector
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ)) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive && SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ)) {
           HandleMoraleEventForSoldier(pTeamSoldier, bMoraleEvent);
         }
       }
@@ -445,8 +445,8 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
 
       // affects everyone
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive) {
           HandleMoraleEventForSoldier(pTeamSoldier, bMoraleEvent);
         }
       }
@@ -457,11 +457,11 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
 
       // affects everyone, in sector differently than not, extra bonuses if it's a buddy or hated merc
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && pTeamSoldier.value.ubProfile != NO_PROFILE) {
-          pProfile = addressof(gMercProfiles[pTeamSoldier.value.ubProfile]);
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive && pTeamSoldier.ubProfile != NO_PROFILE) {
+          pProfile = gMercProfiles[pTeamSoldier.ubProfile];
 
-          if (HATED_MERC(pProfile, pSoldier.value.ubProfile)) {
+          if (HATED_MERC(pProfile, pSoldier.ubProfile)) {
             // yesss!
             HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_HATED_DIED);
           } else {
@@ -473,7 +473,7 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
             // this is handled for everyone even if in sector, as it's a strategic morale mod
             HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_TEAMMATE_DIED);
 
-            if (BUDDY_MERC(pProfile, pSoldier.value.ubProfile)) {
+            if (BUDDY_MERC(pProfile, pSoldier.ubProfile)) {
               // oh no!  buddy died!
               HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_BUDDY_DIED);
             }
@@ -487,15 +487,15 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
       // gentlemen males get unhappy too
 
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && pTeamSoldier.value.ubProfile != NO_PROFILE) {
-          if (WhichHated(pTeamSoldier.value.ubProfile, pSoldier.value.ubProfile) != -1) {
+      for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier = MercPtrs[ubLoop]) {
+        if (pTeamSoldier.bActive && pTeamSoldier.ubProfile != NO_PROFILE) {
+          if (WhichHated(pTeamSoldier.ubProfile, (<SOLDIERTYPE>pSoldier).ubProfile) != -1) {
             // we hate 'em anyways
             continue;
           }
 
-          if (gMercProfiles[pTeamSoldier.value.ubProfile].bSex == Enum272.FEMALE) {
-            switch (gMercProfiles[pTeamSoldier.value.ubProfile].bSexist) {
+          if (gMercProfiles[pTeamSoldier.ubProfile].bSex == Enum272.FEMALE) {
+            switch (gMercProfiles[pTeamSoldier.ubProfile].bSexist) {
               case Enum273.SOMEWHAT_SEXIST:
                 HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_MERC_MARRIED);
                 break;
@@ -508,7 +508,7 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
                 break;
             }
           } else {
-            switch (gMercProfiles[pTeamSoldier.value.ubProfile].bSexist) {
+            switch (gMercProfiles[pTeamSoldier.ubProfile].bSexist) {
               case Enum273.GENTLEMAN:
                 HandleMoraleEventForSoldier(pTeamSoldier, Enum234.MORALE_MERC_MARRIED);
                 break;
@@ -555,11 +555,11 @@ export function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: 
       break;
     case Enum234.MORALE_TEAMMATE_DIED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((pSoldier.value.bExpLevel * REPUTATION_SOLDIER_DIED));
+      ModifyPlayerReputation(((<SOLDIERTYPE>pSoldier).bExpLevel * REPUTATION_SOLDIER_DIED));
       break;
     case Enum234.MORALE_MERC_CAPTURED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((pSoldier.value.bExpLevel * REPUTATION_SOLDIER_CAPTURED));
+      ModifyPlayerReputation(((<SOLDIERTYPE>pSoldier).bExpLevel * REPUTATION_SOLDIER_CAPTURED));
       break;
     case Enum234.MORALE_KILLED_CIVILIAN:
       ModifyPlayerReputation(REPUTATION_KILLED_CIVILIAN);
@@ -588,9 +588,9 @@ export function HourlyMoraleUpdate(): void {
   let bNumTeamMembers: INT8;
   let bHighestTeamLeadership: INT8 = 0;
   let bLastTeamID: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pOtherSoldier: Pointer<SOLDIERTYPE>;
-  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let pSoldier: SOLDIERTYPE;
+  let pOtherSoldier: SOLDIERTYPE;
+  let pProfile: MERCPROFILESTRUCT;
   let fSameGroupOnly: boolean;
   /* static */ let bStrategicMoraleUpdateCounter: INT8 = 0;
   let fFoundHated: boolean = false;
@@ -600,14 +600,14 @@ export function HourlyMoraleUpdate(): void {
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
   // loop through all mercs to calculate their morale
-  for (pSoldier = MercPtrs[bMercID]; bMercID <= bLastTeamID; bMercID++, pSoldier++) {
+  for (pSoldier = MercPtrs[bMercID]; bMercID <= bLastTeamID; bMercID++, pSoldier = MercPtrs[bMercID]) {
     // if the merc is active, in Arulco, and conscious, not POW
-    if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == Enum117.IN_TRANSIT || pSoldier.value.fMercAsleep == true || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+    if (pSoldier.bActive && pSoldier.ubProfile != NO_PROFILE && !(pSoldier.bAssignment == Enum117.IN_TRANSIT || pSoldier.fMercAsleep == true || pSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD || pSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
       // calculate the guy's opinion of the people he is with
-      pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
+      pProfile = gMercProfiles[pSoldier.ubProfile];
 
       // if we're moving
-      if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {
+      if (pSoldier.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.ubGroupID)) {
         // we only check our opinions of people in our squad
         fSameGroupOnly = true;
       } else {
@@ -624,28 +624,28 @@ export function HourlyMoraleUpdate(): void {
 
       // loop through all other mercs
       bOtherID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-      for (pOtherSoldier = MercPtrs[bOtherID]; bOtherID <= bLastTeamID; bOtherID++, pOtherSoldier++) {
+      for (pOtherSoldier = MercPtrs[bOtherID]; bOtherID <= bLastTeamID; bOtherID++, pOtherSoldier = MercPtrs[bOtherID]) {
         // skip past ourselves and all inactive mercs
-        if (bOtherID != bMercID && pOtherSoldier.value.bActive && pOtherSoldier.value.ubProfile != NO_PROFILE && !(pOtherSoldier.value.bAssignment == Enum117.IN_TRANSIT || pOtherSoldier.value.fMercAsleep == true || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_DEAD || pOtherSoldier.value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+        if (bOtherID != bMercID && pOtherSoldier.bActive && pOtherSoldier.ubProfile != NO_PROFILE && !(pOtherSoldier.bAssignment == Enum117.IN_TRANSIT || pOtherSoldier.fMercAsleep == true || pOtherSoldier.bAssignment == Enum117.ASSIGNMENT_DEAD || pOtherSoldier.bAssignment == Enum117.ASSIGNMENT_POW)) {
           if (fSameGroupOnly) {
             // all we have to check is the group ID
-            if (pSoldier.value.ubGroupID != pOtherSoldier.value.ubGroupID) {
+            if (pSoldier.ubGroupID != pOtherSoldier.ubGroupID) {
               continue;
             }
           } else {
             // check to see if the location is the same
-            if (pOtherSoldier.value.sSectorX != pSoldier.value.sSectorX || pOtherSoldier.value.sSectorY != pSoldier.value.sSectorY || pOtherSoldier.value.bSectorZ != pSoldier.value.bSectorZ) {
+            if (pOtherSoldier.sSectorX != pSoldier.sSectorX || pOtherSoldier.sSectorY != pSoldier.sSectorY || pOtherSoldier.bSectorZ != pSoldier.bSectorZ) {
               continue;
             }
 
             // if the OTHER soldier is in motion then we don't do anything!
-            if (pOtherSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pOtherSoldier.value.ubGroupID)) {
+            if (pOtherSoldier.ubGroupID != 0 && PlayerIDGroupInMotion(pOtherSoldier.ubGroupID)) {
               continue;
             }
           }
-          bOpinion = pProfile.value.bMercOpinion[pOtherSoldier.value.ubProfile];
+          bOpinion = pProfile.bMercOpinion[pOtherSoldier.ubProfile];
           if (bOpinion == HATED_OPINION) {
-            bHated = WhichHated(pSoldier.value.ubProfile, pOtherSoldier.value.ubProfile);
+            bHated = WhichHated(pSoldier.ubProfile, pOtherSoldier.ubProfile);
             if (bHated >= 2) {
               // learn to hate which has become full-blown hatred, full strength
               fFoundHated = true;
@@ -653,11 +653,11 @@ export function HourlyMoraleUpdate(): void {
             } else {
               // scale according to how close to we are to snapping
               // KM : Divide by 0 error found.  Wrapped into an if statement.
-              if (pProfile.value.bHatedTime[bHated]) {
-                bOpinion = (bOpinion) * (pProfile.value.bHatedTime[bHated] - pProfile.value.bHatedCount[bHated]) / pProfile.value.bHatedTime[bHated];
+              if (pProfile.bHatedTime[bHated]) {
+                bOpinion = (bOpinion) * (pProfile.bHatedTime[bHated] - pProfile.bHatedCount[bHated]) / pProfile.bHatedTime[bHated];
               }
 
-              if (pProfile.value.bHatedCount[bHated] <= pProfile.value.bHatedTime[bHated] / 2) {
+              if (pProfile.bHatedCount[bHated] <= pProfile.bHatedTime[bHated] / 2) {
                 // Augh, we're teamed with someone we hate!  We HATE this!!  Ignore everyone else!
                 fFoundHated = true;
                 break;
@@ -695,7 +695,7 @@ export function HourlyMoraleUpdate(): void {
       // shift morale from team by ~10%
 
       // this should range between -75 and +75
-      bTeamMoraleModDiff = bActualTeamOpinion - pSoldier.value.bTeamMoraleMod;
+      bTeamMoraleModDiff = bActualTeamOpinion - pSoldier.bTeamMoraleMod;
       if (bTeamMoraleModDiff > 0) {
         bTeamMoraleModChange = 1 + bTeamMoraleModDiff / 10;
       } else if (bTeamMoraleModDiff < 0) {
@@ -703,17 +703,17 @@ export function HourlyMoraleUpdate(): void {
       } else {
         bTeamMoraleModChange = 0;
       }
-      pSoldier.value.bTeamMoraleMod += bTeamMoraleModChange;
-      pSoldier.value.bTeamMoraleMod = Math.min(pSoldier.value.bTeamMoraleMod, MORALE_MOD_MAX);
-      pSoldier.value.bTeamMoraleMod = Math.max(pSoldier.value.bTeamMoraleMod, -MORALE_MOD_MAX);
+      pSoldier.bTeamMoraleMod += bTeamMoraleModChange;
+      pSoldier.bTeamMoraleMod = Math.min(pSoldier.bTeamMoraleMod, MORALE_MOD_MAX);
+      pSoldier.bTeamMoraleMod = Math.max(pSoldier.bTeamMoraleMod, -MORALE_MOD_MAX);
 
       // New, December 3rd, 1998, by CJC --
       // If delayed strategic modifier exists then incorporate it in strategic mod
-      if (pSoldier.value.bDelayedStrategicMoraleMod) {
-        pSoldier.value.bStrategicMoraleMod += pSoldier.value.bDelayedStrategicMoraleMod;
-        pSoldier.value.bDelayedStrategicMoraleMod = 0;
-        pSoldier.value.bStrategicMoraleMod = Math.min(pSoldier.value.bStrategicMoraleMod, MORALE_MOD_MAX);
-        pSoldier.value.bStrategicMoraleMod = Math.max(pSoldier.value.bStrategicMoraleMod, -MORALE_MOD_MAX);
+      if (pSoldier.bDelayedStrategicMoraleMod) {
+        pSoldier.bStrategicMoraleMod += pSoldier.bDelayedStrategicMoraleMod;
+        pSoldier.bDelayedStrategicMoraleMod = 0;
+        pSoldier.bStrategicMoraleMod = Math.min(pSoldier.bStrategicMoraleMod, MORALE_MOD_MAX);
+        pSoldier.bStrategicMoraleMod = Math.max(pSoldier.bStrategicMoraleMod, -MORALE_MOD_MAX);
       }
 
       // refresh the morale value for the soldier based on the recalculated team modifier
@@ -729,8 +729,8 @@ export function HourlyMoraleUpdate(): void {
   }
 }
 
-export function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
-  if (pSoldier.value.ubProfile == NO_PROFILE) {
+export function DailyMoraleUpdate(pSoldier: SOLDIERTYPE): void {
+  if (pSoldier.ubProfile == NO_PROFILE) {
     return;
   }
 
@@ -748,18 +748,18 @@ export function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
   */
 
   // check death rate vs. merc's tolerance once/day (ignores buddies!)
-  if (MercThinksDeathRateTooHigh(pSoldier.value.ubProfile)) {
+  if (MercThinksDeathRateTooHigh(pSoldier.ubProfile)) {
     // too high, morale takes a hit
-    HandleMoraleEvent(pSoldier, Enum234.MORALE_HIGH_DEATHRATE, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+    HandleMoraleEvent(pSoldier, Enum234.MORALE_HIGH_DEATHRATE, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
   }
 
   // check his morale vs. his morale tolerance once/day (ignores buddies!)
   if (MercThinksHisMoraleIsTooLow(pSoldier)) {
     // too low, morale sinks further (merc's in a funk and things aren't getting better)
-    HandleMoraleEvent(pSoldier, Enum234.MORALE_POOR_MORALE, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
-  } else if (pSoldier.value.bMorale >= 75) {
+    HandleMoraleEvent(pSoldier, Enum234.MORALE_POOR_MORALE, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
+  } else if (pSoldier.bMorale >= 75) {
     // very high morale, merc is cheerleading others
-    HandleMoraleEvent(pSoldier, Enum234.MORALE_GREAT_MORALE, pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ);
+    HandleMoraleEvent(pSoldier, Enum234.MORALE_GREAT_MORALE, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
   }
 }
 

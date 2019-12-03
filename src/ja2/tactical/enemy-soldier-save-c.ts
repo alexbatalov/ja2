@@ -37,7 +37,7 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
 export function LoadEnemySoldiersFromTempFile(): boolean {
-  let curr: Pointer<SOLDIERINITNODE>;
+  let curr: SOLDIERINITNODE | null;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
@@ -59,6 +59,8 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   let ubStrategicTroops: UINT8;
   let ubStrategicAdmins: UINT8;
   let ubStrategicCreatures: UINT8;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   gfRestoringEnemySoldiersFromTempFile = true;
 
@@ -82,40 +84,54 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorY = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorY != sSectorY) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   LoadSoldierInitListLinks(hfile);
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorX = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorX != sSectorX) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
-  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  slots = sizeBuffer.readInt32LE(0);
 
-  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  uiTimeStamp = sizeBuffer.readUInt32LE(0);
 
-  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  bSectorZ = sizeBuffer.readInt8(0);
 
   if (GetWorldTotalMin() > uiTimeStamp + 300) {
     // the file has aged.  Use the regular method for adding soldiers.
@@ -126,7 +142,8 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   }
 
   if (gbWorldSectorZ != bSectorZ) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   if (!slots) {
@@ -137,19 +154,20 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
   }
   if (slots < 0 || slots >= 64) {
     // bad IO!
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // For all the enemy slots (enemy/creature), clear the fPriorityExistance flag.  We will use these flags
   // to determine which slots have been modified as we load the data into the map pristine soldier init list.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pBasicPlacement.value.fPriorityExistance) {
-      if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM || curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = false;
+    if (curr.pBasicPlacement.fPriorityExistance) {
+      if (curr.pBasicPlacement.bTeam == ENEMY_TEAM || curr.pBasicPlacement.bTeam == CREATURE_TEAM || curr.pBasicPlacement.bTeam == CIV_TEAM) {
+        curr.pBasicPlacement.fPriorityExistance = false;
       }
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 
   // get the number of enemies in this sector.
@@ -157,7 +175,8 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
     let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
-      goto("FAIL_LOAD");
+      FileClose(hfile);
+      return false;
     }
     ubStrategicElites = pSector.ubNumElites;
     ubStrategicTroops = pSector.ubNumTroops;
@@ -170,55 +189,63 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
     ({ ubNumAdmins: ubStrategicAdmins, ubNumTroops: ubStrategicTroops, ubNumElites: ubStrategicElites } = GetNumberOfEnemiesInSector(sSectorX, sSectorY));
   }
 
+  dataBuffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-      goto("FAIL_LOAD");
+    uiNumBytesRead = FileRead(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
+      FileClose(hfile);
+      return false;
     }
+    readSoldierCreateStruct(tempDetailedPlacement, dataBuffer);
+
     curr = gSoldierInitHead;
     while (curr) {
-      if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
-        if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
-          if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-            curr.value.pBasicPlacement.value.fPriorityExistance = true;
-            if (!curr.value.pDetailedPlacement) {
+      if (!curr.pBasicPlacement.fPriorityExistance) {
+        if (!curr.pDetailedPlacement || curr.pDetailedPlacement && curr.pDetailedPlacement.ubProfile == NO_PROFILE) {
+          if (curr.pBasicPlacement.bTeam == tempDetailedPlacement.bTeam) {
+            curr.pBasicPlacement.fPriorityExistance = true;
+            if (!curr.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+              curr.pDetailedPlacement = createSoldierCreateStruct();
             }
             // now replace the map pristine placement info with the temp map file version..
-            memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
+            copySoldierCreateStruct(curr.pDetailedPlacement, tempDetailedPlacement);
 
-            curr.value.pBasicPlacement.value.fPriorityExistance = true;
-            curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
-            curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
-            curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
-            curr.value.pBasicPlacement.value.bBodyType = curr.value.pDetailedPlacement.value.bBodyType;
-            curr.value.pBasicPlacement.value.fOnRoof = curr.value.pDetailedPlacement.value.fOnRoof;
-            curr.value.pBasicPlacement.value.ubSoldierClass = curr.value.pDetailedPlacement.value.ubSoldierClass;
-            curr.value.pBasicPlacement.value.ubCivilianGroup = curr.value.pDetailedPlacement.value.ubCivilianGroup;
-            curr.value.pBasicPlacement.value.fHasKeys = curr.value.pDetailedPlacement.value.fHasKeys;
-            curr.value.pBasicPlacement.value.usStartingGridNo = curr.value.pDetailedPlacement.value.sInsertionGridNo;
+            curr.pBasicPlacement.fPriorityExistance = true;
+            curr.pBasicPlacement.bDirection = curr.pDetailedPlacement.bDirection;
+            curr.pBasicPlacement.bOrders = curr.pDetailedPlacement.bOrders;
+            curr.pBasicPlacement.bAttitude = curr.pDetailedPlacement.bAttitude;
+            curr.pBasicPlacement.bBodyType = curr.pDetailedPlacement.bBodyType;
+            curr.pBasicPlacement.fOnRoof = curr.pDetailedPlacement.fOnRoof;
+            curr.pBasicPlacement.ubSoldierClass = curr.pDetailedPlacement.ubSoldierClass;
+            curr.pBasicPlacement.ubCivilianGroup = curr.pDetailedPlacement.ubCivilianGroup;
+            curr.pBasicPlacement.fHasKeys = curr.pDetailedPlacement.fHasKeys;
+            curr.pBasicPlacement.usStartingGridNo = curr.pDetailedPlacement.sInsertionGridNo;
 
-            curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
-            memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
+            curr.pBasicPlacement.bPatrolCnt = curr.pDetailedPlacement.bPatrolCnt;
+            copyArray(curr.pBasicPlacement.sPatrolGrid, curr.pDetailedPlacement.sPatrolGrid);
 
-            FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
+            uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
             if (uiNumBytesRead != 2) {
-              goto("FAIL_LOAD");
+              FileClose(hfile);
+              return false;
             }
+            usCheckSum = sizeBuffer.readUInt16LE(0);
+
             // verify the checksum equation (anti-hack) -- see save
-            usFileCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
+            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
               // Hacker has modified the stats on the enemy placements.
-              goto("FAIL_LOAD");
+              FileClose(hfile);
+              return false;
             }
 
-            if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
+            if (curr.pBasicPlacement.bTeam == CIV_TEAM) {
               AddPlacementToWorld(curr);
               break;
             } else {
               // Add preserved placements as long as they don't exceed the actual population.
-              switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
+              switch (curr.pBasicPlacement.ubSoldierClass) {
                 case Enum262.SOLDIER_CLASS_ELITE:
                   ubNumElites++;
                   if (ubNumElites < ubStrategicElites) {
@@ -249,16 +276,20 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
           }
         }
       }
-      curr = curr.value.next;
+      curr = curr.next;
     }
   }
 
-  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  ubSectorID = sizeBuffer.readUInt8(0);
+
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // now add any extra enemies that have arrived since the temp file was made.
@@ -286,18 +317,20 @@ FAIL_LOAD:
 
 // OLD SAVE METHOD:  This is the older way of saving the civilian and the enemies placement into a temp file
 function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubFirstIdTeam: UINT8, ubLastIdTeam: UINT8, fAppendToFile: boolean): boolean {
-  let curr: Pointer<SOLDIERINITNODE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let curr: SOLDIERINITNODE | null;
+  let pSoldier: SOLDIERTYPE;
   let i: INT32;
   let slots: INT32 = 0;
   let iSlotsAlreadyInUse: INT32 = 0;
   let uiNumBytesWritten: UINT32;
   let uiTimeStamp: UINT32;
   let hfile: HWFILE;
-  let pSchedule: Pointer<SCHEDULENODE>;
+  let pSchedule: SCHEDULENODE | null;
   let usCheckSum: UINT16;
   let zMapName: string /* CHAR8[128] */;
   let ubSectorID: UINT8;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   // STEP ONE:  Prep the soldiers for saving...
 
@@ -305,89 +338,88 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   for (i = gTacticalStatus.Team[ubFirstIdTeam].bFirstID; i <= gTacticalStatus.Team[ubLastIdTeam].bLastID; i++) {
     pSoldier = MercPtrs[i];
 
-    if (pSoldier.value.bActive /*&& pSoldier->bInSector*/ && pSoldier.value.bLife) {
+    if (pSoldier.bActive /*&& pSoldier->bInSector*/ && pSoldier.bLife) {
       // soldier is valid, so find the matching soldier init list entry for modification.
       curr = gSoldierInitHead;
-      while (curr && curr.value.pSoldier != pSoldier) {
-        curr = curr.value.next;
+      while (curr && curr.pSoldier != pSoldier) {
+        curr = curr.next;
       }
-      if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
+      if (curr && curr.pSoldier == pSoldier && pSoldier.ubProfile == NO_PROFILE) {
         // found a match.
 
         if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-          if (!curr.value.pDetailedPlacement) {
+          if (!curr.pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
-            curr.value.pBasicPlacement.value.fDetailedPlacement = true;
-            curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
-            memset(curr.value.pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
+            curr.pBasicPlacement.fDetailedPlacement = true;
+            curr.pDetailedPlacement = createSoldierCreateStruct();
           }
 
           // Copy over the data of the soldier.
-          curr.value.pDetailedPlacement.value.ubProfile = NO_PROFILE;
-          curr.value.pDetailedPlacement.value.bLife = pSoldier.value.bLife;
-          curr.value.pDetailedPlacement.value.bLifeMax = pSoldier.value.bLifeMax;
-          curr.value.pDetailedPlacement.value.bAgility = pSoldier.value.bAgility;
-          curr.value.pDetailedPlacement.value.bDexterity = pSoldier.value.bDexterity;
-          curr.value.pDetailedPlacement.value.bExpLevel = pSoldier.value.bExpLevel;
-          curr.value.pDetailedPlacement.value.bMarksmanship = pSoldier.value.bMarksmanship;
-          curr.value.pDetailedPlacement.value.bMedical = pSoldier.value.bMedical;
-          curr.value.pDetailedPlacement.value.bMechanical = pSoldier.value.bMechanical;
-          curr.value.pDetailedPlacement.value.bExplosive = pSoldier.value.bExplosive;
-          curr.value.pDetailedPlacement.value.bLeadership = pSoldier.value.bLeadership;
-          curr.value.pDetailedPlacement.value.bStrength = pSoldier.value.bStrength;
-          curr.value.pDetailedPlacement.value.bWisdom = pSoldier.value.bWisdom;
-          curr.value.pDetailedPlacement.value.bAttitude = pSoldier.value.bAttitude;
-          curr.value.pDetailedPlacement.value.bOrders = pSoldier.value.bOrders;
-          curr.value.pDetailedPlacement.value.bMorale = pSoldier.value.bMorale;
-          curr.value.pDetailedPlacement.value.bAIMorale = pSoldier.value.bAIMorale;
-          curr.value.pDetailedPlacement.value.bBodyType = pSoldier.value.ubBodyType;
-          curr.value.pDetailedPlacement.value.ubCivilianGroup = pSoldier.value.ubCivilianGroup;
+          curr.pDetailedPlacement.ubProfile = NO_PROFILE;
+          curr.pDetailedPlacement.bLife = pSoldier.bLife;
+          curr.pDetailedPlacement.bLifeMax = pSoldier.bLifeMax;
+          curr.pDetailedPlacement.bAgility = pSoldier.bAgility;
+          curr.pDetailedPlacement.bDexterity = pSoldier.bDexterity;
+          curr.pDetailedPlacement.bExpLevel = pSoldier.bExpLevel;
+          curr.pDetailedPlacement.bMarksmanship = pSoldier.bMarksmanship;
+          curr.pDetailedPlacement.bMedical = pSoldier.bMedical;
+          curr.pDetailedPlacement.bMechanical = pSoldier.bMechanical;
+          curr.pDetailedPlacement.bExplosive = pSoldier.bExplosive;
+          curr.pDetailedPlacement.bLeadership = pSoldier.bLeadership;
+          curr.pDetailedPlacement.bStrength = pSoldier.bStrength;
+          curr.pDetailedPlacement.bWisdom = pSoldier.bWisdom;
+          curr.pDetailedPlacement.bAttitude = pSoldier.bAttitude;
+          curr.pDetailedPlacement.bOrders = pSoldier.bOrders;
+          curr.pDetailedPlacement.bMorale = pSoldier.bMorale;
+          curr.pDetailedPlacement.bAIMorale = pSoldier.bAIMorale;
+          curr.pDetailedPlacement.bBodyType = pSoldier.ubBodyType;
+          curr.pDetailedPlacement.ubCivilianGroup = pSoldier.ubCivilianGroup;
 
           // If the soldier has a real schedule (not a default schedule), then store it.
           // All other cases should be 0.
-          curr.value.pDetailedPlacement.value.ubScheduleID = 0;
-          if (pSoldier.value.ubScheduleID) {
-            pSchedule = GetSchedule(pSoldier.value.ubScheduleID);
-            if (pSchedule && !(pSchedule.value.usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
-              curr.value.pDetailedPlacement.value.ubScheduleID = pSoldier.value.ubScheduleID;
+          curr.pDetailedPlacement.ubScheduleID = 0;
+          if (pSoldier.ubScheduleID) {
+            pSchedule = GetSchedule(pSoldier.ubScheduleID);
+            if (pSchedule && !(pSchedule.usFlags & SCHEDULE_FLAGS_TEMPORARY)) {
+              curr.pDetailedPlacement.ubScheduleID = pSoldier.ubScheduleID;
             }
           }
 
-          curr.value.pDetailedPlacement.value.fHasKeys = pSoldier.value.bHasKeys;
-          curr.value.pDetailedPlacement.value.sSectorX = pSoldier.value.sSectorX;
-          curr.value.pDetailedPlacement.value.sSectorY = pSoldier.value.sSectorY;
-          curr.value.pDetailedPlacement.value.bSectorZ = pSoldier.value.bSectorZ;
-          curr.value.pDetailedPlacement.value.ubSoldierClass = pSoldier.value.ubSoldierClass;
-          curr.value.pDetailedPlacement.value.bTeam = pSoldier.value.bTeam;
-          curr.value.pDetailedPlacement.value.bDirection = pSoldier.value.bDirection;
+          curr.pDetailedPlacement.fHasKeys = pSoldier.bHasKeys;
+          curr.pDetailedPlacement.sSectorX = pSoldier.sSectorX;
+          curr.pDetailedPlacement.sSectorY = pSoldier.sSectorY;
+          curr.pDetailedPlacement.bSectorZ = pSoldier.bSectorZ;
+          curr.pDetailedPlacement.ubSoldierClass = pSoldier.ubSoldierClass;
+          curr.pDetailedPlacement.bTeam = pSoldier.bTeam;
+          curr.pDetailedPlacement.bDirection = pSoldier.bDirection;
 
           // we don't want the player to think that all the enemies start in the exact position when we
           // left the map, so randomize the start locations either current position or original position.
           if (PreRandom(2)) {
             // use current position
-            curr.value.pDetailedPlacement.value.fOnRoof = pSoldier.value.bLevel;
-            curr.value.pDetailedPlacement.value.sInsertionGridNo = pSoldier.value.sGridNo;
+            curr.pDetailedPlacement.fOnRoof = pSoldier.bLevel;
+            curr.pDetailedPlacement.sInsertionGridNo = pSoldier.sGridNo;
           } else {
             // use original position
-            curr.value.pDetailedPlacement.value.fOnRoof = curr.value.pBasicPlacement.value.fOnRoof;
-            curr.value.pDetailedPlacement.value.sInsertionGridNo = curr.value.pBasicPlacement.value.usStartingGridNo;
+            curr.pDetailedPlacement.fOnRoof = curr.pBasicPlacement.fOnRoof;
+            curr.pDetailedPlacement.sInsertionGridNo = curr.pBasicPlacement.usStartingGridNo;
           }
 
-          curr.value.pDetailedPlacement.value.name = pSoldier.value.name;
+          curr.pDetailedPlacement.name = pSoldier.name;
 
           // Copy patrol points
-          curr.value.pDetailedPlacement.value.bPatrolCnt = pSoldier.value.bPatrolCnt;
-          memcpy(curr.value.pDetailedPlacement.value.sPatrolGrid, pSoldier.value.usPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+          curr.pDetailedPlacement.bPatrolCnt = pSoldier.bPatrolCnt;
+          copyArray(curr.pDetailedPlacement.sPatrolGrid, pSoldier.usPatrolGrid);
 
           // copy colors for soldier based on the body type.
-          curr.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
-          curr.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
-          curr.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
-          curr.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
-          curr.value.pDetailedPlacement.value.MiscPal = pSoldier.value.MiscPal;
+          curr.pDetailedPlacement.HeadPal = pSoldier.HeadPal;
+          curr.pDetailedPlacement.VestPal = pSoldier.VestPal;
+          curr.pDetailedPlacement.SkinPal = pSoldier.SkinPal;
+          curr.pDetailedPlacement.PantsPal = pSoldier.PantsPal;
+          curr.pDetailedPlacement.MiscPal = pSoldier.MiscPal;
 
           // copy soldier's inventory
-          memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
+          copyObjectArray(curr.pDetailedPlacement.Inv, pSoldier.inv, copyObjectType);
         }
 
         // DONE, now increment the counter, so we know how many there are.
@@ -429,10 +461,12 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     // advance for bytes and read the #of slots already used
     FileSeek(hfile, 4, FILE_SEEK_FROM_START);
 
-    FileRead(hfile, addressof(iSlotsAlreadyInUse), 4, addressof(uiNumBytesWritten));
+    uiNumBytesWritten = FileRead(hfile, sizeBuffer, 4);
     if (uiNumBytesWritten != 4) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
+    iSlotsAlreadyInUse = sizeBuffer.readInt32LE(0);
 
     FileClose(hfile);
 
@@ -447,9 +481,11 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 
     // advance for bytes and read the #of slots already used
     FileSeek(hfile, 4, FILE_SEEK_FROM_START);
-    FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
+    sizeBuffer.writeInt32LE(slots, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 4);
     if (uiNumBytesWritten != 4) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
 
     FileSeek(hfile, 0, FILE_SEEK_FROM_END);
@@ -464,17 +500,21 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 
   // if we are to append to the file
   if (!fAppendToFile) {
-    FileWrite(hfile, addressof(sSectorY), 2, addressof(uiNumBytesWritten));
+    sizeBuffer.writeInt16LE(sSectorY, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
     if (uiNumBytesWritten != 2) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
 
     // STEP THREE:  Save the data
     SaveSoldierInitListLinks(hfile);
 
-    FileWrite(hfile, addressof(sSectorX), 2, addressof(uiNumBytesWritten));
+    sizeBuffer.writeInt16LE(sSectorX, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
     if (uiNumBytesWritten != 2) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
 
     // This check may appear confusing.  It is intended to abort if the player is saving the game.  It is only
@@ -484,20 +524,26 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
       slots = 0;
     }
 
-    FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
+    sizeBuffer.writeInt32LE(slots, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 4);
     if (uiNumBytesWritten != 4) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
 
     uiTimeStamp = GetWorldTotalMin();
-    FileWrite(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesWritten));
+    sizeBuffer.writeUInt32LE(uiTimeStamp, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 4);
     if (uiNumBytesWritten != 4) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
 
-    FileWrite(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesWritten));
+    sizeBuffer.writeInt8(bSectorZ, 0);
+    uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 1);
     if (uiNumBytesWritten != 1) {
-      goto("FAIL_SAVE");
+      FileClose(hfile);
+      return false;
     }
   }
 
@@ -510,50 +556,58 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     return true;
   }
 
-  for (i = gTacticalStatus.Team[ubFirstIdTeam].bFirstID; i <= gTacticalStatus.Team[ubLastIdTeam].bLastID; i++) {
-    pSoldier = MercPtrs[i];
-    if (pSoldier.value.bActive /*&& pSoldier->bInSector*/ && pSoldier.value.bLife) {
-      // soldier is valid, so find the matching soldier init list entry for modification.
-      curr = gSoldierInitHead;
-      while (curr && curr.value.pSoldier != pSoldier) {
-        curr = curr.value.next;
-      }
-      if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
-        // found a match.
-        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesWritten));
-        if (uiNumBytesWritten != sizeof(SOLDIERCREATE_STRUCT)) {
-          goto("FAIL_SAVE");
+  FAIL_SAVE:
+  do {
+    dataBuffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
+    for (i = gTacticalStatus.Team[ubFirstIdTeam].bFirstID; i <= gTacticalStatus.Team[ubLastIdTeam].bLastID; i++) {
+      pSoldier = MercPtrs[i];
+      if (pSoldier.bActive /*&& pSoldier->bInSector*/ && pSoldier.bLife) {
+        // soldier is valid, so find the matching soldier init list entry for modification.
+        curr = gSoldierInitHead;
+        while (curr && curr.pSoldier != pSoldier) {
+          curr = curr.next;
         }
-        // insert a checksum equation (anti-hack)
-        usCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
-        FileWrite(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesWritten));
-        if (uiNumBytesWritten != 2) {
-          goto("FAIL_SAVE");
+        if (curr && curr.pSoldier == pSoldier && pSoldier.ubProfile == NO_PROFILE) {
+          Assert(curr.pDetailedPlacement);
+          // found a match.
+          writeSoldierCreateStruct(curr.pDetailedPlacement, dataBuffer);
+          uiNumBytesWritten = FileWrite(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+          if (uiNumBytesWritten != SOLDIER_CREATE_STRUCT_SIZE) {
+            break FAIL_SAVE;
+          }
+          // insert a checksum equation (anti-hack)
+          usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+          sizeBuffer.writeUInt16LE(usCheckSum, 0);
+          uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
+          if (uiNumBytesWritten != 2) {
+            break FAIL_SAVE;
+          }
         }
       }
     }
-  }
 
-  // if we are to append to the file
-  if (!fAppendToFile) {
-    ubSectorID = SECTOR(sSectorX, sSectorY);
-    FileWrite(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesWritten));
-    if (uiNumBytesWritten != 1) {
-      goto("FAIL_SAVE");
+    // if we are to append to the file
+    if (!fAppendToFile) {
+      ubSectorID = SECTOR(sSectorX, sSectorY);
+      sizeBuffer.writeUInt8(ubSectorID, 0);
+      uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 1);
+      if (uiNumBytesWritten != 1) {
+        FileClose(hfile);
+        return false;
+      }
     }
-  }
 
-  FileClose(hfile);
-  SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
-  return true;
+    FileClose(hfile);
+    SetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
+    return true;
+  } while (false);
 
-FAIL_SAVE:
   FileClose(hfile);
   return false;
 }
 
 export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
-  let curr: Pointer<SOLDIERINITNODE>;
+  let curr: SOLDIERINITNODE | null;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
@@ -575,6 +629,8 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let ubStrategicTroops: UINT8;
   let ubStrategicAdmins: UINT8;
   let ubStrategicCreatures: UINT8;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   gfRestoringEnemySoldiersFromTempFile = true;
 
@@ -591,19 +647,20 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   // Count the number of enemies ( elites, regulars, admins and creatures ) that are in the temp file.
 
   if (gbWorldSectorZ) {
-    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+    let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-      goto("FAIL_LOAD");
+      FileClose(hfile);
+      return false;
     }
   } else {
-    let pSector: Pointer<SECTORINFO>;
-    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
+    let pSector: SECTORINFO;
+    pSector = SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
 
-    ubNumElites = pSector.value.ubNumElites;
-    ubNumTroops = pSector.value.ubNumTroops;
-    ubNumAdmins = pSector.value.ubNumAdmins;
-    ubNumCreatures = pSector.value.ubNumCreatures;
+    ubNumElites = pSector.ubNumElites;
+    ubNumTroops = pSector.ubNumTroops;
+    ubNumAdmins = pSector.ubNumAdmins;
+    ubNumCreatures = pSector.ubNumCreatures;
   }
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -631,12 +688,16 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorY = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorY != sSectorY) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   //	LoadSoldierInitListLinks( hfile );
@@ -644,30 +705,42 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorX = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorX != sSectorX) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
-  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  slots = sizeBuffer.readInt32LE(0);
 
-  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  uiTimeStamp = sizeBuffer.readUInt32LE(0);
 
-  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  bSectorZ = sizeBuffer.readInt8(0);
+
   if (gbWorldSectorZ != bSectorZ) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   if (GetWorldTotalMin() > uiTimeStamp + 300) {
@@ -687,19 +760,20 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
   if (slots < 0 || slots >= 64) {
     // bad IO!
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // For all the enemy slots (enemy/creature), clear the fPriorityExistance flag.  We will use these flags
   // to determine which slots have been modified as we load the data into the map pristine soldier init list.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pBasicPlacement.value.fPriorityExistance) {
-      if (curr.value.pBasicPlacement.value.bTeam == ENEMY_TEAM || curr.value.pBasicPlacement.value.bTeam == CREATURE_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = false;
+    if (curr.pBasicPlacement.fPriorityExistance) {
+      if (curr.pBasicPlacement.bTeam == ENEMY_TEAM || curr.pBasicPlacement.bTeam == CREATURE_TEAM) {
+        curr.pBasicPlacement.fPriorityExistance = false;
       }
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 
   // get the number of enemies in this sector.
@@ -707,7 +781,8 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
     let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
-      goto("FAIL_LOAD");
+      FileClose(hfile);
+      return false;
     }
     ubStrategicElites = pSector.ubNumElites;
     ubStrategicTroops = pSector.ubNumTroops;
@@ -720,50 +795,58 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
     ({ ubNumAdmins: ubStrategicAdmins, ubNumTroops: ubStrategicTroops, ubNumElites: ubStrategicElites } = GetNumberOfEnemiesInSector(sSectorX, sSectorY));
   }
 
+  dataBuffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-      goto("FAIL_LOAD");
+    uiNumBytesRead = FileRead(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
+      FileClose(hfile);
+      return false;
     }
+    readSoldierCreateStruct(tempDetailedPlacement, dataBuffer);
+
     curr = gSoldierInitHead;
     while (curr) {
-      if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
-        if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-          curr.value.pBasicPlacement.value.fPriorityExistance = true;
-          if (!curr.value.pDetailedPlacement) {
+      if (!curr.pBasicPlacement.fPriorityExistance) {
+        if (curr.pBasicPlacement.bTeam == tempDetailedPlacement.bTeam) {
+          curr.pBasicPlacement.fPriorityExistance = true;
+          if (!curr.pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
-            curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+            curr.pDetailedPlacement = createSoldierCreateStruct();
           }
           // now replace the map pristine placement info with the temp map file version..
-          memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
+          copySoldierCreateStruct(curr.pDetailedPlacement, tempDetailedPlacement);
 
-          curr.value.pBasicPlacement.value.fPriorityExistance = true;
-          curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
-          curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
-          curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
-          curr.value.pBasicPlacement.value.bBodyType = curr.value.pDetailedPlacement.value.bBodyType;
-          curr.value.pBasicPlacement.value.fOnRoof = curr.value.pDetailedPlacement.value.fOnRoof;
-          curr.value.pBasicPlacement.value.ubSoldierClass = curr.value.pDetailedPlacement.value.ubSoldierClass;
-          curr.value.pBasicPlacement.value.ubCivilianGroup = curr.value.pDetailedPlacement.value.ubCivilianGroup;
-          curr.value.pBasicPlacement.value.fHasKeys = curr.value.pDetailedPlacement.value.fHasKeys;
-          curr.value.pBasicPlacement.value.usStartingGridNo = curr.value.pDetailedPlacement.value.sInsertionGridNo;
+          curr.pBasicPlacement.fPriorityExistance = true;
+          curr.pBasicPlacement.bDirection = curr.pDetailedPlacement.bDirection;
+          curr.pBasicPlacement.bOrders = curr.pDetailedPlacement.bOrders;
+          curr.pBasicPlacement.bAttitude = curr.pDetailedPlacement.bAttitude;
+          curr.pBasicPlacement.bBodyType = curr.pDetailedPlacement.bBodyType;
+          curr.pBasicPlacement.fOnRoof = curr.pDetailedPlacement.fOnRoof;
+          curr.pBasicPlacement.ubSoldierClass = curr.pDetailedPlacement.ubSoldierClass;
+          curr.pBasicPlacement.ubCivilianGroup = curr.pDetailedPlacement.ubCivilianGroup;
+          curr.pBasicPlacement.fHasKeys = curr.pDetailedPlacement.fHasKeys;
+          curr.pBasicPlacement.usStartingGridNo = curr.pDetailedPlacement.sInsertionGridNo;
 
-          curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
-          memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
+          curr.pBasicPlacement.bPatrolCnt = curr.pDetailedPlacement.bPatrolCnt;
+          copyArray(curr.pBasicPlacement.sPatrolGrid, curr.pDetailedPlacement.sPatrolGrid);
 
-          FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
+          uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
           if (uiNumBytesRead != 2) {
-            goto("FAIL_LOAD");
+            FileClose(hfile);
+            return false;
           }
+          usCheckSum = sizeBuffer.readUInt16LE(0);
+
           // verify the checksum equation (anti-hack) -- see save
-          usFileCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
+          usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
           if (usCheckSum != usFileCheckSum) {
             // Hacker has modified the stats on the enemy placements.
-            goto("FAIL_LOAD");
+            FileClose(hfile);
+            return false;
           }
 
           // Add preserved placements as long as they don't exceed the actual population.
-          switch (curr.value.pBasicPlacement.value.ubSoldierClass) {
+          switch (curr.pBasicPlacement.ubSoldierClass) {
             case Enum262.SOLDIER_CLASS_ELITE:
               ubNumElites++;
               if (ubNumElites <= ubStrategicElites) {
@@ -792,16 +875,20 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
           break;
         }
       }
-      curr = curr.value.next;
+      curr = curr.next;
     }
   }
 
-  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  ubSectorID = sizeBuffer.readUInt8(0);
+
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // now add any extra enemies that have arrived since the temp file was made.
@@ -817,10 +904,11 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
   // set the number of enemies in the sector
   if (bSectorZ) {
-    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+    let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-      goto("FAIL_LOAD");
+      FileClose(hfile);
+      return false;
 
       /*
                               pSector->ubElitesInBattle = ubStrategicElites;
@@ -830,8 +918,8 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
       */
     }
   } else {
-    let pSector: Pointer<SECTORINFO>;
-    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
+    let pSector: SECTORINFO;
+    pSector = SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     /*
                     pSector->ubElitesInBattle = ubStrategicElites;
                     pSector->ubTroopsInBattle = ubStrategicTroops;
@@ -855,8 +943,8 @@ FAIL_LOAD:
 }
 
 export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
-  let curr: Pointer<SOLDIERINITNODE>;
-  let temp: Pointer<SOLDIERINITNODE>;
+  let curr: SOLDIERINITNODE | null;
+  let temp: SOLDIERINITNODE | null;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let i: INT32;
   let slots: INT32 = 0;
@@ -878,6 +966,8 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   let ubNumCreatures: UINT8 = 0;
   let fDeleted: boolean;
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   gfRestoringCiviliansFromTempFile = true;
 
@@ -900,44 +990,60 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorY = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorY != sSectorY) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // LoadSoldierInitListLinks( hfile );
   NewWayOfLoadingCivilianInitListLinks(hfile);
 
   // STEP THREE:  read the data
-  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorX = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorX != sSectorX) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
-  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  slots = sizeBuffer.readInt32LE(0);
 
-  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  uiTimeStamp = sizeBuffer.readUInt32LE(0);
 
   uiTimeSinceLastLoaded = GetWorldTotalMin() - uiTimeStamp;
 
-  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  bSectorZ = sizeBuffer.readInt8(0);
+
   if (gbWorldSectorZ != bSectorZ) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   if (!slots) {
@@ -948,81 +1054,90 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   }
   if (slots < 0 || slots >= 64) {
 // bad IO!
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // For all the enemy slots (enemy/creature), clear the fPriorityExistance flag.  We will use these flags
   // to determine which slots have been modified as we load the data into the map pristine soldier init list.
   curr = gSoldierInitHead;
   while (curr) {
-    if (curr.value.pBasicPlacement.value.fPriorityExistance) {
-      if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
-        curr.value.pBasicPlacement.value.fPriorityExistance = false;
+    if (curr.pBasicPlacement.fPriorityExistance) {
+      if (curr.pBasicPlacement.bTeam == CIV_TEAM) {
+        curr.pBasicPlacement.fPriorityExistance = false;
       }
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 
+  dataBuffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-      goto("FAIL_LOAD");
+    uiNumBytesRead = FileRead(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
+      FileClose(hfile);
+      return false;
     }
+    readSoldierCreateStruct(tempDetailedPlacement, dataBuffer);
+
     curr = gSoldierInitHead;
     while (curr) {
-      if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
-        if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
-          if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
-            curr.value.pBasicPlacement.value.fPriorityExistance = true;
+      if (!curr.pBasicPlacement.fPriorityExistance) {
+        if (!curr.pDetailedPlacement || curr.pDetailedPlacement && curr.pDetailedPlacement.ubProfile == NO_PROFILE) {
+          if (curr.pBasicPlacement.bTeam == tempDetailedPlacement.bTeam) {
+            curr.pBasicPlacement.fPriorityExistance = true;
 
-            if (!curr.value.pDetailedPlacement) {
+            if (!curr.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+              curr.pDetailedPlacement = createSoldierCreateStruct();
             }
             // now replace the map pristine placement info with the temp map file version..
-            memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
+            copySoldierCreateStruct(curr.pDetailedPlacement, tempDetailedPlacement);
 
-            curr.value.pBasicPlacement.value.fPriorityExistance = true;
-            curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
-            curr.value.pBasicPlacement.value.bOrders = curr.value.pDetailedPlacement.value.bOrders;
-            curr.value.pBasicPlacement.value.bAttitude = curr.value.pDetailedPlacement.value.bAttitude;
-            curr.value.pBasicPlacement.value.bBodyType = curr.value.pDetailedPlacement.value.bBodyType;
-            curr.value.pBasicPlacement.value.fOnRoof = curr.value.pDetailedPlacement.value.fOnRoof;
-            curr.value.pBasicPlacement.value.ubSoldierClass = curr.value.pDetailedPlacement.value.ubSoldierClass;
-            curr.value.pBasicPlacement.value.ubCivilianGroup = curr.value.pDetailedPlacement.value.ubCivilianGroup;
-            curr.value.pBasicPlacement.value.fHasKeys = curr.value.pDetailedPlacement.value.fHasKeys;
-            curr.value.pBasicPlacement.value.usStartingGridNo = curr.value.pDetailedPlacement.value.sInsertionGridNo;
+            curr.pBasicPlacement.fPriorityExistance = true;
+            curr.pBasicPlacement.bDirection = curr.pDetailedPlacement.bDirection;
+            curr.pBasicPlacement.bOrders = curr.pDetailedPlacement.bOrders;
+            curr.pBasicPlacement.bAttitude = curr.pDetailedPlacement.bAttitude;
+            curr.pBasicPlacement.bBodyType = curr.pDetailedPlacement.bBodyType;
+            curr.pBasicPlacement.fOnRoof = curr.pDetailedPlacement.fOnRoof;
+            curr.pBasicPlacement.ubSoldierClass = curr.pDetailedPlacement.ubSoldierClass;
+            curr.pBasicPlacement.ubCivilianGroup = curr.pDetailedPlacement.ubCivilianGroup;
+            curr.pBasicPlacement.fHasKeys = curr.pDetailedPlacement.fHasKeys;
+            curr.pBasicPlacement.usStartingGridNo = curr.pDetailedPlacement.sInsertionGridNo;
 
-            curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
-            memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
+            curr.pBasicPlacement.bPatrolCnt = curr.pDetailedPlacement.bPatrolCnt;
+            copyArray(curr.pBasicPlacement.sPatrolGrid, curr.pDetailedPlacement.sPatrolGrid);
 
-            FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
+            uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
             if (uiNumBytesRead != 2) {
-              goto("FAIL_LOAD");
+              FileClose(hfile);
+              return false;
             }
+            usCheckSum = sizeBuffer.readUInt16LE(0);
+
             // verify the checksum equation (anti-hack) -- see save
-            usFileCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
+            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
 // Hacker has modified the stats on the enemy placements.
-              goto("FAIL_LOAD");
+              FileClose(hfile);
+              return false;
             }
 
-            if (curr.value.pDetailedPlacement.value.bLife < curr.value.pDetailedPlacement.value.bLifeMax) {
+            if (curr.pDetailedPlacement.bLife < curr.pDetailedPlacement.bLifeMax) {
               // Add 4 life for every hour that passes.
               let iNewLife: INT32;
-              iNewLife = curr.value.pDetailedPlacement.value.bLife + uiTimeSinceLastLoaded / 15;
-              iNewLife = Math.min(curr.value.pDetailedPlacement.value.bLifeMax, iNewLife);
-              curr.value.pDetailedPlacement.value.bLife = iNewLife;
+              iNewLife = curr.pDetailedPlacement.bLife + uiTimeSinceLastLoaded / 15;
+              iNewLife = Math.min(curr.pDetailedPlacement.bLifeMax, iNewLife);
+              curr.pDetailedPlacement.bLife = iNewLife;
             }
 
-            if (curr.value.pBasicPlacement.value.bTeam == CIV_TEAM) {
+            if (curr.pBasicPlacement.bTeam == CIV_TEAM) {
               // def:				AddPlacementToWorld( curr );
               break;
             }
           }
         }
       }
-      curr = curr.value.next;
+      curr = curr.next;
     }
   }
 
@@ -1030,12 +1145,12 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
   curr = gSoldierInitHead;
   fDeleted = false;
   while (curr) {
-    if (!curr.value.pBasicPlacement.value.fPriorityExistance) {
-      if (!curr.value.pDetailedPlacement || curr.value.pDetailedPlacement && curr.value.pDetailedPlacement.value.ubProfile == NO_PROFILE) {
-        if (curr.value.pBasicPlacement.value.bTeam == tempDetailedPlacement.bTeam) {
+    if (!curr.pBasicPlacement.fPriorityExistance) {
+      if (!curr.pDetailedPlacement || curr.pDetailedPlacement && curr.pDetailedPlacement.ubProfile == NO_PROFILE) {
+        if (curr.pBasicPlacement.bTeam == tempDetailedPlacement.bTeam) {
           // Save pointer to the next guy in the list
           // and after deleting, set the 'curr' to that guy
-          temp = curr.value.next;
+          temp = curr.next;
           RemoveSoldierNodeFromInitList(curr);
           curr = temp;
           fDeleted = true;
@@ -1046,14 +1161,16 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
       // we've already done our pointer update so don't advance the pointer
       fDeleted = false;
     } else {
-      curr = curr.value.next;
+      curr = (<SOLDIERINITNODE>curr).next;
     }
   }
 
-  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  ubSectorID = sizeBuffer.readUInt8(0);
 
   /*
   if( ubSectorID != SECTOR( sSectorX, sSectorY ) )
@@ -1080,8 +1197,8 @@ FAIL_LOAD:
 // If we are saving a game and we are in the sector, we will need to preserve the links between the
 // soldiers and the soldier init list.  Otherwise, the temp file will be deleted.
 export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: boolean, fValidateOnly: boolean): boolean {
-  let curr: Pointer<SOLDIERINITNODE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let curr: SOLDIERINITNODE | null;
+  let pSoldier: SOLDIERTYPE | null;
   let i: INT32;
   let slots: INT32 = 0;
   let uiNumBytesWritten: UINT32;
@@ -1094,6 +1211,8 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
 
   let ubStartID: UINT8 = 0;
   let ubEndID: UINT8 = 0;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   // if we are saving the enemy info to the enemy temp file
   if (fEnemy) {
@@ -1114,80 +1233,79 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
     pSoldier = MercPtrs[i];
 
     // make sure the person is active, alive, in the sector, and is not a profiled person
-    if (pSoldier.value.bActive /*&& pSoldier->bInSector*/ && pSoldier.value.bLife && pSoldier.value.ubProfile == NO_PROFILE) {
+    if (pSoldier.bActive /*&& pSoldier->bInSector*/ && pSoldier.bLife && pSoldier.ubProfile == NO_PROFILE) {
       // soldier is valid, so find the matching soldier init list entry for modification.
       curr = gSoldierInitHead;
-      while (curr && curr.value.pSoldier != pSoldier) {
-        curr = curr.value.next;
+      while (curr && curr.pSoldier != pSoldier) {
+        curr = curr.next;
       }
-      if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
+      if (curr && curr.pSoldier == pSoldier && pSoldier.ubProfile == NO_PROFILE) {
         // found a match.
 
         if (!fValidateOnly) {
           if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-            if (!curr.value.pDetailedPlacement) {
+            if (!curr.pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr.value.pBasicPlacement.value.fDetailedPlacement = true;
-              curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
-              memset(curr.value.pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
+              curr.pBasicPlacement.fDetailedPlacement = true;
+              curr.pDetailedPlacement = createSoldierCreateStruct();
             }
 
             // Copy over the data of the soldier.
-            curr.value.pDetailedPlacement.value.ubProfile = NO_PROFILE;
-            curr.value.pDetailedPlacement.value.bLife = pSoldier.value.bLife;
-            curr.value.pDetailedPlacement.value.bLifeMax = pSoldier.value.bLifeMax;
-            curr.value.pDetailedPlacement.value.bAgility = pSoldier.value.bAgility;
-            curr.value.pDetailedPlacement.value.bDexterity = pSoldier.value.bDexterity;
-            curr.value.pDetailedPlacement.value.bExpLevel = pSoldier.value.bExpLevel;
-            curr.value.pDetailedPlacement.value.bMarksmanship = pSoldier.value.bMarksmanship;
-            curr.value.pDetailedPlacement.value.bMedical = pSoldier.value.bMedical;
-            curr.value.pDetailedPlacement.value.bMechanical = pSoldier.value.bMechanical;
-            curr.value.pDetailedPlacement.value.bExplosive = pSoldier.value.bExplosive;
-            curr.value.pDetailedPlacement.value.bLeadership = pSoldier.value.bLeadership;
-            curr.value.pDetailedPlacement.value.bStrength = pSoldier.value.bStrength;
-            curr.value.pDetailedPlacement.value.bWisdom = pSoldier.value.bWisdom;
-            curr.value.pDetailedPlacement.value.bAttitude = pSoldier.value.bAttitude;
-            curr.value.pDetailedPlacement.value.bOrders = pSoldier.value.bOrders;
-            curr.value.pDetailedPlacement.value.bMorale = pSoldier.value.bMorale;
-            curr.value.pDetailedPlacement.value.bAIMorale = pSoldier.value.bAIMorale;
-            curr.value.pDetailedPlacement.value.bBodyType = pSoldier.value.ubBodyType;
-            curr.value.pDetailedPlacement.value.ubCivilianGroup = pSoldier.value.ubCivilianGroup;
-            curr.value.pDetailedPlacement.value.ubScheduleID = pSoldier.value.ubScheduleID;
-            curr.value.pDetailedPlacement.value.fHasKeys = pSoldier.value.bHasKeys;
-            curr.value.pDetailedPlacement.value.sSectorX = pSoldier.value.sSectorX;
-            curr.value.pDetailedPlacement.value.sSectorY = pSoldier.value.sSectorY;
-            curr.value.pDetailedPlacement.value.bSectorZ = pSoldier.value.bSectorZ;
-            curr.value.pDetailedPlacement.value.ubSoldierClass = pSoldier.value.ubSoldierClass;
-            curr.value.pDetailedPlacement.value.bTeam = pSoldier.value.bTeam;
-            curr.value.pDetailedPlacement.value.bDirection = pSoldier.value.bDirection;
+            curr.pDetailedPlacement.ubProfile = NO_PROFILE;
+            curr.pDetailedPlacement.bLife = pSoldier.bLife;
+            curr.pDetailedPlacement.bLifeMax = pSoldier.bLifeMax;
+            curr.pDetailedPlacement.bAgility = pSoldier.bAgility;
+            curr.pDetailedPlacement.bDexterity = pSoldier.bDexterity;
+            curr.pDetailedPlacement.bExpLevel = pSoldier.bExpLevel;
+            curr.pDetailedPlacement.bMarksmanship = pSoldier.bMarksmanship;
+            curr.pDetailedPlacement.bMedical = pSoldier.bMedical;
+            curr.pDetailedPlacement.bMechanical = pSoldier.bMechanical;
+            curr.pDetailedPlacement.bExplosive = pSoldier.bExplosive;
+            curr.pDetailedPlacement.bLeadership = pSoldier.bLeadership;
+            curr.pDetailedPlacement.bStrength = pSoldier.bStrength;
+            curr.pDetailedPlacement.bWisdom = pSoldier.bWisdom;
+            curr.pDetailedPlacement.bAttitude = pSoldier.bAttitude;
+            curr.pDetailedPlacement.bOrders = pSoldier.bOrders;
+            curr.pDetailedPlacement.bMorale = pSoldier.bMorale;
+            curr.pDetailedPlacement.bAIMorale = pSoldier.bAIMorale;
+            curr.pDetailedPlacement.bBodyType = pSoldier.ubBodyType;
+            curr.pDetailedPlacement.ubCivilianGroup = pSoldier.ubCivilianGroup;
+            curr.pDetailedPlacement.ubScheduleID = pSoldier.ubScheduleID;
+            curr.pDetailedPlacement.fHasKeys = pSoldier.bHasKeys;
+            curr.pDetailedPlacement.sSectorX = pSoldier.sSectorX;
+            curr.pDetailedPlacement.sSectorY = pSoldier.sSectorY;
+            curr.pDetailedPlacement.bSectorZ = pSoldier.bSectorZ;
+            curr.pDetailedPlacement.ubSoldierClass = pSoldier.ubSoldierClass;
+            curr.pDetailedPlacement.bTeam = pSoldier.bTeam;
+            curr.pDetailedPlacement.bDirection = pSoldier.bDirection;
 
             // we don't want the player to think that all the enemies start in the exact position when we
             // left the map, so randomize the start locations either current position or original position.
             if (PreRandom(2)) {
               // use current position
-              curr.value.pDetailedPlacement.value.fOnRoof = pSoldier.value.bLevel;
-              curr.value.pDetailedPlacement.value.sInsertionGridNo = pSoldier.value.sGridNo;
+              curr.pDetailedPlacement.fOnRoof = pSoldier.bLevel;
+              curr.pDetailedPlacement.sInsertionGridNo = pSoldier.sGridNo;
             } else {
               // use original position
-              curr.value.pDetailedPlacement.value.fOnRoof = curr.value.pBasicPlacement.value.fOnRoof;
-              curr.value.pDetailedPlacement.value.sInsertionGridNo = curr.value.pBasicPlacement.value.usStartingGridNo;
+              curr.pDetailedPlacement.fOnRoof = curr.pBasicPlacement.fOnRoof;
+              curr.pDetailedPlacement.sInsertionGridNo = curr.pBasicPlacement.usStartingGridNo;
             }
 
-            curr.value.pDetailedPlacement.value.name = pSoldier.value.name;
+            curr.pDetailedPlacement.name = pSoldier.name;
 
             // Copy patrol points
-            curr.value.pDetailedPlacement.value.bPatrolCnt = pSoldier.value.bPatrolCnt;
-            memcpy(curr.value.pDetailedPlacement.value.sPatrolGrid, pSoldier.value.usPatrolGrid, sizeof(INT16) * MAXPATROLGRIDS);
+            curr.pDetailedPlacement.bPatrolCnt = pSoldier.bPatrolCnt;
+            copyArray(curr.pDetailedPlacement.sPatrolGrid, pSoldier.usPatrolGrid);
 
             // copy colors for soldier based on the body type.
-            curr.value.pDetailedPlacement.value.HeadPal = pSoldier.value.HeadPal;
-            curr.value.pDetailedPlacement.value.VestPal = pSoldier.value.VestPal;
-            curr.value.pDetailedPlacement.value.SkinPal = pSoldier.value.SkinPal;
-            curr.value.pDetailedPlacement.value.PantsPal = pSoldier.value.PantsPal;
-            curr.value.pDetailedPlacement.value.MiscPal = pSoldier.value.MiscPal;
+            curr.pDetailedPlacement.HeadPal = pSoldier.HeadPal;
+            curr.pDetailedPlacement.VestPal = pSoldier.VestPal;
+            curr.pDetailedPlacement.SkinPal = pSoldier.SkinPal;
+            curr.pDetailedPlacement.PantsPal = pSoldier.PantsPal;
+            curr.pDetailedPlacement.MiscPal = pSoldier.MiscPal;
 
             // copy soldier's inventory
-            memcpy(curr.value.pDetailedPlacement.value.Inv, pSoldier.value.inv, sizeof(OBJECTTYPE) * Enum261.NUM_INV_SLOTS);
+            copyObjectArray(curr.pDetailedPlacement.Inv, pSoldier.inv, copyObjectType);
           }
         }
 
@@ -1235,9 +1353,11 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
     return false;
   }
 
-  FileWrite(hfile, addressof(sSectorY), 2, addressof(uiNumBytesWritten));
+  sizeBuffer.writeInt16LE(sSectorY, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
   if (uiNumBytesWritten != 2) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
   // STEP THREE:  Save the data
@@ -1245,9 +1365,11 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
   // this works for both civs and enemies
   SaveSoldierInitListLinks(hfile);
 
-  FileWrite(hfile, addressof(sSectorX), 2, addressof(uiNumBytesWritten));
+  sizeBuffer.writeInt16LE(sSectorX, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
   if (uiNumBytesWritten != 2) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
   // This check may appear confusing.  It is intended to abort if the player is saving the game.  It is only
@@ -1257,20 +1379,26 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
     slots = 0;
   }
 
-  FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
+  sizeBuffer.writeInt32LE(slots, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 4);
   if (uiNumBytesWritten != 4) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
   uiTimeStamp = GetWorldTotalMin();
-  FileWrite(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesWritten));
+  sizeBuffer.writeUInt32LE(uiTimeStamp, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 4);
   if (uiNumBytesWritten != 4) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
-  FileWrite(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesWritten));
+  sizeBuffer.writeInt8(bSectorZ, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 1);
   if (uiNumBytesWritten != 1) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -1287,35 +1415,43 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
     return true;
   }
 
+  dataBuffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
   for (i = gTacticalStatus.Team[ubStartID].bFirstID; i <= gTacticalStatus.Team[ubEndID].bLastID; i++) {
     pSoldier = MercPtrs[i];
     // CJC: note that bInSector is not required; the civ could be offmap!
-    if (pSoldier.value.bActive /*&& pSoldier->bInSector*/ && pSoldier.value.bLife) {
+    if (pSoldier.bActive /*&& pSoldier->bInSector*/ && pSoldier.bLife) {
       // soldier is valid, so find the matching soldier init list entry for modification.
       curr = gSoldierInitHead;
-      while (curr && curr.value.pSoldier != pSoldier) {
-        curr = curr.value.next;
+      while (curr && curr.pSoldier != pSoldier) {
+        curr = curr.next;
       }
-      if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
+      if (curr && curr.pSoldier == pSoldier && pSoldier.ubProfile == NO_PROFILE) {
+        Assert(curr.pDetailedPlacement);
         // found a match.
-        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesWritten));
-        if (uiNumBytesWritten != sizeof(SOLDIERCREATE_STRUCT)) {
-          goto("FAIL_SAVE");
+        writeSoldierCreateStruct(curr.pDetailedPlacement, dataBuffer);
+        uiNumBytesWritten = FileWrite(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+        if (uiNumBytesWritten != SOLDIER_CREATE_STRUCT_SIZE) {
+          FileClose(hfile);
+          return false;
         }
         // insert a checksum equation (anti-hack)
-        usCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
-        FileWrite(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesWritten));
+        usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+        sizeBuffer.writeUInt16LE(usCheckSum, 0);
+        uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
         if (uiNumBytesWritten != 2) {
-          goto("FAIL_SAVE");
+          FileClose(hfile);
+          return false;
         }
       }
     }
   }
 
   ubSectorID = SECTOR(sSectorX, sSectorY);
-  FileWrite(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesWritten));
+  sizeBuffer.writeUInt8(ubSectorID, 0);
+  uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 1);
   if (uiNumBytesWritten != 1) {
-    goto("FAIL_SAVE");
+    FileClose(hfile);
+    return false;
   }
 
   FileClose(hfile);
@@ -1349,6 +1485,8 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   let ubSectorID: UINT8;
   //	UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
+  let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
+  let dataBuffer: Buffer;
 
   // make sure the variables are initialized
   pubNumElites.value = 0;
@@ -1364,7 +1502,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   // add the 'e' for 'Enemy preserved' to the front of the map name
   //	sprintf( zMapName, "%s\\e_%s", MAPS_DIR, zTempName);
 
-  GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, zMapName, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+  zMapName = GetMapTempFileName(SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
 
   // Open the file for reading
   hfile = FileOpen(zMapName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
@@ -1376,12 +1514,16 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorY = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorY != sSectorY) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   //	LoadSoldierInitListLinks( hfile );
@@ -1389,31 +1531,42 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
   if (uiNumBytesRead != 2) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  sSectorX = sizeBuffer.readInt16LE(0);
+
   if (gWorldSectorX != sSectorX) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
-  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  slots = sizeBuffer.readInt32LE(0);
 
-  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 4);
   if (uiNumBytesRead != 4) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  uiTimeStamp = sizeBuffer.readUInt32LE(0);
 
-  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  bSectorZ = sizeBuffer.readInt8(0);
 
   if (gbWorldSectorZ != bSectorZ) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   if (!slots) {
@@ -1424,7 +1577,8 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
 
   if (slots < 0 || slots >= 64) {
     // bad IO!
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   /*
@@ -1454,11 +1608,14 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
           }
   */
 
+  dataBuffer = Buffer.allocUnsafeSlow(SOLDIER_CREATE_STRUCT_SIZE);
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-      goto("FAIL_LOAD");
+    uiNumBytesRead = FileRead(hfile, dataBuffer, SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
+      FileClose(hfile);
+      return false;
     }
+    readSoldierCreateStruct(tempDetailedPlacement, dataBuffer);
 
     // increment the current type of soldier
     switch (tempDetailedPlacement.ubSoldierClass) {
@@ -1476,10 +1633,12 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
         break;
     }
 
-    FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
+    uiNumBytesRead = FileRead(hfile, sizeBuffer, 2);
     if (uiNumBytesRead != 2) {
-      goto("FAIL_LOAD");
+      FileClose(hfile);
+      return false;
     }
+    usCheckSum = sizeBuffer.readUInt16LE(0);
     /*
                     while( curr )
                     {
@@ -1591,13 +1750,16 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
     */
   }
 
-  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
+  uiNumBytesRead = FileRead(hfile, sizeBuffer, 1);
   if (uiNumBytesRead != 1) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
+  ubSectorID = sizeBuffer.readUInt8(0);
 
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-    goto("FAIL_LOAD");
+    FileClose(hfile);
+    return false;
   }
 
   // successful

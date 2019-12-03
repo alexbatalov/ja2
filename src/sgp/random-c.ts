@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export let guiPreRandomIndex: UINT32 = 0;
-export let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */;
+export let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */ = createArray(MAX_PREGENERATED_NUMS, 0);
 
 export function InitializeRandom(): void {
   // Seed the random-number generator with current time so that

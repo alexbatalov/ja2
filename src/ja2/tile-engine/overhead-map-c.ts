@@ -239,7 +239,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
-            (ppReturnedSoldier.value) = gpWorldLevelData[sGridNo].pMercHead.pSoldier;
+            (ppReturnedSoldier.value) = (<LEVELNODE>gpWorldLevelData[sGridNo].pMercHead).pSoldier;
             uiLowestRange = uiRange;
             fFound = true;
           }
@@ -658,7 +658,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
     sAnchorPosY_M = sStartPointY_M;
     sAnchorPosX_S = sStartPointX_S;
     sAnchorPosY_S = sStartPointY_S;
-    bXOddFlag = 0;
+    bXOddFlag = false;
     fEndRenderRow = false;
     fEndRenderCol = false;
 
@@ -786,7 +786,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
       sAnchorPosY_M = sStartPointY_M;
       sAnchorPosX_S = sStartPointX_S;
       sAnchorPosY_S = sStartPointY_S;
-      bXOddFlag = 0;
+      bXOddFlag = false;
       fEndRenderRow = false;
       fEndRenderCol = false;
 

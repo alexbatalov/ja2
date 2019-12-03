@@ -151,6 +151,52 @@ export interface ARMS_DEALER_STATUS {
   ubPadding: UINT8[] /* [8] */;
 }
 
+export function createArmsDealerStatus(): ARMS_DEALER_STATUS {
+  return {
+    uiArmsDealersCash: 0,
+    ubSpecificDealerFlags: 0,
+    fOutOfBusiness: false,
+    fRepairDelayBeenUsed: false,
+    fUnusedKnowsPlayer: false,
+    uiTimePlayerLastInSKI: 0,
+    ubPadding: createArray(8, 0),
+  };
+}
+
+export function resetArmsDealerStatus(o: ARMS_DEALER_STATUS) {
+  o.uiArmsDealersCash = 0;
+  o.ubSpecificDealerFlags = 0;
+  o.fOutOfBusiness = false;
+  o.fRepairDelayBeenUsed = false;
+  o.fUnusedKnowsPlayer = false;
+  o.uiTimePlayerLastInSKI = 0;
+  o.ubPadding.fill(0);
+}
+
+export const ARMS_DEALER_STATUS_SIZE = 20;
+
+export function readArmsDealerStatus(o: ARMS_DEALER_STATUS, buffer: Buffer, offset: number = 0): number {
+  o.uiArmsDealersCash = buffer.readUInt32LE(offset); offset += 4;
+  o.ubSpecificDealerFlags = buffer.readUInt8(offset++);
+  o.fOutOfBusiness = Boolean(buffer.readUInt8(offset++));
+  o.fRepairDelayBeenUsed = Boolean(buffer.readUInt8(offset++));
+  o.fUnusedKnowsPlayer = Boolean(buffer.readUInt8(offset++));
+  o.uiTimePlayerLastInSKI = buffer.readUInt32LE(offset); offset += 4;
+  offset = readUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeArmsDealerStatus(o: ARMS_DEALER_STATUS, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt32LE(o.uiArmsDealersCash, offset);
+  offset = buffer.writeUInt8(o.ubSpecificDealerFlags, offset);
+  offset = buffer.writeUInt8(Number(o.fOutOfBusiness), offset);
+  offset = buffer.writeUInt8(Number(o.fRepairDelayBeenUsed), offset);
+  offset = buffer.writeUInt8(Number(o.fUnusedKnowsPlayer), offset);
+  offset = buffer.writeUInt32LE(o.uiTimePlayerLastInSKI, offset);
+  offset = writeUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
 export interface SPECIAL_ITEM_INFO {
   usAttachment: UINT16[] /* [MAX_ATTACHMENTS] */; // item index of any attachments on the item
 
@@ -174,6 +220,42 @@ export function createSpecialItemInfo(): SPECIAL_ITEM_INFO {
   };
 }
 
+export function resetSpecialItemInfo(o: SPECIAL_ITEM_INFO) {
+  o.usAttachment.fill(0);
+  o.bItemCondition = 0;
+  o.ubImprintID = 0;
+  o.bAttachmentStatus.fill(0);
+  o.ubPadding.fill(0);
+}
+
+export function copySpecialItemInfo(destination: SPECIAL_ITEM_INFO, source: SPECIAL_ITEM_INFO) {
+  copyArray(destination.usAttachment, source.usAttachment);
+  destination.bItemCondition = source.bItemCondition;
+  destination.ubImprintID = source.ubImprintID;
+  copyArray(destination.bAttachmentStatus, source.bAttachmentStatus);
+  copyArray(destination.ubPadding, source.ubPadding);
+}
+
+export const SPECIAL_ITEM_INFO_SIZE = 16;
+
+export function readSpecialItemInfo(o: SPECIAL_ITEM_INFO, buffer: Buffer, offset: number = 0): number {
+  offset = readUIntArray(o.usAttachment, buffer, offset, 2);
+  o.bItemCondition = buffer.readInt8(offset++);
+  o.ubImprintID = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bAttachmentStatus, buffer, offset, 1);
+  offset = readUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeSpecialItemInfo(o: SPECIAL_ITEM_INFO, buffer: Buffer, offset: number = 0): number {
+  offset = writeUIntArray(o.usAttachment, buffer, offset, 2);
+  offset = buffer.writeInt8(o.bItemCondition, offset);
+  offset = buffer.writeUInt8(o.ubImprintID, offset);
+  offset = writeIntArray(o.bAttachmentStatus, buffer, offset, 1);
+  offset = writeUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
 export interface DEALER_SPECIAL_ITEM {
   Info: SPECIAL_ITEM_INFO;
 
@@ -186,19 +268,111 @@ export interface DEALER_SPECIAL_ITEM {
   ubPadding: UINT8[] /* [6] */; // filler
 }
 
+export function createDealerSpecialItem(): DEALER_SPECIAL_ITEM {
+  return {
+    Info: createSpecialItemInfo(),
+    uiRepairDoneTime: 0,
+    fActive: false,
+    ubOwnerProfileId: 0,
+    ubPadding: createArray(6, 0),
+  };
+}
+
+export function resetDealerSpecialItem(o: DEALER_SPECIAL_ITEM) {
+  resetSpecialItemInfo(o.Info)
+  o.uiRepairDoneTime = 0;
+  o.fActive = false;
+  o.ubOwnerProfileId = 0;
+  o.ubPadding.fill(0);
+}
+
+export const DEALER_SPECIAL_ITEM_SIZE = 28;
+
+export function readDealerSpecialItem(o: DEALER_SPECIAL_ITEM, buffer: Buffer, offset: number = 0): number {
+  offset = readSpecialItemInfo(o.Info, buffer, offset);
+  o.uiRepairDoneTime = buffer.readUInt32LE(offset); offset += 4;
+  o.fActive = Boolean(buffer.readUInt8(offset++));
+  o.ubOwnerProfileId = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeDealerSpecialItem(o: DEALER_SPECIAL_ITEM, buffer: Buffer, offset: number = 0): number {
+  offset = writeSpecialItemInfo(o.Info, buffer, offset);
+  offset = buffer.writeUInt32LE(o.uiRepairDoneTime, offset);
+  offset = buffer.writeUInt8(Number(o.fActive), offset);
+  offset = buffer.writeUInt8(o.ubOwnerProfileId, offset);
+  offset = writeUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
 export interface DEALER_ITEM_HEADER {
   ubTotalItems: UINT8; // sum of all the items (all perfect ones + all special ones)
   ubPerfectItems: UINT8; // non-special (perfect) items held by dealer
   ubStrayAmmo: UINT8; // partially-depleted ammo mags are stored here as #bullets, and can be converted to full packs
 
   ubElementsAlloced: UINT8; // number of DEALER_SPECIAL_ITEM array elements alloced for the special item array
-  SpecialItem: DEALER_SPECIAL_ITEM[]; // dynamic array of special items with this same item index
+  SpecialItem: DEALER_SPECIAL_ITEM[] /* Pointer<DEALER_SPECIAL_ITEM> */; // dynamic array of special items with this same item index
 
   uiOrderArrivalTime: UINT32; // Day the items ordered will arrive on.  It's UINT32 in case we change this to minutes.
   ubQtyOnOrder: UINT8; // The number of items currently on order
   fPreviouslyEligible: boolean; // whether or not dealer has been eligible to sell this item in days prior to today
 
   ubPadding: UINT8[] /* [2] */; // filler
+}
+
+export function createDealerItemHeader(): DEALER_ITEM_HEADER {
+  return {
+    ubTotalItems: 0,
+    ubPerfectItems: 0,
+    ubStrayAmmo: 0,
+    ubElementsAlloced: 0,
+    SpecialItem: <DEALER_SPECIAL_ITEM[]><unknown>null,
+    uiOrderArrivalTime: 0,
+    ubQtyOnOrder: 0,
+    fPreviouslyEligible: false,
+    ubPadding: createArray(2, 0),
+  };
+}
+
+export function resetDealerItemHeader(o: DEALER_ITEM_HEADER) {
+  o.ubTotalItems = 0;
+  o.ubPerfectItems = 0;
+  o.ubStrayAmmo = 0;
+  o.ubElementsAlloced = 0;
+  o.SpecialItem = <DEALER_SPECIAL_ITEM[]><unknown>null;
+  o.uiOrderArrivalTime = 0;
+  o.ubQtyOnOrder = 0;
+  o.fPreviouslyEligible = false;
+  o.ubPadding.fill(0);
+}
+
+export const DEALER_ITEM_HEADER_SIZE = 16;
+
+export function readDealerItemHeader(o: DEALER_ITEM_HEADER, buffer: Buffer, offset: number = 0): number {
+  o.ubTotalItems = buffer.readUInt8(offset++);
+  o.ubPerfectItems = buffer.readUInt8(offset++);
+  o.ubStrayAmmo = buffer.readUInt8(offset++);
+  o.ubElementsAlloced = buffer.readUInt8(offset++);
+  o.SpecialItem = <DEALER_SPECIAL_ITEM[]><unknown>null; offset += 4; // pointer
+  o.uiOrderArrivalTime = buffer.readUInt32LE(offset); offset += 4;
+  o.ubQtyOnOrder = buffer.readUInt8(offset++);
+  o.fPreviouslyEligible = Boolean(buffer.readUInt8(offset++));
+  offset = readUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
+}
+
+export function writeDealerItemHeader(o: DEALER_ITEM_HEADER, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubTotalItems, offset);
+  offset = buffer.writeUInt8(o.ubPerfectItems, offset);
+  offset = buffer.writeUInt8(o.ubStrayAmmo, offset);
+  offset = buffer.writeUInt8(o.ubElementsAlloced, offset);
+  offset = writePadding(buffer, offset, 4); // o.SpecialItem (pointer)
+  offset = buffer.writeUInt32LE(o.uiOrderArrivalTime, offset);
+  offset = buffer.writeUInt8(o.ubQtyOnOrder, offset);
+  offset = buffer.writeUInt8(Number(o.fPreviouslyEligible), offset);
+  offset = writeUIntArray(o.ubPadding, buffer, offset, 1);
+  return offset;
 }
 
 }

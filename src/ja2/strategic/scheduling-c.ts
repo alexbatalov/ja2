@@ -236,7 +236,7 @@ export function PrepareSchedulesForEditorEntry(): void {
         prev.next = curr.next;
       else
         gpScheduleList = (<SCHEDULENODE>gpScheduleList).next;
-      MercPtrs[curr.ubSoldierID].value.ubScheduleID = 0;
+      MercPtrs[curr.ubSoldierID].ubScheduleID = 0;
       temp = curr;
       curr = curr.next;
       gubScheduleID--;

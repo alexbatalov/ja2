@@ -780,13 +780,13 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Po
             let ubRoom: UINT8;
             let fInRoom: boolean;
 
-            fInRoom = InARoom(sGridNo, addressof(ubRoom));
+            fInRoom = ((ubRoom = InARoom(sGridNo)) !== -1);
             if (!fInRoom) {
               // try to south
-              fInRoom = InARoom((sGridNo + DirectionInc(Enum245.SOUTH)), addressof(ubRoom));
+              fInRoom = ((ubRoom = InARoom((sGridNo + DirectionInc(Enum245.SOUTH)))) !== -1);
               if (!fInRoom) {
                 // try to east
-                fInRoom = InARoom((sGridNo + DirectionInc(Enum245.EAST)), addressof(ubRoom));
+                fInRoom = ((ubRoom = InARoom((sGridNo + DirectionInc(Enum245.EAST)))) !== -1);
               }
             }
 
@@ -1025,7 +1025,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
 
   pSoldier.ubMiscSoldierFlags |= SOLDIER_MISC_HURT_BY_EXPLOSION;
 
-  if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
+  if (ubOwner != NOBODY && MercPtrs[ubOwner].bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
     ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
   }
 
@@ -1132,7 +1132,7 @@ export function DishOutGasDamage(pSoldier: SOLDIERTYPE, pExplosive: EXPLOSIVETYP
       DoMercBattleSound(pSoldier, (Enum259.BATTLE_SOUND_HIT1 + Random(2)));
     }
 
-    if (ubOwner != NOBODY && MercPtrs[ubOwner].value.bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
+    if (ubOwner != NOBODY && MercPtrs[ubOwner].bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
       ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
     }
   }
@@ -1857,7 +1857,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
     // reset explosion hit flag so we can damage mercs again
     for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       if (MercSlots[cnt]) {
-        MercSlots[cnt].value.ubMiscSoldierFlags &= ~SOLDIER_MISC_HURT_BY_EXPLOSION;
+        MercSlots[cnt].ubMiscSoldierFlags &= ~SOLDIER_MISC_HURT_BY_EXPLOSION;
       }
     }
   }
@@ -1933,7 +1933,7 @@ function HookerInRoom(ubRoom: UINT8): boolean {
     pSoldier = MercPtrs[ubLoop];
 
     if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && pSoldier.bNeutral && pSoldier.ubBodyType == Enum194.MINICIV) {
-      if (InARoom(pSoldier.sGridNo, addressof(ubTempRoom)) && ubTempRoom == ubRoom) {
+      if ((ubTempRoom = InARoom(pSoldier.sGridNo)) !== -1 && ubTempRoom == ubRoom) {
         return true;
       }
     }
@@ -2157,9 +2157,9 @@ function PerformItemAction(sGridNo: INT16, pObj: OBJECTTYPE): void {
         let fEnterCombat: boolean = false;
 
         for (ubID = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubID <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubID++) {
-          if (MercPtrs[ubID].value.bActive && MercPtrs[ubID].value.bInSector && MercPtrs[ubID].value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
+          if (MercPtrs[ubID].bActive && MercPtrs[ubID].bInSector && MercPtrs[ubID].ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
             for (ubID2 = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID2 <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID2++) {
-              if (MercPtrs[ubID].value.bOppList[ubID2] == SEEN_CURRENTLY) {
+              if (MercPtrs[ubID].bOppList[ubID2] == SEEN_CURRENTLY) {
                 MakeCivHostile(MercPtrs[ubID], 2);
                 fEnterCombat = true;
               }
@@ -2254,7 +2254,7 @@ function PerformItemAction(sGridNo: INT16, pObj: OBJECTTYPE): void {
       break;
     case Enum191.ACTION_ITEM_REVEAL_ROOM: {
       let ubRoom: UINT8;
-      if (InAHiddenRoom(sGridNo, addressof(ubRoom))) {
+      if ((ubRoom = InAHiddenRoom(sGridNo)) !== -1) {
         RemoveRoomRoof(sGridNo, ubRoom, null);
       }
     } break;
@@ -2371,7 +2371,7 @@ export function HandleExplosionQueue(): void {
     // re-enable sight
     gTacticalStatus.uiFlags &= (~DISALLOW_SIGHT);
 
-    if (gubPersonToSetOffExplosions != NOBODY && !(MercPtrs[gubPersonToSetOffExplosions].value.uiStatusFlags & SOLDIER_PC)) {
+    if (gubPersonToSetOffExplosions != NOBODY && !(MercPtrs[gubPersonToSetOffExplosions].uiStatusFlags & SOLDIER_PC)) {
       FreeUpNPCFromPendingAction(MercPtrs[gubPersonToSetOffExplosions]);
     }
 
@@ -2511,7 +2511,7 @@ export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: bool
       pObj = gWorldItems[gWorldBombs[uiWorldBombIndex].iItemIndex].o;
       if (!(pObj.fFlags & OBJECT_DISABLED_BOMB)) {
         if (fAllBombs || pObj.bDetonatorType == Enum224.BOMB_PRESSURE) {
-          if (!fAllBombs && MercPtrs[ubID].value.bTeam != gbPlayerNum) {
+          if (!fAllBombs && MercPtrs[ubID].bTeam != gbPlayerNum) {
             // ignore this unless it is a mine, etc which would have to have been placed by the
             // player, seeing as how the others are all marked as known to the AI.
             if (!(pObj.usItem == Enum225.MINE || pObj.usItem == Enum225.TRIP_FLARE || pObj.usItem == Enum225.TRIP_KLAXON)) {
@@ -2520,7 +2520,7 @@ export function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: bool
           }
 
           // player and militia ignore bombs set by player
-          if (pObj.ubBombOwner > 1 && (MercPtrs[ubID].value.bTeam == gbPlayerNum || MercPtrs[ubID].value.bTeam == MILITIA_TEAM)) {
+          if (pObj.ubBombOwner > 1 && (MercPtrs[ubID].bTeam == gbPlayerNum || MercPtrs[ubID].bTeam == MILITIA_TEAM)) {
             continue;
           }
 

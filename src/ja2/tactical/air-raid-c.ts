@@ -32,8 +32,8 @@ let giNumGridNosMovedThisTurn: INT32;
 let gfAirRaidHasHadTurn: boolean = false;
 let gubBeginTeamTurn: UINT8 = 0;
 let gfHaveTBBatton: boolean = false;
-let gsNotLocatedYet: INT16 = false;
-export let giNumFrames: INT32;
+let gsNotLocatedYet: boolean /* INT16 */ = false;
+let giNumFrames: INT32;
 
 let gAirRaidDef: AIR_RAID_DEFINITION = createAirRaidDefinition();
 
@@ -62,7 +62,7 @@ interface AIR_RAID_SAVE_STRUCT {
   AirRaidDef: AIR_RAID_DEFINITION;
   sRaidSoldierID: INT16;
 
-  sNotLocatedYet: INT16;
+  sNotLocatedYet: boolean /* INT16 */;
   iNumFrames: INT32;
 
   bLevel: INT8;
@@ -104,7 +104,7 @@ function createAirRaidSaveStruct(): AIR_RAID_SAVE_STRUCT {
     fHaveTBBatton: false,
     AirRaidDef: createAirRaidDefinition(),
     sRaidSoldierID: 0,
-    sNotLocatedYet: 0,
+    sNotLocatedYet: false,
     iNumFrames: 0,
     bLevel: 0,
     bTeam: 0,
@@ -120,8 +120,102 @@ function createAirRaidSaveStruct(): AIR_RAID_SAVE_STRUCT {
   };
 }
 
+const AIR_RAID_SAVE_STRUCT_SIZE = 132;
+
+function readAirRaidSaveStruct(o: AIR_RAID_SAVE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  o.fInAirRaid = Boolean(buffer.readUInt8(offset++));
+  o.fAirRaidScheduled = Boolean(buffer.readUInt8(offset++));
+  o.ubAirRaidMode = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.uiSoundSample = buffer.readUInt32LE(offset); offset += 4;
+  o.uiRaidLastUpdate = buffer.readUInt32LE(offset); offset += 4;
+  o.fFadingRaidIn = Boolean(buffer.readUInt8(offset++));
+  o.fQuoteSaid = Boolean(buffer.readUInt8(offset++));
+  o.bNumDives = buffer.readInt8(offset++);
+  o.bMaxDives = buffer.readInt8(offset++);
+  o.fFadingRaidOut = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.sDiveX = buffer.readInt16LE(offset); offset += 2;
+  o.sDiveY = buffer.readInt16LE(offset); offset += 2;
+  o.sDiveTargetLocation = buffer.readInt16LE(offset); offset += 2;
+  o.ubDiveDirection = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sNumGridNosMoved = buffer.readInt16LE(offset); offset += 2;
+  o.iNumTurnsSinceLastDive = buffer.readInt32LE(offset); offset += 4;
+  o.iNumTurnsSinceDiveStarted = buffer.readInt32LE(offset); offset += 4;
+  o.iNumGridNosMovedThisTurn = buffer.readInt32LE(offset); offset += 4;
+  o.fAirRaidHasHadTurn = Boolean(buffer.readUInt8(offset++));
+  o.ubBeginTeamTurn = buffer.readUInt8(offset++);
+  o.fHaveTBBatton = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  offset = readAirRaidDefinition(o.AirRaidDef, buffer, offset);
+  o.sRaidSoldierID = buffer.readInt16LE(offset); offset += 2;
+  o.sNotLocatedYet = Boolean(buffer.readUInt16LE(offset)); offset += 2;
+  o.iNumFrames = buffer.readInt32LE(offset); offset += 4;
+  o.bLevel = buffer.readInt8(offset++);
+  o.bTeam = buffer.readInt8(offset++);
+  o.bSide = buffer.readInt8(offset++);
+  o.ubAttackerID = buffer.readUInt8(offset++);
+  o.usAttackingWeapon = buffer.readUInt16LE(offset); offset += 2;
+  offset += 2; // padding
+  o.dXPos = buffer.readFloatLE(offset); offset += 4;
+  o.dYPos = buffer.readFloatLE(offset); offset += 4;
+  o.sX = buffer.readInt16LE(offset); offset += 2;
+  o.sY = buffer.readInt16LE(offset); offset += 2;
+  o.sGridNo = buffer.readInt16LE(offset); offset += 2;
+  offset = readUIntArray(o.ubFiller, buffer, offset, 1);
+  offset += 2; // padding
+  return offset;
+}
+
+function writeAirRaidSaveStruct(o: AIR_RAID_SAVE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(Number(o.fInAirRaid), offset);
+  offset = buffer.writeUInt8(Number(o.fAirRaidScheduled), offset);
+  offset = buffer.writeUInt8(o.ubAirRaidMode, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiSoundSample, offset);
+  offset = buffer.writeUInt32LE(o.uiRaidLastUpdate, offset);
+  offset = buffer.writeUInt8(Number(o.fFadingRaidIn), offset);
+  offset = buffer.writeUInt8(Number(o.fQuoteSaid), offset);
+  offset = buffer.writeInt8(o.bNumDives, offset);
+  offset = buffer.writeInt8(o.bMaxDives, offset);
+  offset = buffer.writeUInt8(Number(o.fFadingRaidOut), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sDiveX, offset);
+  offset = buffer.writeInt16LE(o.sDiveY, offset);
+  offset = buffer.writeInt16LE(o.sDiveTargetLocation, offset);
+  offset = buffer.writeUInt8(o.ubDiveDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sNumGridNosMoved, offset);
+  offset = buffer.writeInt32LE(o.iNumTurnsSinceLastDive, offset);
+  offset = buffer.writeInt32LE(o.iNumTurnsSinceDiveStarted, offset);
+  offset = buffer.writeInt32LE(o.iNumGridNosMovedThisTurn, offset);
+  offset = buffer.writeUInt8(Number(o.fAirRaidHasHadTurn), offset);
+  offset = buffer.writeUInt8(o.ubBeginTeamTurn, offset);
+  offset = buffer.writeUInt8(Number(o.fHaveTBBatton), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writeAirRaidDefinition(o.AirRaidDef, buffer, offset);
+  offset = buffer.writeInt16LE(o.sRaidSoldierID, offset);
+  offset = buffer.writeUInt16LE(Number(o.sNotLocatedYet), offset);
+  offset = buffer.writeInt32LE(o.iNumFrames, offset);
+  offset = buffer.writeInt8(o.bLevel, offset);
+  offset = buffer.writeInt8(o.bTeam, offset);
+  offset = buffer.writeInt8(o.bSide, offset);
+  offset = buffer.writeUInt8(o.ubAttackerID, offset);
+  offset = buffer.writeUInt16LE(o.usAttackingWeapon, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeFloatLE(o.dXPos, offset);
+  offset = buffer.writeFloatLE(o.dYPos, offset);
+  offset = buffer.writeInt16LE(o.sX, offset);
+  offset = buffer.writeInt16LE(o.sY, offset);
+  offset = buffer.writeInt16LE(o.sGridNo, offset);
+  offset = writeUIntArray(o.ubFiller, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 2); // padding
+  return offset;
+}
+
 // END SERIALIZATION
-let gpRaidSoldier: Pointer<SOLDIERTYPE>;
+let gpRaidSoldier: SOLDIERTYPE /* Pointer<SOLDIERTYPE> */;
 
 interface AIR_RAID_DIR {
   bDir1: INT8;
@@ -169,16 +263,16 @@ let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = [
   createAirRaidPosFrom(-1, -1),
 ];
 
-function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
+function ScheduleAirRaid(pAirRaidDef: AIR_RAID_DEFINITION): void {
   // Make sure only one is cheduled...
   if (gfAirRaidScheduled) {
     return;
   }
 
   // Copy definiaiotn structure into global struct....
-  memcpy(addressof(gAirRaidDef), pAirRaidDef, sizeof(AIR_RAID_DEFINITION));
+  copyAirRaidDefinition(gAirRaidDef, pAirRaidDef);
 
-  AddSameDayStrategicEvent(Enum132.EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.value.ubNumMinsFromCurrentTime), 0);
+  AddSameDayStrategicEvent(Enum132.EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.ubNumMinsFromCurrentTime), 0);
 
   gfAirRaidScheduled = true;
 }
@@ -186,7 +280,7 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
 export function BeginAirRaid(): boolean {
   let cnt: INT32;
   let fOK: boolean = false;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // OK, we have been told to start.....
 
@@ -206,9 +300,9 @@ export function BeginAirRaid(): boolean {
                           gAirRaidDef.sSectorZ == gbWorldSectorZ )
   */
   // Do we have any guys in here...
-  for (cnt = 0, pSoldier = MercPtrs[cnt]; cnt < 20; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive) {
-      if (pSoldier.value.sSectorX == gAirRaidDef.sSectorX && pSoldier.value.sSectorY == gAirRaidDef.sSectorY && pSoldier.value.bSectorZ == gAirRaidDef.sSectorZ && !pSoldier.value.fBetweenSectors && pSoldier.value.bLife && pSoldier.value.bAssignment != Enum117.IN_TRANSIT) {
+  for (cnt = 0, pSoldier = MercPtrs[cnt]; cnt < 20; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive) {
+      if (pSoldier.sSectorX == gAirRaidDef.sSectorX && pSoldier.sSectorY == gAirRaidDef.sSectorY && pSoldier.bSectorZ == gAirRaidDef.sSectorZ && !pSoldier.fBetweenSectors && pSoldier.bLife && pSoldier.bAssignment != Enum117.IN_TRANSIT) {
         fOK = true;
       }
     }
@@ -247,14 +341,14 @@ export function BeginAirRaid(): boolean {
   gfAirRaidHasHadTurn = false;
 
   gpRaidSoldier = MercPtrs[MAX_NUM_SOLDIERS - 1];
-  memset(gpRaidSoldier, 0, sizeof(SOLDIERTYPE));
-  gpRaidSoldier.value.bLevel = 0;
-  gpRaidSoldier.value.bTeam = 1;
-  gpRaidSoldier.value.bSide = 1;
-  gpRaidSoldier.value.ubID = MAX_NUM_SOLDIERS - 1;
-  gpRaidSoldier.value.ubAttackerID = NOBODY;
-  gpRaidSoldier.value.usAttackingWeapon = Enum225.HK21E;
-  gpRaidSoldier.value.inv[Enum261.HANDPOS].usItem = Enum225.HK21E;
+  resetSoldierType(gpRaidSoldier);
+  gpRaidSoldier.bLevel = 0;
+  gpRaidSoldier.bTeam = 1;
+  gpRaidSoldier.bSide = 1;
+  gpRaidSoldier.ubID = MAX_NUM_SOLDIERS - 1;
+  gpRaidSoldier.ubAttackerID = NOBODY;
+  gpRaidSoldier.usAttackingWeapon = Enum225.HK21E;
+  gpRaidSoldier.inv[Enum261.HANDPOS].usItem = Enum225.HK21E;
 
   // Determine how many dives this one will be....
   gbMaxDives = (gAirRaidDef.bIntensity + Random(gAirRaidDef.bIntensity - 1));
@@ -265,10 +359,10 @@ export function BeginAirRaid(): boolean {
 }
 
 function PickLocationNearAnyMercInSector(): INT16 {
-  let ubMercsInSector: UINT8[] /* [20] */ = [ 0 ];
+  let ubMercsInSector: UINT8[] /* [20] */ = createArray(20, 0);
   let ubNumMercs: UINT8 = 0;
   let ubChosenMerc: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // Loop through all our guys and randomly say one from someone in our sector
@@ -277,7 +371,7 @@ function PickLocationNearAnyMercInSector(): INT16 {
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // run through list
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     // Add guy if he's a candidate...
     if (OK_INSECTOR_MERC(pTeamSoldier)) {
       ubMercsInSector[ubNumMercs] = cnt;
@@ -289,7 +383,7 @@ function PickLocationNearAnyMercInSector(): INT16 {
   if (ubNumMercs > 0) {
     ubChosenMerc = Random(ubNumMercs);
 
-    return MercPtrs[ubMercsInSector[ubChosenMerc]].value.sGridNo;
+    return MercPtrs[ubMercsInSector[ubChosenMerc]].sGridNo;
   }
 
   return NOWHERE;
@@ -444,7 +538,7 @@ function AirRaidLookForDive(): void {
     if ((gTacticalStatus.uiFlags & INCOMBAT)) {
       if (giNumGridNosMovedThisTurn == 0) {
         // Free up attacker...
-        FreeUpAttacker(gpRaidSoldier.value.ubID);
+        FreeUpAttacker(gpRaidSoldier.ubID);
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Tried to free up attacker AIR RAID NO DIVE, attack count now %d", gTacticalStatus.ubAttackBusyCount));
       }
     }
@@ -626,14 +720,14 @@ function DoDive(): void {
 
       MoveDiveAirplane(dAngle);
 
-      gpRaidSoldier.value.dXPos = gsDiveX;
-      gpRaidSoldier.value.sX = gsDiveX;
-      gpRaidSoldier.value.dYPos = gsDiveY;
-      gpRaidSoldier.value.sY = gsDiveY;
+      gpRaidSoldier.dXPos = gsDiveX;
+      gpRaidSoldier.sX = gsDiveX;
+      gpRaidSoldier.dYPos = gsDiveY;
+      gpRaidSoldier.sY = gsDiveY;
 
       // Figure gridno....
       sGridNo = GETWORLDINDEXFROMWORLDCOORDS(gsDiveY, gsDiveX);
-      gpRaidSoldier.value.sGridNo = sGridNo;
+      gpRaidSoldier.sGridNo = sGridNo;
 
       if (sOldGridNo != sGridNo) {
         gsNumGridNosMoved++;
@@ -669,24 +763,24 @@ function DoDive(): void {
             // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting attack AIR RAID ( fire gun ), attack count now %d", gTacticalStatus.ubAttackBusyCount) );
 
             // INcrement bullet fired...
-            gpRaidSoldier.value.bBulletsLeft++;
+            gpRaidSoldier.bBulletsLeft++;
           }
 
           // For now use first position....
 
-          gpRaidSoldier.value.ubTargetID = NOBODY;
-          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, false, false);
+          gpRaidSoldier.ubTargetID = NOBODY;
+          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.usAttackingWeapon, 10, false, false);
         }
 
         // Do second one.... ( ll )
         sX = (gsDiveX + (Math.sin(dAngle + (Math.PI / 2)) * 40));
         sY = (gsDiveY + (Math.cos(dAngle + (Math.PI / 2)) * 40));
 
-        gpRaidSoldier.value.dXPos = sX;
-        gpRaidSoldier.value.sX = sX;
-        gpRaidSoldier.value.dYPos = sY;
-        gpRaidSoldier.value.sY = sY;
-        gpRaidSoldier.value.sGridNo = GETWORLDINDEXFROMWORLDCOORDS(sY, sX);
+        gpRaidSoldier.dXPos = sX;
+        gpRaidSoldier.sX = sX;
+        gpRaidSoldier.dYPos = sY;
+        gpRaidSoldier.sY = sY;
+        gpRaidSoldier.sGridNo = GETWORLDINDEXFROMWORLDCOORDS(sY, sX);
 
         // Get target.....
         sStrafeX = (sX + dDeltaXPos);
@@ -702,18 +796,18 @@ function DoDive(): void {
             // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Starting attack AIR RAID ( second one ), attack count now %d", gTacticalStatus.ubAttackBusyCount) );
 
             // INcrement bullet fired...
-            gpRaidSoldier.value.bBulletsLeft++;
+            gpRaidSoldier.bBulletsLeft++;
           }
 
           // For now use first position....
-          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.value.usAttackingWeapon, 10, false, false);
+          FireBulletGivenTarget(gpRaidSoldier, sStrafeX, sStrafeY, 0, gpRaidSoldier.usAttackingWeapon, 10, false, false);
         }
       }
 
       if (giNumGridNosMovedThisTurn >= 6) {
         if ((gTacticalStatus.uiFlags & INCOMBAT)) {
           // Free up attacker...
-          FreeUpAttacker(gpRaidSoldier.value.ubID);
+          FreeUpAttacker(gpRaidSoldier.ubID);
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Tried to free up attacker AIR RAID DIVE DONE FOR THIS TURN, attack count now %d", gTacticalStatus.ubAttackBusyCount));
         }
       }
@@ -783,14 +877,14 @@ function DoBombing(): void {
 
       MoveDiveAirplane(dAngle);
 
-      gpRaidSoldier.value.dXPos = gsDiveX;
-      gpRaidSoldier.value.sX = gsDiveX;
-      gpRaidSoldier.value.dYPos = gsDiveY;
-      gpRaidSoldier.value.sY = gsDiveY;
+      gpRaidSoldier.dXPos = gsDiveX;
+      gpRaidSoldier.sX = gsDiveX;
+      gpRaidSoldier.dYPos = gsDiveY;
+      gpRaidSoldier.sY = gsDiveY;
 
       // Figure gridno....
       sGridNo = GETWORLDINDEXFROMWORLDCOORDS(gsDiveY, gsDiveX);
-      gpRaidSoldier.value.sGridNo = sGridNo;
+      gpRaidSoldier.sGridNo = sGridNo;
 
       if (sOldGridNo != sGridNo) {
         // Every once and a while, drop bomb....
@@ -831,14 +925,14 @@ function DoBombing(): void {
             }
 
             // Drop bombs...
-            InternalIgniteExplosion(NOBODY, CenterX(sBombGridNo), CenterY(sBombGridNo), 0, sBombGridNo, usItem, fLocate, IsRoofPresentAtGridno(sBombGridNo));
+            InternalIgniteExplosion(NOBODY, CenterX(sBombGridNo), CenterY(sBombGridNo), 0, sBombGridNo, usItem, fLocate, Number(IsRoofPresentAtGridno(sBombGridNo)));
           }
         }
 
         if (giNumGridNosMovedThisTurn >= 6) {
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {
             // Free up attacker...
-            FreeUpAttacker(gpRaidSoldier.value.ubID);
+            FreeUpAttacker(gpRaidSoldier.ubID);
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Tried to free up attacker AIR RAID BOMB ATTACK DONE FOR THIS TURN, attack count now %d", gTacticalStatus.ubAttackBusyCount));
           }
         }
@@ -951,7 +1045,7 @@ export function HandleAirRaid(): void {
 
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {
             // Free up attacker...
-            FreeUpAttacker(gpRaidSoldier.value.ubID);
+            FreeUpAttacker(gpRaidSoldier.ubID);
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Tried to free up attacker AIR RAID ENDING DIVE, attack count now %d", gTacticalStatus.ubAttackBusyCount));
           }
 
@@ -965,7 +1059,7 @@ export function HandleAirRaid(): void {
 
           if ((gTacticalStatus.uiFlags & INCOMBAT)) {
             // Free up attacker...
-            FreeUpAttacker(gpRaidSoldier.value.ubID);
+            FreeUpAttacker(gpRaidSoldier.ubID);
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Tried to free up attacker AIR RAID ENDING DIVE, attack count now %d", gTacticalStatus.ubAttackBusyCount));
           }
 
@@ -1048,6 +1142,7 @@ export function HandleAirRaidEndTurn(ubTeam: UINT8): boolean {
 export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT = createAirRaidSaveStruct();
+  let buffer: Buffer;
 
   // Put all the globals into the save struct
   sAirRaidSaveStruct.fInAirRaid = gfInAirRaid;
@@ -1076,27 +1171,29 @@ export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
   sAirRaidSaveStruct.iNumFrames = giNumFrames;
 
   if (gpRaidSoldier) {
-    sAirRaidSaveStruct.bLevel = gpRaidSoldier.value.bLevel;
-    sAirRaidSaveStruct.bTeam = gpRaidSoldier.value.bTeam;
-    sAirRaidSaveStruct.bSide = gpRaidSoldier.value.bSide;
-    sAirRaidSaveStruct.ubAttackerID = gpRaidSoldier.value.ubAttackerID;
-    sAirRaidSaveStruct.usAttackingWeapon = gpRaidSoldier.value.usAttackingWeapon;
-    sAirRaidSaveStruct.dXPos = gpRaidSoldier.value.dXPos;
-    sAirRaidSaveStruct.dYPos = gpRaidSoldier.value.dYPos;
-    sAirRaidSaveStruct.sX = gpRaidSoldier.value.sX;
-    sAirRaidSaveStruct.sY = gpRaidSoldier.value.sY;
-    sAirRaidSaveStruct.sGridNo = gpRaidSoldier.value.sGridNo;
+    sAirRaidSaveStruct.bLevel = gpRaidSoldier.bLevel;
+    sAirRaidSaveStruct.bTeam = gpRaidSoldier.bTeam;
+    sAirRaidSaveStruct.bSide = gpRaidSoldier.bSide;
+    sAirRaidSaveStruct.ubAttackerID = gpRaidSoldier.ubAttackerID;
+    sAirRaidSaveStruct.usAttackingWeapon = gpRaidSoldier.usAttackingWeapon;
+    sAirRaidSaveStruct.dXPos = gpRaidSoldier.dXPos;
+    sAirRaidSaveStruct.dYPos = gpRaidSoldier.dYPos;
+    sAirRaidSaveStruct.sX = gpRaidSoldier.sX;
+    sAirRaidSaveStruct.sY = gpRaidSoldier.sY;
+    sAirRaidSaveStruct.sGridNo = gpRaidSoldier.sGridNo;
 
     sAirRaidSaveStruct.sRaidSoldierID = MAX_NUM_SOLDIERS - 1;
     //		sAirRaidSaveStruct.sRaidSoldierID = gpRaidSoldier->ubID;
   } else
     sAirRaidSaveStruct.sRaidSoldierID = -1;
 
-  memcpy(addressof(sAirRaidSaveStruct.AirRaidDef), addressof(gAirRaidDef), sizeof(AIR_RAID_DEFINITION));
+  copyAirRaidDefinition(sAirRaidSaveStruct.AirRaidDef, gAirRaidDef);
 
   // Save the Air Raid Save Struct
-  FileWrite(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(AIR_RAID_SAVE_STRUCT)) {
+  buffer = Buffer.allocUnsafe(AIR_RAID_SAVE_STRUCT_SIZE);
+  writeAirRaidSaveStruct(sAirRaidSaveStruct, buffer);
+  uiNumBytesWritten = FileWrite(hFile, buffer, AIR_RAID_SAVE_STRUCT_SIZE);
+  if (uiNumBytesWritten != AIR_RAID_SAVE_STRUCT_SIZE) {
     return false;
   }
 
@@ -1106,12 +1203,16 @@ export function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): boolean {
 export function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
   let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT = createAirRaidSaveStruct();
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // Load the number of REAL_OBJECTs in the array
-  FileRead(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(AIR_RAID_SAVE_STRUCT)) {
+  buffer = Buffer.allocUnsafe(AIR_RAID_SAVE_STRUCT_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, AIR_RAID_SAVE_STRUCT_SIZE);
+  if (uiNumBytesRead != AIR_RAID_SAVE_STRUCT_SIZE) {
     return false;
   }
+
+  readAirRaidSaveStruct(sAirRaidSaveStruct, buffer);
 
   // Put all the globals into the save struct
   gfInAirRaid = sAirRaidSaveStruct.fInAirRaid;
@@ -1140,22 +1241,22 @@ export function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): boolean {
   giNumFrames = sAirRaidSaveStruct.iNumFrames;
 
   if (sAirRaidSaveStruct.sRaidSoldierID != -1) {
-    gpRaidSoldier = addressof(Menptr[sAirRaidSaveStruct.sRaidSoldierID]);
+    gpRaidSoldier = Menptr[sAirRaidSaveStruct.sRaidSoldierID];
 
-    gpRaidSoldier.value.bLevel = sAirRaidSaveStruct.bLevel;
-    gpRaidSoldier.value.bTeam = sAirRaidSaveStruct.bTeam;
-    gpRaidSoldier.value.bSide = sAirRaidSaveStruct.bSide;
-    gpRaidSoldier.value.ubAttackerID = sAirRaidSaveStruct.ubAttackerID;
-    gpRaidSoldier.value.usAttackingWeapon = sAirRaidSaveStruct.usAttackingWeapon;
-    gpRaidSoldier.value.dXPos = sAirRaidSaveStruct.dXPos;
-    gpRaidSoldier.value.dYPos = sAirRaidSaveStruct.dYPos;
-    gpRaidSoldier.value.sX = sAirRaidSaveStruct.sX;
-    gpRaidSoldier.value.sY = sAirRaidSaveStruct.sY;
-    gpRaidSoldier.value.sGridNo = sAirRaidSaveStruct.sGridNo;
+    gpRaidSoldier.bLevel = sAirRaidSaveStruct.bLevel;
+    gpRaidSoldier.bTeam = sAirRaidSaveStruct.bTeam;
+    gpRaidSoldier.bSide = sAirRaidSaveStruct.bSide;
+    gpRaidSoldier.ubAttackerID = sAirRaidSaveStruct.ubAttackerID;
+    gpRaidSoldier.usAttackingWeapon = sAirRaidSaveStruct.usAttackingWeapon;
+    gpRaidSoldier.dXPos = sAirRaidSaveStruct.dXPos;
+    gpRaidSoldier.dYPos = sAirRaidSaveStruct.dYPos;
+    gpRaidSoldier.sX = sAirRaidSaveStruct.sX;
+    gpRaidSoldier.sY = sAirRaidSaveStruct.sY;
+    gpRaidSoldier.sGridNo = sAirRaidSaveStruct.sGridNo;
   } else
-    gpRaidSoldier = null;
+    gpRaidSoldier = <SOLDIERTYPE><unknown>null;
 
-  memcpy(addressof(gAirRaidDef), addressof(sAirRaidSaveStruct.AirRaidDef), sizeof(AIR_RAID_DEFINITION));
+  copyAirRaidDefinition(gAirRaidDef, sAirRaidSaveStruct.AirRaidDef);
 
   return true;
 }
@@ -1171,23 +1272,23 @@ export function EndAirRaid(): void {
     SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
 
     if (!gTacticalStatus.Team[ENEMY_TEAM].bTeamActive && !gTacticalStatus.Team[CREATURE_TEAM].bTeamActive) {
-      let pTeamSoldier: Pointer<SOLDIERTYPE>;
+      let pTeamSoldier: SOLDIERTYPE;
       let cnt: INT32;
 
       // Loop through all militia and restore them to peaceful status
       cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;
-      for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; cnt++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
+      for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+        if (pTeamSoldier.bActive && pTeamSoldier.bInSector) {
+          pTeamSoldier.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
       gTacticalStatus.Team[MILITIA_TEAM].bAwareOfOpposition = false;
 
       cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
       // Loop through all civs and restore them to peaceful status
-      for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pTeamSoldier++) {
-        if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-          pTeamSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
+      for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CIV_TEAM].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+        if (pTeamSoldier.bActive && pTeamSoldier.bInSector) {
+          pTeamSoldier.bAlertStatus = Enum243.STATUS_GREEN;
         }
       }
       gTacticalStatus.Team[CIV_TEAM].bAwareOfOpposition = false;

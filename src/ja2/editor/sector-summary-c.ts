@@ -50,7 +50,7 @@ export let gfMajorUpdate: boolean = false;
 
 let giCurrentViewLevel: INT32 = ALL_LEVELS_MASK;
 
-let gbSectorLevels: boolean[][] /* [16][16] */;
+let gbSectorLevels: UINT8[][] /* boolean[16][16] */ = createArrayFrom(16, () => createArray(16, 0));
 let gfGlobalSummaryLoaded: boolean = false;
 
 let gpSectorSummary: Pointer<SUMMARYFILE>[][][] /* [16][16][8] */;
@@ -105,11 +105,11 @@ let gubSummaryItemMode: UINT8 = Enum56.ITEMMODE_SCIFI;
 
 let gfItemDetailsMode: boolean = false;
 
-let gpWorldItemsSummaryArray: Pointer<WORLDITEM> = null;
+let gpWorldItemsSummaryArray: WORLDITEM[] /* Pointer<WORLDITEM> */ = <WORLDITEM[]><unknown>null;
 let gusWorldItemsSummaryArraySize: UINT16 = 0;
-let gpPEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = null;
+let gpPEnemyItemsSummaryArray: OBJECTTYPE[] /* Pointer<OBJECTTYPE> */ = <OBJECTTYPE[]><unknown>null;
 let gusPEnemyItemsSummaryArraySize: UINT16 = 0;
-let gpNEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = null;
+let gpNEnemyItemsSummaryArray: OBJECTTYPE[] /* Pointer<OBJECTTYPE> */ = <OBJECTTYPE[]><unknown>null;
 let gusNEnemyItemsSummaryArraySize: UINT16 = 0;
 
 let gfSetupItemDetailsMode: boolean = true;
@@ -202,7 +202,7 @@ export function CreateSummaryWindow(): void {
   if (gfWorldLoaded)
     gfMapFileDirty = true;
   // Create all of the buttons here
-  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 360, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton('', 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 360, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
 
@@ -296,7 +296,7 @@ export function AutoLoadMap(): void {
   SummaryLoadMapCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_LOAD]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   if (gfWorldLoaded)
     DestroySummaryWindow();
-  gfAutoLoadA9 = false;
+  gfAutoLoadA9 = 0;
   gfConfirmExitFirst = true;
 }
 
@@ -363,8 +363,8 @@ export function DestroySummaryWindow(): void {
 
 function RenderSectorInformation(): void {
   // UINT16 str[ 100 ];
-  let m: Pointer<MAPCREATE_STRUCT>;
-  let s: Pointer<SUMMARYFILE>;
+  let m: MAPCREATE_STRUCT;
+  let s: SUMMARYFILE;
   let ePoints: UINT8 = 0;
   let usLine: UINT16 = 35;
   let iOverall: INT32;
@@ -373,151 +373,151 @@ function RenderSectorInformation(): void {
   SetFontShadow(FONT_NEARBLACK);
 
   s = gpCurrentSectorSummary;
-  m = addressof(gpCurrentSectorSummary.value.MapInfo);
+  m = gpCurrentSectorSummary.MapInfo;
 
-  if (m.value.sNorthGridNo != -1)
+  if (m.sNorthGridNo != -1)
     ePoints++;
-  if (m.value.sEastGridNo != -1)
+  if (m.sEastGridNo != -1)
     ePoints++;
-  if (m.value.sSouthGridNo != -1)
+  if (m.sSouthGridNo != -1)
     ePoints++;
-  if (m.value.sWestGridNo != -1)
+  if (m.sWestGridNo != -1)
     ePoints++;
-  if (m.value.sCenterGridNo != -1)
+  if (m.sCenterGridNo != -1)
     ePoints++;
-  if (m.value.sIsolatedGridNo != -1)
+  if (m.sIsolatedGridNo != -1)
     ePoints++;
   // start at 10,35
   SetFontForeground(FONT_ORANGE);
-  mprintf(10, 32, "Tileset:  %s", gTilesets[s.value.ubTilesetID].zName);
-  if (m.value.ubMapVersion < 10)
+  mprintf(10, 32, "Tileset:  %s", gTilesets[s.ubTilesetID].zName);
+  if (m.ubMapVersion < 10)
     SetFontForeground(FONT_RED);
-  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s.value.ubSummaryVersion, s.value.dMajorMapVersion, m.value.ubMapVersion);
+  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s.ubSummaryVersion, s.dMajorMapVersion, m.ubMapVersion);
   SetFontForeground(FONT_GRAY2);
-  mprintf(10, 55, "Number of items:  %d", s.value.usNumItems);
-  mprintf(10, 65, "Number of lights:  %d", s.value.usNumLights);
+  mprintf(10, 55, "Number of items:  %d", s.usNumItems);
+  mprintf(10, 65, "Number of lights:  %d", s.usNumLights);
   mprintf(10, 75, "Number of entry points:  %d", ePoints);
   if (ePoints) {
     let x: INT32;
     x = 140;
     mprintf(x, 75, "(");
     x += StringPixLength("(", FONT10ARIAL()) + 2;
-    if (m.value.sNorthGridNo != -1) {
+    if (m.sNorthGridNo != -1) {
       mprintf(x, 75, "N");
       x += StringPixLength("N", FONT10ARIAL()) + 2;
     }
-    if (m.value.sEastGridNo != -1) {
+    if (m.sEastGridNo != -1) {
       mprintf(x, 75, "E");
       x += StringPixLength("E", FONT10ARIAL()) + 2;
     }
-    if (m.value.sSouthGridNo != -1) {
+    if (m.sSouthGridNo != -1) {
       mprintf(x, 75, "S");
       x += StringPixLength("S", FONT10ARIAL()) + 2;
     }
-    if (m.value.sWestGridNo != -1) {
+    if (m.sWestGridNo != -1) {
       mprintf(x, 75, "W");
       x += StringPixLength("W", FONT10ARIAL()) + 2;
     }
-    if (m.value.sCenterGridNo != -1) {
+    if (m.sCenterGridNo != -1) {
       mprintf(x, 75, "C");
       x += StringPixLength("C", FONT10ARIAL()) + 2;
     }
-    if (m.value.sIsolatedGridNo != -1) {
+    if (m.sIsolatedGridNo != -1) {
       mprintf(x, 75, "I");
       x += StringPixLength("I", FONT10ARIAL()) + 2;
     }
     mprintf(x, 75, ")");
   }
-  mprintf(10, 85, "Number of rooms:  %d", s.value.ubNumRooms);
-  mprintf(10, 95, "Total map population:  %d", m.value.ubNumIndividuals);
-  mprintf(20, 105, "Enemies:  %d", s.value.EnemyTeam.ubTotal);
-  mprintf(30, 115, "Admins:  %d", s.value.ubNumAdmins);
-  if (s.value.ubNumAdmins)
-    mprintf(100, 115, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubAdminDetailed, s.value.ubAdminProfile, s.value.ubAdminExistance);
-  mprintf(30, 125, "Troops:  %d", s.value.ubNumTroops);
-  if (s.value.ubNumTroops)
-    mprintf(100, 125, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubTroopDetailed, s.value.ubTroopProfile, s.value.ubTroopExistance);
-  mprintf(30, 135, "Elites:  %d", s.value.ubNumElites);
-  if (s.value.ubNumElites)
-    mprintf(100, 135, "(%d detailed, %d profile -- %d have priority existance)", s.value.ubEliteDetailed, s.value.ubEliteProfile, s.value.ubEliteExistance);
-  mprintf(20, 145, "Civilians:  %d", s.value.CivTeam.ubTotal);
-  if (s.value.CivTeam.ubTotal)
-    mprintf(100, 145, "(%d detailed, %d profile -- %d have priority existance)", s.value.CivTeam.ubDetailed, s.value.CivTeam.ubProfile, s.value.CivTeam.ubExistance);
-  if (s.value.ubSummaryVersion >= 9) {
-    mprintf(30, 155, "Humans:  %d", s.value.CivTeam.ubTotal - s.value.ubCivCows - s.value.ubCivBloodcats);
-    mprintf(30, 165, "Cows:  %d", s.value.ubCivCows);
-    mprintf(30, 175, "Bloodcats:  %d", s.value.ubCivBloodcats);
+  mprintf(10, 85, "Number of rooms:  %d", s.ubNumRooms);
+  mprintf(10, 95, "Total map population:  %d", m.ubNumIndividuals);
+  mprintf(20, 105, "Enemies:  %d", s.EnemyTeam.ubTotal);
+  mprintf(30, 115, "Admins:  %d", s.ubNumAdmins);
+  if (s.ubNumAdmins)
+    mprintf(100, 115, "(%d detailed, %d profile -- %d have priority existance)", s.ubAdminDetailed, s.ubAdminProfile, s.ubAdminExistance);
+  mprintf(30, 125, "Troops:  %d", s.ubNumTroops);
+  if (s.ubNumTroops)
+    mprintf(100, 125, "(%d detailed, %d profile -- %d have priority existance)", s.ubTroopDetailed, s.ubTroopProfile, s.ubTroopExistance);
+  mprintf(30, 135, "Elites:  %d", s.ubNumElites);
+  if (s.ubNumElites)
+    mprintf(100, 135, "(%d detailed, %d profile -- %d have priority existance)", s.ubEliteDetailed, s.ubEliteProfile, s.ubEliteExistance);
+  mprintf(20, 145, "Civilians:  %d", s.CivTeam.ubTotal);
+  if (s.CivTeam.ubTotal)
+    mprintf(100, 145, "(%d detailed, %d profile -- %d have priority existance)", s.CivTeam.ubDetailed, s.CivTeam.ubProfile, s.CivTeam.ubExistance);
+  if (s.ubSummaryVersion >= 9) {
+    mprintf(30, 155, "Humans:  %d", s.CivTeam.ubTotal - s.ubCivCows - s.ubCivBloodcats);
+    mprintf(30, 165, "Cows:  %d", s.ubCivCows);
+    mprintf(30, 175, "Bloodcats:  %d", s.ubCivBloodcats);
   }
-  mprintf(20, 185, "Creatures:  %d", s.value.CreatureTeam.ubTotal);
-  if (s.value.ubSummaryVersion >= 9) {
-    mprintf(30, 195, "Monsters:  %d", s.value.CreatureTeam.ubTotal - s.value.CreatureTeam.ubNumAnimals);
-    mprintf(30, 205, "Bloodcats:  %d", s.value.CreatureTeam.ubNumAnimals);
+  mprintf(20, 185, "Creatures:  %d", s.CreatureTeam.ubTotal);
+  if (s.ubSummaryVersion >= 9) {
+    mprintf(30, 195, "Monsters:  %d", s.CreatureTeam.ubTotal - s.CreatureTeam.ubNumAnimals);
+    mprintf(30, 205, "Bloodcats:  %d", s.CreatureTeam.ubNumAnimals);
   }
-  mprintf(10, 215, "Number of locked and/or trapped doors:  %d", s.value.ubNumDoors);
-  mprintf(20, 225, "Locked:  %d", s.value.ubNumDoorsLocked);
-  mprintf(20, 235, "Trapped:  %d", s.value.ubNumDoorsTrapped);
-  mprintf(20, 245, "Locked & Trapped:  %d", s.value.ubNumDoorsLockedAndTrapped);
-  if (s.value.ubSummaryVersion >= 8)
-    mprintf(10, 255, "Civilians with schedules:  %d", s.value.ubCivSchedules);
-  if (s.value.ubSummaryVersion >= 10) {
-    if (s.value.fTooManyExitGridDests) {
+  mprintf(10, 215, "Number of locked and/or trapped doors:  %d", s.ubNumDoors);
+  mprintf(20, 225, "Locked:  %d", s.ubNumDoorsLocked);
+  mprintf(20, 235, "Trapped:  %d", s.ubNumDoorsTrapped);
+  mprintf(20, 245, "Locked & Trapped:  %d", s.ubNumDoorsLockedAndTrapped);
+  if (s.ubSummaryVersion >= 8)
+    mprintf(10, 255, "Civilians with schedules:  %d", s.ubCivSchedules);
+  if (s.ubSummaryVersion >= 10) {
+    if (s.fTooManyExitGridDests) {
       SetFontForeground(FONT_RED);
       mprintf(10, 265, "Too many exit grid destinations (more than 4)...");
     } else {
       let i: UINT8;
       let ubNumInvalid: UINT8 = 0;
       for (i = 0; i < 4; i++) {
-        if (s.value.fInvalidDest[i])
+        if (s.fInvalidDest[i])
           ubNumInvalid++;
       }
       if (ubNumInvalid) {
         SetFontForeground(FONT_RED);
-        mprintf(10, 265, "ExitGrids:  %d (%d with a long distance destination)", s.value.ubNumExitGridDests, ubNumInvalid);
+        mprintf(10, 265, "ExitGrids:  %d (%d with a long distance destination)", s.ubNumExitGridDests, ubNumInvalid);
       } else
-        switch (s.value.ubNumExitGridDests) {
+        switch (s.ubNumExitGridDests) {
           case 0:
             mprintf(10, 265, "ExitGrids:  none");
             break;
           case 1:
-            mprintf(10, 265, "ExitGrids:  1 destination using %d exitgrids", s.value.usExitGridSize[0]);
+            mprintf(10, 265, "ExitGrids:  1 destination using %d exitgrids", s.usExitGridSize[0]);
             break;
           case 2:
-            mprintf(10, 265, "ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1]);
+            mprintf(10, 265, "ExitGrids:  2 -- 1) Qty: %d, 2) Qty: %d", s.usExitGridSize[0], s.usExitGridSize[1]);
             break;
           case 3:
-            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1], s.value.usExitGridSize[2]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d", s.usExitGridSize[0], s.usExitGridSize[1], s.usExitGridSize[2]);
             break;
           case 4:
-            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s.value.usExitGridSize[0], s.value.usExitGridSize[1], s.value.usExitGridSize[2], s.value.usExitGridSize[3]);
+            mprintf(10, 265, "ExitGrids:  3 -- 1) Qty: %d, 2) Qty: %d, 3) Qty: %d, 4) Qty: %d", s.usExitGridSize[0], s.usExitGridSize[1], s.usExitGridSize[2], s.usExitGridSize[3]);
             break;
         }
     }
   }
-  iOverall = -(2 * s.value.EnemyTeam.ubBadA) - s.value.EnemyTeam.ubPoorA + s.value.EnemyTeam.ubGoodA + (2 * s.value.EnemyTeam.ubGreatA);
+  iOverall = -(2 * s.EnemyTeam.ubBadA) - s.EnemyTeam.ubPoorA + s.EnemyTeam.ubGoodA + (2 * s.EnemyTeam.ubGreatA);
   usLine = 275;
-  mprintf(10, usLine, "Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.value.EnemyTeam.ubBadA, s.value.EnemyTeam.ubPoorA, s.value.EnemyTeam.ubAvgA, s.value.EnemyTeam.ubGoodA, s.value.EnemyTeam.ubGreatA, iOverall);
-  iOverall = -(2 * s.value.EnemyTeam.ubBadE) - s.value.EnemyTeam.ubPoorE + s.value.EnemyTeam.ubGoodE + (2 * s.value.EnemyTeam.ubGreatE);
+  mprintf(10, usLine, "Enemy Relative Attributes:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.EnemyTeam.ubBadA, s.EnemyTeam.ubPoorA, s.EnemyTeam.ubAvgA, s.EnemyTeam.ubGoodA, s.EnemyTeam.ubGreatA, iOverall);
+  iOverall = -(2 * s.EnemyTeam.ubBadE) - s.EnemyTeam.ubPoorE + s.EnemyTeam.ubGoodE + (2 * s.EnemyTeam.ubGreatE);
   usLine += 10;
-  mprintf(10, usLine, "Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.value.EnemyTeam.ubBadE, s.value.EnemyTeam.ubPoorE, s.value.EnemyTeam.ubAvgE, s.value.EnemyTeam.ubGoodE, s.value.EnemyTeam.ubGreatE, iOverall);
+  mprintf(10, usLine, "Enemy Relative Equipment:  %d bad, %d poor, %d norm, %d good, %d great (%+d Overall)", s.EnemyTeam.ubBadE, s.EnemyTeam.ubPoorE, s.EnemyTeam.ubAvgE, s.EnemyTeam.ubGoodE, s.EnemyTeam.ubGreatE, iOverall);
   usLine += 10;
-  if (s.value.ubSummaryVersion >= 11) {
-    if (s.value.ubEnemiesReqWaypoints) {
+  if (s.ubSummaryVersion >= 11) {
+    if (s.ubEnemiesReqWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d placements have patrol orders without any waypoints defined.", s.value.ubEnemiesReqWaypoints);
+      mprintf(10, usLine, "%d placements have patrol orders without any waypoints defined.", s.ubEnemiesReqWaypoints);
       usLine += 10;
     }
   }
-  if (s.value.ubSummaryVersion >= 13) {
-    if (s.value.ubEnemiesHaveWaypoints) {
+  if (s.ubSummaryVersion >= 13) {
+    if (s.ubEnemiesHaveWaypoints) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d placements have waypoints, but without any patrol orders.", s.value.ubEnemiesHaveWaypoints);
+      mprintf(10, usLine, "%d placements have waypoints, but without any patrol orders.", s.ubEnemiesHaveWaypoints);
       usLine += 10;
     }
   }
-  if (s.value.ubSummaryVersion >= 12) {
-    if (s.value.usWarningRoomNums) {
+  if (s.ubSummaryVersion >= 12) {
+    if (s.usWarningRoomNums) {
       SetFontForeground(FONT_RED);
-      mprintf(10, usLine, "%d gridnos have questionable room numbers.  Please validate.", s.value.usWarningRoomNums);
+      mprintf(10, usLine, "%d gridnos have questionable room numbers.  Please validate.", s.usWarningRoomNums);
     }
   }
 }
@@ -526,17 +526,17 @@ function RenderSectorInformation(): void {
 function RenderItemDetails(): void {
   let dAvgExistChance: FLOAT;
   let dAvgStatus: FLOAT;
-  let pItem: Pointer<OBJECTTYPE>;
+  let pItem: OBJECTTYPE;
   let index: INT32;
   let i: INT32;
   let str: string /* UINT16[100] */;
   let uiQuantity: UINT32;
   let uiExistChance: UINT32;
   let uiStatus: UINT32;
-  let uiTriggerQuantity: UINT32[] /* [8] */;
-  let uiActionQuantity: UINT32[] /* [8] */;
-  let uiTriggerExistChance: UINT32[] /* [8] */;
-  let uiActionExistChance: UINT32[] /* [8] */;
+  let uiTriggerQuantity: UINT32[] /* [8] */ = createArray(8, 0);
+  let uiActionQuantity: UINT32[] /* [8] */ = createArray(8, 0);
+  let uiTriggerExistChance: UINT32[] /* [8] */ = createArray(8, 0);
+  let uiActionExistChance: UINT32[] /* [8] */ = createArray(8, 0);
   let xp: UINT32;
   let yp: UINT32;
   let bFreqIndex: INT8;
@@ -549,10 +549,10 @@ function RenderItemDetails(): void {
   yp = 20;
   xp = 5;
   if (gubSummaryItemMode != Enum56.ITEMMODE_ENEMY && gpWorldItemsSummaryArray) {
-    memset(uiTriggerQuantity, 0, 32);
-    memset(uiActionQuantity, 0, 32);
-    memset(uiTriggerExistChance, 0, 32);
-    memset(uiActionExistChance, 0, 32);
+    uiTriggerQuantity.fill(0);
+    uiActionQuantity.fill(0);
+    uiTriggerExistChance.fill(0);
+    uiActionExistChance.fill(0);
     for (index = 1; index < Enum225.MAXITEMS; index++) {
       uiQuantity = 0;
       uiExistChance = 0;
@@ -561,22 +561,22 @@ function RenderItemDetails(): void {
         if (index == Enum225.SWITCH || index == Enum225.ACTION_ITEM) {
           if (gpWorldItemsSummaryArray[i].o.usItem == index) {
             if (gubSummaryItemMode == Enum56.ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == Enum56.ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
-              pItem = addressof(gpWorldItemsSummaryArray[i].o);
-              if (!pItem.value.bFrequency)
+              pItem = gpWorldItemsSummaryArray[i].o;
+              if (!pItem.bFrequency)
                 bFreqIndex = 7;
-              else if (pItem.value.bFrequency == PANIC_FREQUENCY)
+              else if (pItem.bFrequency == PANIC_FREQUENCY)
                 bFreqIndex = 0;
-              else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
+              else if (pItem.bFrequency == PANIC_FREQUENCY_2)
                 bFreqIndex = 1;
-              else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
+              else if (pItem.bFrequency == PANIC_FREQUENCY_3)
                 bFreqIndex = 2;
-              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 1)
+              else if (pItem.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 1)
                 bFreqIndex = 3;
-              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 2)
+              else if (pItem.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 2)
                 bFreqIndex = 4;
-              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 3)
+              else if (pItem.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 3)
                 bFreqIndex = 5;
-              else if (pItem.value.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 4)
+              else if (pItem.bFrequency == FIRST_MAP_PLACED_FREQUENCY + 4)
                 bFreqIndex = 6;
               else
                 continue;
@@ -593,10 +593,10 @@ function RenderItemDetails(): void {
         }
         if (gpWorldItemsSummaryArray[i].o.usItem == index) {
           if (gubSummaryItemMode == Enum56.ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == Enum56.ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
-            pItem = addressof(gpWorldItemsSummaryArray[i].o);
-            uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem.value.ubNumberOfObjects;
-            uiStatus += pItem.value.bStatus[0];
-            uiQuantity += pItem.value.ubNumberOfObjects;
+            pItem = gpWorldItemsSummaryArray[i].o;
+            uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem.ubNumberOfObjects;
+            uiStatus += pItem.bStatus[0];
+            uiQuantity += pItem.ubNumberOfObjects;
           }
         }
       }
@@ -659,6 +659,8 @@ function RenderItemDetails(): void {
           case 7:
             str = "Pressure Actions";
             break;
+          default:
+            throw new Error('Should be unreachable');
         }
         if (i < 7) {
           dAvgExistChance = (uiTriggerExistChance[i] / 100.0);
@@ -697,10 +699,10 @@ function RenderItemDetails(): void {
         uiStatus = 0;
         for (i = 0; i < gusPEnemyItemsSummaryArraySize; i++) {
           if (gpPEnemyItemsSummaryArray[i].usItem == index) {
-            pItem = addressof(gpPEnemyItemsSummaryArray[i]);
-            uiExistChance += 100 * pItem.value.ubNumberOfObjects;
-            uiStatus += pItem.value.bStatus[0];
-            uiQuantity += pItem.value.ubNumberOfObjects;
+            pItem = gpPEnemyItemsSummaryArray[i];
+            uiExistChance += 100 * pItem.ubNumberOfObjects;
+            uiStatus += pItem.bStatus[0];
+            uiQuantity += pItem.ubNumberOfObjects;
           }
         }
         if (uiQuantity) {
@@ -756,10 +758,10 @@ function RenderItemDetails(): void {
       uiStatus = 0;
       for (i = 0; i < gusNEnemyItemsSummaryArraySize; i++) {
         if (gpNEnemyItemsSummaryArray[i].usItem == index) {
-          pItem = addressof(gpNEnemyItemsSummaryArray[i]);
-          uiExistChance += 100 * pItem.value.ubNumberOfObjects;
-          uiStatus += pItem.value.bStatus[0];
-          uiQuantity += pItem.value.ubNumberOfObjects;
+          pItem = gpNEnemyItemsSummaryArray[i];
+          uiExistChance += 100 * pItem.ubNumberOfObjects;
+          uiStatus += pItem.bStatus[0];
+          uiQuantity += pItem.ubNumberOfObjects;
         }
       }
       if (uiQuantity) {
@@ -801,7 +803,7 @@ export function RenderSummaryWindow(): void {
   let x: INT32;
   let y: INT32;
   if ((GetActiveFieldID() == 1) != gfTempFile) {
-    gfTempFile ^= 1;
+    gfTempFile = !gfTempFile;
     SetInputFieldStringWith16BitString(1, "");
     gfRenderSummary = true;
   }
@@ -1312,13 +1314,13 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
   gfRenderSummary = true;
   // Extract the sector
   if (gszFilename[2] < '0' || gszFilename[2] > '9')
-    x = gszFilename[1] - '0';
+    x = gszFilename.charCodeAt(1) - '0'.charCodeAt(0);
   else
-    x = (gszFilename[1] - '0') * 10 + gszFilename[2] - '0';
+    x = (gszFilename.charCodeAt(1) - '0'.charCodeAt(0)) * 10 + gszFilename.charCodeAt(2) - '0'.charCodeAt(0);
   if (gszFilename[0] >= 'a')
-    y = gszFilename[0] - 'a' + 1;
+    y = gszFilename.charCodeAt(0) - 'a'.charCodeAt(0) + 1;
   else
-    y = gszFilename[0] - 'A' + 1;
+    y = gszFilename.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
   gfMapFileDirty = false;
 
   // Validate that the values extracted are in fact a sector
@@ -1476,7 +1478,7 @@ function SummaryEnemyCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function SummaryToggleProgressCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderProgress = (btn.uiFlags & BUTTON_CLICKED_ON);
+    gfRenderProgress = Boolean(btn.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = true;
   }
 }
@@ -1484,18 +1486,18 @@ function SummaryToggleProgressCallback(btn: GUI_BUTTON, reason: INT32): void {
 function PerformTest(): void {
 }
 
-export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
+export function HandleSummaryInput(pEvent: InputAtom): boolean {
   if (!gfSummaryWindowActive)
     return false;
-  gfCtrlPressed = pEvent.value.usKeyState & CTRL_DOWN;
-  if (!HandleTextInput(pEvent) && pEvent.value.usEvent == KEY_DOWN || pEvent.value.usEvent == KEY_REPEAT) {
+  gfCtrlPressed = Boolean(pEvent.usKeyState & CTRL_DOWN);
+  if (!HandleTextInput(pEvent) && pEvent.usEvent == KEY_DOWN || pEvent.usEvent == KEY_REPEAT) {
     let x: INT32;
-    switch (pEvent.value.usParam) {
+    switch (pEvent.usParam) {
       case ESC:
         if (!gfWorldLoaded) {
           DestroySummaryWindow();
-          pEvent.value.usParam = 'x';
-          pEvent.value.usKeyState |= ALT_DOWN;
+          pEvent.usParam = 'x'.charCodeAt(0);
+          pEvent.usKeyState |= ALT_DOWN;
           gfOverheadMapDirty = true;
           return false;
         }
@@ -1516,8 +1518,8 @@ export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
         for (x = 0; x < 100; x++)
           PerformTest();
         break;
-      case 'y':
-      case 'Y':
+      case 'y'.charCodeAt(0):
+      case 'Y'.charCodeAt(0):
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
           gfRenderSummary = true;
           RegenerateSummaryInfoForAllOutdatedMaps();
@@ -1528,8 +1530,8 @@ export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
           gfRenderSummary = true;
         }
         break;
-      case 'n':
-      case 'N':
+      case 'n'.charCodeAt(0):
+      case 'N'.charCodeAt(0):
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
           gfOutdatedDenied = true;
           gfRenderSummary = true;
@@ -1539,8 +1541,8 @@ export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
           gfRenderSummary = true;
         }
         break;
-      case 'x':
-        if (pEvent.value.usKeyState & ALT_DOWN) {
+      case 'x'.charCodeAt(0):
+        if (pEvent.usKeyState & ALT_DOWN) {
           DestroySummaryWindow();
           return false;
         }
@@ -1584,9 +1586,9 @@ export function HandleSummaryInput(pEvent: Pointer<InputAtom>): boolean {
 
         break;
     }
-  } else if (pEvent.value.usEvent == KEY_UP) {
+  } else if (pEvent.usEvent == KEY_UP) {
     // for releasing modes requiring persistant state keys
-    switch (pEvent.value.usParam) {
+    switch (pEvent.usParam) {
       case F5:
         ReleaseSummaryWindow();
         break;
@@ -1600,7 +1602,7 @@ function CreateGlobalSummary(): void {
   let Dir: string /* STRING512 */;
   let ExecDir: string /* STRING512 */;
 
-  OutputDebugString("Generating GlobalSummary Information...\n");
+  console.debug("Generating GlobalSummary Information...\n");
 
   gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
@@ -1625,32 +1627,32 @@ function CreateGlobalSummary(): void {
   RegenerateSummaryInfoForAllOutdatedMaps();
   gfRenderSummary = true;
 
-  OutputDebugString("GlobalSummary Information generated successfully.\n");
+  console.debug("GlobalSummary Information generated successfully.\n");
 }
 
+/* static */ let MapMoveCallback__gsPrevX: INT16 = 0;
+/* static */ let MapMoveCallback__gsPrevY: INT16 = 0;
 function MapMoveCallback(reg: MOUSE_REGION, reason: INT32): void {
-  /* static */ let gsPrevX: INT16 = 0;
-  /* static */ let gsPrevY: INT16 = 0;
   // calc current sector highlighted.
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    gsPrevX = gsHiSectorX = 0;
-    gsPrevY = gsHiSectorY = 0;
+    MapMoveCallback__gsPrevX = gsHiSectorX = 0;
+    MapMoveCallback__gsPrevY = gsHiSectorY = 0;
     gfRenderMap = true;
     return;
   }
   gsHiSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
   gsHiSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
-  if (gsPrevX != gsHiSectorX || gsPrevY != gsHiSectorY) {
-    gsPrevX = gsHiSectorX;
-    gsPrevY = gsHiSectorY;
+  if (MapMoveCallback__gsPrevX != gsHiSectorX || MapMoveCallback__gsPrevY != gsHiSectorY) {
+    MapMoveCallback__gsPrevX = gsHiSectorX;
+    MapMoveCallback__gsPrevY = gsHiSectorY;
     gfRenderMap = true;
   }
 }
 
+/* static */ let MapClickCallback__sLastX: INT16 = -1;
+/* static */ let MapClickCallback__sLastY: INT16 = -1;
+/* static */ let MapClickCallback__iLastClickTime: INT32 = 0;
 function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
-  /* static */ let sLastX: INT16 = -1;
-  /* static */ let sLastY: INT16 = -1;
-  /* static */ let iLastClickTime: INT32 = 0;
   // calc current sector selected.
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1) {
@@ -1659,12 +1661,12 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
     }
     gsSelSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
     gsSelSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
-    if (gsSelSectorX != sLastX || gsSelSectorY != sLastY) {
+    if (gsSelSectorX != MapClickCallback__sLastX || gsSelSectorY != MapClickCallback__sLastY) {
       // clicked in a new sector
       gfOverrideDirty = true;
-      sLastX = gsSelSectorX;
-      sLastY = gsSelSectorY;
-      iLastClickTime = GetJA2Clock();
+      MapClickCallback__sLastX = gsSelSectorX;
+      MapClickCallback__sLastY = gsSelSectorY;
+      MapClickCallback__iLastClickTime = GetJA2Clock();
       switch (giCurrentViewLevel) {
         case ALL_LEVELS_MASK:
           if (gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][0])
@@ -1732,10 +1734,10 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
     } else {
       // clicked in same sector, check for double click
       let iNewClickTime: INT32 = GetJA2Clock();
-      if (iNewClickTime - iLastClickTime < 400) {
+      if (iNewClickTime - MapClickCallback__iLastClickTime < 400) {
         gfFileIO = true;
       }
-      iLastClickTime = iNewClickTime;
+      MapClickCallback__iLastClickTime = iNewClickTime;
     }
     gfRenderSummary = true;
   }
@@ -1809,7 +1811,7 @@ function SummaryLoadMapCallback(btn: GUI_BUTTON, reason: INT32): void {
       gsSectorLayer = GROUND_LEVEL_MASK;
       giCurrLevel = 0;
     } else {
-      switch (ptr[2] - '0') {
+      switch (ptr.charCodeAt(2) - '0'.charCodeAt(0)) {
         case 1:
           gsSectorLayer = BASEMENT1_LEVEL_MASK;
           break;
@@ -1850,7 +1852,7 @@ function SummarySaveMapCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function SummaryOverrideCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfOverride ^= true;
+    gfOverride = !gfOverride;
     gfRenderSummary = true;
     if (gfOverride)
       EnableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
@@ -1910,7 +1912,7 @@ function LoadGlobalSummary(): void {
   let szFilename: string /* UINT8[40] */;
   let szSector: string /* UINT8[6] */;
 
-  OutputDebugString("Executing LoadGlobalSummary()...\n");
+  console.debug("Executing LoadGlobalSummary()...\n");
 
   gfMustForceUpdateAllMaps = false;
   gusNumberOfMapsToBeForceUpdated = 0;
@@ -1922,7 +1924,7 @@ function LoadGlobalSummary(): void {
 
   // Check to make sure we have a DevInfo directory.  If we don't create one!
   if (!SetFileManCurrentDirectory(DevInfoDir)) {
-    OutputDebugString("LoadGlobalSummary() aborted -- doesn't exist on this local computer.\n");
+    console.debug("LoadGlobalSummary() aborted -- doesn't exist on this local computer.\n");
     return;
   }
 
@@ -2054,17 +2056,17 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
     }
-    OutputDebugString(FormatString("Sector Row %c complete... \n", y + 'A'));
+    console.debug(FormatString("Sector Row %c complete... \n", y + 'A'));
   }
 
   MapsDir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(MapsDir);
 
   if (gfMustForceUpdateAllMaps) {
-    OutputDebugString(FormatString("A MAJOR MAP UPDATE EVENT HAS BEEN DETECTED FOR %d MAPS!!!!.\n", gusNumberOfMapsToBeForceUpdated));
+    console.debug(FormatString("A MAJOR MAP UPDATE EVENT HAS BEEN DETECTED FOR %d MAPS!!!!.\n", gusNumberOfMapsToBeForceUpdated));
   }
 
-  OutputDebugString("LoadGlobalSummary() finished...\n");
+  console.debug("LoadGlobalSummary() finished...\n");
 }
 
 function GenerateSummaryList(): void {
@@ -2093,13 +2095,14 @@ function GenerateSummaryList(): void {
   SetFileManCurrentDirectory(Dir);
 }
 
-export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> */, ubLevel: UINT8, pSummaryFileInfo: Pointer<SUMMARYFILE>): void {
+export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> */, ubLevel: UINT8, pSummaryFileInfo: SUMMARYFILE): void {
   let fp: Pointer<FILE>;
   let ExecDir: string /* STRING512 */;
   let Dir: string /* STRING512 */;
   let ptr: string /* Pointer<UINT8> */;
   let x: INT8;
   let y: INT8;
+  let buffer: Buffer;
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
@@ -2115,7 +2118,10 @@ export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> *
   // write the summary information
   fp = fopen(puiFilename, "wb");
   Assert(fp);
-  fwrite(pSummaryFileInfo, 1, sizeof(SUMMARYFILE), fp);
+
+  buffer = Buffer.allocUnsafe(SUMMARY_FILE_SIZE);
+  writeSummaryFile(pSummaryFileInfo, buffer);
+  fwrite(buffer, 1, SUMMARY_FILE_SIZE, fp);
   fclose(fp);
 
   gusNumEntriesWithOutdatedOrNoSummaryInfo--;
@@ -2123,13 +2129,13 @@ export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> *
 
   // extract the sector information out of the filename.
   if (puiFilename[0] >= 'a')
-    y = puiFilename[0] - 'a';
+    y = puiFilename.charCodeAt(0) - 'a'.charCodeAt(0);
   else
-    y = puiFilename[0] - 'A';
+    y = puiFilename.charCodeAt(0) - 'A'.charCodeAt(0);
   if (puiFilename[2] < '0' || puiFilename[2] > '9')
-    x = puiFilename[1] - '0' - 1;
+    x = puiFilename.charCodeAt(1) - '0'.charCodeAt(0) - 1;
   else
-    x = (puiFilename[1] - '0') * 10 + puiFilename[2] - '0' - 1;
+    x = (puiFilename.charCodeAt(1) - '0'.charCodeAt(0)) * 10 + puiFilename.charCodeAt(2) - '0'.charCodeAt(0) - 1;
 
   gpSectorSummary[x][y][ubLevel] = pSummaryFileInfo;
 
@@ -2162,10 +2168,12 @@ function SummaryNewCaveLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajorMapVersion: FLOAT): void {
   let filename: string /* UINT8[40] */;
-  let temp: SUMMARYFILE;
+  let temp: SUMMARYFILE = createSummaryFile();
   let x: INT32;
   let y: INT32;
   let fp: Pointer<FILE>;
+  let buffer: Buffer;
+
   filename = pSector;
   if (ubLevel % 4) {
     let str: string /* UINT8[4] */;
@@ -2182,28 +2190,30 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     return;
   }
-  fread(addressof(temp), 1, sizeof(SUMMARYFILE), fp);
+  buffer = Buffer.allocUnsafe(SUMMARY_FILE_SIZE);
+  fread(buffer, 1, SUMMARY_FILE_SIZE, fp);
+  readSummaryFile(temp, buffer);
+
   if (temp.ubSummaryVersion < MINIMUMVERSION || dMajorMapVersion < gdMajorMapVersion) {
     gusNumberOfMapsToBeForceUpdated++;
     gfMustForceUpdateAllMaps = true;
   }
   temp.dMajorMapVersion = dMajorMapVersion;
-  UpdateSummaryInfo(addressof(temp));
+  UpdateSummaryInfo(temp);
   // even if the info is outdated (but existing), allocate the structure, but indicate that the info
   // is bad.
-  y = pSector[0] - 'A';
-  if (pSector[2] >= '0' && pSector[2] <= '9')
-    x = (pSector[1] - '0') * 10 + pSector[2] - '0' - 1;
+  y = pSector.charCodeAt(0) - 'A'.charCodeAt(0);
+  if (pSector.charCodeAt(2) >= '0'.charCodeAt(0) && pSector.charCodeAt(2) <= '9'.charCodeAt(0))
+    x = (pSector.charCodeAt(1) - '0'.charCodeAt(0)) * 10 + pSector.charCodeAt(2) - '0'.charCodeAt(0) - 1;
   else
-    x = pSector[1] - '0' - 1;
+    x = pSector.charCodeAt(1) - '0'.charCodeAt(0) - 1;
   if (gpSectorSummary[x][y][ubLevel]) {
-    MemFree(gpSectorSummary[x][y][ubLevel]);
     gpSectorSummary[x][y][ubLevel] = null;
   }
-  gpSectorSummary[x][y][ubLevel] = MemAlloc(sizeof(SUMMARYFILE));
+  gpSectorSummary[x][y][ubLevel] = createSummaryFile();
   if (gpSectorSummary[x][y][ubLevel])
-    memcpy(gpSectorSummary[x][y][ubLevel], addressof(temp), sizeof(SUMMARYFILE));
-  if (gpSectorSummary[x][y][ubLevel].value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
+    copySummaryFile(gpSectorSummary[x][y][ubLevel], temp);
+  if (gpSectorSummary[x][y][ubLevel].ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 
   fclose(fp);
@@ -2225,8 +2235,8 @@ function UpdateMasterProgress(): void {
   }
 }
 
+/* static */ let ReportError__yp: INT32 = 180;
 function ReportError(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): void {
-  /* static */ let yp: INT32 = 180;
   let str: string /* UINT16[40] */;
   let temp: string /* UINT16[10] */;
 
@@ -2236,16 +2246,16 @@ function ReportError(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): void
     temp = swprintf("_b%d.dat", ubLevel % 4);
     str += temp;
   }
-  mprintf(10, yp, "Skipping update for %s.  Probably due to tileset conflicts...", str);
+  mprintf(10, ReportError__yp, "Skipping update for %s.  Probably due to tileset conflicts...", str);
   InvalidateScreen();
-  yp++;
+  ReportError__yp++;
 }
 
 function RegenerateSummaryInfoForAllOutdatedMaps(): void {
   let x: INT32;
   let y: INT32;
   let str: string /* UINT8[40] */;
-  let pSF: Pointer<SUMMARYFILE>;
+  let pSF: SUMMARYFILE | null;
   // CreateProgressBar( 0, 20, 120, 300, 132 ); //slave (individual)
   // CreateProgressBar( 1, 20, 100, 300, 112 ); //master (total)
   // DefineProgressBarPanel( 0, 65, 79, 94, 10, 80, 310, 152 );
@@ -2264,49 +2274,49 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
       str = sprintf("%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 0))
             ReportError(str, 0);
       }
       if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][1];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 1))
             ReportError(str, 1);
       }
       if (gbSectorLevels[x][y] & BASEMENT2_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][2];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 2))
             ReportError(str, 2);
       }
       if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][3];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 3))
             ReportError(str, 3);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
         pSF = gpSectorSummary[x][y][4];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 4))
             ReportError(str, 4);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK) {
         pSF = gpSectorSummary[x][y][5];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 5))
             ReportError(str, 5);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B2_MASK) {
         pSF = gpSectorSummary[x][y][6];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 6))
             ReportError(str, 6);
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK) {
         pSF = gpSectorSummary[x][y][7];
-        if (!pSF || pSF.value.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
+        if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
           if (!EvaluateWorld(str, 7))
             ReportError(str, 7);
       }
@@ -2329,7 +2339,7 @@ function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
       gpCurrentSectorSummary = null;
     }
 
-    str = sprintf("%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
+    str = sprintf("%c%d", String.fromCharCode(gsSelSectorY + 'A'.charCodeAt(0) - 1), gsSelSectorX);
     EvaluateWorld(str, giCurrLevel);
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
@@ -2343,7 +2353,7 @@ function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
 function ExtractTempFilename(): void {
   let str: string /* UINT16[40] */;
   str = Get16BitStringFromField(1);
-  if (wcscmp(gszTempFilename, str)) {
+  if (gszTempFilename == str) {
     gszTempFilename = str;
     gfRenderSummary = true;
     gfOverrideDirty = true;
@@ -2357,10 +2367,10 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   let y: INT32;
   let str: string /* UINT16[50] */;
   let name: string /* UINT8[50] */;
-  let pSF: Pointer<SUMMARYFILE>;
+  let pSF: SUMMARYFILE | null;
   // Create one huge assed button
   gfMajorUpdate = true;
-  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iSummaryButton[Enum58.SUMMARY_BACKGROUND] = CreateTextButton('', 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iSummaryButton[Enum58.SUMMARY_BACKGROUND], Enum29.DISABLED_STYLE_NONE);
   DisableButton(iSummaryButton[Enum58.SUMMARY_BACKGROUND]);
   // Draw it
@@ -2391,7 +2401,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       name = sprintf("%c%d", y + 'A', x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 0))
             return;
@@ -2399,7 +2409,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT1_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][1];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 1))
             return;
@@ -2407,7 +2417,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT2_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][2];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 2))
             return;
@@ -2415,7 +2425,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & BASEMENT3_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][3];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 3))
             return;
@@ -2423,7 +2433,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
         pSF = gpSectorSummary[x][y][4];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 4))
             return;
@@ -2431,7 +2441,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B1_MASK) {
         pSF = gpSectorSummary[x][y][5];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 5))
             return;
@@ -2439,7 +2449,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B2_MASK) {
         pSF = gpSectorSummary[x][y][6];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 6))
             return;
@@ -2447,7 +2457,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
       }
       if (gbSectorLevels[x][y] & ALTERNATE_B3_MASK) {
         pSF = gpSectorSummary[x][y][7];
-        if (!pSF || pSF.value.ubSummaryVersion < MINIMUMVERSION || pSF.value.dMajorMapVersion < gdMajorMapVersion) {
+        if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
           gpCurrentSectorSummary = pSF;
           if (!EvaluateWorld(name, 7))
             return;
@@ -2477,24 +2487,22 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   let i: INT32;
   let j: INT32;
   let usNumItems: UINT16;
-  let pItem: Pointer<OBJECTTYPE>;
+  let pItem: OBJECTTYPE;
   let usPEnemyIndex: UINT16;
   let usNEnemyIndex: UINT16;
+  let buffer: Buffer;
 
   // Clear memory for all the item summaries loaded
   if (gpWorldItemsSummaryArray) {
-    MemFree(gpWorldItemsSummaryArray);
-    gpWorldItemsSummaryArray = null;
+    gpWorldItemsSummaryArray = <WORLDITEM[]><unknown>null;
     gusWorldItemsSummaryArraySize = 0;
   }
   if (gpPEnemyItemsSummaryArray) {
-    MemFree(gpPEnemyItemsSummaryArray);
-    gpPEnemyItemsSummaryArray = null;
+    gpPEnemyItemsSummaryArray = <OBJECTTYPE[]><unknown>null;
     gusPEnemyItemsSummaryArraySize = 0;
   }
   if (gpNEnemyItemsSummaryArray) {
-    MemFree(gpNEnemyItemsSummaryArray);
-    gpNEnemyItemsSummaryArray = null;
+    gpNEnemyItemsSummaryArray = <OBJECTTYPE[]><unknown>null;
     gusNEnemyItemsSummaryArraySize = 0;
   }
 
@@ -2519,12 +2527,15 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     return;
   }
   // Now load the number of world items from the map.
-  FileRead(hfile, addressof(uiNumItems), 4, addressof(uiNumBytesRead));
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hfile, buffer, 4);
   if (uiNumBytesRead != 4) {
     // Invalid situation.
     FileClose(hfile);
     return;
   }
+  uiNumItems = buffer.readUInt32LE(0);
+
   // Now compare this number with the number the summary thinks we should have.  If they are different,
   // the the summary doesn't match the map.  What we will do is force regenerate the map so that they do
   // match
@@ -2538,9 +2549,11 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   ShowButton(iSummaryButton[Enum58.SUMMARY_SCIFI]);
   ShowButton(iSummaryButton[Enum58.SUMMARY_REAL]);
   ShowButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
-  gpWorldItemsSummaryArray = MemAlloc(sizeof(WORLDITEM) * uiNumItems);
+  gpWorldItemsSummaryArray = createArrayFrom(uiNumItems, createWorldItem);
   gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.value.usNumItems;
-  FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, addressof(uiNumBytesRead));
+  buffer = Buffer.allocUnsafe(WORLD_ITEM_SIZE * uiNumItems);
+  uiNumBytesRead = FileRead(hfile, buffer, WORLD_ITEM_SIZE * uiNumItems);
+  readObjectArray(gpWorldItemsSummaryArray, buffer, 0, readWorldItem);
 
   // NOW, do the enemy's items!
   // We need to do two passes.  The first pass simply processes all the enemies and counts all the droppable items
@@ -2556,20 +2569,25 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     return;
   }
   for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
-    FileRead(hfile, addressof(basic), sizeof(BASIC_SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
+    buffer = Buffer.allocUnsafe(BASIC_SOLDIER_CREATE_STRUCT_SIZE);
+    uiNumBytesRead = FileRead(hfile, buffer, BASIC_SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != BASIC_SOLDIER_CREATE_STRUCT_SIZE) {
       // Invalid situation.
       FileClose(hfile);
       return;
     }
+    readBasicSoldierCreateStruct(basic, buffer);
+
     if (basic.fDetailedPlacement) {
       // skip static priority placement
-      FileRead(hfile, addressof(priority), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
+      buffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
+      uiNumBytesRead = FileRead(hfile, buffer, SOLDIER_CREATE_STRUCT_SIZE);
+      if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
         // Invalid situation.
         FileClose(hfile);
         return;
       }
+      readSoldierCreateStruct(priority, buffer);
     } else {
       // non detailed placements don't have items, so skip
       continue;
@@ -2578,8 +2596,8 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
       // Count the items that this enemy placement drops
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
-        pItem = addressof(priority.Inv[gbMercSlotTypes[j]]);
-        if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
+        pItem = priority.Inv[gbMercSlotTypes[j]];
+        if (pItem.usItem != NOTHING && !(pItem.fFlags & OBJECT_UNDROPPABLE)) {
           usNumItems++;
         }
       }
@@ -2593,12 +2611,10 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
 
   // Pass 1 completed, so now allocate enough space to hold all the items
   if (gusPEnemyItemsSummaryArraySize) {
-    gpPEnemyItemsSummaryArray = MemAlloc(sizeof(OBJECTTYPE) * gusPEnemyItemsSummaryArraySize);
-    memset(gpPEnemyItemsSummaryArray, 0, sizeof(OBJECTTYPE) * gusPEnemyItemsSummaryArraySize);
+    gpPEnemyItemsSummaryArray = createArrayFrom(gusPEnemyItemsSummaryArraySize, createObjectType);
   }
   if (gusNEnemyItemsSummaryArraySize) {
-    gpNEnemyItemsSummaryArray = MemAlloc(sizeof(OBJECTTYPE) * gusNEnemyItemsSummaryArraySize);
-    memset(gpNEnemyItemsSummaryArray, 0, sizeof(OBJECTTYPE) * gusNEnemyItemsSummaryArraySize);
+    gpNEnemyItemsSummaryArray = createArrayFrom(gusNEnemyItemsSummaryArraySize, createObjectType);
   }
 
   // PASS #2
@@ -2610,20 +2626,25 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     return;
   }
   for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
-    FileRead(hfile, addressof(basic), sizeof(BASIC_SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
+    buffer = Buffer.allocUnsafe(BASIC_SOLDIER_CREATE_STRUCT_SIZE);
+    uiNumBytesRead = FileRead(hfile, buffer, BASIC_SOLDIER_CREATE_STRUCT_SIZE);
+    if (uiNumBytesRead != BASIC_SOLDIER_CREATE_STRUCT_SIZE) {
       // Invalid situation.
       FileClose(hfile);
       return;
     }
+    readBasicSoldierCreateStruct(basic, buffer);
+
     if (basic.fDetailedPlacement) {
       // skip static priority placement
-      FileRead(hfile, addressof(priority), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
-      if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
+      buffer = Buffer.allocUnsafe(SOLDIER_CREATE_STRUCT_SIZE);
+      uiNumBytesRead = FileRead(hfile, buffer, SOLDIER_CREATE_STRUCT_SIZE);
+      if (uiNumBytesRead != SOLDIER_CREATE_STRUCT_SIZE) {
         // Invalid situation.
         FileClose(hfile);
         return;
       }
+      readSoldierCreateStruct(priority, buffer);
     } else {
       // non detailed placements don't have items, so skip
       continue;
@@ -2632,13 +2653,13 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
       // Copy the items that this enemy placement drops
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
-        pItem = addressof(priority.Inv[gbMercSlotTypes[j]]);
-        if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
+        pItem = priority.Inv[gbMercSlotTypes[j]];
+        if (pItem.usItem != NOTHING && !(pItem.fFlags & OBJECT_UNDROPPABLE)) {
           if (basic.fPriorityExistance) {
-            memcpy(addressof(gpPEnemyItemsSummaryArray[usPEnemyIndex]), pItem, sizeof(OBJECTTYPE));
+            copyObjectType(gpPEnemyItemsSummaryArray[usPEnemyIndex], pItem);
             usPEnemyIndex++;
           } else {
-            memcpy(addressof(gpNEnemyItemsSummaryArray[usNEnemyIndex]), pItem, sizeof(OBJECTTYPE));
+            copyObjectType(gpNEnemyItemsSummaryArray[usNEnemyIndex], pItem);
             usNEnemyIndex++;
           }
         }

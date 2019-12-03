@@ -50,4 +50,52 @@ export interface HELP_SCREEN_STRUCT {
   fForceHelpScreenToComeUp: boolean;
 }
 
+export function createHelpScreenStruct(): HELP_SCREEN_STRUCT {
+  return {
+    bCurrentHelpScreen: 0,
+    uiFlags: 0,
+    usHasPlayerSeenHelpScreenInCurrentScreen: 0,
+    ubHelpScreenDirty: 0,
+    usScreenLocX: 0,
+    usScreenLocY: 0,
+    usScreenWidth: 0,
+    usScreenHeight: 0,
+    iLastMouseClickY: 0,
+    bCurrentHelpScreenActiveSubPage: 0,
+    bNumberOfButtons: 0,
+    fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen: false,
+    bDelayEnteringHelpScreenBy1FrameCount: 0,
+    usLeftMarginPosX: 0,
+    usCursor: 0,
+    fWasTheGamePausedPriorToEnteringHelpScreen: false,
+    usTotalNumberOfPixelsInBuffer: 0,
+    iLineAtTopOfTextBuffer: 0,
+    usTotalNumberOfLinesInBuffer: 0,
+    fForceHelpScreenToComeUp: false,
+  };
+}
+
+export function resetHelpScreenStruct(o: HELP_SCREEN_STRUCT) {
+  o.bCurrentHelpScreen = 0;
+  o.uiFlags = 0;
+  o.usHasPlayerSeenHelpScreenInCurrentScreen = 0;
+  o.ubHelpScreenDirty = 0;
+  o.usScreenLocX = 0;
+  o.usScreenLocY = 0;
+  o.usScreenWidth = 0;
+  o.usScreenHeight = 0;
+  o.iLastMouseClickY = 0;
+  o.bCurrentHelpScreenActiveSubPage = 0;
+  o.bNumberOfButtons = 0;
+  o.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = false;
+  o.bDelayEnteringHelpScreenBy1FrameCount = 0;
+  o.usLeftMarginPosX = 0;
+  o.usCursor = 0;
+  o.fWasTheGamePausedPriorToEnteringHelpScreen = false;
+  o.usTotalNumberOfPixelsInBuffer = 0;
+  o.iLineAtTopOfTextBuffer = 0;
+  o.usTotalNumberOfLinesInBuffer = 0;
+  o.fForceHelpScreenToComeUp = false;
+}
+
 }

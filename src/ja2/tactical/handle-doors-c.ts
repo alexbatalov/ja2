@@ -2,9 +2,9 @@ namespace ja2 {
 
 export let gfSetPerceivedDoorState: boolean = false;
 
-export function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: boolean): void {
-  let pStructure: Pointer<STRUCTURE>;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+export function HandleDoorChangeFromGridNo(pSoldier: SOLDIERTYPE | null, sGridNo: INT16, fNoAnimations: boolean): void {
+  let pStructure: STRUCTURE | null;
+  let pDoorStatus: DOOR_STATUS | null;
   let fDoorsAnimated: boolean = false;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -26,25 +26,25 @@ export function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGrid
 
   // ATE: Only do if animated.....
   if (fDoorsAnimated) {
-    pDoorStatus.value.ubFlags |= DOOR_BUSY;
+    pDoorStatus.ubFlags |= DOOR_BUSY;
   }
 }
 
-export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor: boolean, usAnimState: UINT16): UINT16 {
+export function GetAnimStateForInteraction(pSoldier: SOLDIERTYPE, fDoor: boolean, usAnimState: UINT16): UINT16 {
   switch (usAnimState) {
     case Enum193.OPEN_DOOR:
 
-      if (pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+      if (pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
         return Enum193.CRIPPLE_OPEN_DOOR;
       } else {
         if (fDoor) {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.OPEN_DOOR_CROUCHED;
           } else {
             return usAnimState;
           }
         } else {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.BEGIN_OPENSTRUCT_CROUCHED;
           } else {
             return Enum193.BEGIN_OPENSTRUCT;
@@ -55,17 +55,17 @@ export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor
 
     case Enum193.CLOSE_DOOR:
 
-      if (pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+      if (pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
         return Enum193.CRIPPLE_CLOSE_DOOR;
       } else {
         if (fDoor) {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.CLOSE_DOOR_CROUCHED;
           } else {
             return usAnimState;
           }
         } else {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.OPEN_STRUCT_CROUCHED;
           } else {
             return Enum193.OPEN_STRUCT;
@@ -76,17 +76,17 @@ export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor
 
     case Enum193.END_OPEN_DOOR:
 
-      if (pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+      if (pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
         return Enum193.CRIPPLE_END_OPEN_DOOR;
       } else {
         if (fDoor) {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.END_OPEN_DOOR_CROUCHED;
           } else {
             return usAnimState;
           }
         } else {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.END_OPENSTRUCT_CROUCHED;
           } else {
             return Enum193.END_OPENSTRUCT;
@@ -97,17 +97,17 @@ export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor
 
     case Enum193.END_OPEN_LOCKED_DOOR:
 
-      if (pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+      if (pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
         return Enum193.CRIPPLE_END_OPEN_LOCKED_DOOR;
       } else {
         if (fDoor) {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.END_OPEN_LOCKED_DOOR_CROUCHED;
           } else {
             return Enum193.END_OPEN_LOCKED_DOOR;
           }
         } else {
-          if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+          if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
             return Enum193.END_OPENSTRUCT_LOCKED_CROUCHED;
           } else {
             return Enum193.END_OPENSTRUCT_LOCKED;
@@ -118,7 +118,7 @@ export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor
 
     case Enum193.PICK_LOCK:
 
-      if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_STAND) {
+      if (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_STAND) {
         return Enum193.LOCKPICK_CROUCHED;
       } else {
         return Enum193.PICK_LOCK;
@@ -133,8 +133,8 @@ export function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor
   }
 }
 
-export function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleCode: UINT8): void {
-  pSoldier.value.ubDoorHandleCode = ubHandleCode;
+export function InteractWithClosedDoor(pSoldier: SOLDIERTYPE, ubHandleCode: UINT8): void {
+  pSoldier.ubDoorHandleCode = ubHandleCode;
 
   switch (ubHandleCode) {
     case HANDLE_DOOR_OPEN:
@@ -160,13 +160,13 @@ export function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleC
   }
 }
 
-function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): boolean {
+function DoTrapCheckOnStartingMenu(pSoldier: SOLDIERTYPE, pDoor: DOOR | null): boolean {
   let bDetectLevel: INT8;
 
-  if (pDoor && pDoor.value.fLocked && pDoor.value.ubTrapID != Enum227.NO_TRAP && pDoor.value.bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
+  if (pDoor && pDoor.fLocked && pDoor.ubTrapID != Enum227.NO_TRAP && pDoor.bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
     // check for noticing the trap
     bDetectLevel = CalcTrapDetectLevel(pSoldier, false);
-    if (bDetectLevel >= pDoor.value.ubTrapLevel) {
+    if (bDetectLevel >= pDoor.ubTrapLevel) {
       // say quote, update status
       TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_BOOBYTRAP_ITEM);
       UpdateDoorPerceivedValue(pDoor);
@@ -178,26 +178,26 @@ function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointe
   return false;
 }
 
-export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fDoor: boolean): void {
-  let pBaseStructure: Pointer<STRUCTURE>;
+export function InteractWithOpenableStruct(pSoldier: SOLDIERTYPE, pStructure: STRUCTURE, ubDirection: UINT8, fDoor: boolean): void {
+  let pBaseStructure: STRUCTURE;
   let fDoMenu: boolean = false;
-  let pDoor: Pointer<DOOR>;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoor: DOOR | null = null;
+  let pDoorStatus: DOOR_STATUS | null;
   let fTrapsFound: boolean = false;
 
-  pBaseStructure = FindBaseStructure(pStructure);
+  pBaseStructure = <STRUCTURE>FindBaseStructure(pStructure);
 
   if (fDoor) {
     // get door status, if busy then just return!
-    pDoorStatus = GetDoorStatus(pBaseStructure.value.sGridNo);
-    if (pDoorStatus && (pDoorStatus.value.ubFlags & DOOR_BUSY)) {
+    pDoorStatus = GetDoorStatus(pBaseStructure.sGridNo);
+    if (pDoorStatus && (pDoorStatus.ubFlags & DOOR_BUSY)) {
       // Send this guy into stationary stance....
-      EVENT_StopMerc(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection);
+      EVENT_StopMerc(pSoldier, pSoldier.sGridNo, pSoldier.bDirection);
 
-      if (pSoldier.value.bTeam == gbPlayerNum) {
+      if (pSoldier.bTeam == gbPlayerNum) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.DOOR_IS_BUSY]);
       } else {
-        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Trying to open door and door is busy: %d", pSoldier.value.ubID));
+        DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Trying to open door and door is busy: %d", pSoldier.ubID));
       }
       return;
     }
@@ -206,12 +206,12 @@ export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStru
   EVENT_SetSoldierDesiredDirection(pSoldier, ubDirection);
 
   // Is the door opened?
-  if (pStructure.value.fFlags & STRUCTURE_OPEN) {
-    if (pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID && !(pStructure.value.fFlags & STRUCTURE_SWITCH)) {
+  if (pStructure.fFlags & STRUCTURE_OPEN) {
+    if (pSoldier.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID && !(pStructure.fFlags & STRUCTURE_SWITCH)) {
       // Bring up menu to decide what to do....
       SoldierGotoStationaryStance(pSoldier);
 
-      pDoor = FindDoorInfoAtGridNo(pBaseStructure.value.sGridNo);
+      pDoor = FindDoorInfoAtGridNo(pBaseStructure.sGridNo);
       if (pDoor) {
         if (DoTrapCheckOnStartingMenu(pSoldier, pDoor)) {
           fTrapsFound = true;
@@ -228,8 +228,8 @@ export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStru
     }
   } else {
     // Bring up the menu, only if it has a lock!
-    if (pSoldier.value.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
-      pDoor = FindDoorInfoAtGridNo(pBaseStructure.value.sGridNo);
+    if (pSoldier.ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID) {
+      pDoor = FindDoorInfoAtGridNo(pBaseStructure.sGridNo);
 
       if (pDoor != null) {
         // Assume true
@@ -237,7 +237,7 @@ export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStru
 
         // Check if it's locked.....
         // If not locked, don't bring it up!
-        if (!pDoor.value.fLocked) {
+        if (!pDoor.fLocked) {
           fDoMenu = false;
         }
       }
@@ -255,30 +255,30 @@ export function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStru
       if (!fTrapsFound) {
         InitDoorOpenMenu(pSoldier, pStructure, ubDirection, false);
       } else {
-        UnSetUIBusy(pSoldier.value.ubID);
+        UnSetUIBusy(pSoldier.ubID);
       }
     } else {
-      pSoldier.value.ubDoorHandleCode = HANDLE_DOOR_OPEN;
+      pSoldier.ubDoorHandleCode = HANDLE_DOOR_OPEN;
 
       ChangeSoldierState(pSoldier, GetAnimStateForInteraction(pSoldier, fDoor, Enum193.OPEN_DOOR), 0, false);
     }
   }
 }
 
-function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>): void {
+function ProcessImplicationsOfPCMessingWithDoor(pSoldier: SOLDIERTYPE): void {
   let ubRoom: UINT8;
-  let pGoon: Pointer<SOLDIERTYPE>;
+  let pGoon: SOLDIERTYPE | null;
   // if player is hacking at a door in the brothel and a kingpin guy can see him
-  if ((InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) || (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 && (pSoldier.value.sGridNo == 11010 || pSoldier.value.sGridNo == 11177 || pSoldier.value.sGridNo == 11176))) {
+  if (((ubRoom = InARoom(pSoldier.sGridNo)) !== -1 && IN_BROTHEL(ubRoom)) || (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 && (pSoldier.sGridNo == 11010 || pSoldier.sGridNo == 11177 || pSoldier.sGridNo == 11176))) {
     let ubLoop: UINT8;
 
     // see if a kingpin goon can see us
     for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
-      pGoon = MercPtrs[ubLoop];
-      if (pGoon.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP && pGoon.value.bActive && pGoon.value.bInSector && pGoon.value.bLife >= OKLIFE && pGoon.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY) {
+      pGoon = <SOLDIERTYPE>MercPtrs[ubLoop];
+      if (pGoon.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP && pGoon.bActive && pGoon.bInSector && pGoon.bLife >= OKLIFE && pGoon.bOppList[pSoldier.ubID] == SEEN_CURRENTLY) {
         MakeCivHostile(pGoon, 2);
         if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-          EnterCombatMode(pGoon.value.bTeam);
+          EnterCombatMode(pGoon.bTeam);
         }
       }
     }
@@ -286,27 +286,26 @@ function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>):
 
   if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
     pGoon = FindSoldierByProfileID(Enum268.WARDEN, false);
-    if (pGoon && pGoon.value.bAlertStatus < Enum243.STATUS_RED && PythSpacesAway(pSoldier.value.sGridNo, pGoon.value.sGridNo) <= 5) {
+    if (pGoon && pGoon.bAlertStatus < Enum243.STATUS_RED && PythSpacesAway(pSoldier.sGridNo, pGoon.sGridNo) <= 5) {
       // alert her if she hasn't been alerted
-      pGoon.value.bAlertStatus = Enum243.STATUS_RED;
+      pGoon.bAlertStatus = Enum243.STATUS_RED;
       CheckForChangingOrders(pGoon);
-      CancelAIAction(pGoon, true);
+      CancelAIAction(pGoon, 1);
     }
   }
 }
 
-export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>): boolean {
+export function HandleOpenableStruct(pSoldier: SOLDIERTYPE, sGridNo: INT16, pStructure: STRUCTURE): boolean {
   let fHandleDoor: boolean = false;
   let sAPCost: INT16 = 0;
   let sBPCost: INT16 = 0;
-  let pDoor: Pointer<DOOR>;
+  let pDoor: DOOR | null;
   let fTrapFound: boolean = false;
   let fDoAction: boolean = true;
   let fDoor: boolean = false;
-  let bItemIn: INT8 = false;
 
   // Are we a door?
-  if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
+  if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
     fDoor = true;
   }
 
@@ -315,22 +314,22 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   // We'll add any aps for things like lockpicking, booting, etc
 
   // If we are already open....no need for lockpick checks, etc
-  if (pStructure.value.fFlags & STRUCTURE_OPEN) {
+  if (pStructure.fFlags & STRUCTURE_OPEN) {
     // Set costs for these
     sAPCost = AP_OPEN_DOOR;
     sBPCost = BP_OPEN_DOOR;
 
     fHandleDoor = true;
   } else {
-    if (pSoldier.value.ubID < 20) {
+    if (pSoldier.ubID < 20) {
       // Find locked door here....
       pDoor = FindDoorInfoAtGridNo(sGridNo);
 
       // Alrighty, first check for traps ( unless we are examining.... )
-      if (pSoldier.value.ubDoorHandleCode != HANDLE_DOOR_EXAMINE && pSoldier.value.ubDoorHandleCode != HANDLE_DOOR_UNTRAP && pSoldier.value.ubDoorHandleCode != HANDLE_DOOR_UNLOCK) {
+      if (pSoldier.ubDoorHandleCode != HANDLE_DOOR_EXAMINE && pSoldier.ubDoorHandleCode != HANDLE_DOOR_UNTRAP && pSoldier.ubDoorHandleCode != HANDLE_DOOR_UNLOCK) {
         if (pDoor != null) {
           // Do we have a trap? NB if door is unlocked disable all traps
-          if (pDoor.value.fLocked && pDoor.value.ubTrapID != Enum227.NO_TRAP) {
+          if (pDoor.fLocked && pDoor.ubTrapID != Enum227.NO_TRAP) {
             fTrapFound = true;
 
             // Set costs for these
@@ -345,22 +344,22 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
               // Kaboom
               // Code to handle trap here...
               HandleDoorTrap(pSoldier, pDoor);
-              if (DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_STOPS_ACTION) {
+              if (DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_STOPS_ACTION) {
                 // trap stops person from opening door!
                 fDoAction = false;
               }
-              if (!(DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
+              if (!(DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
                 // trap only happens once
-                pDoor.value.ubTrapLevel = 0;
-                pDoor.value.ubTrapID = Enum227.NO_TRAP;
+                pDoor.ubTrapLevel = 0;
+                pDoor.ubTrapID = Enum227.NO_TRAP;
               }
               UpdateDoorPerceivedValue(pDoor);
             } else {
               // If we didn't set it off then we must have noticed it or know about it already
 
               // do we know it's trapped?
-              if (pDoor.value.bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
-                switch (pDoor.value.ubTrapID) {
+              if (pDoor.bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
+                switch (pDoor.ubTrapID) {
                   case Enum227.BROTHEL_SIREN:
                     ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[Enum227.SIREN]);
                     break;
@@ -368,7 +367,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
                     ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[Enum227.ELECTRIC]);
                     break;
                   default:
-                    ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[pDoor.value.ubTrapID]);
+                    ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[pDoor.ubTrapID]);
                     break;
                 }
 
@@ -380,14 +379,14 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
               } else {
                 // Set it off!
                 HandleDoorTrap(pSoldier, pDoor);
-                if (DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_STOPS_ACTION) {
+                if (DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_STOPS_ACTION) {
                   // trap stops person from opening door!
                   fDoAction = false;
                 }
-                if (!(DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
+                if (!(DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
                   // trap only happens once
-                  pDoor.value.ubTrapLevel = 0;
-                  pDoor.value.ubTrapID = Enum227.NO_TRAP;
+                  pDoor.ubTrapLevel = 0;
+                  pDoor.ubTrapID = Enum227.NO_TRAP;
                 }
               }
               UpdateDoorPerceivedValue(pDoor);
@@ -398,7 +397,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
 
       if (fDoAction) {
         // OK, switch based on how we are going to open door....
-        switch (pSoldier.value.ubDoorHandleCode) {
+        switch (pSoldier.ubDoorHandleCode) {
           case HANDLE_DOOR_OPEN:
 
             // If we have no lock on door...
@@ -412,7 +411,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
               fHandleDoor = true;
               break;
             } else {
-              if (pDoor.value.fLocked) {
+              if (pDoor.fLocked) {
                 // it's locked....
                 ChangeSoldierState(pSoldier, GetAnimStateForInteraction(pSoldier, fDoor, Enum193.END_OPEN_LOCKED_DOOR), 0, false);
 
@@ -544,7 +543,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
               if (ExamineDoorForTraps(pSoldier, pDoor)) {
                 // We have a trap. Use door pointer to determine what type, etc
                 TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_BOOBYTRAP_ITEM);
-                switch (pDoor.value.ubTrapID) {
+                switch (pDoor.ubTrapID) {
                   case Enum227.BROTHEL_SIREN:
                     ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[Enum227.SIREN]);
                     break;
@@ -552,7 +551,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
                     ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[Enum227.ELECTRIC]);
                     break;
                   default:
-                    ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[pDoor.value.ubTrapID]);
+                    ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_LOCK_DESCRIPTION_STR], pDoorTrapStrings[pDoor.ubTrapID]);
                     break;
                 }
 
@@ -614,7 +613,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
               break;
             } else {
               // Do we have a trap?
-              if (pDoor.value.ubTrapID != Enum227.NO_TRAP) {
+              if (pDoor.ubTrapID != Enum227.NO_TRAP) {
                 fTrapFound = true;
               }
 
@@ -630,10 +629,10 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
                   // Now just show on message bar
                   HandleDoorTrap(pSoldier, pDoor);
 
-                  if (!(DoorTrapTable[pDoor.value.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
+                  if (!(DoorTrapTable[pDoor.ubTrapID].fFlags & DOOR_TRAP_RECURRING)) {
                     // trap only happens once
-                    pDoor.value.ubTrapLevel = 0;
-                    pDoor.value.ubTrapID = Enum227.NO_TRAP;
+                    pDoor.ubTrapLevel = 0;
+                    pDoor.ubTrapID = Enum227.NO_TRAP;
                   }
 
                   // Update perceived lock value
@@ -668,7 +667,7 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
                 ChangeSoldierState(pSoldier, GetAnimStateForInteraction(pSoldier, fDoor, Enum193.END_OPEN_LOCKED_DOOR), 0, false);
                 // Do we have a quote for locked stuff?
                 // Now just show on message bar
-                ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_NOT_PROPER_KEY_STR], pSoldier.value.name);
+                ScreenMsg(MSG_FONT_YELLOW, MSG_INTERFACE, TacticalStr[Enum335.DOOR_NOT_PROPER_KEY_STR], pSoldier.name);
 
                 // Update perceived lock value
                 UpdateDoorPerceivedValue(pDoor);
@@ -703,14 +702,14 @@ export function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   return fHandleDoor;
 }
 
-function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fNoAnimations: boolean): boolean {
-  let pShadowNode: Pointer<LEVELNODE>;
-  let pNode: Pointer<LEVELNODE>;
+function HandleDoorsOpenClose(pSoldier: SOLDIERTYPE | null, sGridNo: INT16, pStructure: STRUCTURE, fNoAnimations: boolean): boolean {
+  let pShadowNode: LEVELNODE | null;
+  let pNode: LEVELNODE | null;
   let cnt: INT32;
   let fOpenedGraphic: boolean = false;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let fDoAnimation: boolean = true;
-  let pBaseStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: STRUCTURE | null;
   let uiSoundID: UINT32;
 
   pBaseStructure = FindBaseStructure(pStructure);
@@ -718,35 +717,35 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
     return false;
   }
 
-  pNode = FindLevelNodeBasedOnStructure(pBaseStructure.value.sGridNo, pBaseStructure);
+  pNode = FindLevelNodeBasedOnStructure(pBaseStructure.sGridNo, pBaseStructure);
   if (!pNode) {
     return false;
   }
 
   // ATE: if we are about to swap, but have an animation playing here..... stop the animation....
-  if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
-    if (pNode.value.pAniTile != null) {
-      if (pNode.value.pAniTile.value.uiFlags & ANITILE_DOOR) {
+  if ((pNode.uiFlags & LEVELNODE_ANIMATION)) {
+    if (pNode.pAniTile != null) {
+      if (pNode.pAniTile.uiFlags & ANITILE_DOOR) {
         // ATE: No two doors can exist ( there can be only one )
         // Update value.. ie: prematurely end door animation
         // Update current frame...
 
-        if (pNode.value.pAniTile.value.uiFlags & ANITILE_FORWARD) {
-          pNode.value.sCurrentFrame = pNode.value.pAniTile.value.sStartFrame + pNode.value.pAniTile.value.usNumFrames;
+        if (pNode.pAniTile.uiFlags & ANITILE_FORWARD) {
+          pNode.sCurrentFrame = pNode.pAniTile.sStartFrame + pNode.pAniTile.usNumFrames;
         }
 
-        if (pNode.value.pAniTile.value.uiFlags & ANITILE_BACKWARD) {
-          pNode.value.sCurrentFrame = pNode.value.pAniTile.value.sStartFrame - pNode.value.pAniTile.value.usNumFrames;
+        if (pNode.pAniTile.uiFlags & ANITILE_BACKWARD) {
+          pNode.sCurrentFrame = pNode.pAniTile.sStartFrame - pNode.pAniTile.usNumFrames;
         }
 
-        pNode.value.sCurrentFrame = pNode.value.pAniTile.value.usNumFrames - 1;
+        pNode.sCurrentFrame = pNode.pAniTile.usNumFrames - 1;
 
         // Delete...
-        DeleteAniTile(pNode.value.pAniTile);
+        DeleteAniTile(pNode.pAniTile);
 
-        pNode.value.uiFlags &= ~(LEVELNODE_LASTDYNAMIC | LEVELNODE_UPDATESAVEBUFFERONCE);
+        pNode.uiFlags &= ~(LEVELNODE_LASTDYNAMIC | LEVELNODE_UPDATESAVEBUFFERONCE);
 
-        if (GridNoOnScreen(pBaseStructure.value.sGridNo)) {
+        if (GridNoOnScreen(pBaseStructure.sGridNo)) {
           SetRenderFlags(RENDER_FLAG_FULL);
         }
       }
@@ -760,14 +759,14 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
   cnt = 0;
   while (gOpenDoorList[cnt] != -1) {
     // IF WE ARE A SHADOW TYPE
-    if (pNode.value.usIndex == gOpenDoorList[cnt]) {
+    if (pNode.usIndex == gOpenDoorList[cnt]) {
       fOpenedGraphic = true;
       break;
     }
     cnt++;
   };
 
-  if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
+  if (!(pStructure.fFlags & STRUCTURE_OPEN)) {
     // ATE, the last parameter is the perceived value, I dont know what it is so could you please add the value?
     // ModifyDoorStatus( INT16 sGridNo, BOOLEAN fOpen, BOOLEAN fPercievedOpen )
     if (gfSetPerceivedDoorState) {
@@ -782,10 +781,10 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 
     if (pSoldier) {
       // OK, Are we a player merc or AI?
-      if (pSoldier.value.bTeam != gbPlayerNum) {
+      if (pSoldier.bTeam != gbPlayerNum) {
         // If an AI guy... do LOS check first....
         // If guy is visible... OR fading...
-        if (pSoldier.value.bVisible == -1 && !AllMercsLookForDoor(sGridNo, false) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+        if (pSoldier.bVisible == -1 && !AllMercsLookForDoor(sGridNo, false) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
           fDoAnimation = false;
         }
       }
@@ -805,29 +804,29 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       ModifyDoorStatus(sGridNo, DONTSETDOORSTATUS, true);
 
       if (fOpenedGraphic) {
-        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+        resetAnimatedTileParams(AniParams);
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
-        AniParams.usTileIndex = pNode.value.usIndex;
+        AniParams.usTileType = gTileDatabase[pNode.usIndex].fType;
+        AniParams.usTileIndex = pNode.usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
-        AniParams.sStartFrame = pNode.value.sCurrentFrame;
+        AniParams.sStartFrame = pNode.sCurrentFrame;
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_FORWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        CreateAnimationTile(addressof(AniParams));
+        CreateAnimationTile(AniParams);
       } else {
-        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+        resetAnimatedTileParams(AniParams);
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
-        AniParams.usTileIndex = pNode.value.usIndex;
+        AniParams.usTileType = gTileDatabase[pNode.usIndex].fType;
+        AniParams.usTileIndex = pNode.usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
-        AniParams.sStartFrame = pNode.value.sCurrentFrame;
+        AniParams.sStartFrame = pNode.sCurrentFrame;
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_BACKWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        CreateAnimationTile(addressof(AniParams));
+        CreateAnimationTile(AniParams);
       }
     }
 
@@ -842,21 +841,21 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
     //	pShadowNode->sDelay		= INTTILE_DOOR_OPENSPEED;
     //}
 
-    if (fDoAnimation && pSoldier && pSoldier.value.ubDoorOpeningNoise) {
+    if (fDoAnimation && pSoldier && pSoldier.ubDoorOpeningNoise) {
       // ATE; Default to normal door...
       uiSoundID = (Enum330.DROPEN_1 + Random(3));
 
       // OK, check if this door is sliding and is multi-tiled...
-      if (pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR) {
+      if (pStructure.fFlags & STRUCTURE_SLIDINGDOOR) {
         // Get database value...
-        if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
+        if (pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles > 1) {
           // change sound ID
           uiSoundID = Enum330.GARAGE_DOOR_OPEN;
-        } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_CLOTH) {
+        } else if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_CLOTH) {
           // change sound ID
           uiSoundID = Enum330.CURTAINS_OPEN;
         }
-      } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_LIGHT_METAL || pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_THICKER_METAL || pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_HEAVY_METAL) {
+      } else if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_LIGHT_METAL || pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_THICKER_METAL || pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_HEAVY_METAL) {
         // change sound ID
         uiSoundID = Enum330.METAL_DOOR_OPEN;
       }
@@ -876,10 +875,10 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 
     if (pSoldier) {
       // OK, Are we a player merc or AI?
-      if (pSoldier.value.bTeam != gbPlayerNum) {
+      if (pSoldier.bTeam != gbPlayerNum) {
         // If an AI guy... do LOS check first....
         // If guy is visible... OR fading...
-        if (pSoldier.value.bVisible == -1 && !AllMercsLookForDoor(sGridNo, false) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+        if (pSoldier.bVisible == -1 && !AllMercsLookForDoor(sGridNo, false) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
           fDoAnimation = false;
         }
       }
@@ -898,22 +897,22 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       // Update perceived value
       ModifyDoorStatus(sGridNo, DONTSETDOORSTATUS, false);
 
-      memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+      resetAnimatedTileParams(AniParams);
 
       // ATE; Default to normal door...
       uiSoundID = (Enum330.DRCLOSE_1 + Random(2));
 
       // OK, check if this door is sliding and is multi-tiled...
-      if (pStructure.value.fFlags & STRUCTURE_SLIDINGDOOR) {
+      if (pStructure.fFlags & STRUCTURE_SLIDINGDOOR) {
         // Get database value...
-        if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
+        if (pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles > 1) {
           // change sound ID
           uiSoundID = Enum330.GARAGE_DOOR_CLOSE;
-        } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_CLOTH) {
+        } else if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_CLOTH) {
           // change sound ID
           uiSoundID = Enum330.CURTAINS_CLOSE;
         }
-      } else if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_LIGHT_METAL || pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_THICKER_METAL || pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_HEAVY_METAL) {
+      } else if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_LIGHT_METAL || pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_THICKER_METAL || pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_HEAVY_METAL) {
         // change sound ID
         uiSoundID = Enum330.METAL_DOOR_CLOSE;
       }
@@ -925,29 +924,29 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       if (fOpenedGraphic) {
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
-        AniParams.usTileIndex = pNode.value.usIndex;
+        AniParams.usTileType = gTileDatabase[pNode.usIndex].fType;
+        AniParams.usTileIndex = pNode.usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
-        AniParams.sStartFrame = pNode.value.sCurrentFrame;
+        AniParams.sStartFrame = pNode.sCurrentFrame;
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_BACKWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        AniParams.ubKeyFrame1 = pNode.value.sCurrentFrame - 2;
+        AniParams.ubKeyFrame1 = pNode.sCurrentFrame - 2;
 
-        CreateAnimationTile(addressof(AniParams));
+        CreateAnimationTile(AniParams);
       } else {
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
-        AniParams.usTileIndex = pNode.value.usIndex;
+        AniParams.usTileType = gTileDatabase[pNode.usIndex].fType;
+        AniParams.usTileIndex = pNode.usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
-        AniParams.sStartFrame = pNode.value.sCurrentFrame;
+        AniParams.sStartFrame = pNode.sCurrentFrame;
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_FORWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        AniParams.ubKeyFrame1 = pNode.value.sCurrentFrame + 2;
+        AniParams.ubKeyFrame1 = pNode.sCurrentFrame + 2;
 
-        CreateAnimationTile(addressof(AniParams));
+        CreateAnimationTile(AniParams);
       }
     }
 
@@ -976,9 +975,9 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 }
 
 export function SetDoorString(sGridNo: INT16): void {
-  let pDoor: Pointer<DOOR>;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
-  let pStructure: Pointer<STRUCTURE>;
+  let pDoor: DOOR | null;
+  let pDoorStatus: DOOR_STATUS | null;
+  let pStructure: STRUCTURE | null;
 
   let fTrapped: boolean = false;
 
@@ -994,7 +993,7 @@ export function SetDoorString(sGridNo: INT16): void {
       gfUIIntTileLocation = true;
 
       // CHECK PERCEIVED VALUE
-      switch (pDoor.value.bPerceivedTrapped) {
+      switch (pDoor.bPerceivedTrapped) {
         case DOOR_PERCEIVED_TRAPPED:
 
           gzIntTileLocation2 = TacticalStr[Enum335.DOOR_TRAPPED_MOUSE_DESCRIPTION];
@@ -1005,7 +1004,7 @@ export function SetDoorString(sGridNo: INT16): void {
 
       if (!fTrapped) {
         // CHECK PERCEIVED VALUE
-        switch (pDoor.value.bPerceivedLocked) {
+        switch (pDoor.bPerceivedLocked) {
           case DOOR_PERCEIVED_UNKNOWN:
 
             break;
@@ -1072,11 +1071,11 @@ export function SetDoorString(sGridNo: INT16): void {
 
     // Try to get doors status here...
     pDoorStatus = GetDoorStatus(sGridNo);
-    if (pDoorStatus == null || (pDoorStatus != null && pDoorStatus.value.ubFlags & DOOR_PERCEIVED_NOTSET)) {
+    if (pDoorStatus == null || (pDoorStatus != null && pDoorStatus.ubFlags & DOOR_PERCEIVED_NOTSET)) {
       // OK, get status based on graphic.....
       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
       if (pStructure) {
-        if (pStructure.value.fFlags & STRUCTURE_OPEN) {
+        if (pStructure.fFlags & STRUCTURE_OPEN) {
           // Door is opened....
           gzIntTileLocation2 = pMessageStrings[Enum333.MSG_OPENED];
           gfUIIntTileLocation2 = true;
@@ -1088,7 +1087,7 @@ export function SetDoorString(sGridNo: INT16): void {
       }
     } else {
       // Use percived value
-      if (pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) {
+      if (pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) {
         // Door is opened....
         gzIntTileLocation2 = pMessageStrings[Enum333.MSG_OPENED];
         gfUIIntTileLocation2 = true;

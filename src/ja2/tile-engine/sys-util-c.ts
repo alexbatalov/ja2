@@ -2,7 +2,6 @@ namespace ja2 {
 
 let guiBOTTOMPANEL: UINT32 = 0;
 let guiRIGHTPANEL: UINT32 = 0;
-export let guiRENDERBUFFER: UINT32 = 0;
 export let guiSAVEBUFFER: UINT32 = 0;
 export let guiEXTRABUFFER: UINT32 = 0;
 
@@ -25,11 +24,11 @@ export function InitializeGameVideoObjects(): boolean {
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = ubBitDepth;
 
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiSAVEBUFFER))) {
+  if (!AddVideoSurface(vs_desc, addressof(guiSAVEBUFFER))) {
     return false;
   }
 
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiEXTRABUFFER))) {
+  if (!AddVideoSurface(vs_desc, addressof(guiEXTRABUFFER))) {
     return false;
   }
   gfExtraBuffer = true;

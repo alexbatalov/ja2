@@ -262,7 +262,7 @@ export function LightReset(): boolean {
 
   // Loop through mercs and reset light value
   for (uiCount = 0; uiCount < MAX_NUM_SOLDIERS; uiCount++) {
-    MercPtrs[uiCount].value.iLight = -1;
+    MercPtrs[uiCount].iLight = -1;
   }
 
   return true;

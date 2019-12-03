@@ -138,7 +138,7 @@ export function InitPreBattleInterface(pBattleGroup: GROUP | null, fPersistantPB
     // if( guiCurrentScreen == GAME_SCREEN && pBattleGroup )
     if (guiCurrentScreen == Enum26.GAME_SCREEN && (pBattleGroup || fPersistantPBI)) {
       gpBattleGroup = pBattleGroup;
-      gfEnteringMapScreen = true;
+      gfEnteringMapScreen = 1;
       gfEnteringMapScreenToEnterPreBattleInterface = true;
       gfUsePersistantPBI = true;
       return;
@@ -203,7 +203,7 @@ export function InitPreBattleInterface(pBattleGroup: GROUP | null, fPersistantPB
 
   // If we are currently in tactical, then set the flag to automatically bring up the mapscreen.
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-    gfEnteringMapScreen = true;
+    gfEnteringMapScreen = 1;
   }
 
   if (!fShowTeamFlag) {
@@ -274,7 +274,7 @@ export function InitPreBattleInterface(pBattleGroup: GROUP | null, fPersistantPB
   guiNumUninvolved = 0;
   guiNumInvolved = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (MercPtrs[i].bActive && MercPtrs[i].bLife && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE)) {
       if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
         // involved
         if (!ubGroupID) {
@@ -282,19 +282,19 @@ export function InitPreBattleInterface(pBattleGroup: GROUP | null, fPersistantPB
           // can detect it by comparing the first value with future values.  If we do, then
           // we set a flag which determines whether to use the singular help text or plural version
           // for the retreat button.
-          ubGroupID = MercPtrs[i].value.ubGroupID;
+          ubGroupID = MercPtrs[i].ubGroupID;
           if (!gpBattleGroup)
             gpBattleGroup = GetGroup(ubGroupID);
-          if (bBestExpLevel > MercPtrs[i].value.bExpLevel)
-            bBestExpLevel = MercPtrs[i].value.bExpLevel;
-          if (MercPtrs[i].value.ubPrevSectorID == 255) {
+          if (bBestExpLevel > MercPtrs[i].bExpLevel)
+            bBestExpLevel = MercPtrs[i].bExpLevel;
+          if (MercPtrs[i].ubPrevSectorID == 255) {
             // Not able to retreat (calculate it for group)
             let pTempGroup: GROUP;
             pTempGroup = GetGroup(ubGroupID);
             Assert(pTempGroup);
             CalculateGroupRetreatSector(pTempGroup);
           }
-        } else if (ubGroupID != MercPtrs[i].value.ubGroupID) {
+        } else if (ubGroupID != MercPtrs[i].ubGroupID) {
           fUsePluralVersion = true;
         }
         guiNumInvolved++;
@@ -848,7 +848,7 @@ export function RenderPreBattleInterface(): void {
     line = 0;
     y = TOP_Y + 1;
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-      if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+      if (MercPtrs[i].bActive && MercPtrs[i].bLife && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE)) {
         if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
           // involved
           if (line == giHilitedInvolved)
@@ -856,7 +856,7 @@ export function RenderPreBattleInterface(): void {
           else
             SetFontForeground(FONT_YELLOW);
           // NAME
-          str = MercPtrs[i].value.name;
+          str = MercPtrs[i].name;
           x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
           mprintf(x, y, str);
           // ASSIGN
@@ -896,7 +896,7 @@ export function RenderPreBattleInterface(): void {
       pGroup = gpGroupList;
       y = BOTTOM_Y - ROW_HEIGHT * guiNumUninvolved + 2;
       for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-        if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+        if (MercPtrs[i].bActive && MercPtrs[i].bLife && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE)) {
           if (!PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
             // uninvolved
             if (line == giHilitedUninvolved)
@@ -904,7 +904,7 @@ export function RenderPreBattleInterface(): void {
             else
               SetFontForeground(FONT_YELLOW);
             // NAME
-            str = MercPtrs[i].value.name;
+            str = MercPtrs[i].name;
             x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
             mprintf(x, y, str);
             // ASSIGN
@@ -1530,13 +1530,13 @@ function CheckForRobotAndIfItsControlled(): void {
 
   // search for the robot on player's team
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && AM_A_ROBOT(MercPtrs[i])) {
+    if (MercPtrs[i].bActive && MercPtrs[i].bLife && AM_A_ROBOT(MercPtrs[i])) {
       // check whether it has a valid controller with it. This sets its ubRobotRemoteHolderID field.
       UpdateRobotControllerGivenRobot(MercPtrs[i]);
 
       // if he has a controller, set controllers
-      if (MercPtrs[i].value.ubRobotRemoteHolderID != NOBODY) {
-        UpdateRobotControllerGivenController(MercPtrs[MercPtrs[i].value.ubRobotRemoteHolderID]);
+      if (MercPtrs[i].ubRobotRemoteHolderID != NOBODY) {
+        UpdateRobotControllerGivenController(MercPtrs[MercPtrs[i].ubRobotRemoteHolderID]);
       }
 
       break;

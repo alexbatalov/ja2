@@ -1071,10 +1071,10 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   Corpse.sHeightAdjustment = 0;
   Corpse.bVisible = 1;
 
-  SET_PALETTEREP_ID(Corpse.HeadPal, "BROWNHEAD");
-  SET_PALETTEREP_ID(Corpse.VestPal, "YELLOWVEST");
-  SET_PALETTEREP_ID(Corpse.SkinPal, "PINKSKIN");
-  SET_PALETTEREP_ID(Corpse.PantsPal, "GREENPANTS");
+  Corpse.HeadPal = SET_PALETTEREP_ID("BROWNHEAD");
+  Corpse.VestPal = SET_PALETTEREP_ID("YELLOWVEST");
+  Corpse.SkinPal = SET_PALETTEREP_ID("PINKSKIN");
+  Corpse.PantsPal = SET_PALETTEREP_ID("GREENPANTS");
 
   Corpse.bDirection = Random(8);
 

@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let guiForceRefreshMousePositionCalculation: UINT32 = 0;
+export let guiForceRefreshMousePositionCalculation: boolean /* UINT32 */ = false;
 
 // GLOBALS
 export let DirIncrementer: INT16[] /* [8] */ = [
@@ -701,7 +701,7 @@ function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
   return sNumTurns;
 }
 
-export function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindHeigherLevel(pSoldier: SOLDIERTYPE, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let fFound: boolean = false;
@@ -743,7 +743,7 @@ export function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
   return false;
 }
 
-export function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindLowerLevel(pSoldier: SOLDIERTYPE, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let fFound: boolean = false;
@@ -933,7 +933,7 @@ export function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): b
   return false;
 }
 
-export function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindFenceJumpDirection(pSoldier: SOLDIERTYPE, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let sOtherSideOfFence: INT16;

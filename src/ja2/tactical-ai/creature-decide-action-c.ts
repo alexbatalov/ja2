@@ -1,7 +1,7 @@
 namespace ja2 {
 
-const CAN_CALL = (s: Pointer<SOLDIERTYPE>) => (s.value.ubBodyType != Enum194.BLOODCAT && s.value.ubBodyType != Enum194.LARVAE_MONSTER && s.value.ubBodyType != Enum194.INFANT_MONSTER);
-const CAN_LISTEN_TO_CALL = (s: Pointer<SOLDIERTYPE>) => (s.value.ubBodyType != Enum194.BLOODCAT && s.value.ubBodyType != Enum194.LARVAE_MONSTER);
+const CAN_CALL = (s: SOLDIERTYPE) => (s.ubBodyType != Enum194.BLOODCAT && s.ubBodyType != Enum194.LARVAE_MONSTER && s.ubBodyType != Enum194.INFANT_MONSTER);
+const CAN_LISTEN_TO_CALL = (s: SOLDIERTYPE) => (s.ubBodyType != Enum194.BLOODCAT && s.ubBodyType != Enum194.LARVAE_MONSTER);
 
 const enum Enum294 {
   CALLER_FEMALE = 0,
@@ -40,19 +40,19 @@ const PRIORITY_DECR_DISTANCE = 30;
 const CALL_1_OPPONENT = Enum288.CALL_1_PREY;
 const CALL_MULTIPLE_OPPONENT = Enum288.CALL_MULTIPLE_PREY;
 
-export function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
+export function CreatureCall(pCaller: SOLDIERTYPE): void {
   let ubCallerType: UINT8 = 0;
   let ubReceiver: UINT8;
   let bFullPriority: INT8;
   let bPriority: INT8;
-  let pReceiver: Pointer<SOLDIERTYPE>;
+  let pReceiver: SOLDIERTYPE;
   let usDistToCaller: UINT16;
   // communicate call to all creatures on map through ultrasonics
 
-  gTacticalStatus.Team[pCaller.value.bTeam].bAwareOfOpposition = true;
+  gTacticalStatus.Team[pCaller.bTeam].bAwareOfOpposition = true;
   // bAction should be AI_ACTION_CREATURE_CALL (new)
   // usActionData is call enum #
-  switch (pCaller.value.ubBodyType) {
+  switch (pCaller.ubBodyType) {
     case Enum194.ADULTFEMALEMONSTER:
     case Enum194.YAF_MONSTER:
       ubCallerType = Enum294.CALLER_FEMALE;
@@ -69,15 +69,15 @@ export function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
       ubCallerType = Enum294.CALLER_FEMALE;
       break;
   }
-  if (pCaller.value.bHunting) // which should only be set for females outside of the hive
+  if (pCaller.bHunting) // which should only be set for females outside of the hive
   {
-    bFullPriority = gbHuntCallPriority[pCaller.value.usActionData];
+    bFullPriority = gbHuntCallPriority[pCaller.usActionData];
   } else {
-    bFullPriority = gbCallPriority[pCaller.value.usActionData][ubCallerType];
+    bFullPriority = gbCallPriority[pCaller.usActionData][ubCallerType];
   }
 
   // OK, do animation based on body type...
-  switch (pCaller.value.ubBodyType) {
+  switch (pCaller.ubBodyType) {
     case Enum194.ADULTFEMALEMONSTER:
     case Enum194.YAF_MONSTER:
     case Enum194.AM_MONSTER:
@@ -92,22 +92,22 @@ export function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
       break;
   }
 
-  for (ubReceiver = gTacticalStatus.Team[pCaller.value.bTeam].bFirstID; ubReceiver <= gTacticalStatus.Team[pCaller.value.bTeam].bLastID; ubReceiver++) {
+  for (ubReceiver = gTacticalStatus.Team[pCaller.bTeam].bFirstID; ubReceiver <= gTacticalStatus.Team[pCaller.bTeam].bLastID; ubReceiver++) {
     pReceiver = MercPtrs[ubReceiver];
-    if (pReceiver.value.bActive && pReceiver.value.bInSector && (pReceiver.value.bLife >= OKLIFE) && (pReceiver != pCaller) && (pReceiver.value.bAlertStatus < Enum243.STATUS_BLACK)) {
-      if (pReceiver.value.ubBodyType != Enum194.LARVAE_MONSTER && pReceiver.value.ubBodyType != Enum194.INFANT_MONSTER && pReceiver.value.ubBodyType != Enum194.QUEENMONSTER) {
-        usDistToCaller = PythSpacesAway(pReceiver.value.sGridNo, pCaller.value.sGridNo);
+    if (pReceiver.bActive && pReceiver.bInSector && (pReceiver.bLife >= OKLIFE) && (pReceiver != pCaller) && (pReceiver.bAlertStatus < Enum243.STATUS_BLACK)) {
+      if (pReceiver.ubBodyType != Enum194.LARVAE_MONSTER && pReceiver.ubBodyType != Enum194.INFANT_MONSTER && pReceiver.ubBodyType != Enum194.QUEENMONSTER) {
+        usDistToCaller = PythSpacesAway(pReceiver.sGridNo, pCaller.sGridNo);
         bPriority = bFullPriority - (usDistToCaller / PRIORITY_DECR_DISTANCE);
-        if (bPriority > pReceiver.value.bCallPriority) {
-          pReceiver.value.bCallPriority = bPriority;
-          pReceiver.value.bAlertStatus = Enum243.STATUS_RED; // our status can't be more than red to begin with
-          pReceiver.value.ubCaller = pCaller.value.ubID;
-          pReceiver.value.sCallerGridNo = pCaller.value.sGridNo;
-          pReceiver.value.bCallActedUpon = false;
+        if (bPriority > pReceiver.bCallPriority) {
+          pReceiver.bCallPriority = bPriority;
+          pReceiver.bAlertStatus = Enum243.STATUS_RED; // our status can't be more than red to begin with
+          pReceiver.ubCaller = pCaller.ubID;
+          pReceiver.sCallerGridNo = pCaller.sGridNo;
+          pReceiver.bCallActedUpon = false;
           CancelAIAction(pReceiver, FORCE);
-          if ((bPriority > FRENZY_THRESHOLD) && (pReceiver.value.ubBodyType == Enum194.ADULTFEMALEMONSTER || pReceiver.value.ubBodyType == Enum194.YAF_MONSTER)) {
+          if ((bPriority > FRENZY_THRESHOLD) && (pReceiver.ubBodyType == Enum194.ADULTFEMALEMONSTER || pReceiver.ubBodyType == Enum194.YAF_MONSTER)) {
             // go berzerk!
-            pReceiver.value.bFrenzied = true;
+            pReceiver.bFrenzied = true;
           }
         }
       }
@@ -115,23 +115,23 @@ export function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function CreatureDecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
   let iChance: INT32;
   let iSneaky: INT32 = 10;
   // INT8		bInWater;
-  let bInGas: INT8;
+  let bInGas: boolean /* INT8 */;
 
   // bInWater = MercInWater(pSoldier);
 
   // NB creatures would ignore smoke completely :-)
 
-  if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.value.bActionPoints < pSoldier.value.bInitialActionPoints) {
+  if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.bActionPoints < pSoldier.bInitialActionPoints) {
     return Enum289.AI_ACTION_NONE;
   }
 
-  bInGas = InGas(pSoldier, pSoldier.value.sGridNo);
+  bInGas = InGas(pSoldier, pSoldier.sGridNo);
 
-  if (pSoldier.value.bMobility == Enum295.CREATURE_MOBILE) {
+  if (pSoldier.bMobility == Enum295.CREATURE_MOBILE) {
     if (TrackScent(pSoldier)) {
       return Enum289.AI_ACTION_TRACK;
     }
@@ -142,24 +142,24 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // this takes priority over water/gas checks, so that point patrol WILL work
     // from island to island, and through gas covered areas, too
-    if ((pSoldier.value.bOrders == Enum241.POINTPATROL) && (pSoldier.value.bBreath >= 50)) {
+    if ((pSoldier.bOrders == Enum241.POINTPATROL) && (pSoldier.bBreath >= 50)) {
       if (PointPatrolAI(pSoldier)) {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
-          pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
+          pSoldier.bNextAction = Enum289.AI_ACTION_WAIT;
+          pSoldier.usNextActionData = REALTIME_CREATURE_AI_DELAY();
         }
 
         return Enum289.AI_ACTION_POINT_PATROL;
       }
     }
 
-    if ((pSoldier.value.bOrders == Enum241.RNDPTPATROL) && (pSoldier.value.bBreath >= 50)) {
+    if ((pSoldier.bOrders == Enum241.RNDPTPATROL) && (pSoldier.bBreath >= 50)) {
       if (RandomPointPatrolAI(pSoldier)) {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
-          pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
+          pSoldier.bNextAction = Enum289.AI_ACTION_WAIT;
+          pSoldier.usNextActionData = REALTIME_CREATURE_AI_DELAY();
         }
 
         return Enum289.AI_ACTION_POINT_PATROL;
@@ -171,9 +171,9 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     ////////////////////////////////////////////////////////////////////////////
 
     if (/*bInWater || */ bInGas) {
-      pSoldier.value.usActionData = FindNearestUngassedLand(pSoldier);
+      pSoldier.usActionData = FindNearestUngassedLand(pSoldier);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_LEAVE_WATER_GAS;
       }
     }
@@ -184,9 +184,9 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////
 
   // if our breath is running a bit low, and we're not in the way or in water
-  if ((pSoldier.value.bBreath < 75) /*&& !bInWater*/) {
+  if ((pSoldier.bBreath < 75) /*&& !bInWater*/) {
     // take a breather for gods sake!
-    pSoldier.value.usActionData = NOWHERE;
+    pSoldier.usActionData = NOWHERE;
     return Enum289.AI_ACTION_NONE;
   }
 
@@ -194,11 +194,11 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // RANDOM PATROL:  determine % chance to start a new patrol route
   ////////////////////////////////////////////////////////////////////////////
 
-  if (pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE) {
+  if (pSoldier.bMobility != Enum295.CREATURE_IMMOBILE) {
     iChance = 25;
 
     // set base chance according to orders
-    switch (pSoldier.value.bOrders) {
+    switch (pSoldier.bOrders) {
       case Enum241.STATIONARY:
         iChance += -20;
         break;
@@ -223,7 +223,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     }
 
     // modify chance of patrol (and whether it's a sneaky one) by attitude
-    switch (pSoldier.value.bAttitude) {
+    switch (pSoldier.bAttitude) {
       case Enum242.DEFENSIVE:
         iChance += -10;
         break;
@@ -246,23 +246,23 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     }
 
     // reduce chance for any injury, less likely to wander around when hurt
-    iChance -= (pSoldier.value.bLifeMax - pSoldier.value.bLife);
+    iChance -= (pSoldier.bLifeMax - pSoldier.bLife);
 
     // reduce chance if breath is down, less likely to wander around when tired
-    iChance -= (100 - pSoldier.value.bBreath);
+    iChance -= (100 - pSoldier.bBreath);
 
     // if we're in water with land miles (> 25 tiles) away,
     // OR if we roll under the chance calculated
     if (/*bInWater ||*/ (PreRandom(100) < iChance)) {
-      pSoldier.value.usActionData = RandDestWithinRange(pSoldier);
+      pSoldier.usActionData = RandDestWithinRange(pSoldier);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
-          pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-          pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
-          if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER) {
-            pSoldier.value.usNextActionData *= 2;
+          pSoldier.bNextAction = Enum289.AI_ACTION_WAIT;
+          pSoldier.usNextActionData = REALTIME_CREATURE_AI_DELAY();
+          if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER) {
+            pSoldier.usNextActionData *= 2;
           }
         }
 
@@ -335,17 +335,17 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     ////////////////////////////////////////////////////////////////////////////
 
     // avoid 2 consecutive random turns in a row
-    if (pSoldier.value.bLastAction != Enum289.AI_ACTION_CHANGE_FACING && (GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints)) {
+    if (pSoldier.bLastAction != Enum289.AI_ACTION_CHANGE_FACING && (GetAPsToLook(pSoldier) <= pSoldier.bActionPoints)) {
       iChance = 25;
 
       // set base chance according to orders
-      if (pSoldier.value.bOrders == Enum241.STATIONARY)
+      if (pSoldier.bOrders == Enum241.STATIONARY)
         iChance += 25;
 
-      if (pSoldier.value.bOrders == Enum241.ONGUARD)
+      if (pSoldier.bOrders == Enum241.ONGUARD)
         iChance += 20;
 
-      if (pSoldier.value.bAttitude == Enum242.DEFENSIVE)
+      if (pSoldier.bAttitude == Enum242.DEFENSIVE)
         iChance += 25;
 
       if (PreRandom(100) < iChance) {
@@ -353,21 +353,21 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         do {
           // if man has a LEGAL dominant facing, and isn't facing it, he will turn
           // back towards that facing 50% of the time here (normally just enemies)
-          if ((pSoldier.value.bDominantDir >= 0) && (pSoldier.value.bDominantDir <= 8) && (pSoldier.value.bDirection != pSoldier.value.bDominantDir) && PreRandom(2)) {
-            pSoldier.value.usActionData = pSoldier.value.bDominantDir;
+          if ((pSoldier.bDominantDir >= 0) && (pSoldier.bDominantDir <= 8) && (pSoldier.bDirection != pSoldier.bDominantDir) && PreRandom(2)) {
+            pSoldier.usActionData = pSoldier.bDominantDir;
           } else {
-            pSoldier.value.usActionData = PreRandom(8);
+            pSoldier.usActionData = PreRandom(8);
           }
-        } while (pSoldier.value.usActionData == pSoldier.value.bDirection);
+        } while (pSoldier.usActionData == pSoldier.bDirection);
 
-        if (ValidCreatureTurn(pSoldier, pSoldier.value.usActionData))
+        if (ValidCreatureTurn(pSoldier, pSoldier.usActionData))
 
         // InternalIsValidStance( pSoldier, (INT8) pSoldier->usActionData, ANIM_STAND ) )
         {
           if (!gfTurnBasedAI) {
             // pause at the end of the turn!
-            pSoldier.value.bNextAction = Enum289.AI_ACTION_WAIT;
-            pSoldier.value.usNextActionData = REALTIME_CREATURE_AI_DELAY();
+            pSoldier.bNextAction = Enum289.AI_ACTION_WAIT;
+            pSoldier.usNextActionData = REALTIME_CREATURE_AI_DELAY();
           }
 
           return Enum289.AI_ACTION_CHANGE_FACING;
@@ -381,12 +381,12 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   // by default, if everything else fails, just stands in place without turning
-  pSoldier.value.usActionData = NOWHERE;
+  pSoldier.usActionData = NOWHERE;
 
   return Enum289.AI_ACTION_NONE;
 }
 
-function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function CreatureDecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
   // monster AI - heard something
   let ubNoiseDir: UINT8;
   let sNoiseGridNo: INT16;
@@ -397,7 +397,7 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let fReachable: boolean;
   //	INT16 sClosestFriend;
 
-  if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.value.bActionPoints < pSoldier.value.bInitialActionPoints) {
+  if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.bActionPoints < pSoldier.bInitialActionPoints) {
     return Enum289.AI_ACTION_NONE;
   }
 
@@ -415,26 +415,26 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // LOOK AROUND TOWARD NOISE: determine %chance for man to turn towards noise
   ////////////////////////////////////////////////////////////////////////////
 
-  if (pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE) {
+  if (pSoldier.bMobility != Enum295.CREATURE_IMMOBILE) {
     // determine direction from this soldier in which the noise lies
-    ubNoiseDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sNoiseGridNo), CenterY(sNoiseGridNo));
+    ubNoiseDir = atan8(CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), CenterX(sNoiseGridNo), CenterY(sNoiseGridNo));
 
     // if soldier is not already facing in that direction,
     // and the noise source is close enough that it could possibly be seen
-    if ((GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) && (pSoldier.value.bDirection != ubNoiseDir) && PythSpacesAway(pSoldier.value.sGridNo, sNoiseGridNo) <= STRAIGHT) {
+    if ((GetAPsToLook(pSoldier) <= pSoldier.bActionPoints) && (pSoldier.bDirection != ubNoiseDir) && PythSpacesAway(pSoldier.sGridNo, sNoiseGridNo) <= STRAIGHT) {
       // set base chance according to orders
-      if ((pSoldier.value.bOrders == Enum241.STATIONARY) || (pSoldier.value.bOrders == Enum241.ONGUARD))
+      if ((pSoldier.bOrders == Enum241.STATIONARY) || (pSoldier.bOrders == Enum241.ONGUARD))
         iChance = 60;
       else // all other orders
         iChance = 35;
 
-      if (pSoldier.value.bAttitude == Enum242.DEFENSIVE)
+      if (pSoldier.bAttitude == Enum242.DEFENSIVE)
         iChance += 15;
 
       if (PreRandom(100) < iChance) {
-        pSoldier.value.usActionData = ubNoiseDir;
+        pSoldier.usActionData = ubNoiseDir;
         // if ( InternalIsValidStance( pSoldier, (INT8) pSoldier->usActionData, ANIM_STAND ) )
-        if (ValidCreatureTurn(pSoldier, pSoldier.value.usActionData)) {
+        if (ValidCreatureTurn(pSoldier, pSoldier.usActionData)) {
           return Enum289.AI_ACTION_CHANGE_FACING;
         }
       }
@@ -446,13 +446,13 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////
 
   // if our breath is running a bit low, and we're not in water
-  if ((pSoldier.value.bBreath < 25) /*&& !MercInWater(pSoldier) */) {
+  if ((pSoldier.bBreath < 25) /*&& !MercInWater(pSoldier) */) {
     // take a breather for gods sake!
-    pSoldier.value.usActionData = NOWHERE;
+    pSoldier.usActionData = NOWHERE;
     return Enum289.AI_ACTION_NONE;
   }
 
-  if (pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE && fReachable) {
+  if (pSoldier.bMobility != Enum295.CREATURE_IMMOBILE && fReachable) {
     ////////////////////////////////////////////////////////////////////////////
     // SEEK NOISE
     ////////////////////////////////////////////////////////////////////////////
@@ -462,7 +462,7 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     iSneaky = 30;
 
     // set base chance according to orders
-    switch (pSoldier.value.bOrders) {
+    switch (pSoldier.bOrders) {
       case Enum241.STATIONARY:
         iChance += -20;
         break;
@@ -486,7 +486,7 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     }
 
     // modify chance of patrol (and whether it's a sneaky one) by attitude
-    switch (pSoldier.value.bAttitude) {
+    switch (pSoldier.bAttitude) {
       case Enum242.DEFENSIVE:
         iChance += -10;
         iSneaky += 15;
@@ -511,12 +511,12 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     }
 
     // reduce chance if breath is down, less likely to wander around when tired
-    iChance -= (100 - pSoldier.value.bBreath);
+    iChance -= (100 - pSoldier.bBreath);
 
     if (PreRandom(100) < iChance) {
-      pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sNoiseGridNo, Enum289.AI_ACTION_SEEK_NOISE);
+      pSoldier.usActionData = GoAsFarAsPossibleTowards(pSoldier, sNoiseGridNo, Enum289.AI_ACTION_SEEK_NOISE);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_SEEK_NOISE;
       }
     }
@@ -532,20 +532,20 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   // by default, if everything else fails, just stands in place without turning
-  pSoldier.value.usActionData = NOWHERE;
+  pSoldier.usActionData = NOWHERE;
   return Enum289.AI_ACTION_NONE;
 }
 
-function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
+function CreatureDecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): INT8 {
   // monster AI - hostile mammals somewhere around!
   let iChance: INT16;
   let sClosestOpponent: INT16;
   let sClosestDisturbance: INT16;
   let sDistVisible: INT16;
-  let ubCanMove: UINT8;
+  let ubCanMove: boolean /* UINT8 */;
   let ubOpponentDir: UINT8;
   // INT8 bInWater;
-  let bInGas: INT8;
+  let bInGas: boolean /* INT8 */;
   let bSeekPts: INT8 = 0;
   let bHelpPts: INT8 = 0;
   let bHidePts: INT8 = 0;
@@ -553,32 +553,32 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
   let fChangeLevel: boolean;
 
   // if we have absolutely no action points, we can't do a thing under RED!
-  if (!pSoldier.value.bActionPoints) {
-    pSoldier.value.usActionData = NOWHERE;
+  if (!pSoldier.bActionPoints) {
+    pSoldier.usActionData = NOWHERE;
     return Enum289.AI_ACTION_NONE;
   }
 
-  if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.value.bActionPoints < pSoldier.value.bInitialActionPoints) {
+  if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.bActionPoints < pSoldier.bInitialActionPoints) {
     return Enum289.AI_ACTION_NONE;
   }
 
   // can this guy move to any of the neighbouring squares ? (sets TRUE/FALSE)
-  ubCanMove = ((pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE) && (pSoldier.value.bActionPoints >= MinPtsToMove(pSoldier)));
+  ubCanMove = ((pSoldier.bMobility != Enum295.CREATURE_IMMOBILE) && (pSoldier.bActionPoints >= MinPtsToMove(pSoldier)));
 
   // determine if we happen to be in water (in which case we're in BIG trouble!)
   // bInWater = MercInWater(pSoldier);
 
   // check if standing in tear gas without a gas mask on
-  bInGas = InGas(pSoldier, pSoldier.value.sGridNo);
+  bInGas = InGas(pSoldier, pSoldier.sGridNo);
 
   ////////////////////////////////////////////////////////////////////////////
   // WHEN IN GAS, GO TO NEAREST REACHABLE SPOT OF UNGASSED LAND
   ////////////////////////////////////////////////////////////////////////////
 
   if (bInGas && ubCanMove) {
-    pSoldier.value.usActionData = FindNearestUngassedLand(pSoldier);
+    pSoldier.usActionData = FindNearestUngassedLand(pSoldier);
 
-    if (pSoldier.value.usActionData != NOWHERE) {
+    if (pSoldier.usActionData != NOWHERE) {
       return Enum289.AI_ACTION_LEAVE_WATER_GAS;
     }
   }
@@ -587,18 +587,18 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
   // CALL FOR AID IF HURT
   ////////////////////////////////////////////////////////////////////////////
   if (CAN_CALL(pSoldier)) {
-    if ((pSoldier.value.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.value.bTeam].bMenInSector > 1)) {
-      if (pSoldier.value.bLife < pSoldier.value.bOldLife) {
+    if ((pSoldier.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1)) {
+      if (pSoldier.bLife < pSoldier.bOldLife) {
         // got injured, maybe call
-        if ((pSoldier.value.bOldLife == pSoldier.value.bLifeMax) && (pSoldier.value.bOldLife - pSoldier.value.bLife > 10)) {
+        if ((pSoldier.bOldLife == pSoldier.bLifeMax) && (pSoldier.bOldLife - pSoldier.bLife > 10)) {
           // hurt for first time!
-          pSoldier.value.usActionData = Enum288.CALL_CRIPPLED;
-          pSoldier.value.bOldLife = pSoldier.value.bLife; // don't want to call more than once
+          pSoldier.usActionData = Enum288.CALL_CRIPPLED;
+          pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
           return Enum289.AI_ACTION_CREATURE_CALL;
-        } else if (pSoldier.value.bLifeMax / pSoldier.value.bLife > 2) {
+        } else if (pSoldier.bLifeMax / pSoldier.bLife > 2) {
           // crippled, 1/3 or less health!
-          pSoldier.value.usActionData = Enum288.CALL_ATTACKED;
-          pSoldier.value.bOldLife = pSoldier.value.bLife; // don't want to call more than once
+          pSoldier.usActionData = Enum288.CALL_ATTACKED;
+          pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
           return Enum289.AI_ACTION_CREATURE_CALL;
         }
       }
@@ -610,8 +610,8 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
   ////////////////////////////////////////////////////////////////////////
 
   // if our breath is running a bit low, and we're not in water or under fire
-  if ((pSoldier.value.bBreath < 25) /*&& !bInWater*/ && !pSoldier.value.bUnderFire) {
-    pSoldier.value.usActionData = NOWHERE;
+  if ((pSoldier.bBreath < 25) /*&& !bInWater*/ && !pSoldier.bUnderFire) {
+    pSoldier.usActionData = NOWHERE;
     return Enum289.AI_ACTION_NONE;
   }
 
@@ -621,8 +621,8 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
 
   // if we're a computer merc, and we have the action points remaining to RADIO
   // (we never want NPCs to choose to radio if they would have to wait a turn)
-  if (CAN_CALL(pSoldier) && (!gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition)) {
-    if ((pSoldier.value.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.value.bTeam].bMenInSector > 1)) {
+  if (CAN_CALL(pSoldier) && (!gTacticalStatus.Team[pSoldier.bTeam].bAwareOfOpposition)) {
+    if ((pSoldier.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1)) {
       // if there hasn't been a general sighting call sent yet
 
       // might want to check the specifics of who we see
@@ -630,20 +630,20 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
 
       if (iChance) {
         if (PreRandom(100) < iChance) {
-          pSoldier.value.usActionData = Enum288.CALL_1_PREY;
+          pSoldier.usActionData = Enum288.CALL_1_PREY;
           return Enum289.AI_ACTION_CREATURE_CALL;
         }
       }
     }
   }
 
-  if (pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE) {
+  if (pSoldier.bMobility != Enum295.CREATURE_IMMOBILE) {
     if (FindAIUsableObjClass(pSoldier, IC_WEAPON) == ITEM_NOT_FOUND) {
       // probably a baby bug... run away! run away!
       // look for best place to RUN AWAY to (farthest from the closest threat)
-      pSoldier.value.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
+      pSoldier.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_RUN_AWAY;
       } else {
         return Enum289.AI_ACTION_NONE;
@@ -651,14 +651,14 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
     }
 
     // Respond to call if any
-    if (CAN_LISTEN_TO_CALL(pSoldier) && pSoldier.value.ubCaller != NOBODY) {
-      if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.sCallerGridNo) <= STOPSHORTDIST) {
+    if (CAN_LISTEN_TO_CALL(pSoldier) && pSoldier.ubCaller != NOBODY) {
+      if (PythSpacesAway(pSoldier.sGridNo, pSoldier.sCallerGridNo) <= STOPSHORTDIST) {
         // call completed... hmm, nothing found
-        pSoldier.value.ubCaller = NOBODY;
+        pSoldier.ubCaller = NOBODY;
       } else {
-        pSoldier.value.usActionData = InternalGoAsFarAsPossibleTowards(pSoldier, pSoldier.value.sCallerGridNo, -1, Enum289.AI_ACTION_SEEK_FRIEND, FLAG_STOPSHORT);
+        pSoldier.usActionData = InternalGoAsFarAsPossibleTowards(pSoldier, pSoldier.sCallerGridNo, -1, Enum289.AI_ACTION_SEEK_FRIEND, FLAG_STOPSHORT);
 
-        if (pSoldier.value.usActionData != NOWHERE) {
+        if (pSoldier.usActionData != NOWHERE) {
           return Enum289.AI_ACTION_SEEK_FRIEND;
         }
       }
@@ -673,10 +673,10 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
       //////////////////////////////////////////////////////////////////////
 
       // try to move towards him
-      pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestDisturbance, Enum289.AI_ACTION_SEEK_OPPONENT);
+      pSoldier.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestDisturbance, Enum289.AI_ACTION_SEEK_OPPONENT);
 
       // if it's possible
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_SEEK_OPPONENT;
       }
     }
@@ -684,16 +684,16 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
     ////////////////////////////////////////////////////////////////////////////
     // TAKE A BITE, PERHAPS
     ////////////////////////////////////////////////////////////////////////////
-    if (pSoldier.value.bHunting) {
-      pSoldier.value.usActionData = FindNearestRottingCorpse(pSoldier);
+    if (pSoldier.bHunting) {
+      pSoldier.usActionData = FindNearestRottingCorpse(pSoldier);
       // need smell/visibility check?
-      if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.usActionData) < MAX_EAT_DIST) {
+      if (PythSpacesAway(pSoldier.sGridNo, pSoldier.usActionData) < MAX_EAT_DIST) {
         let sGridNo: INT16;
 
-        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.value.usActionData, addressof(ubOpponentDir), addressof(sAdjustedGridNo), false, false);
+        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.usActionData, addressof(ubOpponentDir), addressof(sAdjustedGridNo), false, false);
 
         if (sGridNo != -1) {
-          pSoldier.value.usActionData = sGridNo;
+          pSoldier.usActionData = sGridNo;
           return Enum289.AI_ACTION_APPROACH_MERC;
         }
       }
@@ -709,33 +709,33 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
     ////////////////////////////////////////////////////////////////////////////
     // LOOK AROUND TOWARD CLOSEST KNOWN OPPONENT, IF KNOWN
     ////////////////////////////////////////////////////////////////////////////
-    if (GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) {
+    if (GetAPsToLook(pSoldier) <= pSoldier.bActionPoints) {
       // determine the location of the known closest opponent
       // (don't care if he's conscious, don't care if he's reachable at all)
       sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
 
       if (sClosestOpponent != NOWHERE) {
         // determine direction from this soldier to the closest opponent
-        ubOpponentDir = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));
+        ubOpponentDir = atan8(CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));
 
         // if soldier is not already facing in that direction,
         // and the opponent is close enough that he could possibly be seen
         // note, have to change this to use the level returned from ClosestKnownOpponent
         sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sClosestOpponent, 0);
 
-        if ((pSoldier.value.bDirection != ubOpponentDir) && (PythSpacesAway(pSoldier.value.sGridNo, sClosestOpponent) <= sDistVisible)) {
+        if ((pSoldier.bDirection != ubOpponentDir) && (PythSpacesAway(pSoldier.sGridNo, sClosestOpponent) <= sDistVisible)) {
           // set base chance according to orders
-          if ((pSoldier.value.bOrders == Enum241.STATIONARY) || (pSoldier.value.bOrders == Enum241.ONGUARD))
+          if ((pSoldier.bOrders == Enum241.STATIONARY) || (pSoldier.bOrders == Enum241.ONGUARD))
             iChance = 50;
           else // all other orders
             iChance = 25;
 
-          if (pSoldier.value.bAttitude == Enum242.DEFENSIVE)
+          if (pSoldier.bAttitude == Enum242.DEFENSIVE)
             iChance += 25;
 
           // if ( (INT16)PreRandom(100) < iChance && InternalIsValidStance( pSoldier, ubOpponentDir, ANIM_STAND ) )
           if (PreRandom(100) < iChance && ValidCreatureTurn(pSoldier, ubOpponentDir)) {
-            pSoldier.value.usActionData = ubOpponentDir;
+            pSoldier.usActionData = ubOpponentDir;
 
             return Enum289.AI_ACTION_CHANGE_FACING;
           }
@@ -754,12 +754,12 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
   // DO NOTHING: Not enough points left to move, so save them for next turn
   ////////////////////////////////////////////////////////////////////////////
 
-  pSoldier.value.usActionData = NOWHERE;
+  pSoldier.usActionData = NOWHERE;
 
   return Enum289.AI_ACTION_NONE;
 }
 
-function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   // monster AI - hostile mammals in sense range
   let sClosestOpponent: INT16;
   let sBestCover: INT16 = NOWHERE;
@@ -781,12 +781,12 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let fChangeLevel: boolean;
 
   // if we have absolutely no action points, we can't do a thing under BLACK!
-  if (!pSoldier.value.bActionPoints) {
-    pSoldier.value.usActionData = NOWHERE;
+  if (!pSoldier.bActionPoints) {
+    pSoldier.usActionData = NOWHERE;
     return Enum289.AI_ACTION_NONE;
   }
 
-  if (pSoldier.value.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.value.bActionPoints < pSoldier.value.bInitialActionPoints) {
+  if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.bActionPoints < pSoldier.bInitialActionPoints) {
     return Enum289.AI_ACTION_NONE;
   }
 
@@ -795,8 +795,8 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   if (CAN_CALL(pSoldier)) {
-    if ((pSoldier.value.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.value.bTeam].bMenInSector > 1)) {
-      if (pSoldier.value.bLife < pSoldier.value.bOldLife) {
+    if ((pSoldier.bActionPoints >= AP_RADIO) && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1)) {
+      if (pSoldier.bLife < pSoldier.bOldLife) {
         // got injured, maybe call
         /*
         // don't call when crippled and have target... save breath for attacking!
@@ -809,25 +809,25 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         }
         else
         */
-        if (pSoldier.value.bLifeMax / pSoldier.value.bLife > 2) {
+        if (pSoldier.bLifeMax / pSoldier.bLife > 2) {
           // crippled, 1/3 or less health!
-          pSoldier.value.usActionData = Enum288.CALL_ATTACKED;
-          pSoldier.value.bOldLife = pSoldier.value.bLife; // don't want to call more than once
+          pSoldier.usActionData = Enum288.CALL_ATTACKED;
+          pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
           return Enum289.AI_ACTION_CREATURE_CALL;
         }
       } else {
-        if (!(gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition)) {
-          if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+        if (!(gTacticalStatus.Team[pSoldier.bTeam].bAwareOfOpposition)) {
+          if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
             uiChance = 100;
           } else {
-            uiChance = 20 * pSoldier.value.bOppCnt;
+            uiChance = 20 * pSoldier.bOppCnt;
           }
           if (Random(100) < uiChance) {
             // alert! alert!
-            if (pSoldier.value.bOppCnt > 1) {
-              pSoldier.value.usActionData = Enum288.CALL_MULTIPLE_PREY;
+            if (pSoldier.bOppCnt > 1) {
+              pSoldier.usActionData = Enum288.CALL_MULTIPLE_PREY;
             } else {
-              pSoldier.value.usActionData = Enum288.CALL_1_PREY;
+              pSoldier.usActionData = Enum288.CALL_1_PREY;
             }
             return Enum289.AI_ACTION_CREATURE_CALL;
           }
@@ -837,26 +837,26 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   // can this guy move to any of the neighbouring squares ? (sets TRUE/FALSE)
-  ubCanMove = ((pSoldier.value.bMobility != Enum295.CREATURE_IMMOBILE) && (pSoldier.value.bActionPoints >= MinPtsToMove(pSoldier)));
+  ubCanMove = ((pSoldier.bMobility != Enum295.CREATURE_IMMOBILE) && (pSoldier.bActionPoints >= MinPtsToMove(pSoldier)));
 
   // determine if we happen to be in water (in which case we're in BIG trouble!)
   // bInWater = MercInWater(pSoldier);
 
   // check if standing in tear gas without a gas mask on
-  bInGas = InGas(pSoldier, pSoldier.value.sGridNo);
+  bInGas = InGas(pSoldier, pSoldier.sGridNo);
 
   ////////////////////////////////////////////////////////////////////////////
   // IF GASSED, OR REALLY TIRED (ON THE VERGE OF COLLAPSING), TRY TO RUN AWAY
   ////////////////////////////////////////////////////////////////////////////
 
   // if we're desperately short on breath (it's OK if we're in water, though!)
-  if (bInGas || (pSoldier.value.bBreath < 5)) {
+  if (bInGas || (pSoldier.bBreath < 5)) {
     // if soldier has enough APs left to move at least 1 square's worth
     if (ubCanMove) {
       // look for best place to RUN AWAY to (farthest from the closest threat)
-      pSoldier.value.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
+      pSoldier.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_RUN_AWAY;
       }
     }
@@ -868,9 +868,9 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   // if soldier in water/gas has enough APs left to move at least 1 square
   if ((/*bInWater ||*/ bInGas) && ubCanMove) {
-    pSoldier.value.usActionData = FindNearestUngassedLand(pSoldier);
+    pSoldier.usActionData = FindNearestUngassedLand(pSoldier);
 
-    if (pSoldier.value.usActionData != NOWHERE) {
+    if (pSoldier.usActionData != NOWHERE) {
       return Enum289.AI_ACTION_LEAVE_WATER_GAS;
     }
   }
@@ -880,16 +880,16 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   // NPCs in water/tear gas without masks are not permitted to shoot/stab/throw
-  if ((pSoldier.value.bActionPoints < 2) /*|| bInWater*/ || bInGas) {
-    bCanAttack = false;
+  if ((pSoldier.bActionPoints < 2) /*|| bInWater*/ || bInGas) {
+    bCanAttack = 0;
   } else {
     bCanAttack = CanNPCAttack(pSoldier);
-    if (bCanAttack != true) {
+    if (bCanAttack != 1) {
       if (bCanAttack == NOSHOOT_NOAMMO) {
-        pSoldier.value.inv[Enum261.HANDPOS].fFlags |= OBJECT_AI_UNUSABLE;
+        pSoldier.inv[Enum261.HANDPOS].fFlags |= OBJECT_AI_UNUSABLE;
 
         // try to find a bladed weapon
-        if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+        if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
           bWeaponIn = FindObjClass(pSoldier, IC_TENTACLES);
         } else {
           bWeaponIn = FindObjClass(pSoldier, IC_BLADE);
@@ -897,14 +897,14 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
         if (bWeaponIn != NO_SLOT) {
           RearrangePocket(pSoldier, Enum261.HANDPOS, bWeaponIn, FOREVER);
-          bCanAttack = true;
+          bCanAttack = 1;
         } else {
           // infants who exhaust their spit should flee!
           fRunAway = true;
-          bCanAttack = false;
+          bCanAttack = 0;
         }
       } else {
-        bCanAttack = false;
+        bCanAttack = 0;
       }
     }
   }
@@ -922,13 +922,13 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // FIRE A GUN AT AN OPPONENT
     //////////////////////////////////////////////////////////////////////////
 
-    pSoldier.value.bAimShotLocation = AIM_SHOT_RANDOM;
+    pSoldier.bAimShotLocation = AIM_SHOT_RANDOM;
 
     bWeaponIn = FindObjClass(pSoldier, IC_GUN);
 
     if (bWeaponIn != NO_SLOT) {
-      if (Item[pSoldier.value.inv[bWeaponIn].usItem].usItemClass == IC_GUN && pSoldier.value.inv[bWeaponIn].bGunStatus >= USABLE) {
-        if (pSoldier.value.inv[bWeaponIn].ubGunShotsLeft > 0) {
+      if (Item[pSoldier.inv[bWeaponIn].usItem].usItemClass == IC_GUN && pSoldier.inv[bWeaponIn].bGunStatus >= USABLE) {
+        if (pSoldier.inv[bWeaponIn].ubGunShotsLeft > 0) {
           bSpitIn = bWeaponIn;
           // if it's in another pocket, swap it into his hand temporarily
           if (bWeaponIn != Enum261.HANDPOS) {
@@ -938,10 +938,10 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           // now it better be a gun, or the guy can't shoot (but has other attack(s))
 
           // get the minimum cost to attack the same target with this gun
-          ubMinAPCost = MinAPsToAttack(pSoldier, pSoldier.value.sLastTarget, DONTADDTURNCOST);
+          ubMinAPCost = MinAPsToAttack(pSoldier, pSoldier.sLastTarget, DONTADDTURNCOST);
 
           // if we have enough action points to shoot with this gun
-          if (pSoldier.value.bActionPoints >= ubMinAPCost) {
+          if (pSoldier.bActionPoints >= ubMinAPCost) {
             // look around for a worthy target (which sets BestShot.ubPossible)
             CalcBestShot(pSoldier, addressof(BestShot));
 
@@ -953,7 +953,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
               //  rare occasions, we may not be able to shoot a healthy guy, too)
               if ((Menptr[BestShot.ubOpponent].bLife < OKLIFE) && !Menptr[BestShot.ubOpponent].bService) {
                 // if our attitude is NOT aggressive
-                if (pSoldier.value.bAttitude != Enum242.AGGRESSIVE) {
+                if (pSoldier.bAttitude != Enum242.AGGRESSIVE) {
                   // get the location of the closest CONSCIOUS reachable opponent
                   sClosestDisturbance = ClosestReachableDisturbance(pSoldier, false, addressof(fChangeLevel));
 
@@ -988,9 +988,9 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     //////////////////////////////////////////////////////////////////////////
 
     // if soldier has a knife in his hand
-    if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
+    if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
       bWeaponIn = FindObjClass(pSoldier, IC_TENTACLES);
-    } else if (pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
+    } else if (pSoldier.ubBodyType == Enum194.BLOODCAT) {
       // 1 in 3 attack with teeth, otherwise with claws
       if (PreRandom(3)) {
         bWeaponIn = FindObj(pSoldier, Enum225.BLOODCAT_CLAW_ATTACK);
@@ -1018,19 +1018,19 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
 
       // get the minimum cost to attack with this knife
-      ubMinAPCost = MinAPsToAttack(pSoldier, pSoldier.value.sLastTarget, DONTADDTURNCOST);
+      ubMinAPCost = MinAPsToAttack(pSoldier, pSoldier.sLastTarget, DONTADDTURNCOST);
 
       // sprintf(tempstr,"%s - ubMinAPCost = %d",pSoldier->name,ubMinAPCost);
       // PopMessage(tempstr);
 
       // if we can afford the minimum AP cost to stab with this knife weapon
-      if (pSoldier.value.bActionPoints >= ubMinAPCost) {
+      if (pSoldier.bActionPoints >= ubMinAPCost) {
         // then look around for a worthy target (which sets BestStab.ubPossible)
 
-        if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
-          CalcTentacleAttack(pSoldier, addressof(CurrStab));
+        if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
+          CalcTentacleAttack(pSoldier, CurrStab);
         } else {
-          CalcBestStab(pSoldier, addressof(CurrStab), true);
+          CalcBestStab(pSoldier, CurrStab, true);
         }
 
         if (CurrStab.ubPossible) {
@@ -1045,7 +1045,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
         if (CurrStab.iAttackValue > BestStab.iAttackValue) {
           CurrStab.bWeaponIn = bWeaponIn;
-          memcpy(addressof(BestStab), addressof(CurrStab), sizeof(BestStab));
+          copyAttackType(BestStab, CurrStab);
         }
       }
     }
@@ -1070,11 +1070,11 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // copy the information on the best action selected into BestAttack struct
       switch (ubBestAttackAction) {
         case Enum289.AI_ACTION_FIRE_GUN:
-          memcpy(addressof(BestAttack), addressof(BestShot), sizeof(BestAttack));
+          copyAttackType(BestAttack, BestShot);
           break;
 
         case Enum289.AI_ACTION_KNIFE_MOVE:
-          memcpy(addressof(BestAttack), addressof(BestStab), sizeof(BestAttack));
+          copyAttackType(BestAttack, BestStab);
           break;
       }
 
@@ -1088,13 +1088,13 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // GO AHEAD & ATTACK!
       //////////////////////////////////////////////////////////////////////////
 
-      pSoldier.value.usActionData = BestAttack.sTarget;
-      pSoldier.value.bAimTime = BestAttack.ubAimTime;
+      pSoldier.usActionData = BestAttack.sTarget;
+      pSoldier.bAimTime = BestAttack.ubAimTime;
 
       if (ubBestAttackAction == Enum289.AI_ACTION_FIRE_GUN && BestAttack.ubChanceToReallyHit > 50) {
-        pSoldier.value.bAimShotLocation = AIM_SHOT_HEAD;
+        pSoldier.bAimShotLocation = AIM_SHOT_HEAD;
       } else {
-        pSoldier.value.bAimShotLocation = AIM_SHOT_RANDOM;
+        pSoldier.bAimShotLocation = AIM_SHOT_RANDOM;
       }
 
       return ubBestAttackAction;
@@ -1106,35 +1106,35 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   if (!fRunAway) {
-    if ((GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints)) {
+    if ((GetAPsToLook(pSoldier) <= pSoldier.bActionPoints)) {
       // determine the location of the known closest opponent
       // (don't care if he's conscious, don't care if he's reachable at all)
       sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
       // if we have a closest reachable opponent
       if (sClosestOpponent != NOWHERE) {
-        if (ubCanMove && PythSpacesAway(pSoldier.value.sGridNo, sClosestOpponent) > 2) {
+        if (ubCanMove && PythSpacesAway(pSoldier.sGridNo, sClosestOpponent) > 2) {
           if (bSpitIn != NO_SLOT) {
-            pSoldier.value.usActionData = AdvanceToFiringRange(pSoldier, sClosestOpponent);
-            if (pSoldier.value.usActionData == NOWHERE) {
-              pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
+            pSoldier.usActionData = AdvanceToFiringRange(pSoldier, sClosestOpponent);
+            if (pSoldier.usActionData == NOWHERE) {
+              pSoldier.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
             }
           } else {
-            pSoldier.value.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
+            pSoldier.usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestOpponent, Enum289.AI_ACTION_SEEK_OPPONENT);
           }
         } else {
-          pSoldier.value.usActionData = NOWHERE;
+          pSoldier.usActionData = NOWHERE;
         }
 
-        if (pSoldier.value.usActionData != NOWHERE) // charge!
+        if (pSoldier.usActionData != NOWHERE) // charge!
         {
           return Enum289.AI_ACTION_SEEK_OPPONENT;
-        } else if (GetAPsToLook(pSoldier) <= pSoldier.value.bActionPoints) // turn to face enemy
+        } else if (GetAPsToLook(pSoldier) <= pSoldier.bActionPoints) // turn to face enemy
         {
-          bDirection = atan8(CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));
+          bDirection = atan8(CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), CenterX(sClosestOpponent), CenterY(sClosestOpponent));
 
           // if we're not facing towards him
-          if (pSoldier.value.bDirection != bDirection && ValidCreatureTurn(pSoldier, bDirection)) {
-            pSoldier.value.usActionData = bDirection;
+          if (pSoldier.bDirection != bDirection && ValidCreatureTurn(pSoldier, bDirection)) {
+            pSoldier.usActionData = bDirection;
 
             return Enum289.AI_ACTION_CHANGE_FACING;
           }
@@ -1146,9 +1146,9 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     if (ubCanMove) {
       // look for best place to RUN AWAY to (farthest from the closest threat)
       // pSoldier->usActionData = RunAway( pSoldier );
-      pSoldier.value.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
+      pSoldier.usActionData = FindSpotMaxDistFromOpponents(pSoldier);
 
-      if (pSoldier.value.usActionData != NOWHERE) {
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_RUN_AWAY;
       }
     }
@@ -1158,14 +1158,14 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
 
   // by default, if everything else fails, just stand in place and wait
-  pSoldier.value.usActionData = NOWHERE;
+  pSoldier.usActionData = NOWHERE;
   return Enum289.AI_ACTION_NONE;
 }
 
-export function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CreatureDecideAction(pSoldier: SOLDIERTYPE): INT8 {
   let bAction: INT8 = Enum289.AI_ACTION_NONE;
 
-  switch (pSoldier.value.bAlertStatus) {
+  switch (pSoldier.bAlertStatus) {
     case Enum243.STATUS_GREEN:
       bAction = CreatureDecideActionGreen(pSoldier);
       break;
@@ -1186,7 +1186,7 @@ export function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return bAction;
 }
 
-export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function CreatureDecideAlertStatus(pSoldier: SOLDIERTYPE): void {
   let bOldStatus: INT8;
   let iDummy: INT32;
   let fClimbDummy: boolean;
@@ -1199,51 +1199,51 @@ export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void 
   // BLACK - Currently has one or more OPPONENTS in sight
 
   // set mobility
-  switch (pSoldier.value.ubBodyType) {
+  switch (pSoldier.ubBodyType) {
     case Enum194.ADULTFEMALEMONSTER:
     case Enum194.YAF_MONSTER:
     case Enum194.AM_MONSTER:
     case Enum194.YAM_MONSTER:
     case Enum194.INFANT_MONSTER:
-      pSoldier.value.bMobility = Enum295.CREATURE_MOBILE;
+      pSoldier.bMobility = Enum295.CREATURE_MOBILE;
       break;
     case Enum194.QUEENMONSTER:
-      pSoldier.value.bMobility = Enum295.CREATURE_IMMOBILE;
+      pSoldier.bMobility = Enum295.CREATURE_IMMOBILE;
       break;
     case Enum194.LARVAE_MONSTER:
-      pSoldier.value.bMobility = Enum295.CREATURE_CRAWLER;
+      pSoldier.bMobility = Enum295.CREATURE_CRAWLER;
       break;
   }
 
-  if (pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER) {
+  if (pSoldier.ubBodyType == Enum194.LARVAE_MONSTER) {
     // larvae never do anything much!
-    pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
+    pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
     return;
   }
 
   // save the man's previous status
-  bOldStatus = pSoldier.value.bAlertStatus;
+  bOldStatus = pSoldier.bAlertStatus;
 
   // determine the current alert status for this category of man
-  if (pSoldier.value.bOppCnt > 0) // opponent(s) in sight
+  if (pSoldier.bOppCnt > 0) // opponent(s) in sight
   {
     // must search through list of people to see if any of them have
     // attacked us, or do some check to see if we have been attacked
     switch (bOldStatus) {
       case Enum243.STATUS_GREEN:
       case Enum243.STATUS_YELLOW:
-        pSoldier.value.bAlertStatus = Enum243.STATUS_BLACK;
+        pSoldier.bAlertStatus = Enum243.STATUS_BLACK;
         break;
       case Enum243.STATUS_RED:
       case Enum243.STATUS_BLACK:
-        pSoldier.value.bAlertStatus = Enum243.STATUS_BLACK;
+        pSoldier.bAlertStatus = Enum243.STATUS_BLACK;
     }
   } else // no opponents are in sight
   {
     switch (bOldStatus) {
       case Enum243.STATUS_BLACK:
         // then drop back to RED status
-        pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
+        pSoldier.bAlertStatus = Enum243.STATUS_RED;
         break;
 
       case Enum243.STATUS_RED:
@@ -1252,28 +1252,28 @@ export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void 
 
       case Enum243.STATUS_YELLOW:
         // if all enemies have been RED alerted, or we're under fire
-        if (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire) {
-          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
+        if (gTacticalStatus.Team[pSoldier.bTeam].bAwareOfOpposition || pSoldier.bUnderFire) {
+          pSoldier.bAlertStatus = Enum243.STATUS_RED;
         } else {
           // if we are NOT aware of any uninvestigated noises right now
           // and we are not currently in the middle of an action
           // (could still be on his way heading to investigate a noise!)
-          if ((MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE) && !pSoldier.value.bActionInProgress) {
+          if ((MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE) && !pSoldier.bActionInProgress) {
             // then drop back to GREEN status
-            pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
+            pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
           }
         }
         break;
 
       case Enum243.STATUS_GREEN:
         // if all enemies have been RED alerted, or we're under fire
-        if (gTacticalStatus.Team[pSoldier.value.bTeam].bAwareOfOpposition || pSoldier.value.bUnderFire) {
-          pSoldier.value.bAlertStatus = Enum243.STATUS_RED;
+        if (gTacticalStatus.Team[pSoldier.bTeam].bAwareOfOpposition || pSoldier.bUnderFire) {
+          pSoldier.bAlertStatus = Enum243.STATUS_RED;
         } else {
           // if we ARE aware of any uninvestigated noises right now
           if (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) != NOWHERE) {
             // then move up to YELLOW status
-            pSoldier.value.bAlertStatus = Enum243.STATUS_YELLOW;
+            pSoldier.bAlertStatus = Enum243.STATUS_YELLOW;
           }
         }
         break;
@@ -1282,32 +1282,32 @@ export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void 
   }
 
   // if the creatures alert status has changed in any way
-  if (pSoldier.value.bAlertStatus != bOldStatus) {
+  if (pSoldier.bAlertStatus != bOldStatus) {
     // HERE ARE TRYING TO AVOID NPCs SHUFFLING BACK & FORTH BETWEEN RED & BLACK
     // if either status is < RED (ie. anything but RED->BLACK && BLACK->RED)
-    if ((bOldStatus < Enum243.STATUS_RED) || (pSoldier.value.bAlertStatus < Enum243.STATUS_RED)) {
+    if ((bOldStatus < Enum243.STATUS_RED) || (pSoldier.bAlertStatus < Enum243.STATUS_RED)) {
       // force a NEW action decision on next pass through HandleManAI()
       SetNewSituation(pSoldier);
     }
 
     // if this guy JUST discovered that there were opponents here for sure...
-    if ((bOldStatus < Enum243.STATUS_RED) && (pSoldier.value.bAlertStatus >= Enum243.STATUS_RED)) {
+    if ((bOldStatus < Enum243.STATUS_RED) && (pSoldier.bAlertStatus >= Enum243.STATUS_RED)) {
       // might want to make custom to let them go anywhere
       CheckForChangingOrders(pSoldier);
     }
   } else // status didn't change
   {
     // if a guy on status GREEN or YELLOW is running low on breath
-    if (((pSoldier.value.bAlertStatus == Enum243.STATUS_GREEN) && (pSoldier.value.bBreath < 75)) || ((pSoldier.value.bAlertStatus == Enum243.STATUS_YELLOW) && (pSoldier.value.bBreath < 50))) {
+    if (((pSoldier.bAlertStatus == Enum243.STATUS_GREEN) && (pSoldier.bBreath < 75)) || ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (pSoldier.bBreath < 50))) {
       // as long as he's not in water (standing on a bridge is OK)
       if (!MercInWater(pSoldier)) {
         // force a NEW decision so that he can get some rest
         SetNewSituation(pSoldier);
 
         // current action will be canceled. if noise is no longer important
-        if ((pSoldier.value.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE)) {
+        if ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE)) {
           // then drop back to GREEN status
-          pSoldier.value.bAlertStatus = Enum243.STATUS_GREEN;
+          pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
           CheckForChangingOrders(pSoldier);
         }
       }
@@ -1315,18 +1315,18 @@ export function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void 
   }
 }
 
-function CrowDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function CrowDecideActionRed(pSoldier: SOLDIERTYPE): INT8 {
   // OK, Fly away!
   // HandleCrowFlyAway( pSoldier );
   if (!gfTurnBasedAI) {
-    pSoldier.value.usActionData = 30000;
+    pSoldier.usActionData = 30000;
     return Enum289.AI_ACTION_WAIT;
   } else {
     return Enum289.AI_ACTION_NONE;
   }
 }
 
-function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+function CrowDecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
   let sCorpseGridNo: INT16;
   let ubDirection: UINT8;
   let sFacingDir: INT16;
@@ -1336,23 +1336,23 @@ function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   if (sCorpseGridNo != NOWHERE) {
     // Are we close, if so , peck!
-    if (SpacesAway(pSoldier.value.sGridNo, sCorpseGridNo) < 2) {
+    if (SpacesAway(pSoldier.sGridNo, sCorpseGridNo) < 2) {
       // Change facing
       sFacingDir = GetDirectionFromGridNo(sCorpseGridNo, pSoldier);
 
-      if (sFacingDir != pSoldier.value.bDirection) {
-        pSoldier.value.usActionData = sFacingDir;
+      if (sFacingDir != pSoldier.bDirection) {
+        pSoldier.usActionData = sFacingDir;
         return Enum289.AI_ACTION_CHANGE_FACING;
       } else if (!gfTurnBasedAI) {
-        pSoldier.value.usActionData = 30000;
+        pSoldier.usActionData = 30000;
         return Enum289.AI_ACTION_WAIT;
       } else {
         return Enum289.AI_ACTION_NONE;
       }
     } else {
       // Walk to nearest one!
-      pSoldier.value.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, addressof(ubDirection));
-      if (pSoldier.value.usActionData != NOWHERE) {
+      pSoldier.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, addressof(ubDirection));
+      if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_GET_CLOSER;
       }
     }
@@ -1361,12 +1361,12 @@ function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return Enum289.AI_ACTION_NONE;
 }
 
-export function CrowDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  if (pSoldier.value.usAnimState == Enum193.CROW_FLY) {
+export function CrowDecideAction(pSoldier: SOLDIERTYPE): INT8 {
+  if (pSoldier.usAnimState == Enum193.CROW_FLY) {
     return Enum289.AI_ACTION_NONE;
   }
 
-  switch (pSoldier.value.bAlertStatus) {
+  switch (pSoldier.bAlertStatus) {
     case Enum243.STATUS_GREEN:
     case Enum243.STATUS_YELLOW:
       return CrowDecideActionGreen(pSoldier);

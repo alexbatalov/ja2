@@ -43,7 +43,7 @@ export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
   MsgBoxRect.iRight = sStartX + sPixLen;
   MsgBoxRect.iBottom = sStartY + 96;
 
-  RestrictMouseCursor(addressof(MsgBoxRect));
+  RestrictMouseCursor(MsgBoxRect);
 
   gubMessageBoxStatus = Enum52.MESSAGEBOX_WAIT;
 }
@@ -55,14 +55,14 @@ export function MessageBoxHandled(): boolean {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case ENTER:
-        case 'y':
-        case 'Y':
+        case 'y'.charCodeAt(0):
+        case 'Y'.charCodeAt(0):
           gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
           gfMessageBoxResult = true;
           break;
         case ESC:
-        case 'n':
-        case 'N':
+        case 'n'.charCodeAt(0):
+        case 'N'.charCodeAt(0):
           gubMessageBoxStatus = Enum52.MESSAGEBOX_DONE;
           gfMessageBoxResult = false;
           break;

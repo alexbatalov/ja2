@@ -437,7 +437,7 @@ function GetLaptopKeyboardInput(): void {
 // This is called only once at game initialization.
 export function LaptopScreenInit(): boolean {
   // Memset the whole structure, to make sure of no 'JUNK'
-  memset(addressof(LaptopSaveInfo), 0, sizeof(LaptopSaveInfoStruct));
+  resetLaptopSaveInfoStruct(LaptopSaveInfo);
 
   LaptopSaveInfo.gfNewGameLaptop = true;
 
@@ -3646,7 +3646,7 @@ function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: strin
   vs_desc.usWidth = LAPTOP_TITLE_BAR_WIDTH;
   vs_desc.usHeight = LAPTOP_TITLE_BAR_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiTitleBarSurface))) {
+  if (!AddVideoSurface(vs_desc, addressof(guiTitleBarSurface))) {
     return false;
   }
 
@@ -4277,7 +4277,7 @@ function LoadDesktopBackground(): boolean {
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = GetMLGFilename(Enum326.MLG_DESKTOP);
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiDESKTOP))) {
+  if (!AddVideoSurface(vs_desc, addressof(guiDESKTOP))) {
     return false;
   }
 

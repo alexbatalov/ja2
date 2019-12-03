@@ -52,7 +52,7 @@ type TRAILCELLTYPE = UINT16;
 /////////////////////////////////////////////////
 interface path_t {
   iLocation: INT32; // 4
-  pNext: Pointer<path_t>[] /* [ABSMAX_SKIPLIST_LEVEL] */; // 4 * MAX_SKIPLIST_LEVEL (5) = 20
+  pNext: path_t[] /* Pointer<path_t>[ABSMAX_SKIPLIST_LEVEL] */; // 4 * MAX_SKIPLIST_LEVEL (5) = 20
   sPathNdx: INT16; // 2
   usCostSoFar: TRAILCELLTYPE; // 2
   usCostToGo: TRAILCELLTYPE; // 2
@@ -62,11 +62,46 @@ interface path_t {
   ubLegDistance: UINT8; // 1
 }
 
-interface trail_ts {
+function createPath(): path_t {
+  return {
+    iLocation: 0,
+    pNext: createArray(ABSMAX_SKIPLIST_LEVEL, <path_t><unknown>null),
+    sPathNdx: 0,
+    usCostSoFar: 0,
+    usCostToGo: 0,
+    usTotalCost: 0,
+    bLevel: 0,
+    ubTotalAPCost: 0,
+    ubLegDistance: 0,
+  };
+}
+
+function resetPath(o: path_t) {
+  o.iLocation = 0;
+  o.pNext.fill(<path_t><unknown>null),
+  o.sPathNdx = 0;
+  o.usCostSoFar = 0;
+  o.usCostToGo = 0;
+  o.usTotalCost = 0;
+  o.bLevel = 0;
+  o.ubTotalAPCost = 0;
+  o.ubLegDistance = 0;
+}
+
+interface trail_t {
   nextLink: INT16;
   stepDir: INT8;
   fFlags: INT8;
   sGridNo: INT16;
+}
+
+function createTrail(): trail_t {
+  return {
+    nextLink: 0,
+    stepDir: 0,
+    fFlags: 0,
+    sGridNo: 0,
+  };
 }
 
 const enum Enum248 {
@@ -79,7 +114,7 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 
-/* static */ let pathQ: Pointer<path_t>;
+/* static */ let pathQ: path_t[] /* Pointer<path_t> */;
 /* static */ let gusPathShown: UINT16;
 /* static */ let gusAPtsToMove: UINT16;
 /* static */ let queRequests: INT32;
@@ -120,18 +155,18 @@ const SETLOC = (str, loc) => {
   (str).iLocation = loc;
 };
 
-/* static */ let trailCost: Pointer<TRAILCELLTYPE>;
-/* static */ let trailCostUsed: Pointer<UINT8>;
+/* static */ let trailCost: TRAILCELLTYPE[] /* Pointer<TRAILCELLTYPE> */;
+/* static */ let trailCostUsed: UINT8[] /* Pointer<UINT8> */;
 /* static */ let gubGlobalPathCount: UINT8 = 0;
-/* static */ let trailTree: Pointer<trail_t>;
+/* static */ let trailTree: trail_t[] /* Pointer<trail_t> */;
 
 /* static */ let trailTreeNdx: number = 0;
 
 const QHEADNDX = (0);
 const QPOOLNDX = () => (iMaxPathQ - 1);
 
-/* static */ let pQueueHead: Pointer<path_t>;
-/* static */ let pClosedHead: Pointer<path_t>;
+/* static */ let pQueueHead: path_t /* Pointer<path_t> */;
+/* static */ let pClosedHead: path_t /* Pointer<path_t> */;
 
 const pathQNotEmpty = () => (pQueueHead.value.pNext[0] != null);
 const pathFound = () => (pQueueHead.value.pNext[0].value.iLocation == iDestination);
@@ -183,8 +218,8 @@ const pathNotYetFound = () => (!pathFound());
 
 // experiment 1, seemed to fail
 const ClosedListAdd = (pNew) => {
-  pNew.value.pNext[0] = pClosedHead.value.pNext[0];
-  pClosedHead.value.pNext[0] = pNew;
+  pNew.value.pNext[0] = pClosedHead.pNext[0];
+  pClosedHead.pNext[0] = pNew;
   pNew.value.iLocation = -1;
   iClosedListSize++;
 };
@@ -195,8 +230,8 @@ const ClosedListGet = (pNew) => {
     queRequests++;
     pNew.value.bLevel = RandomSkipListLevel();
   } else if (iClosedListSize > 0) {
-    pNew = pClosedHead.value.pNext[0];
-    pClosedHead.value.pNext[0] = pNew.value.pNext[0];
+    pNew = pClosedHead.pNext[0];
+    pClosedHead.pNext[0] = pNew.value.pNext[0];
     iClosedListSize--;
     queRequests++;
     memset(pNew.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
@@ -328,8 +363,8 @@ let gfPlotDirectPath: boolean = false;
 export let gfEstimatePath: boolean = false;
 export let gfPathAroundObstacles: boolean = true;
 
-/* static */ let guiPlottedPath: UINT32[] /* [256] */;
-export let guiPathingData: UINT32[] /* [256] */;
+/* static */ let guiPlottedPath: UINT32[] /* [256] */ = createArray(256, 0);
+export let guiPathingData: UINT32[] /* [256] */ = createArray(256, 0);
 /* static */ let giPathDataSize: INT32;
 /* static */ let giPlotCnt: INT32;
 /* static */ let guiEndPlotGridNo: UINT32;
@@ -359,24 +394,23 @@ function RandomSkipListLevel(): INT8 {
 }
 
 export function InitPathAI(): boolean {
-  pathQ = MemAlloc(ABSMAX_PATHQ * sizeof(path_t));
-  trailCost = MemAlloc(MAPLENGTH * sizeof(TRAILCELLTYPE));
-  trailCostUsed = MemAlloc(MAPLENGTH);
-  trailTree = MemAlloc(ABSMAX_TRAIL_TREE * sizeof(trail_t));
+  pathQ = createArrayFrom(ABSMAX_PATHQ, createPath);
+  trailCost = createArray(MAPLENGTH, 0);
+  trailCostUsed = createArray(MAPLENGTH, 0);
+  trailTree = createArrayFrom(ABSMAX_TRAIL_TREE, createTrail);
   if (!pathQ || !trailCost || !trailCostUsed || !trailTree) {
     return false;
   }
-  pQueueHead = addressof(pathQ[QHEADNDX]);
-  pClosedHead = addressof(pathQ[QPOOLNDX()]);
-  memset(trailCostUsed, 0, MAPLENGTH);
+  pQueueHead = pathQ[QHEADNDX];
+  pClosedHead = pathQ[QPOOLNDX()];
   return true;
 }
 
 export function ShutDownPathAI(): void {
-  MemFree(pathQ);
-  MemFree(trailCostUsed);
-  MemFree(trailCost);
-  MemFree(trailTree);
+  pathQ = <path_t[]><unknown>null;
+  trailCostUsed = <UINT8[]><unknown>null;
+  trailCost = <TRAILCELLTYPE[]><unknown>null;
+  trailTree = <trail_t[]><unknown>null;
 }
 
 function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32, iNewMaxPathQ: INT32): void {
@@ -389,8 +423,8 @@ function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32,
   iMaxTrailTree = iNewMaxTrailTree;
   iMaxPathQ = iNewMaxPathQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = addressof(pathQ[QPOOLNDX()]);
-  memset(pClosedHead, 0, sizeof(path_t));
+  pClosedHead = pathQ[QPOOLNDX()];
+  resetPath(pClosedHead);
 }
 
 function RestorePathAIToDefaults(): void {
@@ -398,14 +432,14 @@ function RestorePathAIToDefaults(): void {
   iMaxTrailTree = MAX_TRAIL_TREE;
   iMaxPathQ = MAX_PATHQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = addressof(pathQ[QPOOLNDX()]);
-  memset(pClosedHead, 0, sizeof(path_t));
+  pClosedHead = pathQ[QPOOLNDX()];
+  resetPath(pClosedHead);
 }
 
 ///////////////////////////////////////////////////////////////////////
 //	FINDBESTPATH                                                   /
 ////////////////////////////////////////////////////////////////////////
-export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
+export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
   let iDestination: INT32 = sDestination;
   let iOrigination: INT32;
   let iCnt: INT32 = -1;
@@ -441,7 +475,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
   // INT32 iLastDir, iPrevToLastDir;
   // INT8 bVehicleCheckDir;
   // UINT16 adjLoc;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
+  let pStructureFileRef: STRUCTURE_FILE_REF | null = null;
   let usAnimSurface: UINT16;
   // INT32 iCnt2, iCnt3;
 
@@ -472,10 +506,10 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
   let fTurnBased: boolean;
   let fPathingForPlayer: boolean;
   let iDoorGridNo: INT32 = -1;
-  let fDoorIsObstacleIfClosed: boolean = 0; // if false, door is obstacle if it is open
-  let pDoorStatus: Pointer<DOOR_STATUS>;
-  let pDoor: Pointer<DOOR>;
-  let pDoorStructure: Pointer<STRUCTURE>;
+  let fDoorIsObstacleIfClosed: boolean = false; // if false, door is obstacle if it is open
+  let pDoorStatus: DOOR_STATUS | null;
+  let pDoor: DOOR | null;
+  let pDoorStructure: STRUCTURE | null;
   let fDoorIsOpen: boolean = false;
   let fNonFenceJumper: boolean;
   let fNonSwimmer: boolean;
@@ -489,13 +523,13 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
 
   fVehicle = false;
   iOriginationX = iOriginationY = 0;
-  iOrigination = s.value.sGridNo;
+  iOrigination = s.sGridNo;
 
   if (iOrigination < 0 || iOrigination > WORLD_MAX) {
     return 0;
   } else if (!GridNoOnVisibleWorldTile(iOrigination)) {
     return 0;
-  } else if (s.value.bLevel != ubLevel) {
+  } else if (s.bLevel != ubLevel) {
     // pathing to a different level... bzzzt!
     return 0;
   }
@@ -506,7 +540,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
 
   fTurnBased = ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT));
 
-  fPathingForPlayer = ((s.value.bTeam == gbPlayerNum) && (!gTacticalStatus.fAutoBandageMode) && !(s.value.uiStatusFlags & SOLDIER_PCUNDERAICONTROL));
+  fPathingForPlayer = ((s.bTeam == gbPlayerNum) && (!gTacticalStatus.fAutoBandageMode) && !(s.uiStatusFlags & SOLDIER_PCUNDERAICONTROL));
   fNonFenceJumper = !(IS_MERC_BODY_TYPE(s));
   fNonSwimmer = !(IS_MERC_BODY_TYPE(s));
   if (fNonSwimmer) {
@@ -517,7 +551,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
   fPathAroundPeople = ((fFlags & PATH_THROUGH_PEOPLE) == 0);
   fCloseGoodEnough = ((fFlags & PATH_CLOSE_GOOD_ENOUGH) != 0);
   if (fCloseGoodEnough) {
-    sClosePathLimit = Math.min(PythSpacesAway(s.value.sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
+    sClosePathLimit = Math.min(PythSpacesAway(s.sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
     if (sClosePathLimit <= 0) {
       return 0;
     }
@@ -566,7 +600,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       return false;
     }
 
-    if (sDestination == s.value.sGridNo) {
+    if (sDestination == s.sGridNo) {
       return false;
     }
   }
@@ -582,18 +616,18 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
     }
   }
 
-  fMultiTile = ((s.value.uiStatusFlags & SOLDIER_MULTITILE) != 0);
+  fMultiTile = ((s.uiStatusFlags & SOLDIER_MULTITILE) != 0);
   if (fMultiTile) {
     // Get animation surface...
     // Chris_C... change this to use parameter.....
     usAnimSurface = DetermineSoldierAnimationSurface(s, usMovementMode);
     // Get structure ref...
-    pStructureFileRef = GetAnimationStructureRef(s.value.ubID, usAnimSurface, usMovementMode);
+    pStructureFileRef = GetAnimationStructureRef(s.ubID, usAnimSurface, usMovementMode);
 
     if (pStructureFileRef) {
-      fVehicle = ((s.value.uiStatusFlags & SOLDIER_VEHICLE) != 0);
+      fVehicle = ((s.uiStatusFlags & SOLDIER_VEHICLE) != 0);
 
-      fContinuousTurnNeeded = ((s.value.uiStatusFlags & (SOLDIER_MONSTER | SOLDIER_ANIMAL | SOLDIER_VEHICLE)) != 0);
+      fContinuousTurnNeeded = ((s.uiStatusFlags & (SOLDIER_MONSTER | SOLDIER_ANIMAL | SOLDIER_VEHICLE)) != 0);
 
       /*
       if (fVehicle && s->bReverse)
@@ -609,8 +643,8 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       */
       if (gfEstimatePath) {
         usOKToAddStructID = IGNORE_PEOPLE_STRUCTURE_ID;
-      } else if (s.value.pLevelNode != null && s.value.pLevelNode.value.pStructureData != null) {
-        usOKToAddStructID = s.value.pLevelNode.value.pStructureData.value.usStructureID;
+      } else if (s.pLevelNode != null && s.pLevelNode.value.pStructureData != null) {
+        usOKToAddStructID = s.pLevelNode.value.pStructureData.value.usStructureID;
       } else {
         usOKToAddStructID = INVALID_STRUCTURE_ID;
       }
@@ -668,8 +702,8 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
   pQueueHead.value.usCostSoFar = MAXCOST;
   pQueueHead.value.bLevel = iMaxSkipListLevel - 1;
 
-  pClosedHead.value.pNext[0] = pClosedHead;
-  pClosedHead.value.pNext[1] = pClosedHead;
+  pClosedHead.pNext[0] = pClosedHead;
+  pClosedHead.pNext[1] = pClosedHead;
 
   // setup first path record
   iLocY = iOrigination / MAPWIDTH;
@@ -724,7 +758,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
 
     if (fContinuousTurnNeeded) {
       if (trailTreeNdx < 2) {
-        iLastDir = s.value.bDirection;
+        iLastDir = s.bDirection;
       } else if (trailTree[pCurrPtr.value.sPathNdx].fFlags & Enum248.STEP_BACKWARDS) {
         iLastDir = gOppositeDirection[trailTree[pCurrPtr.value.sPathNdx].stepDir];
       } else {
@@ -768,7 +802,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       if (fMultiTile) {
         if (fContinuousTurnNeeded) {
           if (iCnt != iLastDir) {
-            if (!OkayToAddStructureToWorld(curLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+            if (!OkayToAddStructureToWorld(curLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
               // we have to abort this loop and possibly reset the loop conditions to
               // search in the other direction (if we haven't already done the other dir)
               if (bLoopState == LOOPING_CLOCKWISE) {
@@ -798,7 +832,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
           }
         } else if (pStructureFileRef) {
           // check to make sure it's okay for us to turn to the new direction in our current tile
-          if (!OkayToAddStructureToWorld(curLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+          if (!OkayToAddStructureToWorld(curLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
             goto("NEXTDIR");
           }
         }
@@ -831,7 +865,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       }
 
       // AI check for mines
-      if (gpWorldLevelData[newLoc].uiFlags & MAPELEMENT_ENEMY_MINE_PRESENT && s.value.bSide != 0) {
+      if (gpWorldLevelData[newLoc].uiFlags & MAPELEMENT_ENEMY_MINE_PRESENT && s.bSide != 0) {
         goto("NEXTDIR");
       }
 
@@ -975,7 +1009,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
             // check door status
             pDoorStatus = GetDoorStatus(iDoorGridNo);
             if (pDoorStatus) {
-              fDoorIsOpen = (pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) != 0;
+              fDoorIsOpen = (pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) != 0;
             } else {
               // door destroyed?
               nextCost = gTileTypeMovementCost[gpWorldLevelData[newLoc].ubTerrainID];
@@ -1003,13 +1037,13 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
               if (fDoorIsObstacleIfClosed) {
                 // door is closed and this should be an obstacle, EXCEPT if we are calculating
                 // a path for an enemy or NPC with keys
-                if (fPathingForPlayer || (s && (s.value.uiStatusFlags & SOLDIER_MONSTER || s.value.uiStatusFlags & SOLDIER_ANIMAL))) {
+                if (fPathingForPlayer || (s && (s.uiStatusFlags & SOLDIER_MONSTER || s.uiStatusFlags & SOLDIER_ANIMAL))) {
                   nextCost = TRAVELCOST_OBSTACLE;
                 } else {
                   // have to check if door is locked and NPC does not have keys!
                   pDoor = FindDoorInfoAtGridNo(iDoorGridNo);
                   if (pDoor) {
-                    if (!pDoor.value.fLocked || s.value.bHasKeys) {
+                    if (!pDoor.fLocked || s.bHasKeys) {
                       // add to AP cost
                       if (gubNPCAPBudget) {
                         fGoingThroughDoor = true;
@@ -1048,9 +1082,9 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       // when doing a reachable test, ignore all locations with people in them
       if (fPathAroundPeople && ((newLoc != iDestination) || fCopyReachable)) {
         // ATE: ONLY cancel if they are moving.....
-        ubMerc = WhoIsThere2(newLoc, s.value.bLevel);
+        ubMerc = WhoIsThere2(newLoc, s.bLevel);
 
-        if (ubMerc < NOBODY && ubMerc != s.value.ubID) {
+        if (ubMerc < NOBODY && ubMerc != s.ubID) {
           // Check for movement....
           // if ( fTurnBased || ( (Menptr[ ubMerc ].sFinalDestination == Menptr[ ubMerc ].sGridNo) || (Menptr[ ubMerc ].fDelayedMovement) ) )
           //{
@@ -1072,7 +1106,7 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
         // then 0 1 2 3 4 5 6), we must subtract 1 from the direction
         // ATE: Send in our existing structure ID so it's ignored!
 
-        if (!OkayToAddStructureToWorld(newLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+        if (!OkayToAddStructureToWorld(newLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
           goto("NEXTDIR");
         }
 
@@ -1362,8 +1396,8 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
             memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
             pNewPtr.value.bLevel = RandomSkipListLevel();
           } else if (iClosedListSize > 0) {
-            pNewPtr = pClosedHead.value.pNext[0];
-            pClosedHead.value.pNext[0] = pNewPtr.value.pNext[0];
+            pNewPtr = pClosedHead.pNext[0];
+            pClosedHead.pNext[0] = pNewPtr.value.pNext[0];
             iClosedListSize--;
             queRequests++;
             memset(pNewPtr.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
@@ -1510,13 +1544,13 @@ export function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLev
       z = _z;
 
       for (iCnt = 0; z && (iCnt < MAX_PATH_LIST_SIZE); iCnt++) {
-        s.value.usPathingData[iCnt] = trailTree[z].stepDir;
+        s.usPathingData[iCnt] = trailTree[z].stepDir;
 
         z = trailTree[z].nextLink;
       }
 
-      s.value.usPathIndex = 0;
-      s.value.usPathDataSize = iCnt;
+      s.usPathIndex = 0;
+      s.usPathDataSize = iCnt;
     } else if (bCopy == NO_COPYROUTE) {
       z = _z;
 
@@ -1552,7 +1586,6 @@ export function GlobalReachableTest(sStartGridNo: INT16): void {
   let s: SOLDIERTYPE = createSoldierType();
   let iCurrentGridNo: INT32 = 0;
 
-  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
   s.bLevel = 0;
   s.bTeam = 1;
@@ -1563,7 +1596,7 @@ export function GlobalReachableTest(sStartGridNo: INT16): void {
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(s, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   RestorePathAIToDefaults();
 }
 
@@ -1573,7 +1606,6 @@ export function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   let iX: INT32;
   let iY: INT32;
 
-  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
 
   // if we are moving on the gorund level
@@ -1598,7 +1630,7 @@ export function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   // set the dist limit
   gubNPCDistLimit = bRadius;
   // make the function call
-  FindBestPath(addressof(s), NOWHERE, s.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(s, NOWHERE, s.bLevel, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   // reset dist limit
   gubNPCDistLimit = 0;
 }
@@ -1607,7 +1639,6 @@ export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: IN
   let s: SOLDIERTYPE = createSoldierType();
   let iCurrentGridNo: INT32 = 0;
 
-  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo1;
   s.bLevel = 0;
   s.bTeam = 1;
@@ -1618,10 +1649,10 @@ export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: IN
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(s, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   if (sStartGridNo2 != NOWHERE) {
     s.sGridNo = sStartGridNo2;
-    FindBestPath(addressof(s), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+    FindBestPath(s, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   }
   RestorePathAIToDefaults();
 }
@@ -1629,7 +1660,6 @@ export function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: IN
 export function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   let s: SOLDIERTYPE = createSoldierType();
 
-  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
   s.bLevel = 1;
   s.bTeam = 1;
@@ -1637,7 +1667,7 @@ export function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): voi
   gubBuildingInfoToSet = ubBuildingID;
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(addressof(s), NOWHERE, 1, Enum193.WALKING, COPYREACHABLE, 0);
+  FindBestPath(s, NOWHERE, 1, Enum193.WALKING, COPYREACHABLE, 0);
   RestorePathAIToDefaults();
 
   // set start position to reachable since path code sets it unreachable
@@ -1656,7 +1686,7 @@ export function ErasePath(bEraseOldOne: char): void {
   // EraseAPCursor();
 
   if (gfUIHandleShowMoveGrid) {
-    gfUIHandleShowMoveGrid = false;
+    gfUIHandleShowMoveGrid = 0;
 
     RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS4);
     RemoveTopmost(gsUIHandleShowMoveGridLocation, Enum312.FIRSTPOINTERS9);
@@ -1694,10 +1724,10 @@ export function ErasePath(bEraseOldOne: char): void {
   // RemoveAllStructsOfTypeRange( gusEndPlotGridNo, GOODRING, GOODRING );
 
   giPlotCnt = 0;
-  memset(guiPlottedPath, 0, 256 * sizeof(UINT32));
+  guiPlottedPath.fill(0);
 }
 
-export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function PlotPath(pSold: SOLDIERTYPE, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   let sTileCost: INT16;
   let sPoints: INT16 = 0;
   let sTempGrid: INT16;
@@ -1723,7 +1753,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
   ];
   let usTileIndex: UINT16;
   let usTileNum: UINT16;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE;
   let usMovementModeToUseForAPs: UINT16;
   let bIgnoreNextCost: boolean = false;
   let sTestGridno: INT16;
@@ -1733,7 +1763,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
   }
 
   gusAPtsToMove = 0;
-  sTempGrid = pSold.value.sGridNo;
+  sTempGrid = pSold.sGridNo;
 
   sFootOrderIndex = 0;
 
@@ -1741,10 +1771,10 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
   // distance limit to reduce the cost of plotting a path to a location we can't reach
 
   // For now, use known hight adjustment
-  if (gfRecalculatingExistingPathCost || FindBestPath(pSold, sDestGridno, pSold.value.bLevel, usMovementMode, bCopyRoute, 0)) {
+  if (gfRecalculatingExistingPathCost || FindBestPath(pSold, sDestGridno, pSold.bLevel, usMovementMode, bCopyRoute, 0)) {
     // if soldier would be STARTING to run then he pays a penalty since it takes time to
     // run full speed
-    if (pSold.value.usAnimState != Enum193.RUNNING) {
+    if (pSold.usAnimState != Enum193.RUNNING) {
       // for estimation purposes, always pay penalty
       sPointsRun = AP_START_RUN_COST;
     }
@@ -1753,15 +1783,15 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
     sPoints += MinAPsToStartMovement(pSold, usMovementMode);
 
     // We should reduce points for starting to run if first tile is a fence...
-    sTestGridno = NewGridNo(pSold.value.sGridNo, DirectionInc(guiPathingData[0]));
-    if (gubWorldMovementCosts[sTestGridno][guiPathingData[0]][pSold.value.bLevel] == TRAVELCOST_FENCE) {
-      if (usMovementMode == Enum193.RUNNING && pSold.value.usAnimState != Enum193.RUNNING) {
+    sTestGridno = NewGridNo(pSold.sGridNo, DirectionInc(guiPathingData[0]));
+    if (gubWorldMovementCosts[sTestGridno][guiPathingData[0]][pSold.bLevel] == TRAVELCOST_FENCE) {
+      if (usMovementMode == Enum193.RUNNING && pSold.usAnimState != Enum193.RUNNING) {
         sPoints -= AP_START_RUN_COST;
       }
     }
 
     // FIRST, add up "startup" additional costs - such as intermediate animations, etc.
-    switch (pSold.value.usAnimState) {
+    switch (pSold.usAnimState) {
       // case START_AID   :
       // case GIVING_AID  :	sAnimCost = AP_STOP_FIRST_AID;
       //										break;
@@ -1796,10 +1826,10 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
       sTempGrid = NewGridNo(sTempGrid, DirectionInc(guiPathingData[iCnt]));
 
       // Get switch value...
-      sSwitchValue = gubWorldMovementCosts[sTempGrid][guiPathingData[iCnt]][pSold.value.bLevel];
+      sSwitchValue = gubWorldMovementCosts[sTempGrid][guiPathingData[iCnt]][pSold.bLevel];
 
       // get the tile cost for that tile based on WALKING
-      sTileCost = TerrainActionPoints(pSold, sTempGrid, guiPathingData[iCnt], pSold.value.bLevel);
+      sTileCost = TerrainActionPoints(pSold, sTempGrid, guiPathingData[iCnt], pSold.bLevel);
 
       usMovementModeToUseForAPs = usMovementMode;
 
@@ -1925,7 +1955,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
           }
 
           // Are we a vehicle?
-          if (pSold.value.uiStatusFlags & SOLDIER_VEHICLE) {
+          if (pSold.uiStatusFlags & SOLDIER_VEHICLE) {
             // did we exceed WALK cost?
             if (sPointsSwat > sAPBudget) {
               sFootOrderIndex = 4;
@@ -1979,14 +2009,14 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
           }
           */
 
-          if (pSold.value.bLevel == 0) {
+          if (pSold.bLevel == 0) {
             pNode = AddObjectToTail(sTempGrid, usTileIndex);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           } else {
-            pNode = AddOnRoofToTail(sTempGrid, usTileIndex);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode = <LEVELNODE>AddOnRoofToTail(sTempGrid, usTileIndex);
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           }
 
           // we need a footstep graphic LEAVING this tile
@@ -2012,14 +2042,14 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
             usTileIndex += sFootOrder[sFootOrderIndex];
           }
 
-          if (pSold.value.bLevel == 0) {
+          if (pSold.bLevel == 0) {
             pNode = AddObjectToTail(sTempGrid, usTileIndex);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           } else {
-            pNode = AddOnRoofToTail(sTempGrid, usTileIndex);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode = <LEVELNODE>AddOnRoofToTail(sTempGrid, usTileIndex);
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           }
         }
       } // end of if turn based or real-time user option "show paths" on...
@@ -2036,7 +2066,7 @@ export function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyR
   return sPoints;
 }
 
-export function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function UIPlotPath(pSold: SOLDIERTYPE, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for UI calls to the pathing routine, to
   // check whether the shift key is pressed, etc.
   let sRet: INT16;
@@ -2046,12 +2076,12 @@ export function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCop
   }
 
   // If we are on the same level as the interface level, continue, else return
-  if (pSold.value.bLevel != gsInterfaceLevel) {
+  if (pSold.bLevel != gsInterfaceLevel) {
     return 0;
   }
 
   if (gGameSettings.fOptions[Enum8.TOPTION_ALWAYS_SHOW_MOVEMENT_PATH]) {
-    bPlot = true;
+    bPlot = PLOT;
   }
 
   sRet = PlotPath(pSold, sDestGridno, bCopyRoute, bPlot, bStayOn, usMovementMode, bStealth, bReverse, sAPBudget);
@@ -2059,21 +2089,21 @@ export function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCop
   return sRet;
 }
 
-export function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT16 {
+export function RecalculatePathCost(pSoldier: SOLDIERTYPE, usMovementMode: UINT16): INT16 {
   // AI function for a soldier already with a path; this will return the cost of that path using the given movement mode
   let sRet: INT16;
 
-  if (!pSoldier.value.bPathStored || pSoldier.value.usPathDataSize == 0) {
+  if (!pSoldier.bPathStored || pSoldier.usPathDataSize == 0) {
     return 0;
   }
 
   gfRecalculatingExistingPathCost = true;
-  sRet = PlotPath(pSoldier, pSoldier.value.sFinalDestination, NO_COPYROUTE, false, false, usMovementMode, false, false, 0);
+  sRet = PlotPath(pSoldier, pSoldier.sFinalDestination, NO_COPYROUTE, NO_PLOT, TEMPORARY, usMovementMode, NOT_STEALTH, FORWARD, 0);
   gfRecalculatingExistingPathCost = false;
   return sRet;
 }
 
-export function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
+export function EstimatePlotPath(pSold: SOLDIERTYPE, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for AI calls to estimate path cost to a location
   // It sets stuff up to ignore all people
   let sRet: INT16;
@@ -2087,15 +2117,15 @@ export function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16
   return sRet;
 }
 
-export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: boolean): UINT8 {
+export function InternalDoorTravelCost(pSoldier: SOLDIERTYPE | null, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: boolean): UINT8 {
   // This function will return either TRAVELCOST_DOOR (in place of closed door cost),
   // TRAVELCOST_OBSTACLE, or the base ground terrain
   // travel cost, depending on whether or not the door is open or closed etc.
   let fDoorIsObstacleIfClosed: boolean = false;
   let iDoorGridNo: INT32 = -1;
-  let pDoorStatus: Pointer<DOOR_STATUS>;
-  let pDoor: Pointer<DOOR>;
-  let pDoorStructure: Pointer<STRUCTURE>;
+  let pDoorStatus: DOOR_STATUS | null;
+  let pDoor: DOOR | null;
+  let pDoorStructure: STRUCTURE | null;
   let fDoorIsOpen: boolean;
   let ubReplacementCost: UINT8;
 
@@ -2182,7 +2212,7 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
         break;
     }
 
-    if (pSoldier && (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER || pSoldier.value.uiStatusFlags & SOLDIER_ANIMAL)) {
+    if (pSoldier && (pSoldier.uiStatusFlags & SOLDIER_MONSTER || pSoldier.uiStatusFlags & SOLDIER_ANIMAL)) {
       // can't open doors!
       ubReplacementCost = TRAVELCOST_OBSTACLE;
     }
@@ -2196,7 +2226,7 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
       // check door status
       pDoorStatus = GetDoorStatus(iDoorGridNo);
       if (pDoorStatus) {
-        fDoorIsOpen = (pDoorStatus.value.ubFlags & DOOR_PERCEIVED_OPEN) != 0;
+        fDoorIsOpen = (pDoorStatus.ubFlags & DOOR_PERCEIVED_OPEN) != 0;
       } else {
         // abort!
         return ubMovementCost;
@@ -2205,7 +2235,7 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
       // check door structure
       pDoorStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
       if (pDoorStructure) {
-        fDoorIsOpen = (pDoorStructure.value.fFlags & STRUCTURE_OPEN) != 0;
+        fDoorIsOpen = (pDoorStructure.fFlags & STRUCTURE_OPEN) != 0;
       } else {
         // abort!
         return ubMovementCost;
@@ -2224,13 +2254,13 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
         // a path for an enemy or NPC with keys
 
         // creatures and animals can't open doors!
-        if (fReturnPerceivedValue || (pSoldier && (pSoldier.value.uiStatusFlags & SOLDIER_MONSTER || pSoldier.value.uiStatusFlags & SOLDIER_ANIMAL))) {
+        if (fReturnPerceivedValue || (pSoldier && (pSoldier.uiStatusFlags & SOLDIER_MONSTER || pSoldier.uiStatusFlags & SOLDIER_ANIMAL))) {
           ubMovementCost = ubReplacementCost;
         } else {
           // have to check if door is locked and NPC does not have keys!
           pDoor = FindDoorInfoAtGridNo(iDoorGridNo);
           if (pDoor) {
-            if ((!pDoor.value.fLocked || (pSoldier && pSoldier.value.bHasKeys)) && !fReturnDoorCost) {
+            if ((!pDoor.fLocked || (pSoldier && pSoldier.bHasKeys)) && !fReturnDoorCost) {
               ubMovementCost = gTileTypeMovementCost[gpWorldLevelData[iGridNo].ubTerrainID];
             } else {
               ubMovementCost = ubReplacementCost;
@@ -2247,7 +2277,7 @@ export function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: 
   return ubMovementCost;
 }
 
-export function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
+export function DoorTravelCost(pSoldier: SOLDIERTYPE | null, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: boolean, piDoorGridNo: Pointer<INT32>): UINT8 {
   return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, false);
 }
 

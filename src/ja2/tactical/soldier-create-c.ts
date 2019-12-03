@@ -64,7 +64,7 @@ export function RandomizeNewSoldierStats(pCreateStruct: SOLDIERCREATE_STRUCT): v
   pCreateStruct.bAIMorale = Enum244.MORALE_FEARLESS;
 }
 
-export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
+export function TacticalCreateSoldier(pCreateStruct: SOLDIERCREATE_STRUCT, pubID: Pointer<UINT8>): SOLDIERTYPE | null {
   let Soldier: SOLDIERTYPE = createSoldierType();
   let cnt: INT32;
   let pTeamSoldier: SOLDIERTYPE;
@@ -78,7 +78,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   // Huge no no!  See the header file for description of static detailed placements.
   // If this expression ever evaluates to true, then it will expose serious problems.
   // Simply returning won't help.
-  if (pCreateStruct.value.fStatic) {
+  if (pCreateStruct.fStatic) {
     Assert(0);
   }
 
@@ -90,7 +90,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   guiCurrentUniqueSoldierId++;
 
   // OK, CHECK IF WE HAVE A VALID PROFILE ID!
-  if (pCreateStruct.value.ubProfile != NO_PROFILE) {
+  if (pCreateStruct.ubProfile != NO_PROFILE) {
     // We have a merc created by profile, do this!
     TacticalCopySoldierFromProfile(Soldier, pCreateStruct);
   } else {
@@ -98,15 +98,15 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   }
 
   // If we are NOT creating an existing soldier ( ie, this is not from a save game ), create soldier normally
-  if (!pCreateStruct.value.fUseExistingSoldier) {
+  if (!pCreateStruct.fUseExistingSoldier) {
     // We want to determine what team to place these guys in...
 
     // First off, force player team if they are a player guy! ( do some other stuff for only our guys!
-    if (pCreateStruct.value.fPlayerMerc) {
+    if (pCreateStruct.fPlayerMerc) {
       Soldier.uiStatusFlags |= SOLDIER_PC;
       Soldier.bTeam = gbPlayerNum;
       Soldier.bVisible = 1;
-    } else if (pCreateStruct.value.fPlayerPlan) {
+    } else if (pCreateStruct.fPlayerPlan) {
       Soldier.uiStatusFlags |= SOLDIER_PC;
       Soldier.bVisible = 1;
     } else {
@@ -114,17 +114,17 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     }
 
     // Check for auto team
-    if (pCreateStruct.value.bTeam == SOLDIER_CREATE_AUTO_TEAM) {
+    if (pCreateStruct.bTeam == SOLDIER_CREATE_AUTO_TEAM) {
       // Auto determine!
       // OK, if this is our guy, set team as ours!
-      if (pCreateStruct.value.fPlayerMerc) {
+      if (pCreateStruct.fPlayerMerc) {
         Soldier.bTeam = OUR_TEAM;
         Soldier.bNormalSmell = NORMAL_HUMAN_SMELL_STRENGTH;
-      } else if (pCreateStruct.value.fPlayerPlan) {
+      } else if (pCreateStruct.fPlayerPlan) {
         Soldier.bTeam = PLAYER_PLAN;
       } else {
         // LOOK AT BODY TYPE!
-        switch (pCreateStruct.value.bBodyType) {
+        switch (pCreateStruct.bBodyType) {
           case Enum194.REGMALE:
           case Enum194.BIGMALE:
           case Enum194.STOCKYMALE:
@@ -159,7 +159,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
         }
       }
     } else {
-      Soldier.bTeam = pCreateStruct.value.bTeam;
+      Soldier.bTeam = pCreateStruct.bTeam;
       // if WE_SEE_WHAT_MILITIA_SEES
       if (Soldier.bTeam == MILITIA_TEAM) {
         Soldier.bVisible = 1;
@@ -167,7 +167,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     }
 
     // Copy the items over for thew soldier, only if we have a valid profile id!
-    if (pCreateStruct.value.ubProfile != NO_PROFILE)
+    if (pCreateStruct.ubProfile != NO_PROFILE)
       CopyProfileItems(Soldier, pCreateStruct);
 
     // Given team, get an ID for this guy!
@@ -204,7 +204,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     }
 
     // LOAD MERC's FACE!
-    if (pCreateStruct.value.ubProfile != NO_PROFILE && Soldier.bTeam == OUR_TEAM) {
+    if (pCreateStruct.ubProfile != NO_PROFILE && Soldier.bTeam == OUR_TEAM) {
       Soldier.iFaceIndex = InitSoldierFace(Soldier);
     }
 
@@ -212,15 +212,15 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     Soldier.bInitialActionPoints = Soldier.bActionPoints;
     Soldier.bSide = gTacticalStatus.Team[Soldier.bTeam].bSide;
     Soldier.bActive = true;
-    Soldier.sSectorX = pCreateStruct.value.sSectorX;
-    Soldier.sSectorY = pCreateStruct.value.sSectorY;
-    Soldier.bSectorZ = pCreateStruct.value.bSectorZ;
-    Soldier.ubInsertionDirection = pCreateStruct.value.bDirection;
-    Soldier.bDesiredDirection = pCreateStruct.value.bDirection;
-    Soldier.bDominantDir = pCreateStruct.value.bDirection;
-    Soldier.bDirection = pCreateStruct.value.bDirection;
+    Soldier.sSectorX = pCreateStruct.sSectorX;
+    Soldier.sSectorY = pCreateStruct.sSectorY;
+    Soldier.bSectorZ = pCreateStruct.bSectorZ;
+    Soldier.ubInsertionDirection = pCreateStruct.bDirection;
+    Soldier.bDesiredDirection = pCreateStruct.bDirection;
+    Soldier.bDominantDir = pCreateStruct.bDirection;
+    Soldier.bDirection = pCreateStruct.bDirection;
 
-    Soldier.sInsertionGridNo = pCreateStruct.value.sInsertionGridNo;
+    Soldier.sInsertionGridNo = pCreateStruct.sInsertionGridNo;
     Soldier.bOldLife = Soldier.bLifeMax;
 
     // If a civvy, set neutral
@@ -424,8 +424,8 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
             break;
         }
 
-        if (pCreateStruct.value.fUseGivenVehicle) {
-          Soldier.bVehicleID = pCreateStruct.value.bUseGivenVehicleID;
+        if (pCreateStruct.fUseGivenVehicle) {
+          Soldier.bVehicleID = pCreateStruct.bUseGivenVehicleID;
         } else {
           // Add vehicle to list....
           Soldier.bVehicleID = AddVehicleToList(Soldier.sSectorX, Soldier.sSectorY, Soldier.bSectorZ, ubVehicleID);
@@ -440,20 +440,20 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
 
     if (guiCurrentScreen != Enum26.AUTORESOLVE_SCREEN) {
       // Copy into merc struct
-      memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
+      copySoldierType(MercPtrs[Soldier.ubID], Soldier);
       // Alrighty then, we are set to create the merc, stuff after here can fail!
       if (CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Enum193.STANDING) == false) {
-        return false;
+        return null;
       }
     }
   } else {
     // Copy the data from the existing soldier struct to the new soldier struct
-    if (!CopySavedSoldierInfoToNewSoldier(addressof(Soldier), pCreateStruct.value.pExistingSoldier))
-      return false;
+    if (!CopySavedSoldierInfoToNewSoldier(Soldier, <SOLDIERTYPE>pCreateStruct.pExistingSoldier))
+      return null;
 
     // Reset the face index
     Soldier.iFaceIndex = -1;
-    Soldier.iFaceIndex = InitSoldierFace(addressof(Soldier));
+    Soldier.iFaceIndex = InitSoldierFace(Soldier);
 
     // ATE: Reset soldier's light value to -1....
     Soldier.iLight = -1;
@@ -463,11 +463,11 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     }
 
     // Copy into merc struct
-    memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
+    copySoldierType(MercPtrs[Soldier.ubID], Soldier);
 
     // Alrighty then, we are set to create the merc, stuff after here can fail!
     if (CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) == false) {
-      return false;
+      return null;
     }
 
     pubID.value = Soldier.ubID;
@@ -479,7 +479,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
   }
 
   if (guiCurrentScreen != Enum26.AUTORESOLVE_SCREEN) {
-    if (pCreateStruct.value.fOnRoof && FlatRoofAboveGridNo(pCreateStruct.value.sInsertionGridNo)) {
+    if (pCreateStruct.fOnRoof && FlatRoofAboveGridNo(pCreateStruct.sInsertionGridNo)) {
       SetSoldierHeight(MercPtrs[Soldier.ubID], 58.0);
     }
 
@@ -498,7 +498,7 @@ export function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUC
     pSoldier = createSoldierType();
     if (!pSoldier)
       return null;
-    memcpy(pSoldier, addressof(Soldier), sizeof(SOLDIERTYPE));
+    copySoldierType(pSoldier, Soldier);
     pSoldier.ubID = 255;
     pSoldier.sSectorX = SECTORX(ubSectorID);
     pSoldier.sSectorY = SECTORY(ubSectorID);
@@ -515,10 +515,10 @@ function TacticalCopySoldierFromProfile(pSoldier: SOLDIERTYPE, pCreateStruct: SO
   ubProfileIndex = pCreateStruct.ubProfile;
   pProfile = gMercProfiles[ubProfileIndex];
 
-  SET_PALETTEREP_ID(pSoldier.HeadPal, pProfile.HAIR);
-  SET_PALETTEREP_ID(pSoldier.VestPal, pProfile.VEST);
-  SET_PALETTEREP_ID(pSoldier.SkinPal, pProfile.SKIN);
-  SET_PALETTEREP_ID(pSoldier.PantsPal, pProfile.PANTS);
+  pSoldier.HeadPal = SET_PALETTEREP_ID(pProfile.HAIR);
+  pSoldier.VestPal = SET_PALETTEREP_ID(pProfile.VEST);
+  pSoldier.SkinPal = SET_PALETTEREP_ID(pProfile.SKIN);
+  pSoldier.PantsPal = SET_PALETTEREP_ID(pProfile.PANTS);
 
   // Set profile index!
   pSoldier.ubProfile = ubProfileIndex;
@@ -648,16 +648,16 @@ function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8)
   skin = Random(Enum266.NUMSKINS);
   switch (skin) {
     case Enum266.PINKSKIN:
-      SET_PALETTEREP_ID(pSoldier.SkinPal, "PINKSKIN");
+      pSoldier.SkinPal = SET_PALETTEREP_ID("PINKSKIN");
       break;
     case Enum266.TANSKIN:
-      SET_PALETTEREP_ID(pSoldier.SkinPal, "TANSKIN");
+      pSoldier.SkinPal = SET_PALETTEREP_ID("TANSKIN");
       break;
     case Enum266.DARKSKIN:
-      SET_PALETTEREP_ID(pSoldier.SkinPal, "DARKSKIN");
+      pSoldier.SkinPal = SET_PALETTEREP_ID("DARKSKIN");
       break;
     case Enum266.BLACKSKIN:
-      SET_PALETTEREP_ID(pSoldier.SkinPal, "BLACKSKIN");
+      pSoldier.SkinPal = SET_PALETTEREP_ID("BLACKSKIN");
       break;
     default:
       AssertMsg(0, "Skin type not accounted for.");
@@ -668,19 +668,19 @@ function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8)
   hair = ChooseHairColor(pSoldier, skin);
   switch (hair) {
     case Enum267.BROWNHEAD:
-      SET_PALETTEREP_ID(pSoldier.HeadPal, "BROWNHEAD");
+      pSoldier.HeadPal = SET_PALETTEREP_ID("BROWNHEAD");
       break;
     case Enum267.BLACKHEAD:
-      SET_PALETTEREP_ID(pSoldier.HeadPal, "BLACKHEAD");
+      pSoldier.HeadPal = SET_PALETTEREP_ID("BLACKHEAD");
       break;
     case Enum267.WHITEHEAD:
-      SET_PALETTEREP_ID(pSoldier.HeadPal, "WHITEHEAD");
+      pSoldier.HeadPal = SET_PALETTEREP_ID("WHITEHEAD");
       break;
     case Enum267.BLONDEHEAD:
-      SET_PALETTEREP_ID(pSoldier.HeadPal, "BLONDHEAD");
+      pSoldier.HeadPal = SET_PALETTEREP_ID("BLONDHEAD");
       break;
     case Enum267.REDHEAD:
-      SET_PALETTEREP_ID(pSoldier.HeadPal, "REDHEAD");
+      pSoldier.HeadPal = SET_PALETTEREP_ID("REDHEAD");
       break;
     default:
       AssertMsg(0, "Hair type not accounted for.");
@@ -690,38 +690,38 @@ function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8)
   // OK, After skin, hair we could have a forced color scheme.. use here if so
   switch (ubSoldierClass) {
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("YELLOWVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("GREENPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ELITE:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "BLACKPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("BLACKSHIRT");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("BLACKPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ARMY:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("REDVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("GREENPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_GREEN_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("GREENVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("BEIGEPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_REG_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("JEANVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("BEIGEPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("BLUEVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("BEIGEPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
     case Enum262.SOLDIER_CLASS_MINER:
-      SET_PALETTEREP_ID(pSoldier.VestPal, "greyVEST");
-      SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+      pSoldier.VestPal = SET_PALETTEREP_ID("greyVEST");
+      pSoldier.PantsPal = SET_PALETTEREP_ID("BEIGEPANTS");
       pSoldier.ubSoldierClass = ubSoldierClass;
       return;
   }
@@ -740,42 +740,42 @@ function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8)
     {
       if (Random(100) < 30) {
         // 30% chance that the civilian will choose a gaudy yellow shirt with pants.
-        SET_PALETTEREP_ID(pSoldier.VestPal, "GYELLOWSHIRT");
+        pSoldier.VestPal = SET_PALETTEREP_ID("GYELLOWSHIRT");
         switch (Random(3)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.PantsPal, "TANPANTS");
+            pSoldier.PantsPal = SET_PALETTEREP_ID("TANPANTS");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.PantsPal, "BEIGEPANTS");
+            pSoldier.PantsPal = SET_PALETTEREP_ID("BEIGEPANTS");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+            pSoldier.PantsPal = SET_PALETTEREP_ID("GREENPANTS");
             break;
         }
       } else {
         // 70% chance that the civilian will choose jeans with a shirt.
-        SET_PALETTEREP_ID(pSoldier.PantsPal, "JEANPANTS");
+        pSoldier.PantsPal = SET_PALETTEREP_ID("JEANPANTS");
         switch (Random(7)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("WHITEVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BLACKSHIRT");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "PURPLESHIRT");
+            pSoldier.VestPal = SET_PALETTEREP_ID("PURPLESHIRT");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BLUEVEST");
             break;
           case 4:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BROWNVEST");
             break;
           case 5:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("JEANVEST");
             break;
           case 6:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("REDVEST");
             break;
         }
       }
@@ -784,65 +784,65 @@ function GeneratePaletteForSoldier(pSoldier: SOLDIERTYPE, ubSoldierClass: UINT8)
     // MERC COLORS
     switch (Random(3)) {
       case 0:
-        SET_PALETTEREP_ID(pSoldier.PantsPal, "GREENPANTS");
+        pSoldier.PantsPal = SET_PALETTEREP_ID("GREENPANTS");
         switch (Random(4)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BROWNVEST");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("GREENVEST");
             break;
         }
         break;
       case 1:
-        SET_PALETTEREP_ID(pSoldier.PantsPal, "TANPANTS");
+        pSoldier.PantsPal = SET_PALETTEREP_ID("TANPANTS");
         switch (Random(8)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BLACKSHIRT");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BLUEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BLUEVEST");
             break;
           case 4:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BROWNVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BROWNVEST");
             break;
           case 5:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "GREENVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("GREENVEST");
             break;
           case 6:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "JEANVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("JEANVEST");
             break;
           case 7:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("REDVEST");
             break;
         }
         break;
       case 2:
-        SET_PALETTEREP_ID(pSoldier.PantsPal, "BLUEPANTS");
+        pSoldier.PantsPal = SET_PALETTEREP_ID("BLUEPANTS");
         switch (Random(4)) {
           case 0:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "YELLOWVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("YELLOWVEST");
             break;
           case 1:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "WHITEVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("WHITEVEST");
             break;
           case 2:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "REDVEST");
+            pSoldier.VestPal = SET_PALETTEREP_ID("REDVEST");
             break;
           case 3:
-            SET_PALETTEREP_ID(pSoldier.VestPal, "BLACKSHIRT");
+            pSoldier.VestPal = SET_PALETTEREP_ID("BLACKSHIRT");
             break;
         }
         break;
@@ -1701,10 +1701,10 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: SOLDIERCREATE_
 
   pProfile = gMercProfiles[ubProfile];
 
-  SET_PALETTEREP_ID(spp.HeadPal, pProfile.HAIR);
-  SET_PALETTEREP_ID(spp.VestPal, pProfile.VEST);
-  SET_PALETTEREP_ID(spp.SkinPal, pProfile.SKIN);
-  SET_PALETTEREP_ID(spp.PantsPal, pProfile.PANTS);
+  spp.HeadPal = SET_PALETTEREP_ID(pProfile.HAIR);
+  spp.VestPal = SET_PALETTEREP_ID(pProfile.VEST);
+  spp.SkinPal = SET_PALETTEREP_ID(pProfile.SKIN);
+  spp.PantsPal = SET_PALETTEREP_ID(pProfile.PANTS);
 
   spp.name = pProfile.zNickname;
 
@@ -1784,11 +1784,11 @@ export function ForceSoldierProfileID(pSoldier: SOLDIERTYPE, ubProfileID: UINT8)
 const CENTRAL_GRIDNO = 13202;
 const CENTRAL_RADIUS = 30;
 
-function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SOLDIERTYPE> {
+function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): SOLDIERTYPE | null {
   let i: INT32;
   let iStart: INT32;
   let iEnd: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   // This code looks for a soldier of specified type that currently exists in tactical and
   // returns the pointer to that soldier.  This is used when copying the exact status of
   // all remaining enemy troops (or creatures) to finish the battle in autoresolve.  To
@@ -1803,19 +1803,17 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
     iEnd = gTacticalStatus.Team[CREATURE_TEAM].bLastID;
   }
   for (i = iStart; i <= iEnd; i++) {
-    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bInSector && MercPtrs[i].value.bLife && MercPtrs[i].value.sGridNo != NOWHERE) {
-      if (MercPtrs[i].value.ubSoldierClass == ubSoldierClass) {
+    if (MercPtrs[i].bActive && MercPtrs[i].bInSector && MercPtrs[i].bLife && MercPtrs[i].sGridNo != NOWHERE) {
+      if (MercPtrs[i].ubSoldierClass == ubSoldierClass) {
         // reserve this soldier
-        MercPtrs[i].value.sGridNo = NOWHERE;
+        MercPtrs[i].sGridNo = NOWHERE;
 
         // Allocate and copy the soldier
         pSoldier = createSoldierType();
-        if (!pSoldier)
-          return null;
-        memcpy(pSoldier, MercPtrs[i], sizeof(SOLDIERTYPE));
+        copySoldierType(pSoldier, MercPtrs[i]);
 
         // Assign a bogus ID, then return it
-        pSoldier.value.ubID = 255;
+        pSoldier.ubID = 255;
         return pSoldier;
       }
     }
@@ -1824,11 +1822,11 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateAdministrator(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ADMINISTRATOR);
@@ -1842,21 +1840,21 @@ export function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
-    pSoldier.value.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
+    pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateArmyTroop(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ARMY);
@@ -1870,21 +1868,21 @@ export function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
-    pSoldier.value.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
+    pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
+export function TacticalCreateEliteEnemy(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_ELITE);
@@ -1906,16 +1904,16 @@ export function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
   OkayToUpgradeEliteToSpecialProfiledEnemy(pp);
 
-  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
-    pSoldier.value.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
+    pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier.ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
 }
 
-export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
+export function TacticalCreateMilitia(ubMilitiaClass: UINT8): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
@@ -1929,10 +1927,10 @@ export function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYP
   // bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = -1;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  return TacticalCreateSoldier(addressof(pp), addressof(ubID));
+  return TacticalCreateSoldier(pp, addressof(ubID));
 }
 
-export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
+export function TacticalCreateCreature(bCreatureBodyType: INT8): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let ubID: UINT8;
@@ -1949,7 +1947,7 @@ export function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIER
   bp.bAttitude = Enum242.AGGRESSIVE;
   bp.bBodyType = bCreatureBodyType;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  return TacticalCreateSoldier(addressof(pp), addressof(ubID));
+  return TacticalCreateSoldier(pp, addressof(ubID));
 }
 
 export function RandomizeRelativeLevel(bRelLevel: INT8, ubSoldierClass: UINT8): INT8 {
@@ -2072,7 +2070,7 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
 
       RandomizeNewSoldierStats(MercCreateStruct);
 
-      if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
+      if (TacticalCreateSoldier(MercCreateStruct, addressof(ubID))) {
         AddSoldierToSector(ubID);
 
         // So we can see them!

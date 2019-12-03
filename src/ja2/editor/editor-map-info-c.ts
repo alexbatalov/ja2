@@ -34,7 +34,7 @@ export function SetupTextInputForMapInfo(): void {
   AddTextInputField(210, 420, 30, 20, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
 
   // exit grid input fields
-  str = swprintf("%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
+  str = swprintf("%c%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
   AddTextInputField(338, 363, 30, 18, MSYS_PRIORITY_NORMAL, str, 3, Enum383.INPUTTYPE_EXCLUSIVE_COORDINATE);
   str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   AddTextInputField(338, 383, 30, 18, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
@@ -132,7 +132,7 @@ export function ExtractAndUpdateMapInfo(): void {
   }
   if (fUpdateLight1) {
     gfEditorForceShadeTableRebuild = true;
-    LightSetColors(addressof(gEditorLightColor), 1);
+    LightSetColors([gEditorLightColor], 1);
     gfEditorForceShadeTableRebuild = false;
   }
 
@@ -158,13 +158,13 @@ export function ExtractAndUpdateMapInfo(): void {
   // set up fields for exitgrid information
   str = Get16BitStringFromField(7);
   if (str[0] >= 'a' && str[0] <= 'z')
-    str[0] -= 32; // uppercase it!
+    str = String.fromCharCode(str.charCodeAt(0) - 32) + str.substring(1); // uppercase it!
   if (str[0] >= 'A' && str[0] <= 'Z' && str[1] >= '0' && str[1] <= '9') {
     // only update, if coordinate is valid.
-    gExitGrid.ubGotoSectorY = (str[0] - 'A' + 1);
-    gExitGrid.ubGotoSectorX = (str[1] - '0');
+    gExitGrid.ubGotoSectorY = (str.charCodeAt(0) - 'A'.charCodeAt(0) + 1);
+    gExitGrid.ubGotoSectorX = (str.charCodeAt(1) - '0'.charCodeAt(0));
     if (str[2] >= '0' && str[2] <= '9')
-      gExitGrid.ubGotoSectorX = (gExitGrid.ubGotoSectorX * 10 + str[2] - '0');
+      gExitGrid.ubGotoSectorX = (gExitGrid.ubGotoSectorX * 10 + str.charCodeAt(2) - '0'.charCodeAt(0));
     gExitGrid.ubGotoSectorX = Math.max(Math.min(gExitGrid.ubGotoSectorX, 16), 1);
     gExitGrid.ubGotoSectorY = Math.max(Math.min(gExitGrid.ubGotoSectorY, 16), 1);
   }
@@ -179,7 +179,7 @@ export function ApplyNewExitGridValuesToTextFields(): boolean {
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
     return false;
-  str = swprintf("%c%d", gExitGrid.ubGotoSectorY + 'A' - 1, gExitGrid.ubGotoSectorX);
+  str = swprintf("%c%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
   SetInputFieldStringWith16BitString(7, str);
   str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   SetInputFieldStringWith16BitString(8, str);
@@ -194,14 +194,14 @@ export function LocateNextExitGrid(): void {
   let ExitGrid: EXITGRID = createExitGrid();
   let i: UINT16;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
-    if (GetExitGrid(i, addressof(ExitGrid))) {
+    if (GetExitGrid(i, ExitGrid)) {
       usCurrentExitGridNo = i;
       CenterScreenAtMapIndex(i);
       return;
     }
   }
   for (i = 0; i < usCurrentExitGridNo; i++) {
-    if (GetExitGrid(i, addressof(ExitGrid))) {
+    if (GetExitGrid(i, ExitGrid)) {
       usCurrentExitGridNo = i;
       CenterScreenAtMapIndex(i);
       return;

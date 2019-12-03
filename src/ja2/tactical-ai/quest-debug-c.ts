@@ -58,21 +58,19 @@ export function ToggleQuestDebugModes(ubType: UINT8): void {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "%s Level %d", sType, ubLevel);
 }
 
+/* static */ let QuestDebugFileMsg__fFirstTimeIn: boolean = true;
+/* static */ let QuestDebugFileMsg__uiLineNumber: UINT32 = 1;
 function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: string /* STR */, ...args: any[]): void {
-  /* static */ let fFirstTimeIn: boolean = true;
-  /* static */ let uiLineNumber: UINT32 = 1;
   let hFile: HWFILE;
   let uiByteWritten: UINT32;
-  let argptr: va_list;
   let TempString: string /* char[1024] */;
   let DestString: string /* char[1024] */;
+  let buffer: Buffer;
 
-  TempString[0] = '\0';
-  DestString[0] = '\0';
+  TempString = '';
+  DestString = '';
 
-  va_start(argptr, pStringA); // Set up variable argument pointer
-  vsprintf(TempString, pStringA, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  TempString = sprintf(pStringA, ...args); // process gprintf string (get output str)
 
   //
   // determine if we should display the message
@@ -90,7 +88,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
   }
 
   // if its the first time in the game
-  if (fFirstTimeIn) {
+  if (QuestDebugFileMsg__fFirstTimeIn) {
     // open a new file for writing
 
     // if the file exists
@@ -101,7 +99,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
         return;
       }
     }
-    fFirstTimeIn = false;
+    QuestDebugFileMsg__fFirstTimeIn = false;
   }
 
   // open the file
@@ -112,17 +110,19 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
     return;
   }
 
-  DestString = sprintf("#%5d. P%d:\n\t%s\n\n", uiLineNumber, ubPriority, TempString);
+  DestString = sprintf("#%5d. P%d:\n\t%s\n\n", QuestDebugFileMsg__uiLineNumber, ubPriority, TempString);
 
   // open the file and append to it
-  if (!FileWrite(hFile, DestString, DestString.length, addressof(uiByteWritten))) {
+  buffer = Buffer.allocUnsafe(DestString.length);
+  writeStringNL(DestString, buffer, 0, DestString.length, 'ascii');
+  if ((uiByteWritten = FileWrite(hFile, buffer, DestString.length)) === -1) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
   }
 
   // increment the line number
-  uiLineNumber++;
+  QuestDebugFileMsg__uiLineNumber++;
 }
 
 }

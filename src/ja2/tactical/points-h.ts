@@ -69,8 +69,8 @@ const AP_READY_SAW = 0;
 //#define AP_READY_DUAL           3
 export const AP_READY_DUAL = 1;
 
-const AP_MIN_AIM_ATTACK = 0; // minimum permitted extra aiming
-const AP_MAX_AIM_ATTACK = 4; // maximum permitted extra aiming
+export const AP_MIN_AIM_ATTACK = 0; // minimum permitted extra aiming
+export const AP_MAX_AIM_ATTACK = 4; // maximum permitted extra aiming
 
 export const AP_BURST = 5;
 

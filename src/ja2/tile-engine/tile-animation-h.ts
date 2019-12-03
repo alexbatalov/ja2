@@ -155,6 +155,32 @@ export function createAnimatedTileParams(): ANITILE_PARAMS {
   };
 }
 
+export function resetAnimatedTileParams(o: ANITILE_PARAMS) {
+  o.uiFlags = 0;
+  o.ubLevelID = 0;
+  o.sStartFrame = 0;
+  o.sDelay = 0;
+  o.usTileType = 0;
+  o.usTileIndex = 0;
+  o.sX = 0;
+  o.sY = 0;
+  o.sZ = 0;
+  o.sGridNo = 0;
+
+  o.pGivenLevelNode = null;
+  o.zCachedFile = "";
+
+  o.ubOwner = 0;
+  o.ubKeyFrame1 = 0;
+  o.uiKeyFrame1Code = 0;
+  o.ubKeyFrame2 = 0;
+  o.uiKeyFrame2Code = 0;
+
+  o.uiUserData = 0;
+  o.ubUserData2 = 0;
+  o.uiUserData3 = 0;
+}
+
 export const enum Enum311 {
   ANI_KEYFRAME_NO_CODE,
   ANI_KEYFRAME_BEGIN_TRANSLUCENCY,

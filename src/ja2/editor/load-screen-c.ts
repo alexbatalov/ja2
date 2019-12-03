@@ -26,7 +26,7 @@ let FileList: Pointer<FDLG_LIST> = null;
 
 let iFDlgState: INT32 = Enum50.DIALOG_NONE;
 let gfDestroyFDlg: boolean = false;
-let iFileDlgButtons: INT32[] /* [7] */;
+let iFileDlgButtons: INT32[] /* [7] */ = createArray(7, 0);
 
 let gfLoadError: boolean;
 let gfReadOnly: boolean;

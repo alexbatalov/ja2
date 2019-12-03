@@ -99,7 +99,7 @@ function ConsiderProne(pSoldier: SOLDIERTYPE): boolean {
 export function StanceChange(pSoldier: SOLDIERTYPE, ubAttackAPCost: UINT8): UINT8 {
   // consider crouching or going prone
 
-  if (PTR_STANDING()) {
+  if (PTR_STANDING(pSoldier)) {
     if (pSoldier.bActionPoints - ubAttackAPCost >= AP_CROUCH) {
       if ((pSoldier.bActionPoints - ubAttackAPCost >= AP_CROUCH + AP_PRONE) && IsValidStance(pSoldier, ANIM_PRONE) && ConsiderProne(pSoldier)) {
         return ANIM_PRONE;
@@ -107,7 +107,7 @@ export function StanceChange(pSoldier: SOLDIERTYPE, ubAttackAPCost: UINT8): UINT
         return ANIM_CROUCH;
       }
     }
-  } else if (PTR_CROUCHED()) {
+  } else if (PTR_CROUCHED(pSoldier)) {
     if ((pSoldier.bActionPoints - ubAttackAPCost >= AP_PRONE) && IsValidStance(pSoldier, ANIM_PRONE) && ConsiderProne(pSoldier)) {
       return ANIM_PRONE;
     }
@@ -596,7 +596,7 @@ export function RandDestWithinRange(pSoldier: SOLDIERTYPE): INT16 {
 
   if (pSoldier.bOrders <= Enum241.CLOSEPATROL && (pSoldier.bTeam == CIV_TEAM || pSoldier.ubProfile != NO_PROFILE)) {
     // any other combo uses the default of ubRoom == 0, set above
-    if (!InARoom(pSoldier.usPatrolGrid[0], addressof(ubRoom))) {
+    if ((ubRoom = InARoom(pSoldier.usPatrolGrid[0])) === -1) {
       ubRoom = 0;
     }
   }
@@ -661,7 +661,7 @@ export function RandDestWithinRange(pSoldier: SOLDIERTYPE): INT16 {
         sRandDest = PreRandom(GRIDSIZE);
       }
 
-      if (ubRoom && InARoom(sRandDest, addressof(ubTempRoom)) && ubTempRoom != ubRoom) {
+      if (ubRoom && (ubTempRoom = InARoom(sRandDest) !== -1) && ubTempRoom != ubRoom) {
         // outside of room available for patrol!
         sRandDest = NOWHERE;
         continue;
@@ -681,7 +681,7 @@ export function RandDestWithinRange(pSoldier: SOLDIERTYPE): INT16 {
   return (sRandDest); // defaults to NOWHERE
 }
 
-export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8, pfChangeLevel: Pointer<boolean>): INT16 {
+export function ClosestReachableDisturbance(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8, pfChangeLevel: Pointer<boolean>): INT16 {
   let psLastLoc: Pointer<INT16>;
   let pusNoiseGridNo: Pointer<INT16>;
   let pbLastLevel: Pointer<INT8>;
@@ -703,7 +703,7 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
   let pbPersOL: Pointer<INT8>;
   let pbPublOL: Pointer<INT8>;
   let sClimbGridNo: INT16;
-  let pOpp: Pointer<SOLDIERTYPE>;
+  let pOpp: SOLDIERTYPE;
 
   // CJC: can't trace a path to every known disturbance!
   // for starters, try the closest one as the crow flies
@@ -713,9 +713,9 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
 
   pfChangeLevel.value = false;
 
-  pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.value.bTeam]);
-  pusNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.value.bTeam]);
-  pbNoiseLevel = addressof(gbPublicNoiseLevel[pSoldier.value.bTeam]);
+  pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.bTeam]);
+  pusNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.bTeam]);
+  pbNoiseLevel = addressof(gbPublicNoiseLevel[pSoldier.bTeam]);
 
   // hang pointers at start of this guy's personal and public opponent opplists
   //	pbPersOL = &pSoldier->bOppList[0];
@@ -732,14 +732,14 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
     }
 
     // if this merc is neutral/on same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.value.bSide == pOpp.value.bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.bSide == pOpp.bSide)) {
       continue; // next merc
     }
 
-    pbPersOL = pSoldier.value.bOppList + pOpp.value.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.value.bTeam] + pOpp.value.ubID;
-    psLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID] + pOpp.value.ubID;
-    pbLastLevel = gbLastKnownOppLevel[pSoldier.value.ubID] + pOpp.value.ubID;
+    pbPersOL = pSoldier.bOppList + pOpp.ubID;
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pOpp.ubID;
+    psLastLoc = gsLastKnownOppLoc[pSoldier.ubID] + pOpp.ubID;
+    pbLastLevel = gbLastKnownOppLevel[pSoldier.ubID] + pOpp.ubID;
 
     // if this opponent is unknown personally and publicly
     if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
@@ -748,7 +748,7 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
 
     // this is possible if get here from BLACK AI in one of those rare
     // instances when we couldn't get a meaningful shot off at a guy in sight
-    if ((pbPersOL.value == SEEN_CURRENTLY) && (pOpp.value.bLife >= OKLIFE)) {
+    if ((pbPersOL.value == SEEN_CURRENTLY) && (pOpp.bLife >= OKLIFE)) {
       // don't allow this to return any valid values, this guy remains a
       // serious threat and the last thing we want to do is approach him!
       return NOWHERE;
@@ -761,12 +761,12 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
       bLevel = pbLastLevel.value;
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
-      sGridNo = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpp.value.ubID];
-      bLevel = gbPublicLastKnownOppLevel[pSoldier.value.bTeam][pOpp.value.ubID];
+      sGridNo = gsPublicLastKnownOppLoc[pSoldier.bTeam][pOpp.ubID];
+      bLevel = gbPublicLastKnownOppLevel[pSoldier.bTeam][pOpp.ubID];
     }
 
     // if we are standing at that gridno (!, obviously our info is old...)
-    if (sGridNo == pSoldier.value.sGridNo) {
+    if (sGridNo == pSoldier.sGridNo) {
       continue; // next merc
     }
 
@@ -775,7 +775,7 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
       continue;
     }
 
-    sDistToEnemy = PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
+    sDistToEnemy = PythSpacesAway(pSoldier.sGridNo, sGridNo);
     if (sDistToEnemy < sDistToClosestEnemy)
       ;
     {
@@ -800,15 +800,15 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
   }
 
   // if any "misc. noise" was also heard recently
-  if (pSoldier.value.sNoiseGridno != NOWHERE && pSoldier.value.sNoiseGridno != sClosestDisturbance) {
+  if (pSoldier.sNoiseGridno != NOWHERE && pSoldier.sNoiseGridno != sClosestDisturbance) {
     // test this gridno, too
-    sGridNo = pSoldier.value.sNoiseGridno;
-    bLevel = pSoldier.value.bNoiseLevel;
+    sGridNo = pSoldier.sNoiseGridno;
+    bLevel = pSoldier.bNoiseLevel;
 
     // if we are there (at the noise gridno)
-    if (sGridNo == pSoldier.value.sGridNo) {
-      pSoldier.value.sNoiseGridno = NOWHERE; // wipe it out, not useful anymore
-      pSoldier.value.ubNoiseVolume = 0;
+    if (sGridNo == pSoldier.sGridNo) {
+      pSoldier.sNoiseGridno = NOWHERE; // wipe it out, not useful anymore
+      pSoldier.ubNoiseVolume = 0;
     } else {
       // get the AP cost to get to the location of the noise
       iPathCost = EstimatePathCostToLocation(pSoldier, sGridNo, bLevel, false, addressof(fClimbingNecessary), addressof(sClimbGridNo));
@@ -832,7 +832,7 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
     bLevel = pbNoiseLevel.value;
 
     // if we are not NEAR the noise gridno...
-    if (pSoldier.value.bLevel != bLevel || PythSpacesAway(pSoldier.value.sGridNo, sGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, MaxDistanceVisible(), false) == 0)
+    if (pSoldier.bLevel != bLevel || PythSpacesAway(pSoldier.sGridNo, sGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, MaxDistanceVisible(), false) == 0)
     // if we are NOT there (at the noise gridno)
     //	if (sGridNo != pSoldier->sGridNo)
     {
@@ -858,7 +858,7 @@ export function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUn
   return sClosestDisturbance;
 }
 
-export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
+export function ClosestKnownOpponent(pSoldier: SOLDIERTYPE, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
   let psLastLoc: Pointer<INT16>;
   let sGridNo: INT16;
   let sClosestOpponent: INT16 = NOWHERE;
@@ -869,16 +869,16 @@ export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: P
   let pbPublOL: Pointer<INT8>;
   let bLevel: INT8;
   let bClosestLevel: INT8;
-  let pOpp: Pointer<SOLDIERTYPE>;
+  let pOpp: SOLDIERTYPE;
 
   bClosestLevel = -1;
 
   // NOTE: THIS FUNCTION ALLOWS RETURN OF UNCONSCIOUS AND UNREACHABLE OPPONENTS
-  psLastLoc = addressof(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
+  psLastLoc = addressof(gsLastKnownOppLoc[pSoldier.ubID][0]);
 
   // hang pointers at start of this guy's personal and public opponent opplists
-  pbPersOL = addressof(pSoldier.value.bOppList[0]);
-  pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][0]);
+  pbPersOL = addressof(pSoldier.bOppList[0]);
+  pbPublOL = addressof(gbPublicOpplist[pSoldier.bTeam][0]);
 
   // look through this man's personal & public opplists for opponents known
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
@@ -890,18 +890,18 @@ export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: P
     }
 
     // if this merc is neutral/on same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.value.bSide == pOpp.value.bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.bSide == pOpp.bSide)) {
       continue; // next merc
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
+    if (pSoldier.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.ubProfile != 64) {
       continue; // next opponent
     }
 
-    pbPersOL = pSoldier.value.bOppList + pOpp.value.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.value.bTeam] + pOpp.value.ubID;
-    psLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID] + pOpp.value.ubID;
+    pbPersOL = pSoldier.bOppList + pOpp.ubID;
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pOpp.ubID;
+    psLastLoc = gsLastKnownOppLoc[pSoldier.ubID] + pOpp.ubID;
 
     // if this opponent is unknown personally and publicly
     if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
@@ -911,29 +911,29 @@ export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: P
     // if personal knowledge is more up to date or at least equal
     if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
-      sGridNo = gsLastKnownOppLoc[pSoldier.value.ubID][pOpp.value.ubID];
-      bLevel = gbLastKnownOppLevel[pSoldier.value.ubID][pOpp.value.ubID];
+      sGridNo = gsLastKnownOppLoc[pSoldier.ubID][pOpp.ubID];
+      bLevel = gbLastKnownOppLevel[pSoldier.ubID][pOpp.ubID];
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
-      sGridNo = gsPublicLastKnownOppLoc[pSoldier.value.bTeam][pOpp.value.ubID];
-      bLevel = gbPublicLastKnownOppLevel[pSoldier.value.bTeam][pOpp.value.ubID];
+      sGridNo = gsPublicLastKnownOppLoc[pSoldier.bTeam][pOpp.ubID];
+      bLevel = gbPublicLastKnownOppLevel[pSoldier.bTeam][pOpp.ubID];
     }
 
     // if we are standing at that gridno(!, obviously our info is old...)
-    if (sGridNo == pSoldier.value.sGridNo) {
+    if (sGridNo == pSoldier.sGridNo) {
       continue; // next merc
     }
 
     // this function is used only for turning towards closest opponent or changing stance
     // as such, if they AI is in a building,
     // we should ignore people who are on the roof of the same building as the AI
-    if ((bLevel != pSoldier.value.bLevel) && SameBuilding(pSoldier.value.sGridNo, sGridNo)) {
+    if ((bLevel != pSoldier.bLevel) && SameBuilding(pSoldier.sGridNo, sGridNo)) {
       continue;
     }
 
     // I hope this will be good enough; otherwise we need a fractional/world-units-based 2D distance function
     // sRange = PythSpacesAway( pSoldier->sGridNo, sGridNo);
-    iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+    iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
     if (iRange < iClosestRange) {
       iClosestRange = iRange;
@@ -951,7 +951,7 @@ export function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: P
   return sClosestOpponent;
 }
 
-export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
+export function ClosestSeenOpponent(pSoldier: SOLDIERTYPE, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
   let sGridNo: INT16;
   let sClosestOpponent: INT16 = NOWHERE;
   let uiLoop: UINT32;
@@ -960,7 +960,7 @@ export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Po
   let pbPersOL: Pointer<INT8>;
   let bLevel: INT8;
   let bClosestLevel: INT8;
-  let pOpp: Pointer<SOLDIERTYPE>;
+  let pOpp: SOLDIERTYPE;
 
   bClosestLevel = -1;
 
@@ -974,16 +974,16 @@ export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Po
     }
 
     // if this merc is neutral/on same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.value.bSide == pOpp.value.bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpp) || (pSoldier.bSide == pOpp.bSide)) {
       continue; // next merc
     }
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.value.ubProfile != 64) {
+    if (pSoldier.bAttitude == Enum242.ATTACKSLAYONLY && pOpp.ubProfile != 64) {
       continue; // next opponent
     }
 
-    pbPersOL = pSoldier.value.bOppList + pOpp.value.ubID;
+    pbPersOL = pSoldier.bOppList + pOpp.ubID;
 
     // if this opponent is not seen personally
     if (pbPersOL.value != SEEN_CURRENTLY) {
@@ -991,24 +991,24 @@ export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Po
     }
 
     // since we're dealing with seen people, use exact gridnos
-    sGridNo = pOpp.value.sGridNo;
-    bLevel = pOpp.value.bLevel;
+    sGridNo = pOpp.sGridNo;
+    bLevel = pOpp.bLevel;
 
     // if we are standing at that gridno(!, obviously our info is old...)
-    if (sGridNo == pSoldier.value.sGridNo) {
+    if (sGridNo == pSoldier.sGridNo) {
       continue; // next merc
     }
 
     // this function is used only for turning towards closest opponent or changing stance
     // as such, if they AI is in a building,
     // we should ignore people who are on the roof of the same building as the AI
-    if ((bLevel != pSoldier.value.bLevel) && SameBuilding(pSoldier.value.sGridNo, sGridNo)) {
+    if ((bLevel != pSoldier.bLevel) && SameBuilding(pSoldier.sGridNo, sGridNo)) {
       continue;
     }
 
     // I hope this will be good enough; otherwise we need a fractional/world-units-based 2D distance function
     // sRange = PythSpacesAway( pSoldier->sGridNo, sGridNo);
-    iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+    iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
     if (iRange < iClosestRange) {
       iClosestRange = iRange;
@@ -1026,13 +1026,13 @@ export function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Po
   return sClosestOpponent;
 }
 
-export function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): INT16 {
+export function ClosestPC(pSoldier: SOLDIERTYPE, psDistance: Pointer<INT16>): INT16 {
   // used by NPCs... find the closest PC
 
   // NOTE: skips EPCs!
 
   let ubLoop: UINT8;
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let pTargetSoldier: SOLDIERTYPE;
   let sMinDist: INT16 = WORLD_MAX;
   let sDist: INT16;
   let sGridNo: INT16 = NOWHERE;
@@ -1041,14 +1041,14 @@ export function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<IN
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   for (; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++) {
-    pTargetSoldier = Menptr + ubLoop;
+    pTargetSoldier = Menptr[ubLoop];
 
-    if (!pTargetSoldier.value.bActive || !pTargetSoldier.value.bInSector) {
+    if (!pTargetSoldier.bActive || !pTargetSoldier.bInSector) {
       continue;
     }
 
     // if not conscious, skip him
-    if (pTargetSoldier.value.bLife < OKLIFE) {
+    if (pTargetSoldier.bLife < OKLIFE) {
       continue;
     }
 
@@ -1056,17 +1056,17 @@ export function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<IN
       continue;
     }
 
-    sDist = PythSpacesAway(pSoldier.value.sGridNo, pTargetSoldier.value.sGridNo);
+    sDist = PythSpacesAway(pSoldier.sGridNo, pTargetSoldier.sGridNo);
 
     // if this PC is not visible to the soldier, then add a penalty to the distance
     // so that we weight in favour of visible mercs
-    if (pTargetSoldier.value.bTeam != pSoldier.value.bTeam && pSoldier.value.bOppList[ubLoop] != SEEN_CURRENTLY) {
+    if (pTargetSoldier.bTeam != pSoldier.bTeam && pSoldier.bOppList[ubLoop] != SEEN_CURRENTLY) {
       sDist += 10;
     }
 
     if (sDist < sMinDist) {
       sMinDist = sDist;
-      sGridNo = pTargetSoldier.value.sGridNo;
+      sGridNo = pTargetSoldier.sGridNo;
     }
   }
 
@@ -1114,9 +1114,9 @@ export function ClimbingNecessary(pSoldier: SOLDIERTYPE, sDestGridNo: INT16, bDe
   }
 }
 
-export function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, pfClimbingNecessary: Pointer<boolean>): INT16 {
-  if (pSoldier.value.bLevel == bDestLevel) {
-    if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
+export function GetInterveningClimbingLocation(pSoldier: SOLDIERTYPE, sDestGridNo: INT16, bDestLevel: INT8, pfClimbingNecessary: Pointer<boolean>): INT16 {
+  if (pSoldier.bLevel == bDestLevel) {
+    if ((pSoldier.bLevel == 0) || (gubBuildingInfo[pSoldier.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
       pfClimbingNecessary.value = false;
       return NOWHERE;
@@ -1124,35 +1124,35 @@ export function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, s
       // different buildings!
       // yes, pass in same gridno twice... want closest climb-down spot for building we are on!
       pfClimbingNecessary.value = true;
-      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, pSoldier.value.sGridNo, false);
+      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, pSoldier.sGridNo, false);
     }
   } else {
     pfClimbingNecessary.value = true;
     // different levels
-    if (pSoldier.value.bLevel == 0) {
+    if (pSoldier.bLevel == 0) {
       // got to go UP onto building
-      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, sDestGridNo, true);
+      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, sDestGridNo, true);
     } else {
       // got to go DOWN off building
-      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, pSoldier.value.sGridNo, false);
+      return FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, pSoldier.sGridNo, false);
     }
   }
 }
 
-export function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, fAddCostAfterClimbingUp: boolean, pfClimbingNecessary: Pointer<boolean>, psClimbGridNo: Pointer<INT16>): INT16 {
+export function EstimatePathCostToLocation(pSoldier: SOLDIERTYPE, sDestGridNo: INT16, bDestLevel: INT8, fAddCostAfterClimbingUp: boolean, pfClimbingNecessary: Pointer<boolean>, psClimbGridNo: Pointer<INT16>): INT16 {
   let sPathCost: INT16;
   let sClimbGridNo: INT16;
 
-  if (pSoldier.value.bLevel == bDestLevel) {
-    if ((pSoldier.value.bLevel == 0) || (gubBuildingInfo[pSoldier.value.sGridNo] == gubBuildingInfo[sDestGridNo])) {
+  if (pSoldier.bLevel == bDestLevel) {
+    if ((pSoldier.bLevel == 0) || (gubBuildingInfo[pSoldier.sGridNo] == gubBuildingInfo[sDestGridNo])) {
       // on ground or same building... normal!
-      sPathCost = EstimatePlotPath(pSoldier, sDestGridNo, false, false, false, Enum193.WALKING, false, false, 0);
+      sPathCost = EstimatePlotPath(pSoldier, sDestGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, Enum193.WALKING, NOT_STEALTH, FORWARD, 0);
       pfClimbingNecessary.value = false;
       psClimbGridNo.value = NOWHERE;
     } else {
       // different buildings!
       // yes, pass in same gridno twice... want closest climb-down spot for building we are on!
-      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, pSoldier.value.sGridNo, false);
+      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, pSoldier.sGridNo, false);
       if (sClimbGridNo == NOWHERE) {
         sPathCost = 0;
       } else {
@@ -1176,12 +1176,12 @@ export function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDest
     }
   } else {
     // different levels
-    if (pSoldier.value.bLevel == 0) {
+    if (pSoldier.bLevel == 0) {
       // got to go UP onto building
-      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, sDestGridNo, true);
+      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, sDestGridNo, true);
     } else {
       // got to go DOWN off building
-      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.value.sGridNo, pSoldier.value.sGridNo, false);
+      sClimbGridNo = FindClosestClimbPointAvailableToAI(pSoldier, pSoldier.sGridNo, pSoldier.sGridNo, false);
     }
 
     if (sClimbGridNo == NOWHERE) {
@@ -1190,7 +1190,7 @@ export function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDest
       sPathCost = PlotPath(pSoldier, sClimbGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, Enum193.WALKING, NOT_STEALTH, FORWARD, 0);
       if (sPathCost != 0) {
         // add in the cost of climbing up or down
-        if (pSoldier.value.bLevel == 0) {
+        if (pSoldier.bLevel == 0) {
           // must climb up
           sPathCost += AP_CLIMBROOF;
           if (fAddCostAfterClimbingUp) {
@@ -1233,7 +1233,7 @@ function GuySawEnemyThisTurnOrBefore(pSoldier: SOLDIERTYPE): boolean {
   return false;
 }
 
-export function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimbingNecessary: Pointer<boolean>): INT16 {
+export function ClosestReachableFriendInTrouble(pSoldier: SOLDIERTYPE, pfClimbingNecessary: Pointer<boolean>): INT16 {
   let uiLoop: UINT32;
   let sPathCost: INT16;
   let sClosestFriend: INT16 = NOWHERE;
@@ -1241,10 +1241,10 @@ export function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, 
   let sClimbGridNo: INT16;
   let fClimbingNecessary: boolean;
   let fClosestClimbingNecessary: boolean = false;
-  let pFriend: Pointer<SOLDIERTYPE>;
+  let pFriend: SOLDIERTYPE;
 
   // civilians don't really have any "friends", so they don't bother with this
-  if (PTR_CIVILIAN()) {
+  if (PTR_CIVILIAN(pSoldier)) {
     return sClosestFriend;
   }
 
@@ -1258,29 +1258,29 @@ export function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, 
     }
 
     // if this merc is neutral or NOT on the same side, he's not a friend
-    if (pFriend.value.bNeutral || (pSoldier.value.bSide != pFriend.value.bSide)) {
+    if (pFriend.bNeutral || (pSoldier.bSide != pFriend.bSide)) {
       continue; // next merc
     }
 
     // if this "friend" is actually US
-    if (pFriend.value.ubID == pSoldier.value.ubID) {
+    if (pFriend.ubID == pSoldier.ubID) {
       continue; // next merc
     }
 
     // CJC: restrict "last one to radio" to only if that guy saw us this turn or last turn
 
     // if this friend is not under fire, and isn't the last one to radio
-    if (!(pFriend.value.bUnderFire || (pFriend.value.ubID == gTacticalStatus.Team[pFriend.value.bTeam].ubLastMercToRadio && GuySawEnemyThisTurnOrBefore(pFriend)))) {
+    if (!(pFriend.bUnderFire || (pFriend.ubID == gTacticalStatus.Team[pFriend.bTeam].ubLastMercToRadio && GuySawEnemyThisTurnOrBefore(pFriend)))) {
       continue; // next merc
     }
 
     // if we're already neighbors
-    if (SpacesAway(pSoldier.value.sGridNo, pFriend.value.sGridNo) == 1) {
+    if (SpacesAway(pSoldier.sGridNo, pFriend.sGridNo) == 1) {
       continue; // next merc
     }
 
     // get the AP cost to go to this friend's gridno
-    sPathCost = EstimatePathCostToLocation(pSoldier, pFriend.value.sGridNo, pFriend.value.bLevel, true, addressof(fClimbingNecessary), addressof(sClimbGridNo));
+    sPathCost = EstimatePathCostToLocation(pSoldier, pFriend.sGridNo, pFriend.bLevel, true, addressof(fClimbingNecessary), addressof(sClimbGridNo));
 
     // if we can get there
     if (sPathCost != 0) {
@@ -1291,7 +1291,7 @@ export function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, 
         if (fClimbingNecessary) {
           sClosestFriend = sClimbGridNo;
         } else {
-          sClosestFriend = pFriend.value.sGridNo;
+          sClosestFriend = pFriend.sGridNo;
         }
 
         sShortestPath = sPathCost;
@@ -1426,7 +1426,7 @@ export function WearGasMaskIfAvailable(pSoldier: SOLDIERTYPE): boolean {
     bNewSlot = Enum261.HEAD1POS;
   }
 
-  RearrangePocket(pSoldier, bSlot, bNewSlot, true);
+  RearrangePocket(pSoldier, bSlot, bNewSlot, FOREVER);
   return true;
 }
 
@@ -1446,7 +1446,7 @@ export function InLightAtNight(sGridNo: INT16, bLevel: INT8): boolean {
   }
 
   // could've been placed here, ignore the light
-  if (InARoom(sGridNo, null)) {
+  if (InARoom(sGridNo) !== -1) {
     return false;
   }
 
@@ -1460,7 +1460,7 @@ export function InLightAtNight(sGridNo: INT16, bLevel: INT8): boolean {
   return false;
 }
 
-export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function CalcMorale(pSoldier: SOLDIERTYPE): INT8 {
   let uiLoop: UINT32;
   let uiLoop2: UINT32;
   let iOurTotalThreat: INT32 = 0;
@@ -1474,11 +1474,11 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let pSeenOpp: Pointer<UINT8>; //,*friendOlPtr;
   let pbPersOL: Pointer<INT8>;
   let pbPublOL: Pointer<INT8>;
-  let pOpponent: Pointer<SOLDIERTYPE>;
-  let pFriend: Pointer<SOLDIERTYPE>;
+  let pOpponent: SOLDIERTYPE;
+  let pFriend: SOLDIERTYPE;
 
   // if army guy has NO weapons left then panic!
-  if (pSoldier.value.bTeam == ENEMY_TEAM) {
+  if (pSoldier.bTeam == ENEMY_TEAM) {
     if (FindAIUsableObjClass(pSoldier, IC_WEAPON) == NO_SLOT) {
       return Enum244.MORALE_HOPELESS;
     }
@@ -1486,28 +1486,28 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   // hang pointers to my personal opplist, my team's public opplist, and my
   // list of previously seen opponents
-  pSeenOpp = addressof(gbSeenOpponents[pSoldier.value.ubID][0]);
+  pSeenOpp = addressof(gbSeenOpponents[pSoldier.ubID][0]);
 
   // loop through every one of my possible opponents
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is inactive, at base, on assignment, dead, unconscious
-    if (!pOpponent || (pOpponent.value.bLife < OKLIFE))
+    if (!pOpponent || (pOpponent.bLife < OKLIFE))
       continue; // next merc
 
     // if this merc is neutral/on same side, he's not an opponent, skip him!
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.value.bSide == pOpponent.value.bSide))
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.bSide == pOpponent.bSide))
       continue; // next merc
 
     // Special stuff for Carmen the bounty hunter
-    if (pSoldier.value.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.value.ubProfile != 64) {
+    if (pSoldier.bAttitude == Enum242.ATTACKSLAYONLY && pOpponent.ubProfile != 64) {
       continue; // next opponent
     }
 
-    pbPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.value.bTeam] + pOpponent.value.ubID;
-    pSeenOpp = gbSeenOpponents[pSoldier.value.ubID] + pOpponent.value.ubID;
+    pbPersOL = pSoldier.bOppList + pOpponent.ubID;
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pOpponent.ubID;
+    pSeenOpp = gbSeenOpponents[pSoldier.ubID] + pOpponent.ubID;
 
     // if this opponent is unknown to me personally AND unknown to my team, too
     if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
@@ -1528,7 +1528,7 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     iPercent = ThreatPercent[bMostRecentOpplistValue - OLDEST_HEARD_VALUE];
 
-    sOppThreatValue = (iPercent * CalcManThreatValue(pOpponent, pSoldier.value.sGridNo, false, pSoldier)) / 100;
+    sOppThreatValue = (iPercent * CalcManThreatValue(pOpponent, pSoldier.sGridNo, false, pSoldier)) / 100;
 
     // sprintf(tempstr,"Known opponent %s, opplist status %d, percent %d, threat = %d",
     //           ExtMen[pOpponent->ubID].name,ubMostRecentOpplistValue,ubPercent,sOppThreatValue);
@@ -1547,18 +1547,18 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       pFriend = MercSlots[uiLoop2];
 
       // if this merc is inactive, at base, on assignment, dead, unconscious
-      if (!pFriend || (pFriend.value.bLife < OKLIFE))
+      if (!pFriend || (pFriend.bLife < OKLIFE))
         continue; // next merc
 
       // if this merc is not on my side, then he's NOT one of my friends
 
       // WE CAN'T AFFORD TO CONSIDER THE ENEMY OF MY ENEMY MY FRIEND, HERE!
       // ONLY IF WE ARE ACTUALLY OFFICIALLY CO-OPERATING TOGETHER (SAME SIDE)
-      if (pFriend.value.bNeutral && !(pSoldier.value.ubCivilianGroup != Enum246.NON_CIV_GROUP && pSoldier.value.ubCivilianGroup == pFriend.value.ubCivilianGroup)) {
+      if (pFriend.bNeutral && !(pSoldier.ubCivilianGroup != Enum246.NON_CIV_GROUP && pSoldier.ubCivilianGroup == pFriend.ubCivilianGroup)) {
         continue; // next merc
       }
 
-      if (pSoldier.value.bSide != pFriend.value.bSide)
+      if (pSoldier.bSide != pFriend.bSide)
         continue; // next merc
 
       // THIS TEST IS INVALID IF A COMPUTER-TEAM IS PLAYING CO-OPERATIVELY
@@ -1569,18 +1569,18 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       // subtract HEARD_2_TURNS_AGO (which is negative) to make values start at 0 and
       // be positive otherwise
-      iPercent = ThreatPercent[pFriend.value.bOppList[pOpponent.value.ubID] - OLDEST_HEARD_VALUE];
+      iPercent = ThreatPercent[pFriend.bOppList[pOpponent.ubID] - OLDEST_HEARD_VALUE];
 
       // reduce the percentage value based on how far away they are from the enemy, if they only hear him
-      if (pFriend.value.bOppList[pOpponent.value.ubID] <= HEARD_LAST_TURN) {
-        iPercent -= PythSpacesAway(pSoldier.value.sGridNo, pFriend.value.sGridNo) * 2;
+      if (pFriend.bOppList[pOpponent.ubID] <= HEARD_LAST_TURN) {
+        iPercent -= PythSpacesAway(pSoldier.sGridNo, pFriend.sGridNo) * 2;
         if (iPercent <= 0) {
           // ignore!
           continue;
         }
       }
 
-      sFrndThreatValue = (iPercent * CalcManThreatValue(pFriend, pOpponent.value.sGridNo, false, pSoldier)) / 100;
+      sFrndThreatValue = (iPercent * CalcManThreatValue(pFriend, pOpponent.sGridNo, false, pSoldier)) / 100;
 
       // sprintf(tempstr,"Known by friend %s, opplist status %d, percent %d, threat = %d",
       //         ExtMen[pFriend->ubID].name,pFriend->bOppList[pOpponent->ubID],ubPercent,sFrndThreatValue);
@@ -1618,7 +1618,7 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   else // odds better than 3:1
     bMoraleCategory = Enum244.MORALE_FEARLESS;
 
-  switch (pSoldier.value.bAttitude) {
+  switch (pSoldier.bAttitude) {
     case Enum242.DEFENSIVE:
       bMoraleCategory--;
       break;
@@ -1638,38 +1638,38 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   // make idiot administrators much more aggressive
-  if (pSoldier.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
+  if (pSoldier.ubSoldierClass == Enum262.SOLDIER_CLASS_ADMINISTRATOR) {
     bMoraleCategory += 2;
   }
 
   // if still full of energy
-  if (pSoldier.value.bBreath > 75)
+  if (pSoldier.bBreath > 75)
     bMoraleCategory++;
   else {
     // if getting a bit low on breath
-    if (pSoldier.value.bBreath < 40)
+    if (pSoldier.bBreath < 40)
       bMoraleCategory--;
 
     // if getting REALLY low on breath
-    if (pSoldier.value.bBreath < 10)
+    if (pSoldier.bBreath < 10)
       bMoraleCategory--;
   }
 
   // if still very healthy
-  if (pSoldier.value.bLife > 75)
+  if (pSoldier.bLife > 75)
     bMoraleCategory++;
   else {
     // if getting a bit low on life
-    if (pSoldier.value.bLife < 40)
+    if (pSoldier.bLife < 40)
       bMoraleCategory--;
 
     // if getting REALLY low on life
-    if (pSoldier.value.bLife < 20)
+    if (pSoldier.bLife < 20)
       bMoraleCategory--;
   }
 
   // if soldier is currently not under fire
-  if (!pSoldier.value.bUnderFire)
+  if (!pSoldier.bUnderFire)
     bMoraleCategory++;
 
   // if adjustments made it outside the allowed limits
@@ -1692,7 +1692,7 @@ export function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   */
 
   // brave guys never get hopeless, at worst they get worried
-  if (bMoraleCategory == Enum244.MORALE_HOPELESS && (pSoldier.value.bAttitude == Enum242.BRAVESOLO || pSoldier.value.bAttitude == Enum242.BRAVEAID))
+  if (bMoraleCategory == Enum244.MORALE_HOPELESS && (pSoldier.bAttitude == Enum242.BRAVESOLO || pSoldier.bAttitude == Enum242.BRAVEAID))
     bMoraleCategory = Enum244.MORALE_WORRIED;
 
   return bMoraleCategory;
@@ -1799,26 +1799,26 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
   return iThreatValue;
 }
 
-export function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT16>): INT16 {
+export function RoamingRange(pSoldier: SOLDIERTYPE, pusFromGridNo: Pointer<INT16>): INT16 {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
-    if (pSoldier.value.bAlertStatus == Enum243.STATUS_BLACK) {
-      pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
+    if (pSoldier.bAlertStatus == Enum243.STATUS_BLACK) {
+      pusFromGridNo.value = pSoldier.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     }
   }
-  if (pSoldier.value.bOrders == Enum241.POINTPATROL || pSoldier.value.bOrders == Enum241.RNDPTPATROL) {
+  if (pSoldier.bOrders == Enum241.POINTPATROL || pSoldier.bOrders == Enum241.RNDPTPATROL) {
     // roam near NEXT PATROL POINT, not from where merc starts out
-    pusFromGridNo.value = pSoldier.value.usPatrolGrid[pSoldier.value.bNextPatrolPnt];
+    pusFromGridNo.value = pSoldier.usPatrolGrid[pSoldier.bNextPatrolPnt];
   } else {
     // roam around where mercs started
     //*pusFromGridNo = pSoldier->sInitialGridNo;
-    pusFromGridNo.value = pSoldier.value.usPatrolGrid[0];
+    pusFromGridNo.value = pSoldier.usPatrolGrid[0];
   }
 
-  switch (pSoldier.value.bOrders) {
+  switch (pSoldier.bOrders) {
     // JA2 GOLD: give non-NPCs a 5 tile roam range for cover in combat when being shot at
     case Enum241.STATIONARY:
-      if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.bAlertStatus < Enum243.STATUS_BLACK && !(pSoldier.value.bUnderFire))) {
+      if (pSoldier.ubProfile != NO_PROFILE || (pSoldier.bAlertStatus < Enum243.STATUS_BLACK && !(pSoldier.bUnderFire))) {
         return 0;
       } else {
         return 5;
@@ -1831,26 +1831,26 @@ export function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Poin
     case Enum241.POINTPATROL:
       return (10); // from nextPatrolGrid, not whereIWas
     case Enum241.FARPATROL:
-      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
+      if (pSoldier.bAlertStatus < Enum243.STATUS_RED) {
         return 25;
       } else {
         return 50;
       }
     case Enum241.ONCALL:
-      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
+      if (pSoldier.bAlertStatus < Enum243.STATUS_RED) {
         return 10;
       } else {
         return 30;
       }
     case Enum241.SEEKENEMY:
-      pusFromGridNo.value = pSoldier.value.sGridNo; // from current position!
+      pusFromGridNo.value = pSoldier.sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     default:
       return 0;
   }
 }
 
-export function RearrangePocket(pSoldier: SOLDIERTYPE, bPocket1: INT8, bPocket2: INT8, bPermanent: boolean): void {
+export function RearrangePocket(pSoldier: SOLDIERTYPE, bPocket1: INT8, bPocket2: INT8, bPermanent: UINT8 /* boolean */): void {
   // NB there's no such thing as a temporary swap for now...
   SwapObjs(pSoldier.inv[bPocket1], pSoldier.inv[bPocket2]);
 }

@@ -83,7 +83,7 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
   let ubPaletteRep: UINT8;
 
   // Create 16BPP Palette
-  if (!GetPaletteRepIndexFromID(aPalRep, addressof(ubPaletteRep))) {
+  if ((ubPaletteRep = GetPaletteRepIndexFromID(aPalRep)) === -1) {
     return false;
   }
 

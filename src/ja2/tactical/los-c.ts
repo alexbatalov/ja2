@@ -205,7 +205,7 @@ const enum Enum228 {
   LOC_4_4,
 }
 
-function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIndexX: INT8, bLOSIndexY: INT8, ddHorizAngle: DOUBLE): boolean {
+function ResolveHitOnWall(pStructure: STRUCTURE, iGridNo: INT32, bLOSIndexX: INT8, bLOSIndexY: INT8, ddHorizAngle: DOUBLE): boolean {
   let fNorthSouth: boolean;
   let fEastWest: boolean;
   let fTopLeft: boolean;
@@ -253,8 +253,8 @@ function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIn
   fNorthSouth = ((ddHorizAngle < (0) && ddHorizAngle > (-Math.PI * 1 / 2)) || (ddHorizAngle > (Math.PI * 1 / 2) && ddHorizAngle < (Math.PI)));
   fEastWest = ((ddHorizAngle > (0) && ddHorizAngle < (Math.PI * 1 / 2)) || (ddHorizAngle < (-Math.PI * 1 / 2) && ddHorizAngle > (-Math.PI)));
 
-  fTopLeft = (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT);
-  fTopRight = (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT);
+  fTopLeft = (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT);
+  fTopRight = (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT);
 
   if (fNorthSouth) {
     // Check N-S at west corner:		4,4 4,3   0,4
@@ -284,8 +284,8 @@ function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIn
       }
     } else if (bLocation == Enum228.LOC_4_0) {
       // if door is normal and OPEN and outside type then we let N-S pass
-      if ((pStructure.value.fFlags & STRUCTURE_DOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
-        if (pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+      if ((pStructure.fFlags & STRUCTURE_DOOR) && (pStructure.fFlags & STRUCTURE_OPEN)) {
+        if (pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_LEFT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
           return false;
         }
       } else if (fTopRight) {
@@ -299,7 +299,7 @@ function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIn
   if (fEastWest) {
     // Check E-W at north corner:   4,4   4,0		0,4
     if (bLocation == Enum228.LOC_4_4) {
-      if (pStructure.value.ubWallOrientation == Enum314.NO_ORIENTATION) {
+      if (pStructure.ubWallOrientation == Enum314.NO_ORIENTATION) {
         // very top north corner of building, and going (screenwise) west or east
         return false;
       }
@@ -314,8 +314,8 @@ function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIn
       }
     } else if (bLocation == Enum228.LOC_0_4) {
       // if normal door and OPEN and inside type then we let E-W pass
-      if ((pStructure.value.fFlags & STRUCTURE_DOOR) && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
-        if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT) {
+      if ((pStructure.fFlags & STRUCTURE_DOOR) && (pStructure.fFlags & STRUCTURE_OPEN)) {
+        if (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_LEFT || pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT) {
           return false;
         }
       }
@@ -551,9 +551,9 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
   let iLoop: INT32;
 
-  let pMapElement: Pointer<MAP_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = null;
+  let pMapElement: MAP_ELEMENT;
+  let pStructure: STRUCTURE | null
+  let pRoofStructure: STRUCTURE | null = null;
 
   let fCheckForRoof: boolean;
   let qLastZ: FIXEDPT;
@@ -604,7 +604,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   iDistance = dDistance;
 
   if (iDistance == 0) {
-    return false;
+    return 0;
   }
 
   if (dDistance != iDistance) {
@@ -709,8 +709,8 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
     // retrieve values from world for this particular tile
     iGridNo = iCurrTileX + iCurrTileY * WORLD_COLS;
-    pMapElement = addressof(gpWorldLevelData[iGridNo]);
-    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
+    pMapElement = gpWorldLevelData[iGridNo];
+    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
 
     if (fCheckForRoof) {
@@ -740,7 +740,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
         return 0;
       }
       // check for the existence of structures
-      pStructure = pMapElement.value.pStructureHead;
+      pStructure = pMapElement.pStructureHead;
       if (pStructure == null) {
         // no structures in this tile, AND THAT INCLUDES ROOFS! :-)
 
@@ -850,8 +850,8 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
             // transparent structures should be skipped
             // normal roof structures should be skipped here because their only bits are roof lips
             // and those should act as transparent
-            fOpaque = (pStructure.value.fFlags & STRUCTURE_TRANSPARENT) == 0;
-            if (pStructure.value.fFlags & STRUCTURE_ROOF) {
+            fOpaque = (pStructure.fFlags & STRUCTURE_TRANSPARENT) == 0;
+            if (pStructure.fFlags & STRUCTURE_ROOF) {
               // roof lip; allow sighting if person on roof is near
               if ((iLoop < 2 * CELL_X_SIZE || (iDistance - iLoop) < 2 * CELL_X_SIZE)) {
                 if (iLoop <= CELL_X_SIZE + 1 || (iDistance - iLoop) <= CELL_X_SIZE + 1) {
@@ -876,15 +876,15 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
             }
 
             if (fOpaque) {
-              if (pStructure.value.sCubeOffset == sDesiredLevel) {
-                if ((((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+              if (pStructure.sCubeOffset == sDesiredLevel) {
+                if (((<PROFILE>pStructure.pShape)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
                   if (fSmell) {
-                    if (pStructure.value.fFlags & STRUCTURE_TREE) {
+                    if (pStructure.fFlags & STRUCTURE_TREE) {
                       // smell not stopped by vegetation
-                    } else if ((pStructure.value.fFlags & STRUCTURE_WALLNWINDOW) && (pStructure.value.fFlags & STRUCTURE_OPEN)) {
+                    } else if ((pStructure.fFlags & STRUCTURE_WALLNWINDOW) && (pStructure.fFlags & STRUCTURE_OPEN)) {
                       // open window, smell not stopped
                     } else {
-                      if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+                      if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
                         // possibly at corner in which case we should let it pass
                         fResolveHit = ResolveHitOnWall(pStructure, iGridNo, bLOSIndexX, bLOSIndexY, ddHorizAngle);
                       } else {
@@ -912,7 +912,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                       }
                     }
                   } else {
-                    if (pStructure.value.fFlags & STRUCTURE_TREE) {
+                    if (pStructure.fFlags & STRUCTURE_TREE) {
                       // don't count trees close to the person
                       if (iLoop > CLOSE_TO_FIRER) {
                         if (iLoop > 100) {
@@ -927,7 +927,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                           return 0;
                         }
                       }
-                    } else if ((pStructure.value.fFlags & STRUCTURE_WALLNWINDOW) && !(pStructure.value.fFlags & STRUCTURE_SPECIAL) && qCurrZ >= (gqStandardWindowBottomHeight + qLandHeight) && qCurrZ <= (gqStandardWindowTopHeight + qLandHeight)) {
+                    } else if ((pStructure.fFlags & STRUCTURE_WALLNWINDOW) && !(pStructure.fFlags & STRUCTURE_SPECIAL) && qCurrZ >= (gqStandardWindowBottomHeight + qLandHeight) && qCurrZ <= (gqStandardWindowTopHeight + qLandHeight)) {
                       // do nothing; windows are transparent (except ones marked as special)
                       if (psWindowGridNo != null) {
                         // we're supposed to note the location of this window!
@@ -942,7 +942,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                         }
                       }
                     } else {
-                      if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+                      if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
                         // possibly shooting at corner in which case we should let it pass
                         fResolveHit = ResolveHitOnWall(pStructure, iGridNo, bLOSIndexX, bLOSIndexY, ddHorizAngle);
                       } else {
@@ -976,7 +976,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                 }
               }
             }
-            pStructure = pStructure.value.pNext;
+            pStructure = pStructure.pNext;
           }
         }
         // got past all structures; go to next location within
@@ -1012,8 +1012,8 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
     } while ((iCurrTileX == iOldTileX) && (iCurrTileY == iOldTileY) && (iLoop < iDistance));
 
     // leaving a tile, check to see if it had gas in it
-    if (pMapElement.value.ubExtFlags[0] & (MAPELEMENT_EXT_SMOKE | MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) {
-      if ((pMapElement.value.ubExtFlags[0] & MAPELEMENT_EXT_SMOKE) && !fSmell) {
+    if (pMapElement.ubExtFlags[0] & (MAPELEMENT_EXT_SMOKE | MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS)) {
+      if ((pMapElement.ubExtFlags[0] & MAPELEMENT_EXT_SMOKE) && !fSmell) {
         bSmoke++;
 
         // we can only see 3 tiles in smoke
@@ -1054,20 +1054,20 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   return (iDistance + (iSightLimit - iAdjSightLimit)) * (MaxDistanceVisible() * CELL_X_SIZE) / iSightLimit;
 }
 
-export function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): boolean {
+export function CalculateSoldierZPos(pSoldier: SOLDIERTYPE, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): boolean {
   let ubHeight: UINT8;
 
-  if (pSoldier.value.ubBodyType == Enum194.CROW) {
+  if (pSoldier.ubBodyType == Enum194.CROW) {
     // Crow always as prone...
     ubHeight = ANIM_PRONE;
-  } else if (pSoldier.value.bOverTerrainType == Enum315.DEEP_WATER) {
+  } else if (pSoldier.bOverTerrainType == Enum315.DEEP_WATER) {
     // treat as prone
     ubHeight = ANIM_PRONE;
-  } else if (pSoldier.value.bOverTerrainType == Enum315.LOW_WATER || pSoldier.value.bOverTerrainType == Enum315.MED_WATER) {
+  } else if (pSoldier.bOverTerrainType == Enum315.LOW_WATER || pSoldier.bOverTerrainType == Enum315.MED_WATER) {
     // treat as crouched
     ubHeight = ANIM_CROUCH;
   } else {
-    if (CREATURE_OR_BLOODCAT(pSoldier) || pSoldier.value.ubBodyType == Enum194.COW) {
+    if (CREATURE_OR_BLOODCAT(pSoldier) || pSoldier.ubBodyType == Enum194.COW) {
       // this if statement is to avoid the 'creature weak spot' target
       // spot for creatures
       if (ubPosType == Enum230.HEAD_TARGET_POS || ubPosType == Enum230.LEGS_TARGET_POS) {
@@ -1079,7 +1079,7 @@ export function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: 
       ubPosType = Enum230.HEAD_TARGET_POS;
     }
 
-    ubHeight = gAnimControl[pSoldier.value.usAnimState].ubEndHeight;
+    ubHeight = gAnimControl[pSoldier.usAnimState].ubEndHeight;
   }
 
   switch (ubPosType) {
@@ -1189,32 +1189,32 @@ export function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: 
       }
       break;
   }
-  if (pSoldier.value.ubBodyType == Enum194.HATKIDCIV || pSoldier.value.ubBodyType == Enum194.KIDCIV) {
+  if (pSoldier.ubBodyType == Enum194.HATKIDCIV || pSoldier.ubBodyType == Enum194.KIDCIV) {
     // reduce value for kids who are 2/3 the height of regular people
     pdZPos.value = (pdZPos.value * 2) / 3;
-  } else if (pSoldier.value.ubBodyType == Enum194.ROBOTNOWEAPON || pSoldier.value.ubBodyType == Enum194.LARVAE_MONSTER || pSoldier.value.ubBodyType == Enum194.INFANT_MONSTER || pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
+  } else if (pSoldier.ubBodyType == Enum194.ROBOTNOWEAPON || pSoldier.ubBodyType == Enum194.LARVAE_MONSTER || pSoldier.ubBodyType == Enum194.INFANT_MONSTER || pSoldier.ubBodyType == Enum194.BLOODCAT) {
     // robot is 1/3 the height of regular people
     pdZPos.value = pdZPos.value / 3;
   } else if (TANK(pSoldier)) {
     pdZPos.value = (pdZPos.value * 4) / 3;
   }
 
-  if (pSoldier.value.bLevel > 0) {
+  if (pSoldier.bLevel > 0) {
     // on a roof
     pdZPos.value += WALL_HEIGHT_UNITS;
   }
 
   // IF this is a plane, strafe!
   // ATE: Don;t panic - this is temp - to be changed to a status flag....
-  if (pSoldier.value.ubID == MAX_NUM_SOLDIERS) {
+  if (pSoldier.ubID == MAX_NUM_SOLDIERS) {
     pdZPos.value = (WALL_HEIGHT_UNITS * 2) - 1;
   }
 
-  pdZPos.value += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pSoldier.value.sGridNo].sHeight);
+  pdZPos.value += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pSoldier.sGridNo].sHeight);
   return true;
 }
 
-export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
+export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -1225,39 +1225,39 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
   // TO ADD: if target is camouflaged and in cover, reduce sight distance by 30%
   // TO ADD: if in tear gas, reduce sight limit to 2 tiles
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
   if (!pEndSoldier) {
-    return false;
+    return 0;
   }
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   if (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_N) {
     // in the bloodcat arena sector, skip sight between army & bloodcats
-    if (pStartSoldier.value.bTeam == ENEMY_TEAM && pEndSoldier.value.bTeam == CREATURE_TEAM) {
+    if (pStartSoldier.bTeam == ENEMY_TEAM && pEndSoldier.bTeam == CREATURE_TEAM) {
       return 0;
     }
-    if (pStartSoldier.value.bTeam == CREATURE_TEAM && pEndSoldier.value.bTeam == ENEMY_TEAM) {
+    if (pStartSoldier.bTeam == CREATURE_TEAM && pEndSoldier.bTeam == ENEMY_TEAM) {
       return 0;
     }
   }
 
-  if (pStartSoldier.value.uiStatusFlags & SOLDIER_MONSTER) {
+  if (pStartSoldier.uiStatusFlags & SOLDIER_MONSTER) {
     // monsters use smell instead of sight!
     dEndZPos = STANDING_LOS_POS; // should avoid low rocks etc
-    if (pEndSoldier.value.bLevel > 0) {
+    if (pEndSoldier.bLevel > 0) {
       // on a roof
       dEndZPos += WALL_HEIGHT_UNITS;
     }
-    dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pEndSoldier.value.sGridNo].sHeight);
+    dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pEndSoldier.sGridNo].sHeight);
     fSmell = true;
   } else {
     fOk = CalculateSoldierZPos(pEndSoldier, Enum230.LOS_POS, addressof(dEndZPos));
     if (!fOk) {
-      return false;
+      return 0;
     }
     fSmell = false;
   }
@@ -1265,32 +1265,32 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
   if (TANK(pStartSoldier)) {
     let sDistance: INT16;
 
-    sDistance = PythSpacesAway(pStartSoldier.value.sGridNo, pEndSoldier.value.sGridNo);
+    sDistance = PythSpacesAway(pStartSoldier.sGridNo, pEndSoldier.sGridNo);
 
     if (sDistance <= 8) {
       // blind spot?
       if (dEndZPos <= PRONE_LOS_POS) {
-        return false;
+        return 0;
       } else if (sDistance <= 4 && dEndZPos <= CROUCHED_LOS_POS) {
-        return false;
+        return 0;
       }
     }
   }
 
-  if (pEndSoldier.value.bCamo && !bAware) {
+  if (pEndSoldier.bCamo && !bAware) {
     let iTemp: INT32;
 
     // reduce effects of camo of 5% per tile moved last turn
-    if (pEndSoldier.value.ubBodyType == Enum194.BLOODCAT) {
-      bEffectiveCamo = 100 - pEndSoldier.value.bTilesMoved * 5;
+    if (pEndSoldier.ubBodyType == Enum194.BLOODCAT) {
+      bEffectiveCamo = 100 - pEndSoldier.bTilesMoved * 5;
     } else {
-      bEffectiveCamo = pEndSoldier.value.bCamo * (100 - pEndSoldier.value.bTilesMoved * 5) / 100;
+      bEffectiveCamo = pEndSoldier.bCamo * (100 - pEndSoldier.bTilesMoved * 5) / 100;
     }
     bEffectiveCamo = Math.max(bEffectiveCamo, 0);
 
-    if (gAnimControl[pEndSoldier.value.usAnimState].ubEndHeight < ANIM_STAND) {
+    if (gAnimControl[pEndSoldier.usAnimState].ubEndHeight < ANIM_STAND) {
       // reduce visibility by up to a third for camouflage!
-      switch (pEndSoldier.value.bOverTerrainType) {
+      switch (pEndSoldier.bOverTerrainType) {
         case Enum315.FLAT_GROUND:
         case Enum315.LOW_GRASS:
         case Enum315.HIGH_GRASS:
@@ -1309,13 +1309,13 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
   if (TANK(pEndSoldier)) {
     ubTreeReduction = 0;
   } else {
-    ubTreeReduction = gubTreeSightReduction[gAnimControl[pEndSoldier.value.usAnimState].ubEndHeight];
+    ubTreeReduction = gubTreeSightReduction[gAnimControl[pEndSoldier.usAnimState].ubEndHeight];
   }
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, null);
+  return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, CenterX(pEndSoldier.sGridNo), CenterY(pEndSoldier.sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, null);
 }
 
-export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16): INT16 {
+export function SoldierToLocationWindowTest(pStartSoldier: SOLDIERTYPE | null, sEndGridNo: INT16): INT16 {
   // figure out if there is a SINGLE window between the looker and target
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
@@ -1325,14 +1325,14 @@ export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>,
   let iRet: INT32;
 
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
   dStartZPos = FixedToFloat(((gqStandardWindowTopHeight + gqStandardWindowBottomHeight) / 2));
-  if (pStartSoldier.value.bLevel > 0) {
+  if (pStartSoldier.bLevel > 0) {
     // on a roof
     dStartZPos += WALL_HEIGHT_UNITS;
   }
-  dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pStartSoldier.value.sGridNo].sHeight);
+  dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pStartSoldier.sGridNo].sHeight);
   dEndZPos = dStartZPos;
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sEndGridNo));
@@ -1341,12 +1341,12 @@ export function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>,
 
   // We don't want to consider distance limits here so pass in tile sight limit of 255
   // and consider trees as little as possible
-  iRet = LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, true, 0, false, addressof(sWindowGridNo));
+  iRet = LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, true, 0, false, addressof(sWindowGridNo));
 
   return sWindowGridNo;
 }
 
-function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): boolean {
+function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubTileSightLimit: UINT8, bAware: INT8): boolean {
   let uiLoopLimit: UINT32 = 100000;
   let uiLoop: UINT32;
   let uiStartTime: UINT32;
@@ -1366,22 +1366,22 @@ function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYP
   return true;
 }
 
-export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
+export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
   let ubTargetID: UINT8;
-  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTarget: SOLDIERTYPE;
   let fOk: boolean;
 
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   if (bCubeLevel > 0) {
@@ -1404,11 +1404,11 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIE
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
+  return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
-  let pEndSoldier: Pointer<SOLDIERTYPE>;
+export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+  let pEndSoldier: SOLDIERTYPE;
   let ubTargetID: UINT8;
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
@@ -1425,12 +1425,12 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERT
   pEndSoldier = MercPtrs[ubTargetID];
 
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   switch (ubAimLocation) {
@@ -1450,17 +1450,17 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERT
 
   fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
+  return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
@@ -1468,12 +1468,12 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SO
   let fOk: boolean;
 
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
 
   fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   // manually calculate destination Z position.
@@ -1488,7 +1488,7 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SO
       dEndZPos = PRONE_LOS_POS;
       break;
     default:
-      return false;
+      return 0;
   }
   dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
   if (bLevel > 0) {
@@ -1500,10 +1500,10 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SO
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
-  return LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
+  return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   return SoldierTo3DLocationLineOfSightTest(pStartSoldier, sGridNo, 0, 0, ubTileSightLimit, bAware);
 }
 
@@ -1553,12 +1553,12 @@ INT32 BulletImpactReducedByRange( INT32 iImpact, INT32 iDistanceTravelled, INT32
 }
 */
 
-function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>, fIntended: boolean): boolean {
+function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolean): boolean {
   let iImpact: INT32;
   let iDamage: INT32;
   let SWeaponHit: EV_S_WEAPONHIT = createEvSWeaponHit();
   let sRange: INT16;
-  let pFirer: Pointer<SOLDIERTYPE> = pBullet.value.pFirer;
+  let pFirer: SOLDIERTYPE = pBullet.pFirer;
   let dZPosRelToMerc: FLOAT;
   let ubHitLocation: UINT8 = AIM_SHOT_RANDOM;
   let ubAttackDirection: UINT8;
@@ -1570,34 +1570,34 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   let bSlot: INT8;
   let bHeadSlot: INT8 = NO_SLOT;
   let Object: OBJECTTYPE = createObjectType();
-  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTarget: SOLDIERTYPE;
   let sNewGridNo: INT16;
   let fCanSpewBlood: boolean = false;
   let bSpewBloodLevel: INT8;
 
   // structure IDs for mercs match their merc IDs
-  pTarget = MercPtrs[pStructure.value.usStructureID];
+  pTarget = MercPtrs[pStructure.usStructureID];
 
-  if (pBullet.value.usFlags & BULLET_FLAG_KNIFE) {
+  if (pBullet.usFlags & BULLET_FLAG_KNIFE) {
     // Place knife on guy....
 
     // See if they have room ( and make sure it's not in hand pos?
     bSlot = FindEmptySlotWithin(pTarget, Enum261.BIGPOCK1POS, Enum261.SMALLPOCK8POS);
     if (bSlot == NO_SLOT) {
       // Add item
-      CreateItem(Enum225.THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(Object));
+      CreateItem(Enum225.THROWING_KNIFE, pBullet.ubItemStatus, Object);
 
-      AddItemToPool(pTarget.value.sGridNo, addressof(Object), -1, pTarget.value.bLevel, 0, 0);
+      AddItemToPool(pTarget.sGridNo, Object, -1, pTarget.bLevel, 0, 0);
 
       // Make team look for items
       NotifySoldiersToLookforItems();
     } else {
-      CreateItem(Enum225.BLOODY_THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(pTarget.value.inv[bSlot]));
+      CreateItem(Enum225.BLOODY_THROWING_KNIFE, pBullet.ubItemStatus, pTarget.inv[bSlot]);
     }
 
     ubAmmoType = Enum286.AMMO_KNIFE;
   } else {
-    ubAmmoType = pFirer.value.inv[pFirer.value.ubAttackingHand].ubGunAmmoType;
+    ubAmmoType = pFirer.inv[pFirer.ubAttackingHand].ubGunAmmoType;
   }
 
   // at least partly compensate for "near miss" increases for this guy, after all, the bullet
@@ -1606,7 +1606,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   // when the bullet got near him
   // pTarget->ubSuppressionPoints--;
 
-  if (pTarget.value.uiStatusFlags & SOLDIER_VEHICLE || (pTarget.value.ubBodyType == Enum194.COW || pTarget.value.ubBodyType == Enum194.CROW || pTarget.value.ubBodyType == Enum194.BLOODCAT)) {
+  if (pTarget.uiStatusFlags & SOLDIER_VEHICLE || (pTarget.ubBodyType == Enum194.COW || pTarget.ubBodyType == Enum194.CROW || pTarget.ubBodyType == Enum194.BLOODCAT)) {
     // ubHitLocation = pStructure->ubVehicleHitLocation;
     ubHitLocation = AIM_SHOT_TORSO;
   } else {
@@ -1616,9 +1616,9 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       ubHitLocation = AIM_SHOT_TORSO;
 
       // adult monster types have a weak spot
-      if ((pTarget.value.ubBodyType >= Enum194.ADULTFEMALEMONSTER) && (pTarget.value.ubBodyType <= Enum194.YAM_MONSTER)) {
-        ubAttackDirection = GetDirectionToGridNoFromGridNo(pBullet.value.pFirer.value.sGridNo, pTarget.value.sGridNo);
-        if (ubAttackDirection == pTarget.value.bDirection || ubAttackDirection == gOneCCDirection[pTarget.value.bDirection] || ubAttackDirection == gOneCDirection[pTarget.value.bDirection]) {
+      if ((pTarget.ubBodyType >= Enum194.ADULTFEMALEMONSTER) && (pTarget.ubBodyType <= Enum194.YAM_MONSTER)) {
+        ubAttackDirection = GetDirectionToGridNoFromGridNo(pBullet.pFirer.sGridNo, pTarget.sGridNo);
+        if (ubAttackDirection == pTarget.bDirection || ubAttackDirection == gOneCCDirection[pTarget.bDirection] || ubAttackDirection == gOneCDirection[pTarget.bDirection]) {
           // may hit weak spot!
           if (0) // check fact
           {
@@ -1636,13 +1636,13 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
 
     if (ubHitLocation == AIM_SHOT_RANDOM) // i.e. if not set yet
     {
-      if (pTarget.value.bOverTerrainType == Enum315.DEEP_WATER) {
+      if (pTarget.bOverTerrainType == Enum315.DEEP_WATER) {
         // automatic head hit!
         ubHitLocation = AIM_SHOT_HEAD;
       } else {
-        switch (gAnimControl[pTarget.value.usAnimState].ubEndHeight) {
+        switch (gAnimControl[pTarget.usAnimState].ubEndHeight) {
           case ANIM_STAND:
-            dZPosRelToMerc = FixedToFloat(pBullet.value.qCurrZ) - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.value.sGridNo].sHeight);
+            dZPosRelToMerc = FixedToFloat(pBullet.qCurrZ) - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.sGridNo].sHeight);
             if (dZPosRelToMerc > HEIGHT_UNITS) {
               dZPosRelToMerc -= HEIGHT_UNITS;
             }
@@ -1655,7 +1655,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
             }
             break;
           case ANIM_CROUCH:
-            dZPosRelToMerc = FixedToFloat(pBullet.value.qCurrZ) - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.value.sGridNo].sHeight);
+            dZPosRelToMerc = FixedToFloat(pBullet.qCurrZ) - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.sGridNo].sHeight);
             if (dZPosRelToMerc > HEIGHT_UNITS) {
               dZPosRelToMerc -= HEIGHT_UNITS;
             }
@@ -1675,18 +1675,18 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       }
     }
 
-    if ((ubAmmoType == Enum286.AMMO_MONSTER) && (ubHitLocation == AIM_SHOT_HEAD) && (!(pTarget.value.uiStatusFlags & SOLDIER_MONSTER))) {
+    if ((ubAmmoType == Enum286.AMMO_MONSTER) && (ubHitLocation == AIM_SHOT_HEAD) && (!(pTarget.uiStatusFlags & SOLDIER_MONSTER))) {
       let ubOppositeDirection: UINT8;
 
-      ubAttackDirection = GetDirectionToGridNoFromGridNo(pBullet.value.pFirer.value.sGridNo, pTarget.value.sGridNo);
+      ubAttackDirection = GetDirectionToGridNoFromGridNo(pBullet.pFirer.sGridNo, pTarget.sGridNo);
       ubOppositeDirection = gOppositeDirection[ubAttackDirection];
 
-      if (!(ubOppositeDirection == pTarget.value.bDirection || ubAttackDirection == gOneCCDirection[pTarget.value.bDirection] || ubAttackDirection == gOneCDirection[pTarget.value.bDirection])) {
+      if (!(ubOppositeDirection == pTarget.bDirection || ubAttackDirection == gOneCCDirection[pTarget.bDirection] || ubAttackDirection == gOneCDirection[pTarget.bDirection])) {
         // lucky bastard was facing away!
-      } else if (((pTarget.value.inv[Enum261.HEAD1POS].usItem == Enum225.NIGHTGOGGLES) || (pTarget.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES) || (pTarget.value.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK)) && (PreRandom(100) < (pTarget.value.inv[Enum261.HEAD1POS].bStatus[0]))) {
+      } else if (((pTarget.inv[Enum261.HEAD1POS].usItem == Enum225.NIGHTGOGGLES) || (pTarget.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES) || (pTarget.inv[Enum261.HEAD1POS].usItem == Enum225.GASMASK)) && (PreRandom(100) < (pTarget.inv[Enum261.HEAD1POS].bStatus[0]))) {
         // lucky bastard was wearing protective stuff
         bHeadSlot = Enum261.HEAD1POS;
-      } else if (((pTarget.value.inv[Enum261.HEAD2POS].usItem == Enum225.NIGHTGOGGLES) || (pTarget.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) || (pTarget.value.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK)) && (PreRandom(100) < (pTarget.value.inv[Enum261.HEAD2POS].bStatus[0]))) {
+      } else if (((pTarget.inv[Enum261.HEAD2POS].usItem == Enum225.NIGHTGOGGLES) || (pTarget.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) || (pTarget.inv[Enum261.HEAD2POS].usItem == Enum225.GASMASK)) && (PreRandom(100) < (pTarget.inv[Enum261.HEAD2POS].bStatus[0]))) {
         // lucky bastard was wearing protective stuff
         bHeadSlot = Enum261.HEAD2POS;
       } else {
@@ -1697,44 +1697,44 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   }
 
   // Determine damage, checking guy's armour, etc
-  sRange = GetRangeInCellCoordsFromGridNoDiff(pFirer.value.sGridNo, pTarget.value.sGridNo);
-  if (gTacticalStatus.uiFlags & GODMODE && !(pFirer.value.uiStatusFlags & SOLDIER_PC)) {
+  sRange = GetRangeInCellCoordsFromGridNoDiff(pFirer.sGridNo, pTarget.sGridNo);
+  if (gTacticalStatus.uiFlags & GODMODE && !(pFirer.uiStatusFlags & SOLDIER_PC)) {
     // in god mode, and firer is computer controlled
     iImpact = 0;
     iDamage = 0;
   } else if (fIntended) {
-    if (pFirer.value.bOppList[pTarget.value.ubID] == SEEN_CURRENTLY) {
-      sHitBy = pBullet.value.sHitBy;
+    if (pFirer.bOppList[pTarget.ubID] == SEEN_CURRENTLY) {
+      sHitBy = pBullet.sHitBy;
     } else {
       // hard to aim at something far away being reported by someone else!
-      sHitBy = pBullet.value.sHitBy / 2;
+      sHitBy = pBullet.sHitBy / 2;
     }
     // hit the intended target which was in our LOS
     // reduce due to range
-    iImpact = pBullet.value.iImpact; // BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
-    iImpact -= pBullet.value.iImpactReduction;
+    iImpact = pBullet.iImpact; // BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
+    iImpact -= pBullet.iImpactReduction;
     if (iImpact < 0) {
       // shouldn't happen but
       iImpact = 0;
     }
     iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
     // handle hit here...
-    if ((pFirer.value.bTeam == 0)) {
-      gMercProfiles[pFirer.value.ubProfile].usShotsHit++;
+    if ((pFirer.bTeam == 0)) {
+      gMercProfiles[pFirer.ubProfile].usShotsHit++;
     }
 
     // intentionally shot
-    pTarget.value.fIntendedTarget = true;
+    pTarget.fIntendedTarget = true;
 
-    if ((pBullet.value.usFlags & BULLET_FLAG_BUCKSHOT) && (pTarget.value.ubID == pFirer.value.ubTargetID)) {
-      pTarget.value.bNumPelletsHitBy++;
+    if ((pBullet.usFlags & BULLET_FLAG_BUCKSHOT) && (pTarget.ubID == pFirer.ubTargetID)) {
+      pTarget.bNumPelletsHitBy++;
     }
   } else {
     // if an accidental target was hit, don't give a bonus for good aim!
     sHitBy = 0;
-    iImpact = pBullet.value.iImpact;
+    iImpact = pBullet.iImpact;
     // iImpact = BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
-    iImpact -= pBullet.value.iImpactReduction;
+    iImpact -= pBullet.iImpactReduction;
     if (iImpact < 0) {
       // shouldn't happen but
       iImpact = 0;
@@ -1742,15 +1742,15 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
     iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
 
     // accidentally shot
-    pTarget.value.fIntendedTarget = false;
+    pTarget.fIntendedTarget = false;
   }
 
   if (ubAmmoType == Enum286.AMMO_MONSTER) {
     if (bHeadSlot != NO_SLOT) {
-      pTarget.value.inv[bHeadSlot].bStatus[0] -= ((iImpact / 2) + Random((iImpact / 2)));
-      if (pTarget.value.inv[bHeadSlot].bStatus[0] <= USABLE) {
-        if (pTarget.value.inv[bHeadSlot].bStatus[0] <= 0) {
-          DeleteObj(addressof(pTarget.value.inv[bHeadSlot]));
+      pTarget.inv[bHeadSlot].bStatus[0] -= ((iImpact / 2) + Random((iImpact / 2)));
+      if (pTarget.inv[bHeadSlot].bStatus[0] <= USABLE) {
+        if (pTarget.inv[bHeadSlot].bStatus[0] <= 0) {
+          DeleteObj(pTarget.inv[bHeadSlot]);
           DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
         }
         // say curse?
@@ -1759,49 +1759,48 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   } else if (ubHitLocation == AIM_SHOT_HEAD) {
     // bullet to the head may damage any head item
     bHeadSlot = Enum261.HEAD1POS + Random(2);
-    if (pTarget.value.inv[bHeadSlot].usItem != NOTHING) {
-      pTarget.value.inv[bHeadSlot].bStatus[0] -= (Random(iImpact / 2));
-      if (pTarget.value.inv[bHeadSlot].bStatus[0] < 0) {
+    if (pTarget.inv[bHeadSlot].usItem != NOTHING) {
+      pTarget.inv[bHeadSlot].bStatus[0] -= (Random(iImpact / 2));
+      if (pTarget.inv[bHeadSlot].bStatus[0] < 0) {
         // just break it...
-        pTarget.value.inv[bHeadSlot].bStatus[0] = 1;
+        pTarget.inv[bHeadSlot].bStatus[0] = 1;
       }
     }
   }
 
   // check to see if the guy is a friendly?..if so, up the number of times wounded
-  if ((pTarget.value.bTeam == gbPlayerNum)) {
-    gMercProfiles[pTarget.value.ubProfile].usTimesWounded++;
+  if ((pTarget.bTeam == gbPlayerNum)) {
+    gMercProfiles[pTarget.ubProfile].usTimesWounded++;
   }
 
   // check to see if someone was accidentally hit when no target was specified by the player
-  if (pFirer.value.bTeam == gbPlayerNum && pFirer.value.ubTargetID == NOBODY && pTarget.value.bNeutral) {
-    if (pTarget.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP || pTarget.value.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
+  if (pFirer.bTeam == gbPlayerNum && pFirer.ubTargetID == NOBODY && pTarget.bNeutral) {
+    if (pTarget.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP || pTarget.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
       // hicks and kingpin are touchy!
-      pFirer.value.ubTargetID = pTarget.value.ubID;
+      pFirer.ubTargetID = pTarget.ubID;
     } else if (Random(100) < 60) {
       // get touchy
-      pFirer.value.ubTargetID = pTarget.value.ubID;
+      pFirer.ubTargetID = pTarget.ubID;
     }
   }
 
   // Send event for getting hit
-  memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
-  SWeaponHit.usSoldierID = pTarget.value.ubID;
-  SWeaponHit.uiUniqueId = pTarget.value.uiUniqueSoldierIdValue;
-  SWeaponHit.usWeaponIndex = pFirer.value.usAttackingWeapon;
+  SWeaponHit.usSoldierID = pTarget.ubID;
+  SWeaponHit.uiUniqueId = pTarget.uiUniqueSoldierIdValue;
+  SWeaponHit.usWeaponIndex = pFirer.usAttackingWeapon;
   SWeaponHit.sDamage = iDamage;
   // breath loss is based on original impact of bullet
-  SWeaponHit.sBreathLoss = ((iImpact * BP_GET_WOUNDED * (pTarget.value.bBreathMax * 100 - pTarget.value.sBreathRed)) / 10000);
-  SWeaponHit.usDirection = GetDirectionFromGridNo(pFirer.value.sGridNo, pTarget);
-  SWeaponHit.sXPos = pTarget.value.dXPos;
-  SWeaponHit.sYPos = pTarget.value.dYPos;
+  SWeaponHit.sBreathLoss = ((iImpact * BP_GET_WOUNDED * (pTarget.bBreathMax * 100 - pTarget.sBreathRed)) / 10000);
+  SWeaponHit.usDirection = GetDirectionFromGridNo(pFirer.sGridNo, pTarget);
+  SWeaponHit.sXPos = pTarget.dXPos;
+  SWeaponHit.sYPos = pTarget.dYPos;
   SWeaponHit.sZPos = 20;
   SWeaponHit.sRange = sRange;
-  SWeaponHit.ubAttackerID = pFirer.value.ubID;
+  SWeaponHit.ubAttackerID = pFirer.ubID;
   SWeaponHit.fHit = true;
   SWeaponHit.ubLocation = ubHitLocation;
 
-  if ((pFirer.value.bDoBurst) && (ubSpecial == FIRE_WEAPON_NO_SPECIAL)) {
+  if ((pFirer.bDoBurst) && (ubSpecial == FIRE_WEAPON_NO_SPECIAL)) {
     // the animation required by the bullet hit (head explosion etc) overrides the
     // hit-by-a-burst animation
     ubSpecial = FIRE_WEAPON_BURST_SPECIAL;
@@ -1809,7 +1808,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   SWeaponHit.ubSpecial = ubSpecial;
 
   // now check to see if the bullet goes THROUGH this person! (not vehicles)
-  if (!(pTarget.value.uiStatusFlags & SOLDIER_VEHICLE) && (ubAmmoType == Enum286.AMMO_REGULAR || ubAmmoType == Enum286.AMMO_AP || ubAmmoType == Enum286.AMMO_SUPER_AP) && !EXPLOSIVE_GUN(pFirer.value.usAttackingWeapon)) {
+  if (!(pTarget.uiStatusFlags & SOLDIER_VEHICLE) && (ubAmmoType == Enum286.AMMO_REGULAR || ubAmmoType == Enum286.AMMO_AP || ubAmmoType == Enum286.AMMO_SUPER_AP) && !EXPLOSIVE_GUN(pFirer.usAttackingWeapon)) {
     // if we do more damage than expected, then the bullet will be more likely
     // to be lodged in the body
 
@@ -1831,7 +1830,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       // adjust for other side of armour!
       iImpact -= TotalArmourProtection(pFirer, pTarget, ubHitLocation, iImpact, ubAmmoType);
       if (iImpact > 0) {
-        pBullet.value.iImpact = iImpact;
+        pBullet.iImpact = iImpact;
         // bullet was NOT stopped
         fStopped = false;
       }
@@ -1839,7 +1838,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   }
 
   if (fStopped) {
-    RemoveBullet(pBullet.value.iBullet);
+    RemoveBullet(pBullet.iBullet);
   } else {
     // ATE: I'm in enemy territory again, evil CC's world :)
     // This looks like the place I should add code to spew blood on the ground
@@ -1847,9 +1846,9 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
     // get a new gridno based on direction it was moving.  Check to see if we're not
     // going through walls, etc by testing for a path, unless on the roof, in which case it would always
     // be legal, but the bLevel May change...
-    sNewGridNo = NewGridNo(pBullet.value.sGridNo, DirectionInc(gOppositeDirection[SWeaponHit.usDirection]));
+    sNewGridNo = NewGridNo(pBullet.sGridNo, DirectionInc(gOppositeDirection[SWeaponHit.usDirection]));
 
-    bSpewBloodLevel = MercPtrs[SWeaponHit.usSoldierID].value.bLevel;
+    bSpewBloodLevel = MercPtrs[SWeaponHit.usSoldierID].bLevel;
     fCanSpewBlood = true;
 
     // If on anything other than bLevel of 0, we can pretty much freely spew blood
@@ -1870,7 +1869,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
     }
   }
 
-  if (gTacticalStatus.ubCurrentTeam != OUR_TEAM && pTarget.value.bTeam == gbPlayerNum) {
+  if (gTacticalStatus.ubCurrentTeam != OUR_TEAM && pTarget.bTeam == gbPlayerNum) {
     // someone has been hit so no close-call quotes
     gTacticalStatus.fSomeoneHit = true;
   }
@@ -1880,28 +1879,28 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   return fStopped;
 }
 
-function BulletHitStructure(pBullet: Pointer<BULLET>, usStructureID: UINT16, iImpact: INT32, pFirer: Pointer<SOLDIERTYPE>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT, fStopped: boolean): void {
-  let SStructureHit: EV_S_STRUCTUREHIT;
+function BulletHitStructure(pBullet: BULLET, usStructureID: UINT16, iImpact: INT32, pFirer: SOLDIERTYPE, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT, fStopped: boolean): void {
+  let SStructureHit: EV_S_STRUCTUREHIT = createEvSStructureHit();
 
   SStructureHit.sXPos = FIXEDPT_TO_INT32(qCurrX + FloatToFixed(0.5)); // + 0.5);
   SStructureHit.sYPos = FIXEDPT_TO_INT32(qCurrY + FloatToFixed(0.5)); // (dCurrY + 0.5);
   SStructureHit.sZPos = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ + FloatToFixed(0.5))); // dCurrZ + 0.5) );
-  SStructureHit.usWeaponIndex = pFirer.value.usAttackingWeapon;
-  SStructureHit.bWeaponStatus = pBullet.value.ubItemStatus;
-  SStructureHit.ubAttackerID = pFirer.value.ubID;
+  SStructureHit.usWeaponIndex = pFirer.usAttackingWeapon;
+  SStructureHit.bWeaponStatus = pBullet.ubItemStatus;
+  SStructureHit.ubAttackerID = pFirer.ubID;
   SStructureHit.usStructureID = usStructureID;
   SStructureHit.iImpact = iImpact;
-  SStructureHit.iBullet = pBullet.value.iBullet;
+  SStructureHit.iBullet = pBullet.iBullet;
 
   StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, fStopped);
 }
 
-function BulletHitWindow(pBullet: Pointer<BULLET>, sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean): void {
+function BulletHitWindow(pBullet: BULLET, sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean): void {
   WindowHit(sGridNo, usStructureID, fBlowWindowSouth, false);
 }
 
-function BulletMissed(pBullet: Pointer<BULLET>, pFirer: Pointer<SOLDIERTYPE>): void {
-  ShotMiss(pFirer.value.ubID, pBullet.value.iBullet);
+function BulletMissed(pBullet: BULLET, pFirer: SOLDIERTYPE): void {
+  ShotMiss(pFirer.ubID, pBullet.iBullet);
 }
 
 function ChanceOfBulletHittingStructure(iDistance: INT32, iDistanceToTarget: INT32, sHitBy: INT16): UINT32 {
@@ -1940,8 +1939,8 @@ function StructureResistanceIncreasedByRange(iImpactReduction: INT32, iGunRange:
   */
 }
 
-function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>, pfHit: Pointer<boolean>): INT32 {
-  let pDoor: Pointer<DOOR>;
+function HandleBulletStructureInteraction(pBullet: BULLET, pStructure: STRUCTURE, pfHit: Pointer<boolean>): INT32 {
+  let pDoor: DOOR | null;
   let sLockDamage: INT16;
 
   // returns remaining impact amount
@@ -1951,13 +1950,13 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
 
   pfHit.value = false;
 
-  if (pBullet.value.usFlags & BULLET_FLAG_KNIFE || pBullet.value.usFlags & BULLET_FLAG_MISSILE || pBullet.value.usFlags & BULLET_FLAG_TANK_CANNON || pBullet.value.usFlags & BULLET_FLAG_FLAME) {
+  if (pBullet.usFlags & BULLET_FLAG_KNIFE || pBullet.usFlags & BULLET_FLAG_MISSILE || pBullet.usFlags & BULLET_FLAG_TANK_CANNON || pBullet.usFlags & BULLET_FLAG_FLAME) {
     // stops!
     pfHit.value = true;
     return 0;
-  } else if (pBullet.value.usFlags & BULLET_FLAG_SMALL_MISSILE) {
+  } else if (pBullet.usFlags & BULLET_FLAG_SMALL_MISSILE) {
     // stops if using HE ammo
-    if (pBullet.value.pFirer.value.inv[pBullet.value.pFirer.value.ubAttackingHand].ubGunAmmoType == Enum286.AMMO_HE) {
+    if (pBullet.pFirer.inv[pBullet.pFirer.ubAttackingHand].ubGunAmmoType == Enum286.AMMO_HE) {
       pfHit.value = true;
       return 0;
     }
@@ -1965,36 +1964,36 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
 
   // ATE: Alrighty, check for shooting door locks...
   // First check this is a type of struct that can handle locks...
-  if (pStructure.value.fFlags & (STRUCTURE_DOOR | STRUCTURE_OPENABLE) && PythSpacesAway(pBullet.value.sTargetGridNo, pStructure.value.sGridNo) <= 2) {
+  if (pStructure.fFlags & (STRUCTURE_DOOR | STRUCTURE_OPENABLE) && PythSpacesAway(pBullet.sTargetGridNo, pStructure.sGridNo) <= 2) {
     // lookup lock table to see if we have a lock,
     // and then remove lock if enough damage done....
-    pDoor = FindDoorInfoAtGridNo(pBullet.value.sGridNo);
+    pDoor = FindDoorInfoAtGridNo(pBullet.sGridNo);
 
     // Does it have a lock?
-    if (pDoor && LockTable[pDoor.value.ubLockID].ubPickDifficulty < 50 && LockTable[pDoor.value.ubLockID].ubSmashDifficulty < 70) {
+    if (pDoor && LockTable[pDoor.ubLockID].ubPickDifficulty < 50 && LockTable[pDoor.ubLockID].ubSmashDifficulty < 70) {
       // Yup.....
 
       // Chance that it hit the lock....
       if (PreRandom(2) == 0) {
         // Adjust damage-- CC adjust this based on gun type, etc.....
         // sLockDamage = (INT16)( 35 + Random( 35 ) );
-        sLockDamage = (pBullet.value.iImpact - pBullet.value.iImpactReduction);
+        sLockDamage = (pBullet.iImpact - pBullet.iImpactReduction);
         sLockDamage += PreRandom(sLockDamage);
 
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_HAS_BEEN_HIT]);
 
-        pDoor.value.bLockDamage += sLockDamage;
+        pDoor.bLockDamage += sLockDamage;
 
         // Check if it has been shot!
-        if (pDoor.value.bLockDamage > LockTable[pDoor.value.ubLockID].ubSmashDifficulty) {
+        if (pDoor.bLockDamage > LockTable[pDoor.ubLockID].ubSmashDifficulty) {
           // Display message!
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.LOCK_HAS_BEEN_DESTROYED]);
 
           // succeeded! door can never be locked again, so remove from door list...
-          RemoveDoorInfoFromTable(pDoor.value.sGridNo);
+          RemoveDoorInfoFromTable(pDoor.sGridNo);
 
           // MARKSMANSHIP GAIN (marksPts): Opened/Damaged a door
-          StatChange(pBullet.value.pFirer, MARKAMT, 10, false);
+          StatChange(pBullet.pFirer, MARKAMT, 10, FROM_SUCCESS);
         }
       }
     }
@@ -2009,13 +2008,13 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
   //   ( (1 - X) * (1 - Y) != (1 - X - Y) ! ), this is calculated from
   //	 scratch at each collision with an obstacle
   //   reduction due to range is 25% per "max range"
-  if (PreRandom(100) < pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity) {
-    iCurrImpact = pBullet.value.iImpact;
+  if (PreRandom(100) < pStructure.pDBStructureRef.pDBStructure.ubDensity) {
+    iCurrImpact = pBullet.iImpact;
     // iCurrImpact = BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
-    iImpactReduction = gubMaterialArmour[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour];
-    iImpactReduction = StructureResistanceIncreasedByRange(iImpactReduction, pBullet.value.iRange, pBullet.value.iLoop);
+    iImpactReduction = gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour];
+    iImpactReduction = StructureResistanceIncreasedByRange(iImpactReduction, pBullet.iRange, pBullet.iLoop);
 
-    switch (pBullet.value.pFirer.value.inv[pBullet.value.pFirer.value.ubAttackingHand].ubGunAmmoType) {
+    switch (pBullet.pFirer.inv[pBullet.pFirer.ubAttackingHand].ubGunAmmoType) {
       case Enum286.AMMO_HP:
         iImpactReduction = AMMO_STRUCTURE_ADJUSTMENT_HP(iImpactReduction);
         break;
@@ -2030,17 +2029,17 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
         break;
     }
 
-    pBullet.value.iImpactReduction += iImpactReduction;
+    pBullet.iImpactReduction += iImpactReduction;
 
     // really weak stuff like grass should never *stop* a bullet, maybe slow it though
-    if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour == Enum309.MATERIAL_LIGHT_VEGETATION) {
+    if (pStructure.pDBStructureRef.pDBStructure.ubArmour == Enum309.MATERIAL_LIGHT_VEGETATION) {
       // just return a +ve value to indicate the bullet wasn't stopped
       pfHit.value = false;
       return 1;
     }
 
     pfHit.value = true;
-    return iCurrImpact - pBullet.value.iImpactReduction;
+    return iCurrImpact - pBullet.iImpactReduction;
   } else {
     // just return a +ve value to indicate the bullet wasn't stopped
     pfHit.value = false;
@@ -2048,22 +2047,22 @@ function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: 
   }
 }
 
-function CTGTHandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>): INT32 {
+function CTGTHandleBulletStructureInteraction(pBullet: BULLET, pStructure: STRUCTURE): INT32 {
   // returns reduction in impact for summing in CTGT
 
   let iCurrImpact: INT32;
   let iImpactReduction: INT32;
 
-  if (pBullet.value.usFlags & BULLET_FLAG_KNIFE || pBullet.value.usFlags & BULLET_FLAG_MISSILE || pBullet.value.usFlags & BULLET_FLAG_FLAME || pBullet.value.usFlags & BULLET_FLAG_TANK_CANNON) {
+  if (pBullet.usFlags & BULLET_FLAG_KNIFE || pBullet.usFlags & BULLET_FLAG_MISSILE || pBullet.usFlags & BULLET_FLAG_FLAME || pBullet.usFlags & BULLET_FLAG_TANK_CANNON) {
     // knife/rocket stops when it hits anything, and people block completely
-    return pBullet.value.iImpact;
-  } else if (pBullet.value.usFlags & BULLET_FLAG_SMALL_MISSILE) {
+    return pBullet.iImpact;
+  } else if (pBullet.usFlags & BULLET_FLAG_SMALL_MISSILE) {
     // stops if using HE ammo
-    if (pBullet.value.pFirer.value.inv[pBullet.value.pFirer.value.ubAttackingHand].ubGunAmmoType == Enum286.AMMO_HE) {
-      return pBullet.value.iImpact;
+    if (pBullet.pFirer.inv[pBullet.pFirer.ubAttackingHand].ubGunAmmoType == Enum286.AMMO_HE) {
+      return pBullet.iImpact;
     }
-  } else if (pStructure.value.fFlags & STRUCTURE_PERSON) {
-    if (pStructure.value.usStructureID != pBullet.value.ubFirerID && pStructure.value.usStructureID != pBullet.value.ubTargetID) {
+  } else if (pStructure.fFlags & STRUCTURE_PERSON) {
+    if (pStructure.usStructureID != pBullet.ubFirerID && pStructure.usStructureID != pBullet.ubTargetID) {
     }
   }
 
@@ -2077,11 +2076,11 @@ function CTGTHandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructu
   //	 scratch at each collision with an obstacle
   //   reduction due to range is 25% per "max range"
   // iCurrImpact = BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
-  iCurrImpact = pBullet.value.iImpact;
+  iCurrImpact = pBullet.iImpact;
   // multiply impact reduction by 100 to retain fractions for a bit...
-  iImpactReduction = gubMaterialArmour[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour] * pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity / 100;
-  iImpactReduction = StructureResistanceIncreasedByRange(iImpactReduction, pBullet.value.iRange, pBullet.value.iLoop);
-  switch (pBullet.value.pFirer.value.inv[pBullet.value.pFirer.value.ubAttackingHand].ubGunAmmoType) {
+  iImpactReduction = gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] * pStructure.pDBStructureRef.pDBStructure.ubDensity / 100;
+  iImpactReduction = StructureResistanceIncreasedByRange(iImpactReduction, pBullet.iRange, pBullet.iLoop);
+  switch (pBullet.pFirer.inv[pBullet.pFirer.ubAttackingHand].ubGunAmmoType) {
     case Enum286.AMMO_HP:
       iImpactReduction = AMMO_STRUCTURE_ADJUSTMENT_HP(iImpactReduction);
       break;
@@ -2097,7 +2096,7 @@ function CTGTHandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructu
   return iImpactReduction;
 }
 
-function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
+function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
   let qLandHeight: FIXEDPT;
   let iCurrAboveLevelZ: INT32;
   let iCurrCubesAboveLevelZ: INT32;
@@ -2107,9 +2106,9 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
   let iOldTileY: INT32;
   let iOldCubesZ: INT32;
 
-  let pMapElement: Pointer<MAP_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = null;
+  let pMapElement: MAP_ELEMENT;
+  let pStructure: STRUCTURE | null;
+  let pRoofStructure: STRUCTURE | null = null;
 
   let qLastZ: FIXEDPT;
 
@@ -2140,24 +2139,24 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
   do {
     // check a particular tile
     // retrieve values from world for this particular tile
-    iGridNo = pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS;
+    iGridNo = pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS;
     DebugLOS(FormatString("CTGT now at %ld", iGridNo));
-    pMapElement = addressof(gpWorldLevelData[iGridNo]);
-    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
+    pMapElement = gpWorldLevelData[iGridNo];
+    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
     qWindowBottomHeight = gqStandardWindowBottomHeight + qLandHeight;
     qWindowTopHeight = gqStandardWindowTopHeight + qLandHeight;
 
     // Assemble list of structures we might hit!
     iNumLocalStructures = 0;
-    pStructure = pMapElement.value.pStructureHead;
+    pStructure = pMapElement.pStructureHead;
     // calculate chance of hitting each structure
-    uiChanceOfHit = ChanceOfBulletHittingStructure(pBullet.value.iLoop, pBullet.value.iDistanceLimit, 0);
+    uiChanceOfHit = ChanceOfBulletHittingStructure(pBullet.iLoop, pBullet.iDistanceLimit, 0);
 
     // reset roof structure pointer each tile
     pRoofStructure = null;
 
-    if (iGridNo == pBullet.value.sTargetGridNo) {
+    if (iGridNo == pBullet.sTargetGridNo) {
       fIntended = true;
       // if in the same tile as our destination, we WANT to hit the structure!
       uiChanceOfHit = 100;
@@ -2165,7 +2164,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
       fIntended = false;
     }
 
-    iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.value.qCurrZ - qLandHeight);
+    iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.qCurrZ - qLandHeight);
     if (iCurrAboveLevelZ < 0) {
       // ground is in the way!
       return 0;
@@ -2173,17 +2172,17 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
     iCurrCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(iCurrAboveLevelZ);
 
     while (pStructure) {
-      if (pStructure.value.fFlags & ALWAYS_CONSIDER_HIT) {
+      if (pStructure.fFlags & ALWAYS_CONSIDER_HIT) {
         // ALWAYS add walls
         gpLocalStructure[iNumLocalStructures] = pStructure;
         // fence is special
         //(iCurrCubesAboveLevelZ <= iStartCubesAboveLevelZ)
-        if (pStructure.value.fFlags & STRUCTURE_ANYFENCE) {
-          if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity < 100) {
+        if (pStructure.fFlags & STRUCTURE_ANYFENCE) {
+          if (pStructure.pDBStructureRef.pDBStructure.ubDensity < 100) {
             guiLocalStructureCTH[iNumLocalStructures] = uiChanceOfHit;
-          } else if ((pBullet.value.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.value.bStartCubesAboveLevelZ) && (pBullet.value.bEndCubesAboveLevelZ >= iCurrCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
+          } else if ((pBullet.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.bStartCubesAboveLevelZ) && (pBullet.bEndCubesAboveLevelZ >= iCurrCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
             guiLocalStructureCTH[iNumLocalStructures] = uiChanceOfHit;
-          } else if ((pBullet.value.iDistanceLimit - pBullet.value.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.value.bEndCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
+          } else if ((pBullet.iDistanceLimit - pBullet.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.bEndCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
             guiLocalStructureCTH[iNumLocalStructures] = uiChanceOfHit;
           } else {
             guiLocalStructureCTH[iNumLocalStructures] = 100;
@@ -2193,34 +2192,34 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
         }
         gubLocalStructureNumTimesHit[iNumLocalStructures] = 0;
         iNumLocalStructures++;
-      } else if (pStructure.value.fFlags & STRUCTURE_ROOF) {
+      } else if (pStructure.fFlags & STRUCTURE_ROOF) {
         // only consider roofs if the flag is set; don't add them to the array since they
         // are a special case
-        if (pBullet.value.fCheckForRoof) {
+        if (pBullet.fCheckForRoof) {
           pRoofStructure = pStructure;
 
           if (pRoofStructure) {
-            qLastZ = pBullet.value.qCurrZ - pBullet.value.qIncrZ;
+            qLastZ = pBullet.qCurrZ - pBullet.qIncrZ;
 
             // if just on going to next tile we cross boundary, then roof stops bullet here!
-            if ((qLastZ > qWallHeight && pBullet.value.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.value.qCurrZ >= qWallHeight)) {
+            if ((qLastZ > qWallHeight && pBullet.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.qCurrZ >= qWallHeight)) {
               // hit a roof
               return 0;
             }
           }
         }
-      } else if (pStructure.value.fFlags & STRUCTURE_PERSON) {
-        if ((pStructure.value.usStructureID != pBullet.value.ubFirerID) && (pStructure.value.usStructureID != pBullet.value.ubTargetID)) {
+      } else if (pStructure.fFlags & STRUCTURE_PERSON) {
+        if ((pStructure.usStructureID != pBullet.ubFirerID) && (pStructure.usStructureID != pBullet.ubTargetID)) {
           // ignore intended target since we will get closure upon reaching the center
           // of the destination tile
 
           // ignore intervening target if not visible; PCs are always visible so AI will never skip them on that
           // basis
-          if (!fIntended && (MercPtrs[pStructure.value.usStructureID].value.bVisible == true)) {
+          if (!fIntended && (MercPtrs[pStructure.usStructureID].bVisible == 1)) {
             // in actually moving the bullet, we consider only count friends as targets if the bullet is unaimed
             // (buckshot), if they are the intended target, or beyond the range of automatic friendly fire hits
             // OR a 1 in 30 chance occurs
-            if (gAnimControl[MercPtrs[pStructure.value.usStructureID].value.usAnimState].ubEndHeight == ANIM_STAND && ((pBullet.value.fAimed && pBullet.value.iLoop > MIN_DIST_FOR_HIT_FRIENDS) || (!pBullet.value.fAimed && pBullet.value.iLoop > MIN_DIST_FOR_HIT_FRIENDS_UNAIMED))) {
+            if (gAnimControl[MercPtrs[pStructure.usStructureID].usAnimState].ubEndHeight == ANIM_STAND && ((pBullet.fAimed && pBullet.iLoop > MIN_DIST_FOR_HIT_FRIENDS) || (!pBullet.fAimed && pBullet.iLoop > MIN_DIST_FOR_HIT_FRIENDS_UNAIMED))) {
               // could hit this person!
               gpLocalStructure[iNumLocalStructures] = pStructure;
               // CJC commented this out because of tank trying to shoot through another tank
@@ -2237,8 +2236,8 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
             }
           }
         }
-      } else if (pStructure.value.fFlags & STRUCTURE_CORPSE) {
-        if (iGridNo == pBullet.value.sTargetGridNo || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles >= 10)) {
+      } else if (pStructure.fFlags & STRUCTURE_CORPSE) {
+        if (iGridNo == pBullet.sTargetGridNo || (pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles >= 10)) {
           // could hit this corpse!
           // but we should ignore the corpse if there is someone standing there
           if (FindStructure(iGridNo, STRUCTURE_PERSON) == null) {
@@ -2247,7 +2246,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           }
         }
       } else {
-        if (pBullet.value.iLoop > CLOSE_TO_FIRER && !fIntended) {
+        if (pBullet.iLoop > CLOSE_TO_FIRER && !fIntended) {
           // could hit it
 
           gpLocalStructure[iNumLocalStructures] = pStructure;
@@ -2256,50 +2255,50 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           iNumLocalStructures++;
         }
       }
-      pStructure = pStructure.value.pNext;
+      pStructure = pStructure.pNext;
     }
 
     // record old tile location for loop purposes
-    iOldTileX = pBullet.value.iCurrTileX;
-    iOldTileY = pBullet.value.iCurrTileY;
+    iOldTileX = pBullet.iCurrTileX;
+    iOldTileY = pBullet.iCurrTileY;
 
     do {
       // check a particular location within the tile
 
       // check for collision with the ground
-      iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.value.qCurrZ - qLandHeight);
+      iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.qCurrZ - qLandHeight);
       if (iCurrAboveLevelZ < 0) {
         // ground is in the way!
         return 0;
       }
       // check for the existence of structures
-      pStructure = pMapElement.value.pStructureHead;
+      pStructure = pMapElement.pStructureHead;
       if (pStructure == null) {
         // no structures in this tile, and THAT INCLUDES ROOFS AND PEOPLE! :-)
         // new system; figure out how many steps until we cross the next edge
         // and then fast forward that many steps.
 
-        iOldTileX = pBullet.value.iCurrTileX;
-        iOldTileY = pBullet.value.iCurrTileY;
-        iOldCubesZ = pBullet.value.iCurrCubesZ;
+        iOldTileX = pBullet.iCurrTileX;
+        iOldTileY = pBullet.iCurrTileY;
+        iOldCubesZ = pBullet.iCurrCubesZ;
 
-        if (pBullet.value.qIncrX > 0) {
-          qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.value.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
-          iStepsToTravelX = qDistToTravelX / pBullet.value.qIncrX;
-        } else if (pBullet.value.qIncrX < 0) {
-          qDistToTravelX = pBullet.value.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
-          iStepsToTravelX = qDistToTravelX / (-pBullet.value.qIncrX);
+        if (pBullet.qIncrX > 0) {
+          qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
+          iStepsToTravelX = qDistToTravelX / pBullet.qIncrX;
+        } else if (pBullet.qIncrX < 0) {
+          qDistToTravelX = pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
+          iStepsToTravelX = qDistToTravelX / (-pBullet.qIncrX);
         } else {
           // make sure we don't consider X a limit :-)
           iStepsToTravelX = 1000000;
         }
 
-        if (pBullet.value.qIncrY > 0) {
-          qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.value.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
-          iStepsToTravelY = qDistToTravelY / pBullet.value.qIncrY;
-        } else if (pBullet.value.qIncrY < 0) {
-          qDistToTravelY = pBullet.value.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
-          iStepsToTravelY = qDistToTravelY / (-pBullet.value.qIncrY);
+        if (pBullet.qIncrY > 0) {
+          qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
+          iStepsToTravelY = qDistToTravelY / pBullet.qIncrY;
+        } else if (pBullet.qIncrY < 0) {
+          qDistToTravelY = pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
+          iStepsToTravelY = qDistToTravelY / (-pBullet.qIncrY);
         } else {
           // make sure we don't consider Y a limit :-)
           iStepsToTravelY = 1000000;
@@ -2308,25 +2307,25 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
         // add 1 to the # of steps to travel to go INTO the next tile
         iStepsToTravel = Math.min(iStepsToTravelX, iStepsToTravelY) + 1;
 
-        pBullet.value.qCurrX += pBullet.value.qIncrX * iStepsToTravel;
-        pBullet.value.qCurrY += pBullet.value.qIncrY * iStepsToTravel;
-        pBullet.value.qCurrZ += pBullet.value.qIncrZ * iStepsToTravel;
-        pBullet.value.iLoop += iStepsToTravel;
+        pBullet.qCurrX += pBullet.qIncrX * iStepsToTravel;
+        pBullet.qCurrY += pBullet.qIncrY * iStepsToTravel;
+        pBullet.qCurrZ += pBullet.qIncrZ * iStepsToTravel;
+        pBullet.iLoop += iStepsToTravel;
 
         // check for ground collision
-        if (pBullet.value.qCurrZ < qLandHeight && pBullet.value.iLoop < pBullet.value.iDistanceLimit) {
+        if (pBullet.qCurrZ < qLandHeight && pBullet.iLoop < pBullet.iDistanceLimit) {
           // ground is in the way!
           return 0;
         }
 
         // figure out the new tile location
-        pBullet.value.iCurrTileX = FIXEDPT_TO_TILE_NUM(pBullet.value.qCurrX);
-        pBullet.value.iCurrTileY = FIXEDPT_TO_TILE_NUM(pBullet.value.qCurrY);
-        pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
-        pBullet.value.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrX);
-        pBullet.value.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrY);
+        pBullet.iCurrTileX = FIXEDPT_TO_TILE_NUM(pBullet.qCurrX);
+        pBullet.iCurrTileY = FIXEDPT_TO_TILE_NUM(pBullet.qCurrY);
+        pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
+        pBullet.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrX);
+        pBullet.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrY);
 
-        DebugLOS(FormatString("  CTGT at %ld %ld after traversing empty tile", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY));
+        DebugLOS(FormatString("  CTGT at %ld %ld after traversing empty tile", pBullet.bLOSIndexX, pBullet.bLOSIndexY));
       } else {
         // there are structures in this tile
 
@@ -2345,30 +2344,30 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           // check structures for collision
           for (iStructureLoop = 0; iStructureLoop < iNumLocalStructures; iStructureLoop++) {
             pStructure = gpLocalStructure[iStructureLoop];
-            if (pStructure && pStructure.value.sCubeOffset == sDesiredLevel) {
-              if ((((pStructure.value.pShape).value)[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
-                if (pStructure.value.fFlags & STRUCTURE_PERSON) {
+            if (pStructure && pStructure.sCubeOffset == sDesiredLevel) {
+              if (((<PROFILE>pStructure.pShape)[pBullet.bLOSIndexX][pBullet.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+                if (pStructure.fFlags & STRUCTURE_PERSON) {
                   // hit someone?
                   if (fIntended) {
                     // gotcha! ... return chance to get through
-                    iChanceToGetThrough = iChanceToGetThrough * (pBullet.value.iImpact - pBullet.value.iImpactReduction) / pBullet.value.iImpact;
+                    iChanceToGetThrough = iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact;
                     return iChanceToGetThrough;
                   } else {
                     gubLocalStructureNumTimesHit[iStructureLoop]++;
                   }
-                } else if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW && pBullet.value.qCurrZ >= qWindowBottomHeight && pBullet.value.qCurrZ <= qWindowTopHeight) {
-                  fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.ddHorizAngle);
+                } else if (pStructure.fFlags & STRUCTURE_WALLNWINDOW && pBullet.qCurrZ >= qWindowBottomHeight && pBullet.qCurrZ <= qWindowTopHeight) {
+                  fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.ddHorizAngle);
 
                   if (fResolveHit) {
                     // the bullet would keep on going!  unless we're considering a knife...
-                    if (pBullet.value.usFlags & BULLET_FLAG_KNIFE) {
+                    if (pBullet.usFlags & BULLET_FLAG_KNIFE) {
                       gubLocalStructureNumTimesHit[iStructureLoop]++;
                     }
                   }
-                } else if (pBullet.value.iLoop > CLOSE_TO_FIRER || (pStructure.value.fFlags & ALWAYS_CONSIDER_HIT)) {
-                  if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+                } else if (pBullet.iLoop > CLOSE_TO_FIRER || (pStructure.fFlags & ALWAYS_CONSIDER_HIT)) {
+                  if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
                     // possibly shooting at corner in which case we should let it pass
-                    fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.ddHorizAngle);
+                    fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.ddHorizAngle);
                   } else {
                     fResolveHit = true;
                   }
@@ -2383,47 +2382,47 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
 
         // got past everything; go to next LOS location within
         // tile, horizontally or vertically
-        bOldLOSIndexX = pBullet.value.bLOSIndexX;
-        bOldLOSIndexY = pBullet.value.bLOSIndexY;
-        iOldCubesZ = pBullet.value.iCurrCubesZ;
+        bOldLOSIndexX = pBullet.bLOSIndexX;
+        bOldLOSIndexY = pBullet.bLOSIndexY;
+        iOldCubesZ = pBullet.iCurrCubesZ;
         do {
-          pBullet.value.qCurrX += pBullet.value.qIncrX;
-          pBullet.value.qCurrY += pBullet.value.qIncrY;
+          pBullet.qCurrX += pBullet.qIncrX;
+          pBullet.qCurrY += pBullet.qIncrY;
           if (pRoofStructure) {
-            qLastZ = pBullet.value.qCurrZ;
-            pBullet.value.qCurrZ += pBullet.value.qIncrZ;
-            if ((qLastZ > qWallHeight && pBullet.value.qCurrZ < qWallHeight) || (qLastZ < qWallHeight && pBullet.value.qCurrZ > qWallHeight)) {
+            qLastZ = pBullet.qCurrZ;
+            pBullet.qCurrZ += pBullet.qIncrZ;
+            if ((qLastZ > qWallHeight && pBullet.qCurrZ < qWallHeight) || (qLastZ < qWallHeight && pBullet.qCurrZ > qWallHeight)) {
               // hit roof!
               // pBullet->iImpactReduction += CTGTHandleBulletStructureInteraction( pBullet, pRoofStructure );
               // if (pBullet->iImpactReduction >= pBullet->iImpact)
               { return (0); }
             }
           } else {
-            pBullet.value.qCurrZ += pBullet.value.qIncrZ;
+            pBullet.qCurrZ += pBullet.qIncrZ;
           }
-          pBullet.value.iLoop++;
-          pBullet.value.bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrX) % CELL_X_SIZE);
-          pBullet.value.bLOSIndexY = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrY) % CELL_Y_SIZE);
-          pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
-        } while ((pBullet.value.bLOSIndexX == bOldLOSIndexX) && (pBullet.value.bLOSIndexY == bOldLOSIndexY) && (pBullet.value.iCurrCubesZ == iOldCubesZ));
+          pBullet.iLoop++;
+          pBullet.bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrX) % CELL_X_SIZE);
+          pBullet.bLOSIndexY = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrY) % CELL_Y_SIZE);
+          pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
+        } while ((pBullet.bLOSIndexX == bOldLOSIndexX) && (pBullet.bLOSIndexY == bOldLOSIndexY) && (pBullet.iCurrCubesZ == iOldCubesZ));
 
-        DebugLOS(FormatString("  CTGT at %ld %ld %ld after moving in nonempty tile from %ld %ld %ld", pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.iCurrCubesZ, bOldLOSIndexX, bOldLOSIndexY, iOldCubesZ));
-        pBullet.value.iCurrTileX = FIXEDPT_TO_INT32(pBullet.value.qCurrX) / CELL_X_SIZE;
-        pBullet.value.iCurrTileY = FIXEDPT_TO_INT32(pBullet.value.qCurrY) / CELL_Y_SIZE;
+        DebugLOS(FormatString("  CTGT at %ld %ld %ld after moving in nonempty tile from %ld %ld %ld", pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.iCurrCubesZ, bOldLOSIndexX, bOldLOSIndexY, iOldCubesZ));
+        pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
+        pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
       }
-    } while ((pBullet.value.iLoop < pBullet.value.iDistanceLimit) && (pBullet.value.iCurrTileX == iOldTileX) && (pBullet.value.iCurrTileY == iOldTileY));
+    } while ((pBullet.iLoop < pBullet.iDistanceLimit) && (pBullet.iCurrTileX == iOldTileX) && (pBullet.iCurrTileY == iOldTileY));
 
-    if (pBullet.value.iCurrTileX < 0 || pBullet.value.iCurrTileX >= WORLD_COLS || pBullet.value.iCurrTileY < 0 || pBullet.value.iCurrTileY >= WORLD_ROWS) {
+    if (pBullet.iCurrTileX < 0 || pBullet.iCurrTileX >= WORLD_COLS || pBullet.iCurrTileY < 0 || pBullet.iCurrTileY >= WORLD_ROWS) {
       return 0;
     }
 
-    pBullet.value.sGridNo = MAPROWCOLTOPOS(pBullet.value.iCurrTileY, pBullet.value.iCurrTileX);
+    pBullet.sGridNo = MAPROWCOLTOPOS(pBullet.iCurrTileY, pBullet.iCurrTileX);
 
-    if (pBullet.value.iLoop > pBullet.value.iRange * 2) {
+    if (pBullet.iLoop > pBullet.iRange * 2) {
       // beyond max effective range, bullet starts to drop!
       // since we're doing an increment based on distance, not time, the
       // decrement is scaled down depending on how fast the bullet is (effective range)
-      pBullet.value.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.value.iRange * 2);
+      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
     }
 
     // end of the tile...
@@ -2434,23 +2433,23 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
           iTotalStructureImpact = CTGTHandleBulletStructureInteraction(pBullet, gpLocalStructure[iStructureLoop]) * gubLocalStructureNumTimesHit[iStructureLoop];
 
           // reduce the impact reduction of a structure tile to that of the bullet, since it can't do MORE than stop it.
-          iTotalStructureImpact = Math.min(iTotalStructureImpact, pBullet.value.iImpact);
+          iTotalStructureImpact = Math.min(iTotalStructureImpact, pBullet.iImpact);
 
           // add to "impact reduction" based on strength of structure weighted by probability of hitting it
-          pBullet.value.iImpactReduction += (iTotalStructureImpact * guiLocalStructureCTH[iStructureLoop]) / 100;
+          pBullet.iImpactReduction += (iTotalStructureImpact * guiLocalStructureCTH[iStructureLoop]) / 100;
         }
       }
-      if (pBullet.value.iImpactReduction >= pBullet.value.iImpact) {
+      if (pBullet.iImpactReduction >= pBullet.iImpact) {
         return 0;
       }
     }
-  } while (pBullet.value.iLoop < pBullet.value.iDistanceLimit);
+  } while (pBullet.iLoop < pBullet.iDistanceLimit);
   // unless the distance is integral, after the loop there will be a
   // fractional amount of distance remaining which is unchecked
   // but we shouldn't(?) need to check it because the target is there!
 
   // try simple chance to get through, ignoring range effects
-  iChanceToGetThrough = iChanceToGetThrough * (pBullet.value.iImpact - pBullet.value.iImpactReduction) / pBullet.value.iImpact;
+  iChanceToGetThrough = iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact;
 
   if (iChanceToGetThrough < 0) {
     iChanceToGetThrough = 0;
@@ -2458,7 +2457,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
   return iChanceToGetThrough;
 }
 
-function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+function SoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null): UINT8 {
   let dEndZPos: FLOAT;
   let fOk: boolean;
 
@@ -2466,23 +2465,23 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>,
     return 0;
   }
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
   if (!pEndSoldier) {
-    return false;
+    return 0;
   }
   fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   // set startsoldier's target ID ... need an ID stored in case this
   // is the AI calculating cover to a location where he might not be any more
-  pStartSoldier.value.ubCTGTTargetID = pEndSoldier.value.ubID;
-  return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos);
+  pStartSoldier.ubCTGTTargetID = pEndSoldier.ubID;
+  return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.sGridNo), CenterY(pEndSoldier.sGridNo), dEndZPos);
 }
 
-export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubAimLocation: UINT8): UINT8 {
+export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubAimLocation: UINT8): UINT8 {
   // does like StS-CTGT but with a particular body part in mind
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -2492,10 +2491,10 @@ export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointe
     return 0;
   }
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
   if (!pEndSoldier) {
-    return false;
+    return 0;
   }
   switch (ubAimLocation) {
     case AIM_SHOT_HEAD:
@@ -2514,27 +2513,28 @@ export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointe
 
   fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
 
   // set startsoldier's target ID ... need an ID stored in case this
   // is the AI calculating cover to a location where he might not be any more
-  pStartSoldier.value.ubCTGTTargetID = pEndSoldier.value.ubID;
-  return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos);
+  pStartSoldier.ubCTGTTargetID = pEndSoldier.ubID;
+  return ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.sGridNo), CenterY(pEndSoldier.sGridNo), dEndZPos);
 }
 
-export function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTargetID: UINT8): UINT8 {
+export function SoldierToLocationChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTargetID: UINT8): UINT8 {
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
   let bStructHeight: INT8;
-  let pEndSoldier: Pointer<SOLDIERTYPE>;
+  let pEndSoldier: SOLDIERTYPE | null;
 
-  if (pStartSoldier.value.sGridNo == sGridNo) {
+  if (!pStartSoldier) {
     return 0;
   }
-  if (!pStartSoldier) {
-    return false;
+
+  if (pStartSoldier.sGridNo == sGridNo) {
+    return 0;
   }
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
@@ -2562,12 +2562,12 @@ export function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDI
 
     // set startsoldier's target ID ... need an ID stored in case this
     // is the AI calculating cover to a location where he might not be any more
-    pStartSoldier.value.ubCTGTTargetID = ubTargetID;
+    pStartSoldier.ubCTGTTargetID = ubTargetID;
     return ChanceToGetThrough(pStartSoldier, sXPos, sYPos, dEndZPos);
   }
 }
 
-export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
+export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null): UINT8 {
   // Like a standard CTGT algorithm BUT fakes the start soldier at standing height
   let dEndZPos: FLOAT;
   let fOk: boolean;
@@ -2578,42 +2578,43 @@ export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLD
     return 0;
   }
   if (!pStartSoldier) {
-    return false;
+    return 0;
   }
   if (!pEndSoldier) {
-    return false;
+    return 0;
   }
   fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
-    return false;
+    return 0;
   }
-  usTrueState = pStartSoldier.value.usAnimState;
-  pStartSoldier.value.usAnimState = Enum193.STANDING;
+  usTrueState = pStartSoldier.usAnimState;
+  pStartSoldier.usAnimState = Enum193.STANDING;
 
   // set startsoldier's target ID ... need an ID stored in case this
   // is the AI calculating cover to a location where he might not be any more
-  pStartSoldier.value.ubCTGTTargetID = NOBODY;
+  pStartSoldier.ubCTGTTargetID = NOBODY;
 
-  ubChance = ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.value.sGridNo), CenterY(pEndSoldier.value.sGridNo), dEndZPos);
-  pStartSoldier.value.usAnimState = usTrueState;
+  ubChance = ChanceToGetThrough(pStartSoldier, CenterX(pEndSoldier.sGridNo), CenterY(pEndSoldier.sGridNo), dEndZPos);
+  pStartSoldier.usAnimState = usTrueState;
   return ubChance;
 }
 
-export function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8): UINT8 {
+export function AISoldierToLocationChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8): UINT8 {
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
   let bStructHeight: INT8;
-  let pEndSoldier: Pointer<SOLDIERTYPE>;
+  let pEndSoldier: SOLDIERTYPE | null;
 
   let usTrueState: UINT16;
   let ubChance: UINT8;
 
-  if (pStartSoldier.value.sGridNo == sGridNo) {
+  if (!pStartSoldier) {
     return 0;
   }
-  if (!pStartSoldier) {
-    return false;
+
+  if (pStartSoldier.sGridNo == sGridNo) {
+    return 0;
   }
 
   pEndSoldier = SimpleFindSoldier(sGridNo, bLevel);
@@ -2641,21 +2642,21 @@ export function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOL
 
     // set startsoldier's target ID ... need an ID stored in case this
     // is the AI calculating cover to a location where he might not be any more
-    pStartSoldier.value.ubCTGTTargetID = NOBODY;
+    pStartSoldier.ubCTGTTargetID = NOBODY;
 
-    usTrueState = pStartSoldier.value.usAnimState;
-    pStartSoldier.value.usAnimState = Enum193.STANDING;
+    usTrueState = pStartSoldier.usAnimState;
+    pStartSoldier.usAnimState = Enum193.STANDING;
 
     ubChance = ChanceToGetThrough(pStartSoldier, sXPos, sYPos, dEndZPos);
 
-    pStartSoldier.value.usAnimState = usTrueState;
+    pStartSoldier.usAnimState = usTrueState;
 
     return ubChance;
   }
 }
 
-function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, dd2DDistance: DOUBLE, pBullet: Pointer<BULLET>, pddNewHorizAngle: Pointer<DOUBLE>, pddNewVerticAngle: Pointer<DOUBLE>): void {
-  let iMissedBy: INT32 = -pBullet.value.sHitBy;
+function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, dd2DDistance: DOUBLE, pBullet: BULLET, pddNewHorizAngle: Pointer<DOUBLE>, pddNewVerticAngle: Pointer<DOUBLE>): void {
+  let iMissedBy: INT32 = -pBullet.sHitBy;
   let ddVerticPercentOfMiss: DOUBLE;
   let ddAbsVerticAngle: DOUBLE;
   let ddScrewupAdjustmentLimit: DOUBLE;
@@ -2719,30 +2720,30 @@ function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, 
   pddNewHorizAngle.value = ddHorizAngle;
   pddNewVerticAngle.value = ddVerticAngle;
 
-  pBullet.value.qIncrX = FloatToFixed(Math.cos(ddHorizAngle));
-  pBullet.value.qIncrY = FloatToFixed(Math.sin(ddHorizAngle));
+  pBullet.qIncrX = FloatToFixed(Math.cos(ddHorizAngle));
+  pBullet.qIncrY = FloatToFixed(Math.sin(ddHorizAngle));
 
   // this is the same as multiplying the X and Y increments by the projection of the line in
   // 3-space onto the horizontal plane, without reducing the X/Y increments and thus slowing
   // the LOS code
-  pBullet.value.qIncrZ = FloatToFixed((Math.sin(ddVerticAngle) / Math.sin((Math.PI / 2) - ddVerticAngle) * 2.56));
+  pBullet.qIncrZ = FloatToFixed((Math.sin(ddVerticAngle) / Math.sin((Math.PI / 2) - ddVerticAngle) * 2.56));
 }
 
-function FireBullet(pFirer: Pointer<SOLDIERTYPE>, pBullet: Pointer<BULLET>, fFake: boolean): INT8 {
-  pBullet.value.iCurrTileX = FIXEDPT_TO_INT32(pBullet.value.qCurrX) / CELL_X_SIZE;
-  pBullet.value.iCurrTileY = FIXEDPT_TO_INT32(pBullet.value.qCurrY) / CELL_Y_SIZE;
-  pBullet.value.bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrX) % CELL_X_SIZE);
-  pBullet.value.bLOSIndexY = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrY) % CELL_Y_SIZE);
-  pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
-  pBullet.value.iLoop = 1;
-  pBullet.value.pFirer = pFirer;
-  pBullet.value.iImpactReduction = 0;
-  pBullet.value.sGridNo = MAPROWCOLTOPOS(pBullet.value.iCurrTileY, pBullet.value.iCurrTileX);
+function FireBullet(pFirer: SOLDIERTYPE, pBullet: BULLET, fFake: boolean): INT8 {
+  pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
+  pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
+  pBullet.bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrX) % CELL_X_SIZE);
+  pBullet.bLOSIndexY = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrY) % CELL_Y_SIZE);
+  pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
+  pBullet.iLoop = 1;
+  pBullet.pFirer = pFirer;
+  pBullet.iImpactReduction = 0;
+  pBullet.sGridNo = MAPROWCOLTOPOS(pBullet.iCurrTileY, pBullet.iCurrTileX);
   if (fFake) {
-    pBullet.value.ubTargetID = pFirer.value.ubCTGTTargetID;
+    pBullet.ubTargetID = pFirer.ubCTGTTargetID;
     return CalcChanceToGetThrough(pBullet);
   } else {
-    pBullet.value.ubTargetID = pFirer.value.ubTargetID;
+    pBullet.ubTargetID = pFirer.ubTargetID;
     // if ( gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] )
     //{
     //	pBullet->uiLastUpdate = 0;
@@ -2750,27 +2751,27 @@ function FireBullet(pFirer: Pointer<SOLDIERTYPE>, pBullet: Pointer<BULLET>, fFak
     //}
     // else
     //{
-    pBullet.value.uiLastUpdate = 0;
-    pBullet.value.ubTilesPerUpdate = 1;
+    pBullet.uiLastUpdate = 0;
+    pBullet.ubTilesPerUpdate = 1;
     //}
 
     // increment shots fired if shooter has a merc profile
-    if ((pFirer.value.ubProfile != NO_PROFILE) && (pFirer.value.bTeam == 0)) {
+    if ((pFirer.ubProfile != NO_PROFILE) && (pFirer.bTeam == 0)) {
       // another shot fired
-      gMercProfiles[pFirer.value.ubProfile].usShotsFired++;
+      gMercProfiles[pFirer.ubProfile].usShotsFired++;
     }
 
-    if (Item[pFirer.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
-      pBullet.value.usClockTicksPerUpdate = 30;
+    if (Item[pFirer.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
+      pBullet.usClockTicksPerUpdate = 30;
     } else {
-      pBullet.value.usClockTicksPerUpdate = Weapon[pFirer.value.usAttackingWeapon].ubBulletSpeed / 10;
+      pBullet.usClockTicksPerUpdate = Weapon[pFirer.usAttackingWeapon].ubBulletSpeed / 10;
     }
 
-    HandleBulletSpecialFlags(pBullet.value.iBullet);
+    HandleBulletSpecialFlags(pBullet.iBullet);
 
-    MoveBullet(pBullet.value.iBullet);
+    MoveBullet(pBullet.iBullet);
 
-    return true;
+    return 1;
   }
 }
 
@@ -2792,7 +2793,7 @@ DOUBLE CalculateVerticalAngle( SOLDIERTYPE * pFirer, SOLDIERTYPE * pTarget )
 }
 */
 
-export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: boolean, fFake: boolean): INT8 {
+export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: boolean, fFake: boolean): INT8 {
   // fFake indicates that we should set things up for a call to ChanceToGetThrough
   let dStartZ: FLOAT;
 
@@ -2813,7 +2814,7 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
   let ddDummyHorizAngle: DOUBLE;
   let ddDummyVerticAngle: DOUBLE;
 
-  let pBullet: Pointer<BULLET>;
+  let pBullet: BULLET;
   let iBullet: INT32;
 
   let iDistance: INT32;
@@ -2827,8 +2828,8 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
 
   CalculateSoldierZPos(pFirer, Enum230.FIRING_POS, addressof(dStartZ));
 
-  dStartX = CenterX(pFirer.value.sGridNo);
-  dStartY = CenterY(pFirer.value.sGridNo);
+  dStartX = CenterX(pFirer.sGridNo);
+  dStartY = CenterY(pFirer.sGridNo);
 
   dDeltaX = dEndX - dStartX;
   dDeltaY = dEndY - dStartY;
@@ -2874,11 +2875,11 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
         if (sHitBy > 0) {
           sHitBy = sHitBy / 2;
         }
-        if (FindAttachment(addressof(pFirer.value.inv[pFirer.value.ubAttackingHand]), Enum225.DUCKBILL) != NO_SLOT) {
+        if (FindAttachment(pFirer.inv[pFirer.ubAttackingHand], Enum225.DUCKBILL) != NO_SLOT) {
           ubSpreadIndex = 1;
         }
-        if (pFirer.value.ubTargetID != NOBODY) {
-          MercPtrs[pFirer.value.ubTargetID].value.bNumPelletsHitBy = 0;
+        if (pFirer.ubTargetID != NOBODY) {
+          MercPtrs[pFirer.ubTargetID].bNumPelletsHitBy = 0;
         }
         usBulletFlags |= BULLET_FLAG_BUCKSHOT;
       }
@@ -2888,27 +2889,27 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
 
   // GET BULLET
   for (ubLoop = 0; ubLoop < ubShots; ubLoop++) {
-    iBullet = CreateBullet(pFirer.value.ubID, fFake, usBulletFlags);
+    iBullet = CreateBullet(pFirer.ubID, fFake, usBulletFlags);
     if (iBullet == -1) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Failed to create bullet"));
 
-      return false;
+      return 0;
     }
     pBullet = GetBulletPtr(iBullet);
-    pBullet.value.sHitBy = sHitBy;
+    pBullet.sHitBy = sHitBy;
 
     if (dStartZ < WALL_HEIGHT_UNITS) {
       if (dEndZ > WALL_HEIGHT_UNITS) {
-        pBullet.value.fCheckForRoof = true;
+        pBullet.fCheckForRoof = true;
       } else {
-        pBullet.value.fCheckForRoof = false;
+        pBullet.fCheckForRoof = false;
       }
     } else // dStartZ >= WALL_HEIGHT_UNITS; presumably >
     {
       if (dEndZ < WALL_HEIGHT_UNITS) {
-        pBullet.value.fCheckForRoof = true;
+        pBullet.fCheckForRoof = true;
       } else {
-        pBullet.value.fCheckForRoof = false;
+        pBullet.fCheckForRoof = false;
       }
     }
 
@@ -2919,9 +2920,9 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
       // first bullet, roll to hit...
       if (sHitBy >= 0) {
         // calculate by hand (well, without angles) to match LOS
-        pBullet.value.qIncrX = FloatToFixed(dDeltaX / iDistance);
-        pBullet.value.qIncrY = FloatToFixed(dDeltaY / iDistance);
-        pBullet.value.qIncrZ = FloatToFixed(dDeltaZ / iDistance);
+        pBullet.qIncrX = FloatToFixed(dDeltaX / iDistance);
+        pBullet.qIncrY = FloatToFixed(dDeltaY / iDistance);
+        pBullet.qIncrZ = FloatToFixed(dDeltaZ / iDistance);
         ddAdjustedHorizAngle = ddHorizAngle;
         ddAdjustedVerticAngle = ddVerticAngle;
       } else {
@@ -2929,59 +2930,59 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
       }
     } else {
       // temporarily set bullet's sHitBy value to 0 to get unadjusted angles
-      pBullet.value.sHitBy = 0;
+      pBullet.sHitBy = 0;
 
       ddHorizAngle = ddAdjustedHorizAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][0];
       ddVerticAngle = ddAdjustedVerticAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][1];
 
       CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, addressof(ddDummyHorizAngle), addressof(ddDummyVerticAngle));
-      pBullet.value.sHitBy = sHitBy;
+      pBullet.sHitBy = sHitBy;
     }
 
-    pBullet.value.ddHorizAngle = ddHorizAngle;
+    pBullet.ddHorizAngle = ddHorizAngle;
 
-    if (ubLoop == 0 && pFirer.value.bDoBurst < 2) {
-      pBullet.value.fAimed = true;
+    if (ubLoop == 0 && pFirer.bDoBurst < 2) {
+      pBullet.fAimed = true;
     } else {
       // buckshot pellets after the first can hit friendlies even at close range
-      pBullet.value.fAimed = false;
+      pBullet.fAimed = false;
     }
 
-    if (pBullet.value.usFlags & BULLET_FLAG_KNIFE) {
-      pBullet.value.ubItemStatus = pFirer.value.inv[pFirer.value.ubAttackingHand].bStatus[0];
+    if (pBullet.usFlags & BULLET_FLAG_KNIFE) {
+      pBullet.ubItemStatus = pFirer.inv[pFirer.ubAttackingHand].bStatus[0];
     }
 
     // apply increments for first move
 
-    pBullet.value.qCurrX = FloatToFixed(dStartX) + pBullet.value.qIncrX;
-    pBullet.value.qCurrY = FloatToFixed(dStartY) + pBullet.value.qIncrY;
-    pBullet.value.qCurrZ = FloatToFixed(dStartZ) + pBullet.value.qIncrZ;
+    pBullet.qCurrX = FloatToFixed(dStartX) + pBullet.qIncrX;
+    pBullet.qCurrY = FloatToFixed(dStartY) + pBullet.qIncrY;
+    pBullet.qCurrZ = FloatToFixed(dStartZ) + pBullet.qIncrZ;
 
     // NB we can only apply correction for leftovers if the bullet is going to hit
     // because otherwise the increments are not right for the calculations!
-    if (pBullet.value.sHitBy >= 0) {
-      pBullet.value.qCurrX += (FloatToFixed(dDeltaX) - pBullet.value.qIncrX * iDistance) / 2;
-      pBullet.value.qCurrY += (FloatToFixed(dDeltaY) - pBullet.value.qIncrY * iDistance) / 2;
-      pBullet.value.qCurrZ += (FloatToFixed(dDeltaZ) - pBullet.value.qIncrZ * iDistance) / 2;
+    if (pBullet.sHitBy >= 0) {
+      pBullet.qCurrX += (FloatToFixed(dDeltaX) - pBullet.qIncrX * iDistance) / 2;
+      pBullet.qCurrY += (FloatToFixed(dDeltaY) - pBullet.qIncrY * iDistance) / 2;
+      pBullet.qCurrZ += (FloatToFixed(dDeltaZ) - pBullet.qIncrZ * iDistance) / 2;
     }
 
-    pBullet.value.iImpact = ubImpact;
+    pBullet.iImpact = ubImpact;
 
-    pBullet.value.iRange = GunRange(addressof(pFirer.value.inv[pFirer.value.ubAttackingHand]));
-    pBullet.value.sTargetGridNo = (dEndX) / CELL_X_SIZE + (dEndY) / CELL_Y_SIZE * WORLD_COLS;
+    pBullet.iRange = GunRange(pFirer.inv[pFirer.ubAttackingHand]);
+    pBullet.sTargetGridNo = (dEndX) / CELL_X_SIZE + (dEndY) / CELL_Y_SIZE * WORLD_COLS;
 
-    pBullet.value.bStartCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dStartZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pFirer.value.sGridNo].sHeight));
-    pBullet.value.bEndCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dEndZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.value.sTargetGridNo].sHeight));
+    pBullet.bStartCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dStartZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pFirer.sGridNo].sHeight));
+    pBullet.bEndCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dEndZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.sTargetGridNo].sHeight));
 
     // this distance limit only applies in a "hard" sense to fake bullets for chance-to-get-through,
     // but is used for determining structure hits by the regular code
-    pBullet.value.iDistanceLimit = iDistance;
+    pBullet.iDistanceLimit = iDistance;
     if (fFake) {
       bCTGT = FireBullet(pFirer, pBullet, true);
       RemoveBullet(iBullet);
       return bCTGT;
     } else {
-      if (ubLoop + 1 > pFirer.value.bBulletsLeft) {
+      if (ubLoop + 1 > pFirer.bBulletsLeft) {
         // this is an error!!
         ubLoop = ubLoop;
       }
@@ -2989,21 +2990,21 @@ export function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT
     }
   }
 
-  return true;
+  return 1;
 }
 
-function ChanceToGetThrough(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT): INT8 {
-  if (Item[pFirer.value.usAttackingWeapon].usItemClass == IC_GUN || Item[pFirer.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
+function ChanceToGetThrough(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT): INT8 {
+  if (Item[pFirer.usAttackingWeapon].usItemClass == IC_GUN || Item[pFirer.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
     let fBuckShot: boolean = false;
 
     // if shotgun, shotgun would have to be in main hand
-    if (pFirer.value.inv[Enum261.HANDPOS].usItem == pFirer.value.usAttackingWeapon) {
-      if (pFirer.value.inv[Enum261.HANDPOS].ubGunAmmoType == Enum286.AMMO_BUCKSHOT) {
+    if (pFirer.inv[Enum261.HANDPOS].usItem == pFirer.usAttackingWeapon) {
+      if (pFirer.inv[Enum261.HANDPOS].ubGunAmmoType == Enum286.AMMO_BUCKSHOT) {
         fBuckShot = true;
       }
     }
 
-    return FireBulletGivenTarget(pFirer, dEndX, dEndY, dEndZ, pFirer.value.usAttackingWeapon, 0, fBuckShot, true);
+    return FireBulletGivenTarget(pFirer, dEndX, dEndY, dEndZ, pFirer.usAttackingWeapon, 0, fBuckShot, true);
   } else {
     // fake it
     return FireBulletGivenTarget(pFirer, dEndX, dEndY, dEndZ, Enum225.GLOCK_17, 0, false, true);
@@ -3011,7 +3012,7 @@ function ChanceToGetThrough(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: F
 }
 
 export function MoveBullet(iBullet: INT32): void {
-  let pBullet: Pointer<BULLET>;
+  let pBullet: BULLET;
 
   let qLandHeight: FIXEDPT;
   let iCurrAboveLevelZ: INT32;
@@ -3022,13 +3023,13 @@ export function MoveBullet(iBullet: INT32): void {
   let iOldTileY: INT32;
   let iOldCubesZ: INT32;
 
-  let pMapElement: Pointer<MAP_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
-  let pRoofStructure: Pointer<STRUCTURE> = null;
+  let pMapElement: MAP_ELEMENT;
+  let pStructure: STRUCTURE | null;
+  let pRoofStructure: STRUCTURE | null = null;
 
   let qLastZ: FIXEDPT;
 
-  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTarget: SOLDIERTYPE | null;
   let ubTargetID: UINT8;
   let fIntended: boolean;
   let fStopped: boolean;
@@ -3069,34 +3070,34 @@ export function MoveBullet(iBullet: INT32): void {
   // CHECK MIN TIME ELAPSED
   uiTime = GetJA2Clock();
 
-  if ((uiTime - pBullet.value.uiLastUpdate) < pBullet.value.usClockTicksPerUpdate) {
+  if ((uiTime - pBullet.uiLastUpdate) < pBullet.usClockTicksPerUpdate) {
     return;
   }
 
-  pBullet.value.uiLastUpdate = uiTime;
+  pBullet.uiLastUpdate = uiTime;
 
   do {
     // check a particular tile
     // retrieve values from world for this particular tile
-    iGridNo = pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS;
-    if (!GridNoOnVisibleWorldTile(iGridNo) || (pBullet.value.iCurrCubesZ > PROFILE_Z_SIZE * 2 && FIXEDPT_TO_INT32(pBullet.value.qIncrZ) > 0)) {
+    iGridNo = pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS;
+    if (!GridNoOnVisibleWorldTile(iGridNo) || (pBullet.iCurrCubesZ > PROFILE_Z_SIZE * 2 && FIXEDPT_TO_INT32(pBullet.qIncrZ) > 0)) {
       // bullet outside of world!
       // NB remove bullet only flags a bullet for deletion; we still have access to the
       // information in the structure
-      RemoveBullet(pBullet.value.iBullet);
-      BulletMissed(pBullet, pBullet.value.pFirer);
+      RemoveBullet(pBullet.iBullet);
+      BulletMissed(pBullet, pBullet.pFirer);
       return;
     }
 
-    pMapElement = addressof(gpWorldLevelData[iGridNo]);
-    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
+    pMapElement = gpWorldLevelData[iGridNo];
+    qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
     qWindowBottomHeight = gqStandardWindowBottomHeight + qLandHeight;
     qWindowTopHeight = gqStandardWindowTopHeight + qLandHeight;
 
     // calculate which level bullet is on for suppression and close call purposes
     // figure out the LOS cube level of the current point
-    iCurrCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ - qLandHeight));
+    iCurrCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ - qLandHeight));
     // figure out the level
     if (iCurrCubesAboveLevelZ < STRUCTURE_ON_GROUND_MAX) {
       // check objects on the ground
@@ -3108,10 +3109,10 @@ export function MoveBullet(iBullet: INT32): void {
 
     // assemble list of structures we might hit!
     iNumLocalStructures = 0;
-    pStructure = pMapElement.value.pStructureHead;
+    pStructure = pMapElement.pStructureHead;
     // calculate chance of hitting each structure
-    uiChanceOfHit = ChanceOfBulletHittingStructure(pBullet.value.iLoop, pBullet.value.iDistanceLimit, pBullet.value.sHitBy);
-    if (iGridNo == pBullet.value.sTargetGridNo) {
+    uiChanceOfHit = ChanceOfBulletHittingStructure(pBullet.iLoop, pBullet.iDistanceLimit, pBullet.sHitBy);
+    if (iGridNo == pBullet.sTargetGridNo) {
       fIntended = true;
       // if in the same tile as our destination, we WANT to hit the structure!
       if (fIntended) {
@@ -3122,20 +3123,20 @@ export function MoveBullet(iBullet: INT32): void {
     }
 
     while (pStructure) {
-      if (pStructure.value.fFlags & ALWAYS_CONSIDER_HIT) {
+      if (pStructure.fFlags & ALWAYS_CONSIDER_HIT) {
         // ALWAYS add walls
         // fence is special
-        if (pStructure.value.fFlags & STRUCTURE_ANYFENCE) {
+        if (pStructure.fFlags & STRUCTURE_ANYFENCE) {
           // If the density of the fence is less than 100%, or this is the top of the fence, then roll the dice
           // NB cubes are 0 based, heights 1 based
-          if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity < 100) {
+          if (pStructure.pDBStructureRef.pDBStructure.ubDensity < 100) {
             // requires roll
             if (PreRandom(100) < uiChanceOfHit) {
               gpLocalStructure[iNumLocalStructures] = pStructure;
               gubLocalStructureNumTimesHit[iNumLocalStructures] = 0;
               iNumLocalStructures++;
             }
-          } else if ((pBullet.value.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.value.bStartCubesAboveLevelZ) && (pBullet.value.bEndCubesAboveLevelZ >= iCurrCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
+          } else if ((pBullet.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.bStartCubesAboveLevelZ) && (pBullet.bEndCubesAboveLevelZ >= iCurrCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
             // near firer and at top of structure and at same level as bullet's start
             // requires roll
             if (PreRandom(100) < uiChanceOfHit) {
@@ -3143,7 +3144,7 @@ export function MoveBullet(iBullet: INT32): void {
               gubLocalStructureNumTimesHit[iNumLocalStructures] = 0;
               iNumLocalStructures++;
             }
-          } else if ((pBullet.value.iDistanceLimit - pBullet.value.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.value.bEndCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
+          } else if ((pBullet.iDistanceLimit - pBullet.iLoop <= CLOSE_TO_FIRER) && (iCurrCubesAboveLevelZ <= pBullet.bEndCubesAboveLevelZ) && iCurrCubesAboveLevelZ == (StructureHeight(pStructure) - 1)) {
             // near target and at top of structure and at same level as bullet's end
             // requires roll
             if (PreRandom(100) < uiChanceOfHit) {
@@ -3171,24 +3172,24 @@ export function MoveBullet(iBullet: INT32): void {
           gubLocalStructureNumTimesHit[iNumLocalStructures] = 0;
           iNumLocalStructures++;
         }
-      } else if (pStructure.value.fFlags & STRUCTURE_ROOF) {
+      } else if (pStructure.fFlags & STRUCTURE_ROOF) {
         // only consider roofs if the flag is set; don't add them to the array since they
         // are a special case
-        if (pBullet.value.fCheckForRoof) {
+        if (pBullet.fCheckForRoof) {
           pRoofStructure = pStructure;
 
-          qLastZ = pBullet.value.qCurrZ - pBullet.value.qIncrZ;
+          qLastZ = pBullet.qCurrZ - pBullet.qIncrZ;
 
           // if just on going to next tile we cross boundary, then roof stops bullet here!
-          if ((qLastZ > qWallHeight && pBullet.value.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.value.qCurrZ >= qWallHeight)) {
+          if ((qLastZ > qWallHeight && pBullet.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.qCurrZ >= qWallHeight)) {
             // hit a roof
-            StopBullet(pBullet.value.iBullet);
-            BulletHitStructure(pBullet, 0, 0, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+            StopBullet(pBullet.iBullet);
+            BulletHitStructure(pBullet, 0, 0, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
             return;
           }
         }
-      } else if (pStructure.value.fFlags & STRUCTURE_PERSON) {
-        if (MercPtrs[pStructure.value.usStructureID] != pBullet.value.pFirer) {
+      } else if (pStructure.fFlags & STRUCTURE_PERSON) {
+        if (MercPtrs[pStructure.usStructureID] != pBullet.pFirer) {
           // in actually moving the bullet, we consider only count friends as targets if the bullet is unaimed
           // (buckshot), if they are the intended target, or beyond the range of automatic friendly fire hits
           // OR a 1 in 30 chance occurs
@@ -3199,31 +3200,31 @@ export function MoveBullet(iBullet: INT32): void {
             // could hit this person!
             gpLocalStructure[iNumLocalStructures] = pStructure;
             iNumLocalStructures++;
-          } else if (pBullet.value.pFirer.value.uiStatusFlags & SOLDIER_MONSTER) {
+          } else if (pBullet.pFirer.uiStatusFlags & SOLDIER_MONSTER) {
             // monsters firing will always accidentally hit people but never accidentally hit each other.
-            if (!(MercPtrs[pStructure.value.usStructureID].value.uiStatusFlags & SOLDIER_MONSTER)) {
+            if (!(MercPtrs[pStructure.usStructureID].uiStatusFlags & SOLDIER_MONSTER)) {
               gpLocalStructure[iNumLocalStructures] = pStructure;
               iNumLocalStructures++;
             }
-          } else if (MercPtrs[pStructure.value.usStructureID].value.bVisible == true && gAnimControl[MercPtrs[pStructure.value.usStructureID].value.usAnimState].ubEndHeight == ANIM_STAND && ((pBullet.value.fAimed && pBullet.value.iLoop > MIN_DIST_FOR_HIT_FRIENDS) || (!pBullet.value.fAimed && pBullet.value.iLoop > MIN_DIST_FOR_HIT_FRIENDS_UNAIMED) || PreRandom(100) < MIN_CHANCE_TO_ACCIDENTALLY_HIT_SOMEONE)) {
+          } else if (MercPtrs[pStructure.usStructureID].bVisible == 1 && gAnimControl[MercPtrs[pStructure.usStructureID].usAnimState].ubEndHeight == ANIM_STAND && ((pBullet.fAimed && pBullet.iLoop > MIN_DIST_FOR_HIT_FRIENDS) || (!pBullet.fAimed && pBullet.iLoop > MIN_DIST_FOR_HIT_FRIENDS_UNAIMED) || PreRandom(100) < MIN_CHANCE_TO_ACCIDENTALLY_HIT_SOMEONE)) {
             // could hit this person!
             gpLocalStructure[iNumLocalStructures] = pStructure;
             iNumLocalStructures++;
           }
 
           // this might be a close call
-          if (MercPtrs[pStructure.value.usStructureID].value.bTeam == gbPlayerNum && pBullet.value.pFirer.value.bTeam != gbPlayerNum && sDesiredLevel == MercPtrs[pStructure.value.usStructureID].value.bLevel) {
-            MercPtrs[pStructure.value.usStructureID].value.fCloseCall = true;
+          if (MercPtrs[pStructure.usStructureID].bTeam == gbPlayerNum && pBullet.pFirer.bTeam != gbPlayerNum && sDesiredLevel == MercPtrs[pStructure.usStructureID].bLevel) {
+            MercPtrs[pStructure.usStructureID].fCloseCall = true;
           }
 
-          if (IS_MERC_BODY_TYPE(MercPtrs[pStructure.value.usStructureID])) {
+          if (IS_MERC_BODY_TYPE(MercPtrs[pStructure.usStructureID])) {
             // apply suppression, regardless of friendly or enemy
             // except if friendly, not within a few tiles of shooter
-            if (MercPtrs[pStructure.value.usStructureID].value.bSide != pBullet.value.pFirer.value.bSide || pBullet.value.iLoop > MIN_DIST_FOR_HIT_FRIENDS) {
+            if (MercPtrs[pStructure.usStructureID].bSide != pBullet.pFirer.bSide || pBullet.iLoop > MIN_DIST_FOR_HIT_FRIENDS) {
               // buckshot has only a 1 in 2 chance of applying a suppression point
-              if (!(pBullet.value.usFlags & BULLET_FLAG_BUCKSHOT) || Random(2)) {
+              if (!(pBullet.usFlags & BULLET_FLAG_BUCKSHOT) || Random(2)) {
                 // bullet goes whizzing by this guy!
-                switch (gAnimControl[MercPtrs[pStructure.value.usStructureID].value.usAnimState].ubEndHeight) {
+                switch (gAnimControl[MercPtrs[pStructure.usStructureID].usAnimState].ubEndHeight) {
                   case ANIM_PRONE:
                     // two 1/4 chances of avoiding suppression pt - one below
                     if (PreRandom(4) == 0) {
@@ -3237,16 +3238,16 @@ export function MoveBullet(iBullet: INT32): void {
                     }
                     // else fall through
                   default:
-                    MercPtrs[pStructure.value.usStructureID].value.ubSuppressionPoints++;
-                    MercPtrs[pStructure.value.usStructureID].value.ubSuppressorID = pBullet.value.pFirer.value.ubID;
+                    MercPtrs[pStructure.usStructureID].ubSuppressionPoints++;
+                    MercPtrs[pStructure.usStructureID].ubSuppressorID = pBullet.pFirer.ubID;
                     break;
                 }
               }
             }
           }
         }
-      } else if (pStructure.value.fFlags & STRUCTURE_CORPSE) {
-        if (iGridNo == pBullet.value.sTargetGridNo || (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles >= 10)) {
+      } else if (pStructure.fFlags & STRUCTURE_CORPSE) {
+        if (iGridNo == pBullet.sTargetGridNo || (pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles >= 10)) {
           // could hit this corpse!
           // but ignore if someone is here
           if (FindStructure(iGridNo, STRUCTURE_PERSON) == null) {
@@ -3255,7 +3256,7 @@ export function MoveBullet(iBullet: INT32): void {
           }
         }
       } else {
-        if (pBullet.value.iLoop > CLOSE_TO_FIRER || (fIntended)) {
+        if (pBullet.iLoop > CLOSE_TO_FIRER || (fIntended)) {
           // calculate chance of hitting structure
           if (PreRandom(100) < uiChanceOfHit) {
             // could hit it
@@ -3265,12 +3266,12 @@ export function MoveBullet(iBullet: INT32): void {
           }
         }
       }
-      pStructure = pStructure.value.pNext;
+      pStructure = pStructure.pNext;
     }
 
     // check to see if any soldiers are nearby; those soldiers
     // have their near-miss value incremented
-    if (pMapElement.value.ubAdjacentSoldierCnt > 0) {
+    if (pMapElement.ubAdjacentSoldierCnt > 0) {
       // cube level now calculated above!
       // figure out the LOS cube level of the current point
       // iCurrCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX( FIXEDPT_TO_INT32( pBullet->qCurrZ - qLandHeight) );
@@ -3296,10 +3297,10 @@ export function MoveBullet(iBullet: INT32): void {
             ubTargetID = WhoIsThere2(iAdjGridNo, sDesiredLevel);
             if (ubTargetID != NOBODY) {
               pTarget = MercPtrs[ubTargetID];
-              if (IS_MERC_BODY_TYPE(pTarget) && pBullet.value.pFirer.value.bSide != pTarget.value.bSide) {
-                if (!(pBullet.value.usFlags & BULLET_FLAG_BUCKSHOT) || Random(2)) {
+              if (IS_MERC_BODY_TYPE(pTarget) && pBullet.pFirer.bSide != pTarget.bSide) {
+                if (!(pBullet.usFlags & BULLET_FLAG_BUCKSHOT) || Random(2)) {
                   // bullet goes whizzing by this guy!
-                  switch (gAnimControl[pTarget.value.usAnimState].ubEndHeight) {
+                  switch (gAnimControl[pTarget.usAnimState].ubEndHeight) {
                     case ANIM_PRONE:
                       // two 1/4 chances of avoiding suppression pt - one below
                       if (PreRandom(4) == 0) {
@@ -3313,8 +3314,8 @@ export function MoveBullet(iBullet: INT32): void {
                       }
                       // else fall through
                     default:
-                      pTarget.value.ubSuppressionPoints++;
-                      pTarget.value.ubSuppressorID = pBullet.value.pFirer.value.ubID;
+                      pTarget.ubSuppressionPoints++;
+                      pTarget.ubSuppressorID = pBullet.pFirer.ubID;
                       break;
                   }
                 }
@@ -3334,18 +3335,18 @@ export function MoveBullet(iBullet: INT32): void {
     }
 
     // record old tile location for loop purposes
-    iOldTileX = pBullet.value.iCurrTileX;
-    iOldTileY = pBullet.value.iCurrTileY;
+    iOldTileX = pBullet.iCurrTileX;
+    iOldTileY = pBullet.iCurrTileY;
 
     do {
       // check a particular location within the tile
 
       // check for collision with the ground
-      iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.value.qCurrZ - qLandHeight);
+      iCurrAboveLevelZ = FIXEDPT_TO_INT32(pBullet.qCurrZ - qLandHeight);
       if (iCurrAboveLevelZ < 0) {
         // ground is in the way!
-        StopBullet(pBullet.value.iBullet);
-        BulletHitStructure(pBullet, INVALID_STRUCTURE_ID, 0, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+        StopBullet(pBullet.iBullet);
+        BulletHitStructure(pBullet, INVALID_STRUCTURE_ID, 0, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
         return;
       }
       // check for the existence of structures
@@ -3354,27 +3355,27 @@ export function MoveBullet(iBullet: INT32): void {
         // new system; figure out how many steps until we cross the next edge
         // and then fast forward that many steps.
 
-        iOldTileX = pBullet.value.iCurrTileX;
-        iOldTileY = pBullet.value.iCurrTileY;
-        iOldCubesZ = pBullet.value.iCurrCubesZ;
+        iOldTileX = pBullet.iCurrTileX;
+        iOldTileY = pBullet.iCurrTileY;
+        iOldCubesZ = pBullet.iCurrCubesZ;
 
-        if (pBullet.value.qIncrX > 0) {
-          qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.value.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
-          iStepsToTravelX = qDistToTravelX / pBullet.value.qIncrX;
-        } else if (pBullet.value.qIncrX < 0) {
-          qDistToTravelX = pBullet.value.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
-          iStepsToTravelX = qDistToTravelX / (-pBullet.value.qIncrX);
+        if (pBullet.qIncrX > 0) {
+          qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
+          iStepsToTravelX = qDistToTravelX / pBullet.qIncrX;
+        } else if (pBullet.qIncrX < 0) {
+          qDistToTravelX = pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
+          iStepsToTravelX = qDistToTravelX / (-pBullet.qIncrX);
         } else {
           // make sure we don't consider X a limit :-)
           iStepsToTravelX = 1000000;
         }
 
-        if (pBullet.value.qIncrY > 0) {
-          qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.value.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
-          iStepsToTravelY = qDistToTravelY / pBullet.value.qIncrY;
-        } else if (pBullet.value.qIncrY < 0) {
-          qDistToTravelY = pBullet.value.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
-          iStepsToTravelY = qDistToTravelY / (-pBullet.value.qIncrY);
+        if (pBullet.qIncrY > 0) {
+          qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
+          iStepsToTravelY = qDistToTravelY / pBullet.qIncrY;
+        } else if (pBullet.qIncrY < 0) {
+          qDistToTravelY = pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
+          iStepsToTravelY = qDistToTravelY / (-pBullet.qIncrY);
         } else {
           // make sure we don't consider Y a limit :-)
           iStepsToTravelY = 1000000;
@@ -3385,28 +3386,28 @@ export function MoveBullet(iBullet: INT32): void {
 
         // special coding (compared with other versions above) to deal with
         // bullets hitting the ground
-        if (pBullet.value.qCurrZ + pBullet.value.qIncrZ * iStepsToTravel < qLandHeight) {
-          iStepsToTravel = Math.min(iStepsToTravel, Math.abs((pBullet.value.qCurrZ - qLandHeight) / pBullet.value.qIncrZ));
-          pBullet.value.qCurrX += pBullet.value.qIncrX * iStepsToTravel;
-          pBullet.value.qCurrY += pBullet.value.qIncrY * iStepsToTravel;
-          pBullet.value.qCurrZ += pBullet.value.qIncrZ * iStepsToTravel;
+        if (pBullet.qCurrZ + pBullet.qIncrZ * iStepsToTravel < qLandHeight) {
+          iStepsToTravel = Math.min(iStepsToTravel, Math.abs((pBullet.qCurrZ - qLandHeight) / pBullet.qIncrZ));
+          pBullet.qCurrX += pBullet.qIncrX * iStepsToTravel;
+          pBullet.qCurrY += pBullet.qIncrY * iStepsToTravel;
+          pBullet.qCurrZ += pBullet.qIncrZ * iStepsToTravel;
 
-          StopBullet(pBullet.value.iBullet);
-          BulletHitStructure(pBullet, INVALID_STRUCTURE_ID, 0, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+          StopBullet(pBullet.iBullet);
+          BulletHitStructure(pBullet, INVALID_STRUCTURE_ID, 0, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
           return;
         }
 
-        if (pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
+        if (pBullet.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
           let bStepsPerMove: INT8 = STEPS_FOR_BULLET_MOVE_TRAILS;
 
-          if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
+          if (pBullet.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
             bStepsPerMove = STEPS_FOR_BULLET_MOVE_SMALL_TRAILS;
-          } else if (pBullet.value.usFlags & (BULLET_FLAG_FLAME)) {
+          } else if (pBullet.usFlags & (BULLET_FLAG_FLAME)) {
             bStepsPerMove = STEPS_FOR_BULLET_MOVE_FIRE_TRAILS;
           }
 
           for (i = 0; i < iStepsToTravel; i++) {
-            if (((pBullet.value.iLoop + i) % bStepsPerMove) == 0) {
+            if (((pBullet.iLoop + i) % bStepsPerMove) == 0) {
               fGoingOver = true;
               break;
             }
@@ -3417,25 +3418,25 @@ export function MoveBullet(iBullet: INT32): void {
             let qCurrY: FIXEDPT;
             let qCurrZ: FIXEDPT;
 
-            qCurrX = pBullet.value.qCurrX + pBullet.value.qIncrX * i;
-            qCurrY = pBullet.value.qCurrY + pBullet.value.qIncrY * i;
-            qCurrZ = pBullet.value.qCurrZ + pBullet.value.qIncrZ * i;
+            qCurrX = pBullet.qCurrX + pBullet.qIncrX * i;
+            qCurrY = pBullet.qCurrY + pBullet.qIncrY * i;
+            qCurrZ = pBullet.qCurrZ + pBullet.qIncrZ * i;
 
             AddMissileTrail(pBullet, qCurrX, qCurrY, qCurrZ);
           }
         }
 
-        pBullet.value.qCurrX += pBullet.value.qIncrX * iStepsToTravel;
-        pBullet.value.qCurrY += pBullet.value.qIncrY * iStepsToTravel;
-        pBullet.value.qCurrZ += pBullet.value.qIncrZ * iStepsToTravel;
-        pBullet.value.iLoop += iStepsToTravel;
+        pBullet.qCurrX += pBullet.qIncrX * iStepsToTravel;
+        pBullet.qCurrY += pBullet.qIncrY * iStepsToTravel;
+        pBullet.qCurrZ += pBullet.qIncrZ * iStepsToTravel;
+        pBullet.iLoop += iStepsToTravel;
 
         // figure out the new tile location
-        pBullet.value.iCurrTileX = FIXEDPT_TO_TILE_NUM(pBullet.value.qCurrX);
-        pBullet.value.iCurrTileY = FIXEDPT_TO_TILE_NUM(pBullet.value.qCurrY);
-        pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
-        pBullet.value.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrX);
-        pBullet.value.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrY);
+        pBullet.iCurrTileX = FIXEDPT_TO_TILE_NUM(pBullet.qCurrX);
+        pBullet.iCurrTileY = FIXEDPT_TO_TILE_NUM(pBullet.qCurrY);
+        pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
+        pBullet.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrX);
+        pBullet.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrY);
       } else {
         // there are structures in this tile
         iCurrCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(iCurrAboveLevelZ);
@@ -3453,9 +3454,9 @@ export function MoveBullet(iBullet: INT32): void {
           // check structures for collision
           for (iStructureLoop = 0; iStructureLoop < iNumLocalStructures; iStructureLoop++) {
             pStructure = gpLocalStructure[iStructureLoop];
-            if (pStructure && pStructure.value.sCubeOffset == sDesiredLevel) {
-              if ((((pStructure.value.pShape).value)[pBullet.value.bLOSIndexX][pBullet.value.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
-                if (pStructure.value.fFlags & STRUCTURE_PERSON) {
+            if (pStructure && pStructure.sCubeOffset == sDesiredLevel) {
+              if (((<PROFILE>pStructure.pShape)[pBullet.bLOSIndexX][pBullet.bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+                if (pStructure.fFlags & STRUCTURE_PERSON) {
                   // hit someone!
                   fStopped = BulletHitMerc(pBullet, pStructure, fIntended);
                   if (fStopped) {
@@ -3465,11 +3466,11 @@ export function MoveBullet(iBullet: INT32): void {
                     // set pointer to null so that we don't consider hitting this person again
                     gpLocalStructure[iStructureLoop] = null;
                   }
-                } else if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW && pBullet.value.qCurrZ >= qWindowBottomHeight && pBullet.value.qCurrZ <= qWindowTopHeight) {
-                  fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.ddHorizAngle);
+                } else if (pStructure.fFlags & STRUCTURE_WALLNWINDOW && pBullet.qCurrZ >= qWindowBottomHeight && pBullet.qCurrZ <= qWindowTopHeight) {
+                  fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.ddHorizAngle);
 
                   if (fResolveHit) {
-                    if (pBullet.value.usFlags & BULLET_FLAG_KNIFE) {
+                    if (pBullet.usFlags & BULLET_FLAG_KNIFE) {
                       // knives do get stopped by windows!
 
                       iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
@@ -3478,20 +3479,20 @@ export function MoveBullet(iBullet: INT32): void {
                         let Object: OBJECTTYPE = createObjectType();
                         let iKnifeGridNo: INT32;
 
-                        CreateItem(Enum225.THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(Object));
+                        CreateItem(Enum225.THROWING_KNIFE, pBullet.ubItemStatus, Object);
 
                         // by default knife at same tile as window
                         iKnifeGridNo = iGridNo;
 
-                        if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
-                          if (pBullet.value.qIncrX > 0) {
+                        if (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+                          if (pBullet.qIncrX > 0) {
                             // heading east so place knife on west, in same tile
                           } else {
                             // place to east of window
                             iKnifeGridNo += 1;
                           }
                         } else {
-                          if (pBullet.value.qIncrY > 0) {
+                          if (pBullet.qIncrY > 0) {
                             // heading south so place wall to north, in same tile of window
                           } else {
                             iKnifeGridNo += WORLD_ROWS;
@@ -3499,49 +3500,49 @@ export function MoveBullet(iBullet: INT32): void {
                         }
 
                         if (sDesiredLevel == STRUCTURE_ON_GROUND) {
-                          AddItemToPool(iKnifeGridNo, addressof(Object), -1, 0, 0, 0);
+                          AddItemToPool(iKnifeGridNo, Object, -1, 0, 0, 0);
                         } else {
-                          AddItemToPool(iKnifeGridNo, addressof(Object), -1, 0, 1, 0);
+                          AddItemToPool(iKnifeGridNo, Object, -1, 0, 1, 0);
                         }
 
                         // Make team look for items
                         NotifySoldiersToLookforItems();
 
                         // bullet must end here!
-                        StopBullet(pBullet.value.iBullet);
-                        BulletHitStructure(pBullet, pStructure.value.usStructureID, 1, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+                        StopBullet(pBullet.iBullet);
+                        BulletHitStructure(pBullet, pStructure.usStructureID, 1, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
                         return;
                       }
                     } else {
-                      if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
-                        if (pBullet.value.qIncrX > 0) {
-                          BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, true);
-                          LocateBullet(pBullet.value.iBullet);
+                      if (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+                        if (pBullet.qIncrX > 0) {
+                          BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, true);
+                          LocateBullet(pBullet.iBullet);
                           // have to remove this window from future hit considerations so the deleted structure data can't be referenced!
                           gpLocalStructure[iStructureLoop] = null;
                         } else {
-                          BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, false);
-                          LocateBullet(pBullet.value.iBullet);
+                          BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, false);
+                          LocateBullet(pBullet.iBullet);
                           gpLocalStructure[iStructureLoop] = null;
                         }
                       } else {
-                        if (pBullet.value.qIncrY > 0) {
-                          BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, true);
-                          LocateBullet(pBullet.value.iBullet);
+                        if (pBullet.qIncrY > 0) {
+                          BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, true);
+                          LocateBullet(pBullet.iBullet);
                           gpLocalStructure[iStructureLoop] = null;
                         } else {
-                          BulletHitWindow(pBullet, (pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS), pStructure.value.usStructureID, false);
-                          LocateBullet(pBullet.value.iBullet);
+                          BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, false);
+                          LocateBullet(pBullet.iBullet);
                           gpLocalStructure[iStructureLoop] = null;
                         }
                       }
                       // but the bullet keeps on going!!!
                     }
                   }
-                } else if (pBullet.value.iLoop > CLOSE_TO_FIRER || (pStructure.value.fFlags & ALWAYS_CONSIDER_HIT) || (pBullet.value.iLoop > CLOSE_TO_FIRER) || (fIntended)) {
-                  if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+                } else if (pBullet.iLoop > CLOSE_TO_FIRER || (pStructure.fFlags & ALWAYS_CONSIDER_HIT) || (pBullet.iLoop > CLOSE_TO_FIRER) || (fIntended)) {
+                  if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
                     // possibly shooting at corner in which case we should let it pass
-                    fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.value.bLOSIndexX, pBullet.value.bLOSIndexY, pBullet.value.ddHorizAngle);
+                    fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.ddHorizAngle);
                   } else {
                     fResolveHit = true;
                   }
@@ -3550,23 +3551,23 @@ export function MoveBullet(iBullet: INT32): void {
                     iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
                     if (fHitStructure) {
                       // ATE: NOT if we are a special bullet like a LAW trail...
-                      if (pStructure.value.fFlags & STRUCTURE_CORPSE && !(pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT))) {
+                      if (pStructure.fFlags & STRUCTURE_CORPSE && !(pBullet.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT))) {
                         // ATE: In enemy territory here... ;)
                         // Now that we have hit a corpse, make the bugger twich!
-                        RemoveBullet(pBullet.value.iBullet);
+                        RemoveBullet(pBullet.iBullet);
 
-                        CorpseHit(pBullet.value.sGridNo, pStructure.value.usStructureID);
+                        CorpseHit(pBullet.sGridNo, pStructure.usStructureID);
                         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Reducing attacker busy count..., CORPSE HIT"));
 
-                        FreeUpAttacker(pBullet.value.pFirer.value.ubID);
+                        FreeUpAttacker(pBullet.pFirer.ubID);
                         return;
                       } else if (iRemainingImpact <= 0) {
-                        StopBullet(pBullet.value.iBullet);
-                        BulletHitStructure(pBullet, pStructure.value.usStructureID, 1, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+                        StopBullet(pBullet.iBullet);
+                        BulletHitStructure(pBullet, pStructure.usStructureID, 1, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
                         return;
                       } else if (fHitStructure && (gubLocalStructureNumTimesHit[iStructureLoop] == 0)) {
                         // play animation to indicate structure being hit
-                        BulletHitStructure(pBullet, pStructure.value.usStructureID, 1, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, false);
+                        BulletHitStructure(pBullet, pStructure.usStructureID, 1, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, false);
                         gubLocalStructureNumTimesHit[iStructureLoop] = 1;
                       }
                     }
@@ -3578,22 +3579,22 @@ export function MoveBullet(iBullet: INT32): void {
         }
         // got past everything; go to next LOS location within
         // tile, horizontally or vertically
-        bOldLOSIndexX = pBullet.value.bLOSIndexX;
-        bOldLOSIndexY = pBullet.value.bLOSIndexY;
-        iOldCubesZ = pBullet.value.iCurrCubesZ;
+        bOldLOSIndexX = pBullet.bLOSIndexX;
+        bOldLOSIndexY = pBullet.bLOSIndexY;
+        iOldCubesZ = pBullet.iCurrCubesZ;
         do {
-          pBullet.value.qCurrX += pBullet.value.qIncrX;
-          pBullet.value.qCurrY += pBullet.value.qIncrY;
+          pBullet.qCurrX += pBullet.qIncrX;
+          pBullet.qCurrY += pBullet.qIncrY;
           if (pRoofStructure) {
-            qLastZ = pBullet.value.qCurrZ;
-            pBullet.value.qCurrZ += pBullet.value.qIncrZ;
-            if ((qLastZ > qWallHeight && pBullet.value.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.value.qCurrZ >= qWallHeight)) {
+            qLastZ = pBullet.qCurrZ;
+            pBullet.qCurrZ += pBullet.qIncrZ;
+            if ((qLastZ > qWallHeight && pBullet.qCurrZ <= qWallHeight) || (qLastZ < qWallHeight && pBullet.qCurrZ >= qWallHeight)) {
               // generate roof-hitting event
               // always stop with roofs
 
               if (1 /*HandleBulletStructureInteraction( pBullet, pRoofStructure, &fHitStructure ) <= 0 */) {
-                StopBullet(pBullet.value.iBullet);
-                BulletHitStructure(pBullet, 0, 0, pBullet.value.pFirer, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ, true);
+                StopBullet(pBullet.iBullet);
+                BulletHitStructure(pBullet, 0, 0, pBullet.pFirer, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ, true);
                 return;
               }
               /*
@@ -3606,57 +3607,57 @@ export function MoveBullet(iBullet: INT32): void {
               */
             }
           } else {
-            pBullet.value.qCurrZ += pBullet.value.qIncrZ;
+            pBullet.qCurrZ += pBullet.qIncrZ;
           }
-          pBullet.value.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrX);
-          pBullet.value.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.value.qCurrY);
-          pBullet.value.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
-          pBullet.value.iLoop++;
+          pBullet.bLOSIndexX = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrX);
+          pBullet.bLOSIndexY = FIXEDPT_TO_LOS_INDEX(pBullet.qCurrY);
+          pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
+          pBullet.iLoop++;
 
-          if (pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
+          if (pBullet.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
             let bStepsPerMove: INT8 = STEPS_FOR_BULLET_MOVE_TRAILS;
 
-            if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
+            if (pBullet.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
               bStepsPerMove = STEPS_FOR_BULLET_MOVE_SMALL_TRAILS;
-            } else if (pBullet.value.usFlags & (BULLET_FLAG_FLAME)) {
+            } else if (pBullet.usFlags & (BULLET_FLAG_FLAME)) {
               bStepsPerMove = STEPS_FOR_BULLET_MOVE_FIRE_TRAILS;
             }
 
-            if (pBullet.value.iLoop % bStepsPerMove == 0) {
+            if (pBullet.iLoop % bStepsPerMove == 0) {
               // add smoke trail
-              AddMissileTrail(pBullet, pBullet.value.qCurrX, pBullet.value.qCurrY, pBullet.value.qCurrZ);
+              AddMissileTrail(pBullet, pBullet.qCurrX, pBullet.qCurrY, pBullet.qCurrZ);
             }
           }
-        } while ((pBullet.value.bLOSIndexX == bOldLOSIndexX) && (pBullet.value.bLOSIndexY == bOldLOSIndexY) && (pBullet.value.iCurrCubesZ == iOldCubesZ));
-        pBullet.value.iCurrTileX = FIXEDPT_TO_INT32(pBullet.value.qCurrX) / CELL_X_SIZE;
-        pBullet.value.iCurrTileY = FIXEDPT_TO_INT32(pBullet.value.qCurrY) / CELL_Y_SIZE;
+        } while ((pBullet.bLOSIndexX == bOldLOSIndexX) && (pBullet.bLOSIndexY == bOldLOSIndexY) && (pBullet.iCurrCubesZ == iOldCubesZ));
+        pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
+        pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
       }
-    } while ((pBullet.value.iCurrTileX == iOldTileX) && (pBullet.value.iCurrTileY == iOldTileY));
+    } while ((pBullet.iCurrTileX == iOldTileX) && (pBullet.iCurrTileY == iOldTileY));
 
-    if (!GridNoOnVisibleWorldTile((pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS)) || (pBullet.value.iCurrCubesZ > PROFILE_Z_SIZE * 2 && FIXEDPT_TO_INT32(pBullet.value.qIncrZ) > 0)) {
+    if (!GridNoOnVisibleWorldTile((pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS)) || (pBullet.iCurrCubesZ > PROFILE_Z_SIZE * 2 && FIXEDPT_TO_INT32(pBullet.qIncrZ) > 0)) {
       // bullet outside of world!
-      RemoveBullet(pBullet.value.iBullet);
-      BulletMissed(pBullet, pBullet.value.pFirer);
+      RemoveBullet(pBullet.iBullet);
+      BulletMissed(pBullet, pBullet.pFirer);
       return;
     }
 
-    pBullet.value.sGridNo = MAPROWCOLTOPOS(pBullet.value.iCurrTileY, pBullet.value.iCurrTileX);
+    pBullet.sGridNo = MAPROWCOLTOPOS(pBullet.iCurrTileY, pBullet.iCurrTileX);
     uiTileInc++;
 
-    if ((pBullet.value.iLoop > pBullet.value.iRange * 2)) {
+    if ((pBullet.iLoop > pBullet.iRange * 2)) {
       // beyond max effective range, bullet starts to drop!
       // since we're doing an increment based on distance, not time, the
       // decrement is scaled down depending on how fast the bullet is (effective range)
-      pBullet.value.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.value.iRange * 2);
-    } else if ((pBullet.value.usFlags & BULLET_FLAG_FLAME) && (pBullet.value.iLoop > pBullet.value.iRange)) {
-      pBullet.value.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.value.iRange * 2);
+      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
+    } else if ((pBullet.usFlags & BULLET_FLAG_FLAME) && (pBullet.iLoop > pBullet.iRange)) {
+      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
     }
 
     // check to see if bullet is close to target
-    if (pBullet.value.pFirer.value.ubTargetID != NOBODY && !(pBullet.value.pFirer.value.uiStatusFlags & SOLDIER_ATTACK_NOTICED) && PythSpacesAway(pBullet.value.sGridNo, pBullet.value.sTargetGridNo) <= 3) {
-      pBullet.value.pFirer.value.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
+    if (pBullet.pFirer.ubTargetID != NOBODY && !(pBullet.pFirer.uiStatusFlags & SOLDIER_ATTACK_NOTICED) && PythSpacesAway(pBullet.sGridNo, pBullet.sTargetGridNo) <= 3) {
+      pBullet.pFirer.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
     }
-  } while (uiTileInc < pBullet.value.ubTilesPerUpdate);
+  } while (uiTileInc < pBullet.ubTilesPerUpdate);
   // unless the distance is integral, after the loop there will be a
   // fractional amount of distance remaining which is unchecked
   // but we shouldn't(?) need to check it because the target is there!
@@ -3668,13 +3669,13 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
   let iCurrCubesAboveLevelZ: INT32;
   let sDesiredLevel: INT16;
 
-  let pMapElement: Pointer<MAP_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
-  let pTempStructure: Pointer<STRUCTURE>;
+  let pMapElement: MAP_ELEMENT;
+  let pStructure: STRUCTURE | null;
+  let pTempStructure: STRUCTURE | null;
 
   let fRoofPresent: boolean = false;
 
-  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTarget: SOLDIERTYPE | null;
   let dTargetX: FLOAT;
   let dTargetY: FLOAT;
   let dTargetZMin: FLOAT;
@@ -3711,8 +3712,8 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
 
   // check a particular tile
   // retrieve values from world for this particular tile
-  pMapElement = addressof(gpWorldLevelData[sX + sY * WORLD_COLS]);
-  iLandHeight = CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight);
+  pMapElement = gpWorldLevelData[sX + sY * WORLD_COLS];
+  iLandHeight = CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.sHeight);
 
   // Calculate old height and new hieght in pixels
   dOldZUnits = (dZ - dDeltaZ);
@@ -3731,18 +3732,18 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
   //}
 
   // if (pMapElement->pMercHead != NULL && pBullet->iLoop != 1)
-  if (pMapElement.value.pMercHead != null) {
+  if (pMapElement.pMercHead != null) {
     // a merc! that isn't us :-)
-    pTarget = pMapElement.value.pMercHead.value.pSoldier;
-    dTargetX = pTarget.value.dXPos;
-    dTargetY = pTarget.value.dYPos;
+    pTarget = pMapElement.pMercHead.pSoldier;
+    dTargetX = pTarget.dXPos;
+    dTargetY = pTarget.dYPos;
     dTargetZMin = 0.0;
     CalculateSoldierZPos(pTarget, Enum230.HEIGHT, addressof(dTargetZMax));
-    if (pTarget.value.bLevel > 0) {
+    if (pTarget.bLevel > 0) {
       // on roof
       dTargetZMin += WALL_HEIGHT_UNITS;
     }
-    if (sX + sY * WORLD_COLS == pTarget.value.sGridNo) {
+    if (sX + sY * WORLD_COLS == pTarget.sGridNo) {
       fIntended = true;
     } else {
       fIntended = false;
@@ -3757,14 +3758,14 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
   iCurrAboveLevelZ = dZ - iLandHeight;
   if (iCurrAboveLevelZ < 0) {
     // ground is in the way!
-    if (pMapElement.value.ubTerrainID == Enum315.DEEP_WATER || pMapElement.value.ubTerrainID == Enum315.LOW_WATER || pMapElement.value.ubTerrainID == Enum315.MED_WATER) {
+    if (pMapElement.ubTerrainID == Enum315.DEEP_WATER || pMapElement.ubTerrainID == Enum315.LOW_WATER || pMapElement.ubTerrainID == Enum315.MED_WATER) {
       return Enum229.COLLISION_WATER;
     } else {
       return Enum229.COLLISION_GROUND;
     }
   }
   // check for the existence of structures
-  pStructure = pMapElement.value.pStructureHead;
+  pStructure = pMapElement.pStructureHead;
   if (pStructure == null) {
     // no structures in this tile
 
@@ -3793,7 +3794,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
     // check for ground collision
     if (dZ < iLandHeight) {
       // ground is in the way!
-      if (pMapElement.value.ubTerrainID == Enum315.DEEP_WATER || pMapElement.value.ubTerrainID == Enum315.LOW_WATER || pMapElement.value.ubTerrainID == Enum315.MED_WATER) {
+      if (pMapElement.ubTerrainID == Enum315.DEEP_WATER || pMapElement.ubTerrainID == Enum315.LOW_WATER || pMapElement.ubTerrainID == Enum315.MED_WATER) {
         return Enum229.COLLISION_WATER;
       } else {
         return Enum229.COLLISION_GROUND;
@@ -3841,7 +3842,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
 
       // check structures for collision
       while (pStructure != null) {
-        if (pStructure.value.fFlags & STRUCTURE_ROOF || gfCaves || gfBasement) {
+        if (pStructure.fFlags & STRUCTURE_ROOF || gfCaves || gfBasement) {
           if (dOldZUnits > HEIGHT_UNITS && dZUnits < HEIGHT_UNITS) {
             return Enum229.COLLISION_ROOF;
           }
@@ -3850,12 +3851,12 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
           }
         }
 
-        if (pStructure.value.sCubeOffset == sDesiredLevel) {
-          if ((((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
-            pusStructureID.value = pStructure.value.usStructureID;
+        if (pStructure.sCubeOffset == sDesiredLevel) {
+          if (((<PROFILE>pStructure.pShape)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ]) > 0) {
+            pusStructureID.value = pStructure.usStructureID;
 
-            if (pStructure.value.fFlags & STRUCTURE_WALLNWINDOW && dZ >= WINDOW_BOTTOM_HEIGHT_UNITS && dZ <= WINDOW_TOP_HEIGHT_UNITS) {
-              if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+            if (pStructure.fFlags & STRUCTURE_WALLNWINDOW && dZ >= WINDOW_BOTTOM_HEIGHT_UNITS && dZ <= WINDOW_TOP_HEIGHT_UNITS) {
+              if (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                 if (dDeltaX > 0) {
                   return Enum229.COLLISION_WINDOW_SOUTHWEST;
                 } else {
@@ -3870,7 +3871,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
               }
             }
 
-            if (pStructure.value.fFlags & STRUCTURE_WALLSTUFF) {
+            if (pStructure.fFlags & STRUCTURE_WALLSTUFF) {
               // if ( !CalculateLOSNormal( pStructure, bLOSIndexX, bLOSIndexY, (INT8)iCurrCubesAboveLevelZ, dDeltaX, dDeltaY, dDeltaZ, pdNormalX, pdNormalY, pdNormalZ ) )
               //{
               //	return( COLLISION_NONE );
@@ -3879,7 +3880,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
               pdNormalY.value = 0;
               pdNormalZ.value = 0;
 
-              if (pStructure.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+              if (pStructure.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pStructure.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
                 if (dDeltaX > 0) {
                   pdNormalX.value = -1;
                   return Enum229.COLLISION_WALL_SOUTHEAST;
@@ -3899,10 +3900,10 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
             } else {
               // Determine if we are on top of this struct
               // If we are a tree, not dense enough to stay!
-              if (!(pStructure.value.fFlags & STRUCTURE_TREE) && !(pStructure.value.fFlags & STRUCTURE_CORPSE)) {
+              if (!(pStructure.fFlags & STRUCTURE_TREE) && !(pStructure.fFlags & STRUCTURE_CORPSE)) {
                 if (iCurrCubesAboveLevelZ < PROFILE_Z_SIZE - 1) {
-                  if (!(((pStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ + 1])) {
-                    if ((pStructure.value.fFlags & STRUCTURE_ROOF)) {
+                  if (!((<PROFILE>pStructure.pShape)[bLOSIndexX][bLOSIndexY] & AtHeight[iCurrCubesAboveLevelZ + 1])) {
+                    if ((pStructure.fFlags & STRUCTURE_ROOF)) {
                       return Enum229.COLLISION_ROOF;
                     } else {
                       return Enum229.COLLISION_STRUCTURE_Z;
@@ -3911,17 +3912,17 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
                 } else {
                   // Search next level ( if we are ground )
                   if (sDesiredLevel == STRUCTURE_ON_GROUND) {
-                    pTempStructure = pMapElement.value.pStructureHead;
+                    pTempStructure = pMapElement.pStructureHead;
 
                     // LOOK at ALL structs on roof
                     while (pTempStructure != null) {
-                      if (pTempStructure.value.sCubeOffset == STRUCTURE_ON_ROOF) {
-                        if (!(((pTempStructure.value.pShape).value)[bLOSIndexX][bLOSIndexY] & AtHeight[0])) {
+                      if (pTempStructure.sCubeOffset == STRUCTURE_ON_ROOF) {
+                        if (!((<PROFILE>pTempStructure.pShape)[bLOSIndexX][bLOSIndexY] & AtHeight[0])) {
                           return Enum229.COLLISION_STRUCTURE_Z;
                         }
                       }
 
-                      pTempStructure = pTempStructure.value.pNext;
+                      pTempStructure = pTempStructure.pNext;
                     }
                   } else {
                     // We are very high!
@@ -3932,15 +3933,15 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
 
               // Check armour rating.....
               // ATE; not if small vegitation....
-              if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour != Enum309.MATERIAL_LIGHT_VEGETATION) {
-                if (!(pStructure.value.fFlags & STRUCTURE_CORPSE)) {
+              if (pStructure.pDBStructureRef.pDBStructure.ubArmour != Enum309.MATERIAL_LIGHT_VEGETATION) {
+                if (!(pStructure.fFlags & STRUCTURE_CORPSE)) {
                   return Enum229.COLLISION_STRUCTURE;
                 }
               }
             }
           }
         }
-        pStructure = pStructure.value.pNext;
+        pStructure = pStructure.pNext;
       }
     }
 
@@ -3965,7 +3966,7 @@ let gsLOSDirLUT: INT16[][] /* [3][3] */ = [
   [ 225, 180, 135 ],
 ];
 
-function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: INT8, bLOSZ: INT8, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): boolean {
+function CalculateLOSNormal(pStructure: STRUCTURE, bLOSX: INT8, bLOSY: INT8, bLOSZ: INT8, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): boolean {
   let cntx: INT32;
   let cnty: INT32;
   let bX: INT8;
@@ -3990,7 +3991,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   vIncident.y = dDeltaY;
   vIncident.z = 0;
   // Nomralize
-  vIncident = VGetNormal(addressof(vIncident));
+  vIncident = VGetNormal(vIncident);
 
   vAveNormal.x = 0;
   vAveNormal.y = 0;
@@ -4012,14 +4013,14 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
         continue;
       }
 
-      if ((((pStructure.value.pShape).value)[bX][bY] & AtHeight[bLOSZ]) > 0) {
+      if (((<PROFILE>pStructure.pShape)[bX][bY] & AtHeight[bLOSZ]) > 0) {
         fParimeter = false;
         // THIS MUST BE THE POLYGONAL SURFACE, CHECK!
         do {
           tX = (bX - 1);
           tY = bY;
           if (tX >= 0) {
-            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) <= 0) {
+            if (((<PROFILE>pStructure.pShape)[tX][tY] & AtHeight[bLOSZ]) <= 0) {
               fParimeter = true;
               break;
             }
@@ -4028,7 +4029,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = (bX + 1);
           tY = bY;
           if (tX <= 4) {
-            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if (((<PROFILE>pStructure.pShape)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = true;
               break;
@@ -4038,7 +4039,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = bX;
           tY = bY - 1;
           if (tX >= 0) {
-            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if (((<PROFILE>pStructure.pShape)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = true;
               break;
@@ -4048,7 +4049,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           tX = bX;
           tY = bY + 1;
           if (tX >= 4) {
-            if ((((pStructure.value.pShape).value)[tX][tY] & AtHeight[bLOSZ]) > 0) {
+            if (((<PROFILE>pStructure.pShape)[tX][tY] & AtHeight[bLOSZ]) > 0) {
             } else {
               fParimeter = true;
               break;
@@ -4073,11 +4074,11 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           //}
 
           // 2) Calculate Normal from cross product
-          vNormal = VCrossProduct(addressof(vTemp2), addressof(vZ));
+          vNormal = VCrossProduct(vTemp2, vZ);
 
-          if (VGetLength(addressof(vNormal)) > 0) {
+          if (VGetLength(vNormal) > 0) {
             // Nomralize
-            vNormal = VGetNormal(addressof(vNormal));
+            vNormal = VGetNormal(vNormal);
 
             // CHECK ANGLE BRTWEEN INCIDENNCE AND NORMAL
             // if ( VDotProduct( &vNormal, &vIncident ) > 0 )
@@ -4085,11 +4086,11 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
               bNumNormals++;
 
               // Average normal!
-              vTemp = VAdd(addressof(vNormal), addressof(vAveNormal));
-              vAveNormal = VSetEqual(addressof(vTemp));
-              vAveNormal = VDivScalar(addressof(vAveNormal), bNumNormals);
+              vTemp = VAdd(vNormal, vAveNormal);
+              vAveNormal = VSetEqual(vTemp);
+              vAveNormal = VDivScalar(vAveNormal, bNumNormals);
               // Nomralize
-              vAveNormal = VGetNormal(addressof(vAveNormal));
+              vAveNormal = VGetNormal(vAveNormal);
             }
           }
         }
@@ -4102,13 +4103,13 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   pdNormalZ.value = 0;
 
   if (bLOSZ < 4) {
-    if ((((pStructure.value.pShape).value)[bLOSX][bLOSY] & AtHeight[bLOSZ + 1]) > 0) {
+    if (((<PROFILE>pStructure.pShape)[bLOSX][bLOSY] & AtHeight[bLOSZ + 1]) > 0) {
       //*pdNormalZ = -1;
     }
   }
 
   // Average angle
-  if (VGetLength(addressof(vAveNormal)) > 0) {
+  if (VGetLength(vAveNormal) > 0) {
     pdNormalX.value = vAveNormal.x;
     pdNormalY.value = vAveNormal.y;
 

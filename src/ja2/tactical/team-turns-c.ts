@@ -29,17 +29,57 @@ interface TEAM_TURN_SAVE_STRUCT {
   ubFiller: UINT8[] /* [16] */;
 }
 
+export function createTeamTurnSaveStruct(): TEAM_TURN_SAVE_STRUCT {
+  return {
+    ubOutOfTurnPersons: 0,
+    InterruptOnlyGuynum: 0,
+    sWhoThrewRock: 0,
+    InterruptsAllowed: false,
+    fHiddenInterrupt: false,
+    ubLastInterruptedGuy: 0,
+    ubFiller: createArray(16, 0),
+  };
+}
+
+export const TEAM_TURN_SAVE_STRUCT_SIZE = 26;
+
+export function readTeamTurnSaveStruct(o: TEAM_TURN_SAVE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  o.ubOutOfTurnPersons = buffer.readUInt8(offset++);
+  offset++;
+  o.InterruptOnlyGuynum = buffer.readInt16LE(offset); offset += 2;
+  o.sWhoThrewRock = buffer.readInt16LE(offset); offset += 2;
+  o.InterruptsAllowed = Boolean(buffer.readUInt8(offset++));
+  o.fHiddenInterrupt = Boolean(buffer.readUInt8(offset++));
+  o.ubLastInterruptedGuy = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubFiller, buffer, offset, 1);
+  offset++;
+  return offset;
+}
+
+export function writeTeamTurnSaveStruct(o: TEAM_TURN_SAVE_STRUCT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubOutOfTurnPersons, offset);
+  offset = writePadding(buffer, offset, 1);
+  offset = buffer.writeInt16LE(o.InterruptOnlyGuynum, offset);
+  offset = buffer.writeInt16LE(o.sWhoThrewRock, offset);
+  offset = buffer.writeUInt8(Number(o.InterruptsAllowed), offset);
+  offset = buffer.writeUInt8(Number(o.fHiddenInterrupt), offset);
+  offset = buffer.writeUInt8(o.ubLastInterruptedGuy, offset);
+  offset = writeUIntArray(o.ubFiller, buffer, offset, 1);
+  offset = writePadding(buffer, offset, 1);
+  return offset;
+}
+
 const MIN_APS_TO_INTERRUPT = 4;
 
 export function ClearIntList(): void {
-  memset(addressof(gubOutOfTurnOrder), 0, MAXMERCS);
+  gubOutOfTurnOrder.fill(0);
   gubOutOfTurnOrder[0] = END_OF_INTERRUPTS;
   gubOutOfTurnPersons = 0;
 }
 
 function BloodcatsPresent(): boolean {
   let iLoop: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   if (gTacticalStatus.Team[CREATURE_TEAM].bTeamActive == false) {
     return false;
@@ -48,7 +88,7 @@ function BloodcatsPresent(): boolean {
   for (iLoop = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; iLoop <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; iLoop++) {
     pSoldier = MercPtrs[iLoop];
 
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife > 0 && pSoldier.value.ubBodyType == Enum194.BLOODCAT) {
+    if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife > 0 && pSoldier.ubBodyType == Enum194.BLOODCAT) {
       return true;
     }
   }
@@ -71,7 +111,7 @@ export function StartPlayerTeamTurn(fDoBattleSnd: boolean, fEnteringCombatMode: 
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
-  InitPlayerUIBar(false);
+  InitPlayerUIBar(0);
 
   if (gTacticalStatus.uiFlags & TURNBASED) {
     // Are we in combat already?
@@ -99,7 +139,7 @@ export function StartPlayerTeamTurn(fDoBattleSnd: boolean, fEnteringCombatMode: 
     if (gTacticalStatus.uiFlags & INCOMBAT) {
       if (gusSelectedSoldier != NO_SOLDIER) {
         // Check if this guy is able to be selected....
-        if (MercPtrs[gusSelectedSoldier].value.bLife < OKLIFE) {
+        if (MercPtrs[gusSelectedSoldier].bLife < OKLIFE) {
           SelectNextAvailSoldier(MercPtrs[gusSelectedSoldier]);
         }
 
@@ -159,7 +199,7 @@ function FreezeInterfaceForEnemyTurn(): void {
 }
 
 export function EndTurn(ubNextTeam: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // Check for enemy pooling (add enemies if there happens to be more than the max in the
@@ -185,9 +225,9 @@ export function EndTurn(ubNextTeam: UINT8): void {
 
     // Loop through all mercs and set to moved
     cnt = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive) {
-        pSoldier.value.bMoved = true;
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive) {
+        pSoldier.bMoved = true;
       }
     }
 
@@ -200,7 +240,7 @@ export function EndTurn(ubNextTeam: UINT8): void {
 }
 
 export function EndAITurn(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // Remove any deadlock message
@@ -209,12 +249,12 @@ export function EndAITurn(): void {
     EndInterrupt(false);
   } else {
     cnt = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive) {
-        pSoldier.value.bMoved = true;
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive) {
+        pSoldier.bMoved = true;
         // record old life value... for creature AI; the human AI might
         // want to use this too at some point
-        pSoldier.value.bOldLife = pSoldier.value.bLife;
+        pSoldier.bOldLife = pSoldier.bLife;
       }
     }
 
@@ -225,7 +265,7 @@ export function EndAITurn(): void {
 
 export function EndAllAITurns(): void {
   // warp turn to the player's turn
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // Remove any deadlock message
@@ -236,13 +276,13 @@ export function EndAllAITurns(): void {
 
   if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
     cnt = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive) {
-        pSoldier.value.bMoved = true;
-        pSoldier.value.uiStatusFlags &= (~SOLDIER_UNDERAICONTROL);
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive) {
+        pSoldier.bMoved = true;
+        pSoldier.uiStatusFlags &= (~SOLDIER_UNDERAICONTROL);
         // record old life value... for creature AI; the human AI might
         // want to use this too at some point
-        pSoldier.value.bOldLife = pSoldier.value.bLife;
+        pSoldier.bOldLife = pSoldier.bLife;
       }
     }
 
@@ -270,7 +310,7 @@ function EndTurnEvents(): void {
 export function BeginTeamTurn(ubTeam: UINT8): void {
   let cnt: INT32;
   let ubID: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   while (1) {
     if (ubTeam > LAST_TEAM) {
@@ -297,8 +337,8 @@ export function BeginTeamTurn(ubTeam: UINT8): void {
       DecayPublicOpplist(ubTeam);
 
       cnt = gTacticalStatus.Team[ubTeam].bFirstID;
-      for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ubTeam].bLastID; cnt++, pSoldier++) {
-        if (pSoldier.value.bActive && pSoldier.value.bLife > 0) {
+      for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ubTeam].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+        if (pSoldier.bActive && pSoldier.bLife > 0) {
           // decay personal opplist, and refresh APs and BPs
           EVENT_BeginMercTurn(pSoldier, false, 0);
         }
@@ -344,7 +384,7 @@ export function BeginTeamTurn(ubTeam: UINT8): void {
   }
 }
 
-export function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function DisplayHiddenInterrupt(pSoldier: SOLDIERTYPE): void {
   // If the AI got an interrupt but this has been hidden from the player until this point,
   // this code will display the interrupt
 
@@ -353,8 +393,8 @@ export function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
   EndDeadlockMsg();
 
-  if (pSoldier.value.bVisible != -1) {
-    SlideTo(NOWHERE, pSoldier.value.ubID, NOBODY, SETLOCATOR);
+  if (pSoldier.bVisible != -1) {
+    SlideTo(NOWHERE, pSoldier.ubID, NOBODY, SETLOCATOR);
   }
 
   guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
@@ -371,10 +411,10 @@ export function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Stop our guy....
   AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY()], true);
   // Stop him from going to prone position if doing a turn while prone
-  MercPtrs[LATEST_INTERRUPT_GUY()].value.fTurningFromPronePosition = false;
+  MercPtrs[LATEST_INTERRUPT_GUY()].fTurningFromPronePosition = 0;
 
   // get rid of any old overlay message
-  if (pSoldier.value.bTeam == MILITIA_TEAM) {
+  if (pSoldier.bTeam == MILITIA_TEAM) {
     AddTopMessage(Enum216.MILITIA_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
   } else {
     AddTopMessage(Enum216.COMPUTER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
@@ -383,7 +423,7 @@ export function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   gfHiddenInterrupt = false;
 }
 
-export function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
+export function DisplayHiddenTurnbased(pActingSoldier: SOLDIERTYPE): void {
   // This code should put the game in turn-based and give control to the AI-controlled soldier
   // whose pointer has been passed in as an argument (we were in non-combat and the AI is doing
   // something visible, i.e. making an attack)
@@ -398,15 +438,15 @@ export function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): vo
   }
 
   // Enter combat mode starting with this side's turn
-  gTacticalStatus.ubCurrentTeam = pActingSoldier.value.bTeam;
+  gTacticalStatus.ubCurrentTeam = pActingSoldier.bTeam;
 
   CommonEnterCombatModeCode();
 
   // JA2Gold: use function to make sure flags turned off everywhere else
   // pActingSoldier->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
   SetSoldierAsUnderAiControl(pActingSoldier);
-  DebugAI(FormatString("Giving AI control to %d", pActingSoldier.value.ubID));
-  pActingSoldier.value.fTurnInProgress = true;
+  DebugAI(FormatString("Giving AI control to %d", pActingSoldier.ubID));
+  pActingSoldier.fTurnInProgress = true;
   gTacticalStatus.uiTimeSinceMercAIStart = GetJA2Clock();
 
   if (gTacticalStatus.ubTopMessageType != Enum216.COMPUTER_TURN_MESSAGE) {
@@ -429,9 +469,9 @@ function EveryoneInInterruptListOnSameTeam(): boolean {
 
   for (ubLoop = 1; ubLoop <= gubOutOfTurnPersons; ubLoop++) {
     if (ubTeam == 255) {
-      ubTeam = MercPtrs[gubOutOfTurnOrder[ubLoop]].value.bTeam;
+      ubTeam = MercPtrs[gubOutOfTurnOrder[ubLoop]].bTeam;
     } else {
-      if (MercPtrs[gubOutOfTurnOrder[ubLoop]].value.bTeam != ubTeam) {
+      if (MercPtrs[gubOutOfTurnOrder[ubLoop]].bTeam != ubTeam) {
         return false;
       }
     }
@@ -442,14 +482,14 @@ function EveryoneInInterruptListOnSameTeam(): boolean {
 function StartInterrupt(): void {
   let ubFirstInterrupter: UINT8;
   let bTeam: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTempSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pTempSoldier: SOLDIERTYPE;
   let ubInterrupter: UINT8;
   let cnt: INT32;
 
   ubFirstInterrupter = LATEST_INTERRUPT_GUY();
   pSoldier = MercPtrs[ubFirstInterrupter];
-  bTeam = pSoldier.value.bTeam;
+  bTeam = pSoldier.bTeam;
   ubInterrupter = ubFirstInterrupter;
 
   // display everyone on int queue!
@@ -462,14 +502,14 @@ function StartInterrupt(): void {
   gTacticalStatus.fInterruptOccurred = true;
 
   cnt = 0;
-  for (pTempSoldier = MercPtrs[cnt]; cnt <= MAX_NUM_SOLDIERS; cnt++, pTempSoldier++) {
-    if (pTempSoldier.value.bActive) {
-      pTempSoldier.value.bMovedPriorToInterrupt = pTempSoldier.value.bMoved;
-      pTempSoldier.value.bMoved = true;
+  for (pTempSoldier = MercPtrs[cnt]; cnt <= MAX_NUM_SOLDIERS; cnt++, pTempSoldier = MercPtrs[cnt]) {
+    if (pTempSoldier.bActive) {
+      pTempSoldier.bMovedPriorToInterrupt = pTempSoldier.bMoved;
+      pTempSoldier.bMoved = true;
     }
   }
 
-  if (pSoldier.value.bTeam == OUR_TEAM) {
+  if (pSoldier.bTeam == OUR_TEAM) {
     // start interrupts for everyone on our side at once
     let sTemp: string /* INT16[255] */;
     let ubInterrupters: UINT8 = 0;
@@ -478,7 +518,7 @@ function StartInterrupt(): void {
 
     // build string for display of who gets interrupt
     while (1) {
-      MercPtrs[ubInterrupter].value.bMoved = false;
+      MercPtrs[ubInterrupter].bMoved = false;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
 
       REMOVE_LATEST_INTERRUPT_GUY();
@@ -488,7 +528,7 @@ function StartInterrupt(): void {
       if (ubInterrupter == NOBODY) // previously emptied slot!
       {
         continue;
-      } else if (MercPtrs[ubInterrupter].value.bTeam != bTeam) {
+      } else if (MercPtrs[ubInterrupter].bTeam != bTeam) {
         break;
       }
     }
@@ -499,7 +539,7 @@ function StartInterrupt(): void {
     for (iSquad = 0; iSquad < Enum275.NUMBER_OF_SQUADS; iSquad++) {
       for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
         pTempSoldier = Squad[iSquad][iCounter];
-        if (pTempSoldier && pTempSoldier.value.bActive && pTempSoldier.value.bInSector && !pTempSoldier.value.bMoved) {
+        if (pTempSoldier && pTempSoldier.bActive && pTempSoldier.bInSector && !pTempSoldier.bMoved) {
           // then this guy got an interrupt...
           ubInterrupters++;
           if (ubInterrupters > 6) {
@@ -514,7 +554,7 @@ function StartInterrupt(): void {
           if (ubInterrupters > 1) {
             sTemp += ", ";
           }
-          sTemp += pTempSoldier.value.name;
+          sTemp += pTempSoldier.name;
         }
       }
     }
@@ -536,13 +576,13 @@ function StartInterrupt(): void {
 
     // Dirty panel interface!
     fInterfacePanelDirty = DIRTYLEVEL2;
-    gTacticalStatus.ubCurrentTeam = pSoldier.value.bTeam;
+    gTacticalStatus.ubCurrentTeam = pSoldier.bTeam;
 
     // Signal UI done enemy's turn
     guiPendingOverrideEvent = Enum207.LU_ENDUILOCK;
     HandleTacticalUI();
 
-    InitPlayerUIBar(true);
+    InitPlayerUIBar(1);
     // AddTopMessage( PLAYER_INTERRUPT_MESSAGE, Message[STR_INTERRUPT] );
 
     PlayJA2Sample(Enum330.ENDTURN_1, RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
@@ -550,13 +590,13 @@ function StartInterrupt(): void {
     // report any close call quotes for us here
     for (iCounter = gTacticalStatus.Team[gbPlayerNum].bFirstID; iCounter <= gTacticalStatus.Team[gbPlayerNum].bLastID; iCounter++) {
       if (OK_INSECTOR_MERC(MercPtrs[iCounter])) {
-        if (MercPtrs[iCounter].value.fCloseCall) {
-          if (MercPtrs[iCounter].value.bNumHitsThisTurn == 0 && !(MercPtrs[iCounter].value.usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL) && Random(3) == 0) {
+        if (MercPtrs[iCounter].fCloseCall) {
+          if (MercPtrs[iCounter].bNumHitsThisTurn == 0 && !(MercPtrs[iCounter].usQuoteSaidExtFlags & SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL) && Random(3) == 0) {
             // say close call quote!
             TacticalCharacterDialogue(MercPtrs[iCounter], Enum202.QUOTE_CLOSE_CALL);
-            MercPtrs[iCounter].value.usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL;
+            MercPtrs[iCounter].usQuoteSaidExtFlags |= SOLDIER_QUOTE_SAID_EXT_CLOSE_CALL;
           }
-          MercPtrs[iCounter].value.fCloseCall = false;
+          MercPtrs[iCounter].fCloseCall = false;
         }
       }
     }
@@ -577,7 +617,7 @@ function StartInterrupt(): void {
     */
 
     while (1) {
-      MercPtrs[ubInterrupter].value.bMoved = false;
+      MercPtrs[ubInterrupter].bMoved = false;
 
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("INTERRUPT: popping %d off of the interrupt queue", ubInterrupter));
 
@@ -587,7 +627,7 @@ function StartInterrupt(): void {
       if (ubInterrupter == NOBODY) // previously emptied slot!
       {
         continue;
-      } else if (MercPtrs[ubInterrupter].value.bTeam != bTeam) {
+      } else if (MercPtrs[ubInterrupter].bTeam != bTeam) {
         break;
       } else if (ubInterrupter < ubFirstInterrupter) {
         ubFirstInterrupter = ubInterrupter;
@@ -604,7 +644,7 @@ function StartInterrupt(): void {
     //		pSoldier = MercPtrs[ubFirstInterrupter];
 
     // if ( gTacticalStatus.ubCurrentTeam == OUR_TEAM)
-    if (pSoldier.value.bTeam != OUR_TEAM) {
+    if (pSoldier.bTeam != OUR_TEAM) {
       // we're being interrupted by the computer!
       // we delay displaying any interrupt message until the computer
       // does something...
@@ -613,7 +653,7 @@ function StartInterrupt(): void {
     }
     // otherwise it's the AI interrupting another AI team
 
-    gTacticalStatus.ubCurrentTeam = pSoldier.value.bTeam;
+    gTacticalStatus.ubCurrentTeam = pSoldier.bTeam;
 
     StartNPCAI(pSoldier);
   }
@@ -621,14 +661,14 @@ function StartInterrupt(): void {
   if (!gfHiddenInterrupt) {
     // Stop this guy....
     AdjustNoAPToFinishMove(MercPtrs[LATEST_INTERRUPT_GUY()], true);
-    MercPtrs[LATEST_INTERRUPT_GUY()].value.fTurningFromPronePosition = false;
+    MercPtrs[LATEST_INTERRUPT_GUY()].fTurningFromPronePosition = 0;
   }
 }
 
 function EndInterrupt(fMarkInterruptOccurred: boolean): void {
   let ubInterruptedSoldier: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTempSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pTempSoldier: SOLDIERTYPE;
   let cnt: INT32;
   let fFound: boolean;
   let ubMinAPsToAttack: UINT8;
@@ -648,11 +688,11 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
 
   // Loop through all mercs and see if any passed on this interrupt
   cnt = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID;
-  for (pTempSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pTempSoldier++) {
-    if (pTempSoldier.value.bActive && pTempSoldier.value.bInSector && !pTempSoldier.value.bMoved && (pTempSoldier.value.bActionPoints == pTempSoldier.value.bIntStartAPs)) {
-      ubMinAPsToAttack = MinAPsToAttack(pTempSoldier, pTempSoldier.value.sLastTarget, false);
-      if ((ubMinAPsToAttack <= pTempSoldier.value.bActionPoints) && (ubMinAPsToAttack > 0)) {
-        pTempSoldier.value.bPassedLastInterrupt = true;
+  for (pTempSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pTempSoldier = MercPtrs[cnt]) {
+    if (pTempSoldier.bActive && pTempSoldier.bInSector && !pTempSoldier.bMoved && (pTempSoldier.bActionPoints == pTempSoldier.bIntStartAPs)) {
+      ubMinAPsToAttack = MinAPsToAttack(pTempSoldier, pTempSoldier.sLastTarget, 0);
+      if ((ubMinAPsToAttack <= pTempSoldier.bActionPoints) && (ubMinAPsToAttack > 0)) {
+        pTempSoldier.bPassedLastInterrupt = true;
       }
     }
   }
@@ -670,23 +710,23 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
     pSoldier = MercPtrs[ubInterruptedSoldier];
 
     cnt = 0;
-    for (pTempSoldier = MercPtrs[cnt]; cnt <= MAX_NUM_SOLDIERS; cnt++, pTempSoldier++) {
-      if (pTempSoldier.value.bActive) {
+    for (pTempSoldier = MercPtrs[cnt]; cnt <= MAX_NUM_SOLDIERS; cnt++, pTempSoldier = MercPtrs[cnt]) {
+      if (pTempSoldier.bActive) {
         // AI guys only here...
-        if (pTempSoldier.value.bActionPoints == 0) {
-          pTempSoldier.value.bMoved = true;
-        } else if (pTempSoldier.value.bTeam != gbPlayerNum && pTempSoldier.value.bNewSituation == IS_NEW_SITUATION) {
-          pTempSoldier.value.bMoved = false;
+        if (pTempSoldier.bActionPoints == 0) {
+          pTempSoldier.bMoved = true;
+        } else if (pTempSoldier.bTeam != gbPlayerNum && pTempSoldier.bNewSituation == IS_NEW_SITUATION) {
+          pTempSoldier.bMoved = false;
         } else {
-          pTempSoldier.value.bMoved = pTempSoldier.value.bMovedPriorToInterrupt;
+          pTempSoldier.bMoved = pTempSoldier.bMovedPriorToInterrupt;
         }
       }
     }
 
     // change team
-    gTacticalStatus.ubCurrentTeam = pSoldier.value.bTeam;
+    gTacticalStatus.ubCurrentTeam = pSoldier.bTeam;
     // switch appropriate messages & flags
-    if (pSoldier.value.bTeam == OUR_TEAM) {
+    if (pSoldier.bTeam == OUR_TEAM) {
       // set everyone on the team to however they were set moved before the interrupt
       // must do this before selecting soldier...
       /*
@@ -703,7 +743,7 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
       ClearIntList();
 
       // Select soldier....
-      if (MercPtrs[ubInterruptedSoldier].value.bLife < OKLIFE) {
+      if (MercPtrs[ubInterruptedSoldier].bLife < OKLIFE) {
         SelectNextAvailSoldier(MercPtrs[ubInterruptedSoldier]);
       } else {
         SelectSoldier(ubInterruptedSoldier, false, false);
@@ -714,22 +754,22 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
         gfHiddenInterrupt = false;
 
         // If we can continue a move, do so!
-        if (MercPtrs[gusSelectedSoldier].value.fNoAPToFinishMove && pSoldier.value.ubReasonCantFinishMove != Enum263.REASON_STOPPED_SIGHT) {
+        if (MercPtrs[gusSelectedSoldier].fNoAPToFinishMove && pSoldier.ubReasonCantFinishMove != Enum263.REASON_STOPPED_SIGHT) {
           // Continue
           AdjustNoAPToFinishMove(MercPtrs[gusSelectedSoldier], false);
 
-          if (MercPtrs[gusSelectedSoldier].value.sGridNo != MercPtrs[gusSelectedSoldier].value.sFinalDestination) {
-            EVENT_GetNewSoldierPath(MercPtrs[gusSelectedSoldier], MercPtrs[gusSelectedSoldier].value.sFinalDestination, MercPtrs[gusSelectedSoldier].value.usUIMovementMode);
+          if (MercPtrs[gusSelectedSoldier].sGridNo != MercPtrs[gusSelectedSoldier].sFinalDestination) {
+            EVENT_GetNewSoldierPath(MercPtrs[gusSelectedSoldier], MercPtrs[gusSelectedSoldier].sFinalDestination, MercPtrs[gusSelectedSoldier].usUIMovementMode);
           } else {
-            UnSetUIBusy(pSoldier.value.ubID);
+            UnSetUIBusy(pSoldier.ubID);
           }
         } else {
-          UnSetUIBusy(pSoldier.value.ubID);
+          UnSetUIBusy(pSoldier.ubID);
         }
 
         if (gTacticalStatus.fUnLockUIAfterHiddenInterrupt) {
           gTacticalStatus.fUnLockUIAfterHiddenInterrupt = false;
-          UnSetUIBusy(pSoldier.value.ubID);
+          UnSetUIBusy(pSoldier.ubID);
         }
       } else {
         // Signal UI done enemy's turn
@@ -775,8 +815,8 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
 
       // rebuild list for this team if anyone on the team is still available
       cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
-      for (pTempSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pTempSoldier++) {
-        if (pTempSoldier.value.bActive && pTempSoldier.value.bInSector && pTempSoldier.value.bLife >= OKLIFE) {
+      for (pTempSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; cnt++, pTempSoldier = MercPtrs[cnt]) {
+        if (pTempSoldier.bActive && pTempSoldier.bInSector && pTempSoldier.bLife >= OKLIFE) {
           fFound = true;
           break;
         }
@@ -835,11 +875,11 @@ function EndInterrupt(fMarkInterruptOccurred: boolean): void {
   }
 }
 
-export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, bOldOppList: INT8): boolean {
+export function StandardInterruptConditionsMet(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8, bOldOppList: INT8): boolean {
   //	UINT8 ubAniType;
   let ubMinPtsNeeded: UINT8;
   let bDir: INT8;
-  let pOpponent: Pointer<SOLDIERTYPE>;
+  let pOpponent: SOLDIERTYPE;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && !(gubSightFlags & SIGHT_INTERRUPT)) {
     return false;
@@ -877,7 +917,7 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
     if (Menptr[WhoThrewRock].controller != Net.pnum)
             return(FALSE);
     */
-    pOpponent = null;
+    pOpponent = <SOLDIERTYPE><unknown>null;
   }
 
   // if interrupts have been disabled for any reason
@@ -889,9 +929,9 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
   // also allow calculation for storing in AllTeamsLookForAll
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gubBestToMakeSightingSize != BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL)) {
     // if his team's already in control
-    if (pSoldier.value.bTeam == gTacticalStatus.ubCurrentTeam) {
+    if (pSoldier.bTeam == gTacticalStatus.ubCurrentTeam) {
       // if this is a player's a merc or civilian
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN()) {
+      if ((pSoldier.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN(pSoldier)) {
         // then they are not allowed to interrupt their own team
         return false;
       } else {
@@ -911,42 +951,42 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
     }
   }
 
-  if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector)) {
+  if (!(pSoldier.bActive) || !(pSoldier.bInSector)) {
     return false;
   }
 
   // soldiers at less than OKLIFE can't perform any actions
-  if (pSoldier.value.bLife < OKLIFE) {
+  if (pSoldier.bLife < OKLIFE) {
     return false;
   }
 
   // soldiers out of breath are about to fall over, no interrupt
-  if (pSoldier.value.bBreath < OKBREATH || pSoldier.value.bCollapsed) {
+  if (pSoldier.bBreath < OKBREATH || pSoldier.bCollapsed) {
     return false;
   }
 
   // if soldier doesn't have enough APs
-  if (pSoldier.value.bActionPoints < MIN_APS_TO_INTERRUPT) {
+  if (pSoldier.bActionPoints < MIN_APS_TO_INTERRUPT) {
     return false;
   }
 
   // soldiers gagging on gas are too busy about holding their cookies down...
-  if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED) {
+  if (pSoldier.uiStatusFlags & SOLDIER_GASSED) {
     return false;
   }
 
   // a soldier already engaged in a life & death battle is too busy doing his
   // best to survive to worry about "getting the jump" on additional threats
-  if (pSoldier.value.bUnderFire) {
+  if (pSoldier.bUnderFire) {
     return false;
   }
 
-  if (pSoldier.value.bCollapsed) {
+  if (pSoldier.bCollapsed) {
     return false;
   }
 
   // don't allow neutral folks to get interrupts
-  if (pSoldier.value.bNeutral) {
+  if (pSoldier.bNeutral) {
     return false;
   }
 
@@ -956,7 +996,7 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
   }
 
   // don't let mercs on assignment get interrupts
-  if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
+  if (pSoldier.bTeam == gbPlayerNum && pSoldier.bAssignment >= Enum117.ON_DUTY) {
     return false;
   }
 
@@ -966,15 +1006,15 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
   // if the opponent is SOMEBODY
   if (ubOpponentID < NOBODY) {
     // if the soldiers are on the same side
-    if (pSoldier.value.bSide == pOpponent.value.bSide) {
+    if (pSoldier.bSide == pOpponent.bSide) {
       // human/civilians on same side can't interrupt each other
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN()) {
+      if ((pSoldier.uiStatusFlags & SOLDIER_PC) || PTR_CIVILIAN(pSoldier)) {
         return false;
       } else // enemy
       {
         // enemies can interrupt EACH OTHER, but enemies and civilians on the
         // same side (but different teams) can't interrupt each other.
-        if (pSoldier.value.bTeam != pOpponent.value.bTeam) {
+        if (pSoldier.bTeam != pOpponent.bTeam) {
           return false;
         }
       }
@@ -983,12 +1023,12 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
     // if the interrupted opponent is not the selected character, then the only
     // people eligible to win an interrupt are those on the SAME SIDE AS
     // the selected character, ie. his friends...
-    if (pOpponent.value.bTeam == gbPlayerNum) {
-      if ((ubOpponentID != gusSelectedSoldier) && (pSoldier.value.bSide != Menptr[gusSelectedSoldier].bSide)) {
+    if (pOpponent.bTeam == gbPlayerNum) {
+      if ((ubOpponentID != gusSelectedSoldier) && (pSoldier.bSide != Menptr[gusSelectedSoldier].bSide)) {
         return false;
       }
     } else {
-      if (!(pOpponent.value.uiStatusFlags & SOLDIER_UNDERAICONTROL) && (pSoldier.value.bSide != pOpponent.value.bSide)) {
+      if (!(pOpponent.uiStatusFlags & SOLDIER_UNDERAICONTROL) && (pSoldier.bSide != pOpponent.bSide)) {
         return false;
       }
     }
@@ -1001,28 +1041,28 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
     */
 
     // an non-active soldier can't interrupt a soldier who is also non-active!
-    if ((pOpponent.value.bTeam != gTacticalStatus.ubCurrentTeam) && (pSoldier.value.bTeam != gTacticalStatus.ubCurrentTeam)) {
+    if ((pOpponent.bTeam != gTacticalStatus.ubCurrentTeam) && (pSoldier.bTeam != gTacticalStatus.ubCurrentTeam)) {
       return false;
     }
 
     // if this is a "SEEING" interrupt
-    if (pSoldier.value.bOppList[ubOpponentID] == SEEN_CURRENTLY) {
+    if (pSoldier.bOppList[ubOpponentID] == SEEN_CURRENTLY) {
       // if pSoldier already saw the opponent last "look" or at least this turn
       if ((bOldOppList == SEEN_CURRENTLY) || (bOldOppList == SEEN_THIS_TURN)) {
         return (false); // no interrupt is possible
       }
 
       // if the soldier is behind him and not very close, forget it
-      bDir = atan8(pSoldier.value.sX, pSoldier.value.sY, pOpponent.value.sX, pOpponent.value.sY);
-      if (gOppositeDirection[pSoldier.value.bDesiredDirection] == bDir) {
+      bDir = atan8(pSoldier.sX, pSoldier.sY, pOpponent.sX, pOpponent.sY);
+      if (gOppositeDirection[pSoldier.bDesiredDirection] == bDir) {
         // directly behind; allow interrupts only within # of tiles equal to level
-        if (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > EffectiveExpLevel(pSoldier)) {
+        if (PythSpacesAway(pSoldier.sGridNo, pOpponent.sGridNo) > EffectiveExpLevel(pSoldier)) {
           return false;
         }
       }
 
       // if the soldier isn't currently crouching
-      if (!PTR_CROUCHED()) {
+      if (!PTR_CROUCHED(pSoldier)) {
         ubMinPtsNeeded = AP_CROUCH;
       } else {
         ubMinPtsNeeded = MinPtsToMove(pSoldier);
@@ -1032,32 +1072,32 @@ export function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, u
       // if the opponent can't see the "interrupter" either, OR
       // if the "interrupter" already has any opponents already in sight, OR
       // if the "interrupter" already heard the active soldier this turn
-      if ((pOpponent.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) || (pSoldier.value.bOppCnt > 0) || (bOldOppList == HEARD_THIS_TURN)) {
+      if ((pOpponent.bOppList[pSoldier.ubID] != SEEN_CURRENTLY) || (pSoldier.bOppCnt > 0) || (bOldOppList == HEARD_THIS_TURN)) {
         return (false); // no interrupt is possible
       }
     }
   }
 
   // soldiers without sufficient APs to do something productive can't interrupt
-  if (pSoldier.value.bActionPoints < ubMinPtsNeeded) {
+  if (pSoldier.bActionPoints < ubMinPtsNeeded) {
     return false;
   }
 
   // soldier passed on the chance to react during previous interrupt this turn
-  if (pSoldier.value.bPassedLastInterrupt) {
+  if (pSoldier.bPassedLastInterrupt) {
     return false;
   }
 
   return true;
 }
 
-export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, fUseWatchSpots: boolean): INT8 {
+export function CalcInterruptDuelPts(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8, fUseWatchSpots: boolean): INT8 {
   let bPoints: INT8;
   let bLightLevel: INT8;
   let ubDistance: UINT8;
 
   // extra check to make sure neutral folks never get interrupts
-  if (pSoldier.value.bNeutral) {
+  if (pSoldier.bNeutral) {
     return NO_INTERRUPT;
   }
 
@@ -1065,8 +1105,8 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
 
   // Robot has interrupt points based on the controller...
   // Controller's interrupt points are reduced by 2 for being distracted...
-  if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT && CanRobotBeControlled(pSoldier)) {
-    bPoints = EffectiveExpLevel(MercPtrs[pSoldier.value.ubRobotRemoteHolderID]) - 2;
+  if (pSoldier.uiStatusFlags & SOLDIER_ROBOT && CanRobotBeControlled(pSoldier)) {
+    bPoints = EffectiveExpLevel(MercPtrs[pSoldier.ubRobotRemoteHolderID]) - 2;
   } else {
     bPoints = EffectiveExpLevel(pSoldier);
     /*
@@ -1085,28 +1125,28 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
 
   if (fUseWatchSpots) {
     // if this is a previously noted spot of enemies, give bonus points!
-    bPoints += GetWatchedLocPoints(pSoldier.value.ubID, MercPtrs[ubOpponentID].value.sGridNo, MercPtrs[ubOpponentID].value.bLevel);
+    bPoints += GetWatchedLocPoints(pSoldier.ubID, MercPtrs[ubOpponentID].sGridNo, MercPtrs[ubOpponentID].bLevel);
   }
 
   // LOSE one point for each 2 additional opponents he currently sees, above 2
-  if (pSoldier.value.bOppCnt > 2) {
+  if (pSoldier.bOppCnt > 2) {
     // subtract 1 here so there is a penalty of 1 for seeing 3 enemies
-    bPoints -= (pSoldier.value.bOppCnt - 1) / 2;
+    bPoints -= (pSoldier.bOppCnt - 1) / 2;
   }
 
   // LOSE one point if he's trying to interrupt only by hearing
-  if (pSoldier.value.bOppList[ubOpponentID] == HEARD_THIS_TURN) {
+  if (pSoldier.bOppList[ubOpponentID] == HEARD_THIS_TURN) {
     bPoints--;
   }
 
   // if soldier is still in shock from recent injuries, that penalizes him
-  bPoints -= pSoldier.value.bShock;
+  bPoints -= pSoldier.bShock;
 
-  ubDistance = PythSpacesAway(pSoldier.value.sGridNo, MercPtrs[ubOpponentID].value.sGridNo);
+  ubDistance = PythSpacesAway(pSoldier.sGridNo, MercPtrs[ubOpponentID].sGridNo);
 
   // if we are in combat mode - thus doing an interrupt rather than determine who gets first turn -
   // then give bonus
-  if ((gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.value.bTeam != gTacticalStatus.ubCurrentTeam)) {
+  if ((gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.bTeam != gTacticalStatus.ubCurrentTeam)) {
     // passive player gets penalty due to range
     bPoints -= (ubDistance / 10);
   } else {
@@ -1115,11 +1155,11 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
     // the opplist has been updated to seen.  But we can use gbSeenOpponents ...
 
     // this soldier is moving, so give them a bonus for crawling or swatting at long distances
-    if (!gbSeenOpponents[ubOpponentID][pSoldier.value.ubID]) {
-      if (pSoldier.value.usAnimState == Enum193.SWATTING && ubDistance > (MaxDistanceVisible() / 2)) // more than 1/2 sight distance
+    if (!gbSeenOpponents[ubOpponentID][pSoldier.ubID]) {
+      if (pSoldier.usAnimState == Enum193.SWATTING && ubDistance > (MaxDistanceVisible() / 2)) // more than 1/2 sight distance
       {
         bPoints++;
-      } else if (pSoldier.value.usAnimState == Enum193.CRAWLING && ubDistance > (MaxDistanceVisible() / 4)) // more than 1/4 sight distance
+      } else if (pSoldier.usAnimState == Enum193.CRAWLING && ubDistance > (MaxDistanceVisible() / 4)) // more than 1/4 sight distance
       {
         bPoints += ubDistance / STRAIGHT;
       }
@@ -1127,17 +1167,17 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
   }
 
   // whether active or not, penalize people who are running
-  if (pSoldier.value.usAnimState == Enum193.RUNNING && !gbSeenOpponents[pSoldier.value.ubID][ubOpponentID]) {
+  if (pSoldier.usAnimState == Enum193.RUNNING && !gbSeenOpponents[pSoldier.ubID][ubOpponentID]) {
     bPoints -= 2;
   }
 
-  if (pSoldier.value.ubServicePartner != NOBODY) {
+  if (pSoldier.ubServicePartner != NOBODY) {
     // distracted by being bandaged/doing bandaging
     bPoints -= 2;
   }
 
   if (HAS_SKILL_TRAIT(pSoldier, Enum269.NIGHTOPS)) {
-    bLightLevel = LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel);
+    bLightLevel = LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel);
     if (bLightLevel > NORMAL_LIGHTLEVEL_DAY + 3) {
       // it's dark, give a bonus for interrupts
       bPoints += 1 * NUM_SKILL_TRAITS(pSoldier, Enum269.NIGHTOPS);
@@ -1148,23 +1188,23 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
 
   // CJC note: this will affect friendly AI as well...
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
-    if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
+  if (pSoldier.uiStatusFlags & SOLDIER_PC) {
+    if (pSoldier.bAssignment >= Enum117.ON_DUTY) {
       // make sure don't get interrupts!
       bPoints = -10;
     }
 
     // GAIN one point if he's previously seen the opponent
     // check for TRUE because -1 means we JUST saw him (always so here)
-    if (gbSeenOpponents[pSoldier.value.ubID][ubOpponentID] == true) {
+    if (gbSeenOpponents[pSoldier.ubID][ubOpponentID] == 1) {
       bPoints++; // seen him before, easier to react to him
     }
-  } else if (pSoldier.value.bTeam == ENEMY_TEAM) {
+  } else if (pSoldier.bTeam == ENEMY_TEAM) {
     // GAIN one point if he's previously seen the opponent
     // check for TRUE because -1 means we JUST saw him (always so here)
-    if (gbSeenOpponents[pSoldier.value.ubID][ubOpponentID] == true) {
+    if (gbSeenOpponents[pSoldier.ubID][ubOpponentID] == 1) {
       bPoints++; // seen him before, easier to react to him
-    } else if (gbPublicOpplist[pSoldier.value.bTeam][ubOpponentID] != NOT_HEARD_OR_SEEN) {
+    } else if (gbPublicOpplist[pSoldier.bTeam][ubOpponentID] != NOT_HEARD_OR_SEEN) {
       // GAIN one point if opponent has been recently radioed in by his team
       bPoints++;
     }
@@ -1182,19 +1222,19 @@ export function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentI
   return bPoints;
 }
 
-export function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>): boolean {
+export function InterruptDuel(pSoldier: SOLDIERTYPE, pOpponent: SOLDIERTYPE): boolean {
   let fResult: boolean = false;
 
   // if opponent can't currently see us and we can see them
-  if (pSoldier.value.bOppList[pOpponent.value.ubID] == SEEN_CURRENTLY && pOpponent.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) {
+  if (pSoldier.bOppList[pOpponent.ubID] == SEEN_CURRENTLY && pOpponent.bOppList[pSoldier.ubID] != SEEN_CURRENTLY) {
     fResult = true; // we automatically interrupt
     // fix up our interrupt duel pts if necessary
-    if (pSoldier.value.bInterruptDuelPts < pOpponent.value.bInterruptDuelPts) {
-      pSoldier.value.bInterruptDuelPts = pOpponent.value.bInterruptDuelPts;
+    if (pSoldier.bInterruptDuelPts < pOpponent.bInterruptDuelPts) {
+      pSoldier.bInterruptDuelPts = pOpponent.bInterruptDuelPts;
     }
   } else {
     // If our total points is HIGHER, then we interrupt him anyway
-    if (pSoldier.value.bInterruptDuelPts > pOpponent.value.bInterruptDuelPts) {
+    if (pSoldier.bInterruptDuelPts > pOpponent.bInterruptDuelPts) {
       fResult = true;
     }
   }
@@ -1287,7 +1327,7 @@ export function AddToIntList(ubID: UINT8, fGainControl: boolean, fCommunicate: b
 }
 
 function VerifyOutOfTurnOrderArray(): void {
-  let ubTeamHighest: UINT8[] /* [MAXTEAMS] */ = [ 0 ];
+  let ubTeamHighest: UINT8[] /* [MAXTEAMS] */ = createArray(MAXTEAMS, 0);
   let ubTeamsInList: UINT8;
   let ubNextInArrayOnTeam: UINT8;
   let ubNextIndex: UINT8;
@@ -1315,7 +1355,7 @@ function VerifyOutOfTurnOrderArray(): void {
               AdjustNoAPToFinishMove(MercPtrs[gubOutOfTurnOrder[ubNextIndex]], true);
 
               // If they were turning from prone, stop them
-              MercPtrs[gubOutOfTurnOrder[ubNextIndex]].value.fTurningFromPronePosition = false;
+              MercPtrs[gubOutOfTurnOrder[ubNextIndex]].fTurningFromPronePosition = 0;
 
               DeleteFromIntList(ubNextIndex, false);
             }
@@ -1355,14 +1395,14 @@ function VerifyOutOfTurnOrderArray(): void {
   if (ubTeamsInList >= 3) {
     // This is bad.  Loop through everyone but the first person in the INT list and remove 'em
     for (ubLoop = 2; ubLoop <= gubOutOfTurnPersons;) {
-      if (MercPtrs[gubOutOfTurnOrder[ubLoop]].value.bTeam != MercPtrs[gubOutOfTurnOrder[1]].value.bTeam) {
+      if (MercPtrs[gubOutOfTurnOrder[ubLoop]].bTeam != MercPtrs[gubOutOfTurnOrder[1]].bTeam) {
         // remove!
 
         // Pause them...
         AdjustNoAPToFinishMove(MercPtrs[gubOutOfTurnOrder[ubLoop]], true);
 
         // If they were turning from prone, stop them
-        MercPtrs[gubOutOfTurnOrder[ubLoop]].value.fTurningFromPronePosition = false;
+        MercPtrs[gubOutOfTurnOrder[ubLoop]].fTurningFromPronePosition = 0;
 
         DeleteFromIntList(ubLoop, false);
 
@@ -1375,7 +1415,7 @@ function VerifyOutOfTurnOrderArray(): void {
   }
 }
 
-export function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: boolean, ubInterruptType: UINT8): void {
+export function DoneAddingToIntList(pSoldier: SOLDIERTYPE, fChange: boolean, ubInterruptType: UINT8): void {
   if (fChange) {
     VerifyOutOfTurnOrderArray();
     if (EveryoneInInterruptListOnSameTeam()) {
@@ -1386,53 +1426,53 @@ export function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: boo
   }
 }
 
-export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UINT8): void {
+export function ResolveInterruptsVs(pSoldier: SOLDIERTYPE, ubInterruptType: UINT8): void {
   let ubTeam: UINT8;
   let ubOpp: UINT8;
   let ubIntCnt: UINT8;
-  let ubIntList: UINT8[] /* [MAXMERCS] */;
-  let ubIntDiff: UINT8[] /* [MAXMERCS] */;
+  let ubIntList: UINT8[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
+  let ubIntDiff: UINT8[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
   let ubSmallestDiff: UINT8;
   let ubSlot: UINT8;
   let ubSmallestSlot: UINT8;
   let ubLoop: UINT8;
   let fIntOccurs: boolean;
-  let pOpponent: Pointer<SOLDIERTYPE>;
+  let pOpponent: SOLDIERTYPE;
   let fControlChanged: boolean = false;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
     ubIntCnt = 0;
 
     for (ubTeam = 0; ubTeam < MAXTEAMS; ubTeam++) {
-      if (gTacticalStatus.Team[ubTeam].bTeamActive && (gTacticalStatus.Team[ubTeam].bSide != pSoldier.value.bSide) && ubTeam != CIV_TEAM) {
+      if (gTacticalStatus.Team[ubTeam].bTeamActive && (gTacticalStatus.Team[ubTeam].bSide != pSoldier.bSide) && ubTeam != CIV_TEAM) {
         for (ubOpp = gTacticalStatus.Team[ubTeam].bFirstID; ubOpp <= gTacticalStatus.Team[ubTeam].bLastID; ubOpp++) {
           pOpponent = MercPtrs[ubOpp];
-          if (pOpponent.value.bActive && pOpponent.value.bInSector && (pOpponent.value.bLife >= OKLIFE) && !(pOpponent.value.bCollapsed)) {
+          if (pOpponent.bActive && pOpponent.bInSector && (pOpponent.bLife >= OKLIFE) && !(pOpponent.bCollapsed)) {
             if (ubInterruptType == NOISEINTERRUPT) {
               // don't grant noise interrupts at greater than max. visible distance
-              if (PythSpacesAway(pSoldier.value.sGridNo, pOpponent.value.sGridNo) > MaxDistanceVisible()) {
-                pOpponent.value.bInterruptDuelPts = NO_INTERRUPT;
+              if (PythSpacesAway(pSoldier.sGridNo, pOpponent.sGridNo) > MaxDistanceVisible()) {
+                pOpponent.bInterruptDuelPts = NO_INTERRUPT;
                 continue;
               }
-            } else if (pOpponent.value.bOppList[pSoldier.value.ubID] != SEEN_CURRENTLY) {
-              pOpponent.value.bInterruptDuelPts = NO_INTERRUPT;
+            } else if (pOpponent.bOppList[pSoldier.ubID] != SEEN_CURRENTLY) {
+              pOpponent.bInterruptDuelPts = NO_INTERRUPT;
 
               continue;
             }
 
-            switch (pOpponent.value.bInterruptDuelPts) {
+            switch (pOpponent.bInterruptDuelPts) {
               case NO_INTERRUPT: // no interrupt possible, no duel necessary
                 fIntOccurs = false;
                 break;
 
               case AUTOMATIC_INTERRUPT: // interrupts occurs automatically
-                pSoldier.value.bInterruptDuelPts = 0; // just to have a valid intDiff later
+                pSoldier.bInterruptDuelPts = 0; // just to have a valid intDiff later
                 fIntOccurs = true;
                 break;
 
               default: // interrupt is possible, run a duel
                 DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Calculating int duel pts for onlooker in ResolveInterruptsVs");
-                pSoldier.value.bInterruptDuelPts = CalcInterruptDuelPts(pSoldier, pOpponent.value.ubID, true);
+                pSoldier.bInterruptDuelPts = CalcInterruptDuelPts(pSoldier, pOpponent.ubID, true);
                 fIntOccurs = InterruptDuel(pOpponent, pSoldier);
 
                 break;
@@ -1440,10 +1480,10 @@ export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptT
 
             if (fIntOccurs) {
               // remember that this opponent's scheduled to interrupt us
-              ubIntList[ubIntCnt] = pOpponent.value.ubID;
+              ubIntList[ubIntCnt] = pOpponent.ubID;
 
               // and by how much he beat us in the duel
-              ubIntDiff[ubIntCnt] = pOpponent.value.bInterruptDuelPts - pSoldier.value.bInterruptDuelPts;
+              ubIntDiff[ubIntCnt] = pOpponent.bInterruptDuelPts - pSoldier.bInterruptDuelPts;
 
               // increment counter of interrupts lost
               ubIntCnt++;
@@ -1458,9 +1498,9 @@ export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptT
 
 // either way, clear out both sides' bInterruptDuelPts field to prepare next one
 
-            pSoldier.value.bInterruptDuelPts = NO_INTERRUPT;
+            pSoldier.bInterruptDuelPts = NO_INTERRUPT;
 
-            pOpponent.value.bInterruptDuelPts = NO_INTERRUPT;
+            pOpponent.bInterruptDuelPts = NO_INTERRUPT;
           }
         }
       }
@@ -1474,20 +1514,20 @@ export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptT
       // victim's screaming...  the guy screaming is pSoldier here, it's not his turn!
       // AddToIntList( (UINT8) gusSelectedSoldier, FALSE, TRUE);
 
-      if ((gTacticalStatus.ubCurrentTeam != pSoldier.value.bTeam) && !(gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bHuman)) {
+      if ((gTacticalStatus.ubCurrentTeam != pSoldier.bTeam) && !(gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bHuman)) {
         // if anyone on this team is under AI control, remove
         // their AI control flag and put them on the queue instead of this guy
         for (ubLoop = gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bFirstID; ubLoop <= gTacticalStatus.Team[gTacticalStatus.ubCurrentTeam].bLastID; ubLoop++) {
-          if ((MercPtrs[ubLoop].value.uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
+          if ((MercPtrs[ubLoop].uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
             // this guy lost control
-            MercPtrs[ubLoop].value.uiStatusFlags &= (~SOLDIER_UNDERAICONTROL);
+            MercPtrs[ubLoop].uiStatusFlags &= (~SOLDIER_UNDERAICONTROL);
             AddToIntList(ubLoop, false, true);
             break;
           }
         }
       } else {
         // this guy lost control
-        AddToIntList(pSoldier.value.ubID, false, true);
+        AddToIntList(pSoldier.ubID, false, true);
       }
 
       // loop once for each opponent who interrupted
@@ -1527,11 +1567,14 @@ export function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptT
 
 export function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
-  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
+  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT = createTeamTurnSaveStruct();
+  let buffer: Buffer;
 
   // Save the gubTurn Order Array
-  FileWrite(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT8) * MAXMERCS) {
+  buffer = Buffer.allocUnsafe(MAXMERCS);
+  writeUIntArray(gubOutOfTurnOrder, buffer, 0, 1);
+  uiNumBytesWritten = FileWrite(hFile, buffer, MAXMERCS);
+  if (uiNumBytesWritten != MAXMERCS) {
     return false;
   }
 
@@ -1544,8 +1587,10 @@ export function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
   TeamTurnStruct.ubLastInterruptedGuy = gubLastInterruptedGuy;
 
   // Save the Team turn save structure
-  FileWrite(hFile, addressof(TeamTurnStruct), sizeof(TEAM_TURN_SAVE_STRUCT), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(TEAM_TURN_SAVE_STRUCT)) {
+  buffer = Buffer.allocUnsafe(TEAM_TURN_SAVE_STRUCT_SIZE);
+  writeTeamTurnSaveStruct(TeamTurnStruct, buffer);
+  uiNumBytesWritten = FileWrite(hFile, buffer, TEAM_TURN_SAVE_STRUCT_SIZE);
+  if (uiNumBytesWritten != TEAM_TURN_SAVE_STRUCT_SIZE) {
     return false;
   }
 
@@ -1554,19 +1599,26 @@ export function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
-  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
+  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT = createTeamTurnSaveStruct();
+  let buffer: Buffer;
 
   // Load the gubTurn Order Array
-  FileRead(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT8) * MAXMERCS) {
+  buffer = Buffer.allocUnsafe(MAXMERCS);
+  uiNumBytesRead = FileRead(hFile, buffer, MAXMERCS);
+  if (uiNumBytesRead != MAXMERCS) {
     return false;
   }
 
+  readUIntArray(gubOutOfTurnOrder, buffer, 0, 1);
+
   // Load the Team turn save structure
-  FileRead(hFile, addressof(TeamTurnStruct), sizeof(TEAM_TURN_SAVE_STRUCT), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(TEAM_TURN_SAVE_STRUCT)) {
+  buffer = Buffer.allocUnsafe(TEAM_TURN_SAVE_STRUCT_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, TEAM_TURN_SAVE_STRUCT_SIZE);
+  if (uiNumBytesRead != TEAM_TURN_SAVE_STRUCT_SIZE) {
     return false;
   }
+
+  readTeamTurnSaveStruct(TeamTurnStruct, buffer);
 
   gubOutOfTurnPersons = TeamTurnStruct.ubOutOfTurnPersons;
 
@@ -1579,10 +1631,10 @@ export function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-export function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function NPCFirstDraw(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE): boolean {
   // if attacking an NPC check to see who draws first!
 
-  if (pTargetSoldier.value.ubProfile != NO_PROFILE && pTargetSoldier.value.ubProfile != Enum268.SLAY && pTargetSoldier.value.bNeutral && pTargetSoldier.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
+  if (pTargetSoldier.ubProfile != NO_PROFILE && pTargetSoldier.ubProfile != Enum268.SLAY && pTargetSoldier.bNeutral && pTargetSoldier.bOppList[pSoldier.ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
     let ubLargerHalf: UINT8;
     let ubSmallerHalf: UINT8;
     let ubTargetLargerHalf: UINT8;
@@ -1596,7 +1648,7 @@ export function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poi
 
     ubTargetSmallerHalf = EffectiveExpLevel(pTargetSoldier) / 2;
     ubTargetLargerHalf = EffectiveExpLevel(pTargetSoldier) - ubTargetSmallerHalf;
-    if (gMercProfiles[pTargetSoldier.value.ubProfile].bApproached & gbFirstApproachFlags[Enum296.APPROACH_THREATEN - 1]) {
+    if (gMercProfiles[pTargetSoldier.ubProfile].bApproached & gbFirstApproachFlags[Enum296.APPROACH_THREATEN - 1]) {
       // gains 1 to 2 points
       ubTargetSmallerHalf += 1;
       ubTargetLargerHalf += 1;

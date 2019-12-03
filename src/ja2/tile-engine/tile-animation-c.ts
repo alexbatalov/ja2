@@ -187,7 +187,7 @@ export function CreateAnimationTile(pAniParams: ANITILE_PARAMS): ANITILE | null 
     pNewAniNode.usNumFrames = gpTileCache[iCachedTile].ubNumFrames;
   } else {
     Assert(gTileDatabase[usTileIndex].pAnimData != null);
-    pNewAniNode.usNumFrames = gTileDatabase[usTileIndex].pAnimData.value.ubNumFrames;
+    pNewAniNode.usNumFrames = (<TILE_ANIMATION_DATA>gTileDatabase[usTileIndex].pAnimData).ubNumFrames;
   }
 
   if ((uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
@@ -327,7 +327,7 @@ export function DeleteAniTile(pAniTile: ANITILE): void {
 
         // OK, update existing tile usIndex....
         Assert(TileElem.pAnimData != null);
-        pAniNode.pLevelNode.usIndex = TileElem.pAnimData.value.pusFrames[pAniNode.pLevelNode.sCurrentFrame];
+        pAniNode.pLevelNode.usIndex = TileElem.pAnimData.pusFrames[pAniNode.pLevelNode.sCurrentFrame];
 
         // OK, set our frame data back to zero....
         pAniNode.pLevelNode.sCurrentFrame = 0;

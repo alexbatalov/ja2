@@ -10,7 +10,7 @@ let gpPersistantButton: GUI_BUTTON /* Pointer<GUI_BUTTON> */;
 
 let guiSaveTacticalStatusFlags: UINT32; // saves the tactical status flags when entering the editor.
 
-export let gfAutoLoadA9: boolean = false;
+export let gfAutoLoadA9: UINT8 /* boolean */ = 0;
 // new vars added by Kris
 export let gfRenderWorld: boolean = false;
 export let gfRenderTaskbar: boolean = false;
@@ -92,8 +92,8 @@ let fFirstTimeInEditModeInit: boolean = true;
 let fSelectionWindow: boolean = false;
 let gfRealGunNut: boolean = true;
 
-export let sGridX: INT16;
-export let sGridY: INT16;
+let sGridX: INT16;
+let sGridY: INT16;
 let iMapIndex: UINT32;
 let fNewMap: boolean = false;
 
@@ -164,7 +164,7 @@ function EditModeInit(): boolean {
   let i: INT32;
   let LColors: SGPPaletteEntry[] /* [2] */ = createArrayFrom(2, createSGPPaletteEntry);
 
-  OutputDebugString("Entering editor mode...\n");
+  console.debug("Entering editor mode...\n");
 
   gfRealGunNut = gGameOptions.fGunNut;
   gGameOptions.fGunNut = true;
@@ -292,7 +292,7 @@ function EditModeInit(): boolean {
     ShowLightPositionHandles();
     LightSpriteRenderAll();
   } else {
-    OutputDebugString("Creating summary window...\n");
+    console.debug("Creating summary window...\n");
     CreateSummaryWindow();
     gfNeedToInitGame = true;
   }
@@ -307,7 +307,7 @@ function EditModeInit(): boolean {
 
   gfIntendOnEnteringEditor = false;
 
-  OutputDebugString("Finished entering editor mode...\n");
+  console.debug("Finished entering editor mode...\n");
 
   return true;
 }
@@ -435,7 +435,7 @@ function SetBackgroundTexture(): void {
     RemoveAllLandsOfTypeRange(cnt, Enum313.FIRSTTEXTURE, Enum313.DEEPWATERTEXTURE);
 
     // Add level
-    usIndex = (rand() % 10);
+    usIndex = Math.floor(Math.random() * 10);
 
     // Adjust for type
     usIndex += gTileTypeStartIndex[gCurrentBackground];
@@ -624,7 +624,7 @@ export function ShowCurrentDrawingMode(): void {
   let iPicWidth: INT32;
   let sTempOffsetX: INT16;
   let sTempOffsetY: INT16;
-  let pETRLEObject: Pointer<ETRLEObject>;
+  let pETRLEObject: ETRLEObject;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let usFillColor: UINT16;
@@ -810,28 +810,28 @@ export function ShowCurrentDrawingMode(): void {
 
   // If we actually have something to draw, draw it
   if ((usUseIndex != 0xffff) && (usObjIndex != 0xffff)) {
-    pETRLEObject = addressof(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex]);
+    pETRLEObject = gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex];
 
-    iPicWidth = pETRLEObject.value.usWidth;
-    iPicHeight = pETRLEObject.value.usHeight;
+    iPicWidth = pETRLEObject.usWidth;
+    iPicHeight = pETRLEObject.usHeight;
 
     // Center the picture in the display window.
     iStartX = (100 - iPicWidth) / 2;
     iStartY = (60 - iPicHeight) / 2;
 
     // We have to store the offset data in temp variables before zeroing them and blitting
-    sTempOffsetX = pETRLEObject.value.sOffsetX;
-    sTempOffsetY = pETRLEObject.value.sOffsetY;
+    sTempOffsetX = pETRLEObject.sOffsetX;
+    sTempOffsetY = pETRLEObject.sOffsetY;
 
     // Set the offsets used for blitting to 0
-    pETRLEObject.value.sOffsetX = 0;
-    pETRLEObject.value.sOffsetY = 0;
+    pETRLEObject.sOffsetX = 0;
+    pETRLEObject.sOffsetY = 0;
 
     SetObjectShade(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, DEFAULT_SHADE_LEVEL);
     BltVideoObject(FRAME_BUFFER, gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface, usUseIndex, (0 + iStartX), (400 + iStartY), VO_BLT_SRCTRANSPARENCY, null);
 
-    pETRLEObject.value.sOffsetX = sTempOffsetX;
-    pETRLEObject.value.sOffsetY = sTempOffsetY;
+    pETRLEObject.sOffsetX = sTempOffsetX;
+    pETRLEObject.sOffsetY = sTempOffsetY;
   }
 
   // Set the color for the window's border. Blueish color = Normal, Red = Fake lighting is turned on
@@ -891,7 +891,7 @@ function HandleJA2ToolbarSelection(): void {
       break;
 
     case Enum35.TBAR_MODE_FAKE_LIGHTING:
-      gfFakeLights ^= true;
+      gfFakeLights = !gfFakeLights;
       if (gfFakeLights) {
         gusSavedLightLevel = gusLightLevel;
         gusLightLevel = EDITOR_LIGHT_FAKE;
@@ -1116,11 +1116,11 @@ function HandleJA2ToolbarSelection(): void {
 //	Select action to be taken based on the user's current key press (if any)
 //
 
+/* static */ let HandleKeyboardShortcuts__iSavedMode: INT32;
+/* static */ let HandleKeyboardShortcuts__fShowTrees: boolean = true;
 function HandleKeyboardShortcuts(): void {
-  /* static */ let iSavedMode: INT32;
-  /* static */ let fShowTrees: boolean = true;
   while (DequeueEvent(EditorInputEvent)) {
-    if (!HandleSummaryInput(addressof(EditorInputEvent)) && !HandleTextInput(addressof(EditorInputEvent)) && EditorInputEvent.usEvent == KEY_DOWN) {
+    if (!HandleSummaryInput(EditorInputEvent) && !HandleTextInput(EditorInputEvent) && EditorInputEvent.usEvent == KEY_DOWN) {
       if (gfGotoGridNoUI) {
         switch (EditorInputEvent.usParam) {
           case ESC:
@@ -1130,7 +1130,7 @@ function HandleKeyboardShortcuts(): void {
           case ENTER:
             RemoveGotoGridNoUI();
             break;
-          case 'x':
+          case 'x'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & ALT_DOWN) {
               SetInputFieldStringWith16BitString(0, "");
               RemoveGotoGridNoUI();
@@ -1141,7 +1141,7 @@ function HandleKeyboardShortcuts(): void {
       } else
         switch (EditorInputEvent.usParam) {
           case HOME:
-            gfFakeLights ^= true;
+            gfFakeLights = !gfFakeLights;
             if (gfFakeLights) {
               gusSavedLightLevel = gusLightLevel;
               gusLightLevel = EDITOR_LIGHT_FAKE;
@@ -1346,7 +1346,7 @@ function HandleKeyboardShortcuts(): void {
                   RemoveAllRoofsOfTypeRange(i, Enum313.FIRSTTEXTURE, LASTITEM);
                   RemoveAllOnRoofsOfTypeRange(i, Enum313.FIRSTTEXTURE, LASTITEM);
                   RemoveAllShadowsOfTypeRange(i, Enum313.FIRSTROOF, LASTSLANTROOF);
-                  usRoofIndex = 9 + (rand() % 3);
+                  usRoofIndex = 9 + Math.floor(Math.random() * 3);
                   usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
                   AddRoofToHead(i, usTileIndex);
                 }
@@ -1374,53 +1374,53 @@ function HandleKeyboardShortcuts(): void {
             gfScheduleClearPending = true;
             break;
 
-          case '[':
+          case '['.charCodeAt(0):
             iCurrentAction = Enum37.ACTION_DENSITY_DOWN;
             break;
 
-          case ']':
+          case ']'.charCodeAt(0):
             iCurrentAction = Enum37.ACTION_DENSITY_UP;
             break;
 
-          case '+':
+          case '+'.charCodeAt(0):
             // if ( iDrawMode == DRAW_MODE_SHOW_TILESET )
             //	iCurrentAction = ACTION_MLIST_DWN;
             // else
             iCurrentAction = Enum37.ACTION_SHADE_UP;
             break;
 
-          case '-':
+          case '-'.charCodeAt(0):
             // if ( iDrawMode == DRAW_MODE_SHOW_TILESET )
             //	iCurrentAction = ACTION_MLIST_UP;
             iCurrentAction = Enum37.ACTION_SHADE_DWN;
             break;
 
-          case '0':
-          case '1':
-          case '2':
-          case '3':
-          case '4':
-          case '5':
-          case '6':
-          case '7':
-          case '8':
-          case '9':
+          case '0'.charCodeAt(0):
+          case '1'.charCodeAt(0):
+          case '2'.charCodeAt(0):
+          case '3'.charCodeAt(0):
+          case '4'.charCodeAt(0):
+          case '5'.charCodeAt(0):
+          case '6'.charCodeAt(0):
+          case '7'.charCodeAt(0):
+          case '8'.charCodeAt(0):
+          case '9'.charCodeAt(0):
             if (iCurrentTaskbar == Enum36.TASK_MERCS) {
               if (iDrawMode >= Enum38.DRAW_MODE_ERASE)
                 iCurrentAction = Enum37.ACTION_ERASE_WAYPOINT;
               else
                 iCurrentAction = Enum37.ACTION_SET_WAYPOINT;
-              iActionParam = EditorInputEvent.usParam - '0';
+              iActionParam = EditorInputEvent.usParam - '0'.charCodeAt(0);
             } else {
               iCurrentAction = Enum37.ACTION_SET_FNAME;
-              iActionParam = EditorInputEvent.usParam - '0';
+              iActionParam = EditorInputEvent.usParam - '0'.charCodeAt(0);
             }
             break;
 
-          case 'a':
+          case 'a'.charCodeAt(0):
             iCurrentAction = Enum37.ACTION_PREV_SELECTIONTYPE;
             break;
-          case 'b':
+          case 'b'.charCodeAt(0):
             if (iCurrentTaskbar != Enum36.TASK_BUILDINGS) {
               iTaskMode = Enum36.TASK_BUILDINGS;
               DoTaskbar();
@@ -1438,13 +1438,13 @@ function HandleKeyboardShortcuts(): void {
               SetEditorBuildingTaskbarMode(Enum32.BUILDING_NEW_ROOM);
             TerrainTileDrawMode = TERRAIN_TILES_BRETS_STRANGEMODE;
             break;
-          case 'c':
+          case 'c'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == Enum36.TASK_MERCS) {
               iCurrentAction = Enum37.ACTION_COPY_MERC_PLACEMENT;
             }
             break;
 
-          case 'd': // debris
+          case 'd'.charCodeAt(0): // debris
             if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
               iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
@@ -1456,7 +1456,7 @@ function HandleKeyboardShortcuts(): void {
             iEditorToolbarState = Enum35.TBAR_MODE_DRAW_DEBRIS;
             TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
             break;
-          case 'e':
+          case 'e'.charCodeAt(0):
             if (iDrawMode >= Enum38.DRAW_MODE_ERASE) {
               iDrawMode -= Enum38.DRAW_MODE_ERASE;
             } else {
@@ -1493,11 +1493,11 @@ function HandleKeyboardShortcuts(): void {
               }
             }
             break;
-          case 'f':
+          case 'f'.charCodeAt(0):
             gbFPSDisplay = !gbFPSDisplay;
             DisableFPSOverlay(!gbFPSDisplay);
             break;
-          case 'g': // ground
+          case 'g'.charCodeAt(0): // ground
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
               CreateGotoGridNoUI();
             } else {
@@ -1510,22 +1510,22 @@ function HandleKeyboardShortcuts(): void {
             }
             break;
 
-          case 'h':
-            if (fBuildingShowRoofs ^= 1)
+          case 'h'.charCodeAt(0):
+            if (fBuildingShowRoofs = !fBuildingShowRoofs)
               ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
             else
               UnclickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
             UpdateRoofsView();
             break;
 
-          case 'i':
+          case 'i'.charCodeAt(0):
             if (!InOverheadMap())
               GoIntoOverheadMap();
             else
               KillOverheadMap();
             break;
 
-          case 'l':
+          case 'l'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
               UpdateLastActionBeforeLeaving();
               iCurrentAction = Enum37.ACTION_LOAD_MAP;
@@ -1536,8 +1536,8 @@ function HandleKeyboardShortcuts(): void {
               DoTaskbar();
             }
             break;
-          case 'n':
-            if (fBuildingShowRoomInfo ^= 1) {
+          case 'n'.charCodeAt(0):
+            if (fBuildingShowRoomInfo = !fBuildingShowRoomInfo) {
               SetRenderFlags(RENDER_FLAG_ROOMIDS);
               ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
             } else {
@@ -1545,7 +1545,7 @@ function HandleKeyboardShortcuts(): void {
               UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
             }
             break;
-          case 'o':
+          case 'o'.charCodeAt(0):
             if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
               iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
@@ -1555,7 +1555,7 @@ function HandleKeyboardShortcuts(): void {
             ClickEditorButton(Enum32.TERRAIN_PLACE_MISC);
             iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS2;
             break;
-          case 'r': // rocks
+          case 'r'.charCodeAt(0): // rocks
             if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
               iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
@@ -1565,12 +1565,12 @@ function HandleKeyboardShortcuts(): void {
             ClickEditorButton(Enum32.TERRAIN_PLACE_ROCKS);
             iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS1;
             break;
-          case 's':
+          case 's'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
               iCurrentAction = Enum37.ACTION_SAVE_MAP;
             }
             break;
-          case 't': // Trees
+          case 't'.charCodeAt(0): // Trees
             if (iCurrentTaskbar != Enum36.TASK_TERRAIN) {
               iTaskMode = Enum36.TASK_TERRAIN;
               DoTaskbar();
@@ -1580,34 +1580,34 @@ function HandleKeyboardShortcuts(): void {
             ClickEditorButton(Enum32.TERRAIN_PLACE_TREES);
             iEditorToolbarState = Enum35.TBAR_MODE_DRAW_OSTRUCTS;
             break;
-          case 'T':
-            if (fShowTrees) {
+          case 'T'.charCodeAt(0):
+            if (HandleKeyboardShortcuts__fShowTrees) {
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Removing Treetops");
               WorldHideTrees();
             } else {
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Showing Treetops");
               WorldShowTrees();
             }
-            fShowTrees = !fShowTrees;
+            HandleKeyboardShortcuts__fShowTrees = !HandleKeyboardShortcuts__fShowTrees;
 
             break;
-          case 'u':
+          case 'u'.charCodeAt(0):
             RaiseWorldLand();
             break;
-          case 'w': // walls (full building)
-            if (fBuildingShowWalls ^= 1)
+          case 'w'.charCodeAt(0): // walls (full building)
+            if (fBuildingShowWalls = !fBuildingShowWalls)
               ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
             else
               UnclickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
             UpdateWallsView();
             break;
-          case 'v':
+          case 'v'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == Enum36.TASK_MERCS) {
               iCurrentAction = Enum37.ACTION_PASTE_MERC_PLACEMENT;
             }
             break;
 
-          case 'x':
+          case 'x'.charCodeAt(0):
             if (EditorInputEvent.usKeyState & ALT_DOWN) {
               if (InOverheadMap())
                 KillOverheadMap();
@@ -1617,17 +1617,17 @@ function HandleKeyboardShortcuts(): void {
               return;
             }
             break;
-          case 'z':
+          case 'z'.charCodeAt(0):
             iCurrentAction = Enum37.ACTION_NEXT_SELECTIONTYPE;
             break;
-          case ',':
+          case ','.charCodeAt(0):
             gusSelectionType = Enum33.LINESELECTION;
             gusPreserveSelectionWidth--;
             if (!gusPreserveSelectionWidth)
               gusPreserveSelectionWidth = 8;
             gfRenderTaskbar = true;
             break;
-          case '.':
+          case '.'.charCodeAt(0):
             gusSelectionType = Enum33.LINESELECTION;
             gusPreserveSelectionWidth++;
             if (gusPreserveSelectionWidth > 8)
@@ -2369,7 +2369,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   }
 
   vSfx.SrcRect = ClipRect;
-  BltVideoSurface(FRAME_BUFFER, vSurface, 0, iStartX, iStartY, VS_BLT_SRCSUBRECT, addressof(vSfx));
+  BltVideoSurface(FRAME_BUFFER, vSurface, 0, iStartX, iStartY, VS_BLT_SRCSUBRECT, vSfx);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2387,7 +2387,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   let iPicWidth: INT32;
   let sTempOffsetX: INT16;
   let sTempOffsetY: INT16;
-  let pETRLEObject: Pointer<ETRLEObject>;
+  let pETRLEObject: ETRLEObject;
   let iWinWidth: INT32;
   let iWinHeight: INT32;
 
@@ -2402,27 +2402,27 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   GetClippingRect(ClipRect);
   SetClippingRect(NewRect);
 
-  pETRLEObject = addressof(hVObj.value.pETRLEObject[0]);
+  pETRLEObject = hVObj.value.pETRLEObject[0];
 
-  iPicWidth = pETRLEObject.value.usWidth;
-  iPicHeight = pETRLEObject.value.usHeight;
+  iPicWidth = pETRLEObject.usWidth;
+  iPicHeight = pETRLEObject.usHeight;
 
   iStartX = ((iWinWidth - iPicWidth) / 2) + NewRect.iLeft;
   iStartY = ((iWinHeight - iPicHeight) / 2) + NewRect.iTop;
 
   // We have to store the offset data in temp variables before zeroing them and blitting
-  sTempOffsetX = pETRLEObject.value.sOffsetX;
-  sTempOffsetY = pETRLEObject.value.sOffsetY;
+  sTempOffsetX = pETRLEObject.sOffsetX;
+  sTempOffsetY = pETRLEObject.sOffsetY;
 
   // Set the offsets used for blitting to 0
-  pETRLEObject.value.sOffsetX = 0;
-  pETRLEObject.value.sOffsetY = 0;
+  pETRLEObject.sOffsetX = 0;
+  pETRLEObject.sOffsetY = 0;
 
   SetObjectShade(hVObj, DEFAULT_SHADE_LEVEL);
   BltVideoObject(FRAME_BUFFER, hVObj, 0, (iStartX), (iStartY), VO_BLT_SRCTRANSPARENCY, null);
 
-  pETRLEObject.value.sOffsetX = sTempOffsetX;
-  pETRLEObject.value.sOffsetY = sTempOffsetY;
+  pETRLEObject.sOffsetX = sTempOffsetX;
+  pETRLEObject.sOffsetY = sTempOffsetY;
 
   SetClippingRect(ClipRect);
 }
@@ -2488,7 +2488,7 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
   iMapIndex = (iMapY * WORLD_COLS) + iMapX;
   if ((usTmpIndex = TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING)) === -1) {
     AddObjectToHead(iMapIndex, Enum312.GOODRING1);
-    gpWorldLevelData[iMapIndex].pObjectHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    (<LEVELNODE>gpWorldLevelData[iMapIndex].pObjectHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 
   AddLightToUndoList(iMapIndex, 0, 0);
@@ -2508,7 +2508,7 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
 export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
   let iCount: INT32;
   let cnt: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let fSoldierLight: boolean;
   let fRemovedLight: boolean;
   let iMapIndex: INT32;
@@ -2524,8 +2524,8 @@ export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
         // Found a light, so let's see if it belong to a merc!
         fSoldierLight = false;
         for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-          if (GetSoldier(addressof(pSoldier), cnt)) {
-            if (pSoldier.value.iLight == iCount)
+          if ((pSoldier = GetSoldier(cnt)) !== null) {
+            if (pSoldier.iLight == iCount)
               fSoldierLight = true;
           }
         }
@@ -2566,7 +2566,7 @@ export function ShowLightPositionHandles(): void {
   let iMapIndex: INT32;
   let cnt: UINT16;
   let usTmpIndex: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let fSoldierLight: boolean;
 
   // Check all lights and place a position handle there!
@@ -2575,8 +2575,8 @@ export function ShowLightPositionHandles(): void {
       // Found a light, so let's see if it belong to a merc!
       fSoldierLight = false;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-        if (GetSoldier(addressof(pSoldier), cnt)) {
-          if (pSoldier.value.iLight == iCount)
+        if ((pSoldier = GetSoldier(cnt)) !== null) {
+          if (pSoldier.iLight == iCount)
             fSoldierLight = true;
         }
       }
@@ -2585,7 +2585,7 @@ export function ShowLightPositionHandles(): void {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
         if ((usTmpIndex = TypeExistsInObjectLayer(iMapIndex, Enum313.GOODRING)) === -1) {
           AddObjectToHead(iMapIndex, Enum312.GOODRING1);
-          gpWorldLevelData[iMapIndex].pObjectHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[iMapIndex].pObjectHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
     }
@@ -2601,7 +2601,7 @@ function RemoveLightPositionHandles(): void {
   let iCount: INT32;
   let iMapIndex: INT32;
   let cnt: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let fSoldierLight: boolean;
 
   // Check all lights and remove the position handle there!
@@ -2610,8 +2610,8 @@ function RemoveLightPositionHandles(): void {
       // Found a light, so let's see if it belong to a merc!
       fSoldierLight = false;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-        if (GetSoldier(addressof(pSoldier), cnt)) {
-          if (pSoldier.value.iLight == iCount)
+        if ((pSoldier = GetSoldier(cnt)) !== null) {
+          if (pSoldier.iLight == iCount)
             fSoldierLight = true;
         }
       }
@@ -2680,7 +2680,7 @@ function MapOptimize(): void {
 function CheckForFences(): boolean {
   let usCheck: UINT16;
   let fFence: boolean;
-  let T: Pointer<TILE_ELEMENT>;
+  let T: TILE_ELEMENT;
 
   pSelList = SelOStructs2;
   pNumSelList = addressof(iNumOStructs2Selected);
@@ -2688,10 +2688,10 @@ function CheckForFences(): boolean {
   fFence = true;
 
   for (usCheck = 0; usCheck < iNumOStructs2Selected; usCheck++) {
-    T = addressof(gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]]);
-    if (T.value.pDBStructureRef == null)
+    T = gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]];
+    if (T.pDBStructureRef == null)
       fFence = false;
-    else if (!(T.value.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_ANYFENCE))
+    else if (!(T.pDBStructureRef.pDBStructure.fFlags & STRUCTURE_ANYFENCE))
       fFence = false;
   }
 
@@ -2980,7 +2980,7 @@ function HandleMouseClicksInGameScreen(): void {
         RestoreWalls(iMapIndex);
         break;
       case Enum38.DRAW_MODE_EXITGRID:
-        if (GetExitGrid(iMapIndex, addressof(gExitGrid)))
+        if (GetExitGrid(iMapIndex, gExitGrid))
           ApplyNewExitGridValuesToTextFields();
         break;
       default:
@@ -3119,16 +3119,16 @@ export function ProcessAreaSelection(fWithLeftButton: boolean): void {
   switch (iDrawMode) {
     case Enum38.DRAW_MODE_ROOM:
     case Enum38.DRAW_MODE_SLANTED_ROOF:
-      AddBuildingSectionToWorld(addressof(gSelectRegion));
+      AddBuildingSectionToWorld(gSelectRegion);
       break;
     case Enum38.DRAW_MODE_SAW_ROOM:
-      RemoveBuildingSectionFromWorld(addressof(gSelectRegion));
+      RemoveBuildingSectionFromWorld(gSelectRegion);
       break;
     case Enum38.DRAW_MODE_CAVES:
       if (fWithLeftButton)
-        AddCaveSectionToWorld(addressof(gSelectRegion));
+        AddCaveSectionToWorld(gSelectRegion);
       else
-        RemoveCaveSectionFromWorld(addressof(gSelectRegion));
+        RemoveCaveSectionFromWorld(gSelectRegion);
       break;
     case Enum38.DRAW_MODE_ROOMNUM:
       DrawObjectsBasedOnSelectionRegion();
@@ -3188,7 +3188,7 @@ function DrawObjectsBasedOnSelectionRegion(): void {
         switch (iDrawMode) {
           case Enum38.DRAW_MODE_EXITGRID:
             AddToUndoList(iMapIndex);
-            AddExitGridToWorld(iMapIndex, addressof(gExitGrid));
+            AddExitGridToWorld(iMapIndex, gExitGrid);
             AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS8);
             break;
           case Enum38.DRAW_MODE_DEBRIS:

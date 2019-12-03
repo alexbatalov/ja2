@@ -73,7 +73,7 @@ let gbSmoothWaterStruct: INT16[] /* [] */ = [
 export function SmoothTerrain(gridno: number, origType: number, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   let temp: number = 0;
   let type: number = 0;
-  let FullTile: number = false;
+  let FullTile: boolean /* number */ = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
@@ -170,7 +170,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
           piNewTile.value = NO_TILE;
           return;
         }
-        uiTempIndex = rand() % pSmoothStruct[cnt + 1];
+        uiTempIndex = Math.floor(Math.random() * pSmoothStruct[cnt + 1]);
         land = pSmoothStruct[cnt + 2 + uiTempIndex];
         fFound = true;
       } while (false);
@@ -186,7 +186,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
     }
     // this is a "full" tile, so randomize between the
     // five available tiles
-    land = (rand() % 10) + 1;
+    land = Math.floor(Math.random() * 10) + 1;
     FullTile = true;
   }
   usTileIndex = GetTileIndexFromTypeSubIndex(origType, land);
@@ -194,7 +194,7 @@ export function SmoothTerrain(gridno: number, origType: number, piNewTile: Point
 }
 
 function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
-  let pShadow: Pointer<LEVELNODE>;
+  let pShadow: LEVELNODE | null;
   let x: INT16;
   let y: INT16;
   let centerX: INT16;
@@ -206,12 +206,12 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
     for (x = centerX - ubRadius; x <= centerX + ubRadius; x++) {
       sMapIndex = y * WORLD_COLS + x;
       if (GridNoOnVisibleWorldTile(sMapIndex)) {
-        if (GetExitGridLevelNode(sMapIndex, addressof(pShadow))) {
+        if ((pShadow = GetExitGridLevelNode(sMapIndex)) !== null) {
           let usIndex: UINT16;
           SmoothExitGrid(sMapIndex, addressof(usIndex), true);
-          if (usIndex != NO_TILE && usIndex != pShadow.value.usIndex) {
+          if (usIndex != NO_TILE && usIndex != pShadow.usIndex) {
             AddToUndoList(sMapIndex);
-            pShadow.value.usIndex = usIndex;
+            pShadow.usIndex = usIndex;
           }
         }
       }
@@ -222,7 +222,7 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
 function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth: boolean): void {
   let temp: number = 0;
   let type: number = 0;
-  let FullTile: number = false;
+  let FullTile: boolean /* number */ = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
@@ -311,7 +311,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
           piNewTile.value = NO_TILE;
           return;
         }
-        uiTempIndex = rand() % pSmoothStruct[cnt + 1];
+        uiTempIndex = Math.floor(Math.random() * pSmoothStruct[cnt + 1]);
         usExitGridIndex = pSmoothStruct[cnt + 2 + uiTempIndex];
         fFound = true;
       } while (false);
@@ -327,7 +327,7 @@ function SmoothExitGrid(gridno: number, piNewTile: Pointer<UINT16>, fForceSmooth
     }
     // this is a "full" tile, so randomize between the
     // five available tiles
-    usExitGridIndex = (rand() % 10) + 1;
+    usExitGridIndex = Math.floor(Math.random() * 10) + 1;
     FullTile = true;
   }
   usTileIndex = GetTileIndexFromTypeSubIndex(Enum313.EXITTEXTURE, usExitGridIndex);
@@ -451,7 +451,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
   // a temp variable, then searching for the right texture and inserting it
   let temp: number = 0;
   let type: number = 0;
-  let FullTile: number = false;
+  let FullTile: boolean /* number */ = false;
   let usOldIndex: UINT16;
   let usTempIndex: UINT16;
   let cnt: UINT32;
@@ -569,7 +569,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
           piNewTile.value = NO_TILE;
           return;
         }
-        uiTempIndex = rand() % pSmoothStruct[cnt + 1];
+        uiTempIndex = Math.floor(Math.random() * pSmoothStruct[cnt + 1]);
         land = pSmoothStruct[cnt + 2 + uiTempIndex];
         fFound = true;
       } while (false);
@@ -583,7 +583,7 @@ function SmoothWaterTerrain(gridno: number, origType: number, piNewTile: Pointer
       piNewTile.value = NO_TILE;
       return;
     }
-    land = (rand() % 10) + 1;
+    land = Math.floor(Math.random() * 10) + 1;
     FullTile = true;
   }
   usTileIndex = GetTileIndexFromTypeSubIndex(origType, land);

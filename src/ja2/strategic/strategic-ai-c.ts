@@ -2649,7 +2649,7 @@ export function LoadStrategicAI(hFile: HWFILE): boolean {
         // We are in the basement sector, relocate queen to proper position.
         let i: INT32;
         for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
-          if (MercPtrs[i].value.ubProfile == Enum268.QUEEN) {
+          if (MercPtrs[i].ubProfile == Enum268.QUEEN) {
             // Found queen, relocate her to 16866
             BumpAnyExistingMerc(16866);
             TeleportSoldier(MercPtrs[i], 16866, true);

@@ -225,6 +225,46 @@ export function createSavedEmailStruct(): SavedEmailStruct {
   };
 }
 
+export const SAVED_EMAIL_STRUCT_SIZE = 44;
+
+export function readSavedEmailStruct(o: SavedEmailStruct, buffer: Buffer, offset: number = 0): number {
+  o.usOffset = buffer.readUInt16LE(offset); offset += 2;
+  o.usLength = buffer.readUInt16LE(offset); offset += 2;
+  o.ubSender = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.iDate = buffer.readUInt32LE(offset); offset += 4
+  o.iId = buffer.readInt32LE(offset); offset += 4;
+  o.iFirstData = buffer.readInt32LE(offset); offset += 4;
+  o.uiSecondData = buffer.readUInt32LE(offset); offset += 4;
+  o.iThirdData = buffer.readInt32LE(offset); offset += 4;
+  o.iFourthData = buffer.readInt32LE(offset); offset += 4;
+  o.uiFifthData = buffer.readUInt32LE(offset); offset += 4;
+  o.uiSixData = buffer.readUInt32LE(offset); offset += 4;
+  o.fRead = Boolean(buffer.readUInt8(offset++));
+  o.fNew = Boolean(buffer.readUInt8(offset++));
+  offset += 2; // padding
+  return offset;
+}
+
+export function writeSavedEmailStruct(o: SavedEmailStruct, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt16LE(o.usOffset, offset);
+  offset = buffer.writeUInt16LE(o.usLength, offset);
+  offset = buffer.writeUInt8(o.ubSender, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.iDate, offset);
+  offset = buffer.writeInt32LE(o.iId, offset);
+  offset = buffer.writeInt32LE(o.iFirstData, offset);
+  offset = buffer.writeUInt32LE(o.uiSecondData, offset);
+  offset = buffer.writeInt32LE(o.iThirdData, offset);
+  offset = buffer.writeInt32LE(o.iFourthData, offset);
+  offset = buffer.writeUInt32LE(o.uiFifthData, offset);
+  offset = buffer.writeUInt32LE(o.uiSixData, offset);
+  offset = buffer.writeUInt8(Number(o.fRead), offset);
+  offset = buffer.writeUInt8(Number(o.fNew), offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  return offset;
+}
+
 export interface Page {
   iIds: INT32[] /* [MAX_MESSAGES_PAGE] */;
   iPageId: INT32;

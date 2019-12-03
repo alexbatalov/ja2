@@ -82,11 +82,9 @@ export function RemoveSoldierNodeFromInitList(pNode: SOLDIERINITNODE | null): vo
   if (gfOriginalList)
     gMapInformation.ubNumIndividuals--;
   if (pNode.pBasicPlacement) {
-    MemFree(pNode.pBasicPlacement);
-    pNode.pBasicPlacement = null;
+    pNode.pBasicPlacement = <BASIC_SOLDIERCREATE_STRUCT><unknown>null;
   }
   if (pNode.pDetailedPlacement) {
-    MemFree(pNode.pDetailedPlacement);
     pNode.pDetailedPlacement = null;
   }
   if (pNode.pSoldier) {
@@ -105,11 +103,11 @@ export function RemoveSoldierNodeFromInitList(pNode: SOLDIERINITNODE | null): vo
     else
       gAlternateSoldierInitListHead = gSoldierInitHead;
   } else if (pNode == gSoldierInitTail) {
-    gSoldierInitTail = gSoldierInitTail.prev;
+    gSoldierInitTail = <SOLDIERINITNODE>gSoldierInitTail.prev;
     gSoldierInitTail.next = null;
   } else {
-    pNode.prev.next = pNode.next;
-    pNode.next.prev = pNode.prev;
+    (<SOLDIERINITNODE>pNode.prev).next = pNode.next;
+    (<SOLDIERINITNODE>pNode.next).prev = pNode.prev;
   }
   MemFree(pNode);
 }
@@ -403,7 +401,7 @@ function SortSoldierInitList(): void {
 export function AddPlacementToWorld(curr: SOLDIERINITNODE): boolean {
   let ubProfile: UINT8;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
   let ubID: UINT8;
   // First check if this guy has a profile and if so check his location such that it matches!
   // Get profile from placement info
@@ -470,7 +468,7 @@ export function AddPlacementToWorld(curr: SOLDIERINITNODE): boolean {
           } else if (tempDetailedPlacement.ubProfile == Enum268.MADAME) {
             // she shouldn't be here!
             return true;
-          } else if (tempDetailedPlacement.ubProfile == NO_PROFILE && InARoom(tempDetailedPlacement.sInsertionGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
+          } else if (tempDetailedPlacement.ubProfile == NO_PROFILE && (ubRoom = InARoom(tempDetailedPlacement.sInsertionGridNo)) !== -1 && IN_BROTHEL(ubRoom)) {
             // must be a hooker, shouldn't be there
             return true;
           }
@@ -517,7 +515,7 @@ export function AddPlacementToWorld(curr: SOLDIERINITNODE): boolean {
     }
   }
 
-  if (pSoldier = TacticalCreateSoldier(addressof(tempDetailedPlacement), addressof(ubID))) {
+  if (pSoldier = TacticalCreateSoldier(tempDetailedPlacement, addressof(ubID))) {
     curr.pSoldier = pSoldier;
     curr.ubSoldierID = ubID;
     AddSoldierToSectorNoCalculateDirection(ubID);
@@ -1672,7 +1670,7 @@ export function AddProfilesUsingProfileInsertionData(): void {
       MercCreateStruct.sSectorY = gWorldSectorY;
       MercCreateStruct.bSectorZ = gbWorldSectorZ;
 
-      pSoldier = TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID));
+      pSoldier = TacticalCreateSoldier(MercCreateStruct, addressof(ubID));
     }
     if (pSoldier) {
       // Now, insert the soldier.

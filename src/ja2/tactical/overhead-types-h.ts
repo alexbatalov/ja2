@@ -21,6 +21,11 @@ export const AIM_SHOT_GLAND = 4;
 
 export const MIN_AMB_LEVEL_FOR_MERC_LIGHTS = 9;
 
+// ENUMERATION OF SOLDIER POSIITONS IN GLOBAL SOLDIER LIST
+export const MAX_NUM_SOLDIERS = 148;
+const NUM_PLANNING_MERCS = 8;
+export const TOTAL_SOLDIERS = (NUM_PLANNING_MERCS + MAX_NUM_SOLDIERS);
+
 export const MAXTEAMS = 6;
 export const MAXMERCS = MAX_NUM_SOLDIERS;
 
@@ -87,7 +92,7 @@ const FADE_DELAY = 150;
 export const FLASH_SELECTOR_DELAY = 4000;
 const BLINK_SELECTOR_DELAY = 250;
 
-export const PTR_OURTEAM = () => (pSoldier.value.bTeam == gbPlayerNum);
+export const PTR_OURTEAM = (pSoldier: SOLDIERTYPE) => (pSoldier.bTeam == gbPlayerNum);
 
 const DONTLOOK = 0;
 export const LOOK = 1;
@@ -227,11 +232,6 @@ export const enum Enum245 {
   DIRECTION_EXITGRID = 255,
 }
 
-// ENUMERATION OF SOLDIER POSIITONS IN GLOBAL SOLDIER LIST
-export const MAX_NUM_SOLDIERS = 148;
-const NUM_PLANNING_MERCS = 8;
-export const TOTAL_SOLDIERS = (NUM_PLANNING_MERCS + MAX_NUM_SOLDIERS);
-
 // DEFINE TEAMS
 export const OUR_TEAM = 0;
 export const ENEMY_TEAM = 1;
@@ -300,15 +300,26 @@ export interface PaletteReplacementType {
   ubType: UINT8;
   ID: PaletteRepID;
   ubPaletteSize: UINT8;
-  r: Pointer<UINT8>;
-  g: Pointer<UINT8>;
-  b: Pointer<UINT8>;
+  r: UINT8[] /* Pointer<UINT8> */;
+  g: UINT8[] /* Pointer<UINT8> */;
+  b: UINT8[] /* Pointer<UINT8> */;
+}
+
+export function createPaletteReplacementType(): PaletteReplacementType {
+  return {
+    ubType: 0,
+    ID: '',
+    ubPaletteSize: 0,
+    r: <UINT8[]><unknown>null,
+    g: <UINT8[]><unknown>null,
+    b: <UINT8[]><unknown>null,
+  };
 }
 
 // MACROS
 // This will set an animation ID
-export const SET_PALETTEREP_ID = (a, b) => (a = b);
+export const SET_PALETTEREP_ID = (b: PaletteRepID) => b;
 // strcmp returns 0 if true!
-export const COMPARE_PALETTEREP_ID = (a: PaletteRepID, b: PaletteRepID) => (strcmp(a, b) ? false : true);
+export const COMPARE_PALETTEREP_ID = (a: PaletteRepID, b: PaletteRepID) => (a == b);
 
 }

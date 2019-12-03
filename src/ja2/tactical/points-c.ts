@@ -933,7 +933,7 @@ export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGr
     if (ubAddTurningCost) {
       // Given a gridno here, check if we are on a guy - if so - get his gridno
       if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
-        sGridNo = MercPtrs[usTargID].value.sGridNo;
+        sGridNo = MercPtrs[usTargID].sGridNo;
       }
 
       ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
@@ -1018,7 +1018,7 @@ export function MinAPsToShootOrStab(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAdd
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
     if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
-      sGridNo = MercPtrs[usTargID].value.sGridNo;
+      sGridNo = MercPtrs[usTargID].sGridNo;
     }
   }
 
@@ -1080,10 +1080,10 @@ function MinAPsToPunch(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurningCost: 
 
     // Given a gridno here, check if we are on a guy - if so - get his gridno
     if (usTargID != NOBODY) {
-      sGridNo = MercPtrs[usTargID].value.sGridNo;
+      sGridNo = MercPtrs[usTargID].sGridNo;
 
       // Check if target is prone, if so, calc cost...
-      if (gAnimControl[MercPtrs[usTargID].value.usAnimState].ubEndHeight == ANIM_PRONE) {
+      if (gAnimControl[MercPtrs[usTargID].usAnimState].ubEndHeight == ANIM_PRONE) {
         bAPCost += GetAPsToChangeStance(pSoldier, ANIM_CROUCH);
       } else {
         if (pSoldier.sGridNo == sGridNo) {
@@ -1626,7 +1626,7 @@ export function MinAPsToThrow(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurnin
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
     if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
-      sGridNo = MercPtrs[usTargID].value.sGridNo;
+      sGridNo = MercPtrs[usTargID].sGridNo;
     }
 
     // OK, get a direction and see if we need to turn...
@@ -1710,7 +1710,7 @@ export function GetAPsToStealItem(pSoldier: SOLDIERTYPE, usMapPos: INT16): INT8 
   sAPCost += AP_STEAL_ITEM;
 
   // CJC August 13 2002: added cost to stand into equation
-  if (!(PTR_STANDING())) {
+  if (!(PTR_STANDING(pSoldier))) {
     sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
   }
 

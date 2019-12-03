@@ -245,18 +245,18 @@ export function ValidateAndUpdateMapVersionIfNecessary(): void {
 // This function is used to avoid conflicts between minor version updates and sector summary info.
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.
-export function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
-  if (pSummary.value.MapInfo.ubMapVersion == MINOR_MAP_VERSION)
+export function UpdateSummaryInfo(pSummary: SUMMARYFILE): void {
+  if (pSummary.MapInfo.ubMapVersion == MINOR_MAP_VERSION)
     return;
-  if (pSummary.value.MapInfo.ubMapVersion < 9) {
+  if (pSummary.MapInfo.ubMapVersion < 9) {
     // See bug 10
-    pSummary.value.ubCivSchedules = 0;
+    pSummary.ubCivSchedules = 0;
   }
-  if (pSummary.value.MapInfo.ubMapVersion < 12) {
-    pSummary.value.MapInfo.sCenterGridNo = -1;
+  if (pSummary.MapInfo.ubMapVersion < 12) {
+    pSummary.MapInfo.sCenterGridNo = -1;
   }
-  if (pSummary.value.MapInfo.ubMapVersion < 16) {
-    pSummary.value.MapInfo.sIsolatedGridNo = -1;
+  if (pSummary.MapInfo.ubMapVersion < 16) {
+    pSummary.MapInfo.sIsolatedGridNo = -1;
   }
 }
 

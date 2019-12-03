@@ -896,7 +896,7 @@ function NotifyPlayersOfNewEnemies(): void {
 }
 
 function AddEnemiesToBattle(pGroup: GROUP, ubStrategicInsertionCode: UINT8, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8, fMagicallyAppeared: boolean): void {
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
   let MapEdgepointInfo: MAPEDGEPOINTINFO = createMapEdgePointInfo();
   let ubCurrSlot: UINT8;
   let ubTotalSoldiers: UINT8;
@@ -953,6 +953,7 @@ function AddEnemiesToBattle(pGroup: GROUP, ubStrategicInsertionCode: UINT8, ubNu
       ubNumElites--;
       ubTotalSoldiers--;
       pSoldier = TacticalCreateEliteEnemy();
+      Assert(pSoldier);
       if (pGroup) {
         pSoldier.ubGroupID = pGroup.ubGroupID;
       }
@@ -972,6 +973,7 @@ function AddEnemiesToBattle(pGroup: GROUP, ubStrategicInsertionCode: UINT8, ubNu
       ubNumTroops--;
       ubTotalSoldiers--;
       pSoldier = TacticalCreateArmyTroop();
+      Assert(pSoldier);
       if (pGroup) {
         pSoldier.ubGroupID = pGroup.ubGroupID;
       }
@@ -991,6 +993,7 @@ function AddEnemiesToBattle(pGroup: GROUP, ubStrategicInsertionCode: UINT8, ubNu
       ubNumAdmins--;
       ubTotalSoldiers--;
       pSoldier = TacticalCreateAdministrator();
+      Assert(pSoldier);
       if (pGroup) {
         pSoldier.ubGroupID = pGroup.ubGroupID;
       }
@@ -1250,7 +1253,7 @@ export function EnemyCapturesPlayerSoldier(pSoldier: SOLDIERTYPE): void {
         WorldItem.sGridNo = EnemyCapturesPlayerSoldier__sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
         WorldItem.usFlags = 0;
-        WorldItem.bVisible = false;
+        WorldItem.bVisible = 0;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
         copyObjectType(WorldItem.o, pSoldier.inv[i]);
@@ -1280,7 +1283,7 @@ export function EnemyCapturesPlayerSoldier(pSoldier: SOLDIERTYPE): void {
         WorldItem.sGridNo = EnemyCapturesPlayerSoldier__sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue];
         WorldItem.ubLevel = 0;
         WorldItem.usFlags = 0;
-        WorldItem.bVisible = false;
+        WorldItem.bVisible = 0;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
         copyObjectType(WorldItem.o, pSoldier.inv[i]);

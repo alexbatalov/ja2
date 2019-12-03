@@ -431,7 +431,7 @@ function SaveSeenAndUnseenItems(): void {
           }
         }
         pSeenItemsList[iItemCount].fExists = true;
-        pSeenItemsList[iItemCount].bVisible = true;
+        pSeenItemsList[iItemCount].bVisible = 1;
         iItemCount++;
       }
     }
@@ -673,13 +673,13 @@ function MapInvenPoolSlots(pRegion: MOUSE_REGION, iReason: INT32): void {
         //}
 
         // Check if it's the same now!
-        if (gpItemPointer.value.ubNumberOfObjects == 0) {
+        if (gpItemPointer.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         } else {
           // update ptr
           // now set the cursor
-          guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.value.usItem]);
-          gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
+          guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
+          gusExternVoSubIndex = Item[gpItemPointer.usItem].ubGraphicNum;
 
           fMapInventoryItem = true;
           MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
@@ -1036,7 +1036,7 @@ function BeginInventoryPoolPtr(pInventorySlot: OBJECTTYPE): void {
     fMapPanelDirty = true;
     gpItemPointer = gItemPointer;
 
-    gpItemPointerSoldier = null;
+    gpItemPointerSoldier = <SOLDIERTYPE><unknown>null;
 
     // now set the cursor
     guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
@@ -1541,7 +1541,7 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
   if (fShowMapInventoryPool) {
     // check if any compatable items in the soldier inventory matches with this item
     if (gfCheckForCursorOverMapSectorInventoryItem) {
-      if (HandleCompatibleAmmoUIForMapInventory(pSoldier, iCurrentSlot, (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
+      if (HandleCompatibleAmmoUIForMapInventory(<SOLDIERTYPE>pSoldier, iCurrentSlot, (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT), true, false)) {
         if (GetJA2Clock() - giCompatibleItemBaseTime > 100) {
           if (HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted == false) {
             HandleMouseInCompatableItemForMapSectorInventory__fItemWasHighLighted = true;
@@ -1578,7 +1578,7 @@ function HandleMapSectorInventory(): void {
 
 // CJC look here to add/remove checks for the sector inventory
 export function IsMapScreenWorldItemVisibleInMapInventory(pWorldItem: WORLDITEM): boolean {
-  if (pWorldItem.bVisible == true && pWorldItem.fExists && pWorldItem.o.usItem != Enum225.SWITCH && pWorldItem.o.usItem != Enum225.ACTION_ITEM && pWorldItem.o.bTrap <= 0) {
+  if (pWorldItem.bVisible == 1 && pWorldItem.fExists && pWorldItem.o.usItem != Enum225.SWITCH && pWorldItem.o.usItem != Enum225.ACTION_ITEM && pWorldItem.o.bTrap <= 0) {
     return true;
   }
 

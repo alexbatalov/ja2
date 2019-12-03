@@ -15,7 +15,7 @@ export let gfRerenderInterfaceFromHelpText: boolean = false;
 
 let gLockPanelOverlayRegion: MOUSE_REGION = createMouseRegion();
 
-export let gfPausedTacticalRenderInterfaceFlags: boolean = false;
+export let gfPausedTacticalRenderInterfaceFlags: UINT8 /* boolean */ = 0;
 export let gfPausedTacticalRenderFlags: boolean = false;
 
 export function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
@@ -28,7 +28,7 @@ export function HandleTacticalPanelSwitch(): void {
     SetCurrentTacticalPanelCurrentMerc(gubNewPanelParam);
     gfSwitchPanel = false;
 
-    if ((!guiTacticalInterfaceFlags & INTERFACE_NORENDERBUTTONS) && !(guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)) {
+    if (!(guiTacticalInterfaceFlags & INTERFACE_NORENDERBUTTONS) && !(guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)) {
       RenderButtons();
     }
   }
@@ -95,8 +95,8 @@ export function RenderTacticalInterfaceWhileScrolling(): void {
 }
 
 export function SetUpInterface(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pIntTile: Pointer<LEVELNODE>;
+  let pSoldier: SOLDIERTYPE | null;
+  let pIntTile: LEVELNODE | null;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     return;
@@ -113,7 +113,7 @@ export function SetUpInterface(): void {
   }
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = GetSoldier(gusSelectedSoldier);
   }
 
   if (gCurrentUIMode == Enum206.OPENDOOR_MENU_MODE) {
@@ -136,12 +136,12 @@ export function SetUpInterface(): void {
   if (gfUIHandleSelection == NONSELECTED_GUY_SELECTION) {
     if (gsSelectedLevel > 0) {
       AddRoofToHead(gsSelectedGridNo, Enum312.GOODRING1);
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       AddObjectToHead(gsSelectedGridNo, Enum312.GOODRING1);
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
   }
 
@@ -149,44 +149,44 @@ export function SetUpInterface(): void {
     if (gsSelectedLevel > 0) {
       // AddRoofToHead( gsSelectedGridNo, SELRING1 );
       AddRoofToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       // AddObjectToHead( gsSelectedGridNo, SELRING1 );
       AddObjectToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
   }
 
   if (gfUIHandleSelection == ENEMY_GUY_SELECTION) {
     if (gsSelectedLevel > 0) {
       AddRoofToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       AddObjectToHead(gsSelectedGridNo, Enum312.FIRSTPOINTERS2);
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsSelectedGridNo].pObjectHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsSelectedGridNo].pObjectHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
   }
 
   if (gfUIHandleShowMoveGrid) {
     if (gusSelectedSoldier != NOBODY) {
-      if (MercPtrs[gusSelectedSoldier].value.sGridNo != gsUIHandleShowMoveGridLocation) {
+      if (MercPtrs[gusSelectedSoldier].sGridNo != gsUIHandleShowMoveGridLocation) {
         if (gfUIHandleShowMoveGrid == 2) {
           AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS4));
-          gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         } else {
-          if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
+          if (MercPtrs[gusSelectedSoldier].bStealthMode) {
             AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS9));
-            gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           } else {
             AddTopmostToHead(gsUIHandleShowMoveGridLocation, GetSnapCursorIndex(Enum312.FIRSTPOINTERS2));
-            gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            (<LEVELNODE>gpWorldLevelData[gsUIHandleShowMoveGridLocation].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
           }
         }
       }
@@ -195,21 +195,21 @@ export function SetUpInterface(): void {
 
   // Check if we are over an interactive tile...
   if (gfUIShowCurIntTile) {
-    pIntTile = GetCurInteractiveTileGridNo(addressof(gsUICurIntTileEffectGridNo));
+    pIntTile = GetCurInteractiveTileGridNo(gsUICurIntTileEffectGridNo);
 
     if (pIntTile != null) {
-      gusUICurIntTileEffectIndex = pIntTile.value.usIndex;
+      gusUICurIntTileEffectIndex = pIntTile.usIndex;
 
       // Shade green
-      gsUICurIntTileOldShade = pIntTile.value.ubShadeLevel;
-      pIntTile.value.ubShadeLevel = 0;
-      pIntTile.value.uiFlags |= LEVELNODE_DYNAMIC;
+      gsUICurIntTileOldShade = pIntTile.ubShadeLevel;
+      pIntTile.ubShadeLevel = 0;
+      pIntTile.uiFlags |= LEVELNODE_DYNAMIC;
     }
   }
 }
 
 export function ResetInterface(): void {
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     return;
@@ -254,13 +254,13 @@ export function ResetInterface(): void {
       pNode = gpWorldLevelData[gsUICurIntTileEffectGridNo].pStructHead;
 
       while (pNode != null) {
-        if (pNode.value.usIndex == gusUICurIntTileEffectIndex) {
-          pNode.value.ubShadeLevel = gsUICurIntTileOldShade;
-          pNode.value.uiFlags &= (~LEVELNODE_DYNAMIC);
+        if (pNode.usIndex == gusUICurIntTileEffectIndex) {
+          pNode.ubShadeLevel = gsUICurIntTileOldShade;
+          pNode.uiFlags &= (~LEVELNODE_DYNAMIC);
           break;
         }
 
-        pNode = pNode.value.pNext;
+        pNode = pNode.pNext;
       }
     }
   }
@@ -281,6 +281,8 @@ let guiColors: UINT32[] /* [12] */ = [
   FROMRGB(185, 150, 0),
 ];
 
+/* static */ let RenderRubberBanding__iFlashColor: INT32 = 0;
+/* static */ let RenderRubberBanding__uiTimeOfLastUpdate: INT32 = 0;
 function RenderRubberBanding(): void {
   let usLineColor: UINT16;
   let uiDestPitchBYTES: UINT32;
@@ -290,8 +292,6 @@ function RenderRubberBanding(): void {
   let iTop: INT16;
   let iBottom: INT16;
   let iBack: INT32 = -1;
-  /* static */ let iFlashColor: INT32 = 0;
-  /* static */ let uiTimeOfLastUpdate: INT32 = 0;
 
   if (!gRubberBandActive)
     return;
@@ -305,12 +305,12 @@ function RenderRubberBanding(): void {
     return;
   }
 
-  if ((GetJA2Clock() - uiTimeOfLastUpdate) > 60) {
-    uiTimeOfLastUpdate = GetJA2Clock();
-    iFlashColor++;
+  if ((GetJA2Clock() - RenderRubberBanding__uiTimeOfLastUpdate) > 60) {
+    RenderRubberBanding__uiTimeOfLastUpdate = GetJA2Clock();
+    RenderRubberBanding__iFlashColor++;
 
-    if (iFlashColor == 12) {
-      iFlashColor = 0;
+    if (RenderRubberBanding__iFlashColor == 12) {
+      RenderRubberBanding__iFlashColor = 0;
     }
   }
 
@@ -318,7 +318,7 @@ function RenderRubberBanding(): void {
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y);
 
-  usLineColor = Get16BPPColor(guiColors[iFlashColor]);
+  usLineColor = Get16BPPColor(guiColors[RenderRubberBanding__iFlashColor]);
 
   if ((iRight - iLeft) > 0) {
     LineDraw(true, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
@@ -377,10 +377,10 @@ function RenderRubberBanding(): void {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
+/* static */ let RenderTopmostTacticalInterface__uiBogTarget: UINT32 = 0;
 export function RenderTopmostTacticalInterface(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let cnt: UINT32;
-  /* static */ let uiBogTarget: UINT32 = 0;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sX: INT16;
   let sY: INT16;
@@ -439,20 +439,20 @@ export function RenderTopmostTacticalInterface(): void {
   if (InUIPlanMode()) {
     // Zero out any planned soldiers
     for (cnt = MAX_NUM_SOLDIERS; cnt < TOTAL_SOLDIERS; cnt++) {
-      if (MercPtrs[cnt].value.bActive) {
-        if (MercPtrs[cnt].value.sPlannedTargetX != -1) {
+      if (MercPtrs[cnt].bActive) {
+        if (MercPtrs[cnt].sPlannedTargetX != -1) {
           // Blit bogus target
-          if (uiBogTarget == 0) {
+          if (RenderTopmostTacticalInterface__uiBogTarget == 0) {
             // Loadup cursor!
             VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
             VObjectDesc.ImageFile = FilenameForBPP("CURSORS\\targblak.sti");
-            uiBogTarget = AddVideoObject(VObjectDesc);
+            RenderTopmostTacticalInterface__uiBogTarget = AddVideoObject(VObjectDesc);
           }
 
-          if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt].value.sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt].value.sPlannedTargetX / CELL_X_SIZE)))) {
+          if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt].sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt].sPlannedTargetX / CELL_X_SIZE)))) {
             // GET SCREEN COORDINATES
-            sOffsetX = (MercPtrs[cnt].value.sPlannedTargetX - gsRenderCenterX);
-            sOffsetY = (MercPtrs[cnt].value.sPlannedTargetY - gsRenderCenterY);
+            sOffsetX = (MercPtrs[cnt].sPlannedTargetX - gsRenderCenterX);
+            sOffsetY = (MercPtrs[cnt].sPlannedTargetY - gsRenderCenterY);
 
             ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
@@ -466,7 +466,7 @@ export function RenderTopmostTacticalInterface(): void {
             sX -= 10;
             sY -= 10;
 
-            BltVideoObjectFromIndex(FRAME_BUFFER, uiBogTarget, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
+            BltVideoObjectFromIndex(FRAME_BUFFER, RenderTopmostTacticalInterface__uiBogTarget, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
             InvalidateRegion(sX, sY, sX + 20, sY + 20);
           }
         }
@@ -499,12 +499,12 @@ export function RenderTopmostTacticalInterface(): void {
     pSoldier = MercSlots[cnt];
 
     if (pSoldier != null) {
-      if (pSoldier.value.ubID == gsSelectedGuy && gfUIHandleSelectionAboveGuy) {
+      if (pSoldier.ubID == gsSelectedGuy && gfUIHandleSelectionAboveGuy) {
       } else {
-        DrawSelectedUIAboveGuy(pSoldier.value.ubID);
+        DrawSelectedUIAboveGuy(pSoldier.ubID);
       }
 
-      if (pSoldier.value.fDisplayDamage) {
+      if (pSoldier.fDisplayDamage) {
         // Display damage
 
         // Use world coordinates!
@@ -515,19 +515,19 @@ export function RenderTopmostTacticalInterface(): void {
         let sDamageX: INT16;
         let sDamageY: INT16;
 
-        if (pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bVisible != -1) {
+        if (pSoldier.sGridNo != NOWHERE && pSoldier.bVisible != -1) {
           ({ sScreenX: sMercScreenX, sScreenY: sMercScreenY } = GetSoldierScreenPos(pSoldier));
           ({ sOffsetX, sOffsetY } = GetSoldierAnimOffsets(pSoldier));
 
-          if (pSoldier.value.ubBodyType == Enum194.QUEENMONSTER) {
-            sDamageX = sMercScreenX + pSoldier.value.sDamageX - pSoldier.value.sBoundingBoxOffsetX;
-            sDamageY = sMercScreenY + pSoldier.value.sDamageY - pSoldier.value.sBoundingBoxOffsetY;
+          if (pSoldier.ubBodyType == Enum194.QUEENMONSTER) {
+            sDamageX = sMercScreenX + pSoldier.sDamageX - pSoldier.sBoundingBoxOffsetX;
+            sDamageY = sMercScreenY + pSoldier.sDamageY - pSoldier.sBoundingBoxOffsetY;
 
             sDamageX += 25;
             sDamageY += 10;
           } else {
-            sDamageX = pSoldier.value.sDamageX + (sMercScreenX + (2 * 30 / 3));
-            sDamageY = pSoldier.value.sDamageY + (sMercScreenY - 5);
+            sDamageX = pSoldier.sDamageX + (sMercScreenX + (2 * 30 / 3));
+            sDamageY = pSoldier.sDamageY + (sMercScreenY - 5);
 
             sDamageX -= sOffsetX;
             sDamageY -= sOffsetY;
@@ -541,8 +541,8 @@ export function RenderTopmostTacticalInterface(): void {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_WHITE);
 
-          gprintfdirty(sDamageX, sDamageY, "-%d", pSoldier.value.sDamage);
-          mprintf(sDamageX, sDamageY, "-%d", pSoldier.value.sDamage);
+          gprintfdirty(sDamageX, sDamageY, "-%d", pSoldier.sDamage);
+          mprintf(sDamageX, sDamageY, "-%d", pSoldier.sDamage);
         }
       }
     }
@@ -574,10 +574,10 @@ export function RenderTopmostTacticalInterface(): void {
   // CHECK IF OUR CURSOR IS OVER AN INV POOL
   if (GetMouseMapPos(addressof(usMapPos))) {
     if (gfUIOverItemPool) {
-      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
         // Check if we are over an item pool
-        if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, pSoldier.value.bLevel))) {
-          let pStructure: Pointer<STRUCTURE> = null;
+        if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, pSoldier.bLevel))) {
+          let pStructure: STRUCTURE | null = null;
           let sIntTileGridNo: INT16;
           let bZLevel: INT8 = 0;
           let sActionGridNo: INT16 = usMapPos;
@@ -587,7 +587,7 @@ export function RenderTopmostTacticalInterface(): void {
             sActionGridNo = sIntTileGridNo;
           }
 
-          bZLevel = GetZLevelOfItemPoolGivenStructure(sActionGridNo, pSoldier.value.bLevel, pStructure);
+          bZLevel = GetZLevelOfItemPoolGivenStructure(sActionGridNo, pSoldier.bLevel, pStructure);
 
           if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
             DrawItemPoolList(pItemPool, gfUIOverItemPoolGridNo, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, gusMouseYPos);
@@ -599,7 +599,7 @@ export function RenderTopmostTacticalInterface(): void {
           let bCheckLevel: INT8;
 
           // ATE: Allow to see list if a different level....
-          if (pSoldier.value.bLevel == 0) {
+          if (pSoldier.bLevel == 0) {
             bCheckLevel = 1;
           } else {
             bCheckLevel = 0;
@@ -607,7 +607,7 @@ export function RenderTopmostTacticalInterface(): void {
 
           // Check if we are over an item pool
           if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, bCheckLevel))) {
-            let pStructure: Pointer<STRUCTURE> = null;
+            let pStructure: STRUCTURE | null = null;
             let sIntTileGridNo: INT16;
             let bZLevel: INT8 = 0;
             let sActionGridNo: INT16 = usMapPos;
@@ -684,10 +684,10 @@ export function RenderTopmostTacticalInterface(): void {
 function StartViewportOverlays(): void {
   // Set Clipping Rect to be the viewscreen
   // Save old one
-  memcpy(addressof(gOldClippingRect), addressof(ClippingRect), sizeof(gOldClippingRect));
+  copySGPRect(gOldClippingRect, ClippingRect);
 
   // Save old dirty clipping rect
-  memcpy(addressof(gOldDirtyClippingRect), addressof(ClippingRect), sizeof(gOldDirtyClippingRect));
+  copySGPRect(gOldDirtyClippingRect, ClippingRect);
 
   // Set bottom clipping value for blitter clipping rect
   ClippingRect.iLeft = INTERFACE_START_X;
@@ -707,8 +707,8 @@ function StartViewportOverlays(): void {
 
 function EndViewportOverlays(): void {
   // Reset clipping rect
-  memcpy(addressof(ClippingRect), addressof(gOldClippingRect), sizeof(gOldClippingRect));
-  memcpy(addressof(gDirtyClipRect), addressof(gOldDirtyClippingRect), sizeof(gOldDirtyClippingRect));
+  copySGPRect(ClippingRect, gOldClippingRect);
+  copySGPRect(gDirtyClipRect, gOldDirtyClippingRect);
   RestoreFontSettings();
 }
 

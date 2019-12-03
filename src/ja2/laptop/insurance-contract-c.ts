@@ -1126,8 +1126,7 @@ export function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8):
 export function InsuranceContractEndGameShutDown(): void {
   // Free up the memory allocated to the insurance payouts
   if (LaptopSaveInfo.pLifeInsurancePayouts) {
-    MemFree(LaptopSaveInfo.pLifeInsurancePayouts);
-    LaptopSaveInfo.pLifeInsurancePayouts = null;
+    LaptopSaveInfo.pLifeInsurancePayouts = <LIFE_INSURANCE_PAYOUT[]><unknown>null;
   }
 }
 

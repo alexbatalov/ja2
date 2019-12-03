@@ -31,7 +31,7 @@ function GetPopupMenuString(ubIndex: UINT8): string /* Pointer<INT16> */ {
     case Enum53.ACTIONITEM_POPUP:
       return gszActionItemDesc[ubIndex];
     default:
-      return 0;
+      return '';
   }
 }
 /*
@@ -92,6 +92,8 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
       usX = button.Area.RegionBottomRightX;
       usY = button.Area.RegionBottomRightY;
       break;
+    default:
+      throw new Error('Should be unreachable');
   }
 
   // Decipher the popupMenuID

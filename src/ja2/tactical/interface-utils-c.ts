@@ -76,7 +76,7 @@ export function UnLoadCarPortraits(): void {
   return;
 }
 
-export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -92,7 +92,7 @@ export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sY
     RestoreExternBackgroundRect(sXPos, (sYPos - sHeight), sWidth, (sHeight + 1));
   }
 
-  if (pSoldier.value.bLife == 0) {
+  if (pSoldier.bLife == 0) {
     // are they dead?
     return;
   }
@@ -101,7 +101,7 @@ export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sY
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO MAX LIFE
-  dPercentage = pSoldier.value.bLife / 100;
+  dPercentage = pSoldier.bLife / 100;
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
@@ -117,7 +117,7 @@ export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sY
   // NOW DO BANDAGE
 
   // Calculate bandage
-  bBandage = pSoldier.value.bLifeMax - pSoldier.value.bLife - pSoldier.value.bBleeding;
+  bBandage = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
   if (bBandage) {
     dPercentage = bBandage / 100;
@@ -135,8 +135,8 @@ export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sY
   }
 
   // NOW DO BLEEDING
-  if (pSoldier.value.bBleeding) {
-    dPercentage = pSoldier.value.bBleeding / 100;
+  if (pSoldier.bBleeding) {
+    dPercentage = pSoldier.bBleeding / 100;
     dStart = (dStart - dEnd);
     dEnd = (dPercentage * sHeight);
 
@@ -153,7 +153,7 @@ export function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sY
   UnLockVideoSurface(uiBuffer);
 }
 
-export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -169,7 +169,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
     RestoreExternBackgroundRect(sXPos, (sYPos - sHeight), sWidth, (sHeight + 1));
   }
 
-  if (pSoldier.value.bLife == 0) {
+  if (pSoldier.bLife == 0) {
     // are they dead?
     return;
   }
@@ -184,7 +184,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
 
   // DO MAX BREATH
   if (guiCurrentScreen != Enum26.MAP_SCREEN) {
-    if (gusSelectedSoldier == pSoldier.value.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
+    if (gusSelectedSoldier == pSoldier.ubID && gTacticalStatus.ubCurrentTeam == OUR_TEAM && OK_INTERRUPT_MERC(pSoldier)) {
       // gold, the second entry in the .sti
       BltVideoObject(uiBuffer, hHandle, 1, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, null);
     } else {
@@ -199,8 +199,8 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
-  if (pSoldier.value.bBreathMax <= 97) {
-    dPercentage = ((pSoldier.value.bBreathMax + 3)) / 100;
+  if (pSoldier.bBreathMax <= 97) {
+    dPercentage = ((pSoldier.bBreathMax + 3)) / 100;
     dEnd = dPercentage * sHeight;
     dStart = sYPos;
 
@@ -215,7 +215,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
     RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
   }
 
-  dPercentage = pSoldier.value.bBreathMax / 100;
+  dPercentage = pSoldier.bBreathMax / 100;
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
@@ -229,7 +229,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BREATH
-  dPercentage = pSoldier.value.bBreath / 100;
+  dPercentage = pSoldier.bBreath / 100;
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
@@ -245,7 +245,7 @@ export function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   UnLockVideoSurface(uiBuffer);
 }
 
-export function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
+export function DrawMoraleUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: boolean, uiBuffer: UINT32): void {
   let dStart: FLOAT;
   let dEnd: FLOAT;
   let dPercentage: FLOAT;
@@ -260,7 +260,7 @@ export function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
     RestoreExternBackgroundRect(sXPos, (sYPos - sHeight), sWidth, (sHeight + 1));
   }
 
-  if (pSoldier.value.bLife == 0) {
+  if (pSoldier.bLife == 0) {
     // are they dead?
     return;
   }
@@ -269,7 +269,7 @@ export function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO BREATH
-  dPercentage = pSoldier.value.bMorale / 100;
+  dPercentage = pSoldier.bMorale / 100;
   dEnd = dPercentage * sHeight;
   dStart = sYPos;
 
@@ -349,15 +349,15 @@ export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT
   }
 }
 
-export function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: boolean): void {
+export function RenderSoldierFace(pSoldier: SOLDIERTYPE, sFaceX: INT16, sFaceY: INT16, fAutoFace: boolean): void {
   let fDoFace: boolean = false;
   let iFaceIndex: INT32 = -1;
   let ubVehicleType: UINT8 = 0;
 
-  if (pSoldier.value.bActive) {
-    if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.bActive) {
+    if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
       // get the type of vehicle
-      ubVehicleType = pVehicleList[pSoldier.value.bVehicleID].ubVehicleType;
+      ubVehicleType = pVehicleList[pSoldier.bVehicleID].ubVehicleType;
 
       // just draw the vehicle
       BltVideoObjectFromIndex(guiSAVEBUFFER, giCarPortraits[ubVehicleType], 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
@@ -368,11 +368,11 @@ export function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16,
 
     if (fAutoFace) {
       // OK, check if this face actually went active...
-      if (gFacesData[pSoldier.value.iFaceIndex].uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE) {
+      if (gFacesData[pSoldier.iFaceIndex].uiFlags & FACE_INACTIVE_HANDLED_ELSEWHERE) {
         // Render as an extern face...
         fAutoFace = false;
       } else {
-        SetAutoFaceActiveFromSoldier(FRAME_BUFFER, guiSAVEBUFFER, pSoldier.value.ubID, sFaceX, sFaceY);
+        SetAutoFaceActiveFromSoldier(FRAME_BUFFER, guiSAVEBUFFER, pSoldier.ubID, sFaceX, sFaceY);
         //	SetAutoFaceActiveFromSoldier( FRAME_BUFFER, FACE_AUTO_RESTORE_BUFFER, pSoldier->ubID , sFaceX, sFaceY );
       }
     }
@@ -381,9 +381,9 @@ export function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16,
 
     if (fDoFace) {
       if (fAutoFace) {
-        RenderAutoFaceFromSoldier(pSoldier.value.ubID);
+        RenderAutoFaceFromSoldier(pSoldier.ubID);
       } else {
-        ExternRenderFaceFromSoldier(guiSAVEBUFFER, pSoldier.value.ubID, sFaceX, sFaceY);
+        ExternRenderFaceFromSoldier(guiSAVEBUFFER, pSoldier.ubID, sFaceX, sFaceY);
       }
     }
   } else {

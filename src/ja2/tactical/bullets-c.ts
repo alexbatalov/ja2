@@ -4,7 +4,7 @@ namespace ja2 {
 const NUM_BULLET_SLOTS = 50;
 
 // GLOBAL FOR FACES LISTING
-let gBullets: BULLET[] /* [NUM_BULLET_SLOTS] */;
+let gBullets: BULLET[] /* [NUM_BULLET_SLOTS] */ = createArrayFrom(NUM_BULLET_SLOTS, createBullet);
 export let guiNumBullets: UINT32 = 0;
 
 function GetFreeBullet(): INT32 {
@@ -35,76 +35,74 @@ function RecountBullets(): void {
 
 export function CreateBullet(ubFirerID: UINT8, fFake: boolean, usFlags: UINT16): INT32 {
   let iBulletIndex: INT32;
-  let pBullet: Pointer<BULLET>;
+  let pBullet: BULLET;
 
   if ((iBulletIndex = GetFreeBullet()) == (-1))
     return -1;
 
-  memset(addressof(gBullets[iBulletIndex]), 0, sizeof(BULLET));
+  resetBullet(gBullets[iBulletIndex]);
 
-  pBullet = addressof(gBullets[iBulletIndex]);
+  pBullet = gBullets[iBulletIndex];
 
-  pBullet.value.iBullet = iBulletIndex;
-  pBullet.value.fAllocated = true;
-  pBullet.value.fLocated = false;
-  pBullet.value.ubFirerID = ubFirerID;
-  pBullet.value.usFlags = usFlags;
-  pBullet.value.usLastStructureHit = 0;
+  pBullet.iBullet = iBulletIndex;
+  pBullet.fAllocated = true;
+  pBullet.fLocated = false;
+  pBullet.ubFirerID = ubFirerID;
+  pBullet.usFlags = usFlags;
+  pBullet.usLastStructureHit = 0;
 
   if (fFake) {
-    pBullet.value.fReal = false;
+    pBullet.fReal = false;
   } else {
-    pBullet.value.fReal = true;
+    pBullet.fReal = true;
   }
 
   return iBulletIndex;
 }
 
 export function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
-  let pBullet: Pointer<BULLET>;
+  let pBullet: BULLET;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let dX: FLOAT;
   let dY: FLOAT;
   let ubDirection: UINT8;
 
-  pBullet = addressof(gBullets[iBulletIndex]);
+  pBullet = gBullets[iBulletIndex];
 
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
-
-  if (pBullet.value.fReal) {
+  if (pBullet.fReal) {
     // Create ani tile if this is a spit!
-    if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
-      AniParams.sGridNo = pBullet.value.sGridNo;
+    if (pBullet.usFlags & (BULLET_FLAG_KNIFE)) {
+      AniParams.sGridNo = pBullet.sGridNo;
       AniParams.ubLevelID = ANI_STRUCT_LEVEL;
       AniParams.sDelay = 100;
       AniParams.sStartFrame = 3;
       AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_LOOPING | ANITILE_USE_DIRECTION_FOR_START_FRAME;
-      AniParams.sX = FIXEDPT_TO_INT32(pBullet.value.qCurrX);
-      AniParams.sY = FIXEDPT_TO_INT32(pBullet.value.qCurrY);
-      AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(pBullet.value.qCurrZ));
+      AniParams.sX = FIXEDPT_TO_INT32(pBullet.qCurrX);
+      AniParams.sY = FIXEDPT_TO_INT32(pBullet.qCurrY);
+      AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(pBullet.qCurrZ));
 
-      if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
+      if (pBullet.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
         AniParams.zCachedFile = "TILECACHE\\SPIT2.STI";
-      } else if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
+      } else if (pBullet.usFlags & (BULLET_FLAG_KNIFE)) {
         AniParams.zCachedFile = "TILECACHE\\KNIFING.STI";
-        pBullet.value.ubItemStatus = pBullet.value.pFirer.value.inv[Enum261.HANDPOS].bStatus[0];
+        pBullet.ubItemStatus = pBullet.pFirer.inv[Enum261.HANDPOS].bStatus[0];
       }
 
       // Get direction to use for this guy....
-      dX = ((pBullet.value.qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
-      dY = ((pBullet.value.qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dX = ((pBullet.qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dY = ((pBullet.qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
 
       ubDirection = atan8(0, 0, (dX * 100), (dY * 100));
 
       AniParams.uiUserData3 = ubDirection;
 
-      pBullet.value.pAniTile = CreateAnimationTile(addressof(AniParams));
+      pBullet.pAniTile = CreateAnimationTile(AniParams);
 
       // IF we are anything that needs a shadow.. set it here....
-      if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
+      if (pBullet.usFlags & (BULLET_FLAG_KNIFE)) {
         AniParams.ubLevelID = ANI_SHADOW_LEVEL;
         AniParams.sZ = 0;
-        pBullet.value.pShadowAniTile = CreateAnimationTile(addressof(AniParams));
+        pBullet.pShadowAniTile = CreateAnimationTile(AniParams);
       }
     }
   }
@@ -122,20 +120,20 @@ export function RemoveBullet(iBullet: INT32): void {
     gBullets[iBullet].fToDelete = true;
 
     // decrement reference to bullet in the firer
-    gBullets[iBullet].pFirer.value.bBulletsLeft--;
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer.value.bBulletsLeft));
+    gBullets[iBullet].pFirer.bBulletsLeft--;
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Ending bullet, bullets left %d", gBullets[iBullet].pFirer.bBulletsLeft));
 
     if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
       // Delete ani tile
       if (gBullets[iBullet].pAniTile != null) {
-        DeleteAniTile(gBullets[iBullet].pAniTile);
+        DeleteAniTile(<ANITILE>gBullets[iBullet].pAniTile);
         gBullets[iBullet].pAniTile = null;
       }
 
       // Delete shadow
       if (gBullets[iBullet].usFlags & (BULLET_FLAG_KNIFE)) {
         if (gBullets[iBullet].pShadowAniTile != null) {
-          DeleteAniTile(gBullets[iBullet].pShadowAniTile);
+          DeleteAniTile(<ANITILE>gBullets[iBullet].pShadowAniTile);
           gBullets[iBullet].pShadowAniTile = null;
         }
       }
@@ -151,7 +149,7 @@ export function LocateBullet(iBulletIndex: INT32): void {
   if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
     // Check if a bad guy fired!
     if (gBullets[iBulletIndex].ubFirerID != NOBODY) {
-      if (MercPtrs[gBullets[iBulletIndex].ubFirerID].value.bSide == gbPlayerNum) {
+      if (MercPtrs[gBullets[iBulletIndex].ubFirerID].bSide == gbPlayerNum) {
         if (!gBullets[iBulletIndex].fLocated) {
           gBullets[iBulletIndex].fLocated = true;
 
@@ -167,7 +165,7 @@ export function LocateBullet(iBulletIndex: INT32): void {
 
 export function UpdateBullets(): void {
   let uiCount: UINT32;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE;
   let fDeletedSome: boolean = false;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
@@ -210,35 +208,35 @@ export function UpdateBullets(): void {
         {
           if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
             if (gBullets[uiCount].pAniTile != null) {
-              gBullets[uiCount].pAniTile.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-              gBullets[uiCount].pAniTile.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-              gBullets[uiCount].pAniTile.value.pLevelNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+              (<ANITILE>gBullets[uiCount].pAniTile).sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+              (<ANITILE>gBullets[uiCount].pAniTile).sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+              (<ANITILE>gBullets[uiCount].pAniTile).pLevelNode.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
               if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
-                gBullets[uiCount].pShadowAniTile.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-                gBullets[uiCount].pShadowAniTile.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+                (<ANITILE>gBullets[uiCount].pShadowAniTile).sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+                (<ANITILE>gBullets[uiCount].pShadowAniTile).sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
               }
             }
           }
           // Are we a missle?
           else if (gBullets[uiCount].usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
           } else {
-            pNode = AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE1);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode.value.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+            pNode = <LEVELNODE>AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE1);
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
+            pNode.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode.sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
             // Display shadow
-            pNode = AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE2);
-            pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
-            pNode.value.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode.value.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode.value.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode.value.sRelativeZ = gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
+            pNode = <LEVELNODE>AddStructToTail(gBullets[uiCount].sGridNo, Enum312.BULLETTILE2);
+            pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+            pNode.uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
+            pNode.sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode.sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode.sRelativeZ = gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
           }
         }
       } else {
@@ -255,38 +253,37 @@ export function UpdateBullets(): void {
   }
 }
 
-export function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
-  let pBullet: Pointer<BULLET>;
+export function GetBulletPtr(iBullet: INT32): BULLET {
+  let pBullet: BULLET;
 
   if (iBullet >= NUM_BULLET_SLOTS) {
-    return null;
+    return <BULLET><unknown>null;
   }
 
-  pBullet = addressof(gBullets[iBullet]);
+  pBullet = gBullets[iBullet];
 
   return pBullet;
 }
 
-export function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT): void {
+export function AddMissileTrail(pBullet: BULLET, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT): void {
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // If we are a small missle, don't show
-  if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
-    if (pBullet.value.iLoop < 5) {
+  if (pBullet.usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
+    if (pBullet.iLoop < 5) {
       return;
     }
   }
 
   // If we are a small missle, don't show
-  if (pBullet.value.usFlags & (BULLET_FLAG_TANK_CANNON)) {
+  if (pBullet.usFlags & (BULLET_FLAG_TANK_CANNON)) {
     // if ( pBullet->iLoop < 40 )
     //{
     return;
     //}
   }
 
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
-  AniParams.sGridNo = pBullet.value.sGridNo;
+  AniParams.sGridNo = pBullet.sGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
   AniParams.sDelay = (100 + Random(100));
   AniParams.sStartFrame = 0;
@@ -295,24 +292,25 @@ export function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurr
   AniParams.sY = FIXEDPT_TO_INT32(qCurrY);
   AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(qCurrZ));
 
-  if (pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_TANK_CANNON)) {
+  if (pBullet.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_TANK_CANNON)) {
     AniParams.zCachedFile = "TILECACHE\\MSLE_SMK.STI";
-  } else if (pBullet.value.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
+  } else if (pBullet.usFlags & (BULLET_FLAG_SMALL_MISSILE)) {
     AniParams.zCachedFile = "TILECACHE\\MSLE_SMA.STI";
-  } else if (pBullet.value.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
+  } else if (pBullet.usFlags & (BULLET_FLAG_CREATURE_SPIT)) {
     AniParams.zCachedFile = "TILECACHE\\MSLE_SPT.STI";
-  } else if (pBullet.value.usFlags & (BULLET_FLAG_FLAME)) {
+  } else if (pBullet.usFlags & (BULLET_FLAG_FLAME)) {
     AniParams.zCachedFile = "TILECACHE\\FLMTHR2.STI";
     AniParams.sDelay = (100);
   }
 
-  CreateAnimationTile(addressof(AniParams));
+  CreateAnimationTile(AniParams);
 }
 
 export function SaveBulletStructureToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
   let usCnt: UINT16;
   let uiBulletCount: UINT32 = 0;
+  let buffer: Buffer;
 
   // loop through and count the number of bullets
   for (usCnt = 0; usCnt < NUM_BULLET_SLOTS; usCnt++) {
@@ -323,18 +321,22 @@ export function SaveBulletStructureToSaveGameFile(hFile: HWFILE): boolean {
   }
 
   // Save the number of Bullets in the array
-  FileWrite(hFile, addressof(uiBulletCount), sizeof(UINT32), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32LE(uiBulletCount, 0);
+  uiNumBytesWritten = FileWrite(hFile, buffer, 4);
+  if (uiNumBytesWritten != 4) {
     return false;
   }
 
   if (uiBulletCount != 0) {
+    buffer = Buffer.allocUnsafe(BULLET_SIZE);
     for (usCnt = 0; usCnt < NUM_BULLET_SLOTS; usCnt++) {
       // if the bullet is active, save it
       if (gBullets[usCnt].fAllocated) {
         // Save the the Bullet structure
-        FileWrite(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesWritten));
-        if (uiNumBytesWritten != sizeof(BULLET)) {
+        writeBullet(gBullets[usCnt], buffer);
+        uiNumBytesWritten = FileWrite(hFile, buffer, BULLET_SIZE);
+        if (uiNumBytesWritten != BULLET_SIZE) {
           return false;
         }
       }
@@ -347,29 +349,36 @@ export function SaveBulletStructureToSaveGameFile(hFile: HWFILE): boolean {
 export function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
   let usCnt: UINT16;
+  let buffer: Buffer;
 
   // make sure the bullets are not allocated
-  memset(gBullets, 0, NUM_BULLET_SLOTS * sizeof(BULLET));
+  gBullets.forEach(resetBullet);
 
   // Load the number of Bullets in the array
-  FileRead(hFile, addressof(guiNumBullets), sizeof(UINT32), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(UINT32)) {
+  buffer = Buffer.allocUnsafe(4);
+  uiNumBytesRead = FileRead(hFile, buffer, 4);
+  if (uiNumBytesRead != 4) {
     return false;
   }
 
+  guiNumBullets = buffer.readUInt32LE(0);
+
+  buffer = Buffer.allocUnsafe(BULLET_SIZE);
   for (usCnt = 0; usCnt < guiNumBullets; usCnt++) {
     // Load the the Bullet structure
-    FileRead(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(BULLET)) {
+    uiNumBytesRead = FileRead(hFile, buffer, BULLET_SIZE);
+    if (uiNumBytesRead != BULLET_SIZE) {
       return false;
     }
+
+    readBullet(gBullets[usCnt], buffer);
 
     // Set some parameters
     gBullets[usCnt].uiLastUpdate = 0;
     if (gBullets[usCnt].ubFirerID != NOBODY)
-      gBullets[usCnt].pFirer = addressof(Menptr[gBullets[usCnt].ubFirerID]);
+      gBullets[usCnt].pFirer = Menptr[gBullets[usCnt].ubFirerID];
     else
-      gBullets[usCnt].pFirer = null;
+      gBullets[usCnt].pFirer = <SOLDIERTYPE><unknown>null;
 
     gBullets[usCnt].pAniTile = null;
     gBullets[usCnt].pShadowAniTile = null;

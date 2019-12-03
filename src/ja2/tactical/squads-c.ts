@@ -5,14 +5,35 @@ interface SAVE_SQUAD_INFO_STRUCT {
   sPadding: INT16[] /* [5] */;
 }
 
+function createSaveSquadInfoStruct(): SAVE_SQUAD_INFO_STRUCT {
+  return {
+    uiID: 0,
+    sPadding: createArray(5, 0),
+  };
+}
+
+const SAVE_SQUAD_INFO_STRUCT_SIZE = 12;
+
+function readSaveSquadInfoStruct(o: SAVE_SQUAD_INFO_STRUCT, buffer: Buffer, offset: number = 0): number {
+  o.uiID = buffer.readInt16LE(offset); offset += 2;
+  offset = readIntArray(o.sPadding, buffer, offset, 2);
+  return offset;
+}
+
+function writeSaveSquadInfoStruct(o: SAVE_SQUAD_INFO_STRUCT, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeInt16LE(o.uiID, offset);
+  offset = writeIntArray(o.sPadding, buffer, offset, 2);
+  return offset;
+}
+
 // squad array
-export let Squad: Pointer<SOLDIERTYPE>[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */;
+export let Squad: SOLDIERTYPE[][] /* Pointer<SOLDIERTYPE>[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */ = createArrayFrom(Enum275.NUMBER_OF_SQUADS, () => createArray(NUMBER_OF_SOLDIERS_PER_SQUAD, <SOLDIERTYPE><unknown>null));
 
 // list of dead guys for squads...in id values -> -1 means no one home
 export let sDeadMercs: INT16[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */ = createArrayFrom(Enum275.NUMBER_OF_SQUADS, () => createArray(NUMBER_OF_SOLDIERS_PER_SQUAD, 0));
 
 // the movement group ids
-export let SquadMovementGroups: INT8[] /* [NUMBER_OF_SQUADS] */;
+export let SquadMovementGroups: INT8[] /* [NUMBER_OF_SQUADS] */ = createArray(Enum275.NUMBER_OF_SQUADS, 0);
 
 let fExitingVehicleToSquad: boolean = false;
 
@@ -28,7 +49,7 @@ export function InitSquads(): void {
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     for (iCounterB = 0; iCounterB < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounterB++) {
       // squad, soldier
-      Squad[iCounter][iCounterB] = null;
+      Squad[iCounter][iCounterB] = <SOLDIERTYPE><unknown>null;
     }
 
     // create mvt groups
@@ -83,7 +104,7 @@ export function AddCharacterToSquad(pCharacter: SOLDIERTYPE, bSquadValue: INT8):
   let sY: INT16;
   let bZ: INT8;
   //	BOOLEAN fBetweenSectors = FALSE;
-  let pGroup: Pointer<GROUP>;
+  let pGroup: GROUP | null;
   let fNewSquad: boolean;
 
   // add character to squad...return success or failure
@@ -277,7 +298,7 @@ export function AddCharacterToAnySquad(pCharacter: SOLDIERTYPE): boolean {
 }
 
 // find the first slot we can fit the guy in
-export function AddCharacterToUniqueSquad(pCharacter: Pointer<SOLDIERTYPE>): INT8 {
+export function AddCharacterToUniqueSquad(pCharacter: SOLDIERTYPE): INT8 {
   // add character to any squad, if character is assigned to a squad, returns TRUE
   let bCounter: INT8 = 0;
 
@@ -324,7 +345,7 @@ export function RemoveCharacterFromSquads(pCharacter: SOLDIERTYPE): boolean {
       // check if on current squad and current slot?
       if (Squad[iCounterA][iCounter] == pCharacter) {
         // found and nulled
-        Squad[iCounterA][iCounter] = null;
+        Squad[iCounterA][iCounter] = <SOLDIERTYPE><unknown>null;
 
         // Release memory for his personal path, BUT DON'T CLEAR HIS GROUP'S PATH/WAYPOINTS (pass in groupID -1).
         // Just because one guy leaves a group is no reason to cancel movement for the rest of the group.
@@ -374,7 +395,7 @@ function RemoveCharacterFromASquad(pCharacter: SOLDIERTYPE, bSquadValue: INT8): 
       UpdateCurrentlySelectedMerc(pCharacter, bSquadValue);
 
       // found and nulled
-      Squad[bSquadValue][iCounter] = null;
+      Squad[bSquadValue][iCounter] = <SOLDIERTYPE><unknown>null;
 
       // remove character from mvt group
       RemovePlayerFromGroup(SquadMovementGroups[bSquadValue], pCharacter);
@@ -643,11 +664,11 @@ export function SetCurrentSquad(iCurrentSquad: INT32, fForce: boolean): boolean 
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (Menptr[gusSelectedSoldier].bAssignment != iCurrentTacticalSquad) {
       // ATE: Changed this to FALSE for ackoledgement sounds.. sounds bad if just starting/entering sector..
-      SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, false, true);
+      SelectSoldier(Squad[iCurrentTacticalSquad][0].ubID, false, true);
     }
   } else {
     // ATE: Changed this to FALSE for ackoledgement sounds.. sounds bad if just starting/entering sector..
-    SelectSoldier(Squad[iCurrentTacticalSquad][0].value.ubID, false, true);
+    SelectSoldier(Squad[iCurrentTacticalSquad][0].ubID, false, true);
   }
 
   return true;
@@ -705,7 +726,7 @@ export function ExamineCurrentSquadLights(): void {
   // OK, we should add lights for any guy currently bInSector who is not bad OKLIFE...
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   for (; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++) {
-    if (MercPtrs[ubLoop].value.bInSector && MercPtrs[ubLoop].value.bLife >= OKLIFE) {
+    if (MercPtrs[ubLoop].bInSector && MercPtrs[ubLoop].bLife >= OKLIFE) {
       PositionSoldierLight(MercPtrs[ubLoop]);
     }
   }
@@ -758,7 +779,7 @@ export function IsSquadOnCurrentTacticalMap(iCurrentSquad: INT32): boolean {
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[iCurrentSquad][iCounter] != null) {
       // ATE; Added more checks here for being in sector ( fBetweenSectors and SectorZ )
-      if ((Squad[iCurrentSquad][iCounter].value.sSectorX == gWorldSectorX) && (Squad[iCurrentSquad][iCounter].value.sSectorY == gWorldSectorY) && Squad[iCurrentSquad][iCounter].value.bSectorZ == gbWorldSectorZ && Squad[iCurrentSquad][iCounter].value.fBetweenSectors != true) {
+      if ((Squad[iCurrentSquad][iCounter].sSectorX == gWorldSectorX) && (Squad[iCurrentSquad][iCounter].sSectorY == gWorldSectorY) && Squad[iCurrentSquad][iCounter].bSectorZ == gbWorldSectorZ && Squad[iCurrentSquad][iCounter].fBetweenSectors != true) {
         return true;
       }
     }
@@ -811,25 +832,6 @@ export function GetLastSquadActive(): INT32 {
   return iLastSquad;
 }
 
-function GetSquadPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPrevX: Pointer<UINT8>, ubPrevY: Pointer<UINT8>, uiTraverseTime: Pointer<UINT32>, uiArriveTime: Pointer<UINT32>, ubSquadValue: UINT8): void {
-  // grab the mvt group for this squad and find all this information
-
-  if (SquadMovementGroups[ubSquadValue] == 0) {
-    ubNextX.value = 0;
-    ubNextY.value = 0;
-    ubPrevX.value = 0;
-    ubPrevY.value = 0;
-    uiTraverseTime.value = 0;
-    uiArriveTime.value = 0;
-    return;
-  }
-
-  // grab this squads mvt position
-  GetGroupPosition(ubNextX, ubNextY, ubPrevX, ubPrevY, uiTraverseTime, uiArriveTime, SquadMovementGroups[ubSquadValue]);
-
-  return;
-}
-
 function SetSquadPositionBetweenSectors(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrevY: UINT8, uiTraverseTime: UINT32, uiArriveTime: UINT32, ubSquadValue: UINT8): void {
   // set mvt group position for squad for
 
@@ -848,27 +850,36 @@ export function SaveSquadInfoToSavedGameFile(hFile: HWFILE): boolean {
   // Reset the current squad info
   let iCounterB: INT32 = 0;
   let iCounter: INT32 = 0;
+  let buffer: Buffer;
 
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     for (iCounterB = 0; iCounterB < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounterB++) {
       if (Squad[iCounter][iCounterB])
-        sSquadSaveStruct[iCounter][iCounterB].uiID = Squad[iCounter][iCounterB].value.ubID;
+        sSquadSaveStruct[iCounter][iCounterB].uiID = Squad[iCounter][iCounterB].ubID;
       else
         sSquadSaveStruct[iCounter][iCounterB].uiID = -1;
     }
   }
 
   // Save the squad info to the Saved Game File
-  uiSaveSize = sizeof(SAVE_SQUAD_INFO_STRUCT) * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
+  uiSaveSize = SAVE_SQUAD_INFO_STRUCT_SIZE * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
 
-  uiNumBytesWritten = FileWrite(hFile, sSquadSaveStruct, uiSaveSize);
+  buffer = Buffer.allocUnsafe(uiSaveSize);
+  for (let i = 0, offset = 0; i < sSquadSaveStruct.length; i++) {
+    offset = writeObjectArray(sSquadSaveStruct[i], buffer, offset, writeSaveSquadInfoStruct);
+  }
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, uiSaveSize);
   if (uiNumBytesWritten != uiSaveSize) {
     return false;
   }
 
   // Save all the squad movement id's
-  uiNumBytesWritten = FileWrite(hFile, SquadMovementGroups, sizeof(INT8) * Enum275.NUMBER_OF_SQUADS);
-  if (uiNumBytesWritten != sizeof(INT8) * Enum275.NUMBER_OF_SQUADS) {
+  buffer = Buffer.allocUnsafe(Enum275.NUMBER_OF_SQUADS);
+  writeIntArray(SquadMovementGroups, buffer, 0, 1);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, Enum275.NUMBER_OF_SQUADS);
+  if (uiNumBytesWritten != Enum275.NUMBER_OF_SQUADS) {
     return false;
   }
 
@@ -879,6 +890,7 @@ export function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): boolean {
   let sSquadSaveStruct: SAVE_SQUAD_INFO_STRUCT[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */ = createArrayFrom(Enum275.NUMBER_OF_SQUADS, () => createArrayFrom(NUMBER_OF_SOLDIERS_PER_SQUAD, createSaveSquadInfoStruct));
   let uiNumBytesRead: UINT32 = 0;
   let uiSaveSize: UINT32 = 0;
+  let buffer: Buffer;
 
   // Reset the current squad info
   let iCounterB: INT32 = 0;
@@ -888,33 +900,41 @@ export function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): boolean {
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     for (iCounterB = 0; iCounterB < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounterB++) {
       // squad, soldier
-      Squad[iCounter][iCounterB] = null;
+      Squad[iCounter][iCounterB] = <SOLDIERTYPE><unknown>null;
     }
   }
 
   // Load in the squad info
-  uiSaveSize = sizeof(SAVE_SQUAD_INFO_STRUCT) * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
+  uiSaveSize = SAVE_SQUAD_INFO_STRUCT_SIZE * Enum275.NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
 
-  uiNumBytesRead = FileRead(hFile, sSquadSaveStruct, uiSaveSize);
+  buffer = Buffer.allocUnsafe(uiSaveSize);
+  uiNumBytesRead = FileRead(hFile, buffer, uiSaveSize);
   if (uiNumBytesRead != uiSaveSize) {
     return false;
+  }
+
+  for (let i = 0, offset = 0; i < sSquadSaveStruct.length; i++) {
+    offset = readObjectArray(sSquadSaveStruct[i], buffer, offset, readSaveSquadInfoStruct);
   }
 
   // Loop through the array loaded in
   for (iCounter = 0; iCounter < Enum275.NUMBER_OF_SQUADS; iCounter++) {
     for (iCounterB = 0; iCounterB < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounterB++) {
       if (sSquadSaveStruct[iCounter][iCounterB].uiID != -1)
-        Squad[iCounter][iCounterB] = addressof(Menptr[sSquadSaveStruct[iCounter][iCounterB].uiID]);
+        Squad[iCounter][iCounterB] = Menptr[sSquadSaveStruct[iCounter][iCounterB].uiID];
       else
-        Squad[iCounter][iCounterB] = null;
+        Squad[iCounter][iCounterB] = <SOLDIERTYPE><unknown>null;
     }
   }
 
   // Load in the Squad movement id's
-  uiNumBytesRead = FileRead(hFile, SquadMovementGroups, sizeof(INT8) * Enum275.NUMBER_OF_SQUADS);
-  if (uiNumBytesRead != sizeof(INT8) * Enum275.NUMBER_OF_SQUADS) {
+  buffer = Buffer.allocUnsafe(Enum275.NUMBER_OF_SQUADS);
+  uiNumBytesRead = FileRead(hFile, buffer, Enum275.NUMBER_OF_SQUADS);
+  if (uiNumBytesRead != Enum275.NUMBER_OF_SQUADS) {
     return false;
   }
+
+  readIntArray(SquadMovementGroups, buffer, 0, 1);
 
   return true;
 }
@@ -944,7 +964,7 @@ export function IsThisSquadOnTheMove(bSquadValue: INT8): boolean {
 
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     if (Squad[bSquadValue][iCounter]) {
-      return Squad[bSquadValue][iCounter].value.fBetweenSectors;
+      return Squad[bSquadValue][iCounter].fBetweenSectors;
     }
   }
 
@@ -961,7 +981,7 @@ function RebuildSquad(bSquadValue: INT8): void {
       if (Squad[bSquadValue][iCounter] == null) {
         if (Squad[bSquadValue][iCounter + 1] != null) {
           Squad[bSquadValue][iCounter] = Squad[bSquadValue][iCounter + 1];
-          Squad[bSquadValue][iCounter + 1] = null;
+          Squad[bSquadValue][iCounter + 1] = <SOLDIERTYPE><unknown>null;
         }
       }
     }
@@ -1016,11 +1036,11 @@ function IsSquadInSector(pSoldier: SOLDIERTYPE, ubSquad: UINT8): boolean {
     return true;
   }
 
-  if ((pSoldier.sSectorX != Squad[ubSquad][0].value.sSectorX) || (pSoldier.sSectorY != Squad[ubSquad][0].value.sSectorY) || (pSoldier.bSectorZ != Squad[ubSquad][0].value.bSectorZ)) {
+  if ((pSoldier.sSectorX != Squad[ubSquad][0].sSectorX) || (pSoldier.sSectorY != Squad[ubSquad][0].sSectorY) || (pSoldier.bSectorZ != Squad[ubSquad][0].bSectorZ)) {
     return false;
   }
 
-  if (Squad[ubSquad][0].value.fBetweenSectors == true) {
+  if (Squad[ubSquad][0].fBetweenSectors == true) {
     return false;
   }
 
@@ -1099,33 +1119,6 @@ function IsDeadGuyOnAnySquad(pSoldier: SOLDIERTYPE): boolean {
     // slot?
     for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
       if (sDeadMercs[iCounterA][iCounter] == pSoldier.ubProfile) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-function IsDeadGuyInThisSquadSlot(bSlotId: INT8, bSquadValue: INT8, bNumberOfDeadGuysSoFar: Pointer<INT8>): boolean {
-  let iCounter: INT32 = 0;
-  let iCount: INT32 = 0;
-
-  // see if we have gone too far?
-  if (bSlotId < bNumberOfDeadGuysSoFar.value) {
-    // reset
-    bNumberOfDeadGuysSoFar.value = 0;
-  }
-
-  for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
-    if (sDeadMercs[bSquadValue][iCounter] != -1) {
-      // not gone far enough yet
-      if (bNumberOfDeadGuysSoFar.value > iCounter) {
-        iCount++;
-      } else {
-        // far enough, start checking
-        bNumberOfDeadGuysSoFar++;
-
         return true;
       }
     }

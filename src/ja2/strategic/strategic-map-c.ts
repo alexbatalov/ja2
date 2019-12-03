@@ -2106,7 +2106,7 @@ void AllMercsHaveWalkedOffSector( )
                         }
 
                         //Lock game into mapscreen mode, but after the fade is done.
-                        gfEnteringMapScreen = TRUE;
+                        gfEnteringMapScreen = 1;
 
                         // ATE; Fade FAST....
                         SetMusicFadeSpeed( 5 );
@@ -2199,7 +2199,7 @@ function SetupTacticalTraversalInformation(): void {
 }
 
 export function AllMercsHaveWalkedOffSector(): void {
-  let pPlayer: Pointer<PLAYERGROUP>;
+  let pPlayer: PLAYERGROUP | null;
   let fEnemiesInLoadedSector: boolean = false;
 
   if (NumEnemiesInAnySector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ)) {
@@ -2233,8 +2233,8 @@ export function AllMercsHaveWalkedOffSector(): void {
     //         there are other mercs in sector while a battle is in progress.
     pPlayer = (<GROUP>gpAdjacentGroup).pPlayerList;
     while (pPlayer) {
-      RemoveSoldierFromTacticalSector(pPlayer.value.pSoldier, true);
-      pPlayer = pPlayer.value.next;
+      RemoveSoldierFromTacticalSector(pPlayer.pSoldier, true);
+      pPlayer = pPlayer.next;
     }
     SetDefaultSquadOnSectorEntry(true);
   } else {
@@ -2273,7 +2273,7 @@ export function AllMercsHaveWalkedOffSector(): void {
       // Case 3:  Going directly to mapscreen
 
       // Lock game into mapscreen mode, but after the fade is done.
-      gfEnteringMapScreen = true;
+      gfEnteringMapScreen = 1;
 
       // ATE; Fade FAST....
       SetMusicFadeSpeed(5);
@@ -2555,7 +2555,7 @@ export function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, 
 
   // If we are here, at least one guy is controllable in this sector, at least he can go!
   if (fAtLeastOneMercControllable) {
-    ubPlayerControllableMercsInSquad = NumberOfPlayerControllableMercsInSquad(MercPtrs[gusSelectedSoldier].value.bAssignment);
+    ubPlayerControllableMercsInSquad = NumberOfPlayerControllableMercsInSquad(MercPtrs[gusSelectedSoldier].bAssignment);
     if (fAtLeastOneMercControllable <= ubPlayerControllableMercsInSquad) {
       // if the selected merc is an EPC and we can only leave with that merc, then prevent it
       // as EPCs aren't allowed to leave by themselves.  Instead of restricting this in the
@@ -3613,7 +3613,7 @@ function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): boolean {
     // Setup the tactical existance of the current soldier.
     //@@@Evaluate
     for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
-      if (MercPtrs[i].value.bActive && MercPtrs[i].value.bInSector) {
+      if (MercPtrs[i].bActive && MercPtrs[i].bInSector) {
         SetupProfileInsertionDataForSoldier(MercPtrs[i]);
       }
     }
@@ -3632,14 +3632,14 @@ export function HandlePotentialBringUpAutoresolveToFinishBattle(): boolean {
   // We don't have mercs in the sector.  Now, we check to see if there are BOTH enemies and militia.  If both
   // co-exist in the sector, then make them fight for control of the sector via autoresolve.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
-    if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife) {
-      if (MercPtrs[i].value.sSectorX == gWorldSectorX && MercPtrs[i].value.sSectorY == gWorldSectorY && MercPtrs[i].value.bSectorZ == gbWorldSectorZ) {
+    if (MercPtrs[i].bActive && MercPtrs[i].bLife) {
+      if (MercPtrs[i].sSectorX == gWorldSectorX && MercPtrs[i].sSectorY == gWorldSectorY && MercPtrs[i].bSectorZ == gbWorldSectorZ) {
         // We have enemies, now look for militia!
         for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
-          if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && MercPtrs[i].value.bSide == OUR_TEAM) {
-            if (MercPtrs[i].value.sSectorX == gWorldSectorX && MercPtrs[i].value.sSectorY == gWorldSectorY && MercPtrs[i].value.bSectorZ == gbWorldSectorZ) {
+          if (MercPtrs[i].bActive && MercPtrs[i].bLife && MercPtrs[i].bSide == OUR_TEAM) {
+            if (MercPtrs[i].sSectorX == gWorldSectorX && MercPtrs[i].sSectorY == gWorldSectorY && MercPtrs[i].bSectorZ == gbWorldSectorZ) {
               // We have militia and enemies and no mercs!  Let's finish this battle in autoresolve.
-              gfEnteringMapScreen = true;
+              gfEnteringMapScreen = 1;
               gfEnteringMapScreenToEnterPreBattleInterface = true;
               gfAutomaticallyStartAutoResolve = true;
               gfUsePersistantPBI = false;
@@ -3687,8 +3687,8 @@ export function CheckAndHandleUnloadingOfCurrentWorld(): boolean {
     if (gWorldSectorX == sBattleSectorX && gWorldSectorY == sBattleSectorY && gbWorldSectorZ == sBattleSectorZ) {
       for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
         // If we have a live and valid soldier
-        if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !MercPtrs[i].value.fBetweenSectors && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i]) && !AM_AN_EPC(MercPtrs[i])) {
-          if (MercPtrs[i].value.sSectorX == gWorldSectorX && MercPtrs[i].value.sSectorY == gWorldSectorY && MercPtrs[i].value.bSectorZ == gbWorldSectorZ) {
+        if (MercPtrs[i].bActive && MercPtrs[i].bLife && !MercPtrs[i].fBetweenSectors && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i]) && !AM_AN_EPC(MercPtrs[i])) {
+          if (MercPtrs[i].sSectorX == gWorldSectorX && MercPtrs[i].sSectorY == gWorldSectorY && MercPtrs[i].bSectorZ == gbWorldSectorZ) {
             RemoveSoldierFromGridNo(MercPtrs[i]);
             InitSoldierOppList(MercPtrs[i]);
           }
@@ -3699,8 +3699,8 @@ export function CheckAndHandleUnloadingOfCurrentWorld(): boolean {
     // Check and see if we have any live mercs in the sector.
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       // If we have a live and valid soldier
-      if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !MercPtrs[i].value.fBetweenSectors && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i]) && !AM_AN_EPC(MercPtrs[i])) {
-        if (MercPtrs[i].value.sSectorX == gWorldSectorX && MercPtrs[i].value.sSectorY == gWorldSectorY && MercPtrs[i].value.bSectorZ == gbWorldSectorZ) {
+      if (MercPtrs[i].bActive && MercPtrs[i].bLife && !MercPtrs[i].fBetweenSectors && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i]) && !AM_AN_EPC(MercPtrs[i])) {
+        if (MercPtrs[i].sSectorX == gWorldSectorX && MercPtrs[i].sSectorY == gWorldSectorY && MercPtrs[i].bSectorZ == gbWorldSectorZ) {
           return false;
         }
       }
@@ -3731,7 +3731,7 @@ export function CheckAndHandleUnloadingOfCurrentWorld(): boolean {
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
     if (!gfTacticalTraversal) {
       // if we are in tactical and don't intend on going to another sector immediately, then
-      gfEnteringMapScreen = true;
+      gfEnteringMapScreen = 1;
     } else {
       // The trashing of the world will be handled automatically.
       return false;

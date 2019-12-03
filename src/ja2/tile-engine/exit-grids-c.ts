@@ -55,18 +55,17 @@ export function ExitGridAtGridNo(usMapIndex: UINT16): boolean {
   return false;
 }
 
-export function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<LEVELNODE>>): boolean {
+export function GetExitGridLevelNode(usMapIndex: UINT16): LEVELNODE | null {
   let pShadow: LEVELNODE | null;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
   while (pShadow) {
     if (pShadow.uiFlags & LEVELNODE_EXITGRID) {
-      ppLevelNode.value = pShadow;
-      return true;
+      return pShadow;
     }
     pShadow = pShadow.pNext;
   }
-  return false;
+  return null;
 }
 
 export function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: EXITGRID): void {

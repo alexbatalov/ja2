@@ -127,7 +127,7 @@ export function RemoveProgressBar(ubID: UINT8): void {
 // As the process animates using UpdateProgressBar( 0 to 100 ), the total progress bar will only reach 30%
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
-export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: string /* Pointer<UINT16> */): void {
+export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: string | null /* Pointer<UINT16> */): void {
   let pCurr: PROGRESSBAR | null;
   let usStartX: UINT16;
   let usStartY: UINT16;

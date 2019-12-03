@@ -474,10 +474,10 @@ export function ShopKeeperScreenHandle(): UINT32 {
   GetShopKeeperInterfaceUserInput();
 
   // Check for any newly added items...
-  if (gpSMCurrentMerc.value.fCheckForNewlyAddedItems) {
+  if (gpSMCurrentMerc.fCheckForNewlyAddedItems) {
     // Startup any newly added items....
     CheckForAnyNewlyAddedItems(gpSMCurrentMerc);
-    gpSMCurrentMerc.value.fCheckForNewlyAddedItems = false;
+    gpSMCurrentMerc.fCheckForNewlyAddedItems = false;
   }
 
   HandleShopKeeperInterface();
@@ -740,12 +740,12 @@ function EnterShopKeeperInterface(): boolean {
     // (you can't be out of space if it isn't a repairman, only they can fill it up with repaired items!)
     if ((ArmsDealerInfo[gbSelectedArmsDealerID].ubTypeOfArmsDealer != Enum198.ARMS_DEALER_REPAIRS) || (CountNumberOfItemsInThePlayersOfferArea() < SKI_NUM_ARMS_DEALERS_INV_SLOTS)) {
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
-      if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
+      if ((bSlotNum != -1) && (gpSMCurrentMerc.inv[bSlotNum].ubNumberOfObjects > 0)) {
         // then we can't store the pocket #, because our system can't return stacked objects
         bSlotNum = -1;
       }
 
-      if (OfferObjectToDealer(gItemToAdd.ItemObject, gpSMCurrentMerc.value.ubProfile, bSlotNum)) {
+      if (OfferObjectToDealer(gItemToAdd.ItemObject, gpSMCurrentMerc.ubProfile, bSlotNum)) {
         fAddedOK = true;
       }
     }
@@ -755,7 +755,7 @@ function EnterShopKeeperInterface(): boolean {
       gfDoEvaluationAfterOpening = true;
     } else {
       // add the item back to the current PC into the slot it came from
-      CopyObj(gItemToAdd.ItemObject, Menptr[gpSMCurrentMerc.value.ubID].inv[gItemToAdd.bPreviousInvPos]);
+      CopyObj(gItemToAdd.ItemObject, Menptr[gpSMCurrentMerc.ubID].inv[gItemToAdd.bPreviousInvPos]);
     }
 
     // Clear the contents of the structure
@@ -2311,27 +2311,28 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): boolean {
   return true;
 }
 
+/* static */ let DrawHatchOnInventory__Pattern: UINT8[][] /* [8][8] */ = [
+  [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+  [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+  [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+  [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+  [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+  [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+  [ 1, 0, 1, 0, 1, 0, 1, 0 ],
+  [ 0, 1, 0, 1, 0, 1, 0, 1 ],
+];
 export function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
   let ClipRect: SGPRect = createSGPRect();
-  /* static */ let Pattern: UINT8[][] /* [8][8] */ = [
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-  ];
+
   ClipRect.iLeft = usPosX;
   ClipRect.iRight = usPosX + usWidth;
   ClipRect.iTop = usPosY;
   ClipRect.iBottom = usPosY + usHeight;
 
   pDestBuf = LockVideoSurface(uiSurface, addressof(uiDestPitchBYTES));
-  Blt16BPPBufferPixelateRect(pDestBuf, uiDestPitchBYTES, ClipRect, Pattern);
+  Blt16BPPBufferPixelateRect(pDestBuf, uiDestPitchBYTES, ClipRect, DrawHatchOnInventory__Pattern);
   UnLockVideoSurface(uiSurface);
 }
 
@@ -2403,7 +2404,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: boolean, fUnitPriceOnly: boolea
   }
 
   // if Flo is doing the dealin' and wheelin'
-  if (gpSMCurrentMerc.value.ubProfile == Enum268.FLO) {
+  if (gpSMCurrentMerc.ubProfile == Enum268.FLO) {
     // if it's a GUN or AMMO (but not Launchers, and all attachments and payload is included)
     switch (Item[usItemID].usItemClass) {
       case IC_GUN:
@@ -3161,7 +3162,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
 
       // if there is an owner of the item
       if (gMoveingItem.ubIdOfMercWhoOwnsTheItem != -1) {
-        gpItemPointerSoldier = FindSoldierByProfileID(gMoveingItem.ubIdOfMercWhoOwnsTheItem, true);
+        gpItemPointerSoldier = <SOLDIERTYPE>FindSoldierByProfileID(gMoveingItem.ubIdOfMercWhoOwnsTheItem, true);
         // make sure the soldier is not null
         if (gpItemPointerSoldier == null) {
           gpItemPointerSoldier = gpSMCurrentMerc;
@@ -3202,7 +3203,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
 
       // if there is an owner of the item
       if (gMoveingItem.ubIdOfMercWhoOwnsTheItem != -1) {
-        gpItemPointerSoldier = FindSoldierByProfileID(gMoveingItem.ubIdOfMercWhoOwnsTheItem, true);
+        gpItemPointerSoldier = <SOLDIERTYPE>FindSoldierByProfileID(gMoveingItem.ubIdOfMercWhoOwnsTheItem, true);
         // make sure the soldier is not null
         if (gpItemPointerSoldier == null) {
           gpItemPointerSoldier = gpSMCurrentMerc;
@@ -3217,7 +3218,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
       Assert((bSlotNum >= -1) && (bSlotNum < Enum261.NUM_INV_SLOTS));
 
       // if we're supposed to store the original pocket #, but that pocket still holds more of these
-      if ((bSlotNum != -1) && (gpSMCurrentMerc.value.inv[bSlotNum].ubNumberOfObjects > 0)) {
+      if ((bSlotNum != -1) && (gpSMCurrentMerc.inv[bSlotNum].ubNumberOfObjects > 0)) {
         // then we can't store the pocket #, because our system can't return stacked objects
         bSlotNum = -1;
       }
@@ -3226,7 +3227,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
       // if that doesn't work (because there isn't enough room in the player's offer area), the item is picked up into
       // the cursor, and may then get placed into the player's offer area directly, but it will NOT get evaluated that
       // way, and so has no possibility of entering the dealer's inventory (where complex items aren't permitted).
-      if (fOfferToDealerFirst && OfferObjectToDealer(gpItemPointer, gpSMCurrentMerc.value.ubProfile, bSlotNum)) {
+      if (fOfferToDealerFirst && OfferObjectToDealer(gpItemPointer, gpSMCurrentMerc.ubProfile, bSlotNum)) {
         // Reset the cursor
         SetSkiCursor(Enum317.CURSOR_NORMAL);
       } else // not supposed to offer it, or dealer has no more room
@@ -3250,7 +3251,7 @@ export function BeginSkiItemPointer(ubSource: UINT8, bSlotNum: INT8, fOfferToDea
 
         // By necessity, these items don't belong to a slot (so you can't return them via a right click),
         // because it would be too much work to handle attachments, members of a stack, or even items swapped out of slots.
-        gMoveingItem.ubIdOfMercWhoOwnsTheItem = gpSMCurrentMerc.value.ubProfile;
+        gMoveingItem.ubIdOfMercWhoOwnsTheItem = gpSMCurrentMerc.ubProfile;
         gMoveingItem.bSlotIdInOtherLocation = bSlotNum;
 
         // Restrict the cursor to the players offer area and the players inventory
@@ -3357,7 +3358,7 @@ export function SetSkiCursor(usCursor: UINT16): void {
     resetInventoryInSlot(gMoveingItem);
 
     //		gpSkiItemPointer = NULL;
-    gpItemPointer = null;
+    gpItemPointer = <OBJECTTYPE><unknown>null;
 
     DisableTacticalTeamPanelButtons(false);
 
@@ -5578,7 +5579,7 @@ function SKITryToAddInvToMercsInventory(pInv: INVENTORY_IN_SLOT, pSoldier: SOLDI
 }
 
 export function CanMercInteractWithSelectedShopkeeper(pSoldier: SOLDIERTYPE): boolean {
-  let pShopkeeper: SOLDIERTYPE;
+  let pShopkeeper: SOLDIERTYPE | null;
   let sDestGridNo: INT16;
   let bDestLevel: INT8;
   let sDistVisible: INT16;

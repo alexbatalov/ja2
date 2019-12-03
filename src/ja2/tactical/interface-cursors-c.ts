@@ -235,8 +235,8 @@ export function DrawUICursor(): boolean {
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(gUICursors[guiCurUICursor].usAdditionalData));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -249,13 +249,13 @@ export function DrawUICursor(): boolean {
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
         // If we are over a target, jump to that....
         if (gfUIFullTargetFound) {
-          gusTargetDropPos = MercPtrs[gusUIFullTargetID].value.sGridNo;
+          gusTargetDropPos = MercPtrs[gusUIFullTargetID].sGridNo;
         }
 
         // Put tile on the floor
         AddTopmostToTail(gusTargetDropPos, Enum312.FIRSTPOINTERS14);
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusTargetDropPos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusTargetDropPos].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusTargetDropPos].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -265,7 +265,7 @@ export function DrawUICursor(): boolean {
 
       // ATE; Is the current guy in steath mode?
       if (gusSelectedSoldier != NOBODY) {
-        if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
+        if (MercPtrs[gusSelectedSoldier].bStealthMode) {
           usTileCursor = Enum312.FIRSTPOINTERS9;
         }
       }
@@ -275,7 +275,7 @@ export function DrawUICursor(): boolean {
 
         // ATE; Is the current guy in steath mode?
         if (gusSelectedSoldier != NOBODY) {
-          if (MercPtrs[gusSelectedSoldier].value.bStealthMode) {
+          if (MercPtrs[gusSelectedSoldier].bStealthMode) {
             usTileCursor = Enum312.FIRSTPOINTERS10;
           }
         }
@@ -293,8 +293,8 @@ export function DrawUICursor(): boolean {
       if (gsInterfaceLevel == Enum214.I_ROOF_LEVEL) {
         // Put one on the roof as well
         AddOnRoofToHead(gusCurMousePos, GetSnapCursorIndex(usTileCursor));
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       }
     }
 
@@ -410,10 +410,10 @@ export function HideUICursor(): boolean {
 /* static */ let DrawSnappingCursor__fShowAP: boolean = true;
 function DrawSnappingCursor(): void {
   let pNewUIElem: LEVELNODE;
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = GetSoldier(gusSelectedSoldier);
   }
 
   // If we are in draw item mode, do nothing here but call the fuctiuon
@@ -424,8 +424,8 @@ function DrawSnappingCursor(): void {
     case Enum210.NORMAL_SNAPUICURSOR:
 
       AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS1);
-      gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       break;
 
     case Enum210.ALL_MOVE_RUN_UICURSOR:
@@ -495,22 +495,22 @@ function DrawSnappingCursor(): void {
 
         if (gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
 
         AddOnRoofToHead(gusCurMousePos, Enum312.FIRSTPOINTERS14);
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pOnRoofHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pOnRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
       } else {
         AddTopmostToHead(gusCurMousePos, Enum312.BADMARKER1);
-        gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-        gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+        (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
         if (gGameSettings.fOptions[Enum8.TOPTION_3D_CURSOR]) {
           AddTopmostToHead(gusCurMousePos, Enum312.FIRSTPOINTERS13);
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-          gpWorldLevelData[gusCurMousePos].pTopmostHead.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+          (<LEVELNODE>gpWorldLevelData[gusCurMousePos].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
         }
       }
       break;

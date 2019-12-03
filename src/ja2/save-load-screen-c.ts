@@ -104,7 +104,7 @@ let giSaveLoadMessageBox: INT32 = -1; // SaveLoad pop up messages index value
 let guiSaveLoadExitScreen: UINT32 = Enum26.SAVE_LOAD_SCREEN;
 
 // Contains the array of valid save game locations
-export let gbSaveGameArray: boolean[] /* [NUM_SAVE_GAMES] */;
+export let gbSaveGameArray: UINT8[] /* boolean[NUM_SAVE_GAMES] */ = createArray(NUM_SAVE_GAMES, 0);
 
 let gfDoingQuickLoad: boolean = false;
 
@@ -117,7 +117,7 @@ export let gfSaveGame: boolean = true;
 
 let gfSaveLoadScreenButtonsCreated: boolean = false;
 
-let gbSaveGameSelectedLocation: INT8[] /* [NUM_SAVE_GAMES] */;
+let gbSaveGameSelectedLocation: INT8[] /* [NUM_SAVE_GAMES] */ = createArray(NUM_SAVE_GAMES, 0);
 let gbSelectedSaveLocation: INT8 = -1;
 let gbHighLightedLocation: INT8 = -1;
 let gbLastHighLightedLocation: INT8 = -1;
@@ -127,7 +127,7 @@ let guiSlgBackGroundImage: UINT32;
 let guiBackGroundAddOns: UINT32;
 
 // The string that will contain the game desc text
-let gzGameDescTextField: string /* wchar_t[SIZE_OF_SAVE_GAME_DESC] */ = [ 0 ];
+let gzGameDescTextField: string /* wchar_t[SIZE_OF_SAVE_GAME_DESC] */;
 
 let gfUserInTextInputMode: boolean = false;
 let gubSaveGameNextPass: UINT8 = 0;
@@ -179,7 +179,7 @@ export function SaveLoadScreenInit(): boolean {
   // Set so next time we come in, we can set up
   gfSaveLoadScreenEntry = true;
 
-  memset(gbSaveGameArray, -1, NUM_SAVE_GAMES);
+  gbSaveGameArray.fill(-1);
 
   ClearSelectedSaveSlot();
 
@@ -428,7 +428,7 @@ function EnterSaveLoadScreen(): boolean {
   // Reset the highlight
   gbHighLightedLocation = -1;
 
-  gzGameDescTextField[0] = '\0';
+  gzGameDescTextField = '';
 
   // if we are loading
   //	if( !gfSaveGame )
@@ -439,9 +439,7 @@ function EnterSaveLoadScreen(): boolean {
     if (gGameSettings.bLastSavedGameSlot != -1) {
       // if the slot is valid
       if (gbSaveGameArray[gGameSettings.bLastSavedGameSlot]) {
-        let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
-
-        memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
+        let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
 
         // if it is not the Quick Save slot, and we are loading
         if (!gfSaveGame || gfSaveGame && gGameSettings.bLastSavedGameSlot != 0) {
@@ -451,10 +449,10 @@ function EnterSaveLoadScreen(): boolean {
           // load the save gamed header string
 
           // Get the heade for the saved game
-          if (!LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader))) {
-            memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
+          if (!LoadSavedGameHeader(gbSelectedSaveLocation, SaveGameHeader)) {
+            resetSavedGameHeader(SaveGameHeader);
             gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
-            gbSaveGameArray[gbSelectedSaveLocation] = false;
+            gbSaveGameArray[gbSelectedSaveLocation] = 0;
             gbSelectedSaveLocation = gGameSettings.bLastSavedGameSlot = -1;
           }
 
@@ -620,11 +618,11 @@ function HandleSaveLoadScreen(): void {
   }
 }
 
+/* static */ let GetSaveLoadScreenUserInput__fWasCtrlHeldDownLastFrame: boolean = false;
 function GetSaveLoadScreenUserInput(): void {
   let Event: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let bActiveTextField: INT8;
-  /* static */ let fWasCtrlHeldDownLastFrame: boolean = false;
 
   GetCursorPos(MousePos);
 
@@ -639,11 +637,11 @@ function GetSaveLoadScreenUserInput(): void {
     DisplayOnScreenNumber(true);
   }
 
-  if (gfKeyState[CTRL] || fWasCtrlHeldDownLastFrame) {
+  if (gfKeyState[CTRL] || GetSaveLoadScreenUserInput__fWasCtrlHeldDownLastFrame) {
     DisplaySaveGameEntry(gbSelectedSaveLocation);
   }
 
-  fWasCtrlHeldDownLastFrame = gfKeyState[CTRL];
+  GetSaveLoadScreenUserInput__fWasCtrlHeldDownLastFrame = gfKeyState[CTRL];
 
   while (DequeueEvent(Event)) {
     // HOOK INTO MOUSE HOOKS
@@ -668,36 +666,36 @@ function GetSaveLoadScreenUserInput(): void {
         break;
     }
 
-    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(Event) && Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
-        case '1':
+        case '1'.charCodeAt(0):
           SetSelection(1);
           break;
-        case '2':
+        case '2'.charCodeAt(0):
           SetSelection(2);
           break;
-        case '3':
+        case '3'.charCodeAt(0):
           SetSelection(3);
           break;
-        case '4':
+        case '4'.charCodeAt(0):
           SetSelection(4);
           break;
-        case '5':
+        case '5'.charCodeAt(0):
           SetSelection(5);
           break;
-        case '6':
+        case '6'.charCodeAt(0):
           SetSelection(6);
           break;
-        case '7':
+        case '7'.charCodeAt(0):
           SetSelection(7);
           break;
-        case '8':
+        case '8'.charCodeAt(0):
           SetSelection(8);
           break;
-        case '9':
+        case '9'.charCodeAt(0):
           SetSelection(9);
           break;
-        case '0':
+        case '0'.charCodeAt(0):
           SetSelection(10);
           break;
       }
@@ -705,7 +703,7 @@ function GetSaveLoadScreenUserInput(): void {
 
     if (Event.usEvent == KEY_UP) {
       switch (Event.usParam) {
-        case 'a':
+        case 'a'.charCodeAt(0):
           if (gfKeyState[ALT] && !gfSaveGame) {
             let iFile: INT8 = GetNumberForAutoSave(true);
 
@@ -719,7 +717,7 @@ function GetSaveLoadScreenUserInput(): void {
           }
           break;
 
-        case 'b':
+        case 'b'.charCodeAt(0):
           if (gfKeyState[ALT] && !gfSaveGame) {
             let iFile: INT8 = GetNumberForAutoSave(false);
 
@@ -854,7 +852,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
   }
 }
 
-export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): boolean {
+export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect): boolean {
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
@@ -862,11 +860,11 @@ export function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: string /* 
   return giSaveLoadMessageBox != -1;
 }
 
-function DoSaveLoadMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): boolean {
+function DoSaveLoadMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): boolean {
   let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 639, 479);
 
   // do message box and return
-  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
+  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, CenteringRect);
 
   // send back return state
   return giSaveLoadMessageBox != -1;
@@ -875,19 +873,19 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> 
 export function InitSaveGameArray(): boolean {
   let cnt: INT8;
   let zSaveGameName: string /* CHAR8[512] */;
-  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
+  let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
-    CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
+    zSaveGameName = CreateSavedGameFileNameFromNumber(cnt);
 
     if (FileExists(zSaveGameName)) {
       // Get the header for the saved game
-      if (!LoadSavedGameHeader(cnt, addressof(SaveGameHeader)))
-        gbSaveGameArray[cnt] = false;
+      if (!LoadSavedGameHeader(cnt, SaveGameHeader))
+        gbSaveGameArray[cnt] = 0;
       else
-        gbSaveGameArray[cnt] = true;
+        gbSaveGameArray[cnt] = 1;
     } else
-      gbSaveGameArray[cnt] = false;
+      gbSaveGameArray[cnt] = 0;
   }
 
   return true;
@@ -914,7 +912,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
   let zLocationString: string /* CHAR16[128] */;
   let zNumMercsString: string /* CHAR16[128] */;
   let zBalanceString: string /* CHAR16[128] */;
-  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
+  let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
   let hPixHandle: HVOBJECT;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
   let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT();
@@ -1011,11 +1009,11 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       SaveGameHeader.sSavedGameDesc = gzGameDescTextField;
 
       // copy over the initial game options
-      memcpy(addressof(SaveGameHeader.sInitialGameOptions), addressof(gGameOptions), sizeof(GAME_OPTIONS));
+      copyGameOptions(SaveGameHeader.sInitialGameOptions, gGameOptions);
     } else {
       // Get the header for the specified saved game
-      if (!LoadSavedGameHeader(bEntryID, addressof(SaveGameHeader))) {
-        memset(addressof(SaveGameHeader), 0, sizeof(SaveGameHeader));
+      if (!LoadSavedGameHeader(bEntryID, SaveGameHeader)) {
+        resetSavedGameHeader(SaveGameHeader);
         return false;
       }
     }
@@ -1121,34 +1119,34 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
   return true;
 }
 
-function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): boolean {
+function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: SAVED_GAME_HEADER): boolean {
   let hFile: HWFILE;
   let zSavedGameName: string /* CHAR8[512] */;
   let uiNumBytesRead: UINT32;
 
   // make sure the entry is valid
   if (bEntry < 0 || bEntry > NUM_SAVE_GAMES) {
-    memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
+    resetSavedGameHeader(pSaveGameHeader);
     return false;
   }
 
   // Get the name of the file
-  CreateSavedGameFileNameFromNumber(bEntry, zSavedGameName);
+  zSavedGameName = CreateSavedGameFileNameFromNumber(bEntry);
 
   if (FileExists(zSavedGameName)) {
     // create the save game file
     hFile = FileOpen(zSavedGameName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
     if (!hFile) {
       FileClose(hFile);
-      gbSaveGameArray[bEntry] = false;
+      gbSaveGameArray[bEntry] = 0;
       return false;
     }
 
     // Load the Save Game header file
-    FileRead(hFile, pSaveGameHeader, sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(SAVED_GAME_HEADER)) {
+    uiNumBytesRead = FileRead(hFile, pSaveGameHeader, SAVED_GAME_HEADER_SIZE);
+    if (uiNumBytesRead != SAVED_GAME_HEADER_SIZE) {
       FileClose(hFile);
-      gbSaveGameArray[bEntry] = false;
+      gbSaveGameArray[bEntry] = 0;
       return false;
     }
 
@@ -1159,20 +1157,20 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
     //
 
     // Check to see if the desc field is bigger then it should be, ie no null char
-    if (pSaveGameHeader.value.sSavedGameDesc.length >= SIZE_OF_SAVE_GAME_DESC) {
-      memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
-      gbSaveGameArray[bEntry] = false;
+    if (pSaveGameHeader.sSavedGameDesc.length >= SIZE_OF_SAVE_GAME_DESC) {
+      resetSavedGameHeader(pSaveGameHeader);
+      gbSaveGameArray[bEntry] = 0;
       return false;
     }
 
     // Check to see if the version # field is bigger then it should be, ie no null char
-    if (pSaveGameHeader.value.zGameVersionNumber.length >= GAME_VERSION_LENGTH) {
-      memset(pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
-      gbSaveGameArray[bEntry] = false;
+    if (pSaveGameHeader.zGameVersionNumber.length >= GAME_VERSION_LENGTH) {
+      resetSavedGameHeader(pSaveGameHeader);
+      gbSaveGameArray[bEntry] = 0;
       return false;
     }
   } else {
-    memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
+    resetSavedGameHeader(pSaveGameHeader);
   }
 
   return true;
@@ -1246,13 +1244,13 @@ void BtnSlgLoadCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
+/* static */ let SelectedSaveRegionCallBack__uiLastTime: UINT32 = 0;
 function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void {
   let bActiveTextField: INT8;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let bSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
-    /* static */ let uiLastTime: UINT32 = 0;
     let uiCurTime: UINT32 = GetJA2Clock();
     let i: INT32;
 
@@ -1287,7 +1285,7 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
       gbSelectedSaveLocation = bSelected;
 
       // Reset the global string
-      gzGameDescTextField[0] = '\0';
+      gzGameDescTextField = '';
 
       // Init the text field for the game desc
       InitSaveLoadScreenTextInputBoxes();
@@ -1305,7 +1303,7 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
       //			else
       {
         // Set the time in which the button was first pressed
-        uiLastTime = GetJA2Clock();
+        SelectedSaveRegionCallBack__uiLastTime = GetJA2Clock();
       }
 
       // Set the selected region to be highlighted
@@ -1313,7 +1311,7 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
 
       gfRedrawSaveLoadScreen = true;
 
-      uiLastTime = GetJA2Clock();
+      SelectedSaveRegionCallBack__uiLastTime = GetJA2Clock();
     }
 
     // the user is selecting the selected save game slot
@@ -1324,11 +1322,11 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
         if (!gfUserInTextInputMode) {
           //					SaveLoadGameNumber( gbSelectedSaveLocation );
 
-          if ((uiCurTime - uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
+          if ((uiCurTime - SelectedSaveRegionCallBack__uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
             // Load the saved game
             SaveLoadGameNumber(gbSelectedSaveLocation);
           } else {
-            uiLastTime = GetJA2Clock();
+            SelectedSaveRegionCallBack__uiLastTime = GetJA2Clock();
           }
 
           InitSaveLoadScreenTextInputBoxes();
@@ -1353,10 +1351,10 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
 
             gfRedrawSaveLoadScreen = true;
 
-            if ((uiCurTime - uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
+            if ((uiCurTime - SelectedSaveRegionCallBack__uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
               gubSaveGameNextPass = 1;
             } else {
-              uiLastTime = GetJA2Clock();
+              SelectedSaveRegionCallBack__uiLastTime = GetJA2Clock();
             }
           }
         }
@@ -1365,11 +1363,11 @@ function SelectedSaveRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): void
       }
       // else we are loading
       else {
-        if ((uiCurTime - uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
+        if ((uiCurTime - SelectedSaveRegionCallBack__uiLastTime) < SLG_DOUBLE_CLICK_DELAY) {
           // Load the saved game
           SaveLoadGameNumber(bSelected);
         } else {
-          uiLastTime = GetJA2Clock();
+          SelectedSaveRegionCallBack__uiLastTime = GetJA2Clock();
         }
       }
     }
@@ -1412,7 +1410,7 @@ function SelectedSaveRegionMovementCallBack(pRegion: MOUSE_REGION, reason: INT32
 function InitSaveLoadScreenTextInputBoxes(): void {
   let uiStartLoc: UINT32 = 0;
   let usPosY: UINT16;
-  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
+  let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
 
   if (gbSelectedSaveLocation == -1)
     return;
@@ -1441,14 +1439,14 @@ function InitSaveLoadScreenTextInputBoxes(): void {
   // if there is already a string here, use its string
   if (gbSaveGameArray[gbSelectedSaveLocation]) {
     // if we are modifying a previously modifed string, use it
-    if (gzGameDescTextField[0] != '\0') {
+    if (gzGameDescTextField != '') {
     } else {
       // Get the header for the specified saved game
-      LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader));
+      LoadSavedGameHeader(gbSelectedSaveLocation, SaveGameHeader);
       gzGameDescTextField = SaveGameHeader.sSavedGameDesc;
     }
   } else
-    gzGameDescTextField[0] = '\0';
+    gzGameDescTextField = '';
 
   // Game Desc Field
   AddTextInputField(SLG_FIRST_SAVED_SPOT_X + SLG_SAVE_GAME_DESC_X, (usPosY + SLG_SAVE_GAME_DESC_Y - 5), SLG_SAVELOCATION_WIDTH - SLG_SAVE_GAME_DESC_X - 7, 17, MSYS_PRIORITY_HIGH + 2, gzGameDescTextField, 46, INPUTTYPE_ASCII); // 23
@@ -1501,7 +1499,7 @@ function SetSelection(ubNewSelection: UINT8): void {
       gbSelectedSaveLocation = ubNewSelection;
 
       // Null out the currently selected save game
-      gzGameDescTextField[0] = '\0';
+      gzGameDescTextField = '';
 
       // Init the text field for the game desc
       InitSaveLoadScreenTextInputBoxes();
@@ -1553,10 +1551,10 @@ function SetSelection(ubNewSelection: UINT8): void {
 function CompareSaveGameVersion(bSaveGameID: INT8): UINT8 {
   let ubRetVal: UINT8 = Enum25.SLS_HEADER_OK;
 
-  let SaveGameHeader: SAVED_GAME_HEADER = createSaveGameHeader();
+  let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
 
   // Get the heade for the saved game
-  LoadSavedGameHeader(bSaveGameID, addressof(SaveGameHeader));
+  LoadSavedGameHeader(bSaveGameID, SaveGameHeader);
 
   // check to see if the saved game version in the header is the same as the current version
   if (SaveGameHeader.uiSavedGameVersion != guiSavedGameVersion) {
@@ -1617,7 +1615,7 @@ export function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
   let zSaveGameName: string /* CHAR8[512] */;
 
   // Create the name of the file
-  CreateSavedGameFileNameFromNumber(ubSaveGameSlotID, zSaveGameName);
+  zSaveGameName = CreateSavedGameFileNameFromNumber(ubSaveGameSlotID);
 
   // Delete the saved game file
   FileDelete(zSaveGameName);
@@ -1790,7 +1788,7 @@ function FailedLoadingGameCallBack(bExitValue: UINT8): void {
 }
 
 export function DoQuickSave(): boolean {
-  gzGameDescTextField[0] = '\0';
+  gzGameDescTextField = '';
 
   /*
           // Make sure the user has enough hard drive space
@@ -1863,7 +1861,7 @@ export function IsThereAnySavedGameFiles(): boolean {
   let zSaveGameName: string /* CHAR8[512] */;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
-    CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
+    zSaveGameName = CreateSavedGameFileNameFromNumber(cnt);
 
     if (FileExists(zSaveGameName))
       return true;

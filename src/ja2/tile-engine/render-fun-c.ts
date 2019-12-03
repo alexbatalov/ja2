@@ -29,26 +29,22 @@ function SetTileRangeRoomNum(pSelectRegion: SGPRect, ubRoomNum: UINT8): void {
   }
 }
 
-export function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
+export function InARoom(sGridNo: UINT16): UINT8 {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
-    if (pubRoomNo) {
-      pubRoomNo.value = gubWorldRoomInfo[sGridNo];
-    }
-    return true;
+    return gubWorldRoomInfo[sGridNo];
   }
 
-  return false;
+  return -1;
 }
 
-export function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): boolean {
+export function InAHiddenRoom(sGridNo: UINT16): UINT8 {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
-      pubRoomNo.value = gubWorldRoomInfo[sGridNo];
-      return true;
+      return gubWorldRoomInfo[sGridNo];
     }
   }
 
-  return false;
+  return -1;
 }
 
 // @@ATECLIP TO WORLD!

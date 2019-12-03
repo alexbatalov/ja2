@@ -8,7 +8,15 @@ interface BURST_LOCATIONS {
   sGridNo: INT16;
 }
 
-let gsBurstLocations: BURST_LOCATIONS[] /* [MAX_BURST_LOCATIONS] */;
+function createBurstLocations(): BURST_LOCATIONS {
+  return {
+    sX: 0,
+    sY: 0,
+    sGridNo: 0,
+  };
+}
+
+let gsBurstLocations: BURST_LOCATIONS[] /* [MAX_BURST_LOCATIONS] */ = createArrayFrom(MAX_BURST_LOCATIONS, createBurstLocations);
 let gbNumBurstLocations: INT8 = 0;
 
 export function ResetBurstLocations(): void {
@@ -35,7 +43,7 @@ export function AccumulateBurstLocation(sGridNo: INT16): void {
   }
 }
 
-export function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function PickBurstLocations(pSoldier: SOLDIERTYPE): void {
   let ubShotsPerBurst: UINT8;
   let dAccululator: FLOAT = 0;
   let dStep: FLOAT = 0;
@@ -45,7 +53,7 @@ export function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
   // Get shots per burst
-  ubShotsPerBurst = Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].ubShotsPerBurst;
+  ubShotsPerBurst = Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
   dStep = gbNumBurstLocations / ubShotsPerBurst;
@@ -56,7 +64,7 @@ export function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
     ubLocationNum = (dAccululator);
 
     // Add to merc location
-    pSoldier.value.sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
+    pSoldier.sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
 
     // Acculuate index value
     dAccululator += dStep;
@@ -65,7 +73,7 @@ export function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   // OK, they have been added
 }
 
-export function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pTargets: Pointer<SOLDIERTYPE>[] /* [5] */): void {
+export function AIPickBurstLocations(pSoldier: SOLDIERTYPE, bTargets: INT8, pTargets: SOLDIERTYPE[] /* [5] */): void {
   let ubShotsPerBurst: UINT8;
   let dAccululator: FLOAT = 0;
   let dStep: FLOAT = 0;
@@ -75,12 +83,12 @@ export function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: I
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
   // Get shots per burst
-  ubShotsPerBurst = Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].ubShotsPerBurst;
+  ubShotsPerBurst = Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
   // dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
   // CJC: tweak!
-  dStep = bTargets / ubShotsPerBurst;
+  dStep = Math.floor(bTargets / ubShotsPerBurst);
 
   // Loop through our shots!
   for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
@@ -88,7 +96,7 @@ export function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: I
     ubLocationNum = (dAccululator);
 
     // Add to merc location
-    pSoldier.value.sSpreadLocations[cnt] = pTargets[ubLocationNum].value.sGridNo;
+    pSoldier.sSpreadLocations[cnt] = pTargets[ubLocationNum].sGridNo;
 
     // Acculuate index value
     dAccululator += dStep;

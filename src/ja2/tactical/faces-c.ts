@@ -350,7 +350,7 @@ export function SetAutoFaceActiveFromSoldier(uiDisplayBuffer: UINT32, uiRestoreB
     return;
   }
 
-  SetAutoFaceActive(uiDisplayBuffer, uiRestoreBuffer, MercPtrs[ubSoldierID].value.iFaceIndex, usFaceX, usFaceY);
+  SetAutoFaceActive(uiDisplayBuffer, uiRestoreBuffer, MercPtrs[ubSoldierID].iFaceIndex, usFaceX, usFaceY);
 }
 
 function GetFaceRelativeCoordinates(pFace: FACETYPE): { usEyesX: UINT16, usEyesY: UINT16, usMouthX: UINT16, usMouthY: UINT16 } {
@@ -503,7 +503,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   // Are we a soldier?
   if (pFace.ubSoldierID != NOBODY) {
-    pFace.bOldSoldierLife = MercPtrs[pFace.ubSoldierID].value.bLife;
+    pFace.bOldSoldierLife = MercPtrs[pFace.ubSoldierID].bLife;
   }
 }
 
@@ -513,7 +513,7 @@ export function SetAutoFaceInActiveFromSoldier(ubSoldierID: UINT8): void {
     return;
   }
 
-  SetAutoFaceInActive(MercPtrs[ubSoldierID].value.iFaceIndex);
+  SetAutoFaceInActive(MercPtrs[ubSoldierID].iFaceIndex);
 }
 
 export function SetAutoFaceInActive(iFaceIndex: INT32): void {
@@ -596,7 +596,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
 
     // CHECK IF BUDDY IS DEAD, UNCONSCIOUS, ASLEEP, OR POW!
     if (pFace.ubSoldierID != NOBODY) {
-      if ((MercPtrs[pFace.ubSoldierID].value.bLife < OKLIFE) || (MercPtrs[pFace.ubSoldierID].value.fMercAsleep == true) || (MercPtrs[pFace.ubSoldierID].value.bAssignment == Enum117.ASSIGNMENT_POW)) {
+      if ((MercPtrs[pFace.ubSoldierID].bLife < OKLIFE) || (MercPtrs[pFace.ubSoldierID].fMercAsleep == true) || (MercPtrs[pFace.ubSoldierID].bAssignment == Enum117.ASSIGNMENT_POW)) {
         return;
       }
     }
@@ -697,12 +697,12 @@ function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sF
         UnLockVideoSurface(uiBuffer);
       } else if ((pFace.uiFlags & FACE_SHOW_MOVING_HILIGHT)) {
         if (pFace.ubSoldierID != NOBODY) {
-          if (MercPtrs[pFace.ubSoldierID].value.bLife >= OKLIFE) {
+          if (MercPtrs[pFace.ubSoldierID].bLife >= OKLIFE) {
             // Lock buffer
             pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
             SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.usFaceWidth + 4, sFaceY + pFace.usFaceHeight + 4);
 
-            if (MercPtrs[pFace.ubSoldierID].value.bStealthMode) {
+            if (MercPtrs[pFace.ubSoldierID].bStealthMode) {
               usLineColor = Get16BPPColor(FROMRGB(158, 158, 12));
             } else {
               usLineColor = Get16BPPColor(FROMRGB(8, 12, 118));
@@ -899,7 +899,7 @@ export function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): boolean {
     return false;
   }
 
-  return RenderAutoFace(MercPtrs[ubSoldierID].value.iFaceIndex);
+  return RenderAutoFace(MercPtrs[ubSoldierID].iFaceIndex);
 }
 
 function GetXYForIconPlacement(pFace: FACETYPE, ubIndex: UINT16, sFaceX: INT16, sFaceY: INT16): { sX: INT16, sY: INT16 } {
@@ -995,7 +995,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
   if (pFace.ubSoldierID != NOBODY) {
     pSoldier = MercPtrs[pFace.ubSoldierID];
 
-    if ((MercPtrs[pFace.ubSoldierID].value.bLife < CONSCIOUSNESS || MercPtrs[pFace.ubSoldierID].value.fDeadPanel)) {
+    if ((MercPtrs[pFace.ubSoldierID].bLife < CONSCIOUSNESS || MercPtrs[pFace.ubSoldierID].fDeadPanel)) {
       // Blit Closed eyes here!
       BltVideoObjectFromIndex(uiRenderBuffer, pFace.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -1003,7 +1003,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
       BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
     }
 
-    if (MercPtrs[pFace.ubSoldierID].value.fMercAsleep == true) {
+    if (MercPtrs[pFace.ubSoldierID].fMercAsleep == true) {
       // blit eyes closed
       BltVideoObjectFromIndex(uiRenderBuffer, pFace.uiVideoObject, 1, usEyesX, usEyesY, VO_BLT_SRCTRANSPARENCY, null);
     }
@@ -1059,7 +1059,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
         UnLockVideoSurface(uiRenderBuffer);
       }
 
-      if (MercPtrs[pFace.ubSoldierID].value.bInSector && (((gTacticalStatus.ubCurrentTeam != OUR_TEAM) || !OK_INTERRUPT_MERC(MercPtrs[pFace.ubSoldierID])) && !gfHiddenInterrupt) || ((gfSMDisableForItems && !gfInItemPickupMenu) && gusSMCurrentMerc == pFace.ubSoldierID && gsCurInterfacePanel == Enum215.SM_PANEL)) {
+      if (MercPtrs[pFace.ubSoldierID].bInSector && (((gTacticalStatus.ubCurrentTeam != OUR_TEAM) || !OK_INTERRUPT_MERC(MercPtrs[pFace.ubSoldierID])) && !gfHiddenInterrupt) || ((gfSMDisableForItems && !gfInItemPickupMenu) && gusSMCurrentMerc == pFace.ubSoldierID && gsCurInterfacePanel == Enum215.SM_PANEL)) {
         // Blit hatch!
         BltVideoObjectFromIndex(uiRenderBuffer, guiHATCH, 0, sFaceX, sFaceY, VO_BLT_SRCTRANSPARENCY, null);
       }
@@ -1089,7 +1089,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
     }
 
     // Check if a robot and is not controlled....
-    if (MercPtrs[pFace.ubSoldierID].value.uiStatusFlags & SOLDIER_ROBOT) {
+    if (MercPtrs[pFace.ubSoldierID].uiStatusFlags & SOLDIER_ROBOT) {
       if (!CanRobotBeControlled(MercPtrs[pFace.ubSoldierID])) {
         // Not controlled robot
         sIconIndex = 5;
@@ -1104,12 +1104,12 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
     }
 
     // If blind...
-    if (MercPtrs[pFace.ubSoldierID].value.bBlindedCounter > 0) {
+    if (MercPtrs[pFace.ubSoldierID].bBlindedCounter > 0) {
       DoRightIcon(uiRenderBuffer, pFace, sFaceX, sFaceY, bNumRightIcons, 6);
       bNumRightIcons++;
     }
 
-    if (MercPtrs[pFace.ubSoldierID].value.bDrugEffect[DRUG_TYPE_ADRENALINE]) {
+    if (MercPtrs[pFace.ubSoldierID].bDrugEffect[DRUG_TYPE_ADRENALINE]) {
       DoRightIcon(uiRenderBuffer, pFace, sFaceX, sFaceY, bNumRightIcons, 7);
       bNumRightIcons++;
     }
@@ -1294,7 +1294,7 @@ export function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8
     return false;
   }
 
-  return ExternRenderFace(uiBuffer, MercPtrs[ubSoldierID].value.iFaceIndex, sX, sY);
+  return ExternRenderFace(uiBuffer, MercPtrs[ubSoldierID].iFaceIndex, sX, sY);
 }
 
 function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: INT16): boolean {

@@ -9,8 +9,8 @@ export let gusSelectionType: UINT16 = Enum33.SMALLSELECTION;
 export let gusSelectionDensity: UINT16 = 2;
 export let gusSavedSelectionType: UINT16 = Enum33.SMALLSELECTION;
 export let gusSavedBuildingSelectionType: UINT16 = Enum33.AREASELECTION;
-export let sGridX: INT16;
-export let sGridY: INT16;
+let sGridX: INT16;
+let sGridY: INT16;
 let sBadMarker: INT16 = -1;
 
 export let wszSelType: string[] /* Pointer<UINT16>[6] */ = [
@@ -72,17 +72,17 @@ export function RemoveCursors(): void {
   Assert(gSelectRegion.iLeft >= 0 && gSelectRegion.iLeft <= gSelectRegion.iRight);
   for (y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; y++) {
     for (x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; x++) {
-      let pNode: Pointer<LEVELNODE>;
+      let pNode: LEVELNODE | null;
       iMapIndex = y * WORLD_COLS + x;
       if (gfUsingOffset)
         iMapIndex += ROOF_OFFSET;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode.value.usIndex == Enum312.FIRSTPOINTERS1 || pNode.value.usIndex == Enum312.FIRSTPOINTERS5) {
-          RemoveTopmost(iMapIndex, pNode.value.usIndex);
+        if (pNode.usIndex == Enum312.FIRSTPOINTERS1 || pNode.usIndex == Enum312.FIRSTPOINTERS5) {
+          RemoveTopmost(iMapIndex, pNode.usIndex);
           break;
         }
-        pNode = pNode.value.pNext;
+        pNode = pNode.pNext;
       }
     }
   }
@@ -91,17 +91,17 @@ export function RemoveCursors(): void {
 }
 
 function RemoveBadMarker(): void {
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
   if (sBadMarker < 0)
     return;
   pNode = gpWorldLevelData[sBadMarker].pTopmostHead;
   while (pNode) {
-    if (pNode.value.usIndex == Enum312.BADMARKER1) {
-      RemoveTopmost(sBadMarker, pNode.value.usIndex);
+    if (pNode.usIndex == Enum312.BADMARKER1) {
+      RemoveTopmost(sBadMarker, pNode.usIndex);
       sBadMarker = -1;
       break;
     }
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
   }
 }
 
@@ -338,43 +338,43 @@ function EnsureSelectionType(): void {
 }
 
 function DrawBuildingLayout(iMapIndex: INT32): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   let iOffset: INT32;
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE | null;
   let fAdd: boolean;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
-    iMapIndex = curr.value.sGridNo + iOffset;
+    iMapIndex = curr.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX) {
       fAdd = true;
       pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
       while (pNode) {
-        if (pNode.value.usIndex == Enum312.FIRSTPOINTERS1) {
+        if (pNode.usIndex == Enum312.FIRSTPOINTERS1) {
           fAdd = false;
           break;
         }
-        pNode = pNode.value.pNext;
+        pNode = pNode.pNext;
       }
       if (fAdd)
         AddTopmostToTail(iMapIndex, Enum312.FIRSTPOINTERS1);
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
 }
 
 export function RemoveBuildingLayout(): void {
-  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: BUILDINGLAYOUTNODE | null;
   let iOffset: INT32;
   let iMapIndex: INT32;
   iMapIndex = gSelectRegion.iLeft + gSelectRegion.iTop * WORLD_COLS;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
-    iMapIndex = curr.value.sGridNo + iOffset;
+    iMapIndex = curr.sGridNo + iOffset;
     if (iMapIndex > 0 && iMapIndex < WORLD_MAX)
       RemoveTopmost(iMapIndex, Enum312.FIRSTPOINTERS1);
-    curr = curr.value.next;
+    curr = curr.next;
   }
 }
 

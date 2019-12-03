@@ -3,11 +3,11 @@ namespace ja2 {
 export let gfAniEditMode: boolean = false;
 /* static */ let usStartAnim: UINT16 = 0;
 /* static */ let ubStartHeight: UINT8 = 0;
-/* static */ export let pSoldier: Pointer<SOLDIERTYPE>;
+/* static */ let pSoldier: SOLDIERTYPE /* Pointer<SOLDIERTYPE> */;
 
 /* static */ let fOKFiles: boolean = false;
 /* static */ let ubNumStates: UINT8 = 0;
-/* static */ let pusStates: Pointer<UINT16> = null;
+/* static */ let pusStates: UINT16[] /* Pointer<UINT16> */ = <UINT16[]><unknown>null;
 /* static */ let ubCurLoadedState: INT8 = 0;
 
 function CycleAnimations(): void {
@@ -37,25 +37,25 @@ export function AniEditScreenShutdown(): boolean {
   return true;
 }
 
+/* static */ let AniEditScreenHandle__fFirstTime: boolean = true;
+/* static */ let AniEditScreenHandle__usOldState: UINT16;
+/* static */ let AniEditScreenHandle__fToggle: boolean = false;
+/* static */ let AniEditScreenHandle__fToggle2: boolean = false;
 export function AniEditScreenHandle(): UINT32 {
   let InputEvent: InputAtom = createInputAtom();
-  /* static */ let fFirstTime: boolean = true;
-  /* static */ let usOldState: UINT16;
-  /* static */ let fToggle: boolean = false;
-  /* static */ let fToggle2: boolean = false;
 
   //	EV_S_SETPOSITION SSetPosition;
 
   // Make backups
-  if (fFirstTime) {
+  if (AniEditScreenHandle__fFirstTime) {
     gfAniEditMode = true;
 
     usStartAnim = 0;
     ubStartHeight = ANIM_STAND;
 
-    fFirstTime = false;
-    fToggle = false;
-    fToggle2 = false;
+    AniEditScreenHandle__fFirstTime = false;
+    AniEditScreenHandle__fToggle = false;
+    AniEditScreenHandle__fToggle2 = false;
     ubCurLoadedState = 0;
 
     pSoldier = MercPtrs[gusSelectedSoldier];
@@ -81,8 +81,8 @@ export function AniEditScreenHandle(): UINT32 {
   mprintf(0, 0, "SOLDIER ANIMATION VIEWER");
   gprintfdirty(0, 0, "SOLDIER ANIMATION VIEWER");
 
-  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.value.usAnimSurface].Filename);
-  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.value.usAnimSurface].Filename);
+  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
+  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
 
   switch (ubStartHeight) {
     case ANIM_STAND:
@@ -102,12 +102,12 @@ export function AniEditScreenHandle(): UINT32 {
   }
   gprintfdirty(0, 40, "Current Animation: %S", gAnimControl[usStartAnim].zAnimStr);
 
-  if (fToggle) {
+  if (AniEditScreenHandle__fToggle) {
     mprintf(0, 60, "FORCE ON");
     gprintfdirty(0, 60, "FORCE OFF");
   }
 
-  if (fToggle2) {
+  if (AniEditScreenHandle__fToggle2) {
     mprintf(0, 70, "LOADED ORDER ON");
     gprintfdirty(0, 70, "LOADED ORDER ON");
 
@@ -117,7 +117,7 @@ export function AniEditScreenHandle(): UINT32 {
 
   if (DequeueEvent(InputEvent) == true) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
-      fFirstTime = true;
+      AniEditScreenHandle__fFirstTime = true;
 
       gfAniEditMode = false;
 
@@ -135,15 +135,15 @@ export function AniEditScreenHandle(): UINT32 {
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == SPACE)) {
-      if (!fToggle && !fToggle2) {
+      if (!AniEditScreenHandle__fToggle && !AniEditScreenHandle__fToggle2) {
         CycleAnimations();
       }
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 's')) {
-      if (!fToggle) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 's'.charCodeAt(0))) {
+      if (!AniEditScreenHandle__fToggle) {
         let usAnim: UINT16 = 0;
-        usOldState = usStartAnim;
+        AniEditScreenHandle__usOldState = usStartAnim;
 
         switch (ubStartHeight) {
           case ANIM_STAND:
@@ -164,26 +164,26 @@ export function AniEditScreenHandle(): UINT32 {
 
         EVENT_InitNewSoldierAnim(pSoldier, usAnim, 0, true);
       } else {
-        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, true);
+        EVENT_InitNewSoldierAnim(pSoldier, AniEditScreenHandle__usOldState, 0, true);
       }
 
-      fToggle = !fToggle;
+      AniEditScreenHandle__fToggle = !AniEditScreenHandle__fToggle;
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'l')) {
-      if (!fToggle2) {
-        usOldState = usStartAnim;
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'l'.charCodeAt(0))) {
+      if (!AniEditScreenHandle__fToggle2) {
+        AniEditScreenHandle__usOldState = usStartAnim;
 
         EVENT_InitNewSoldierAnim(pSoldier, pusStates[ubCurLoadedState], 0, true);
       } else {
-        EVENT_InitNewSoldierAnim(pSoldier, usOldState, 0, true);
+        EVENT_InitNewSoldierAnim(pSoldier, AniEditScreenHandle__usOldState, 0, true);
       }
 
-      fToggle2 = !fToggle2;
+      AniEditScreenHandle__fToggle2 = !AniEditScreenHandle__fToggle2;
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == PGUP)) {
-      if (fOKFiles && fToggle2) {
+      if (fOKFiles && AniEditScreenHandle__fToggle2) {
         ubCurLoadedState++;
 
         if (ubCurLoadedState == ubNumStates) {
@@ -195,7 +195,7 @@ export function AniEditScreenHandle(): UINT32 {
     }
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == PGDN)) {
-      if (fOKFiles && fToggle2) {
+      if (fOKFiles && AniEditScreenHandle__fToggle2) {
         ubCurLoadedState--;
 
         if (ubCurLoadedState == 0) {
@@ -206,7 +206,7 @@ export function AniEditScreenHandle(): UINT32 {
       }
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'c')) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'c'.charCodeAt(0))) {
       // CLEAR!
       usStartAnim = 0;
       EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, true);
@@ -231,7 +231,7 @@ function GetAnimStateFromName(zName: string /* Pointer<INT8> */): UINT16 {
 
   // FInd the next animation with start height the same...
   for (cnt = 0; cnt < Enum193.NUMANIMATIONSTATES; cnt++) {
-    if (stricmp(gAnimControl[cnt].zAnimStr, zName) == 0) {
+    if (gAnimControl[cnt].zAnimStr.toLowerCase() === zName.toLowerCase()) {
       return cnt;
     }
   }

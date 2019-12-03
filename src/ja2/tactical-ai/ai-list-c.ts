@@ -143,22 +143,22 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): boolean {
   return false;
 }
 
-function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: boolean): boolean {
-  if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {
+function SatisfiesAIListConditions(pSoldier: SOLDIERTYPE, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: boolean): boolean {
+  if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pSoldier.uiStatusFlags & SOLDIER_BOXER)) {
     return false;
   }
 
-  if (!(pSoldier.value.bActive && pSoldier.value.bInSector)) {
+  if (!(pSoldier.bActive && pSoldier.bInSector)) {
     // the check for
     return false;
   }
 
-  if (!(pSoldier.value.bLife >= OKLIFE && pSoldier.value.bBreath >= OKBREATH)) {
+  if (!(pSoldier.bLife >= OKLIFE && pSoldier.bBreath >= OKBREATH)) {
     return false;
   }
 
-  if (pSoldier.value.bMoved) {
-    if (pSoldier.value.bActionPoints <= 1 && pubDoneCount) {
+  if (pSoldier.bMoved) {
+    if (pSoldier.bActionPoints <= 1 && pubDoneCount) {
       (pubDoneCount.value)++;
     }
     return false;
@@ -169,25 +169,25 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
 
   // if we are dealing with the civ team and this person
   // hasn't heard any gunfire, handle only 1 time in 10
-  if (PTR_CIVILIAN()) {
-    if (pSoldier.value.ubBodyType == Enum194.CROW || pSoldier.value.ubBodyType == Enum194.COW) {
+  if (PTR_CIVILIAN(pSoldier)) {
+    if (pSoldier.ubBodyType == Enum194.CROW || pSoldier.ubBodyType == Enum194.COW) {
       // don't handle cows and crows in TB!
       return false;
     }
 
     // if someone in a civ group is neutral but the civ group is non-neutral, should be handled all the time
-    if (pSoldier.value.bNeutral && (pSoldier.value.ubCivilianGroup == Enum246.NON_CIV_GROUP || gTacticalStatus.fCivGroupHostile[pSoldier.value.ubCivilianGroup] == CIV_GROUP_NEUTRAL)) {
-      if (pSoldier.value.bAlertStatus < Enum243.STATUS_RED) {
+    if (pSoldier.bNeutral && (pSoldier.ubCivilianGroup == Enum246.NON_CIV_GROUP || gTacticalStatus.fCivGroupHostile[pSoldier.ubCivilianGroup] == CIV_GROUP_NEUTRAL)) {
+      if (pSoldier.bAlertStatus < Enum243.STATUS_RED) {
         // unalerted, barely handle
-        if (fDoRandomChecks && PreRandom(10) && !(pSoldier.value.ubQuoteRecord)) {
+        if (fDoRandomChecks && PreRandom(10) && !(pSoldier.ubQuoteRecord)) {
           return false;
         }
       } else {
         // heard gunshots
-        if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
-          if (pSoldier.value.bVisible) {
+        if (pSoldier.uiStatusFlags & SOLDIER_COWERING) {
+          if (pSoldier.bVisible) {
             // if have profile, don't handle, don't want them running around
-            if (pSoldier.value.ubProfile != NO_PROFILE) {
+            if (pSoldier.ubProfile != NO_PROFILE) {
               return false;
             }
             // else don't handle much
@@ -198,7 +198,7 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
             // never handle
             return false;
           }
-        } else if (pSoldier.value.ubBodyType == Enum194.COW || pSoldier.value.ubBodyType == Enum194.CRIPPLECIV) {
+        } else if (pSoldier.ubBodyType == Enum194.COW || pSoldier.ubBodyType == Enum194.CRIPPLECIV) {
           // don't handle much
           if (fDoRandomChecks && PreRandom(3)) {
             return false;
@@ -209,8 +209,8 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
     // non-neutral civs should be handled all the time, right?
     // reset last action if cowering
 
-    if (pSoldier.value.uiStatusFlags & SOLDIER_COWERING) {
-      pSoldier.value.bLastAction = Enum289.AI_ACTION_NONE;
+    if (pSoldier.uiStatusFlags & SOLDIER_COWERING) {
+      pSoldier.bLastAction = Enum289.AI_ACTION_NONE;
     }
   }
 

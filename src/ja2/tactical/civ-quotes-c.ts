@@ -10,9 +10,35 @@ interface CIV_QUOTE {
   ubUnusedCurrentEntry: UINT8;
 }
 
+function createCivQuote(): CIV_QUOTE {
+  return {
+    ubNumEntries: 0,
+    ubUnusedCurrentEntry: 0,
+  };
+}
+
+function resetCivQuote(o: CIV_QUOTE) {
+  o.ubNumEntries = 0;
+  o.ubUnusedCurrentEntry = 0;
+}
+
+const CIV_QUOTE_SIZE = 2;
+
+function readCivQuote(o: CIV_QUOTE, buffer: Buffer, offset: number = 0): number {
+  o.ubNumEntries = buffer.readUInt8(offset++);
+  o.ubUnusedCurrentEntry = buffer.readUInt8(offset++);
+  return offset;
+}
+
+function writeCivQuote(o: CIV_QUOTE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubNumEntries, offset);
+  offset = buffer.writeUInt8(o.ubUnusedCurrentEntry, offset);
+  return offset;
+}
+
 export let gfSurrendered: boolean = false;
 
-let gCivQuotes: CIV_QUOTE[] /* [NUM_CIV_QUOTES] */;
+let gCivQuotes: CIV_QUOTE[] /* [NUM_CIV_QUOTES] */ = createArrayFrom(Enum201.NUM_CIV_QUOTES, createCivQuote);
 
 let gubNumEntries: UINT8[] /* [NUM_CIV_QUOTES] */ = [
   15,
@@ -78,10 +104,32 @@ interface QUOTE_SYSTEM_STRUCT {
   iDialogueBox: INT32;
   uiTimeOfCreation: UINT32;
   uiDelayTime: UINT32;
-  pCiv: Pointer<SOLDIERTYPE>;
+  pCiv: SOLDIERTYPE | null;
 }
 
-let gCivQuoteData: QUOTE_SYSTEM_STRUCT;
+function createQuoteSystemStruct(): QUOTE_SYSTEM_STRUCT {
+  return {
+    bActive: false,
+    MouseRegion: createMouseRegion(),
+    iVideoOverlay: 0,
+    iDialogueBox: 0,
+    uiTimeOfCreation: 0,
+    uiDelayTime: 0,
+    pCiv: null,
+  };
+}
+
+function resetQuoteSystemStruct(o: QUOTE_SYSTEM_STRUCT) {
+  o.bActive = false;
+  resetMouseRegion(o.MouseRegion);
+  o.iVideoOverlay = 0;
+  o.iDialogueBox = 0;
+  o.uiTimeOfCreation = 0;
+  o.uiDelayTime = 0;
+  o.pCiv = null;
+}
+
+let gCivQuoteData: QUOTE_SYSTEM_STRUCT = createQuoteSystemStruct();
 
 let gzCivQuote: string /* INT16[320] */;
 let gusCivQuoteBoxWidth: UINT16;
@@ -95,7 +143,9 @@ function CopyNumEntriesIntoQuoteStruct(): void {
   }
 }
 
-function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<string> /* Pointer<INT16> */): boolean {
+function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8): string {
+  let zQuote: string;
+
   let zFileName: string /* UINT8[164] */;
 
   // Build filename....
@@ -111,21 +161,21 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<
   }
 
   if (!FileExists(zFileName)) {
-    return false;
+    return <string><unknown>undefined;
   }
 
   // Get data...
   zQuote = LoadEncryptedDataFromFile(zFileName, ubEntryID * 320, 320);
 
-  if (zQuote[0] == 0) {
-    return false;
+  if (zQuote == '') {
+    return <string><unknown>undefined;
   }
 
-  return true;
+  return zQuote;
 }
 
 function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
 
   if (ubExitValue == MSG_BOX_RETURN_YES) {
@@ -135,10 +185,10 @@ function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
     // Do capture....
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
-    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
+    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
       // Are we active and in sector.....
-      if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-        if (pTeamSoldier.value.bLife != 0) {
+      if (pTeamSoldier.bActive && pTeamSoldier.bInSector) {
+        if (pTeamSoldier.bLife != 0) {
           EnemyCapturesPlayerSoldier(pTeamSoldier);
 
           RemoveSoldierFromTacticalSector(pTeamSoldier, true);
@@ -151,9 +201,9 @@ function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
     gfSurrendered = true;
     SetCustomizableTimerCallbackAndDelay(3000, CaptureTimerCallback, false);
 
-    ActionDone(gCivQuoteData.pCiv);
+    ActionDone(<SOLDIERTYPE>gCivQuoteData.pCiv);
   } else {
-    ActionDone(gCivQuoteData.pCiv);
+    ActionDone(<SOLDIERTYPE>gCivQuoteData.pCiv);
   }
 }
 
@@ -175,7 +225,7 @@ function ShutDownQuoteBox(fForce: boolean): void {
     gCivQuoteData.bActive = false;
 
     // do we need to do anything at the end of the civ quote?
-    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
+    if (gCivQuoteData.pCiv && gCivQuoteData.pCiv.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, Message[Enum334.STR_SURRENDER], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, SurrenderMessageBoxCallBack, null);
     }
   }
@@ -191,8 +241,8 @@ export function ShutDownQuoteBoxIfActive(): boolean {
   return false;
 }
 
-export function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
-  if (pCiv.value.ubProfile != NO_PROFILE) {
+export function GetCivType(pCiv: SOLDIERTYPE): INT8 {
+  if (pCiv.ubProfile != NO_PROFILE) {
     return CIV_TYPE_NA;
   }
 
@@ -200,22 +250,22 @@ export function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   // 1 ) check sector....
   if (gWorldSectorX == 10 && gWorldSectorY == 6 && gbWorldSectorZ == 0) {
     // 2 ) the only female....
-    if (pCiv.value.ubCivilianGroup == 0 && pCiv.value.bTeam != gbPlayerNum && pCiv.value.ubBodyType == Enum194.REGFEMALE) {
+    if (pCiv.ubCivilianGroup == 0 && pCiv.bTeam != gbPlayerNum && pCiv.ubBodyType == Enum194.REGFEMALE) {
       // She's a ho!
       return CIV_TYPE_MARRIED_PC;
     }
   }
 
   // OK, look for enemy type - MUST be on enemy team, merc bodytype
-  if (pCiv.value.bTeam == ENEMY_TEAM && IS_MERC_BODY_TYPE(pCiv)) {
+  if (pCiv.bTeam == ENEMY_TEAM && IS_MERC_BODY_TYPE(pCiv)) {
     return CIV_TYPE_ENEMY;
   }
 
-  if (pCiv.value.bTeam != CIV_TEAM && pCiv.value.bTeam != MILITIA_TEAM) {
+  if (pCiv.bTeam != CIV_TEAM && pCiv.bTeam != MILITIA_TEAM) {
     return CIV_TYPE_NA;
   }
 
-  switch (pCiv.value.ubBodyType) {
+  switch (pCiv.ubBodyType) {
     case Enum194.REGMALE:
     case Enum194.BIGMALE:
     case Enum194.STOCKYMALE:
@@ -252,11 +302,11 @@ export function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   return CIV_TYPE_NA;
 }
 
-function RenderCivQuoteBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
+function RenderCivQuoteBoxOverlay(pBlitter: VIDEO_OVERLAY): void {
   if (gCivQuoteData.iVideoOverlay != -1) {
-    RenderMercPopUpBoxFromIndex(gCivQuoteData.iDialogueBox, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.uiDestBuff);
+    RenderMercPopUpBoxFromIndex(gCivQuoteData.iDialogueBox, pBlitter.sX, pBlitter.sY, pBlitter.uiDestBuff);
 
-    InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusCivQuoteBoxWidth, pBlitter.value.sY + gusCivQuoteBoxHeight);
+    InvalidateRegion(pBlitter.sX, pBlitter.sY, pBlitter.sX + gusCivQuoteBoxWidth, pBlitter.sY + gusCivQuoteBoxHeight);
   }
 }
 
@@ -275,7 +325,7 @@ function QuoteOverlayClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void 
   }
 }
 
-export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
+export function BeginCivQuote(pCiv: SOLDIERTYPE, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let zQuote: string /* INT16[320] */;
 
@@ -286,7 +336,7 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
   }
 
   // get text
-  if (!GetCivQuoteText(ubCivQuoteID, ubEntryID, zQuote)) {
+  if ((zQuote = GetCivQuoteText(ubCivQuoteID, ubEntryID)) === undefined) {
     return;
   }
 
@@ -295,9 +345,6 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, "%s", gzCivQuote);
   }
-
-  // Create video oeverlay....
-  memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Prepare text box
   SET_USE_WINFONTS(true);
@@ -339,7 +386,7 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   VideoOverlayDesc.BltCallback = RenderCivQuoteBoxOverlay;
 
-  gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
+  gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
 
   // Define main region
   MSYS_DefineRegion(gCivQuoteData.MouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
@@ -355,7 +402,7 @@ export function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, u
   gCivQuoteData.pCiv = pCiv;
 }
 
-function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Pointer<UINT8>, fCanUseHints: boolean): UINT8 {
+function DetermineCivQuoteEntry(pCiv: SOLDIERTYPE, pubCivHintToUse: Pointer<UINT8>, fCanUseHints: boolean): UINT8 {
   let ubCivType: UINT8;
   let bTownId: INT8;
   let bCivLowLoyalty: boolean = false;
@@ -372,17 +419,17 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
     // Determine what type of quote to say...
     // Are are we going to attack?
 
-    if (pCiv.value.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE || pCiv.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.value.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.value.bAction == Enum289.AI_ACTION_KNIFE_MOVE) {
+    if (pCiv.bAction == Enum289.AI_ACTION_TOSS_PROJECTILE || pCiv.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.bAction == Enum289.AI_ACTION_FIRE_GUN || pCiv.bAction == Enum289.AI_ACTION_KNIFE_MOVE) {
       return Enum201.CIV_QUOTE_ENEMY_THREAT;
-    } else if (pCiv.value.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
+    } else if (pCiv.bAction == Enum289.AI_ACTION_OFFER_SURRENDER) {
       return Enum201.CIV_QUOTE_ENEMY_OFFER_SURRENDER;
     }
     // Hurt?
-    else if (pCiv.value.bLife < 30) {
+    else if (pCiv.bLife < 30) {
       return Enum201.CIV_QUOTE_ENEMY_HURT;
     }
     // elite?
-    else if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE) {
+    else if (pCiv.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE) {
       return Enum201.CIV_QUOTE_ENEMY_ELITE;
     } else {
       return Enum201.CIV_QUOTE_ENEMY_ADMIN;
@@ -400,10 +447,10 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
 
   // CIV GROUPS FIRST!
   // Hicks.....
-  if (pCiv.value.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
+  if (pCiv.ubCivilianGroup == Enum246.HICKS_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ HICKS_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
-    if (pCiv.value.bNeutral) {
+    if (pCiv.bNeutral) {
       return Enum201.CIV_QUOTE_HICKS_FRIENDLY;
     } else {
       return Enum201.CIV_QUOTE_HICKS_ENEMIES;
@@ -411,10 +458,10 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Goons.....
-  if (pCiv.value.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
+  if (pCiv.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP) {
     // Are they friendly?
     // if ( gTacticalStatus.fCivGroupHostile[ KINGPIN_CIV_GROUP ] < CIV_GROUP_WILL_BECOME_HOSTILE )
-    if (pCiv.value.bNeutral) {
+    if (pCiv.bNeutral) {
       return Enum201.CIV_QUOTE_GOONS_FRIENDLY;
     } else {
       return Enum201.CIV_QUOTE_GOONS_ENEMIES;
@@ -422,7 +469,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // ATE: Cowering people take precedence....
-  if ((pCiv.value.uiStatusFlags & SOLDIER_COWERING) || (pCiv.value.bTeam == CIV_TEAM && (gTacticalStatus.uiFlags & INCOMBAT))) {
+  if ((pCiv.uiStatusFlags & SOLDIER_COWERING) || (pCiv.bTeam == CIV_TEAM && (gTacticalStatus.uiFlags & INCOMBAT))) {
     if (ubCivType == CIV_TYPE_ADULT) {
       return Enum201.CIV_QUOTE_ADULTS_COWER;
     } else {
@@ -431,7 +478,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Kid slaves...
-  if (pCiv.value.ubCivilianGroup == Enum246.FACTORY_KIDS_GROUP) {
+  if (pCiv.ubCivilianGroup == Enum246.FACTORY_KIDS_GROUP) {
     // Check fact.....
     if (CheckFact(Enum170.FACT_DOREEN_HAD_CHANGE_OF_HEART, 0) || !CheckFact(Enum170.FACT_DOREEN_ALIVE, 0)) {
       return Enum201.CIV_QUOTE_KID_SLAVES_FREE;
@@ -441,7 +488,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // BEGGERS
-  if (pCiv.value.ubCivilianGroup == Enum246.BEGGARS_CIV_GROUP) {
+  if (pCiv.ubCivilianGroup == Enum246.BEGGARS_CIV_GROUP) {
     // Check if we are in a town...
     if (bTownId != Enum135.BLANK_SECTOR && gbWorldSectorZ == 0) {
       if (bTownId == Enum135.SAN_MONA && ubCivType == CIV_TYPE_ADULT) {
@@ -458,7 +505,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // REBELS
-  if (pCiv.value.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
+  if (pCiv.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // DO normal beggers...
     if (ubCivType == CIV_TYPE_ADULT) {
       return Enum201.CIV_QUOTE_ADULTS_REBELS;
@@ -468,15 +515,15 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // Do miltitia...
-  if (pCiv.value.bTeam == MILITIA_TEAM) {
+  if (pCiv.bTeam == MILITIA_TEAM) {
     // Different types....
-    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_GREEN_MILITIA) {
+    if (pCiv.ubSoldierClass == Enum262.SOLDIER_CLASS_GREEN_MILITIA) {
       return Enum201.CIV_QUOTE_GREEN_MILITIA;
     }
-    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
+    if (pCiv.ubSoldierClass == Enum262.SOLDIER_CLASS_REG_MILITIA) {
       return Enum201.CIV_QUOTE_MEDIUM_MILITIA;
     }
-    if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE_MILITIA) {
+    if (pCiv.ubSoldierClass == Enum262.SOLDIER_CLASS_ELITE_MILITIA) {
       return Enum201.CIV_QUOTE_ELITE_MILITIA;
     }
   }
@@ -508,7 +555,7 @@ function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Poi
   }
 
   // ATE: check miners......
-  if (pCiv.value.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
+  if (pCiv.ubSoldierClass == Enum262.SOLDIER_CLASS_MINER) {
     bMiners = true;
 
     // If not a civ hint available...
@@ -585,7 +632,7 @@ export function HandleCivQuote(): void {
   }
 }
 
-export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
+export function StartCivQuote(pCiv: SOLDIERTYPE): void {
   let ubCivQuoteID: UINT8;
   let sX: INT16;
   let sY: INT16;
@@ -596,11 +643,11 @@ export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // ATE: Check for old quote.....
   // This could have been stored on last attempt...
-  if (pCiv.value.bCurrentCivQuote == CIV_QUOTE_HINT) {
+  if (pCiv.bCurrentCivQuote == CIV_QUOTE_HINT) {
     // Determine which quote to say.....
     // CAN'T USE HINTS, since we just did one...
-    pCiv.value.bCurrentCivQuote = -1;
-    pCiv.value.bCurrentCivQuoteDelta = 0;
+    pCiv.bCurrentCivQuote = -1;
+    pCiv.bCurrentCivQuoteDelta = 0;
     ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), false);
   } else {
     // Determine which quote to say.....
@@ -610,19 +657,19 @@ export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
   // Determine entry id
   // ATE: Try and get entry from soldier pointer....
   if (ubCivQuoteID != CIV_QUOTE_HINT) {
-    if (pCiv.value.bCurrentCivQuote == -1) {
+    if (pCiv.bCurrentCivQuote == -1) {
       // Pick random one
-      pCiv.value.bCurrentCivQuote = Random(gCivQuotes[ubCivQuoteID].ubNumEntries - 2);
-      pCiv.value.bCurrentCivQuoteDelta = 0;
+      pCiv.bCurrentCivQuote = Random(gCivQuotes[ubCivQuoteID].ubNumEntries - 2);
+      pCiv.bCurrentCivQuoteDelta = 0;
     }
 
-    ubEntryID = pCiv.value.bCurrentCivQuote + pCiv.value.bCurrentCivQuoteDelta;
+    ubEntryID = pCiv.bCurrentCivQuote + pCiv.bCurrentCivQuoteDelta;
   } else {
     ubEntryID = ubCivHintToUse;
 
     // ATE: set value for quote ID.....
-    pCiv.value.bCurrentCivQuote = ubCivQuoteID;
-    pCiv.value.bCurrentCivQuoteDelta = ubEntryID;
+    pCiv.bCurrentCivQuote = ubCivQuoteID;
+    pCiv.bCurrentCivQuoteDelta = ubEntryID;
   }
 
   // Determine location...
@@ -636,19 +683,19 @@ export function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // Increment use
   if (ubCivQuoteID != CIV_QUOTE_HINT) {
-    pCiv.value.bCurrentCivQuoteDelta++;
+    pCiv.bCurrentCivQuoteDelta++;
 
-    if (pCiv.value.bCurrentCivQuoteDelta == 2) {
-      pCiv.value.bCurrentCivQuoteDelta = 0;
+    if (pCiv.bCurrentCivQuoteDelta == 2) {
+      pCiv.bCurrentCivQuoteDelta = 0;
     }
   }
 }
 
 export function InitCivQuoteSystem(): void {
-  memset(addressof(gCivQuotes), 0, sizeof(gCivQuotes));
+  gCivQuotes.forEach(resetCivQuote);
   CopyNumEntriesIntoQuoteStruct();
 
-  memset(addressof(gCivQuoteData), 0, sizeof(gCivQuoteData));
+  resetQuoteSystemStruct(gCivQuoteData);
   gCivQuoteData.bActive = false;
   gCivQuoteData.iVideoOverlay = -1;
   gCivQuoteData.iDialogueBox = -1;
@@ -656,9 +703,13 @@ export function InitCivQuoteSystem(): void {
 
 export function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
-  FileWrite(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(gCivQuotes)) {
+  buffer = Buffer.allocUnsafe(gCivQuotes.length * CIV_QUOTE_SIZE);
+  writeObjectArray(gCivQuotes, buffer, 0, writeCivQuote);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, buffer.length);
+  if (uiNumBytesWritten != buffer.length) {
     return false;
   }
 
@@ -667,11 +718,15 @@ export function SaveCivQuotesToSaveGameFile(hFile: HWFILE): boolean {
 
 export function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
-  FileRead(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesRead));
-  if (uiNumBytesRead != sizeof(gCivQuotes)) {
+  buffer = Buffer.allocUnsafe(gCivQuotes.length * CIV_QUOTE_SIZE);
+  uiNumBytesRead = FileRead(hFile, buffer, buffer.length);
+  if (uiNumBytesRead != buffer.length) {
     return false;
   }
+
+  readObjectArray(gCivQuotes, buffer, 0, readCivQuote);
 
   CopyNumEntriesIntoQuoteStruct();
 

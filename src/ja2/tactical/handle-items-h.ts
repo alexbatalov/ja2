@@ -50,18 +50,45 @@ export interface ITEM_POOL {
   ubLevel: UINT8;
   usFlags: UINT16;
   bRenderZHeightAboveLevel: INT8;
-  pLevelNode: Pointer<LEVELNODE>;
+  pLevelNode: LEVELNODE /* Pointer<LEVELNODE> */;
+}
+
+export function createItemPool(): ITEM_POOL {
+  return {
+    pNext: null,
+    pPrev: null,
+    iItemIndex: 0,
+    bVisible: 0,
+    bFlashColor: 0,
+    uiTimerID: 0,
+    sGridNo: 0,
+    ubLevel: 0,
+    usFlags: 0,
+    bRenderZHeightAboveLevel: 0,
+    pLevelNode: <LEVELNODE><unknown>null,
+  };
 }
 
 export interface ITEM_POOL_LOCATOR {
-  pItemPool: Pointer<ITEM_POOL>;
+  pItemPool: ITEM_POOL /* Pointer<ITEM_POOL> */;
 
   // Additional info for locators
   bRadioFrame: INT8;
   uiLastFrameUpdate: UINT32;
-  Callback: ITEM_POOL_LOCATOR_HOOK;
+  Callback: ITEM_POOL_LOCATOR_HOOK | null;
   fAllocated: boolean;
   ubFlags: UINT8;
+}
+
+export function createItemPoolLocator(): ITEM_POOL_LOCATOR {
+  return {
+    pItemPool: <ITEM_POOL><unknown>null,
+    bRadioFrame: 0,
+    uiLastFrameUpdate: 0,
+    Callback: null,
+    fAllocated: false,
+    ubFlags: 0,
+  };
 }
 
 }

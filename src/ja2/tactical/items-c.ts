@@ -2312,7 +2312,7 @@ export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYP
       if (bAttachComboMerge != -1) {
         PerformAttachmentComboMerge(pTargetObj, bAttachComboMerge);
         if (bAttachInfoIndex != -1 && AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod < 20) {
-          StatChange(pSoldier, MECHANAMT, (20 - AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod), false);
+          StatChange(<SOLDIERTYPE>pSoldier, MECHANAMT, (20 - AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod), FROM_SUCCESS);
         }
       }
 
@@ -2360,7 +2360,7 @@ export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYP
         // the merge destroyed both items!
         DeleteObj(pTargetObj);
         DeleteObj(pAttachment);
-        DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
+        DoMercBattleSound(<SOLDIERTYPE>pSoldier, Enum259.BATTLE_SOUND_CURSE1);
         break;
       case Enum226.ELECTRONIC_MERGE:
         if (pSoldier) {
@@ -2388,7 +2388,7 @@ export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYP
               DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
               return false;
             }
-            StatChange(pSoldier, EXPLODEAMT, 25, false);
+            StatChange(pSoldier, EXPLODEAMT, 25, FROM_SUCCESS);
           }
         }
         // fall through

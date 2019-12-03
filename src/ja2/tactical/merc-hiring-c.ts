@@ -43,7 +43,7 @@ export function HireMerc(pHireMerc: MERC_HIRE_STRUCT): INT8 {
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
   MercCreateStruct.fCopyProfileItemsOver = pHireMerc.fCopyProfileItemsOver;
 
-  if (!TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
+  if (!TacticalCreateSoldier(MercCreateStruct, addressof(iNewIndex))) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "TacticalCreateSoldier in HireMerc():  Failed to Add Merc");
     return MERC_HIRE_FAILED;
   }

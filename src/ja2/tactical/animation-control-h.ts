@@ -2,8 +2,8 @@ namespace ja2 {
 
 // Defines
 // #######################################################
-const MAX_ANIMATIONS = 320;
-const MAX_FRAMES_PER_ANIM = 100;
+export const MAX_ANIMATIONS = 320;
+export const MAX_FRAMES_PER_ANIM = 100;
 export const MAX_RANDOM_ANIMS_PER_BODYTYPE = 7;
 
 export const RANDOM_ANIM_NOTHINGINHAND = 0;
@@ -119,6 +119,28 @@ export interface RANDOM_ANI_DEF {
   ubFlags: UINT8;
   ubAnimHeight: UINT8;
   zSoundFile: string /* INT8[30] */;
+}
+
+export function createRandomAnimationDefinition(): RANDOM_ANI_DEF {
+  return {
+    ubHandRestriction: 0,
+    sAnimID: 0,
+    ubStartRoll: 0,
+    ubEndRoll: 0,
+    ubFlags: 0,
+    ubAnimHeight: 0,
+    zSoundFile: '',
+  };
+}
+
+export function resetRandomAnimationDefinition(o: RANDOM_ANI_DEF) {
+  o.ubHandRestriction = 0;
+  o.sAnimID = 0;
+  o.ubStartRoll = 0;
+  o.ubEndRoll = 0;
+  o.ubFlags = 0;
+  o.ubAnimHeight = 0;
+  o.zSoundFile = '';
 }
 
 // Enumeration of animation states

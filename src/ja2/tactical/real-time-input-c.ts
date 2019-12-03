@@ -14,17 +14,17 @@ export function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryRTRightButton(puiNewEvent);
 }
 
+/* static */ let QueryRTLeftButton__uiSingleClickTime: UINT32;
+/* static */ let QueryRTLeftButton__fDoubleClickIntercepted: boolean = false;
+/* static */ let QueryRTLeftButton__fValidDoubleClickPossible: boolean = false;
+/* static */ let QueryRTLeftButton__fCanCheckForSpeechAdvance: boolean = false;
+/* static */ let QueryRTLeftButton__sMoveClickGridNo: INT16 = 0;
 function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
   let usSoldierIndex: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let uiMercFlags: UINT32;
-  /* static */ let uiSingleClickTime: UINT32;
   let usMapPos: UINT16;
   let fDone: boolean = false;
-  /* static */ let fDoubleClickIntercepted: boolean = false;
-  /* static */ let fValidDoubleClickPossible: boolean = false;
-  /* static */ let fCanCheckForSpeechAdvance: boolean = false;
-  /* static */ let sMoveClickGridNo: INT16 = 0;
 
   // LEFT MOUSE BUTTON
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -33,7 +33,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
     }
 
     if (gusSelectedSoldier != NOBODY) {
-      if (MercPtrs[gusSelectedSoldier].value.pTempObject != null) {
+      if (MercPtrs[gusSelectedSoldier].pTempObject != null) {
         return;
       }
     }
@@ -51,14 +51,14 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
               case Enum206.ACTION_MODE:
 
                 if (gusSelectedSoldier != NOBODY) {
-                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier) && gpItemPointer == null) {
+                  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null && gpItemPointer == null) {
                     // OK, check for needing ammo
                     if (HandleUIReloading(pSoldier)) {
                       gfRTClickLeftHoldIntercepted = true;
                       // fLeftButtonDown				= FALSE;
                     } else {
-                      if (pSoldier.value.bDoBurst) {
-                        pSoldier.value.sStartGridNo = usMapPos;
+                      if (pSoldier.bDoBurst) {
+                        pSoldier.sStartGridNo = usMapPos;
                         ResetBurstLocations();
                         puiNewEvent.value = Enum207.A_CHANGE_TO_CONFIM_ACTION;
                       } else {
@@ -106,7 +106,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                     } else if (bReturnCode == 0) {
                       {
                         {
-                          let fResult: boolean;
+                          let fResult: UINT8 /* boolean */;
 
                           if (gusSelectedSoldier != NOBODY) {
                             if ((fResult = UIOKMoveDestination(MercPtrs[gusSelectedSoldier], usMapPos)) == 1) {
@@ -135,7 +135,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
           }
         }
         if (gfUIWaitingForUserSpeechAdvance) {
-          fCanCheckForSpeechAdvance = true;
+          QueryRTLeftButton__fCanCheckForSpeechAdvance = true;
         }
       }
 
@@ -149,7 +149,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
               // First check if we clicked on a guy, if so, make selected if it's ours
               if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
                 // Select guy
-                if ((uiMercFlags & SELECTED_MERC) && !(uiMercFlags & UNCONSCIOUS_MERC) && !(MercPtrs[usSoldierIndex].value.uiStatusFlags & SOLDIER_VEHICLE)) {
+                if ((uiMercFlags & SELECTED_MERC) && !(uiMercFlags & UNCONSCIOUS_MERC) && !(MercPtrs[usSoldierIndex].uiStatusFlags & SOLDIER_VEHICLE)) {
                   puiNewEvent.value = Enum207.M_CHANGE_TO_ADJPOS_MODE;
                 }
               } else {
@@ -206,11 +206,11 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
         if (!fIgnoreLeftUp) {
           // set flag for handling single clicks
           // OK , FOR DOUBLE CLICKS - TAKE TIME STAMP & RECORD EVENT
-          if ((GetJA2Clock() - uiSingleClickTime) < 300) {
+          if ((GetJA2Clock() - QueryRTLeftButton__uiSingleClickTime) < 300) {
             // CHECK HERE FOR DOUBLE CLICK EVENTS
-            if (fValidDoubleClickPossible) {
+            if (QueryRTLeftButton__fValidDoubleClickPossible) {
               if (gpItemPointer == null) {
-                fDoubleClickIntercepted = true;
+                QueryRTLeftButton__fDoubleClickIntercepted = true;
 
                 // First check if we clicked on a guy, if so, make selected if it's ours
                 if (gusSelectedSoldier != NO_SOLDIER) {
@@ -219,7 +219,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                   // if ( gAnimControl[ MercPtrs[ gusSelectedSoldier ]->usAnimState ].uiFlags & ANIM_STATIONARY )
                   // if ( MercPtrs[ gusSelectedSoldier ]->usAnimState == WALKING )
                   {
-                    MercPtrs[gusSelectedSoldier].value.fUIMovementFast = true;
+                    MercPtrs[gusSelectedSoldier].fUIMovementFast = true;
                     puiNewEvent.value = Enum207.C_MOVE_MERC;
                   }
                 }
@@ -228,11 +228,11 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
           }
 
           // Capture time!
-          uiSingleClickTime = GetJA2Clock();
+          QueryRTLeftButton__uiSingleClickTime = GetJA2Clock();
 
-          fValidDoubleClickPossible = false;
+          QueryRTLeftButton__fValidDoubleClickPossible = false;
 
-          if (!fDoubleClickIntercepted) {
+          if (!QueryRTLeftButton__fDoubleClickIntercepted) {
             // FIRST CHECK FOR ANYTIME ( NON-INTERVAL ) CLICKS
             switch (gCurrentUIMode) {
               case Enum206.ADJUST_STANCE_MODE:
@@ -250,20 +250,20 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                 case Enum206.CONFIRM_ACTION_MODE:
                 case Enum206.ACTION_MODE:
 
-                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-                    if (pSoldier.value.bDoBurst) {
-                      pSoldier.value.sEndGridNo = usMapPos;
+                  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+                    if (pSoldier.bDoBurst) {
+                      pSoldier.sEndGridNo = usMapPos;
 
                       gfBeginBurstSpreadTracking = false;
 
-                      if (pSoldier.value.sEndGridNo != pSoldier.value.sStartGridNo) {
-                        pSoldier.value.fDoSpread = true;
+                      if (pSoldier.sEndGridNo != pSoldier.sStartGridNo) {
+                        pSoldier.fDoSpread = 1;
 
                         PickBurstLocations(pSoldier);
 
                         puiNewEvent.value = Enum207.CA_MERC_SHOOT;
                       } else {
-                        pSoldier.value.fDoSpread = false;
+                        pSoldier.fDoSpread = 0;
                       }
                       gfRTClickLeftHoldIntercepted = true;
                     }
@@ -289,7 +289,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                       }
                     } else {
                       // Check for wiating for keyboard advance
-                      if (gfUIWaitingForUserSpeechAdvance && fCanCheckForSpeechAdvance) {
+                      if (gfUIWaitingForUserSpeechAdvance && QueryRTLeftButton__fCanCheckForSpeechAdvance) {
                         // We have a key, advance!
                         DialogueAdvanceSpeech();
                       } else {
@@ -330,10 +330,10 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                           case Enum206.CONFIRM_MOVE_MODE:
 
                             if (gusSelectedSoldier != NO_SOLDIER) {
-                              if (MercPtrs[gusSelectedSoldier].value.usAnimState != Enum193.RUNNING) {
+                              if (MercPtrs[gusSelectedSoldier].usAnimState != Enum193.RUNNING) {
                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
                               } else {
-                                MercPtrs[gusSelectedSoldier].value.fUIMovementFast = 2;
+                                MercPtrs[gusSelectedSoldier].fUIMovementFast = 2;
                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
                               }
                             }
@@ -341,7 +341,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                             //*puiNewEvent = C_MOVE_MERC;
 
                             // if ( gGameSettings.fOptions[ TOPTION_RTCONFIRM ] )
-                            { fValidDoubleClickPossible = true; }
+                            { QueryRTLeftButton__fValidDoubleClickPossible = true; }
                             break;
 
                           case Enum206.CONFIRM_ACTION_MODE:
@@ -374,24 +374,24 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                 if (!(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                                   // Select guy
                                   if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == null) {
-                                    if (pSoldier.value.bAssignment >= Enum117.ON_DUTY && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+                                    if (pSoldier.bAssignment >= Enum117.ON_DUTY && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
                                       PopupAssignmentMenuInTactical(pSoldier);
                                     } else {
                                       if (!_KeyDown(ALT)) {
                                         ResetMultiSelection();
                                         puiNewEvent.value = Enum207.I_SELECT_MERC;
                                       } else {
-                                        if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
-                                          pSoldier.value.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
+                                        if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+                                          pSoldier.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
                                         } else {
-                                          pSoldier.value.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
+                                          pSoldier.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
                                           // Say Confimation...
                                           if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS])
                                             DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ATTN1);
 
                                           // OK, if we have a selected guy.. make him part too....
                                           if (gusSelectedSoldier != NOBODY) {
-                                            MercPtrs[gusSelectedSoldier].value.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
+                                            MercPtrs[gusSelectedSoldier].uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
                                           }
                                         }
 
@@ -405,10 +405,10 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                       ResetMultiSelection();
                                       puiNewEvent.value = Enum207.I_SELECT_MERC;
                                     } else {
-                                      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
-                                        pSoldier.value.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
+                                      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+                                        pSoldier.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
                                       } else {
-                                        pSoldier.value.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
+                                        pSoldier.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
                                         // Say Confimation...
                                         if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS])
                                           DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ATTN1);
@@ -416,7 +416,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 
                                       // OK, if we have a selected guy.. make him part too....
                                       if (gusSelectedSoldier != NOBODY) {
-                                        MercPtrs[gusSelectedSoldier].value.uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
+                                        MercPtrs[gusSelectedSoldier].uiStatusFlags |= (SOLDIER_MULTI_SELECTED);
                                       }
 
                                       gfIgnoreOnSelectedGuy = true;
@@ -443,22 +443,22 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                   {
                                     let sIntTileGridNo: INT16;
 
-                                    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+                                    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
                                       BeginDisplayTimedCursor(GetInteractiveTileCursor(guiCurrentUICursor, true), 300);
 
-                                      if (pSoldier.value.usAnimState != Enum193.RUNNING) {
+                                      if (pSoldier.usAnimState != Enum193.RUNNING) {
                                         puiNewEvent.value = Enum207.C_MOVE_MERC;
                                       } else {
                                         if (GetCurInteractiveTileGridNo(addressof(sIntTileGridNo)) != null) {
-                                          pSoldier.value.fUIMovementFast = true;
+                                          pSoldier.fUIMovementFast = true;
                                           puiNewEvent.value = Enum207.C_MOVE_MERC;
                                         }
                                       }
-                                      fValidDoubleClickPossible = true;
+                                      QueryRTLeftButton__fValidDoubleClickPossible = true;
                                     }
                                   }
                                 } else if (bReturnCode == 0) {
-                                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+                                  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
                                     // First check if we clicked on a guy, if so, make selected if it's ours
                                     if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags)) && (uiMercFlags & OWNED_MERC)) {
                                       // Select guy
@@ -470,7 +470,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
                                         gfRTClickLeftHoldIntercepted = true;
                                       } else {
-                                        let fResult: boolean;
+                                        let fResult: UINT8 /* boolean */;
 
                                         if (gusSelectedSoldier != NOBODY) {
                                           if ((fResult = UIOKMoveDestination(MercPtrs[gusSelectedSoldier], usMapPos)) == 1) {
@@ -480,7 +480,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                                 // Make move!
                                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
 
-                                                fValidDoubleClickPossible = true;
+                                                QueryRTLeftButton__fValidDoubleClickPossible = true;
                                               }
                                             } else {
                                               // We're on terrain in which we can walk, walk
@@ -490,7 +490,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                                 gfPlotNewMovement = true;
                                               } else {
                                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
-                                                fValidDoubleClickPossible = true;
+                                                QueryRTLeftButton__fValidDoubleClickPossible = true;
                                               }
                                             }
                                           } else {
@@ -594,8 +594,8 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
         fLeftButtonDown = false;
         fIgnoreLeftUp = false;
         gfRTClickLeftHoldIntercepted = false;
-        fDoubleClickIntercepted = false;
-        fCanCheckForSpeechAdvance = false;
+        QueryRTLeftButton__fDoubleClickIntercepted = false;
+        QueryRTLeftButton__fCanCheckForSpeechAdvance = false;
         gfStartLookingForRubberBanding = false;
 
         // Reset counter
@@ -611,22 +611,21 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
     // OK, handle special cases like if we are dragging and holding for a burst spread and
     // release mouse over another mouse region
     if (gfBeginBurstSpreadTracking) {
-      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-        pSoldier.value.fDoSpread = false;
+      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+        pSoldier.fDoSpread = 0;
       }
       gfBeginBurstSpreadTracking = false;
     }
   }
 }
 
+/* static */ let QueryRTRightButton__fClickHoldIntercepted: boolean = false;
+/* static */ let QueryRTRightButton__fClickIntercepted: boolean = false;
+/* static */ let QueryRTRightButton__uiSingleClickTime: UINT32;
+/* static */ let QueryRTRightButton__fDoubleClickIntercepted: boolean = false;
+/* static */ let QueryRTRightButton__fValidDoubleClickPossible: boolean = false;
 function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
-  /* static */ let fClickHoldIntercepted: boolean = false;
-  /* static */ let fClickIntercepted: boolean = false;
-  /* static */ let uiSingleClickTime: UINT32;
-  /* static */ let fDoubleClickIntercepted: boolean = false;
-  /* static */ let fValidDoubleClickPossible: boolean = false;
-
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
 
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -654,7 +653,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
               case Enum206.MOVE_MODE:
 
                 if (!gfUIAllMoveOn) {
-                  fValidDoubleClickPossible = true;
+                  QueryRTRightButton__fValidDoubleClickPossible = true;
 
                   // OK, our first right-click is an all-cycle
                   if (gfUICanBeginAllMoveCycle) {
@@ -672,7 +671,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
                       puiNewEvent.value = Enum207.M_CYCLE_MOVE_ALL;
                     }
                   }
-                  fClickHoldIntercepted = true;
+                  QueryRTRightButton__fClickHoldIntercepted = true;
                 }
             }
 
@@ -680,8 +679,8 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
             if (gfBeginBurstSpreadTracking) {
               gfBeginBurstSpreadTracking = false;
               gfRTClickLeftHoldIntercepted = true;
-              MercPtrs[gusSelectedSoldier].value.fDoSpread = false;
-              fClickHoldIntercepted = true;
+              MercPtrs[gusSelectedSoldier].fDoSpread = 0;
+              QueryRTRightButton__fClickHoldIntercepted = true;
               puiNewEvent.value = Enum207.A_END_ACTION;
               gCurrentUIMode = Enum206.MOVE_MODE;
             }
@@ -689,7 +688,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
         }
       } else {
         // IF HERE, DO A CLICK-HOLD IF IN INTERVAL
-        if (COUNTERDONE(Enum386.RMOUSECLICK_DELAY_COUNTER) && !fClickHoldIntercepted) {
+        if (COUNTERDONE(Enum386.RMOUSECLICK_DELAY_COUNTER) && !QueryRTRightButton__fClickHoldIntercepted) {
           if (gpItemPointer == null) {
             // Switch on UI mode
             switch (gCurrentUIMode) {
@@ -700,12 +699,12 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
               case Enum206.TALKCURSOR_MODE:
               case Enum206.MOVE_MODE:
 
-                if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-                  if ((guiUIFullTargetFlags & OWNED_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC) && !(pSoldier ? pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE : 0)) {
+                if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+                  if ((guiUIFullTargetFlags & OWNED_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC) && !(pSoldier ? pSoldier.uiStatusFlags & SOLDIER_VEHICLE : 0)) {
                     // if( pSoldier->bAssignment >= ON_DUTY )
                     {
                       PopupAssignmentMenuInTactical(pSoldier);
-                      fClickHoldIntercepted = true;
+                      QueryRTRightButton__fClickHoldIntercepted = true;
                     }
                     break;
                   } else {
@@ -715,9 +714,9 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
                   }
 
                   // ATE:
-                  if (!fClickHoldIntercepted) {
+                  if (!QueryRTRightButton__fClickHoldIntercepted) {
                     puiNewEvent.value = Enum207.U_MOVEMENT_MENU;
-                    fClickHoldIntercepted = true;
+                    QueryRTRightButton__fClickHoldIntercepted = true;
                   }
                   break;
                 }
@@ -732,16 +731,16 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
     } else {
       if (fRightButtonDown) {
         // OK , FOR DOUBLE CLICKS - TAKE TIME STAMP & RECORD EVENT
-        if ((GetJA2Clock() - uiSingleClickTime) < 300) {
+        if ((GetJA2Clock() - QueryRTRightButton__uiSingleClickTime) < 300) {
           // CHECK HERE FOR DOUBLE CLICK EVENTS
-          if (fValidDoubleClickPossible) {
-            fDoubleClickIntercepted = true;
+          if (QueryRTRightButton__fValidDoubleClickPossible) {
+            QueryRTRightButton__fDoubleClickIntercepted = true;
 
             // Do stuff....
             // OK, check if left button down...
             if (fLeftButtonDown) {
               if (gpItemPointer == null) {
-                if (!fClickIntercepted && !fClickHoldIntercepted) {
+                if (!QueryRTRightButton__fClickIntercepted && !QueryRTRightButton__fClickHoldIntercepted) {
                   // ATE:
                   if (gusSelectedSoldier != NOBODY) {
                     // fIgnoreLeftUp = TRUE;
@@ -762,15 +761,15 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
         }
 
         // Capture time!
-        uiSingleClickTime = GetJA2Clock();
+        QueryRTRightButton__uiSingleClickTime = GetJA2Clock();
 
-        fValidDoubleClickPossible = true;
+        QueryRTRightButton__fValidDoubleClickPossible = true;
 
-        if (!fDoubleClickIntercepted) {
+        if (!QueryRTRightButton__fDoubleClickIntercepted) {
           // CHECK COMBINATIONS
           if (fLeftButtonDown) {
             if (gpItemPointer == null) {
-              if (!fClickHoldIntercepted && !fClickIntercepted) {
+              if (!QueryRTRightButton__fClickHoldIntercepted && !QueryRTRightButton__fClickIntercepted) {
                 // ATE:
                 if (gusSelectedSoldier != NOBODY) {
                   // fIgnoreLeftUp = TRUE;
@@ -779,7 +778,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
                     case Enum206.MOVE_MODE:
 
                       if (gfUIAllMoveOn) {
-                        gfUIAllMoveOn = false;
+                        gfUIAllMoveOn = 0;
                         gfUICanBeginAllMoveCycle = true;
                       }
                   }
@@ -787,7 +786,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
               }
             }
           } else {
-            if (!fClickHoldIntercepted && !fClickIntercepted) {
+            if (!QueryRTRightButton__fClickHoldIntercepted && !QueryRTRightButton__fClickIntercepted) {
               if (gpItemPointer == null) {
                 // ATE:
                 if (gusSelectedSoldier != NOBODY) {
@@ -805,29 +804,29 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
                       // We have here a change to action mode
                       puiNewEvent.value = Enum207.M_CHANGE_TO_ACTION;
                     }
-                      fClickIntercepted = true;
+                      QueryRTRightButton__fClickIntercepted = true;
                       break;
 
                     case Enum206.ACTION_MODE:
 
                       // We have here a change to move mode
                       puiNewEvent.value = Enum207.A_END_ACTION;
-                      fClickIntercepted = true;
+                      QueryRTRightButton__fClickIntercepted = true;
                       break;
 
                     case Enum206.CONFIRM_ACTION_MODE:
 
-                      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+                      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
                         HandleRightClickAdjustCursor(pSoldier, usMapPos);
                       }
-                      fClickIntercepted = true;
+                      QueryRTRightButton__fClickIntercepted = true;
                       break;
 
                     case Enum206.MENU_MODE:
 
                       // If we get a hit here and we're in menu mode, quit the menu mode
                       EndMenuEvent(guiCurrentEvent);
-                      fClickIntercepted = true;
+                      QueryRTRightButton__fClickIntercepted = true;
                       break;
 
                     case Enum206.HANDCURSOR_MODE:
@@ -853,9 +852,9 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
 
         // Reset flag
         fRightButtonDown = false;
-        fClickHoldIntercepted = false;
-        fClickIntercepted = false;
-        fDoubleClickIntercepted = false;
+        QueryRTRightButton__fClickHoldIntercepted = false;
+        QueryRTRightButton__fClickIntercepted = false;
+        QueryRTRightButton__fDoubleClickIntercepted = false;
 
         // Reset counter
         RESETCOUNTER(Enum386.RMOUSECLICK_DELAY_COUNTER);
@@ -864,12 +863,12 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
+/* static */ let GetRTMousePositionInput__usOldMapPos: UINT16 = 0;
+/* static */ let GetRTMousePositionInput__uiMoveTargetSoldierId: UINT32 = NO_SOLDIER;
+/* static */ let GetRTMousePositionInput__fOnValidGuy: boolean = false;
 export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   let usMapPos: UINT16;
-  /* static */ let usOldMapPos: UINT16 = 0;
-  /* static */ let uiMoveTargetSoldierId: UINT32 = NO_SOLDIER;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  /* static */ let fOnValidGuy: boolean = false;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
     return;
@@ -925,9 +924,9 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
 
       case Enum206.TALKCURSOR_MODE:
 
-        if (uiMoveTargetSoldierId != NOBODY) {
+        if (GetRTMousePositionInput__uiMoveTargetSoldierId != NOBODY) {
           if (gfUIFullTargetFound) {
-            if (gusUIFullTargetID != uiMoveTargetSoldierId) {
+            if (gusUIFullTargetID != GetRTMousePositionInput__uiMoveTargetSoldierId) {
               puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
               return;
             }
@@ -971,20 +970,20 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
 
       case Enum206.MOVE_MODE:
 
-        if (usMapPos != usOldMapPos) {
+        if (usMapPos != GetRTMousePositionInput__usOldMapPos) {
           // Set off ALL move....
-          gfUIAllMoveOn = false;
+          gfUIAllMoveOn = 0;
         }
 
-        uiMoveTargetSoldierId = NO_SOLDIER;
+        GetRTMousePositionInput__uiMoveTargetSoldierId = NO_SOLDIER;
 
         // Check for being on terrain
-        if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+        if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
           let usItem: UINT16;
           let ubItemCursor: UINT8;
 
           // Alrighty, check what's in our hands = if a 'friendly thing', like med kit, look for our own guys
-          usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+          usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
           // get cursor for item
           ubItemCursor = GetActionModeCursor(pSoldier);
@@ -996,8 +995,8 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
             return;
           } else {
             if (gfUIFullTargetFound) {
-              if (IsValidTalkableNPC(gusUIFullTargetID, false, false, false) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && MercPtrs[gusUIFullTargetID].value.bTeam != ENEMY_TEAM && !ValidQuickExchangePosition()) {
-                uiMoveTargetSoldierId = gusUIFullTargetID;
+              if (IsValidTalkableNPC(gusUIFullTargetID, false, false, false) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && MercPtrs[gusUIFullTargetID].bTeam != ENEMY_TEAM && !ValidQuickExchangePosition()) {
+                GetRTMousePositionInput__uiMoveTargetSoldierId = gusUIFullTargetID;
                 puiNewEvent.value = Enum207.T_CHANGE_TO_TALKING;
                 return;
               } else if (ubItemCursor == AIDCURS) {
@@ -1010,7 +1009,7 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
               } else {
                 // IF it's an ememy, goto confirm action mode
                 if ((guiUIFullTargetFlags & ENEMY_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC)) {
-                  uiMoveTargetSoldierId = gusUIFullTargetID;
+                  GetRTMousePositionInput__uiMoveTargetSoldierId = gusUIFullTargetID;
                   puiNewEvent.value = Enum207.A_ON_TERRAIN;
                   return;
                 }
@@ -1027,7 +1026,7 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
         // Check if the guy is visible
         guiUITargetSoldierId = NOBODY;
 
-        fOnValidGuy = false;
+        GetRTMousePositionInput__fOnValidGuy = false;
 
         if (gfUIFullTargetFound)
         // if ( gfUIFullTargetFound )
@@ -1035,8 +1034,8 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
           if (IsValidTargetMerc(gusUIFullTargetID)) {
             guiUITargetSoldierId = gusUIFullTargetID;
 
-            if (MercPtrs[gusUIFullTargetID].value.bTeam != gbPlayerNum) {
-              fOnValidGuy = true;
+            if (MercPtrs[gusUIFullTargetID].bTeam != gbPlayerNum) {
+              GetRTMousePositionInput__fOnValidGuy = true;
             } else {
               if (gUIActionModeChangeDueToMouseOver) {
                 puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -1055,10 +1054,10 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
 
       case Enum206.CONFIRM_MOVE_MODE:
 
-        if (usMapPos != usOldMapPos) {
+        if (usMapPos != GetRTMousePositionInput__usOldMapPos) {
           // Switch event out of confirm mode
           // Set off ALL move....
-          gfUIAllMoveOn = false;
+          gfUIAllMoveOn = 0;
 
           puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
         }
@@ -1067,16 +1066,16 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
       case Enum206.CONFIRM_ACTION_MODE:
 
         // DONOT CANCEL IF BURST
-        if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-          if (pSoldier.value.bDoBurst) {
-            pSoldier.value.sEndGridNo = usMapPos;
+        if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+          if (pSoldier.bDoBurst) {
+            pSoldier.sEndGridNo = usMapPos;
 
-            if (pSoldier.value.sEndGridNo != pSoldier.value.sStartGridNo && fLeftButtonDown) {
-              pSoldier.value.fDoSpread = true;
+            if (pSoldier.sEndGridNo != pSoldier.sStartGridNo && fLeftButtonDown) {
+              pSoldier.fDoSpread = 1;
               gfBeginBurstSpreadTracking = true;
             }
 
-            if (pSoldier.value.fDoSpread) {
+            if (pSoldier.fDoSpread) {
               // Accumulate gridno
               AccumulateBurstLocation(usMapPos);
 
@@ -1095,7 +1094,7 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
             puiNewEvent.value = Enum207.CA_ON_TERRAIN;
           }
         } else {
-          if (ConfirmActionCancel(usMapPos, usOldMapPos)) {
+          if (ConfirmActionCancel(usMapPos, GetRTMousePositionInput__usOldMapPos)) {
             // Switch event out of confirm mode
             puiNewEvent.value = Enum207.CA_END_CONFIRM_ACTION;
           } else {
@@ -1114,7 +1113,7 @@ export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
     //	}
     //}
 
-    usOldMapPos = usMapPos;
+    GetRTMousePositionInput__usOldMapPos = usMapPos;
   }
 }
 

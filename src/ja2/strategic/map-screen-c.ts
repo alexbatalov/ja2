@@ -809,7 +809,7 @@ export function DrawFace(sCharNumber: INT16): void {
   // grab the soldier
   if (bSelectedInfoChar != -1) {
     if (gCharactersList[bSelectedInfoChar].fValid) {
-      GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
+      pSoldier = GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
     }
   }
 
@@ -846,7 +846,7 @@ function RenderHandPosItem(): void {
   // grab the soldier
   if (bSelectedInfoChar != -1) {
     if (gCharactersList[bSelectedInfoChar].fValid) {
-      GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
+      pSoldier = GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
     }
   }
 
@@ -899,7 +899,7 @@ function DrawPay(sCharNumber: INT16): void {
   let usMercProfileID: INT16;
 
   // get merc id
-  usMercProfileID = MercPtrs[gCharactersList[sCharNumber].usSolID].value.ubProfile;
+  usMercProfileID = MercPtrs[gCharactersList[sCharNumber].usSolID].ubProfile;
 
   // grab salary
   uiSalary = (gMercProfiles[usMercProfileID].sSalary);
@@ -936,7 +936,7 @@ function DrawCharBars(): void {
     }
 
     // grab soldier's id number
-    GetSoldier(addressof(pSoldier), usSoldierID);
+    pSoldier = GetSoldier(usSoldierID);
 
     if (pSoldier == null) {
       // no soldier
@@ -2143,7 +2143,7 @@ export function MapScreenHandle(): UINT32 {
     fLeavingMapScreen = false;
     fResetTimerForFirstEntryIntoMapScreen = true;
     fFlashAssignDone = false;
-    gfEnteringMapScreen = false;
+    gfEnteringMapScreen = 0;
 
     guiTacticalInterfaceFlags |= INTERFACE_MAPSCREEN;
 
@@ -2884,11 +2884,11 @@ export function MapScreenHandle(): UINT32 {
 
   if (fShowDescriptionFlag == true) {
     // unmark done button
-    if (gpItemDescObject.value.usItem == Enum225.MONEY) {
+    if (gpItemDescObject.usItem == Enum225.MONEY) {
       MapscreenMarkButtonsDirty();
     }
 
-    if (Item[gpItemDescObject.value.usItem].usItemClass & IC_GUN) {
+    if (Item[gpItemDescObject.usItem].usItemClass & IC_GUN) {
       MapscreenMarkButtonsDirty();
     }
 
@@ -4966,7 +4966,7 @@ export function CreateDestroyMapInvButton(): void {
     // disable allmouse regions in this space
     fTeamPanelDirty = true;
 
-    InitInvSlotInterface(gMapScreenInvPocketXY, addressof(gSCamoXY), MAPInvMoveCallback, MAPInvClickCallback, MAPInvMoveCamoCallback, MAPInvClickCamoCallback, false);
+    InitInvSlotInterface(gMapScreenInvPocketXY, gSCamoXY, MAPInvMoveCallback, MAPInvClickCallback, MAPInvMoveCamoCallback, MAPInvClickCamoCallback, false);
     MSYS_EnableRegion(gMPanelRegion);
 
     // switch hand region help text to "Exit Inventory"
@@ -4998,7 +4998,7 @@ function BltCharInvPanel(): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
   let hCharListHandle: HVOBJECT;
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
   let sString: string /* CHAR16[32] */;
   let usX: UINT16;
   let usY: UINT16;
@@ -5007,7 +5007,7 @@ function BltCharInvPanel(): void {
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
+  pSoldier = GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
 
   pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
   hCharListHandle = GetVideoObject(guiMAPINV);
@@ -5121,7 +5121,7 @@ function MAPInvMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
+  pSoldier = <SOLDIERTYPE>GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5177,7 +5177,7 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
+  pSoldier = <SOLDIERTYPE>GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5219,7 +5219,7 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       }
 
       usOldItemIndex = pSoldier.inv[uiHandPos].usItem;
-      usNewItemIndex = gpItemPointer.value.usItem;
+      usNewItemIndex = gpItemPointer.usItem;
 
       // ATE: Put this here to handle Nails refusal....
       if (HandleNailsVestFetish(pSoldier, uiHandPos, usNewItemIndex)) {
@@ -5228,7 +5228,7 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 
       if (_KeyDown(CTRL)) {
         CleanUpStack(addressof(pSoldier.inv[uiHandPos]), gpItemPointer);
-        if (gpItemPointer.value.ubNumberOfObjects == 0) {
+        if (gpItemPointer.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         }
         return;
@@ -5273,13 +5273,13 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
         fMapPanelDirty = true;
 
         // Check if cursor is empty now
-        if (gpItemPointer.value.ubNumberOfObjects == 0) {
+        if (gpItemPointer.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         } else // items swapped
         {
           // Update mouse cursor
-          guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.value.usItem]);
-          gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
+          guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
+          gusExternVoSubIndex = Item[gpItemPointer.usItem].ubGraphicNum;
 
           MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
           MSYS_SetCurrentCursor(EXTERN_CURSOR);
@@ -5351,8 +5351,8 @@ export function InternalMAPBeginItemPointer(pSoldier: SOLDIERTYPE): void {
   gpItemPointerSoldier = pSoldier;
 
   // Set mouse
-  guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.value.usItem]);
-  gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
+  guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
+  gusExternVoSubIndex = Item[gpItemPointer.usItem].ubGraphicNum;
 
   MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
@@ -7391,7 +7391,7 @@ function TrashCanBtnCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
     // check if an item is in the cursor, if so, warn player
     if (gpItemPointer != null) {
       // set up for mapscreen
-      if (gpItemPointer.value.ubMission) {
+      if (gpItemPointer.ubMission) {
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pTrashItemText[1], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);
       } else {
         DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, pTrashItemText[0], Enum26.MAP_SCREEN, MSG_BOX_FLAG_YESNO, TrashItemMessageBoxCallBack);

@@ -845,13 +845,13 @@ function RestoreGIOButtonBackGrounds(): void {
 
 function DoneFadeOutForExitGameInitOptionScreen(): void {
   // loop through and get the status of all the buttons
-  gGameOptions.fGunNut = GetCurrentGunButtonSetting();
-  gGameOptions.fSciFi = GetCurrentGameStyleButtonSetting();
+  gGameOptions.fGunNut = Boolean(GetCurrentGunButtonSetting());
+  gGameOptions.fSciFi = Boolean(GetCurrentGameStyleButtonSetting());
   gGameOptions.ubDifficultyLevel = GetCurrentDifficultyButtonSetting() + 1;
   // JA2Gold: no more timed turns setting
   // gGameOptions.fTurnTimeLimit = GetCurrentTimedTurnsButtonSetting();
   // JA2Gold: iron man
-  gGameOptions.fIronManMode = GetCurrentGameSaveButtonSetting();
+  gGameOptions.fIronManMode = Boolean(GetCurrentGameSaveButtonSetting());
 
   //	gubGIOExitScreen = INIT_SCREEN;
   gubGIOExitScreen = Enum26.INTRO_SCREEN;
@@ -878,7 +878,7 @@ function DoGioMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, u
   //	gfExitGioDueToMessageBox = TRUE;
 
   // do message box and return
-  giGioMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
+  giGioMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, CenteringRect);
 
   // send back return state
   return giGioMessageBox != -1;

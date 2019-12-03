@@ -1,6 +1,6 @@
 namespace ja2 {
 
-const MAXCHANCETOHIT = 99;
+export const MAXCHANCETOHIT = 99;
 export const BAD_DODGE_POSITION_PENALTY = 20;
 
 export const GUN_BARREL_RANGE_BONUS = 100;

@@ -618,7 +618,7 @@ export function AutoResolveScreenHandle(): UINT32 {
   RestoreBackgroundRects();
 
   if (!gpAR) {
-    gfEnteringMapScreen = true;
+    gfEnteringMapScreen = 1;
     return Enum26.MAP_SCREEN;
   }
   if (gpAR.fEnteringAutoResolve) {
@@ -632,7 +632,7 @@ export function AutoResolveScreenHandle(): UINT32 {
     ClipRect.iRight = 640;
     ClipRect.iBottom = 480;
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
     KillPreBattleInterface();
@@ -649,7 +649,7 @@ export function AutoResolveScreenHandle(): UINT32 {
     gpAR.fRenderAutoResolve = true;
   }
   if (gpAR.fExitAutoResolve) {
-    gfEnteringMapScreen = true;
+    gfEnteringMapScreen = 1;
     RemoveAutoResolveInterface(true);
     return Enum26.MAP_SCREEN;
   }
@@ -913,7 +913,7 @@ function RenderSoldierCell(pCell: SOLDIERCELL): void {
     ClipRect.iRight = pCell.xp + 33 + x;
     ClipRect.iBottom = pCell.yp + 29;
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }
 
@@ -1532,7 +1532,7 @@ function RenderAutoResolve(): void {
         case Enum120.BATTLE_SURRENDERED:
         case Enum120.BATTLE_CAPTURED:
           for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-            if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife && !(MercPtrs[i].value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i])) {
+            if (MercPtrs[i].bActive && MercPtrs[i].bLife && !(MercPtrs[i].uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(MercPtrs[i])) {
               // Merc is active and alive, and not a vehicle or robot
               if (PlayerMercInvolvedInThisCombat(MercPtrs[i])) {
                 // This morale event is PER INDIVIDUAL SOLDIER
@@ -1729,21 +1729,21 @@ function CreateAutoResolveInterface(): void {
     ResetMortarsOnTeamCount();
 
     if (i < ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_ELITE_MILITIA);
+      gpCivs[i].pSoldier = <SOLDIERTYPE>TacticalCreateMilitia(Enum262.SOLDIER_CLASS_ELITE_MILITIA);
       if (gpCivs[i].pSoldier.ubBodyType == Enum194.REGFEMALE) {
         gpCivs[i].usIndex = Enum122.MILITIA3F_FACE;
       } else {
         gpCivs[i].usIndex = Enum122.MILITIA3_FACE;
       }
     } else if (i < ubRegMilitia + ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_REG_MILITIA);
+      gpCivs[i].pSoldier = <SOLDIERTYPE>TacticalCreateMilitia(Enum262.SOLDIER_CLASS_REG_MILITIA);
       if (gpCivs[i].pSoldier.ubBodyType == Enum194.REGFEMALE) {
         gpCivs[i].usIndex = Enum122.MILITIA2F_FACE;
       } else {
         gpCivs[i].usIndex = Enum122.MILITIA2_FACE;
       }
     } else if (i < ubGreenMilitia + ubRegMilitia + ubEliteMilitia) {
-      gpCivs[i].pSoldier = TacticalCreateMilitia(Enum262.SOLDIER_CLASS_GREEN_MILITIA);
+      gpCivs[i].pSoldier = <SOLDIERTYPE>TacticalCreateMilitia(Enum262.SOLDIER_CLASS_GREEN_MILITIA);
       if (gpCivs[i].pSoldier.ubBodyType == Enum194.REGFEMALE) {
         gpCivs[i].usIndex = Enum122.MILITIA1F_FACE;
       } else {
@@ -1762,7 +1762,7 @@ function CreateAutoResolveInterface(): void {
   }
   if (gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE) {
     for (i = 0, index = 0; i < gpAR.ubElites; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateEliteEnemy();
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateEliteEnemy();
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       if (gpEnemies[i].pSoldier.ubBodyType == Enum194.REGFEMALE) {
         gpEnemies[index].usIndex = Enum122.ELITEF_FACE;
@@ -1774,7 +1774,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].pSoldier.name = gpStrategicString[Enum365.STR_AR_ELITE_NAME];
     }
     for (i = 0; i < gpAR.ubTroops; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateArmyTroop();
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateArmyTroop();
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.TROOP_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -1782,7 +1782,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].pSoldier.name = gpStrategicString[Enum365.STR_AR_TROOP_NAME];
     }
     for (i = 0; i < gpAR.ubAdmins; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateAdministrator();
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateAdministrator();
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.ADMIN_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -1792,7 +1792,7 @@ function CreateAutoResolveInterface(): void {
     AssociateEnemiesWithStrategicGroups();
   } else {
     for (i = 0, index = 0; i < gpAR.ubAFCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.ADULTFEMALEMONSTER);
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateCreature(Enum194.ADULTFEMALEMONSTER);
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.AF_CREATURE_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -1800,7 +1800,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].pSoldier.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.ubAMCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.AM_MONSTER);
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateCreature(Enum194.AM_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.AM_CREATURE_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -1808,7 +1808,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].pSoldier.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.ubYFCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAF_MONSTER);
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateCreature(Enum194.YAF_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.YF_CREATURE_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -1816,7 +1816,7 @@ function CreateAutoResolveInterface(): void {
       gpEnemies[index].pSoldier.name = gpStrategicString[Enum365.STR_AR_CREATURE_NAME];
     }
     for (i = 0; i < gpAR.ubYMCreatures; i++, index++) {
-      gpEnemies[index].pSoldier = TacticalCreateCreature(Enum194.YAM_MONSTER);
+      gpEnemies[index].pSoldier = <SOLDIERTYPE>TacticalCreateCreature(Enum194.YAM_MONSTER);
       gpEnemies[index].uiVObjectID = gpAR.iFaces;
       gpEnemies[index].usIndex = Enum122.YM_CREATURE_FACE;
       gpEnemies[index].pSoldier.sSectorX = gpAR.ubSectorX;
@@ -2716,7 +2716,7 @@ function CreateTempPlayerMerc(): void {
 
   // Create the player soldier
 
-  gpMercs[gpAR.iNumMercFaces].pSoldier = TacticalCreateSoldier(MercCreateStruct, addressof(ubID));
+  gpMercs[gpAR.iNumMercFaces].pSoldier = <SOLDIERTYPE>TacticalCreateSoldier(MercCreateStruct, addressof(ubID));
   if (gpMercs[gpAR.iNumMercFaces].pSoldier) {
     gpAR.iNumMercFaces++;
   }

@@ -749,7 +749,7 @@ export function HandleContinueOfTownTraining(): void {
   if (fContinueEventPosted) {
     // ATE: If this event happens in tactical mode we will be switching at some time to mapscreen...
     if (guiCurrentScreen == Enum26.GAME_SCREEN) {
-      gfEnteringMapScreen = true;
+      gfEnteringMapScreen = 1;
     }
 
     // If the militia view isn't currently active, then turn it on when prompting to continue training.

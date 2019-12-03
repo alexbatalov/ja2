@@ -1,15 +1,15 @@
 namespace ja2 {
 
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArrayFrom(256, createSGPPaletteEntry));
-export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
+export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArray(256, 0));
 
-let IntensityTable: UINT16[] /* [65536] */;
-let ShadeTable: UINT16[] /* [65536] */;
-export let White16BPPPalette: UINT16[] /* [256] */;
+let IntensityTable: UINT16[] /* [65536] */ = createArray(65536, 0);
+let ShadeTable: UINT16[] /* [65536] */ = createArray(65536, 0);
+export let White16BPPPalette: UINT16[] /* [256] */ = createArray(256, 0);
 let guiShadePercent: FLOAT = 0.48;
 let guiBrightPercent: FLOAT = 1.1;
 
-function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): boolean {
+function ShadesCalculateTables(p8BPPPalette: SGPPaletteEntry[]): boolean {
   let uiCount: UINT32;
 
   // Green palette
@@ -51,7 +51,7 @@ function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): boolean 
   return true;
 }
 
-function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPalette: Pointer<SGPPaletteEntry>, usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: boolean): boolean {
+function ShadesCalculatePalette(pSrcPalette: SGPPaletteEntry[], pDestPalette: SGPPaletteEntry[], usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: boolean): boolean {
   let cnt: UINT32;
   let lumin: UINT32;
   let rmod: UINT32;
@@ -81,7 +81,7 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
   return true;
 }
 
-function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointer<SGPPaletteEntry>, pTable: Pointer<UINT8>): void {
+function FindIndecies(pSrcPalette: SGPPaletteEntry[], pMapPalette: SGPPaletteEntry[], pTable: UINT8[]): void {
   let usCurIndex: UINT16;
   let usCurDelta: UINT16;
   let usCurCount: UINT16;
@@ -188,7 +188,7 @@ export function BuildShadeTable(): void {
         ShadeTable[index] = Get16BPPColor(FROMRGB(red * guiShadePercent, green * guiShadePercent, blue * guiShadePercent));
       }
 
-  memset(White16BPPPalette, 65535, sizeof(White16BPPPalette));
+  White16BPPPalette.fill(65535);
 }
 
 /**********************************************************************************************
@@ -240,7 +240,7 @@ function Init8BitTables(): void {
   Set8BPPPalette(Shaded8BPPPalettes[4]);
 }
 
-function Set8BitModePalette(pPal: Pointer<SGPPaletteEntry>): boolean {
+function Set8BitModePalette(pPal: SGPPaletteEntry[]): boolean {
   ShadesCalculateTables(pPal);
   Set8BPPPalette(pPal);
   return true;

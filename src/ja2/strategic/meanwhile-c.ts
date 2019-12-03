@@ -262,7 +262,7 @@ export function ScheduleMeanwhileEvent(pMeanwhileDef: MEANWHILE_DEFINITION, uiTi
   ubCurrentMeanWhileId = pMeanwhileDef.ubMeanwhileID;
 
   // Copy definiaiotn structure into position in global array....
-  copyMeanWhileDefinition(gMeanwhileDef[pMeanwhileDef.ubMeanwhileID], pMeanwhileDef);
+  copyMeanwhileDefinition(gMeanwhileDef[pMeanwhileDef.ubMeanwhileID], pMeanwhileDef);
 
   // A meanwhile.. poor elliot!
   // increment his slapped count...
@@ -279,7 +279,7 @@ export function BeginMeanwhile(ubMeanwhileID: UINT8): boolean {
   let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
-  copyMeanWhileDefinition(gCurrentMeanwhileDef, gMeanwhileDef[ubMeanwhileID]);
+  copyMeanwhileDefinition(gCurrentMeanwhileDef, gMeanwhileDef[ubMeanwhileID]);
 
   gfMeanwhileTryingToStart = true;
   PauseGame();
@@ -722,7 +722,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
   switch (guiOldScreen) {
     case Enum26.MAP_SCREEN:
       InternalLeaveTacticalScreen(Enum26.MAP_SCREEN);
-      // gfEnteringMapScreen = TRUE;
+      // gfEnteringMapScreen = 1;
       break;
 
     case Enum26.GAME_SCREEN:

@@ -1203,7 +1203,7 @@ export function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, us
   RestrictMouseCursor(addressof(TempRect));
 }
 
-export function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
+export function RestrictMouseCursor(pRectangle: SGPRect): void {
   // Make a copy of our rect....
   memcpy(addressof(gCursorClipRect), pRectangle, sizeof(gCursorClipRect));
   ClipCursor(pRectangle);

@@ -64,7 +64,7 @@ let gfVideoCapture: boolean = false;
 let guiFramePeriod: UINT32 = (1000 / 15);
 let guiLastFrame: UINT32;
 let gpFrameData: Pointer<UINT16>[] /* [MAX_NUM_FRAMES] */;
-export let giNumFrames: INT32 = 0;
+let giNumFrames: INT32 = 0;
 
 //
 // Direct Draw objects for both the Primary and Backbuffer surfaces
@@ -130,7 +130,7 @@ let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 // Dirty rectangle management variables
 //
 
-let gpFrameBufferRefreshOverride: () => void;
+let gpFrameBufferRefreshOverride: (() => void) | null;
 let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */ = createArrayFrom(MAX_DIRTY_REGIONS, createSGPRect);
 let guiDirtyRegionCount: UINT32;
 let gfForceFullScreenRefresh: boolean;

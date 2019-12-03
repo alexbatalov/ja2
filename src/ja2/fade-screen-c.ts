@@ -10,7 +10,6 @@ let guiFadeDelay: UINT32;
 let gfFirstTimeInFade: boolean = false;
 let gsFadeCount: INT16;
 let gbFadeType: INT8;
-export let gfFadeIn: boolean;
 let giX1: INT32;
 let giX2: INT32;
 let giY1: INT32;
@@ -20,10 +19,10 @@ export let gfFadeInVideo: boolean;
 
 let uiOldMusicMode: UINT32;
 
-export let gFadeFunction: FADE_FUNCTION = null;
+export let gFadeFunction: FADE_FUNCTION;
 
-export let gFadeInDoneCallback: FADE_HOOK = null;
-export let gFadeOutDoneCallback: FADE_HOOK = null;
+export let gFadeInDoneCallback: FADE_HOOK | null = null;
+export let gFadeOutDoneCallback: FADE_HOOK | null = null;
 
 export let gfFadeIn: boolean = false;
 export let gfFadeOut: boolean = false;
@@ -177,7 +176,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
     case FADE_OUT_VERSION_FASTER:
       gsFadeLimit = (255 / bFadeValue) * 2;
-      gFadeFunction = FadeFrameBufferVersionFaster;
+      gFadeFunction = <FADE_FUNCTION>FadeFrameBufferVersionFaster;
 
       // SetMusicFadeSpeed( 25 );
       // SetMusicMode( MUSIC_NONE );
@@ -495,7 +494,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iRight != BltFx.SrcRect.iLeft) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, BltFx);
   }
 
   iX1 = giX2;
@@ -509,7 +508,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iRight != BltFx.SrcRect.iLeft) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, BltFx);
   }
 
   iX1 = giX1;
@@ -523,7 +522,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iBottom != BltFx.SrcRect.iTop) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, BltFx);
   }
 
   iX1 = giX1;
@@ -537,7 +536,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iBottom != BltFx.SrcRect.iTop) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, BltFx);
   }
 
   giX1 -= sFadeXMove;

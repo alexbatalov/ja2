@@ -1466,7 +1466,7 @@ export function AnyDoctorWhoCanHealThisPatient(pPatient: SOLDIERTYPE, fThisHour:
   return null;
 }
 
-export function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT16 {
+export function CalculateHealingPointsForDoctor(pDoctor: SOLDIERTYPE, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT16 {
   let usHealPts: UINT16 = 0;
   let usKitPts: UINT16 = 0;
   let bMedFactor: INT8;
@@ -1483,7 +1483,7 @@ export function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, p
 
   // calculate normal doctoring rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  pusMaxPts.value = (pDoctor.value.bMedical * ((pDoctor.value.bDexterity + pDoctor.value.bWisdom) / 2) * (100 + (5 * pDoctor.value.bExpLevel))) / DOCTORING_RATE_DIVISOR;
+  pusMaxPts.value = (pDoctor.bMedical * ((pDoctor.bDexterity + pDoctor.bWisdom) / 2) * (100 + (5 * pDoctor.bExpLevel))) / DOCTORING_RATE_DIVISOR;
 
   // adjust for fatigue
   usHealPts = ReducePointsForFatigue(pDoctor, usHealPts);
@@ -1497,7 +1497,7 @@ export function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, p
   }
 
   // get the type of medkit being used
-  bMedFactor = IsMedicalKitItem(pDoctor.value.inv[Enum261.HANDPOS]);
+  bMedFactor = IsMedicalKitItem(pDoctor.inv[Enum261.HANDPOS]);
 
   if (bMedFactor != 0) {
     // no med kit left?
@@ -1512,7 +1512,7 @@ export function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, p
   return usHealPts;
 }
 
-export function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT8 {
+export function CalculateRepairPointsForRepairman(pSoldier: SOLDIERTYPE, pusMaxPts: Pointer<UINT16>, fMakeSureKitIsInHand: boolean): UINT8 {
   let usRepairPts: UINT16;
   let usKitPts: UINT16;
   let ubKitEffectiveness: UINT8;
@@ -1523,7 +1523,7 @@ export function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>
   }
 
   // can't repair at all without a toolkit
-  if (pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.TOOLKIT) {
+  if (pSoldier.inv[Enum261.HANDPOS].usItem != Enum225.TOOLKIT) {
     pusMaxPts.value = 0;
     return 0;
   }
@@ -1533,7 +1533,7 @@ export function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>
 
   // calculate normal repair rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  pusMaxPts.value = (pSoldier.value.bMechanical * pSoldier.value.bDexterity * (100 + (5 * pSoldier.value.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
+  pusMaxPts.value = (pSoldier.bMechanical * pSoldier.bDexterity * (100 + (5 * pSoldier.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
 
   // adjust for fatigue
   usRepairPts = ReducePointsForFatigue(pSoldier, usRepairPts);
@@ -2224,7 +2224,7 @@ function FindRepairableItemOnOtherSoldier(pSoldier: SOLDIERTYPE, ubPassType: UIN
   return NO_SLOT;
 }
 
-function DoActualRepair(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, pbStatus: Pointer<INT8>, pubRepairPtsLeft: Pointer<UINT8>): void {
+function DoActualRepair(pSoldier: SOLDIERTYPE, usItem: UINT16, pbStatus: Pointer<INT8>, pubRepairPtsLeft: Pointer<UINT8>): void {
   let sRepairCostAdj: INT16;
   let usDamagePts: UINT16;
   let usPtsFixed: UINT16;
@@ -2273,30 +2273,30 @@ function DoActualRepair(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, pbStatus
   }
 }
 
-function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pubRepairPtsLeft: Pointer<UINT8>): boolean {
+function RepairObject(pSoldier: SOLDIERTYPE, pOwner: SOLDIERTYPE, pObj: OBJECTTYPE, pubRepairPtsLeft: Pointer<UINT8>): boolean {
   let ubLoop: UINT8;
   let ubItemsInPocket: UINT8;
   let fSomethingWasRepaired: boolean = false;
 
-  ubItemsInPocket = pObj.value.ubNumberOfObjects;
+  ubItemsInPocket = pObj.ubNumberOfObjects;
 
   for (ubLoop = 0; ubLoop < ubItemsInPocket; ubLoop++) {
     // if it's repairable and NEEDS repairing
-    if (IsItemRepairable(pObj.value.usItem, pObj.value.bStatus[ubLoop])) {
+    if (IsItemRepairable(pObj.usItem, pObj.bStatus[ubLoop])) {
       // repairable, try to repair it
 
       // void DoActualRepair( SOLDIERTYPE * pSoldier, UINT16 usItem, INT8 * pbStatus, UINT8 * pubRepairPtsLeft )
-      DoActualRepair(pSoldier, pObj.value.usItem, addressof(pObj.value.bStatus[ubLoop]), pubRepairPtsLeft);
+      DoActualRepair(pSoldier, pObj.usItem, addressof(pObj.bStatus[ubLoop]), pubRepairPtsLeft);
 
       fSomethingWasRepaired = true;
 
-      if (pObj.value.bStatus[ubLoop] == 100) {
+      if (pObj.bStatus[ubLoop] == 100) {
         // report it as fixed
         if (pSoldier == pOwner) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.name, ItemNames[pObj.usItem]);
         } else {
           // NOTE: may need to be changed for localized versions
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.value.name, pOwner.value.name, ItemNames[pObj.value.usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.name, pOwner.name, ItemNames[pObj.usItem]);
         }
       }
 
@@ -2309,21 +2309,21 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
 
   // now check for attachments
   for (ubLoop = 0; ubLoop < MAX_ATTACHMENTS; ubLoop++) {
-    if (pObj.value.usAttachItem[ubLoop] != NOTHING) {
-      if (IsItemRepairable(pObj.value.usAttachItem[ubLoop], pObj.value.bAttachStatus[ubLoop])) {
+    if (pObj.usAttachItem[ubLoop] != NOTHING) {
+      if (IsItemRepairable(pObj.usAttachItem[ubLoop], pObj.bAttachStatus[ubLoop])) {
         // repairable, try to repair it
 
-        DoActualRepair(pSoldier, pObj.value.usAttachItem[ubLoop], addressof(pObj.value.bAttachStatus[ubLoop]), pubRepairPtsLeft);
+        DoActualRepair(pSoldier, pObj.usAttachItem[ubLoop], addressof(pObj.bAttachStatus[ubLoop]), pubRepairPtsLeft);
 
         fSomethingWasRepaired = true;
 
-        if (pObj.value.bAttachStatus[ubLoop] == 100) {
+        if (pObj.bAttachStatus[ubLoop] == 100) {
           // report it as fixed
           if (pSoldier == pOwner) {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.value.name, ItemNames[pObj.value.usAttachItem[ubLoop]]);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_REPAIRED], pSoldier.name, ItemNames[pObj.usAttachItem[ubLoop]]);
           } else {
             // NOTE: may need to be changed for localized versions
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.value.name, pOwner.value.name, ItemNames[pObj.value.usAttachItem[ubLoop]]);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[35], pSoldier.name, pOwner.name, ItemNames[pObj.usAttachItem[ubLoop]]);
           }
         }
 
@@ -2651,7 +2651,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     sBestTrainingPts = -1;
 
     // search team for active instructors in this sector
-    for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer = MercPtrs[uiCnt]) {
+    for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].bTeam].bLastID; uiCnt++, pTrainer = MercPtrs[uiCnt]) {
       if (pTrainer.bActive && (pTrainer.sSectorX == sMapX) && (pTrainer.sSectorY == sMapY) && (pTrainer.bSectorZ == bZ)) {
         // if he's training teammates in this stat
         if ((pTrainer.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.fMercAsleep == false)) {
@@ -2669,7 +2669,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   }
 
   // now search team for active self-trainers in this sector
-  for (uiCnt = 0, pStudent = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pStudent = MercPtrs[uiCnt]) {
+  for (uiCnt = 0, pStudent = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].bTeam].bLastID; uiCnt++, pStudent = MercPtrs[uiCnt]) {
     // see if this merc is active and in the same sector
     if ((pStudent.bActive) && (pStudent.sSectorX == sMapX) && (pStudent.sSectorY == sMapY) && (pStudent.bSectorZ == bZ)) {
       // if he's training himself (alone, or by others), then he's a student
@@ -2766,7 +2766,7 @@ function TownTrainerQsortCompare(pArg1: TOWN_TRAINER_TYPE, pArg2: TOWN_TRAINER_T
   }
 }
 
-export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, pStudent: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetBonusTrainingPtsDueToInstructor(pInstructor: SOLDIERTYPE, pStudent: SOLDIERTYPE | null, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   // return the bonus training pts of this instructor with this student,...if student null, simply assignment student skill of 0 and student wisdom of 100
   let sTrainingPts: INT16 = 0;
   let bTraineeEffWisdom: INT8 = 0;
@@ -2788,39 +2788,39 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
   switch (bTrainStat) {
     case (Enum118.STRENGTH):
       bTrainerEffSkill = EffectiveStrength(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bStrength;
+      bTrainerNatSkill = pInstructor.bStrength;
       break;
     case (Enum118.DEXTERITY):
       bTrainerEffSkill = EffectiveDexterity(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bDexterity;
+      bTrainerNatSkill = pInstructor.bDexterity;
       break;
     case (Enum118.AGILITY):
       bTrainerEffSkill = EffectiveAgility(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bAgility;
+      bTrainerNatSkill = pInstructor.bAgility;
       break;
     case (Enum118.HEALTH):
-      bTrainerEffSkill = pInstructor.value.bLifeMax;
-      bTrainerNatSkill = pInstructor.value.bLifeMax;
+      bTrainerEffSkill = pInstructor.bLifeMax;
+      bTrainerNatSkill = pInstructor.bLifeMax;
       break;
     case (Enum118.LEADERSHIP):
       bTrainerEffSkill = EffectiveLeadership(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bLeadership;
+      bTrainerNatSkill = pInstructor.bLeadership;
       break;
     case (Enum118.MARKSMANSHIP):
       bTrainerEffSkill = EffectiveMarksmanship(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bMarksmanship;
+      bTrainerNatSkill = pInstructor.bMarksmanship;
       break;
     case (Enum118.EXPLOSIVE_ASSIGN):
       bTrainerEffSkill = EffectiveExplosive(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bExplosive;
+      bTrainerNatSkill = pInstructor.bExplosive;
       break;
     case (Enum118.MEDICAL):
       bTrainerEffSkill = EffectiveMedical(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bMedical;
+      bTrainerNatSkill = pInstructor.bMedical;
       break;
     case (Enum118.MECHANICAL):
       bTrainerEffSkill = EffectiveMechanical(pInstructor);
-      bTrainerNatSkill = pInstructor.value.bMechanical;
+      bTrainerNatSkill = pInstructor.bMechanical;
       break;
     // NOTE: Wisdom can't be trained!
     default:
@@ -2837,36 +2837,36 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
   } else {
     // set student's variables
     bTraineeEffWisdom = EffectiveWisdom(pStudent);
-    bTraineeNatWisdom = pStudent.value.bWisdom;
+    bTraineeNatWisdom = pStudent.bWisdom;
 
     // for trainee's stat skill, must use the natural value, not the effective one, to avoid drunks training beyond cap
     switch (bTrainStat) {
       case (Enum118.STRENGTH):
-        bTraineeSkill = pStudent.value.bStrength;
+        bTraineeSkill = pStudent.bStrength;
         break;
       case (Enum118.DEXTERITY):
-        bTraineeSkill = pStudent.value.bDexterity;
+        bTraineeSkill = pStudent.bDexterity;
         break;
       case (Enum118.AGILITY):
-        bTraineeSkill = pStudent.value.bAgility;
+        bTraineeSkill = pStudent.bAgility;
         break;
       case (Enum118.HEALTH):
-        bTraineeSkill = pStudent.value.bLifeMax;
+        bTraineeSkill = pStudent.bLifeMax;
         break;
       case (Enum118.LEADERSHIP):
-        bTraineeSkill = pStudent.value.bLeadership;
+        bTraineeSkill = pStudent.bLeadership;
         break;
       case (Enum118.MARKSMANSHIP):
-        bTraineeSkill = pStudent.value.bMarksmanship;
+        bTraineeSkill = pStudent.bMarksmanship;
         break;
       case (Enum118.EXPLOSIVE_ASSIGN):
-        bTraineeSkill = pStudent.value.bExplosive;
+        bTraineeSkill = pStudent.bExplosive;
         break;
       case (Enum118.MEDICAL):
-        bTraineeSkill = pStudent.value.bMedical;
+        bTraineeSkill = pStudent.bMedical;
         break;
       case (Enum118.MECHANICAL):
-        bTraineeSkill = pStudent.value.bMechanical;
+        bTraineeSkill = pStudent.bMechanical;
         break;
       // NOTE: Wisdom can't be trained!
       default:
@@ -2879,8 +2879,8 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
     }
 
     // factor in their mutual relationship
-    bOpinionFactor = gMercProfiles[pStudent.value.ubProfile].bMercOpinion[pInstructor.value.ubProfile];
-    bOpinionFactor += gMercProfiles[pInstructor.value.ubProfile].bMercOpinion[pStudent.value.ubProfile] / 2;
+    bOpinionFactor = gMercProfiles[pStudent.ubProfile].bMercOpinion[pInstructor.ubProfile];
+    bOpinionFactor += gMercProfiles[pInstructor.ubProfile].bMercOpinion[pStudent.ubProfile] / 2;
   }
 
   // check to see if student better than/equal to instructor's effective skill, if so, return 0
@@ -2893,7 +2893,7 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
   sTrainingPts = (bTrainerEffSkill - bTraineeSkill) * (bTraineeEffWisdom + (EffectiveWisdom(pInstructor) + EffectiveLeadership(pInstructor)) / 2) / INSTRUCTED_TRAINING_DIVISOR;
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = (bTrainerNatSkill - bTraineeSkill) * (bTraineeNatWisdom + (pInstructor.value.bWisdom + pInstructor.value.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR;
+  pusMaxPts.value = (bTrainerNatSkill - bTraineeSkill) * (bTraineeNatWisdom + (pInstructor.bWisdom + pInstructor.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR;
 
   // put in a minimum (that can be reduced due to instructor being tired?)
   if (pusMaxPts.value == 0) {
@@ -2905,10 +2905,10 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
   }
 
   // check for teaching skill bonuses
-  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait == Enum269.TEACHING) {
+  if (gMercProfiles[pInstructor.ubProfile].bSkillTrait == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
-  if (gMercProfiles[pInstructor.value.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
+  if (gMercProfiles[pInstructor.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
 
@@ -2929,7 +2929,7 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERT
   return sTrainingPts;
 }
 
-export function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetSoldierTrainingPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -2940,31 +2940,31 @@ export function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
     case (Enum118.STRENGTH):
-      bSkill = pSoldier.value.bStrength;
+      bSkill = pSoldier.bStrength;
       break;
     case (Enum118.DEXTERITY):
-      bSkill = pSoldier.value.bDexterity;
+      bSkill = pSoldier.bDexterity;
       break;
     case (Enum118.AGILITY):
-      bSkill = pSoldier.value.bAgility;
+      bSkill = pSoldier.bAgility;
       break;
     case (Enum118.HEALTH):
-      bSkill = pSoldier.value.bLifeMax;
+      bSkill = pSoldier.bLifeMax;
       break;
     case (Enum118.LEADERSHIP):
-      bSkill = pSoldier.value.bLeadership;
+      bSkill = pSoldier.bLeadership;
       break;
     case (Enum118.MARKSMANSHIP):
-      bSkill = pSoldier.value.bMarksmanship;
+      bSkill = pSoldier.bMarksmanship;
       break;
     case (Enum118.EXPLOSIVE_ASSIGN):
-      bSkill = pSoldier.value.bExplosive;
+      bSkill = pSoldier.bExplosive;
       break;
     case (Enum118.MEDICAL):
-      bSkill = pSoldier.value.bMedical;
+      bSkill = pSoldier.bMedical;
       break;
     case (Enum118.MECHANICAL):
-      bSkill = pSoldier.value.bMechanical;
+      bSkill = pSoldier.bMechanical;
       break;
     // NOTE: Wisdom can't be trained!
     default:
@@ -2977,7 +2977,7 @@ export function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = Math.max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
   sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
@@ -2996,7 +2996,7 @@ export function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat
   return sTrainingPts;
 }
 
-export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetSoldierStudentPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fAtGunRange: boolean, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   let bSkill: INT8 = 0;
@@ -3006,7 +3006,7 @@ export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat:
   let usMaxTrainerPts: UINT16;
   let usBestMaxTrainerPts: UINT16;
   let uiCnt: UINT32;
-  let pTrainer: Pointer<SOLDIERTYPE>;
+  let pTrainer: SOLDIERTYPE;
 
   // assume training impossible for max pts
   pusMaxPts.value = 0;
@@ -3014,31 +3014,31 @@ export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat:
   // use NATURAL not EFFECTIVE values here
   switch (bTrainStat) {
     case (Enum118.STRENGTH):
-      bSkill = pSoldier.value.bStrength;
+      bSkill = pSoldier.bStrength;
       break;
     case (Enum118.DEXTERITY):
-      bSkill = pSoldier.value.bDexterity;
+      bSkill = pSoldier.bDexterity;
       break;
     case (Enum118.AGILITY):
-      bSkill = pSoldier.value.bAgility;
+      bSkill = pSoldier.bAgility;
       break;
     case (Enum118.HEALTH):
-      bSkill = pSoldier.value.bLifeMax;
+      bSkill = pSoldier.bLifeMax;
       break;
     case (Enum118.LEADERSHIP):
-      bSkill = pSoldier.value.bLeadership;
+      bSkill = pSoldier.bLeadership;
       break;
     case (Enum118.MARKSMANSHIP):
-      bSkill = pSoldier.value.bMarksmanship;
+      bSkill = pSoldier.bMarksmanship;
       break;
     case (Enum118.EXPLOSIVE_ASSIGN):
-      bSkill = pSoldier.value.bExplosive;
+      bSkill = pSoldier.bExplosive;
       break;
     case (Enum118.MEDICAL):
-      bSkill = pSoldier.value.bMedical;
+      bSkill = pSoldier.bMedical;
       break;
     case (Enum118.MECHANICAL):
-      bSkill = pSoldier.value.bMechanical;
+      bSkill = pSoldier.bMechanical;
       break;
     // NOTE: Wisdom can't be trained!
     default:
@@ -3051,7 +3051,7 @@ export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat:
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = Math.max(((pSoldier.value.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
   sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
@@ -3073,11 +3073,11 @@ export function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat:
   sBestTrainingPts = -1;
 
   // search team for active instructors in this sector
-  for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
-    if (pTrainer.value.bActive && (pTrainer.value.sSectorX == pSoldier.value.sSectorX) && (pTrainer.value.sSectorY == pSoldier.value.sSectorY) && (pTrainer.value.bSectorZ == pSoldier.value.bSectorZ)) {
+  for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].bTeam].bLastID; uiCnt++, pTrainer = MercPtrs[uiCnt]) {
+    if (pTrainer.bActive && (pTrainer.sSectorX == pSoldier.sSectorX) && (pTrainer.sSectorY == pSoldier.sSectorY) && (pTrainer.bSectorZ == pSoldier.bSectorZ)) {
       // if he's training teammates in this stat
       // NB skip the EnoughTime requirement to display what the value should be even if haven't been training long yet...
-      if ((pTrainer.value.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == false)) {
+      if ((pTrainer.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.bTrainStat == bTrainStat) && (pTrainer.fMercAsleep == false)) {
         sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, addressof(usMaxTrainerPts));
 
         // if he's the best trainer so far for this stat
@@ -3193,28 +3193,28 @@ function TrainTownInSector(pTrainer: SOLDIERTYPE, sMapX: INT16, sMapY: INT16, sT
   }
 }
 
-export function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: Pointer<UINT16>): INT16 {
+export function GetTownTrainPtsForCharacter(pTrainer: SOLDIERTYPE, pusMaxPts: Pointer<UINT16>): INT16 {
   let sTotalTrainingPts: INT16 = 0;
   let bTrainingBonus: INT8 = 0;
   //	UINT8 ubTownId = 0;
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = (pTrainer.value.bWisdom + pTrainer.value.bLeadership + (10 * pTrainer.value.bExpLevel)) * TOWN_TRAINING_RATE;
+  pusMaxPts.value = (pTrainer.bWisdom + pTrainer.bLeadership + (10 * pTrainer.bExpLevel)) * TOWN_TRAINING_RATE;
 
   // calculate effective training points (this is hundredths of pts / hour)
   // typical: 300/hr, maximum: 600/hr
   sTotalTrainingPts = (EffectiveWisdom(pTrainer) + EffectiveLeadership(pTrainer) + (10 * EffectiveExpLevel(pTrainer))) * TOWN_TRAINING_RATE;
 
   // check for teaching bonuses
-  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait == Enum269.TEACHING) {
+  if (gMercProfiles[pTrainer.ubProfile].bSkillTrait == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
-  if (gMercProfiles[pTrainer.value.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
+  if (gMercProfiles[pTrainer.ubProfile].bSkillTrait2 == Enum269.TEACHING) {
     bTrainingBonus += TEACH_BONUS_TO_TRAIN;
   }
 
   // RPCs get a small training bonus for being more familiar with the locals and their customs/needs than outsiders
-  if (pTrainer.value.ubProfile >= FIRST_RPC) {
+  if (pTrainer.ubProfile >= FIRST_RPC) {
     bTrainingBonus += RPC_BONUS_TO_TRAIN;
   }
 
@@ -7477,41 +7477,41 @@ function CanCharacterRepairRobot(pSoldier: SOLDIERTYPE): boolean {
   return true;
 }
 
-function HandleRepairOfRobotBySoldier(pSoldier: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
-  let pRobot: Pointer<SOLDIERTYPE> = null;
+function HandleRepairOfRobotBySoldier(pSoldier: SOLDIERTYPE, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
+  let pRobot: SOLDIERTYPE;
 
-  pRobot = GetRobotSoldier();
+  pRobot = <SOLDIERTYPE>GetRobotSoldier();
 
   // do the actual repairs
   return RepairRobot(pRobot, ubRepairPts, pfNothingLeftToRepair);
 }
 
-function RepairRobot(pRobot: Pointer<SOLDIERTYPE>, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
+function RepairRobot(pRobot: SOLDIERTYPE, ubRepairPts: UINT8, pfNothingLeftToRepair: Pointer<boolean>): UINT8 {
   let ubPointsUsed: UINT8 = 0;
 
   // is it "dead" ?
-  if (pRobot.value.bLife == 0) {
+  if (pRobot.bLife == 0) {
     pfNothingLeftToRepair.value = true;
     return ubPointsUsed;
   }
 
   // is it "unhurt" ?
-  if (pRobot.value.bLife == pRobot.value.bLifeMax) {
+  if (pRobot.bLife == pRobot.bLifeMax) {
     pfNothingLeftToRepair.value = true;
     return ubPointsUsed;
   }
 
   // if we have enough or more than we need
-  if (pRobot.value.bLife + ubRepairPts >= pRobot.value.bLifeMax) {
-    ubPointsUsed = (pRobot.value.bLifeMax - pRobot.value.bLife);
-    pRobot.value.bLife = pRobot.value.bLifeMax;
+  if (pRobot.bLife + ubRepairPts >= pRobot.bLifeMax) {
+    ubPointsUsed = (pRobot.bLifeMax - pRobot.bLife);
+    pRobot.bLife = pRobot.bLifeMax;
   } else {
     // not enough, do what we can
     ubPointsUsed = ubRepairPts;
-    pRobot.value.bLife += ubRepairPts;
+    pRobot.bLife += ubRepairPts;
   }
 
-  if (pRobot.value.bLife == pRobot.value.bLifeMax) {
+  if (pRobot.bLife == pRobot.bLifeMax) {
     pfNothingLeftToRepair.value = true;
   } else {
     pfNothingLeftToRepair.value = false;
@@ -8771,7 +8771,7 @@ export function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
 
               // is the squad between sectors
               if (Squad[bAssignment][0]) {
-                if (Squad[bAssignment][0].value.fBetweenSectors) {
+                if (Squad[bAssignment][0].fBetweenSectors) {
                   // between sectors, remove from old mvt group
                   if (pSoldier.bOldAssignment >= Enum117.ON_DUTY) {
                     // remove from group
@@ -8918,7 +8918,7 @@ export function UnEscortEPC(pSoldier: SOLDIERTYPE): void {
     HandleFactForNPCUnescorted(pSoldier.ubProfile);
 
     if (pSoldier.ubProfile == Enum268.JOHN) {
-      let pSoldier2: Pointer<SOLDIERTYPE>;
+      let pSoldier2: SOLDIERTYPE | null /* Pointer<SOLDIERTYPE> */;
 
       // unrecruit Mary as well
       pSoldier2 = FindSoldierByProfileID(Enum268.MARY, true);
@@ -8937,7 +8937,7 @@ export function UnEscortEPC(pSoldier: SOLDIERTYPE): void {
         SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_REMOVE_EPC, Enum268.MARY, 0, 0, 0, 0);
       }
     } else if (pSoldier.ubProfile == Enum268.MARY) {
-      let pSoldier2: Pointer<SOLDIERTYPE>;
+      let pSoldier2: SOLDIERTYPE | null /* Pointer<SOLDIERTYPE> */;
 
       // unrecruit John as well
       pSoldier2 = FindSoldierByProfileID(Enum268.JOHN, true);
@@ -9149,12 +9149,12 @@ export function ResumeOldAssignment(pSoldier: SOLDIERTYPE): void {
   fMapPanelDirty = true;
 }
 
-function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: Pointer<UINT8>): void {
+function RepairItemsOnOthers(pSoldier: SOLDIERTYPE, pubRepairPtsLeft: Pointer<UINT8>): void {
   let ubPassType: UINT8;
   let bLoop: INT8;
   let bPocket: INT8;
-  let pOtherSoldier: Pointer<SOLDIERTYPE>;
-  let pBestOtherSoldier: Pointer<SOLDIERTYPE>;
+  let pOtherSoldier: SOLDIERTYPE;
+  let pBestOtherSoldier: SOLDIERTYPE | null;
   let bPriority: INT8;
   let bBestPriority: INT8 = -1;
   let fSomethingWasRepairedThisPass: boolean;
@@ -9187,7 +9187,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
         if (CanCharacterRepairAnotherSoldiersStuff(pSoldier, pOtherSoldier)) {
           // okay, seems like a candidate!
           if (FindRepairableItemOnOtherSoldier(pOtherSoldier, ubPassType) != NO_SLOT) {
-            bPriority = pOtherSoldier.value.bExpLevel;
+            bPriority = pOtherSoldier.bExpLevel;
             if (bPriority > bBestPriority) {
               bBestPriority = bPriority;
               pBestOtherSoldier = pOtherSoldier;
@@ -9202,7 +9202,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
         do {
           bPocket = FindRepairableItemOnOtherSoldier(pBestOtherSoldier, ubPassType);
           if (bPocket != NO_SLOT) {
-            if (RepairObject(pSoldier, pBestOtherSoldier, addressof(pBestOtherSoldier.value.inv[bPocket]), pubRepairPtsLeft)) {
+            if (RepairObject(pSoldier, pBestOtherSoldier, pBestOtherSoldier.inv[bPocket], pubRepairPtsLeft)) {
               fSomethingWasRepairedThisPass = true;
             }
           }
@@ -9213,7 +9213,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
     }
 
     if (fSomethingWasRepairedThisPass && !DoesCharacterHaveAnyItemsToRepair(pSoldier, ubPassType)) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sRepairsDoneString[1 + ubPassType], pSoldier.value.name);
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, sRepairsDoneString[1 + ubPassType], pSoldier.name);
 
       // let player react
       StopTimeCompression();
@@ -9221,18 +9221,18 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
   }
 }
 
-function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: Pointer<UINT8>): boolean {
+function UnjamGunsOnSoldier(pOwnerSoldier: SOLDIERTYPE, pRepairSoldier: SOLDIERTYPE, pubRepairPtsLeft: Pointer<UINT8>): boolean {
   let fAnyGunsWereUnjammed: boolean = false;
   let bPocket: INT8;
 
   // try to unjam everything before beginning any actual repairs.. successful unjamming costs 2 points per weapon
   for (bPocket = Enum261.HANDPOS; bPocket <= Enum261.SMALLPOCK8POS; bPocket++) {
     // the object a weapon? and jammed?
-    if ((Item[pOwnerSoldier.value.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus < 0)) {
+    if ((Item[pOwnerSoldier.inv[bPocket].usItem].usItemClass == IC_GUN) && (pOwnerSoldier.inv[bPocket].bGunAmmoStatus < 0)) {
       if (pubRepairPtsLeft.value >= REPAIR_COST_PER_JAM) {
         pubRepairPtsLeft.value -= REPAIR_COST_PER_JAM;
 
-        pOwnerSoldier.value.inv[bPocket].bGunAmmoStatus *= -1;
+        pOwnerSoldier.inv[bPocket].bGunAmmoStatus *= -1;
 
         // MECHANICAL/DEXTERITY GAIN: Unjammed a gun
         StatChange(pRepairSoldier, MECHANAMT, 5, 0);
@@ -9240,10 +9240,10 @@ function UnjamGunsOnSoldier(pOwnerSoldier: Pointer<SOLDIERTYPE>, pRepairSoldier:
 
         // report it as unjammed
         if (pRepairSoldier == pOwnerSoldier) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[53], pRepairSoldier.value.name, ItemNames[pOwnerSoldier.value.inv[bPocket].usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[53], pRepairSoldier.name, ItemNames[pOwnerSoldier.inv[bPocket].usItem]);
         } else {
           // NOTE: may need to be changed for localized versions
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[54], pRepairSoldier.value.name, pOwnerSoldier.value.name, ItemNames[pOwnerSoldier.value.inv[bPocket].usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[54], pRepairSoldier.name, pOwnerSoldier.name, ItemNames[pOwnerSoldier.inv[bPocket].usItem]);
         }
 
         fAnyGunsWereUnjammed = true;

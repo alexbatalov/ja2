@@ -451,7 +451,7 @@ export function EnterAIMMembers(): boolean {
   vs_desc.usWidth = AIM_MEMBER_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = AIM_MEMBER_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoFaceBackground))) {
+  if (!AddVideoSurface(vs_desc, addressof(guiVideoFaceBackground))) {
     return false;
   }
 
@@ -2728,7 +2728,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
       vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
       vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
       vs_desc.ubBitDepth = 16;
-      if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar))) {
+      if (!AddVideoSurface(vs_desc, addressof(guiVideoTitleBar))) {
         return false;
       }
 
@@ -2923,7 +2923,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
     vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
     vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
     vs_desc.ubBitDepth = 16;
-    if (!AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar))) {
+    if (!AddVideoSurface(vs_desc, addressof(guiVideoTitleBar))) {
       return false;
     }
 

@@ -1,12 +1,12 @@
 namespace ja2 {
 
 // editor icon storage vars
-export let giEditMercDirectionIcons: INT32[] /* [2] */;
+export let giEditMercDirectionIcons: INT32[] /* [2] */ = createArray(2, 0);
 export let guiMercInventoryPanel: UINT32;
 export let guiOmertaMap: UINT32;
-export let guiMercInvPanelBuffers: UINT32[] /* [9] */;
+export let guiMercInvPanelBuffers: UINT32[] /* [9] */ = createArray(9, 0);
 export let guiMercTempBuffer: UINT32;
-export let giEditMercImage: INT32[] /* [2] */;
+export let giEditMercImage: INT32[] /* [2] */ = createArray(2, 0);
 export let guiExclamation: UINT32;
 export let guiKeyImage: UINT32;
 
@@ -148,15 +148,15 @@ function CreateEditorBuffers(): void {
   vs_desc.usWidth = 60;
   vs_desc.usHeight = 25;
   vs_desc.ubBitDepth = ubBitDepth;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercTempBuffer)))
-    AssertMsg(0, "Failed to allocate memory for merc tempitem buffer.");
+  if (!AddVideoSurface(vs_desc, addressof(guiMercTempBuffer)))
+    AssertMsg(false, "Failed to allocate memory for merc tempitem buffer.");
 
   // create the nine buffers for the merc's inventory slots.
   vs_desc.usHeight = MERCINV_SLOT_HEIGHT;
   for (i = 0; i < 9; i++) {
     vs_desc.usWidth = i < 3 ? MERCINV_SMSLOT_WIDTH : MERCINV_LGSLOT_WIDTH;
-    if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercInvPanelBuffers[i])))
-      AssertMsg(0, "Failed to allocate memory for merc item[] buffers.");
+    if (!AddVideoSurface(vs_desc, addressof(guiMercInvPanelBuffers[i])))
+      AssertMsg(false, "Failed to allocate memory for merc item[] buffers.");
   }
 }
 
@@ -389,16 +389,13 @@ export function EnableEditorTaskbar(): void {
 // string before rendering the string.  This is obviously only useful for drawing text
 // in the editor taskbar.
 export function mprintfEditor(x: INT16, y: INT16, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiStringLength: UINT16;
   let uiStringHeight: UINT16;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   uiStringLength = StringPixLength(string, FontDefault);
   uiStringHeight = GetFontHeight(FontDefault);
@@ -619,29 +616,33 @@ function RenderMapEntryPointsAndLights(): void {
   }
 }
 
-function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<string> /* Pointer<UINT16> */): void {
-  if (pItem.value.usItem == Enum225.SWITCH) {
-    if (pItem.value.bFrequency == PANIC_FREQUENCY)
+function BuildTriggerName(pItem: OBJECTTYPE): string {
+  let szItemName: string;
+
+  if (pItem.usItem == Enum225.SWITCH) {
+    if (pItem.bFrequency == PANIC_FREQUENCY)
       szItemName = "Panic Trigger1";
-    else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
+    else if (pItem.bFrequency == PANIC_FREQUENCY_2)
       szItemName = "Panic Trigger2";
-    else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
+    else if (pItem.bFrequency == PANIC_FREQUENCY_3)
       szItemName = "Panic Trigger3";
     else
-      szItemName = swprintf("Trigger%d", pItem.value.bFrequency - 50);
+      szItemName = swprintf("Trigger%d", pItem.bFrequency - 50);
   } else {
     // action item
-    if (pItem.value.bDetonatorType == Enum224.BOMB_PRESSURE)
+    if (pItem.bDetonatorType == Enum224.BOMB_PRESSURE)
       szItemName = "Pressure Action";
-    else if (pItem.value.bFrequency == PANIC_FREQUENCY)
+    else if (pItem.bFrequency == PANIC_FREQUENCY)
       szItemName = "Panic Action1";
-    else if (pItem.value.bFrequency == PANIC_FREQUENCY_2)
+    else if (pItem.bFrequency == PANIC_FREQUENCY_2)
       szItemName = "Panic Action2";
-    else if (pItem.value.bFrequency == PANIC_FREQUENCY_3)
+    else if (pItem.bFrequency == PANIC_FREQUENCY_3)
       szItemName = "Panic Action3";
     else
-      szItemName = swprintf("Action%d", pItem.value.bFrequency - 50);
+      szItemName = swprintf("Action%d", pItem.bFrequency - 50);
   }
+
+  return szItemName;
 }
 
 function RenderDoorLockInfo(): void {
@@ -714,35 +715,35 @@ function RenderSelectedItemBlownUp(): void {
     return;
 
   // Display the enlarged item graphic
-  uiVideoObjectIndex = GetInterfaceGraphicForItem(addressof(Item[gpItem.value.usItem]));
+  uiVideoObjectIndex = GetInterfaceGraphicForItem(Item[gpItem.usItem]);
   hVObject = GetVideoObject(uiVideoObjectIndex);
 
-  sWidth = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usWidth;
-  sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetX;
+  sWidth = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usWidth;
+  sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetX;
   xp = sScreenX + (40 - sWidth - sOffsetX * 2) / 2;
 
-  sHeight = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usHeight;
-  sOffsetY = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetY;
+  sHeight = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usHeight;
+  sOffsetY = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetY;
   yp = sScreenY + (20 - sHeight - sOffsetY * 2) / 2;
 
-  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem.value.usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), true);
+  BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem.usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), true);
 
   // Display the item name above it
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
   SetFontShadow(FONT_NEARBLACK);
-  if (gpItem.value.usItem == Enum225.ACTION_ITEM || gpItem.value.usItem == Enum225.SWITCH) {
-    BuildTriggerName(gpItem, szItemName);
-  } else if (Item[gpItem.value.usItem].usItemClass == IC_KEY) {
-    szItemName = swprintf("%S", LockTable[gpItem.value.ubKeyID].ubEditorName);
+  if (gpItem.usItem == Enum225.ACTION_ITEM || gpItem.usItem == Enum225.SWITCH) {
+    szItemName = BuildTriggerName(gpItem);
+  } else if (Item[gpItem.usItem].usItemClass == IC_KEY) {
+    szItemName = swprintf("%S", LockTable[gpItem.ubKeyID].ubEditorName);
   } else {
-    ({ name: szItemName } = LoadItemInfo(gpItem.value.usItem));
+    ({ name: szItemName } = LoadItemInfo(gpItem.usItem));
   }
   xp = sScreenX - (StringPixLength(szItemName, FONT10ARIAL()) - 40) / 2;
   yp -= 10;
   mprintf(xp, yp, szItemName);
 
-  if (gpItem.value.usItem == Enum225.ACTION_ITEM) {
+  if (gpItem.usItem == Enum225.ACTION_ITEM) {
     let pStr: string /* Pointer<UINT16> */;
     pStr = GetActionItemName(gpItem);
     xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD()) - 40) / 2;

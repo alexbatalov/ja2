@@ -877,10 +877,10 @@ export function MercsPriorityExistanceCallback(btn: GUI_BUTTON, reason: INT32): 
     if (gpSelected) {
       if (btn.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected.value.pBasicPlacement.value.fPriorityExistance = true;
+        gpSelected.pBasicPlacement.fPriorityExistance = true;
       } else // button is unchecked.
       {
-        gpSelected.value.pBasicPlacement.value.fPriorityExistance = false;
+        gpSelected.pBasicPlacement.fPriorityExistance = false;
       }
     }
   }
@@ -891,13 +891,13 @@ export function MercsHasKeysCallback(btn: GUI_BUTTON, reason: INT32): void {
     if (gpSelected) {
       if (btn.uiFlags & BUTTON_CLICKED_ON) // button is checked
       {
-        gpSelected.value.pBasicPlacement.value.fHasKeys = true;
+        gpSelected.pBasicPlacement.fHasKeys = true;
       } else // button is unchecked.
       {
-        gpSelected.value.pBasicPlacement.value.fHasKeys = false;
+        gpSelected.pBasicPlacement.fHasKeys = false;
       }
-      if (gpSelected.value.pDetailedPlacement) {
-        gpSelected.value.pDetailedPlacement.value.fHasKeys = gpSelected.value.pBasicPlacement.value.fHasKeys;
+      if (gpSelected.pDetailedPlacement) {
+        gpSelected.pDetailedPlacement.fHasKeys = gpSelected.pBasicPlacement.fHasKeys;
       }
     }
   }
@@ -952,14 +952,14 @@ export function MercsDirectionSetCallback(btn: GUI_BUTTON, reason: INT32): void 
 }
 
 export function MercsFindSelectedMercCallback(btn: GUI_BUTTON, reason: INT32): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gsSelectedMercID == -1)
       return;
-    GetSoldier(addressof(pSoldier), gsSelectedMercID);
+    pSoldier = GetSoldier(gsSelectedMercID);
     if (!pSoldier)
       return;
-    CenterScreenAtMapIndex(pSoldier.value.sGridNo);
+    CenterScreenAtMapIndex(pSoldier.sGridNo);
   }
 }
 

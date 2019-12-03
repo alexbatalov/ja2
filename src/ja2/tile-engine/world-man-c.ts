@@ -1709,8 +1709,8 @@ export function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: SO
   }
 
   // Remove existing structs
-  DeleteStructureFromWorld(pSoldier.pLevelNode.value.pStructureData);
-  pSoldier.pLevelNode.value.pStructureData = null;
+  DeleteStructureFromWorld(pSoldier.pLevelNode.pStructureData);
+  pSoldier.pLevelNode.pStructureData = null;
 
   pStructureFileRef = GetAnimationStructureRef(pSoldier.ubID, usAnimSurface, usAnimState);
 
@@ -1748,7 +1748,7 @@ export function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: SO
       return false;
     } else {
       // Turn on if we are multi-tiled
-      if (pSoldier.pLevelNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
+      if (pSoldier.pLevelNode.pStructureData.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
         // If we have more than one tile
         pSoldier.uiStatusFlags |= SOLDIER_MULTITILE_Z;
       } else {
@@ -1778,8 +1778,8 @@ export function OKToAddMercToWorld(pSoldier: SOLDIERTYPE, bDirection: INT8): boo
     // Now check if we have multi-tile info!
     if (pStructFileRef != null) {
       // Try adding struct to this location, if we can it's good!
-      if (pSoldier.pLevelNode && pSoldier.pLevelNode.value.pStructureData != null) {
-        usOKToAddStructID = pSoldier.pLevelNode.value.pStructureData.value.usStructureID;
+      if (pSoldier.pLevelNode && pSoldier.pLevelNode.pStructureData != null) {
+        usOKToAddStructID = pSoldier.pLevelNode.pStructureData.usStructureID;
       } else {
         usOKToAddStructID = INVALID_STRUCTURE_ID;
       }
@@ -2620,7 +2620,7 @@ export function WhoIsThere2(sGridNo: INT16, bLevel: INT8): UINT8 {
 
     while (pStructure) {
       // person must either have their pSoldier->sGridNo here or be non-passable
-      if ((pStructure.fFlags & STRUCTURE_PERSON) && (!(pStructure.fFlags & STRUCTURE_PASSABLE) || MercPtrs[pStructure.usStructureID].value.sGridNo == sGridNo)) {
+      if ((pStructure.fFlags & STRUCTURE_PERSON) && (!(pStructure.fFlags & STRUCTURE_PASSABLE) || MercPtrs[pStructure.usStructureID].sGridNo == sGridNo)) {
         if ((bLevel == 0 && pStructure.sCubeOffset == 0) || (bLevel > 0 && pStructure.sCubeOffset > 0)) {
           // found a person, on the right level!
           // structure ID and merc ID are identical for merc structures

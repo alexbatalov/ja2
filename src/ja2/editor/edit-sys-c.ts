@@ -83,11 +83,11 @@ export function EraseMapTile(iMapIndex: UINT32): void {
         break;
 
       // is there only 1 ground tile here? if so, get out o here
-      if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == null)
+      if ((<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).pNext == null)
         break;
       AddToUndoList(iMapIndex);
-      uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
-      RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
+      uiCheckType = GetTileType((<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).usIndex);
+      RemoveLand(iMapIndex, (<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).usIndex);
       SmoothTerrainRadius(iMapIndex, uiCheckType, 1, true);
       break;
     case Enum38.DRAW_MODE_OSTRUCTS:
@@ -376,7 +376,7 @@ export function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16):
       usNumInPickList++;
     }
   }
-  return (usNumInPickList) ? usPickList[rand() % usNumInPickList] : 0xffff;
+  return (usNumInPickList) ? usPickList[Math.floor(Math.random() * usNumInPickList)] : 0xffff;
 }
 
 function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
@@ -510,7 +510,7 @@ export function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: b
 
     if (gpWorldLevelData[iMapIndex].pStructHead != null) {
       // CHECK IF THE SAME TILE IS HERE
-      if (gpWorldLevelData[iMapIndex].pStructHead.value.usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
+      if ((<LEVELNODE>gpWorldLevelData[iMapIndex].pStructHead).usIndex == (gTileTypeStartIndex[usUseObjIndex] + usUseIndex)) {
         fDoPaste = false;
       }
     } else {
@@ -741,7 +741,7 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): boolean {
   DeleteAllLandLayers(iMapIndex);
 
   // ADD BASE LAND AT LEAST!
-  usNewIndex = (rand() % 10);
+  usNewIndex = Math.floor(Math.random() * 10);
 
   // Adjust for type
   usNewIndex += gTileTypeStartIndex[gCurrentBackground];
@@ -849,14 +849,14 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
-            usTemp = (rand() % 10) + 1;
+            usTemp = Math.floor(Math.random() * 10) + 1;
             NewTile = GetTileIndexFromTypeSubIndex(uiNewType, usTemp);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else if (AnyHeigherLand(iNewIndex, uiNewType, addressof(ubLastHighLevel))) {
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
-            usTemp = (rand() % 10) + 1;
+            usTemp = Math.floor(Math.random() * 10) + 1;
             NewTile = GetTileIndexFromTypeSubIndex(uiNewType, usTemp);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
           } else {
@@ -952,7 +952,7 @@ const LAND_DROP_5 = Enum312.FIRSTCLIFF8;
 export function RaiseWorldLand(): void {
   let cnt: INT32;
   let sTempGridNo: UINT32;
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   let pTileElement: TILE_ELEMENT;
   let fRaise: boolean;
   let fRaiseSet: boolean;
@@ -980,14 +980,14 @@ export function RaiseWorldLand(): void {
     gpWorldLevelData[cnt].sHeight = 0;
 
     while (pStruct) {
-      pTileElement = gTileDatabase[pStruct.value.usIndex];
+      pTileElement = gTileDatabase[pStruct.usIndex];
       if (pTileElement.fType == Enum313.FIRSTCLIFF) {
         fSomethingRaised = true;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
         if (pTileElement.ubNumberOfTiles > 1) {
           // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff has %d children", pTileElement->ubNumberOfTiles));
           for (ubLoop = 0; ubLoop < pTileElement.ubNumberOfTiles; ubLoop++) {
-            usIndex = pStruct.value.usIndex;
+            usIndex = pStruct.usIndex;
             // need means to turn land raising on and off based on the tile ID and the offset in the
             // tile database when reading into the mapsystem
             // turning off of land raising can only be done
@@ -1032,7 +1032,7 @@ export function RaiseWorldLand(): void {
           }
         }
       }
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
     }
   }
 
@@ -1155,9 +1155,9 @@ function EliminateObjectLayerRedundancy(): void {
   let numRoads: INT32;
   let numAnothers: INT32;
   let uiType: UINT32;
-  let pObject: Pointer<LEVELNODE>;
-  let pValidRoad: Pointer<LEVELNODE>;
-  let pValidAnother: Pointer<LEVELNODE>;
+  let pObject: LEVELNODE | null;
+  let pValidRoad: LEVELNODE | null;
+  let pValidAnother: LEVELNODE | null;
   let usIndex: UINT16;
 
   for (i = 0; i < WORLD_MAX; i++) {
@@ -1166,7 +1166,7 @@ function EliminateObjectLayerRedundancy(): void {
     pValidRoad = pValidAnother = null;
     numRoads = numAnothers = 0;
     while (pObject) {
-      uiType = GetTileType(pObject.value.usIndex);
+      uiType = GetTileType(pObject.usIndex);
       if (uiType == Enum313.ROADPIECES) {
         // keep track of the last valid road piece, and count the total
         pValidRoad = pObject;
@@ -1176,19 +1176,19 @@ function EliminateObjectLayerRedundancy(): void {
         pValidAnother = pObject;
         numAnothers++;
       }
-      pObject = pObject.value.pNext;
+      pObject = pObject.pNext;
     }
     if (pValidRoad && numRoads > 1) {
       // we have more than two roadpieces on the same gridno, so get rid of them, replacing it
       // with the visible one.
-      usIndex = pValidRoad.value.usIndex;
+      usIndex = pValidRoad.usIndex;
       RemoveAllObjectsOfTypeRange(i, Enum313.ROADPIECES, Enum313.ROADPIECES);
       AddObjectToHead(i, usIndex);
     }
     if (pValidAnother && numAnothers > 1) {
       // we have more than two anotherdebris on the same gridno, so get rid of them, replacing it
       // with the visible one.
-      usIndex = pValidAnother.value.usIndex;
+      usIndex = pValidAnother.usIndex;
       RemoveAllObjectsOfTypeRange(i, Enum313.ANOTHERDEBRIS, Enum313.ANOTHERDEBRIS);
       AddObjectToHead(i, usIndex);
     }

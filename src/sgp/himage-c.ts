@@ -419,8 +419,8 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   return true;
 }
 
-export function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16> {
-  let p16BPPPalette: Pointer<UINT16>;
+export function Create16BPPPalette(pPalette: SGPPaletteEntry[]): UINT16[] {
+  let p16BPPPalette: UINT16[];
   let r16: UINT16;
   let g16: UINT16;
   let b16: UINT16;
@@ -432,7 +432,7 @@ export function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<
 
   Assert(pPalette != null);
 
-  p16BPPPalette = MemAlloc(sizeof(UINT16) * 256);
+  p16BPPPalette = createArray(256, 0);
 
   for (cnt = 0; cnt < 256; cnt++) {
     r = pPalette[cnt].peRed;

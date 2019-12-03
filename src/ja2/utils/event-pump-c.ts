@@ -377,7 +377,7 @@ export function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
 }
 
 function ExecuteGameEvent(pEvent: EVENT): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // Switch on event type
   switch (pEvent.uiEvent) {
@@ -401,7 +401,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeState.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SChangeState.uiUniqueId) {
         break;
       }
 
@@ -422,7 +422,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeDest.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SChangeDest.uiUniqueId) {
         break;
       }
 
@@ -443,7 +443,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SSetPosition.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SSetPosition.uiUniqueId) {
         break;
       }
 
@@ -464,7 +464,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SGetNewPath.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SGetNewPath.uiUniqueId) {
         break;
       }
       // Call soldier function
@@ -484,7 +484,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SBeginTurn.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SBeginTurn.uiUniqueId) {
         break;
       }
 
@@ -505,7 +505,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SChangeStance.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SChangeStance.uiUniqueId) {
         break;
       }
       // Call soldier function
@@ -525,7 +525,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SSetDirection.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SSetDirection.uiUniqueId) {
         break;
       }
 
@@ -546,7 +546,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SSetDesiredDirection.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SSetDesiredDirection.uiUniqueId) {
         break;
       }
 
@@ -568,15 +568,15 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SBeginFireWeapon.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SBeginFireWeapon.uiUniqueId) {
         break;
       }
 
       // Call soldier function
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Begin Fire Weapon");
-      pSoldier.value.sTargetGridNo = SBeginFireWeapon.sTargetGridNo;
-      pSoldier.value.bTargetLevel = SBeginFireWeapon.bTargetLevel;
-      pSoldier.value.bTargetCubeLevel = SBeginFireWeapon.bTargetCubeLevel;
+      pSoldier.sTargetGridNo = SBeginFireWeapon.sTargetGridNo;
+      pSoldier.bTargetLevel = SBeginFireWeapon.bTargetLevel;
+      pSoldier.bTargetCubeLevel = SBeginFireWeapon.bTargetCubeLevel;
       EVENT_FireSoldierWeapon(pSoldier, SBeginFireWeapon.sTargetGridNo);
       break;
 
@@ -592,15 +592,15 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       }
 
       // check for error
-      if (pSoldier.value.uiUniqueSoldierIdValue != SFireWeapon.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SFireWeapon.uiUniqueId) {
         break;
       }
 
       // Call soldier function
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: FireWeapon");
-      pSoldier.value.sTargetGridNo = SFireWeapon.sTargetGridNo;
-      pSoldier.value.bTargetLevel = SFireWeapon.bTargetLevel;
-      pSoldier.value.bTargetCubeLevel = SFireWeapon.bTargetCubeLevel;
+      pSoldier.sTargetGridNo = SFireWeapon.sTargetGridNo;
+      pSoldier.bTargetLevel = SFireWeapon.bTargetLevel;
+      pSoldier.bTargetCubeLevel = SFireWeapon.bTargetCubeLevel;
       FireWeapon(pSoldier, SFireWeapon.sTargetGridNo);
       break;
 
@@ -649,7 +649,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
         break;
       }
 
-      if (pSoldier.value.uiUniqueSoldierIdValue != SStopMerc.uiUniqueId) {
+      if (pSoldier.uiUniqueSoldierIdValue != SStopMerc.uiUniqueId) {
         break;
       }
 

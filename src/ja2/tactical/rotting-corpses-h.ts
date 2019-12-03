@@ -151,15 +151,67 @@ export function copyRottingCorpseDefinition(destination: ROTTING_CORPSE_DEFINITI
   copyArray(destination.ubFiller, source.ubFiller);
 }
 
+export const ROTTING_CORPSE_DEFINITION_SIZE = 160;
+
+export function readRottingCorpseDefinition(o: ROTTING_CORPSE_DEFINITION, buffer: Buffer, offset: number = 0): number {
+  o.ubType = buffer.readUInt8(offset++);
+  o.ubBodyType = buffer.readUInt8(offset++);
+  o.sGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.dXPos = buffer.readFloatLE(offset); offset += 4;
+  o.dYPos = buffer.readFloatLE(offset); offset += 4;
+  o.sHeightAdjustment = buffer.readInt16LE(offset); offset += 2;
+  o.HeadPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.PantsPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.VestPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.SkinPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.bDirection = buffer.readInt8(offset++);
+  offset++; // padding
+  o.uiTimeOfDeath = buffer.readUInt32LE(offset); offset += 4;
+  o.usFlags = buffer.readUInt16LE(offset); offset += 2;
+  o.bLevel = buffer.readInt8(offset++);
+  o.bVisible = buffer.readInt8(offset++);
+  o.bNumServicingCrows = buffer.readInt8(offset++);
+  o.ubProfile = buffer.readUInt8(offset++);
+  o.fHeadTaken = Boolean(buffer.readUInt8(offset++));
+  o.ubAIWarningValue = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.ubFiller, buffer, offset, 1);
+  return offset;
+}
+
+export function writeRottingCorpseDefinition(o: ROTTING_CORPSE_DEFINITION, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubType, offset);
+  offset = buffer.writeUInt8(o.ubBodyType, offset);
+  offset = buffer.writeInt16LE(o.sGridNo, offset);
+  offset = buffer.writeFloatLE(o.dXPos, offset);
+  offset = buffer.writeFloatLE(o.dYPos, offset);
+  offset = buffer.writeInt16LE(o.sHeightAdjustment, offset);
+  offset = writeStringNL(o.HeadPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.PantsPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.VestPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.SkinPal, buffer, offset, 30, 'ascii');
+  offset = buffer.writeInt8(o.bDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeOfDeath, offset);
+  offset = buffer.writeUInt16LE(o.usFlags, offset);
+  offset = buffer.writeInt8(o.bLevel, offset);
+  offset = buffer.writeInt8(o.bVisible, offset);
+  offset = buffer.writeInt8(o.bNumServicingCrows, offset);
+  offset = buffer.writeUInt8(o.ubProfile, offset);
+  offset = buffer.writeUInt8(Number(o.fHeadTaken), offset);
+  offset = buffer.writeUInt8(o.ubAIWarningValue, offset);
+  offset = writeUIntArray(o.ubFiller, buffer, offset, 1);
+  return offset;
+}
+
 export interface ROTTING_CORPSE {
   def: ROTTING_CORPSE_DEFINITION;
   fActivated: boolean;
 
-  pAniTile: Pointer<ANITILE>;
+  pAniTile: ANITILE | null /* Pointer<ANITILE> */;
 
-  p8BPPPalette: Pointer<SGPPaletteEntry>;
-  p16BPPPalette: Pointer<UINT16>;
-  pShades: Pointer<UINT16>[] /* [NUM_CORPSE_SHADES] */;
+  p8BPPPalette: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */;
+  p16BPPPalette: UINT16[] /* Pointer<UINT16> */;
+  pShades: UINT16[][] /* Pointer<UINT16>[NUM_CORPSE_SHADES] */;
   sGraphicNum: INT16;
   iCachedTileID: INT32;
   dXPos: FLOAT;

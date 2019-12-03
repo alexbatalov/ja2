@@ -283,7 +283,7 @@ export function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 // would be used to jump to the file starting with that letter, and setting the field in the text input
 // field.  Pressing TAB again would place you back in the text input field.  All of that stuff would be handled
 // externally, except for the TAB keys.
-export function AddUserInputField(userFunction: INPUT_CALLBACK): void {
+export function AddUserInputField(userFunction: INPUT_CALLBACK | null): void {
   let pNode: TEXTINPUTNODE;
   pNode = createTextInputNode();
   pNode.next = null;

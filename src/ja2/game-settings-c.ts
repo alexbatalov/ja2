@@ -6,7 +6,7 @@ const GAME_INI_FILE = "..\\Ja2.ini";
 
 const CD_ROOT_DIR = "DATA\\";
 
-export let gGameSettings: GAME_SETTINGS;
+export let gGameSettings: GAME_SETTINGS = createGameSettings();
 export let gGameOptions: GAME_OPTIONS = createGameOptions();
 
 // Change this number when we want any who gets the new build to reset the options
@@ -15,9 +15,10 @@ const GAME_SETTING_CURRENT_VERSION = 522;
 export function LoadGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // if the game settings file does NOT exist, or if it is smaller then what it should be
-  if (!FileExists(GAME_SETTINGS_FILE) || FileSize(GAME_SETTINGS_FILE) != sizeof(GAME_SETTINGS)) {
+  if (!FileExists(GAME_SETTINGS_FILE) || FileSize(GAME_SETTINGS_FILE) != GAME_SETTINGS_SIZE) {
     // Initialize the settings
     InitGameSettings();
 
@@ -31,12 +32,15 @@ export function LoadGameSettings(): boolean {
       return false;
     }
 
-    FileRead(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesRead));
-    if (uiNumBytesRead != sizeof(GAME_SETTINGS)) {
+    buffer = Buffer.allocUnsafe(GAME_SETTINGS_SIZE);
+    uiNumBytesRead = FileRead(hFile, buffer, GAME_SETTINGS_SIZE);
+    if (uiNumBytesRead != GAME_SETTINGS_SIZE) {
       FileClose(hFile);
       InitGameSettings();
       return false;
     }
+
+    readGameSettings(gGameSettings, buffer);
 
     FileClose(hFile);
   }
@@ -95,6 +99,7 @@ export function LoadGameSettings(): boolean {
 export function SaveGameSettings(): boolean {
   let hFile: HWFILE;
   let uiNumBytesWritten: UINT32;
+  let buffer: Buffer;
 
   // create the file
   hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, false);
@@ -114,8 +119,11 @@ export function SaveGameSettings(): boolean {
   gGameSettings.uiSettingsVersionNumber = GAME_SETTING_CURRENT_VERSION;
 
   // Write the game settings to disk
-  FileWrite(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesWritten));
-  if (uiNumBytesWritten != sizeof(GAME_SETTINGS)) {
+  buffer = Buffer.allocUnsafe(GAME_SETTINGS_SIZE);
+  writeGameSettings(gGameSettings, buffer);
+
+  uiNumBytesWritten = FileWrite(hFile, buffer, GAME_SETTINGS_SIZE);
+  if (uiNumBytesWritten != GAME_SETTINGS_SIZE) {
     FileClose(hFile);
     return false;
   }
@@ -126,7 +134,7 @@ export function SaveGameSettings(): boolean {
 }
 
 function InitGameSettings(): void {
-  memset(addressof(gGameSettings), 0, sizeof(GAME_SETTINGS));
+  resetGameSettings(gGameSettings);
 
   // Init the Game Settings
   gGameSettings.bLastSavedGameSlot = -1;
@@ -175,7 +183,7 @@ function InitGameSettings(): void {
 }
 
 export function InitGameOptions(): void {
-  memset(addressof(gGameOptions), 0, sizeof(GAME_OPTIONS));
+  resetGameOptions(gGameOptions);
 
   // Init the game options
   gGameOptions.fGunNut = false;
@@ -443,7 +451,7 @@ export function DisplayGameSettings(): void {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + Enum375.GIO_EASY_TEXT - 1]);
 
   // Iron man option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT + gGameOptions.fIronManMode]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_SAVE_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT + Number(gGameOptions.fIronManMode)]);
 
   // Gun option
   if (gGameOptions.fGunNut)
@@ -452,7 +460,7 @@ export function DisplayGameSettings(): void {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GUN_OPTIONS_TEXT], gzGIOScreenText[Enum375.GIO_REDUCED_GUNS_TEXT]);
 
   // Sci fi option
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT + gGameOptions.fSciFi]);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_GAME_STYLE_TEXT], gzGIOScreenText[Enum375.GIO_REALISTIC_TEXT + Number(gGameOptions.fSciFi)]);
 
   // Timed Turns option
   // JA2Gold: no timed turns

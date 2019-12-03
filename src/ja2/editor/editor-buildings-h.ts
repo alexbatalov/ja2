@@ -5,4 +5,11 @@ export interface BUILDINGLAYOUTNODE {
   sGridNo: INT16;
 }
 
+export function createBuildingLayoutNode(): BUILDINGLAYOUTNODE {
+  return {
+    next: null,
+    sGridNo: 0,
+  };
+}
+
 }

@@ -238,7 +238,7 @@ function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex:
   Assert(psArray.value);
 }
 
-function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
+function InternallyClassifyEdgepoints(pSoldier: SOLDIERTYPE, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
   let i: INT32;
   let us1stBenchmarkID: UINT16;
   let us2ndBenchmarkID: UINT16;

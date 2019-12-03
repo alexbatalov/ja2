@@ -20,7 +20,7 @@ namespace ja2 {
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -46,7 +46,6 @@ export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGr
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -72,7 +71,7 @@ export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGr
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -83,7 +82,7 @@ export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGr
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           // ATE: INstead of using absolute range, use the path cost!
           // uiRange = PlotPath( &soldier, sGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, WALKING, NOT_STEALTH, FORWARD, 50 );
           uiRange = CardinalSpacesAway(sSweetGridNo, sGridNo);
@@ -113,7 +112,7 @@ export function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGr
   }
 }
 
-export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotThroughPeople(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -139,9 +138,8 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTY
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
-  soldier.bTeam = pSoldier.value.bTeam;
+  soldier.bTeam = pSoldier.bTeam;
   soldier.sGridNo = sSweetGridNo;
 
   sTop = ubRadius;
@@ -176,7 +174,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTY
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           {
@@ -203,7 +201,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTY
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean): UINT16 {
+export function FindGridNoFromSweetSpotWithStructData(pSoldier: SOLDIERTYPE, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -231,7 +229,6 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -242,8 +239,8 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
   sRight = ubRadius;
 
   // If we are already at this gridno....
-  if (pSoldier.value.sGridNo == sSweetGridNo && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    pubDirection.value = pSoldier.value.bDirection;
+  if (pSoldier.sGridNo == sSweetGridNo && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
+    pubDirection.value = pSoldier.bDirection;
     return sSweetGridNo;
   }
 
@@ -263,7 +260,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -274,15 +271,15 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           let fDirectionFound: boolean = false;
           let usOKToAddStructID: UINT16;
-          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let pStructureFileRef: STRUCTURE_FILE_REF | null;
           let usAnimSurface: UINT16;
 
-          if (pSoldier.value.pLevelNode != null) {
-            if (pSoldier.value.pLevelNode.value.pStructureData != null) {
-              usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
+          if (pSoldier.pLevelNode != null) {
+            if (pSoldier.pLevelNode.pStructureData != null) {
+              usOKToAddStructID = pSoldier.pLevelNode.pStructureData.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
             }
@@ -293,15 +290,15 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
           // Get animation surface...
           usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
           // Get structure ref...
-          pStructureFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, usAnimState);
+          pStructureFileRef = GetAnimationStructureRef(pSoldier.ubID, usAnimSurface, usAnimState);
 
           if (!pStructureFileRef) {
-            Assert(0);
+            Assert(false);
           }
 
           // Check each struct in each direction
           for (cnt3 = 0; cnt3 < 8; cnt3++) {
-            if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+            if (OkayToAddStructureToWorld(sGridNo, pSoldier.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[cnt3]], usOKToAddStructID)) {
               fDirectionFound = true;
               break;
             }
@@ -309,7 +306,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
 
           if (fDirectionFound) {
             if (fClosestToMerc) {
-              uiRange = FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, 0);
+              uiRange = FindBestPath(pSoldier, sGridNo, pSoldier.bLevel, pSoldier.usUIMovementMode, NO_COPYROUTE, 0);
 
               if (uiRange == 0) {
                 uiRange = 999;
@@ -341,7 +338,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERT
   }
 }
 
-function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean, bGivenDirection: INT8): UINT16 {
+function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier: SOLDIERTYPE, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: boolean, bGivenDirection: INT8): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -369,7 +366,6 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -380,8 +376,8 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   sRight = ubRadius;
 
   // If we are already at this gridno....
-  if (pSoldier.value.sGridNo == sSweetGridNo && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    pubDirection.value = pSoldier.value.bDirection;
+  if (pSoldier.sGridNo == sSweetGridNo && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
+    pubDirection.value = pSoldier.bDirection;
     return sSweetGridNo;
   }
 
@@ -401,7 +397,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -412,15 +408,15 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           let fDirectionFound: boolean = false;
           let usOKToAddStructID: UINT16;
-          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let pStructureFileRef: STRUCTURE_FILE_REF | null;
           let usAnimSurface: UINT16;
 
-          if (pSoldier.value.pLevelNode != null) {
-            if (pSoldier.value.pLevelNode.value.pStructureData != null) {
-              usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
+          if (pSoldier.pLevelNode != null) {
+            if (pSoldier.pLevelNode.pStructureData != null) {
+              usOKToAddStructID = pSoldier.pLevelNode.pStructureData.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
             }
@@ -431,21 +427,21 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
           // Get animation surface...
           usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
           // Get structure ref...
-          pStructureFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, usAnimState);
+          pStructureFileRef = GetAnimationStructureRef(pSoldier.ubID, usAnimSurface, usAnimState);
 
           if (!pStructureFileRef) {
-            Assert(0);
+            Assert(false);
           }
 
           // OK, check the perfered given direction first
-          if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bGivenDirection]]), usOKToAddStructID)) {
+          if (OkayToAddStructureToWorld(sGridNo, pSoldier.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[bGivenDirection]], usOKToAddStructID)) {
             fDirectionFound = true;
             cnt3 = bGivenDirection;
           } else {
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
               if (cnt3 != bGivenDirection) {
-                if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+                if (OkayToAddStructureToWorld(sGridNo, pSoldier.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[cnt3]], usOKToAddStructID)) {
                   fDirectionFound = true;
                   break;
                 }
@@ -455,7 +451,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
           if (fDirectionFound) {
             if (fClosestToMerc) {
-              uiRange = FindBestPath(pSoldier, sGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, 0);
+              uiRange = FindBestPath(pSoldier, sGridNo, pSoldier.bLevel, pSoldier.usUIMovementMode, NO_COPYROUTE, 0);
 
               if (uiRange == 0) {
                 uiRange = 999;
@@ -487,7 +483,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   }
 }
 
-export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: UINT8 /* boolean */, pSrcSoldier: SOLDIERTYPE): UINT16 {
+export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: SOLDIERTYPE, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: UINT8 /* boolean */, pSrcSoldier: SOLDIERTYPE): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -507,7 +503,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
   let sSweetGridNo: INT16;
   let soldier: SOLDIERTYPE = createSoldierType();
 
-  sSweetGridNo = pSrcSoldier.value.sGridNo;
+  sSweetGridNo = pSrcSoldier.sGridNo;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -518,7 +514,6 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -543,7 +538,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
   }
 
   // Now, find out which of these gridnos are reachable
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -554,15 +549,15 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           let fDirectionFound: boolean = false;
           let usOKToAddStructID: UINT16;
-          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let pStructureFileRef: STRUCTURE_FILE_REF | null;
           let usAnimSurface: UINT16;
 
           if (fClosestToMerc != 3) {
-            if (pSoldier.value.pLevelNode != null && pSoldier.value.pLevelNode.value.pStructureData != null) {
-              usOKToAddStructID = pSoldier.value.pLevelNode.value.pStructureData.value.usStructureID;
+            if (pSoldier.pLevelNode != null && pSoldier.pLevelNode.pStructureData != null) {
+              usOKToAddStructID = pSoldier.pLevelNode.pStructureData.usStructureID;
             } else {
               usOKToAddStructID = INVALID_STRUCTURE_ID;
             }
@@ -570,11 +565,11 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
             // Get animation surface...
             usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
             // Get structure ref...
-            pStructureFileRef = GetAnimationStructureRef(pSoldier.value.ubID, usAnimSurface, usAnimState);
+            pStructureFileRef = <STRUCTURE_FILE_REF>GetAnimationStructureRef(pSoldier.ubID, usAnimSurface, usAnimState);
 
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pSoldier.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[cnt3]], usOKToAddStructID)) {
                 fDirectionFound = true;
                 break;
               }
@@ -586,15 +581,15 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
 
           if (fDirectionFound) {
             if (fClosestToMerc == 1) {
-              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
             } else if (fClosestToMerc == 2) {
-              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo) + GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
+              uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo) + GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
             } else {
               // uiRange = GetRangeInCellCoordsFromGridNoDiff( sSweetGridNo, sGridNo );
               uiRange = Math.abs((sSweetGridNo / MAXCOL) - (sGridNo / MAXCOL)) + Math.abs((sSweetGridNo % MAXROW) - (sGridNo % MAXROW));
             }
 
-            if (uiRange < uiLowestRange || (uiRange == uiLowestRange && PythSpacesAway(pSoldier.value.sGridNo, sGridNo) < PythSpacesAway(pSoldier.value.sGridNo, sLowestGridNo))) {
+            if (uiRange < uiLowestRange || (uiRange == uiLowestRange && PythSpacesAway(pSoldier.sGridNo, sGridNo) < PythSpacesAway(pSoldier.sGridNo, sLowestGridNo))) {
               ubBestDirection = cnt3;
               sLowestGridNo = sGridNo;
               uiLowestRange = uiRange;
@@ -617,7 +612,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Point
   }
 }
 
-export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -650,7 +645,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLD
 
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
@@ -674,7 +669,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLD
   }
 }
 
-export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
+export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -713,7 +708,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Po
 
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+        if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
@@ -736,12 +731,12 @@ export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Po
   }
 }
 
-export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): boolean {
+export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: SOLDIERTYPE, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): boolean {
   let iNumTiles: INT32;
   let sActionGridNo: INT16;
   let ubDirection: UINT8;
 
-  if (pSoldier.value.bLevel != bLevel) {
+  if (pSoldier.bLevel != bLevel) {
     return false;
   }
 
@@ -751,11 +746,11 @@ export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERT
     sActionGridNo = sGridNo;
   }
 
-  if (sActionGridNo == pSoldier.value.sGridNo) {
+  if (sActionGridNo == pSoldier.sGridNo) {
     return true;
   }
 
-  iNumTiles = FindBestPath(pSoldier, sActionGridNo, pSoldier.value.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST);
+  iNumTiles = FindBestPath(pSoldier, sActionGridNo, pSoldier.bLevel, Enum193.WALKING, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST);
 
   if (iNumTiles <= sMaxTiles && iNumTiles != 0) {
     return true;
@@ -764,7 +759,7 @@ export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERT
   }
 }
 
-export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+export function FindRandomGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sX: INT16;
   let sY: INT16;
   let sGridNo: INT16;
@@ -792,7 +787,6 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sS
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -816,7 +810,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sS
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   do {
     sX = Random(ubRadius);
@@ -828,10 +822,10 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sS
 
     if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
       // Go on sweet stop
-      if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+      if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
         // If we are a crow, we need this additional check
-        if (pSoldier.value.ubBodyType == Enum194.CROW) {
-          if (!InARoom(sGridNo, addressof(ubRoomNum))) {
+        if (pSoldier.ubBodyType == Enum194.CROW) {
+          if ((ubRoomNum = InARoom(sGridNo)) === -1) {
             fFound = true;
           }
         } else {
@@ -856,7 +850,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sS
   return sGridNo;
 }
 
-function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
+function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   let sX: INT16;
   let sY: INT16;
   let sGridNo: INT16;
@@ -878,7 +872,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
 
     if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
       // Go on sweet stop
-      if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.value.bLevel)) {
+      if (NewOKDestination(pSoldier, sGridNo, true, pSoldier.bLevel)) {
         fFound = true;
       }
     }
@@ -899,72 +893,72 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
 export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boolean, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): boolean {
   let ubDirection: UINT8;
   let ubCalculatedDirection: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
   let sExitGridNo: INT16;
 
   pSoldier = MercPtrs[ubID];
 
-  if (pSoldier.value.bActive) {
+  if (pSoldier.bActive) {
     // ATE: Make sure life of elliot is OK if from a meanwhile
-    if (AreInMeanwhile() && pSoldier.value.ubProfile == Enum268.ELLIOT) {
-      if (pSoldier.value.bLife < OKLIFE) {
-        pSoldier.value.bLife = 25;
+    if (AreInMeanwhile() && pSoldier.ubProfile == Enum268.ELLIOT) {
+      if (pSoldier.bLife < OKLIFE) {
+        pSoldier.bLife = 25;
       }
     }
 
     // ADD SOLDIER TO SLOT!
-    if (pSoldier.value.uiStatusFlags & SOLDIER_OFF_MAP) {
+    if (pSoldier.uiStatusFlags & SOLDIER_OFF_MAP) {
       AddAwaySlot(pSoldier);
 
       // Guy is NOT "in sector"
-      pSoldier.value.bInSector = false;
+      pSoldier.bInSector = false;
     } else {
       AddMercSlot(pSoldier);
 
       // Add guy to sector flag
-      pSoldier.value.bInSector = true;
+      pSoldier.bInSector = true;
     }
 
     // If a driver or passenger - stop here!
-    if (pSoldier.value.uiStatusFlags & SOLDIER_DRIVER || pSoldier.value.uiStatusFlags & SOLDIER_PASSENGER) {
+    if (pSoldier.uiStatusFlags & SOLDIER_DRIVER || pSoldier.uiStatusFlags & SOLDIER_PASSENGER) {
       return false;
     }
 
     // Add to panel
     CheckForAndAddMercToTeamPanel(pSoldier);
 
-    pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK);
-    pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_SMELLED_CREATURE);
-    pSoldier.value.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES);
+    pSoldier.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_SPOTTING_CREATURE_ATTACK);
+    pSoldier.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_SMELLED_CREATURE);
+    pSoldier.usQuoteSaidFlags &= (~SOLDIER_QUOTE_SAID_WORRIED_ABOUT_CREATURES);
 
     // Add to interface if the are ours
-    if (pSoldier.value.bTeam == CREATURE_TEAM) {
-      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STANDING, pSoldier.value.sInsertionGridNo, 7, addressof(ubCalculatedDirection), false);
+    if (pSoldier.bTeam == CREATURE_TEAM) {
+      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 7, addressof(ubCalculatedDirection), false);
       if (fCalculateDirection)
         ubDirection = ubCalculatedDirection;
       else
-        ubDirection = pSoldier.value.ubInsertionDirection;
+        ubDirection = pSoldier.ubInsertionDirection;
     } else {
-      if (pSoldier.value.sInsertionGridNo == NOWHERE) {
+      if (pSoldier.sInsertionGridNo == NOWHERE) {
         // Add the soldier to the respective entrypoint.  This is an error condition.
       }
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, Enum193.STANDING, pSoldier.value.sInsertionGridNo, 12, addressof(ubCalculatedDirection), false, pSoldier.value.ubInsertionDirection);
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
+        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 12, addressof(ubCalculatedDirection), false, pSoldier.ubInsertionDirection);
         // ATE: Override insertion direction
-        pSoldier.value.ubInsertionDirection = ubCalculatedDirection;
+        pSoldier.ubInsertionDirection = ubCalculatedDirection;
       } else {
-        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 7, addressof(ubCalculatedDirection));
+        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sInsertionGridNo, 7, addressof(ubCalculatedDirection));
 
         // ATE: Error condition - if nowhere use insertion gridno!
         if (sGridNo == NOWHERE) {
-          sGridNo = pSoldier.value.sInsertionGridNo;
+          sGridNo = pSoldier.sInsertionGridNo;
         }
       }
 
       // Override calculated direction if we were told to....
-      if (pSoldier.value.ubInsertionDirection > 100) {
-        pSoldier.value.ubInsertionDirection = pSoldier.value.ubInsertionDirection - 100;
+      if (pSoldier.ubInsertionDirection > 100) {
+        pSoldier.ubInsertionDirection = pSoldier.ubInsertionDirection - 100;
         fCalculateDirection = false;
       }
 
@@ -972,8 +966,8 @@ export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boo
         ubDirection = ubCalculatedDirection;
 
         // Check if we need to get direction from exit grid...
-        if (pSoldier.value.bUseExitGridForReentryDirection) {
-          pSoldier.value.bUseExitGridForReentryDirection = false;
+        if (pSoldier.bUseExitGridForReentryDirection) {
+          pSoldier.bUseExitGridForReentryDirection = false;
 
           // OK, we know there must be an exit gridno SOMEWHERE close...
           sExitGridNo = FindClosestExitGrid(pSoldier, sGridNo, 10);
@@ -985,13 +979,13 @@ export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boo
           }
         }
       } else {
-        ubDirection = pSoldier.value.ubInsertionDirection;
+        ubDirection = pSoldier.ubInsertionDirection;
       }
     }
 
     // Add
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
-      AddSoldierToSectorGridNo(pSoldier, sGridNo, pSoldier.value.bDirection, fUseAnimation, usAnimState, usAnimCode);
+      AddSoldierToSectorGridNo(pSoldier, sGridNo, pSoldier.bDirection, fUseAnimation, usAnimState, usAnimCode);
     else
       AddSoldierToSectorGridNo(pSoldier, sGridNo, ubDirection, fUseAnimation, usAnimState, usAnimCode);
 
@@ -1015,14 +1009,14 @@ export function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, 
   return InternalAddSoldierToSector(ubID, false, true, usAnimState, usAnimCode);
 }
 
-function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fDoTransition: boolean): void {
+function InternalSoldierInSectorSleep(pSoldier: SOLDIERTYPE, sGridNo: INT16, fDoTransition: boolean): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
   let sGoodGridNo: INT16;
   let usAnim: UINT16 = Enum193.SLEEPING;
 
-  if (!pSoldier.value.bInSector) {
+  if (!pSoldier.bInSector) {
     return;
   }
 
@@ -1054,13 +1048,13 @@ function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 }
 
-function SoldierInSectorIncompaciated(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+function SoldierInSectorIncompaciated(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
   let sGoodGridNo: INT16;
 
-  if (!pSoldier.value.bInSector) {
+  if (!pSoldier.bInSector) {
     return;
   }
 
@@ -1087,13 +1081,13 @@ void SoldierInSectorSleep( SOLDIERTYPE *pSoldier, INT16 sGridNo )
 }
 */
 
-export function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorPatient(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
   let sGoodGridNo: INT16;
 
-  if (!pSoldier.value.bInSector) {
+  if (!pSoldier.bInSector) {
     return;
   }
 
@@ -1117,13 +1111,13 @@ export function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: 
   }
 }
 
-export function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorDoctor(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
   let sGoodGridNo: INT16;
 
-  if (!pSoldier.value.bInSector) {
+  if (!pSoldier.bInSector) {
     return;
   }
 
@@ -1147,13 +1141,13 @@ export function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 }
 
-export function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+export function SoldierInSectorRepair(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let ubNewDirection: UINT8;
   let sGoodGridNo: INT16;
 
-  if (!pSoldier.value.bInSector) {
+  if (!pSoldier.bInSector) {
     return;
   }
 
@@ -1177,7 +1171,7 @@ export function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 }
 
-function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): void {
+function AddSoldierToSectorGridNo(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirection: UINT8, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sNewGridNo: INT16;
@@ -1190,16 +1184,16 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   sWorldY = CenterY(sGridNo);
 
   // Set reserved location!
-  pSoldier.value.sReservedMovementGridNo = NOWHERE;
+  pSoldier.sReservedMovementGridNo = NOWHERE;
 
   // Save OLD insertion code.. as this can change...
-  ubInsertionCode = pSoldier.value.ubStrategicInsertionCode;
+  ubInsertionCode = pSoldier.ubStrategicInsertionCode;
 
   // Remove any pending animations
-  pSoldier.value.usPendingAnimation = NO_PENDING_ANIMATION;
-  pSoldier.value.usPendingAnimation2 = NO_PENDING_ANIMATION;
-  pSoldier.value.ubPendingDirection = NO_PENDING_DIRECTION;
-  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.usPendingAnimation = NO_PENDING_ANIMATION;
+  pSoldier.usPendingAnimation2 = NO_PENDING_ANIMATION;
+  pSoldier.ubPendingDirection = NO_PENDING_DIRECTION;
+  pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
   // If we are not loading a saved game
   if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -1225,13 +1219,13 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   }
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-    if (!(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
-      if (pSoldier.value.bTeam == gbPlayerNum) {
-        RevealRoofsAndItems(pSoldier, true, false, pSoldier.value.bLevel, true);
+    if (!(pSoldier.uiStatusFlags & SOLDIER_DEAD)) {
+      if (pSoldier.bTeam == gbPlayerNum) {
+        RevealRoofsAndItems(pSoldier, true, false, pSoldier.bLevel, true);
 
         // ATE: Patch fix: If we are in an non-interruptable animation, stop!
-        if (pSoldier.value.usAnimState == Enum193.HOPFENCE) {
-          pSoldier.value.fInNonintAnim = false;
+        if (pSoldier.usAnimState == Enum193.HOPFENCE) {
+          pSoldier.fInNonintAnim = false;
           SoldierGotoStationaryStance(pSoldier);
         }
 
@@ -1247,50 +1241,50 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
     }
 
     // If he's an enemy... set presence
-    if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
+    if (!pSoldier.bNeutral && (pSoldier.bSide != gbPlayerNum)) {
       // ATE: Added if not bloodcats
       // only do this once they are seen.....
-      if (pSoldier.value.ubBodyType != Enum194.BLOODCAT) {
+      if (pSoldier.ubBodyType != Enum194.BLOODCAT) {
         SetEnemyPresence();
       }
     }
   }
 
-  if (!(pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
+  if (!(pSoldier.uiStatusFlags & SOLDIER_DEAD)) {
     // if we are loading a 'pristine' map ( ie, not loading a saved game )
     if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
       // ATE: Double check if we are on the roof that there is a roof there!
-      if (pSoldier.value.bLevel == 1) {
-        if (!FindStructure(pSoldier.value.sGridNo, STRUCTURE_ROOF)) {
+      if (pSoldier.bLevel == 1) {
+        if (!FindStructure(pSoldier.sGridNo, STRUCTURE_ROOF)) {
           SetSoldierHeight(pSoldier, (0));
         }
       }
 
       if (ubInsertionCode != Enum175.INSERTION_CODE_ARRIVING_GAME) {
         // default to standing on arrival
-        if (pSoldier.value.usAnimState != Enum193.HELIDROP) {
+        if (pSoldier.usAnimState != Enum193.HELIDROP) {
           if (fUseAnimation) {
             EVENT_InitNewSoldierAnim(pSoldier, usAnimState, usAnimCode, true);
-          } else if (pSoldier.value.ubBodyType != Enum194.CROW) {
+          } else if (pSoldier.ubBodyType != Enum194.CROW) {
             EVENT_InitNewSoldierAnim(pSoldier, Enum193.STANDING, 1, true);
           }
         }
 
         // ATE: if we are below OK life, make them lie down!
-        if (pSoldier.value.bLife < OKLIFE) {
-          SoldierInSectorIncompaciated(pSoldier, pSoldier.value.sInsertionGridNo);
-        } else if (pSoldier.value.fMercAsleep == true) {
-          InternalSoldierInSectorSleep(pSoldier, pSoldier.value.sInsertionGridNo, false);
-        } else if (pSoldier.value.bAssignment == Enum117.PATIENT) {
-          SoldierInSectorPatient(pSoldier, pSoldier.value.sInsertionGridNo);
-        } else if (pSoldier.value.bAssignment == Enum117.DOCTOR) {
-          SoldierInSectorDoctor(pSoldier, pSoldier.value.sInsertionGridNo);
-        } else if (pSoldier.value.bAssignment == Enum117.REPAIR) {
-          SoldierInSectorRepair(pSoldier, pSoldier.value.sInsertionGridNo);
+        if (pSoldier.bLife < OKLIFE) {
+          SoldierInSectorIncompaciated(pSoldier, pSoldier.sInsertionGridNo);
+        } else if (pSoldier.fMercAsleep == true) {
+          InternalSoldierInSectorSleep(pSoldier, pSoldier.sInsertionGridNo, false);
+        } else if (pSoldier.bAssignment == Enum117.PATIENT) {
+          SoldierInSectorPatient(pSoldier, pSoldier.sInsertionGridNo);
+        } else if (pSoldier.bAssignment == Enum117.DOCTOR) {
+          SoldierInSectorDoctor(pSoldier, pSoldier.sInsertionGridNo);
+        } else if (pSoldier.bAssignment == Enum117.REPAIR) {
+          SoldierInSectorRepair(pSoldier, pSoldier.sInsertionGridNo);
         }
 
         // ATE: Make sure movement mode is up to date!
-        pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
+        pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.usAnimState].ubEndHeight);
       }
     } else {
       // THIS ALL SHOULD HAVE BEEN HANDLED BY THE FACT THAT A GAME WAS LOADED
@@ -1310,16 +1304,16 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 export function IsMercOnTeam(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
   ubLastTeamID = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier.value.ubProfile == ubMercID) {
-      if (pTeamSoldier.value.bActive)
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if (pTeamSoldier.ubProfile == ubMercID) {
+      if (pTeamSoldier.bActive)
         return true;
     }
   }
@@ -1331,17 +1325,17 @@ export function IsMercOnTeam(ubMercID: UINT8): boolean {
 export function IsMercOnTeamAndAlive(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
   ubLastTeamID = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier.value.ubProfile == ubMercID) {
-      if (pTeamSoldier.value.bActive) {
-        if (pTeamSoldier.value.bLife > 0) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if (pTeamSoldier.ubProfile == ubMercID) {
+      if (pTeamSoldier.bActive) {
+        if (pTeamSoldier.bLife > 0) {
           return true;
         }
       }
@@ -1354,16 +1348,16 @@ export function IsMercOnTeamAndAlive(ubMercID: UINT8): boolean {
 export function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
   ubLastTeamID = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier.value.ubProfile == ubMercID) {
-      if (pTeamSoldier.value.bActive && pTeamSoldier.value.bAssignment != Enum117.IN_TRANSIT)
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if (pTeamSoldier.ubProfile == ubMercID) {
+      if (pTeamSoldier.bActive && pTeamSoldier.bAssignment != Enum117.IN_TRANSIT)
         return true;
     }
   }
@@ -1374,17 +1368,17 @@ export function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): boolean {
 export function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): boolean {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
   ubLastTeamID = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier.value.ubProfile == ubMercID) {
-      if (pTeamSoldier.value.bActive && pTeamSoldier.value.bAssignment != Enum117.IN_TRANSIT) {
-        if (pTeamSoldier.value.bLife > 0) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if (pTeamSoldier.ubProfile == ubMercID) {
+      if (pTeamSoldier.bActive && pTeamSoldier.bAssignment != Enum117.IN_TRANSIT) {
+        if (pTeamSoldier.bLife > 0) {
           return true;
         }
       }
@@ -1398,16 +1392,16 @@ export function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): boolean
 export function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
   let cnt: UINT16;
   let ubLastTeamID: UINT8;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
   ubLastTeamID = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier++) {
-    if (pTeamSoldier.value.ubProfile == ubMercID) {
-      if (pTeamSoldier.value.bActive)
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= ubLastTeamID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
+    if (pTeamSoldier.ubProfile == ubMercID) {
+      if (pTeamSoldier.bActive)
         return cnt;
     }
   }

@@ -4,8 +4,8 @@ namespace ja2 {
 const MAXCIVLASTNAMES = 30;
 
 // ANDREW: these are defines for OKDestanation usage - please move to approprite file
-export const IGNOREPEOPLE = 0;
-export const PEOPLETOO = 1;
+export const IGNOREPEOPLE = false;
+export const PEOPLETOO = true;
 const ALLPEOPLE = 2;
 const FALLINGTEST = 3;
 
@@ -225,6 +225,28 @@ export function createPathSt(): PathSt {
   };
 }
 
+export const PATH_ST_SIZE = 20;
+
+export function readPathSt(o: PathSt, buffer: Buffer, offset: number = 0): number {
+  o.uiSectorId = buffer.readUInt32LE(offset); offset += 4;
+  o.uiEta = buffer.readUInt32LE(offset); offset += 4;
+  o.fSpeed = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  offset += 4; // pNext (pointer)
+  offset += 4; // pPrev (pointer)
+  return offset;
+}
+
+export function writePathSt(o: PathSt, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt32LE(o.uiSectorId, offset);
+  offset = buffer.writeUInt32LE(o.uiEta, offset);
+  offset = buffer.writeUInt8(o.fSpeed, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = writePadding(buffer, offset, 4); // pNext (pointer)
+  offset = writePadding(buffer, offset, 4); // pPrev (pointer)
+  return offset;
+}
+
 export type PathStPtr = Pointer<PathSt>;
 export const enum Enum261 {
   HELMETPOS = 0,
@@ -274,6 +296,27 @@ export const CONSIDERED_NEUTRAL = (me: SOLDIERTYPE, them: SOLDIERTYPE) => ((them
 export interface KEY_ON_RING {
   ubKeyID: UINT8;
   ubNumber: UINT8;
+}
+
+export function createKeyOnRing(): KEY_ON_RING {
+  return {
+    ubKeyID: 0,
+    ubNumber: 0,
+  };
+}
+
+export const KEY_ON_RING_SIZE = 2;
+
+export function readKeyOnRing(o: KEY_ON_RING, buffer: Buffer, offset: number = 0): number {
+  o.ubKeyID = buffer.readUInt8(offset++);
+  o.ubNumber = buffer.readUInt8(offset++);
+  return offset;
+}
+
+export function writeKeyOnRing(o: KEY_ON_RING, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubKeyID, offset);
+  offset = buffer.writeUInt8(o.ubNumber, offset);
+  return offset;
 }
 
 export interface THROW_PARAMS {
@@ -329,8 +372,8 @@ export interface SOLDIERTYPE {
   uiStatusFlags: UINT32;
 
   inv: OBJECTTYPE[] /* [NUM_INV_SLOTS] */;
-  pTempObject: OBJECTTYPE | null;
-  pKeyRing: Pointer<KEY_ON_RING>;
+  pTempObject: OBJECTTYPE | null /* Pointer<OBJECTTYPE> */;
+  pKeyRing: KEY_ON_RING[] /* Pointer<KEY_ON_RING> */;
 
   bOldLife: INT8; // life at end of last turn, recorded for monster AI
   // attributes
@@ -343,7 +386,7 @@ export interface SOLDIERTYPE {
   bStealthMode: boolean /* INT8 */;
 
   sBreathRed: INT16; // current breath value
-  fDelayedMovement: boolean;
+  fDelayedMovement: UINT8 /* boolean */;
 
   fReloading: boolean;
   ubWaitActionToDo: UINT8;
@@ -388,7 +431,7 @@ export interface SOLDIERTYPE {
   bOverTerrainType: INT8;
   bOldOverTerrainType: INT8;
 
-  bCollapsed: INT8; // collapsed due to being out of APs
+  bCollapsed: boolean /* INT8 */; // collapsed due to being out of APs
   bBreathCollapsed: boolean /* INT8 */; // collapsed due to being out of APs
   ubDesiredHeight: UINT8;
   usPendingAnimation: UINT16;
@@ -426,7 +469,7 @@ export interface SOLDIERTYPE {
   bExpLevel: INT8; // general experience level
   sInsertionGridNo: INT16;
 
-  fContinueMoveAfterStanceChange: boolean;
+  fContinueMoveAfterStanceChange: UINT8 /* boolean */;
 
   // 60
   AnimCache: AnimationSurfaceCacheType; // will be 9 bytes once changed to pointers
@@ -467,7 +510,7 @@ export interface SOLDIERTYPE {
   fTurningToShoot: boolean;
   fTurningToFall: boolean;
   fTurningUntilDone: boolean;
-  fGettingHit: boolean;
+  fGettingHit: UINT8 /* boolean */;
   fInNonintAnim: boolean;
   fFlashLocator: boolean;
   sLocatorFrame: INT16;
@@ -489,13 +532,13 @@ export interface SOLDIERTYPE {
   usFrontArcFullTileList: UINT16[] /* [MAX_FULLTILE_DIRECTIONS] */;
   usFrontArcFullTileGridNos: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */;
 
-  p8BPPPalette: Pointer<SGPPaletteEntry>; // 4
-  p16BPPPalette: Pointer<UINT16>;
-  pShades: Pointer<UINT16>[] /* [NUM_SOLDIER_SHADES] */; // Shading tables
-  pGlowShades: Pointer<UINT16>[] /* [20] */; //
-  pCurrentShade: Pointer<UINT16>;
+  p8BPPPalette: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */; // 4
+  p16BPPPalette: UINT16[] /* Pointer<UINT16> */;
+  pShades: UINT16[][] /* Pointer<UINT16>[NUM_SOLDIER_SHADES] */; // Shading tables
+  pGlowShades: UINT16[][] /* Pointer<UINT16>[20] */; //
+  pCurrentShade: UINT16[] /* Pointer<UINT16> */;
   bMedical: INT8;
-  fBeginFade: boolean;
+  fBeginFade: UINT8 /* boolean */;
   ubFadeLevel: UINT8;
   ubServiceCount: UINT8;
   ubServicePartner: UINT8;
@@ -503,10 +546,10 @@ export interface SOLDIERTYPE {
   bExplosive: INT8;
   pThrowParams: THROW_PARAMS | null;
   fTurningFromPronePosition: UINT8 /* boolean */;
-  bReverse: INT8;
-  pLevelNode: Pointer<LEVELNODE>;
-  pExternShadowLevelNode: Pointer<LEVELNODE>;
-  pRoofUILevelNode: Pointer<LEVELNODE>;
+  bReverse: boolean /* INT8 */;
+  pLevelNode: LEVELNODE | null /* Pointer<LEVELNODE> */;
+  pExternShadowLevelNode: LEVELNODE | null /* Pointer<LEVELNODE> */;
+  pRoofUILevelNode: LEVELNODE | null /* Pointer<LEVELNODE> */;
 
   // WALKING STUFF
   bDesiredDirection: INT8;
@@ -517,7 +560,7 @@ export interface SOLDIERTYPE {
   sFinalDestination: INT16;
   bLevel: INT8;
   bStopped: INT8;
-  bNeedToLook: INT8;
+  bNeedToLook: boolean /* INT8 */;
 
   // PATH STUFF
   usPathingData: UINT16[] /* [MAX_PATH_LIST_SIZE] */;
@@ -527,11 +570,11 @@ export interface SOLDIERTYPE {
   bAimTime: INT8;
   bShownAimTime: INT8;
   bPathStored: boolean /* INT8 */; // good for AI to reduct redundancy
-  bHasKeys: boolean /* INT8 */; // allows AI controlled dudes to open locked doors
+  bHasKeys: INT8; // allows AI controlled dudes to open locked doors
 
   // UNBLIT BACKGROUND
-  pBackGround: Pointer<UINT16>;
-  pZBackground: Pointer<UINT16>;
+  pBackGround: UINT16[] | null /* Pointer<UINT16> */;
+  pZBackground: UINT16[] | null /* Pointer<UINT16> */;
 
   usUnblitX: UINT16;
   usUnblitY: UINT16;
@@ -566,7 +609,7 @@ export interface SOLDIERTYPE {
   usActionData: UINT16;
   bNextAction: INT8;
   usNextActionData: UINT16;
-  bActionInProgress: INT8;
+  bActionInProgress: boolean /* INT8 */;
   bAlertStatus: INT8;
   bOppCnt: INT8;
   bNeutral: boolean /* INT8 */;
@@ -576,7 +619,7 @@ export interface SOLDIERTYPE {
   bAttitude: INT8;
   bUnderFire: INT8;
   bShock: INT8;
-  bUnderEscort: INT8;
+  bUnderEscort: boolean /* INT8 */;
   bBypassToGreen: INT8;
   ubLastMercToRadio: UINT8;
   bDominantDir: INT8; // AI main direction to face...
@@ -585,7 +628,7 @@ export interface SOLDIERTYPE {
   usPatrolGrid: INT16[] /* [MAXPATROLGRIDS] */; // AI list for ptr->orders==PATROL
   sNoiseGridno: INT16;
   ubNoiseVolume: UINT8;
-  bLastAttackHit: INT8;
+  bLastAttackHit: boolean /* INT8 */;
   ubXRayedBy: UINT8;
   dHeightAdjustment: FLOAT;
   bMorale: INT8;
@@ -601,7 +644,7 @@ export interface SOLDIERTYPE {
   ubDoorHandleCode: INT8;
   uiPendingActionData4: UINT32;
   bInterruptDuelPts: INT8;
-  bPassedLastInterrupt: INT8;
+  bPassedLastInterrupt: boolean /* INT8 */;
   bIntStartAPs: INT8;
   bMoved: boolean /* INT8 */;
   bHunting: boolean /* INT8 */;
@@ -609,8 +652,8 @@ export interface SOLDIERTYPE {
   ubCaller: UINT8;
   sCallerGridNo: INT16;
   bCallPriority: UINT8;
-  bCallActedUpon: INT8;
-  bFrenzied: INT8;
+  bCallActedUpon: boolean /* INT8 */;
+  bFrenzied: boolean /* INT8 */;
   bNormalSmell: INT8;
   bMonsterSmell: INT8;
   bMobility: INT8;
@@ -634,7 +677,7 @@ export interface SOLDIERTYPE {
   fStopPendingNextTile: boolean;
 
   fForceShade: boolean;
-  pForcedShade: Pointer<UINT16>;
+  pForcedShade: UINT16[] /* Pointer<UINT16> */;
 
   bDisplayDamageCount: INT8;
   fDisplayDamage: boolean /* INT8 */;
@@ -669,14 +712,14 @@ export interface SOLDIERTYPE {
   // QUOTE STUFF
   bNumHitsThisTurn: INT8;
   usQuoteSaidFlags: UINT16;
-  fCloseCall: INT8;
+  fCloseCall: boolean /* INT8 */;
   bLastSkillCheck: INT8;
   ubSkillCheckAttempts: INT8;
 
   bVocalVolume: INT8; // verbal sounds need to differ in volume
 
   bStartFallDir: INT8;
-  fTryingToFall: INT8;
+  fTryingToFall: boolean /* INT8 */;
 
   ubPendingDirection: UINT8;
   uiAnimSubFlags: UINT32;
@@ -684,19 +727,19 @@ export interface SOLDIERTYPE {
   bAimShotLocation: UINT8;
   ubHitLocation: UINT8;
 
-  pEffectShades: Pointer<UINT16>[] /* [NUM_SOLDIER_EFFECTSHADES] */; // Shading tables for effects
+  pEffectShades: UINT16[][] /* Pointer<UINT16>[NUM_SOLDIER_EFFECTSHADES] */; // Shading tables for effects
 
   ubPlannedUIAPCost: UINT8;
   sPlannedTargetX: INT16;
   sPlannedTargetY: INT16;
 
   sSpreadLocations: INT16[] /* [6] */;
-  fDoSpread: boolean;
+  fDoSpread: UINT8 /* boolean */;
   sStartGridNo: INT16;
   sEndGridNo: INT16;
   sForcastGridno: INT16;
   sZLevelOverride: INT16;
-  bMovedPriorToInterrupt: INT8;
+  bMovedPriorToInterrupt: boolean /* INT8 */;
   iEndofContractTime: INT32; // time, in global time(resolution, minutes) that merc will leave, or if its a M.E.R.C. merc it will be set to -1.  -2 for NPC and player generated
   iStartContractTime: INT32;
   iTotalContractLength: INT32; // total time of AIM mercs contract	or the time since last paid for a M.E.R.C. merc
@@ -710,7 +753,7 @@ export interface SOLDIERTYPE {
   sSectorY: INT16; // Y position on the Stategic Map
   bSectorZ: INT8; // Z sector location
   iVehicleId: INT32; // the id of the vehicle the char is in
-  pMercPath: PathStPtr; // Path Structure
+  pMercPath: PathSt /* PathStPtr */; // Path Structure
   fHitByGasFlags: UINT8; // flags
   usMedicalDeposit: UINT16; // is there a medical deposit on merc
   usLifeInsurance: UINT16; // is there life insurance taken out on merc
@@ -772,15 +815,15 @@ export interface SOLDIERTYPE {
   ubTargetID: UINT8;
   bAIScheduleProgress: INT8;
   sOffWorldGridNo: INT16;
-  pAniTile: Pointer<ANITILE>;
+  pAniTile: ANITILE /* Pointer<ANITILE> */;
   bCamo: INT8;
   sAbsoluteFinalDestination: INT16;
   ubHiResDirection: UINT8;
   ubHiResDesiredDirection: UINT8;
   ubLastFootPrintSound: UINT8;
   bVehicleID: INT8;
-  fPastXDest: INT8;
-  fPastYDest: INT8;
+  fPastXDest: boolean /* INT8 */;
+  fPastYDest: boolean /* INT8 */;
   bMovementDirection: INT8;
   sOldGridNo: INT16;
   usDontUpdateNewGridNoOnMoveAnimChange: UINT16;
@@ -827,7 +870,7 @@ export interface SOLDIERTYPE {
   usQuoteSaidExtFlags: UINT16;
 
   sContPathLocation: UINT16;
-  bGoodContPath: INT8;
+  bGoodContPath: boolean /* INT8 */;
   ubPendingActionInterrupted: UINT8;
   bNoiseLevel: INT8;
   bRegenerationCounter: INT8;
@@ -865,13 +908,13 @@ export interface SOLDIERTYPE {
   ubContractRenewalQuoteCode: UINT8;
   sPreTraversalGridNo: INT16;
   uiXRayActivatedTime: UINT32;
-  bTurningFromUI: INT8;
+  bTurningFromUI: boolean /* INT8 */;
   bPendingActionData5: INT8;
 
   bDelayedStrategicMoraleMod: INT8;
   ubDoorOpeningNoise: UINT8;
 
-  pGroup: Pointer<GROUP>;
+  pGroup: GROUP /* Pointer<GROUP> */;
   ubLeaveHistoryCode: UINT8;
   fDontUnsetLastTargetFromTurn: boolean;
   bOverrideMoveSpeed: INT8;
@@ -912,7 +955,7 @@ export function createSoldierType(): SOLDIERTYPE {
     uiStatusFlags: 0,
     inv: createArrayFrom(Enum261.NUM_INV_SLOTS, createObjectType),
     pTempObject: null,
-    pKeyRing: null,
+    pKeyRing: <KEY_ON_RING[]><unknown>null,
     bOldLife: 0,
     bInSector: false,
     bFlashPortraitFrame: 0,
@@ -922,7 +965,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bBreathMax: 0,
     bStealthMode: false,
     sBreathRed: 0,
-    fDelayedMovement: false,
+    fDelayedMovement: 0,
     fReloading: false,
     ubWaitActionToDo: 0,
     fPauseAim: false,
@@ -954,7 +997,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sRoomNo: 0,
     bOverTerrainType: 0,
     bOldOverTerrainType: 0,
-    bCollapsed: 0,
+    bCollapsed: false,
     bBreathCollapsed: false,
     ubDesiredHeight: 0,
     usPendingAnimation: 0,
@@ -986,7 +1029,7 @@ export function createSoldierType(): SOLDIERTYPE {
     fPauseAllAnimation: false,
     bExpLevel: 0,
     sInsertionGridNo: 0,
-    fContinueMoveAfterStanceChange: false,
+    fContinueMoveAfterStanceChange: 0,
     AnimCache: createAnimationSurfaceCacheType(),
     bLife: 0,
     bSide: 0,
@@ -1016,7 +1059,7 @@ export function createSoldierType(): SOLDIERTYPE {
     fTurningToShoot: false,
     fTurningToFall: false,
     fTurningUntilDone: false,
-    fGettingHit: false,
+    fGettingHit: 0,
     fInNonintAnim: false,
     fFlashLocator: false,
     sLocatorFrame: 0,
@@ -1032,13 +1075,13 @@ export function createSoldierType(): SOLDIERTYPE {
     MiscPal: "",
     usFrontArcFullTileList: createArray(MAX_FULLTILE_DIRECTIONS, 0),
     usFrontArcFullTileGridNos: createArray(MAX_FULLTILE_DIRECTIONS, 0),
-    p8BPPPalette: null,
-    p16BPPPalette: null,
-    pShades: createArray(NUM_SOLDIER_SHADES, null),
-    pGlowShades: createArray(20, null),
-    pCurrentShade: null,
+    p8BPPPalette: <SGPPaletteEntry[]><unknown>null,
+    p16BPPPalette: <UINT16[]><unknown>null,
+    pShades: createArray(NUM_SOLDIER_SHADES, <UINT16[]><unknown>null),
+    pGlowShades: createArray(20, <UINT16[]><unknown>null),
+    pCurrentShade: <UINT16[]><unknown>null,
     bMedical: 0,
-    fBeginFade: false,
+    fBeginFade: 0,
     ubFadeLevel: 0,
     ubServiceCount: 0,
     ubServicePartner: 0,
@@ -1046,7 +1089,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bExplosive: 0,
     pThrowParams: null,
     fTurningFromPronePosition: 0,
-    bReverse: 0,
+    bReverse: false,
     pLevelNode: null,
     pExternShadowLevelNode: null,
     pRoofUILevelNode: null,
@@ -1058,7 +1101,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sFinalDestination: 0,
     bLevel: 0,
     bStopped: 0,
-    bNeedToLook: 0,
+    bNeedToLook: false,
     usPathingData: createArray(MAX_PATH_LIST_SIZE, 0),
     usPathDataSize: 0,
     usPathIndex: 0,
@@ -1066,7 +1109,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bAimTime: 0,
     bShownAimTime: 0,
     bPathStored: false,
-    bHasKeys: false,
+    bHasKeys: 0,
     pBackGround: null,
     pZBackground: null,
     usUnblitX: 0,
@@ -1092,7 +1135,7 @@ export function createSoldierType(): SOLDIERTYPE {
     usActionData: 0,
     bNextAction: 0,
     usNextActionData: 0,
-    bActionInProgress: 0,
+    bActionInProgress: false,
     bAlertStatus: 0,
     bOppCnt: 0,
     bNeutral: false,
@@ -1102,7 +1145,7 @@ export function createSoldierType(): SOLDIERTYPE {
     bAttitude: 0,
     bUnderFire: 0,
     bShock: 0,
-    bUnderEscort: 0,
+    bUnderEscort: false,
     bBypassToGreen: 0,
     ubLastMercToRadio: 0,
     bDominantDir: 0,
@@ -1111,7 +1154,7 @@ export function createSoldierType(): SOLDIERTYPE {
     usPatrolGrid: createArray(MAXPATROLGRIDS, 0),
     sNoiseGridno: 0,
     ubNoiseVolume: 0,
-    bLastAttackHit: 0,
+    bLastAttackHit: false,
     ubXRayedBy: 0,
     dHeightAdjustment: 0,
     bMorale: 0,
@@ -1127,7 +1170,7 @@ export function createSoldierType(): SOLDIERTYPE {
     ubDoorHandleCode: 0,
     uiPendingActionData4: 0,
     bInterruptDuelPts: 0,
-    bPassedLastInterrupt: 0,
+    bPassedLastInterrupt: false,
     bIntStartAPs: 0,
     bMoved: false,
     bHunting: false,
@@ -1135,8 +1178,8 @@ export function createSoldierType(): SOLDIERTYPE {
     ubCaller: 0,
     sCallerGridNo: 0,
     bCallPriority: 0,
-    bCallActedUpon: 0,
-    bFrenzied: 0,
+    bCallActedUpon: false,
+    bFrenzied: false,
     bNormalSmell: 0,
     bMonsterSmell: 0,
     bMobility: 0,
@@ -1155,7 +1198,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sLocatorOffY: 0,
     fStopPendingNextTile: false,
     fForceShade: false,
-    pForcedShade: null,
+    pForcedShade: <UINT16[]><unknown>null,
     bDisplayDamageCount: 0,
     fDisplayDamage: false,
     sDamage: 0,
@@ -1184,27 +1227,27 @@ export function createSoldierType(): SOLDIERTYPE {
     sPanelFaceY: 0,
     bNumHitsThisTurn: 0,
     usQuoteSaidFlags: 0,
-    fCloseCall: 0,
+    fCloseCall: false,
     bLastSkillCheck: 0,
     ubSkillCheckAttempts: 0,
     bVocalVolume: 0,
     bStartFallDir: 0,
-    fTryingToFall: 0,
+    fTryingToFall: false,
     ubPendingDirection: 0,
     uiAnimSubFlags: 0,
     bAimShotLocation: 0,
     ubHitLocation: 0,
-    pEffectShades: createArray(NUM_SOLDIER_EFFECTSHADES, null),
+    pEffectShades: createArray(NUM_SOLDIER_EFFECTSHADES, <UINT16[]><unknown>null),
     ubPlannedUIAPCost: 0,
     sPlannedTargetX: 0,
     sPlannedTargetY: 0,
     sSpreadLocations: createArray(6, 0),
-    fDoSpread: false,
+    fDoSpread: 0,
     sStartGridNo: 0,
     sEndGridNo: 0,
     sForcastGridno: 0,
     sZLevelOverride: 0,
-    bMovedPriorToInterrupt: 0,
+    bMovedPriorToInterrupt: false,
     iEndofContractTime: 0,
     iStartContractTime: 0,
     iTotalContractLength: 0,
@@ -1218,7 +1261,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sSectorY: 0,
     bSectorZ: 0,
     iVehicleId: 0,
-    pMercPath: null,
+    pMercPath: <PathSt><unknown>null,
     fHitByGasFlags: 0,
     usMedicalDeposit: 0,
     usLifeInsurance: 0,
@@ -1268,15 +1311,15 @@ export function createSoldierType(): SOLDIERTYPE {
     ubTargetID: 0,
     bAIScheduleProgress: 0,
     sOffWorldGridNo: 0,
-    pAniTile: null,
+    pAniTile: <ANITILE><unknown>null,
     bCamo: 0,
     sAbsoluteFinalDestination: 0,
     ubHiResDirection: 0,
     ubHiResDesiredDirection: 0,
     ubLastFootPrintSound: 0,
     bVehicleID: 0,
-    fPastXDest: 0,
-    fPastYDest: 0,
+    fPastXDest: false,
+    fPastYDest: false,
     bMovementDirection: 0,
     sOldGridNo: 0,
     usDontUpdateNewGridNoOnMoveAnimChange: 0,
@@ -1317,7 +1360,7 @@ export function createSoldierType(): SOLDIERTYPE {
     ubTurnsUntilCanSayHeardNoise: 0,
     usQuoteSaidExtFlags: 0,
     sContPathLocation: 0,
-    bGoodContPath: 0,
+    bGoodContPath: false,
     ubPendingActionInterrupted: 0,
     bNoiseLevel: 0,
     bRegenerationCounter: 0,
@@ -1348,11 +1391,11 @@ export function createSoldierType(): SOLDIERTYPE {
     ubContractRenewalQuoteCode: 0,
     sPreTraversalGridNo: 0,
     uiXRayActivatedTime: 0,
-    bTurningFromUI: 0,
+    bTurningFromUI: false,
     bPendingActionData5: 0,
     bDelayedStrategicMoraleMod: 0,
     ubDoorOpeningNoise: 0,
-    pGroup: null,
+    pGroup: <GROUP><unknown>null,
     ubLeaveHistoryCode: 0,
     fDontUnsetLastTargetFromTurn: false,
     bOverrideMoveSpeed: 0,
@@ -1391,7 +1434,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.uiStatusFlags = 0;
   o.inv.forEach(resetObjectType);
   o.pTempObject = null;
-  o.pKeyRing = null;
+  o.pKeyRing = <KEY_ON_RING[]><unknown>null;
   o.bOldLife = 0;
   o.bInSector = false;
   o.bFlashPortraitFrame = 0;
@@ -1401,7 +1444,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.bBreathMax = 0;
   o.bStealthMode = false;
   o.sBreathRed = 0;
-  o.fDelayedMovement = false;
+  o.fDelayedMovement = 0;
   o.fReloading = false;
   o.ubWaitActionToDo = 0;
   o.fPauseAim = false;
@@ -1433,7 +1476,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sRoomNo = 0;
   o.bOverTerrainType = 0;
   o.bOldOverTerrainType = 0;
-  o.bCollapsed = 0;
+  o.bCollapsed = false;
   o.bBreathCollapsed = false;
   o.ubDesiredHeight = 0;
   o.usPendingAnimation = 0;
@@ -1465,7 +1508,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.fPauseAllAnimation = false;
   o.bExpLevel = 0;
   o.sInsertionGridNo = 0;
-  o.fContinueMoveAfterStanceChange = false;
+  o.fContinueMoveAfterStanceChange = 0;
   resetAnimationSurfaceCacheType(o.AnimCache);
   o.bLife = 0;
   o.bSide = 0;
@@ -1495,7 +1538,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.fTurningToShoot = false;
   o.fTurningToFall = false;
   o.fTurningUntilDone = false;
-  o.fGettingHit = false;
+  o.fGettingHit = 0;
   o.fInNonintAnim = false;
   o.fFlashLocator = false;
   o.sLocatorFrame = 0;
@@ -1511,13 +1554,13 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.MiscPal = "";
   o.usFrontArcFullTileList.fill(0);
   o.usFrontArcFullTileGridNos.fill(0);
-  o.p8BPPPalette = null;
-  o.p16BPPPalette = null;
-  o.pShades.fill(0);
-  o.pGlowShades.fill(0);
-  o.pCurrentShade = null;
+  o.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
+  o.p16BPPPalette = <UINT16[]><unknown>null;
+  o.pShades.fill(<UINT16[]><unknown>null);
+  o.pGlowShades.fill(<UINT16[]><unknown>null);
+  o.pCurrentShade = <UINT16[]><unknown>null;
   o.bMedical = 0;
-  o.fBeginFade = false;
+  o.fBeginFade = 0;
   o.ubFadeLevel = 0;
   o.ubServiceCount = 0;
   o.ubServicePartner = 0;
@@ -1525,7 +1568,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.bExplosive = 0;
   o.pThrowParams = null;
   o.fTurningFromPronePosition = 0;
-  o.bReverse = 0;
+  o.bReverse = false;
   o.pLevelNode = null;
   o.pExternShadowLevelNode = null;
   o.pRoofUILevelNode = null;
@@ -1537,7 +1580,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sFinalDestination = 0;
   o.bLevel = 0;
   o.bStopped = 0;
-  o.bNeedToLook = 0;
+  o.bNeedToLook = false;
   o.usPathingData.fill(0);
   o.usPathDataSize = 0;
   o.usPathIndex = 0;
@@ -1545,7 +1588,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.bAimTime = 0;
   o.bShownAimTime = 0;
   o.bPathStored = false;
-  o.bHasKeys = false;
+  o.bHasKeys = 0;
   o.pBackGround = null;
   o.pZBackground = null;
   o.usUnblitX = 0;
@@ -1571,7 +1614,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.usActionData = 0;
   o.bNextAction = 0;
   o.usNextActionData = 0;
-  o.bActionInProgress = 0;
+  o.bActionInProgress = false;
   o.bAlertStatus = 0;
   o.bOppCnt = 0;
   o.bNeutral = false;
@@ -1581,7 +1624,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.bAttitude = 0;
   o.bUnderFire = 0;
   o.bShock = 0;
-  o.bUnderEscort = 0;
+  o.bUnderEscort = false;
   o.bBypassToGreen = 0;
   o.ubLastMercToRadio = 0;
   o.bDominantDir = 0;
@@ -1590,7 +1633,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.usPatrolGrid.fill(0);
   o.sNoiseGridno = 0;
   o.ubNoiseVolume = 0;
-  o.bLastAttackHit = 0;
+  o.bLastAttackHit = false;
   o.ubXRayedBy = 0;
   o.dHeightAdjustment = 0;
   o.bMorale = 0;
@@ -1606,7 +1649,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.ubDoorHandleCode = 0;
   o.uiPendingActionData4 = 0;
   o.bInterruptDuelPts = 0;
-  o.bPassedLastInterrupt = 0;
+  o.bPassedLastInterrupt = false;
   o.bIntStartAPs = 0;
   o.bMoved = false;
   o.bHunting = false;
@@ -1614,8 +1657,8 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.ubCaller = 0;
   o.sCallerGridNo = 0;
   o.bCallPriority = 0;
-  o.bCallActedUpon = 0;
-  o.bFrenzied = 0;
+  o.bCallActedUpon = false;
+  o.bFrenzied = false;
   o.bNormalSmell = 0;
   o.bMonsterSmell = 0;
   o.bMobility = 0;
@@ -1634,7 +1677,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sLocatorOffY = 0;
   o.fStopPendingNextTile = false;
   o.fForceShade = false;
-  o.pForcedShade = null;
+  o.pForcedShade = <UINT16[]><unknown>null;
   o.bDisplayDamageCount = 0;
   o.fDisplayDamage = false;
   o.sDamage = 0;
@@ -1663,27 +1706,27 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sPanelFaceY = 0;
   o.bNumHitsThisTurn = 0;
   o.usQuoteSaidFlags = 0;
-  o.fCloseCall = 0;
+  o.fCloseCall = false;
   o.bLastSkillCheck = 0;
   o.ubSkillCheckAttempts = 0;
   o.bVocalVolume = 0;
   o.bStartFallDir = 0;
-  o.fTryingToFall = 0;
+  o.fTryingToFall = false;
   o.ubPendingDirection = 0;
   o.uiAnimSubFlags = 0;
   o.bAimShotLocation = 0;
   o.ubHitLocation = 0;
-  o.pEffectShades.fill(null);
+  o.pEffectShades.fill(<UINT16[]><unknown>null);
   o.ubPlannedUIAPCost = 0;
   o.sPlannedTargetX = 0;
   o.sPlannedTargetY = 0;
   o.sSpreadLocations.fill(0);
-  o.fDoSpread = false;
+  o.fDoSpread = 0;
   o.sStartGridNo = 0;
   o.sEndGridNo = 0;
   o.sForcastGridno = 0;
   o.sZLevelOverride = 0;
-  o.bMovedPriorToInterrupt = 0;
+  o.bMovedPriorToInterrupt = false;
   o.iEndofContractTime = 0;
   o.iStartContractTime = 0;
   o.iTotalContractLength = 0;
@@ -1697,7 +1740,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sSectorY = 0;
   o.bSectorZ = 0;
   o.iVehicleId = 0;
-  o.pMercPath = null;
+  o.pMercPath = <PathSt><unknown>null;
   o.fHitByGasFlags = 0;
   o.usMedicalDeposit = 0;
   o.usLifeInsurance = 0;
@@ -1747,15 +1790,15 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.ubTargetID = 0;
   o.bAIScheduleProgress = 0;
   o.sOffWorldGridNo = 0;
-  o.pAniTile = null;
+  o.pAniTile = <ANITILE><unknown>null;
   o.bCamo = 0;
   o.sAbsoluteFinalDestination = 0;
   o.ubHiResDirection = 0;
   o.ubHiResDesiredDirection = 0;
   o.ubLastFootPrintSound = 0;
   o.bVehicleID = 0;
-  o.fPastXDest = 0;
-  o.fPastYDest = 0;
+  o.fPastXDest = false;
+  o.fPastYDest = false;
   o.bMovementDirection = 0;
   o.sOldGridNo = 0;
   o.usDontUpdateNewGridNoOnMoveAnimChange = 0;
@@ -1796,7 +1839,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.ubTurnsUntilCanSayHeardNoise = 0;
   o.usQuoteSaidExtFlags = 0;
   o.sContPathLocation = 0;
-  o.bGoodContPath = 0;
+  o.bGoodContPath = false;
   o.ubPendingActionInterrupted = 0;
   o.bNoiseLevel = 0;
   o.bRegenerationCounter = 0;
@@ -1827,11 +1870,11 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.ubContractRenewalQuoteCode = 0;
   o.sPreTraversalGridNo = 0;
   o.uiXRayActivatedTime = 0;
-  o.bTurningFromUI = 0;
+  o.bTurningFromUI = false;
   o.bPendingActionData5 = 0;
   o.bDelayedStrategicMoraleMod = 0;
   o.ubDoorOpeningNoise = 0;
-  o.pGroup = null;
+  o.pGroup = <GROUP><unknown>null;
   o.ubLeaveHistoryCode = 0;
   o.fDontUnsetLastTargetFromTurn = false;
   o.bOverrideMoveSpeed = 0;
@@ -1860,7 +1903,1539 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.bFiller.fill(0);
 }
 
+export function copySoldierType(destination: SOLDIERTYPE, source: SOLDIERTYPE) {
+  destination.ubID = source.ubID;
+  destination.bReserved1 = source.bReserved1;
+  destination.ubBodyType = source.ubBodyType;
+  destination.bActionPoints = source.bActionPoints;
+  destination.bInitialActionPoints = source.bInitialActionPoints;
+  destination.uiStatusFlags = source.uiStatusFlags;
+  copyObjectArray(destination.inv, source.inv, copyObjectType);
+  destination.pTempObject = source.pTempObject;
+  destination.pKeyRing = source.pKeyRing;
+  destination.bOldLife = source.bOldLife;
+  destination.bInSector = source.bInSector;
+  destination.bFlashPortraitFrame = source.bFlashPortraitFrame;
+  destination.sFractLife = source.sFractLife;
+  destination.bBleeding = source.bBleeding;
+  destination.bBreath = source.bBreath;
+  destination.bBreathMax = source.bBreathMax;
+  destination.bStealthMode = source.bStealthMode;
+  destination.sBreathRed = source.sBreathRed;
+  destination.fDelayedMovement = source.fDelayedMovement;
+  destination.fReloading = source.fReloading;
+  destination.ubWaitActionToDo = source.ubWaitActionToDo;
+  destination.fPauseAim = source.fPauseAim;
+  destination.ubInsertionDirection = source.ubInsertionDirection;
+  destination.bGunType = source.bGunType;
+  destination.ubOppNum = source.ubOppNum;
+  destination.bLastRenderVisibleValue = source.bLastRenderVisibleValue;
+  destination.fInMissionExitNode = source.fInMissionExitNode;
+  destination.ubAttackingHand = source.ubAttackingHand;
+  destination.bScientific = source.bScientific;
+  destination.sWeightCarriedAtTurnStart = source.sWeightCarriedAtTurnStart;
+  destination.name = source.name;
+  destination.bVisible = source.bVisible;
+  destination.bActive = source.bActive;
+  destination.bTeam = source.bTeam;
+  destination.ubGroupID = source.ubGroupID;
+  destination.fBetweenSectors = source.fBetweenSectors;
+  destination.ubMovementNoiseHeard = source.ubMovementNoiseHeard;
+  destination.dXPos = source.dXPos;
+  destination.dYPos = source.dYPos;
+  destination.dOldXPos = source.dOldXPos;
+  destination.dOldYPos = source.dOldYPos;
+  destination.sInitialGridNo = source.sInitialGridNo;
+  destination.sGridNo = source.sGridNo;
+  destination.bDirection = source.bDirection;
+  destination.sHeightAdjustment = source.sHeightAdjustment;
+  destination.sDesiredHeight = source.sDesiredHeight;
+  destination.sTempNewGridNo = source.sTempNewGridNo;
+  destination.sRoomNo = source.sRoomNo;
+  destination.bOverTerrainType = source.bOverTerrainType;
+  destination.bOldOverTerrainType = source.bOldOverTerrainType;
+  destination.bCollapsed = source.bCollapsed;
+  destination.bBreathCollapsed = source.bBreathCollapsed;
+  destination.ubDesiredHeight = source.ubDesiredHeight;
+  destination.usPendingAnimation = source.usPendingAnimation;
+  destination.ubPendingStanceChange = source.ubPendingStanceChange;
+  destination.usAnimState = source.usAnimState;
+  destination.fNoAPToFinishMove = source.fNoAPToFinishMove;
+  destination.fPausedMove = source.fPausedMove;
+  destination.fUIdeadMerc = source.fUIdeadMerc;
+  destination.fUInewMerc = source.fUInewMerc;
+  destination.fUICloseMerc = source.fUICloseMerc;
+  destination.fUIFirstTimeNOAP = source.fUIFirstTimeNOAP;
+  destination.fUIFirstTimeUNCON = source.fUIFirstTimeUNCON;
+  destination.UpdateCounter = source.UpdateCounter;
+  destination.DamageCounter = source.DamageCounter;
+  destination.ReloadCounter = source.ReloadCounter;
+  destination.FlashSelCounter = source.FlashSelCounter;
+  destination.AICounter = source.AICounter;
+  destination.FadeCounter = source.FadeCounter;
+  destination.ubSkillTrait1 = source.ubSkillTrait1;
+  destination.ubSkillTrait2 = source.ubSkillTrait2;
+  destination.uiAIDelay = source.uiAIDelay;
+  destination.bDexterity = source.bDexterity;
+  destination.bWisdom = source.bWisdom;
+  destination.sReloadDelay = source.sReloadDelay;
+  destination.ubAttackerID = source.ubAttackerID;
+  destination.ubPreviousAttackerID = source.ubPreviousAttackerID;
+  destination.fTurnInProgress = source.fTurnInProgress;
+  destination.fIntendedTarget = source.fIntendedTarget;
+  destination.fPauseAllAnimation = source.fPauseAllAnimation;
+  destination.bExpLevel = source.bExpLevel;
+  destination.sInsertionGridNo = source.sInsertionGridNo;
+  destination.fContinueMoveAfterStanceChange = source.fContinueMoveAfterStanceChange;
+  copyAnimationSurfaceCacheType(destination.AnimCache, source.AnimCache);
+  destination.bLife = source.bLife;
+  destination.bSide = source.bSide;
+  destination.bViewRange = source.bViewRange;
+  destination.bNewOppCnt = source.bNewOppCnt;
+  destination.bService = source.bService;
+  destination.usAniCode = source.usAniCode;
+  destination.usAniFrame = source.usAniFrame;
+  destination.sAniDelay = source.sAniDelay;
+  destination.bAgility = source.bAgility;
+  destination.ubDelayedMovementCauseMerc = source.ubDelayedMovementCauseMerc;
+  destination.sDelayedMovementCauseGridNo = source.sDelayedMovementCauseGridNo;
+  destination.sReservedMovementGridNo = source.sReservedMovementGridNo;
+  destination.bStrength = source.bStrength;
+  destination.fHoldAttackerUntilDone = source.fHoldAttackerUntilDone;
+  destination.sTargetGridNo = source.sTargetGridNo;
+  destination.bTargetLevel = source.bTargetLevel;
+  destination.bTargetCubeLevel = source.bTargetCubeLevel;
+  destination.sLastTarget = source.sLastTarget;
+  destination.bTilesMoved = source.bTilesMoved;
+  destination.bLeadership = source.bLeadership;
+  destination.dNextBleed = source.dNextBleed;
+  destination.fWarnedAboutBleeding = source.fWarnedAboutBleeding;
+  destination.fDyingComment = source.fDyingComment;
+  destination.ubTilesMovedPerRTBreathUpdate = source.ubTilesMovedPerRTBreathUpdate;
+  destination.usLastMovementAnimPerRTBreathUpdate = source.usLastMovementAnimPerRTBreathUpdate;
+  destination.fTurningToShoot = source.fTurningToShoot;
+  destination.fTurningToFall = source.fTurningToFall;
+  destination.fTurningUntilDone = source.fTurningUntilDone;
+  destination.fGettingHit = source.fGettingHit;
+  destination.fInNonintAnim = source.fInNonintAnim;
+  destination.fFlashLocator = source.fFlashLocator;
+  destination.sLocatorFrame = source.sLocatorFrame;
+  destination.fShowLocator = source.fShowLocator;
+  destination.fFlashPortrait = source.fFlashPortrait;
+  destination.bMechanical = source.bMechanical;
+  destination.bLifeMax = source.bLifeMax;
+  destination.iFaceIndex = source.iFaceIndex;
+  destination.HeadPal = source.HeadPal;
+  destination.PantsPal = source.PantsPal;
+  destination.VestPal = source.VestPal;
+  destination.SkinPal = source.SkinPal;
+  destination.MiscPal = source.MiscPal;
+  copyArray(destination.usFrontArcFullTileList, source.usFrontArcFullTileList);
+  copyArray(destination.usFrontArcFullTileGridNos, source.usFrontArcFullTileGridNos);
+  destination.p8BPPPalette = source.p8BPPPalette;
+  destination.p16BPPPalette = source.p16BPPPalette;
+  copyArray(destination.pShades, source.pShades);
+  copyArray(destination.pGlowShades, source.pGlowShades);
+  destination.pCurrentShade = source.pCurrentShade;
+  destination.bMedical = source.bMedical;
+  destination.fBeginFade = source.fBeginFade;
+  destination.ubFadeLevel = source.ubFadeLevel;
+  destination.ubServiceCount = source.ubServiceCount;
+  destination.ubServicePartner = source.ubServicePartner;
+  destination.bMarksmanship = source.bMarksmanship;
+  destination.bExplosive = source.bExplosive;
+  destination.pThrowParams = source.pThrowParams;
+  destination.fTurningFromPronePosition = source.fTurningFromPronePosition;
+  destination.bReverse = source.bReverse;
+  destination.pLevelNode = source.pLevelNode;
+  destination.pExternShadowLevelNode = source.pExternShadowLevelNode;
+  destination.pRoofUILevelNode = source.pRoofUILevelNode;
+  destination.bDesiredDirection = source.bDesiredDirection;
+  destination.sDestXPos = source.sDestXPos;
+  destination.sDestYPos = source.sDestYPos;
+  destination.sDesiredDest = source.sDesiredDest;
+  destination.sDestination = source.sDestination;
+  destination.sFinalDestination = source.sFinalDestination;
+  destination.bLevel = source.bLevel;
+  destination.bStopped = source.bStopped;
+  destination.bNeedToLook = source.bNeedToLook;
+  copyArray(destination.usPathingData, source.usPathingData);
+  destination.usPathDataSize = source.usPathDataSize;
+  destination.usPathIndex = source.usPathIndex;
+  destination.sBlackList = source.sBlackList;
+  destination.bAimTime = source.bAimTime;
+  destination.bShownAimTime = source.bShownAimTime;
+  destination.bPathStored = source.bPathStored;
+  destination.bHasKeys = source.bHasKeys;
+  destination.pBackGround = source.pBackGround;
+  destination.pZBackground = source.pZBackground;
+  destination.usUnblitX = source.usUnblitX;
+  destination.usUnblitY = source.usUnblitY;
+  destination.usUnblitWidth = source.usUnblitWidth;
+  destination.usUnblitHeight = source.usUnblitHeight;
+  destination.ubStrategicInsertionCode = source.ubStrategicInsertionCode;
+  destination.usStrategicInsertionData = source.usStrategicInsertionData;
+  destination.iLight = source.iLight;
+  destination.iMuzFlash = source.iMuzFlash;
+  destination.bMuzFlashCount = source.bMuzFlashCount;
+  destination.sX = source.sX;
+  destination.sY = source.sY;
+  destination.usOldAniState = source.usOldAniState;
+  destination.sOldAniCode = source.sOldAniCode;
+  destination.bBulletsLeft = source.bBulletsLeft;
+  destination.ubSuppressionPoints = source.ubSuppressionPoints;
+  destination.uiTimeOfLastRandomAction = source.uiTimeOfLastRandomAction;
+  destination.usLastRandomAnim = source.usLastRandomAnim;
+  copyArray(destination.bOppList, source.bOppList);
+  destination.bLastAction = source.bLastAction;
+  destination.bAction = source.bAction;
+  destination.usActionData = source.usActionData;
+  destination.bNextAction = source.bNextAction;
+  destination.usNextActionData = source.usNextActionData;
+  destination.bActionInProgress = source.bActionInProgress;
+  destination.bAlertStatus = source.bAlertStatus;
+  destination.bOppCnt = source.bOppCnt;
+  destination.bNeutral = source.bNeutral;
+  destination.bNewSituation = source.bNewSituation;
+  destination.bNextTargetLevel = source.bNextTargetLevel;
+  destination.bOrders = source.bOrders;
+  destination.bAttitude = source.bAttitude;
+  destination.bUnderFire = source.bUnderFire;
+  destination.bShock = source.bShock;
+  destination.bUnderEscort = source.bUnderEscort;
+  destination.bBypassToGreen = source.bBypassToGreen;
+  destination.ubLastMercToRadio = source.ubLastMercToRadio;
+  destination.bDominantDir = source.bDominantDir;
+  destination.bPatrolCnt = source.bPatrolCnt;
+  destination.bNextPatrolPnt = source.bNextPatrolPnt;
+  copyArray(destination.usPatrolGrid, source.usPatrolGrid);
+  destination.sNoiseGridno = source.sNoiseGridno;
+  destination.ubNoiseVolume = source.ubNoiseVolume;
+  destination.bLastAttackHit = source.bLastAttackHit;
+  destination.ubXRayedBy = source.ubXRayedBy;
+  destination.dHeightAdjustment = source.dHeightAdjustment;
+  destination.bMorale = source.bMorale;
+  destination.bTeamMoraleMod = source.bTeamMoraleMod;
+  destination.bTacticalMoraleMod = source.bTacticalMoraleMod;
+  destination.bStrategicMoraleMod = source.bStrategicMoraleMod;
+  destination.bAIMorale = source.bAIMorale;
+  destination.ubPendingAction = source.ubPendingAction;
+  destination.ubPendingActionAnimCount = source.ubPendingActionAnimCount;
+  destination.uiPendingActionData1 = source.uiPendingActionData1;
+  destination.sPendingActionData2 = source.sPendingActionData2;
+  destination.bPendingActionData3 = source.bPendingActionData3;
+  destination.ubDoorHandleCode = source.ubDoorHandleCode;
+  destination.uiPendingActionData4 = source.uiPendingActionData4;
+  destination.bInterruptDuelPts = source.bInterruptDuelPts;
+  destination.bPassedLastInterrupt = source.bPassedLastInterrupt;
+  destination.bIntStartAPs = source.bIntStartAPs;
+  destination.bMoved = source.bMoved;
+  destination.bHunting = source.bHunting;
+  destination.ubLastCall = source.ubLastCall;
+  destination.ubCaller = source.ubCaller;
+  destination.sCallerGridNo = source.sCallerGridNo;
+  destination.bCallPriority = source.bCallPriority;
+  destination.bCallActedUpon = source.bCallActedUpon;
+  destination.bFrenzied = source.bFrenzied;
+  destination.bNormalSmell = source.bNormalSmell;
+  destination.bMonsterSmell = source.bMonsterSmell;
+  destination.bMobility = source.bMobility;
+  destination.bRTPCombat = source.bRTPCombat;
+  destination.fAIFlags = source.fAIFlags;
+  destination.fDontChargeReadyAPs = source.fDontChargeReadyAPs;
+  destination.usAnimSurface = source.usAnimSurface;
+  destination.sZLevel = source.sZLevel;
+  destination.fPrevInWater = source.fPrevInWater;
+  destination.fGoBackToAimAfterHit = source.fGoBackToAimAfterHit;
+  destination.sWalkToAttackGridNo = source.sWalkToAttackGridNo;
+  destination.sWalkToAttackWalkToCost = source.sWalkToAttackWalkToCost;
+  destination.fForceRenderColor = source.fForceRenderColor;
+  destination.fForceNoRenderPaletteCycle = source.fForceNoRenderPaletteCycle;
+  destination.sLocatorOffX = source.sLocatorOffX;
+  destination.sLocatorOffY = source.sLocatorOffY;
+  destination.fStopPendingNextTile = source.fStopPendingNextTile;
+  destination.fForceShade = source.fForceShade;
+  destination.pForcedShade = source.pForcedShade;
+  destination.bDisplayDamageCount = source.bDisplayDamageCount;
+  destination.fDisplayDamage = source.fDisplayDamage;
+  destination.sDamage = source.sDamage;
+  destination.sDamageX = source.sDamageX;
+  destination.sDamageY = source.sDamageY;
+  destination.bDamageDir = source.bDamageDir;
+  destination.bDoBurst = source.bDoBurst;
+  destination.usUIMovementMode = source.usUIMovementMode;
+  destination.bUIInterfaceLevel = source.bUIInterfaceLevel;
+  destination.fUIMovementFast = source.fUIMovementFast;
+  destination.BlinkSelCounter = source.BlinkSelCounter;
+  destination.PortraitFlashCounter = source.PortraitFlashCounter;
+  destination.fDeadSoundPlayed = source.fDeadSoundPlayed;
+  destination.ubProfile = source.ubProfile;
+  destination.ubQuoteRecord = source.ubQuoteRecord;
+  destination.ubQuoteActionID = source.ubQuoteActionID;
+  destination.ubBattleSoundID = source.ubBattleSoundID;
+  destination.fClosePanel = source.fClosePanel;
+  destination.fClosePanelToDie = source.fClosePanelToDie;
+  destination.ubClosePanelFrame = source.ubClosePanelFrame;
+  destination.fDeadPanel = source.fDeadPanel;
+  destination.ubDeadPanelFrame = source.ubDeadPanelFrame;
+  destination.fOpenPanel = source.fOpenPanel;
+  destination.bOpenPanelFrame = source.bOpenPanelFrame;
+  destination.sPanelFaceX = source.sPanelFaceX;
+  destination.sPanelFaceY = source.sPanelFaceY;
+  destination.bNumHitsThisTurn = source.bNumHitsThisTurn;
+  destination.usQuoteSaidFlags = source.usQuoteSaidFlags;
+  destination.fCloseCall = source.fCloseCall;
+  destination.bLastSkillCheck = source.bLastSkillCheck;
+  destination.ubSkillCheckAttempts = source.ubSkillCheckAttempts;
+  destination.bVocalVolume = source.bVocalVolume;
+  destination.bStartFallDir = source.bStartFallDir;
+  destination.fTryingToFall = source.fTryingToFall;
+  destination.ubPendingDirection = source.ubPendingDirection;
+  destination.uiAnimSubFlags = source.uiAnimSubFlags;
+  destination.bAimShotLocation = source.bAimShotLocation;
+  destination.ubHitLocation = source.ubHitLocation;
+  copyArray(destination.pEffectShades, source.pEffectShades);
+  destination.ubPlannedUIAPCost = source.ubPlannedUIAPCost;
+  destination.sPlannedTargetX = source.sPlannedTargetX;
+  destination.sPlannedTargetY = source.sPlannedTargetY;
+  copyArray(destination.sSpreadLocations, source.sSpreadLocations);
+  destination.fDoSpread = source.fDoSpread;
+  destination.sStartGridNo = source.sStartGridNo;
+  destination.sEndGridNo = source.sEndGridNo;
+  destination.sForcastGridno = source.sForcastGridno;
+  destination.sZLevelOverride = source.sZLevelOverride;
+  destination.bMovedPriorToInterrupt = source.bMovedPriorToInterrupt;
+  destination.iEndofContractTime = source.iEndofContractTime;
+  destination.iStartContractTime = source.iStartContractTime;
+  destination.iTotalContractLength = source.iTotalContractLength;
+  destination.iNextActionSpecialData = source.iNextActionSpecialData;
+  destination.ubWhatKindOfMercAmI = source.ubWhatKindOfMercAmI;
+  destination.bAssignment = source.bAssignment;
+  destination.bOldAssignment = source.bOldAssignment;
+  destination.fForcedToStayAwake = source.fForcedToStayAwake;
+  destination.bTrainStat = source.bTrainStat;
+  destination.sSectorX = source.sSectorX;
+  destination.sSectorY = source.sSectorY;
+  destination.bSectorZ = source.bSectorZ;
+  destination.iVehicleId = source.iVehicleId;
+  destination.pMercPath = <PathSt><unknown>null;
+  destination.fHitByGasFlags = source.fHitByGasFlags;
+  destination.usMedicalDeposit = source.usMedicalDeposit;
+  destination.usLifeInsurance = source.usLifeInsurance;
+  destination.uiStartMovementTime = source.uiStartMovementTime;
+  destination.uiOptimumMovementTime = source.uiOptimumMovementTime;
+  destination.usLastUpdateTime = source.usLastUpdateTime;
+  destination.fIsSoldierMoving = source.fIsSoldierMoving;
+  destination.fIsSoldierDelayed = source.fIsSoldierDelayed;
+  destination.fSoldierUpdatedFromNetwork = source.fSoldierUpdatedFromNetwork;
+  destination.uiSoldierUpdateNumber = source.uiSoldierUpdateNumber;
+  destination.ubSoldierUpdateType = source.ubSoldierUpdateType;
+  destination.iStartOfInsuranceContract = source.iStartOfInsuranceContract;
+  destination.uiLastAssignmentChangeMin = source.uiLastAssignmentChangeMin;
+  destination.iTotalLengthOfInsuranceContract = source.iTotalLengthOfInsuranceContract;
+  destination.ubSoldierClass = source.ubSoldierClass;
+  destination.ubAPsLostToSuppression = source.ubAPsLostToSuppression;
+  destination.fChangingStanceDueToSuppression = source.fChangingStanceDueToSuppression;
+  destination.ubSuppressorID = source.ubSuppressorID;
+  destination.ubDesiredSquadAssignment = source.ubDesiredSquadAssignment;
+  destination.ubNumTraversalsAllowedToMerge = source.ubNumTraversalsAllowedToMerge;
+  destination.usPendingAnimation2 = source.usPendingAnimation2;
+  destination.ubCivilianGroup = source.ubCivilianGroup;
+  destination.uiChangeLevelTime = source.uiChangeLevelTime;
+  destination.uiChangeHealthTime = source.uiChangeHealthTime;
+  destination.uiChangeStrengthTime = source.uiChangeStrengthTime;
+  destination.uiChangeDexterityTime = source.uiChangeDexterityTime;
+  destination.uiChangeAgilityTime = source.uiChangeAgilityTime;
+  destination.uiChangeWisdomTime = source.uiChangeWisdomTime;
+  destination.uiChangeLeadershipTime = source.uiChangeLeadershipTime;
+  destination.uiChangeMarksmanshipTime = source.uiChangeMarksmanshipTime;
+  destination.uiChangeExplosivesTime = source.uiChangeExplosivesTime;
+  destination.uiChangeMedicalTime = source.uiChangeMedicalTime;
+  destination.uiChangeMechanicalTime = source.uiChangeMechanicalTime;
+  destination.uiUniqueSoldierIdValue = source.uiUniqueSoldierIdValue;
+  destination.bBeingAttackedCount = source.bBeingAttackedCount;
+  copyArray(destination.bNewItemCount, source.bNewItemCount);
+  copyArray(destination.bNewItemCycleCount, source.bNewItemCycleCount);
+  destination.fCheckForNewlyAddedItems = source.fCheckForNewlyAddedItems;
+  destination.bEndDoorOpenCode = source.bEndDoorOpenCode;
+  destination.ubScheduleID = source.ubScheduleID;
+  destination.sEndDoorOpenCodeData = source.sEndDoorOpenCodeData;
+  destination.NextTileCounter = source.NextTileCounter;
+  destination.fBlockedByAnotherMerc = source.fBlockedByAnotherMerc;
+  destination.bBlockedByAnotherMercDirection = source.bBlockedByAnotherMercDirection;
+  destination.usAttackingWeapon = source.usAttackingWeapon;
+  destination.bWeaponMode = source.bWeaponMode;
+  destination.ubTargetID = source.ubTargetID;
+  destination.bAIScheduleProgress = source.bAIScheduleProgress;
+  destination.sOffWorldGridNo = source.sOffWorldGridNo;
+  destination.pAniTile = source.pAniTile;
+  destination.bCamo = source.bCamo;
+  destination.sAbsoluteFinalDestination = source.sAbsoluteFinalDestination;
+  destination.ubHiResDirection = source.ubHiResDirection;
+  destination.ubHiResDesiredDirection = source.ubHiResDesiredDirection;
+  destination.ubLastFootPrintSound = source.ubLastFootPrintSound;
+  destination.bVehicleID = source.bVehicleID;
+  destination.fPastXDest = source.fPastXDest;
+  destination.fPastYDest = source.fPastYDest;
+  destination.bMovementDirection = source.bMovementDirection;
+  destination.sOldGridNo = source.sOldGridNo;
+  destination.usDontUpdateNewGridNoOnMoveAnimChange = source.usDontUpdateNewGridNoOnMoveAnimChange;
+  destination.sBoundingBoxWidth = source.sBoundingBoxWidth;
+  destination.sBoundingBoxHeight = source.sBoundingBoxHeight;
+  destination.sBoundingBoxOffsetX = source.sBoundingBoxOffsetX;
+  destination.sBoundingBoxOffsetY = source.sBoundingBoxOffsetY;
+  destination.uiTimeSameBattleSndDone = source.uiTimeSameBattleSndDone;
+  destination.bOldBattleSnd = source.bOldBattleSnd;
+  destination.fReactingFromBeingShot = source.fReactingFromBeingShot;
+  destination.fContractPriceHasIncreased = source.fContractPriceHasIncreased;
+  destination.iBurstSoundID = source.iBurstSoundID;
+  destination.fFixingSAMSite = source.fFixingSAMSite;
+  destination.fFixingRobot = source.fFixingRobot;
+  destination.bSlotItemTakenFrom = source.bSlotItemTakenFrom;
+  destination.fSignedAnotherContract = source.fSignedAnotherContract;
+  destination.ubAutoBandagingMedic = source.ubAutoBandagingMedic;
+  destination.fDontChargeTurningAPs = source.fDontChargeTurningAPs;
+  destination.ubRobotRemoteHolderID = source.ubRobotRemoteHolderID;
+  destination.uiTimeOfLastContractUpdate = source.uiTimeOfLastContractUpdate;
+  destination.bTypeOfLastContract = source.bTypeOfLastContract;
+  destination.bTurnsCollapsed = source.bTurnsCollapsed;
+  destination.bSleepDrugCounter = source.bSleepDrugCounter;
+  destination.ubMilitiaKills = source.ubMilitiaKills;
+  copyArray(destination.bFutureDrugEffect, source.bFutureDrugEffect);
+  copyArray(destination.bDrugEffectRate, source.bDrugEffectRate);
+  copyArray(destination.bDrugEffect, source.bDrugEffect);
+  copyArray(destination.bDrugSideEffectRate, source.bDrugSideEffectRate);
+  copyArray(destination.bDrugSideEffect, source.bDrugSideEffect);
+  copyArray(destination.bTimesDrugUsedSinceSleep, source.bTimesDrugUsedSinceSleep);
+  destination.bBlindedCounter = source.bBlindedCounter;
+  destination.fMercCollapsedFlag = source.fMercCollapsedFlag;
+  destination.fDoneAssignmentAndNothingToDoFlag = source.fDoneAssignmentAndNothingToDoFlag;
+  destination.fMercAsleep = source.fMercAsleep;
+  destination.fDontChargeAPsForStanceChange = source.fDontChargeAPsForStanceChange;
+  destination.ubHoursOnAssignment = source.ubHoursOnAssignment;
+  destination.ubMercJustFired = source.ubMercJustFired;
+  destination.ubTurnsUntilCanSayHeardNoise = source.ubTurnsUntilCanSayHeardNoise;
+  destination.usQuoteSaidExtFlags = source.usQuoteSaidExtFlags;
+  destination.sContPathLocation = source.sContPathLocation;
+  destination.bGoodContPath = source.bGoodContPath;
+  destination.ubPendingActionInterrupted = source.ubPendingActionInterrupted;
+  destination.bNoiseLevel = source.bNoiseLevel;
+  destination.bRegenerationCounter = source.bRegenerationCounter;
+  destination.bRegenBoostersUsedToday = source.bRegenBoostersUsedToday;
+  destination.bNumPelletsHitBy = source.bNumPelletsHitBy;
+  destination.sSkillCheckGridNo = source.sSkillCheckGridNo;
+  destination.ubLastEnemyCycledID = source.ubLastEnemyCycledID;
+  destination.ubPrevSectorID = source.ubPrevSectorID;
+  destination.ubNumTilesMovesSinceLastForget = source.ubNumTilesMovesSinceLastForget;
+  destination.bTurningIncrement = source.bTurningIncrement;
+  destination.uiBattleSoundID = source.uiBattleSoundID;
+  destination.fSoldierWasMoving = source.fSoldierWasMoving;
+  destination.fSayAmmoQuotePending = source.fSayAmmoQuotePending;
+  destination.usValueGoneUp = source.usValueGoneUp;
+  destination.ubNumLocateCycles = source.ubNumLocateCycles;
+  destination.ubDelayedMovementFlags = source.ubDelayedMovementFlags;
+  destination.fMuzzleFlash = source.fMuzzleFlash;
+  destination.ubCTGTTargetID = source.ubCTGTTargetID;
+  destination.PanelAnimateCounter = source.PanelAnimateCounter;
+  destination.uiMercChecksum = source.uiMercChecksum;
+  destination.bCurrentCivQuote = source.bCurrentCivQuote;
+  destination.bCurrentCivQuoteDelta = source.bCurrentCivQuoteDelta;
+  destination.ubMiscSoldierFlags = source.ubMiscSoldierFlags;
+  destination.ubReasonCantFinishMove = source.ubReasonCantFinishMove;
+  destination.sLocationOfFadeStart = source.sLocationOfFadeStart;
+  destination.bUseExitGridForReentryDirection = source.bUseExitGridForReentryDirection;
+  destination.uiTimeSinceLastSpoke = source.uiTimeSinceLastSpoke;
+  destination.ubContractRenewalQuoteCode = source.ubContractRenewalQuoteCode;
+  destination.sPreTraversalGridNo = source.sPreTraversalGridNo;
+  destination.uiXRayActivatedTime = source.uiXRayActivatedTime;
+  destination.bTurningFromUI = source.bTurningFromUI;
+  destination.bPendingActionData5 = source.bPendingActionData5;
+  destination.bDelayedStrategicMoraleMod = source.bDelayedStrategicMoraleMod;
+  destination.ubDoorOpeningNoise = source.ubDoorOpeningNoise;
+  destination.pGroup = source.pGroup;
+  destination.ubLeaveHistoryCode = source.ubLeaveHistoryCode;
+  destination.fDontUnsetLastTargetFromTurn = source.fDontUnsetLastTargetFromTurn;
+  destination.bOverrideMoveSpeed = source.bOverrideMoveSpeed;
+  destination.fUseMoverrideMoveSpeed = source.fUseMoverrideMoveSpeed;
+  destination.uiTimeSoldierWillArrive = source.uiTimeSoldierWillArrive;
+  destination.fDieSoundUsed = source.fDieSoundUsed;
+  destination.fUseLandingZoneForArrival = source.fUseLandingZoneForArrival;
+  destination.fFallClockwise = source.fFallClockwise;
+  destination.bVehicleUnderRepairID = source.bVehicleUnderRepairID;
+  destination.iTimeCanSignElsewhere = source.iTimeCanSignElsewhere;
+  destination.bHospitalPriceModifier = source.bHospitalPriceModifier;
+  copyArray(destination.bFillerBytes, source.bFillerBytes);
+  destination.uiStartTimeOfInsuranceContract = source.uiStartTimeOfInsuranceContract;
+  destination.fRTInNonintAnim = source.fRTInNonintAnim;
+  destination.fDoingExternalDeath = source.fDoingExternalDeath;
+  destination.bCorpseQuoteTolerance = source.bCorpseQuoteTolerance;
+  destination.bYetAnotherPaddingSpace = source.bYetAnotherPaddingSpace;
+  destination.iPositionSndID = source.iPositionSndID;
+  destination.iTuringSoundID = source.iTuringSoundID;
+  destination.ubLastDamageReason = source.ubLastDamageReason;
+  destination.fComplainedThatTired = source.fComplainedThatTired;
+  copyArray(destination.sLastTwoLocations, source.sLastTwoLocations);
+  destination.bFillerDude = source.bFillerDude;
+  destination.uiTimeSinceLastBleedGrunt = source.uiTimeSinceLastBleedGrunt;
+  destination.ubNextToPreviousAttackerID = source.ubNextToPreviousAttackerID;
+  copyArray(destination.bFiller, source.bFiller);
+}
+
 export const SOLDIER_TYPE_SIZE = 2328;
+
+export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number = 0): number {
+  o.ubID = buffer.readUInt8(offset++);
+  o.bReserved1 = buffer.readUInt8(offset++);
+  o.ubBodyType = buffer.readUInt8(offset++);
+  o.bActionPoints = buffer.readInt8(offset++);
+  o.bInitialActionPoints = buffer.readInt8(offset++);
+  offset += 3; // padding
+  o.uiStatusFlags = buffer.readUInt32LE(offset); offset += 4;
+  offset = readObjectArray(o.inv, buffer, offset, readObjectType);
+  o.pTempObject = null; offset += 4; // pointer
+  o.pKeyRing = <KEY_ON_RING[]><unknown>null; offset += 4; // pointer
+  o.bOldLife = buffer.readInt8(offset++);
+  o.bInSector = Boolean(buffer.readUInt8(offset++));
+  o.bFlashPortraitFrame = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sFractLife = buffer.readInt16LE(offset); offset += 2;
+  o.bBleeding = buffer.readInt8(offset++);
+  o.bBreath = buffer.readInt8(offset++);
+  o.bBreathMax = buffer.readInt8(offset++);
+  o.bStealthMode = Boolean(buffer.readUInt8(offset++));
+  o.sBreathRed = buffer.readInt16LE(offset); offset += 2;
+  o.fDelayedMovement = buffer.readUInt8(offset++);
+  o.fReloading = Boolean(buffer.readUInt8(offset++));
+  o.ubWaitActionToDo = buffer.readUInt8(offset++);
+  o.fPauseAim = Boolean(buffer.readUInt8(offset++));
+  o.ubInsertionDirection = buffer.readInt8(offset++);
+  o.bGunType = buffer.readInt8(offset++);
+  o.ubOppNum = buffer.readUInt8(offset++);
+  o.bLastRenderVisibleValue = buffer.readInt8(offset++);
+  o.fInMissionExitNode = Boolean(buffer.readUInt8(offset++));
+  o.ubAttackingHand = buffer.readUInt8(offset++);
+  o.bScientific = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sWeightCarriedAtTurnStart = buffer.readInt16LE(offset); offset += 2;
+  o.name = readStringNL(buffer, 'utf16le', offset, offset + 20); offset += 20;
+  o.bVisible = buffer.readInt8(offset++);
+  o.bActive = Boolean(buffer.readUInt8(offset++));
+  o.bTeam = buffer.readInt8(offset++);
+  o.ubGroupID = buffer.readUInt8(offset++);
+  o.fBetweenSectors = Boolean(buffer.readUInt8(offset++));
+  o.ubMovementNoiseHeard = buffer.readUInt8(offset++);
+  o.dXPos = buffer.readFloatLE(offset); offset += 4;
+  o.dYPos = buffer.readFloatLE(offset); offset += 4;
+  o.dOldXPos = buffer.readFloatLE(offset); offset += 4;
+  o.dOldYPos = buffer.readFloatLE(offset); offset += 4;
+  o.sInitialGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.bDirection = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sHeightAdjustment = buffer.readInt16LE(offset); offset += 2;
+  o.sDesiredHeight = buffer.readInt16LE(offset); offset += 2;
+  o.sTempNewGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sRoomNo = buffer.readInt16LE(offset); offset += 2;
+  o.bOverTerrainType = buffer.readInt8(offset++);
+  o.bOldOverTerrainType = buffer.readInt8(offset++);
+  o.bCollapsed = Boolean(buffer.readUInt8(offset++));
+  o.bBreathCollapsed = Boolean(buffer.readUInt8(offset++));
+  o.ubDesiredHeight = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usPendingAnimation = buffer.readUInt16LE(offset); offset += 2;
+  o.ubPendingStanceChange = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usAnimState = buffer.readUInt16LE(offset); offset += 2;
+  o.fNoAPToFinishMove = Boolean(buffer.readUInt8(offset++));
+  o.fPausedMove = Boolean(buffer.readUInt8(offset++));
+  o.fUIdeadMerc = Boolean(buffer.readUInt8(offset++));
+  o.fUInewMerc = Boolean(buffer.readUInt8(offset++));
+  o.fUICloseMerc = Boolean(buffer.readUInt8(offset++));
+  o.fUIFirstTimeNOAP = Boolean(buffer.readUInt8(offset++));
+  o.fUIFirstTimeUNCON = Boolean(buffer.readUInt8(offset++));
+  offset += 3; // padding
+  o.UpdateCounter = buffer.readInt32LE(offset); offset += 4;
+  o.DamageCounter = buffer.readInt32LE(offset); offset += 4;
+  o.ReloadCounter = buffer.readInt32LE(offset); offset += 4;
+  o.FlashSelCounter = buffer.readInt32LE(offset); offset += 4;
+  o.AICounter = buffer.readInt32LE(offset); offset += 4;
+  o.FadeCounter = buffer.readInt32LE(offset); offset += 4;
+  o.ubSkillTrait1 = buffer.readUInt8(offset++);
+  o.ubSkillTrait2 = buffer.readUInt8(offset++);
+  offset += 2; // padding
+  o.uiAIDelay = buffer.readUInt32LE(offset); offset += 4;
+  o.bDexterity = buffer.readInt8(offset++);
+  o.bWisdom = buffer.readInt8(offset++);
+  o.sReloadDelay = buffer.readInt16LE(offset); offset += 2;
+  o.ubAttackerID = buffer.readUInt8(offset++);
+  o.ubPreviousAttackerID = buffer.readUInt8(offset++);
+  o.fTurnInProgress = Boolean(buffer.readUInt8(offset++));
+  o.fIntendedTarget = Boolean(buffer.readUInt8(offset++));
+  o.fPauseAllAnimation = Boolean(buffer.readUInt8(offset++));
+  o.bExpLevel = buffer.readInt8(offset++);
+  o.sInsertionGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.fContinueMoveAfterStanceChange = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  offset = readAnimationSurfaceCacheType(o.AnimCache, buffer, offset);
+  o.bLife = buffer.readInt8(offset++);
+  o.bSide = buffer.readUInt8(offset++);
+  o.bViewRange = buffer.readUInt8(offset++);
+  o.bNewOppCnt = buffer.readInt8(offset++);
+  o.bService = buffer.readInt8(offset++);
+  offset++; // padding
+  o.usAniCode = buffer.readUInt16LE(offset); offset += 2;
+  o.usAniFrame = buffer.readUInt16LE(offset); offset += 2;
+  o.sAniDelay = buffer.readInt16LE(offset); offset += 2;
+  o.bAgility = buffer.readInt8(offset++);
+  o.ubDelayedMovementCauseMerc = buffer.readUInt8(offset++);
+  o.sDelayedMovementCauseGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sReservedMovementGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.bStrength = buffer.readInt8(offset++);
+  o.fHoldAttackerUntilDone = Boolean(buffer.readUInt8(offset++));
+  o.sTargetGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.bTargetLevel = buffer.readInt8(offset++);
+  o.bTargetCubeLevel = buffer.readInt8(offset++);
+  o.sLastTarget = buffer.readInt16LE(offset); offset += 2;
+  o.bTilesMoved = buffer.readInt8(offset++);
+  o.bLeadership = buffer.readInt8(offset++);
+  o.dNextBleed = buffer.readFloatLE(offset); offset += 4;
+  o.fWarnedAboutBleeding = Boolean(buffer.readUInt8(offset++));
+  o.fDyingComment = Boolean(buffer.readUInt8(offset++));
+  o.ubTilesMovedPerRTBreathUpdate = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usLastMovementAnimPerRTBreathUpdate = buffer.readUInt16LE(offset); offset += 2;
+  o.fTurningToShoot = Boolean(buffer.readUInt8(offset++));
+  o.fTurningToFall = Boolean(buffer.readUInt8(offset++));
+  o.fTurningUntilDone = Boolean(buffer.readUInt8(offset++));
+  o.fGettingHit = buffer.readUInt8(offset++);
+  o.fInNonintAnim = Boolean(buffer.readUInt8(offset++));
+  o.fFlashLocator = Boolean(buffer.readUInt8(offset++));
+  o.sLocatorFrame = buffer.readInt16LE(offset); offset += 2;
+  o.fShowLocator = Boolean(buffer.readUInt8(offset++));
+  o.fFlashPortrait = buffer.readUInt8(offset++);
+  o.bMechanical = buffer.readInt8(offset++);
+  o.bLifeMax = buffer.readInt8(offset++);
+  offset += 2; // padding
+  o.iFaceIndex = buffer.readInt32LE(offset); offset += 4;
+  o.HeadPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.PantsPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.VestPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.SkinPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  o.MiscPal = readStringNL(buffer, 'ascii', offset, offset + 30); offset += 30;
+  offset = readUIntArray(o.usFrontArcFullTileList, buffer, offset, 2);
+  offset = readIntArray(o.usFrontArcFullTileGridNos, buffer, offset, 2);
+  offset += 2; // padding
+  o.p8BPPPalette = <SGPPaletteEntry[]><unknown>null; offset += 4; // pointer
+  o.p16BPPPalette = <UINT16[]><unknown>null; offset += 4; // pointer
+  o.pShades.fill(<UINT16[]><unknown>null); offset += 4 * NUM_SOLDIER_SHADES; // pointers
+  o.pGlowShades.fill(<UINT16[]><unknown>null); offset += 4 * 20; // pointers
+  o.pCurrentShade = <UINT16[]><unknown>null; offset += 4; // pointer
+  o.bMedical = buffer.readInt8(offset++);
+  o.fBeginFade = buffer.readUInt8(offset++);
+  o.ubFadeLevel = buffer.readUInt8(offset++);
+  o.ubServiceCount = buffer.readUInt8(offset++);
+  o.ubServicePartner = buffer.readUInt8(offset++);
+  o.bMarksmanship = buffer.readInt8(offset++);
+  o.bExplosive = buffer.readInt8(offset++);
+  offset++; // padding
+  o.pThrowParams = null; offset += 4; // pointer
+  o.fTurningFromPronePosition = buffer.readUInt8(offset++);
+  o.bReverse = Boolean(buffer.readUInt8(offset++));
+  offset += 2; // padding
+  o.pLevelNode = null; offset += 4; // pointer
+  o.pExternShadowLevelNode = null; offset += 4; // pointer
+  o.pRoofUILevelNode = null; offset += 4; // pointer
+  o.bDesiredDirection = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sDestXPos = buffer.readInt16LE(offset); offset += 2;
+  o.sDestYPos = buffer.readInt16LE(offset); offset += 2;
+  o.sDesiredDest = buffer.readInt16LE(offset); offset += 2;
+  o.sDestination = buffer.readInt16LE(offset); offset += 2;
+  o.sFinalDestination = buffer.readInt16LE(offset); offset += 2;
+  o.bLevel = buffer.readInt8(offset++);
+  o.bStopped = buffer.readInt8(offset++);
+  o.bNeedToLook = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  offset = readUIntArray(o.usPathingData, buffer, offset, 2);
+  o.usPathDataSize = buffer.readUInt16LE(offset); offset += 2;
+  o.usPathIndex = buffer.readUInt16LE(offset); offset += 2;
+  o.sBlackList = buffer.readInt16LE(offset); offset += 2;
+  o.bAimTime = buffer.readInt8(offset++);
+  o.bShownAimTime = buffer.readInt8(offset++);
+  o.bPathStored = Boolean(buffer.readUInt8(offset++));
+  o.bHasKeys = buffer.readInt8(offset++);
+  offset += 2; // padding
+  o.pBackGround = null; offset += 4; // pointer
+  o.pZBackground = null; offset += 4; // pointer
+  o.usUnblitX = buffer.readUInt16LE(offset); offset += 2;
+  o.usUnblitY = buffer.readUInt16LE(offset); offset += 2;
+  o.usUnblitWidth = buffer.readUInt16LE(offset); offset += 2;
+  o.usUnblitHeight = buffer.readUInt16LE(offset); offset += 2;
+  o.ubStrategicInsertionCode = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usStrategicInsertionData = buffer.readUInt16LE(offset); offset += 2;
+  o.iLight = buffer.readInt32LE(offset); offset += 4;
+  o.iMuzFlash = buffer.readInt32LE(offset); offset += 4;
+  o.bMuzFlashCount = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sX = buffer.readInt16LE(offset); offset += 2;
+  o.sY = buffer.readInt16LE(offset); offset += 2;
+  o.usOldAniState = buffer.readUInt16LE(offset); offset += 2;
+  o.sOldAniCode = buffer.readInt16LE(offset); offset += 2;
+  o.bBulletsLeft = buffer.readInt8(offset++);
+  o.ubSuppressionPoints = buffer.readUInt8(offset++);
+  o.uiTimeOfLastRandomAction = buffer.readUInt32LE(offset); offset += 4;
+  o.usLastRandomAnim = buffer.readInt16LE(offset); offset += 2;
+  offset = readIntArray(o.bOppList, buffer, offset, 1);
+  o.bLastAction = buffer.readInt8(offset++);
+  o.bAction = buffer.readInt8(offset++);
+  o.usActionData = buffer.readUInt16LE(offset); offset += 2;
+  o.bNextAction = buffer.readInt8(offset++);
+  offset++; // padding
+  o.usNextActionData = buffer.readUInt16LE(offset); offset += 2;
+  o.bActionInProgress = Boolean(buffer.readUInt8(offset++));
+  o.bAlertStatus = buffer.readInt8(offset++);
+  o.bOppCnt = buffer.readInt8(offset++);
+  o.bNeutral = Boolean(buffer.readUInt8(offset++));
+  o.bNewSituation = buffer.readInt8(offset++);
+  o.bNextTargetLevel = buffer.readInt8(offset++);
+  o.bOrders = buffer.readInt8(offset++);
+  o.bAttitude = buffer.readInt8(offset++);
+  o.bUnderFire = buffer.readInt8(offset++);
+  o.bShock = buffer.readInt8(offset++);
+  o.bUnderEscort = Boolean(buffer.readUInt8(offset++));
+  o.bBypassToGreen = buffer.readInt8(offset++);
+  o.ubLastMercToRadio = buffer.readUInt8(offset++);
+  o.bDominantDir = buffer.readInt8(offset++);
+  o.bPatrolCnt = buffer.readInt8(offset++);
+  o.bNextPatrolPnt = buffer.readInt8(offset++);
+  offset = readIntArray(o.usPatrolGrid, buffer, offset, 2);
+  o.sNoiseGridno = buffer.readInt16LE(offset); offset += 2;
+  o.ubNoiseVolume = buffer.readUInt8(offset++);
+  o.bLastAttackHit = Boolean(buffer.readUInt8(offset++));
+  o.ubXRayedBy = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.dHeightAdjustment = buffer.readFloatLE(offset); offset += 4;
+  o.bMorale = buffer.readInt8(offset++);
+  o.bTeamMoraleMod = buffer.readInt8(offset++);
+  o.bTacticalMoraleMod = buffer.readInt8(offset++);
+  o.bStrategicMoraleMod = buffer.readInt8(offset++);
+  o.bAIMorale = buffer.readInt8(offset++);
+  o.ubPendingAction = buffer.readUInt8(offset++);
+  o.ubPendingActionAnimCount = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.uiPendingActionData1 = buffer.readUInt32LE(offset); offset += 4;
+  o.sPendingActionData2 = buffer.readInt16LE(offset); offset += 2;
+  o.bPendingActionData3 = buffer.readInt8(offset++);
+  o.ubDoorHandleCode = buffer.readInt8(offset++);
+  o.uiPendingActionData4 = buffer.readUInt32LE(offset); offset += 4;
+  o.bInterruptDuelPts = buffer.readInt8(offset++);
+  o.bPassedLastInterrupt = Boolean(buffer.readUInt8(offset++));
+  o.bIntStartAPs = buffer.readInt8(offset++);
+  o.bMoved = Boolean(buffer.readUInt8(offset++));
+  o.bHunting = Boolean(buffer.readUInt8(offset++));
+  o.ubLastCall = buffer.readUInt8(offset++);
+  o.ubCaller = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sCallerGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.bCallPriority = buffer.readUInt8(offset++);
+  o.bCallActedUpon = Boolean(buffer.readUInt8(offset++));
+  o.bFrenzied = Boolean(buffer.readUInt8(offset++));
+  o.bNormalSmell = buffer.readInt8(offset++);
+  o.bMonsterSmell = buffer.readInt8(offset++);
+  o.bMobility = buffer.readInt8(offset++);
+  o.bRTPCombat = buffer.readInt8(offset++);
+  o.fAIFlags = buffer.readInt8(offset++);
+  o.fDontChargeReadyAPs = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.usAnimSurface = buffer.readUInt16LE(offset); offset += 2;
+  o.sZLevel = buffer.readUInt16LE(offset); offset += 2;
+  o.fPrevInWater = Boolean(buffer.readUInt8(offset++));
+  o.fGoBackToAimAfterHit = Boolean(buffer.readUInt8(offset++));
+  o.sWalkToAttackGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sWalkToAttackWalkToCost = buffer.readInt16LE(offset); offset += 2;
+  o.fForceRenderColor = Boolean(buffer.readUInt8(offset++));
+  o.fForceNoRenderPaletteCycle = Boolean(buffer.readUInt8(offset++));
+  o.sLocatorOffX = buffer.readInt16LE(offset); offset += 2;
+  o.sLocatorOffY = buffer.readInt16LE(offset); offset += 2;
+  o.fStopPendingNextTile = Boolean(buffer.readUInt8(offset++));
+  o.fForceShade = Boolean(buffer.readUInt8(offset++));
+  offset += 2; // padding
+  o.pForcedShade = <UINT16[]><unknown>null; offset += 4; // pointer
+  o.bDisplayDamageCount = buffer.readInt8(offset++);
+  o.fDisplayDamage = Boolean(buffer.readUInt8(offset++));
+  o.sDamage = buffer.readInt16LE(offset); offset += 2;
+  o.sDamageX = buffer.readInt16LE(offset); offset += 2;
+  o.sDamageY = buffer.readInt16LE(offset); offset += 2;
+  o.bDamageDir = buffer.readInt8(offset++);
+  o.bDoBurst = buffer.readInt8(offset++);
+  o.usUIMovementMode = buffer.readInt16LE(offset); offset += 2;
+  o.bUIInterfaceLevel = buffer.readInt8(offset++);
+  o.fUIMovementFast = Boolean(buffer.readUInt8(offset++));
+  offset += 2; // padding
+  o.BlinkSelCounter = buffer.readInt32LE(offset); offset += 4;
+  o.PortraitFlashCounter = buffer.readInt32LE(offset); offset += 4;
+  o.fDeadSoundPlayed = Boolean(buffer.readUInt8(offset++));
+  o.ubProfile = buffer.readUInt8(offset++);
+  o.ubQuoteRecord = buffer.readUInt8(offset++);
+  o.ubQuoteActionID = buffer.readUInt8(offset++);
+  o.ubBattleSoundID = buffer.readUInt8(offset++);
+  o.fClosePanel = Boolean(buffer.readUInt8(offset++));
+  o.fClosePanelToDie = Boolean(buffer.readUInt8(offset++));
+  o.ubClosePanelFrame = buffer.readUInt8(offset++);
+  o.fDeadPanel = Boolean(buffer.readUInt8(offset++));
+  o.ubDeadPanelFrame = buffer.readUInt8(offset++);
+  o.fOpenPanel = Boolean(buffer.readUInt8(offset++));
+  o.bOpenPanelFrame = buffer.readInt8(offset++);
+  o.sPanelFaceX = buffer.readInt16LE(offset); offset += 2;
+  o.sPanelFaceY = buffer.readInt16LE(offset); offset += 2;
+  o.bNumHitsThisTurn = buffer.readInt8(offset++);
+  offset++; // padding
+  o.usQuoteSaidFlags = buffer.readUInt16LE(offset); offset += 2;
+  o.fCloseCall = Boolean(buffer.readUInt8(offset++));
+  o.bLastSkillCheck = buffer.readInt8(offset++);
+  o.ubSkillCheckAttempts = buffer.readInt8(offset++);
+  o.bVocalVolume = buffer.readInt8(offset++);
+  o.bStartFallDir = buffer.readInt8(offset++);
+  o.fTryingToFall = Boolean(buffer.readUInt8(offset++));
+  o.ubPendingDirection = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.uiAnimSubFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.bAimShotLocation = buffer.readUInt8(offset++);
+  o.ubHitLocation = buffer.readUInt8(offset++);
+  offset += 2; // padding
+  o.pEffectShades.fill(<UINT16[]><unknown>null); offset += 4 * NUM_SOLDIER_EFFECTSHADES; // pointers
+  o.ubPlannedUIAPCost = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sPlannedTargetX = buffer.readInt16LE(offset); offset += 2;
+  o.sPlannedTargetY = buffer.readInt16LE(offset); offset += 2;
+  offset = readIntArray(o.sSpreadLocations, buffer, offset, 2);
+  o.fDoSpread = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sStartGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sEndGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.sForcastGridno = buffer.readInt16LE(offset); offset += 2;
+  o.sZLevelOverride = buffer.readInt16LE(offset); offset += 2;
+  o.bMovedPriorToInterrupt = Boolean(buffer.readUInt8(offset++));
+  offset += 3; // padding
+  o.iEndofContractTime = buffer.readInt32LE(offset); offset += 4;
+  o.iStartContractTime = buffer.readInt32LE(offset); offset += 4;
+  o.iTotalContractLength = buffer.readInt32LE(offset); offset += 4;
+  o.iNextActionSpecialData = buffer.readInt32LE(offset); offset += 4;
+  o.ubWhatKindOfMercAmI = buffer.readUInt8(offset++);
+  o.bAssignment = buffer.readInt8(offset++);
+  o.bOldAssignment = buffer.readInt8(offset++);
+  o.fForcedToStayAwake = Boolean(buffer.readUInt8(offset++));
+  o.bTrainStat = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sSectorX = buffer.readInt16LE(offset); offset += 2;
+  o.sSectorY = buffer.readInt16LE(offset); offset += 2;
+  o.bSectorZ = buffer.readInt8(offset++);
+  offset++; // padding
+  o.iVehicleId = buffer.readInt32LE(offset); offset += 4;
+  o.pMercPath = <PathSt><unknown>null; offset += 4; // pointer
+  o.fHitByGasFlags = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.usMedicalDeposit = buffer.readUInt16LE(offset); offset += 2;
+  o.usLifeInsurance = buffer.readUInt16LE(offset); offset += 2;
+  offset += 2; // padding
+  o.uiStartMovementTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiOptimumMovementTime = buffer.readUInt32LE(offset); offset += 4;
+  o.usLastUpdateTime = buffer.readUInt32LE(offset); offset += 4;
+  o.fIsSoldierMoving = Boolean(buffer.readUInt8(offset++));
+  o.fIsSoldierDelayed = Boolean(buffer.readUInt8(offset++));
+  o.fSoldierUpdatedFromNetwork = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.uiSoldierUpdateNumber = buffer.readUInt32LE(offset); offset += 4;
+  o.ubSoldierUpdateType = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.iStartOfInsuranceContract = buffer.readInt32LE(offset); offset += 4;
+  o.uiLastAssignmentChangeMin = buffer.readUInt32LE(offset); offset += 4;
+  o.iTotalLengthOfInsuranceContract = buffer.readInt32LE(offset); offset += 4;
+  o.ubSoldierClass = buffer.readUInt8(offset++);
+  o.ubAPsLostToSuppression = buffer.readUInt8(offset++);
+  o.fChangingStanceDueToSuppression = Boolean(buffer.readUInt8(offset++));
+  o.ubSuppressorID = buffer.readUInt8(offset++);
+  o.ubDesiredSquadAssignment = buffer.readUInt8(offset++);
+  o.ubNumTraversalsAllowedToMerge = buffer.readUInt8(offset++);
+  o.usPendingAnimation2 = buffer.readUInt16LE(offset); offset += 2;
+  o.ubCivilianGroup = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.uiChangeLevelTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeHealthTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeStrengthTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeDexterityTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeAgilityTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeWisdomTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeLeadershipTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeMarksmanshipTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeExplosivesTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeMedicalTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiChangeMechanicalTime = buffer.readUInt32LE(offset); offset += 4;
+  o.uiUniqueSoldierIdValue = buffer.readUInt32LE(offset); offset += 4;
+  o.bBeingAttackedCount = buffer.readInt8(offset++);
+  offset = readIntArray(o.bNewItemCount, buffer, offset, 1);
+  offset = readIntArray(o.bNewItemCycleCount, buffer, offset, 1);
+  o.fCheckForNewlyAddedItems = Boolean(buffer.readUInt8(offset++));
+  o.bEndDoorOpenCode = buffer.readInt8(offset++);
+  o.ubScheduleID = buffer.readUInt8(offset++);
+  o.sEndDoorOpenCodeData = buffer.readInt16LE(offset); offset += 2;
+  o.NextTileCounter = buffer.readInt32LE(offset); offset += 4;
+  o.fBlockedByAnotherMerc = Boolean(buffer.readUInt8(offset++));
+  o.bBlockedByAnotherMercDirection = buffer.readInt8(offset++);
+  o.usAttackingWeapon = buffer.readUInt16LE(offset); offset += 2;
+  o.bWeaponMode = buffer.readInt8(offset++);
+  o.ubTargetID = buffer.readUInt8(offset++);
+  o.bAIScheduleProgress = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sOffWorldGridNo = buffer.readInt16LE(offset); offset += 2;
+  offset += 2; // padding
+  o.pAniTile = <ANITILE><unknown>null; offset += 4; // pointer
+  o.bCamo = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sAbsoluteFinalDestination = buffer.readInt16LE(offset); offset += 2;
+  o.ubHiResDirection = buffer.readUInt8(offset++);
+  o.ubHiResDesiredDirection = buffer.readUInt8(offset++);
+  o.ubLastFootPrintSound = buffer.readUInt8(offset++);
+  o.bVehicleID = buffer.readInt8(offset++);
+  o.fPastXDest = Boolean(buffer.readUInt8(offset++));
+  o.fPastYDest = Boolean(buffer.readUInt8(offset++));
+  o.bMovementDirection = buffer.readInt8(offset++);
+  offset++; // padding
+  o.sOldGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.usDontUpdateNewGridNoOnMoveAnimChange = buffer.readUInt16LE(offset); offset += 2;
+  o.sBoundingBoxWidth = buffer.readInt16LE(offset); offset += 2;
+  o.sBoundingBoxHeight = buffer.readInt16LE(offset); offset += 2;
+  o.sBoundingBoxOffsetX = buffer.readInt16LE(offset); offset += 2;
+  o.sBoundingBoxOffsetY = buffer.readInt16LE(offset); offset += 2;
+  o.uiTimeSameBattleSndDone = buffer.readUInt32LE(offset); offset += 4;
+  o.bOldBattleSnd = buffer.readInt8(offset++);
+  o.fReactingFromBeingShot = Boolean(buffer.readUInt8(offset++));
+  o.fContractPriceHasIncreased = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.iBurstSoundID = buffer.readInt32LE(offset); offset += 4;
+  o.fFixingSAMSite = Boolean(buffer.readUInt8(offset++));
+  o.fFixingRobot = Boolean(buffer.readUInt8(offset++));
+  o.bSlotItemTakenFrom = buffer.readInt8(offset++);
+  o.fSignedAnotherContract = Boolean(buffer.readUInt8(offset++));
+  o.ubAutoBandagingMedic = buffer.readUInt8(offset++);
+  o.fDontChargeTurningAPs = Boolean(buffer.readUInt8(offset++));
+  o.ubRobotRemoteHolderID = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.uiTimeOfLastContractUpdate = buffer.readUInt32LE(offset); offset += 4;
+  o.bTypeOfLastContract = buffer.readInt8(offset++);
+  o.bTurnsCollapsed = buffer.readInt8(offset++);
+  o.bSleepDrugCounter = buffer.readInt8(offset++);
+  o.ubMilitiaKills = buffer.readUInt8(offset++);
+  offset = readIntArray(o.bFutureDrugEffect, buffer, offset, 1);
+  offset = readIntArray(o.bDrugEffectRate, buffer, offset, 1);
+  offset = readIntArray(o.bDrugEffect, buffer, offset, 1);
+  offset = readIntArray(o.bDrugSideEffectRate, buffer, offset, 1);
+  offset = readIntArray(o.bDrugSideEffect, buffer, offset, 1);
+  offset = readIntArray(o.bTimesDrugUsedSinceSleep, buffer, offset, 1);
+  o.bBlindedCounter = buffer.readInt8(offset++);
+  o.fMercCollapsedFlag = Boolean(buffer.readUInt8(offset++));
+  o.fDoneAssignmentAndNothingToDoFlag = Boolean(buffer.readUInt8(offset++));
+  o.fMercAsleep = Boolean(buffer.readUInt8(offset++));
+  o.fDontChargeAPsForStanceChange = Boolean(buffer.readUInt8(offset++));
+  o.ubHoursOnAssignment = buffer.readUInt8(offset++);
+  o.ubMercJustFired = buffer.readUInt8(offset++);
+  o.ubTurnsUntilCanSayHeardNoise = buffer.readUInt8(offset++);
+  o.usQuoteSaidExtFlags = buffer.readUInt16LE(offset); offset += 2;
+  o.sContPathLocation = buffer.readUInt16LE(offset); offset += 2;
+  o.bGoodContPath = Boolean(buffer.readUInt8(offset++));
+  o.ubPendingActionInterrupted = buffer.readUInt8(offset++);
+  o.bNoiseLevel = buffer.readInt8(offset++);
+  o.bRegenerationCounter = buffer.readInt8(offset++);
+  o.bRegenBoostersUsedToday = buffer.readInt8(offset++);
+  o.bNumPelletsHitBy = buffer.readInt8(offset++);
+  o.sSkillCheckGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.ubLastEnemyCycledID = buffer.readUInt8(offset++);
+  o.ubPrevSectorID = buffer.readUInt8(offset++);
+  o.ubNumTilesMovesSinceLastForget = buffer.readUInt8(offset++);
+  o.bTurningIncrement = buffer.readInt8(offset++);
+  o.uiBattleSoundID = buffer.readUInt32LE(offset); offset += 4;
+  o.fSoldierWasMoving = Boolean(buffer.readUInt8(offset++));
+  o.fSayAmmoQuotePending = Boolean(buffer.readUInt8(offset++));
+  o.usValueGoneUp = buffer.readUInt16LE(offset); offset += 2;
+  o.ubNumLocateCycles = buffer.readUInt8(offset++);
+  o.ubDelayedMovementFlags = buffer.readUInt8(offset++);
+  o.fMuzzleFlash = Boolean(buffer.readUInt8(offset++));
+  o.ubCTGTTargetID = buffer.readUInt8(offset++);
+  o.PanelAnimateCounter = buffer.readInt32LE(offset); offset += 4;
+  o.uiMercChecksum = buffer.readUInt32LE(offset); offset += 4;
+  o.bCurrentCivQuote = buffer.readInt8(offset++);
+  o.bCurrentCivQuoteDelta = buffer.readInt8(offset++);
+  o.ubMiscSoldierFlags = buffer.readUInt8(offset++);
+  o.ubReasonCantFinishMove = buffer.readUInt8(offset++);
+  o.sLocationOfFadeStart = buffer.readInt16LE(offset); offset += 2;
+  o.bUseExitGridForReentryDirection = Boolean(buffer.readUInt8(offset++));
+  offset++; // padding
+  o.uiTimeSinceLastSpoke = buffer.readUInt32LE(offset); offset += 4;
+  o.ubContractRenewalQuoteCode = buffer.readUInt8(offset++);
+  offset++; // padding
+  o.sPreTraversalGridNo = buffer.readInt16LE(offset); offset += 2;
+  o.uiXRayActivatedTime = buffer.readUInt32LE(offset); offset += 4;
+  o.bTurningFromUI = Boolean(buffer.readUInt8(offset++));
+  o.bPendingActionData5 = buffer.readInt8(offset++);
+  o.bDelayedStrategicMoraleMod = buffer.readInt8(offset++);
+  o.ubDoorOpeningNoise = buffer.readUInt8(offset++);
+  o.pGroup = <GROUP><unknown>null; offset += 4; // pointer
+  o.ubLeaveHistoryCode = buffer.readUInt8(offset++);
+  o.fDontUnsetLastTargetFromTurn = Boolean(buffer.readUInt8(offset++));
+  o.bOverrideMoveSpeed = buffer.readInt8(offset++);
+  o.fUseMoverrideMoveSpeed = Boolean(buffer.readUInt8(offset++));
+  o.uiTimeSoldierWillArrive = buffer.readUInt32LE(offset); offset += 4;
+  o.fDieSoundUsed = Boolean(buffer.readUInt8(offset++));
+  o.fUseLandingZoneForArrival = Boolean(buffer.readUInt8(offset++));
+  o.fFallClockwise = Boolean(buffer.readUInt8(offset++));
+  o.bVehicleUnderRepairID = buffer.readInt8(offset++);
+  o.iTimeCanSignElsewhere = buffer.readInt32LE(offset); offset += 4;
+  o.bHospitalPriceModifier = buffer.readInt8(offset++);
+  offset = readIntArray(o.bFillerBytes, buffer, offset, 1);
+  o.uiStartTimeOfInsuranceContract = buffer.readUInt32LE(offset); offset += 4;
+  o.fRTInNonintAnim = Boolean(buffer.readUInt8(offset++));
+  o.fDoingExternalDeath = Boolean(buffer.readUInt8(offset++));
+  o.bCorpseQuoteTolerance = buffer.readInt8(offset++);
+  o.bYetAnotherPaddingSpace = buffer.readInt8(offset++);
+  o.iPositionSndID = buffer.readInt32LE(offset); offset += 4;
+  o.iTuringSoundID = buffer.readInt32LE(offset); offset += 4;
+  o.ubLastDamageReason = buffer.readUInt8(offset++);
+  o.fComplainedThatTired = Boolean(buffer.readUInt8(offset++));
+  offset = readIntArray(o.sLastTwoLocations, buffer, offset, 2);
+  o.bFillerDude = buffer.readInt16LE(offset); offset += 2;
+  o.uiTimeSinceLastBleedGrunt = buffer.readInt32LE(offset); offset += 4;
+  o.ubNextToPreviousAttackerID = buffer.readUInt8(offset++);
+  offset = readUIntArray(o.bFiller, buffer, offset, 1);
+  return offset;
+}
+
+export function writeSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubID, offset);
+  offset = buffer.writeUInt8(o.bReserved1, offset);
+  offset = buffer.writeUInt8(o.ubBodyType, offset);
+  offset = buffer.writeInt8(o.bActionPoints, offset);
+  offset = buffer.writeInt8(o.bInitialActionPoints, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiStatusFlags, offset);
+  offset = writeObjectArray(o.inv, buffer, offset, writeObjectType);
+  offset = writePadding(buffer, offset, 4); // pTempObject (pointer)
+  offset = writePadding(buffer, offset, 4); // pKeyRing (pointer)
+  offset = buffer.writeInt8(o.bOldLife, offset);
+  offset = buffer.writeUInt8(Number(o.bInSector), offset);
+  offset = buffer.writeInt8(o.bFlashPortraitFrame, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sFractLife, offset);
+  offset = buffer.writeInt8(o.bBleeding, offset);
+  offset = buffer.writeInt8(o.bBreath, offset);
+  offset = buffer.writeInt8(o.bBreathMax, offset);
+  offset = buffer.writeUInt8(Number(o.bStealthMode), offset);
+  offset = buffer.writeInt16LE(o.sBreathRed, offset);
+  offset = buffer.writeUInt8(o.fDelayedMovement, offset);
+  offset = buffer.writeUInt8(Number(o.fReloading), offset);
+  offset = buffer.writeUInt8(o.ubWaitActionToDo, offset);
+  offset = buffer.writeUInt8(Number(o.fPauseAim), offset);
+  offset = buffer.writeInt8(o.ubInsertionDirection, offset);
+  offset = buffer.writeInt8(o.bGunType, offset);
+  offset = buffer.writeUInt8(o.ubOppNum, offset);
+  offset = buffer.writeInt8(o.bLastRenderVisibleValue, offset);
+  offset = buffer.writeUInt8(Number(o.fInMissionExitNode), offset);
+  offset = buffer.writeUInt8(o.ubAttackingHand, offset);
+  offset = buffer.writeInt8(o.bScientific, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sWeightCarriedAtTurnStart, offset);
+  offset = writeStringNL(o.name, buffer, offset, 20, 'utf16le');
+  offset = buffer.writeInt8(o.bVisible, offset);
+  offset = buffer.writeUInt8(Number(o.bActive), offset);
+  offset = buffer.writeInt8(o.bTeam, offset);
+  offset = buffer.writeUInt8(o.ubGroupID, offset);
+  offset = buffer.writeUInt8(Number(o.fBetweenSectors), offset);
+  offset = buffer.writeUInt8(o.ubMovementNoiseHeard, offset);
+  offset = buffer.writeFloatLE(o.dXPos, offset);
+  offset = buffer.writeFloatLE(o.dYPos, offset);
+  offset = buffer.writeFloatLE(o.dOldXPos, offset);
+  offset = buffer.writeFloatLE(o.dOldYPos, offset);
+  offset = buffer.writeInt16LE(o.sInitialGridNo, offset);
+  offset = buffer.writeInt16LE(o.sGridNo, offset);
+  offset = buffer.writeInt8(o.bDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sHeightAdjustment, offset);
+  offset = buffer.writeInt16LE(o.sDesiredHeight, offset);
+  offset = buffer.writeInt16LE(o.sTempNewGridNo, offset);
+  offset = buffer.writeInt16LE(o.sRoomNo, offset);
+  offset = buffer.writeInt8(o.bOverTerrainType, offset);
+  offset = buffer.writeInt8(o.bOldOverTerrainType, offset);
+  offset = buffer.writeUInt8(Number(o.bCollapsed), offset);
+  offset = buffer.writeUInt8(Number(o.bBreathCollapsed), offset);
+  offset = buffer.writeUInt8(o.ubDesiredHeight, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usPendingAnimation, offset);
+  offset = buffer.writeUInt8(o.ubPendingStanceChange, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usAnimState, offset);
+  offset = buffer.writeUInt8(Number(o.fNoAPToFinishMove), offset);
+  offset = buffer.writeUInt8(Number(o.fPausedMove), offset);
+  offset = buffer.writeUInt8(Number(o.fUIdeadMerc), offset);
+  offset = buffer.writeUInt8(Number(o.fUInewMerc), offset);
+  offset = buffer.writeUInt8(Number(o.fUICloseMerc), offset);
+  offset = buffer.writeUInt8(Number(o.fUIFirstTimeNOAP), offset);
+  offset = buffer.writeUInt8(Number(o.fUIFirstTimeUNCON), offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeInt32LE(o.UpdateCounter, offset);
+  offset = buffer.writeInt32LE(o.DamageCounter, offset);
+  offset = buffer.writeInt32LE(o.ReloadCounter, offset);
+  offset = buffer.writeInt32LE(o.FlashSelCounter, offset);
+  offset = buffer.writeInt32LE(o.AICounter, offset);
+  offset = buffer.writeInt32LE(o.FadeCounter, offset);
+  offset = buffer.writeUInt8(o.ubSkillTrait1, offset);
+  offset = buffer.writeUInt8(o.ubSkillTrait2, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeUInt32LE(o.uiAIDelay, offset);
+  offset = buffer.writeInt8(o.bDexterity, offset);
+  offset = buffer.writeInt8(o.bWisdom, offset);
+  offset = buffer.writeInt16LE(o.sReloadDelay, offset);
+  offset = buffer.writeUInt8(o.ubAttackerID, offset);
+  offset = buffer.writeUInt8(o.ubPreviousAttackerID, offset);
+  offset = buffer.writeUInt8(Number(o.fTurnInProgress), offset);
+  offset = buffer.writeUInt8(Number(o.fIntendedTarget), offset);
+  offset = buffer.writeUInt8(Number(o.fPauseAllAnimation), offset);
+  offset = buffer.writeInt8(o.bExpLevel, offset);
+  offset = buffer.writeInt16LE(o.sInsertionGridNo, offset);
+  offset = buffer.writeUInt8(o.fContinueMoveAfterStanceChange, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = writeAnimationSurfaceCacheType(o.AnimCache, buffer, offset);
+  offset = buffer.writeInt8(o.bLife, offset);
+  offset = buffer.writeUInt8(o.bSide, offset);
+  offset = buffer.writeUInt8(o.bViewRange, offset);
+  offset = buffer.writeInt8(o.bNewOppCnt, offset);
+  offset = buffer.writeInt8(o.bService, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usAniCode, offset);
+  offset = buffer.writeUInt16LE(o.usAniFrame, offset);
+  offset = buffer.writeInt16LE(o.sAniDelay, offset);
+  offset = buffer.writeInt8(o.bAgility, offset);
+  offset = buffer.writeUInt8(o.ubDelayedMovementCauseMerc, offset);
+  offset = buffer.writeInt16LE(o.sDelayedMovementCauseGridNo, offset);
+  offset = buffer.writeInt16LE(o.sReservedMovementGridNo, offset);
+  offset = buffer.writeInt8(o.bStrength, offset);
+  offset = buffer.writeUInt8(Number(o.fHoldAttackerUntilDone), offset);
+  offset = buffer.writeInt16LE(o.sTargetGridNo, offset);
+  offset = buffer.writeInt8(o.bTargetLevel, offset);
+  offset = buffer.writeInt8(o.bTargetCubeLevel, offset);
+  offset = buffer.writeInt16LE(o.sLastTarget, offset);
+  offset = buffer.writeInt8(o.bTilesMoved, offset);
+  offset = buffer.writeInt8(o.bLeadership, offset);
+  offset = buffer.writeFloatLE(o.dNextBleed, offset);
+  offset = buffer.writeUInt8(Number(o.fWarnedAboutBleeding), offset);
+  offset = buffer.writeUInt8(Number(o.fDyingComment), offset);
+  offset = buffer.writeUInt8(o.ubTilesMovedPerRTBreathUpdate, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usLastMovementAnimPerRTBreathUpdate, offset);
+  offset = buffer.writeUInt8(Number(o.fTurningToShoot), offset);
+  offset = buffer.writeUInt8(Number(o.fTurningToFall), offset);
+  offset = buffer.writeUInt8(Number(o.fTurningUntilDone), offset);
+  offset = buffer.writeUInt8(o.fGettingHit, offset);
+  offset = buffer.writeUInt8(Number(o.fInNonintAnim), offset);
+  offset = buffer.writeUInt8(Number(o.fFlashLocator), offset);
+  offset = buffer.writeInt16LE(o.sLocatorFrame, offset);
+  offset = buffer.writeUInt8(Number(o.fShowLocator), offset);
+  offset = buffer.writeUInt8(o.fFlashPortrait, offset);
+  offset = buffer.writeInt8(o.bMechanical, offset);
+  offset = buffer.writeInt8(o.bLifeMax, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeInt32LE(o.iFaceIndex, offset);
+  offset = writeStringNL(o.HeadPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.PantsPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.VestPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.SkinPal, buffer, offset, 30, 'ascii');
+  offset = writeStringNL(o.MiscPal, buffer, offset, 30, 'ascii');
+  offset = writeUIntArray(o.usFrontArcFullTileList, buffer, offset, 2);
+  offset = writeIntArray(o.usFrontArcFullTileGridNos, buffer, offset, 2);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // p8BPPPalette (pointer)
+  offset = writePadding(buffer, offset, 4); // p16BPPPalette (pointer)
+  offset = writePadding(buffer, offset, 4 * NUM_SOLDIER_SHADES); // pShades (pointers)
+  offset = writePadding(buffer, offset, 4 * 20); // pGlowShades (pointers)
+  offset = writePadding(buffer, offset, 4); // pCurrentShade (pointer)
+  offset = buffer.writeInt8(o.bMedical, offset);
+  offset = buffer.writeUInt8(o.fBeginFade, offset);
+  offset = buffer.writeUInt8(o.ubFadeLevel, offset);
+  offset = buffer.writeUInt8(o.ubServiceCount, offset);
+  offset = buffer.writeUInt8(o.ubServicePartner, offset);
+  offset = buffer.writeInt8(o.bMarksmanship, offset);
+  offset = buffer.writeInt8(o.bExplosive, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writePadding(buffer, offset, 4); // pThrowParams (pointer)
+  offset = buffer.writeUInt8(o.fTurningFromPronePosition, offset);
+  offset = buffer.writeUInt8(Number(o.bReverse), offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pLevelNode (pointer)
+  offset = writePadding(buffer, offset, 4); // pExternShadowLevelNode (pointer)
+  offset = writePadding(buffer, offset, 4); // pRoofUILevelNode (pointer)
+  offset = buffer.writeInt8(o.bDesiredDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sDestXPos, offset);
+  offset = buffer.writeInt16LE(o.sDestYPos, offset);
+  offset = buffer.writeInt16LE(o.sDesiredDest, offset);
+  offset = buffer.writeInt16LE(o.sDestination, offset);
+  offset = buffer.writeInt16LE(o.sFinalDestination, offset);
+  offset = buffer.writeInt8(o.bLevel, offset);
+  offset = buffer.writeInt8(o.bStopped, offset);
+  offset = buffer.writeUInt8(Number(o.bNeedToLook), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = writeUIntArray(o.usPathingData, buffer, offset, 2);
+  offset = buffer.writeUInt16LE(o.usPathDataSize, offset);
+  offset = buffer.writeUInt16LE(o.usPathIndex, offset);
+  offset = buffer.writeInt16LE(o.sBlackList, offset);
+  offset = buffer.writeInt8(o.bAimTime, offset);
+  offset = buffer.writeInt8(o.bShownAimTime, offset);
+  offset = buffer.writeUInt8(Number(o.bPathStored), offset);
+  offset = buffer.writeInt8(o.bHasKeys, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pBackGround (pointer)
+  offset = writePadding(buffer, offset, 4); // pZBackground (pointer)
+  offset = buffer.writeUInt16LE(o.usUnblitX, offset);
+  offset = buffer.writeUInt16LE(o.usUnblitY, offset);
+  offset = buffer.writeUInt16LE(o.usUnblitWidth, offset);
+  offset = buffer.writeUInt16LE(o.usUnblitHeight, offset);
+  offset = buffer.writeUInt8(o.ubStrategicInsertionCode, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usStrategicInsertionData, offset);
+  offset = buffer.writeInt32LE(o.iLight, offset);
+  offset = buffer.writeInt32LE(o.iMuzFlash, offset);
+  offset = buffer.writeInt8(o.bMuzFlashCount, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sX, offset);
+  offset = buffer.writeInt16LE(o.sY, offset);
+  offset = buffer.writeUInt16LE(o.usOldAniState, offset);
+  offset = buffer.writeInt16LE(o.sOldAniCode, offset);
+  offset = buffer.writeInt8(o.bBulletsLeft, offset);
+  offset = buffer.writeUInt8(o.ubSuppressionPoints, offset);
+  offset = buffer.writeUInt32LE(o.uiTimeOfLastRandomAction, offset);
+  offset = buffer.writeInt16LE(o.usLastRandomAnim, offset);
+  offset = writeIntArray(o.bOppList, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bLastAction, offset);
+  offset = buffer.writeInt8(o.bAction, offset);
+  offset = buffer.writeUInt16LE(o.usActionData, offset);
+  offset = buffer.writeInt8(o.bNextAction, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usNextActionData, offset);
+  offset = buffer.writeUInt8(Number(o.bActionInProgress), offset);
+  offset = buffer.writeInt8(o.bAlertStatus, offset);
+  offset = buffer.writeInt8(o.bOppCnt, offset);
+  offset = buffer.writeUInt8(Number(o.bNeutral), offset);
+  offset = buffer.writeInt8(o.bNewSituation, offset);
+  offset = buffer.writeInt8(o.bNextTargetLevel, offset);
+  offset = buffer.writeInt8(o.bOrders, offset);
+  offset = buffer.writeInt8(o.bAttitude, offset);
+  offset = buffer.writeInt8(o.bUnderFire, offset);
+  offset = buffer.writeInt8(o.bShock, offset);
+  offset = buffer.writeUInt8(Number(o.bUnderEscort), offset);
+  offset = buffer.writeInt8(o.bBypassToGreen, offset);
+  offset = buffer.writeUInt8(o.ubLastMercToRadio, offset);
+  offset = buffer.writeInt8(o.bDominantDir, offset);
+  offset = buffer.writeInt8(o.bPatrolCnt, offset);
+  offset = buffer.writeInt8(o.bNextPatrolPnt, offset);
+  offset = writeIntArray(o.usPatrolGrid, buffer, offset, 2);
+  offset = buffer.writeInt16LE(o.sNoiseGridno, offset);
+  offset = buffer.writeUInt8(o.ubNoiseVolume, offset);
+  offset = buffer.writeUInt8(Number(o.bLastAttackHit), offset);
+  offset = buffer.writeUInt8(o.ubXRayedBy, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeFloatLE(o.dHeightAdjustment, offset);
+  offset = buffer.writeInt8(o.bMorale, offset);
+  offset = buffer.writeInt8(o.bTeamMoraleMod, offset);
+  offset = buffer.writeInt8(o.bTacticalMoraleMod, offset);
+  offset = buffer.writeInt8(o.bStrategicMoraleMod, offset);
+  offset = buffer.writeInt8(o.bAIMorale, offset);
+  offset = buffer.writeUInt8(o.ubPendingAction, offset);
+  offset = buffer.writeUInt8(o.ubPendingActionAnimCount, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiPendingActionData1, offset);
+  offset = buffer.writeInt16LE(o.sPendingActionData2, offset);
+  offset = buffer.writeInt8(o.bPendingActionData3, offset);
+  offset = buffer.writeInt8(o.ubDoorHandleCode, offset);
+  offset = buffer.writeUInt32LE(o.uiPendingActionData4, offset);
+  offset = buffer.writeInt8(o.bInterruptDuelPts, offset);
+  offset = buffer.writeUInt8(Number(o.bPassedLastInterrupt), offset);
+  offset = buffer.writeInt8(o.bIntStartAPs, offset);
+  offset = buffer.writeUInt8(Number(o.bMoved), offset);
+  offset = buffer.writeUInt8(Number(o.bHunting), offset);
+  offset = buffer.writeUInt8(o.ubLastCall, offset);
+  offset = buffer.writeUInt8(o.ubCaller, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sCallerGridNo, offset);
+  offset = buffer.writeUInt8(o.bCallPriority, offset);
+  offset = buffer.writeUInt8(Number(o.bCallActedUpon), offset);
+  offset = buffer.writeUInt8(Number(o.bFrenzied), offset);
+  offset = buffer.writeInt8(o.bNormalSmell, offset);
+  offset = buffer.writeInt8(o.bMonsterSmell, offset);
+  offset = buffer.writeInt8(o.bMobility, offset);
+  offset = buffer.writeInt8(o.bRTPCombat, offset);
+  offset = buffer.writeInt8(o.fAIFlags, offset);
+  offset = buffer.writeUInt8(Number(o.fDontChargeReadyAPs), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usAnimSurface, offset);
+  offset = buffer.writeUInt16LE(o.sZLevel, offset);
+  offset = buffer.writeUInt8(Number(o.fPrevInWater), offset);
+  offset = buffer.writeUInt8(Number(o.fGoBackToAimAfterHit), offset);
+  offset = buffer.writeInt16LE(o.sWalkToAttackGridNo, offset);
+  offset = buffer.writeInt16LE(o.sWalkToAttackWalkToCost, offset);
+  offset = buffer.writeUInt8(Number(o.fForceRenderColor), offset);
+  offset = buffer.writeUInt8(Number(o.fForceNoRenderPaletteCycle), offset);
+  offset = buffer.writeInt16LE(o.sLocatorOffX, offset);
+  offset = buffer.writeInt16LE(o.sLocatorOffY, offset);
+  offset = buffer.writeUInt8(Number(o.fStopPendingNextTile), offset);
+  offset = buffer.writeUInt8(Number(o.fForceShade), offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pForcedShade (pointer)
+  offset = buffer.writeInt8(o.bDisplayDamageCount, offset);
+  offset = buffer.writeUInt8(Number(o.fDisplayDamage), offset);
+  offset = buffer.writeInt16LE(o.sDamage, offset);
+  offset = buffer.writeInt16LE(o.sDamageX, offset);
+  offset = buffer.writeInt16LE(o.sDamageY, offset);
+  offset = buffer.writeInt8(o.bDamageDir, offset);
+  offset = buffer.writeInt8(o.bDoBurst, offset);
+  offset = buffer.writeInt16LE(o.usUIMovementMode, offset);
+  offset = buffer.writeInt8(o.bUIInterfaceLevel, offset);
+  offset = buffer.writeUInt8(Number(o.fUIMovementFast), offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeInt32LE(o.BlinkSelCounter, offset);
+  offset = buffer.writeInt32LE(o.PortraitFlashCounter, offset);
+  offset = buffer.writeUInt8(Number(o.fDeadSoundPlayed), offset);
+  offset = buffer.writeUInt8(o.ubProfile, offset);
+  offset = buffer.writeUInt8(o.ubQuoteRecord, offset);
+  offset = buffer.writeUInt8(o.ubQuoteActionID, offset);
+  offset = buffer.writeUInt8(o.ubBattleSoundID, offset);
+  offset = buffer.writeUInt8(Number(o.fClosePanel), offset);
+  offset = buffer.writeUInt8(Number(o.fClosePanelToDie), offset);
+  offset = buffer.writeUInt8(o.ubClosePanelFrame, offset);
+  offset = buffer.writeUInt8(Number(o.fDeadPanel), offset);
+  offset = buffer.writeUInt8(o.ubDeadPanelFrame, offset);
+  offset = buffer.writeUInt8(Number(o.fOpenPanel), offset);
+  offset = buffer.writeInt8(o.bOpenPanelFrame, offset);
+  offset = buffer.writeInt16LE(o.sPanelFaceX, offset);
+  offset = buffer.writeInt16LE(o.sPanelFaceY, offset);
+  offset = buffer.writeInt8(o.bNumHitsThisTurn, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usQuoteSaidFlags, offset);
+  offset = buffer.writeUInt8(Number(o.fCloseCall), offset);
+  offset = buffer.writeInt8(o.bLastSkillCheck, offset);
+  offset = buffer.writeInt8(o.ubSkillCheckAttempts, offset);
+  offset = buffer.writeInt8(o.bVocalVolume, offset);
+  offset = buffer.writeInt8(o.bStartFallDir, offset);
+  offset = buffer.writeUInt8(Number(o.fTryingToFall), offset);
+  offset = buffer.writeUInt8(o.ubPendingDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiAnimSubFlags, offset);
+  offset = buffer.writeUInt8(o.bAimShotLocation, offset);
+  offset = buffer.writeUInt8(o.ubHitLocation, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4 * NUM_SOLDIER_EFFECTSHADES); // pEffectShades (pointers)
+  offset = buffer.writeUInt8(o.ubPlannedUIAPCost, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sPlannedTargetX, offset);
+  offset = buffer.writeInt16LE(o.sPlannedTargetY, offset);
+  offset = writeIntArray(o.sSpreadLocations, buffer, offset, 2);
+  offset = buffer.writeUInt8(o.fDoSpread, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sStartGridNo, offset);
+  offset = buffer.writeInt16LE(o.sEndGridNo, offset);
+  offset = buffer.writeInt16LE(o.sForcastGridno, offset);
+  offset = buffer.writeInt16LE(o.sZLevelOverride, offset);
+  offset = buffer.writeUInt8(Number(o.bMovedPriorToInterrupt), offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeInt32LE(o.iEndofContractTime, offset);
+  offset = buffer.writeInt32LE(o.iStartContractTime, offset);
+  offset = buffer.writeInt32LE(o.iTotalContractLength, offset);
+  offset = buffer.writeInt32LE(o.iNextActionSpecialData, offset);
+  offset = buffer.writeUInt8(o.ubWhatKindOfMercAmI, offset);
+  offset = buffer.writeInt8(o.bAssignment, offset);
+  offset = buffer.writeInt8(o.bOldAssignment, offset);
+  offset = buffer.writeUInt8(Number(o.fForcedToStayAwake), offset);
+  offset = buffer.writeInt8(o.bTrainStat, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sSectorX, offset);
+  offset = buffer.writeInt16LE(o.sSectorY, offset);
+  offset = buffer.writeInt8(o.bSectorZ, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt32LE(o.iVehicleId, offset);
+  offset = writePadding(buffer, offset, 4); // pMercPath (pointer)
+  offset = buffer.writeUInt8(o.fHitByGasFlags, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt16LE(o.usMedicalDeposit, offset);
+  offset = buffer.writeUInt16LE(o.usLifeInsurance, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = buffer.writeUInt32LE(o.uiStartMovementTime, offset);
+  offset = buffer.writeUInt32LE(o.uiOptimumMovementTime, offset);
+  offset = buffer.writeUInt32LE(o.usLastUpdateTime, offset);
+  offset = buffer.writeUInt8(Number(o.fIsSoldierMoving), offset);
+  offset = buffer.writeUInt8(Number(o.fIsSoldierDelayed), offset);
+  offset = buffer.writeUInt8(Number(o.fSoldierUpdatedFromNetwork), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiSoldierUpdateNumber, offset);
+  offset = buffer.writeUInt8(o.ubSoldierUpdateType, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeInt32LE(o.iStartOfInsuranceContract, offset);
+  offset = buffer.writeUInt32LE(o.uiLastAssignmentChangeMin, offset);
+  offset = buffer.writeInt32LE(o.iTotalLengthOfInsuranceContract, offset);
+  offset = buffer.writeUInt8(o.ubSoldierClass, offset);
+  offset = buffer.writeUInt8(o.ubAPsLostToSuppression, offset);
+  offset = buffer.writeUInt8(Number(o.fChangingStanceDueToSuppression), offset);
+  offset = buffer.writeUInt8(o.ubSuppressorID, offset);
+  offset = buffer.writeUInt8(o.ubDesiredSquadAssignment, offset);
+  offset = buffer.writeUInt8(o.ubNumTraversalsAllowedToMerge, offset);
+  offset = buffer.writeUInt16LE(o.usPendingAnimation2, offset);
+  offset = buffer.writeUInt8(o.ubCivilianGroup, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiChangeLevelTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeHealthTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeStrengthTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeDexterityTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeAgilityTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeWisdomTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeLeadershipTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeMarksmanshipTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeExplosivesTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeMedicalTime, offset);
+  offset = buffer.writeUInt32LE(o.uiChangeMechanicalTime, offset);
+  offset = buffer.writeUInt32LE(o.uiUniqueSoldierIdValue, offset);
+  offset = buffer.writeInt8(o.bBeingAttackedCount, offset);
+  offset = writeIntArray(o.bNewItemCount, buffer, offset, 1);
+  offset = writeIntArray(o.bNewItemCycleCount, buffer, offset, 1);
+  offset = buffer.writeUInt8(Number(o.fCheckForNewlyAddedItems), offset);
+  offset = buffer.writeInt8(o.bEndDoorOpenCode, offset);
+  offset = buffer.writeUInt8(o.ubScheduleID, offset);
+  offset = buffer.writeInt16LE(o.sEndDoorOpenCodeData, offset);
+  offset = buffer.writeInt32LE(o.NextTileCounter, offset);
+  offset = buffer.writeUInt8(Number(o.fBlockedByAnotherMerc), offset);
+  offset = buffer.writeInt8(o.bBlockedByAnotherMercDirection, offset);
+  offset = buffer.writeUInt16LE(o.usAttackingWeapon, offset);
+  offset = buffer.writeInt8(o.bWeaponMode, offset);
+  offset = buffer.writeUInt8(o.ubTargetID, offset);
+  offset = buffer.writeInt8(o.bAIScheduleProgress, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sOffWorldGridNo, offset);
+  offset = writePadding(buffer, offset, 2); // padding
+  offset = writePadding(buffer, offset, 4); // pAniTile (pointer)
+  offset = buffer.writeInt8(o.bCamo, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sAbsoluteFinalDestination, offset);
+  offset = buffer.writeUInt8(o.ubHiResDirection, offset);
+  offset = buffer.writeUInt8(o.ubHiResDesiredDirection, offset);
+  offset = buffer.writeUInt8(o.ubLastFootPrintSound, offset);
+  offset = buffer.writeInt8(o.bVehicleID, offset);
+  offset = buffer.writeUInt8(Number(o.fPastXDest), offset);
+  offset = buffer.writeUInt8(Number(o.fPastYDest), offset);
+  offset = buffer.writeInt8(o.bMovementDirection, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sOldGridNo, offset);
+  offset = buffer.writeUInt16LE(o.usDontUpdateNewGridNoOnMoveAnimChange, offset);
+  offset = buffer.writeInt16LE(o.sBoundingBoxWidth, offset);
+  offset = buffer.writeInt16LE(o.sBoundingBoxHeight, offset);
+  offset = buffer.writeInt16LE(o.sBoundingBoxOffsetX, offset);
+  offset = buffer.writeInt16LE(o.sBoundingBoxOffsetY, offset);
+  offset = buffer.writeUInt32LE(o.uiTimeSameBattleSndDone, offset);
+  offset = buffer.writeInt8(o.bOldBattleSnd, offset);
+  offset = buffer.writeUInt8(Number(o.fReactingFromBeingShot), offset);
+  offset = buffer.writeUInt8(Number(o.fContractPriceHasIncreased), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt32LE(o.iBurstSoundID, offset);
+  offset = buffer.writeUInt8(Number(o.fFixingSAMSite), offset);
+  offset = buffer.writeUInt8(Number(o.fFixingRobot), offset);
+  offset = buffer.writeInt8(o.bSlotItemTakenFrom, offset);
+  offset = buffer.writeUInt8(Number(o.fSignedAnotherContract), offset);
+  offset = buffer.writeUInt8(o.ubAutoBandagingMedic, offset);
+  offset = buffer.writeUInt8(Number(o.fDontChargeTurningAPs), offset);
+  offset = buffer.writeUInt8(o.ubRobotRemoteHolderID, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeOfLastContractUpdate, offset);
+  offset = buffer.writeInt8(o.bTypeOfLastContract, offset);
+  offset = buffer.writeInt8(o.bTurnsCollapsed, offset);
+  offset = buffer.writeInt8(o.bSleepDrugCounter, offset);
+  offset = buffer.writeUInt8(o.ubMilitiaKills, offset);
+  offset = writeIntArray(o.bFutureDrugEffect, buffer, offset, 1);
+  offset = writeIntArray(o.bDrugEffectRate, buffer, offset, 1);
+  offset = writeIntArray(o.bDrugEffect, buffer, offset, 1);
+  offset = writeIntArray(o.bDrugSideEffectRate, buffer, offset, 1);
+  offset = writeIntArray(o.bDrugSideEffect, buffer, offset, 1);
+  offset = writeIntArray(o.bTimesDrugUsedSinceSleep, buffer, offset, 1);
+  offset = buffer.writeInt8(o.bBlindedCounter, offset);
+  offset = buffer.writeUInt8(Number(o.fMercCollapsedFlag), offset);
+  offset = buffer.writeUInt8(Number(o.fDoneAssignmentAndNothingToDoFlag), offset);
+  offset = buffer.writeUInt8(Number(o.fMercAsleep), offset);
+  offset = buffer.writeUInt8(Number(o.fDontChargeAPsForStanceChange), offset);
+  offset = buffer.writeUInt8(o.ubHoursOnAssignment, offset);
+  offset = buffer.writeUInt8(o.ubMercJustFired, offset);
+  offset = buffer.writeUInt8(o.ubTurnsUntilCanSayHeardNoise, offset);
+  offset = buffer.writeUInt16LE(o.usQuoteSaidExtFlags, offset);
+  offset = buffer.writeUInt16LE(o.sContPathLocation, offset);
+  offset = buffer.writeUInt8(Number(o.bGoodContPath), offset);
+  offset = buffer.writeUInt8(o.ubPendingActionInterrupted, offset);
+  offset = buffer.writeInt8(o.bNoiseLevel, offset);
+  offset = buffer.writeInt8(o.bRegenerationCounter, offset);
+  offset = buffer.writeInt8(o.bRegenBoostersUsedToday, offset);
+  offset = buffer.writeInt8(o.bNumPelletsHitBy, offset);
+  offset = buffer.writeInt16LE(o.sSkillCheckGridNo, offset);
+  offset = buffer.writeUInt8(o.ubLastEnemyCycledID, offset);
+  offset = buffer.writeUInt8(o.ubPrevSectorID, offset);
+  offset = buffer.writeUInt8(o.ubNumTilesMovesSinceLastForget, offset);
+  offset = buffer.writeInt8(o.bTurningIncrement, offset);
+  offset = buffer.writeUInt32LE(o.uiBattleSoundID, offset);
+  offset = buffer.writeUInt8(Number(o.fSoldierWasMoving), offset);
+  offset = buffer.writeUInt8(Number(o.fSayAmmoQuotePending), offset);
+  offset = buffer.writeUInt16LE(o.usValueGoneUp, offset);
+  offset = buffer.writeUInt8(o.ubNumLocateCycles, offset);
+  offset = buffer.writeUInt8(o.ubDelayedMovementFlags, offset);
+  offset = buffer.writeUInt8(Number(o.fMuzzleFlash), offset);
+  offset = buffer.writeUInt8(o.ubCTGTTargetID, offset);
+  offset = buffer.writeInt32LE(o.PanelAnimateCounter, offset);
+  offset = buffer.writeUInt32LE(o.uiMercChecksum, offset);
+  offset = buffer.writeInt8(o.bCurrentCivQuote, offset);
+  offset = buffer.writeInt8(o.bCurrentCivQuoteDelta, offset);
+  offset = buffer.writeUInt8(o.ubMiscSoldierFlags, offset);
+  offset = buffer.writeUInt8(o.ubReasonCantFinishMove, offset);
+  offset = buffer.writeInt16LE(o.sLocationOfFadeStart, offset);
+  offset = buffer.writeUInt8(Number(o.bUseExitGridForReentryDirection), offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeUInt32LE(o.uiTimeSinceLastSpoke, offset);
+  offset = buffer.writeUInt8(o.ubContractRenewalQuoteCode, offset);
+  offset = writePadding(buffer, offset, 1); // padding
+  offset = buffer.writeInt16LE(o.sPreTraversalGridNo, offset);
+  offset = buffer.writeUInt32LE(o.uiXRayActivatedTime, offset);
+  offset = buffer.writeUInt8(Number(o.bTurningFromUI), offset);
+  offset = buffer.writeInt8(o.bPendingActionData5, offset);
+  offset = buffer.writeInt8(o.bDelayedStrategicMoraleMod, offset);
+  offset = buffer.writeUInt8(o.ubDoorOpeningNoise, offset);
+  offset = writePadding(buffer, offset, 4); // pGroup (pointer)
+  offset = buffer.writeUInt8(o.ubLeaveHistoryCode, offset);
+  offset = buffer.writeUInt8(Number(o.fDontUnsetLastTargetFromTurn), offset);
+  offset = buffer.writeInt8(o.bOverrideMoveSpeed, offset);
+  offset = buffer.writeUInt8(Number(o.fUseMoverrideMoveSpeed), offset);
+  offset = buffer.writeUInt32LE(o.uiTimeSoldierWillArrive, offset);
+  offset = buffer.writeUInt8(Number(o.fDieSoundUsed), offset);
+  offset = buffer.writeUInt8(Number(o.fUseLandingZoneForArrival), offset);
+  offset = buffer.writeUInt8(Number(o.fFallClockwise), offset);
+  offset = buffer.writeInt8(o.bVehicleUnderRepairID, offset);
+  offset = buffer.writeInt32LE(o.iTimeCanSignElsewhere, offset);
+  offset = buffer.writeInt8(o.bHospitalPriceModifier, offset);
+  offset = writeIntArray(o.bFillerBytes, buffer, offset, 1);
+  offset = buffer.writeUInt32LE(o.uiStartTimeOfInsuranceContract, offset);
+  offset = buffer.writeUInt8(Number(o.fRTInNonintAnim), offset);
+  offset = buffer.writeUInt8(Number(o.fDoingExternalDeath), offset);
+  offset = buffer.writeInt8(o.bCorpseQuoteTolerance, offset);
+  offset = buffer.writeInt8(o.bYetAnotherPaddingSpace, offset);
+  offset = buffer.writeInt32LE(o.iPositionSndID, offset);
+  offset = buffer.writeInt32LE(o.iTuringSoundID, offset);
+  offset = buffer.writeUInt8(o.ubLastDamageReason, offset);
+  offset = buffer.writeUInt8(Number(o.fComplainedThatTired), offset);
+  offset = writeIntArray(o.sLastTwoLocations, buffer, offset, 2);
+  offset = buffer.writeInt16LE(o.bFillerDude, offset);
+  offset = buffer.writeInt32LE(o.uiTimeSinceLastBleedGrunt, offset);
+  offset = buffer.writeUInt8(o.ubNextToPreviousAttackerID, offset);
+  offset = writeUIntArray(o.bFiller, buffer, offset, 1);
+  return offset;
+}
 
 export const HEALTH_INCREASE = 0x0001;
 export const STRENGTH_INCREASE = 0x0002;
@@ -1890,13 +3465,34 @@ export interface ANIM_PROF_TILE {
   bTileY: INT8;
 }
 
+export function createAnimationProfileTile(): ANIM_PROF_TILE {
+  return {
+    usTileFlags: 0,
+    bTileX: 0,
+    bTileY: 0,
+  };
+}
+
 export interface ANIM_PROF_DIR {
   ubNumTiles: UINT8;
-  pTiles: Pointer<ANIM_PROF_TILE>;
+  pTiles: ANIM_PROF_TILE[] /* Pointer<ANIM_PROF_TILE> */;
+}
+
+export function createAnimationProfileDirection(): ANIM_PROF_DIR {
+  return {
+    ubNumTiles: 0,
+    pTiles: <ANIM_PROF_TILE[]><unknown>null,
+  }
 }
 
 export interface ANIM_PROF {
   Dirs: ANIM_PROF_DIR[] /* [8] */;
+}
+
+export function createAnimationProfile(): ANIM_PROF {
+  return {
+    Dirs: createArrayFrom(8, createAnimationProfileDirection),
+  };
 }
 
 // Globals
@@ -1905,10 +3501,10 @@ export interface ANIM_PROF {
 // Functions
 ////////////
 
-export const PTR_CIVILIAN = () => (pSoldier.value.bTeam == CIV_TEAM);
-export const PTR_CROUCHED = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_CROUCH);
-export const PTR_STANDING = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_STAND);
-const PTR_PRONE = () => (gAnimControl[pSoldier.value.usAnimState].ubHeight == ANIM_PRONE);
+export const PTR_CIVILIAN = (pSoldier: SOLDIERTYPE) => (pSoldier.bTeam == CIV_TEAM);
+export const PTR_CROUCHED = (pSoldier: SOLDIERTYPE) => (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_CROUCH);
+export const PTR_STANDING = (pSoldier: SOLDIERTYPE) => (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_STAND);
+const PTR_PRONE = (pSoldier: SOLDIERTYPE) => (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_PRONE);
 
 // VARIABLES FOR PALETTE REPLACEMENTS FOR HAIR, ETC
 export let gubpNumReplacementsPerRange: Pointer<UINT8>;

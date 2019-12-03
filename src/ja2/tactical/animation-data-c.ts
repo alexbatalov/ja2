@@ -5,10 +5,10 @@ const TO_INIT = 0;
 
 const ANIMPROFILEFILENAME = "BINARYDATA\\JA2PROF.DAT";
 
-export let gpAnimProfiles: Pointer<ANIM_PROF> = null;
+export let gpAnimProfiles: ANIM_PROF[] /* Pointer<ANIM_PROF> */ = <ANIM_PROF[]><unknown>null;
 let gubNumAnimProfiles: UINT8 = 0;
 
-let gbAnimUsageHistory: INT8[][] /* [NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS] */;
+let gbAnimUsageHistory: INT8[][] /* [NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS] */ = createArrayFrom(Enum195.NUMANIMATIONSURFACETYPES, () => createArray(MAX_NUM_SOLDIERS, 0));
 
 export let gAnimSurfaceDatabase: AnimationSurfaceType[] /* [NUMANIMATIONSURFACETYPES] */ = [
   createAnimationSurfaceTypeFrom(Enum195.RGMBASICWALKING, "ANIMS\\S_MERC\\S_R_WALK.STI", Enum196.S_STRUCT, 0, 8, TO_INIT, null, null, 0, -1),
@@ -793,10 +793,10 @@ function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: U
   // return STANDING struct for these - which start standing but end prone
   // CJC August 14 2002: added standing burst hit to this list
   if ((usAnimState == Enum193.FALLFORWARD_FROMHIT_STAND || usAnimState == Enum193.GENERIC_HIT_STAND || usAnimState == Enum193.FALLFORWARD_FROMHIT_CROUCH || usAnimState == Enum193.STANDING_BURST_HIT) && !fUseAbsolute) {
-    return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][Enum196.S_STRUCT].pStructureFileRef;
+    return gAnimStructureDatabase[MercPtrs[usSoldierID].ubBodyType][Enum196.S_STRUCT].pStructureFileRef;
   }
 
-  return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][bStructDataType].pStructureFileRef;
+  return gAnimStructureDatabase[MercPtrs[usSoldierID].ubBodyType][bStructDataType].pStructureFileRef;
 }
 
 export function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): STRUCTURE_FILE_REF | null {
@@ -804,12 +804,12 @@ export function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UI
 }
 
 function GetDefaultStructureRef(usSoldierID: UINT16): STRUCTURE_FILE_REF | null {
-  return gAnimStructureDatabase[MercPtrs[usSoldierID].value.ubBodyType][Enum196.DEFAULT_STRUCT].pStructureFileRef;
+  return gAnimStructureDatabase[MercPtrs[usSoldierID].ubBodyType][Enum196.DEFAULT_STRUCT].pStructureFileRef;
 }
 
 // Surface mamagement functions
 export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): boolean {
-  let pAuxData: Pointer<AuxObjectData>;
+  let pAuxData: AuxObjectData;
 
   // Check for valid surface
   if (usSurfaceIndex >= Enum195.NUMANIMATIONSURFACETYPES) {
@@ -826,7 +826,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     let hVObject: HVOBJECT;
     let hImage: HIMAGE;
     let sFilename: string /* CHAR8[48] */;
-    let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+    let pStructureFileRef: STRUCTURE_FILE_REF | null;
 
     AnimDebugMsg(FormatString("Surface Database: Loading %d", usSurfaceIndex));
 
@@ -843,7 +843,7 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
     VObjectDesc.hImage = hImage;
 
-    hVObject = CreateVideoObject(addressof(VObjectDesc));
+    hVObject = CreateVideoObject(VObjectDesc);
 
     if (hVObject == null) {
       // Report error
@@ -854,11 +854,11 @@ export function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16
     }
 
     // Get aux data
-    if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * sizeof(AuxObjectData)) {
+    if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * AUX_OBJECT_DATA_SIZE) {
       // Valid auxiliary data, so get # od frames from data
       pAuxData = hImage.value.pAppData;
 
-      gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir = pAuxData.value.ubNumberOfFrames;
+      gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir = pAuxData.ubNumberOfFrames;
     } else {
       // Report error
       SET_ERROR("Invalid # of animations given");
@@ -959,9 +959,10 @@ function LoadAnimationProfiles(): boolean {
   let iProfileCount: INT32;
   let iDirectionCount: INT32;
   let iTileCount: INT32;
-  let pProfile: Pointer<ANIM_PROF>;
-  let pProfileDirs: Pointer<ANIM_PROF_DIR>;
+  let pProfile: ANIM_PROF;
+  let pProfileDirs: ANIM_PROF_DIR;
   let uiBytesRead: UINT32;
+  let buffer: Buffer;
 
   //	pInput = fopen( ANIMPROFILEFILENAME, "rb" );
   pInput = FileOpen(ANIMPROFILEFILENAME, FILE_ACCESS_READ, false);
@@ -970,50 +971,62 @@ function LoadAnimationProfiles(): boolean {
     return false;
   }
 
+  buffer = Buffer.allocUnsafe(2);
+
   // Writeout profile data!
   //	if ( fread( &gubNumAnimProfiles, sizeof( gubNumAnimProfiles ), 1, pInput ) != 1 )
-  if (FileRead(pInput, addressof(gubNumAnimProfiles), sizeof(gubNumAnimProfiles), addressof(uiBytesRead)) != 1) {
+  if ((uiBytesRead = FileRead(pInput, buffer, 1)) === -1) {
     return false;
   }
 
+  gubNumAnimProfiles = buffer.readUInt8(0);
+
   // Malloc profile data!
-  gpAnimProfiles = MemAlloc(gubNumAnimProfiles * sizeof(ANIM_PROF));
+  gpAnimProfiles = createArrayFrom(gubNumAnimProfiles, createAnimationProfile);
 
   // Loop profiles
   for (iProfileCount = 0; iProfileCount < gubNumAnimProfiles; iProfileCount++) {
     // Get profile pointer
-    pProfile = addressof(gpAnimProfiles[iProfileCount]);
+    pProfile = gpAnimProfiles[iProfileCount];
 
     // Loop directions
     for (iDirectionCount = 0; iDirectionCount < 8; iDirectionCount++) {
       // Get prodile direction pointer
-      pProfileDirs = addressof(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
+      pProfileDirs = gpAnimProfiles[iProfileCount].Dirs[iDirectionCount];
 
       // Read # tiles
       //			if ( fread( &pProfileDirs->ubNumTiles, sizeof( UINT8 ), 1, pInput ) != 1 )
-      if (FileRead(pInput, addressof(pProfileDirs.value.ubNumTiles), sizeof(UINT8), addressof(uiBytesRead)) != 1) {
+      if ((uiBytesRead = FileRead(pInput, buffer, 1)) === -1) {
         return false;
       }
 
+      pProfileDirs.ubNumTiles = buffer.readUInt8(0);
+
       // Malloc space for tiles!
-      pProfileDirs.value.pTiles = MemAlloc(sizeof(ANIM_PROF_TILE) * pProfileDirs.value.ubNumTiles);
+      pProfileDirs.pTiles = createArrayFrom(pProfileDirs.ubNumTiles, createAnimationProfileTile);
 
       // Loop tiles
-      for (iTileCount = 0; iTileCount < pProfileDirs.value.ubNumTiles; iTileCount++) {
+      for (iTileCount = 0; iTileCount < pProfileDirs.ubNumTiles; iTileCount++) {
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].usTileFlags, sizeof( UINT16 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].usTileFlags), sizeof(UINT16), addressof(uiBytesRead)) != 1) {
+        if ((uiBytesRead = FileRead(pInput, buffer, 2)) === -1) {
           return false;
         }
+
+        pProfileDirs.pTiles[iTileCount].usTileFlags = buffer.readUInt16LE(0);
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileX, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileX), sizeof(INT8), addressof(uiBytesRead)) != 1) {
+        if ((uiBytesRead = FileRead(pInput, buffer, 1)) === -1) {
           return false;
         }
 
+        pProfileDirs.pTiles[iTileCount].bTileX = buffer.readInt8(0);
+
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileY, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileY), sizeof(INT8), addressof(uiBytesRead)) != 1) {
+        if ((uiBytesRead = FileRead(pInput, buffer, 1)) === -1) {
           return false;
         }
+
+        pProfileDirs.pTiles[iTileCount].bTileY = buffer.readInt8(0);
       }
     }
   }
@@ -1027,26 +1040,23 @@ function LoadAnimationProfiles(): boolean {
 function DeleteAnimationProfiles(): void {
   let iProfileCount: INT32;
   let iDirectionCount: INT32;
-  let pProfile: Pointer<ANIM_PROF>;
-  let pProfileDir: Pointer<ANIM_PROF_DIR>;
+  let pProfile: ANIM_PROF;
+  let pProfileDir: ANIM_PROF_DIR;
 
   // Loop profiles
   for (iProfileCount = 0; iProfileCount < gubNumAnimProfiles; iProfileCount++) {
     // Get profile pointer
-    pProfile = addressof(gpAnimProfiles[iProfileCount]);
+    pProfile = gpAnimProfiles[iProfileCount];
 
     // Loop directions
     for (iDirectionCount = 0; iDirectionCount < 8; iDirectionCount++) {
       // Get prodile direction pointer
-      pProfileDir = addressof(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
-
-      // Free tile
-      MemFree(pProfileDir.value.pTiles);
+      pProfileDir = gpAnimProfiles[iProfileCount].Dirs[iDirectionCount];
     }
   }
 
   // Free profile data!
-  MemFree(gpAnimProfiles);
+  gpAnimProfiles = <ANIM_PROF[]><unknown>null;
 }
 
 export function ZeroAnimSurfaceCounts(): void {
@@ -1057,7 +1067,9 @@ export function ZeroAnimSurfaceCounts(): void {
     gAnimSurfaceDatabase[cnt].hVideoObject = null;
   }
 
-  memset(gbAnimUsageHistory, 0, sizeof(gbAnimUsageHistory));
+  for (let i = 0; i < gbAnimUsageHistory.length; i++) {
+    gbAnimUsageHistory[i].fill(0);
+  }
 }
 
 }

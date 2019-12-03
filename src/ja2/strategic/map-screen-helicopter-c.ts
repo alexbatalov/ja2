@@ -100,7 +100,7 @@ export function InitializeHelicopter(): void {
   fSkyRiderAvailable = false;
   fSkyRiderSetUp = false;
   pSkyRider = <SOLDIERTYPE><unknown>null;
-  memset(addressof(SoldierSkyRider), 0, sizeof(SoldierSkyRider));
+  resetSoldierType(SoldierSkyRider);
 
   fHelicopterIsAirBorne = false;
   fHeliReturnStraightToBase = false;
@@ -717,7 +717,7 @@ export function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
 
     Assert(iHelicopterVehicleId != -1);
 
-    memset(addressof(SoldierSkyRider), 0, sizeof(SOLDIERTYPE));
+    resetSoldierType(SoldierSkyRider);
     SoldierSkyRider.ubProfile = Enum268.SKYRIDER;
     SoldierSkyRider.bLife = 80;
 
@@ -1510,7 +1510,7 @@ function EndOfHelicoptersPath(): boolean {
     return true;
   }
 
-  if (pVehicleList[iHelicopterVehicleId].pMercPath.value.pNext == null) {
+  if ((<PathSt>pVehicleList[iHelicopterVehicleId].pMercPath).pNext == null) {
     return true;
   }
 

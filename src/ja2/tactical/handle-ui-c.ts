@@ -39,15 +39,15 @@ const GO_MOVE_THREE = 100;
 let gsTreeRevealXPos: INT16;
 let gsTreeRevealYPos: INT16;
 
-let gpRequesterMerc: Pointer<SOLDIERTYPE> = null;
-let gpRequesterTargetMerc: Pointer<SOLDIERTYPE> = null;
+let gpRequesterMerc: SOLDIERTYPE | null /* Pointer<SOLDIERTYPE> */ = null;
+let gpRequesterTargetMerc: SOLDIERTYPE | null /* Pointer<SOLDIERTYPE> */ = null;
 let gsRequesterGridNo: INT16;
 let gsOverItemsGridNo: INT16 = NOWHERE;
 let gsOverItemsLevel: INT16 = 0;
 let gfUIInterfaceSetBusy: boolean = false;
 let guiUIInterfaceBusyTime: UINT32 = 0;
 
-let gfTacticalForceNoCursor: UINT32 = false;
+let gfTacticalForceNoCursor: boolean /* UINT32 */ = false;
 let gpInvTileThatCausedMoveConfirm: Pointer<LEVELNODE> = null;
 export let gfResetUIMovementOptimization: boolean = false;
 let gfResetUIItemCursorOptimization: boolean = false;
@@ -135,7 +135,7 @@ let guiNewUICursor: UINT32 = Enum210.NORMAL_SNAPUICURSOR;
 export let guiPendingOverrideEvent: UINT32 = Enum207.I_DO_NOTHING;
 let gusSavedMouseX: UINT16;
 let gusSavedMouseY: UINT16;
-export let gUIKeyboardHook: UIKEYBOARD_HOOK = null;
+export let gUIKeyboardHook: UIKEYBOARD_HOOK | null = null;
 export let gUIActionModeChangeDueToMouseOver: boolean = false;
 
 let gfDisplayTimerCursor: boolean = false;
@@ -187,17 +187,17 @@ export let gfUIDisplayActionPointsCenter: boolean = false;
 export let gUIDisplayActionPointsOffY: INT16 = 0;
 export let gUIDisplayActionPointsOffX: INT16 = 0;
 let gfUIDoNotHighlightSelMerc: boolean = false;
-export let gfUIHandleSelection: boolean = false;
+export let gfUIHandleSelection: UINT8 /* boolean */ = 0;
 export let gfUIHandleSelectionAboveGuy: boolean = false;
 export let gfUIInDeadlock: boolean = false;
 export let gUIDeadlockedSoldier: UINT8 = NOBODY;
-export let gfUIHandleShowMoveGrid: boolean = false;
+export let gfUIHandleShowMoveGrid: UINT8 /* boolean */ = 0;
 export let gsUIHandleShowMoveGridLocation: UINT16 = NOWHERE;
 export let gfUIOverItemPool: boolean = false;
 export let gfUIOverItemPoolGridNo: INT16 = 0;
 export let gsCurrentActionPoints: INT16 = 1;
 export let gfUIHandlePhysicsTrajectory: boolean = false;
-export let gfUIMouseOnValidCatcher: boolean = false;
+export let gfUIMouseOnValidCatcher: UINT8 /* boolean */ = false;
 export let gubUIValidCatcherID: UINT8 = 0;
 
 export let gfUIConfirmExitArrows: boolean = false;
@@ -206,7 +206,7 @@ export let gfUIShowCurIntTile: boolean = false;
 
 export let gfUIWaitingForUserSpeechAdvance: boolean = false; // Waiting for key input/mouse click to advance speech
 let gfUIKeyCheatModeOn: boolean = false; // Sets cool cheat keys on
-export let gfUIAllMoveOn: boolean = false; // Sets to all move
+export let gfUIAllMoveOn: UINT8 /* boolean */ = 0; // Sets to all move
 export let gfUICanBeginAllMoveCycle: boolean = false; // GEts set so we know that the next right-click is a move-call inc\stead of a movement cycle through
 
 export let gsSelectedGridNo: INT16 = 0;
@@ -237,12 +237,12 @@ let gfUINewStateForIntTile: boolean = false;
 export let gfUIForceReExamineCursorData: boolean = false;
 
 // MAIN TACTICAL UI HANDLER
+/* static */ let HandleTacticalUI__pOldIntTile: Pointer<LEVELNODE> = null;
 export function HandleTacticalUI(): UINT32 {
   let ReturnVal: UINT32 = Enum26.GAME_SCREEN;
   let uiNewEvent: UINT32;
   let usMapPos: UINT16;
   let pIntTile: Pointer<LEVELNODE>;
-  /* static */ let pOldIntTile: Pointer<LEVELNODE> = null;
 
   // RESET FLAGS
   gfUIDisplayActionPoints = false;
@@ -262,7 +262,7 @@ export function HandleTacticalUI(): UINT32 {
   gfUIShowExitExitGrid = false;
   gfUIOverItemPool = false;
   gfUIHandlePhysicsTrajectory = false;
-  gfUIMouseOnValidCatcher = false;
+  gfUIMouseOnValidCatcher = 0;
   gfIgnoreOnSelectedGuy = false;
 
   // Set old event value
@@ -292,10 +292,10 @@ export function HandleTacticalUI(): UINT32 {
   // OK, do a check for on an int tile...
   pIntTile = GetCurInteractiveTile();
 
-  if (pIntTile != pOldIntTile) {
+  if (pIntTile != HandleTacticalUI__pOldIntTile) {
     gfUINewStateForIntTile = true;
 
-    pOldIntTile = pIntTile;
+    HandleTacticalUI__pOldIntTile = pIntTile;
   }
 
   if (guiPendingOverrideEvent == Enum207.I_DO_NOTHING) {
@@ -367,7 +367,7 @@ export function HandleTacticalUI(): UINT32 {
       SimulateMouseMovement(gusSavedMouseX, gusSavedMouseY);
     }
 
-    ClearEvent(addressof(gEvents[uiNewEvent]));
+    ClearEvent(gEvents[uiNewEvent]);
   }
 
   // Restore not scrolling from stance adjust....
@@ -383,7 +383,7 @@ export function HandleTacticalUI(): UINT32 {
   }
 
   // HANDLE UI EVENT
-  ReturnVal = gEvents[uiNewEvent].HandleEvent(addressof(gEvents[uiNewEvent]));
+  ReturnVal = gEvents[uiNewEvent].HandleEvent(gEvents[uiNewEvent]);
 
   if (gfInOpenDoorMenu) {
     return ReturnVal;
@@ -449,13 +449,13 @@ export function HandleTacticalUI(): UINT32 {
   return ReturnVal;
 }
 
+/* static */ let SetUIMouseCursor__sOldExitGridNo: INT16 = NOWHERE;
+/* static */ let SetUIMouseCursor__fOkForExit: boolean = false;
 function SetUIMouseCursor(): void {
   let uiCursorFlags: UINT32;
   let uiTraverseTimeInMinutes: UINT32;
   let fForceUpdateNewCursor: boolean = false;
   let fUpdateNewCursor: boolean = true;
-  /* static */ let sOldExitGridNo: INT16 = NOWHERE;
-  /* static */ let fOkForExit: boolean = false;
 
   // Check if we moved from confirm mode on exit arrows
   // If not in move mode, return!
@@ -587,15 +587,15 @@ function SetUIMouseCursor(): void {
       ErasePath(true);
 
       if (GetMouseMapPos(addressof(usMapPos))) {
-        if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].value.bLevel == 0) {
+        if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].bLevel == 0) {
           // ATE: Is this place revealed?
-          if (!InARoom(usMapPos, addressof(ubRoomNum)) || (InARoom(usMapPos, addressof(ubRoomNum)) && gpWorldLevelData[usMapPos].uiFlags & MAPELEMENT_REVEALED)) {
-            if (sOldExitGridNo != usMapPos) {
-              fOkForExit = OKForSectorExit(-1, usMapPos, addressof(uiTraverseTimeInMinutes));
-              sOldExitGridNo = usMapPos;
+          if ((ubRoomNum = InARoom(usMapPos)) === -1 || ((ubRoomNum = InARoom(usMapPos)) !== -1 && gpWorldLevelData[usMapPos].uiFlags & MAPELEMENT_REVEALED)) {
+            if (SetUIMouseCursor__sOldExitGridNo != usMapPos) {
+              SetUIMouseCursor__fOkForExit = OKForSectorExit(-1, usMapPos, addressof(uiTraverseTimeInMinutes));
+              SetUIMouseCursor__sOldExitGridNo = usMapPos;
             }
 
-            if (fOkForExit) {
+            if (SetUIMouseCursor__fOkForExit) {
               if (gfUIConfirmExitArrows) {
                 guiNewUICursor = Enum210.CONFIRM_EXIT_GRID_UICURSOR;
               } else {
@@ -608,7 +608,7 @@ function SetUIMouseCursor(): void {
         }
       }
     } else {
-      sOldExitGridNo = NOWHERE;
+      SetUIMouseCursor__sOldExitGridNo = NOWHERE;
     }
   } else {
     gsGlobalCursorYOffset = 0;
@@ -639,15 +639,15 @@ function SetUIMouseCursor(): void {
   }
 }
 
-export function SetUIKeyboardHook(KeyboardHookFnc: UIKEYBOARD_HOOK): void {
+export function SetUIKeyboardHook(KeyboardHookFnc: UIKEYBOARD_HOOK | null): void {
   gUIKeyboardHook = KeyboardHookFnc;
 }
 
-function ClearEvent(pUIEvent: Pointer<UI_EVENT>): void {
-  memset(pUIEvent.value.uiParams, 0, sizeof(pUIEvent.value.uiParams));
-  pUIEvent.value.fDoneMenu = false;
-  pUIEvent.value.fFirstTime = true;
-  pUIEvent.value.uiMenuPreviousMode = 0;
+function ClearEvent(pUIEvent: UI_EVENT): void {
+  memset(pUIEvent.uiParams, 0, sizeof(pUIEvent.uiParams));
+  pUIEvent.fDoneMenu = false;
+  pUIEvent.fFirstTime = true;
+  pUIEvent.uiMenuPreviousMode = 0;
 }
 
 export function EndMenuEvent(uiEvent: UINT32): void {
@@ -656,32 +656,30 @@ export function EndMenuEvent(uiEvent: UINT32): void {
 
 // HANDLER FUCNTIONS
 
-function UIHandleIDoNothing(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIDoNothing(pUIEvent: UI_EVENT): UINT32 {
   guiNewUICursor = Enum210.NORMAL_SNAPUICURSOR;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleExit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleExit(pUIEvent: UI_EVENT): UINT32 {
   gfProgramIsRunning = false;
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  /* static */ let ubTemp: UINT8 = 3;
+/* static */ let UIHandleNewMerc__ubTemp: UINT8 = 3;
+/* static */ let UIHandleNewMerc__iSoldierCount: INT32 = 0;
+function UIHandleNewMerc(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: INT16;
-  /* static */ let iSoldierCount: INT32 = 0;
   let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let bReturnCode: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // Get Grid Corrdinates of mouse
   if (GetMouseMapPos(addressof(usMapPos))) {
-    ubTemp += 2;
+    UIHandleNewMerc__ubTemp += 2;
 
-    memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
-
-    HireMercStruct.ubProfileID = ubTemp;
+    HireMercStruct.ubProfileID = UIHandleNewMerc__ubTemp;
 
     // DEF: temp
     HireMercStruct.sSectorX = gWorldSectorX;
@@ -696,7 +694,7 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     HireMercStruct.uiTimeTillMercArrives = 0;
 
     // if we succesfully hired the merc
-    bReturnCode = HireMerc(addressof(HireMercStruct));
+    bReturnCode = HireMerc(HireMercStruct);
 
     if (bReturnCode == MERC_HIRE_FAILED) {
       ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "Merc hire failed:  Either already hired or dislikes you.");
@@ -704,17 +702,17 @@ function UIHandleNewMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, "Can't hire more than 20 mercs.");
     } else {
       // Get soldier from profile
-      pSoldier = FindSoldierByProfileID(ubTemp, false);
+      pSoldier = <SOLDIERTYPE>FindSoldierByProfileID(UIHandleNewMerc__ubTemp, false);
 
-      MercArrivesCallback(pSoldier.value.ubID);
-      SelectSoldier(pSoldier.value.ubID, false, true);
+      MercArrivesCallback(pSoldier.ubID);
+      SelectSoldier(pSoldier.ubID, false, true);
     }
   }
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleNewBadMerc(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
   let usRandom: UINT16;
 
@@ -736,43 +734,43 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     // Add soldier strategic info, so it doesn't break the counters!
     if (pSoldier) {
       if (!gbWorldSectorZ) {
-        let pSector: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
-        switch (pSoldier.value.ubSoldierClass) {
+        let pSector: SECTORINFO = SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+        switch (pSoldier.ubSoldierClass) {
           case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-            pSector.value.ubNumAdmins++;
-            pSector.value.ubAdminsInBattle++;
+            pSector.ubNumAdmins++;
+            pSector.ubAdminsInBattle++;
             break;
           case Enum262.SOLDIER_CLASS_ARMY:
-            pSector.value.ubNumTroops++;
-            pSector.value.ubTroopsInBattle++;
+            pSector.ubNumTroops++;
+            pSector.ubTroopsInBattle++;
             break;
           case Enum262.SOLDIER_CLASS_ELITE:
-            pSector.value.ubNumElites++;
-            pSector.value.ubElitesInBattle++;
+            pSector.ubNumElites++;
+            pSector.ubElitesInBattle++;
             break;
         }
       } else {
-        let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+        let pSector: UNDERGROUND_SECTORINFO | null = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
         if (pSector) {
-          switch (pSoldier.value.ubSoldierClass) {
+          switch (pSoldier.ubSoldierClass) {
             case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-              pSector.value.ubNumAdmins++;
-              pSector.value.ubAdminsInBattle++;
+              pSector.ubNumAdmins++;
+              pSector.ubAdminsInBattle++;
               break;
             case Enum262.SOLDIER_CLASS_ARMY:
-              pSector.value.ubNumTroops++;
-              pSector.value.ubTroopsInBattle++;
+              pSector.ubNumTroops++;
+              pSector.ubTroopsInBattle++;
               break;
             case Enum262.SOLDIER_CLASS_ELITE:
-              pSector.value.ubNumElites++;
-              pSector.value.ubElitesInBattle++;
+              pSector.ubNumElites++;
+              pSector.ubElitesInBattle++;
               break;
           }
         }
       }
 
-      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
-      pSoldier.value.usStrategicInsertionData = usMapPos;
+      pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
+      pSoldier.usStrategicInsertionData = usMapPos;
       UpdateMercInSector(pSoldier, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       AllTeamsLookForAll(NO_INTERRUPTS);
     }
@@ -780,15 +778,15 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleEnterEditMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleEnterEditMode(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.EDIT_SCREEN;
 }
 
-function UIHandleEnterPalEditMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleEnterPalEditMode(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.PALEDIT_SCREEN;
 }
 
-export function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleEndTurn(pUIEvent: UI_EVENT | null): UINT32 {
   // CANCEL FROM PLANNING MODE!
   if (InUIPlanMode()) {
     EndUIPlan();
@@ -815,20 +813,20 @@ export function UIHandleEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleTestHit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleTestHit(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE;
   let bDamage: INT8;
 
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   if (gfUIFullTargetFound) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusUIFullTargetID);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusUIFullTargetID);
 
     if (_KeyDown(SHIFT)) {
-      pSoldier.value.bBreath -= 30;
+      pSoldier.bBreath -= 30;
 
-      if (pSoldier.value.bBreath < 0)
-        pSoldier.value.bBreath = 0;
+      if (pSoldier.bBreath < 0)
+        pSoldier.bBreath = 0;
 
       bDamage = 1;
     } else {
@@ -841,7 +839,7 @@ function UIHandleTestHit(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     gTacticalStatus.ubAttackBusyCount++;
 
-    EVENT_SoldierGotHit(pSoldier, 1, bDamage, 10, pSoldier.value.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pSoldier.value.bAimShotLocation, 0, NOWHERE);
+    EVENT_SoldierGotHit(pSoldier, 1, bDamage, 10, pSoldier.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pSoldier.bAimShotLocation, 0, NOWHERE);
   }
   return Enum26.GAME_SCREEN;
 }
@@ -871,7 +869,7 @@ export function ChangeInterfaceLevel(sLevel: INT16): void {
   ErasePath(false);
 }
 
-export function UIHandleChangeLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleChangeLevel(pUIEvent: UI_EVENT): UINT32 {
   if (gsInterfaceLevel == 0) {
     ChangeInterfaceLevel(1);
   } else if (gsInterfaceLevel == 1) {
@@ -881,7 +879,7 @@ export function UIHandleChangeLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleSelectMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleSelectMerc(pUIEvent: UI_EVENT): UINT32 {
   let iCurrentSquad: INT32;
 
   // Get merc index at mouse and set current selection
@@ -899,21 +897,20 @@ function UIHandleSelectMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+/* static */ let UIHandleMOnTerrain__sGridNoForItemsOver: INT16;
+/* static */ let UIHandleMOnTerrain__bLevelForItemsOver: INT8;
+/* static */ let UIHandleMOnTerrain__uiItemsOverTimer: UINT32;
+/* static */ let UIHandleMOnTerrain__fOverItems: boolean;
+function UIHandleMOnTerrain(pUIEvent: UI_EVENT | null): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
   let fSetCursor: boolean = false;
   let uiCursorFlags: UINT32;
-  let pIntNode: Pointer<LEVELNODE>;
+  let pIntNode: LEVELNODE | null;
   let ExitGrid: EXITGRID = createExitGrid();
   let sIntTileGridNo: INT16;
   let fContinue: boolean = true;
   let pItemPool: ITEM_POOL | null;
-
-  /* static */ let sGridNoForItemsOver: INT16;
-  /* static */ let bLevelForItemsOver: INT8;
-  /* static */ let uiItemsOverTimer: UINT32;
-  /* static */ let fOverItems: boolean;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
     return Enum26.GAME_SCREEN;
@@ -922,7 +919,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gUIActionModeChangeDueToMouseOver = false;
 
   // If we are a vehicle..... just show an X
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
       if (!UIHandleOnMerc(true)) {
         guiNewUICursor = Enum210.FLOATING_X_UICURSOR;
@@ -936,44 +933,44 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     // Are we over items...
     if ((pItemPool = GetItemPool(usMapPos, gsInterfaceLevel)) && ITEMPOOL_VISIBLE(pItemPool)) {
       // Are we already in...
-      if (fOverItems) {
+      if (UIHandleMOnTerrain__fOverItems) {
         // Is this the same level & gridno...
-        if (gsInterfaceLevel == bLevelForItemsOver && usMapPos == sGridNoForItemsOver) {
+        if (gsInterfaceLevel == UIHandleMOnTerrain__bLevelForItemsOver && usMapPos == UIHandleMOnTerrain__sGridNoForItemsOver) {
           // Check timer...
-          if ((GetJA2Clock() - uiItemsOverTimer) > 1500) {
+          if ((GetJA2Clock() - UIHandleMOnTerrain__uiItemsOverTimer) > 1500) {
             // Change to hand curso mode
             guiPendingOverrideEvent = Enum207.M_CHANGE_TO_HANDMODE;
             gsOverItemsGridNo = usMapPos;
             gsOverItemsLevel = gsInterfaceLevel;
-            fOverItems = false;
+            UIHandleMOnTerrain__fOverItems = false;
           }
         } else {
-          uiItemsOverTimer = GetJA2Clock();
-          bLevelForItemsOver = gsInterfaceLevel;
-          sGridNoForItemsOver = usMapPos;
+          UIHandleMOnTerrain__uiItemsOverTimer = GetJA2Clock();
+          UIHandleMOnTerrain__bLevelForItemsOver = gsInterfaceLevel;
+          UIHandleMOnTerrain__sGridNoForItemsOver = usMapPos;
         }
       } else {
-        fOverItems = true;
+        UIHandleMOnTerrain__fOverItems = true;
 
-        uiItemsOverTimer = GetJA2Clock();
-        bLevelForItemsOver = gsInterfaceLevel;
-        sGridNoForItemsOver = usMapPos;
+        UIHandleMOnTerrain__uiItemsOverTimer = GetJA2Clock();
+        UIHandleMOnTerrain__bLevelForItemsOver = gsInterfaceLevel;
+        UIHandleMOnTerrain__sGridNoForItemsOver = usMapPos;
       }
     } else {
-      fOverItems = false;
+      UIHandleMOnTerrain__fOverItems = false;
     }
 
-    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-      if (pSoldier.value.sGridNo == NOWHERE) {
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+      if (pSoldier.sGridNo == NOWHERE) {
         let i: number = 0;
       }
 
-      if (GetExitGrid(usMapPos, addressof(ExitGrid)) && pSoldier.value.bLevel == 0) {
+      if (GetExitGrid(usMapPos, ExitGrid) && pSoldier.bLevel == 0) {
         gfUIShowExitExitGrid = true;
       }
 
       // ATE: Draw invalidc cursor if heights different
-      if (gpWorldLevelData[usMapPos].sHeight != gpWorldLevelData[pSoldier.value.sGridNo].sHeight) {
+      if (gpWorldLevelData[usMapPos].sHeight != gpWorldLevelData[pSoldier.sGridNo].sHeight) {
         // ERASE PATH
         ErasePath(true);
 
@@ -988,7 +985,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
     if (gusSelectedSoldier != NO_SOLDIER) {
       // Get Soldier Pointer
-      GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+      pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
       // Get interactvie tile node
       pIntNode = GetCurInteractiveTileGridNo(addressof(sIntTileGridNo));
@@ -996,7 +993,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       // Check were we are
       // CHECK IF WE CAN MOVE HERE
       // THIS IS JUST A CRUDE TEST FOR NOW
-      if (pSoldier.value.bLife < OKLIFE) {
+      if (pSoldier.bLife < OKLIFE) {
         let ubID: UINT8;
         // Show reg. cursor
         // GO INTO IDLE MODE
@@ -1056,16 +1053,16 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleMovementMenu(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
 
   // Get soldier
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
   // Popup Menu
-  if (pUIEvent.value.fFirstTime) {
+  if (pUIEvent.fFirstTime) {
     // Pop-up menu
     PopupMovementMenu(pUIEvent);
 
@@ -1074,47 +1071,47 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   // Check for done flag
-  if (pUIEvent.value.fDoneMenu) {
+  if (pUIEvent.fDoneMenu) {
     PopDownMovementMenu();
 
     // Excecute command, if user hit a button
-    if (pUIEvent.value.uiParams[1] == true) {
-      if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_LOOK) {
+    if (pUIEvent.uiParams[1] == true) {
+      if (pUIEvent.uiParams[2] == MOVEMENT_MENU_LOOK) {
         guiPendingOverrideEvent = Enum207.LC_CHANGE_TO_LOOK;
-      } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_HAND) {
+      } else if (pUIEvent.uiParams[2] == MOVEMENT_MENU_HAND) {
         guiPendingOverrideEvent = Enum207.HC_ON_TERRAIN;
-      } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_ACTIONC) {
+      } else if (pUIEvent.uiParams[2] == MOVEMENT_MENU_ACTIONC) {
         guiPendingOverrideEvent = Enum207.M_CHANGE_TO_ACTION;
-      } else if (pUIEvent.value.uiParams[2] == MOVEMENT_MENU_TALK) {
+      } else if (pUIEvent.uiParams[2] == MOVEMENT_MENU_TALK) {
         guiPendingOverrideEvent = Enum207.T_CHANGE_TO_TALKING;
       } else {
         // Change stance based on params!
-        switch (pUIEvent.value.uiParams[0]) {
+        switch (pUIEvent.uiParams[0]) {
           case MOVEMENT_MENU_RUN:
 
-            if (pSoldier.value.usUIMovementMode != Enum193.WALKING && pSoldier.value.usUIMovementMode != Enum193.RUNNING) {
-              UIHandleSoldierStanceChange(pSoldier.value.ubID, ANIM_STAND);
-              pSoldier.value.fUIMovementFast = 1;
+            if (pSoldier.usUIMovementMode != Enum193.WALKING && pSoldier.usUIMovementMode != Enum193.RUNNING) {
+              UIHandleSoldierStanceChange(pSoldier.ubID, ANIM_STAND);
+              pSoldier.fUIMovementFast = true;
             } else {
-              pSoldier.value.fUIMovementFast = 1;
-              pSoldier.value.usUIMovementMode = Enum193.RUNNING;
+              pSoldier.fUIMovementFast = true;
+              pSoldier.usUIMovementMode = Enum193.RUNNING;
               gfPlotNewMovement = true;
             }
             break;
 
           case MOVEMENT_MENU_WALK:
 
-            UIHandleSoldierStanceChange(pSoldier.value.ubID, ANIM_STAND);
+            UIHandleSoldierStanceChange(pSoldier.ubID, ANIM_STAND);
             break;
 
           case MOVEMENT_MENU_SWAT:
 
-            UIHandleSoldierStanceChange(pSoldier.value.ubID, ANIM_CROUCH);
+            UIHandleSoldierStanceChange(pSoldier.ubID, ANIM_CROUCH);
             break;
 
           case MOVEMENT_MENU_PRONE:
 
-            UIHandleSoldierStanceChange(pSoldier.value.ubID, ANIM_PRONE);
+            UIHandleSoldierStanceChange(pSoldier.ubID, ANIM_PRONE);
             break;
         }
 
@@ -1128,13 +1125,13 @@ function UIHandleMovementMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandlePositionMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandlePositionMenu(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleAOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   //	INT16							sTargetXPos, sTargetYPos;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
@@ -1146,7 +1143,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   // Get soldier to determine range
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     // ATE: Add stuff here to display a system message if we are targeting smeothing and
     //  are out of range.
     // Are we using a gun?
@@ -1159,28 +1156,28 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         // Are we over a guy?
         if (gfUIFullTargetFound) {
           // No, ok display message IF this is the first time at this gridno
-          if (gsOutOfRangeGridNo != MercPtrs[gusUIFullTargetID].value.sGridNo || gubOutOfRangeMerc != gusSelectedSoldier) {
+          if (gsOutOfRangeGridNo != MercPtrs[gusUIFullTargetID].sGridNo || gubOutOfRangeMerc != gusSelectedSoldier) {
             // Display
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.OUT_OF_RANGE_STRING]);
 
             // PlayJA2Sample( TARGET_OUT_OF_RANGE, RATE_11025, MIDVOLUME, 1, MIDDLEPAN );
 
             // Set
-            gsOutOfRangeGridNo = MercPtrs[gusUIFullTargetID].value.sGridNo;
+            gsOutOfRangeGridNo = MercPtrs[gusUIFullTargetID].sGridNo;
             gubOutOfRangeMerc = gusSelectedSoldier;
           }
         }
       }
     }
 
-    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem, usMapPos, false);
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.inv[Enum261.HANDPOS].usItem, usMapPos, false);
 
     // Show UI ON GUY
     UIHandleOnMerc(false);
 
     // If we are in realtime, and in a stationary animation, follow!
     if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-      if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_STATIONARY && pSoldier.value.ubPendingAction == NO_PENDING_ACTION) {
+      if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_STATIONARY && pSoldier.ubPendingAction == NO_PENDING_ACTION) {
         // Check if we have a shot waiting!
         if (gUITargetShotWaiting) {
           guiPendingOverrideEvent = Enum207.CA_MERC_SHOOT;
@@ -1205,7 +1202,7 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMChangeToAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleMChangeToAction(pUIEvent: UI_EVENT): UINT32 {
   gUITargetShotWaiting = false;
 
   EndPhysicsTrajectoryUI();
@@ -1215,13 +1212,13 @@ function UIHandleMChangeToAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMChangeToHandMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleMChangeToHandMode(pUIEvent: UI_EVENT): UINT32 {
   ErasePath(false);
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleAChangeToMove(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleAChangeToMove(pUIEvent: UI_EVENT): UINT32 {
   // Set merc glow back to normal
   // ( could have been set when in target cursor )
   SetMercGlowNormal();
@@ -1233,18 +1230,18 @@ function UIHandleAChangeToMove(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleCWait(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let fSetCursor: boolean;
   let uiCursorFlags: UINT32;
-  let pInvTile: Pointer<LEVELNODE>;
+  let pInvTile: LEVELNODE | null;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
     return Enum26.GAME_SCREEN;
   }
 
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     pInvTile = GetCurInteractiveTile();
 
     if (pInvTile && gpInvTileThatCausedMoveConfirm != pInvTile) {
@@ -1291,22 +1288,22 @@ function UIHandleCWait(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
 // NOTE, ONCE AT THIS FUNCTION, WE HAVE ASSUMED TO HAVE CHECKED FOR ENOUGH APS THROUGH
 // SelectedMercCanAffordMove
-function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleCMoveMerc(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let sDestGridNo: INT16;
   let sActionGridNo: INT16;
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
   let ubDirection: UINT8;
-  let fAllMove: boolean;
+  let fAllMove: number /* boolean */;
   let bLoop: INT8;
-  let pIntTile: Pointer<LEVELNODE>;
+  let pIntTile: LEVELNODE | null;
   let sIntTileGridNo: INT16;
   let fOldFastMove: boolean;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     fAllMove = gfUIAllMoveOn;
-    gfUIAllMoveOn = false;
+    gfUIAllMoveOn = 0;
 
     if (!GetMouseMapPos(addressof(usMapPos))) {
       return Enum26.GAME_SCREEN;
@@ -1320,10 +1317,10 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
       // Loop through all mercs and make go!
       // TODO: Only our squad!
-      for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++, pSoldier++) {
-        if (OK_CONTROLLABLE_MERC(pSoldier) && pSoldier.value.bAssignment == CurrentSquad() && !pSoldier.value.fMercAsleep) {
+      for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++, pSoldier = MercPtrs[bLoop]) {
+        if (OK_CONTROLLABLE_MERC(pSoldier) && pSoldier.bAssignment == CurrentSquad() && !pSoldier.fMercAsleep) {
           // If we can't be controlled, returninvalid...
-          if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+          if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
             if (!CanRobotBeControlled(pSoldier)) {
               continue;
             }
@@ -1331,18 +1328,18 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           AdjustNoAPToFinishMove(pSoldier, false);
 
-          fOldFastMove = pSoldier.value.fUIMovementFast;
+          fOldFastMove = pSoldier.fUIMovementFast;
 
           if (fAllMove == 2) {
-            pSoldier.value.fUIMovementFast = true;
-            pSoldier.value.usUIMovementMode = Enum193.RUNNING;
+            pSoldier.fUIMovementFast = true;
+            pSoldier.usUIMovementMode = Enum193.RUNNING;
           } else {
-            pSoldier.value.fUIMovementFast = false;
-            pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
+            pSoldier.fUIMovementFast = false;
+            pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.usAnimState].ubEndHeight);
           }
 
           // Remove any previous actions
-          pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
+          pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
           // if ( !( gTacticalStatus.uiFlags & INCOMBAT ) && ( gAnimControl[ pSoldier->usAnimState ].uiFlags & ANIM_MOVING ) )
           //{
@@ -1350,13 +1347,13 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           //	pSoldier->usRTPendingMovementAnim  = pSoldier->usUIMovementMode;
           //}
           // else
-          if (EVENT_InternalGetNewSoldierPath(pSoldier, usMapPos, pSoldier.value.usUIMovementMode, true, false)) {
+          if (EVENT_InternalGetNewSoldierPath(pSoldier, usMapPos, pSoldier.usUIMovementMode, 1, false)) {
             InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
           } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.value.name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.name);
           }
 
-          pSoldier.value.fUIMovementFast = fOldFastMove;
+          pSoldier.fUIMovementFast = fOldFastMove;
         }
       }
       gfGetNewPathThroughPeople = false;
@@ -1367,10 +1364,10 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       gfUIAllMoveOn = 0;
     } else {
       // Get soldier
-      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
         // FOR REALTIME - DO MOVEMENT BASED ON STANCE!
         if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
-          pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
+          pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.usAnimState].ubEndHeight);
         }
 
         sDestGridNo = usMapPos;
@@ -1382,13 +1379,13 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         if (pIntTile != null) {
           sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, false, true);
           if (sActionGridNo != -1) {
-            SetUIBusy(pSoldier.value.ubID);
+            SetUIBusy(pSoldier.ubID);
 
             // Set dest gridno
             sDestGridNo = sActionGridNo;
 
             // check if we are at this location
-            if (pSoldier.value.sGridNo == sDestGridNo) {
+            if (pSoldier.sGridNo == sDestGridNo) {
               StartInteractiveObject(sIntTileGridNo, pStructure.value.usStructureID, pSoldier, ubDirection);
               InteractWithInteractiveObject(pSoldier, pStructure, ubDirection);
               return Enum26.GAME_SCREEN;
@@ -1399,14 +1396,14 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           }
         }
 
-        SetUIBusy(pSoldier.value.ubID);
+        SetUIBusy(pSoldier.ubID);
 
         if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
           // RESET MOVE FAST FLAG
           SetConfirmMovementModeCursor(pSoldier, true);
 
           if (!gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
-            pSoldier.value.fUIMovementFast = false;
+            pSoldier.fUIMovementFast = false;
           }
 
           // StartLooseCursor( usMapPos, 0 );
@@ -1416,23 +1413,23 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           HandleMultiSelectionMove(sDestGridNo);
         } else {
           if (gUIUseReverse) {
-            pSoldier.value.bReverse = true;
+            pSoldier.bReverse = true;
           } else {
-            pSoldier.value.bReverse = false;
+            pSoldier.bReverse = false;
           }
 
           // Remove any previous actions
-          pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
+          pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
-          { EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.value.usUIMovementMode, true, pSoldier.value.fNoAPToFinishMove); }
+          { EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.usUIMovementMode, 1, pSoldier.fNoAPToFinishMove); }
 
-          if (pSoldier.value.usPathDataSize > 5) {
+          if (pSoldier.usPathDataSize > 5) {
             DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1);
           }
 
           // HANDLE ANY INTERACTIVE OBJECTS HERE!
           if (pIntTile != null) {
-            StartInteractiveObject(sIntTileGridNo, pStructure.value.usStructureID, pSoldier, ubDirection);
+            StartInteractiveObject(sIntTileGridNo, pStructure.usStructureID, pSoldier, ubDirection);
           }
         }
       }
@@ -1441,56 +1438,56 @@ function UIHandleCMoveMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMCycleMoveAll(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleMCycleMoveAll(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
 
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
   if (gfUICanBeginAllMoveCycle) {
-    gfUIAllMoveOn = true;
+    gfUIAllMoveOn = 1;
     gfUICanBeginAllMoveCycle = false;
   }
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMCycleMovement(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleMCycleMovement(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let fGoodMode: boolean = false;
 
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
-  gfUIAllMoveOn = false;
+  gfUIAllMoveOn = 0;
 
-  if (pSoldier.value.ubBodyType == Enum194.ROBOTNOWEAPON) {
-    pSoldier.value.usUIMovementMode = Enum193.WALKING;
+  if (pSoldier.ubBodyType == Enum194.ROBOTNOWEAPON) {
+    pSoldier.usUIMovementMode = Enum193.WALKING;
     gfPlotNewMovement = true;
     return Enum26.GAME_SCREEN;
   }
 
   do {
     // Cycle gmovement state
-    if (pSoldier.value.usUIMovementMode == Enum193.RUNNING) {
-      pSoldier.value.usUIMovementMode = Enum193.WALKING;
+    if (pSoldier.usUIMovementMode == Enum193.RUNNING) {
+      pSoldier.usUIMovementMode = Enum193.WALKING;
       if (IsValidMovementMode(pSoldier, Enum193.WALKING)) {
         fGoodMode = true;
       }
-    } else if (pSoldier.value.usUIMovementMode == Enum193.WALKING) {
-      pSoldier.value.usUIMovementMode = Enum193.SWATTING;
+    } else if (pSoldier.usUIMovementMode == Enum193.WALKING) {
+      pSoldier.usUIMovementMode = Enum193.SWATTING;
       if (IsValidMovementMode(pSoldier, Enum193.SWATTING)) {
         fGoodMode = true;
       }
-    } else if (pSoldier.value.usUIMovementMode == Enum193.SWATTING) {
-      pSoldier.value.usUIMovementMode = Enum193.CRAWLING;
+    } else if (pSoldier.usUIMovementMode == Enum193.SWATTING) {
+      pSoldier.usUIMovementMode = Enum193.CRAWLING;
       if (IsValidMovementMode(pSoldier, Enum193.CRAWLING)) {
         fGoodMode = true;
       }
-    } else if (pSoldier.value.usUIMovementMode == Enum193.CRAWLING) {
-      pSoldier.value.fUIMovementFast = 1;
-      pSoldier.value.usUIMovementMode = Enum193.RUNNING;
+    } else if (pSoldier.usUIMovementMode == Enum193.CRAWLING) {
+      pSoldier.fUIMovementFast = true;
+      pSoldier.usUIMovementMode = Enum193.RUNNING;
       if (IsValidMovementMode(pSoldier, Enum193.RUNNING)) {
         fGoodMode = true;
       }
@@ -1502,34 +1499,34 @@ function UIHandleMCycleMovement(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+/* static */ let UIHandleMAdjustStanceMode__gusAnchorMouseY: UINT16;
+/* static */ let UIHandleMAdjustStanceMode__usOldMouseY: UINT16;
+/* static */ let UIHandleMAdjustStanceMode__ubNearHeigherLevel: boolean;
+/* static */ let UIHandleMAdjustStanceMode__ubNearLowerLevel: boolean;
+/* static */ let UIHandleMAdjustStanceMode__ubUpHeight: UINT8;
+/* static */ let UIHandleMAdjustStanceMode__ubDownDepth: UINT8;
+/* static */ let UIHandleMAdjustStanceMode__uiOldShowUPDownArrows: UINT32;
+function UIHandleMAdjustStanceMode(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let fCheck: boolean = false;
   let iPosDiff: INT32;
-  /* static */ let gusAnchorMouseY: UINT16;
-  /* static */ let usOldMouseY: UINT16;
-  /* static */ let ubNearHeigherLevel: boolean;
-  /* static */ let ubNearLowerLevel: boolean;
-  /* static */ let ubUpHeight: UINT8;
-  /* static */ let ubDownDepth: UINT8;
-  /* static */ let uiOldShowUPDownArrows: UINT32;
   let bNewDirection: INT8;
 
   // Change cusror to normal
   guiNewUICursor = Enum210.NO_UICURSOR;
 
-  if (pUIEvent.value.fFirstTime) {
-    gusAnchorMouseY = gusMouseYPos;
-    usOldMouseY = gusMouseYPos;
-    ubNearHeigherLevel = false;
-    ubNearLowerLevel = false;
+  if (pUIEvent.fFirstTime) {
+    UIHandleMAdjustStanceMode__gusAnchorMouseY = gusMouseYPos;
+    UIHandleMAdjustStanceMode__usOldMouseY = gusMouseYPos;
+    UIHandleMAdjustStanceMode__ubNearHeigherLevel = false;
+    UIHandleMAdjustStanceMode__ubNearLowerLevel = false;
 
     guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
-    uiOldShowUPDownArrows = guiShowUPDownArrows;
+    UIHandleMAdjustStanceMode__uiOldShowUPDownArrows = guiShowUPDownArrows;
 
     gbAdjustStanceDiff = 0;
     gbClimbID = 0;
@@ -1537,58 +1534,58 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     gfIgnoreScrolling = true;
 
     // Get soldier current height of animation
-    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
       // IF we are on a basic level...(temp)
-      if (pSoldier.value.bLevel == 0) {
-        if (FindHeigherLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
-          ubNearHeigherLevel = true;
+      if (pSoldier.bLevel == 0) {
+        if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
+          UIHandleMAdjustStanceMode__ubNearHeigherLevel = true;
         }
       }
 
       // IF we are higher...
-      if (pSoldier.value.bLevel > 0) {
-        if (FindLowerLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
-          ubNearLowerLevel = true;
+      if (pSoldier.bLevel > 0) {
+        if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
+          UIHandleMAdjustStanceMode__ubNearLowerLevel = true;
         }
       }
 
-      switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
+      switch (gAnimControl[pSoldier.usAnimState].ubEndHeight) {
         case ANIM_STAND:
-          if (ubNearHeigherLevel) {
-            ubUpHeight = 1;
-            ubDownDepth = 2;
-          } else if (ubNearLowerLevel) {
-            ubUpHeight = 0;
-            ubDownDepth = 3;
+          if (UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 1;
+            UIHandleMAdjustStanceMode__ubDownDepth = 2;
+          } else if (UIHandleMAdjustStanceMode__ubNearLowerLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 0;
+            UIHandleMAdjustStanceMode__ubDownDepth = 3;
           } else {
-            ubUpHeight = 0;
-            ubDownDepth = 2;
+            UIHandleMAdjustStanceMode__ubUpHeight = 0;
+            UIHandleMAdjustStanceMode__ubDownDepth = 2;
           }
           break;
 
         case ANIM_CROUCH:
-          if (ubNearHeigherLevel) {
-            ubUpHeight = 2;
-            ubDownDepth = 1;
-          } else if (ubNearLowerLevel) {
-            ubUpHeight = 1;
-            ubDownDepth = 2;
+          if (UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 2;
+            UIHandleMAdjustStanceMode__ubDownDepth = 1;
+          } else if (UIHandleMAdjustStanceMode__ubNearLowerLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 1;
+            UIHandleMAdjustStanceMode__ubDownDepth = 2;
           } else {
-            ubUpHeight = 1;
-            ubDownDepth = 1;
+            UIHandleMAdjustStanceMode__ubUpHeight = 1;
+            UIHandleMAdjustStanceMode__ubDownDepth = 1;
           }
           break;
 
         case ANIM_PRONE:
-          if (ubNearHeigherLevel) {
-            ubUpHeight = 3;
-            ubDownDepth = 0;
-          } else if (ubNearLowerLevel) {
-            ubUpHeight = 2;
-            ubDownDepth = 1;
+          if (UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 3;
+            UIHandleMAdjustStanceMode__ubDownDepth = 0;
+          } else if (UIHandleMAdjustStanceMode__ubNearLowerLevel) {
+            UIHandleMAdjustStanceMode__ubUpHeight = 2;
+            UIHandleMAdjustStanceMode__ubDownDepth = 1;
           } else {
-            ubUpHeight = 2;
-            ubDownDepth = 0;
+            UIHandleMAdjustStanceMode__ubUpHeight = 2;
+            UIHandleMAdjustStanceMode__ubDownDepth = 0;
           }
           break;
       }
@@ -1596,24 +1593,24 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   // Check if delta X has changed alot since last time
-  iPosDiff = Math.abs((usOldMouseY - gusMouseYPos));
+  iPosDiff = Math.abs((UIHandleMAdjustStanceMode__usOldMouseY - gusMouseYPos));
 
   // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
-  guiShowUPDownArrows = uiOldShowUPDownArrows;
+  guiShowUPDownArrows = UIHandleMAdjustStanceMode__uiOldShowUPDownArrows;
 
   {
-    if (gusAnchorMouseY > gusMouseYPos) {
+    if (UIHandleMAdjustStanceMode__gusAnchorMouseY > gusMouseYPos) {
       // Get soldier
-      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-        if (iPosDiff < GO_MOVE_ONE && ubUpHeight >= 1) {
+      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+        if (iPosDiff < GO_MOVE_ONE && UIHandleMAdjustStanceMode__ubUpHeight >= 1) {
           // Change arrows to move down arrow + show
           // guiShowUPDownArrows = ARROWS_SHOW_UP_ABOVE_Y;
           guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
           gbAdjustStanceDiff = 0;
           gbClimbID = 0;
-        } else if (iPosDiff > GO_MOVE_ONE && iPosDiff < GO_MOVE_TWO && ubUpHeight >= 1) {
+        } else if (iPosDiff > GO_MOVE_ONE && iPosDiff < GO_MOVE_TWO && UIHandleMAdjustStanceMode__ubUpHeight >= 1) {
           // guiShowUPDownArrows = ARROWS_SHOW_UP_ABOVE_G;
-          if (ubUpHeight == 1 && ubNearHeigherLevel) {
+          if (UIHandleMAdjustStanceMode__ubUpHeight == 1 && UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_UP_ABOVE_CLIMB;
             gbClimbID = 1;
           } else {
@@ -1621,8 +1618,8 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             gbClimbID = 0;
           }
           gbAdjustStanceDiff = 1;
-        } else if (iPosDiff >= GO_MOVE_TWO && iPosDiff < GO_MOVE_THREE && ubUpHeight >= 2) {
-          if (ubUpHeight == 2 && ubNearHeigherLevel) {
+        } else if (iPosDiff >= GO_MOVE_TWO && iPosDiff < GO_MOVE_THREE && UIHandleMAdjustStanceMode__ubUpHeight >= 2) {
+          if (UIHandleMAdjustStanceMode__ubUpHeight == 2 && UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_UP_ABOVE_CLIMB;
             gbClimbID = 1;
           } else {
@@ -1630,8 +1627,8 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             gbClimbID = 0;
           }
           gbAdjustStanceDiff = 2;
-        } else if (iPosDiff >= GO_MOVE_THREE && ubUpHeight >= 3) {
-          if (ubUpHeight == 3 && ubNearHeigherLevel) {
+        } else if (iPosDiff >= GO_MOVE_THREE && UIHandleMAdjustStanceMode__ubUpHeight >= 3) {
+          if (UIHandleMAdjustStanceMode__ubUpHeight == 3 && UIHandleMAdjustStanceMode__ubNearHeigherLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_UP_ABOVE_CLIMB;
             gbClimbID = 1;
           }
@@ -1639,18 +1636,18 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       }
     }
 
-    if (gusAnchorMouseY < gusMouseYPos) {
+    if (UIHandleMAdjustStanceMode__gusAnchorMouseY < gusMouseYPos) {
       // Get soldier
-      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-        if (iPosDiff < GO_MOVE_ONE && ubDownDepth >= 1) {
+      if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+        if (iPosDiff < GO_MOVE_ONE && UIHandleMAdjustStanceMode__ubDownDepth >= 1) {
           // Change arrows to move down arrow + show
           // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BELOW_Y;
           guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
           gbAdjustStanceDiff = 0;
           gbClimbID = 0;
-        } else if (iPosDiff >= GO_MOVE_ONE && iPosDiff < GO_MOVE_TWO && ubDownDepth >= 1) {
+        } else if (iPosDiff >= GO_MOVE_ONE && iPosDiff < GO_MOVE_TWO && UIHandleMAdjustStanceMode__ubDownDepth >= 1) {
           //						guiShowUPDownArrows = ARROWS_SHOW_DOWN_BELOW_G;
-          if (ubDownDepth == 1 && ubNearLowerLevel) {
+          if (UIHandleMAdjustStanceMode__ubDownDepth == 1 && UIHandleMAdjustStanceMode__ubNearLowerLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_DOWN_CLIMB;
             gbClimbID = -1;
           } else {
@@ -1658,9 +1655,9 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             gbClimbID = 0;
           }
           gbAdjustStanceDiff = -1;
-        } else if (iPosDiff > GO_MOVE_TWO && iPosDiff < GO_MOVE_THREE && ubDownDepth >= 2) {
+        } else if (iPosDiff > GO_MOVE_TWO && iPosDiff < GO_MOVE_THREE && UIHandleMAdjustStanceMode__ubDownDepth >= 2) {
           // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BELOW_GG;
-          if (ubDownDepth == 2 && ubNearLowerLevel) {
+          if (UIHandleMAdjustStanceMode__ubDownDepth == 2 && UIHandleMAdjustStanceMode__ubNearLowerLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_DOWN_CLIMB;
             gbClimbID = -1;
           } else {
@@ -1668,9 +1665,9 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
             gbClimbID = 0;
           }
           gbAdjustStanceDiff = -2;
-        } else if (iPosDiff > GO_MOVE_THREE && ubDownDepth >= 3) {
+        } else if (iPosDiff > GO_MOVE_THREE && UIHandleMAdjustStanceMode__ubDownDepth >= 3) {
           // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BELOW_GG;
-          if (ubDownDepth == 3 && ubNearLowerLevel) {
+          if (UIHandleMAdjustStanceMode__ubDownDepth == 3 && UIHandleMAdjustStanceMode__ubNearLowerLevel) {
             guiShowUPDownArrows = ARROWS_SHOW_DOWN_CLIMB;
             gbClimbID = -1;
           }
@@ -1679,15 +1676,15 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
   }
 
-  uiOldShowUPDownArrows = guiShowUPDownArrows;
+  UIHandleMAdjustStanceMode__uiOldShowUPDownArrows = guiShowUPDownArrows;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleAChangeToConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleAChangeToConfirmAction(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
 
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     HandleLeftClickCursor(pSoldier);
   }
 
@@ -1696,16 +1693,16 @@ function UIHandleAChangeToConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleCAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleCAOnTerrain(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
     return Enum26.GAME_SCREEN;
   }
 
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.value.inv[Enum261.HANDPOS].usItem, usMapPos, true);
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier.inv[Enum261.HANDPOS].usItem, usMapPos, true);
 
     UIHandleOnMerc(false);
   }
@@ -1713,13 +1710,13 @@ function UIHandleCAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): void {
+function UIHandleMercAttack(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE | null, usMapPos: UINT16): void {
   let iHandleReturn: INT32;
   let sTargetGridNo: INT16;
   let bTargetLevel: INT8;
   let usItem: UINT16;
-  let pIntNode: Pointer<LEVELNODE>;
-  let pStructure: Pointer<STRUCTURE>;
+  let pIntNode: LEVELNODE | null;
+  let pStructure: STRUCTURE | null;
   let sGridNo: INT16;
   let sNewGridNo: INT16;
   let ubItemCursor: UINT8;
@@ -1727,11 +1724,11 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   // get cursor
   ubItemCursor = GetActionModeCursor(pSoldier);
 
-  if (!(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
+  if (!(gTacticalStatus.uiFlags & INCOMBAT) && pTargetSoldier && Item[pSoldier.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
     if (NPCFirstDraw(pSoldier, pTargetSoldier)) {
       // go into turnbased for that person
-      CancelAIAction(pTargetSoldier, true);
-      AddToShouldBecomeHostileOrSayQuoteList(pTargetSoldier.value.ubID);
+      CancelAIAction(pTargetSoldier, 1);
+      AddToShouldBecomeHostileOrSayQuoteList(pTargetSoldier.ubID);
       // MakeCivHostile( pTargetSoldier, 2 );
       // TriggerNPCWithIHateYouQuote( pTargetSoldier->ubProfile );
       return;
@@ -1739,15 +1736,15 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   }
 
   // Set aim time to one in UI
-  pSoldier.value.bAimTime = (pSoldier.value.bShownAimTime / 2);
-  usItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+  pSoldier.bAimTime = (pSoldier.bShownAimTime / 2);
+  usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
   // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
   pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
   if (pTargetSoldier != null) {
-    sTargetGridNo = pTargetSoldier.value.sGridNo;
-    bTargetLevel = pTargetSoldier.value.bLevel;
+    sTargetGridNo = pTargetSoldier.sGridNo;
+    bTargetLevel = pTargetSoldier.bLevel;
   } else {
     sTargetGridNo = usMapPos;
     bTargetLevel = gsInterfaceLevel;
@@ -1761,9 +1758,9 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   // here, change gridno if we're targeting ourselves....
   if (pIntNode != null) {
     // Are we in the same gridno?
-    if (sGridNo == pSoldier.value.sGridNo && ubItemCursor != AIDCURS) {
+    if (sGridNo == pSoldier.sGridNo && ubItemCursor != AIDCURS) {
       // Get orientation....
-      switch (pStructure.value.ubWallOrientation) {
+      switch (pStructure.ubWallOrientation) {
         case Enum314.OUTSIDE_TOP_LEFT:
         case Enum314.INSIDE_TOP_LEFT:
 
@@ -1785,7 +1782,7 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
 
       // now set target cube height
       // CJC says to hardcode this value :)
-      pSoldier.value.bTargetCubeLevel = 2;
+      pSoldier.bTargetCubeLevel = 2;
     } else {
       // ATE: Refine this a bit - if we have nobody as a target...
       if (pTargetSoldier == null) {
@@ -1797,7 +1794,7 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   // Cannot be fire if we are already in a fire animation....
   // this is to stop the shooting trigger/happy duded from contiously pressing fire...
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-    if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_FIRE) {
+    if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_FIRE) {
       return;
     }
   }
@@ -1805,15 +1802,15 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
   // If in turn-based mode - return to movement
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
     // Reset some flags for cont move...
-    pSoldier.value.sFinalDestination = pSoldier.value.sGridNo;
-    pSoldier.value.bGoodContPath = false;
+    pSoldier.sFinalDestination = pSoldier.sGridNo;
+    pSoldier.bGoodContPath = false;
     //  guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
   }
 
-  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
+  if (pSoldier.bWeaponMode == Enum265.WM_ATTACHED) {
     iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, Enum225.UNDER_GLAUNCHER, true);
   } else {
-    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, pSoldier.value.inv[Enum261.HANDPOS].usItem, true);
+    iHandleReturn = HandleItem(pSoldier, sTargetGridNo, bTargetLevel, pSoldier.inv[Enum261.HANDPOS].usItem, true);
   }
 
   if (iHandleReturn < 0) {
@@ -1837,16 +1834,16 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
 
 function AttackRequesterCallback(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    gTacticalStatus.ubLastRequesterTargetID = gpRequesterTargetMerc.value.ubProfile;
+    gTacticalStatus.ubLastRequesterTargetID = (<SOLDIERTYPE>gpRequesterTargetMerc).ubProfile;
 
-    UIHandleMercAttack(gpRequesterMerc, gpRequesterTargetMerc, gsRequesterGridNo);
+    UIHandleMercAttack(<SOLDIERTYPE>gpRequesterMerc, gpRequesterTargetMerc, gsRequesterGridNo);
   }
 }
 
-function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleCAMercShoot(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE | null;
+  let pTSoldier: SOLDIERTYPE | null = null;
   let fDidRequester: boolean = false;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
@@ -1855,7 +1852,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     }
 
     // Get soldier
-    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
       // Get target guy...
       if (gfUIFullTargetFound) {
         // Get target soldier, if one exists
@@ -1864,7 +1861,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
       if (pTSoldier != null) {
         // If this is one of our own guys.....pop up requiester...
-        if ((pTSoldier.value.bTeam == gbPlayerNum || pTSoldier.value.bTeam == MILITIA_TEAM) && Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass != IC_MEDKIT && pSoldier.value.inv[Enum261.HANDPOS].usItem != Enum225.GAS_CAN && gTacticalStatus.ubLastRequesterTargetID != pTSoldier.value.ubProfile && (pTSoldier.value.ubID != pSoldier.value.ubID)) {
+        if ((pTSoldier.bTeam == gbPlayerNum || pTSoldier.bTeam == MILITIA_TEAM) && Item[pSoldier.inv[Enum261.HANDPOS].usItem].usItemClass != IC_MEDKIT && pSoldier.inv[Enum261.HANDPOS].usItem != Enum225.GAS_CAN && gTacticalStatus.ubLastRequesterTargetID != pTSoldier.ubProfile && (pTSoldier.ubID != pSoldier.ubID)) {
           let zStr: string /* INT16[200] */;
 
           gpRequesterMerc = pSoldier;
@@ -1873,7 +1870,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           fDidRequester = true;
 
-          zStr = swprintf(TacticalStr[Enum335.ATTACK_OWN_GUY_PROMPT], pTSoldier.value.name);
+          zStr = swprintf(TacticalStr[Enum335.ATTACK_OWN_GUY_PROMPT], pTSoldier.name);
 
           DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zStr, Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, AttackRequesterCallback, null);
         }
@@ -1888,8 +1885,8 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleAEndAction(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
   let usMapPos: UINT16;
@@ -1899,7 +1896,7 @@ function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     return Enum26.GAME_SCREEN;
   }
 
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
       if (gUITargetReady) {
         // Move to proper stance + direction!
@@ -1916,17 +1913,17 @@ function UIHandleAEndAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleCAEndConfirmAction(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleCAEndConfirmAction(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
 
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     HandleEndConfirmCursor(pSoldier);
   }
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
 
   // Get gridno at this location
@@ -1947,12 +1944,12 @@ function UIHandleIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleIChangeToIdle(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIChangeToIdle(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandlePADJAdjustStance(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandlePADJAdjustStance(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let ubNewStance: UINT8;
   let fChangeStance: boolean = false;
 
@@ -1962,8 +1959,8 @@ function UIHandlePADJAdjustStance(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   if (gusSelectedSoldier != NO_SOLDIER && gbAdjustStanceDiff != 0) {
     // Get soldier
-    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-      ubNewStance = GetAdjustedAnimHeight(gAnimControl[pSoldier.value.usAnimState].ubEndHeight, gbAdjustStanceDiff);
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+      ubNewStance = GetAdjustedAnimHeight(gAnimControl[pSoldier.usAnimState].ubEndHeight, gbAdjustStanceDiff);
 
       if (gbClimbID == 1) {
         BeginSoldierClimbUpRoof(pSoldier);
@@ -1971,7 +1968,7 @@ function UIHandlePADJAdjustStance(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         BeginSoldierClimbDownRoof(pSoldier);
       } else {
         // Set state to result
-        UIHandleSoldierStanceChange(pSoldier.value.ubID, ubNewStance);
+        UIHandleSoldierStanceChange(pSoldier.ubID, ubNewStance);
       }
 
       // Once we have APs, we can safely reset nomove flag!
@@ -2020,7 +2017,7 @@ function GetAdjustedAnimHeight(ubAnimHeight: UINT8, bChange: INT8): UINT8 {
 }
 
 export function HandleObjectHighlighting(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let usMapPos: UINT16;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
@@ -2030,7 +2027,7 @@ export function HandleObjectHighlighting(): void {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   if (gfUIFullTargetFound) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusUIFullTargetID);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusUIFullTargetID);
 
     // If an enemy, and in a given mode, highlight
     if (guiUIFullTargetFlags & ENEMY_MERC) {
@@ -2051,7 +2048,7 @@ export function HandleObjectHighlighting(): void {
       }
     } else if (guiUIFullTargetFlags & OWNED_MERC) {
       // Check for selected
-      pSoldier.value.pCurrentShade = pSoldier.value.pShades[0];
+      pSoldier.pCurrentShade = pSoldier.pShades[0];
       gfUIDoNotHighlightSelMerc = true;
     }
   }
@@ -2059,13 +2056,13 @@ export function HandleObjectHighlighting(): void {
 
 export function AdjustSoldierCreationStartValues(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   guiCreateGuyIndex = cnt;
 
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; pSoldier++, cnt++) {
-    if (!pSoldier.value.bActive) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (!pSoldier.bActive) {
       guiCreateGuyIndex = cnt;
       break;
     }
@@ -2074,8 +2071,8 @@ export function AdjustSoldierCreationStartValues(): void {
   cnt = gTacticalStatus.Team[gbPlayerNum].bLastID + 1;
   guiCreateBadGuyIndex = cnt;
 
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; pSoldier++, cnt++) {
-    if (!pSoldier.value.bActive && cnt > gTacticalStatus.Team[gbPlayerNum].bLastID) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (!pSoldier.bActive && cnt > gTacticalStatus.Team[gbPlayerNum].bLastID) {
       guiCreateBadGuyIndex = cnt;
       break;
     }
@@ -2083,8 +2080,8 @@ export function AdjustSoldierCreationStartValues(): void {
 }
 
 export function SelectedMercCanAffordAttack(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
+  let pTargetSoldier: SOLDIERTYPE;
   let usMapPos: UINT16;
   let sTargetGridNo: INT16;
   let fEnoughPoints: boolean = true;
@@ -2094,13 +2091,13 @@ export function SelectedMercCanAffordAttack(): boolean {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return Enum26.GAME_SCREEN;
+      return true;
     }
 
     // Get soldier
-    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
       // LOOK IN GUY'S HAND TO CHECK LOCATION
-      usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+      usInHand = pSoldier.inv[Enum261.HANDPOS].usItem;
 
       // Get cursor value
       ubItemCursor = GetActionModeCursor(pSoldier);
@@ -2123,13 +2120,13 @@ export function SelectedMercCanAffordAttack(): boolean {
         // Look for a soldier at this position
         if (gfUIFullTargetFound) {
           // GetSoldier
-          GetSoldier(addressof(pTargetSoldier), gusUIFullTargetID);
-          sTargetGridNo = pTargetSoldier.value.sGridNo;
+          pTargetSoldier = <SOLDIERTYPE>GetSoldier(gusUIFullTargetID);
+          sTargetGridNo = pTargetSoldier.sGridNo;
         } else {
           sTargetGridNo = usMapPos;
         }
 
-        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, true, (pSoldier.value.bShownAimTime / 2));
+        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 1, (pSoldier.bShownAimTime / 2));
 
         if (EnoughPoints(pSoldier, sAPCost, 0, true)) {
           return true;
@@ -2145,16 +2142,16 @@ export function SelectedMercCanAffordAttack(): boolean {
 }
 
 export function SelectedMercCanAffordMove(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let sAPCost: UINT16 = 0;
   let sBPCost: INT16 = 0;
   let usMapPos: UINT16;
-  let pIntTile: Pointer<LEVELNODE>;
+  let pIntTile: LEVELNODE | null;
 
   // Get soldier
-  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     if (!GetMouseMapPos(addressof(usMapPos))) {
-      return Enum26.GAME_SCREEN;
+      return true;
     }
 
     // IF WE ARE OVER AN INTERACTIVE TILE, GIVE GRIDNO OF POSITION
@@ -2172,14 +2169,14 @@ export function SelectedMercCanAffordMove(): boolean {
     // Take the first direction!
     sAPCost = PtsToMoveDirection(pSoldier, guiPathingData[0]);
 
-    sAPCost += GetAPsToChangeStance(pSoldier, gAnimControl[pSoldier.value.usUIMovementMode].ubHeight);
+    sAPCost += GetAPsToChangeStance(pSoldier, gAnimControl[pSoldier.usUIMovementMode].ubHeight);
 
     if (EnoughPoints(pSoldier, sAPCost, 0, true)) {
       return true;
     } else {
       // OK, remember where we were trying to get to.....
-      pSoldier.value.sContPathLocation = usMapPos;
-      pSoldier.value.bGoodContPath = true;
+      pSoldier.sContPathLocation = usMapPos;
+      pSoldier.bGoodContPath = true;
     }
   }
 
@@ -2188,26 +2185,26 @@ export function SelectedMercCanAffordMove(): boolean {
 
 export function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<boolean>, pfGoUp: Pointer<boolean>): void {
   let bNewDirection: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   pfGoDown.value = false;
   pfGoUp.value = false;
 
-  if (!GetSoldier(addressof(pSoldier), ubSoldierID)) {
+  if ((pSoldier = GetSoldier(ubSoldierID)) === null) {
     return;
   }
 
   // Check if we are close / can climb
-  if (pSoldier.value.bLevel == 0) {
+  if (pSoldier.bLevel == 0) {
     // See if we are not in a building!
-    if (FindHeigherLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
+    if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
       pfGoUp.value = true;
     }
   }
 
   // IF we are higher...
-  if (pSoldier.value.bLevel > 0) {
-    if (FindLowerLevel(pSoldier, pSoldier.value.sGridNo, pSoldier.value.bDirection, addressof(bNewDirection))) {
+  if (pSoldier.bLevel > 0) {
+    if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
       pfGoDown.value = true;
     }
   }
@@ -2218,24 +2215,24 @@ function RemoveTacticalCursor(): void {
   ErasePath(true);
 }
 
-function UIHandlePOPUPMSG(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandlePOPUPMSG(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleHCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleHCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let usMapPos: UINT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
     return Enum26.GAME_SCREEN;
   }
 
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
   // If we are out of breath, no cursor...
-  if (pSoldier.value.bBreath < OKBREATH && pSoldier.value.bCollapsed) {
+  if (pSoldier.bBreath < OKBREATH && pSoldier.bCollapsed) {
     guiNewUICursor = Enum210.INVALID_ACTION_UICURSOR;
   } else {
     if (gsOverItemsGridNo != NOWHERE && (usMapPos != gsOverItemsGridNo || gsInterfaceLevel != gsOverItemsLevel)) {
@@ -2250,31 +2247,31 @@ function UIHandleHCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleHCGettingItem(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleHCGettingItem(pUIEvent: UI_EVENT): UINT32 {
   guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleTATalkingMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleTATalkingMenu(pUIEvent: UI_EVENT): UINT32 {
   guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleEXExitSectorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleEXExitSectorMenu(pUIEvent: UI_EVENT): UINT32 {
   guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleOpenDoorMenu(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleOpenDoorMenu(pUIEvent: UI_EVENT): UINT32 {
   guiNewUICursor = Enum210.NORMAL_FREEUICURSOR;
 
   return Enum26.GAME_SCREEN;
 }
 
-export function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleHandCursorMode(puiNewEvent: UINT32): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2283,7 +2280,7 @@ export function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-export function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleTalkCursorMode(puiNewEvent: UINT32): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2292,7 +2289,7 @@ export function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-export function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
+export function ToggleLookCursorMode(puiNewEvent: UINT32): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
     guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
@@ -2304,14 +2301,14 @@ export function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32>): void {
 }
 
 export function UIHandleOnMerc(fMovementMode: boolean): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
   let usMapPos: UINT16;
   let fFoundMerc: boolean = false;
 
   if (!GetMouseMapPos(addressof(usMapPos))) {
-    return Enum26.GAME_SCREEN;
+    return true;
   }
 
   // if ( fMovementMode )
@@ -2330,7 +2327,7 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   if (fFoundMerc) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), usSoldierIndex);
+    pSoldier = <SOLDIERTYPE>GetSoldier(usSoldierIndex);
 
     if (uiMercFlags & OWNED_MERC) {
       // ATE: Check if this is an empty vehicle.....
@@ -2357,7 +2354,7 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
               // Don't do this unless we want to
 
               // Check if buddy is stationary!
-              if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_STATIONARY || pSoldier.value.fNoAPToFinishMove) {
+              if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_STATIONARY || pSoldier.fNoAPToFinishMove) {
                 guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
               }
             }
@@ -2383,8 +2380,8 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
           // Show cursor with highlight on selected merc
           guiNewUICursor = Enum210.NO_UICURSOR;
 
-          gsSelectedGridNo = pSoldier.value.sGridNo;
-          gsSelectedLevel = pSoldier.value.bLevel;
+          gsSelectedGridNo = pSoldier.sGridNo;
+          gsSelectedLevel = pSoldier.bLevel;
         }
 
         gsSelectedGuy = usSoldierIndex;
@@ -2397,7 +2394,7 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
       } else {
         if (fMovementMode) {
           // Check if this guy is on the enemy team....
-          if (!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum)) {
+          if (!pSoldier.bNeutral && (pSoldier.bSide != gbPlayerNum)) {
             gUIActionModeChangeDueToMouseOver = true;
 
             guiPendingOverrideEvent = Enum207.M_CHANGE_TO_ACTION;
@@ -2411,8 +2408,8 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
             guiNewUICursor = Enum210.NO_UICURSOR;
             // Show cursor with highlight
             gfUIHandleSelection = ENEMY_GUY_SELECTION;
-            gsSelectedGridNo = pSoldier.value.sGridNo;
-            gsSelectedLevel = pSoldier.value.bLevel;
+            gsSelectedGridNo = pSoldier.sGridNo;
+            gsSelectedLevel = pSoldier.bLevel;
           }
         }
 
@@ -2420,7 +2417,7 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
         gsSelectedGuy = usSoldierIndex;
       }
     } else {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
         return false;
       }
     }
@@ -2433,11 +2430,11 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
   return true;
 }
 
-function UIHandleILoadLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadLevel(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.INIT_SCREEN;
 }
 
-function UIHandleISoldierDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleISoldierDebug(pUIEvent: UI_EVENT): UINT32 {
   // Use soldier display pages
   SetDebugRenderHook(DebugSoldierPage1, 0);
   SetDebugRenderHook(DebugSoldierPage2, 1);
@@ -2448,17 +2445,17 @@ function UIHandleISoldierDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.DEBUG_SCREEN;
 }
 
-function UIHandleILOSDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILOSDebug(pUIEvent: UI_EVENT): UINT32 {
   SetDebugRenderHook(DebugStructurePage1, 0);
   return Enum26.DEBUG_SCREEN;
 }
 
-function UIHandleILevelNodeDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILevelNodeDebug(pUIEvent: UI_EVENT): UINT32 {
   SetDebugRenderHook(DebugLevelNodePage, 0);
   return Enum26.DEBUG_SCREEN;
 }
 
-function UIHandleIETOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIETOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   // guiNewUICursor = CANNOT_MOVE_UICURSOR;
   guiNewUICursor = Enum210.NO_UICURSOR;
 
@@ -2468,24 +2465,24 @@ function UIHandleIETOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 }
 
 export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   pSoldier = MercPtrs[ubSoldierID];
 
   // Is this a valid stance for our position?
   if (!IsValidStance(pSoldier, bNewStance)) {
-    if (pSoldier.value.bCollapsed && pSoldier.value.bBreath < OKBREATH) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[4], pSoldier.value.name);
+    if (pSoldier.bCollapsed && pSoldier.bBreath < OKBREATH) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[4], pSoldier.name);
     } else {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.VEHICLES_NO_STANCE_CHANGE_STR]);
-      } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+      } else if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.ROBOT_NO_STANCE_CHANGE_STR]);
       } else {
-        if (pSoldier.value.bCollapsed) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_CANT_CHANGE_STANCE], pSoldier.value.name);
+        if (pSoldier.bCollapsed) {
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_CANT_CHANGE_STANCE], pSoldier.name);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_STANCE_CHANGE_STR], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_STANCE_CHANGE_STR], pSoldier.name);
         }
       }
     }
@@ -2494,7 +2491,7 @@ export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8
 
   // IF turn-based - adjust stance now!
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    pSoldier.value.fTurningFromPronePosition = false;
+    pSoldier.fTurningFromPronePosition = 0;
 
     // Check if we have enough APS
     if (SoldierCanAffordNewStance(pSoldier, bNewStance)) {
@@ -2502,8 +2499,8 @@ export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8
       // ChangeSoldierStance( pSoldier, bNewStance );
       SendChangeSoldierStanceEvent(pSoldier, bNewStance);
 
-      pSoldier.value.sFinalDestination = pSoldier.value.sGridNo;
-      pSoldier.value.bGoodContPath = false;
+      pSoldier.sFinalDestination = pSoldier.sGridNo;
+      pSoldier.bGoodContPath = false;
     } else
       return;
   }
@@ -2511,23 +2508,23 @@ export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8
   // If realtime- change walking animation!
   if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     // If we are stationary, do something else!
-    if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_STATIONARY) {
+    if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_STATIONARY) {
       // Change stance normally
       SendChangeSoldierStanceEvent(pSoldier, bNewStance);
     } else {
       // Pick moving animation based on stance
 
       // LOCK VARIBLE FOR NO UPDATE INDEX...
-      pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, bNewStance);
+      pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, bNewStance);
 
-      if (pSoldier.value.usUIMovementMode == Enum193.CRAWLING && gAnimControl[pSoldier.value.usAnimState].ubEndHeight != ANIM_PRONE) {
-        pSoldier.value.usDontUpdateNewGridNoOnMoveAnimChange = LOCKED_NO_NEWGRIDNO;
-        pSoldier.value.bPathStored = false;
+      if (pSoldier.usUIMovementMode == Enum193.CRAWLING && gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_PRONE) {
+        pSoldier.usDontUpdateNewGridNoOnMoveAnimChange = LOCKED_NO_NEWGRIDNO;
+        pSoldier.bPathStored = false;
       } else {
-        pSoldier.value.usDontUpdateNewGridNoOnMoveAnimChange = 1;
+        pSoldier.usDontUpdateNewGridNoOnMoveAnimChange = 1;
       }
 
-      ChangeSoldierState(pSoldier, pSoldier.value.usUIMovementMode, 0, false);
+      ChangeSoldierState(pSoldier, pSoldier.usUIMovementMode, 0, false);
     }
   }
 
@@ -2542,55 +2539,53 @@ export function UIHandleSoldierStanceChange(ubSoldierID: UINT8, bNewStance: INT8
   // gfPlotNewMovement   = TRUE;
 }
 
-function UIHandleIETEndTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIETEndTurn(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleIGotoDemoMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleIGotoDemoMode(pUIEvent: UI_EVENT): UINT32 {
   return EnterTacticalDemoMode();
 }
 
-function UIHandleILoadFirstLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadFirstLevel(pUIEvent: UI_EVENT): UINT32 {
   gubCurrentScene = 0;
   return Enum26.INIT_SCREEN;
 }
 
-function UIHandleILoadSecondLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadSecondLevel(pUIEvent: UI_EVENT): UINT32 {
   gubCurrentScene = 1;
   return Enum26.INIT_SCREEN;
 }
 
-function UIHandleILoadThirdLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadThirdLevel(pUIEvent: UI_EVENT): UINT32 {
   gubCurrentScene = 2;
   return Enum26.INIT_SCREEN;
 }
 
-function UIHandleILoadFourthLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadFourthLevel(pUIEvent: UI_EVENT): UINT32 {
   gubCurrentScene = 3;
   return Enum26.INIT_SCREEN;
 }
 
-function UIHandleILoadFifthLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleILoadFifthLevel(pUIEvent: UI_EVENT): UINT32 {
   gubCurrentScene = 4;
   return Enum26.INIT_SCREEN;
 }
 
+/* static */ let GetCursorMovementFlags__fStationary: boolean = false;
+/* static */ let GetCursorMovementFlags__usOldMouseXPos: UINT16 = 32000;
+/* static */ let GetCursorMovementFlags__usOldMouseYPos: UINT16 = 32000;
+/* static */ let GetCursorMovementFlags__usOldMapPos: UINT16 = 32000;
+/* static */ let GetCursorMovementFlags__uiSameFrameCursorFlags: UINT32;
+/* static */ let GetCursorMovementFlags__uiOldFrameNumber: UINT32 = 99999;
 export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   let usMapPos: UINT16;
   let sXPos: INT16;
   let sYPos: INT16;
 
-  /* static */ let fStationary: boolean = false;
-  /* static */ let usOldMouseXPos: UINT16 = 32000;
-  /* static */ let usOldMouseYPos: UINT16 = 32000;
-  /* static */ let usOldMapPos: UINT16 = 32000;
-
-  /* static */ let uiSameFrameCursorFlags: UINT32;
-  /* static */ let uiOldFrameNumber: UINT32 = 99999;
-
   // Check if this is the same frame as before, return already calculated value if so!
-  if (uiOldFrameNumber == guiGameCycleCounter) {
-    (puiCursorFlags.value) = uiSameFrameCursorFlags;
+  if (GetCursorMovementFlags__uiOldFrameNumber == guiGameCycleCounter) {
+    (puiCursorFlags.value) = GetCursorMovementFlags__uiSameFrameCursorFlags;
     return;
   }
 
@@ -2599,34 +2594,34 @@ export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
 
   puiCursorFlags.value = 0;
 
-  if (gusMouseXPos != usOldMouseXPos || gusMouseYPos != usOldMouseYPos) {
+  if (gusMouseXPos != GetCursorMovementFlags__usOldMouseXPos || gusMouseYPos != GetCursorMovementFlags__usOldMouseYPos) {
     (puiCursorFlags.value) |= MOUSE_MOVING;
 
     // IF CURSOR WAS PREVIOUSLY STATIONARY, MAKE THE ADDITIONAL CHECK OF GRID POS CHANGE
-    if (fStationary && usOldMapPos == usMapPos) {
+    if (GetCursorMovementFlags__fStationary && GetCursorMovementFlags__usOldMapPos == usMapPos) {
       (puiCursorFlags.value) |= MOUSE_MOVING_IN_TILE;
     } else {
-      fStationary = false;
+      GetCursorMovementFlags__fStationary = false;
       (puiCursorFlags.value) |= MOUSE_MOVING_NEW_TILE;
     }
   } else {
     (puiCursorFlags.value) |= MOUSE_STATIONARY;
-    fStationary = true;
+    GetCursorMovementFlags__fStationary = true;
   }
 
-  usOldMapPos = usMapPos;
-  usOldMouseXPos = gusMouseXPos;
-  usOldMouseYPos = gusMouseYPos;
+  GetCursorMovementFlags__usOldMapPos = usMapPos;
+  GetCursorMovementFlags__usOldMouseXPos = gusMouseXPos;
+  GetCursorMovementFlags__usOldMouseYPos = gusMouseYPos;
 
-  uiOldFrameNumber = guiGameCycleCounter;
-  uiSameFrameCursorFlags = (puiCursorFlags.value);
+  GetCursorMovementFlags__uiOldFrameNumber = guiGameCycleCounter;
+  GetCursorMovementFlags__uiSameFrameCursorFlags = (puiCursorFlags.value);
 }
 
-export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorFlags: UINT32, usMapPos: UINT16, uiFlags: UINT32): boolean {
+/* static */ let HandleUIMovementCursor__usTargetID: UINT16 = NOBODY;
+/* static */ let HandleUIMovementCursor__fTargetFound: boolean = false;
+export function HandleUIMovementCursor(pSoldier: SOLDIERTYPE, uiCursorFlags: UINT32, usMapPos: UINT16, uiFlags: UINT32): boolean {
   let fSetCursor: boolean = false;
   let fCalculated: boolean = false;
-  /* static */ let usTargetID: UINT16 = NOBODY;
-  /* static */ let fTargetFound: boolean = false;
   let fTargetFoundAndLookingForOne: boolean = false;
   let fIntTileFoundAndLookingForOne: boolean = false;
 
@@ -2636,10 +2631,10 @@ export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorF
   }
 
   // Check if we're stationary
-  if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) || ((gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_STATIONARY) || pSoldier.value.fNoAPToFinishMove) || pSoldier.value.ubID >= MAX_NUM_SOLDIERS) {
+  if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) || ((gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_STATIONARY) || pSoldier.fNoAPToFinishMove) || pSoldier.ubID >= MAX_NUM_SOLDIERS) {
     // If we are targeting a merc for some reason, don't go thorugh normal channels if we are on someone now
     if (uiFlags == MOVEUI_TARGET_MERCS || uiFlags == MOVEUI_TARGET_MERCSFORAID) {
-      if (gfUIFullTargetFound != fTargetFound || usTargetID != gusUIFullTargetID || gfResetUIMovementOptimization) {
+      if (gfUIFullTargetFound != HandleUIMovementCursor__fTargetFound || HandleUIMovementCursor__usTargetID != gusUIFullTargetID || gfResetUIMovementOptimization) {
         gfResetUIMovementOptimization = false;
 
         // ERASE PATH
@@ -2650,10 +2645,10 @@ export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorF
       }
 
       // Save for next time...
-      fTargetFound = gfUIFullTargetFound;
-      usTargetID = gusUIFullTargetID;
+      HandleUIMovementCursor__fTargetFound = gfUIFullTargetFound;
+      HandleUIMovementCursor__usTargetID = gusUIFullTargetID;
 
-      if (fTargetFound) {
+      if (HandleUIMovementCursor__fTargetFound) {
         fTargetFoundAndLookingForOne = true;
       }
     }
@@ -2734,7 +2729,7 @@ export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorF
             gUIDisplayActionPointsOffX = 22;
             gUIDisplayActionPointsOffY = 15;
           } else {
-            switch (pSoldier.value.usUIMovementMode) {
+            switch (pSoldier.usUIMovementMode) {
               case Enum193.WALKING:
 
                 gUIDisplayActionPointsOffY = 10;
@@ -2761,19 +2756,19 @@ export function HandleUIMovementCursor(pSoldier: Pointer<SOLDIERTYPE>, uiCursorF
   return fSetCursor;
 }
 
-function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, uiFlags: UINT32): INT8 {
+function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UINT32): INT8 {
   let sAPCost: INT16;
   let sBPCost: INT16;
   let sActionGridNo: INT16;
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
   let fOnInterTile: boolean = false;
   let ubDirection: UINT8;
   //	ITEM_POOL					*pItemPool;
   let sAdjustedGridNo: INT16;
   let sIntTileGridNo: INT16;
-  let pIntTile: Pointer<LEVELNODE>;
+  let pIntTile: LEVELNODE | null;
   let bReturnCode: INT8 = 0;
-  let fPlot: boolean;
+  let fPlot: UINT8 /* boolean */;
   let ubMercID: UINT8;
 
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) || _KeyDown(SHIFT)) {
@@ -2800,17 +2795,17 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       }
       CalcInteractiveObjectAPs(sIntTileGridNo, pStructure, addressof(sAPCost), addressof(sBPCost));
       // sAPCost += UIPlotPath( pSoldier, sActionGridNo, NO_COPYROUTE, PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-      if (sActionGridNo != pSoldier.value.sGridNo) {
-        gfUIHandleShowMoveGrid = true;
+      if (sActionGridNo != pSoldier.sGridNo) {
+        gfUIHandleShowMoveGrid = 1;
         gsUIHandleShowMoveGridLocation = sActionGridNo;
       }
 
       // Add cost for stance change....
       sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
     } else {
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
     }
   } else if (uiFlags == MOVEUI_TARGET_WIREFENCE) {
     sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), null, false, true);
@@ -2819,10 +2814,10 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
     } else {
       sAPCost = GetAPsToCutFence(pSoldier);
 
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-      if (sActionGridNo != pSoldier.value.sGridNo) {
-        gfUIHandleShowMoveGrid = true;
+      if (sActionGridNo != pSoldier.sGridNo) {
+        gfUIHandleShowMoveGrid = 1;
         gsUIHandleShowMoveGridLocation = sActionGridNo;
       }
     }
@@ -2834,10 +2829,10 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToUseJar(pSoldier, sActionGridNo);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-    if (sActionGridNo != pSoldier.value.sGridNo) {
-      gfUIHandleShowMoveGrid = true;
+    if (sActionGridNo != pSoldier.sGridNo) {
+      gfUIHandleShowMoveGrid = 1;
       gsUIHandleShowMoveGridLocation = sActionGridNo;
     }
   } else if (uiFlags == MOVEUI_TARGET_CAN) {
@@ -2849,15 +2844,15 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, false, true);
       if (sActionGridNo != -1) {
         sAPCost = AP_ATTACH_CAN;
-        sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+        sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-        if (sActionGridNo != pSoldier.value.sGridNo) {
-          gfUIHandleShowMoveGrid = true;
+        if (sActionGridNo != pSoldier.sGridNo) {
+          gfUIHandleShowMoveGrid = 1;
           gsUIHandleShowMoveGridLocation = sActionGridNo;
         }
       }
     } else {
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
     }
   } else if (uiFlags == MOVEUI_TARGET_REPAIR) {
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
@@ -2865,7 +2860,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usMapPos = sNewGridNo;
@@ -2879,10 +2874,10 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToBeginRepair(pSoldier);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-    if (sActionGridNo != pSoldier.value.sGridNo) {
-      gfUIHandleShowMoveGrid = true;
+    if (sActionGridNo != pSoldier.sGridNo) {
+      gfUIHandleShowMoveGrid = 1;
       gsUIHandleShowMoveGridLocation = sActionGridNo;
     }
   } else if (uiFlags == MOVEUI_TARGET_REFUEL) {
@@ -2891,7 +2886,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usMapPos = sNewGridNo;
@@ -2905,10 +2900,10 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToRefuelVehicle(pSoldier);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-    if (sActionGridNo != pSoldier.value.sGridNo) {
-      gfUIHandleShowMoveGrid = true;
+    if (sActionGridNo != pSoldier.sGridNo) {
+      gfUIHandleShowMoveGrid = 1;
       gsUIHandleShowMoveGridLocation = sActionGridNo;
     }
   } else if (uiFlags == MOVEUI_TARGET_MERCS) {
@@ -2922,7 +2917,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       let ubGuyThere: UINT8;
 
       for (cnt = 0; cnt < Enum245.NUM_WORLD_DIRECTIONS; cnt++) {
-        sSpot = NewGridNo(pSoldier.value.sGridNo, DirectionInc(cnt));
+        sSpot = NewGridNo(pSoldier.sGridNo, DirectionInc(cnt));
 
         // Make sure movement costs are OK....
         if (gubWorldMovementCosts[sSpot][cnt][gsInterfaceLevel] >= TRAVELCOST_BLOCKED) {
@@ -2930,20 +2925,20 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
         }
 
         // Check for who is there...
-        ubGuyThere = WhoIsThere2(sSpot, pSoldier.value.bLevel);
+        ubGuyThere = WhoIsThere2(sSpot, pSoldier.bLevel);
 
-        if (ubGuyThere == MercPtrs[gusUIFullTargetID].value.ubID) {
+        if (ubGuyThere == MercPtrs[gusUIFullTargetID].ubID) {
           // We've got a guy here....
           // Who is the one we want......
           sGotLocation = sSpot;
-          sAdjustedGridNo = MercPtrs[gusUIFullTargetID].value.sGridNo;
+          sAdjustedGridNo = MercPtrs[gusUIFullTargetID].sGridNo;
           ubDirection = cnt;
           break;
         }
       }
 
       if (sGotLocation == NOWHERE) {
-        sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
 
         if (sActionGridNo == -1) {
           sGotLocation = NOWHERE;
@@ -2959,42 +2954,42 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
     }
 
     if (sGotLocation != NOWHERE) {
-      sAPCost += MinAPsToAttack(pSoldier, sAdjustedGridNo, true);
-      sAPCost += UIPlotPath(pSoldier, sGotLocation, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += MinAPsToAttack(pSoldier, sAdjustedGridNo, 1);
+      sAPCost += UIPlotPath(pSoldier, sGotLocation, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-      if (sGotLocation != pSoldier.value.sGridNo && fGotAdjacent) {
-        gfUIHandleShowMoveGrid = true;
+      if (sGotLocation != pSoldier.sGridNo && fGotAdjacent) {
+        gfUIHandleShowMoveGrid = 1;
         gsUIHandleShowMoveGridLocation = sGotLocation;
       }
     }
   } else if (uiFlags == MOVEUI_TARGET_STEAL) {
     // Check if we are on a target
     if (gfUIFullTargetFound) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
       if (sActionGridNo == -1) {
         sActionGridNo = sAdjustedGridNo;
       }
       sAPCost += AP_STEAL_ITEM;
       // CJC August 13 2002: take into account stance in AP prediction
-      if (!(PTR_STANDING())) {
+      if (!(PTR_STANDING(pSoldier))) {
         sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
       }
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-      if (sActionGridNo != pSoldier.value.sGridNo) {
-        gfUIHandleShowMoveGrid = true;
+      if (sActionGridNo != pSoldier.sGridNo) {
+        gfUIHandleShowMoveGrid = 1;
         gsUIHandleShowMoveGridLocation = sActionGridNo;
       }
     }
   } else if (uiFlags == MOVEUI_TARGET_BOMB) {
     sAPCost += GetAPsToDropBomb(pSoldier);
-    sAPCost += UIPlotPath(pSoldier, usMapPos, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, usMapPos, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
-    gfUIHandleShowMoveGrid = true;
+    gfUIHandleShowMoveGrid = 1;
     gsUIHandleShowMoveGridLocation = usMapPos;
   } else if (uiFlags == MOVEUI_TARGET_MERCSFORAID) {
     if (gfUIFullTargetFound) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
 
       // Try again at another gridno...
       if (sActionGridNo == -1) {
@@ -3005,9 +3000,9 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
         }
       }
       sAPCost += GetAPsToBeginFirstAid(pSoldier);
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
-      if (sActionGridNo != pSoldier.value.sGridNo) {
-        gfUIHandleShowMoveGrid = true;
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
+      if (sActionGridNo != pSoldier.sGridNo) {
+        gfUIHandleShowMoveGrid = 1;
         gsUIHandleShowMoveGridLocation = sActionGridNo;
       }
     }
@@ -3018,8 +3013,8 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       {
         sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, sActionGridNo);
 
-        if (pSoldier.value.sGridNo != sActionGridNo) {
-          sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+        if (pSoldier.sGridNo != sActionGridNo) {
+          sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
           if (sAPCost != 0) {
             sAPCost += AP_PICKUP_ITEM;
           }
@@ -3027,18 +3022,18 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
           sAPCost += AP_PICKUP_ITEM;
         }
 
-        if (sActionGridNo != pSoldier.value.sGridNo) {
-          gfUIHandleShowMoveGrid = true;
+        if (sActionGridNo != pSoldier.sGridNo) {
+          gfUIHandleShowMoveGrid = 1;
           gsUIHandleShowMoveGridLocation = sActionGridNo;
         }
       }
     }
   } else {
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
   }
 
   if (gTacticalStatus.uiFlags & SHOW_AP_LEFT) {
-    gsCurrentActionPoints = pSoldier.value.bActionPoints - sAPCost;
+    gsCurrentActionPoints = pSoldier.bActionPoints - sAPCost;
   } else {
     gsCurrentActionPoints = sAPCost;
   }
@@ -3046,10 +3041,10 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
   return bReturnCode;
 }
 
-export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): boolean {
+export function UIMouseOnValidAttackLocation(pSoldier: SOLDIERTYPE): boolean {
   let usInHand: UINT16;
   let fGuyHere: boolean = false;
-  let pTSoldier: Pointer<SOLDIERTYPE>;
+  let pTSoldier: SOLDIERTYPE;
   let ubItemCursor: UINT8;
   let usMapPos: UINT16;
 
@@ -3058,7 +3053,7 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
   }
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
-  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+  usInHand = pSoldier.inv[Enum261.HANDPOS].usItem;
 
   // Get cursor value
   ubItemCursor = GetActionModeCursor(pSoldier);
@@ -3068,7 +3063,7 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
   }
 
   if (ubItemCursor == WIRECUTCURS) {
-    if (IsCuttableWireFenceAtGridNo(usMapPos) && pSoldier.value.bLevel == 0) {
+    if (IsCuttableWireFenceAtGridNo(usMapPos) && pSoldier.bLevel == 0) {
       return true;
     } else {
       return false;
@@ -3077,10 +3072,10 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
 
   if (ubItemCursor == REPAIRCURS) {
     if (gfUIFullTargetFound) {
-      usMapPos = MercPtrs[gusUIFullTargetID].value.sGridNo;
+      usMapPos = MercPtrs[gusUIFullTargetID].sGridNo;
     }
 
-    if (IsRepairableStructAtGridNo(usMapPos, null) && pSoldier.value.bLevel == 0) {
+    if (IsRepairableStructAtGridNo(usMapPos, null) && pSoldier.bLevel == 0) {
       return true;
     } else {
       return false;
@@ -3089,10 +3084,10 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
 
   if (ubItemCursor == REFUELCURS) {
     if (gfUIFullTargetFound) {
-      usMapPos = MercPtrs[gusUIFullTargetID].value.sGridNo;
+      usMapPos = MercPtrs[gusUIFullTargetID].sGridNo;
     }
 
-    if (IsRefuelableStructAtGridNo(usMapPos, null) && pSoldier.value.bLevel == 0) {
+    if (IsRefuelableStructAtGridNo(usMapPos, null) && pSoldier.bLevel == 0) {
       return true;
     } else {
       return false;
@@ -3100,11 +3095,11 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
   }
 
   if (ubItemCursor == BOMBCURS) {
-    if (usMapPos == pSoldier.value.sGridNo) {
+    if (usMapPos == pSoldier.sGridNo) {
       return true;
     }
 
-    if (!NewOKDestination(pSoldier, usMapPos, true, pSoldier.value.bLevel)) {
+    if (!NewOKDestination(pSoldier, usMapPos, true, pSoldier.bLevel)) {
       return false;
     }
   }
@@ -3153,23 +3148,23 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
     pTSoldier = MercPtrs[gusUIFullTargetID];
 
     // If we are a vehicle...
-    if ((pTSoldier.value.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_ROBOT))) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_DO_FIRST_AID_STR], pTSoldier.value.name);
+    if ((pTSoldier.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_ROBOT))) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_DO_FIRST_AID_STR], pTSoldier.name);
       return false;
     }
 
-    if (pSoldier.value.bMedical == 0) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_MERC_HAS_NO_MEDSKILL], pSoldier.value.name);
+    if (pSoldier.bMedical == 0) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, pMessageStrings[Enum333.MSG_MERC_HAS_NO_MEDSKILL], pSoldier.name);
       return false;
     }
 
-    if (pTSoldier.value.bBleeding == 0 && pTSoldier.value.bLife != pTSoldier.value.bLifeMax) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[19], pTSoldier.value.name);
+    if (pTSoldier.bBleeding == 0 && pTSoldier.bLife != pTSoldier.bLifeMax) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[19], pTSoldier.name);
       return false;
     }
 
-    if (pTSoldier.value.bBleeding == 0 && pTSoldier.value.bLife >= OKLIFE) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_NO_NEED_FIRST_AID_STR], pTSoldier.value.name);
+    if (pTSoldier.bBleeding == 0 && pTSoldier.bLife >= OKLIFE) {
+      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.CANNOT_NO_NEED_FIRST_AID_STR], pTSoldier.name);
       return false;
     }
   }
@@ -3177,7 +3172,7 @@ export function UIMouseOnValidAttackLocation(pSoldier: Pointer<SOLDIERTYPE>): bo
   return true;
 }
 
-export function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function UIOkForItemPickup(pSoldier: SOLDIERTYPE, sGridNo: INT16): boolean {
   let sAPCost: INT16;
   let pItemPool: ITEM_POOL | null;
 
@@ -3186,7 +3181,7 @@ export function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   if (sAPCost == 0) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
   } else {
-    if ((pItemPool = GetItemPool(sGridNo, pSoldier.value.bLevel))) {
+    if ((pItemPool = GetItemPool(sGridNo, pSoldier.bLevel))) {
       // if ( !ITEMPOOL_VISIBLE( pItemPool ) )
       {
         //		return( FALSE );
@@ -3201,12 +3196,12 @@ export function UIOkForItemPickup(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   return false;
 }
 
-function SoldierCanAffordNewStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UINT8): boolean {
+function SoldierCanAffordNewStance(pSoldier: SOLDIERTYPE, ubDesiredStance: UINT8): boolean {
   let bCurrentHeight: INT8;
   let bAP: UINT8 = 0;
   let bBP: UINT8 = 0;
 
-  bCurrentHeight = (ubDesiredStance - gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
+  bCurrentHeight = (ubDesiredStance - gAnimControl[pSoldier.usAnimState].ubEndHeight);
 
   // Now change to appropriate animation
 
@@ -3236,32 +3231,32 @@ function SoldierCanAffordNewStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStan
   return EnoughPoints(pSoldier, bAP, bBP, true);
 }
 
-function SetUIbasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): void {
+function SetUIbasedOnStance(pSoldier: SOLDIERTYPE, bNewStance: INT8): void {
   // Set UI based on our stance!
   switch (bNewStance) {
     case ANIM_STAND:
-      pSoldier.value.usUIMovementMode = Enum193.WALKING;
+      pSoldier.usUIMovementMode = Enum193.WALKING;
       break;
 
     case ANIM_CROUCH:
-      pSoldier.value.usUIMovementMode = Enum193.SWATTING;
+      pSoldier.usUIMovementMode = Enum193.SWATTING;
       break;
 
     case ANIM_PRONE:
-      pSoldier.value.usUIMovementMode = Enum193.CRAWLING;
+      pSoldier.usUIMovementMode = Enum193.CRAWLING;
       break;
   }
 
   // Set UI cursor!
 }
 
-function SetMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
+function SetMovementModeCursor(pSoldier: SOLDIERTYPE): void {
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
       guiNewUICursor = Enum210.MOVE_VEHICLE_UICURSOR;
     } else {
       // Change mouse cursor based on type of movement we want to do
-      switch (pSoldier.value.usUIMovementMode) {
+      switch (pSoldier.usUIMovementMode) {
         case Enum193.WALKING:
           guiNewUICursor = Enum210.MOVE_WALK_UICURSOR;
           break;
@@ -3297,14 +3292,14 @@ function SetMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
   guiNewUICursor = GetInteractiveTileCursor(guiNewUICursor, false);
 }
 
-function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove: boolean): void {
+function SetConfirmMovementModeCursor(pSoldier: SOLDIERTYPE, fFromMove: boolean): void {
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if (gfUIAllMoveOn) {
       if ((OK_ENTERABLE_VEHICLE(pSoldier))) {
         guiNewUICursor = Enum210.ALL_MOVE_VEHICLE_UICURSOR;
       } else {
         // Change mouse cursor based on type of movement we want to do
-        switch (pSoldier.value.usUIMovementMode) {
+        switch (pSoldier.usUIMovementMode) {
           case Enum193.WALKING:
             guiNewUICursor = Enum210.ALL_MOVE_WALK_UICURSOR;
             break;
@@ -3323,11 +3318,11 @@ function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove:
         }
       }
     } else {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+      if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
         guiNewUICursor = Enum210.CONFIRM_MOVE_VEHICLE_UICURSOR;
       } else {
         // Change mouse cursor based on type of movement we want to do
-        switch (pSoldier.value.usUIMovementMode) {
+        switch (pSoldier.usUIMovementMode) {
           case Enum193.WALKING:
             guiNewUICursor = Enum210.CONFIRM_MOVE_WALK_UICURSOR;
             break;
@@ -3356,7 +3351,7 @@ function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove:
         guiNewUICursor = Enum210.ALL_MOVE_REALTIME_UICURSOR;
       }
     } else {
-      if (pSoldier.value.fUIMovementFast && pSoldier.value.usAnimState == Enum193.RUNNING && fFromMove) {
+      if (pSoldier.fUIMovementFast && pSoldier.usAnimState == Enum193.RUNNING && fFromMove) {
         BeginDisplayTimedCursor(Enum210.MOVE_RUN_REALTIME_UICURSOR, 300);
       }
 
@@ -3367,8 +3362,8 @@ function SetConfirmMovementModeCursor(pSoldier: Pointer<SOLDIERTYPE>, fFromMove:
   guiNewUICursor = GetInteractiveTileCursor(guiNewUICursor, true);
 }
 
-function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleLCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let sFacingDir: INT16;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -3376,7 +3371,7 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   guiNewUICursor = Enum210.LOOK_UICURSOR;
 
   // Get soldier
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3386,7 +3381,7 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gUIDisplayActionPointsOffY = 7;
 
   // Get soldier
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3396,7 +3391,7 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   sFacingDir = GetDirectionFromXY(sXPos, sYPos, pSoldier);
 
   // Set # of APs
-  if (sFacingDir != pSoldier.value.bDirection) {
+  if (sFacingDir != pSoldier.bDirection) {
     gsCurrentActionPoints = GetAPsToLook(pSoldier);
   } else {
     gsCurrentActionPoints = 0;
@@ -3410,20 +3405,20 @@ function UIHandleLCOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLCChangeToLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLCChangeToLook(pUIEvent: UI_EVENT): UINT32 {
   ErasePath(true);
 
   return Enum26.GAME_SCREEN;
 }
 
-function MakeSoldierTurn(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16): boolean {
+function MakeSoldierTurn(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16): boolean {
   let sFacingDir: INT16;
   let sAPCost: INT16;
 
   // Get direction from mouse pos
   sFacingDir = GetDirectionFromXY(sXPos, sYPos, pSoldier);
 
-  if (sFacingDir != pSoldier.value.bDirection) {
+  if (sFacingDir != pSoldier.bDirection) {
     sAPCost = GetAPsToLook(pSoldier);
 
     // Check AP cost...
@@ -3432,14 +3427,14 @@ function MakeSoldierTurn(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     }
 
     // ATE: make stationary if...
-    if (pSoldier.value.fNoAPToFinishMove) {
+    if (pSoldier.fNoAPToFinishMove) {
       SoldierGotoStationaryStance(pSoldier);
     }
 
     // DEF:  made it an event
     SendSoldierSetDesiredDirectionEvent(pSoldier, sFacingDir);
 
-    pSoldier.value.bTurningFromUI = true;
+    pSoldier.bTurningFromUI = true;
 
     // ATE: Hard-code here previous event to ui busy event...
     guiOldEvent = Enum207.LA_BEGINUIOURTURNLOCK;
@@ -3450,12 +3445,11 @@ function MakeSoldierTurn(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   return false;
 }
 
-function UIHandleLCLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLCLook(pUIEvent: UI_EVENT): UINT32 {
   let sXPos: INT16;
   let sYPos: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
   let cnt: INT32;
-  let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (!GetMouseXY(addressof(sXPos), addressof(sYPos))) {
     return Enum26.GAME_SCREEN;
@@ -3464,28 +3458,28 @@ function UIHandleLCLook(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   if (gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     // OK, loop through all guys who are 'multi-selected' and
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-        if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive && pSoldier.bInSector) {
+        if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
           MakeSoldierTurn(pSoldier, sXPos, sYPos);
         }
       }
     }
   } else {
     // Get soldier
-    if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+    if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
       return Enum26.GAME_SCREEN;
     }
 
     if (MakeSoldierTurn(pSoldier, sXPos, sYPos)) {
-      SetUIBusy(pSoldier.value.ubID);
+      SetUIBusy(pSoldier.ubID);
     }
   }
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleTOnTerrain(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let ubTargID: UINT8;
   let uiRange: UINT32;
   let usMapPos: UINT16;
@@ -3494,7 +3488,7 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   let sDistVisible: INT16;
 
   // Get soldier
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3518,14 +3512,14 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // USe cursor based on distance
   // Get distance away
   if (fValidTalkableGuy) {
-    sTargetGridNo = MercPtrs[ubTargID].value.sGridNo;
+    sTargetGridNo = MercPtrs[ubTargID].sGridNo;
   }
 
-  uiRange = GetRangeFromGridNoDiff(pSoldier.value.sGridNo, sTargetGridNo);
+  uiRange = GetRangeFromGridNoDiff(pSoldier.sGridNo, sTargetGridNo);
 
   // ATE: Check if we have good LOS
   // is he close enough to see that gridno if he turns his head?
-  sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
+  sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.bLevel);
 
   if (uiRange <= NPC_TALK_RADIUS) {
     if (fValidTalkableGuy) {
@@ -3543,7 +3537,7 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   if (fValidTalkableGuy) {
-    if (!SoldierTo3DLocationLineOfSightTest(pSoldier, sTargetGridNo, pSoldier.value.bLevel, 3, sDistVisible, true)) {
+    if (!SoldierTo3DLocationLineOfSightTest(pSoldier, sTargetGridNo, pSoldier.bLevel, 3, sDistVisible, true)) {
       //. ATE: Make range far, so we alternate cursors...
       guiNewUICursor = Enum210.TALK_OUT_RANGE_A_UICURSOR;
     }
@@ -3573,20 +3567,20 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleTChangeToTalking(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleTChangeToTalking(pUIEvent: UI_EVENT): UINT32 {
   ErasePath(true);
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLUIOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLUIOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   // guiNewUICursor = NO_UICURSOR;
   //	SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLUIBeginLock(pUIEvent: UI_EVENT): UINT32 {
   // Don't let both versions of the locks to happen at the same time!
   // ( They are mutually exclusive )!
   UIHandleLAEndLockOurTurn(null);
@@ -3611,7 +3605,7 @@ function UIHandleLUIBeginLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-export function UIHandleLUIEndLock(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+export function UIHandleLUIEndLock(pUIEvent: UI_EVENT | null): UINT32 {
   if (gfDisableRegionActive) {
     gfDisableRegionActive = false;
 
@@ -3666,7 +3660,7 @@ export function CheckForDisabledRegionRemove(): void {
   }
 }
 
-function UIHandleLAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLAOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   // guiNewUICursor = NO_UICURSOR;
   // SetCurrentCursorFromDatabase( VIDEO_NO_CURSOR );
 
@@ -3712,9 +3706,9 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
 }
 
 export function EndMultiSoldierSelection(fAcknowledge: boolean): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
-  let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
+  let pFirstSoldier: SOLDIERTYPE | null = null;
   let fSelectedSoldierInBatch: boolean = false;
 
   gTacticalStatus.fAtLeastOneGuyOnMultiSelect = false;
@@ -3723,23 +3717,23 @@ export function EndMultiSoldierSelection(fAcknowledge: boolean): void {
   // check if our currently selected guy is amoung the
   // lucky few.. if not, change to a guy who is...
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
+      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
         gTacticalStatus.fAtLeastOneGuyOnMultiSelect = true;
 
-        if (pSoldier.value.ubID != gusSelectedSoldier && pFirstSoldier == null) {
+        if (pSoldier.ubID != gusSelectedSoldier && pFirstSoldier == null) {
           pFirstSoldier = pSoldier;
         }
 
-        if (pSoldier.value.ubID == gusSelectedSoldier) {
+        if (pSoldier.ubID == gusSelectedSoldier) {
           fSelectedSoldierInBatch = true;
         }
 
         if (!gGameSettings.fOptions[Enum8.TOPTION_MUTE_CONFIRMATIONS] && fAcknowledge)
           InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_ATTN1, BATTLE_SND_LOWER_VOLUME);
 
-        if (pSoldier.value.fMercAsleep) {
+        if (pSoldier.fMercAsleep) {
           PutMercInAwakeState(pSoldier);
         }
       }
@@ -3753,9 +3747,8 @@ export function EndMultiSoldierSelection(fAcknowledge: boolean): void {
 }
 
 export function StopRubberBandedMercFromMoving(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
-  let pFirstSoldier: Pointer<SOLDIERTYPE> = null;
 
   if (!gTacticalStatus.fAtLeastOneGuyOnMultiSelect) {
     return;
@@ -3765,11 +3758,11 @@ export function StopRubberBandedMercFromMoving(): void {
   // check if our currently selected guy is amoung the
   // lucky few.. if not, change to a guy who is...
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
-        pSoldier.value.fDelayedMovement = false;
-        pSoldier.value.sFinalDestination = pSoldier.value.sGridNo;
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
+      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+        pSoldier.fDelayedMovement = 0;
+        pSoldier.sFinalDestination = pSoldier.sGridNo;
         StopSoldier(pSoldier);
       }
     }
@@ -3788,7 +3781,7 @@ export function EndRubberBanding(): void {
 }
 
 function HandleMultiSelectionMove(sDestGridNo: INT16): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
   let fAtLeastOneMultiSelect: boolean = false;
   let fMoveFast: boolean = false;
@@ -3800,11 +3793,11 @@ function HandleMultiSelectionMove(sDestGridNo: INT16): boolean {
   gfGetNewPathThroughPeople = true;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
-        if (pSoldier.value.ubID == gusSelectedSoldier) {
-          fMoveFast = pSoldier.value.fUIMovementFast;
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
+      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+        if (pSoldier.ubID == gusSelectedSoldier) {
+          fMoveFast = pSoldier.fUIMovementFast;
           break;
         }
       }
@@ -3812,34 +3805,34 @@ function HandleMultiSelectionMove(sDestGridNo: INT16): boolean {
   }
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
+      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
         // If we can't be controlled, returninvalid...
-        if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+        if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
           if (!CanRobotBeControlled(pSoldier)) {
             continue;
           }
         }
 
-        pSoldier.value.fUIMovementFast = fMoveFast;
-        pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
+        pSoldier.fUIMovementFast = fMoveFast;
+        pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.usAnimState].ubEndHeight);
 
-        pSoldier.value.fUIMovementFast = false;
+        pSoldier.fUIMovementFast = false;
 
         if (gUIUseReverse) {
-          pSoldier.value.bReverse = true;
+          pSoldier.bReverse = true;
         } else {
-          pSoldier.value.bReverse = false;
+          pSoldier.bReverse = false;
         }
 
         // Remove any previous actions
-        pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
+        pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
-        if (EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.value.usUIMovementMode, true, pSoldier.value.fNoAPToFinishMove)) {
+        if (EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, pSoldier.usUIMovementMode, 1, pSoldier.fNoAPToFinishMove)) {
           InternalDoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1, BATTLE_SND_LOWER_VOLUME);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.NO_PATH_FOR_MERC], pSoldier.name);
         }
 
         fAtLeastOneMultiSelect = true;
@@ -3852,17 +3845,17 @@ function HandleMultiSelectionMove(sDestGridNo: INT16): boolean {
 }
 
 export function ResetMultiSelection(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   // OK, loop through all guys who are 'multi-selected' and
   // Make them move....
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector) {
-      if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
-        pSoldier.value.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector) {
+      if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+        pSoldier.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
       }
     }
   }
@@ -3870,8 +3863,8 @@ export function ResetMultiSelection(): void {
   gTacticalStatus.fAtLeastOneGuyOnMultiSelect = false;
 }
 
-function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleRubberBandOnTerrain(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
   let sScreenX: INT16;
   let sScreenY: INT16;
@@ -3886,7 +3879,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   gRubberBandRect.iBottom = gusMouseYPos;
 
   // Copy into temp rect
-  memcpy(addressof(aRect), addressof(gRubberBandRect), sizeof(gRubberBandRect));
+  copySGPRect(aRect, gRubberBandRect);
 
   if (aRect.iRight < aRect.iLeft) {
     iTemp = aRect.iLeft;
@@ -3902,11 +3895,11 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // ATE:Check at least for one guy that's in point!
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // Check if this guy is OK to control....
-    if (OK_CONTROLLABLE_MERC(pSoldier) && !(pSoldier.value.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
+    if (OK_CONTROLLABLE_MERC(pSoldier) && !(pSoldier.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
       // Get screen pos of gridno......
-      GetGridNoScreenXY(pSoldier.value.sGridNo, addressof(sScreenX), addressof(sScreenY));
+      GetGridNoScreenXY(pSoldier.sGridNo, addressof(sScreenX), addressof(sScreenY));
 
       // ATE: If we are in a hiehger interface level, subttrasct....
       if (gsInterfaceLevel == 1) {
@@ -3925,15 +3918,15 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
   // ATE: Now loop through our guys and see if any fit!
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // Check if this guy is OK to control....
-    if (OK_CONTROLLABLE_MERC(pSoldier) && !(pSoldier.value.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
+    if (OK_CONTROLLABLE_MERC(pSoldier) && !(pSoldier.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
       if (!_KeyDown(ALT)) {
-        pSoldier.value.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
+        pSoldier.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
       }
 
       // Get screen pos of gridno......
-      GetGridNoScreenXY(pSoldier.value.sGridNo, addressof(sScreenX), addressof(sScreenY));
+      GetGridNoScreenXY(pSoldier.sGridNo, addressof(sScreenX), addressof(sScreenY));
 
       // ATE: If we are in a hiehger interface level, subttrasct....
       if (gsInterfaceLevel == 1) {
@@ -3942,7 +3935,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
       if (IsPointInScreenRect(sScreenX, sScreenY, aRect)) {
         // Adjust this guy's flag...
-        pSoldier.value.uiStatusFlags |= SOLDIER_MULTI_SELECTED;
+        pSoldier.uiStatusFlags |= SOLDIER_MULTI_SELECTED;
       }
     }
   }
@@ -3950,12 +3943,12 @@ function UIHandleRubberBandOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleJumpOverOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleJumpOverOnTerrain(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
 
   // Here, first get map screen
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3979,13 +3972,13 @@ function UIHandleJumpOverOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+function UIHandleJumpOver(pUIEvent: UI_EVENT): UINT32 {
+  let pSoldier: SOLDIERTYPE | null;
   let usMapPos: UINT16;
   let bDirection: INT8;
 
   // Here, first get map screen
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3997,26 +3990,26 @@ function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
     return Enum26.GAME_SCREEN;
   }
 
-  SetUIBusy(pSoldier.value.ubID);
+  SetUIBusy(pSoldier.ubID);
 
   // OK, Start jumping!
   // Remove any previous actions
-  pSoldier.value.ubPendingAction = NO_PENDING_ACTION;
+  pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
   // Get direction to goto....
   bDirection = GetDirectionFromGridNo(usMapPos, pSoldier);
 
-  pSoldier.value.fDontChargeTurningAPs = true;
-  EVENT_InternalSetSoldierDesiredDirection(pSoldier, bDirection, false, pSoldier.value.usAnimState);
-  pSoldier.value.fTurningUntilDone = true;
+  pSoldier.fDontChargeTurningAPs = true;
+  EVENT_InternalSetSoldierDesiredDirection(pSoldier, bDirection, false, pSoldier.usAnimState);
+  pSoldier.fTurningUntilDone = true;
   // ATE: Reset flag to go back to prone...
   // pSoldier->fTurningFromPronePosition = TURNING_FROM_PRONE_OFF;
-  pSoldier.value.usPendingAnimation = Enum193.JUMP_OVER_BLOCKING_PERSON;
+  pSoldier.usPendingAnimation = Enum193.JUMP_OVER_BLOCKING_PERSON;
 
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLABeginLockOurTurn(pUIEvent: UI_EVENT): UINT32 {
   // Don't let both versions of the locks to happen at the same time!
   // ( They are mutually exclusive )!
   UIHandleLUIEndLock(null);
@@ -4046,7 +4039,7 @@ function UIHandleLABeginLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
+function UIHandleLAEndLockOurTurn(pUIEvent: UI_EVENT | null): UINT32 {
   if (gfUserTurnRegionActive) {
     gfUserTurnRegionActive = false;
 
@@ -4089,7 +4082,7 @@ export function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive:
 }
 
 export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMercs: boolean, fCheckCollapsed: boolean): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubSoldierID];
+  let pSoldier: SOLDIERTYPE = MercPtrs[ubSoldierID];
   let fValidGuy: boolean = false;
 
   if (gusSelectedSoldier != NOBODY) {
@@ -4099,41 +4092,41 @@ export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMer
   }
 
   // CHECK IF ACTIVE!
-  if (!pSoldier.value.bActive) {
+  if (!pSoldier.bActive) {
     return false;
   }
 
   // CHECK IF DEAD
-  if (pSoldier.value.bLife == 0) {
+  if (pSoldier.bLife == 0) {
     return false;
   }
 
-  if (pSoldier.value.bCollapsed && fCheckCollapsed) {
+  if (pSoldier.bCollapsed && fCheckCollapsed) {
     return false;
   }
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     return false;
   }
 
   // IF BAD GUY - CHECK VISIVILITY
-  if (pSoldier.value.bTeam != gbPlayerNum) {
-    if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+  if (pSoldier.bTeam != gbPlayerNum) {
+    if (pSoldier.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
       return false;
     }
   }
 
-  if (pSoldier.value.ubProfile != NO_PROFILE && pSoldier.value.ubProfile >= FIRST_RPC && !RPC_RECRUITED(pSoldier) && !AM_AN_EPC(pSoldier)) {
+  if (pSoldier.ubProfile != NO_PROFILE && pSoldier.ubProfile >= FIRST_RPC && !RPC_RECRUITED(pSoldier) && !AM_AN_EPC(pSoldier)) {
     fValidGuy = true;
   }
 
   // Check for EPC...
-  if (pSoldier.value.ubProfile != NO_PROFILE && (gCurrentUIMode == Enum206.TALKCURSOR_MODE || fGive) && AM_AN_EPC(pSoldier)) {
+  if (pSoldier.ubProfile != NO_PROFILE && (gCurrentUIMode == Enum206.TALKCURSOR_MODE || fGive) && AM_AN_EPC(pSoldier)) {
     fValidGuy = true;
   }
 
   // ATE: We can talk to our own teammates....
-  if (pSoldier.value.bTeam == gbPlayerNum && fAllowMercs) {
+  if (pSoldier.bTeam == gbPlayerNum && fAllowMercs) {
     fValidGuy = true;
   }
 
@@ -4142,7 +4135,7 @@ export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMer
   }
 
   // Alright, let's do something special here for robot...
-  if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+  if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
     if (fValidGuy == true && !fGive) {
       // Can't talk to robots!
       fValidGuy = false;
@@ -4152,7 +4145,7 @@ export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMer
   // OK, check if they are stationary or not....
   // Do some checks common to all..
   if (fValidGuy) {
-    if ((gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_MOVING) && !(gTacticalStatus.uiFlags & INCOMBAT)) {
+    if ((gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_MOVING) && !(gTacticalStatus.uiFlags & INCOMBAT)) {
       return false;
     }
 
@@ -4164,8 +4157,8 @@ export function IsValidTalkableNPC(ubSoldierID: UINT8, fGive: boolean, fAllowMer
 
 export function HandleTalkInit(): boolean {
   let sAPCost: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE | null;
+  let pTSoldier: SOLDIERTYPE;
   let uiRange: UINT32;
   let usMapPos: UINT16;
   let sGoodGridNo: INT16;
@@ -4177,7 +4170,7 @@ export function HandleTalkInit(): boolean {
   let ubDirection: UINT8;
 
   // Get soldier
-  if (!GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
+  if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return false;
   }
 
@@ -4189,26 +4182,26 @@ export function HandleTalkInit(): boolean {
   if (gfUIFullTargetFound) {
     // Is he a valid NPC?
     if (IsValidTalkableNPC(gusUIFullTargetID, false, true, false)) {
-      GetSoldier(addressof(pTSoldier), gusUIFullTargetID);
+      pTSoldier = <SOLDIERTYPE>GetSoldier(gusUIFullTargetID);
 
-      if (pTSoldier.value.ubID != pSoldier.value.ubID) {
+      if (pTSoldier.ubID != pSoldier.ubID) {
         // ATE: Check if we have good LOS
         // is he close enough to see that gridno if he turns his head?
-        sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pTSoldier.value.sGridNo, pTSoldier.value.bLevel);
+        sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pTSoldier.sGridNo, pTSoldier.bLevel);
 
         // Check LOS!
-        if (!SoldierTo3DLocationLineOfSightTest(pSoldier, pTSoldier.value.sGridNo, pTSoldier.value.bLevel, 3, sDistVisible, true)) {
-          if (pTSoldier.value.ubProfile != NO_PROFILE) {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_LOS_TO_TALK_TARGET], pSoldier.value.name, pTSoldier.value.name);
+        if (!SoldierTo3DLocationLineOfSightTest(pSoldier, pTSoldier.sGridNo, pTSoldier.bLevel, 3, sDistVisible, true)) {
+          if (pTSoldier.ubProfile != NO_PROFILE) {
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_LOS_TO_TALK_TARGET], pSoldier.name, pTSoldier.name);
           } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[45], pSoldier.value.name);
+            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[45], pSoldier.name);
           }
           return false;
         }
       }
 
-      if (pTSoldier.value.bCollapsed) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[21], pTSoldier.value.name);
+      if (pTSoldier.bCollapsed) {
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[21], pTSoldier.name);
         return false;
       }
 
@@ -4218,23 +4211,23 @@ export function HandleTalkInit(): boolean {
       }
 
       // ATE: if our own guy...
-      if (pTSoldier.value.bTeam == gbPlayerNum && !AM_AN_EPC(pTSoldier)) {
-        if (pTSoldier.value.ubProfile == Enum268.DIMITRI) {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[32], pTSoldier.value.name);
+      if (pTSoldier.bTeam == gbPlayerNum && !AM_AN_EPC(pTSoldier)) {
+        if (pTSoldier.ubProfile == Enum268.DIMITRI) {
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, gzLateLocalizedString[32], pTSoldier.name);
           return false;
         }
 
         // Randomize quote to use....
 
         // If buddy had a social trait...
-        if (gMercProfiles[pTSoldier.value.ubProfile].bAttitude != Enum271.ATT_NORMAL) {
+        if (gMercProfiles[pTSoldier.ubProfile].bAttitude != Enum271.ATT_NORMAL) {
           ubDiceRoll = Random(3);
         } else {
           ubDiceRoll = Random(2);
         }
 
         // If we are a PC, only use 0
-        if (pTSoldier.value.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
+        if (pTSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__PLAYER_CHARACTER) {
           ubDiceRoll = 0;
         }
 
@@ -4246,7 +4239,7 @@ export function HandleTalkInit(): boolean {
 
           case 1:
 
-            if (QuoteExp_PassingDislike[pTSoldier.value.ubProfile]) {
+            if (QuoteExp_PassingDislike[pTSoldier.ubProfile]) {
               ubQuoteNum = Enum202.QUOTE_PASSING_DISLIKE;
             } else {
               ubQuoteNum = Enum202.QUOTE_NEGATIVE_COMPANY;
@@ -4264,7 +4257,7 @@ export function HandleTalkInit(): boolean {
             break;
         }
 
-        if (pTSoldier.value.ubProfile == Enum268.IRA) {
+        if (pTSoldier.ubProfile == Enum268.IRA) {
           ubQuoteNum = Enum202.QUOTE_PASSING_DISLIKE;
         }
 
@@ -4274,7 +4267,7 @@ export function HandleTalkInit(): boolean {
       }
 
       // Check distance
-      uiRange = GetRangeFromGridNoDiff(pSoldier.value.sGridNo, usMapPos);
+      uiRange = GetRangeFromGridNoDiff(pSoldier.sGridNo, usMapPos);
 
       // Double check path
       if (GetCivType(pTSoldier) != CIV_TYPE_NA) {
@@ -4286,21 +4279,21 @@ export function HandleTalkInit(): boolean {
 
       if (uiRange > NPC_TALK_RADIUS) {
         // First get an adjacent gridno....
-        sActionGridNo = FindAdjacentGridEx(pSoldier, pTSoldier.value.sGridNo, addressof(ubDirection), null, false, true);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, pTSoldier.sGridNo, addressof(ubDirection), null, false, true);
 
         if (sActionGridNo == -1) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
           return false;
         }
 
-        if (UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, false, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints) == 0) {
+        if (UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints) == 0) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
           return false;
         }
 
         // Walk up and talk to buddy....
         gfNPCCircularDistLimit = true;
-        sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, pSoldier.value.usUIMovementMode, pTSoldier.value.sGridNo, (NPC_TALK_RADIUS - 1), addressof(ubNewDirection), true);
+        sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, pSoldier.usUIMovementMode, pTSoldier.sGridNo, (NPC_TALK_RADIUS - 1), addressof(ubNewDirection), true);
         gfNPCCircularDistLimit = false;
 
         // First calculate APs and validate...
@@ -4313,12 +4306,12 @@ export function HandleTalkInit(): boolean {
         }
 
         // Now walkup to talk....
-        pSoldier.value.ubPendingAction = Enum257.MERC_TALK;
-        pSoldier.value.uiPendingActionData1 = pTSoldier.value.ubID;
-        pSoldier.value.ubPendingActionAnimCount = 0;
+        pSoldier.ubPendingAction = Enum257.MERC_TALK;
+        pSoldier.uiPendingActionData1 = pTSoldier.ubID;
+        pSoldier.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sGoodGridNo, pSoldier.value.usUIMovementMode, true, pSoldier.value.fNoAPToFinishMove);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sGoodGridNo, pSoldier.usUIMovementMode, 1, pSoldier.fNoAPToFinishMove);
 
         return false;
       } else {
@@ -4330,7 +4323,7 @@ export function HandleTalkInit(): boolean {
         }
 
         // OK, startup!
-        PlayerSoldierStartTalking(pSoldier, pTSoldier.value.ubID, false);
+        PlayerSoldierStartTalking(pSoldier, pTSoldier.ubID, false);
       }
 
       if (GetCivType(pTSoldier) != CIV_TYPE_NA) {
@@ -4375,24 +4368,24 @@ export function BeginDisplayTimedCursor(uiCursorID: UINT32, uiDelay: UINT32): vo
   guiTimerCursorDelay = uiDelay;
 }
 
-function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16, fUseOKCursor: boolean, fItemsOnlyIfOnIntTiles: boolean): INT8 {
+/* static */ let UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool: boolean = false;
+/* static */ let UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy: boolean = false;
+function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: SOLDIERTYPE, usMapPos: INT16, fUseOKCursor: boolean, fItemsOnlyIfOnIntTiles: boolean): INT8 {
   let pItemPool: ITEM_POOL | null;
   let fSetCursor: boolean;
   let uiCursorFlags: UINT32;
-  let pIntTile: Pointer<LEVELNODE>;
-  /* static */ let fOverPool: boolean = false;
-  /* static */ let fOverEnemy: boolean = false;
+  let pIntTile: LEVELNODE | null;
   let sActionGridNo: INT16;
   let sIntTileGridNo: INT16;
   let fContinue: boolean = true;
-  let pStructure: Pointer<STRUCTURE> = null;
+  let pStructure: STRUCTURE | null = null;
   let fPoolContainsHiddenItems: boolean = false;
-  let pTSoldier: Pointer<SOLDIERTYPE>;
+  let pTSoldier: SOLDIERTYPE;
 
   if (gfResetUIItemCursorOptimization) {
     gfResetUIItemCursorOptimization = false;
-    fOverPool = false;
-    fOverEnemy = false;
+    UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool = false;
+    UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy = false;
   }
 
   GetCursorMovementFlags(addressof(uiCursorFlags));
@@ -4409,17 +4402,17 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
   if (gfUIFullTargetFound) {
     pTSoldier = MercPtrs[gusUIFullTargetID];
 
-    if (OK_ENTERABLE_VEHICLE(pTSoldier) && pTSoldier.value.bVisible != -1) {
+    if (OK_ENTERABLE_VEHICLE(pTSoldier) && pTSoldier.bVisible != -1) {
       // grab number of occupants in vehicles
       if (fItemsOnlyIfOnIntTiles) {
-        if (!OKUseVehicle(pTSoldier.value.ubProfile)) {
+        if (!OKUseVehicle(pTSoldier.ubProfile)) {
           // Set UI CURSOR....
           guiNewUICursor = Enum210.CANNOT_MOVE_UICURSOR;
 
           gfBeginVehicleCursor = true;
           return 1;
         } else {
-          if (GetNumberInVehicle(pTSoldier.value.bVehicleID) == 0) {
+          if (GetNumberInVehicle(pTSoldier.bVehicleID) == 0) {
             // Set UI CURSOR....
             guiNewUICursor = Enum210.ENTER_VEHICLE_UICURSOR;
 
@@ -4436,8 +4429,8 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
 
     if (!fItemsOnlyIfOnIntTiles) {
       if ((guiUIFullTargetFlags & ENEMY_MERC) && !(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
-        if (!fOverEnemy) {
-          fOverEnemy = true;
+        if (!UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy) {
+          UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy = true;
           gfPlotNewMovement = true;
         }
 
@@ -4463,9 +4456,9 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
     }
   }
 
-  if (fOverEnemy) {
+  if (UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy) {
     ErasePath(true);
-    fOverEnemy = false;
+    UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy = false;
     gfPlotNewMovement = true;
   }
 
@@ -4478,16 +4471,16 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
   }
 
   // Check if we are over an item pool
-  if ((pItemPool = GetItemPool(sActionGridNo, pSoldier.value.bLevel))) {
+  if ((pItemPool = GetItemPool(sActionGridNo, pSoldier.bLevel))) {
     // If we want only on int tiles, and we have no int tiles.. ignore items!
     if (fItemsOnlyIfOnIntTiles && pIntTile == null) {
-    } else if (fItemsOnlyIfOnIntTiles && pIntTile != null && (pStructure.value.fFlags & STRUCTURE_HASITEMONTOP)) {
+    } else if (fItemsOnlyIfOnIntTiles && pIntTile != null && (pStructure.fFlags & STRUCTURE_HASITEMONTOP)) {
       // if in this mode, we don't want to automatically show hand cursor over items on strucutres
     }
     // else if ( pIntTile != NULL && ( pStructure->fFlags & ( STRUCTURE_SWITCH | STRUCTURE_ANYDOOR ) ) )
-    else if (pIntTile != null && (pStructure.value.fFlags & (STRUCTURE_SWITCH))) {
+    else if (pIntTile != null && (pStructure.fFlags & (STRUCTURE_SWITCH))) {
       // We don't want switches messing around with items ever!
-    } else if ((pIntTile != null && (pStructure.value.fFlags & (STRUCTURE_ANYDOOR))) && (sActionGridNo != usMapPos || fItemsOnlyIfOnIntTiles)) {
+    } else if ((pIntTile != null && (pStructure.fFlags & (STRUCTURE_ANYDOOR))) && (sActionGridNo != usMapPos || fItemsOnlyIfOnIntTiles)) {
       // Next we look for if we are over a door and if the mouse position is != base door position, ignore items!
     } else {
       fPoolContainsHiddenItems = DoesItemPoolContainAnyHiddenItems(pItemPool);
@@ -4500,8 +4493,8 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
       }
 
       if (ITEMPOOL_VISIBLE(pItemPool) || fPoolContainsHiddenItems) {
-        if (!fOverPool) {
-          fOverPool = true;
+        if (!UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool) {
+          UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool = true;
           gfPlotNewMovement = true;
         }
 
@@ -4534,9 +4527,9 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
   if (fContinue) {
     // Try interactive tiles now....
     if (pIntTile != null) {
-      if (fOverPool) {
+      if (UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool) {
         ErasePath(true);
-        fOverPool = false;
+        UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool = false;
         gfPlotNewMovement = true;
       }
 
@@ -4547,8 +4540,8 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: Pointer<SOLDIERTYPE
     } else {
       if (!fItemsOnlyIfOnIntTiles) {
         // Let's at least show where the merc will walk to if they go here...
-        if (!fOverPool) {
-          fOverPool = true;
+        if (!UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool) {
+          UIHandleInteractiveTilesAndItemsOnTerrain__fOverPool = true;
           gfPlotNewMovement = true;
         }
 
@@ -4587,14 +4580,14 @@ export function HandleTacticalUILoseCursorFromOtherScreen(): void {
 }
 
 export function SelectedGuyInBusyAnimation(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   if (gusSelectedSoldier != NOBODY) {
     pSoldier = MercPtrs[gusSelectedSoldier];
 
-    if (pSoldier.value.usAnimState == Enum193.LOB_ITEM || pSoldier.value.usAnimState == Enum193.THROW_ITEM || pSoldier.value.usAnimState == Enum193.PICKUP_ITEM || pSoldier.value.usAnimState == Enum193.DROP_ITEM || pSoldier.value.usAnimState == Enum193.OPEN_DOOR || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR || pSoldier.value.usAnimState == Enum193.END_OPEN_LOCKED_DOOR || pSoldier.value.usAnimState == Enum193.ADJACENT_GET_ITEM || pSoldier.value.usAnimState == Enum193.DROP_ADJACENT_OBJECT ||
+    if (pSoldier.usAnimState == Enum193.LOB_ITEM || pSoldier.usAnimState == Enum193.THROW_ITEM || pSoldier.usAnimState == Enum193.PICKUP_ITEM || pSoldier.usAnimState == Enum193.DROP_ITEM || pSoldier.usAnimState == Enum193.OPEN_DOOR || pSoldier.usAnimState == Enum193.OPEN_STRUCT || pSoldier.usAnimState == Enum193.OPEN_STRUCT || pSoldier.usAnimState == Enum193.END_OPEN_DOOR || pSoldier.usAnimState == Enum193.END_OPEN_LOCKED_DOOR || pSoldier.usAnimState == Enum193.ADJACENT_GET_ITEM || pSoldier.usAnimState == Enum193.DROP_ADJACENT_OBJECT ||
 
-        pSoldier.value.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.CLOSE_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPEN_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPEN_LOCKED_DOOR_CROUCHED || pSoldier.value.usAnimState == Enum193.END_OPENSTRUCT_LOCKED_CROUCHED || pSoldier.value.usAnimState == Enum193.BEGIN_OPENSTRUCT) {
+        pSoldier.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.usAnimState == Enum193.BEGIN_OPENSTRUCT_CROUCHED || pSoldier.usAnimState == Enum193.CLOSE_DOOR_CROUCHED || pSoldier.usAnimState == Enum193.OPEN_DOOR_CROUCHED || pSoldier.usAnimState == Enum193.OPEN_STRUCT_CROUCHED || pSoldier.usAnimState == Enum193.END_OPENSTRUCT_CROUCHED || pSoldier.usAnimState == Enum193.END_OPEN_DOOR_CROUCHED || pSoldier.usAnimState == Enum193.END_OPEN_LOCKED_DOOR_CROUCHED || pSoldier.usAnimState == Enum193.END_OPENSTRUCT_LOCKED_CROUCHED || pSoldier.usAnimState == Enum193.BEGIN_OPENSTRUCT) {
       return true;
     }
   }
@@ -4602,16 +4595,16 @@ export function SelectedGuyInBusyAnimation(): boolean {
   return false;
 }
 
-export function GotoHeigherStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GotoHeigherStance(pSoldier: SOLDIERTYPE): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
 
-  switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
+  switch (gAnimControl[pSoldier.usAnimState].ubEndHeight) {
     case ANIM_STAND:
 
       // Nowhere
       // Try to climb
-      GetMercClimbDirection(pSoldier.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+      GetMercClimbDirection(pSoldier.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
       if (fNearHeigherLevel) {
         BeginSoldierClimbUpRoof(pSoldier);
@@ -4630,11 +4623,11 @@ export function GotoHeigherStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
-export function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function GotoLowerStance(pSoldier: SOLDIERTYPE): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
 
-  switch (gAnimControl[pSoldier.value.usAnimState].ubEndHeight) {
+  switch (gAnimControl[pSoldier.usAnimState].ubEndHeight) {
     case ANIM_STAND:
 
       HandleStanceChangeFromUIKeys(ANIM_CROUCH);
@@ -4649,7 +4642,7 @@ export function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       // Nowhere
       // Try to climb
-      GetMercClimbDirection(pSoldier.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+      GetMercClimbDirection(pSoldier.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
       if (fNearLowerLevel) {
         BeginSoldierClimbDownRoof(pSoldier);
@@ -4658,14 +4651,14 @@ export function GotoLowerStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 }
 
+/* static */ let SetInterfaceHeightLevel__sOldHeight: INT16 = 0;
 export function SetInterfaceHeightLevel(): void {
   let sHeight: INT16;
-  /* static */ let sOldHeight: INT16 = 0;
   let sGridNo: INT16;
 
   if (gfBasement || gfCaves) {
     gsRenderHeight = 0;
-    sOldHeight = 0;
+    SetInterfaceHeightLevel__sOldHeight = 0;
 
     return;
   }
@@ -4686,7 +4679,7 @@ export function SetInterfaceHeightLevel(): void {
 
   sHeight = gpWorldLevelData[sGridNo].sHeight;
 
-  if (sHeight != sOldHeight) {
+  if (sHeight != SetInterfaceHeightLevel__sOldHeight) {
     gsRenderHeight = sHeight;
 
     if (gsInterfaceLevel > 0) {
@@ -4696,16 +4689,16 @@ export function SetInterfaceHeightLevel(): void {
     SetRenderFlags(RENDER_FLAG_FULL);
     ErasePath(false);
 
-    sOldHeight = sHeight;
+    SetInterfaceHeightLevel__sOldHeight = sHeight;
   }
 }
 
+/* static */ let ValidQuickExchangePosition__fOldOnValidGuy: boolean = false;
 export function ValidQuickExchangePosition(): boolean {
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pOverSoldier: Pointer<SOLDIERTYPE>;
-  let sDistVisible: INT16 = false;
+  let pSoldier: SOLDIERTYPE | null;
+  let pOverSoldier: SOLDIERTYPE;
+  let sDistVisible: INT16 = 0;
   let fOnValidGuy: boolean = false;
-  /* static */ let fOldOnValidGuy: boolean = false;
 
   // Check if we over a civ
   if (gfUIFullTargetFound) {
@@ -4713,19 +4706,19 @@ export function ValidQuickExchangePosition(): boolean {
 
     // KM: Replaced this older if statement for the new one which allows exchanging with militia
     // if ( ( pOverSoldier->bSide != gbPlayerNum ) && pOverSoldier->bNeutral  )
-    if ((pOverSoldier.value.bTeam != gbPlayerNum && pOverSoldier.value.bNeutral) || (pOverSoldier.value.bTeam == MILITIA_TEAM && pOverSoldier.value.bSide == 0)) {
+    if ((pOverSoldier.bTeam != gbPlayerNum && pOverSoldier.bNeutral) || (pOverSoldier.bTeam == MILITIA_TEAM && pOverSoldier.bSide == 0)) {
       // hehe - don't allow animals to exchange places
-      if (!(pOverSoldier.value.uiStatusFlags & (SOLDIER_ANIMAL))) {
+      if (!(pOverSoldier.uiStatusFlags & (SOLDIER_ANIMAL))) {
         // OK, we have a civ , now check if they are near selected guy.....
-        if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
-          if (PythSpacesAway(pSoldier.value.sGridNo, pOverSoldier.value.sGridNo) == 1) {
+        if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
+          if (PythSpacesAway(pSoldier.sGridNo, pOverSoldier.sGridNo) == 1) {
             // Check if we have LOS to them....
-            sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pOverSoldier.value.sGridNo, pOverSoldier.value.bLevel);
+            sDistVisible = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, pOverSoldier.sGridNo, pOverSoldier.bLevel);
 
-            if (SoldierTo3DLocationLineOfSightTest(pSoldier, pOverSoldier.value.sGridNo, pOverSoldier.value.bLevel, 3, sDistVisible, true)) {
+            if (SoldierTo3DLocationLineOfSightTest(pSoldier, pOverSoldier.sGridNo, pOverSoldier.bLevel, 3, sDistVisible, true)) {
               // ATE:
               // Check that the path is good!
-              if (FindBestPath(pSoldier, pOverSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST) == 1) {
+              if (FindBestPath(pSoldier, pOverSoldier.sGridNo, pSoldier.bLevel, pSoldier.usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST) == 1) {
                 fOnValidGuy = true;
               }
             }
@@ -4735,7 +4728,7 @@ export function ValidQuickExchangePosition(): boolean {
     }
   }
 
-  if (fOldOnValidGuy != fOnValidGuy) {
+  if (ValidQuickExchangePosition__fOldOnValidGuy != fOnValidGuy) {
     // Update timer....
     // ATE: Adjust clock for automatic swapping so that the 'feel' is there....
     guiUIInterfaceSwapCursorsTime = GetJA2Clock();
@@ -4744,7 +4737,7 @@ export function ValidQuickExchangePosition(): boolean {
   }
 
   // Update old value.....
-  fOldOnValidGuy = fOnValidGuy;
+  ValidQuickExchangePosition__fOldOnValidGuy = fOnValidGuy;
 
   if (!gfOKForExchangeCursor) {
     fOnValidGuy = false;
@@ -4755,8 +4748,8 @@ export function ValidQuickExchangePosition(): boolean {
 
 // This function contains the logic for allowing the player
 // to jump over people.
-export function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCheckForPath: boolean): boolean {
-  let sFourGrids: INT16[] /* [4] */;
+export function IsValidJumpLocation(pSoldier: SOLDIERTYPE, sGridNo: INT16, fCheckForPath: boolean): boolean {
+  let sFourGrids: INT16[] /* [4] */ = createArray(4, 0);
   let sDistance: INT16 = 0;
   let sSpot: INT16;
   let sIntSpot: INT16;
@@ -4783,9 +4776,9 @@ export function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
     sIntSpot = NewGridNo(sGridNo, DirectionInc(sDirs[cnt]));
 
     // ATE: Check our movement costs for going through walls!
-    ubMovementCost = gubWorldMovementCosts[sIntSpot][sDirs[cnt]][pSoldier.value.bLevel];
+    ubMovementCost = gubWorldMovementCosts[sIntSpot][sDirs[cnt]][pSoldier.bLevel];
     if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), addressof(iDoorGridNo));
+      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), addressof(iDoorGridNo));
     }
 
     // If we have hit an obstacle, STOP HERE
@@ -4798,21 +4791,21 @@ export function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
     sFourGrids[cnt] = sSpot = NewGridNo(sIntSpot, DirectionInc(sDirs[cnt]));
 
     // Is the soldier we're looking at here?
-    ubGuyThere = WhoIsThere2(sSpot, pSoldier.value.bLevel);
+    ubGuyThere = WhoIsThere2(sSpot, pSoldier.bLevel);
 
     // Alright folks, here we are!
-    if (ubGuyThere == pSoldier.value.ubID) {
+    if (ubGuyThere == pSoldier.ubID) {
       // Double check OK destination......
       if (NewOKDestination(pSoldier, sGridNo, true, gsInterfaceLevel)) {
         // If the soldier in the middle of doing stuff?
-        if (!pSoldier.value.fTurningUntilDone) {
+        if (!pSoldier.fTurningUntilDone) {
           // OK, NOW check if there is a guy in between us
           //
           //
-          ubGuyThere = WhoIsThere2(sIntSpot, pSoldier.value.bLevel);
+          ubGuyThere = WhoIsThere2(sIntSpot, pSoldier.bLevel);
 
           // Is there a guy and is he prone?
-          if (ubGuyThere != NOBODY && ubGuyThere != pSoldier.value.ubID && gAnimControl[MercPtrs[ubGuyThere].value.usAnimState].ubHeight == ANIM_PRONE) {
+          if (ubGuyThere != NOBODY && ubGuyThere != pSoldier.ubID && gAnimControl[MercPtrs[ubGuyThere].usAnimState].ubHeight == ANIM_PRONE) {
             // It's a GO!
             return true;
           }

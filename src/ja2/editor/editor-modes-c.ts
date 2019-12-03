@@ -48,9 +48,9 @@ const NO_EFFECT = 2;
 
 export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
   let fNewGroup: boolean = false;
-  let fNewRoofs: boolean;
-  let fNewWalls: boolean;
-  let fNewRoomInfo: boolean;
+  let fNewRoofs: boolean | undefined;
+  let fNewWalls: boolean | undefined;
+  let fNewRoomInfo: boolean | undefined;
   if (usNewMode == usCurrentMode) {
     ClickEditorButton(usNewMode);
     return;
@@ -98,7 +98,7 @@ export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
       break;
     case Enum32.BUILDING_DRAW_ROOMNUM: // Show room info
     case Enum32.BUILDING_ERASE_ROOMNUM: // Show room info
-      fNewWalls = NO_EFFECT;
+      fNewWalls = undefined;
       fNewRoofs = gfBasement ? true : false;
       fNewRoomInfo = true;
       break;
@@ -130,7 +130,7 @@ export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
       return;
   }
   UnclickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
-  if (fNewWalls != NO_EFFECT && fNewWalls != fBuildingShowWalls) {
+  if (fNewWalls !== undefined && fNewWalls != fBuildingShowWalls) {
     if (fNewWalls)
       ClickEditorButton(Enum32.BUILDING_TOGGLE_WALL_VIEW);
     else
@@ -138,7 +138,7 @@ export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
     fBuildingShowWalls = fNewWalls;
     UpdateWallsView();
   }
-  if (fNewRoofs != NO_EFFECT && fNewRoofs != fBuildingShowRoofs) {
+  if (fNewRoofs !== undefined && fNewRoofs != fBuildingShowRoofs) {
     if (fNewRoofs)
       ClickEditorButton(Enum32.BUILDING_TOGGLE_ROOF_VIEW);
     else
@@ -146,7 +146,7 @@ export function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
     fBuildingShowRoofs = fNewRoofs;
     UpdateRoofsView();
   }
-  if (fNewRoomInfo != NO_EFFECT && fNewRoomInfo != fBuildingShowRoomInfo) {
+  if (fNewRoomInfo !== undefined && fNewRoomInfo != fBuildingShowRoomInfo) {
     if (fNewRoomInfo)
       ClickEditorButton(Enum32.BUILDING_TOGGLE_INFO_VIEW);
     else
@@ -219,12 +219,12 @@ export function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
 
 function ShowExitGrids(): void {
   let i: UINT16;
-  let pLevelNode: Pointer<LEVELNODE>;
+  let pLevelNode: LEVELNODE | null;
   if (gfShowExitGrids)
     return;
   gfShowExitGrids = true;
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
+    if ((pLevelNode = GetExitGridLevelNode(i)) !== null) {
       AddTopmostToTail(i, Enum312.FIRSTPOINTERS8);
     }
   }
@@ -232,19 +232,19 @@ function ShowExitGrids(): void {
 
 export function HideExitGrids(): void {
   let i: UINT16;
-  let pLevelNode: Pointer<LEVELNODE>;
+  let pLevelNode: LEVELNODE | null;
   if (!gfShowExitGrids)
     return;
   gfShowExitGrids = false;
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
+    if ((pLevelNode = GetExitGridLevelNode(i)) !== null) {
       pLevelNode = gpWorldLevelData[i].pTopmostHead;
       while (pLevelNode) {
-        if (pLevelNode.value.usIndex == Enum312.FIRSTPOINTERS8) {
-          RemoveTopmost(i, pLevelNode.value.usIndex);
+        if (pLevelNode.usIndex == Enum312.FIRSTPOINTERS8) {
+          RemoveTopmost(i, pLevelNode.usIndex);
           break;
         }
-        pLevelNode = pLevelNode.value.pNext;
+        pLevelNode = pLevelNode.pNext;
       }
     }
   }

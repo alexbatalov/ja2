@@ -28,6 +28,13 @@ export function createExitGridFrom(usGridNo: UINT16, ubGotoSectorX: UINT8, ubGot
   };
 }
 
+export function copyExitGrid(destination: EXITGRID, source: EXITGRID) {
+  destination.usGridNo = source.usGridNo;
+  destination.ubGotoSectorX = source.ubGotoSectorX;
+  destination.ubGotoSectorY = source.ubGotoSectorY;
+  destination.ubGotoSectorZ = source.ubGotoSectorZ;
+}
+
 export const EXIT_GRID_SIZE = 6;
 
 export function readExitGrid(o: EXITGRID, buffer: Buffer, offset: number = 0): number {

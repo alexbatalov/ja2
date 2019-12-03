@@ -57,6 +57,12 @@ export function createLastHiredMercStruct(): LAST_HIRED_MERC_STRUCT {
   };
 }
 
+export function resetLastHiredMercStruct(o: LAST_HIRED_MERC_STRUCT) {
+  o.fHaveDisplayedPopUpInLaptop = false;
+  o.iIdOfMerc = 0;
+  o.uiArrivalTime = 0;
+}
+
 export const LAST_HIRED_MERC_STRUCT_SIZE = 12;
 
 export function readLastHiredMercStruct(o: LAST_HIRED_MERC_STRUCT, buffer: Buffer, offset: number = 0): number {
@@ -324,6 +330,55 @@ export function createLaptopSaveInfoStruct(): LaptopSaveInfoStruct {
     ubLastMercAvailableId: 0,
     bPadding: createArray(86, 0),
   };
+}
+
+export function resetLaptopSaveInfoStruct(o: LaptopSaveInfoStruct) {
+  o.gfNewGameLaptop = false;
+  o.fVisitedBookmarkAlready.fill(false);
+  o.iBookMarkList.fill(0);
+  o.iCurrentBalance = 0;
+  o.fIMPCompletedFlag = false;
+  o.fSentImpWarningAlready = false;
+  o.ubDeadCharactersList.fill(0);
+  o.ubLeftCharactersList.fill(0);
+  o.ubOtherCharactersList.fill(0);
+  o.gubPlayersMercAccountStatus = 0;
+  o.guiPlayersMercAccountNumber = 0;
+  o.gubLastMercIndex = 0;
+  o.BobbyRayInventory.forEach(resetStoreInventory);
+  o.BobbyRayUsedInventory.forEach(resetStoreInventory);
+  o.BobbyRayOrdersOnDeliveryArray = <BobbyRayOrderStruct[]><unknown>null;
+  o.usNumberOfBobbyRayOrderItems = 0;
+  o.usNumberOfBobbyRayOrderUsed = 0;
+  o.pLifeInsurancePayouts = <LIFE_INSURANCE_PAYOUT[]><unknown>null;
+  o.ubNumberLifeInsurancePayouts = 0;
+  o.ubNumberLifeInsurancePayoutUsed = 0;
+  o.fBobbyRSiteCanBeAccessed = false;
+  o.ubPlayerBeenToMercSiteStatus = 0;
+  o.fFirstVisitSinceServerWentDown = false;
+  o.fNewMercsAvailableAtMercSite = false;
+  o.fSaidGenericOpeningInMercSite = false;
+  o.fSpeckSaidFloMarriedCousinQuote = false;
+  o.fHasAMercDiedAtMercSite = false;
+  o.gbNumDaysTillFirstMercArrives = 0;
+  o.gbNumDaysTillSecondMercArrives = 0;
+  o.gbNumDaysTillThirdMercArrives = 0;
+  o.gbNumDaysTillFourthMercArrives = 0;
+  o.guiNumberOfMercPaymentsInDays = 0;
+  o.usInventoryListLength.fill(0);
+  o.iVoiceId = 0;
+  o.ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction = 0;
+  o.fMercSiteHasGoneDownYet = false;
+  o.ubSpeckCanSayPlayersLostQuote = 0;
+  resetLastHiredMercStruct(o.sLastHiredMerc);
+  o.iCurrentHistoryPage = 0;
+  o.iCurrentFinancesPage = 0;
+  o.iCurrentEmailPage = 0;
+  o.uiSpeckQuoteFlags = 0;
+  o.uiFlowerOrderNumber = 0;
+  o.uiTotalMoneyPaidToSpeck = 0;
+  o.ubLastMercAvailableId = 0;
+  o.bPadding.fill(0);
 }
 
 export const LAPTOP_SAVE_INFO_STRUCT_SIZE = 7440;

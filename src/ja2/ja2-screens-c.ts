@@ -27,21 +27,21 @@ let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = [
   DefaultDebugPage4,
 ];
 
+/* static */ let DisplayFrameRate__uiFPS: UINT32 = 0;
+/* static */ let DisplayFrameRate__uiFrameCount: UINT32 = 0;
 export function DisplayFrameRate(): void {
-  /* static */ let uiFPS: UINT32 = 0;
-  /* static */ let uiFrameCount: UINT32 = 0;
   let usMapPos: UINT16;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
   // Increment frame count
-  uiFrameCount++;
+  DisplayFrameRate__uiFrameCount++;
 
   if (COUNTERDONE(Enum386.FPSCOUNTER)) {
     // Reset counter
     RESETCOUNTER(Enum386.FPSCOUNTER);
 
-    uiFPS = uiFrameCount;
-    uiFrameCount = 0;
+    DisplayFrameRate__uiFPS = DisplayFrameRate__uiFrameCount;
+    DisplayFrameRate__uiFrameCount = 0;
   }
 
   // Create string
@@ -49,7 +49,7 @@ export function DisplayFrameRate(): void {
 
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String( "FPS: %d ", __min( uiFPS, 1000 ) ) );
 
-  if (uiFPS < 20) {
+  if (DisplayFrameRate__uiFPS < 20) {
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_LTRED);
   } else {
@@ -59,15 +59,14 @@ export function DisplayFrameRate(): void {
 
   if (gbFPSDisplay == SHOW_FULL_FPS) {
     // FRAME RATE
-    memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-    VideoOverlayDesc.pzText = swprintf("%ld", Math.min(uiFPS, 1000));
+    VideoOverlayDesc.pzText = swprintf("%ld", Math.min(DisplayFrameRate__uiFPS, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, false);
+    UpdateVideoOverlay(VideoOverlayDesc, giFPSOverlay, false);
 
     // TIMER COUNTER
     VideoOverlayDesc.pzText = swprintf("%ld", Math.min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, false);
+    UpdateVideoOverlay(VideoOverlayDesc, giCounterPeriodOverlay, false);
 
     if (GetMouseMapPos(addressof(usMapPos))) {
       // gprintfdirty( 0, 315, L"(%d)",usMapPos);
@@ -153,7 +152,7 @@ export function ErrorScreenHandle(): UINT32 {
   // Check for esc
   while (DequeueEvent(InputEvent) == true) {
     if (InputEvent.usEvent == KEY_DOWN) {
-      if (InputEvent.usParam == ESC || InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN) {
+      if (InputEvent.usParam == ESC || InputEvent.usParam == 'x'.charCodeAt(0) && InputEvent.usKeyState & ALT_DOWN) {
         // Exit the program
         DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
 
@@ -194,7 +193,7 @@ export function InitScreenHandle(): UINT32 {
   }
 
   if (ubCurrentScreen == 0) {
-    if (strcmp(gzCommandLine, "-NODD") == 0) {
+    if (gzCommandLine === "-NODD") {
       gfDontUseDDBlits = true;
     }
 
@@ -272,20 +271,19 @@ export function PalEditScreenInit(): boolean {
   return true;
 }
 
+/* static */ let PalEditScreenHandle__FirstTime: boolean = true;
 export function PalEditScreenHandle(): UINT32 {
-  /* static */ let FirstTime: boolean = true;
-
   if (gfExitPalEditScreen) {
     gfExitPalEditScreen = false;
-    FirstTime = true;
+    PalEditScreenHandle__FirstTime = true;
     FreeBackgroundRect(guiBackgroundRect);
     SetRenderHook(null);
     SetUIKeyboardHook(null);
     return Enum26.GAME_SCREEN;
   }
 
-  if (FirstTime) {
-    FirstTime = false;
+  if (PalEditScreenHandle__FirstTime) {
+    PalEditScreenHandle__FirstTime = false;
 
     SetRenderHook(PalEditRenderHook);
     SetUIKeyboardHook(PalEditKeyboardHook);
@@ -303,22 +301,22 @@ export function PalEditScreenShutdown(): boolean {
 }
 
 function PalEditRenderHook(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     // Set to current
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
-    DisplayPaletteRep(pSoldier.value.HeadPal, 50, 10, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier.value.PantsPal, 50, 50, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier.value.VestPal, 50, 90, FRAME_BUFFER);
-    DisplayPaletteRep(pSoldier.value.SkinPal, 50, 130, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.HeadPal, 50, 10, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.PantsPal, 50, 50, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.VestPal, 50, 90, FRAME_BUFFER);
+    DisplayPaletteRep(pSoldier.SkinPal, 50, 130, FRAME_BUFFER);
   }
 }
 
-function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
+function PalEditKeyboardHook(pInputEvent: InputAtom): boolean {
   let ubType: UINT8;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let ubPaletteRep: UINT8;
   let cnt: UINT32;
   let ubStartRep: UINT8 = 0;
@@ -328,17 +326,17 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     return false;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == ESC)) {
+  if ((pInputEvent.usEvent == KEY_DOWN) && (pInputEvent.usParam == ESC)) {
     gfExitPalEditScreen = true;
     return true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'h')) {
+  if ((pInputEvent.usEvent == KEY_DOWN) && (pInputEvent.usParam == 'h'.charCodeAt(0))) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get index of current
-    if (!GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep))) {
+    if ((ubPaletteRep = GetPaletteRepIndexFromID(pSoldier.HeadPal)) === -1) {
       return false;
     }
     ubType = gpPalRep[ubPaletteRep].ubType;
@@ -355,19 +353,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier.value.HeadPal, gpPalRep[ubPaletteRep].ID);
+    pSoldier.HeadPal = SET_PALETTEREP_ID(gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'v')) {
+  if ((pInputEvent.usEvent == KEY_DOWN) && (pInputEvent.usParam == 'v'.charCodeAt(0))) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get index of current
-    if (!GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep))) {
+    if ((ubPaletteRep = GetPaletteRepIndexFromID(pSoldier.VestPal)) === -1) {
       return false;
     }
     ubType = gpPalRep[ubPaletteRep].ubType;
@@ -384,19 +382,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier.value.VestPal, gpPalRep[ubPaletteRep].ID);
+    pSoldier.VestPal = SET_PALETTEREP_ID(gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'p')) {
+  if ((pInputEvent.usEvent == KEY_DOWN) && (pInputEvent.usParam == 'p'.charCodeAt(0))) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get index of current
-    if (!GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep))) {
+    if ((ubPaletteRep = GetPaletteRepIndexFromID(pSoldier.PantsPal)) === -1) {
       return false;
     }
     ubType = gpPalRep[ubPaletteRep].ubType;
@@ -413,19 +411,19 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier.value.PantsPal, gpPalRep[ubPaletteRep].ID);
+    pSoldier.PantsPal = SET_PALETTEREP_ID(gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
     return true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 's')) {
+  if ((pInputEvent.usEvent == KEY_DOWN) && (pInputEvent.usParam == 's'.charCodeAt(0))) {
     // Get Soldier
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get index of current
-    if (!GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep))) {
+    if ((ubPaletteRep = GetPaletteRepIndexFromID(pSoldier.SkinPal)) === -1) {
       return false;
     }
     ubType = gpPalRep[ubPaletteRep].ubType;
@@ -442,7 +440,7 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
     }
-    SET_PALETTEREP_ID(pSoldier.value.SkinPal, gpPalRep[ubPaletteRep].ID);
+    pSoldier.SkinPal = SET_PALETTEREP_ID(gpPalRep[ubPaletteRep].ID);
 
     CreateSoldierPalettes(pSoldier);
 
@@ -509,13 +507,13 @@ function DebugRenderHook(): void {
   gDebugRenderOverride[gCurDebugPage]();
 }
 
-function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
-  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == 'q')) {
+function DebugKeyboardHook(pInputEvent: InputAtom): boolean {
+  if ((pInputEvent.usEvent == KEY_UP) && (pInputEvent.usParam == 'q'.charCodeAt(0))) {
     gfExitDebugScreen = true;
     return true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGUP)) {
+  if ((pInputEvent.usEvent == KEY_UP) && (pInputEvent.usParam == PGUP)) {
     // Page down
     gCurDebugPage++;
 
@@ -527,7 +525,7 @@ function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): boolean {
     gfInitRect = true;
   }
 
-  if ((pInputEvent.value.usEvent == KEY_UP) && (pInputEvent.value.usParam == PGDN)) {
+  if ((pInputEvent.usEvent == KEY_UP) && (pInputEvent.usParam == PGDN)) {
     // Page down
     gCurDebugPage--;
 
@@ -573,14 +571,14 @@ export function SexScreenInit(): boolean {
 const SMILY_DELAY = 100;
 const SMILY_END_DELAY = 1000;
 
+/* static */ let SexScreenHandle__ubCurrentScreen: UINT8 = 0;
+/* static */ let SexScreenHandle__guiSMILY: UINT32;
+/* static */ let SexScreenHandle__bCurFrame: INT8 = 0;
+/* static */ let SexScreenHandle__uiTimeOfLastUpdate: UINT32 = 0;
+/* static */ let SexScreenHandle__uiTime: UINT32;
 export function SexScreenHandle(): UINT32 {
-  /* static */ let ubCurrentScreen: UINT8 = 0;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  /* static */ let guiSMILY: UINT32;
-  /* static */ let bCurFrame: INT8 = 0;
-  /* static */ let uiTimeOfLastUpdate: UINT32 = 0;
-  /* static */ let uiTime: UINT32;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let hVObject: HVOBJECT;
   let sX: INT16;
   let sY: INT16;
@@ -591,49 +589,49 @@ export function SexScreenHandle(): UINT32 {
   // Remove cursor....
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
-  if (ubCurrentScreen == 0) {
+  if (SexScreenHandle__ubCurrentScreen == 0) {
     // Load face....
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\luckysmile.sti");
-    if (!(guiSMILY = AddVideoObject(VObjectDesc)))
+    if (!(SexScreenHandle__guiSMILY = AddVideoObject(VObjectDesc)))
       AssertMsg(0, "Missing INTERFACE\\luckysmile.sti");
 
     // Init screen
-    bCurFrame = 0;
+    SexScreenHandle__bCurFrame = 0;
 
-    ubCurrentScreen = 1;
+    SexScreenHandle__ubCurrentScreen = 1;
 
-    uiTimeOfLastUpdate = GetJA2Clock();
+    SexScreenHandle__uiTimeOfLastUpdate = GetJA2Clock();
 
     return Enum26.SEX_SCREEN;
   }
 
   // Update frame
-  uiTime = GetJA2Clock();
+  SexScreenHandle__uiTime = GetJA2Clock();
 
   // if we are animation smile...
-  if (ubCurrentScreen == 1) {
+  if (SexScreenHandle__ubCurrentScreen == 1) {
     PlayJA2StreamingSampleFromFile("Sounds\\Sex.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, null);
-    if ((uiTime - uiTimeOfLastUpdate) > SMILY_DELAY) {
-      uiTimeOfLastUpdate = uiTime;
+    if ((SexScreenHandle__uiTime - SexScreenHandle__uiTimeOfLastUpdate) > SMILY_DELAY) {
+      SexScreenHandle__uiTimeOfLastUpdate = SexScreenHandle__uiTime;
 
-      bCurFrame++;
+      SexScreenHandle__bCurFrame++;
 
-      if (bCurFrame == 32) {
+      if (SexScreenHandle__bCurFrame == 32) {
         // Start end delay
-        ubCurrentScreen = 2;
+        SexScreenHandle__ubCurrentScreen = 2;
       }
     }
   }
 
-  if (ubCurrentScreen == 2) {
-    if ((uiTime - uiTimeOfLastUpdate) > SMILY_END_DELAY) {
-      uiTimeOfLastUpdate = uiTime;
+  if (SexScreenHandle__ubCurrentScreen == 2) {
+    if ((SexScreenHandle__uiTime - SexScreenHandle__uiTimeOfLastUpdate) > SMILY_END_DELAY) {
+      SexScreenHandle__uiTimeOfLastUpdate = SexScreenHandle__uiTime;
 
-      ubCurrentScreen = 0;
+      SexScreenHandle__ubCurrentScreen = 0;
 
       // Remove video object...
-      DeleteVideoObjectFromIndex(guiSMILY);
+      DeleteVideoObjectFromIndex(SexScreenHandle__guiSMILY);
 
       FadeInGameScreen();
 
@@ -646,19 +644,19 @@ export function SexScreenHandle(): UINT32 {
   }
 
   // Calculate smily face positions...
-  hVObject = GetVideoObject(guiSMILY);
-  pTrav = addressof(hVObject.value.pETRLEObject[0]);
+  hVObject = GetVideoObject(SexScreenHandle__guiSMILY);
+  pTrav = hVObject.value.pETRLEObject[0];
 
-  sX = ((640 - pTrav.value.usWidth) / 2);
-  sY = ((480 - pTrav.value.usHeight) / 2);
+  sX = ((640 - pTrav.usWidth) / 2);
+  sY = ((480 - pTrav.usHeight) / 2);
 
-  if (bCurFrame < 24) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
+  if (SexScreenHandle__bCurFrame < 24) {
+    BltVideoObjectFromIndex(FRAME_BUFFER, SexScreenHandle__guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   } else {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObjectFromIndex(FRAME_BUFFER, SexScreenHandle__guiSMILY, (SexScreenHandle__bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, null);
   }
 
-  InvalidateRegion(sX, sY, (sX + pTrav.value.usWidth), (sY + pTrav.value.usHeight));
+  InvalidateRegion(sX, sY, (sX + pTrav.usWidth), (sY + pTrav.usHeight));
 
   return Enum26.SEX_SCREEN;
 }

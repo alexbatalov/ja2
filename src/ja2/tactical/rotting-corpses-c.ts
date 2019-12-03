@@ -368,12 +368,12 @@ export function AddRottingCorpse(pCorpseDef: ROTTING_CORPSE_DEFINITION): INT32 {
   let pCorpse: ROTTING_CORPSE;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let ubLevelID: UINT8;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
+  let pStructureFileRef: STRUCTURE_FILE_REF | null = null;
   let zFilename: string /* INT8[150] */;
-  let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  let pDBStructureRef: DB_STRUCTURE_REF;
   let ubLoop: UINT8;
   let sTileGridNo: INT16;
-  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ppTile: DB_STRUCTURE_TILE[];
   let usStructIndex: UINT16;
   let uiDirectionUseFlag: UINT32;
 
@@ -454,14 +454,14 @@ export function AddRottingCorpse(pCorpseDef: ROTTING_CORPSE_DEFINITION): INT32 {
   }
 
   // Set flag and index values
-  pCorpse.pAniTile.value.pLevelNode.value.uiFlags |= (LEVELNODE_ROTTINGCORPSE);
+  pCorpse.pAniTile.pLevelNode.uiFlags |= (LEVELNODE_ROTTINGCORPSE);
 
-  pCorpse.pAniTile.value.pLevelNode.value.ubShadeLevel = gpWorldLevelData[pCorpse.def.sGridNo].pLandHead.value.ubShadeLevel;
-  pCorpse.pAniTile.value.pLevelNode.value.ubSumLights = gpWorldLevelData[pCorpse.def.sGridNo].pLandHead.value.ubSumLights;
-  pCorpse.pAniTile.value.pLevelNode.value.ubMaxLights = gpWorldLevelData[pCorpse.def.sGridNo].pLandHead.value.ubMaxLights;
-  pCorpse.pAniTile.value.pLevelNode.value.ubNaturalShadeLevel = gpWorldLevelData[pCorpse.def.sGridNo].pLandHead.value.ubNaturalShadeLevel;
+  pCorpse.pAniTile.pLevelNode.ubShadeLevel = (<LEVELNODE>gpWorldLevelData[pCorpse.def.sGridNo].pLandHead).ubShadeLevel;
+  pCorpse.pAniTile.pLevelNode.ubSumLights = (<LEVELNODE>gpWorldLevelData[pCorpse.def.sGridNo].pLandHead).ubSumLights;
+  pCorpse.pAniTile.pLevelNode.ubMaxLights = (<LEVELNODE>gpWorldLevelData[pCorpse.def.sGridNo].pLandHead).ubMaxLights;
+  pCorpse.pAniTile.pLevelNode.ubNaturalShadeLevel = (<LEVELNODE>gpWorldLevelData[pCorpse.def.sGridNo].pLandHead).ubNaturalShadeLevel;
 
-  pCorpse.pAniTile.value.uiUserData = iIndex;
+  pCorpse.pAniTile.uiUserData = iIndex;
   pCorpse.iID = iIndex;
 
   pCorpse.fActivated = true;
@@ -472,7 +472,7 @@ export function AddRottingCorpse(pCorpseDef: ROTTING_CORPSE_DEFINITION): INT32 {
     pCorpse.fAttractCrowsOnlyWhenOnScreen = false;
   }
 
-  pCorpse.iCachedTileID = pCorpse.pAniTile.value.sCachedTileID;
+  pCorpse.iCachedTileID = pCorpse.pAniTile.sCachedTileID;
 
   if (pCorpse.iCachedTileID == -1) {
     DeleteAniTile(pCorpse.pAniTile);
@@ -490,10 +490,10 @@ export function AddRottingCorpse(pCorpseDef: ROTTING_CORPSE_DEFINITION): INT32 {
   SetRenderFlags(RENDER_FLAG_FULL);
 
   if (pCorpse.def.usFlags & ROTTING_CORPSE_VEHICLE) {
-    pCorpse.pAniTile.value.uiFlags |= (ANITILE_FORWARD | ANITILE_LOOPING);
+    pCorpse.pAniTile.uiFlags |= (ANITILE_FORWARD | ANITILE_LOOPING);
 
     // Turn off pause...
-    pCorpse.pAniTile.value.uiFlags &= (~ANITILE_PAUSED);
+    pCorpse.pAniTile.uiFlags &= (~ANITILE_PAUSED);
   }
 
   InvalidateWorldRedundency();
@@ -505,19 +505,19 @@ export function AddRottingCorpse(pCorpseDef: ROTTING_CORPSE_DEFINITION): INT32 {
   zFilename = GetRootName(AniParams.zCachedFile);
 
   // Add structure data.....
-  CheckForAndAddTileCacheStructInfo(pCorpse.pAniTile.value.pLevelNode, pCorpse.def.sGridNo, (pCorpse.iCachedTileID), GetCorpseStructIndex(pCorpseDef, true));
+  CheckForAndAddTileCacheStructInfo(pCorpse.pAniTile.pLevelNode, pCorpse.def.sGridNo, (pCorpse.iCachedTileID), GetCorpseStructIndex(pCorpseDef, true));
 
   pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 
   if (pStructureFileRef != null) {
     usStructIndex = GetCorpseStructIndex(pCorpseDef, true);
 
-    pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[usStructIndex]);
+    pDBStructureRef = pStructureFileRef.pDBStructureRef[usStructIndex];
 
-    for (ubLoop = 0; ubLoop < pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
-      ppTile = pDBStructureRef.value.ppTile;
+    for (ubLoop = 0; ubLoop < pDBStructureRef.pDBStructure.ubNumberOfTiles; ubLoop++) {
+      ppTile = pDBStructureRef.ppTile;
 
-      sTileGridNo = pCorpseDef.sGridNo + ppTile[ubLoop].value.sPosRelToBase;
+      sTileGridNo = pCorpseDef.sGridNo + ppTile[ubLoop].sPosRelToBase;
 
       // Remove blood
       RemoveBlood(sTileGridNo, pCorpseDef.bLevel);
@@ -559,7 +559,7 @@ function RemoveCorpse(iCorpseID: INT32): void {
   // Remove!
   gRottingCorpse[iCorpseID].fActivated = false;
 
-  DeleteAniTile(gRottingCorpse[iCorpseID].pAniTile);
+  DeleteAniTile(<ANITILE>gRottingCorpse[iCorpseID].pAniTile);
 
   FreeCorpsePalettes(gRottingCorpse[iCorpseID]);
 }
@@ -583,7 +583,7 @@ function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
 
   if (bBodyTypePalette == -1) {
     // Use palette from HVOBJECT, then use substitution for pants, etc
-    memcpy(pCorpse.p8BPPPalette, gpTileCache[pCorpse.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+    memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
 
     // Substitute based on head, etc
     SetPaletteReplacement(pCorpse.p8BPPPalette, pCorpse.def.HeadPal);
@@ -592,7 +592,7 @@ function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
     SetPaletteReplacement(pCorpse.p8BPPPalette, pCorpse.def.SkinPal);
   } else if (bBodyTypePalette == 0) {
     // Use palette from hvobject
-    memcpy(pCorpse.p8BPPPalette, gpTileCache[pCorpse.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+    memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
   } else {
     // Use col file
     if (CreateSGPPaletteFromCOLFile(Temp8BPPPalette, zColFilename)) {
@@ -600,7 +600,7 @@ function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
       memcpy(pCorpse.p8BPPPalette, Temp8BPPPalette, sizeof(pCorpse.p8BPPPalette) * 256);
     } else {
       // Use palette from hvobject
-      memcpy(pCorpse.p8BPPPalette, gpTileCache[pCorpse.iCachedTileID].pImagery.value.vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+      memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
     }
   }
 
@@ -645,10 +645,10 @@ export function TurnSoldierIntoCorpse(pSoldier: SOLDIERTYPE, fRemoveMerc: boolea
     Corpse.sHeightAdjustment = (pSoldier.sHeightAdjustment - WALL_HEIGHT);
   }
 
-  SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier.HeadPal);
-  SET_PALETTEREP_ID(Corpse.VestPal, pSoldier.VestPal);
-  SET_PALETTEREP_ID(Corpse.SkinPal, pSoldier.SkinPal);
-  SET_PALETTEREP_ID(Corpse.PantsPal, pSoldier.PantsPal);
+  Corpse.HeadPal = SET_PALETTEREP_ID(pSoldier.HeadPal);
+  Corpse.VestPal = SET_PALETTEREP_ID(pSoldier.VestPal);
+  Corpse.SkinPal = SET_PALETTEREP_ID(pSoldier.SkinPal);
+  Corpse.PantsPal = SET_PALETTEREP_ID(pSoldier.PantsPal);
 
   if (pSoldier.bCamo != 0) {
     Corpse.usFlags |= ROTTING_CORPSE_USE_CAMMO_PALETTE;
@@ -808,7 +808,7 @@ function AddCrowToCorpse(pCorpse: ROTTING_CORPSE): void {
   let ubRoomNum: UINT8;
 
   // No crows inside :(
-  if (InARoom(pCorpse.def.sGridNo, addressof(ubRoomNum))) {
+  if ((ubRoomNum = InARoom(pCorpse.def.sGridNo)) !== -1) {
     return;
   }
 
@@ -1139,19 +1139,19 @@ export function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
 }
 
 export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
-  let pStructure: Pointer<STRUCTURE>;
-  let pBaseStructure: Pointer<STRUCTURE>;
-  let pCorpse: Pointer<ROTTING_CORPSE> = null;
+  let pStructure: STRUCTURE;
+  let pBaseStructure: STRUCTURE;
+  let pCorpse: ROTTING_CORPSE | null = null;
   let sBaseGridNo: INT16;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
-  pStructure = FindStructureByID(sGridNo, usStructureID);
+  pStructure = <STRUCTURE>FindStructureByID(sGridNo, usStructureID);
 
   // Get base....
-  pBaseStructure = FindBaseStructure(pStructure);
+  pBaseStructure = <STRUCTURE>FindBaseStructure(pStructure);
 
   // Find base gridno...
-  sBaseGridNo = pBaseStructure.value.sGridNo;
+  sBaseGridNo = pBaseStructure.sGridNo;
 
   // Get corpse ID.....
   pCorpse = FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
@@ -1160,7 +1160,7 @@ export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     return;
   }
 
-  if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
+  if (pCorpse.def.usFlags & ROTTING_CORPSE_VEHICLE) {
     return;
   }
 
@@ -1173,16 +1173,16 @@ export function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD;
     AniParams.sX = CenterX(sBaseGridNo);
     AniParams.sY = CenterY(sBaseGridNo);
-    AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
+    AniParams.sZ = pCorpse.def.sHeightAdjustment;
 
     AniParams.zCachedFile = "TILECACHE\\GEN_BLOW.STI";
     CreateAnimationTile(AniParams);
 
     // Remove....
-    RemoveCorpse(pCorpse.value.iID);
+    RemoveCorpse(pCorpse.iID);
     SetRenderFlags(RENDER_FLAG_FULL);
 
-    if (pCorpse.value.def.bLevel == 0) {
+    if (pCorpse.def.bLevel == 0) {
       // Set some blood......
       SpreadEffect(sBaseGridNo, ((2)), 0, NOBODY, BLOOD_SPREAD_EFFECT, 0, -1);
     }
@@ -1210,7 +1210,7 @@ export function FindNearestAvailableGridNoForCorpse(pDef: ROTTING_CORPSE_DEFINIT
   let soldier: SOLDIERTYPE = createSoldierType();
   let ubSaveNPCAPBudget: UINT8;
   let ubSaveNPCDistLimit: UINT8;
-  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = null;
+  let pStructureFileRef: STRUCTURE_FILE_REF | null = null;
   let zFilename: string /* INT8[150] */;
   let ubBestDirection: UINT8 = 0;
   let fSetDirection: boolean = false;
@@ -1275,7 +1275,7 @@ export function FindNearestAvailableGridNoForCorpse(pDef: ROTTING_CORPSE_DEFINIT
             fDirectionFound = true;
           } else {
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld(sGridNo, pDef.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pDef.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[cnt3]], INVALID_STRUCTURE_ID)) {
                 fDirectionFound = true;
                 fCanSetDirection = true;
                 break;
@@ -1329,7 +1329,7 @@ export function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): ROTTING_CORPSE 
 
   if (pStructure != null) {
     // Get base....
-    pBaseStructure = FindBaseStructure(pStructure);
+    pBaseStructure = <STRUCTURE>FindBaseStructure(pStructure);
 
     // Find base gridno...
     sBaseGridNo = pBaseStructure.sGridNo;

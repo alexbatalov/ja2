@@ -192,7 +192,7 @@ function GenerateBuilding(sDesiredSpot: INT16): BUILDING | null {
           bSkipSpots--;
         } else if (Random(uiChanceIn) == 0) {
           // don't consider people as obstacles
-          if (NewOKDestination(addressof(FakeSoldier), sCurrGridNo, false, 0)) {
+          if (NewOKDestination(FakeSoldier, sCurrGridNo, false, 0)) {
             pBuilding.sUpClimbSpots[pBuilding.ubNumClimbSpots] = sCurrGridNo;
             pBuilding.sDownClimbSpots[pBuilding.ubNumClimbSpots] = sRightGridNo;
             pBuilding.ubNumClimbSpots++;

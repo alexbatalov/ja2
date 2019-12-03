@@ -482,7 +482,7 @@ export function DecayCreatures(): void {
 
 function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   let iRandom: INT32;
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
   let MapEdgepointInfo: MAPEDGEPOINTINFO = createMapEdgePointInfo();
   let bDesiredDirection: UINT8 = 0;
   let ubCurrSlot: UINT8 = 0;
@@ -537,9 +537,10 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
       gubSectorIDOfCreatureAttack = 0;
       AllTeamsLookForAll(false);
 
-      Assert(0);
+      Assert(false);
       return;
     }
+    Assert(pSoldier);
     pSoldier.ubInsertionDirection = bDesiredDirection;
     // Setup the position
     pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;

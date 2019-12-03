@@ -1,7 +1,6 @@
 namespace ja2 {
 
 let fDirtyRectangleMode: boolean = false;
-let gpFPSBuffer: Pointer<UINT16> = null;
 // MarkNote
 // extern ScrollStringStPtr pStringS=NULL;
 let counter: UINT32 = 0;
@@ -17,20 +16,20 @@ let gfExitToNewSector: boolean = false;
 // UINT8		gubNewSectorExitDirection;
 
 export let gfGameScreenLocateToSoldier: boolean = false;
-export let gfEnteringMapScreen: boolean = false;
+export let gfEnteringMapScreen: UINT8 /* boolean */ = 0;
 let uiOldMouseCursor: UINT32;
 export let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
 
-let gfTacticalIsModal: boolean = false;
+let gfTacticalIsModal: UINT8 /* boolean */ = 0;
 let gTacticalDisableRegion: MOUSE_REGION = createMouseRegion();
 let gfTacticalDisableRegionActive: boolean = false;
-let gbTacticalDisableMode: INT8 = false;
+let gbTacticalDisableMode: INT8 = 0;
 export let gModalDoneCallback: MODAL_HOOK | null;
 export let gfBeginEndTurn: boolean = false;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
-let gRenderOverride: RENDER_HOOK = null;
+let gRenderOverride: RENDER_HOOK | null = null;
 
 const NOINPUT_DELAY = 60000;
 const DEMOPLAY_DELAY = 40000;
@@ -123,7 +122,7 @@ export function EnterTacticalScreen(): void {
       SelectNextAvailSoldier(MercPtrs[gusSelectedSoldier]);
     }
     // ATE: If the current guy is sleeping, change....
-    if (MercPtrs[gusSelectedSoldier].value.fMercAsleep) {
+    if (MercPtrs[gusSelectedSoldier].fMercAsleep) {
       SelectNextAvailSoldier(MercPtrs[gusSelectedSoldier]);
     }
   } else {
@@ -340,7 +339,7 @@ export function MainGameScreenHandle(): UINT32 {
         if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
           AdjustNoAPToFinishMove(MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID], false);
         }
-        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID].value.fPauseAllAnimation = false;
+        MercPtrs[gTacticalStatus.ubEnemySightingOnTheirTurnEnemyID].fPauseAllAnimation = false;
 
         gTacticalStatus.fEnemySightingOnTheirTurn = false;
       }
@@ -460,12 +459,12 @@ export function MainGameScreenHandle(): UINT32 {
       HandleTalkingAutoFaces();
     }
     else if (gfIntendOnEnteringEditor) {
-      OutputDebugString("Aborting normal game mode and entering editor mode...\n");
+      console.debug("Aborting normal game mode and entering editor mode...\n");
       SetPendingNewScreen(0xffff); // NO_SCREEN
       return Enum26.EDIT_SCREEN;
     }
     else if (!gfEnteringMapScreen) {
-      gfEnteringMapScreen = true;
+      gfEnteringMapScreen = 1;
     }
 
     if (uiNewScreen != Enum26.GAME_SCREEN) {
@@ -578,7 +577,7 @@ export function MainGameScreenHandle(): UINT32 {
 
   // Check if we are to enter map screen
   if (gfEnteringMapScreen == 2) {
-    gfEnteringMapScreen = false;
+    gfEnteringMapScreen = 0;
     EnterMapScreen();
   }
 
@@ -590,7 +589,7 @@ export function MainGameScreenHandle(): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-export function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
+export function SetRenderHook(pRenderOverride: RENDER_HOOK | null): void {
   gRenderOverride = pRenderOverride;
 }
 
@@ -660,7 +659,7 @@ export function UpdateTeamPanelAssignments(): void {
 
 export function EnterModalTactical(bMode: INT8): void {
   gbTacticalDisableMode = bMode;
-  gfTacticalIsModal = true;
+  gfTacticalIsModal = 1;
 
   if (gbTacticalDisableMode == TACTICAL_MODAL_NOMOUSE) {
     if (!gfTacticalDisableRegionActive) {
@@ -688,7 +687,7 @@ export function EndModalTactical(): void {
     gModalDoneCallback = null;
   }
 
-  gfTacticalIsModal = false;
+  gfTacticalIsModal = 0;
 
   SetRenderFlags(RENDER_FLAG_FULL);
 }

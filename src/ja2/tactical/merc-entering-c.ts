@@ -333,7 +333,7 @@ let fFadingHeliOut: boolean = false;
 
 export let gfIngagedInDrop: boolean = false;
 
-let gpHeli: Pointer<ANITILE>;
+let gpHeli: ANITILE /* Pointer<ANITILE> */ = <ANITILE><unknown>null;
 export let gfFirstHeliRun: boolean;
 
 export function ResetHeliSeats(): void {
@@ -413,13 +413,13 @@ export function HandleHeliDrop(): void {
       // Loop through all mercs not yet placed
       for (cnt = gbCurDrop; cnt < gbNumHeliSeatsOccupied; cnt++) {
         // Add merc to sector
-        MercPtrs[gusHeliSeats[cnt]].value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
+        MercPtrs[gusHeliSeats[cnt]].ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
         UpdateMercInSector(MercPtrs[gusHeliSeats[cnt]], 9, 1, 0);
 
         // Check for merc arrives quotes...
         HandleMercArrivesQuotes(MercPtrs[gusHeliSeats[cnt]]);
 
-        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]].value.name);
+        ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[cnt]].name);
       }
 
       // Remove heli
@@ -528,7 +528,7 @@ export function HandleHeliDrop(): void {
             EVENT_InitNewSoldierAnim(MercPtrs[gusHeliSeats[gbCurDrop]], Enum193.HELIDROP, 0, false);
 
             // Change insertion code
-            MercPtrs[gusHeliSeats[gbCurDrop]].value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
+            MercPtrs[gusHeliSeats[gbCurDrop]].ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
 
             UpdateMercInSector(MercPtrs[gusHeliSeats[gbCurDrop]], 9, 1, 0);
             // EVENT_SetSoldierPosition( MercPtrs[ gusHeliSeats[ gbCurDrop ] ], sWorldX, sWorldY );
@@ -536,9 +536,9 @@ export function HandleHeliDrop(): void {
             // IF the first guy down, set squad!
             if (gfFirstGuyDown) {
               gfFirstGuyDown = false;
-              SetCurrentSquad(MercPtrs[gusHeliSeats[gbCurDrop]].value.bAssignment, true);
+              SetCurrentSquad(MercPtrs[gusHeliSeats[gbCurDrop]].bAssignment, true);
             }
-            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]].value.name);
+            ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[Enum335.MERC_HAS_ARRIVED_STR], MercPtrs[gusHeliSeats[gbCurDrop]].name);
 
             gbCurDrop++;
 
@@ -567,35 +567,35 @@ export function HandleHeliDrop(): void {
         case Enum233.HELI_MOVE_DOWN:
 
           gdHeliZPos -= 1;
-          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
           break;
 
         case Enum233.HELI_MOVE_UP:
 
           gdHeliZPos += 1;
-          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
           break;
 
         case Enum233.HELI_MOVESMALL_DOWN:
 
           gdHeliZPos -= 0.25;
-          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
           break;
 
         case Enum233.HELI_MOVESMALL_UP:
 
           gdHeliZPos += 0.25;
-          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
           break;
 
         case Enum233.HELI_MOVEY:
 
-          gpHeli.value.sRelativeY += 4;
+          gpHeli.sRelativeY += 4;
           break;
 
         case Enum233.HELI_MOVELARGERY:
 
-          gpHeli.value.sRelativeY += 6;
+          gpHeli.sRelativeY += 6;
           break;
 
         case Enum233.HELI_GOTO_BEGINDROP:
@@ -607,7 +607,6 @@ export function HandleHeliDrop(): void {
         case Enum233.HELI_SHOW_HELI:
 
           // Start animation
-          memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = gsGridNoSweetSpot;
           AniParams.ubLevelID = ANI_SHADOW_LEVEL;
           AniParams.sDelay = 90;
@@ -618,14 +617,14 @@ export function HandleHeliDrop(): void {
           AniParams.sZ = gdHeliZPos;
           AniParams.zCachedFile = "TILECACHE\\HELI_SH.STI";
 
-          gpHeli = CreateAnimationTile(addressof(AniParams));
+          gpHeli = <ANITILE>CreateAnimationTile(AniParams);
           break;
 
         case Enum233.HELI_GOTO_DROP:
 
           // Goto drop animation
           gdHeliZPos -= 0.25;
-          gpHeli.value.pLevelNode.value.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
           gsHeliScript = -1;
           gubHeliState = Enum232.HELI_DROP;
           break;
@@ -663,7 +662,7 @@ export function HandleHeliDrop(): void {
 
             // Ahh, but still delete the heli!
             DeleteAniTile(gpHeli);
-            gpHeli = null;
+            gpHeli = <ANITILE><unknown>null;
           } else {
             // Goto drop animation
             gsHeliScript = -1;
@@ -671,7 +670,7 @@ export function HandleHeliDrop(): void {
 
             // Delete helicopter image!
             DeleteAniTile(gpHeli);
-            gpHeli = null;
+            gpHeli = <ANITILE><unknown>null;
             gfIgnoreScrolling = false;
 
             // Select our first guy
@@ -691,10 +690,10 @@ export function HandleHeliDrop(): void {
   }
 }
 
-function BeginMercEntering(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
+function BeginMercEntering(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   ResetHeliSeats();
 
-  AddMercToHeli(pSoldier.value.ubID);
+  AddMercToHeli(pSoldier.ubID);
 
   StartHelicopterRun(sGridNo);
 

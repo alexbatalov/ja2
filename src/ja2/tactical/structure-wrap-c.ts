@@ -63,7 +63,7 @@ function IsWallPresentAtGridno(sGridNo: INT16): LEVELNODE | null {
 }
 
 function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8): LEVELNODE | null {
-  let pNode: LEVELNODE = null;
+  let pNode: LEVELNODE;
   let pStructure: STRUCTURE | null;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -339,7 +339,7 @@ export function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>
   }
 
   if (ubMerc != NOBODY) {
-    if (MercPtrs[ubMerc].value.uiStatusFlags & SOLDIER_VEHICLE) {
+    if (MercPtrs[ubMerc].uiStatusFlags & SOLDIER_VEHICLE) {
       return 2;
     }
   }
@@ -364,7 +364,7 @@ export function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>
   }
 
   if (ubMerc != NOBODY) {
-    if (MercPtrs[ubMerc].value.uiStatusFlags & SOLDIER_VEHICLE) {
+    if (MercPtrs[ubMerc].uiStatusFlags & SOLDIER_VEHICLE) {
       return true;
     }
   }

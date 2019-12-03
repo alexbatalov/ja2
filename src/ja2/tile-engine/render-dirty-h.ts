@@ -122,7 +122,23 @@ export function createVideoOverlay(): VIDEO_OVERLAY {
 }
 
 export function resetVideoOverlay(o: VIDEO_OVERLAY) {
-
+  o.uiFlags = 0;
+  o.fAllocated = 0;
+  o.fDisabled = false;
+  o.fActivelySaving = false;
+  o.fDeletionPending = false;
+  o.uiBackground = 0;
+  o.pBackground = null;
+  o.pSaveArea = null;
+  o.uiUserData.fill(0);
+  o.uiFontID = 0;
+  o.sX = 0;
+  o.sY = 0;
+  o.ubFontBack = 0;
+  o.ubFontFore = 0;
+  o.zText = '';
+  o.uiDestBuff = 0;
+  o.BltCallback = <OVERLAY_CALLBACK><unknown>null;
 }
 
 // Struct for init topmost blitter

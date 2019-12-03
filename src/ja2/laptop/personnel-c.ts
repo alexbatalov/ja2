@@ -633,8 +633,8 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
 
   // special case?..player generated merc
   if (fCurrentTeamMode == true) {
-    if ((50 < MercPtrs[iId].value.ubProfile) && (57 > MercPtrs[iId].value.ubProfile)) {
-      sTemp = sprintf("%s%03d.sti", FACES_DIR, gMercProfiles[MercPtrs[iId].value.ubProfile].ubFaceIndex);
+    if ((50 < MercPtrs[iId].ubProfile) && (57 > MercPtrs[iId].ubProfile)) {
+      sTemp = sprintf("%s%03d.sti", FACES_DIR, gMercProfiles[MercPtrs[iId].ubProfile].ubFaceIndex);
     } else {
       sTemp = sprintf("%s%02d.sti", FACES_DIR, Menptr[iId].ubProfile);
     }
@@ -652,7 +652,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
   }
 
   if (fCurrentTeamMode == true) {
-    if (MercPtrs[iId].value.uiStatusFlags & SOLDIER_VEHICLE) {
+    if (MercPtrs[iId].uiStatusFlags & SOLDIER_VEHICLE) {
       return true;
     }
   }
@@ -667,7 +667,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
   hFaceHandle = GetVideoObject(guiFACE);
 
   if (fCurrentTeamMode == true) {
-    if (MercPtrs[iId].value.bLife <= 0) {
+    if (MercPtrs[iId].bLife <= 0) {
       hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
       // set the red pallete to the face
@@ -1687,10 +1687,10 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   iId = gTacticalStatus.Team[pSoldier.bTeam].bFirstID;
 
   for (iCounter = 0; iCounter < iTotalOnTeam; iCnt++) {
-    if ((MercPtrs[iId + iCnt].value.bActive == true)) {
+    if ((MercPtrs[iId + iCnt].bActive == true)) {
       // found the next actual guy
-      if ((50 < MercPtrs[iId + iCnt].value.ubProfile) && (57 > MercPtrs[iId + iCnt].value.ubProfile)) {
-        sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[MercPtrs[iId + iCnt].value.ubProfile].ubFaceIndex);
+      if ((50 < MercPtrs[iId + iCnt].ubProfile) && (57 > MercPtrs[iId + iCnt].ubProfile)) {
+        sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[MercPtrs[iId + iCnt].ubProfile].ubFaceIndex);
       } else {
         if (Menptr[iId + iCnt].ubProfile < 100) {
           sTemp = sprintf("%s%02d.sti", SMALL_FACES_DIR, Menptr[iId + iCnt].ubProfile);
@@ -3248,7 +3248,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       if (iId == -1)
         sString = swprintf("%s", pPOWStrings[1]);
       else
-        sString = swprintf("%s", MercPtrs[iId].value.name);
+        sString = swprintf("%s", MercPtrs[iId].name);
     } else {
       // get name
       sString = swprintf("%s", gMercProfiles[iDepartedId].zNickname);
@@ -3263,7 +3263,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
           if (iId == -1)
             iStat = -1;
           else
-            iStat = MercPtrs[iId].value.bLifeMax;
+            iStat = MercPtrs[iId].bLifeMax;
         } else {
           iStat = gMercProfiles[iDepartedId].bLife;
         }
@@ -3271,7 +3271,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 1:
         // agility
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bAgility;
+          iStat = MercPtrs[iId].bAgility;
         } else {
           iStat = gMercProfiles[iDepartedId].bAgility;
         }
@@ -3280,7 +3280,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 2:
         // dexterity
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bDexterity;
+          iStat = MercPtrs[iId].bDexterity;
         } else {
           iStat = gMercProfiles[iDepartedId].bDexterity;
         }
@@ -3289,7 +3289,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 3:
         // strength
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bStrength;
+          iStat = MercPtrs[iId].bStrength;
         } else {
           iStat = gMercProfiles[iDepartedId].bStrength;
         }
@@ -3298,7 +3298,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 4:
         // leadership
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bLeadership;
+          iStat = MercPtrs[iId].bLeadership;
         } else {
           iStat = gMercProfiles[iDepartedId].bLeadership;
         }
@@ -3306,7 +3306,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 5:
         // wisdom
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bWisdom;
+          iStat = MercPtrs[iId].bWisdom;
         } else {
           iStat = gMercProfiles[iDepartedId].bWisdom;
         }
@@ -3314,7 +3314,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 6:
         // exper
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bExpLevel;
+          iStat = MercPtrs[iId].bExpLevel;
         } else {
           iStat = gMercProfiles[iDepartedId].bExpLevel;
         }
@@ -3322,7 +3322,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 7:
         // mrkmanship
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMarksmanship;
+          iStat = MercPtrs[iId].bMarksmanship;
         } else {
           iStat = gMercProfiles[iDepartedId].bMarksmanship;
         }
@@ -3330,7 +3330,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 8:
         // mech
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMechanical;
+          iStat = MercPtrs[iId].bMechanical;
         } else {
           iStat = gMercProfiles[iDepartedId].bMechanical;
         }
@@ -3338,7 +3338,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 9:
         // exp
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bExplosive;
+          iStat = MercPtrs[iId].bExplosive;
         } else {
           iStat = gMercProfiles[iDepartedId].bExplosive;
         }
@@ -3346,7 +3346,7 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
       case 10:
         // med
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMedical;
+          iStat = MercPtrs[iId].bMedical;
         } else {
           iStat = gMercProfiles[iDepartedId].bMedical;
         }
@@ -3418,7 +3418,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       if (iId == -1)
         sString = swprintf("%s", pPOWStrings[1]);
       else
-        sString = swprintf("%s", MercPtrs[iId].value.name);
+        sString = swprintf("%s", MercPtrs[iId].name);
     } else {
       // get name
       sString = swprintf("%s", gMercProfiles[iId].zNickname);
@@ -3433,7 +3433,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
           if (iId == -1)
             iStat = -1;
           else
-            iStat = MercPtrs[iId].value.bLifeMax;
+            iStat = MercPtrs[iId].bLifeMax;
         } else {
           iStat = gMercProfiles[iId].bLife;
         }
@@ -3441,7 +3441,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 1:
         // agility
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bAgility;
+          iStat = MercPtrs[iId].bAgility;
         } else {
           iStat = gMercProfiles[iId].bAgility;
         }
@@ -3450,7 +3450,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 2:
         // dexterity
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bDexterity;
+          iStat = MercPtrs[iId].bDexterity;
         } else {
           iStat = gMercProfiles[iId].bDexterity;
         }
@@ -3459,7 +3459,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 3:
         // strength
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bStrength;
+          iStat = MercPtrs[iId].bStrength;
         } else {
           iStat = gMercProfiles[iId].bStrength;
         }
@@ -3468,7 +3468,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 4:
         // leadership
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bLeadership;
+          iStat = MercPtrs[iId].bLeadership;
         } else {
           iStat = gMercProfiles[iId].bLeadership;
         }
@@ -3476,7 +3476,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 5:
         // wisdom
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bWisdom;
+          iStat = MercPtrs[iId].bWisdom;
         } else {
           iStat = gMercProfiles[iId].bWisdom;
         }
@@ -3484,7 +3484,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 6:
         // exper
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bExpLevel;
+          iStat = MercPtrs[iId].bExpLevel;
         } else {
           iStat = gMercProfiles[iId].bExpLevel;
         }
@@ -3492,7 +3492,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 7:
         // mrkmanship
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMarksmanship;
+          iStat = MercPtrs[iId].bMarksmanship;
         } else {
           iStat = gMercProfiles[iId].bMarksmanship;
         }
@@ -3500,7 +3500,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 8:
         // mech
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMechanical;
+          iStat = MercPtrs[iId].bMechanical;
         } else {
           iStat = gMercProfiles[iId].bMechanical;
         }
@@ -3508,7 +3508,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 9:
         // exp
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bExplosive;
+          iStat = MercPtrs[iId].bExplosive;
         } else {
           iStat = gMercProfiles[iId].bExplosive;
         }
@@ -3516,7 +3516,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
       case 10:
         // med
         if (fCurrentTeamMode == true) {
-          iStat = MercPtrs[iId].value.bMedical;
+          iStat = MercPtrs[iId].bMedical;
         } else {
           iStat = gMercProfiles[iId].bMedical;
         }

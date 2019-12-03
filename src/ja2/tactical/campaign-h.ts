@@ -37,7 +37,7 @@ export const MAX_LARGE_SALARY = 500000; // no limit, really
 export const TRAINING_RATING_CAP = 85;
 
 // stat change causes
-const FROM_SUCCESS = 0;
+export const FROM_SUCCESS = 0;
 export const FROM_TRAINING = 1;
 export const FROM_FAILURE = 2;
 

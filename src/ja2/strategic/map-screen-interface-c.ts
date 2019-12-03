@@ -1038,7 +1038,7 @@ export function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sM
 
   // showing it
   if ((fMapInventoryPoolInited) && (HandleDisplayOfItemPopUpForSector__fWasInited)) {
-    SetPickUpMenuDirtyLevel(<boolean><unknown>DIRTYLEVEL2);
+    SetPickUpMenuDirtyLevel(DIRTYLEVEL2);
     RenderItemPickupMenu();
   }
 
@@ -1130,7 +1130,7 @@ export function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void 
     }
   }
 
-  DropKeysInKeyRing(MercPtrs[uiMercId], sGridNo, MercPtrs[uiMercId].value.bLevel, 1, false, 0, false);
+  DropKeysInKeyRing(MercPtrs[uiMercId], sGridNo, MercPtrs[uiMercId].bLevel, 1, false, 0, false);
 }
 
 export function HandleMercLeavingEquipmentInOmerta(uiMercId: UINT32): void {
@@ -4576,7 +4576,7 @@ function CanCharacterMoveInStrategic(pSoldier: SOLDIERTYPE, pbErrorNumber: Point
     let cnt: UINT8;
     let pSoldier2: SOLDIERTYPE;
 
-    if (InARoom(pSoldier.sGridNo, addressof(ubRoom)) && ubRoom >= 22 && ubRoom <= 41) {
+    if ((ubRoom = InARoom(pSoldier.sGridNo)) !== -1 && ubRoom >= 22 && ubRoom <= 41) {
       cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
       for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2 = MercPtrs[cnt]) {

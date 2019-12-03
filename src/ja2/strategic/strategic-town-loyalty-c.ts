@@ -921,7 +921,7 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
     // set up item list ptrs
     for (iCounter = 0; iCounter < uiNumberOfItems; iCounter++) {
       // if the item exists, and is visible and reachable, see if it should be stolen
-      if (pItemList[iCounter].fExists && pItemList[iCounter].bVisible == true && pItemList[iCounter].usFlags & WORLD_ITEM_REACHABLE) {
+      if (pItemList[iCounter].fExists && pItemList[iCounter].bVisible == 1 && pItemList[iCounter].usFlags & WORLD_ITEM_REACHABLE) {
         if (Random(100) < ubChance) {
           // remove
           uiNewTotal--;
@@ -944,7 +944,7 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
   {
     for (iCounter = 0; iCounter < guiNumWorldItems; iCounter++) {
       // note, can't do reachable test here because we'd have to do a path call...
-      if (gWorldItems[iCounter].fExists && gWorldItems[iCounter].bVisible == true) {
+      if (gWorldItems[iCounter].fExists && gWorldItems[iCounter].bVisible == 1) {
         if (Random(100) < ubChance) {
           RemoveItemFromPool(gWorldItems[iCounter].sGridNo, iCounter, gWorldItems[iCounter].ubLevel);
           // debug message

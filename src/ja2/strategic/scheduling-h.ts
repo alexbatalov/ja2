@@ -59,6 +59,17 @@ export function createScheduleNode(): SCHEDULENODE {
   };
 }
 
+export function resetScheduleNode(o: SCHEDULENODE) {
+  o.next = null;
+  o.usTime.fill(0);
+  o.usData1.fill(0);
+  o.usData2.fill(0);
+  o.ubAction.fill(0);
+  o.ubScheduleID = 0;
+  o.ubSoldierID = 0;
+  o.usFlags = 0;
+}
+
 export function copyScheduleNode(destination: SCHEDULENODE, source: SCHEDULENODE) {
   destination.next = source.next;
   copyArray(destination.usTime, source.usTime);

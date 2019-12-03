@@ -52,8 +52,8 @@ function UpdateRegenCounters(): void {
   let ubID: UINT8;
 
   for (ubID = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID++) {
-    if (MercPtrs[ubID].value.bRegenBoostersUsedToday > 0) {
-      MercPtrs[ubID].value.bRegenBoostersUsedToday--;
+    if (MercPtrs[ubID].bRegenBoostersUsedToday > 0) {
+      MercPtrs[ubID].bRegenBoostersUsedToday--;
     }
   }
 }

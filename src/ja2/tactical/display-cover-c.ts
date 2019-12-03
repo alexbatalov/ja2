@@ -14,10 +14,36 @@ interface BEST_COVER_STRUCT {
   bCover: INT8; //% chance that the gridno is fully covered.  ie 100 if safe, 0  is has no cover
 }
 
+function createBestCoverStruct(): BEST_COVER_STRUCT {
+  return {
+    sGridNo: 0,
+    bCover: 0,
+  };
+}
+
+function resetBestCoverStruct(o: BEST_COVER_STRUCT) {
+  o.sGridNo = 0;
+  o.bCover = 0;
+}
+
 interface VISIBLE_TO_SOLDIER_STRUCT {
   sGridNo: INT16;
   bVisibleToSoldier: INT8;
   fRoof: boolean;
+}
+
+function createVisibleToSoldierStruct(): VISIBLE_TO_SOLDIER_STRUCT {
+  return {
+    sGridNo: 0,
+    bVisibleToSoldier: 0,
+    fRoof: false,
+  };
+}
+
+function resetVisibleToSoldierStruct(o: VISIBLE_TO_SOLDIER_STRUCT) {
+  o.sGridNo = 0;
+  o.bVisibleToSoldier = 0;
+  o.fRoof = false;
 }
 
 /*
@@ -34,12 +60,12 @@ const enum Enum205 {
 
 //******  Global Variables  *****************************************
 
-let gCoverRadius: BEST_COVER_STRUCT[][] /* [DC_MAX_COVER_RANGE][DC_MAX_COVER_RANGE] */;
+let gCoverRadius: BEST_COVER_STRUCT[][] /* [DC_MAX_COVER_RANGE][DC_MAX_COVER_RANGE] */ = createArrayFrom(DC_MAX_COVER_RANGE, () => createArrayFrom(DC_MAX_COVER_RANGE, createBestCoverStruct));
 let gsLastCoverGridNo: INT16 = NOWHERE;
 let gsLastSoldierGridNo: INT16 = NOWHERE;
 let gbLastStance: INT8 = -1;
 
-let gVisibleToSoldierStruct: VISIBLE_TO_SOLDIER_STRUCT[][] /* [DC__SOLDIER_VISIBLE_RANGE][DC__SOLDIER_VISIBLE_RANGE] */;
+let gVisibleToSoldierStruct: VISIBLE_TO_SOLDIER_STRUCT[][] /* [DC__SOLDIER_VISIBLE_RANGE][DC__SOLDIER_VISIBLE_RANGE] */ = createArrayFrom(DC__SOLDIER_VISIBLE_RANGE, () => createArrayFrom(DC__SOLDIER_VISIBLE_RANGE, createVisibleToSoldierStruct));
 let gsLastVisibleToSoldierGridNo: INT16 = NOWHERE;
 
 //*******  Function Prototypes ***************************************
@@ -64,7 +90,7 @@ export function DisplayCoverOfSelectedGridNo(): void {
     bStance = GetCurrentMercForDisplayCoverStance();
 
     // if the gridno is different then the last one that was displayed
-    if (sGridNo != gsLastCoverGridNo || gbLastStance != bStance || MercPtrs[gusSelectedSoldier].value.sGridNo != gsLastSoldierGridNo) {
+    if (sGridNo != gsLastCoverGridNo || gbLastStance != bStance || MercPtrs[gusSelectedSoldier].sGridNo != gsLastSoldierGridNo) {
       // if the cover is currently being displayed
       if (gsLastCoverGridNo != NOWHERE || gbLastStance != -1 || gsLastSoldierGridNo != NOWHERE) {
         // remove the gridnos
@@ -81,7 +107,7 @@ export function DisplayCoverOfSelectedGridNo(): void {
 
       gbLastStance = bStance;
       gsLastCoverGridNo = sGridNo;
-      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].value.sGridNo;
+      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].sGridNo;
 
       // Fill the array of gridno and cover values
       CalculateCoverInRadiusAroundGridno(sGridNo, gGameSettings.ubSizeOfDisplayCover);
@@ -203,7 +229,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
   let sCounterX: INT16;
   let sCounterY: INT16;
@@ -286,7 +312,7 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
         ubID = WhoIsThere2(sGridNo, 1);
       }
       // if someone is here, and they are an enemy, skip over them
-      if (ubID != NOBODY && Menptr[ubID].bVisible == true && Menptr[ubID].bTeam != pSoldier.value.bTeam) {
+      if (ubID != NOBODY && Menptr[ubID].bVisible == 1 && Menptr[ubID].bTeam != pSoldier.bTeam) {
         continue;
       }
 
@@ -301,14 +327,14 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
   }
 }
 
-function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, bStance: INT8): INT8 {
+function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, bStance: INT8): INT8 {
   let iTotalCoverPoints: INT32 = 0;
   let bNumEnemies: INT8 = 0;
   let bPercentCoverForGridno: INT8 = 0;
   let uiLoop: UINT32;
-  let pOpponent: Pointer<SOLDIERTYPE>;
-  let pbPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
+  let pOpponent: SOLDIERTYPE;
+  let pbPersOL: INT8;
+  let pbPublOL: INT8;
   let iGetThrough: INT32 = 0;
   let iBulletGetThrough: INT32 = 0;
   let iHighestValue: INT32 = 0;
@@ -322,40 +348,40 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     pOpponent = MercSlots[uiLoop];
 
     // if this merc is inactive, at base, on assignment, dead, unconscious
-    if (!pOpponent || pOpponent.value.bLife < OKLIFE) {
+    if (!pOpponent || pOpponent.bLife < OKLIFE) {
       continue; // next merc
     }
 
     // if this man is neutral / on the same side, he's not an opponent
-    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.value.bSide == pOpponent.value.bSide)) {
+    if (CONSIDERED_NEUTRAL(pSoldier, pOpponent) || (pSoldier.bSide == pOpponent.bSide)) {
       continue; // next merc
     }
 
-    pbPersOL = pSoldier.value.bOppList + pOpponent.value.ubID;
-    pbPublOL = gbPublicOpplist[OUR_TEAM] + pOpponent.value.ubID;
+    pbPersOL = pSoldier.bOppList[pOpponent.ubID];
+    pbPublOL = gbPublicOpplist[OUR_TEAM][pOpponent.ubID];
 
     // if this opponent is unknown personally and publicly
-    if (pbPersOL.value != SEEN_CURRENTLY && pbPersOL.value != SEEN_THIS_TURN && pbPublOL.value != SEEN_CURRENTLY && pbPublOL.value != SEEN_THIS_TURN) {
+    if (pbPersOL != SEEN_CURRENTLY && pbPersOL != SEEN_THIS_TURN && pbPublOL != SEEN_CURRENTLY && pbPublOL != SEEN_THIS_TURN) {
       continue; // next merc
     }
 
-    usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent.value.sGridNo, sTargetGridNo);
-    usSightLimit = DistanceVisible(pOpponent, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.value.bLevel);
+    usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent.sGridNo, sTargetGridNo);
+    usSightLimit = DistanceVisible(pOpponent, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier.bLevel);
 
     if (usRange > (usSightLimit * CELL_X_SIZE)) {
       continue;
     }
 
     // if actual LOS check fails, then chance to hit is 0, ignore this guy
-    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, usSightLimit, true) == 0) {
+    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.bLevel, bStance, usSightLimit, 1) == 0) {
       continue;
     }
 
-    iGetThrough = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo, pSoldier.value.bLevel, bStance, NOBODY);
+    iGetThrough = SoldierToLocationChanceToGetThrough(pOpponent, sTargetGridNo, pSoldier.bLevel, bStance, NOBODY);
     //	iBulletGetThrough = CalcChanceToHitGun( pOpponent, sTargetGridNo, AP_MAX_AIM_ATTACK, AIM_SHOT_TORSO );
 
     if (WeaponInHand(pOpponent)) {
-      usMaxRange = GunRange(addressof(pOpponent.value.inv[Enum261.HANDPOS]));
+      usMaxRange = GunRange(pOpponent.inv[Enum261.HANDPOS]);
     } else {
       usMaxRange = Weapon[Enum225.GLOCK_18].usRange;
     }
@@ -391,21 +417,21 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
 }
 
 function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: boolean): void {
-  let pNode: Pointer<LEVELNODE>;
+  let pNode: LEVELNODE;
 
   if (fRoof) {
     AddOnRoofToHead(sGridNo, usGraphic);
-    pNode = gpWorldLevelData[sGridNo].pOnRoofHead;
+    pNode = <LEVELNODE>gpWorldLevelData[sGridNo].pOnRoofHead;
   } else {
     AddObjectToHead(sGridNo, usGraphic);
-    pNode = gpWorldLevelData[sGridNo].pObjectHead;
+    pNode = <LEVELNODE>gpWorldLevelData[sGridNo].pObjectHead;
   }
 
-  pNode.value.uiFlags |= LEVELNODE_REVEAL;
+  pNode.uiFlags |= LEVELNODE_REVEAL;
 
   if (NightTime()) {
-    pNode.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    pNode.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    pNode.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
   }
 }
 
@@ -417,24 +443,24 @@ function RemoveCoverObjectFromWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: bo
   }
 }
 
-function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+function GetCurrentMercForDisplayCover(): SOLDIERTYPE {
+  let pSoldier: SOLDIERTYPE;
   // Get a soldier that is on the player team
   if (gusSelectedSoldier != NOBODY) {
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
   } else {
-    Assert(0);
+    Assert(false);
   }
   return pSoldier;
 }
 
 function GetCurrentMercForDisplayCoverStance(): INT8 {
   let bStance: INT8;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   pSoldier = GetCurrentMercForDisplayCover();
 
-  switch (pSoldier.value.usUIMovementMode) {
+  switch (pSoldier.usUIMovementMode) {
     case Enum193.PRONE:
     case Enum193.CRAWLING:
       bStance = ANIM_PRONE;
@@ -460,7 +486,7 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
   return bStance;
 }
 
-export function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
+export function DisplayRangeToTarget(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): void {
   let usRange: UINT16 = 0;
   let zOutputString: string /* CHAR16[512] */;
 
@@ -469,14 +495,14 @@ export function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGrid
   }
 
   // Get the range to the target location
-  usRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sTargetGridNo);
+  usRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sTargetGridNo);
 
   usRange = usRange / 10;
 
   // if the soldier has a weapon in hand,
   if (WeaponInHand(pSoldier)) {
     // display a string with the weapons range, then range to target
-    zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.value.inv[Enum261.HANDPOS].usItem].usRange / 10, usRange);
+    zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].usRange / 10, usRange);
   } else {
     // display a string with the range to target
     zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET], usRange);
@@ -486,7 +512,7 @@ export function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGrid
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zOutputString);
 
   // if the target is out of the mercs gun range or knife
-  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
+  if (!InRange(pSoldier, sTargetGridNo) && (Item[pSoldier.inv[Enum261.HANDPOS].usItem].usItemClass == IC_GUN || Item[pSoldier.inv[Enum261.HANDPOS].usItem].usItemClass == IC_THROWING_KNIFE)) {
     // Display a warning saying so
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[Enum335.OUT_OF_RANGE_STRING]);
   }
@@ -509,7 +535,7 @@ export function DisplayGridNoVisibleToSoldierGrid(): void {
   // if the cursor is in a the tactical map
   if (sGridNo != NOWHERE && sGridNo != 0) {
     // if the gridno is different then the last one that was displayed
-    if (sGridNo != gsLastVisibleToSoldierGridNo || MercPtrs[gusSelectedSoldier].value.sGridNo != gsLastSoldierGridNo) {
+    if (sGridNo != gsLastVisibleToSoldierGridNo || MercPtrs[gusSelectedSoldier].sGridNo != gsLastSoldierGridNo) {
       // if the cover is currently being displayed
       if (gsLastVisibleToSoldierGridNo != NOWHERE || gsLastSoldierGridNo != NOWHERE) {
         // remove the gridnos
@@ -522,7 +548,7 @@ export function DisplayGridNoVisibleToSoldierGrid(): void {
       }
 
       gsLastVisibleToSoldierGridNo = sGridNo;
-      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].value.sGridNo;
+      gsLastSoldierGridNo = MercPtrs[gusSelectedSoldier].sGridNo;
 
       // Fill the array of gridno and cover values
       CalculateVisibleToSoldierAroundGridno(sGridNo, gGameSettings.ubSizeOfLOS);
@@ -543,14 +569,16 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
   let sCounterX: INT16;
   let sCounterY: INT16;
   let fRoof: boolean = false;
 
   // clear out the struct
-  memset(gVisibleToSoldierStruct, 0, sizeof(VISIBLE_TO_SOLDIER_STRUCT) * DC__SOLDIER_VISIBLE_RANGE * DC__SOLDIER_VISIBLE_RANGE);
+  for (let i = 0; i < gVisibleToSoldierStruct.length; i++) {
+    gVisibleToSoldierStruct[i].forEach(resetVisibleToSoldierStruct);
+  }
 
   if (bSearchRange > (DC_MAX_COVER_RANGE / 2))
     bSearchRange = (DC_MAX_COVER_RANGE / 2);
@@ -726,14 +754,14 @@ export function RemoveVisibleGridNoAtSelectedGridNo(): void {
   gsLastSoldierGridNo = NOWHERE;
 }
 
-function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fRoof: boolean): INT8 {
+function CalcIfSoldierCanSeeGridNo(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, fRoof: boolean): INT8 {
   let bRetVal: INT8 = 0;
   let iLosForGridNo: INT32 = 0;
   let usSightLimit: UINT16 = 0;
-  let pPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
+  let pPersOL: INT8;
+  let pbPublOL: INT8;
   let ubID: UINT8;
-  let bAware: boolean = false;
+  let bAware: UINT8 /* boolean */ = 0;
 
   if (fRoof) {
     ubID = WhoIsThere2(sTargetGridNo, 1);
@@ -742,21 +770,21 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   }
 
   if (ubID != NOBODY) {
-    pPersOL = addressof(pSoldier.value.bOppList[ubID]);
-    pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][ubID]);
+    pPersOL = pSoldier.bOppList[ubID];
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam][ubID];
 
     // if soldier is known about (SEEN or HEARD within last few turns)
-    if (pPersOL.value || pbPublOL.value) {
-      bAware = true;
+    if (pPersOL || pbPublOL) {
+      bAware = 1;
     }
   }
 
-  usSightLimit = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, fRoof);
+  usSightLimit = DistanceVisible(pSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sTargetGridNo, Number(fRoof));
 
   //
   // Prone
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_PRONE, usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, Number(fRoof), ANIM_PRONE, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -764,7 +792,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   //
   // Crouch
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_CROUCH, usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, Number(fRoof), ANIM_CROUCH, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -772,7 +800,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   //
   // Standing
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_STAND, usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, Number(fRoof), ANIM_STAND, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -783,7 +811,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
 function IsTheRoofVisible(sGridNo: INT16): boolean {
   let ubRoom: UINT8;
 
-  if (InARoom(sGridNo, addressof(ubRoom))) {
+  if ((ubRoom = InARoom(sGridNo)) !== -1) {
     if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
       if (gTacticalStatus.uiFlags & SHOW_ALL_ROOFS)
         return true;

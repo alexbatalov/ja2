@@ -18,7 +18,7 @@ export const OK_INSECTOR_MERC = (p: SOLDIERTYPE) => (p.bLife >= OKLIFE && p.bAct
 // Checkf if our guy can be selected and is not in a position where our team has an interupt and he does not have one...
 export const OK_INTERRUPT_MERC = (p: SOLDIERTYPE) => ((INTERRUPT_QUEUED() != false) ? ((p.bMoved) ? false : true) : true);
 
-export const CREATURE_OR_BLOODCAT = (p: SOLDIERTYPE) => ((p.uiStatusFlags & SOLDIER_MONSTER) || p.ubBodyType == Enum194.BLOODCAT);
+export const CREATURE_OR_BLOODCAT = (p: SOLDIERTYPE) => (Boolean(p.uiStatusFlags & SOLDIER_MONSTER) || p.ubBodyType == Enum194.BLOODCAT);
 
 export const TANK = (p: SOLDIERTYPE) => (p.ubBodyType == Enum194.TANK_NE || p.ubBodyType == Enum194.TANK_NW);
 

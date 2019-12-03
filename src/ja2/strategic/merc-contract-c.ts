@@ -959,7 +959,7 @@ function HandleFiredDeadMerc(pSoldier: SOLDIERTYPE): boolean {
 
 function HandleExtendMercsContract(pSoldier: SOLDIERTYPE): void {
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-    gfEnteringMapScreen = true;
+    gfEnteringMapScreen = 1;
 
     fEnterMapDueToContract = true;
     pContractReHireSoldier = pSoldier;
@@ -1062,7 +1062,7 @@ export function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
       AddReasonToWaitingListQueue(Enum154.CONTRACT_EXPIRE_WARNING_REASON);
       TacticalCharacterDialogueWithSpecialEvent(MercPtrs[ubPotentialMercs[ubChosenMerc]], 0, DIALOGUE_SPECIAL_EVENT_SHOW_UPDATE_MENU, 0, 0);
 
-      MercPtrs[ubPotentialMercs[ubChosenMerc]].value.ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_89_USED;
+      MercPtrs[ubPotentialMercs[ubChosenMerc]].ubContractRenewalQuoteCode = SOLDIER_CONTRACT_RENEW_QUOTE_89_USED;
     }
   }
 }

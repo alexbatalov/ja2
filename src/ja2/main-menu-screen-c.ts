@@ -21,10 +21,10 @@ const MAINMENU_TITLE_Y = 75;
 const MAINMENU_Y = 277; // 200
 const MAINMENU_Y_SPACE = 37;
 
-let iMenuImages: INT32[] /* [NUM_MENU_ITEMS] */;
-let iMenuButtons: INT32[] /* [NUM_MENU_ITEMS] */;
+let iMenuImages: INT32[] /* [NUM_MENU_ITEMS] */ = createArray(Enum23.NUM_MENU_ITEMS, 0);
+let iMenuButtons: INT32[] /* [NUM_MENU_ITEMS] */ = createArray(Enum23.NUM_MENU_ITEMS, 0);
 
-let gusMainMenuButtonWidths: UINT16[] /* [NUM_MENU_ITEMS] */;
+let gusMainMenuButtonWidths: UINT16[] /* [NUM_MENU_ITEMS] */ = createArray(Enum23.NUM_MENU_ITEMS, 0);
 
 let guiMainMenuBackGroundImage: UINT32;
 let guiJa2LogoImage: UINT32;
@@ -311,7 +311,7 @@ function HandleMainMenuInput(): void {
                                                 break;
         */
 
-        case 'c':
+        case 'c'.charCodeAt(0):
           gbHandledMainMenu = Enum23.LOAD_GAME;
 
           if (gfKeyState[ALT])
@@ -319,11 +319,11 @@ function HandleMainMenuInput(): void {
 
           break;
 
-        case 'o':
+        case 'o'.charCodeAt(0):
           gbHandledMainMenu = Enum23.PREFERENCES;
           break;
 
-        case 's':
+        case 's'.charCodeAt(0):
           gbHandledMainMenu = Enum23.CREDITS;
           break;
       }
@@ -383,11 +383,10 @@ function SetMainMenuExitScreen(uiNewScreen: UINT32): void {
   gfMainMenuScreenExit = true;
 }
 
+/* static */ let CreateDestroyBackGroundMouseMask__fRegionCreated: boolean = false;
 function CreateDestroyBackGroundMouseMask(fCreate: boolean): void {
-  /* static */ let fRegionCreated: boolean = false;
-
   if (fCreate) {
-    if (fRegionCreated)
+    if (CreateDestroyBackGroundMouseMask__fRegionCreated)
       return;
 
     // Make a mouse region
@@ -395,18 +394,18 @@ function CreateDestroyBackGroundMouseMask(fCreate: boolean): void {
     // Add region
     MSYS_AddRegion(gBackRegion);
 
-    fRegionCreated = true;
+    CreateDestroyBackGroundMouseMask__fRegionCreated = true;
   } else {
-    if (!fRegionCreated)
+    if (!CreateDestroyBackGroundMouseMask__fRegionCreated)
       return;
 
     MSYS_RemoveRegion(gBackRegion);
-    fRegionCreated = false;
+    CreateDestroyBackGroundMouseMask__fRegionCreated = false;
   }
 }
 
+/* static */ let CreateDestroyMainMenuButtons__fButtonsCreated: boolean = false;
 function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
-  /* static */ let fButtonsCreated: boolean = false;
   let cnt: INT32;
   let filename: string /* SGPFILENAME */;
   let sSlot: INT16;
@@ -414,7 +413,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
   let zText: string /* CHAR16[512] */;
 
   if (fCreate) {
-    if (fButtonsCreated)
+    if (CreateDestroyMainMenuButtons__fButtonsCreated)
       return true;
 
     // reset the variable that allows the user to ALT click on the continue save btn to load the save instantly
@@ -457,20 +456,20 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
       // load up some info from the 'mainmenu.edt' file.  This makes sure the file is present.  The file is
       // 'marked' with a code that identifies the testers
       iStartLoc = MAINMENU_RECORD_SIZE * cnt;
-      if ((zText = LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, iStartLoc, MAINMENU_RECORD_SIZE)) !== null) {
+      if ((zText = LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, iStartLoc, MAINMENU_RECORD_SIZE)) === null) {
         // the file was not able to be loaded properly
-        let pSoldier: Pointer<SOLDIERTYPE> = null;
+        let pSoldier: SOLDIERTYPE = <SOLDIERTYPE><unknown>null;
 
-        if (pSoldier.value.bActive != true) {
+        if (pSoldier.bActive != true) {
           // something is very wrong
-          pSoldier.value.bActive = pSoldier.value.bLife;
+          pSoldier.bActive = Boolean(pSoldier.bLife);
         }
       }
     }
 
-    fButtonsCreated = true;
+    CreateDestroyMainMenuButtons__fButtonsCreated = true;
   } else {
-    if (!fButtonsCreated)
+    if (!CreateDestroyMainMenuButtons__fButtonsCreated)
       return true;
 
     // Delete images/buttons
@@ -478,7 +477,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
       RemoveButton(iMenuButtons[cnt]);
       UnloadButtonImage(iMenuImages[cnt]);
     }
-    fButtonsCreated = false;
+    CreateDestroyMainMenuButtons__fButtonsCreated = false;
   }
 
   return true;

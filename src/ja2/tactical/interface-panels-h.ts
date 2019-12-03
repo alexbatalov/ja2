@@ -40,6 +40,15 @@ interface TEAM_PANEL_SLOTS_TYPE {
   fOccupied: boolean;
 }
 
+function createTeamPanelSlotsType(): TEAM_PANEL_SLOTS_TYPE {
+  return {
+    ubID: 0,
+    fOccupied: false,
+  };
+}
+
+export let gTeamPanel: TEAM_PANEL_SLOTS_TYPE[] /* [NUM_TEAM_SLOTS] */ = createArrayFrom(NUM_TEAM_SLOTS, createTeamPanelSlotsType);
+
 export let gSMPanelRegion: MOUSE_REGION = createMouseRegion();
 
 // void DisableSMPpanelButtonsWhenInShopKeeperInterface( );

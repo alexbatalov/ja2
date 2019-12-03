@@ -141,6 +141,7 @@ let guiITEMPOINTERHATCHES: UINT32;
 // UI Globals
 export let gViewportRegion: MOUSE_REGION = createMouseRegion();
 export let gRadarRegion: MOUSE_REGION = createMouseRegion();
+export let gBottomPanalRegion: MOUSE_REGION = createMouseRegion();
 
 let gsUpArrowX: UINT16;
 let gsUpArrowY: UINT16;
@@ -478,8 +479,8 @@ function PopDownPositionMenu(): void {
 function BtnPositionCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
-export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+export function PopupMovementMenu(pUIEvent: UI_EVENT): void {
+  let pSoldier: SOLDIERTYPE = <SOLDIERTYPE><unknown>null;
   let iMenuAnchorX: INT32;
   let iMenuAnchorY: INT32;
   let uiActionImages: UINT32;
@@ -533,7 +534,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   // SetButtonSavedRect( iActionIcons[ RUN_ICON ] );
   ButtonList[iActionIcons[Enum209.RUN_ICON]].UserData[0] = pUIEvent;
 
-  if (MercInWater(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT)) {
+  if (MercInWater(pSoldier) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.uiStatusFlags & SOLDIER_ROBOT)) {
     DisableButton(iActionIcons[Enum209.RUN_ICON]);
   }
 
@@ -544,7 +545,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
   // SetButtonSavedRect( iActionIcons[ WALK_ICON ] );
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     SetButtonFastHelpText(iActionIcons[Enum209.WALK_ICON], TacticalStr[Enum335.DRIVE_POPUPTEXT]);
   } else {
     SetButtonFastHelpText(iActionIcons[Enum209.WALK_ICON], pTacticalPopupButtonStrings[Enum209.WALK_ICON]);
@@ -552,7 +553,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
 
   ButtonList[iActionIcons[Enum209.WALK_ICON]].UserData[0] = pUIEvent;
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+  if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
       DisableButton(iActionIcons[Enum209.WALK_ICON]);
     }
@@ -595,31 +596,31 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   // SetButtonSavedRect( iActionIcons[ LOOK_ICON ] );
   ButtonList[iActionIcons[Enum209.LOOK_ICON]].UserData[0] = pUIEvent;
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     DisableButton(iActionIcons[Enum209.LOOK_ICON]);
   }
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
+  if (pSoldier.uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
       DisableButton(iActionIcons[Enum209.LOOK_ICON]);
     }
   }
 
-  if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     // Until we get mounted weapons...
     uiActionImages = Enum208.CANCEL_IMAGES;
     zActionString = TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT];
     fDisableAction = true;
   } else {
-    if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.TOOLKIT) {
+    if (pSoldier.inv[Enum261.HANDPOS].usItem == Enum225.TOOLKIT) {
       uiActionImages = Enum208.TOOLKITACTIONC_IMAGES;
       zActionString = TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT];
-    } else if (pSoldier.value.inv[Enum261.HANDPOS].usItem == Enum225.WIRECUTTERS) {
+    } else if (pSoldier.inv[Enum261.HANDPOS].usItem == Enum225.WIRECUTTERS) {
       uiActionImages = Enum208.WIRECUTACTIONC_IMAGES;
       zActionString = TacticalStr[Enum335.NOT_APPLICABLE_POPUPTEXT];
     } else {
       // Create button based on what is in our hands at the moment!
-      switch (Item[pSoldier.value.inv[Enum261.HANDPOS].usItem].usItemClass) {
+      switch (Item[pSoldier.inv[Enum261.HANDPOS].usItem].usItemClass) {
         case IC_PUNCH:
 
           uiActionImages = Enum208.PUNCHACTIONC_IMAGES;
@@ -687,7 +688,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   SetButtonFastHelpText(iActionIcons[Enum209.TALK_ICON], pTacticalPopupButtonStrings[Enum209.TALK_ICON]);
   ButtonList[iActionIcons[Enum209.TALK_ICON]].UserData[0] = pUIEvent;
 
-  if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if (AM_AN_EPC(pSoldier) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[Enum209.TALK_ICON]);
   }
 
@@ -700,7 +701,7 @@ export function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   SetButtonFastHelpText(iActionIcons[Enum209.HAND_ICON], pTacticalPopupButtonStrings[Enum209.HAND_ICON]);
   ButtonList[iActionIcons[Enum209.HAND_ICON]].UserData[0] = pUIEvent;
 
-  if (AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+  if (AM_AN_EPC(pSoldier) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[Enum209.HAND_ICON]);
   }
 
@@ -775,7 +776,7 @@ export function CancelMovementMenu(): void {
 
 function BtnMovementCallback(btn: GUI_BUTTON, reason: INT32): void {
   let uiBtnID: INT32;
-  let pUIEvent: Pointer<UI_EVENT>;
+  let pUIEvent: UI_EVENT;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.uiFlags |= BUTTON_CLICKED_ON;
@@ -785,25 +786,25 @@ function BtnMovementCallback(btn: GUI_BUTTON, reason: INT32): void {
     pUIEvent = (btn.UserData[0]);
 
     if (uiBtnID == iActionIcons[Enum209.WALK_ICON]) {
-      pUIEvent.value.uiParams[0] = MOVEMENT_MENU_WALK;
+      pUIEvent.uiParams[0] = MOVEMENT_MENU_WALK;
     } else if (uiBtnID == iActionIcons[Enum209.RUN_ICON]) {
-      pUIEvent.value.uiParams[0] = MOVEMENT_MENU_RUN;
+      pUIEvent.uiParams[0] = MOVEMENT_MENU_RUN;
     } else if (uiBtnID == iActionIcons[Enum209.SNEAK_ICON]) {
-      pUIEvent.value.uiParams[0] = MOVEMENT_MENU_SWAT;
+      pUIEvent.uiParams[0] = MOVEMENT_MENU_SWAT;
     } else if (uiBtnID == iActionIcons[Enum209.CRAWL_ICON]) {
-      pUIEvent.value.uiParams[0] = MOVEMENT_MENU_PRONE;
+      pUIEvent.uiParams[0] = MOVEMENT_MENU_PRONE;
     } else if (uiBtnID == iActionIcons[Enum209.LOOK_ICON]) {
-      pUIEvent.value.uiParams[2] = MOVEMENT_MENU_LOOK;
+      pUIEvent.uiParams[2] = MOVEMENT_MENU_LOOK;
     } else if (uiBtnID == iActionIcons[Enum209.ACTIONC_ICON]) {
-      pUIEvent.value.uiParams[2] = MOVEMENT_MENU_ACTIONC;
+      pUIEvent.uiParams[2] = MOVEMENT_MENU_ACTIONC;
     } else if (uiBtnID == iActionIcons[Enum209.TALK_ICON]) {
-      pUIEvent.value.uiParams[2] = MOVEMENT_MENU_TALK;
+      pUIEvent.uiParams[2] = MOVEMENT_MENU_TALK;
     } else if (uiBtnID == iActionIcons[Enum209.HAND_ICON]) {
-      pUIEvent.value.uiParams[2] = MOVEMENT_MENU_HAND;
+      pUIEvent.uiParams[2] = MOVEMENT_MENU_HAND;
     } else if (uiBtnID == iActionIcons[CANCEL_ICON]) {
       // Signal end of event
       EndMenuEvent(Enum207.U_MOVEMENT_MENU);
-      pUIEvent.value.uiParams[1] = false;
+      pUIEvent.uiParams[1] = false;
       return;
     } else {
       return;
@@ -811,7 +812,7 @@ function BtnMovementCallback(btn: GUI_BUTTON, reason: INT32): void {
 
     // Signal end of event
     EndMenuEvent(Enum207.U_MOVEMENT_MENU);
-    pUIEvent.value.uiParams[1] = true;
+    pUIEvent.uiParams[1] = true;
   }
 }
 
@@ -947,7 +948,7 @@ export function EraseRenderArrows(): void {
 }
 
 function GetArrowsBackground(): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sMercScreenX: INT16;
   let sMercScreenY: INT16;
   let sArrowHeight: UINT16 = ARROWS_HEIGHT;
@@ -959,7 +960,7 @@ function GetArrowsBackground(): void {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     // Get selected soldier
-    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
+    pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get screen position of our guy
     GetSoldierTRUEScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
@@ -1041,7 +1042,7 @@ function GetArrowsBackground(): void {
   }
 }
 
-export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: boolean): void {
+export function GetSoldierAboveGuyPositions(pSoldier: SOLDIERTYPE, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: boolean): void {
   let sMercScreenX: INT16;
   let sMercScreenY: INT16;
   let sOffsetX: INT16;
@@ -1061,10 +1062,10 @@ export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX:
   sMercScreenY -= sOffsetY;
 
   // Adjust based on stance
-  if ((gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_NOMOVE_MARKER)) {
-    ubAnimUseHeight = gAnimControl[pSoldier.value.usAnimState].ubHeight;
+  if ((gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_NOMOVE_MARKER)) {
+    ubAnimUseHeight = gAnimControl[pSoldier.usAnimState].ubHeight;
   } else {
-    ubAnimUseHeight = gAnimControl[pSoldier.value.usAnimState].ubEndHeight;
+    ubAnimUseHeight = gAnimControl[pSoldier.usAnimState].ubEndHeight;
   }
   switch (ubAnimUseHeight) {
     case ANIM_STAND:
@@ -1080,7 +1081,7 @@ export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX:
   }
 
   // Adjust based on body type...
-  switch (pSoldier.value.ubBodyType) {
+  switch (pSoldier.ubBodyType) {
     case Enum194.CROW:
 
       sStanceOffset = 30;
@@ -1095,19 +1096,19 @@ export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX:
   // sStanceOffset -= gpWorldLevelData[ pSoldier->sGridNo ].sHeight;
 
   // Adjust based on level
-  if (pSoldier.value.bLevel == 1 && gsInterfaceLevel == 0) {
+  if (pSoldier.bLevel == 1 && gsInterfaceLevel == 0) {
     // sStanceOffset -= ROOF_LEVEL_HEIGHT;
   }
-  if (pSoldier.value.bLevel == 0 && gsInterfaceLevel == 1) {
+  if (pSoldier.bLevel == 0 && gsInterfaceLevel == 1) {
     // sStanceOffset += ROOF_LEVEL_HEIGHT;
   }
 
-  if (pSoldier.value.ubProfile != NO_PROFILE) {
+  if (pSoldier.ubProfile != NO_PROFILE) {
     if (fRadio) {
-      psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+      psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
       psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
     } else {
-      psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+      psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
       psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
 
       // OK, Check if we need to go below....
@@ -1115,20 +1116,20 @@ export function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX:
 
       // If not a radio position, adjust if we are getting hit, to be lower!
       // If we are getting hit, lower them!
-      if (pSoldier.value.fDisplayDamage || psY.value < gsVIEWPORT_WINDOW_START_Y) {
-        psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+      if (pSoldier.fDisplayDamage || psY.value < gsVIEWPORT_WINDOW_START_Y) {
+        psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
         psY.value = sMercScreenY;
       }
     }
   } else {
     // Display Text!
-    psX.value = sMercScreenX - (80 / 2) - pSoldier.value.sLocatorOffX;
+    psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
     psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
   }
 }
 
 export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let sXPos: INT16;
   let sYPos: INT16;
   let sX: INT16;
@@ -1141,34 +1142,34 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let fRaiseName: boolean = false;
   let fDoName: boolean = true;
 
-  GetSoldier(addressof(pSoldier), usSoldierID);
+  pSoldier = <SOLDIERTYPE>GetSoldier(usSoldierID);
 
-  if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
+  if (pSoldier.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
     return;
   }
 
-  if (pSoldier.value.sGridNo == NOWHERE) {
+  if (pSoldier.sGridNo == NOWHERE) {
     return;
   }
 
-  if (pSoldier.value.fFlashLocator) {
-    if (pSoldier.value.bVisible == -1) {
-      pSoldier.value.fFlashLocator = false;
+  if (pSoldier.fFlashLocator) {
+    if (pSoldier.bVisible == -1) {
+      pSoldier.fFlashLocator = false;
     } else {
-      if (TIMECOUNTERDONE(pSoldier.value.BlinkSelCounter, 80)) {
-        pSoldier.value.BlinkSelCounter = RESETTIMECOUNTER(80);
+      if (TIMECOUNTERDONE(pSoldier.BlinkSelCounter, 80)) {
+        pSoldier.BlinkSelCounter = RESETTIMECOUNTER(80);
 
         //	pSoldier->fShowLocator = !pSoldier->fShowLocator;
 
-        pSoldier.value.fShowLocator = true;
+        pSoldier.fShowLocator = true;
 
         // Update frame
-        pSoldier.value.sLocatorFrame++;
+        pSoldier.sLocatorFrame++;
 
-        if (pSoldier.value.sLocatorFrame == 5) {
+        if (pSoldier.sLocatorFrame == 5) {
           // Update time we do this
-          pSoldier.value.fFlashLocator++;
-          pSoldier.value.sLocatorFrame = 0;
+          pSoldier.fFlashLocator++;
+          pSoldier.sLocatorFrame = 0;
         }
       }
 
@@ -1180,9 +1181,9 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       //	pSoldier->fShowLocator = FALSE;
 
       //}
-      if (pSoldier.value.fFlashLocator == pSoldier.value.ubNumLocateCycles) {
-        pSoldier.value.fFlashLocator = false;
-        pSoldier.value.fShowLocator = false;
+      if (pSoldier.fFlashLocator == pSoldier.ubNumLocateCycles) {
+        pSoldier.fFlashLocator = false;
+        pSoldier.fShowLocator = false;
       }
 
       // if ( pSoldier->fShowLocator )
@@ -1205,10 +1206,10 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
           SetBackgroundRectFilled(iBack);
         }
 
-        if ((!pSoldier.value.bNeutral && (pSoldier.value.bSide != gbPlayerNum))) {
-          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO2, pSoldier.value.sLocatorFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
+        if ((!pSoldier.bNeutral && (pSoldier.bSide != gbPlayerNum))) {
+          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO2, pSoldier.sLocatorFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
         } else {
-          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pSoldier.value.sLocatorFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
+          BltVideoObjectFromIndex(FRAME_BUFFER, guiRADIO, pSoldier.sLocatorFrame, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, null);
 
           // BltVideoObjectFromIndex(  FRAME_BUFFER, guiRADIO, 0, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL );
         }
@@ -1217,10 +1218,10 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     // return;
   }
 
-  if (!pSoldier.value.fShowLocator) {
+  if (!pSoldier.fShowLocator) {
     // RETURN IF MERC IS NOT SELECTED
-    if (gfUIHandleSelectionAboveGuy && pSoldier.value.ubID == gsSelectedGuy && pSoldier.value.ubID != gusSelectedSoldier && !gfIgnoreOnSelectedGuy) {
-    } else if (pSoldier.value.ubID == gusSelectedSoldier && !gRubberBandActive) {
+    if (gfUIHandleSelectionAboveGuy && pSoldier.ubID == gsSelectedGuy && pSoldier.ubID != gusSelectedSoldier && !gfIgnoreOnSelectedGuy) {
+    } else if (pSoldier.ubID == gusSelectedSoldier && !gRubberBandActive) {
       usGraphicToUse = Enum312.THIRDPOINTERS2;
     }
     // show all people's names if !
@@ -1228,23 +1229,23 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     //{
 
     //}
-    else if (pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
+    else if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
     } else {
       return;
     }
   } else {
-    if (pSoldier.value.ubID == gusSelectedSoldier && !gRubberBandActive) {
+    if (pSoldier.ubID == gusSelectedSoldier && !gRubberBandActive) {
       usGraphicToUse = Enum312.THIRDPOINTERS2;
     }
   }
 
   // If he is in the middle of a certain animation, ignore!
-  if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_NOSHOW_MARKER) {
+  if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_NOSHOW_MARKER) {
     return;
   }
 
   // Donot show if we are dead
-  if ((pSoldier.value.uiStatusFlags & SOLDIER_DEAD)) {
+  if ((pSoldier.uiStatusFlags & SOLDIER_DEAD)) {
     return;
   }
 
@@ -1255,34 +1256,34 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   SetFontBackground(FONT_MCOLOR_BLACK);
   SetFontForeground(FONT_MCOLOR_WHITE);
 
-  if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-    if (gfUIMouseOnValidCatcher == 1 && pSoldier.value.ubID == gubUIValidCatcherID) {
+  if (pSoldier.ubProfile != NO_PROFILE || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (gfUIMouseOnValidCatcher == 1 && pSoldier.ubID == gubUIValidCatcherID) {
       NameStr = TacticalStr[Enum335.CATCH_STR];
       ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
-    } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
+    } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.ubID == gubUIValidCatcherID) {
       NameStr = TacticalStr[Enum335.RELOAD_STR];
       ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
-    } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
+    } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.ubID == gubUIValidCatcherID) {
       NameStr = pMessageStrings[Enum333.MSG_PASS];
       ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
-    } else if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
+    } else if (pSoldier.bAssignment >= Enum117.ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
-      NameStr = swprintf("(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
+      NameStr = swprintf("(%s)", pAssignmentStrings[pSoldier.bAssignment]);
       ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = true;
-    } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < Enum117.ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
-      NameStr = swprintf(gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
+    } else if (pSoldier.bTeam == gbPlayerNum && pSoldier.bAssignment < Enum117.ON_DUTY && pSoldier.bAssignment != CurrentSquad() && !(pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
+      NameStr = swprintf(gzLateLocalizedString[34], (pSoldier.bAssignment + 1));
       ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1()));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
@@ -1290,34 +1291,34 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     }
 
     // If not in a squad....
-    if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
-      if (GetNumberInVehicle(pSoldier.value.bVehicleID) == 0) {
+    if ((pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
+      if (GetNumberInVehicle(pSoldier.bVehicleID) == 0) {
         SetFontForeground(FONT_GRAY4);
       }
     } else {
-      if (pSoldier.value.bAssignment >= Enum117.ON_DUTY) {
+      if (pSoldier.bAssignment >= Enum117.ON_DUTY) {
         SetFontForeground(FONT_YELLOW);
       }
     }
 
     if (fDoName) {
       if (fRaiseName) {
-        NameStr = swprintf("%s", pSoldier.value.name);
+        NameStr = swprintf("%s", pSoldier.name);
         ({ sX, sY } = FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1()));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
-        NameStr = swprintf("%s", pSoldier.value.name);
+        NameStr = swprintf("%s", pSoldier.name);
         ({ sX, sY } = FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1()));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       }
     }
 
-    if (pSoldier.value.ubProfile < FIRST_RPC || RPC_RECRUITED(pSoldier) || AM_AN_EPC(pSoldier) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
+    if (pSoldier.ubProfile < FIRST_RPC || RPC_RECRUITED(pSoldier) || AM_AN_EPC(pSoldier) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
       // Adjust for bars!
 
-      if (pSoldier.value.ubID == gusSelectedSoldier) {
+      if (pSoldier.ubID == gusSelectedSoldier) {
         sXPos += 28;
         sYPos += 5;
       } else {
@@ -1336,13 +1337,13 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
       // Draw life, breath
       // Only do this when we are a vehicle but on our team
-      if (pSoldier.value.ubID == gusSelectedSoldier) {
+      if (pSoldier.ubID == gusSelectedSoldier) {
         DrawBarsInUIBox(pSoldier, (sXPos + 1), (sYPos + 2), 16, 1);
       } else {
         DrawBarsInUIBox(pSoldier, (sXPos), (sYPos), 16, 1);
       }
     } else {
-      if (gfUIMouseOnValidCatcher == 2 && pSoldier.value.ubID == gubUIValidCatcherID) {
+      if (gfUIMouseOnValidCatcher == 2 && pSoldier.ubID == gubUIValidCatcherID) {
         SetFont(TINYFONT1());
         SetFontBackground(FONT_MCOLOR_BLACK);
         SetFontForeground(FONT_MCOLOR_WHITE);
@@ -1364,7 +1365,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       }
     }
   } else {
-    if (pSoldier.value.bLevel != 0) {
+    if (pSoldier.bLevel != 0) {
       // Display name
       SetFont(TINYFONT1());
       SetFontBackground(FONT_MCOLOR_BLACK);
@@ -1388,26 +1389,23 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   }
 }
 
-function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
+function RenderOverlayMessage(pBlitter: VIDEO_OVERLAY): void {
   // Override it!
   OverrideMercPopupBox(addressof(gpOverrideMercBox));
 
-  RenderMercPopupBox(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.uiDestBuff);
+  RenderMercPopupBox(pBlitter.sX, pBlitter.sY, pBlitter.uiDestBuff);
 
   // Set it back!
   ResetOverrideMercPopupBox();
 
-  InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusOverlayPopupBoxWidth, pBlitter.value.sY + gusOverlayPopupBoxHeight);
+  InvalidateRegion(pBlitter.sX, pBlitter.sY, pBlitter.sX + gusOverlayPopupBoxWidth, pBlitter.sY + gusOverlayPopupBoxHeight);
 }
 
 function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let SlideString: string /* wchar_t[512] */;
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(SlideString, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  SlideString = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   // Override it!
   OverrideMercPopupBox(addressof(gpOverrideMercBox));
@@ -1430,7 +1428,7 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderOverlayMessage;
 
-    giPopupSlideMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
+    giPopupSlideMessageOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
   }
 }
 
@@ -1444,7 +1442,7 @@ function EndOverlayMessage(): void {
   }
 }
 
-function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16): void {
+function DrawBarsInUIBox(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16): void {
   let dWidth: FLOAT;
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
@@ -1461,11 +1459,11 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 640, (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y));
 
   // get amt bandaged
-  bBandage = pSoldier.value.bLifeMax - pSoldier.value.bLife - pSoldier.value.bBleeding;
+  bBandage = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
   // NOW DO BLEEDING
-  if (pSoldier.value.bBleeding) {
-    dPercentage = (pSoldier.value.bBleeding + pSoldier.value.bLife + bBandage) / 100;
+  if (pSoldier.bBleeding) {
+    dPercentage = (pSoldier.bBleeding + pSoldier.bLife + bBandage) / 100;
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(240, 240, 20));
@@ -1478,7 +1476,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   }
 
   if (bBandage) {
-    dPercentage = (pSoldier.value.bLife + bBandage) / 100;
+    dPercentage = (pSoldier.bLife + bBandage) / 100;
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(222, 132, 132));
@@ -1490,7 +1488,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     }
   }
 
-  dPercentage = pSoldier.value.bLife / 100;
+  dPercentage = pSoldier.bLife / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(200, 0, 0));
@@ -1501,7 +1499,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   }
 
-  dPercentage = (pSoldier.value.bBreathMax) / 100;
+  dPercentage = (pSoldier.bBreathMax) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(20, 20, 150));
@@ -1512,7 +1510,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     RectangleDraw8(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
-  dPercentage = (pSoldier.value.bBreath) / 100;
+  dPercentage = (pSoldier.bBreath) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(100, 100, 220));
@@ -1632,8 +1630,8 @@ function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   UnLockVideoSurface(pBlitter.value.uiDestBuff);
 }
 
-export function DirtyMercPanelInterface(pSoldier: Pointer<SOLDIERTYPE>, ubDirtyLevel: UINT8): void {
-  if (pSoldier.value.bTeam == gbPlayerNum) {
+export function DirtyMercPanelInterface(pSoldier: SOLDIERTYPE, ubDirtyLevel: UINT8): void {
+  if (pSoldier.bTeam == gbPlayerNum) {
     // ONly set to a higher level!
     if (fInterfacePanelDirty < ubDirtyLevel) {
       fInterfacePanelDirty = ubDirtyLevel;
@@ -1642,19 +1640,31 @@ export function DirtyMercPanelInterface(pSoldier: Pointer<SOLDIERTYPE>, ubDirtyL
 }
 
 interface OPENDOOR_MENU {
-  pSoldier: Pointer<SOLDIERTYPE>;
-  pStructure: Pointer<STRUCTURE>;
+  pSoldier: SOLDIERTYPE /* Pointer<SOLDIERTYPE> */;
+  pStructure: STRUCTURE /* Pointer<STRUCTURE> */;
   ubDirection: UINT8;
   sX: INT16;
   sY: INT16;
-  fMenuHandled: boolean;
+  fMenuHandled: UINT8 /* boolean */;
   fClosingDoor: boolean;
 }
 
-let gOpenDoorMenu: OPENDOOR_MENU;
+function createOpenDoorMenu(): OPENDOOR_MENU {
+  return {
+    pSoldier: <SOLDIERTYPE><unknown>null,
+    pStructure: <STRUCTURE><unknown>null,
+    ubDirection: 0,
+    sX: 0,
+    sY: 0,
+    fMenuHandled: 0,
+    fClosingDoor: false,
+  };
+}
+
+let gOpenDoorMenu: OPENDOOR_MENU = createOpenDoorMenu();
 export let gfInOpenDoorMenu: boolean = false;
 
-export function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fClosingDoor: boolean): boolean {
+export function InitDoorOpenMenu(pSoldier: SOLDIERTYPE, pStructure: STRUCTURE, ubDirection: UINT8, fClosingDoor: boolean): boolean {
   let sHeight: INT16;
   let sWidth: INT16;
   let sScreenX: INT16;
@@ -1677,14 +1687,14 @@ export function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Poi
   // OK, Determine position...
   // Center on guy
   // Locate to guy first.....
-  LocateSoldier(pSoldier.value.ubID, false);
+  LocateSoldier(pSoldier.ubID, 0);
   GetSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
   ({ sScreenX, sScreenY } = GetSoldierScreenPos(pSoldier));
   gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
   gOpenDoorMenu.sY = sScreenY - ((BUTTON_PANEL_HEIGHT - sHeight) / 2);
 
   // Alrighty, cancel lock UI if we havn't done so already
-  UnSetUIBusy(pSoldier.value.ubID);
+  UnSetUIBusy(pSoldier.ubID);
 
   // OK, CHECK FOR BOUNDARIES!
   if ((gOpenDoorMenu.sX + BUTTON_PANEL_WIDTH) > 640) {
@@ -1700,7 +1710,7 @@ export function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Poi
     gOpenDoorMenu.sY = 0;
   }
 
-  gOpenDoorMenu.fMenuHandled = false;
+  gOpenDoorMenu.fMenuHandled = 0;
 
   guiPendingOverrideEvent = Enum207.OP_OPENDOORMENU;
   HandleTacticalUI();
@@ -1979,7 +1989,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
     uiBtnID = btn.IDNum;
 
     // Popdown menu
-    gOpenDoorMenu.fMenuHandled = true;
+    gOpenDoorMenu.fMenuHandled = 1;
 
     if (uiBtnID == iActionIcons[CANCEL_ICON]) {
       // OK, set cancle code!
@@ -1992,7 +2002,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Check APs
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         if (gOpenDoorMenu.fClosingDoor) {
           ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, true, Enum193.CLOSE_DOOR), 0, false);
@@ -2009,7 +2019,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Boot door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_FORCE);
       } else {
@@ -2022,7 +2032,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Unlock door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_UNLOCK);
       } else {
@@ -2035,7 +2045,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_LOCKPICK);
       } else {
@@ -2048,7 +2058,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_EXAMINE);
       } else {
@@ -2061,7 +2071,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_EXPLODE);
       } else {
@@ -2074,7 +2084,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_UNTRAP);
       } else {
@@ -2087,7 +2097,7 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, false)) {
         // Set UI
-        SetUIBusy(gOpenDoorMenu.pSoldier.value.ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier.ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_CROWBAR);
       } else {
@@ -2100,32 +2110,29 @@ function BtnDoorMenuCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
-export function HandleOpenDoorMenu(): boolean {
+export function HandleOpenDoorMenu(): UINT8 {
   if (gOpenDoorMenu.fMenuHandled) {
     PopDownOpenDoorMenu();
     return gOpenDoorMenu.fMenuHandled;
   }
 
-  return false;
+  return 0;
 }
 
-function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
+function RenderUIMessage(pBlitter: VIDEO_OVERLAY): void {
   // Shade area first...
-  ShadowVideoSurfaceRect(pBlitter.value.uiDestBuff, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusUIMessageWidth - 2, pBlitter.value.sY + gusUIMessageHeight - 2);
+  ShadowVideoSurfaceRect(pBlitter.uiDestBuff, pBlitter.sX, pBlitter.sY, pBlitter.sX + gusUIMessageWidth - 2, pBlitter.sY + gusUIMessageHeight - 2);
 
-  RenderMercPopUpBoxFromIndex(iUIMessageBox, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.uiDestBuff);
+  RenderMercPopUpBoxFromIndex(iUIMessageBox, pBlitter.sX, pBlitter.sY, pBlitter.uiDestBuff);
 
-  InvalidateRegion(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.sX + gusUIMessageWidth, pBlitter.value.sY + gusUIMessageHeight);
+  InvalidateRegion(pBlitter.sX, pBlitter.sY, pBlitter.sX + gusUIMessageWidth, pBlitter.sY + gusUIMessageHeight);
 }
 
 export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let MsgString: string /* wchar_t[512] */;
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  MsgString = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   guiUIMessageTime = GetJA2Clock();
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
@@ -2154,8 +2161,6 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: stri
   }
 
   if (giUIMessageOverlay == -1) {
-    memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-
     // Set Overlay
     VideoOverlayDesc.sLeft = (640 - gusUIMessageWidth) / 2;
     VideoOverlayDesc.sTop = 150;
@@ -2165,33 +2170,25 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: stri
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderUIMessage;
 
-    giUIMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
+    giUIMessageOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
   }
 
   gfUseSkullIconMessage = fUseSkullIcon;
 }
 
 export function BeginUIMessage(pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let argptr: va_list;
   let MsgString: string /* wchar_t[512] */;
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  MsgString = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   InternalBeginUIMessage(false, MsgString);
 }
 
 export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let argptr: va_list;
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
   let MsgString: string /* wchar_t[512] */;
 
-  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
-
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  MsgString = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   guiUIMessageTime = GetJA2Clock();
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
@@ -2225,7 +2222,7 @@ export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Poin
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderUIMessage;
 
-    giUIMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
+    giUIMessageOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
   }
 }
 
@@ -2254,9 +2251,9 @@ export function EndUIMessage(): void {
   // iUIMessageBox = -1;
 }
 
+const PLAYER_TEAM_TIMER_SEC_PER_TICKS = 100;
 const PLAYER_TEAM_TIMER_INTTERUPT_GRACE = (15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 const PLAYER_TEAM_TIMER_GRACE_PERIOD = 1000;
-const PLAYER_TEAM_TIMER_SEC_PER_TICKS = 100;
 const PLAYER_TEAM_TIMER_TICKS_PER_OK_MERC = (15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 const PLAYER_TEAM_TIMER_TICKS_PER_NOTOK_MERC = (5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = (5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
@@ -2314,7 +2311,6 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: string /* 
   let dLength: FLOAT;
   let dCurSize: FLOAT;
 
-  memset(addressof(VObjectDesc), 0, sizeof(VObjectDesc));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
 
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\rect.sti");
@@ -2564,7 +2560,7 @@ export function HandleTopMessages(): void {
       BltFx.SrcRect.iRight = 640;
       BltFx.SrcRect.iBottom = 20;
 
-      BltVideoSurface(FRAME_BUFFER, gTopMessage.uiSurface, 0, 0, 0, VS_BLT_SRCSUBRECT, addressof(BltFx));
+      BltVideoSurface(FRAME_BUFFER, gTopMessage.uiSurface, 0, 0, 0, VS_BLT_SRCSUBRECT, BltFx);
 
       // Save to save buffer....
       BltFx.SrcRect.iLeft = 0;
@@ -2572,7 +2568,7 @@ export function HandleTopMessages(): void {
       BltFx.SrcRect.iRight = 640;
       BltFx.SrcRect.iBottom = 20;
 
-      BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 0, VS_BLT_SRCSUBRECT, addressof(BltFx));
+      BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 0, VS_BLT_SRCSUBRECT, BltFx);
 
       InvalidateRegion(0, 0, 640, 20);
 
@@ -2677,14 +2673,14 @@ export function UpdateEnemyUIBar(): void {
   }
 }
 
-export function InitPlayerUIBar(fInterrupt: boolean): void {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+export function InitPlayerUIBar(fInterrupt: UINT8 /* boolean */): void {
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let bNumOK: INT8 = 0;
   let bNumNotOK: INT8 = 0;
 
   if (!gGameOptions.fTurnTimeLimit) {
-    if (fInterrupt == true) {
+    if (fInterrupt == 1) {
       AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
     } else {
       // EndTopMessage();
@@ -2701,10 +2697,10 @@ export function InitPlayerUIBar(fInterrupt: boolean): void {
     cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
     // look for all mercs on the same team,
-    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
+    for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
       // Are we active and in sector.....
-      if (pTeamSoldier.value.bActive && pTeamSoldier.value.bInSector) {
-        if (pTeamSoldier.value.bLife < OKLIFE) {
+      if (pTeamSoldier.bActive && pTeamSoldier.bInSector) {
+        if (pTeamSoldier.bLife < OKLIFE) {
           bNumNotOK++;
         } else {
           bNumOK++;
@@ -2726,7 +2722,7 @@ export function InitPlayerUIBar(fInterrupt: boolean): void {
   giTimerTeamTurnUpdate = RESETTIMECOUNTER(PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
   // OK, set value
-  if (fInterrupt != true) {
+  if (fInterrupt != 1) {
     AddTopMessage(Enum216.PLAYER_TURN_MESSAGE, TeamTurnString[0]);
   } else {
     AddTopMessage(Enum216.PLAYER_INTERRUPT_MESSAGE, Message[Enum334.STR_INTERRUPT]);
@@ -2745,17 +2741,17 @@ function DoorMenuBackregionCallback(pRegion: MOUSE_REGION, iReason: INT32): void
   }
 }
 
-export function GetSoldierHealthString(pSoldier: Pointer<SOLDIERTYPE>): string /* Pointer<UINT16> */ {
+export function GetSoldierHealthString(pSoldier: SOLDIERTYPE): string /* Pointer<UINT16> */ {
   let cnt: INT32;
   let cntStart: INT32;
-  if (pSoldier.value.bLife == pSoldier.value.bLifeMax) {
+  if (pSoldier.bLife == pSoldier.bLifeMax) {
     cntStart = 4;
   } else {
     cntStart = 0;
   }
   // Show health on others.........
   for (cnt = cntStart; cnt < 6; cnt++) {
-    if (pSoldier.value.bLife < bHealthStrRanges[cnt]) {
+    if (pSoldier.bLife < bHealthStrRanges[cnt]) {
       break;
     }
   }
@@ -2767,7 +2763,7 @@ interface AIMCUBE_UI_DATA {
   bPower: INT8;
   sGridNo: INT16;
   ubLevel: UINT8;
-  pSoldier: Pointer<SOLDIERTYPE>;
+  pSoldier: SOLDIERTYPE;
   fShowHeight: boolean;
   fShowPower: boolean;
   fActiveHeightBar: boolean;
@@ -2805,7 +2801,7 @@ function CalculateAimCubeUIPhysics(): void {
       gCubeUIData.dForce = gCubeUIData.dMaxForce;
     }
 
-    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, addressof(gCubeUIData.pSoldier.value.inv[Enum261.HANDPOS]), addressof(gCubeUIData.sTargetGridNo));
+    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, gCubeUIData.pSoldier.inv[Enum261.HANDPOS], addressof(gCubeUIData.sTargetGridNo));
   }
 }
 
@@ -2834,7 +2830,7 @@ function AimCubeUIClick(): boolean {
   }
 }
 
-function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: INT8, bStartPower: UINT8, bStartHeight: INT8): void {
+function BeginAimCubeUI(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubLevel: INT8, bStartPower: UINT8, bStartHeight: INT8): void {
   gfInAimCubeUI = true;
 
   gCubeUIData.sGridNo = sGridNo;
@@ -2899,8 +2895,8 @@ function IncrementAimCubeUI(): void {
 function SetupAimCubeAI(): void {
   if (gfInAimCubeUI) {
     AddTopmostToHead(gCubeUIData.sTargetGridNo, Enum312.FIRSTPOINTERS2);
-    gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-    gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+    (<LEVELNODE>gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+    (<LEVELNODE>gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
     // AddTopmostToHead( gCubeUIData.sGridNo, FIRSTPOINTERS2 );
     // gpWorldLevelData[ gCubeUIData.sGridNo ].pTopmostHead->ubShadeLevel=DEFAULT_SHADE_LEVEL;
@@ -2995,16 +2991,16 @@ export function SetupPhysicsTrajectoryUI(): void {
       } else {
         AddTopmostToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
       }
-      gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsPhysicsImpactPointGridNo].pTopmostHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     } else {
       if (gfBadPhysicsCTGT) {
         AddOnRoofToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS12);
       } else {
         AddOnRoofToHead(gsPhysicsImpactPointGridNo, Enum312.FIRSTPOINTERS8);
       }
-      gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
-      gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead).ubShadeLevel = DEFAULT_SHADE_LEVEL;
+      (<LEVELNODE>gpWorldLevelData[gsPhysicsImpactPointGridNo].pOnRoofHead).ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
     }
   }
 }

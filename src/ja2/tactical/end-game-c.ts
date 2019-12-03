@@ -7,7 +7,7 @@ let sStatueGridNos: INT16[] /* [] */ = [
   13670,
 ];
 
-let gpKillerSoldier: Pointer<SOLDIERTYPE> = null;
+let gpKillerSoldier: SOLDIERTYPE | null = null;
 let gsGridNo: INT16;
 let gbLevel: INT8;
 
@@ -20,7 +20,7 @@ export function DoesO3SectorStatueExistHere(sGridNo: INT16): boolean {
   if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
     // Check for exitence of and exit grid here...
     // ( if it doesn't then the change has already taken place )
-    if (!GetExitGrid(13669, addressof(ExitGrid))) {
+    if (!GetExitGrid(13669, ExitGrid)) {
       for (cnt = 0; cnt < 4; cnt++) {
         if (sStatueGridNos[cnt] == sGridNo) {
           return true;
@@ -64,7 +64,7 @@ export function ChangeO3SectorStatue(fFromExplosion: boolean): void {
   ExitGrid.ubGotoSectorZ = 1;
   ExitGrid.usGridNo = 13037;
 
-  AddExitGridToWorld(13669, addressof(ExitGrid));
+  AddExitGridToWorld(13669, ExitGrid);
   gpWorldLevelData[13669].uiFlags |= MAPELEMENT_REVEALED;
 
   // Turn off permenant changes....
@@ -86,7 +86,7 @@ function DeidrannaTimerCallback(): void {
   HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-export function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
+export function BeginHandleDeidrannaDeath(pKillerSoldier: SOLDIERTYPE, sGridNo: INT16, bLevel: INT8): void {
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
   gbLevel = bLevel;
@@ -101,10 +101,10 @@ export function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, 
   SetCustomizableTimerCallbackAndDelay(2000, DeidrannaTimerCallback, false);
 }
 
-function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+function HandleDeidrannaDeath(pKillerSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8): void {
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32;
-  let sDistVisible: INT16 = false;
+  let sDistVisible: INT16 = 0;
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
@@ -112,7 +112,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
 
   if (pKillerSoldier) {
     TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLING_DEIDRANNA);
-    ubKillerSoldierID = pKillerSoldier.value.ubID;
+    ubKillerSoldierID = pKillerSoldier.ubID;
   }
 
   // STEP 1 ) START ALL QUOTES GOING!
@@ -120,10 +120,10 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // run through list
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     if (cnt != ubKillerSoldierID) {
-      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
-        if (QuoteExp_WitnessDeidrannaDeath[pTeamSoldier.value.ubProfile]) {
+      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
+        if (QuoteExp_WitnessDeidrannaDeath[pTeamSoldier.ubProfile]) {
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
@@ -145,7 +145,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
 }
 
 function DoneFadeInKilledQueen(): void {
-  let pNPCSoldier: Pointer<SOLDIERTYPE>;
+  let pNPCSoldier: SOLDIERTYPE | null;
 
   // Locate gridno.....
 
@@ -157,34 +157,34 @@ function DoneFadeInKilledQueen(): void {
 
   // Converse!
   // InitiateConversation( pNPCSoldier, pSoldier, 0, 1 );
-  TriggerNPCRecordImmediately(pNPCSoldier.value.ubProfile, 6);
+  TriggerNPCRecordImmediately(pNPCSoldier.ubProfile, 6);
 }
 
 function DoneFadeOutKilledQueen(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
+  let pTeamSoldier: SOLDIERTYPE;
 
   // For one, loop through our current squad and move them over
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // Are we in this sector, On the current squad?
-    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && pSoldier.value.bInSector && pSoldier.value.bAssignment == CurrentSquad()) {
+    if (pSoldier.bActive && pSoldier.bLife >= OKLIFE && pSoldier.bInSector && pSoldier.bAssignment == CurrentSquad()) {
       gfTacticalTraversal = true;
-      SetGroupSectorValue(3, MAP_ROW_P, 0, pSoldier.value.ubGroupID);
+      SetGroupSectorValue(3, MAP_ROW_P, 0, pSoldier.ubGroupID);
 
       // Set next sectore
-      pSoldier.value.sSectorX = 3;
-      pSoldier.value.sSectorY = MAP_ROW_P;
-      pSoldier.value.bSectorZ = 0;
+      pSoldier.sSectorX = 3;
+      pSoldier.sSectorY = MAP_ROW_P;
+      pSoldier.bSectorZ = 0;
 
       // Set gridno
-      pSoldier.value.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
-      pSoldier.value.usStrategicInsertionData = 5687;
+      pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
+      pSoldier.usStrategicInsertionData = 5687;
       // Set direction to face....
-      pSoldier.value.ubInsertionDirection = 100 + Enum245.NORTHWEST;
+      pSoldier.ubInsertionDirection = 100 + Enum245.NORTHWEST;
     }
   }
 
@@ -192,13 +192,13 @@ function DoneFadeOutKilledQueen(): void {
   cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     // Are we active and in sector.....
-    if (pTeamSoldier.value.bActive) {
+    if (pTeamSoldier.bActive) {
       // For sure for flag thet they are dead is not set
       // Check for any more badguys
       // ON THE STRAGETY LAYER KILL BAD GUYS!
-      if (!pTeamSoldier.value.bNeutral && (pTeamSoldier.value.bSide != gbPlayerNum)) {
+      if (!pTeamSoldier.bNeutral && (pTeamSoldier.bSide != gbPlayerNum)) {
         ProcessQueenCmdImplicationsOfDeath(pSoldier);
       }
     }
@@ -258,7 +258,7 @@ export function HandleDoneLastKilledQueenQuote(): void {
 
 export function EndQueenDeathEndgameBeginEndCimenatic(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // Start end cimimatic....
   gTacticalStatus.uiFlags |= IN_ENDGAME_SEQUENCE;
@@ -267,9 +267,9 @@ export function EndQueenDeathEndgameBeginEndCimenatic(): void {
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // look for all mercs on the same team,
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // Are we in this sector, On the current squad?
-    if (pSoldier.value.bActive && pSoldier.value.bLife >= OKLIFE && !AM_AN_EPC(pSoldier)) {
+    if (pSoldier.bActive && pSoldier.bLife >= OKLIFE && !AM_AN_EPC(pSoldier)) {
       TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_END_GAME_COMMENT);
     }
   }
@@ -314,8 +314,8 @@ function QueenBitchTimerCallback(): void {
   HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-export function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+export function BeginHandleQueenBitchDeath(pKillerSoldier: SOLDIERTYPE, sGridNo: INT16, bLevel: INT8): void {
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32;
 
   gpKillerSoldier = pKillerSoldier;
@@ -335,9 +335,9 @@ export function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>,
   cnt = gTacticalStatus.Team[CREATURE_TEAM].bFirstID;
 
   // look for all mercs on the same team,
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     // Are we active and ALIVE and in sector.....
-    if (pTeamSoldier.value.bActive && pTeamSoldier.value.bLife > 0) {
+    if (pTeamSoldier.bActive && pTeamSoldier.bLife > 0) {
       // For sure for flag thet they are dead is not set
       // Check for any more badguys
       // ON THE STRAGETY LAYER KILL BAD GUYS!
@@ -346,16 +346,16 @@ export function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>,
       // if ( !pTeamSoldier->bNeutral && (pTeamSoldier->bSide != gbPlayerNum ) )
       {
         gTacticalStatus.ubAttackBusyCount++;
-        EVENT_SoldierGotHit(pTeamSoldier, 0, 10000, 0, pTeamSoldier.value.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pTeamSoldier.value.bAimShotLocation, 0, NOWHERE);
+        EVENT_SoldierGotHit(pTeamSoldier, 0, 10000, 0, pTeamSoldier.bDirection, 320, NOBODY, FIRE_WEAPON_NO_SPECIAL, pTeamSoldier.bAimShotLocation, 0, NOWHERE);
       }
     }
   }
 }
 
-function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+function HandleQueenBitchDeath(pKillerSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8): void {
+  let pTeamSoldier: SOLDIERTYPE;
   let cnt: INT32;
-  let sDistVisible: INT16 = false;
+  let sDistVisible: INT16 = 0;
   let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
@@ -363,7 +363,7 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
 
   if (pKillerSoldier) {
     TacticalCharacterDialogue(pKillerSoldier, Enum202.QUOTE_KILLING_QUEEN);
-    ubKillerSoldierID = pKillerSoldier.value.ubID;
+    ubKillerSoldierID = pKillerSoldier.ubID;
   }
 
   // STEP 1 ) START ALL QUOTES GOING!
@@ -371,10 +371,10 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
   // run through list
-  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
+  for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
     if (cnt != ubKillerSoldierID) {
-      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.value.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
-        if (QuoteExp_WitnessQueenBugDeath[pTeamSoldier.value.ubProfile]) {
+      if (OK_INSECTOR_MERC(pTeamSoldier) && !(pTeamSoldier.uiStatusFlags & SOLDIER_GASSED) && !AM_AN_EPC(pTeamSoldier)) {
+        if (QuoteExp_WitnessQueenBugDeath[pTeamSoldier.ubProfile]) {
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, Enum245.DIRECTION_IRRELEVANT, Enum245.DIRECTION_IRRELEVANT, sGridNo, bLevel);
 

@@ -3,7 +3,7 @@ namespace ja2 {
 // max number of merc faces per row in autobandage box
 const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
-let sAutoBandageString: string /* STR16 */ = null;
+let sAutoBandageString: string /* STR16 */ = '';
 let giBoxId: INT32 = -1;
 let gusTextBoxWidth: UINT16 = 0;
 let gusTextBoxHeight: UINT16 = 0;
@@ -17,17 +17,17 @@ let fEndAutoBandage: boolean = false;
 export let gfAutoBandageFailed: boolean;
 
 // the button and associated image for ending autobandage
-let iEndAutoBandageButton: INT32[] /* [2] */;
-let iEndAutoBandageButtonImage: INT32[] /* [2] */;
+let iEndAutoBandageButton: INT32[] /* [2] */ = createArray(2, 0);
+let iEndAutoBandageButtonImage: INT32[] /* [2] */ = createArray(2, 0);
 
 let gAutoBandageRegion: MOUSE_REGION = createMouseRegion();
 
 // the lists of the doctor and patient
-let iDoctorList: INT32[] /* [MAX_CHARACTER_COUNT] */;
-let iPatientList: INT32[] /* [MAX_CHARACTER_COUNT] */;
+let iDoctorList: INT32[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, 0);
+let iPatientList: INT32[] /* [MAX_CHARACTER_COUNT] */ = createArray(MAX_CHARACTER_COUNT, 0);
 
 // faces for update panel
-let giAutoBandagesSoldierFaces: INT32[] /* [2 * MAX_CHARACTER_COUNT] */;
+let giAutoBandagesSoldierFaces: INT32[] /* [2 * MAX_CHARACTER_COUNT] */ = createArray(2 * MAX_CHARACTER_COUNT, 0);
 
 // has the button for autobandage end been setup yet
 let fAutoEndBandageButtonCreated: boolean = false;
@@ -35,7 +35,7 @@ let fAutoEndBandageButtonCreated: boolean = false;
 export function BeginAutoBandage(): void {
   let cnt: INT32;
   let fFoundAGuy: boolean = false;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let fFoundAMedKit: boolean = false;
 
   // If we are in combat, we con't...
@@ -46,9 +46,9 @@ export function BeginAutoBandage(): void {
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   // check for anyone needing bandages
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     // if the soldier isn't active or in sector, we have problems..leave
-    if (!(pSoldier.value.bActive) || !(pSoldier.value.bInSector) || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.value.bAssignment == Enum117.VEHICLE)) {
+    if (!(pSoldier.bActive) || !(pSoldier.bInSector) || (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier.bAssignment == Enum117.VEHICLE)) {
       continue;
     }
 
@@ -83,7 +83,7 @@ export function BeginAutoBandage(): void {
 
 export function HandleAutoBandagePending(): void {
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
 
   // OK, if we have a pending autobandage....
   // check some conditions
@@ -101,11 +101,11 @@ export function HandleAutoBandagePending(): void {
 
     // Do any guys have pending actions...?
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
       // Are we in sector?
-      if (pSoldier.value.bActive) {
-        if (pSoldier.value.sSectorX == gWorldSectorX && pSoldier.value.sSectorY == gWorldSectorY && pSoldier.value.bSectorZ == gbWorldSectorZ && !pSoldier.value.fBetweenSectors) {
-          if (pSoldier.value.ubPendingAction != NO_PENDING_ACTION) {
+      if (pSoldier.bActive) {
+        if (pSoldier.sSectorX == gWorldSectorX && pSoldier.sSectorY == gWorldSectorY && pSoldier.bSectorZ == gbWorldSectorZ && !pSoldier.fBetweenSectors) {
+          if (pSoldier.ubPendingAction != NO_PENDING_ACTION) {
             return;
           }
         }
@@ -202,20 +202,20 @@ export function HandleAutoBandage(): boolean {
 
 function CreateAutoBandageString(): boolean {
   let cnt: INT32;
-  let ubDoctor: UINT8[] /* [20] */;
+  let ubDoctor: UINT8[] /* [20] */ = createArray(20, 0);
   let ubDoctors: UINT8 = 0;
   let uiDoctorNameStringLength: UINT32 = 1; // for end-of-string character
   let sTemp: string /* STR16 */;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-    if (pSoldier.value.bActive && pSoldier.value.bInSector && pSoldier.value.bLife >= OKLIFE && !(pSoldier.value.bCollapsed) && pSoldier.value.bMedical > 0 && FindObjClass(pSoldier, IC_MEDKIT) != NO_SLOT) {
-      ubDoctor[ubDoctors] = pSoldier.value.ubID;
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+    if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && !(pSoldier.bCollapsed) && pSoldier.bMedical > 0 && FindObjClass(pSoldier, IC_MEDKIT) != NO_SLOT) {
+      ubDoctor[ubDoctors] = pSoldier.ubID;
       ubDoctors++;
       // increase the length of the string by the size of the name
       // plus 2, one for the comma and one for the space after that
-      uiDoctorNameStringLength += pSoldier.value.name.length + 2;
+      uiDoctorNameStringLength += pSoldier.name.length + 2;
     }
   }
   if (ubDoctors == 0) {
@@ -228,23 +228,13 @@ function CreateAutoBandageString(): boolean {
     uiDoctorNameStringLength += Message[Enum334.STR_ARE_APPLYING_FIRST_AID].length;
   }
 
-  sAutoBandageString = MemRealloc(sAutoBandageString, uiDoctorNameStringLength * sizeof(CHAR16));
-  if (!sAutoBandageString) {
-    return false;
-  }
-
   if (ubDoctors == 1) {
-    sAutoBandageString = swprintf(Message[Enum334.STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].value.name);
+    sAutoBandageString = swprintf(Message[Enum334.STR_IS_APPLYING_FIRST_AID], MercPtrs[ubDoctor[0]].name);
   } else {
     // make a temporary string to hold most of the doctors names joined by commas
-    sTemp = MemAlloc(uiDoctorNameStringLength * sizeof(CHAR16));
-    //	sTemp = MemAlloc( 1000 );
-    if (!sTemp) {
-      return false;
-    }
     sTemp = "";
     for (cnt = 0; cnt < ubDoctors - 1; cnt++) {
-      sTemp += MercPtrs[ubDoctor[cnt]].value.name;
+      sTemp += MercPtrs[ubDoctor[cnt]].name;
       if (ubDoctors > 2) {
         if (cnt == ubDoctors - 2) {
           sTemp += ",";
@@ -253,8 +243,7 @@ function CreateAutoBandageString(): boolean {
         }
       }
     }
-    sAutoBandageString = swprintf(Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].value.name);
-    MemFree(sTemp);
+    sAutoBandageString = swprintf(Message[Enum334.STR_ARE_APPLYING_FIRST_AID], sTemp, MercPtrs[ubDoctor[ubDoctors - 1]].name);
   }
   return true;
 }
@@ -270,7 +259,7 @@ export function AutoBandage(fStart: boolean): void {
   let aRect: SGPRect = createSGPRect();
   let ubLoop: UINT8;
   let cnt: INT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   if (fStart) {
     gTacticalStatus.fAutoBandageMode = true;
@@ -290,10 +279,10 @@ export function AutoBandage(fStart: boolean): void {
     // SetGameTimeCompressionLevel( TIME_COMPRESS_5MINS );
 
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive) {
-        pSoldier.value.bSlotItemTakenFrom = NO_SLOT;
-        pSoldier.value.ubAutoBandagingMedic = NOBODY;
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive) {
+        pSoldier.bSlotItemTakenFrom = NO_SLOT;
+        pSoldier.ubAutoBandagingMedic = NOBODY;
       }
     }
 
@@ -322,17 +311,17 @@ export function AutoBandage(fStart: boolean): void {
 
     // make sure anyone under AI control has their action cancelled
     cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
-      if (pSoldier.value.bActive) {
+    for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
+      if (pSoldier.bActive) {
         ActionDone(pSoldier);
-        if (pSoldier.value.bSlotItemTakenFrom != NO_SLOT) {
+        if (pSoldier.bSlotItemTakenFrom != NO_SLOT) {
           // swap our old hand item back to the main hand
-          SwapObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), addressof(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
+          SwapObjs(pSoldier.inv[Enum261.HANDPOS], pSoldier.inv[pSoldier.bSlotItemTakenFrom]);
         }
 
         // ATE: Mkae everyone stand up!
-        if (pSoldier.value.bLife >= OKLIFE && !pSoldier.value.bCollapsed) {
-          if (gAnimControl[pSoldier.value.usAnimState].ubHeight != ANIM_STAND) {
+        if (pSoldier.bLife >= OKLIFE && !pSoldier.bCollapsed) {
+          if (gAnimControl[pSoldier.usAnimState].ubHeight != ANIM_STAND) {
             ChangeSoldierStance(pSoldier, ANIM_STAND);
           }
         }
@@ -344,7 +333,7 @@ export function AutoBandage(fStart: boolean): void {
       ActionDone(MercPtrs[ubLoop]);
 
       // If anyone is still doing aid animation, stop!
-      if (MercPtrs[ubLoop].value.usAnimState == Enum193.GIVING_AID) {
+      if (MercPtrs[ubLoop].usAnimState == Enum193.GIVING_AID) {
         SoldierGotoStationaryStance(MercPtrs[ubLoop]);
       }
     }
@@ -401,15 +390,15 @@ function SetUpAutoBandageUpdatePanel(): void {
   let iCounterA: INT32 = 0;
 
   // reset the tables of merc ids
-  memset(iDoctorList, -1, sizeof(INT32) * MAX_CHARACTER_COUNT);
-  memset(iPatientList, -1, sizeof(INT32) * MAX_CHARACTER_COUNT);
+  iDoctorList.fill(-1);
+  iPatientList.fill(-1);
 
   // grab number of potential grunts on players team
   iNumberOnTeam = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
   // run through mercs on squad...if they can doctor, add to list
   for (iCounterA = 0; iCounterA < iNumberOnTeam; iCounterA++) {
-    if (CanCharacterAutoBandageTeammate(addressof(Menptr[iCounterA]))) {
+    if (CanCharacterAutoBandageTeammate(Menptr[iCounterA])) {
       // add to list, up the count
       iDoctorList[iNumberDoctoring] = iCounterA;
       iNumberDoctoring++;
@@ -418,7 +407,7 @@ function SetUpAutoBandageUpdatePanel(): void {
 
   // run through mercs on squad, if they can patient, add to list
   for (iCounterA = 0; iCounterA < iNumberOnTeam; iCounterA++) {
-    if (CanCharacterBeAutoBandagedByTeammate(addressof(Menptr[iCounterA]))) {
+    if (CanCharacterBeAutoBandagedByTeammate(Menptr[iCounterA])) {
       // add to list, up the count
       iPatientList[iNumberPatienting] = iCounterA;
       iNumberPatienting++;
@@ -428,8 +417,8 @@ function SetUpAutoBandageUpdatePanel(): void {
   // makes sure there is someone to doctor and patient...
   if ((iNumberDoctoring == 0) || (iNumberPatienting == 0)) {
     // reset the tables of merc ids
-    memset(iDoctorList, -1, sizeof(INT32) * MAX_CHARACTER_COUNT);
-    memset(iPatientList, -1, sizeof(INT32) * MAX_CHARACTER_COUNT);
+    iDoctorList.fill(-1);
+    iPatientList.fill(-1);
   }
 
   // now add the faces
@@ -802,7 +791,7 @@ function AddFacesToAutoBandageBox(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   // reset
-  memset(addressof(giAutoBandagesSoldierFaces), -1, 2 * MAX_CHARACTER_COUNT);
+  giAutoBandagesSoldierFaces.fill(-1);
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
 
@@ -877,7 +866,7 @@ function RemoveFacesForAutoBandage(): boolean {
 
 function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): boolean {
   let iStartY: INT32 = 0;
-  let pSoldier: Pointer<SOLDIERTYPE> = null;
+  let pSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
   let iIndexCount: INT32 = 0;
   let hHandle: HVOBJECT;
@@ -904,38 +893,38 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   // see if we are looking into doctor or patient lists?
   if (iIndexCount > iIndex) {
     // HEALTH BAR
-    pSoldier = addressof(Menptr[iDoctorList[iIndex]]);
+    pSoldier = Menptr[iDoctorList[iIndex]];
   } else {
     // HEALTH BAR
-    pSoldier = addressof(Menptr[iPatientList[iIndex - iIndexCount]]);
+    pSoldier = Menptr[iPatientList[iIndex - iIndexCount]];
   }
 
   // is the merc alive?
-  if (!pSoldier.value.bLife)
+  if (!pSoldier.bLife)
     return false;
 
   // yellow one for bleeding
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bLifeMax / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bLifeMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
-  iStartY += 27 * pSoldier.value.bBleeding / 100;
+  iStartY += 27 * pSoldier.bBleeding / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
 
   // red one for actual health
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bLife / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bLife / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bBreathMax / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bBreathMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 39, iStartY, sCurrentXPosition + 40, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 40, iStartY, sCurrentXPosition + 41, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.value.bMorale / 100;
+  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bMorale / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 42, iStartY, sCurrentXPosition + 43, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 

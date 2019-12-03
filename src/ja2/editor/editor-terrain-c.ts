@@ -142,7 +142,7 @@ export function ChooseWeightedTerrainTile(): void {
     // Not in the weighted mode.  CurrentPaste will already contain the selected tile.
     return;
   }
-  sRandomNum = rand() % usTotalWeight;
+  sRandomNum = Math.floor(Math.random() * usTotalWeight);
   x = NUM_TERRAIN_TILE_REGIONS;
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     usWeight = ubTerrainTileButtonWeight[x];
@@ -155,7 +155,7 @@ export function ChooseWeightedTerrainTile(): void {
 }
 
 let guiSearchType: UINT32;
-export let count: UINT32;
+let count: UINT32;
 let maxCount: UINT32 = 0;
 let calls: UINT32 = 0;
 
@@ -174,7 +174,7 @@ function Fill(x: INT32, y: INT32): void {
     count--;
     return;
   }
-  uiCheckType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
+  uiCheckType = GetTileType((<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).usIndex);
   if (guiSearchType == uiCheckType)
     PasteTextureCommon(iMapIndex);
   else {
@@ -197,7 +197,7 @@ export function TerrainFill(iMapIndex: UINT32): void {
   let sX: INT16;
   let sY: INT16;
   // determine what we should be looking for to replace...
-  guiSearchType = GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
+  guiSearchType = GetTileType((<LEVELNODE>gpWorldLevelData[iMapIndex].pLandHead).usIndex);
 
   // check terminating conditions
   if (guiSearchType == CurrentPaste)

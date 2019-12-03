@@ -37,7 +37,7 @@ export type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 export interface MESSAGE_BOX_STRUCT {
   usFlags: UINT16;
   uiExitScreen: UINT32;
-  ExitCallback: MSGBOX_CALLBACK;
+  ExitCallback: MSGBOX_CALLBACK | null;
   sX: INT16;
   sY: INT16;
   uiSaveBuffer: UINT32;
@@ -59,6 +59,76 @@ export interface MESSAGE_BOX_STRUCT {
   fRenderBox: boolean;
   bHandled: INT8;
   iBoxId: INT32;
+}
+
+class _MESSAGE_BOX_STRUCT implements MESSAGE_BOX_STRUCT {
+  public usFlags: UINT16;
+  public uiExitScreen: UINT32;
+  public ExitCallback: MSGBOX_CALLBACK | null;
+  public sX: INT16;
+  public sY: INT16;
+  public uiSaveBuffer: UINT32;
+  public BackRegion: MOUSE_REGION;
+  public usWidth: UINT16;
+  public usHeight: UINT16;
+  public iButtonImages: INT32;
+  public uiButton: UINT32[] /* [4] */;
+  public fRenderBox: boolean;
+  public bHandled: INT8;
+  public iBoxId: INT32;
+
+  constructor() {
+    this.usFlags = 0;
+    this.uiExitScreen = 0;
+    this.ExitCallback = null;
+    this.sX = 0;
+    this.sY = 0;
+    this.uiSaveBuffer = 0;
+    this.BackRegion = createMouseRegion();
+    this.usWidth = 0;
+    this.usHeight = 0;
+    this.iButtonImages = 0;
+    this.uiButton = createArray(4, 0);
+    this.fRenderBox = false;
+    this.bHandled = 0;
+    this.iBoxId = 0;
+  }
+
+  get uiOKButton() {
+    return this.uiButton[0];
+  }
+
+  set uiOKButton(value) {
+    this.uiButton[0] = value;
+  }
+
+  get uiYESButton() {
+    return this.uiButton[1];
+  }
+
+  set uiYESButton(value) {
+    this.uiButton[1] = value;
+  }
+
+  get uiNOButton() {
+    return this.uiButton[2];
+  }
+
+  set uiNOButton(value) {
+    this.uiButton[2] = value;
+  }
+
+  get uiUnusedButton() {
+    return this.uiButton[3];
+  }
+
+  set uiUnusedButton(value) {
+    this.uiButton[3] = value;
+  }
+}
+
+export function createMessageBoxStruct(): MESSAGE_BOX_STRUCT {
+  return new _MESSAGE_BOX_STRUCT();
 }
 
 ////////////////////////////////

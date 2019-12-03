@@ -1006,7 +1006,7 @@ function GetUserInput(): void {
         case LEFTARROW:
           if (giSelectedMercCurrentQuote != -1) {
             if (ubPanelMercShouldUse == Enum168.QDS_REGULAR_PANEL)
-              ShutupaYoFace(gTalkingMercSoldier.iFaceIndex);
+              ShutupaYoFace((<SOLDIERTYPE>gTalkingMercSoldier).iFaceIndex);
             else
               ShutupaYoFace(gTalkPanel.iFaceIndex);
 
@@ -1023,7 +1023,7 @@ function GetUserInput(): void {
         case RIGHTARROW:
           if (giSelectedMercCurrentQuote != -1) {
             if (ubPanelMercShouldUse == Enum168.QDS_REGULAR_PANEL)
-              ShutupaYoFace(gTalkingMercSoldier.iFaceIndex);
+              ShutupaYoFace((<SOLDIERTYPE>gTalkingMercSoldier).iFaceIndex);
             else
               ShutupaYoFace(gTalkPanel.iFaceIndex);
 
@@ -1119,7 +1119,7 @@ function GetUserInput(): void {
         case LEFTARROW:
           if (giSelectedMercCurrentQuote != -1) {
             if (ubPanelMercShouldUse == Enum168.QDS_REGULAR_PANEL)
-              ShutupaYoFace(gTalkingMercSoldier.iFaceIndex);
+              ShutupaYoFace((<SOLDIERTYPE>gTalkingMercSoldier).iFaceIndex);
             else
               ShutupaYoFace(gTalkPanel.iFaceIndex);
 
@@ -1138,7 +1138,7 @@ function GetUserInput(): void {
             DisplayQDSCurrentlyQuoteNum();
 
             if (ubPanelMercShouldUse == Enum168.QDS_REGULAR_PANEL)
-              ShutupaYoFace(gTalkingMercSoldier.iFaceIndex);
+              ShutupaYoFace((<SOLDIERTYPE>gTalkingMercSoldier).iFaceIndex);
             else
               ShutupaYoFace(gTalkPanel.iFaceIndex);
           }
@@ -2368,7 +2368,7 @@ function AddNPCToGridNo(iGridNo: INT32): void {
 
   //	RandomizeNewSoldierStats( &MercCreateStruct );
 
-  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
+  if (TacticalCreateSoldier(MercCreateStruct, addressof(ubID))) {
     AddSoldierToSector(ubID);
 
     // So we can see them!
@@ -2683,6 +2683,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   let DestString: string /* char[1024] */;
   //	char			MercName[ NICKNAME_LENGTH ];
   //	char			NpcName[ NICKNAME_LENGTH ];
+  let buffer: Buffer;
 
   DestString = '';
 
@@ -2726,7 +2727,9 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   DestString = sprintf("\n\n\nNew Approach for NPC ID: %d '%S' against Merc: %d '%S'", ubNpcID, gMercProfiles[ubNpcID].zNickname, ubMercID, gMercProfiles[ubMercID].zNickname);
   //	sprintf( DestString, "\n\n\nNew Approach for NPC ID: %d  against Merc: %d ", ubNpcID, ubMercID );
 
-  if ((uiByteWritten = FileWrite(hFile, DestString, DestString.length)) === -1) {
+  buffer = Buffer.allocUnsafe(DestString.length);
+  writeStringNL(DestString, buffer, 0, DestString.length, 'ascii');
+  if ((uiByteWritten = FileWrite(hFile, buffer, DestString.length)) === -1) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
@@ -2736,7 +2739,9 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
   DestString = sprintf("\n\tTesting Record #: %d", ubQuoteNum);
 
   // append to file
-  if ((uiByteWritten = FileWrite(hFile, DestString, DestString.length)) === -1) {
+  buffer = Buffer.allocUnsafe(DestString.length);
+  writeStringNL(DestString, buffer, 0, DestString.length, 'ascii');
+  if ((uiByteWritten = FileWrite(hFile, buffer, DestString.length)) === -1) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("FAILED to write to %s", QUEST_DEBUG_FILE));
     return;
@@ -3080,7 +3085,7 @@ function SetTalkingMercPauseState(fState: boolean): void {
 
 function SetQDSMercProfile(): void {
   // Get selected soldier
-  if (GetSoldier(addressof(gTalkingMercSoldier), gusSelectedSoldier)) {
+  if ((gTalkingMercSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     // Change guy!
     ForceSoldierProfileID(gTalkingMercSoldier, gNpcListBox.sCurSelectedItem);
 

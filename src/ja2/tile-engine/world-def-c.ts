@@ -2608,7 +2608,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   // CHECK IF OUR SELECTED GUY IS GONE!
   if (gusSelectedSoldier != NO_SOLDIER) {
-    if (MercPtrs[gusSelectedSoldier].value.bActive == false) {
+    if (MercPtrs[gusSelectedSoldier].bActive == false) {
       gusSelectedSoldier = NO_SOLDIER;
     }
   }
@@ -2921,7 +2921,7 @@ export function LoadMapTileset(iTilesetID: INT32): boolean {
   return true;
 }
 
-export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: string /* Pointer<CHAR8> */): void {
+export function SetLoadOverrideParams(fForceLoad: boolean, fForceFile: boolean, zLoadName: string | null /* Pointer<CHAR8> */): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
@@ -3254,7 +3254,7 @@ export function ReloadTileset(ubID: UINT8): void {
 }
 
 function SaveMapLights(hfile: HWFILE): void {
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
   let LColors: SGPPaletteEntry[] /* [3] */ = createArrayFrom(3, createSGPPaletteEntry);
   let ubNumColors: UINT8;
   let fSoldierLight: boolean;
@@ -3282,7 +3282,7 @@ function SaveMapLights(hfile: HWFILE): void {
       // found an active light.  Check to make sure it doesn't belong to a merc.
       fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
-        if (GetSoldier(addressof(pSoldier), cnt2)) {
+        if ((pSoldier = GetSoldier(cnt2)) !== null) {
           if (pSoldier.iLight == cnt)
             fSoldierLight = true;
         }
@@ -3302,7 +3302,7 @@ function SaveMapLights(hfile: HWFILE): void {
       // found an active light.  Check to make sure it doesn't belong to a merc.
       fSoldierLight = false;
       for (cnt2 = 0; cnt2 < MAX_NUM_SOLDIERS && !fSoldierLight; cnt2++) {
-        if (GetSoldier(addressof(pSoldier), cnt2)) {
+        if ((pSoldier = GetSoldier(cnt2)) !== null) {
           if (pSoldier.iLight == cnt)
             fSoldierLight = true;
         }

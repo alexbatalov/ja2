@@ -1,24 +1,24 @@
 namespace ja2 {
 
 function CaveAtGridNo(iMapIndex: INT32): boolean {
-  let pStruct: Pointer<STRUCTURE>;
-  let pLevel: Pointer<LEVELNODE>;
+  let pStruct: STRUCTURE | null;
+  let pLevel: LEVELNODE | null;
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
     return true;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
-    if (pStruct.value.fFlags & STRUCTURE_CAVEWALL) {
+    if (pStruct.fFlags & STRUCTURE_CAVEWALL) {
       return true;
     }
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
   // may not have structure information, so check if there is a levelnode flag.
   pLevel = gpWorldLevelData[iMapIndex].pStructHead;
   while (pLevel) {
-    if (pLevel.value.uiFlags & LEVELNODE_CAVE) {
+    if (pLevel.uiFlags & LEVELNODE_CAVE) {
       return true;
     }
-    pLevel = pLevel.value.pNext;
+    pLevel = pLevel.pNext;
   }
   return false;
 }
@@ -384,6 +384,8 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xff:
       usIndex = 60 + Random(6);
       break;
+    default:
+      throw new Error('Should be unreachable');
   }
   usTileIndex = GetTileIndexFromTypeSubIndex(usType, usIndex);
   return usTileIndex;
@@ -423,7 +425,7 @@ function CalcNewCavePerimeterValue(iMapIndex: INT32): UINT8 {
 }
 
 export function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
 
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
     return;
@@ -435,7 +437,7 @@ export function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
   // Set the cave flag
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   Assert(pStruct);
-  pStruct.value.uiFlags |= LEVELNODE_CAVE;
+  pStruct.uiFlags |= LEVELNODE_CAVE;
 }
 
 // These walls have shadows associated with them, and are draw when the wall is drawn.
@@ -561,7 +563,7 @@ export function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
   let usWallPieceChosen: UINT16 = 0;
   if (usWallPieceType >= 0 || usWallPieceType < Enum60.NUM_WALL_TYPES) {
     usVariants = gbWallTileLUT[usWallPieceType][0];
-    usVariantChosen = (rand() % usVariants) + 1;
+    usVariantChosen = Math.floor(Math.random() * usVariants) + 1;
     usWallPieceChosen = gbWallTileLUT[usWallPieceType][usVariantChosen];
   }
   return usWallPieceChosen;
@@ -581,7 +583,7 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
   let sIndex: INT16;
   let usTileIndex: UINT16;
   let ubWallClass: UINT16;
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   if (!usWallType) {
     usWallType = SearchForWallType(iMapIndex);
   }
@@ -603,7 +605,7 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
         sIndex = PickAWallPiece(Enum60.EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.usIndex, usTileIndex);
       }
       ubWallClass = Enum60.EXTERIOR_L;
       if (!gfBasement) {
@@ -618,7 +620,7 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
         sIndex = PickAWallPiece(Enum60.INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.usIndex, usTileIndex);
       }
       break;
     case Enum61.EXTERIOR_LEFT:
@@ -653,14 +655,14 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
         sIndex = PickAWallPiece(Enum60.INTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.usIndex, usTileIndex);
         // NOTE:  Not yet checking for interior extended bottomend!
       }
       if (pStruct = GetVerticalWall(iMapIndex)) {
         sIndex = PickAWallPiece(Enum60.INTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.usIndex, usTileIndex);
       }
       break;
     case Enum61.INTERIOR_BOTTOM:
@@ -672,13 +674,13 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
         sIndex = PickAWallPiece(Enum60.EXTERIOR_BOTTOMEND);
         AddToUndoList(iMapIndex);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex, pStruct.usIndex, usTileIndex);
       }
       if ((pStruct = GetVerticalWall(iMapIndex + WORLD_COLS - 1)) && !GetVerticalWall(iMapIndex - 1)) {
         sIndex = PickAWallPiece(Enum60.EXTERIOR_EXTENDED);
         AddToUndoList(iMapIndex + WORLD_COLS - 1);
         usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
-        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.value.usIndex, usTileIndex);
+        ReplaceStructIndex(iMapIndex + WORLD_COLS - 1, pStruct.usIndex, usTileIndex);
       }
       if (!gfBasement) {
         // All exterior_l walls have shadows.
@@ -722,6 +724,8 @@ export function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType
         AddExclusiveShadow(iMapIndex, usTileIndex);
       }
       break;
+    default:
+      throw new Error('Should be unreachable');
   }
   sIndex = PickAWallPiece(ubWallClass);
   usTileIndex = GetTileIndexFromTypeSubIndex(usWallType, sIndex);
@@ -767,7 +771,7 @@ export function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16):
   else if (fRight)
     usRoofIndex = RIGHT_ROOF_INDEX;
   else
-    usRoofIndex = CENTER_ROOF_BASE_INDEX + (rand() % CENTER_ROOF_VARIANTS);
+    usRoofIndex = CENTER_ROOF_BASE_INDEX + Math.floor(Math.random() * CENTER_ROOF_VARIANTS);
   usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
   AddRoofToHead(iMapIndex, usTileIndex);
   // if the editor view roofs is off, then the new roofs need to be hidden.
@@ -818,7 +822,7 @@ export function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
   else if (fRight)
     usRoofIndex = RIGHT_ROOF_INDEX;
   else
-    usRoofIndex = CENTER_ROOF_BASE_INDEX + (rand() % CENTER_ROOF_VARIANTS);
+    usRoofIndex = CENTER_ROOF_BASE_INDEX + Math.floor(Math.random() * CENTER_ROOF_VARIANTS);
   usTileIndex = GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex);
   AddRoofToHead(iMapIndex, usTileIndex);
   // if the editor view roofs is off, then the new roofs need to be hidden.
@@ -872,7 +876,7 @@ export function EraseBuilding(iMapIndex: UINT32): void {
 // and the TOP_LEFT oriented wall in the gridno up one as well as the other building information at this
 // gridno.
 function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
-  let pStruct: Pointer<LEVELNODE> = null;
+  let pStruct: LEVELNODE | null = null;
   let uiTileType: UINT32;
   let usWallOrientation: UINT16;
 
@@ -884,36 +888,36 @@ function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
   // FIRST, SEARCH AND DESTROY FOR A LEFT NEIGHBORING TILE WITH A TOP_RIGHT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - 1].pStructHead;
   while (pStruct != null) {
-    if (pStruct.value.usIndex != NO_TILE) {
-      uiTileType = GetTileType(pStruct.value.usIndex);
+    if (pStruct.usIndex != NO_TILE) {
+      uiTileType = GetTileType(pStruct.usIndex);
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
-        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
+        usWallOrientation = GetWallOrientation(pStruct.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_RIGHT || usWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
           AddToUndoList(iMapIndex - 1);
-          RemoveStruct(iMapIndex - 1, pStruct.value.usIndex);
+          RemoveStruct(iMapIndex - 1, pStruct.usIndex);
           RemoveAllShadowsOfTypeRange(iMapIndex - 1, Enum313.FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
     }
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
   // FINALLY, SEARCH AND DESTROY FOR A TOP NEIGHBORING TILE WITH A TOP_LEFT ORIENTED WALL
   pStruct = gpWorldLevelData[iMapIndex - WORLD_COLS].pStructHead;
   while (pStruct != null) {
-    if (pStruct.value.usIndex != NO_TILE) {
-      uiTileType = GetTileType(pStruct.value.usIndex);
+    if (pStruct.usIndex != NO_TILE) {
+      uiTileType = GetTileType(pStruct.usIndex);
       if (uiTileType >= Enum313.FIRSTWALL && uiTileType <= LASTWALL || uiTileType >= Enum313.FIRSTDOOR && uiTileType <= LASTDOOR) {
-        usWallOrientation = GetWallOrientation(pStruct.value.usIndex);
+        usWallOrientation = GetWallOrientation(pStruct.usIndex);
         if (usWallOrientation == Enum314.INSIDE_TOP_LEFT || usWallOrientation == Enum314.OUTSIDE_TOP_LEFT) {
           AddToUndoList(iMapIndex - WORLD_COLS);
-          RemoveStruct(iMapIndex - WORLD_COLS, pStruct.value.usIndex);
+          RemoveStruct(iMapIndex - WORLD_COLS, pStruct.usIndex);
           RemoveAllShadowsOfTypeRange(iMapIndex - WORLD_COLS, Enum313.FIRSTWALL, LASTWALL);
           break; // otherwise, it'll crash because pStruct is toast.
         }
       }
     }
-    pStruct = pStruct.value.pNext;
+    pStruct = pStruct.pNext;
   }
 }
 
@@ -924,7 +928,7 @@ UINT8 CalcNewCavePerimeterValue( INT32 iMapIndex );
 void AddCave( INT32 iMapIndex, UINT16 usIndex );
 */
 
-export function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function RemoveCaveSectionFromWorld(pSelectRegion: SGPRect): void {
   let top: UINT32;
   let left: UINT32;
   let right: UINT32;
@@ -934,10 +938,10 @@ export function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): voi
   let iMapIndex: UINT32;
   let usIndex: UINT16;
   let ubPerimeterValue: UINT8;
-  top = pSelectRegion.value.iTop;
-  left = pSelectRegion.value.iLeft;
-  right = pSelectRegion.value.iRight;
-  bottom = pSelectRegion.value.iBottom;
+  top = pSelectRegion.iTop;
+  left = pSelectRegion.iLeft;
+  right = pSelectRegion.iRight;
+  bottom = pSelectRegion.iBottom;
   // Pass 1:  Remove all pieces in area
   for (y = top; y <= bottom; y++)
     for (x = left; x <= right; x++) {
@@ -963,7 +967,7 @@ export function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): voi
     }
 }
 
-export function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function AddCaveSectionToWorld(pSelectRegion: SGPRect): void {
   let top: INT32;
   let left: INT32;
   let right: INT32;
@@ -973,10 +977,10 @@ export function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
   let uiMapIndex: UINT32;
   let usIndex: UINT16;
   let ubPerimeterValue: UINT8;
-  top = pSelectRegion.value.iTop;
-  left = pSelectRegion.value.iLeft;
-  right = pSelectRegion.value.iRight;
-  bottom = pSelectRegion.value.iBottom;
+  top = pSelectRegion.iTop;
+  left = pSelectRegion.iLeft;
+  right = pSelectRegion.iRight;
+  bottom = pSelectRegion.iBottom;
   // Pass 1:  Add bogus piece to each gridno in region
   for (y = top; y <= bottom; y++)
     for (x = left; x <= right; x++) {
@@ -1018,7 +1022,7 @@ export function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
 // When the user removes a section from a building, it will not only erase the
 // entire highlighted area, it'll repair the building itself so there are no
 // outside walls missing from the new building.
-export function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function RemoveBuildingSectionFromWorld(pSelectRegion: SGPRect): void {
   let top: UINT32;
   let left: UINT32;
   let right: UINT32;
@@ -1030,10 +1034,10 @@ export function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>):
   let usFloorType: UINT16;
   let fFloor: boolean;
 
-  top = pSelectRegion.value.iTop;
-  left = pSelectRegion.value.iLeft;
-  right = pSelectRegion.value.iRight;
-  bottom = pSelectRegion.value.iBottom;
+  top = pSelectRegion.iTop;
+  left = pSelectRegion.iLeft;
+  right = pSelectRegion.iRight;
+  bottom = pSelectRegion.iBottom;
 
   // 1ST PASS:  Erase all building owned by the floor tile if there is one.
   for (y = top; y <= bottom; y++)
@@ -1090,7 +1094,7 @@ export function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>):
     }
 }
 
-export function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
+export function AddBuildingSectionToWorld(pSelectRegion: SGPRect): void {
   let top: INT32;
   let left: INT32;
   let right: INT32;
@@ -1100,16 +1104,16 @@ export function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void
   let iMapIndex: UINT32;
   let usFloorType: UINT16;
   let usWallType: UINT16;
-  let usRoofType: UINT16;
+  let usRoofType: UINT16 = <UINT16><unknown>undefined;
   let usTileIndex: UINT16;
   let fNewBuilding: boolean;
   let fSlantRoof: boolean = false;
   let fVertical: boolean;
   let fFloor: boolean;
-  top = pSelectRegion.value.iTop;
-  left = pSelectRegion.value.iLeft;
-  right = pSelectRegion.value.iRight;
-  bottom = pSelectRegion.value.iBottom;
+  top = pSelectRegion.iTop;
+  left = pSelectRegion.iLeft;
+  right = pSelectRegion.iRight;
+  bottom = pSelectRegion.iBottom;
 
   // Special case scenario:
   // If the user selects a floor without walls, then it is implied that the user wishes to
@@ -1138,14 +1142,14 @@ export function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void
     for (x = left; x <= right; x++) {
       iMapIndex = y * WORLD_COLS + x;
       if (FloorAtGridNo(iMapIndex)) {
-        let pFloor: Pointer<LEVELNODE>;
+        let pFloor: LEVELNODE | null;
         let uiTileType: UINT32;
         // If a floor is found, then we are adding to an existing structure.
         fNewBuilding = false;
         // Extract the floor type.  We already checked if there was a floor here, so it is assumed.
         pFloor = gpWorldLevelData[iMapIndex].pLandHead;
         while (pFloor) {
-          uiTileType = GetTileType(pFloor.value.usIndex);
+          uiTileType = GetTileType(pFloor.usIndex);
           if (uiTileType >= Enum313.FIRSTFLOOR && uiTileType <= LASTFLOOR) {
             usFloorType = uiTileType;
             break;
@@ -1268,23 +1272,23 @@ export function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void
 }
 
 export function AnalyseCaveMapForStructureInfo(): void {
-  let pStruct: Pointer<LEVELNODE>;
+  let pStruct: LEVELNODE | null;
   let uiTileType: UINT32;
   let iMapIndex: INT32;
   for (iMapIndex = 0; iMapIndex < WORLD_MAX; iMapIndex++) {
     pStruct = gpWorldLevelData[iMapIndex].pStructHead;
     while (pStruct) {
-      if (pStruct.value.usIndex != NO_TILE) {
-        uiTileType = GetTileType(pStruct.value.usIndex);
+      if (pStruct.usIndex != NO_TILE) {
+        uiTileType = GetTileType(pStruct.usIndex);
         if (uiTileType == Enum313.FIRSTWALL) {
           let usSubIndex: UINT16;
-          usSubIndex = GetSubIndexFromTileIndex(pStruct.value.usIndex);
+          usSubIndex = GetSubIndexFromTileIndex(pStruct.usIndex);
           if (usSubIndex >= 60 && usSubIndex <= 65) {
-            pStruct.value.uiFlags |= LEVELNODE_CAVE;
+            pStruct.uiFlags |= LEVELNODE_CAVE;
           }
         }
       }
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
     }
   }
 }

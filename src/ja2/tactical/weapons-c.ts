@@ -318,16 +318,16 @@ let BodyImpactReduction: UINT8[] /* [4] */ = [
   23,
 ];
 
-export function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
+export function GunRange(pObj: OBJECTTYPE): UINT16 {
   let bAttachPos: INT8;
 
-  if (Item[pObj.value.usItem].usItemClass & IC_WEAPON) {
+  if (Item[pObj.usItem].usItemClass & IC_WEAPON) {
     bAttachPos = FindAttachment(pObj, Enum225.GUN_BARREL_EXTENDER);
 
     if (bAttachPos == ITEM_NOT_FOUND) {
-      return Weapon[pObj.value.usItem].usRange;
+      return Weapon[pObj.usItem].usRange;
     } else {
-      return Weapon[pObj.value.usItem].usRange + (GUN_BARREL_RANGE_BONUS * WEAPON_STATUS_MOD(pObj.value.bAttachStatus[bAttachPos]) / 100);
+      return Weapon[pObj.usItem].usRange + (GUN_BARREL_RANGE_BONUS * WEAPON_STATUS_MOD(pObj.bAttachStatus[bAttachPos]) / 100);
     }
   } else {
     // return a minimal value of 1 tile
@@ -335,51 +335,51 @@ export function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   }
 }
 
-export function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
+export function EffectiveArmour(pObj: OBJECTTYPE): INT8 {
   let iValue: INT32;
   let bPlate: INT8;
 
-  if (pObj == null || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
+  if (pObj == null || Item[pObj.usItem].usItemClass != IC_ARMOUR) {
     return 0;
   }
-  iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
-  iValue = iValue * pObj.value.bStatus[0] / 100;
+  iValue = Armour[Item[pObj.usItem].ubClassIndex].ubProtection;
+  iValue = iValue * pObj.bStatus[0] / 100;
 
   bPlate = FindAttachment(pObj, Enum225.CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
     let iValue2: INT32;
 
     iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
-    iValue2 = iValue2 * pObj.value.bAttachStatus[bPlate] / 100;
+    iValue2 = iValue2 * pObj.bAttachStatus[bPlate] / 100;
 
     iValue += iValue2;
   }
   return iValue;
 }
 
-export function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ArmourPercent(pSoldier: SOLDIERTYPE): INT8 {
   let iVest: INT32;
   let iHelmet: INT32;
   let iLeg: INT32;
 
-  if (pSoldier.value.inv[Enum261.VESTPOS].usItem) {
-    iVest = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.VESTPOS]));
+  if (pSoldier.inv[Enum261.VESTPOS].usItem) {
+    iVest = EffectiveArmour(pSoldier.inv[Enum261.VESTPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iVest = 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection);
   } else {
     iVest = 0;
   }
 
-  if (pSoldier.value.inv[Enum261.HELMETPOS].usItem) {
-    iHelmet = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.HELMETPOS]));
+  if (pSoldier.inv[Enum261.HELMETPOS].usItem) {
+    iHelmet = EffectiveArmour(pSoldier.inv[Enum261.HELMETPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iHelmet = 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection;
   } else {
     iHelmet = 0;
   }
 
-  if (pSoldier.value.inv[Enum261.LEGPOS].usItem) {
-    iLeg = EffectiveArmour(addressof(pSoldier.value.inv[Enum261.LEGPOS]));
+  if (pSoldier.inv[Enum261.LEGPOS].usItem) {
+    iLeg = EffectiveArmour(pSoldier.inv[Enum261.LEGPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iLeg = 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection;
   } else {
@@ -388,16 +388,16 @@ export function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   return (iHelmet + iVest + iLeg);
 }
 
-function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
+function ExplosiveEffectiveArmour(pObj: OBJECTTYPE): INT8 {
   let iValue: INT32;
   let bPlate: INT8;
 
-  if (pObj == null || Item[pObj.value.usItem].usItemClass != IC_ARMOUR) {
+  if (pObj == null || Item[pObj.usItem].usItemClass != IC_ARMOUR) {
     return 0;
   }
-  iValue = Armour[Item[pObj.value.usItem].ubClassIndex].ubProtection;
-  iValue = iValue * pObj.value.bStatus[0] / 100;
-  if (pObj.value.usItem == Enum225.FLAK_JACKET || pObj.value.usItem == Enum225.FLAK_JACKET_18 || pObj.value.usItem == Enum225.FLAK_JACKET_Y) {
+  iValue = Armour[Item[pObj.usItem].ubClassIndex].ubProtection;
+  iValue = iValue * pObj.bStatus[0] / 100;
+  if (pObj.usItem == Enum225.FLAK_JACKET || pObj.usItem == Enum225.FLAK_JACKET_18 || pObj.usItem == Enum225.FLAK_JACKET_Y) {
     // increase value for flak jackets!
     iValue *= 3;
   }
@@ -407,37 +407,37 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
     let iValue2: INT32;
 
     iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
-    iValue2 = iValue2 * pObj.value.bAttachStatus[bPlate] / 100;
+    iValue2 = iValue2 * pObj.bAttachStatus[bPlate] / 100;
 
     iValue += iValue2;
   }
   return iValue;
 }
 
-export function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
+export function ArmourVersusExplosivesPercent(pSoldier: SOLDIERTYPE): INT8 {
   // returns the % damage reduction from grenades
   let iVest: INT32;
   let iHelmet: INT32;
   let iLeg: INT32;
 
-  if (pSoldier.value.inv[Enum261.VESTPOS].usItem) {
-    iVest = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.VESTPOS]));
+  if (pSoldier.inv[Enum261.VESTPOS].usItem) {
+    iVest = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.VESTPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iVest = Math.min(65, 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
     iVest = 0;
   }
 
-  if (pSoldier.value.inv[Enum261.HELMETPOS].usItem) {
-    iHelmet = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.HELMETPOS]));
+  if (pSoldier.inv[Enum261.HELMETPOS].usItem) {
+    iHelmet = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.HELMETPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iHelmet = Math.min(15, 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
     iHelmet = 0;
   }
 
-  if (pSoldier.value.inv[Enum261.LEGPOS].usItem) {
-    iLeg = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[Enum261.LEGPOS]));
+  if (pSoldier.inv[Enum261.LEGPOS].usItem) {
+    iLeg = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.LEGPOS]);
     // convert to % of best; ignoring bug-treated stuff
     iLeg = Math.min(25, 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
@@ -468,18 +468,18 @@ function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewIm
 
 // #define	TESTGUNJAM
 
-export function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
-  let pObj: Pointer<OBJECTTYPE>;
+export function CheckForGunJam(pSoldier: SOLDIERTYPE): UINT8 {
+  let pObj: OBJECTTYPE;
   let iChance: INT32;
   let iResult: INT32;
 
   // should jams apply to enemies?
-  if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
-    if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_GUN && !EXPLOSIVE_GUN(pSoldier.value.usAttackingWeapon)) {
-      pObj = addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
-      if (pObj.value.bGunAmmoStatus > 0) {
+  if (pSoldier.uiStatusFlags & SOLDIER_PC) {
+    if (Item[pSoldier.usAttackingWeapon].usItemClass == IC_GUN && !EXPLOSIVE_GUN(pSoldier.usAttackingWeapon)) {
+      pObj = pSoldier.inv[pSoldier.ubAttackingHand];
+      if (pObj.bGunAmmoStatus > 0) {
         // gun might jam, figure out the chance
-        iChance = (80 - pObj.value.bGunStatus);
+        iChance = (80 - pObj.bGunStatus);
 
         // CJC: removed reliability from formula...
 
@@ -490,7 +490,7 @@ export function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
         // increased by 20% per negative point...
         // iChance = iChance * (10 - Item[pObj->usItem].bReliability * 2) / 10;
 
-        if (pSoldier.value.bDoBurst > 1) {
+        if (pSoldier.bDoBurst > 1) {
           // if at bullet in a burst after the first, higher chance
           iChance -= PreRandom(80);
         } else {
@@ -502,47 +502,47 @@ export function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): boolean {
           gfNextFireJam = false;
 
           // jam! negate the gun ammo status.
-          pObj.value.bGunAmmoStatus *= -1;
+          pObj.bGunAmmoStatus *= -1;
 
           // Deduct AMMO!
-          DeductAmmo(pSoldier, pSoldier.value.ubAttackingHand);
+          DeductAmmo(pSoldier, pSoldier.ubAttackingHand);
 
           TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_JAMMED_GUN);
-          return true;
+          return 1;
         }
-      } else if (pObj.value.bGunAmmoStatus < 0) {
+      } else if (pObj.bGunAmmoStatus < 0) {
         // try to unjam gun
-        iResult = SkillCheck(pSoldier, Enum255.UNJAM_GUN_CHECK, (Item[pObj.value.usItem].bReliability * 4));
+        iResult = SkillCheck(pSoldier, Enum255.UNJAM_GUN_CHECK, (Item[pObj.usItem].bReliability * 4));
         if (iResult > 0) {
           // yay! unjammed the gun
-          pObj.value.bGunAmmoStatus *= -1;
+          pObj.bGunAmmoStatus *= -1;
 
           // MECHANICAL/DEXTERITY GAIN: Unjammed a gun
-          StatChange(pSoldier, MECHANAMT, 5, false);
-          StatChange(pSoldier, DEXTAMT, 5, false);
+          StatChange(pSoldier, MECHANAMT, 5, FROM_SUCCESS);
+          StatChange(pSoldier, DEXTAMT, 5, FROM_SUCCESS);
 
           DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
           // We unjammed gun, return appropriate value!
           return 255;
         } else {
-          return true;
+          return 1;
         }
       }
     }
   }
-  return false;
+  return 0;
 }
 
-export function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
-  let bGunJamVal: boolean;
+export function OKFireWeapon(pSoldier: SOLDIERTYPE): UINT8 {
+  let bGunJamVal: UINT8 /* boolean */;
 
   // 1) Are we attacking with our second hand?
-  if (pSoldier.value.ubAttackingHand == Enum261.SECONDHANDPOS) {
-    if (!EnoughAmmo(pSoldier, false, pSoldier.value.ubAttackingHand)) {
-      if (pSoldier.value.bTeam == gbPlayerNum) {
+  if (pSoldier.ubAttackingHand == Enum261.SECONDHANDPOS) {
+    if (!EnoughAmmo(pSoldier, false, pSoldier.ubAttackingHand)) {
+      if (pSoldier.bTeam == gbPlayerNum) {
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_2ND_CLIP_DEPLETED]);
-        return false;
+        return 0;
       }
     }
   }
@@ -554,53 +554,53 @@ export function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): boolean {
   }
 
   if (bGunJamVal) {
-    return false;
+    return 0;
   }
 
-  return true;
+  return 1;
 }
 
-export function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
+export function FireWeapon(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
   // ignore passed in target gridno for now
 
   // If realtime and we are reloading - do not fire until counter is done!
-  if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) && !pSoldier.value.bDoBurst) {
-    if (pSoldier.value.fReloading) {
+  if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) && !pSoldier.bDoBurst) {
+    if (pSoldier.fReloading) {
       return false;
     }
   }
 
   // if target gridno is the same as ours, do not fire!
-  if (sTargetGridNo == pSoldier.value.sGridNo) {
+  if (sTargetGridNo == pSoldier.sGridNo) {
     // FREE UP NPC!
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - attack on own gridno!"));
-    FreeUpAttacker(pSoldier.value.ubID);
+    FreeUpAttacker(pSoldier.ubID);
     return false;
   }
 
   // SET ATTACKER TO NOBODY, WILL GET SET EVENTUALLY
-  pSoldier.value.ubOppNum = NOBODY;
+  pSoldier.ubOppNum = NOBODY;
 
-  switch (Item[pSoldier.value.usAttackingWeapon].usItemClass) {
+  switch (Item[pSoldier.usAttackingWeapon].usItemClass) {
     case IC_THROWING_KNIFE:
     case IC_GUN:
 
       // ATE: PAtch up - bookkeeping for spreading done out of whak
-      if (pSoldier.value.fDoSpread && !pSoldier.value.bDoBurst) {
-        pSoldier.value.fDoSpread = false;
+      if (pSoldier.fDoSpread && !pSoldier.bDoBurst) {
+        pSoldier.fDoSpread = 0;
       }
 
-      if (pSoldier.value.fDoSpread >= 6) {
-        pSoldier.value.fDoSpread = false;
+      if (pSoldier.fDoSpread >= 6) {
+        pSoldier.fDoSpread = 0;
       }
 
-      if (pSoldier.value.fDoSpread) {
-        if (pSoldier.value.sSpreadLocations[pSoldier.value.fDoSpread - 1] != 0) {
-          UseGun(pSoldier, pSoldier.value.sSpreadLocations[pSoldier.value.fDoSpread - 1]);
+      if (pSoldier.fDoSpread) {
+        if (pSoldier.sSpreadLocations[pSoldier.fDoSpread - 1] != 0) {
+          UseGun(pSoldier, pSoldier.sSpreadLocations[pSoldier.fDoSpread - 1]);
         } else {
           UseGun(pSoldier, sTargetGridNo);
         }
-        pSoldier.value.fDoSpread++;
+        pSoldier.fDoSpread++;
       } else {
         UseGun(pSoldier, sTargetGridNo);
       }
@@ -625,44 +625,44 @@ export function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16)
   return true;
 }
 
-export function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
+export function GetTargetWorldPositions(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
   let dTargetX: FLOAT;
   let dTargetY: FLOAT;
   let dTargetZ: FLOAT;
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let pTargetSoldier: SOLDIERTYPE | null;
   let bStructHeight: INT8;
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let uiRoll: UINT32;
 
-  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.value.bTargetLevel);
+  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.bTargetLevel);
   if (pTargetSoldier) {
     // SAVE OPP ID
-    pSoldier.value.ubOppNum = pTargetSoldier.value.ubID;
-    dTargetX = CenterX(pTargetSoldier.value.sGridNo);
-    dTargetY = CenterY(pTargetSoldier.value.sGridNo);
-    if (pSoldier.value.bAimShotLocation == AIM_SHOT_RANDOM) {
+    pSoldier.ubOppNum = pTargetSoldier.ubID;
+    dTargetX = CenterX(pTargetSoldier.sGridNo);
+    dTargetY = CenterY(pTargetSoldier.sGridNo);
+    if (pSoldier.bAimShotLocation == AIM_SHOT_RANDOM) {
       uiRoll = PreRandom(100);
       if (uiRoll < 15) {
-        pSoldier.value.bAimShotLocation = AIM_SHOT_LEGS;
+        pSoldier.bAimShotLocation = AIM_SHOT_LEGS;
       } else if (uiRoll > 94) {
-        pSoldier.value.bAimShotLocation = AIM_SHOT_HEAD;
+        pSoldier.bAimShotLocation = AIM_SHOT_HEAD;
       } else {
-        pSoldier.value.bAimShotLocation = AIM_SHOT_TORSO;
+        pSoldier.bAimShotLocation = AIM_SHOT_TORSO;
       }
-      if (pSoldier.value.bAimShotLocation != AIM_SHOT_HEAD) {
-        let uiChanceToGetThrough: UINT32 = SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier.value.bAimShotLocation);
+      if (pSoldier.bAimShotLocation != AIM_SHOT_HEAD) {
+        let uiChanceToGetThrough: UINT32 = SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier.bAimShotLocation);
 
         if (uiChanceToGetThrough < 25) {
           if (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, AIM_SHOT_HEAD) > uiChanceToGetThrough * 2) {
             // try for a head shot then
-            pSoldier.value.bAimShotLocation = AIM_SHOT_HEAD;
+            pSoldier.bAimShotLocation = AIM_SHOT_HEAD;
           }
         }
       }
     }
 
-    switch (pSoldier.value.bAimShotLocation) {
+    switch (pSoldier.bAimShotLocation) {
       case AIM_SHOT_HEAD:
         CalculateSoldierZPos(pTargetSoldier, Enum230.HEAD_TARGET_POS, addressof(dTargetZ));
         break;
@@ -684,21 +684,21 @@ export function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetG
     // fire at centre of tile
     dTargetX = sXMapPos;
     dTargetY = sYMapPos;
-    if (pSoldier.value.bTargetCubeLevel) {
+    if (pSoldier.bTargetCubeLevel) {
       // fire at the centre of the cube specified
-      dTargetZ = ((pSoldier.value.bTargetCubeLevel + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
+      dTargetZ = ((pSoldier.bTargetCubeLevel + pSoldier.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
     } else {
-      bStructHeight = GetStructureTargetHeight(sTargetGridNo, (pSoldier.value.bTargetLevel == 1));
+      bStructHeight = GetStructureTargetHeight(sTargetGridNo, (pSoldier.bTargetLevel == 1));
       if (bStructHeight > 0) {
         // fire at the centre of the cube *one below* the tallest of the tallest structure
         if (bStructHeight > 1) {
           // reduce target level by 1
           bStructHeight--;
         }
-        dTargetZ = ((bStructHeight + pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
+        dTargetZ = ((bStructHeight + pSoldier.bTargetLevel * PROFILE_Z_SIZE) - 0.5) * HEIGHT_UNITS_PER_INDEX;
       } else {
         // fire at 1 unit above the level of the ground
-        dTargetZ = (pSoldier.value.bTargetLevel * PROFILE_Z_SIZE) * HEIGHT_UNITS_PER_INDEX + 1;
+        dTargetZ = (pSoldier.bTargetLevel * PROFILE_Z_SIZE) * HEIGHT_UNITS_PER_INDEX + 1;
       }
     }
     // adjust for terrain height
@@ -710,7 +710,7 @@ export function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetG
   pdZPos.value = dTargetZ;
 }
 
-function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
+function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
   let uiHitChance: UINT32;
   let uiDiceRoll: UINT32;
   let sXMapPos: INT16;
@@ -732,32 +732,32 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
   let uiDepreciateTest: UINT32;
 
   // Deduct points!
-  sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, false, pSoldier.value.bAimTime);
+  sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 0, pSoldier.bAimTime);
 
-  usItemNum = pSoldier.value.usAttackingWeapon;
+  usItemNum = pSoldier.usAttackingWeapon;
 
-  if (pSoldier.value.bDoBurst) {
+  if (pSoldier.bDoBurst) {
     // ONly deduct points once
-    if (pSoldier.value.bDoBurst == 1) {
+    if (pSoldier.bDoBurst == 1) {
       if (Weapon[usItemNum].sBurstSound != NO_WEAPON_SOUND) {
         // IF we are silenced?
-        if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.SILENCER) != NO_SLOT) {
+        if (FindAttachment(pSoldier.inv[pSoldier.ubAttackingHand], Enum225.SILENCER) != NO_SLOT) {
           // Pick sound file baed on how many bullets we are going to fire...
-          zBurstString = sprintf("SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.value.bBulletsLeft);
+          zBurstString = sprintf("SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.bBulletsLeft);
 
           // Try playing sound...
-          pSoldier.value.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          pSoldier.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
         } else {
           // Pick sound file baed on how many bullets we are going to fire...
-          zBurstString = sprintf("SOUNDS\\WEAPONS\\%s%d.wav", gzBurstSndStrings[Weapon[usItemNum].ubCalibre], pSoldier.value.bBulletsLeft);
+          zBurstString = sprintf("SOUNDS\\WEAPONS\\%s%d.wav", gzBurstSndStrings[Weapon[usItemNum].ubCalibre], pSoldier.bBulletsLeft);
 
           // Try playing sound...
-          pSoldier.value.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          pSoldier.iBurstSoundID = PlayJA2SampleFromFile(zBurstString, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
         }
 
-        if (pSoldier.value.iBurstSoundID == NO_SAMPLE) {
+        if (pSoldier.iBurstSoundID == NO_SAMPLE) {
           // If failed, play normal default....
-          pSoldier.value.iBurstSoundID = PlayJA2Sample(Weapon[usItemNum].sBurstSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+          pSoldier.iBurstSoundID = PlayJA2Sample(Weapon[usItemNum].sBurstSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
         }
       }
 
@@ -765,9 +765,9 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
     }
   } else {
     // ONLY DEDUCT FOR THE FIRST HAND when doing two-pistol attacks
-    if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
+    if (IsValidSecondHandShot(pSoldier) && pSoldier.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
       // only deduct APs when the main gun fires
-      if (pSoldier.value.ubAttackingHand == Enum261.HANDPOS) {
+      if (pSoldier.ubAttackingHand == Enum261.HANDPOS) {
         DeductPoints(pSoldier, sAPCost, 0);
       }
     } else {
@@ -778,7 +778,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
     // ( For throwing knife.. it's earlier in the animation
     if (Weapon[usItemNum].sSound != NO_WEAPON_SOUND && Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
       // Switch on silencer...
-      if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), Enum225.SILENCER) != NO_SLOT) {
+      if (FindAttachment(pSoldier.inv[pSoldier.ubAttackingHand], Enum225.SILENCER) != NO_SLOT) {
         let uiSound: INT32;
 
         if (Weapon[usItemNum].ubCalibre == Enum285.AMMO9 || Weapon[usItemNum].ubCalibre == Enum285.AMMO38 || Weapon[usItemNum].ubCalibre == Enum285.AMMO57) {
@@ -787,18 +787,18 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
           uiSound = Enum330.S_SILENCER_2;
         }
 
-        PlayJA2Sample(uiSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+        PlayJA2Sample(uiSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
       } else {
-        PlayJA2Sample(Weapon[usItemNum].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+        PlayJA2Sample(Weapon[usItemNum].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
       }
     }
   }
 
   // CALC CHANCE TO HIT
   if (Item[usItemNum].usItemClass == IC_THROWING_KNIFE) {
-    uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.value.bAimTime, pSoldier.value.bAimShotLocation);
+    uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.bAimTime, pSoldier.bAimShotLocation);
   } else {
-    uiHitChance = CalcChanceToHitGun(pSoldier, sTargetGridNo, pSoldier.value.bAimTime, pSoldier.value.bAimShotLocation);
+    uiHitChance = CalcChanceToHitGun(pSoldier, sTargetGridNo, pSoldier.bAimTime, pSoldier.bAimShotLocation);
   }
 
   // ATE: Added if we are in meanwhile, we always hit...
@@ -823,16 +823,16 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
     // If realtime - set counter to freeup from attacking once done
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
       // Set delay based on stats, weapon type, etc
-      pSoldier.value.sReloadDelay = (Weapon[usItemNum].usReloadDelay + MANDATORY_WEAPON_DELAY);
+      pSoldier.sReloadDelay = (Weapon[usItemNum].usReloadDelay + MANDATORY_WEAPON_DELAY);
 
       // If a bad guy, double the delay!
-      if ((pSoldier.value.uiStatusFlags & SOLDIER_ENEMY)) {
-        pSoldier.value.sReloadDelay = (pSoldier.value.sReloadDelay * 2);
+      if ((pSoldier.uiStatusFlags & SOLDIER_ENEMY)) {
+        pSoldier.sReloadDelay = (pSoldier.sReloadDelay * 2);
       }
 
       // slow down demo mode!
       if (gTacticalStatus.uiFlags & DEMOMODE) {
-        pSoldier.value.sReloadDelay *= 2;
+        pSoldier.sReloadDelay *= 2;
       }
 
       // pSoldier->fReloading		= TRUE;
@@ -840,26 +840,26 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
     }
 
     // Deduct AMMO!
-    DeductAmmo(pSoldier, pSoldier.value.ubAttackingHand);
+    DeductAmmo(pSoldier, pSoldier.ubAttackingHand);
 
     // ATE: Check if we should say quote...
-    if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunShotsLeft == 0 && pSoldier.value.usAttackingWeapon != Enum225.ROCKET_LAUNCHER) {
-      if (pSoldier.value.bTeam == gbPlayerNum) {
-        pSoldier.value.fSayAmmoQuotePending = true;
+    if (pSoldier.inv[pSoldier.ubAttackingHand].ubGunShotsLeft == 0 && pSoldier.usAttackingWeapon != Enum225.ROCKET_LAUNCHER) {
+      if (pSoldier.bTeam == gbPlayerNum) {
+        pSoldier.fSayAmmoQuotePending = true;
       }
     }
 
     // NB bDoBurst will be 2 at this point for the first shot since it was incremented
     // above
-    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY && (!pSoldier.value.bDoBurst || pSoldier.value.bDoBurst == 2) && (gTacticalStatus.uiFlags & INCOMBAT) && (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, MercPtrs[pSoldier.value.ubTargetID], pSoldier.value.bAimShotLocation) > 0)) {
+    if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY && (!pSoldier.bDoBurst || pSoldier.bDoBurst == 2) && (gTacticalStatus.uiFlags & INCOMBAT) && (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, MercPtrs[pSoldier.ubTargetID], pSoldier.bAimShotLocation) > 0)) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - uiHitChance) / 25;
 
-        if (pSoldier.value.bAimTime && !pSoldier.value.bDoBurst) {
+        if (pSoldier.bAimTime && !pSoldier.bDoBurst) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the shot
-          usExpGain += Math.min(pSoldier.value.bAimTime, usExpGain);
+          usExpGain += Math.min(pSoldier.bAimTime, usExpGain);
         }
 
         // base pts extra for hitting
@@ -869,32 +869,32 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 3;
 
-      if (IsValidSecondHandShot(pSoldier) && pSoldier.value.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.value.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
+      if (IsValidSecondHandShot(pSoldier) && pSoldier.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
         // reduce exp gain for two pistol shooting since both shots give xp
         usExpGain = (usExpGain * 2) / 3;
       }
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
+      if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
-      } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
+      } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
       }
 
       // MARKSMANSHIP GAIN: gun attack
-      StatChange(pSoldier, MARKAMT, usExpGain, (fGonnaHit ? false : FROM_FAILURE));
+      StatChange(pSoldier, MARKAMT, usExpGain, (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
     }
 
     // set buckshot and muzzle flash
     fBuckshot = false;
     if (!CREATURE_OR_BLOODCAT(pSoldier)) {
-      pSoldier.value.fMuzzleFlash = true;
-      switch (pSoldier.value.inv[pSoldier.value.ubAttackingHand].ubGunAmmoType) {
+      pSoldier.fMuzzleFlash = true;
+      switch (pSoldier.inv[pSoldier.ubAttackingHand].ubGunAmmoType) {
         case Enum286.AMMO_BUCKSHOT:
           fBuckshot = true;
           break;
         case Enum286.AMMO_SLEEP_DART:
-          pSoldier.value.fMuzzleFlash = false;
+          pSoldier.fMuzzleFlash = false;
           break;
         default:
           break;
@@ -903,20 +903,20 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
   } else //  throwing knife
   {
     fBuckshot = false;
-    pSoldier.value.fMuzzleFlash = false;
+    pSoldier.fMuzzleFlash = false;
 
     // Deduct knife from inv! (not here, later?)
 
     // Improve for using a throwing knife....
-    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY) {
+    if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - uiHitChance) / 10;
 
-        if (pSoldier.value.bAimTime) {
+        if (pSoldier.bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the throw
-          usExpGain += (2 * Math.min(pSoldier.value.bAimTime, usExpGain));
+          usExpGain += (2 * Math.min(pSoldier.bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -926,96 +926,96 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 10;
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
+      if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
-      } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
+      } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
       }
 
       // MARKSMANSHIP/DEXTERITY GAIN: throwing knife attack
-      StatChange(pSoldier, MARKAMT, (usExpGain / 2), (fGonnaHit ? false : FROM_FAILURE));
-      StatChange(pSoldier, DEXTAMT, (usExpGain / 2), (fGonnaHit ? false : FROM_FAILURE));
+      StatChange(pSoldier, MARKAMT, (usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
+      StatChange(pSoldier, DEXTAMT, (usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
     }
   }
 
   if (usItemNum == Enum225.ROCKET_LAUNCHER) {
-    if (WillExplosiveWeaponFail(pSoldier, addressof(pSoldier.value.inv[Enum261.HANDPOS]))) {
-      CreateItem(Enum225.DISCARDED_LAW, pSoldier.value.inv[Enum261.HANDPOS].bStatus[0], addressof(pSoldier.value.inv[Enum261.HANDPOS]));
+    if (WillExplosiveWeaponFail(pSoldier, pSoldier.inv[Enum261.HANDPOS])) {
+      CreateItem(Enum225.DISCARDED_LAW, pSoldier.inv[Enum261.HANDPOS].bStatus[0], pSoldier.inv[Enum261.HANDPOS]);
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
-      IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, Enum225.C1, pSoldier.value.bLevel);
+      IgniteExplosion(pSoldier.ubID, CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), 0, pSoldier.sGridNo, Enum225.C1, pSoldier.bLevel);
 
       // Reduce again for attack end 'cause it has been incremented for a normal attack
       //
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - ATTACK ANIMATION %s ENDED BY BAD EXPLOSIVE CHECK, Now %d", gAnimControl[pSoldier.value.usAnimState].zAnimStr, gTacticalStatus.ubAttackBusyCount));
-      ReduceAttackBusyCount(pSoldier.value.ubID, false);
+      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - ATTACK ANIMATION %s ENDED BY BAD EXPLOSIVE CHECK, Now %d", gAnimControl[pSoldier.usAnimState].zAnimStr, gTacticalStatus.ubAttackBusyCount));
+      ReduceAttackBusyCount(pSoldier.ubID, false);
 
       return false;
     }
   }
 
-  FireBulletGivenTarget(pSoldier, dTargetX, dTargetY, dTargetZ, pSoldier.value.usAttackingWeapon, (uiHitChance - uiDiceRoll), fBuckshot, false);
+  FireBulletGivenTarget(pSoldier, dTargetX, dTargetY, dTargetZ, pSoldier.usAttackingWeapon, (uiHitChance - uiDiceRoll), fBuckshot, false);
 
-  ubVolume = Weapon[pSoldier.value.usAttackingWeapon].ubAttackVolume;
+  ubVolume = Weapon[pSoldier.usAttackingWeapon].ubAttackVolume;
 
   if (Item[usItemNum].usItemClass == IC_THROWING_KNIFE) {
     // Here, remove the knife...	or (for now) rocket launcher
-    RemoveObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 1);
+    RemoveObjs(pSoldier.inv[Enum261.HANDPOS], 1);
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   } else if (usItemNum == Enum225.ROCKET_LAUNCHER) {
-    CreateItem(Enum225.DISCARDED_LAW, pSoldier.value.inv[Enum261.HANDPOS].bStatus[0], addressof(pSoldier.value.inv[Enum261.HANDPOS]));
+    CreateItem(Enum225.DISCARDED_LAW, pSoldier.inv[Enum261.HANDPOS].bStatus[0], pSoldier.inv[Enum261.HANDPOS]);
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
     // Direction to center of explosion
-    ubDirection = gOppositeDirection[pSoldier.value.bDirection];
-    sNewGridNo = NewGridNo(pSoldier.value.sGridNo, (1 * DirectionInc(ubDirection)));
+    ubDirection = gOppositeDirection[pSoldier.bDirection];
+    sNewGridNo = NewGridNo(pSoldier.sGridNo, (1 * DirectionInc(ubDirection)));
 
     // Check if a person exists here and is not prone....
-    ubMerc = WhoIsThere2(sNewGridNo, pSoldier.value.bLevel);
+    ubMerc = WhoIsThere2(sNewGridNo, pSoldier.bLevel);
 
     if (ubMerc != NOBODY) {
-      if (gAnimControl[MercPtrs[ubMerc].value.usAnimState].ubHeight != ANIM_PRONE) {
+      if (gAnimControl[MercPtrs[ubMerc].usAnimState].ubHeight != ANIM_PRONE) {
         // Increment attack counter...
         gTacticalStatus.ubAttackBusyCount++;
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Incrementing Attack: Exaust from LAW", gTacticalStatus.ubAttackBusyCount));
 
-        EVENT_SoldierGotHit(MercPtrs[ubMerc], Enum225.MINI_GRENADE, 10, 200, pSoldier.value.bDirection, 0, pSoldier.value.ubID, 0, ANIM_CROUCH, 0, sNewGridNo);
+        EVENT_SoldierGotHit(MercPtrs[ubMerc], Enum225.MINI_GRENADE, 10, 200, pSoldier.bDirection, 0, pSoldier.ubID, 0, ANIM_CROUCH, 0, sNewGridNo);
       }
     }
   } else {
     // if the weapon has a silencer attached
-    bSilencerPos = FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.SILENCER);
+    bSilencerPos = FindAttachment(pSoldier.inv[Enum261.HANDPOS], Enum225.SILENCER);
     if (bSilencerPos != -1) {
       // reduce volume by a percentage equal to silencer's work %age (min 1)
-      ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.value.inv[Enum261.HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
+      ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
     }
   }
 
-  MakeNoise(pSoldier.value.ubID, pSoldier.value.sGridNo, pSoldier.value.bLevel, pSoldier.value.bOverTerrainType, ubVolume, Enum236.NOISE_GUNFIRE);
+  MakeNoise(pSoldier.ubID, pSoldier.sGridNo, pSoldier.bLevel, pSoldier.bOverTerrainType, ubVolume, Enum236.NOISE_GUNFIRE);
 
-  if (pSoldier.value.bDoBurst) {
+  if (pSoldier.bDoBurst) {
     // done, if bursting, increment
-    pSoldier.value.bDoBurst++;
+    pSoldier.bDoBurst++;
   }
 
   // CJC: since jamming is no longer affected by reliability, increase chance of status going down for really unreliabile guns
   uiDepreciateTest = BASIC_DEPRECIATE_CHANCE + 3 * Item[usItemNum].bReliability;
 
-  if (!PreRandom(uiDepreciateTest) && (pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] > 1)) {
-    pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0]--;
+  if (!PreRandom(uiDepreciateTest) && (pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] > 1)) {
+    pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0]--;
   }
 
   // reduce monster smell (gunpowder smell)
-  if (pSoldier.value.bMonsterSmell > 0 && Random(2) == 0) {
-    pSoldier.value.bMonsterSmell--;
+  if (pSoldier.bMonsterSmell > 0 && Random(2) == 0) {
+    pSoldier.bMonsterSmell--;
   }
 
   return true;
 }
 
-function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
+  let pTargetSoldier: SOLDIERTYPE | null;
   let iHitChance: INT32;
   let iDiceRoll: INT32;
   let sXMapPos: INT16;
@@ -1030,7 +1030,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
   let fSurpriseAttack: boolean;
 
   // Deduct points!
-  sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, false, pSoldier.value.bAimTime);
+  sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 0, pSoldier.bAimTime);
 
   DeductPoints(pSoldier, sAPCost, 0);
 
@@ -1038,21 +1038,21 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
   ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
   // See if a guy is here!
-  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.value.bTargetLevel);
+  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.bTargetLevel);
   if (pTargetSoldier) {
     // set target as noticed attack
-    pSoldier.value.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
-    pTargetSoldier.value.fIntendedTarget = true;
+    pSoldier.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
+    pTargetSoldier.fIntendedTarget = true;
 
     // SAVE OPP ID
-    pSoldier.value.ubOppNum = pTargetSoldier.value.ubID;
+    pSoldier.ubOppNum = pTargetSoldier.ubID;
 
     // CHECK IF BUDDY KNOWS ABOUT US
-    if (pTargetSoldier.value.bOppList[pSoldier.value.ubID] == NOT_HEARD_OR_SEEN || pTargetSoldier.value.bLife < OKLIFE || pTargetSoldier.value.bCollapsed) {
+    if (pTargetSoldier.bOppList[pSoldier.ubID] == NOT_HEARD_OR_SEEN || pTargetSoldier.bLife < OKLIFE || pTargetSoldier.bCollapsed) {
       iHitChance = 100;
       fSurpriseAttack = true;
     } else {
-      iHitChance = CalcChanceToStab(pSoldier, pTargetSoldier, pSoldier.value.bAimTime);
+      iHitChance = CalcChanceToStab(pSoldier, pTargetSoldier, pSoldier.bAimTime);
       fSurpriseAttack = false;
     }
 
@@ -1068,10 +1068,10 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
       iImpact = HTHImpact(pSoldier, pTargetSoldier, (iHitChance - iDiceRoll), true);
 
       // modify this by the knife's condition (if it's dull, not much good)
-      iImpact = (iImpact * WEAPON_STATUS_MOD(pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0])) / 100;
+      iImpact = (iImpact * WEAPON_STATUS_MOD(pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0])) / 100;
 
       // modify by hit location
-      AdjustImpactByHitLocation(iImpact, pSoldier.value.bAimShotLocation, addressof(iImpact), addressof(iImpactForCrits));
+      AdjustImpactByHitLocation(iImpact, pSoldier.bAimShotLocation, addressof(iImpact), addressof(iImpactForCrits));
 
       // bonus for surprise
       if (fSurpriseAttack) {
@@ -1083,53 +1083,53 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
         iImpact = 1;
       }
 
-      if (pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] > USABLE) {
+      if (pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] > USABLE) {
         bMaxDrop = (iImpact / 20);
 
         // the duller they get, the slower they get any worse...
-        bMaxDrop = Math.min(bMaxDrop, pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] / 10);
+        bMaxDrop = Math.min(bMaxDrop, pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] / 10);
 
         // as long as its still > USABLE, it drops another point 1/2 the time
         bMaxDrop = Math.max(bMaxDrop, 2);
 
-        pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0] -= Random(bMaxDrop); // 0 to (maxDrop - 1)
+        pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] -= Random(bMaxDrop); // 0 to (maxDrop - 1)
       }
 
       // Send event for getting hit
-      SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
-      SWeaponHit.uiUniqueId = pTargetSoldier.value.uiUniqueSoldierIdValue;
-      SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
+      SWeaponHit.usSoldierID = pTargetSoldier.ubID;
+      SWeaponHit.uiUniqueId = pTargetSoldier.uiUniqueSoldierIdValue;
+      SWeaponHit.usWeaponIndex = pSoldier.usAttackingWeapon;
       SWeaponHit.sDamage = iImpact;
-      SWeaponHit.usDirection = GetDirectionFromGridNo(pSoldier.value.sGridNo, pTargetSoldier);
-      SWeaponHit.sXPos = pTargetSoldier.value.dXPos;
-      SWeaponHit.sYPos = pTargetSoldier.value.dYPos;
+      SWeaponHit.usDirection = GetDirectionFromGridNo(pSoldier.sGridNo, pTargetSoldier);
+      SWeaponHit.sXPos = pTargetSoldier.dXPos;
+      SWeaponHit.sYPos = pTargetSoldier.dYPos;
       SWeaponHit.sZPos = 20;
       SWeaponHit.sRange = 1;
-      SWeaponHit.ubAttackerID = pSoldier.value.ubID;
+      SWeaponHit.ubAttackerID = pSoldier.ubID;
       SWeaponHit.fHit = true;
       SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
       AddGameEvent(Enum319.S_WEAPONHIT, 20, SWeaponHit);
     } else {
       // if it was another team shooting at someone under our control
-      if ((pSoldier.value.bTeam != Menptr[pTargetSoldier.value.ubID].bTeam)) {
-        if (pTargetSoldier.value.bTeam == gbPlayerNum) {
+      if ((pSoldier.bTeam != Menptr[pTargetSoldier.ubID].bTeam)) {
+        if (pTargetSoldier.bTeam == gbPlayerNum) {
           // AGILITY GAIN (10):  Target avoids a knife attack
-          StatChange(MercPtrs[pTargetSoldier.value.ubID], AGILAMT, 10, false);
+          StatChange(MercPtrs[pTargetSoldier.ubID], AGILAMT, 10, FROM_SUCCESS);
         }
       }
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - missed in knife attack"));
-      FreeUpAttacker(pSoldier.value.ubID);
+      FreeUpAttacker(pSoldier.ubID);
     }
 
-    if (PTR_OURTEAM() && pSoldier.value.ubTargetID != NOBODY) {
+    if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
         usExpGain += (100 - iHitChance) / 10;
 
-        if (pSoldier.value.bAimTime) {
+        if (pSoldier.bAimTime) {
           // gain extra exp for aiming, up to the amount from
           // the difficulty of the attack
-          usExpGain += (2 * Math.min(pSoldier.value.bAimTime, usExpGain));
+          usExpGain += (2 * Math.min(pSoldier.bAimTime, usExpGain));
         }
 
         // base pts extra for hitting
@@ -1139,31 +1139,31 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean
       // add base pts for taking a shot, whether it hits or misses
       usExpGain += 10;
 
-      if (MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.COW || MercPtrs[pSoldier.value.ubTargetID].value.ubBodyType == Enum194.CROW) {
+      if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
         usExpGain /= 2;
-      } else if (MercPtrs[pSoldier.value.ubTargetID].value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.value.ubTargetID]) || TANK(MercPtrs[pSoldier.value.ubTargetID])) {
+      } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
       }
 
       // DEXTERITY GAIN:  Made a knife attack, successful or not
-      StatChange(pSoldier, DEXTAMT, usExpGain, (fGonnaHit ? false : FROM_FAILURE));
+      StatChange(pSoldier, DEXTAMT, usExpGain, (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
     }
   } else {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - missed in knife attack"));
-    FreeUpAttacker(pSoldier.value.ubID);
+    FreeUpAttacker(pSoldier.ubID);
   }
 
   // possibly reduce monster smell
-  if (pSoldier.value.bMonsterSmell > 0 && Random(5) == 0) {
-    pSoldier.value.bMonsterSmell--;
+  if (pSoldier.bMonsterSmell > 0 && Random(5) == 0) {
+    pSoldier.bMonsterSmell--;
   }
 
   return true;
 }
 
-export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fStealing: boolean): boolean {
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+export function UseHandToHand(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, fStealing: boolean): boolean {
+  let pTargetSoldier: SOLDIERTYPE | null;
   let iHitChance: INT32;
   let iDiceRoll: INT32;
   let sXMapPos: INT16;
@@ -1179,37 +1179,37 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
 
   //	if (!fStealing)
   {
-    sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, false, pSoldier.value.bAimTime);
+    sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 0, pSoldier.bAimTime);
 
     DeductPoints(pSoldier, sAPCost, 0);
   }
 
   // See if a guy is here!
-  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.value.bTargetLevel);
+  pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.bTargetLevel);
   if (pTargetSoldier) {
     // set target as noticed attack
-    pSoldier.value.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
-    pTargetSoldier.value.fIntendedTarget = true;
+    pSoldier.uiStatusFlags |= SOLDIER_ATTACK_NOTICED;
+    pTargetSoldier.fIntendedTarget = true;
 
     // SAVE OPP ID
-    pSoldier.value.ubOppNum = pTargetSoldier.value.ubID;
+    pSoldier.ubOppNum = pTargetSoldier.ubID;
 
     if (fStealing) {
       if (AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier) || CREATURE_OR_BLOODCAT(pTargetSoldier) || TANK(pTargetSoldier)) {
         iHitChance = 0;
-      } else if (pTargetSoldier.value.bOppList[pSoldier.value.ubID] == NOT_HEARD_OR_SEEN) {
+      } else if (pTargetSoldier.bOppList[pSoldier.ubID] == NOT_HEARD_OR_SEEN) {
         // give bonus for surprise, but not so much as struggle would still occur
-        iHitChance = CalcChanceToSteal(pSoldier, pTargetSoldier, pSoldier.value.bAimTime) + 20;
-      } else if (pTargetSoldier.value.bLife < OKLIFE || pTargetSoldier.value.bCollapsed) {
+        iHitChance = CalcChanceToSteal(pSoldier, pTargetSoldier, pSoldier.bAimTime) + 20;
+      } else if (pTargetSoldier.bLife < OKLIFE || pTargetSoldier.bCollapsed) {
         iHitChance = 100;
       } else {
-        iHitChance = CalcChanceToSteal(pSoldier, pTargetSoldier, pSoldier.value.bAimTime);
+        iHitChance = CalcChanceToSteal(pSoldier, pTargetSoldier, pSoldier.bAimTime);
       }
     } else {
-      if (pTargetSoldier.value.bOppList[pSoldier.value.ubID] == NOT_HEARD_OR_SEEN || pTargetSoldier.value.bLife < OKLIFE || pTargetSoldier.value.bCollapsed) {
+      if (pTargetSoldier.bOppList[pSoldier.ubID] == NOT_HEARD_OR_SEEN || pTargetSoldier.bLife < OKLIFE || pTargetSoldier.bCollapsed) {
         iHitChance = 100;
       } else {
-        iHitChance = CalcChanceToPunch(pSoldier, pTargetSoldier, pSoldier.value.bAimTime);
+        iHitChance = CalcChanceToPunch(pSoldier, pTargetSoldier, pSoldier.bAimTime);
       }
     }
 
@@ -1221,30 +1221,30 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
     ({ sX: sXMapPos, sY: sYMapPos } = ConvertGridNoToCenterCellXY(sTargetGridNo));
 
     if (fStealing) {
-      if (pTargetSoldier.value.inv[Enum261.HANDPOS].usItem != NOTHING) {
+      if (pTargetSoldier.inv[Enum261.HANDPOS].usItem != NOTHING) {
         if (iDiceRoll <= iHitChance) {
           // Was a good steal!
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_STOLE_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[Enum261.HANDPOS].usItem]);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_STOLE_SOMETHING], pSoldier.name, ShortItemNames[pTargetSoldier.inv[Enum261.HANDPOS].usItem]);
 
-          usOldItem = pTargetSoldier.value.inv[Enum261.HANDPOS].usItem;
+          usOldItem = pTargetSoldier.inv[Enum261.HANDPOS].usItem;
 
-          if (pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier.value.bTeam != gbPlayerNum && !(pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
+          if (pSoldier.bTeam == gbPlayerNum && pTargetSoldier.bTeam != gbPlayerNum && !(pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
             // made a steal; give experience
-            StatChange(pSoldier, STRAMT, 8, false);
+            StatChange(pSoldier, STRAMT, 8, FROM_SUCCESS);
           }
 
           if (iDiceRoll <= iHitChance * 2 / 3) {
             // Grabbed item
-            if (AutoPlaceObject(pSoldier, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), true)) {
+            if (AutoPlaceObject(pSoldier, pTargetSoldier.inv[Enum261.HANDPOS], true)) {
               // Item transferred; remove it from the target's inventory
-              DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
+              DeleteObj(pTargetSoldier.inv[Enum261.HANDPOS]);
             } else {
               // No room to hold it so the item should drop in our tile again
-              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
-              DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
+              AddItemToPool(pSoldier.sGridNo, pTargetSoldier.inv[Enum261.HANDPOS], 1, pSoldier.bLevel, 0, -1);
+              DeleteObj(pTargetSoldier.inv[Enum261.HANDPOS]);
             }
           } else {
-            if (pSoldier.value.bTeam == gbPlayerNum) {
+            if (pSoldier.bTeam == gbPlayerNum) {
               DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
             }
 
@@ -1252,66 +1252,66 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
             iDiceRoll = PreRandom(100);
             if (iDiceRoll < iHitChance) {
               // Drop item in the our tile
-              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pSoldier.sGridNo, pTargetSoldier.inv[Enum261.HANDPOS], 1, pSoldier.bLevel, 0, -1);
             } else {
               // Drop item in the target's tile
-              AddItemToPool(pTargetSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pTargetSoldier.sGridNo, pTargetSoldier.inv[Enum261.HANDPOS], 1, pSoldier.bLevel, 0, -1);
             }
-            DeleteObj(addressof(pTargetSoldier.value.inv[Enum261.HANDPOS]));
+            DeleteObj(pTargetSoldier.inv[Enum261.HANDPOS]);
           }
 
           // Reload buddy's animation...
           ReLoadSoldierAnimationDueToHandItemChange(pTargetSoldier, usOldItem, NOTHING);
         } else {
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_FAILED_TO_STEAL_SOMETHING], pSoldier.value.name, ShortItemNames[pTargetSoldier.value.inv[Enum261.HANDPOS].usItem]);
-          if (pSoldier.value.bTeam == gbPlayerNum) {
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_FAILED_TO_STEAL_SOMETHING], pSoldier.name, ShortItemNames[pTargetSoldier.inv[Enum261.HANDPOS].usItem]);
+          if (pSoldier.bTeam == gbPlayerNum) {
             DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
           }
 
-          if (iHitChance > 0 && pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier.value.bTeam != gbPlayerNum && !(pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
+          if (iHitChance > 0 && pSoldier.bTeam == gbPlayerNum && pTargetSoldier.bTeam != gbPlayerNum && !(pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pTargetSoldier) && !TANK(pTargetSoldier)) {
             // failed a steal; give some experience
             StatChange(pSoldier, STRAMT, 4, FROM_FAILURE);
           }
         }
       }
 
-      FreeUpAttacker(pSoldier.value.ubID);
+      FreeUpAttacker(pSoldier.ubID);
     } else {
       // ATE/CC: if doing ninja spin kick (only), automatically make it a hit
-      if (pSoldier.value.usAnimState == Enum193.NINJA_SPINKICK) {
+      if (pSoldier.usAnimState == Enum193.NINJA_SPINKICK) {
         // Let him to succeed by a random amount
         iDiceRoll = PreRandom(iHitChance);
       }
 
-      if (pSoldier.value.bTeam == gbPlayerNum && pTargetSoldier.value.bTeam != gbPlayerNum) {
+      if (pSoldier.bTeam == gbPlayerNum && pTargetSoldier.bTeam != gbPlayerNum) {
         // made an HTH attack; give experience
         if (iDiceRoll <= iHitChance) {
           ubExpGain = 8;
 
-          if (pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
+          if (pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
-          } else if (pTargetSoldier.value.ubBodyType == Enum194.COW || pTargetSoldier.value.ubBodyType == Enum194.CROW) {
+          } else if (pTargetSoldier.ubBodyType == Enum194.COW || pTargetSoldier.ubBodyType == Enum194.CROW) {
             ubExpGain /= 2;
           }
 
-          StatChange(pSoldier, STRAMT, ubExpGain, false);
-          StatChange(pSoldier, DEXTAMT, ubExpGain, false);
+          StatChange(pSoldier, STRAMT, ubExpGain, FROM_SUCCESS);
+          StatChange(pSoldier, DEXTAMT, ubExpGain, FROM_SUCCESS);
         } else {
           ubExpGain = 4;
 
-          if (pTargetSoldier.value.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
+          if (pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
-          } else if (pTargetSoldier.value.ubBodyType == Enum194.COW || pTargetSoldier.value.ubBodyType == Enum194.CROW) {
+          } else if (pTargetSoldier.ubBodyType == Enum194.COW || pTargetSoldier.ubBodyType == Enum194.CROW) {
             ubExpGain /= 2;
           }
 
           StatChange(pSoldier, STRAMT, ubExpGain, FROM_FAILURE);
           StatChange(pSoldier, DEXTAMT, ubExpGain, FROM_FAILURE);
         }
-      } else if (pSoldier.value.bTeam != gbPlayerNum && pTargetSoldier.value.bTeam == gbPlayerNum) {
+      } else if (pSoldier.bTeam != gbPlayerNum && pTargetSoldier.bTeam == gbPlayerNum) {
         // being attacked... if successfully dodged, give experience
         if (iDiceRoll > iHitChance) {
-          StatChange(pTargetSoldier, AGILAMT, 8, false);
+          StatChange(pTargetSoldier, AGILAMT, 8, FROM_SUCCESS);
         }
       }
 
@@ -1320,55 +1320,55 @@ export function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
         iImpact = HTHImpact(pSoldier, pTargetSoldier, (iHitChance - iDiceRoll), false);
 
         // Send event for getting hit
-        SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
-        SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
+        SWeaponHit.usSoldierID = pTargetSoldier.ubID;
+        SWeaponHit.usWeaponIndex = pSoldier.usAttackingWeapon;
         SWeaponHit.sDamage = iImpact;
-        SWeaponHit.usDirection = GetDirectionFromGridNo(pSoldier.value.sGridNo, pTargetSoldier);
-        SWeaponHit.sXPos = pTargetSoldier.value.dXPos;
-        SWeaponHit.sYPos = pTargetSoldier.value.dYPos;
+        SWeaponHit.usDirection = GetDirectionFromGridNo(pSoldier.sGridNo, pTargetSoldier);
+        SWeaponHit.sXPos = pTargetSoldier.dXPos;
+        SWeaponHit.sYPos = pTargetSoldier.dYPos;
         SWeaponHit.sZPos = 20;
         SWeaponHit.sRange = 1;
-        SWeaponHit.ubAttackerID = pSoldier.value.ubID;
+        SWeaponHit.ubAttackerID = pSoldier.ubID;
         SWeaponHit.fHit = true;
         SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
         AddGameEvent(Enum319.S_WEAPONHIT, 20, SWeaponHit);
       } else {
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - missed in HTH attack"));
-        FreeUpAttacker(pSoldier.value.ubID);
+        FreeUpAttacker(pSoldier.ubID);
       }
     }
   }
 
   // possibly reduce monster smell (gunpowder smell)
-  if (pSoldier.value.bMonsterSmell > 0 && Random(5) == 0) {
-    pSoldier.value.bMonsterSmell--;
+  if (pSoldier.bMonsterSmell > 0 && Random(5) == 0) {
+    pSoldier.bMonsterSmell--;
   }
 
   return true;
 }
 
-function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
+function UseThrown(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
   let uiHitChance: UINT32;
   let uiDiceRoll: UINT32;
   let sAPCost: INT16 = 0;
   let bLoop: INT8;
   let ubTargetID: UINT8;
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let pTargetSoldier: SOLDIERTYPE | null;
 
-  uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.value.bAimTime, AIM_SHOT_TORSO);
+  uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.bAimTime, AIM_SHOT_TORSO);
 
   uiDiceRoll = PreRandom(100);
 
-  if (pSoldier.value.bTeam == gbPlayerNum && gTacticalStatus.uiFlags & INCOMBAT) {
+  if (pSoldier.bTeam == gbPlayerNum && gTacticalStatus.uiFlags & INCOMBAT) {
     // check target gridno
-    ubTargetID = WhoIsThere2(pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel);
+    ubTargetID = WhoIsThere2(pSoldier.sTargetGridNo, pSoldier.bTargetLevel);
     if (ubTargetID == NOBODY) {
       pTargetSoldier = null;
     } else {
       pTargetSoldier = MercPtrs[ubTargetID];
     }
 
-    if (pTargetSoldier && pTargetSoldier.value.bTeam == pSoldier.value.bTeam) {
+    if (pTargetSoldier && pTargetSoldier.bTeam == pSoldier.bTeam) {
       // ignore!
       pTargetSoldier = null;
     }
@@ -1376,11 +1376,11 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolea
     if (pTargetSoldier == null) {
       // search for an opponent near the target gridno
       for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
-        ubTargetID = WhoIsThere2(NewGridNo(pSoldier.value.sTargetGridNo, DirectionInc(bLoop)), pSoldier.value.bTargetLevel);
+        ubTargetID = WhoIsThere2(NewGridNo(pSoldier.sTargetGridNo, DirectionInc(bLoop)), pSoldier.bTargetLevel);
         pTargetSoldier = null;
         if (ubTargetID != NOBODY) {
           pTargetSoldier = MercPtrs[ubTargetID];
-          if (pTargetSoldier.value.bTeam != pSoldier.value.bTeam) {
+          if (pTargetSoldier.bTeam != pSoldier.bTeam) {
             break;
           }
         }
@@ -1389,10 +1389,10 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolea
 
     if (pTargetSoldier) {
       // ok this is a real attack on someone, grant experience
-      StatChange(pSoldier, STRAMT, 5, false);
+      StatChange(pSoldier, STRAMT, 5, FROM_SUCCESS);
       if (uiDiceRoll < uiHitChance) {
-        StatChange(pSoldier, DEXTAMT, 5, false);
-        StatChange(pSoldier, MARKAMT, 5, false);
+        StatChange(pSoldier, DEXTAMT, 5, FROM_SUCCESS);
+        StatChange(pSoldier, MARKAMT, 5, FROM_SUCCESS);
       } else {
         StatChange(pSoldier, DEXTAMT, 2, FROM_FAILURE);
         StatChange(pSoldier, MARKAMT, 2, FROM_FAILURE);
@@ -1400,37 +1400,37 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolea
     }
   }
 
-  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.value.bTargetLevel, (pSoldier.value.bTargetLevel * 256), addressof(pSoldier.value.inv[Enum261.HANDPOS]), (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.bTargetLevel, (pSoldier.bTargetLevel * 256), pSoldier.inv[Enum261.HANDPOS], (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
 
   // OK, goto throw animation
-  HandleSoldierThrowItem(pSoldier, pSoldier.value.sTargetGridNo);
+  HandleSoldierThrowItem(pSoldier, pSoldier.sTargetGridNo);
 
-  RemoveObjs(addressof(pSoldier.value.inv[Enum261.HANDPOS]), 1);
+  RemoveObjs(pSoldier.inv[Enum261.HANDPOS], 1);
 
   return true;
 }
 
-function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): boolean {
+function UseLauncher(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
   let uiHitChance: UINT32;
   let uiDiceRoll: UINT32;
   let sAPCost: INT16 = 0;
   let bAttachPos: INT8;
   let Launchable: OBJECTTYPE = createObjectType();
-  let pObj: Pointer<OBJECTTYPE>;
+  let pObj: OBJECTTYPE;
   let usItemNum: UINT16;
   let iID: INT32;
-  let pObject: Pointer<REAL_OBJECT>;
+  let pObject: REAL_OBJECT;
 
-  usItemNum = pSoldier.value.usAttackingWeapon;
+  usItemNum = pSoldier.usAttackingWeapon;
 
-  if (!EnoughAmmo(pSoldier, true, pSoldier.value.ubAttackingHand)) {
+  if (!EnoughAmmo(pSoldier, true, pSoldier.ubAttackingHand)) {
     return false;
   }
 
-  pObj = addressof(pSoldier.value.inv[Enum261.HANDPOS]);
+  pObj = pSoldier.inv[Enum261.HANDPOS];
   for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
-    if (pObj.value.usAttachItem[bAttachPos] != NOTHING) {
-      if (Item[pObj.value.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
+    if (pObj.usAttachItem[bAttachPos] != NOTHING) {
+      if (Item[pObj.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
         break;
       }
     }
@@ -1440,9 +1440,9 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): bool
     return false;
   }
 
-  CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], addressof(Launchable));
+  CreateItem(pObj.usAttachItem[bAttachPos], pObj.bAttachStatus[bAttachPos], Launchable);
 
-  if (pSoldier.value.usAttackingWeapon == pObj.value.usItem) {
+  if (pSoldier.usAttackingWeapon == pObj.usItem) {
     DeductAmmo(pSoldier, Enum261.HANDPOS);
   } else {
     // Firing an attached grenade launcher... the attachment we found above
@@ -1456,22 +1456,22 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): bool
 
     // So we still should have ABC > 0
     // Begin explosion due to failure...
-    IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, Launchable.usItem, pSoldier.value.bLevel);
+    IgniteExplosion(pSoldier.ubID, CenterX(pSoldier.sGridNo), CenterY(pSoldier.sGridNo), 0, pSoldier.sGridNo, Launchable.usItem, pSoldier.bLevel);
 
     // Reduce again for attack end 'cause it has been incremented for a normal attack
     //
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - ATTACK ANIMATION %s ENDED BY BAD EXPLOSIVE CHECK, Now %d", gAnimControl[pSoldier.value.usAnimState].zAnimStr, gTacticalStatus.ubAttackBusyCount));
-    ReduceAttackBusyCount(pSoldier.value.ubID, false);
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - ATTACK ANIMATION %s ENDED BY BAD EXPLOSIVE CHECK, Now %d", gAnimControl[pSoldier.usAnimState].zAnimStr, gTacticalStatus.ubAttackBusyCount));
+    ReduceAttackBusyCount(pSoldier.ubID, false);
 
     // So all's well, should be good from here....
     return false;
   }
 
   if (Weapon[usItemNum].sSound != NO_WEAPON_SOUND) {
-    PlayJA2Sample(Weapon[usItemNum].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.value.sGridNo), 1, SoundDir(pSoldier.value.sGridNo));
+    PlayJA2Sample(Weapon[usItemNum].sSound, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier.sGridNo), 1, SoundDir(pSoldier.sGridNo));
   }
 
-  uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.value.bAimTime, AIM_SHOT_TORSO);
+  uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier.bAimTime, AIM_SHOT_TORSO);
 
   uiDiceRoll = PreRandom(100);
 
@@ -1479,26 +1479,26 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): bool
     // Preserve gridno!
     // pSoldier->sLastTarget = sTargetGridNo;
 
-    sAPCost = MinAPsToAttack(pSoldier, sTargetGridNo, true);
+    sAPCost = MinAPsToAttack(pSoldier, sTargetGridNo, 1);
   } else {
     // Throw....
-    sAPCost = MinAPsToThrow(pSoldier, sTargetGridNo, false);
+    sAPCost = MinAPsToThrow(pSoldier, sTargetGridNo, 0);
   }
 
   DeductPoints(pSoldier, sAPCost, 0);
 
-  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel, 0, addressof(Launchable), (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.sTargetGridNo, pSoldier.bTargetLevel, 0, Launchable, (uiDiceRoll - uiHitChance), Enum258.THROW_ARM_ITEM, 0);
 
-  iID = CreatePhysicalObject(pSoldier.value.pTempObject, pSoldier.value.pThrowParams.value.dLifeSpan, pSoldier.value.pThrowParams.value.dX, pSoldier.value.pThrowParams.value.dY, pSoldier.value.pThrowParams.value.dZ, pSoldier.value.pThrowParams.value.dForceX, pSoldier.value.pThrowParams.value.dForceY, pSoldier.value.pThrowParams.value.dForceZ, pSoldier.value.ubID, pSoldier.value.pThrowParams.value.ubActionCode, pSoldier.value.pThrowParams.value.uiActionData);
+  Assert(pSoldier.pTempObject);
+  Assert(pSoldier.pThrowParams);
+  iID = CreatePhysicalObject(pSoldier.pTempObject, pSoldier.pThrowParams.dLifeSpan, pSoldier.pThrowParams.dX, pSoldier.pThrowParams.dY, pSoldier.pThrowParams.dZ, pSoldier.pThrowParams.dForceX, pSoldier.pThrowParams.dForceY, pSoldier.pThrowParams.dForceZ, pSoldier.ubID, pSoldier.pThrowParams.ubActionCode, pSoldier.pThrowParams.uiActionData);
 
-  pObject = addressof(ObjectSlots[iID]);
+  pObject = ObjectSlots[iID];
   // pObject->fPotentialForDebug = TRUE;
 
-  MemFree(pSoldier.value.pTempObject);
-  pSoldier.value.pTempObject = null;
+  pSoldier.pTempObject = null;
 
-  MemFree(pSoldier.value.pThrowParams);
-  pSoldier.value.pThrowParams = null;
+  pSoldier.pThrowParams = null;
 
   return true;
 }
@@ -1508,10 +1508,8 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
   let ubAmmoType: UINT8;
   let usItem: UINT16;
 
-  ubAmmoType = MercPtrs[ubAttackerID].value.inv[MercPtrs[ubAttackerID].value.ubAttackingHand].ubGunAmmoType;
-  usItem = MercPtrs[ubAttackerID].value.inv[MercPtrs[ubAttackerID].value.ubAttackingHand].usItem;
-
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+  ubAmmoType = MercPtrs[ubAttackerID].inv[MercPtrs[ubAttackerID].ubAttackingHand].ubGunAmmoType;
+  usItem = MercPtrs[ubAttackerID].inv[MercPtrs[ubAttackerID].ubAttackingHand].usItem;
 
   if (ubAmmoType == Enum286.AMMO_HE || ubAmmoType == Enum286.AMMO_HEAT) {
     if (!fSoundOnly) {
@@ -1526,7 +1524,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
 
       AniParams.zCachedFile = "TILECACHE\\MINIBOOM.STI";
 
-      CreateAnimationTile(addressof(AniParams));
+      CreateAnimationTile(AniParams);
 
       if (fFreeupAttacker) {
         RemoveBullet(iBullet);
@@ -1571,8 +1569,8 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
 }
 
 export function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, usDirection: UINT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, sRange: INT16, ubAttackerID: UINT8, fHit: boolean, ubSpecial: UINT8, ubHitLocation: UINT8): void {
-  let pTargetSoldier: Pointer<SOLDIERTYPE>;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTargetSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE;
 
   // Get attacker
   pSoldier = MercPtrs[ubAttackerID];
@@ -1580,15 +1578,15 @@ export function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: I
   // Get Target
   pTargetSoldier = MercPtrs[usSoldierID];
 
-  MakeNoise(ubAttackerID, pTargetSoldier.value.sGridNo, pTargetSoldier.value.bLevel, gpWorldLevelData[pTargetSoldier.value.sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
+  MakeNoise(ubAttackerID, pTargetSoldier.sGridNo, pTargetSoldier.bLevel, gpWorldLevelData[pTargetSoldier.sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
 
   if (EXPLOSIVE_GUN(usWeaponIndex)) {
     // Reduce attacker count!
     if (usWeaponIndex == Enum225.ROCKET_LAUNCHER) {
-      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.C1, pTargetSoldier.value.bLevel);
+      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.C1, pTargetSoldier.bLevel);
     } else // tank cannon
     {
-      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.TANK_SHELL, pTargetSoldier.value.bLevel);
+      IgniteExplosion(ubAttackerID, sXPos, sYPos, 0, (GETWORLDINDEXFROMWORLDCOORDS(sYPos, sXPos)), Enum225.TANK_SHELL, pTargetSoldier.bLevel);
     }
 
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - end of LAW fire"));
@@ -1596,52 +1594,52 @@ export function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: I
     return;
   }
 
-  DoSpecialEffectAmmoMiss(ubAttackerID, pTargetSoldier.value.sGridNo, sXPos, sYPos, sZPos, false, false, 0);
+  DoSpecialEffectAmmoMiss(ubAttackerID, pTargetSoldier.sGridNo, sXPos, sYPos, sZPos, false, false, 0);
 
   // OK, SHOT HAS HIT, DO THINGS APPROPRIATELY
   // ATE: This is 'cause of that darn smoke effect that could potnetially kill
   // the poor bastard .. so check
-  if (!pTargetSoldier.value.fDoingExternalDeath) {
+  if (!pTargetSoldier.fDoingExternalDeath) {
     EVENT_SoldierGotHit(pTargetSoldier, usWeaponIndex, sDamage, sBreathLoss, usDirection, sRange, ubAttackerID, ubSpecial, ubHitLocation, 0, NOWHERE);
   } else {
     // Buddy had died from additional dammage - free up attacker here...
-    ReduceAttackBusyCount(pTargetSoldier.value.ubAttackerID, false);
+    ReduceAttackBusyCount(pTargetSoldier.ubAttackerID, false);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Special effect killed before bullet impact, attack count now %d", gTacticalStatus.ubAttackBusyCount));
   }
 }
 
 export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8, ubAttackerID: UINT8, sXPos: UINT16, sYPos: INT16, sZPos: INT16, usStructureID: UINT16, iImpact: INT32, fStopped: boolean): void {
   let fDoMissForGun: boolean = false;
-  let pNode: Pointer<ANITILE>;
+  let pNode: ANITILE;
   let sGridNo: INT16;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
   let usMissTileIndex: UINT16;
   let usMissTileType: UINT16;
-  let pStructure: Pointer<STRUCTURE> = null;
+  let pStructure: STRUCTURE | null = null;
   let uiMissVolume: UINT32 = MIDVOLUME;
   let fHitSameStructureAsBefore: boolean;
-  let pBullet: Pointer<BULLET>;
-  let pAttacker: Pointer<SOLDIERTYPE>;
+  let pBullet: BULLET;
+  let pAttacker: SOLDIERTYPE;
 
   pBullet = GetBulletPtr(iBullet);
 
   if (fStopped && ubAttackerID != NOBODY) {
     pAttacker = MercPtrs[ubAttackerID];
 
-    if (pAttacker.value.ubOppNum != NOBODY) {
+    if (pAttacker.ubOppNum != NOBODY) {
       // if it was another team shooting at someone under our control
-      if ((pAttacker.value.bTeam != Menptr[pAttacker.value.ubOppNum].bTeam)) {
+      if ((pAttacker.bTeam != Menptr[pAttacker.ubOppNum].bTeam)) {
         // if OPPONENT is under our control
-        if (Menptr[pAttacker.value.ubOppNum].bTeam == gbPlayerNum) {
+        if (Menptr[pAttacker.ubOppNum].bTeam == gbPlayerNum) {
           // AGILITY GAIN: Opponent "dodged" a bullet shot at him (it missed)
-          StatChange(MercPtrs[pAttacker.value.ubOppNum], AGILAMT, 5, FROM_FAILURE);
+          StatChange(MercPtrs[pAttacker.ubOppNum], AGILAMT, 5, FROM_FAILURE);
         }
       }
     }
   }
 
   if (pBullet) {
-    fHitSameStructureAsBefore = (usStructureID == pBullet.value.usLastStructureHit);
+    fHitSameStructureAsBefore = (usStructureID == pBullet.usLastStructureHit);
   } else {
     // WTF?
     fHitSameStructureAsBefore = false;
@@ -1699,8 +1697,8 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
     case Enum282.MGCLASS:
 
       // Guy has missed, play random sound
-      if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
-        if (!MercPtrs[ubAttackerID].value.bDoBurst) {
+      if (MercPtrs[ubAttackerID].bTeam == gbPlayerNum) {
+        if (!MercPtrs[ubAttackerID].bDoBurst) {
           if (Random(40) == 0) {
             DoMercBattleSound(MercPtrs[ubAttackerID], Enum259.BATTLE_SOUND_CURSE1);
           }
@@ -1731,9 +1729,9 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
         // OK, have we hit ground?
         if (usStructureID == INVALID_STRUCTURE_ID) {
           // Add item
-          CreateItem(Enum225.THROWING_KNIFE, bWeaponStatus, addressof(Object));
+          CreateItem(Enum225.THROWING_KNIFE, bWeaponStatus, Object);
 
-          AddItemToPool(sGridNo, addressof(Object), -1, 0, 0, -1);
+          AddItemToPool(sGridNo, Object, -1, 0, 0, -1);
 
           // Make team look for items
           NotifySoldiersToLookforItems();
@@ -1788,7 +1786,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
           usMissTileType = Enum313.SECONDMISS;
 
           // Add ripple
-          memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+          resetAnimatedTileParams(AniParams);
           AniParams.sGridNo = sGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
           AniParams.usTileType = Enum313.THIRDMISS;
@@ -1797,16 +1795,16 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
           AniParams.sStartFrame = 0;
           AniParams.uiFlags = ANITILE_FORWARD;
 
-          pNode = CreateAnimationTile(addressof(AniParams));
+          pNode = <ANITILE>CreateAnimationTile(AniParams);
 
           // Adjust for absolute positioning
-          pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
-          pNode.value.pLevelNode.value.sRelativeX = sXPos;
-          pNode.value.pLevelNode.value.sRelativeY = sYPos;
-          pNode.value.pLevelNode.value.sRelativeZ = sZPos;
+          pNode.pLevelNode.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
+          pNode.pLevelNode.sRelativeX = sXPos;
+          pNode.pLevelNode.sRelativeY = sYPos;
+          pNode.pLevelNode.sRelativeZ = sZPos;
         }
 
-        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
+        resetAnimatedTileParams(AniParams);
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
         AniParams.usTileType = usMissTileType;
@@ -1821,38 +1819,38 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
         // Save bullet ID!
         AniParams.uiUserData3 = iBullet;
 
-        pNode = CreateAnimationTile(addressof(AniParams));
+        pNode = <ANITILE>CreateAnimationTile(AniParams);
 
         // Set attacker ID
-        pNode.value.usMissAnimationPlayed = usMissTileType;
-        pNode.value.ubAttackerMissed = ubAttackerID;
+        pNode.usMissAnimationPlayed = usMissTileType;
+        pNode.ubAttackerMissed = ubAttackerID;
         // Adjust for absolute positioning
-        pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
-        pNode.value.pLevelNode.value.sRelativeX = sXPos;
-        pNode.value.pLevelNode.value.sRelativeY = sYPos;
-        pNode.value.pLevelNode.value.sRelativeZ = sZPos;
+        pNode.pLevelNode.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
+        pNode.pLevelNode.sRelativeX = sXPos;
+        pNode.pLevelNode.sRelativeY = sYPos;
+        pNode.pLevelNode.sRelativeZ = sZPos;
 
         // ATE: Show misses...( if our team )
         if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
           if (ubAttackerID != NOBODY) {
-            if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
+            if (MercPtrs[ubAttackerID].bTeam == gbPlayerNum) {
               LocateGridNo(sGridNo);
             }
           }
         }
       }
 
-      pBullet.value.usLastStructureHit = usStructureID;
+      pBullet.usLastStructureHit = usStructureID;
     }
   }
 }
 
 export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: boolean, fLargeForce: boolean): void {
-  let pWallAndWindow: Pointer<STRUCTURE>;
-  let pWallAndWindowInDB: Pointer<DB_STRUCTURE>;
+  let pWallAndWindow: STRUCTURE | null;
+  let pWallAndWindowInDB: DB_STRUCTURE;
   let sShatterGridNo: INT16;
   let usTileIndex: UINT16;
-  let pNode: Pointer<ANITILE>;
+  let pNode: ANITILE | null;
   let AniParams: ANITILE_PARAMS = createAnimatedTileParams();
 
   // ATE: Make large force always for now ( feel thing )
@@ -1877,35 +1875,35 @@ export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSout
   // record window smash
   AddWindowHitToMapTempFile(sGridNo);
 
-  pWallAndWindowInDB = pWallAndWindow.value.pDBStructureRef.value.pDBStructure;
+  pWallAndWindowInDB = pWallAndWindow.pDBStructureRef.pDBStructure;
 
   if (fLargeForce) {
     // Force to destruction animation!
-    if (pWallAndWindowInDB.value.bPartnerDelta != NO_PARTNER_STRUCTURE) {
+    if (pWallAndWindowInDB.bPartnerDelta != NO_PARTNER_STRUCTURE) {
       pWallAndWindow = SwapStructureForPartner(sGridNo, pWallAndWindow);
       if (pWallAndWindow) {
         // record 2nd window smash
         AddWindowHitToMapTempFile(sGridNo);
 
-        pWallAndWindowInDB = pWallAndWindow.value.pDBStructureRef.value.pDBStructure;
+        pWallAndWindowInDB = pWallAndWindow.pDBStructureRef.pDBStructure;
       }
     }
   }
 
   SetRenderFlags(RENDER_FLAG_FULL);
 
-  if (pWallAndWindowInDB.value.ubArmour == Enum309.MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS) {
+  if (pWallAndWindowInDB.ubArmour == Enum309.MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS) {
     // don't play any sort of animation or sound
     return;
   }
 
-  if (pWallAndWindowInDB.value.bPartnerDelta != NO_PARTNER_STRUCTURE) {
+  if (pWallAndWindowInDB.bPartnerDelta != NO_PARTNER_STRUCTURE) {
     // just cracked; don't display the animation
     MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_CRACK_VOLUME, Enum236.NOISE_BULLET_IMPACT);
     return;
   }
   MakeNoise(NOBODY, sGridNo, 0, gpWorldLevelData[sGridNo].ubTerrainID, WINDOW_SMASH_VOLUME, Enum236.NOISE_BULLET_IMPACT);
-  if (pWallAndWindowInDB.value.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pWallAndWindowInDB.value.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
+  if (pWallAndWindowInDB.ubWallOrientation == Enum314.INSIDE_TOP_RIGHT || pWallAndWindowInDB.ubWallOrientation == Enum314.OUTSIDE_TOP_RIGHT) {
     /*
             sShatterGridNo = sGridNo + 1;
             // check for wrapping around edge of map
@@ -1939,7 +1937,6 @@ export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSout
     }
   }
 
-  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = sShatterGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
   AniParams.usTileType = Enum313.WINDOWSHATTER;
@@ -1948,20 +1945,20 @@ export function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSout
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_FORWARD;
 
-  pNode = CreateAnimationTile(addressof(AniParams));
+  pNode = CreateAnimationTile(AniParams);
 
   PlayJA2Sample(Enum330.GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
 }
 
-export function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean {
+export function InRange(pSoldier: SOLDIERTYPE, sGridNo: INT16): boolean {
   let sRange: INT16;
   let usInHand: UINT16;
 
-  usInHand = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+  usInHand = pSoldier.inv[Enum261.HANDPOS].usItem;
 
   if (Item[usInHand].usItemClass == IC_GUN || Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
     // Determine range
-    sRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+    sRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
     if (Item[usInHand].usItemClass == IC_THROWING_KNIFE) {
       // NB CalcMaxTossRange returns range in tiles, not in world units
@@ -1970,7 +1967,7 @@ export function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean
       }
     } else {
       // For given weapon, check range
-      if (sRange <= GunRange(addressof(pSoldier.value.inv[Enum261.HANDPOS]))) {
+      if (sRange <= GunRange(pSoldier.inv[Enum261.HANDPOS])) {
         return true;
       }
     }
@@ -1978,9 +1975,9 @@ export function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): boolean
   return false;
 }
 
-export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   // SOLDIERTYPE *vicpSoldier;
-  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTarget: SOLDIERTYPE | null;
   let iChance: INT32;
   let iRange: INT32;
   let iSightRange: INT32;
@@ -1991,24 +1988,24 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   let iMarksmanship: INT32;
   let iPenalty: INT32;
   let usInHand: UINT16;
-  let pInHand: Pointer<OBJECTTYPE>;
+  let pInHand: OBJECTTYPE;
   let bAttachPos: INT8;
   let bBandaged: INT8;
   let sDistVis: INT16;
   let ubAdjAimPos: UINT8;
   let ubTargetID: UINT8;
 
-  if (pSoldier.value.bMarksmanship == 0) {
+  if (pSoldier.bMarksmanship == 0) {
     // always min chance
     return MINCHANCETOHIT;
   }
 
   // make sure the guy's actually got a weapon in his hand!
-  pInHand = addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
-  usInHand = pSoldier.value.usAttackingWeapon;
+  pInHand = pSoldier.inv[pSoldier.ubAttackingHand];
+  usInHand = pSoldier.usAttackingWeapon;
 
   // DETERMINE BASE CHANCE OF HITTING
-  iGunCondition = WEAPON_STATUS_MOD(pInHand.value.bGunStatus);
+  iGunCondition = WEAPON_STATUS_MOD(pInHand.bGunStatus);
 
   if (usInHand == Enum225.ROCKET_LAUNCHER) {
     // use the same calculation as for mechanical thrown weapons
@@ -2021,7 +2018,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
     iMarksmanship = EffectiveMarksmanship(pSoldier);
 
     if (AM_A_ROBOT(pSoldier)) {
-      let pSoldier2: Pointer<SOLDIERTYPE>;
+      let pSoldier2: SOLDIERTYPE | null;
 
       pSoldier2 = GetRobotController(pSoldier);
       if (pSoldier2) {
@@ -2044,18 +2041,18 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
     iChance = (iMarksmanship + iGunCondition) / 2;
 
   // if shooting same target as the last shot
-  if (sGridNo == pSoldier.value.sLastTarget)
+  if (sGridNo == pSoldier.sLastTarget)
     iChance += AIM_BONUS_SAME_TARGET; // give a bonus to hit
 
-  if (pSoldier.value.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.value.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
+  if (pSoldier.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
     iChance += AIM_BONUS_PSYCHO;
   }
 
   // calculate actual range (in units, 10 units = 1 tile)
-  iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+  iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
   // if shooter is crouched, he aims slightly better (to max of AIM_BONUS_CROUCHING)
-  if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_CROUCH) {
+  if (gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_CROUCH) {
     iBonus = iRange / 10;
     if (iBonus > AIM_BONUS_CROUCHING) {
       iBonus = AIM_BONUS_CROUCHING;
@@ -2063,7 +2060,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
     iChance += iBonus;
   }
   // if shooter is prone, he aims even better, except at really close range
-  else if (gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_PRONE) {
+  else if (gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_PRONE) {
     if (iRange > MIN_PRONE_RANGE) {
       iBonus = iRange / 10;
       if (iBonus > AIM_BONUS_PRONE) {
@@ -2072,7 +2069,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
       bAttachPos = FindAttachment(pInHand, Enum225.BIPOD);
       if (bAttachPos != ITEM_NOT_FOUND) {
         // extra bonus to hit for a bipod, up to half the prone bonus itself
-        iBonus += (iBonus * WEAPON_STATUS_MOD(pInHand.value.bAttachStatus[bAttachPos]) / 100) / 2;
+        iBonus += (iBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos]) / 100) / 2;
       }
       iChance += iBonus;
     }
@@ -2107,8 +2104,8 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   // If in burst mode, deduct points for change to hit for each shot after the first
-  if (pSoldier.value.bDoBurst) {
-    iPenalty = Weapon[usInHand].ubBurstPenalty * (pSoldier.value.bDoBurst - 1);
+  if (pSoldier.bDoBurst) {
+    iPenalty = Weapon[usInHand].ubBurstPenalty * (pSoldier.bDoBurst - 1);
 
     // halve the penalty for people with the autofire trait
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.AUTO_WEAPS)) {
@@ -2130,15 +2127,15 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   // If the start soldier has a body part they are aiming at, and know about the person in the tile, then use that height instead
   iSightRange = -1;
 
-  ubTargetID = WhoIsThere2(sGridNo, pSoldier.value.bTargetLevel);
+  ubTargetID = WhoIsThere2(sGridNo, pSoldier.bTargetLevel);
   // best to use team knowledge as well, in case of spotting for someone else
-  if (ubTargetID != NOBODY && pSoldier.value.bOppList[ubTargetID] == SEEN_CURRENTLY || gbPublicOpplist[pSoldier.value.bTeam][ubTargetID] == SEEN_CURRENTLY) {
-    iSightRange = SoldierToBodyPartLineOfSightTest(pSoldier, sGridNo, pSoldier.value.bTargetLevel, pSoldier.value.bAimShotLocation, (MaxDistanceVisible() * 2), true);
+  if (ubTargetID != NOBODY && pSoldier.bOppList[ubTargetID] == SEEN_CURRENTLY || gbPublicOpplist[pSoldier.bTeam][ubTargetID] == SEEN_CURRENTLY) {
+    iSightRange = SoldierToBodyPartLineOfSightTest(pSoldier, sGridNo, pSoldier.bTargetLevel, pSoldier.bAimShotLocation, (MaxDistanceVisible() * 2), 1);
   }
 
   if (iSightRange == -1) // didn't do a bodypart-based test
   {
-    iSightRange = SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pSoldier.value.bTargetLevel, pSoldier.value.bTargetCubeLevel, (MaxDistanceVisible() * 2), true);
+    iSightRange = SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pSoldier.bTargetLevel, pSoldier.bTargetCubeLevel, (MaxDistanceVisible() * 2), true);
   }
 
   iSightRange *= 2;
@@ -2149,10 +2146,10 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   // if shooter spent some extra time aiming and can see the target
-  if (iSightRange > 0 && ubAimTime && !pSoldier.value.bDoBurst)
+  if (iSightRange > 0 && ubAimTime && !pSoldier.bDoBurst)
     iChance += (AIM_BONUS_PER_AP * ubAimTime); // bonus for every pt of aiming
 
-  if (!(pSoldier.value.uiStatusFlags & SOLDIER_PC)) // if this is a computer AI controlled enemy
+  if (!(pSoldier.uiStatusFlags & SOLDIER_PC)) // if this is a computer AI controlled enemy
   {
     if (gGameOptions.ubDifficultyLevel == Enum9.DIF_LEVEL_EASY) {
       // On easy, penalize all enemies by 5%
@@ -2166,45 +2163,45 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   // if shooter is being affected by gas
-  if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED) {
+  if (pSoldier.uiStatusFlags & SOLDIER_GASSED) {
     iChance -= AIM_PENALTY_GASSED;
   }
 
   // if shooter is being bandaged at the same time, his concentration is off
-  if (pSoldier.value.ubServiceCount > 0)
+  if (pSoldier.ubServiceCount > 0)
     iChance -= AIM_PENALTY_GETTINGAID;
 
   // if shooter is still in shock
-  if (pSoldier.value.bShock)
-    iChance -= (pSoldier.value.bShock * AIM_PENALTY_PER_SHOCK);
+  if (pSoldier.bShock)
+    iChance -= (pSoldier.bShock * AIM_PENALTY_PER_SHOCK);
 
   if (Item[usInHand].usItemClass == IC_GUN) {
     bAttachPos = FindAttachment(pInHand, Enum225.GUN_BARREL_EXTENDER);
     if (bAttachPos != ITEM_NOT_FOUND) {
       // reduce status and see if it falls off
-      pInHand.value.bAttachStatus[bAttachPos] -= Random(2);
+      pInHand.bAttachStatus[bAttachPos] -= Random(2);
 
-      if (pInHand.value.bAttachStatus[bAttachPos] - Random(35) - Random(35) < USABLE) {
+      if (pInHand.bAttachStatus[bAttachPos] - Random(35) - Random(35) < USABLE) {
         // barrel extender falls off!
         let Temp: OBJECTTYPE = createObjectType();
 
         // since barrel extenders are not removable we cannot call RemoveAttachment here
         // and must create the item by hand
-        CreateItem(Enum225.GUN_BARREL_EXTENDER, pInHand.value.bAttachStatus[bAttachPos], addressof(Temp));
-        pInHand.value.usAttachItem[bAttachPos] = NOTHING;
-        pInHand.value.bAttachStatus[bAttachPos] = 0;
+        CreateItem(Enum225.GUN_BARREL_EXTENDER, pInHand.bAttachStatus[bAttachPos], Temp);
+        pInHand.usAttachItem[bAttachPos] = NOTHING;
+        pInHand.bAttachStatus[bAttachPos] = 0;
 
         // drop it to ground
-        AddItemToPool(pSoldier.value.sGridNo, addressof(Temp), 1, pSoldier.value.bLevel, 0, -1);
+        AddItemToPool(pSoldier.sGridNo, Temp, 1, pSoldier.bLevel, 0, -1);
 
         // big penalty to hit
         iChance -= 30;
 
         // curse!
-        if (pSoldier.value.bTeam == OUR_TEAM) {
+        if (pSoldier.bTeam == OUR_TEAM) {
           DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[46], pSoldier.value.name);
+          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[46], pSoldier.name);
         }
       }
     }
@@ -2215,7 +2212,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   if (iSightRange > 0) {
-    if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
+    if (pSoldier.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
       // decrease effective range by 10% when using sungoggles (w or w/o scope)
       iSightRange -= iRange / 10; // basically, +1% to hit per every 2 squares
     }
@@ -2229,7 +2226,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
       iScopeBonus = ((SNIPERSCOPE_AIM_BONUS * ubAimTime) * (iRange - MIN_SCOPE_RANGE)) / 100;
 
       // adjust for scope condition, only has full affect at 100%
-      iScopeBonus = (iScopeBonus * WEAPON_STATUS_MOD(pInHand.value.bAttachStatus[bAttachPos])) / 100;
+      iScopeBonus = (iScopeBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos])) / 100;
 
       // reduce effective range by the bonus obtained from the scope
       iSightRange -= iScopeBonus;
@@ -2244,9 +2241,9 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
       let bLaserStatus: INT8;
 
       if (usInHand == Enum225.ROCKET_RIFLE || usInHand == Enum225.AUTO_ROCKET_RIFLE) {
-        bLaserStatus = WEAPON_STATUS_MOD(pInHand.value.bGunStatus);
+        bLaserStatus = WEAPON_STATUS_MOD(pInHand.bGunStatus);
       } else {
-        bLaserStatus = WEAPON_STATUS_MOD(pInHand.value.bAttachStatus[bAttachPos]);
+        bLaserStatus = WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos]);
       }
 
       // laser scope isn't of much use in high light levels; add something for that
@@ -2317,14 +2314,14 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   // adjust for roof/not on roof
-  if (pSoldier.value.bLevel == 0) {
-    if (pSoldier.value.bTargetLevel > 0) {
+  if (pSoldier.bLevel == 0) {
+    if (pSoldier.bTargetLevel > 0) {
       // penalty for firing up
       iChance -= AIM_PENALTY_FIRING_UP;
     }
   } else // pSoldier->bLevel > 0 )
   {
-    if (pSoldier.value.bTargetLevel == 0) {
+    if (pSoldier.bTargetLevel == 0) {
       iChance += AIM_BONUS_FIRING_DOWN;
     }
     // if have roof trait, give bonus
@@ -2333,11 +2330,11 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
     }
   }
 
-  pTarget = SimpleFindSoldier(sGridNo, pSoldier.value.bTargetLevel);
+  pTarget = SimpleFindSoldier(sGridNo, pSoldier.bTargetLevel);
   if (pTarget != null) {
     // targeting a merc
     // adjust for crouched/prone target
-    switch (gAnimControl[pTarget.value.usAnimState].ubHeight) {
+    switch (gAnimControl[pTarget.usAnimState].ubHeight) {
       case ANIM_CROUCH:
         if (TANK(pSoldier) && iRange < MIN_TANK_RANGE) {
           // 13% penalty per tile closer than min range
@@ -2369,7 +2366,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
         break;
       case ANIM_STAND:
         // if we are prone and at close range, then penalize shots to the torso or head!
-        if (iRange <= MIN_PRONE_RANGE && gAnimControl[pSoldier.value.usAnimState].ubEndHeight == ANIM_PRONE) {
+        if (iRange <= MIN_PRONE_RANGE && gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_PRONE) {
           if (ubAimPos == AIM_SHOT_RANDOM || ubAimPos == AIM_SHOT_GLAND) {
             ubAdjAimPos = AIM_SHOT_TORSO;
           } else {
@@ -2387,14 +2384,14 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
     }
 
     // penalty for amount that enemy has moved
-    iPenalty = Math.min(((pTarget.value.bTilesMoved * 3) / 2), 30);
+    iPenalty = Math.min(((pTarget.bTilesMoved * 3) / 2), 30);
     iChance -= iPenalty;
 
     // if target sees us, he may have a chance to dodge before the gun goes off
     // but ability to dodge is reduced if crouched or prone!
-    if (pTarget.value.bOppList[pSoldier.value.ubID] == SEEN_CURRENTLY && !TANK(pTarget) && !(pSoldier.value.ubBodyType != Enum194.QUEENMONSTER)) {
+    if (pTarget.bOppList[pSoldier.ubID] == SEEN_CURRENTLY && !TANK(pTarget) && !(pSoldier.ubBodyType != Enum194.QUEENMONSTER)) {
       iPenalty = (EffectiveAgility(pTarget) / 5 + EffectiveExpLevel(pTarget) * 2);
-      switch (gAnimControl[pTarget.value.usAnimState].ubHeight) {
+      switch (gAnimControl[pTarget.usAnimState].ubHeight) {
         case ANIM_CROUCH:
           iPenalty = iPenalty * 2 / 3;
           break;
@@ -2405,7 +2402,7 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
 
       // reduce dodge ability by the attacker's stats
       iBonus = (EffectiveDexterity(pSoldier) / 5 + EffectiveExpLevel(pSoldier) * 2);
-      if (TANK(pTarget) || (pSoldier.value.ubBodyType != Enum194.QUEENMONSTER)) {
+      if (TANK(pTarget) || (pSoldier.ubBodyType != Enum194.QUEENMONSTER)) {
         // reduce ability to track shots
         iBonus = iBonus / 2;
       }
@@ -2420,21 +2417,21 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   }
 
   // IF CHANCE EXISTS, BUT SHOOTER IS INJURED
-  if ((iChance > 0) && (pSoldier.value.bLife < pSoldier.value.bLifeMax)) {
+  if ((iChance > 0) && (pSoldier.bLife < pSoldier.bLifeMax)) {
     // if bandaged, give 1/2 of the bandaged life points back into equation
-    bBandaged = pSoldier.value.bLifeMax - pSoldier.value.bLife - pSoldier.value.bBleeding;
+    bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
     // injury penalty is based on % damage taken (max 2/3rds chance)
-    iPenalty = (iChance * 2 * (pSoldier.value.bLifeMax - pSoldier.value.bLife + (bBandaged / 2))) / (3 * pSoldier.value.bLifeMax);
+    iPenalty = (iChance * 2 * (pSoldier.bLifeMax - pSoldier.bLife + (bBandaged / 2))) / (3 * pSoldier.bLifeMax);
 
     // reduce injury penalty due to merc's experience level (he can take it!)
     iChance -= (iPenalty * (100 - (10 * (EffectiveExpLevel(pSoldier) - 1)))) / 100;
   }
 
   // IF CHANCE EXISTS, BUT SHOOTER IS LOW ON BREATH
-  if ((iChance > 0) && (pSoldier.value.bBreath < 100)) {
+  if ((iChance > 0) && (pSoldier.bBreath < 100)) {
     // breath penalty is based on % breath missing (max 1/2 chance)
-    iPenalty = (iChance * (100 - pSoldier.value.bBreath)) / 200;
+    iPenalty = (iChance * (100 - pSoldier.bBreath)) / 200;
     // reduce breath penalty due to merc's dexterity (he can compensate!)
     iChance -= (iPenalty * (100 - (EffectiveDexterity(pSoldier) - 10))) / 100;
   }
@@ -2472,15 +2469,15 @@ export function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
   return iChance;
 }
 
-export function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function AICalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   let usTrueState: UINT16;
   let uiChance: UINT32;
 
   // same as CCTHG but fakes the attacker always standing
-  usTrueState = pSoldier.value.usAnimState;
-  pSoldier.value.usAnimState = Enum193.STANDING;
+  usTrueState = pSoldier.usAnimState;
+  pSoldier.usAnimState = Enum193.STANDING;
   uiChance = CalcChanceToHitGun(pSoldier, sGridNo, ubAimTime, ubAimPos);
-  pSoldier.value.usAnimState = usTrueState;
+  pSoldier.usAnimState = usTrueState;
   return uiChance;
 }
 
@@ -2505,7 +2502,7 @@ export function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8)
   return iReduction;
 }
 
-function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pbStatus: Pointer<INT8>, iImpact: INT32, ubAmmoType: UINT8): INT32 {
+function ArmourProtection(pTarget: SOLDIERTYPE, ubArmourType: UINT8, pbStatus: Pointer<INT8>, iImpact: INT32, ubAmmoType: UINT8): INT32 {
   let iProtection: INT32;
   let iAppliedProtection: INT32;
   let iFailure: INT32;
@@ -2571,18 +2568,18 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
   return iProtection;
 }
 
-export function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
+export function TotalArmourProtection(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
   let iTotalProtection: INT32 = 0;
   let iSlot: INT32;
-  let pArmour: Pointer<OBJECTTYPE>;
+  let pArmour: OBJECTTYPE;
   let bPlatePos: INT8 = -1;
 
-  if (pTarget.value.uiStatusFlags & SOLDIER_VEHICLE) {
+  if (pTarget.uiStatusFlags & SOLDIER_VEHICLE) {
     let bDummyStatus: INT8 = 100;
 
     // bDummyStatus = (INT8) pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ];
 
-    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.value.bVehicleID].sArmourType, addressof(bDummyStatus), iImpact, ubAmmoType);
+    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.bVehicleID].sArmourType, addressof(bDummyStatus), iImpact, ubAmmoType);
 
     // pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ] = bDummyStatus;
   } else {
@@ -2602,24 +2599,24 @@ export function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Poi
         break;
     }
 
-    pArmour = addressof(pTarget.value.inv[iSlot]);
-    if (pArmour.value.usItem != NOTHING) {
+    pArmour = pTarget.inv[iSlot];
+    if (pArmour.usItem != NOTHING) {
       // check plates first
       if (iSlot == Enum261.VESTPOS) {
         bPlatePos = FindAttachment(pArmour, Enum225.CERAMIC_PLATES);
         if (bPlatePos != -1) {
           // bullet got through jacket; apply ceramic plate armour
-          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usAttachItem[bPlatePos]].ubClassIndex, addressof(pArmour.value.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
-          if (pArmour.value.bAttachStatus[bPlatePos] < USABLE) {
+          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usAttachItem[bPlatePos]].ubClassIndex, addressof(pArmour.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
+          if (pArmour.bAttachStatus[bPlatePos] < USABLE) {
             // destroy plates!
-            pArmour.value.usAttachItem[bPlatePos] = NOTHING;
-            pArmour.value.bAttachStatus[bPlatePos] = 0;
+            pArmour.usAttachItem[bPlatePos] = NOTHING;
+            pArmour.bAttachStatus[bPlatePos] = 0;
             DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
 // FIXME: Language-specific code
 // #ifdef ENGLISH
-            if (pTarget.value.bTeam == gbPlayerNum) {
+            if (pTarget.bTeam == gbPlayerNum) {
               // report plates destroyed!
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[61], pTarget.value.name);
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[61], pTarget.name);
             }
 // #endif
           }
@@ -2628,8 +2625,8 @@ export function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Poi
 
       // if the plate didn't stop the bullet...
       if (iImpact > iTotalProtection) {
-        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usItem].ubClassIndex, addressof(pArmour.value.bStatus[0]), iImpact, ubAmmoType);
-        if (pArmour.value.bStatus[0] < USABLE) {
+        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usItem].ubClassIndex, addressof(pArmour.bStatus[0]), iImpact, ubAmmoType);
+        if (pArmour.bStatus[0] < USABLE) {
           DeleteObj(pArmour);
           DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
         }
@@ -2639,7 +2636,7 @@ export function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Poi
   return iTotalProtection;
 }
 
-export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
+export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
@@ -2651,10 +2648,10 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
   // in MoveBullet.
 
   // Set a few things up:
-  if (Item[pFirer.value.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
+  if (Item[pFirer.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
     ubAmmoType = Enum286.AMMO_KNIFE;
   } else {
-    ubAmmoType = pFirer.value.inv[pFirer.value.ubAttackingHand].ubGunAmmoType;
+    ubAmmoType = pFirer.inv[pFirer.ubAttackingHand].ubGunAmmoType;
   }
 
   if (TANK(pTarget)) {
@@ -2706,8 +2703,8 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
       iImpact = (iOrigImpact + 5) / 10;
     }
 
-    if ((ubAmmoType == Enum286.AMMO_BUCKSHOT) && (pTarget.value.bNumPelletsHitBy > 0)) {
-      iImpact += (pTarget.value.bNumPelletsHitBy - 1) / 2;
+    if ((ubAmmoType == Enum286.AMMO_BUCKSHOT) && (pTarget.bNumPelletsHitBy > 0)) {
+      iImpact += (pTarget.bNumPelletsHitBy - 1) / 2;
     }
   }
 
@@ -2735,17 +2732,17 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
     switch (ubHitLocation) {
       case AIM_SHOT_HEAD:
         // is the blow deadly enough for an instant kill?
-        if (PythSpacesAway(pFirer.value.sGridNo, pTarget.value.sGridNo) <= MAX_DISTANCE_FOR_MESSY_DEATH) {
-          if (iImpactForCrits > MIN_DAMAGE_FOR_INSTANT_KILL && iImpactForCrits < pTarget.value.bLife) {
+        if (PythSpacesAway(pFirer.sGridNo, pTarget.sGridNo) <= MAX_DISTANCE_FOR_MESSY_DEATH) {
+          if (iImpactForCrits > MIN_DAMAGE_FOR_INSTANT_KILL && iImpactForCrits < pTarget.bLife) {
             // blow to the head is so deadly that it causes instant death;
             // the target has more life than iImpact so we increase it
-            iImpact = pTarget.value.bLife + Random(10);
+            iImpact = pTarget.bLife + Random(10);
             iImpactForCrits = iImpact;
           }
 
           if (pubSpecial) {
             // is the blow deadly enough to cause a head explosion?
-            if (iImpactForCrits >= pTarget.value.bLife) {
+            if (iImpactForCrits >= pTarget.bLife) {
               if (iImpactForCrits > MIN_DAMAGE_FOR_HEAD_EXPLOSION) {
                 pubSpecial.value = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
               } else if (iImpactForCrits > (MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) && (PreRandom(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) < (iImpactForCrits - MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2))) {
@@ -2757,7 +2754,7 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
         break;
       case AIM_SHOT_LEGS:
         // is the damage enough to make us fall over?
-        if (pubSpecial && IS_MERC_BODY_TYPE(pTarget) && gAnimControl[pTarget.value.usAnimState].ubEndHeight == ANIM_STAND && pTarget.value.bOverTerrainType != Enum315.LOW_WATER && pTarget.value.bOverTerrainType != Enum315.MED_WATER && pTarget.value.bOverTerrainType != Enum315.DEEP_WATER) {
+        if (pubSpecial && IS_MERC_BODY_TYPE(pTarget) && gAnimControl[pTarget.usAnimState].ubEndHeight == ANIM_STAND && pTarget.bOverTerrainType != Enum315.LOW_WATER && pTarget.bOverTerrainType != Enum315.MED_WATER && pTarget.bOverTerrainType != Enum315.DEEP_WATER) {
           if (iImpactForCrits > MIN_DAMAGE_FOR_AUTO_FALL_OVER) {
             pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
@@ -2771,22 +2768,22 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
         // normal damage to torso
         // is the blow deadly enough for an instant kill?
         // since this value is much lower than the others, it only applies at short range...
-        if (PythSpacesAway(pFirer.value.sGridNo, pTarget.value.sGridNo) <= MAX_DISTANCE_FOR_MESSY_DEATH) {
-          if (iImpact > MIN_DAMAGE_FOR_INSTANT_KILL && iImpact < pTarget.value.bLife) {
+        if (PythSpacesAway(pFirer.sGridNo, pTarget.sGridNo) <= MAX_DISTANCE_FOR_MESSY_DEATH) {
+          if (iImpact > MIN_DAMAGE_FOR_INSTANT_KILL && iImpact < pTarget.bLife) {
             // blow to the chest is so deadly that it causes instant death;
             // the target has more life than iImpact so we increase it
-            iImpact = pTarget.value.bLife + Random(10);
+            iImpact = pTarget.bLife + Random(10);
             iImpactForCrits = iImpact;
           }
           // special thing for hitting chest - allow cumulative damage to count
-          else if ((iImpact + pTarget.value.sDamage) > (MIN_DAMAGE_FOR_BLOWN_AWAY + MIN_DAMAGE_FOR_INSTANT_KILL)) {
-            iImpact = pTarget.value.bLife + Random(10);
+          else if ((iImpact + pTarget.sDamage) > (MIN_DAMAGE_FOR_BLOWN_AWAY + MIN_DAMAGE_FOR_INSTANT_KILL)) {
+            iImpact = pTarget.bLife + Random(10);
             iImpactForCrits = iImpact;
           }
 
           // is the blow deadly enough to cause a chest explosion?
           if (pubSpecial) {
-            if (iImpact > MIN_DAMAGE_FOR_BLOWN_AWAY && iImpact >= pTarget.value.bLife) {
+            if (iImpact > MIN_DAMAGE_FOR_BLOWN_AWAY && iImpact >= pTarget.bLife) {
               pubSpecial.value = FIRE_WEAPON_CHEST_EXPLODE_SPECIAL;
             }
           }
@@ -2801,123 +2798,123 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
 
   // don't do critical hits against people who are gonna die!
   if (!IsAutoResolveActive()) {
-    if (ubAmmoType == Enum286.AMMO_KNIFE && pFirer.value.bOppList[pTarget.value.ubID] == SEEN_CURRENTLY) {
+    if (ubAmmoType == Enum286.AMMO_KNIFE && pFirer.bOppList[pTarget.ubID] == SEEN_CURRENTLY) {
       // is this a stealth attack?
-      if (pTarget.value.bOppList[pFirer.value.ubID] == NOT_HEARD_OR_SEEN && !CREATURE_OR_BLOODCAT(pTarget) && (ubHitLocation == AIM_SHOT_HEAD || ubHitLocation == AIM_SHOT_TORSO)) {
+      if (pTarget.bOppList[pFirer.ubID] == NOT_HEARD_OR_SEEN && !CREATURE_OR_BLOODCAT(pTarget) && (ubHitLocation == AIM_SHOT_HEAD || ubHitLocation == AIM_SHOT_TORSO)) {
         if (PreRandom(100) < (sHitBy + 10 * NUM_SKILL_TRAITS(pFirer, Enum269.THROWING))) {
           // instant death!
-          iImpact = pTarget.value.bLife + Random(10);
+          iImpact = pTarget.bLife + Random(10);
           iImpactForCrits = iImpact;
         }
       }
     }
 
-    if (iImpactForCrits > 0 && iImpactForCrits < pTarget.value.bLife) {
-      if (PreRandom(iImpactForCrits / 2 + pFirer.value.bAimTime * 5) + 1 > CRITICAL_HIT_THRESHOLD) {
+    if (iImpactForCrits > 0 && iImpactForCrits < pTarget.bLife) {
+      if (PreRandom(iImpactForCrits / 2 + pFirer.bAimTime * 5) + 1 > CRITICAL_HIT_THRESHOLD) {
         bStatLoss = PreRandom(iImpactForCrits / 2) + 1;
         switch (ubHitLocation) {
           case AIM_SHOT_HEAD:
-            if (bStatLoss >= pTarget.value.bWisdom) {
-              bStatLoss = pTarget.value.bWisdom - 1;
+            if (bStatLoss >= pTarget.bWisdom) {
+              bStatLoss = pTarget.bWisdom - 1;
             }
             if (bStatLoss > 0) {
-              pTarget.value.bWisdom -= bStatLoss;
+              pTarget.bWisdom -= bStatLoss;
 
-              if (pTarget.value.ubProfile != NO_PROFILE) {
-                gMercProfiles[pTarget.value.ubProfile].bWisdom = pTarget.value.bWisdom;
+              if (pTarget.ubProfile != NO_PROFILE) {
+                gMercProfiles[pTarget.ubProfile].bWisdom = pTarget.bWisdom;
               }
 
-              if (pTarget.value.name[0] && pTarget.value.bVisible == true) {
+              if (pTarget.name && pTarget.bVisible == 1) {
                 // make stat RED for a while...
-                pTarget.value.uiChangeWisdomTime = GetJA2Clock();
-                pTarget.value.usValueGoneUp &= ~(WIS_INCREASE);
+                pTarget.uiChangeWisdomTime = GetJA2Clock();
+                pTarget.usValueGoneUp &= ~(WIS_INCREASE);
 
                 if (bStatLoss == 1) {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_WISDOM], pTarget.value.name);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_WISDOM], pTarget.name);
                 } else {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_WISDOM], pTarget.value.name, bStatLoss);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_WISDOM], pTarget.name, bStatLoss);
                 }
               }
-            } else if (pTarget.value.bNumPelletsHitBy == 0) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.value.name);
+            } else if (pTarget.bNumPelletsHitBy == 0) {
+              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.name);
             }
             break;
           case AIM_SHOT_TORSO:
-            if (PreRandom(1) == 0 && !(pTarget.value.uiStatusFlags & SOLDIER_MONSTER)) {
-              if (bStatLoss >= pTarget.value.bDexterity) {
-                bStatLoss = pTarget.value.bDexterity - 1;
+            if (PreRandom(1) == 0 && !(pTarget.uiStatusFlags & SOLDIER_MONSTER)) {
+              if (bStatLoss >= pTarget.bDexterity) {
+                bStatLoss = pTarget.bDexterity - 1;
               }
               if (bStatLoss > 0) {
-                pTarget.value.bDexterity -= bStatLoss;
+                pTarget.bDexterity -= bStatLoss;
 
-                if (pTarget.value.ubProfile != NO_PROFILE) {
-                  gMercProfiles[pTarget.value.ubProfile].bDexterity = pTarget.value.bDexterity;
+                if (pTarget.ubProfile != NO_PROFILE) {
+                  gMercProfiles[pTarget.ubProfile].bDexterity = pTarget.bDexterity;
                 }
 
-                if (pTarget.value.name[0] && pTarget.value.bVisible == true) {
+                if (pTarget.name && pTarget.bVisible == 1) {
                   // make stat RED for a while...
-                  pTarget.value.uiChangeDexterityTime = GetJA2Clock();
-                  pTarget.value.usValueGoneUp &= ~(DEX_INCREASE);
+                  pTarget.uiChangeDexterityTime = GetJA2Clock();
+                  pTarget.usValueGoneUp &= ~(DEX_INCREASE);
 
                   if (bStatLoss == 1) {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_DEX], pTarget.value.name);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_DEX], pTarget.name);
                   } else {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_DEX], pTarget.value.name, bStatLoss);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_DEX], pTarget.name, bStatLoss);
                   }
                 }
               }
             } else {
-              if (bStatLoss >= pTarget.value.bStrength) {
-                bStatLoss = pTarget.value.bStrength - 1;
+              if (bStatLoss >= pTarget.bStrength) {
+                bStatLoss = pTarget.bStrength - 1;
               }
               if (bStatLoss > 0) {
-                pTarget.value.bStrength -= bStatLoss;
+                pTarget.bStrength -= bStatLoss;
 
-                if (pTarget.value.ubProfile != NO_PROFILE) {
-                  gMercProfiles[pTarget.value.ubProfile].bStrength = pTarget.value.bStrength;
+                if (pTarget.ubProfile != NO_PROFILE) {
+                  gMercProfiles[pTarget.ubProfile].bStrength = pTarget.bStrength;
                 }
 
-                if (pTarget.value.name[0] && pTarget.value.bVisible == true) {
+                if (pTarget.name && pTarget.bVisible == 1) {
                   // make stat RED for a while...
-                  pTarget.value.uiChangeStrengthTime = GetJA2Clock();
-                  pTarget.value.usValueGoneUp &= ~(STRENGTH_INCREASE);
+                  pTarget.uiChangeStrengthTime = GetJA2Clock();
+                  pTarget.usValueGoneUp &= ~(STRENGTH_INCREASE);
 
                   if (bStatLoss == 1) {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_STRENGTH], pTarget.value.name);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_STRENGTH], pTarget.name);
                   } else {
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_STRENGTH], pTarget.value.name, bStatLoss);
+                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_STRENGTH], pTarget.name, bStatLoss);
                   }
                 }
               }
             }
             break;
           case AIM_SHOT_LEGS:
-            if (bStatLoss >= pTarget.value.bAgility) {
-              bStatLoss = pTarget.value.bAgility - 1;
+            if (bStatLoss >= pTarget.bAgility) {
+              bStatLoss = pTarget.bAgility - 1;
             }
             if (bStatLoss > 0) {
-              pTarget.value.bAgility -= bStatLoss;
+              pTarget.bAgility -= bStatLoss;
 
-              if (pTarget.value.ubProfile != NO_PROFILE) {
-                gMercProfiles[pTarget.value.ubProfile].bAgility = pTarget.value.bAgility;
+              if (pTarget.ubProfile != NO_PROFILE) {
+                gMercProfiles[pTarget.ubProfile].bAgility = pTarget.bAgility;
               }
 
-              if (pTarget.value.name[0] && pTarget.value.bVisible == true) {
+              if (pTarget.name && pTarget.bVisible == 1) {
                 // make stat RED for a while...
-                pTarget.value.uiChangeAgilityTime = GetJA2Clock();
-                pTarget.value.usValueGoneUp &= ~(AGIL_INCREASE);
+                pTarget.uiChangeAgilityTime = GetJA2Clock();
+                pTarget.usValueGoneUp &= ~(AGIL_INCREASE);
 
                 if (bStatLoss == 1) {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_AGIL], pTarget.value.name);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_1_AGIL], pTarget.name);
                 } else {
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_AGIL], pTarget.value.name, bStatLoss);
+                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_LOSES_AGIL], pTarget.name, bStatLoss);
                 }
               }
             }
             break;
         }
-      } else if (ubHitLocation == AIM_SHOT_HEAD && pTarget.value.bNumPelletsHitBy == 0) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.value.name);
+      } else if (ubHitLocation == AIM_SHOT_HEAD && pTarget.bNumPelletsHitBy == 0) {
+        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, Message[Enum334.STR_HEAD_HIT], pTarget.name);
       }
     }
   }
@@ -2925,14 +2922,14 @@ export function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLD
   return iImpact;
 }
 
-export function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, iHitBy: INT32, fBladeAttack: boolean): INT32 {
+export function HTHImpact(pSoldier: SOLDIERTYPE, pTarget: SOLDIERTYPE, iHitBy: INT32, fBladeAttack: boolean): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
 
   if (fBladeAttack) {
     iImpact = (EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
-    iImpact += Weapon[pSoldier.value.usAttackingWeapon].ubImpact;
+    iImpact += Weapon[pSoldier.usAttackingWeapon].ubImpact;
     iImpact += EffectiveStrength(pSoldier) / 20; // 0 to 5 for strength, adjusted by damage taken
 
     if (AM_A_ROBOT(pTarget)) {
@@ -2943,8 +2940,8 @@ export function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDI
     iImpact += EffectiveStrength(pSoldier) / 5; // 0 to 20 for strength, adjusted by damage taken
 
     // NB martial artists don't get a bonus for using brass knuckles!
-    if (pSoldier.value.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
-      iImpact += Weapon[pSoldier.value.usAttackingWeapon].ubImpact;
+    if (pSoldier.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
+      iImpact += Weapon[pSoldier.usAttackingWeapon].ubImpact;
 
       if (AM_A_ROBOT(pTarget)) {
         iImpact /= 2;
@@ -2967,7 +2964,7 @@ export function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDI
     // add bonuses for hand-to-hand and martial arts
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS)) {
       iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100;
-      if (pSoldier.value.usAnimState == Enum193.NINJA_SPINKICK) {
+      if (pSoldier.usAnimState == Enum193.NINJA_SPINKICK) {
         iImpact *= 2;
       }
     }
@@ -2983,23 +2980,23 @@ export function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDI
 
 export function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
   let fDoMissForGun: boolean = false;
-  let pAttacker: Pointer<SOLDIERTYPE>;
-  let pBullet: Pointer<BULLET>;
+  let pAttacker: SOLDIERTYPE;
+  let pBullet: BULLET;
 
   pAttacker = MercPtrs[ubAttackerID];
 
-  if (pAttacker.value.ubOppNum != NOBODY) {
+  if (pAttacker.ubOppNum != NOBODY) {
     // if it was another team shooting at someone under our control
-    if ((pAttacker.value.bTeam != Menptr[pAttacker.value.ubOppNum].bTeam)) {
+    if ((pAttacker.bTeam != Menptr[pAttacker.ubOppNum].bTeam)) {
       // if OPPONENT is under our control
-      if (Menptr[pAttacker.value.ubOppNum].bTeam == gbPlayerNum) {
+      if (Menptr[pAttacker.ubOppNum].bTeam == gbPlayerNum) {
         // AGILITY GAIN: Opponent "dodged" a bullet shot at him (it missed)
-        StatChange(MercPtrs[pAttacker.value.ubOppNum], AGILAMT, 5, FROM_FAILURE);
+        StatChange(MercPtrs[pAttacker.ubOppNum], AGILAMT, 5, FROM_FAILURE);
       }
     }
   }
 
-  switch (Weapon[MercPtrs[ubAttackerID].value.usAttackingWeapon].ubWeaponClass) {
+  switch (Weapon[MercPtrs[ubAttackerID].usAttackingWeapon].ubWeaponClass) {
     case Enum282.HANDGUNCLASS:
     case Enum282.RIFLECLASS:
     case Enum282.SHOTGUNCLASS:
@@ -3007,7 +3004,7 @@ export function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
     case Enum282.MGCLASS:
 
       // Guy has missed, play random sound
-      if (MercPtrs[ubAttackerID].value.bTeam == gbPlayerNum) {
+      if (MercPtrs[ubAttackerID].bTeam == gbPlayerNum) {
         if (Random(40) == 0) {
           DoMercBattleSound(MercPtrs[ubAttackerID], Enum259.BATTLE_SOUND_CURSE1);
         }
@@ -3032,8 +3029,8 @@ export function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
     if (gGameSettings.fOptions[Enum8.TOPTION_SHOW_MISSES]) {
       pBullet = GetBulletPtr(iBullet);
 
-      if (pAttacker.value.bTeam == gbPlayerNum) {
-        LocateGridNo(pBullet.value.sGridNo);
+      if (pAttacker.bTeam == gbPlayerNum) {
+        LocateGridNo(pBullet.sGridNo);
       }
     }
   }
@@ -3042,16 +3039,16 @@ export function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
   FreeUpAttacker(ubAttackerID);
 }
 
-function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8, ubMode: UINT8): UINT32 {
+function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime: UINT8, ubMode: UINT8): UINT32 {
   let usInHand: UINT16;
   let ubBandaged: UINT8;
   let iAttRating: INT32;
   let iDefRating: INT32;
   let iChance: INT32;
 
-  usInHand = pAttacker.value.usAttackingWeapon;
+  usInHand = pAttacker.usAttackingWeapon;
 
-  if ((usInHand != Enum225.CREATURE_QUEEN_TENTACLES) && (pDefender.value.bLife < OKLIFE || pDefender.value.bBreath < OKBREATH)) {
+  if ((usInHand != Enum225.CREATURE_QUEEN_TENTACLES) && (pDefender.bLife < OKLIFE || pDefender.bBreath < OKBREATH)) {
     // there is NO way to miss
     return 100;
   }
@@ -3072,19 +3069,19 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
     // this is more of a brute force strength-vs-strength check
     iAttRating = (EffectiveDexterity(pAttacker) + // coordination, accuracy
                   EffectiveAgility(pAttacker) + // speed & reflexes
-                  3 * pAttacker.value.bStrength + // physical strength (TRIPLED!)
+                  3 * pAttacker.bStrength + // physical strength (TRIPLED!)
                   (10 * EffectiveExpLevel(pAttacker))); // experience, knowledge
   } else {
     iAttRating = (3 * EffectiveDexterity(pAttacker) + // coordination, accuracy (TRIPLED!)
                   EffectiveAgility(pAttacker) + // speed & reflexes
-                  pAttacker.value.bStrength + // physical strength
+                  pAttacker.bStrength + // physical strength
                   (10 * EffectiveExpLevel(pAttacker))); // experience, knowledge
   }
 
   iAttRating /= 6; // convert from 6-600 to 1-100
 
   // psycho bonus
-  if (pAttacker.value.ubProfile != NO_PROFILE && gMercProfiles[pAttacker.value.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
+  if (pAttacker.ubProfile != NO_PROFILE && gMercProfiles[pAttacker.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
     iAttRating += AIM_BONUS_PSYCHO;
   }
 
@@ -3101,22 +3098,22 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
     iAttRating += ((AIM_BONUS_PER_AP * ubAimTime) / 2); // bonus for aiming
   }
 
-  if (!(pAttacker.value.uiStatusFlags & SOLDIER_PC)) // if attacker is a computer AI controlled enemy
+  if (!(pAttacker.uiStatusFlags & SOLDIER_PC)) // if attacker is a computer AI controlled enemy
   {
     iAttRating += gbDiff[DIFF_ENEMY_TO_HIT_MOD][SoldierDifficultyLevel(pAttacker)];
   }
 
   // if attacker is being affected by gas
-  if (pAttacker.value.uiStatusFlags & SOLDIER_GASSED)
+  if (pAttacker.uiStatusFlags & SOLDIER_GASSED)
     iAttRating -= AIM_PENALTY_GASSED;
 
   // if attacker is being bandaged at the same time, his concentration is off
-  if (pAttacker.value.ubServiceCount > 0)
+  if (pAttacker.ubServiceCount > 0)
     iAttRating -= AIM_PENALTY_GETTINGAID;
 
   // if attacker is still in shock
-  if (pAttacker.value.bShock)
-    iAttRating -= (pAttacker.value.bShock * AIM_PENALTY_PER_SHOCK);
+  if (pAttacker.bShock)
+    iAttRating -= (pAttacker.bShock * AIM_PENALTY_PER_SHOCK);
 
   /*
     // if the attacker is an A.I.M. mercenary
@@ -3125,18 +3122,18 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   */
 
   // If attacker injured, reduce chance accordingly (by up to 2/3rds)
-  if ((iAttRating > 0) && (pAttacker.value.bLife < pAttacker.value.bLifeMax)) {
+  if ((iAttRating > 0) && (pAttacker.bLife < pAttacker.bLifeMax)) {
     // if bandaged, give 1/2 of the bandaged life points back into equation
-    ubBandaged = pAttacker.value.bLifeMax - pAttacker.value.bLife - pAttacker.value.bBleeding;
+    ubBandaged = pAttacker.bLifeMax - pAttacker.bLife - pAttacker.bBleeding;
 
-    iAttRating -= (2 * iAttRating * (pAttacker.value.bLifeMax - pAttacker.value.bLife + (ubBandaged / 2))) / (3 * pAttacker.value.bLifeMax);
+    iAttRating -= (2 * iAttRating * (pAttacker.bLifeMax - pAttacker.bLife + (ubBandaged / 2))) / (3 * pAttacker.bLifeMax);
   }
 
   // If attacker tired, reduce chance accordingly (by up to 1/2)
-  if ((iAttRating > 0) && (pAttacker.value.bBreath < 100))
-    iAttRating -= (iAttRating * (100 - pAttacker.value.bBreath)) / 200;
+  if ((iAttRating > 0) && (pAttacker.bBreath < 100))
+    iAttRating -= (iAttRating * (100 - pAttacker.bBreath)) / 200;
 
-  if (pAttacker.value.ubProfile != NO_PROFILE) {
+  if (pAttacker.ubProfile != NO_PROFILE) {
     if (ubMode == HTH_MODE_STAB) {
       if (HAS_SKILL_TRAIT(pAttacker, Enum269.KNIFING)) {
         iAttRating += gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pAttacker, Enum269.KNIFING);
@@ -3159,12 +3156,12 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   if (ubMode == HTH_MODE_STEAL) {
     iDefRating = (EffectiveAgility(pDefender)) + // speed & reflexes
                  EffectiveDexterity(pDefender) + // coordination, accuracy
-                 3 * pDefender.value.bStrength + // physical strength (TRIPLED!)
+                 3 * pDefender.bStrength + // physical strength (TRIPLED!)
                  (10 * EffectiveExpLevel(pDefender)); // experience, knowledge
   } else {
     iDefRating = (3 * EffectiveAgility(pDefender)) + // speed & reflexes (TRIPLED!)
                  EffectiveDexterity(pDefender) + // coordination, accuracy
-                 pDefender.value.bStrength + // physical strength
+                 pDefender.bStrength + // physical strength
                  (10 * EffectiveExpLevel(pDefender)); // experience, knowledge
   }
 
@@ -3177,16 +3174,16 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   iDefRating -= GetSkillCheckPenaltyForFatigue(pDefender, iDefRating);
 
   // if attacker is being affected by gas
-  if (pDefender.value.uiStatusFlags & SOLDIER_GASSED)
+  if (pDefender.uiStatusFlags & SOLDIER_GASSED)
     iDefRating -= AIM_PENALTY_GASSED;
 
   // if defender is being bandaged at the same time, his concentration is off
-  if (pDefender.value.ubServiceCount > 0)
+  if (pDefender.ubServiceCount > 0)
     iDefRating -= AIM_PENALTY_GETTINGAID;
 
   // if defender is still in shock
-  if (pDefender.value.bShock)
-    iDefRating -= (pDefender.value.bShock * AIM_PENALTY_PER_SHOCK);
+  if (pDefender.bShock)
+    iDefRating -= (pDefender.bShock * AIM_PENALTY_PER_SHOCK);
 
   /*
     // if the defender is an A.I.M. mercenary
@@ -3195,25 +3192,25 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   */
 
   // If defender injured, reduce chance accordingly (by up to 2/3rds)
-  if ((iDefRating > 0) && (pDefender.value.bLife < pDefender.value.bLifeMax)) {
+  if ((iDefRating > 0) && (pDefender.bLife < pDefender.bLifeMax)) {
     // if bandaged, give 1/2 of the bandaged life points back into equation
-    ubBandaged = pDefender.value.bLifeMax - pDefender.value.bLife - pDefender.value.bBleeding;
+    ubBandaged = pDefender.bLifeMax - pDefender.bLife - pDefender.bBleeding;
 
-    iDefRating -= (2 * iDefRating * (pDefender.value.bLifeMax - pDefender.value.bLife + (ubBandaged / 2))) / (3 * pDefender.value.bLifeMax);
+    iDefRating -= (2 * iDefRating * (pDefender.bLifeMax - pDefender.bLife + (ubBandaged / 2))) / (3 * pDefender.bLifeMax);
   }
 
   // If defender tired, reduce chance accordingly (by up to 1/2)
-  if ((iDefRating > 0) && (pDefender.value.bBreath < 100))
-    iDefRating -= (iDefRating * (100 - pDefender.value.bBreath)) / 200;
+  if ((iDefRating > 0) && (pDefender.bBreath < 100))
+    iDefRating -= (iDefRating * (100 - pDefender.bBreath)) / 200;
 
-  if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES && pDefender.value.ubBodyType == Enum194.LARVAE_MONSTER || pDefender.value.ubBodyType == Enum194.INFANT_MONSTER) {
+  if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES && pDefender.ubBodyType == Enum194.LARVAE_MONSTER || pDefender.ubBodyType == Enum194.INFANT_MONSTER) {
     // try to prevent queen from killing the kids, ever!
     iDefRating += 10000;
   }
 
-  if (gAnimControl[pDefender.value.usAnimState].ubEndHeight < ANIM_STAND) {
+  if (gAnimControl[pDefender.usAnimState].ubEndHeight < ANIM_STAND) {
     if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES) {
-      if (gAnimControl[pDefender.value.usAnimState].ubEndHeight == ANIM_PRONE) {
+      if (gAnimControl[pDefender.usAnimState].ubEndHeight == ANIM_PRONE) {
         // make it well-nigh impossible to hit someone who is prone!
         iDefRating += 1000;
       } else {
@@ -3223,15 +3220,15 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
       // if defender crouched, reduce chance accordingly (harder to dodge)
       iDefRating -= BAD_DODGE_POSITION_PENALTY;
       // If our target is prone, double the penalty!
-      if (gAnimControl[pDefender.value.usAnimState].ubEndHeight == ANIM_PRONE) {
+      if (gAnimControl[pDefender.usAnimState].ubEndHeight == ANIM_PRONE) {
         iDefRating -= BAD_DODGE_POSITION_PENALTY;
       }
     }
   }
 
-  if (pDefender.value.ubProfile != NO_PROFILE) {
+  if (pDefender.ubProfile != NO_PROFILE) {
     if (ubMode == HTH_MODE_STAB) {
-      if (Item[pDefender.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE) {
+      if (Item[pDefender.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE) {
         if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // good with knives, got one, so we're good at parrying
           iDefRating += gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING);
@@ -3252,7 +3249,7 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
       }
     } else {
       // punch/hand-to-hand/martial arts attack/steal
-      if (Item[pDefender.value.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL) {
+      if (Item[pDefender.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL) {
         if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // with our knife, we get some bonus at defending from HTH attacks
           iDefRating += (gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 2;
@@ -3285,7 +3282,7 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
     // Changed from DG by CJC to give higher chances of hitting with a stab or punch
     iChance = 67 + (iAttRating - iDefRating) / 3;
 
-    if (pAttacker.value.bAimShotLocation == AIM_SHOT_HEAD) {
+    if (pAttacker.bAimShotLocation == AIM_SHOT_HEAD) {
       // make this harder!
       iChance -= 20;
     }
@@ -3304,48 +3301,48 @@ function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDI
   return iChance;
 }
 
-export function CalcChanceToStab(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
+export function CalcChanceToStab(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STAB);
 }
 
-export function CalcChanceToPunch(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
+export function CalcChanceToPunch(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_PUNCH);
 }
 
-function CalcChanceToSteal(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
+function CalcChanceToSteal(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STEAL);
 }
 
-export function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
+export function ReloadWeapon(pSoldier: SOLDIERTYPE, ubHandPos: UINT8): void {
   // NB this is a cheat function, don't award experience
 
-  if (pSoldier.value.inv[ubHandPos].usItem != NOTHING) {
-    pSoldier.value.inv[ubHandPos].ubGunShotsLeft = Weapon[pSoldier.value.inv[ubHandPos].usItem].ubMagSize;
+  if (pSoldier.inv[ubHandPos].usItem != NOTHING) {
+    pSoldier.inv[ubHandPos].ubGunShotsLeft = Weapon[pSoldier.inv[ubHandPos].usItem].ubMagSize;
     // Dirty Bars
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL1);
   }
 }
 
-export function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNotify: boolean): boolean {
+export function IsGunBurstCapable(pSoldier: SOLDIERTYPE, ubHandPos: UINT8, fNotify: boolean): boolean {
   let fCapable: boolean = false;
 
-  if (pSoldier.value.inv[ubHandPos].usItem != NOTHING) {
+  if (pSoldier.inv[ubHandPos].usItem != NOTHING) {
     // ATE: Check for being a weapon....
-    if (Item[pSoldier.value.inv[ubHandPos].usItem].usItemClass & IC_WEAPON) {
-      if (Weapon[pSoldier.value.inv[ubHandPos].usItem].ubShotsPerBurst > 0) {
+    if (Item[pSoldier.inv[ubHandPos].usItem].usItemClass & IC_WEAPON) {
+      if (Weapon[pSoldier.inv[ubHandPos].usItem].ubShotsPerBurst > 0) {
         fCapable = true;
       }
     }
   }
 
   if (fNotify && !fCapable) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[Enum334.STR_NOT_BURST_CAPABLE], pSoldier.value.name);
+    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, Message[Enum334.STR_NOT_BURST_CAPABLE], pSoldier.name);
   }
 
   return fCapable;
 }
 
-export function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed: boolean): INT32 {
+export function CalcMaxTossRange(pSoldier: SOLDIERTYPE, usItem: UINT16, fArmed: boolean): INT32 {
   let iRange: INT32;
   let usSubItem: UINT16;
 
@@ -3380,7 +3377,7 @@ export function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16,
     }
 
     // adjust for thrower's remaining breath (lose up to 1/2 of range)
-    iRange -= (iRange * (100 - pSoldier.value.bBreath)) / 200;
+    iRange -= (iRange * (100 - pSoldier.bBreath)) / 200;
 
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.THROWING)) {
       // better max range due to expertise
@@ -3395,7 +3392,7 @@ export function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16,
   return iRange;
 }
 
-export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
+export function CalcThrownChanceToHit(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   let iChance: INT32;
   let iMaxRange: INT32;
   let iRange: INT32;
@@ -3403,10 +3400,10 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   let bPenalty: INT8;
   let bBandaged: INT8;
 
-  if (pSoldier.value.bWeaponMode == Enum265.WM_ATTACHED) {
+  if (pSoldier.bWeaponMode == Enum265.WM_ATTACHED) {
     usHandItem = Enum225.UNDER_GLAUNCHER;
   } else {
-    usHandItem = pSoldier.value.inv[Enum261.HANDPOS].usItem;
+    usHandItem = pSoldier.inv[Enum261.HANDPOS].usItem;
   }
 
   /*
@@ -3420,7 +3417,7 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
           #endif
   */
 
-  if (Item[usHandItem].usItemClass != IC_LAUNCHER && pSoldier.value.bWeaponMode != Enum265.WM_ATTACHED) {
+  if (Item[usHandItem].usItemClass != IC_LAUNCHER && pSoldier.bWeaponMode != Enum265.WM_ATTACHED) {
     // PHYSICALLY THROWN arced projectile (ie. grenade)
     // for lack of anything better, base throwing accuracy on dex & marskmanship
     iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier)) / 2;
@@ -3430,7 +3427,7 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     }
   } else {
     // MECHANICALLY FIRED arced projectile (ie. mortar), need brains & know-how
-    iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + pSoldier.value.bExpLevel) / 4;
+    iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + pSoldier.bExpLevel) / 4;
 
     // heavy weapons trait helps out
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.HEAVY_WEAPS)) {
@@ -3445,7 +3442,7 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   iChance -= GetSkillCheckPenaltyForFatigue(pSoldier, iChance);
 
   // if shooting same target from same position as the last shot
-  if (sGridNo == pSoldier.value.sLastTarget) {
+  if (sGridNo == pSoldier.sLastTarget) {
     iChance += AIM_BONUS_SAME_TARGET; // give a bonus to hit
   }
 
@@ -3462,26 +3459,26 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   */
 
   // if shooter is being affected by gas
-  if (pSoldier.value.uiStatusFlags & SOLDIER_GASSED) {
+  if (pSoldier.uiStatusFlags & SOLDIER_GASSED) {
     iChance -= AIM_PENALTY_GASSED;
   }
 
   // if shooter is being bandaged at the same time, his concentration is off
-  if (pSoldier.value.ubServiceCount > 0) {
+  if (pSoldier.ubServiceCount > 0) {
     iChance -= AIM_PENALTY_GETTINGAID;
   }
 
   // if shooter is still in shock
-  if (pSoldier.value.bShock) {
-    iChance -= (pSoldier.value.bShock * AIM_PENALTY_PER_SHOCK);
+  if (pSoldier.bShock) {
+    iChance -= (pSoldier.bShock * AIM_PENALTY_PER_SHOCK);
   }
 
   // calculate actual range (in world units)
-  iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
+  iRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo);
 
   // NumMessage("ACTUAL RANGE = ",range);
 
-  if (pSoldier.value.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.value.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
+  if (pSoldier.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
     // decrease effective range by 10% when using sungoggles (w or w/o scope)
     iRange -= iRange / 10; // basically, +1% to hit per every 2 squares
   }
@@ -3512,12 +3509,12 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // IF CHANCE EXISTS, BUT ATTACKER IS INJURED
-  if ((iChance > 0) && (pSoldier.value.bLife < pSoldier.value.bLifeMax)) {
+  if ((iChance > 0) && (pSoldier.bLife < pSoldier.bLifeMax)) {
     // if bandaged, give 1/2 of the bandaged life points back into equation
-    bBandaged = pSoldier.value.bLifeMax - pSoldier.value.bLife - pSoldier.value.bBleeding;
+    bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
     // injury penalty is based on % damage taken (max 2/3rds iChance)
-    bPenalty = (2 * iChance * (pSoldier.value.bLifeMax - pSoldier.value.bLife + (bBandaged / 2))) / (3 * pSoldier.value.bLifeMax);
+    bPenalty = (2 * iChance * (pSoldier.bLifeMax - pSoldier.bLife + (bBandaged / 2))) / (3 * pSoldier.bLifeMax);
 
     // for mechanically-fired projectiles, reduce penalty in half
     if (Item[usHandItem].usItemClass == IC_LAUNCHER) {
@@ -3529,9 +3526,9 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // IF CHANCE EXISTS, BUT ATTACKER IS LOW ON BREATH
-  if ((iChance > 0) && (pSoldier.value.bBreath < 100)) {
+  if ((iChance > 0) && (pSoldier.bBreath < 100)) {
     // breath penalty is based on % breath missing (max 1/2 iChance)
-    bPenalty = (iChance * (100 - pSoldier.value.bBreath)) / 200;
+    bPenalty = (iChance * (100 - pSoldier.bBreath)) / 200;
 
     // for mechanically-fired projectiles, reduce penalty in half
     if (Item[usHandItem].usItemClass == IC_LAUNCHER)
@@ -3544,7 +3541,7 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   // if iChance exists, but it's a mechanical item being used
   if ((iChance > 0) && (Item[usHandItem].usItemClass == IC_LAUNCHER))
     // reduce iChance to hit DIRECTLY by the item's working condition
-    iChance = (iChance * WEAPON_STATUS_MOD(pSoldier.value.inv[Enum261.HANDPOS].bStatus[0])) / 100;
+    iChance = (iChance * WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bStatus[0])) / 100;
 
   // MAKE SURE CHANCE TO HIT IS WITHIN DEFINED LIMITS
   if (iChance < MINCHANCETOHIT)
@@ -3558,19 +3555,19 @@ export function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   return iChance;
 }
 
-export function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
+export function ChangeWeaponMode(pSoldier: SOLDIERTYPE): void {
   // ATE: Don't do this if in a fire amimation.....
-  if (gAnimControl[pSoldier.value.usAnimState].uiFlags & ANIM_FIRE) {
+  if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_FIRE) {
     return;
   }
 
-  if (FindAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(addressof(pSoldier.value.inv[Enum261.HANDPOS]), Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
+  if (FindAttachment(pSoldier.inv[Enum261.HANDPOS], Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(pSoldier.inv[Enum261.HANDPOS], Enum225.UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
     // swap between single/burst fire
     if (IsGunBurstCapable(pSoldier, Enum261.HANDPOS, true)) {
-      pSoldier.value.bWeaponMode++;
-      if (pSoldier.value.bWeaponMode > Enum265.WM_BURST) {
+      pSoldier.bWeaponMode++;
+      if (pSoldier.bWeaponMode > Enum265.WM_BURST) {
         // return to normal mode after going past burst
-        pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
+        pSoldier.bWeaponMode = Enum265.WM_NORMAL;
       }
     } else {
       // do nothing
@@ -3578,30 +3575,30 @@ export function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
   } else {
     // grenade launcher available, makes things more complicated
-    pSoldier.value.bWeaponMode++;
-    if (pSoldier.value.bWeaponMode == Enum265.NUM_WEAPON_MODES) {
+    pSoldier.bWeaponMode++;
+    if (pSoldier.bWeaponMode == Enum265.NUM_WEAPON_MODES) {
       // return to the beginning
-      pSoldier.value.bWeaponMode = Enum265.WM_NORMAL;
+      pSoldier.bWeaponMode = Enum265.WM_NORMAL;
     } else {
       // do NOT give message that gun is burst capable, because if we skip past
       // burst capable then we are going on to the grenade launcher
-      if (pSoldier.value.bWeaponMode == Enum265.WM_BURST && !(IsGunBurstCapable(pSoldier, Enum261.HANDPOS, false))) {
+      if (pSoldier.bWeaponMode == Enum265.WM_BURST && !(IsGunBurstCapable(pSoldier, Enum261.HANDPOS, false))) {
         // skip past that mode!
-        pSoldier.value.bWeaponMode++;
+        pSoldier.bWeaponMode++;
       }
     }
   }
 
-  if (pSoldier.value.bWeaponMode == Enum265.WM_BURST) {
-    pSoldier.value.bDoBurst = true;
+  if (pSoldier.bWeaponMode == Enum265.WM_BURST) {
+    pSoldier.bDoBurst = 1;
   } else {
-    pSoldier.value.bDoBurst = false;
+    pSoldier.bDoBurst = 0;
   }
   DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   gfUIForceReExamineCursorData = true;
 }
 
-export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
+export function DishoutQueenSwipeDamage(pQueenSoldier: SOLDIERTYPE): void {
   let bValidDishoutDirs: INT8[][] /* [3][3] */ = [
     [ Enum245.NORTH, Enum245.NORTHEAST, -1 ],
     [ Enum245.EAST, Enum245.SOUTHEAST, -1 ],
@@ -3610,7 +3607,7 @@ export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): vo
 
   let cnt: UINT32;
   let cnt2: UINT32;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let bDir: INT8;
   let iChance: INT32;
   let iImpact: INT32;
@@ -3621,17 +3618,17 @@ export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): vo
     pSoldier = MercSlots[cnt];
 
     if (pSoldier != null) {
-      if (pSoldier.value.ubID != pQueenSoldier.value.ubID) {
+      if (pSoldier.ubID != pQueenSoldier.ubID) {
         // ATE: Ok, lets check for some basic things here!
-        if (pSoldier.value.bLife >= OKLIFE && pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bActive && pSoldier.value.bInSector) {
+        if (pSoldier.bLife >= OKLIFE && pSoldier.sGridNo != NOWHERE && pSoldier.bActive && pSoldier.bInSector) {
           // Get Pyth spaces away....
-          if (GetRangeInCellCoordsFromGridNoDiff(pQueenSoldier.value.sGridNo, pSoldier.value.sGridNo) <= Weapon[Enum225.CREATURE_QUEEN_TENTACLES].usRange) {
+          if (GetRangeInCellCoordsFromGridNoDiff(pQueenSoldier.sGridNo, pSoldier.sGridNo) <= Weapon[Enum225.CREATURE_QUEEN_TENTACLES].usRange) {
             // get direction
-            bDir = GetDirectionFromGridNo(pSoldier.value.sGridNo, pQueenSoldier);
+            bDir = GetDirectionFromGridNo(pSoldier.sGridNo, pQueenSoldier);
 
             //
             for (cnt2 = 0; cnt2 < 2; cnt2++) {
-              if (bValidDishoutDirs[pQueenSoldier.value.uiPendingActionData1][cnt2] == bDir) {
+              if (bValidDishoutDirs[pQueenSoldier.uiPendingActionData1][cnt2] == bDir) {
                 iChance = CalcChanceToStab(pQueenSoldier, pSoldier, 0);
 
                 // CC: Look here for chance to hit, damage, etc...
@@ -3640,7 +3637,7 @@ export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): vo
                 if (iHitBy > 0) {
                   // Hit!
                   iImpact = HTHImpact(pQueenSoldier, pSoldier, iHitBy, true);
-                  EVENT_SoldierGotHit(pSoldier, Enum225.CREATURE_QUEEN_TENTACLES, iImpact, iImpact, gOppositeDirection[bDir], 50, pQueenSoldier.value.ubID, 0, ANIM_CROUCH, 0, 0);
+                  EVENT_SoldierGotHit(pSoldier, Enum225.CREATURE_QUEEN_TENTACLES, iImpact, iImpact, gOppositeDirection[bDir], 50, pQueenSoldier.ubID, 0, ANIM_CROUCH, 0, 0);
                 }
               }
             }
@@ -3650,12 +3647,12 @@ export function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): vo
     }
   }
 
-  pQueenSoldier.value.uiPendingActionData1++;
+  pQueenSoldier.uiPendingActionData1++;
 }
 
-function WillExplosiveWeaponFail(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): boolean {
-  if (pSoldier.value.bTeam == gbPlayerNum || pSoldier.value.bVisible == 1) {
-    if ((PreRandom(40) + PreRandom(40)) > pObj.value.bStatus[0]) {
+function WillExplosiveWeaponFail(pSoldier: SOLDIERTYPE, pObj: OBJECTTYPE): boolean {
+  if (pSoldier.bTeam == gbPlayerNum || pSoldier.bVisible == 1) {
+    if ((PreRandom(40) + PreRandom(40)) > pObj.bStatus[0]) {
       // Do second dice roll
       if (PreRandom(2) == 1) {
         // Fail
