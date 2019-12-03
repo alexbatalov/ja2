@@ -51,6 +51,7 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
   let uiType: UINT8;
   let uiBytesRead: UINT32;
   let fReturnVal: boolean = false;
+  let buffer: Buffer;
 
   Assert(hImage != null);
 
@@ -63,12 +64,25 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
     return false;
   }
 
-  if (!FileRead(hFile, addressof(uiImgID), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiColMap), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiType), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
+  buffer = Buffer.allocUnsafe(1);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    FileClose(hFile);
+    return false;
+  }
+  uiImgID = buffer.readUInt8(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    FileClose(hFile);
+    return false;
+  }
+  uiColMap = buffer.readUInt8(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    FileClose(hFile);
+    return false;
+  }
+  uiType = buffer.readUInt8(0);
 
   switch (uiType) {
     case 1:
@@ -87,10 +101,6 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
       break;
   }
 
-  // Set remaining values
-
-end:
-  FileClose(hFile);
   return fReturnVal;
 }
 
@@ -127,9 +137,6 @@ function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, ui
 //**************************************************************************
 
 function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
-  let pBMData: Pointer<UINT8>;
-  let pBMPtr: Pointer<UINT8>;
-
   let uiColMapOrigin: UINT16;
   let uiColMapLength: UINT16;
   let uiColMapEntrySize: UINT8;
@@ -147,26 +154,55 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
   let r: UINT8;
   let g: UINT8;
   let b: UINT8;
+  let buffer: Buffer;
+  let chunk: Buffer;
+  let offset: number;
 
-  if (!FileRead(hFile, addressof(uiColMapOrigin), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiColMapLength), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiColMapEntrySize), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
+  buffer = Buffer.allocUnsafe(2);
 
-  if (!FileRead(hFile, addressof(uiXOrg), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiYOrg), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiWidth), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiHeight), sizeof(UINT16), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiImagePixelSize), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
-  if (!FileRead(hFile, addressof(uiImageDescriptor), sizeof(UINT8), addressof(uiBytesRead)))
-    goto("end");
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiColMapOrigin = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiColMapLength = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    return false;
+  }
+  uiColMapEntrySize = buffer.readUInt8(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiXOrg = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiYOrg = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiWidth = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 2)) === -1) {
+    return false;
+  }
+  uiHeight = buffer.readUInt16LE(0);
+
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    return false;
+  }
+  uiImagePixelSize = buffer.readUInt8(0);
+  if ((uiBytesRead = FileRead(hFile, buffer, 1)) === -1) {
+    return false;
+  }
+  uiImageDescriptor = buffer.readUInt8(0);
 
   // skip the id
   FileSeek(hFile, uiImgID, FILE_SEEK_FROM_CURRENT);
@@ -188,74 +224,85 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
     if (uiImagePixelSize == 16) {
       iNumValues = uiWidth * uiHeight;
 
-      hImage.value.p16BPPData = MemAlloc(iNumValues * (uiImagePixelSize / 8));
-
-      if (hImage.value.p16BPPData == null)
-        goto("end");
-
-      // Get data pointer
-      pBMData = hImage.value.p8BPPData;
+      buffer = Buffer.allocUnsafe(iNumValues * (uiImagePixelSize / 8));
 
       // Start at end
-      pBMData += uiWidth * (uiHeight - 1) * (uiImagePixelSize / 8);
+      offset = uiWidth * (uiHeight - 1) * (uiImagePixelSize / 8);
 
       // Data is stored top-bottom - reverse for SGP HIMAGE format
+      chunk = Buffer.allocUnsafe(uiWidth * 2);
       for (cnt = 0; cnt < uiHeight - 1; cnt++) {
-        if (!FileRead(hFile, pBMData, uiWidth * 2, addressof(uiBytesRead)))
-          goto("freeEnd");
+        if ((uiBytesRead = FileRead(hFile, chunk, uiWidth * 2)) === -1)
+          return false;
 
-        pBMData -= uiWidth * 2;
+        chunk.copy(buffer, offset);
+
+        offset -= uiWidth * 2;
       }
       // Do first row
-      if (!FileRead(hFile, pBMData, uiWidth * 2, addressof(uiBytesRead)))
-        goto("freeEnd");
+      if ((uiBytesRead = FileRead(hFile, chunk, uiWidth * 2)) === -1)
+        return false;
+
+      chunk.copy(buffer, 0);
 
       // Convert TGA 5,5,5 16 BPP data into current system 16 BPP Data
       // ConvertTGAToSystemBPPFormat( hImage );
+
+      hImage.value.pImageData = buffer;
+      hImage.value.pCompressedImageData = buffer;
+
+      hImage.value.p8BPPData = createArray(buffer.length, 0);
+      readUIntArray(hImage.value.p8BPPData, buffer, 0, 1);
+
+      hImage.value.p16BPPData = createArray(buffer.length / 2, 0);
+      readUIntArray(hImage.value.p16BPPData, buffer, 0, 2);
 
       hImage.value.fFlags |= IMAGE_BITMAPDATA;
     }
 
     if (uiImagePixelSize == 24) {
-      hImage.value.p8BPPData = MemAlloc(uiWidth * uiHeight * (uiImagePixelSize / 8));
-
-      if (hImage.value.p8BPPData == null)
-        goto("end");
-
-      // Get data pointer
-      pBMData = hImage.value.p8BPPData;
+      buffer = Buffer.allocUnsafe(uiWidth * uiHeight * (uiImagePixelSize / 8));
 
       // Start at end
-      pBMPtr = pBMData + uiWidth * (uiHeight - 1) * 3;
+      offset = uiWidth * (uiHeight - 1) * 3;
 
       iNumValues = uiWidth * uiHeight;
 
+      chunk = Buffer.allocUnsafe(1);
       for (cnt = 0; cnt < uiHeight; cnt++) {
         for (i = 0; i < uiWidth; i++) {
-          if (!FileRead(hFile, addressof(b), sizeof(UINT8), addressof(uiBytesRead)))
-            goto("freeEnd");
-          if (!FileRead(hFile, addressof(g), sizeof(UINT8), addressof(uiBytesRead)))
-            goto("freeEnd");
-          if (!FileRead(hFile, addressof(r), sizeof(UINT8), addressof(uiBytesRead)))
-            goto("freeEnd");
+          if ((uiBytesRead = FileRead(hFile, chunk, 1)) === -1)
+            return false;
+          b = chunk.readUInt8(0);
 
-          pBMPtr[i * 3] = r;
-          pBMPtr[i * 3 + 1] = g;
-          pBMPtr[i * 3 + 2] = b;
+          if ((uiBytesRead = FileRead(hFile, chunk, 1)) === -1)
+            return false;
+          g = chunk.readUInt8(0);
+
+          if ((uiBytesRead = FileRead(hFile, chunk, 1)) === -1)
+            return false;
+          r = chunk.readUInt8(0);
+
+          buffer[offset + i * 3] = r;
+          buffer[offset + i * 3 + 1] = g;
+          buffer[offset + i * 3 + 2] = b;
         }
-        pBMPtr -= uiWidth * 3;
+        offset -= uiWidth * 3;
       }
+
+      hImage.value.pImageData = buffer;
+      hImage.value.pCompressedImageData = buffer;
+
+      hImage.value.p8BPPData = createArray(buffer.length, 0);
+      readUIntArray(hImage.value.p8BPPData, buffer, 0, 1);
+
+      hImage.value.p16BPPData = createArray(buffer.length / 2, 0);
+      readUIntArray(hImage.value.p16BPPData, buffer, 0, 2);
+
       hImage.value.fFlags |= IMAGE_BITMAPDATA;
     }
   }
   return true;
-
-end:
-  return false;
-
-freeEnd:
-  MemFree(pBMData);
-  return false;
 }
 
 //**************************************************************************
