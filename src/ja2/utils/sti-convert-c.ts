@@ -93,7 +93,7 @@ export function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteE
 
   let Header: STCIHeader;
   let uiLoop: UINT32;
-  let Image: image_type;
+  let Image: ImageType;
 
   let pSGPPaletteEntry: Pointer<SGPPaletteEntry>;
   let STCIPaletteEntry: STCIPaletteElement;

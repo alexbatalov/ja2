@@ -274,7 +274,7 @@ export function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, us
 export function CreateVideoObject(VObjectDesc: VOBJECT_DESC): HVOBJECT {
   let hVObject: HVOBJECT;
   let hImage: HIMAGE;
-  let TempETRLEData: ETRLEData;
+  let TempETRLEData: ETRLEData = createETRLEData();
   //	UINT32							count;
 
   // Allocate memory for video object data and initialize

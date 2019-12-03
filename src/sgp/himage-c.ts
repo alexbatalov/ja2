@@ -24,49 +24,64 @@ interface SplitUINT32 {
   /* } */
 }
 
-function createSplitUint32(): SplitUINT32 {
-  return {
-    usLower: 0,
-    usHigher: 0,
-    uiValue: 0,
-  };
+class _SplitUINT32 implements SplitUINT32 {
+  public usLower: UINT16;
+  public usHigher: UINT16;
+
+  constructor() {
+    this.usLower = 0;
+    this.usHigher = 0;
+  }
+
+  get uiValue() {
+    return (this.usHigher << 16) | this.usLower;
+  }
+
+  set uiValue(value) {
+    this.usLower = value & 0xFFFF;
+    this.usHigher = value >> 16;
+  }
 }
 
-export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT16): HIMAGE {
-  let hImage: HIMAGE = null;
+function createSplitUint32(): SplitUINT32 {
+  return new _SplitUINT32();
+}
+
+export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT16): ImageType {
+  let hImage: ImageType;
   let Extension: string /* SGPFILENAME */;
   let ExtensionSep: string /* CHAR8[] */ = ".";
-  let StrPtr: string /* STR */;
+  let StrPtr: number /* STR */;
   let iFileLoader: UINT32;
 
   // Depending on extension of filename, use different image readers
   // Get extension
-  StrPtr = strstr(ImageFile, ExtensionSep);
+  StrPtr = ImageFile.indexOf(ExtensionSep);
 
-  if (StrPtr == null) {
+  if (StrPtr == -1) {
     // No extension given, use default internal loader extension
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "No extension given, using default");
     ImageFile += ".PCX";
     Extension = ".PCX";
   } else {
-    Extension = StrPtr + 1;
+    Extension = ImageFile.substring(StrPtr + 1);
   }
 
   // Determine type from Extension
   do {
     iFileLoader = UNKNOWN_FILE_READER;
 
-    if (_stricmp(Extension, "PCX") == 0) {
+    if (Extension.toUpperCase() === "PCX") {
       iFileLoader = PCX_FILE_READER;
       break;
     }
 
-    if (_stricmp(Extension, "TGA") == 0) {
+    if (Extension.toUpperCase() === "TGA") {
       iFileLoader = TGA_FILE_READER;
       break;
     }
 
-    if (_stricmp(Extension, "STI") == 0) {
+    if (Extension.toUpperCase() === "STI") {
       iFileLoader = STCI_FILE_READER;
       break;
     }
@@ -75,15 +90,11 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
   // Determine if resource exists before creating image structure
   if (!FileExists(ImageFile)) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, FormatString("Resource file %s does not exist.", ImageFile));
-    return null;
+    return <ImageType><unknown>null;
   }
 
   // Create memory for image structure
-  hImage = MemAlloc(sizeof(image_type));
-
-  AssertMsg(hImage, "Failed to allocate memory for hImage in CreateImage");
-  // Initialize some values
-  memset(hImage, 0, sizeof(image_type));
+  hImage = createImageType();
 
   // hImage->fFlags = 0;
   // Set data pointers to NULL
@@ -92,78 +103,76 @@ export function CreateImage(ImageFile: string /* SGPFILENAME */, fContents: UINT
   // hImage->pui16BPPPalette = NULL;
 
   // Set filename and loader
-  hImage.value.ImageFile = ImageFile;
-  hImage.value.iFileLoader = iFileLoader;
+  hImage.ImageFile = ImageFile;
+  hImage.iFileLoader = iFileLoader;
 
   if (!LoadImageData(hImage, fContents)) {
-    return null;
+    return <ImageType><unknown>null;
   }
 
   // All is fine, image is loaded and allocated, return pointer
   return hImage;
 }
 
-export function DestroyImage(hImage: HIMAGE): boolean {
+export function DestroyImage(hImage: ImageType): boolean {
   Assert(hImage != null);
 
   // First delete contents
   ReleaseImageData(hImage, IMAGE_ALLDATA); // hImage->fFlags );
 
-  // Now free structure
-  MemFree(hImage);
-
   return true;
 }
 
-function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): boolean {
+function ReleaseImageData(hImage: ImageType, fContents: UINT16): boolean {
   Assert(hImage != null);
 
-  if ((fContents & IMAGE_PALETTE) && (hImage.value.fFlags & IMAGE_PALETTE)) {
+  if ((fContents & IMAGE_PALETTE) && (hImage.fFlags & IMAGE_PALETTE)) {
     // Destroy palette
-    if (hImage.value.pPalette != null) {
-      MemFree(hImage.value.pPalette);
-      hImage.value.pPalette = null;
+    if (hImage.pPalette != null) {
+      hImage.pPalette = <SGPPaletteEntry[]><unknown>null;
     }
 
-    if (hImage.value.pui16BPPPalette != null) {
-      MemFree(hImage.value.pui16BPPPalette);
-      hImage.value.pui16BPPPalette = null;
+    if (hImage.pui16BPPPalette != null) {
+      hImage.pui16BPPPalette = <Uint16Array><unknown>null;
     }
 
     // Remove contents flag
-    hImage.value.fFlags = hImage.value.fFlags ^ IMAGE_PALETTE;
+    hImage.fFlags = hImage.fFlags ^ IMAGE_PALETTE;
   }
 
-  if ((fContents & IMAGE_BITMAPDATA) && (hImage.value.fFlags & IMAGE_BITMAPDATA)) {
+  if ((fContents & IMAGE_BITMAPDATA) && (hImage.fFlags & IMAGE_BITMAPDATA)) {
     // Destroy image data
-    Assert(hImage.value.pImageData != null);
-    MemFree(hImage.value.pImageData);
-    hImage.value.pImageData = null;
-    if (hImage.value.usNumberOfObjects > 0) {
-      MemFree(hImage.value.pETRLEObject);
+    Assert(hImage.pImageData != null);
+    hImage.pImageData = <Buffer><unknown>null;
+    hImage.pCompressedImageData = <Buffer><unknown>null;
+    hImage.p8BPPData = <Uint8Array><unknown>null;
+    hImage.p16BPPData = <Uint16Array><unknown>null;
+    hImage.pPixData8 = <Uint8Array><unknown>null;
+    if (hImage.usNumberOfObjects > 0) {
+      hImage.pETRLEObject = <ETRLEObject[]><unknown>null;
     }
     // Remove contents flag
-    hImage.value.fFlags = hImage.value.fFlags ^ IMAGE_BITMAPDATA;
+    hImage.fFlags = hImage.fFlags ^ IMAGE_BITMAPDATA;
   }
 
-  if ((fContents & IMAGE_APPDATA) && (hImage.value.fFlags & IMAGE_APPDATA)) {
+  if ((fContents & IMAGE_APPDATA) && (hImage.fFlags & IMAGE_APPDATA)) {
     // get rid of the APP DATA
-    if (hImage.value.pAppData != null) {
-      MemFree(hImage.value.pAppData);
-      hImage.value.fFlags &= (~IMAGE_APPDATA);
+    if (hImage.pAppData != null) {
+      hImage.pAppData = <Buffer><unknown>null;
+      hImage.fFlags &= (~IMAGE_APPDATA);
     }
   }
 
   return true;
 }
 
-function LoadImageData(hImage: HIMAGE, fContents: UINT16): boolean {
+function LoadImageData(hImage: ImageType, fContents: UINT16): boolean {
   let fReturnVal: boolean = false;
 
   Assert(hImage != null);
 
   // Switch on file loader
-  switch (hImage.value.iFileLoader) {
+  switch (hImage.iFileLoader) {
     case TGA_FILE_READER:
 
       fReturnVal = LoadTGAFileToImage(hImage, fContents);
@@ -190,23 +199,23 @@ function LoadImageData(hImage: HIMAGE, fContents: UINT16): boolean {
   return fReturnVal;
 }
 
-export function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
+export function CopyImageToBuffer(hImage: ImageType, fBufferType: UINT32, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   // Use blitter based on type of image
   Assert(hImage != null);
 
-  if (hImage.value.ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
+  if (hImage.ubBitDepth == 8 && fBufferType == BUFFER_8BPP) {
     // Default do here
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, "Copying 8 BPP Imagery.");
     return Copy8BPPImageTo8BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
 
-  if (hImage.value.ubBitDepth == 8 && fBufferType == BUFFER_16BPP) {
+  if (hImage.ubBitDepth == 8 && fBufferType == BUFFER_16BPP) {
     // Default do here
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Copying 8 BPP Imagery to 16BPP Buffer.");
     return Copy8BPPImageTo16BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
 
-  if (hImage.value.ubBitDepth == 16 && fBufferType == BUFFER_16BPP) {
+  if (hImage.ubBitDepth == 16 && fBufferType == BUFFER_16BPP) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Automatically Copying 16 BPP Imagery.");
     return Copy16BPPImageTo16BPPBuffer(hImage, pDestBuf, usDestWidth, usDestHeight, usX, usY, srcRect);
   }
@@ -214,18 +223,18 @@ export function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf:
   return false;
 }
 
-function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
+function Copy8BPPImageTo8BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
   let uiLineSize: UINT32;
   let cnt: UINT32;
-  let pDest: Pointer<UINT8>;
-  let pSrc: Pointer<UINT8>;
+  let pDest: UINT8;
+  let pSrc: UINT8;
 
   // Assertions
   Assert(hImage != null);
-  Assert(hImage.value.p16BPPData != null);
+  Assert(hImage.p16BPPData != null);
 
   // Validations
   if (usX < 0) {
@@ -240,74 +249,74 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
   if (usY >= usDestHeight) {
     return false;
   }
-  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+  if (srcRect.iRight <= srcRect.iLeft) {
     return false;
   }
-  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+  if (srcRect.iBottom <= srcRect.iTop) {
     return false;
   }
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
+  uiSrcStart = srcRect.iTop * hImage.usWidth + srcRect.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop) + 1;
-  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft) + 1;
+  uiNumLines = (srcRect.iBottom - srcRect.iTop) + 1;
+  uiLineSize = (srcRect.iRight - srcRect.iLeft) + 1;
 
   Assert(usDestWidth >= uiLineSize);
   Assert(usDestHeight >= uiNumLines);
 
   // Copy line by line
-  pDest = pDestBuf + uiDestStart;
-  pSrc = hImage.value.p8BPPData + uiSrcStart;
+  pDest = uiDestStart;
+  pSrc = uiSrcStart;
 
-  for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
-    memcpy(pDest, pSrc, uiLineSize);
+  for (cnt = 0; cnt < uiNumLines; cnt++) {
+    for (let i = 0; i < uiLineSize; i++) {
+      pDestBuf[pDest + i] = hImage.p8BPPData[pSrc + i];
+    }
     pDest += usDestWidth;
-    pSrc += hImage.value.usWidth;
+    pSrc += hImage.usWidth;
   }
-  // Do last line
-  memcpy(pDest, pSrc, uiLineSize);
 
   return true;
 }
 
-function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
+function Copy16BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
   let uiLineSize: UINT32;
   let cnt: UINT32;
-  let pDest: Pointer<UINT16>;
-  let pSrc: Pointer<UINT16>;
+  let pDest: UINT16;
+  let pSrc: UINT16;
 
   Assert(hImage != null);
-  Assert(hImage.value.p16BPPData != null);
+  Assert(hImage.p16BPPData != null);
 
   // Validations
   if (usX < 0) {
     return false;
   }
-  if (usX >= hImage.value.usWidth) {
+  if (usX >= hImage.usWidth) {
     return false;
   }
   if (usY < 0) {
     return false;
   }
-  if (usY >= hImage.value.usHeight) {
+  if (usY >= hImage.usHeight) {
     return false;
   }
-  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+  if (srcRect.iRight <= srcRect.iLeft) {
     return false;
   }
-  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+  if (srcRect.iBottom <= srcRect.iTop) {
     return false;
   }
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
+  uiSrcStart = srcRect.iTop * hImage.usWidth + srcRect.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop) + 1;
-  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft) + 1;
+  uiNumLines = (srcRect.iBottom - srcRect.iTop) + 1;
+  uiLineSize = (srcRect.iRight - srcRect.iLeft) + 1;
 
   if (usDestWidth < uiLineSize) {
     return false;
@@ -317,49 +326,49 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   }
 
   // Copy line by line
-  pDest = pDestBuf + uiDestStart;
-  pSrc = hImage.value.p16BPPData + uiSrcStart;
+  pDest = uiDestStart;
+  pSrc = uiSrcStart;
 
-  for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
-    memcpy(pDest, pSrc, uiLineSize * 2);
+  for (cnt = 0; cnt < uiNumLines; cnt++) {
+    for (let i = 0; i < uiLineSize * 2; i++) {
+      pDestBuf[pDest + i] = hImage.p16BPPData[pSrc + i];
+    }
     pDest += usDestWidth;
-    pSrc += hImage.value.usWidth;
+    pSrc += hImage.usWidth;
   }
-  // Do last line
-  memcpy(pDest, pSrc, uiLineSize * 2);
 
   return true;
 }
 
-function Extract8BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): boolean {
+function Extract8BPPCompressedImageToBuffer(hImage: ImageType, pDestBuf: Uint8Array): boolean {
   return false;
 }
 
-function Extract16BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>): boolean {
+function Extract16BPPCompressedImageToBuffer(hImage: ImageType, pDestBuf: Uint8Array): boolean {
   return false;
 }
 
-function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): boolean {
+function Copy8BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
   let uiLineSize: UINT32;
   let rows: UINT32;
   let cols: UINT32;
-  let pSrc: Pointer<UINT8>;
-  let pSrcTemp: Pointer<UINT8>;
-  let pDest: Pointer<UINT16>;
-  let pDestTemp: Pointer<UINT16>;
-  let p16BPPPalette: Pointer<UINT16>;
+  let pSrc: UINT8;
+  let pSrcTemp: UINT8;
+  let pDest: UINT16;
+  let pDestTemp: UINT16;
+  let p16BPPPalette: Uint16Array;
 
-  p16BPPPalette = hImage.value.pui16BPPPalette;
+  p16BPPPalette = hImage.pui16BPPPalette;
 
   // Assertions
   Assert(p16BPPPalette != null);
   Assert(hImage != null);
 
   // Validations
-  if (hImage.value.p16BPPData == null) {
+  if (hImage.p16BPPData == null) {
     return false;
   }
   if (usX < 0) {
@@ -374,18 +383,18 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   if (usY >= usDestHeight) {
     return false;
   }
-  if (srcRect.value.iRight <= srcRect.value.iLeft) {
+  if (srcRect.iRight <= srcRect.iLeft) {
     return false;
   }
-  if (srcRect.value.iBottom <= srcRect.value.iTop) {
+  if (srcRect.iBottom <= srcRect.iTop) {
     return false;
   }
 
   // Determine memcopy coordinates
-  uiSrcStart = srcRect.value.iTop * hImage.value.usWidth + srcRect.value.iLeft;
+  uiSrcStart = srcRect.iTop * hImage.usWidth + srcRect.iLeft;
   uiDestStart = usY * usDestWidth + usX;
-  uiNumLines = (srcRect.value.iBottom - srcRect.value.iTop);
-  uiLineSize = (srcRect.value.iRight - srcRect.value.iLeft);
+  uiNumLines = (srcRect.iBottom - srcRect.iTop);
+  uiLineSize = (srcRect.iRight - srcRect.iLeft);
 
   if (usDestWidth < uiLineSize) {
     return false;
@@ -395,8 +404,8 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   }
 
   // Convert to Pixel specification
-  pDest = pDestBuf + uiDestStart;
-  pSrc = hImage.value.p8BPPData + uiSrcStart;
+  pDest = uiDestStart;
+  pSrc = uiSrcStart;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, FormatString("Start Copying at %p", pDest));
 
   // For every entry, look up into 16BPP palette
@@ -405,13 +414,14 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
     pSrcTemp = pSrc;
 
     for (cols = 0; cols < uiLineSize; cols++) {
-      pDestTemp.value = p16BPPPalette[pSrcTemp.value];
-      pDestTemp++;
+      pDestBuf[pDestTemp] = p16BPPPalette[hImage.p8BPPData[pSrcTemp]] >> 16;
+      pDestBuf[pDestTemp] = p16BPPPalette[hImage.p8BPPData[pSrcTemp]] & 0xFFFF;
+      pDestTemp += 2;
       pSrcTemp++;
     }
 
-    pDest += usDestWidth;
-    pSrc += hImage.value.usWidth;
+    pDest += usDestWidth * 2;
+    pSrc += hImage.usWidth;
   }
   // Do last line
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, FormatString("End Copying at %p", pDest));
@@ -419,8 +429,8 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   return true;
 }
 
-export function Create16BPPPalette(pPalette: SGPPaletteEntry[]): UINT16[] {
-  let p16BPPPalette: UINT16[];
+export function Create16BPPPalette(pPalette: SGPPaletteEntry[]): Uint16Array {
+  let p16BPPPalette: Uint16Array;
   let r16: UINT16;
   let g16: UINT16;
   let b16: UINT16;
@@ -432,7 +442,7 @@ export function Create16BPPPalette(pPalette: SGPPaletteEntry[]): UINT16[] {
 
   Assert(pPalette != null);
 
-  p16BPPPalette = createArray(256, 0);
+  p16BPPPalette = new Uint16Array(256);
 
   for (cnt = 0; cnt < 256; cnt++) {
     r = pPalette[cnt].peRed;
@@ -651,91 +661,80 @@ export function GetRGBColor(Value16BPP: UINT16): UINT32 {
 //
 //*****************************************************************************
 
-function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Pointer<UINT8>): Pointer<SGPPaletteEntry> {
+function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Uint8Array): SGPPaletteEntry[] {
   let Index: UINT16;
-  let pPalEntry: Pointer<SGPPaletteEntry>;
-  let pInitEntry: Pointer<SGPPaletteEntry>;
+  let pPalEntry: SGPPaletteEntry[];
+  let pInitEntry: SGPPaletteEntry[];
 
-  pPalEntry = MemAlloc(sizeof(SGPPaletteEntry) * 256);
+  pPalEntry = createArrayFrom(256, createSGPPaletteEntry);
   pInitEntry = pPalEntry;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_0, "Converting RGB palette to SGPPaletteEntry");
   for (Index = 0; Index <= (sbEnd - sbStart); Index++) {
-    pPalEntry.value.peRed = (pOldPalette + (Index * 3)).value;
-    pPalEntry.value.peGreen = (pOldPalette + (Index * 3) + 1).value;
-    pPalEntry.value.peBlue = (pOldPalette + (Index * 3) + 2).value;
-    pPalEntry.value.peFlags = 0;
-    pPalEntry++;
+    pPalEntry[Index].peRed = pOldPalette[Index * 3];
+    pPalEntry[Index].peGreen = pOldPalette[Index * 3 + 1];
+    pPalEntry[Index].peBlue = pOldPalette[Index * 3 + 2];
+    pPalEntry[Index].peFlags = 0;
   }
   return pInitEntry;
 }
 
-export function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): boolean {
+export function GetETRLEImageData(hImage: ImageType, pBuffer: ETRLEData): boolean {
   // Assertions
   Assert(hImage != null);
   Assert(pBuffer != null);
 
   // Create memory for data
-  pBuffer.value.usNumberOfObjects = hImage.value.usNumberOfObjects;
+  pBuffer.usNumberOfObjects = hImage.usNumberOfObjects;
 
   // Create buffer for objects
-  pBuffer.value.pETRLEObject = MemAlloc(sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
-  if (pBuffer.value.pETRLEObject == null) {
-    return false;
-  }
+  pBuffer.pETRLEObject = createArrayFrom(pBuffer.usNumberOfObjects, createETRLEObject);
 
   // Copy into buffer
-  memcpy(pBuffer.value.pETRLEObject, hImage.value.pETRLEObject, sizeof(ETRLEObject) * pBuffer.value.usNumberOfObjects);
+  copyObjectArray(pBuffer.pETRLEObject, hImage.pETRLEObject, copyETRLEObject);
 
   // Allocate memory for pixel data
-  pBuffer.value.pPixData = MemAlloc(hImage.value.uiSizePixData);
-  if (pBuffer.value.pPixData == null) {
-    return false;
-  }
+  pBuffer.pPixData = new Uint8Array(hImage.uiSizePixData);
 
-  pBuffer.value.uiSizePixData = hImage.value.uiSizePixData;
+  pBuffer.uiSizePixData = hImage.uiSizePixData;
 
   // Copy into buffer
-  memcpy(pBuffer.value.pPixData, hImage.value.pPixData8, pBuffer.value.uiSizePixData);
+  pBuffer.pPixData.set(hImage.pPixData8);
 
   return true;
 }
 
-export function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  let pPixel: Pointer<UINT16>;
+export function ConvertRGBDistribution565To555(p16BPPData: Uint16Array, uiNumberOfPixels: UINT32): void {
+  let pPixel: UINT16;
   let uiLoop: UINT32;
 
   let Pixel: SplitUINT32 = createSplitUint32();
 
-  pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
+    pPixel = p16BPPData[uiLoop];
     // If the pixel is completely black, don't bother converting it -- DB
-    if (pPixel.value != 0) {
+    if (pPixel != 0) {
       // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
       // right shift the blue value (at the bottom) into the LOWER word to protect it
-      Pixel.usHigher = pPixel.value;
+      Pixel.usHigher = pPixel;
       Pixel.uiValue >>= 5;
       // get rid of the least significant bit of green
       Pixel.usHigher >>= 1;
       // now shift back into the upper word
       Pixel.uiValue <<= 5;
       // and copy back
-      pPixel.value = Pixel.usHigher | gusAlphaMask;
+      p16BPPData[uiLoop] = Pixel.usHigher | gusAlphaMask;
     }
-    pPixel++;
   }
 }
 
-export function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  let pPixel: Pointer<UINT16>;
+export function ConvertRGBDistribution565To655(p16BPPData: Uint16Array, uiNumberOfPixels: UINT32): void {
   let uiLoop: UINT32;
-
   let Pixel: SplitUINT32 = createSplitUint32();
 
-  pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
     // right shift the blue value (at the bottom) into the LOWER word to protect it
-    Pixel.usHigher = pPixel.value;
+    Pixel.usHigher = p16BPPData[uiLoop];
     Pixel.uiValue >>= 5;
     // get rid of the least significant bit of green
     Pixel.usHigher >>= 1;
@@ -745,22 +744,18 @@ export function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNu
     Pixel.usHigher <<= 1;
     // now shift back and copy
     Pixel.uiValue <<= 10;
-    pPixel.value = Pixel.usHigher;
-    pPixel++;
+    p16BPPData[uiLoop] = Pixel.usHigher;
   }
 }
 
-export function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  let pPixel: Pointer<UINT16>;
+export function ConvertRGBDistribution565To556(p16BPPData: Uint16Array, uiNumberOfPixels: UINT32): void {
   let uiLoop: UINT32;
-
   let Pixel: SplitUINT32 = createSplitUint32();
 
-  pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
     // we put the 16 pixel bits in the UPPER word of uiPixel, so that we can
     // right shift the blue value (at the bottom) into the LOWER word to protect it
-    Pixel.usHigher = pPixel.value;
+    Pixel.usHigher = p16BPPData[uiLoop];
     Pixel.uiValue >>= 5;
     // get rid of the least significant bit of green
     Pixel.usHigher >>= 1;
@@ -769,29 +764,27 @@ export function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNu
     // give blue an extra bit (blank in the least significant spot)
     Pixel.usHigher <<= 1;
     // copy back
-    pPixel.value = Pixel.usHigher;
-    pPixel++;
+    p16BPPData[uiLoop] = Pixel.usHigher;
   }
 }
 
-export function ConvertRGBDistribution565ToAny(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  let pPixel: Pointer<UINT16>;
+export function ConvertRGBDistribution565ToAny(p16BPPData: Uint16Array, uiNumberOfPixels: UINT32): void {
+  let pPixel: UINT16;
   let uiRed: UINT32;
   let uiGreen: UINT32;
   let uiBlue: UINT32;
   let uiTemp: UINT32;
   let uiLoop: UINT32;
 
-  pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
+    pPixel = p16BPPData[uiLoop];
     // put the 565 RGB 16-bit value into a 32-bit RGB value
-    uiRed = (pPixel.value) >> 11;
-    uiGreen = (pPixel.value & 0x07E0) >> 5;
-    uiBlue = (pPixel.value & 0x001F);
+    uiRed = pPixel >> 11;
+    uiGreen = (pPixel & 0x07E0) >> 5;
+    uiBlue = pPixel & 0x001F;
     uiTemp = FROMRGB(uiRed, uiGreen, uiBlue);
     // then convert the 32-bit RGB value to whatever 16 bit format is used
-    pPixel.value = Get16BPPColor(uiTemp);
-    pPixel++;
+    p16BPPData[uiLoop] = Get16BPPColor(uiTemp);
   }
 }
 

@@ -195,48 +195,99 @@ export function createETRLEObject(): ETRLEObject {
   };
 }
 
+export function copyETRLEObject(destination: ETRLEObject, source: ETRLEObject) {
+  destination.uiDataOffset = source.uiDataOffset;
+  destination.uiDataLength = source.uiDataLength;
+  destination.sOffsetX = source.sOffsetX;
+  destination.sOffsetY = source.sOffsetY;
+  destination.usHeight = source.usHeight;
+  destination.usWidth = source.usWidth;
+}
+
+export function readETRLEObject(o: ETRLEObject, buffer: Buffer, offset: number = 0): number {
+  o.uiDataOffset = buffer.readUInt32LE(offset); offset += 4;
+  o.uiDataLength = buffer.readUInt32LE(offset); offset += 4;
+  o.sOffsetX = buffer.readInt16LE(offset); offset += 2;
+  o.sOffsetY = buffer.readInt16LE(offset); offset += 2;
+  o.usHeight = buffer.readUInt16LE(offset); offset += 2;
+  o.usWidth = buffer.readUInt16LE(offset); offset += 2;
+  return offset;
+}
+
 export interface ETRLEData {
-  pPixData: PTR;
+  pPixData: Uint8Array;
   uiSizePixData: UINT32;
-  pETRLEObject: Pointer<ETRLEObject>;
+  pETRLEObject: ETRLEObject[] /* Pointer<ETRLEObject> */;
   usNumberOfObjects: UINT16;
 }
 
+export function createETRLEData(): ETRLEData {
+  return {
+    pPixData: <Uint8Array><unknown>null,
+    uiSizePixData: 0,
+    pETRLEObject: <ETRLEObject[]><unknown>null,
+    usNumberOfObjects: 0,
+  };
+}
+
 // Image header structure
-export interface image_type {
+export interface ImageType {
   usWidth: UINT16;
   usHeight: UINT16;
   ubBitDepth: UINT8;
   fFlags: UINT16;
   ImageFile: string /* SGPFILENAME */;
   iFileLoader: UINT32;
-  pPalette: Pointer<SGPPaletteEntry>;
-  pui16BPPPalette: Pointer<UINT16>;
-  pAppData: Pointer<UINT8>;
+  pPalette: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */;
+  pui16BPPPalette: Uint16Array /* Pointer<UINT16> */;
+  pAppData: Buffer /* Pointer<UINT8> */;
   uiAppDataSize: UINT32;
   /* union { */
   /*   struct { */
-  pImageData: PTR;
+  pImageData: Buffer /* PTR */;
   /*   } */
   /*   struct { */
-  pCompressedImageData: PTR;
+  pCompressedImageData: Buffer /* PTR */;
   /*   } */
   /*   struct { */
-  p8BPPData: Pointer<UINT8>;
+  p8BPPData: Uint8Array /* Pointer<UINT8> */;
   /*   } */
   /*   struct { */
-  p16BPPData: Pointer<UINT16>;
+  p16BPPData: Uint16Array /* Pointer<UINT16> */;
   /*   } */
   /*   struct { */
-  pPixData8: Pointer<UINT8>;
+  pPixData8: Uint8Array /* Pointer<UINT8> */;
   uiSizePixData: UINT32;
-  pETRLEObject: Pointer<ETRLEObject>;
+  pETRLEObject: ETRLEObject[] /* Pointer<ETRLEObject> */;
   usNumberOfObjects: UINT16;
   /*   } */
   /* } */
 }
 
-export type HIMAGE = Pointer<image_type>;
+export function createImageType(): ImageType {
+  return {
+    usWidth: 0,
+    usHeight: 0,
+    ubBitDepth: 0,
+    fFlags: 0,
+    ImageFile: '',
+    iFileLoader: 0,
+    pPalette: <SGPPaletteEntry[]><unknown>null,
+    pui16BPPPalette: <Uint16Array><unknown>null,
+    pAppData: <Buffer><unknown>null,
+    uiAppDataSize: 0,
+    pImageData: <Buffer><unknown>null,
+    pCompressedImageData: <Buffer><unknown>null,
+    p8BPPData: <Uint8Array><unknown>null,
+    p16BPPData: <Uint16Array><unknown>null,
+    pPixData8: <Uint8Array><unknown>null,
+    uiSizePixData: 0,
+    pETRLEObject: <ETRLEObject[]><unknown>null,
+    usNumberOfObjects: 0,
+  };
+}
+
+export type HIMAGE = Pointer<ImageType>;
 
 export const SGPGetRValue = (rgb: number) => ((rgb));
 export const SGPGetBValue = (rgb: number) => (((rgb) >> 16));

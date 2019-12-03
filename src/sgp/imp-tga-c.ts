@@ -44,7 +44,7 @@ namespace ja2 {
 //
 //**************************************************************************
 
-export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
+export function LoadTGAFileToImage(hImage: ImageType, fContents: UINT16): boolean {
   let hFile: HWFILE;
   let uiImgID: UINT8;
   let uiColMap: UINT8;
@@ -55,11 +55,11 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
 
   Assert(hImage != null);
 
-  if (!FileExists(hImage.value.ImageFile)) {
+  if (!FileExists(hImage.ImageFile)) {
     return false;
   }
 
-  hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, false);
+  hFile = FileOpen(hImage.ImageFile, FILE_ACCESS_READ, false);
   if (!hFile) {
     return false;
   }
@@ -118,7 +118,7 @@ export function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
 //
 //**************************************************************************
 
-function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+function ReadUncompColMapImage(hImage: ImageType, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
   return false;
 }
 
@@ -136,7 +136,7 @@ function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, ui
 //
 //**************************************************************************
 
-function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+function ReadUncompRGBImage(hImage: ImageType, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
   let uiColMapOrigin: UINT16;
   let uiColMapLength: UINT16;
   let uiColMapEntrySize: UINT8;
@@ -213,9 +213,9 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
   }
 
   // Set some HIMAGE data values
-  hImage.value.usWidth = uiWidth;
-  hImage.value.usHeight = uiHeight;
-  hImage.value.ubBitDepth = uiImagePixelSize;
+  hImage.usWidth = uiWidth;
+  hImage.usHeight = uiHeight;
+  hImage.ubBitDepth = uiImagePixelSize;
 
   // Allocate memory based on bpp, height, width
 
@@ -248,16 +248,13 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
       // Convert TGA 5,5,5 16 BPP data into current system 16 BPP Data
       // ConvertTGAToSystemBPPFormat( hImage );
 
-      hImage.value.pImageData = buffer;
-      hImage.value.pCompressedImageData = buffer;
+      hImage.pImageData = buffer;
+      hImage.pCompressedImageData = buffer;
+      hImage.p8BPPData = buffer;
+      hImage.p16BPPData = new Uint16Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / 2);
+      hImage.pPixData8 = buffer;
 
-      hImage.value.p8BPPData = createArray(buffer.length, 0);
-      readUIntArray(hImage.value.p8BPPData, buffer, 0, 1);
-
-      hImage.value.p16BPPData = createArray(buffer.length / 2, 0);
-      readUIntArray(hImage.value.p16BPPData, buffer, 0, 2);
-
-      hImage.value.fFlags |= IMAGE_BITMAPDATA;
+      hImage.fFlags |= IMAGE_BITMAPDATA;
     }
 
     if (uiImagePixelSize == 24) {
@@ -290,16 +287,13 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
         offset -= uiWidth * 3;
       }
 
-      hImage.value.pImageData = buffer;
-      hImage.value.pCompressedImageData = buffer;
+      hImage.pImageData = buffer;
+      hImage.pCompressedImageData = buffer;
+      hImage.p8BPPData = buffer;
+      hImage.p16BPPData = new Uint16Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / 2);
+      hImage.pPixData8 = buffer;
 
-      hImage.value.p8BPPData = createArray(buffer.length, 0);
-      readUIntArray(hImage.value.p8BPPData, buffer, 0, 1);
-
-      hImage.value.p16BPPData = createArray(buffer.length / 2, 0);
-      readUIntArray(hImage.value.p16BPPData, buffer, 0, 2);
-
-      hImage.value.fFlags |= IMAGE_BITMAPDATA;
+      hImage.fFlags |= IMAGE_BITMAPDATA;
     }
   }
   return true;

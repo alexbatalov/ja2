@@ -17,29 +17,29 @@ const PCX_INVALIDFORMAT = 2;
 const PCX_INVALIDLEN = 4;
 const PCX_OUTOFMEMORY = 8;
 
-export function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
+export function LoadPCXFileToImage(hImage: ImageType, fContents: UINT16): boolean {
   let pPcxObject: PcxObject | null;
 
   // First Load a PCX Image
-  pPcxObject = LoadPcx(hImage.value.ImageFile);
+  pPcxObject = LoadPcx(hImage.ImageFile);
 
   if (pPcxObject == null) {
     return false;
   }
 
   // Set some header information
-  hImage.value.usWidth = pPcxObject.usWidth;
-  hImage.value.usHeight = pPcxObject.usHeight;
-  hImage.value.ubBitDepth = 8;
-  hImage.value.fFlags = hImage.value.fFlags | fContents;
+  hImage.usWidth = pPcxObject.usWidth;
+  hImage.usHeight = pPcxObject.usHeight;
+  hImage.ubBitDepth = 8;
+  hImage.fFlags = hImage.fFlags | fContents;
 
   // Read and allocate bitmap block if requested
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for buffer
-    hImage.value.p8BPPData = MemAlloc(hImage.value.usWidth * hImage.value.usHeight);
+    hImage.p8BPPData = new Uint8Array(hImage.usWidth * hImage.usHeight);
 
-    if (!BlitPcxToBuffer(pPcxObject, hImage.value.p8BPPData, hImage.value.usWidth, hImage.value.usHeight, 0, 0, false)) {
-      MemFree(hImage.value.p8BPPData);
+    if (!BlitPcxToBuffer(pPcxObject, hImage.p8BPPData, hImage.usWidth, hImage.usHeight, 0, 0, false)) {
+      hImage.p8BPPData = <Uint8Array><unknown>null;
       return false;
     }
   }
@@ -48,7 +48,7 @@ export function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): boolean {
     SetPcxPalette(pPcxObject, hImage);
 
     // Create 16 BPP palette if flags and BPP justify
-    hImage.value.pui16BPPPalette = Create16BPPPalette(hImage.value.pPalette);
+    hImage.pui16BPPPalette = Create16BPPPalette(hImage.pPalette);
   }
 
   return true;

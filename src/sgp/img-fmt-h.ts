@@ -58,7 +58,74 @@ export interface STCIHeader {
   cUnused: UINT8[] /* [15] */;
 }
 
+export function createSTCIHeader(): STCIHeader {
+  return {
+    cID: '',
+    uiOriginalSize: 0,
+    uiStoredSize: 0,
+    uiTransparentValue: 0,
+    fFlags: 0,
+    usHeight: 0,
+    usWidth: 0,
+    RGB: {
+      uiRedMask: 0,
+      uiGreenMask: 0,
+      uiBlueMask: 0,
+      uiAlphaMask: 0,
+      ubRedDepth: 0,
+      ubGreenDepth: 0,
+      ubBlueDepth: 0,
+      ubAlphaDepth: 0,
+    },
+    Indexed: {
+      uiNumberOfColours: 0,
+      usNumberOfSubImages: 0,
+      ubRedDepth: 0,
+      ubGreenDepth: 0,
+      ubBlueDepth: 0,
+      cIndexedUnused: createArray(11, 0),
+    },
+    ubDepth: 0,
+    uiAppDataSize: 0,
+    cUnused: createArray(15, 0),
+  };
+}
+
 export const STCI_HEADER_SIZE = 64;
+
+export function readSTCIHeader(o: STCIHeader, buffer: Buffer, offset: number = 0): number {
+  o.cID = buffer.toString('ascii', offset, offset + 4); offset += 4;
+  o.uiOriginalSize = buffer.readUInt32LE(offset); offset += 4;
+  o.uiStoredSize = buffer.readUInt32LE(offset); offset += 4;
+  o.uiTransparentValue = buffer.readUInt32LE(offset); offset += 4;
+  o.fFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.usHeight = buffer.readUInt16LE(offset); offset += 2;
+  o.usWidth = buffer.readUInt16LE(offset); offset += 2;
+
+  if (o.fFlags & STCI_RGB) {
+    o.RGB.uiRedMask = buffer.readUInt32LE(offset); offset += 4;
+    o.RGB.uiGreenMask = buffer.readUInt32LE(offset); offset += 4;
+    o.RGB.uiBlueMask = buffer.readUInt32LE(offset); offset += 4;
+    o.RGB.uiAlphaMask = buffer.readUInt32LE(offset); offset += 4;
+    o.RGB.ubRedDepth = buffer.readUInt8(offset++);
+    o.RGB.ubGreenDepth = buffer.readUInt8(offset++);
+    o.RGB.ubBlueDepth = buffer.readUInt8(offset++);
+    o.RGB.ubAlphaDepth = buffer.readUInt8(offset++);
+  } else if (o.fFlags & STCI_INDEXED) {
+    o.Indexed.uiNumberOfColours = buffer.readUInt32LE(offset); offset += 4;
+    o.Indexed.usNumberOfSubImages = buffer.readUInt16LE(offset); offset += 2;
+    o.Indexed.ubRedDepth = buffer.readUInt8(offset++);
+    o.Indexed.ubGreenDepth = buffer.readUInt8(offset++);
+    o.Indexed.ubBlueDepth = buffer.readUInt8(offset++);
+    offset = readUIntArray(o.Indexed.cIndexedUnused, buffer, offset, 1);
+  }
+
+  o.ubDepth = buffer.readUInt8(offset++);
+  offset += 3; // padding
+  o.uiAppDataSize = buffer.readUInt32LE(offset); offset += 4;
+
+  return offset;
+}
 
 export interface STCISubImage {
   uiDataOffset: UINT32;
