@@ -140,7 +140,7 @@ export function createVSurfaceDesc(): VSURFACE_DESC {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Creates and adds a video Surface to list
-export const AddVideoSurface = (a: Pointer<VSURFACE_DESC>, b: Pointer<UINT32>) => AddStandardVideoSurface(a, b);
+export const AddVideoSurface = (a: VSURFACE_DESC) => AddStandardVideoSurface(a);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

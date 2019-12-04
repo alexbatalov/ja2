@@ -38,12 +38,21 @@ interface VSURFACE_NODE {
   hVSurface: HVSURFACE;
   uiIndex: UINT32;
 
-  next: Pointer<VSURFACE_NODE>;
-  prev: Pointer<VSURFACE_NODE>;
+  next: VSURFACE_NODE | null;
+  prev: VSURFACE_NODE | null;
 }
 
-let gpVSurfaceHead: Pointer<VSURFACE_NODE> = null;
-let gpVSurfaceTail: Pointer<VSURFACE_NODE> = null;
+function createVSurfaceNode(): VSURFACE_NODE {
+  return {
+    hVSurface: null,
+    uiIndex: 0,
+    next: null,
+    prev: null,
+  };
+}
+
+let gpVSurfaceHead: VSURFACE_NODE | null = null;
+let gpVSurfaceTail: VSURFACE_NODE | null = null;
 let guiVSurfaceIndex: UINT32 = 0;
 let guiVSurfaceSize: UINT32 = 0;
 let guiVSurfaceTotalAdded: UINT32 = 0;
@@ -85,7 +94,7 @@ export function InitializeVideoSurfaceManager(): boolean {
 }
 
 export function ShutdownVideoSurfaceManager(): boolean {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE;
 
   DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
 
@@ -94,8 +103,8 @@ export function ShutdownVideoSurfaceManager(): boolean {
 
   while (gpVSurfaceHead) {
     curr = gpVSurfaceHead;
-    gpVSurfaceHead = gpVSurfaceHead.value.next;
-    DeleteVideoSurface(curr.value.hVSurface);
+    gpVSurfaceHead = gpVSurfaceHead.next;
+    DeleteVideoSurface(curr.hVSurface);
     MemFree(curr);
   }
   gpVSurfaceHead = null;
@@ -108,26 +117,25 @@ export function ShutdownVideoSurfaceManager(): boolean {
 }
 
 export function RestoreVideoSurfaces(): boolean {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE | null;
 
   //
   // Loop through Video Surfaces and Restore
   //
   curr = gpVSurfaceTail;
   while (curr) {
-    if (!RestoreVideoSurface(curr.value.hVSurface)) {
+    if (!RestoreVideoSurface(curr.hVSurface)) {
       return false;
     }
-    curr = curr.value.prev;
+    curr = curr.prev;
   }
   return true;
 }
 
-export function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex: Pointer<UINT32>): boolean {
+export function AddStandardVideoSurface(pVSurfaceDesc: VSURFACE_DESC): UINT32 {
   let hVSurface: HVSURFACE;
 
   // Assertions
-  Assert(puiIndex);
   Assert(pVSurfaceDesc);
 
   // Create video object
@@ -135,41 +143,38 @@ export function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, p
 
   if (!hVSurface) {
     // Video Object will set error condition.
-    return false;
+    return -1;
   }
 
   // Set transparency to default
   SetVideoSurfaceTransparencyColor(hVSurface, FROMRGB(0, 0, 0));
 
   // Set into video object list
-  if (gpVSurfaceHead) {
+  if (gpVSurfaceTail) {
     // Add node after tail
-    gpVSurfaceTail.value.next = MemAlloc(sizeof(VSURFACE_NODE));
-    Assert(gpVSurfaceTail.value.next); // out of memory?
-    gpVSurfaceTail.value.next.value.prev = gpVSurfaceTail;
-    gpVSurfaceTail.value.next.value.next = null;
-    gpVSurfaceTail = gpVSurfaceTail.value.next;
+    gpVSurfaceTail.next = createVSurfaceNode();
+    gpVSurfaceTail.next.prev = gpVSurfaceTail;
+    gpVSurfaceTail.next.next = null;
+    gpVSurfaceTail = gpVSurfaceTail.next;
   } else {
     // new list
-    gpVSurfaceHead = MemAlloc(sizeof(VSURFACE_NODE));
-    Assert(gpVSurfaceHead); // out of memory?
-    gpVSurfaceHead.value.prev = gpVSurfaceHead.value.next = null;
+    gpVSurfaceHead = createVSurfaceNode();
+    gpVSurfaceHead.prev = gpVSurfaceHead.next = null;
     gpVSurfaceTail = gpVSurfaceHead;
   }
   // Set the hVSurface into the node.
-  gpVSurfaceTail.value.hVSurface = hVSurface;
-  gpVSurfaceTail.value.uiIndex = guiVSurfaceIndex += 2;
-  puiIndex.value = gpVSurfaceTail.value.uiIndex;
+  gpVSurfaceTail.hVSurface = hVSurface;
+  gpVSurfaceTail.uiIndex = guiVSurfaceIndex += 2;
   Assert(guiVSurfaceIndex < 0xfffffff0); // unlikely that we will ever use 2 billion VSurfaces!
   // We would have to create about 70 VSurfaces per second for 1 year straight to achieve this...
   guiVSurfaceSize++;
   guiVSurfaceTotalAdded++;
 
-  return true;
+  return gpVSurfaceTail.uiIndex;
 }
 
 export function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointer<BYTE> {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE | null;
 
   //
   // Check if given backbuffer or primary buffer
@@ -196,10 +201,10 @@ export function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>):
 
   curr = gpVSurfaceHead;
   while (curr) {
-    if (curr.value.uiIndex == uiVSurface) {
+    if (curr.uiIndex == uiVSurface) {
       break;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
   if (!curr) {
     return false;
@@ -209,11 +214,11 @@ export function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>):
   // Lock buffer
   //
 
-  return LockVideoSurfaceBuffer(curr.value.hVSurface, puiPitch);
+  return LockVideoSurfaceBuffer(curr.hVSurface, puiPitch);
 }
 
 export function UnLockVideoSurface(uiVSurface: UINT32): void {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE | null;
 
   //
   // Check if given backbuffer or primary buffer
@@ -240,10 +245,10 @@ export function UnLockVideoSurface(uiVSurface: UINT32): void {
 
   curr = gpVSurfaceHead;
   while (curr) {
-    if (curr.value.uiIndex == uiVSurface) {
+    if (curr.uiIndex == uiVSurface) {
       break;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
   if (!curr) {
     return;
@@ -253,7 +258,7 @@ export function UnLockVideoSurface(uiVSurface: UINT32): void {
   // unlock buffer
   //
 
-  UnLockVideoSurfaceBuffer(curr.value.hVSurface);
+  UnLockVideoSurfaceBuffer(curr.hVSurface);
 }
 
 export function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVAL): boolean {
@@ -321,7 +326,7 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
 }
 
 export function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): boolean {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE | null;
 
   if (uiIndex == PRIMARY_SURFACE) {
     hVSurface.value = ghPrimary;
@@ -345,11 +350,11 @@ export function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32):
 
   curr = gpVSurfaceHead;
   while (curr) {
-    if (curr.value.uiIndex == uiIndex) {
-      hVSurface.value = curr.value.hVSurface;
+    if (curr.uiIndex == uiIndex) {
+      hVSurface.value = curr.hVSurface;
       return true;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
   return false;
 }
@@ -1201,32 +1206,32 @@ export function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointe
 }
 
 export function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): boolean {
-  let curr: Pointer<VSURFACE_NODE>;
+  let curr: VSURFACE_NODE | null;
 
   curr = gpVSurfaceHead;
   while (curr) {
-    if (curr.value.uiIndex == uiIndex) {
+    if (curr.uiIndex == uiIndex) {
       // Found the node, so detach it and delete it.
 
       // Deallocate the memory for the video surface
-      DeleteVideoSurface(curr.value.hVSurface);
+      DeleteVideoSurface(curr.hVSurface);
 
       if (curr == gpVSurfaceHead) {
         // Advance the head, because we are going to remove the head node.
-        gpVSurfaceHead = gpVSurfaceHead.value.next;
+        gpVSurfaceHead = gpVSurfaceHead.next;
       }
       if (curr == gpVSurfaceTail) {
         // Back up the tail, because we are going to remove the tail node.
-        gpVSurfaceTail = gpVSurfaceTail.value.prev;
+        gpVSurfaceTail = gpVSurfaceTail.prev;
       }
       // Detach the node from the vsurface list
-      if (curr.value.next) {
+      if (curr.next) {
         // Make the prev node point to the next
-        curr.value.next.value.prev = curr.value.prev;
+        curr.next.prev = curr.prev;
       }
-      if (curr.value.prev) {
+      if (curr.prev) {
         // Make the next node point to the prev
-        curr.value.prev.value.next = curr.value.next;
+        curr.prev.next = curr.next;
       }
       // The node is now detached.  Now deallocate it.
 
@@ -1234,7 +1239,7 @@ export function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): boolean {
       guiVSurfaceSize--;
       return true;
     }
-    curr = curr.value.next;
+    curr = curr.next;
   }
   return false;
 }
@@ -2131,13 +2136,12 @@ function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurf
 
   if ((hSrcVObject = GetVideoObject(uiVObject))) {
     // ATE: Memset
-    memset(addressof(hDesc), 0, sizeof(VSURFACE_DESC));
     hDesc.fCreateFlags = VSURFACE_CREATE_DEFAULT;
     hDesc.usWidth = hSrcVObject.value.pETRLEObject[usSubIndex].usWidth;
     hDesc.usHeight = hSrcVObject.value.pETRLEObject[usSubIndex].usHeight;
     hDesc.ubBitDepth = PIXEL_DEPTH;
 
-    if (AddVideoSurface(addressof(hDesc), addressof(uiVSurface))) {
+    if ((uiVSurface = AddVideoSurface(hDesc)) !== -1) {
       if (BltVideoObjectFromIndex(uiVSurface, uiVObject, usSubIndex, 0, 0, VO_BLT_SRCTRANSPARENCY, null)) {
         puiVSurface.value = uiVSurface;
         return true;

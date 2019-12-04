@@ -2189,12 +2189,12 @@ export function MapScreenHandle(): UINT32 {
       // Grab the Map image
 
       vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
-      if (!AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP))) {
+      if ((guiBIGMAP = AddVideoSurface(vs_desc)) === -1) {
         return 0;
       }
 
       vs_desc.ImageFile = "INTERFACE\\popupbackground.pcx";
-      if (!AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX))) {
+      if ((guiPOPUPTEX = AddVideoSurface(vs_desc)) === -1) {
         return 0;
       }
 
@@ -7766,7 +7766,7 @@ export function HandlePreloadOfMapGraphics(): boolean {
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP))) {
+  if ((guiBIGMAP = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
   // strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");

@@ -249,7 +249,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   vs_desc.ubBitDepth = ubBitDepth;
 
   //!!!Memory check.  Create the item buffer
-  if (!AddVideoSurface(addressof(vs_desc), addressof(eInfo.uiBuffer))) {
+  if ((eInfo.uiBuffer = AddVideoSurface(vs_desc)) === -1) {
     eInfo.fKill = true;
     eInfo.fActive = false;
     return;

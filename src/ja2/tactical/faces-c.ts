@@ -446,7 +446,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.fAutoRestoreBuffer = true;
 
-    if (!AddVideoSurface(addressof(vs_desc), addressof(pFace.uiAutoRestoreBuffer))) {
+    if ((pFace.uiAutoRestoreBuffer = AddVideoSurface(vs_desc)) === -1) {
       return;
     }
   } else {
@@ -465,7 +465,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.fAutoDisplayBuffer = true;
 
-    if (!AddVideoSurface(addressof(vs_desc), addressof(pFace.uiAutoDisplayBuffer))) {
+    if ((pFace.uiAutoDisplayBuffer = AddVideoSurface(vs_desc)) === -1) {
       return;
     }
   } else {

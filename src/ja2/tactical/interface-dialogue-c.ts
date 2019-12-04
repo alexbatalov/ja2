@@ -365,7 +365,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   vs_desc.usWidth = pFace.usFaceWidth;
   vs_desc.usHeight = pFace.usFaceHeight;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(gTalkPanel.uiSaveBuffer))) {
+  if ((gTalkPanel.uiSaveBuffer = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

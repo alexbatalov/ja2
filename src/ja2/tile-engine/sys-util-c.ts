@@ -24,11 +24,11 @@ export function InitializeGameVideoObjects(): boolean {
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = ubBitDepth;
 
-  if (!AddVideoSurface(vs_desc, addressof(guiSAVEBUFFER))) {
+  if ((guiSAVEBUFFER = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 
-  if (!AddVideoSurface(vs_desc, addressof(guiEXTRABUFFER))) {
+  if ((guiEXTRABUFFER = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
   gfExtraBuffer = true;

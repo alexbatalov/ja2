@@ -1780,7 +1780,7 @@ function CreateHelpScreenTextBuffer(): boolean {
   vs_desc.usWidth = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   vs_desc.usHeight = HLP_SCRN__HEIGHT_OF_TEXT_BUFFER();
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface))) {
+  if ((guiHelpScreenTextBufferSurface = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

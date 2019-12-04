@@ -201,7 +201,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   vs_desc.usHeight = usTextBoxHeight;
   vs_desc.ubBitDepth = 16;
 
-  if (AddVideoSurface(vs_desc, addressof(gMsgBox.uiSaveBuffer)) == false) {
+  if ((gMsgBox.uiSaveBuffer = AddVideoSurface(vs_desc)) === -1) {
     return -1;
   }
 

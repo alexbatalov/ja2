@@ -550,7 +550,7 @@ function EnterShopKeeperInterface(): boolean {
   vs_desc.usWidth = SKI_TACTICAL_BACKGROUND_START_WIDTH;
   vs_desc.usHeight = SKI_TACTICAL_BACKGROUND_START_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiCornerWhereTacticalIsStillSeenImage))) {
+  if ((guiCornerWhereTacticalIsStillSeenImage = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

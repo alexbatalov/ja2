@@ -108,7 +108,7 @@ export function MapUtilScreenHandle(): UINT32 {
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = ubBitDepth;
 
-    if (AddVideoSurface(addressof(vs_desc), addressof(giMiniMap)) == false) {
+    if ((giMiniMap = AddVideoSurface(vs_desc)) === -1) {
       return Enum26.ERROR_SCREEN;
     }
 
@@ -135,7 +135,7 @@ export function MapUtilScreenHandle(): UINT32 {
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = 8;
 
-    if (AddVideoSurface(addressof(vs_desc), addressof(gi8BitMiniMap)) == false) {
+    if ((gi8BitMiniMap = AddVideoSurface(vs_desc)) === -1) {
       return Enum26.ERROR_SCREEN;
     }
     GetVideoSurface(addressof(ghvSurface), gi8BitMiniMap);

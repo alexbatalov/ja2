@@ -694,7 +694,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: string /* STR16
     vs_desc.usHeight = pNodeToAdd.sHeightOfString;
     vs_desc.ubBitDepth = 16;
 
-    if (AddVideoSurface(vs_desc, addressof(pNodeToAdd.uiVideoSurfaceImage)) == 0) {
+    if ((pNodeToAdd.uiVideoSurfaceImage = AddVideoSurface(vs_desc)) === -1) {
       return false;
     }
 

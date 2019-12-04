@@ -998,8 +998,8 @@ function BuildInterfaceBuffer(): void {
   vs_desc.usWidth = gpAR.sWidth;
   vs_desc.usHeight = gpAR.sHeight;
   vs_desc.ubBitDepth = ubBitDepth;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(gpAR.iInterfaceBuffer)))
-    AssertMsg(0, "Failed to allocate memory for autoresolve interface buffer.");
+  if ((gpAR.iInterfaceBuffer = AddVideoSurface(vs_desc)) === -1)
+    AssertMsg(false, "Failed to allocate memory for autoresolve interface buffer.");
 
   GetClippingRect(ClipRect);
   SetClippingRect(DestRect);

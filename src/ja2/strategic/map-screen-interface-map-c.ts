@@ -1417,7 +1417,7 @@ export function InitializePalettesForMap(): boolean {
   // load image
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = "INTERFACE\\b_map.pcx";
-  if (!AddVideoSurface(addressof(vs_desc), addressof(uiTempMap))) {
+  if ((uiTempMap = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

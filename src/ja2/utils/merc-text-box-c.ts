@@ -136,7 +136,7 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
   // the background
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.ImageFile = zMercBackgroundPopupFilenames[ubBackgroundIndex];
-  if (!AddVideoSurface(addressof(vs_desc), addressof(gPopUpTextBox.uiMercTextPopUpBackground))) {
+  if ((gPopUpTextBox.uiMercTextPopUpBackground = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 
@@ -372,7 +372,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   vs_desc.usWidth = usWidth;
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(pPopUpTextBox.uiSourceBufferIndex))) {
+  if ((pPopUpTextBox.uiSourceBufferIndex = AddVideoSurface(vs_desc)) === -1) {
     return 0;
   }
   pPopUpTextBox.fMercTextPopupSurfaceInitialized = true;

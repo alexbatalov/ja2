@@ -344,7 +344,7 @@ export function EnterMercs(): boolean {
   vs_desc.usWidth = MERC_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = MERC_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercVideoFaceBackground))) {
+  if ((guiMercVideoFaceBackground = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

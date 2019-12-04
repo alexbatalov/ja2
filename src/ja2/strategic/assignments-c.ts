@@ -6874,7 +6874,7 @@ export function CreateDestroyAssignmentPopUpBoxes(): boolean {
 
     vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.ImageFile = "INTERFACE\\popupbackground.pcx";
-    if (!AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX))) {
+    if ((guiPOPUPTEX = AddVideoSurface(vs_desc)) === -1) {
       return false;
     }
 

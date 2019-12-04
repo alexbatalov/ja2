@@ -199,8 +199,8 @@ export function InitializeTacticalInterface(): boolean {
     vs_desc.ImageFile = "INTERFACE\\IN_TEXT.STI";
   }
 
-  if (!AddVideoSurface(addressof(vs_desc), addressof(guiINTEXT)))
-    AssertMsg(0, "Missing INTERFACE\\In_text.sti");
+  if ((guiINTEXT = AddVideoSurface(vs_desc)) === -1)
+    AssertMsg(false, "Missing INTERFACE\\In_text.sti");
   SetVideoSurfaceTransparency(guiINTEXT, FROMRGB(255, 0, 0));
 
   // LOAD CLOSE ANIM
@@ -314,7 +314,7 @@ export function InitializeTacticalInterface(): boolean {
   vs_desc.usWidth = 640;
   vs_desc.usHeight = 20;
   vs_desc.ubBitDepth = 16;
-  if (!AddVideoSurface(addressof(vs_desc), addressof(gTopMessage.uiSurface))) {
+  if ((gTopMessage.uiSurface = AddVideoSurface(vs_desc)) === -1) {
     return false;
   }
 

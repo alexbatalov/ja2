@@ -320,7 +320,7 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
     mprintf(5, 5, "Error loading save, attempting to patch save to version 1.02...", vs_desc.ImageFile);
-  } else if (AddVideoSurface(vs_desc, addressof(uiLoadScreen))) {
+  } else if ((uiLoadScreen = AddVideoSurface(vs_desc)) !== -1) {
     // Blit the background image
     GetVideoSurface(addressof(hVSurface), uiLoadScreen);
     BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, null);
