@@ -198,15 +198,15 @@ function ResetFontObjectPalette(iFont: INT32): boolean {
 // the appropriate 16-bit palette, and assigned to the HVOBJECT).
 //
 //*****************************************************************************
-function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>): Pointer<UINT16> {
-  let pPal16: Pointer<UINT16>;
+function SetFontObjectPalette8BPP(iFont: INT32, pPal8: SGPPaletteEntry[]): Uint16Array {
+  let pPal16: Uint16Array | null;
 
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
 
   if ((pPal16 = Create16BPPPalette(pPal8)) == null)
-    return null;
+    return <Uint16Array><unknown>null;
 
   FontObjs[iFont].value.p16BPPPalette = pPal16;
   FontObjs[iFont].value.pShadeCurrent = pPal16;
@@ -220,7 +220,7 @@ function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>)
 //	Sets the palette of a font, using a 16 bit palette.
 //
 //*****************************************************************************
-function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Pointer<UINT16>): Pointer<UINT16> {
+function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Uint16Array): Uint16Array {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);

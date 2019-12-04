@@ -311,10 +311,10 @@ export let gsHighlightSectorY: INT16 = -1;
 export let iCurrentMapSectorZ: INT32 = 0;
 
 // the palettes
-let pMapLTRedPalette: UINT16[] | null;
-let pMapDKRedPalette: UINT16[] | null;
-let pMapLTGreenPalette: UINT16[] | null;
-let pMapDKGreenPalette: UINT16[] | null;
+let pMapLTRedPalette: Uint16Array | null;
+let pMapDKRedPalette: Uint16Array | null;
+let pMapLTGreenPalette: Uint16Array | null;
+let pMapDKGreenPalette: Uint16Array | null;
 
 // the map border eta pop up
 export let guiMapBorderEtaPopUp: UINT32;

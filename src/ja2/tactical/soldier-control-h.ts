@@ -533,10 +533,10 @@ export interface SOLDIERTYPE {
   usFrontArcFullTileGridNos: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */;
 
   p8BPPPalette: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */; // 4
-  p16BPPPalette: UINT16[] /* Pointer<UINT16> */;
-  pShades: UINT16[][] /* Pointer<UINT16>[NUM_SOLDIER_SHADES] */; // Shading tables
-  pGlowShades: UINT16[][] /* Pointer<UINT16>[20] */; //
-  pCurrentShade: UINT16[] /* Pointer<UINT16> */;
+  p16BPPPalette: Uint16Array /* Pointer<UINT16> */;
+  pShades: Uint16Array[] /* Pointer<UINT16>[NUM_SOLDIER_SHADES] */; // Shading tables
+  pGlowShades: Uint16Array[] /* Pointer<UINT16>[20] */; //
+  pCurrentShade: Uint16Array /* Pointer<UINT16> */;
   bMedical: INT8;
   fBeginFade: UINT8 /* boolean */;
   ubFadeLevel: UINT8;
@@ -727,7 +727,7 @@ export interface SOLDIERTYPE {
   bAimShotLocation: UINT8;
   ubHitLocation: UINT8;
 
-  pEffectShades: UINT16[][] /* Pointer<UINT16>[NUM_SOLDIER_EFFECTSHADES] */; // Shading tables for effects
+  pEffectShades: Uint16Array[] /* Pointer<UINT16>[NUM_SOLDIER_EFFECTSHADES] */; // Shading tables for effects
 
   ubPlannedUIAPCost: UINT8;
   sPlannedTargetX: INT16;
@@ -1076,10 +1076,10 @@ export function createSoldierType(): SOLDIERTYPE {
     usFrontArcFullTileList: createArray(MAX_FULLTILE_DIRECTIONS, 0),
     usFrontArcFullTileGridNos: createArray(MAX_FULLTILE_DIRECTIONS, 0),
     p8BPPPalette: <SGPPaletteEntry[]><unknown>null,
-    p16BPPPalette: <UINT16[]><unknown>null,
-    pShades: createArray(NUM_SOLDIER_SHADES, <UINT16[]><unknown>null),
-    pGlowShades: createArray(20, <UINT16[]><unknown>null),
-    pCurrentShade: <UINT16[]><unknown>null,
+    p16BPPPalette: <Uint16Array><unknown>null,
+    pShades: createArray(NUM_SOLDIER_SHADES, <Uint16Array><unknown>null),
+    pGlowShades: createArray(20, <Uint16Array><unknown>null),
+    pCurrentShade: <Uint16Array><unknown>null,
     bMedical: 0,
     fBeginFade: 0,
     ubFadeLevel: 0,
@@ -1237,7 +1237,7 @@ export function createSoldierType(): SOLDIERTYPE {
     uiAnimSubFlags: 0,
     bAimShotLocation: 0,
     ubHitLocation: 0,
-    pEffectShades: createArray(NUM_SOLDIER_EFFECTSHADES, <UINT16[]><unknown>null),
+    pEffectShades: createArray(NUM_SOLDIER_EFFECTSHADES, <Uint16Array><unknown>null),
     ubPlannedUIAPCost: 0,
     sPlannedTargetX: 0,
     sPlannedTargetY: 0,
@@ -1555,10 +1555,10 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.usFrontArcFullTileList.fill(0);
   o.usFrontArcFullTileGridNos.fill(0);
   o.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
-  o.p16BPPPalette = <UINT16[]><unknown>null;
-  o.pShades.fill(<UINT16[]><unknown>null);
-  o.pGlowShades.fill(<UINT16[]><unknown>null);
-  o.pCurrentShade = <UINT16[]><unknown>null;
+  o.p16BPPPalette = <Uint16Array><unknown>null;
+  o.pShades.fill(<Uint16Array><unknown>null);
+  o.pGlowShades.fill(<Uint16Array><unknown>null);
+  o.pCurrentShade = <Uint16Array><unknown>null;
   o.bMedical = 0;
   o.fBeginFade = 0;
   o.ubFadeLevel = 0;
@@ -1716,7 +1716,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.uiAnimSubFlags = 0;
   o.bAimShotLocation = 0;
   o.ubHitLocation = 0;
-  o.pEffectShades.fill(<UINT16[]><unknown>null);
+  o.pEffectShades.fill(<Uint16Array><unknown>null);
   o.ubPlannedUIAPCost = 0;
   o.sPlannedTargetX = 0;
   o.sPlannedTargetY = 0;
@@ -2526,10 +2526,10 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   offset = readIntArray(o.usFrontArcFullTileGridNos, buffer, offset, 2);
   offset += 2; // padding
   o.p8BPPPalette = <SGPPaletteEntry[]><unknown>null; offset += 4; // pointer
-  o.p16BPPPalette = <UINT16[]><unknown>null; offset += 4; // pointer
-  o.pShades.fill(<UINT16[]><unknown>null); offset += 4 * NUM_SOLDIER_SHADES; // pointers
-  o.pGlowShades.fill(<UINT16[]><unknown>null); offset += 4 * 20; // pointers
-  o.pCurrentShade = <UINT16[]><unknown>null; offset += 4; // pointer
+  o.p16BPPPalette = <Uint16Array><unknown>null; offset += 4; // pointer
+  o.pShades.fill(<Uint16Array><unknown>null); offset += 4 * NUM_SOLDIER_SHADES; // pointers
+  o.pGlowShades.fill(<Uint16Array><unknown>null); offset += 4 * 20; // pointers
+  o.pCurrentShade = <Uint16Array><unknown>null; offset += 4; // pointer
   o.bMedical = buffer.readInt8(offset++);
   o.fBeginFade = buffer.readUInt8(offset++);
   o.ubFadeLevel = buffer.readUInt8(offset++);
@@ -2704,7 +2704,7 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   o.bAimShotLocation = buffer.readUInt8(offset++);
   o.ubHitLocation = buffer.readUInt8(offset++);
   offset += 2; // padding
-  o.pEffectShades.fill(<UINT16[]><unknown>null); offset += 4 * NUM_SOLDIER_EFFECTSHADES; // pointers
+  o.pEffectShades.fill(<Uint16Array><unknown>null); offset += 4 * NUM_SOLDIER_EFFECTSHADES; // pointers
   o.ubPlannedUIAPCost = buffer.readUInt8(offset++);
   offset++; // padding
   o.sPlannedTargetX = buffer.readInt16LE(offset); offset += 2;

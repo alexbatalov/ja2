@@ -37,17 +37,29 @@ export interface ZStripInfo {
   bInitialZChange: INT8; // difference in Z value between the leftmost and base strips
   ubFirstZStripWidth: UINT8; // # of pixels in the leftmost strip
   ubNumberOfZChanges: UINT8; // number of strips (after the first)
-  pbZChange: Pointer<INT8>; // change to the Z value in each strip (after the first)
+  pbZChange: Int8Array /* Pointer<INT8> */; // change to the Z value in each strip (after the first)
 }
 
 export interface SixteenBPPObjectInfo {
-  p16BPPData: Pointer<UINT16>;
+  p16BPPData: Uint16Array /* Pointer<UINT16> */;
   usRegionIndex: UINT16;
   ubShadeLevel: UINT8;
   usWidth: UINT16;
   usHeight: UINT16;
   sOffsetX: INT16;
   sOffsetY: INT16;
+}
+
+export function createSixteenBPPObjectInfo(): SixteenBPPObjectInfo {
+  return {
+    p16BPPData: <Uint16Array><unknown>null,
+    usRegionIndex: 0,
+    ubShadeLevel: 0,
+    usWidth: 0,
+    usHeight: 0,
+    sOffsetX: 0,
+    sOffsetY: 0,
+  };
 }
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
@@ -69,19 +81,19 @@ export const VOBJECT_FLAG_SHADETABLE_SHARED = 0x00000100;
 export interface SGPVObject {
   fFlags: UINT32; // Special flags
   uiSizePixData: UINT32; // ETRLE data size
-  pPaletteEntry: Pointer<SGPPaletteEntry>; // 8BPP Palette
+  pPaletteEntry: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */; // 8BPP Palette
   TransparentColor: COLORVAL; // Defaults to 0,0,0
-  p16BPPPalette: Pointer<UINT16>; // A 16BPP palette used for 8->16 blits
+  p16BPPPalette: Uint16Array /* Pointer<UINT16> */; // A 16BPP palette used for 8->16 blits
 
-  pPixData: PTR; // ETRLE pixel data
-  pETRLEObject: Pointer<ETRLEObject>; // Object offset data etc
-  p16BPPObject: Pointer<SixteenBPPObjectInfo>;
-  pShades: Pointer<UINT16>[] /* [HVOBJECT_SHADE_TABLES] */; // Shading tables
-  pShadeCurrent: Pointer<UINT16>;
-  pGlow: Pointer<UINT16>; // glow highlight table
-  pShade8: Pointer<UINT8>; // 8-bit shading index table
-  pGlow8: Pointer<UINT8>; // 8-bit glow table
-  ppZStripInfo: Pointer<Pointer<ZStripInfo>>; // Z-value strip info arrays
+  pPixData: Uint8Array /* PTR */; // ETRLE pixel data
+  pETRLEObject: ETRLEObject[] /* Pointer<ETRLEObject> */; // Object offset data etc
+  p16BPPObject: SixteenBPPObjectInfo[] /* Pointer<SixteenBPPObjectInfo> */;
+  pShades: Uint16Array[] /* Pointer<UINT16>[HVOBJECT_SHADE_TABLES] */; // Shading tables
+  pShadeCurrent: Uint16Array /* Pointer<UINT16> */;
+  pGlow: Uint16Array /* Pointer<UINT16> */; // glow highlight table
+  pShade8: Uint8Array /* Pointer<UINT8> */; // 8-bit shading index table
+  pGlow8: Uint8Array /* Pointer<UINT8> */; // 8-bit glow table
+  ppZStripInfo: ZStripInfo[] /* Pointer<Pointer<ZStripInfo>> */; // Z-value strip info arrays
 
   usNumberOf16BPPObjects: UINT16;
   usNumberOfObjects: UINT16; // Total number of objects
@@ -89,6 +101,29 @@ export interface SGPVObject {
 
   // Reserved for added room and 32-byte boundaries
   bReserved: BYTE[] /* [1] */;
+}
+
+export function createSGPVObject(): SGPVObject {
+  return {
+    fFlags: 0,
+    uiSizePixData: 0,
+    pPaletteEntry: <SGPPaletteEntry[]><unknown>null,
+    TransparentColor: 0,
+    p16BPPPalette: <Uint16Array><unknown>null,
+    pPixData: <Buffer><unknown>null,
+    pETRLEObject: <ETRLEObject[]><unknown>null,
+    p16BPPObject: <SixteenBPPObjectInfo[]><unknown>null,
+    pShades: <Uint16Array[]><unknown>null,
+    pShadeCurrent: <Uint16Array><unknown>null,
+    pGlow: <Uint16Array><unknown>null,
+    pShade8: <Uint8Array><unknown>null,
+    pGlow8: <Uint8Array><unknown>null,
+    ppZStripInfo: <ZStripInfo[]><unknown>null,
+    usNumberOf16BPPObjects: 0,
+    usNumberOfObjects: 0,
+    ubBitDepth: 0,
+    bReserved: createArray(1, 0),
+  };
 }
 
 export type HVOBJECT = Pointer<SGPVObject>;

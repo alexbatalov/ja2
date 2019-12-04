@@ -502,8 +502,8 @@ export function Create16BPPPalette(pPalette: SGPPaletteEntry[]): Uint16Array {
         4) For gamma correction, pass in weighted values for each color.
 
 **********************************************************************************************/
-export function Create16BPPPaletteShaded(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, bscale: UINT32, mono: boolean): UINT16[] {
-  let p16BPPPalette: UINT16[];
+export function Create16BPPPaletteShaded(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, bscale: UINT32, mono: boolean): Uint16Array {
+  let p16BPPPalette: Uint16Array;
   let r16: UINT16;
   let g16: UINT16;
   let b16: UINT16;
@@ -519,7 +519,7 @@ export function Create16BPPPaletteShaded(pPalette: SGPPaletteEntry[], rscale: UI
 
   Assert(pPalette != null);
 
-  p16BPPPalette = createArray(256, 0);
+  p16BPPPalette = new Uint16Array(256);
 
   for (cnt = 0; cnt < 256; cnt++) {
     if (mono) {

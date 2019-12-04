@@ -4285,8 +4285,7 @@ export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
   }
 
   if (pSoldier.p16BPPPalette != null) {
-    MemFree(pSoldier.p16BPPPalette);
-    pSoldier.p16BPPPalette = null;
+    pSoldier.p16BPPPalette = <Uint16Array><unknown>null;
   }
 
   // -- BUILD 16BPP Palette from this
@@ -4294,22 +4293,19 @@ export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
 
   for (iWhich = 0; iWhich < NUM_SOLDIER_SHADES; iWhich++) {
     if (pSoldier.pShades[iWhich] != null) {
-      MemFree(pSoldier.pShades[iWhich]);
-      pSoldier.pShades[iWhich] = null;
+      pSoldier.pShades[iWhich] = <Uint16Array><unknown>null;
     }
   }
 
   for (iWhich = 0; iWhich < NUM_SOLDIER_EFFECTSHADES; iWhich++) {
     if (pSoldier.pEffectShades[iWhich] != null) {
-      MemFree(pSoldier.pEffectShades[iWhich]);
-      pSoldier.pEffectShades[iWhich] = null;
+      pSoldier.pEffectShades[iWhich] = <Uint16Array><unknown>null;
     }
   }
 
   for (iWhich = 0; iWhich < 20; iWhich++) {
     if (pSoldier.pGlowShades[iWhich] != null) {
-      MemFree(pSoldier.pGlowShades[iWhich]);
-      pSoldier.pGlowShades[iWhich] = null;
+      pSoldier.pGlowShades[iWhich] = <Uint16Array><unknown>null;
     }
   }
 
@@ -7256,8 +7252,8 @@ export function ReLoadSoldierAnimationDueToHandItemChange(pSoldier: SOLDIERTYPE,
   }
 }
 
-function CreateEnemyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, fAdjustGreen: boolean): UINT16[] {
-  let p16BPPPalette: UINT16[];
+function CreateEnemyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, fAdjustGreen: boolean): Uint16Array {
+  let p16BPPPalette: Uint16Array;
   let r16: UINT16;
   let g16: UINT16;
   let b16: UINT16;
@@ -7272,7 +7268,7 @@ function CreateEnemyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32
 
   Assert(pPalette != null);
 
-  p16BPPPalette = createArray(256, 0);
+  p16BPPPalette = new Uint16Array(256);
 
   for (cnt = 0; cnt < 256; cnt++) {
     gmod = (pPalette[cnt].peGreen);
@@ -7314,8 +7310,8 @@ function CreateEnemyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32
   return p16BPPPalette;
 }
 
-function CreateEnemyGreyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, fAdjustGreen: boolean): UINT16[] {
-  let p16BPPPalette: UINT16[];
+function CreateEnemyGreyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UINT32, gscale: UINT32, fAdjustGreen: boolean): Uint16Array {
+  let p16BPPPalette: Uint16Array;
   let r16: UINT16;
   let g16: UINT16;
   let b16: UINT16;
@@ -7331,7 +7327,7 @@ function CreateEnemyGreyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UI
 
   Assert(pPalette != null);
 
-  p16BPPPalette = createArray(256, 0);
+  p16BPPPalette = new Uint16Array(256);
 
   for (cnt = 0; cnt < 256; cnt++) {
     lumin = (pPalette[cnt].peRed * 299 / 1000) + (pPalette[cnt].peGreen * 587 / 1000) + (pPalette[cnt].peBlue * 114 / 1000);

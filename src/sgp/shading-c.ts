@@ -1,7 +1,7 @@
 namespace ja2 {
 
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArrayFrom(256, createSGPPaletteEntry));
-export let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArray(256, 0));
+export let ubColorTables: Uint8Array[] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => new Uint8Array(256));
 
 let IntensityTable: UINT16[] /* [65536] */ = createArray(65536, 0);
 let ShadeTable: UINT16[] /* [65536] */ = createArray(65536, 0);
@@ -81,7 +81,7 @@ function ShadesCalculatePalette(pSrcPalette: SGPPaletteEntry[], pDestPalette: SG
   return true;
 }
 
-function FindIndecies(pSrcPalette: SGPPaletteEntry[], pMapPalette: SGPPaletteEntry[], pTable: UINT8[]): void {
+function FindIndecies(pSrcPalette: SGPPaletteEntry[], pMapPalette: SGPPaletteEntry[], pTable: Uint8Array): void {
   let usCurIndex: UINT16;
   let usCurDelta: UINT16;
   let usCurCount: UINT16;

@@ -210,8 +210,8 @@ export interface ROTTING_CORPSE {
   pAniTile: ANITILE | null /* Pointer<ANITILE> */;
 
   p8BPPPalette: SGPPaletteEntry[] /* Pointer<SGPPaletteEntry> */;
-  p16BPPPalette: UINT16[] /* Pointer<UINT16> */;
-  pShades: UINT16[][] /* Pointer<UINT16>[NUM_CORPSE_SHADES] */;
+  p16BPPPalette: Uint16Array /* Pointer<UINT16> */;
+  pShades: Uint16Array[] /* Pointer<UINT16>[NUM_CORPSE_SHADES] */;
   sGraphicNum: INT16;
   iCachedTileID: INT32;
   dXPos: FLOAT;
