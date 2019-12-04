@@ -4256,7 +4256,7 @@ function DrawDeskTopBackground(): boolean {
   clip.iBottom = 408 + 19;
   // get surfaces
   pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  if (!GetVideoSurface(addressof(hSrcVSurface), guiDESKTOP)) {
+  if ((hSrcVSurface = GetVideoSurface(guiDESKTOP)) === null) {
     return false;
   }
   pSrcBuf = LockVideoSurface(guiDESKTOP, addressof(uiSrcPitchBYTES));

@@ -206,7 +206,7 @@ function SmkSetupVideo(): void {
   // DEF:
   //	lpVideoPlayback2=CinematicModeOn();
 
-  GetVideoSurface(addressof(hVSurface), FRAME_BUFFER);
+  hVSurface = GetVideoSurface(FRAME_BUFFER);
   lpVideoPlayback2 = GetVideoSurfaceDDSurface(hVSurface);
 
   ZEROMEM(SurfaceDescription);

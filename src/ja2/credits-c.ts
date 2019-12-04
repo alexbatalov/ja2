@@ -860,7 +860,7 @@ function DisplayCreditNode(pCurrent: CRDT_NODE): boolean {
     }
   }
 
-  GetVideoSurface(addressof(hVSurface), pCurrent.uiVideoSurfaceImage);
+  hVSurface = GetVideoSurface(pCurrent.uiVideoSurfaceImage);
 
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.sPosX, pCurrent.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, null);
 

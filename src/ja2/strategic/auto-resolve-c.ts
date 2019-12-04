@@ -1439,7 +1439,7 @@ function RenderAutoResolve(): void {
   }
   gpAR.fRenderAutoResolve = false;
 
-  GetVideoSurface(addressof(hVSurface), gpAR.iInterfaceBuffer);
+  hVSurface = GetVideoSurface(gpAR.iInterfaceBuffer);
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.Rect.iLeft, gpAR.Rect.iTop, VO_BLT_SRCTRANSPARENCY, 0);
 
   for (i = 0; i < gpAR.ubMercs; i++) {

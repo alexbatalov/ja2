@@ -2343,7 +2343,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   iWinWidth = WinRect.iRight - WinRect.iLeft;
   iWinHeight = WinRect.iBottom - WinRect.iTop;
 
-  GetVideoSurface(addressof(hvSurface), vSurface);
+  hvSurface = GetVideoSurface(vSurface);
 
   iPicWidth = hvSurface.value.usWidth;
   iPicHeight = hvSurface.value.usHeight;

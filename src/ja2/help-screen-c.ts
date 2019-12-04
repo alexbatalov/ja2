@@ -1807,8 +1807,8 @@ function RenderTextBufferToScreen(): void {
   let hSrcVSurface: HVSURFACE;
   let SrcRect: SGPRect = createSGPRect();
 
-  GetVideoSurface(addressof(hDestVSurface), guiRENDERBUFFER);
-  GetVideoSurface(addressof(hSrcVSurface), guiHelpScreenTextBufferSurface);
+  hDestVSurface = GetVideoSurface(guiRENDERBUFFER);
+  hSrcVSurface = GetVideoSurface(guiHelpScreenTextBufferSurface);
 
   SrcRect.iLeft = 0;
   SrcRect.iTop = gHelpScreen.iLineAtTopOfTextBuffer * HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER();

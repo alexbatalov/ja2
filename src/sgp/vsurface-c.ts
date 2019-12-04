@@ -268,7 +268,7 @@ export function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVA
   // Get Video Surface
   //
 
-  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+  if ((hVSurface = GetVideoSurface(uiIndex)) === null) {
     return false;
   }
 
@@ -288,7 +288,7 @@ function AddVideoSurfaceRegion(uiIndex: UINT32, pNewRegion: Pointer<VSURFACE_REG
   // Get Video Surface
   //
 
-  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+  if ((hVSurface = GetVideoSurface(uiIndex)) === null) {
     return false;
   }
 
@@ -314,7 +314,7 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
   // Get Video Surface
   //
 
-  if (!GetVideoSurface(addressof(hVSurface), uiIndex)) {
+  if ((hVSurface = GetVideoSurface(uiIndex)) === null) {
     return false;
   }
 
@@ -325,38 +325,33 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
   return true;
 }
 
-export function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): boolean {
+export function GetVideoSurface(uiIndex: UINT32): HVSURFACE {
   let curr: VSURFACE_NODE | null;
 
   if (uiIndex == PRIMARY_SURFACE) {
-    hVSurface.value = ghPrimary;
-    return true;
+    return ghPrimary;
   }
 
   if (uiIndex == BACKBUFFER) {
-    hVSurface.value = ghBackBuffer;
-    return true;
+    return ghBackBuffer;
   }
 
   if (uiIndex == FRAME_BUFFER) {
-    hVSurface.value = ghFrameBuffer;
-    return true;
+    return ghFrameBuffer;
   }
 
   if (uiIndex == MOUSE_BUFFER) {
-    hVSurface.value = ghMouseBuffer;
-    return true;
+    return ghMouseBuffer;
   }
 
   curr = gpVSurfaceHead;
   while (curr) {
     if (curr.uiIndex == uiIndex) {
-      hVSurface.value = curr.hVSurface;
-      return true;
+      return curr.hVSurface;
     }
     curr = curr.next;
   }
-  return false;
+  return <HVSURFACE><unknown>null;
 }
 
 function SetPrimaryVideoSurfaces(): boolean {
@@ -461,10 +456,10 @@ export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, u
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 
-  if (!GetVideoSurface(addressof(hDestVSurface), uiDestVSurface)) {
+  if ((hDestVSurface = GetVideoSurface(uiDestVSurface)) === null) {
     return false;
   }
-  if (!GetVideoSurface(addressof(hSrcVSurface), uiSrcVSurface)) {
+  if ((hSrcVSurface = GetVideoSurface(uiSrcVSurface)) === null) {
     return false;
   }
   if (!BltVideoSurfaceToVideoSurface(hDestVSurface, hSrcVSurface, usRegionIndex, iDestX, iDestY, fBltFlags, pBltFx)) {
@@ -485,7 +480,7 @@ export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   let hDestVSurface: HVSURFACE;
   let Clip: SGPRect = createSGPRect();
 
-  if (!GetVideoSurface(addressof(hDestVSurface), uiDestVSurface)) {
+  if ((hDestVSurface = GetVideoSurface(uiDestVSurface)) === null) {
     return false;
   }
 
@@ -1987,7 +1982,7 @@ function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: I
   //
   // Get Video Surface
   //
-  if (!GetVideoSurface(addressof(hVSurface), uiDestVSurface)) {
+  if ((hVSurface = GetVideoSurface(uiDestVSurface)) === null) {
     return false;
   }
 
@@ -2098,10 +2093,10 @@ export function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UI
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 
-  if (!GetVideoSurface(addressof(hDestVSurface), uiDestVSurface)) {
+  if ((hDestVSurface = GetVideoSurface(uiDestVSurface)) === null) {
     return false;
   }
-  if (!GetVideoSurface(addressof(hSrcVSurface), uiSrcVSurface)) {
+  if ((hSrcVSurface = GetVideoSurface(uiSrcVSurface)) === null) {
     return false;
   }
 

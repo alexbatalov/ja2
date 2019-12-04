@@ -158,7 +158,7 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   string = sprintf("%S", string2);
 
   // Get surface...
-  GetVideoSurface(addressof(hVSurface), uiDestBuf);
+  hVSurface = GetVideoSurface(uiDestBuf);
 
   pDDSurface = GetVideoSurfaceDDSurface(hVSurface);
 

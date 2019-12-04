@@ -404,8 +404,8 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
 
     UnLockVideoSurface(pPopUpTextBox.uiSourceBufferIndex);
   } else {
-    if (!GetVideoSurface(addressof(hSrcVSurface), pPopUpTextBox.uiMercTextPopUpBackground)) {
-      AssertMsg(0, FormatString("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.uiMercTextPopUpBackground));
+    if ((hSrcVSurface = GetVideoSurface(pPopUpTextBox.uiMercTextPopUpBackground)) === null) {
+      AssertMsg(false, FormatString("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.uiMercTextPopUpBackground));
     }
 
     pDestBuf = LockVideoSurface(pPopUpTextBox.uiSourceBufferIndex, addressof(uiDestPitchBYTES));

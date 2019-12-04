@@ -1042,8 +1042,8 @@ function RenderShopKeeperInterface(): boolean {
   // At this point the background is pure, copy it to the save buffer
   if (gfRenderScreenOnNextLoop) {
     //	BlitBufferToBuffer( guiRENDERBUFFER, guiCornerWhereTacticalIsStillSeenImage, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_Y, SKI_TACTICAL_BACKGROUND_START_WIDTH, SKI_TACTICAL_BACKGROUND_START_HEIGHT );
-    GetVideoSurface(addressof(hDestVSurface), guiCornerWhereTacticalIsStillSeenImage);
-    GetVideoSurface(addressof(hSrcVSurface), guiSAVEBUFFER);
+    hDestVSurface = GetVideoSurface(guiCornerWhereTacticalIsStillSeenImage);
+    hSrcVSurface = GetVideoSurface(guiSAVEBUFFER);
 
     SrcRect.iLeft = SKI_TACTICAL_BACKGROUND_START_X;
     SrcRect.iTop = SKI_TACTICAL_BACKGROUND_START_Y;
@@ -1092,8 +1092,8 @@ function RestoreTacticalBackGround(): void {
 
   //	BlitBufferToBuffer( guiCornerWhereTacticalIsStillSeenImage, guiRENDERBUFFER, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_Y, SKI_TACTICAL_BACKGROUND_START_WIDTH, SKI_TACTICAL_BACKGROUND_START_HEIGHT );
 
-  GetVideoSurface(addressof(hDestVSurface), guiRENDERBUFFER);
-  GetVideoSurface(addressof(hSrcVSurface), guiCornerWhereTacticalIsStillSeenImage);
+  hDestVSurface = GetVideoSurface(guiRENDERBUFFER);
+  hSrcVSurface = GetVideoSurface(guiCornerWhereTacticalIsStillSeenImage);
 
   SrcRect.iLeft = 0;
   SrcRect.iTop = 0;

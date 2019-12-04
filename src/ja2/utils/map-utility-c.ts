@@ -138,7 +138,7 @@ export function MapUtilScreenHandle(): UINT32 {
     if ((gi8BitMiniMap = AddVideoSurface(vs_desc)) === -1) {
       return Enum26.ERROR_SCREEN;
     }
-    GetVideoSurface(addressof(ghvSurface), gi8BitMiniMap);
+    ghvSurface = GetVideoSurface(gi8BitMiniMap);
   }
 
   // OK, we are here, now loop through files

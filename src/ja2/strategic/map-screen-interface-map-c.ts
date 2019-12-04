@@ -563,7 +563,7 @@ export function DrawMap(): boolean {
   if (!iCurrentMapSectorZ) {
     pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
 
-    if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+    if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
       return false;
     }
     pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1053,7 +1053,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let pOriginalPallette: Pointer<UINT16>;
 
   // get original video surface palette
-  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+  if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
     return false;
   }
   // get original video surface palette
@@ -1105,7 +1105,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
 
@@ -1115,7 +1115,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1132,7 +1132,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
@@ -1141,7 +1141,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
         /// lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1158,7 +1158,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
@@ -1167,7 +1167,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1184,7 +1184,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
       case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
@@ -1193,7 +1193,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1210,7 +1210,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
     }
 
     // restore original palette
-    if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+    if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
       return false;
     }
     hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
@@ -1247,7 +1247,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   iX = sScreenX - MAP_GRID_X;
 
   // get original video surface palette
-  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+  if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
     return false;
   }
   pOriginalPallette = hSrcVSurface.value.p16BPPPalette;
@@ -1306,14 +1306,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_LT_GREEN):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1329,14 +1329,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_DK_GREEN):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
 
         /// lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1352,14 +1352,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_LT_RED):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1375,14 +1375,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
 
       case (Enum157.MAP_SHADE_DK_RED):
         // grab video surface and set palette
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
 
         // lock source and dest buffers
         pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
-        if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+        if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
         pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
@@ -1399,7 +1399,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   }
 
   // restore original palette
-  if (!GetVideoSurface(addressof(hSrcVSurface), guiBIGMAP)) {
+  if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
     return false;
   }
   hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
@@ -1422,7 +1422,7 @@ export function InitializePalettesForMap(): boolean {
   }
 
   // get video surface
-  if (!GetVideoSurface(addressof(hSrcVSurface), uiTempMap)) {
+  if ((hSrcVSurface = GetVideoSurface(uiTempMap)) === null) {
     return false;
   }
   GetVSurfacePaletteEntries(hSrcVSurface, pPalette);

@@ -1090,7 +1090,7 @@ function DrawBox(uiCounter: UINT32): boolean {
   // blit in texture first, then borders
   // blit in surface
   pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].uiBuffer, addressof(uiDestPitchBYTES));
-  if (!GetVideoSurface(addressof(hSrcVSurface), PopUpBoxList[uiCounter].iBackGroundSurface)) {
+  if ((hSrcVSurface = GetVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface)) === null) {
     return false;
   }
   pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface, addressof(uiSrcPitchBYTES));
