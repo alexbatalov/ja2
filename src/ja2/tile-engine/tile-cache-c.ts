@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+
 let guiNumTileCacheStructs: UINT32 = 0;
 let guiMaxTileCacheSize: UINT32 = 50;
 let guiCurTileCacheSize: UINT32 = 0;
@@ -24,26 +26,23 @@ export function InitTileCache(): boolean {
   guiCurTileCacheSize = 0;
 
   // OK, look for JSD files in the tile cache directory and
-  // load any we find....
-  if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
-    while (GetFileNext(addressof(FileInfo))) {
-      sFiles++;
-    }
-    GetFileClose(addressof(FileInfo));
-  }
+  // load any we find...
+  const tileCacheDirName = fs.readdirSync('.').find(entry => entry.toLowerCase() === 'tilecache');
+  if (tileCacheDirName) {
+    const fileNames = fs.readdirSync(tileCacheDirName).filter(entry => entry.toLowerCase().endsWith('.jsd'));
+    sFiles = fileNames.length;
 
-  // Allocate memory...
-  if (sFiles > 0) {
-    cnt = 0;
+    // Allocate memory...
+    if (sFiles > 0) {
+      cnt = 0;
 
-    guiNumTileCacheStructs = sFiles;
+      guiNumTileCacheStructs = sFiles;
 
-    gpTileCacheStructInfo = createArrayFrom(sFiles, createTileCacheStruct);
+      gpTileCacheStructInfo = createArrayFrom(sFiles, createTileCacheStruct);
 
-    // Loop through and set filenames
-    if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
-      while (GetFileNext(addressof(FileInfo))) {
-        gpTileCacheStructInfo[cnt].Filename = sprintf("TILECACHE\\%s", FileInfo.zFileName);
+      // Loop through and set filenames
+      for (let i = 0; i < sFiles; i++) {
+        gpTileCacheStructInfo[cnt].Filename = sprintf("%s\\%s", tileCacheDirName, fileNames[i]);
 
         // Get root name
         gpTileCacheStructInfo[cnt].zRootName = GetRootName(gpTileCacheStructInfo[cnt].Filename);
@@ -57,7 +56,6 @@ export function InitTileCache(): boolean {
 
         cnt++;
       }
-      GetFileClose(addressof(FileInfo));
     }
   }
 
@@ -201,21 +199,6 @@ export function RemoveCachedTile(iCachedTile: INT32): boolean {
   }
 
   return false;
-}
-
-function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
-  let pImagery: TILE_IMAGERY | null;
-
-  if (iIndex == -1) {
-    return null;
-  }
-
-  pImagery = gpTileCache[iIndex].pImagery;
-  if (pImagery == null) {
-    return null;
-  }
-
-  return pImagery.vo;
 }
 
 function GetCachedTileStructureRef(iIndex: INT32): STRUCTURE_FILE_REF | null {

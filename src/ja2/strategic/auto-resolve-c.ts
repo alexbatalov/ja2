@@ -550,7 +550,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, SrcRect, DstRect);
     InvalidateScreen();
-    RefreshScreen(null);
+    RefreshScreen();
 
     // Restore the previous rect.
     BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, DstRect.iLeft, DstRect.iTop, (DstRect.iRight - DstRect.iLeft + 1), (DstRect.iBottom - DstRect.iTop + 1));
@@ -1007,22 +1007,22 @@ function BuildInterfaceBuffer(): void {
   // Blit the back panels...
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
     for (x = DestRect.iLeft; x < DestRect.iRight; x += 50) {
-      BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.C_TEXTURE, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+      BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.C_TEXTURE, x, y, VO_BLT_SRCTRANSPARENCY, null);
     }
   }
   // Blit the left and right edges
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
     x = DestRect.iLeft;
-    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.L_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.L_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, null);
     x = DestRect.iRight - 3;
-    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.R_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.R_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, null);
   }
   // Blit the top and bottom edges
   for (x = DestRect.iLeft; x < DestRect.iRight; x += 50) {
     y = DestRect.iTop;
-    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.T_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.T_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, null);
     y = DestRect.iBottom - 3;
-    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.B_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.B_BORDER, x, y, VO_BLT_SRCTRANSPARENCY, null);
   }
   // Blit the 4 corners
   BltVideoObjectFromIndex(gpAR.iInterfaceBuffer, gpAR.iPanelImages, Enum121.TL_BORDER, DestRect.iLeft, DestRect.iTop, VO_BLT_SRCTRANSPARENCY, null);
@@ -1440,7 +1440,7 @@ function RenderAutoResolve(): void {
   gpAR.fRenderAutoResolve = false;
 
   hVSurface = GetVideoSurface(gpAR.iInterfaceBuffer);
-  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.Rect.iLeft, gpAR.Rect.iTop, VO_BLT_SRCTRANSPARENCY, 0);
+  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.Rect.iLeft, gpAR.Rect.iTop, VO_BLT_SRCTRANSPARENCY, null);
 
   for (i = 0; i < gpAR.ubMercs; i++) {
     RenderSoldierCell(gpMercs[i]);
@@ -1625,7 +1625,7 @@ function CreateAutoResolveInterface(): void {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let i: INT32;
   let index: INT32;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject | null;
   let ubGreenMilitia: UINT8;
   let ubRegMilitia: UINT8;
   let ubEliteMilitia: UINT8;
@@ -1680,8 +1680,8 @@ function CreateAutoResolveInterface(): void {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
   if ((hVObject = GetVideoObject(gpAR.iFaces))) {
-    hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
-    hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
+    hVObject.pShades[0] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 255, 255, 255, false);
+    hVObject.pShades[1] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 250, 25, 25, true);
   }
 
   // Add the battle over panels
@@ -1703,8 +1703,8 @@ function CreateAutoResolveInterface(): void {
       }
     }
     if ((hVObject = GetVideoObject(gpMercs[i].uiVObjectID))) {
-      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
-      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
+      hVObject.pShades[0] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 255, 255, 255, false);
+      hVObject.pShades[1] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 250, 25, 25, true);
     }
   }
 
@@ -2703,7 +2703,7 @@ function GetUnusedMercProfileID(): UINT8 {
 /* static */ let CreateTempPlayerMerc__iSoldierCount: INT32 = 0;
 function CreateTempPlayerMerc(): void {
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
 
   // Init the merc create structure with basic information
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
@@ -2716,7 +2716,7 @@ function CreateTempPlayerMerc(): void {
 
   // Create the player soldier
 
-  gpMercs[gpAR.iNumMercFaces].pSoldier = <SOLDIERTYPE>TacticalCreateSoldier(MercCreateStruct, addressof(ubID));
+  gpMercs[gpAR.iNumMercFaces].pSoldier = <SOLDIERTYPE>TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubID, (v) => ubID = v));
   if (gpMercs[gpAR.iNumMercFaces].pSoldier) {
     gpAR.iNumMercFaces++;
   }

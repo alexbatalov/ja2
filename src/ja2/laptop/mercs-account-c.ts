@@ -112,7 +112,7 @@ export function HandleMercsAccount(): void {
 
 export function RenderMercsAccount(): void {
   let sText: string /* wchar_t[100] */;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DrawMecBackGround();
 

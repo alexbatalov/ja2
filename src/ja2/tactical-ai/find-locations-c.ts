@@ -27,15 +27,20 @@ function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32,
   return iPercentBetter;
 }
 
-function AICenterXY(sGridNo: INT16, pdX: Pointer<FLOAT>, pdY: Pointer<FLOAT>): void {
+function AICenterXY(sGridNo: INT16): { dX: FLOAT, dY: FLOAT } {
+  let dX: FLOAT;
+  let dY: FLOAT;
+
   let sXPos: INT16;
   let sYPos: INT16;
 
   sXPos = sGridNo % WORLD_COLS;
   sYPos = sGridNo / WORLD_COLS;
 
-  pdX.value = (sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
-  pdY.value = (sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
+  dX = (sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
+  dY = (sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
+
+  return { dX, dY };
 }
 
 function CalcWorstCTGTForPosition(pSoldier: SOLDIERTYPE, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
@@ -114,7 +119,7 @@ function CalcBestCTGT(pSoldier: SOLDIERTYPE, ubOppID: UINT8, sOppGridNo: INT16, 
   let sSouthGridNo: INT16;
   let sDir: INT16;
   let sCheckSpot: INT16;
-  let sOKTest: INT16;
+  let sOKTest: boolean /* INT16 */;
 
   let bThisCTGT: INT8;
   let bBestCTGT: INT8 = 0;
@@ -137,7 +142,7 @@ function CalcBestCTGT(pSoldier: SOLDIERTYPE, ubOppID: UINT8, sOppGridNo: INT16, 
     // if it wasn't out of bounds
     if (sAdjSpot != sCentralGridNo) {
       // if the adjacent spot can we walked on and isn't in water or gas
-      if ((NewOKDestination(pSoldier, sAdjSpot, IGNOREPEOPLE, bLevel) > 0) && !InWaterOrGas(pSoldier, sAdjSpot)) {
+      if ((NewOKDestination(pSoldier, sAdjSpot, IGNOREPEOPLE, bLevel)) && !InWaterOrGas(pSoldier, sAdjSpot)) {
         switch (sDir) {
           case Enum245.NORTH:
           case Enum245.EAST:
@@ -165,7 +170,7 @@ function CalcBestCTGT(pSoldier: SOLDIERTYPE, ubOppID: UINT8, sOppGridNo: INT16, 
 
           // NOTE: GOTTA SET THESE 3 FIELDS *BACK* AFTER USING THIS FUNCTION!!!
           pSoldier.sGridNo = sAdjSpot; // pretend he's standing at 'sAdjSpot'
-          AICenterXY(sAdjSpot, addressof(pSoldier.dXPos), addressof(pSoldier.dYPos));
+          ({ dX: pSoldier.dXPos, dY: pSoldier.dYPos } = AICenterXY(sAdjSpot));
           bThisCTGT = CalcWorstCTGTForPosition(pSoldier, ubOppID, sOppGridNo, bLevel, iMyAPsLeft);
           if (bThisCTGT > bBestCTGT) {
             bBestCTGT = bThisCTGT;
@@ -394,13 +399,10 @@ function NumberOfTeamMatesAdjacent(pSoldier: SOLDIERTYPE, sGridNo: INT16): UINT8
 
   for (ubLoop = 0; ubLoop < Enum245.NUM_WORLD_DIRECTIONS; ubLoop++) {
     sTempGridNo = NewGridNo(sGridNo, DirectionInc(ubLoop));
-    if (sTempGridNo != sGridNo)
-      ;
-    {
-      ubWhoIsThere = WhoIsThere2(sGridNo, pSoldier.bLevel);
-      if (ubWhoIsThere != NOBODY && ubWhoIsThere != pSoldier.ubID && MercPtrs[ubWhoIsThere].bTeam == pSoldier.bTeam) {
-        ubCount++;
-      }
+
+    ubWhoIsThere = WhoIsThere2(sGridNo, pSoldier.bLevel);
+    if (ubWhoIsThere != NOBODY && ubWhoIsThere != pSoldier.ubID && MercPtrs[ubWhoIsThere].bTeam == pSoldier.bTeam) {
+      ubCount++;
     }
   }
 
@@ -414,8 +416,10 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
   let iCoverValue: INT32;
   let iBestCoverValue: INT32;
   let iCurrentScale: INT32;
-  let iCoverScale: INT32;
-  let iBestCoverScale: INT32;
+  let iCurrentScale__Pointer = createPointer(() => iCurrentScale, (v) => iCurrentScale = v);
+  let iCoverScale: INT32 = 0;
+  let iCoverScale__Pointer = createPointer(() => iCoverScale, (v) => iCoverScale = v);
+  let iBestCoverScale: INT32 = 0;
   let iDistFromOrigin: INT32;
   let iDistCoverFromOrigin: INT32;
   let iThreatCertainty: INT32;
@@ -438,10 +442,10 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let sOrigin: INT16; // has to be a short, need a pointer
-  let pusLastLoc: Pointer<INT16>;
-  let pbPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
+  let sOrigin: INT16 = 0; // has to be a short, need a pointer
+  let pusLastLoc: INT16;
+  let pbPersOL: INT8;
+  let pbPublOL: INT8;
   let pOpponent: SOLDIERTYPE;
   let usMovementMode: UINT16;
   let fHasGasMask: boolean /* INT8 */;
@@ -480,12 +484,12 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
 
   // BUILD A LIST OF THREATENING GRID #s FROM PERSONAL & PUBLIC opplists
 
-  pusLastLoc = addressof(gsLastKnownOppLoc[pSoldier.ubID][0]);
+  pusLastLoc = gsLastKnownOppLoc[pSoldier.ubID][0];
 
   // hang a pointer into personal opplist
-  pbPersOL = addressof(pSoldier.bOppList[0]);
+  pbPersOL = pSoldier.bOppList[0];
   // hang a pointer into public opplist
-  pbPublOL = addressof(gbPublicOpplist[pSoldier.bTeam][0]);
+  pbPublOL = gbPublicOpplist[pSoldier.bTeam][0];
 
   // decide how far we're gonna be looking
   iSearchRange = gbDiff[DIFF_MAX_COVER_RANGE][SoldierDifficultyLevel(pSoldier)];
@@ -552,12 +556,12 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
       continue; // next merc
     }
 
-    pbPersOL = pSoldier.bOppList + pOpponent.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pOpponent.ubID;
-    pusLastLoc = gsLastKnownOppLoc[pSoldier.ubID] + pOpponent.ubID;
+    pbPersOL = pSoldier.bOppList[pOpponent.ubID];
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam][pOpponent.ubID];
+    pusLastLoc = gsLastKnownOppLoc[pSoldier.ubID][pOpponent.ubID];
 
     // if this opponent is unknown personally and publicly
-    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL == NOT_HEARD_OR_SEEN) && (pbPublOL == NOT_HEARD_OR_SEEN)) {
       continue; // next merc
     }
 
@@ -567,14 +571,14 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
+    if ((gubKnowledgeValue[pbPublOL - OLDEST_HEARD_VALUE][pbPersOL - OLDEST_HEARD_VALUE] > 0) || (pbPersOL == pbPublOL)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
-      sThreatLoc = pusLastLoc.value;
-      iThreatCertainty = ThreatPercent[pbPersOL.value - OLDEST_HEARD_VALUE];
+      sThreatLoc = pusLastLoc;
+      iThreatCertainty = ThreatPercent[pbPersOL - OLDEST_HEARD_VALUE];
     } else {
       // using public knowledge, obtain opponent's "best guess" gridno
       sThreatLoc = gsPublicLastKnownOppLoc[pSoldier.bTeam][pOpponent.ubID];
-      iThreatCertainty = ThreatPercent[pbPublOL.value - OLDEST_HEARD_VALUE];
+      iThreatCertainty = ThreatPercent[pbPublOL - OLDEST_HEARD_VALUE];
     }
 
     // calculate how far away this threat is (in adjusted pixels)
@@ -634,7 +638,7 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
     // if this threat is CURRENTLY within 20 tiles
     if (Threat[uiLoop].iOrigRange <= MAX_THREAT_RANGE) {
       // add this opponent's cover value to our current total cover value
-      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier.sGridNo, iMyThreatValue, pSoldier.bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, addressof(iCurrentScale));
+      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier.sGridNo, iMyThreatValue, pSoldier.bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, iCurrentScale__Pointer);
     }
     // sprintf(tempstr,"iCurrentCoverValue after opponent %d is now %d",iLoop,iCurrentCoverValue);
     // PopMessage(tempstr);
@@ -654,7 +658,7 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
   sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
-  iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
+  iRoamRange = RoamingRange(pSoldier, createPointer(() => sOrigin, (v) => sOrigin = v));
 
   // if status isn't black (life & death combat), and roaming range is limited
   if ((pSoldier.bAlertStatus != Enum243.STATUS_BLACK) && (iRoamRange < MAX_ROAMING_RANGE) && (sOrigin != NOWHERE)) {
@@ -781,7 +785,7 @@ export function FindBestNearbyCover(pSoldier: SOLDIERTYPE, morale: INT32, piPerc
         iThreatRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, Threat[uiLoop].sGridNo);
         // if this threat would be within 20 tiles, count it
         if (iThreatRange <= MAX_THREAT_RANGE) {
-          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier.bActionPoints - iPathCost), uiLoop, iThreatRange, morale, addressof(iCoverScale));
+          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier.bActionPoints - iPathCost), uiLoop, iThreatRange, morale, iCoverScale__Pointer);
         }
 
         // sprintf(tempstr,"iCoverValue after opponent %d is now %d",iLoop,iCoverValue);
@@ -862,7 +866,7 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
   let iClosestThreatRange: INT32 = 1500;
   let iSpotClosestThreatRange: INT32;
   let sThreatLoc: INT16;
-  let sThreatGridNo: INT16[] /* [MAXMERCS] */;
+  let sThreatGridNo: INT16[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
   let uiThreatCnt: UINT32 = 0;
   let iSearchRange: INT32;
   let sMaxLeft: INT16;
@@ -871,12 +875,14 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
   let sMaxDown: INT16;
   let sXOffset: INT16;
   let sYOffset: INT16;
-  let pbPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
-  let bEscapeDirection: INT8;
+  let pbPersOL: INT8;
+  let pbPublOL: INT8;
+  let bEscapeDirection: INT8 = 0;
+  let bEscapeDirection__Pointer = createPointer(() => bEscapeDirection, (v) => bEscapeDirection = v);
   let bBestEscapeDirection: INT8 = -1;
   let pOpponent: SOLDIERTYPE;
-  let sOrigin: INT16;
+  let sOrigin: INT16 = 0;
+  let sOrigin__Pointer = createPointer(() => sOrigin, (v) => sOrigin = v);
   let iRoamRange: INT32;
 
   let fHasGasMask: boolean /* INT8 */;
@@ -907,11 +913,11 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
       continue; // next merc
     }
 
-    pbPersOL = addressof(pSoldier.bOppList[pOpponent.ubID]);
-    pbPublOL = addressof(gbPublicOpplist[pSoldier.bTeam][pOpponent.ubID]);
+    pbPersOL = pSoldier.bOppList[pOpponent.ubID];
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam][pOpponent.ubID];
 
     // if this opponent is unknown personally and publicly
-    if ((pbPersOL.value == NOT_HEARD_OR_SEEN) && (pbPublOL.value == NOT_HEARD_OR_SEEN)) {
+    if ((pbPersOL == NOT_HEARD_OR_SEEN) && (pbPublOL == NOT_HEARD_OR_SEEN)) {
       continue; // check next opponent
     }
 
@@ -926,7 +932,7 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
     }
 
     // if personal knowledge is more up to date or at least equal
-    if ((gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE] > 0) || (pbPersOL.value == pbPublOL.value)) {
+    if ((gubKnowledgeValue[pbPublOL - OLDEST_HEARD_VALUE][pbPersOL - OLDEST_HEARD_VALUE] > 0) || (pbPersOL == pbPublOL)) {
       // using personal knowledge, obtain opponent's "best guess" gridno
       sThreatLoc = gsLastKnownOppLoc[pSoldier.ubID][pOpponent.ubID];
     } else {
@@ -955,7 +961,7 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
 
   // get roaming range here; for civilians, running away is limited by roam range
   if (pSoldier.bTeam == CIV_TEAM) {
-    iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
+    iRoamRange = RoamingRange(pSoldier, sOrigin__Pointer);
     if (iRoamRange == 0) {
       return sBestSpot;
     }
@@ -1059,7 +1065,7 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
       }
 
       if (pSoldier.bTeam == CIV_TEAM) {
-        iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
+        iRoamRange = RoamingRange(pSoldier, sOrigin__Pointer);
         if (PythSpacesAway(sOrigin, sGridNo) > iRoamRange) {
           continue;
         }
@@ -1075,7 +1081,7 @@ export function FindSpotMaxDistFromOpponents(pSoldier: SOLDIERTYPE): INT16 {
 
       iSpotClosestThreatRange = 1500;
 
-      if (pSoldier.bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, addressof(bEscapeDirection))) {
+      if (pSoldier.bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, bEscapeDirection__Pointer)) {
         // We can escape!  This is better than anything else except a closer spot which we can
         // cross over from.
 
@@ -1244,11 +1250,11 @@ export function FindNearbyDarkerSpot(pSoldier: SOLDIERTYPE): INT16 {
   let bCurrLightLevel: INT8;
   let bLightDiff: INT8;
   let iRoamRange: INT32;
-  let sOrigin: INT16;
+  let sOrigin: INT16 = 0;
 
   bCurrLightLevel = LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel);
 
-  iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
+  iRoamRange = RoamingRange(pSoldier, createPointer(() => sOrigin, (v) => sOrigin = v));
 
   // start with a small search area, and expand it if we're unsuccessful
   // this should almost never need to search farther than 5 or 10 squares...
@@ -1811,7 +1817,8 @@ export function FindNearbyPointOnEdgeOfMap(pSoldier: SOLDIERTYPE, pbDirection: P
 
   let sGridNo: INT16;
   let sClosestSpot: INT16 = NOWHERE;
-  let bDirection: INT8;
+  let bDirection: INT8 = 0;
+  let bDirection__Pointer = createPointer(() => bDirection, (v) => bDirection = v);
   let bClosestDirection: INT8;
   let iPathCost: INT32;
   let iClosestPathCost: INT32 = 1000;
@@ -1868,7 +1875,7 @@ export function FindNearbyPointOnEdgeOfMap(pSoldier: SOLDIERTYPE, pbDirection: P
         continue;
       }
 
-      if (GridNoOnEdgeOfMap(sGridNo, addressof(bDirection))) {
+      if (GridNoOnEdgeOfMap(sGridNo, bDirection__Pointer)) {
         iPathCost = PythSpacesAway(pSoldier.sGridNo, sGridNo);
 
         if (iPathCost < iClosestPathCost) {

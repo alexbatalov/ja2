@@ -832,7 +832,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
   return pBaseStructure;
 }
 
-export function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: DB_STRUCTURE_REF | null, pLevelN: PTR): boolean {
+export function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: DB_STRUCTURE_REF | null, pLevelN: LEVELNODE | null): boolean {
   let pStructure: STRUCTURE | null;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, pLevelN);
@@ -1414,18 +1414,15 @@ export function DebugStructurePage1(): void {
   let pStructure: STRUCTURE | null;
   let pBase: STRUCTURE | null;
   // LEVELNODE *		pLand;
-  let sGridNo: INT16;
+  let sGridNo: INT16 = 0;
   let sDesiredLevel: INT16;
   let bHeight: INT8;
-  let bDens0: INT8;
-  let bDens1: INT8;
-  let bDens2: INT8;
-  let bDens3: INT8;
+  let bDens: INT8[] = createArray(4, 0);
   let bStructures: INT8;
 
   SetFont(LARGEFONT1());
   gprintf(0, 0, "DEBUG STRUCTURES PAGE 1 OF 1");
-  if (GetMouseMapPos(addressof(sGridNo)) == false) {
+  if (GetMouseMapPos(createPointer(() => sGridNo, (v) => sGridNo = v)) == false) {
     return;
     // gprintf( 0, LINE_HEIGHT * 1, L"No structure selected" );
   }
@@ -1478,10 +1475,10 @@ export function DebugStructurePage1(): void {
       gprintf(0, LINE_HEIGHT * 1, "UNKNOWN STRUCTURE! (%x)", pStructure.fFlags);
     }
     bHeight = StructureHeight(pStructure);
-    pBase = FindBaseStructure(pStructure);
+    pBase = <STRUCTURE>FindBaseStructure(pStructure);
     gprintf(0, LINE_HEIGHT * 2, "Structure height %d, cube offset %d, armour %d, HP %d", bHeight, pStructure.sCubeOffset, gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour], pBase.ubHitPoints);
-    if (StructureDensity(pStructure, addressof(bDens0), addressof(bDens1), addressof(bDens2), addressof(bDens3)) == true) {
-      gprintf(0, LINE_HEIGHT * 3, "Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure.pDBStructureRef.pDBStructure.ubDensity);
+    if (StructureDensity(pStructure, createElementPointer(bDens, 0), createElementPointer(bDens, 1), createElementPointer(bDens, 2), createElementPointer(bDens, 3)) == true) {
+      gprintf(0, LINE_HEIGHT * 3, "Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens[0], bDens[1], bDens[2], bDens[3], pStructure.pDBStructureRef.pDBStructure.ubDensity);
     }
 
     gprintf(0, LINE_HEIGHT * 4, "Structure ID %d", pStructure.usStructureID);
@@ -1499,14 +1496,14 @@ export function DebugStructurePage1(): void {
   gprintf(0, LINE_HEIGHT * 16, "Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
 }
 
-export function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: STRUCTURE_FILE_REF, fFromAnimation: boolean, sSTIStartIndex: INT16): boolean {
+export function AddZStripInfoToVObject(hVObject: SGPVObject, pStructureFileRef: STRUCTURE_FILE_REF, fFromAnimation: boolean, sSTIStartIndex: INT16): boolean {
   let uiLoop: UINT32;
   let ubLoop2: UINT8;
   let ubNumIncreasing: UINT8 = 0;
   let ubNumStable: UINT8 = 0;
   let ubNumDecreasing: UINT8 = 0;
   let fFound: boolean = false;
-  let pCurr: Pointer<ZStripInfo>;
+  let pCurr: ZStripInfo;
   let sLeftHalfWidth: INT16;
   let sRightHalfWidth: INT16;
   let sOffsetX: INT16;
@@ -1549,20 +1546,16 @@ export function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: ST
     // no multi-tile images in this vobject; that's okay... return!
     return true;
   }
-  hVObject.value.ppZStripInfo = MemAlloc(sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
-  if (hVObject.value.ppZStripInfo == null) {
-    return false;
-  }
-  memset(hVObject.value.ppZStripInfo, 0, sizeof(ZStripInfo /* Pointer<ZStripInfo> */) * hVObject.value.usNumberOfObjects);
+  hVObject.ppZStripInfo = createArray(hVObject.usNumberOfObjects, <ZStripInfo><unknown>null);
 
   if (fFromAnimation) {
     // Determine step index for STI
     if (sSTIStartIndex == -1) {
       // one-direction only for this anim structure
-      sSTIStep = hVObject.value.usNumberOfObjects;
+      sSTIStep = hVObject.usNumberOfObjects;
       sSTIStartIndex = 0;
     } else {
-      sSTIStep = (hVObject.value.usNumberOfObjects / pStructureFileRef.usNumberOfStructures);
+      sSTIStep = (hVObject.usNumberOfObjects / pStructureFileRef.usNumberOfStructures);
     }
   } else {
     sSTIStep = 1;
@@ -1572,7 +1565,7 @@ export function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: ST
   sNext = sSTIStartIndex + sSTIStep;
   fFirstTime = true;
 
-  for (uiLoop = sSTIStartIndex; uiLoop < hVObject.value.usNumberOfObjects; uiLoop++) {
+  for (uiLoop = sSTIStartIndex; uiLoop < hVObject.usNumberOfObjects; uiLoop++) {
     // Defualt to true
     fCopyIntoVo = true;
 
@@ -1601,143 +1594,121 @@ export function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: ST
       {
         // ATE: We allow SLIDING DOORS of 2 tile sizes...
         if (!(pDBStructure.fFlags & STRUCTURE_ANYDOOR) || ((pDBStructure.fFlags & (STRUCTURE_ANYDOOR)) && (pDBStructure.fFlags & STRUCTURE_SLIDINGDOOR))) {
-          hVObject.value.ppZStripInfo[uiDestVoIndex] = MemAlloc(sizeof(ZStripInfo));
-          if (hVObject.value.ppZStripInfo[uiDestVoIndex] == null) {
-            // augh!! out of memory!  free everything allocated and abort
-            for (ubLoop2 = 0; ubLoop2 < uiLoop; ubLoop2++) {
-              if (hVObject.value.ppZStripInfo[ubLoop2] != null) {
-                MemFree(hVObject.value.ppZStripInfo[uiLoop]);
-              }
-            }
-            MemFree(hVObject.value.ppZStripInfo);
-            hVObject.value.ppZStripInfo = null;
-            return false;
-          } else {
-            pCurr = hVObject.value.ppZStripInfo[uiDestVoIndex];
+          hVObject.ppZStripInfo[uiDestVoIndex] = createZStripInfo();
+          pCurr = hVObject.ppZStripInfo[uiDestVoIndex];
 
-            ubNumIncreasing = 0;
-            ubNumStable = 0;
-            ubNumDecreasing = 0;
+          ubNumIncreasing = 0;
+          ubNumStable = 0;
+          ubNumDecreasing = 0;
 
-            // time to do our calculations!
-            sOffsetX = hVObject.value.pETRLEObject[uiLoop].sOffsetX;
-            sOffsetY = hVObject.value.pETRLEObject[uiLoop].sOffsetY;
-            usWidth = hVObject.value.pETRLEObject[uiLoop].usWidth;
-            usHeight = hVObject.value.pETRLEObject[uiLoop].usHeight;
-            if (pDBStructure.fFlags & (STRUCTURE_MOBILE | STRUCTURE_CORPSE)) {
-              let i: UINT32 = 0;
-              // adjust for the difference between the animation and structure base tile
+          // time to do our calculations!
+          sOffsetX = hVObject.pETRLEObject[uiLoop].sOffsetX;
+          sOffsetY = hVObject.pETRLEObject[uiLoop].sOffsetY;
+          usWidth = hVObject.pETRLEObject[uiLoop].usWidth;
+          usHeight = hVObject.pETRLEObject[uiLoop].usHeight;
+          if (pDBStructure.fFlags & (STRUCTURE_MOBILE | STRUCTURE_CORPSE)) {
+            let i: UINT32 = 0;
+            // adjust for the difference between the animation and structure base tile
 
-              // if (pDBStructure->fFlags & (STRUCTURE_MOBILE ) )
-              {
-                sOffsetX = sOffsetX + (WORLD_TILE_X / 2);
-                sOffsetY = sOffsetY + (WORLD_TILE_Y / 2);
-              }
-              // adjust for the tile offset
-              sOffsetX = sOffsetX - pDBStructure.bZTileOffsetX * (WORLD_TILE_X / 2) + pDBStructure.bZTileOffsetY * (WORLD_TILE_X / 2);
-              sOffsetY = sOffsetY - pDBStructure.bZTileOffsetY * (WORLD_TILE_Y / 2);
-            }
-
-            // figure out how much of the image is on each side of
-            // the bottom corner of the base tile
-            if (sOffsetX <= 0) {
-              // note that the adjustments here by (WORLD_TILE_X / 2) are to account for the X difference
-              // between the blit position and the bottom corner of the base tile
-              sRightHalfWidth = usWidth + sOffsetX - (WORLD_TILE_X / 2);
-
-              if (sRightHalfWidth >= 0) {
-                // Case 1: negative image offset, image straddles bottom corner
-
-                // negative of a negative is positive
-                sLeftHalfWidth = -sOffsetX + (WORLD_TILE_X / 2);
-              } else {
-                // Case 2: negative image offset, image all on left side
-
-                // bump up the LeftHalfWidth to the right edge of the last tile-half,
-                // so we can calculate the size of the leftmost portion accurately
-                // NB subtracting a negative to add the absolute value
-                sLeftHalfWidth = usWidth - (sRightHalfWidth % (WORLD_TILE_X / 2));
-                sRightHalfWidth = 0;
-              }
-            } else if (sOffsetX < (WORLD_TILE_X / 2)) {
-              sLeftHalfWidth = (WORLD_TILE_X / 2) - sOffsetX;
-              sRightHalfWidth = usWidth - sLeftHalfWidth;
-              if (sRightHalfWidth <= 0) {
-                // Case 3: positive offset < 20, image all on left side
-                // should never happen because these images are multi-tile!
-                sRightHalfWidth = 0;
-                // fake the left width to one half-tile
-                sLeftHalfWidth = (WORLD_TILE_X / 2);
-              } else {
-                // Case 4: positive offset < 20, image straddles bottom corner
-
-                // all okay?
-              }
-            } else {
-              // Case 5: positive offset, image all on right side
-              // should never happen either
-              sLeftHalfWidth = 0;
-              sRightHalfWidth = usWidth;
-            }
-
-            if (sLeftHalfWidth > 0) {
-              ubNumIncreasing = sLeftHalfWidth / (WORLD_TILE_X / 2);
-            }
-            if (sRightHalfWidth > 0) {
-              ubNumStable = 1;
-              if (sRightHalfWidth > (WORLD_TILE_X / 2)) {
-                ubNumDecreasing = sRightHalfWidth / (WORLD_TILE_X / 2);
-              }
-            }
-            if (sLeftHalfWidth > 0) {
-              pCurr.value.ubFirstZStripWidth = sLeftHalfWidth % (WORLD_TILE_X / 2);
-              if (pCurr.value.ubFirstZStripWidth == 0) {
-                ubNumIncreasing--;
-                pCurr.value.ubFirstZStripWidth = (WORLD_TILE_X / 2);
-              }
-            } else // right side only; offset is at least 20 (= WORLD_TILE_X / 2)
+            // if (pDBStructure->fFlags & (STRUCTURE_MOBILE ) )
             {
-              if (sOffsetX > WORLD_TILE_X) {
-                pCurr.value.ubFirstZStripWidth = (WORLD_TILE_X / 2) - (sOffsetX - WORLD_TILE_X) % (WORLD_TILE_X / 2);
-              } else {
-                pCurr.value.ubFirstZStripWidth = WORLD_TILE_X - sOffsetX;
-              }
-              if (pCurr.value.ubFirstZStripWidth == 0) {
-                ubNumDecreasing--;
-                pCurr.value.ubFirstZStripWidth = (WORLD_TILE_X / 2);
-              }
+              sOffsetX = sOffsetX + (WORLD_TILE_X / 2);
+              sOffsetY = sOffsetY + (WORLD_TILE_Y / 2);
             }
+            // adjust for the tile offset
+            sOffsetX = sOffsetX - pDBStructure.bZTileOffsetX * (WORLD_TILE_X / 2) + pDBStructure.bZTileOffsetY * (WORLD_TILE_X / 2);
+            sOffsetY = sOffsetY - pDBStructure.bZTileOffsetY * (WORLD_TILE_Y / 2);
+          }
 
-            // now create the array!
-            pCurr.value.ubNumberOfZChanges = ubNumIncreasing + ubNumStable + ubNumDecreasing;
-            pCurr.value.pbZChange = MemAlloc(pCurr.value.ubNumberOfZChanges);
-            if (pCurr.value.pbZChange == null) {
-              // augh!
-              for (ubLoop2 = 0; ubLoop2 < uiLoop; ubLoop2++) {
-                if (hVObject.value.ppZStripInfo[ubLoop2] != null) {
-                  MemFree(hVObject.value.ppZStripInfo[uiLoop]);
-                }
-              }
-              MemFree(hVObject.value.ppZStripInfo);
-              hVObject.value.ppZStripInfo = null;
-              return false;
-            }
-            for (ubLoop2 = 0; ubLoop2 < ubNumIncreasing; ubLoop2++) {
-              pCurr.value.pbZChange[ubLoop2] = 1;
-            }
-            for (; ubLoop2 < ubNumIncreasing + ubNumStable; ubLoop2++) {
-              pCurr.value.pbZChange[ubLoop2] = 0;
-            }
-            for (; ubLoop2 < pCurr.value.ubNumberOfZChanges; ubLoop2++) {
-              pCurr.value.pbZChange[ubLoop2] = -1;
-            }
-            if (ubNumIncreasing > 0) {
-              pCurr.value.bInitialZChange = -(ubNumIncreasing);
-            } else if (ubNumStable > 0) {
-              pCurr.value.bInitialZChange = 0;
+          // figure out how much of the image is on each side of
+          // the bottom corner of the base tile
+          if (sOffsetX <= 0) {
+            // note that the adjustments here by (WORLD_TILE_X / 2) are to account for the X difference
+            // between the blit position and the bottom corner of the base tile
+            sRightHalfWidth = usWidth + sOffsetX - (WORLD_TILE_X / 2);
+
+            if (sRightHalfWidth >= 0) {
+              // Case 1: negative image offset, image straddles bottom corner
+
+              // negative of a negative is positive
+              sLeftHalfWidth = -sOffsetX + (WORLD_TILE_X / 2);
             } else {
-              pCurr.value.bInitialZChange = -(ubNumDecreasing);
+              // Case 2: negative image offset, image all on left side
+
+              // bump up the LeftHalfWidth to the right edge of the last tile-half,
+              // so we can calculate the size of the leftmost portion accurately
+              // NB subtracting a negative to add the absolute value
+              sLeftHalfWidth = usWidth - (sRightHalfWidth % (WORLD_TILE_X / 2));
+              sRightHalfWidth = 0;
             }
+          } else if (sOffsetX < (WORLD_TILE_X / 2)) {
+            sLeftHalfWidth = (WORLD_TILE_X / 2) - sOffsetX;
+            sRightHalfWidth = usWidth - sLeftHalfWidth;
+            if (sRightHalfWidth <= 0) {
+              // Case 3: positive offset < 20, image all on left side
+              // should never happen because these images are multi-tile!
+              sRightHalfWidth = 0;
+              // fake the left width to one half-tile
+              sLeftHalfWidth = (WORLD_TILE_X / 2);
+            } else {
+              // Case 4: positive offset < 20, image straddles bottom corner
+
+              // all okay?
+            }
+          } else {
+            // Case 5: positive offset, image all on right side
+            // should never happen either
+            sLeftHalfWidth = 0;
+            sRightHalfWidth = usWidth;
+          }
+
+          if (sLeftHalfWidth > 0) {
+            ubNumIncreasing = sLeftHalfWidth / (WORLD_TILE_X / 2);
+          }
+          if (sRightHalfWidth > 0) {
+            ubNumStable = 1;
+            if (sRightHalfWidth > (WORLD_TILE_X / 2)) {
+              ubNumDecreasing = sRightHalfWidth / (WORLD_TILE_X / 2);
+            }
+          }
+          if (sLeftHalfWidth > 0) {
+            pCurr.ubFirstZStripWidth = sLeftHalfWidth % (WORLD_TILE_X / 2);
+            if (pCurr.ubFirstZStripWidth == 0) {
+              ubNumIncreasing--;
+              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2);
+            }
+          } else // right side only; offset is at least 20 (= WORLD_TILE_X / 2)
+          {
+            if (sOffsetX > WORLD_TILE_X) {
+              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2) - (sOffsetX - WORLD_TILE_X) % (WORLD_TILE_X / 2);
+            } else {
+              pCurr.ubFirstZStripWidth = WORLD_TILE_X - sOffsetX;
+            }
+            if (pCurr.ubFirstZStripWidth == 0) {
+              ubNumDecreasing--;
+              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2);
+            }
+          }
+
+          // now create the array!
+          pCurr.ubNumberOfZChanges = ubNumIncreasing + ubNumStable + ubNumDecreasing;
+          pCurr.pbZChange = new Int8Array(pCurr.ubNumberOfZChanges);
+
+          for (ubLoop2 = 0; ubLoop2 < ubNumIncreasing; ubLoop2++) {
+            pCurr.pbZChange[ubLoop2] = 1;
+          }
+          for (; ubLoop2 < ubNumIncreasing + ubNumStable; ubLoop2++) {
+            pCurr.pbZChange[ubLoop2] = 0;
+          }
+          for (; ubLoop2 < pCurr.ubNumberOfZChanges; ubLoop2++) {
+            pCurr.pbZChange[ubLoop2] = -1;
+          }
+          if (ubNumIncreasing > 0) {
+            pCurr.bInitialZChange = -(ubNumIncreasing);
+          } else if (ubNumStable > 0) {
+            pCurr.bInitialZChange = 0;
+          } else {
+            pCurr.bInitialZChange = -(ubNumDecreasing);
           }
         }
       }
@@ -1756,7 +1727,7 @@ function FiniStructureDB(): boolean {
   return true;
 }
 
-export function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: boolean): INT8 {
+export function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<STRUCTURE | null>, fWallsBlock: boolean): INT8 {
   let pCurrent: STRUCTURE | null;
   let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
   let sDesiredLevel: INT16;

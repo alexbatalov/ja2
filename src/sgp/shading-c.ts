@@ -3,9 +3,9 @@ namespace ja2 {
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArrayFrom(256, createSGPPaletteEntry));
 export let ubColorTables: Uint8Array[] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => new Uint8Array(256));
 
-let IntensityTable: UINT16[] /* [65536] */ = createArray(65536, 0);
-let ShadeTable: UINT16[] /* [65536] */ = createArray(65536, 0);
-export let White16BPPPalette: UINT16[] /* [256] */ = createArray(256, 0);
+let IntensityTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
+let ShadeTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
+export let White16BPPPalette: Uint16Array /* UINT16[256] */ = new Uint16Array(256);
 let guiShadePercent: FLOAT = 0.48;
 let guiBrightPercent: FLOAT = 1.1;
 

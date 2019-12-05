@@ -390,11 +390,11 @@ function CreatureDecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
   // monster AI - heard something
   let ubNoiseDir: UINT8;
   let sNoiseGridNo: INT16;
-  let iNoiseValue: INT32;
+  let iNoiseValue: INT32 = 0;
   let iChance: INT32;
   let iSneaky: INT32;
-  let fClimb: boolean;
-  let fReachable: boolean;
+  let fClimb: boolean = false;
+  let fReachable: boolean = false;
   //	INT16 sClosestFriend;
 
   if (pSoldier.bMobility == Enum295.CREATURE_CRAWLER && pSoldier.bActionPoints < pSoldier.bInitialActionPoints) {
@@ -402,7 +402,7 @@ function CreatureDecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
   }
 
   // determine the most important noise heard, and its relative value
-  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, addressof(iNoiseValue), addressof(fClimb), addressof(fReachable));
+  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, createPointer(() => iNoiseValue, (v) => iNoiseValue = v), createPointer(() => fClimb, (v) => fClimb = v), createPointer(() => fReachable, (v) => fReachable = v));
   // NumMessage("iNoiseValue = ",iNoiseValue);
 
   if (sNoiseGridNo == NOWHERE) {
@@ -550,7 +550,7 @@ function CreatureDecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8):
   let bHelpPts: INT8 = 0;
   let bHidePts: INT8 = 0;
   let sAdjustedGridNo: INT16;
-  let fChangeLevel: boolean;
+  let fChangeLevel: boolean = false;
 
   // if we have absolutely no action points, we can't do a thing under RED!
   if (!pSoldier.bActionPoints) {
@@ -665,7 +665,7 @@ function CreatureDecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8):
     }
 
     // get the location of the closest reachable opponent
-    sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, addressof(fChangeLevel));
+    sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, createPointer(() => fChangeLevel, (v) => fChangeLevel = v));
     // if there is an opponent reachable
     if (sClosestDisturbance != NOWHERE) {
       //////////////////////////////////////////////////////////////////////
@@ -690,7 +690,7 @@ function CreatureDecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8):
       if (PythSpacesAway(pSoldier.sGridNo, pSoldier.usActionData) < MAX_EAT_DIST) {
         let sGridNo: INT16;
 
-        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.usActionData, addressof(ubOpponentDir), addressof(sAdjustedGridNo), false, false);
+        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.usActionData, createPointer(() => ubOpponentDir, (v) => ubOpponentDir = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), false, false);
 
         if (sGridNo != -1) {
           pSoldier.usActionData = sGridNo;
@@ -765,8 +765,8 @@ function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   let sBestCover: INT16 = NOWHERE;
   let sClosestDisturbance: INT16;
   let ubMinAPCost: UINT8;
-  let ubCanMove: UINT8;
-  let bInGas: UINT8;
+  let ubCanMove: boolean /* UINT8 */;
+  let bInGas: boolean /* UINT8 */;
   let bDirection: INT8;
   let ubBestAttackAction: UINT8;
   let bCanAttack: INT8;
@@ -943,7 +943,7 @@ function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
           // if we have enough action points to shoot with this gun
           if (pSoldier.bActionPoints >= ubMinAPCost) {
             // look around for a worthy target (which sets BestShot.ubPossible)
-            CalcBestShot(pSoldier, addressof(BestShot));
+            CalcBestShot(pSoldier, BestShot);
 
             if (BestShot.ubPossible) {
               BestShot.bWeaponIn = bWeaponIn;
@@ -955,14 +955,14 @@ function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
                 // if our attitude is NOT aggressive
                 if (pSoldier.bAttitude != Enum242.AGGRESSIVE) {
                   // get the location of the closest CONSCIOUS reachable opponent
-                  sClosestDisturbance = ClosestReachableDisturbance(pSoldier, false, addressof(fChangeLevel));
+                  sClosestDisturbance = ClosestReachableDisturbance(pSoldier, 0, createPointer(() => fChangeLevel, (v) => fChangeLevel = v));
 
                   // if we found one
                   if (sClosestDisturbance != NOWHERE) {
 // don't bother checking GRENADES/KNIVES, he can't have conscious targets
                     // then make decision as if at alert status RED, but make sure
                     // we don't try to SEEK OPPONENT the unconscious guy!
-                    return DecideActionRed(pSoldier, false);
+                    return DecideActionRed(pSoldier, 0);
                   }
                   // else kill the guy, he could be the last opponent alive in this sector
                 }
@@ -1175,7 +1175,7 @@ export function CreatureDecideAction(pSoldier: SOLDIERTYPE): INT8 {
       break;
 
     case Enum243.STATUS_RED:
-      bAction = CreatureDecideActionRed(pSoldier, true);
+      bAction = CreatureDecideActionRed(pSoldier, 1);
       break;
 
     case Enum243.STATUS_BLACK:
@@ -1189,8 +1189,11 @@ export function CreatureDecideAction(pSoldier: SOLDIERTYPE): INT8 {
 export function CreatureDecideAlertStatus(pSoldier: SOLDIERTYPE): void {
   let bOldStatus: INT8;
   let iDummy: INT32;
+  let iDummy__Pointer = createPointer(() => iDummy, (v) => iDummy = v);
   let fClimbDummy: boolean;
+  let fClimbDummy__Pointer = createPointer(() => fClimbDummy, (v) => fClimbDummy = v);
   let fReachableDummy: boolean;
+  let fReachableDummy__Pointer = createPointer(() => fReachableDummy, (v) => fReachableDummy = v);
 
   // THE FOUR (4) POSSIBLE ALERT STATUSES ARE:
   // GREEN - No one sensed, no suspicious noise heard, go about doing regular stuff
@@ -1258,7 +1261,7 @@ export function CreatureDecideAlertStatus(pSoldier: SOLDIERTYPE): void {
           // if we are NOT aware of any uninvestigated noises right now
           // and we are not currently in the middle of an action
           // (could still be on his way heading to investigate a noise!)
-          if ((MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE) && !pSoldier.bActionInProgress) {
+          if ((MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) == NOWHERE) && !pSoldier.bActionInProgress) {
             // then drop back to GREEN status
             pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
           }
@@ -1271,7 +1274,7 @@ export function CreatureDecideAlertStatus(pSoldier: SOLDIERTYPE): void {
           pSoldier.bAlertStatus = Enum243.STATUS_RED;
         } else {
           // if we ARE aware of any uninvestigated noises right now
-          if (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) != NOWHERE) {
+          if (MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) != NOWHERE) {
             // then move up to YELLOW status
             pSoldier.bAlertStatus = Enum243.STATUS_YELLOW;
           }
@@ -1305,7 +1308,7 @@ export function CreatureDecideAlertStatus(pSoldier: SOLDIERTYPE): void {
         SetNewSituation(pSoldier);
 
         // current action will be canceled. if noise is no longer important
-        if ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE)) {
+        if ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) == NOWHERE)) {
           // then drop back to GREEN status
           pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
           CheckForChangingOrders(pSoldier);
@@ -1328,7 +1331,7 @@ function CrowDecideActionRed(pSoldier: SOLDIERTYPE): INT8 {
 
 function CrowDecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
   let sCorpseGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let sFacingDir: INT16;
 
   // Look for a corse!
@@ -1351,7 +1354,7 @@ function CrowDecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
       }
     } else {
       // Walk to nearest one!
-      pSoldier.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, addressof(ubDirection));
+      pSoldier.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, createPointer(() => ubDirection, (v) => ubDirection = v));
       if (pSoldier.usActionData != NOWHERE) {
         return Enum289.AI_ACTION_GET_CLOSER;
       }

@@ -377,7 +377,7 @@ let gTEAM_FirstHandInv: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMous
 let gTEAM_SecondHandInv: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
 let gTEAM_EnemyIndicator: MOUSE_REGION[] /* [6] */ = createArrayFrom(6, createMouseRegion);
 
-let gfTEAM_HandInvDispText: boolean[][] /* [6][NUM_INV_SLOTS] */ = createArrayFrom(6, () => createArray(Enum261.NUM_INV_SLOTS, false));
+let gfTEAM_HandInvDispText: UINT8[][] /* boolean[6][NUM_INV_SLOTS] */ = createArrayFrom(6, () => createArray(Enum261.NUM_INV_SLOTS, 0));
 let gfSM_HandInvDispText: boolean[] /* [NUM_INV_SLOTS] */ = createArray(Enum261.NUM_INV_SLOTS, false);
 
 // Globals - for one - the current merc here
@@ -575,7 +575,6 @@ export function UpdateForContOverPortrait(pSoldier: SOLDIERTYPE, fOn: boolean): 
 function UpdateSMPanel(): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
-  let bDirection: INT8;
   let ubStanceState: UINT8;
 
   if (gpSMCurrentMerc.sGridNo == NOWHERE) {
@@ -696,7 +695,7 @@ function UpdateSMPanel(): void {
 
   DisableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
 
-  GetMercClimbDirection(gpSMCurrentMerc.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+  ({ fNearLowerLevel, fNearHeigherLevel } = GetMercClimbDirection(gpSMCurrentMerc.ubID));
 
   if (fNearLowerLevel || fNearHeigherLevel) {
     if (fNearLowerLevel) {
@@ -712,7 +711,7 @@ function UpdateSMPanel(): void {
     }
   }
 
-  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.sGridNo, gpSMCurrentMerc.bDirection, addressof(bDirection))) {
+  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.sGridNo, gpSMCurrentMerc.bDirection, null)) {
     EnableButton(iSMPanelButtons[Enum220.CLIMB_BUTTON]);
   }
 
@@ -1266,13 +1265,13 @@ export function ShutdownSMPanel(): boolean {
 
 /* static */ let RenderSMPanel__pStr: string /* INT16[200] */;
 /* static */ let RenderSMPanel__pMoraleStr: string /* INT16[20] */;
-export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
+export function RenderSMPanel(pfDirty: Pointer<UINT8>): void {
   let sFontX: INT16;
   let sFontY: INT16;
   let usX: UINT16;
   let usY: UINT16;
   let sString: string /* wchar_t[9] */;
-  let cnt: UINT32;
+  let cnt: UINT32 = 0;
 
   if (gubSelectSMPanelToMerc != NOBODY) {
     // Give him the panel!
@@ -1509,7 +1508,7 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
       if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT) && gpSMCurrentMerc.bLife >= OKLIFE) {
         SetFont(TINYFONT1());
         // if ( gpSMCurrentMerc->sLastTarget != NOWHERE && !EnoughPoints( gpSMCurrentMerc, MinAPsToAttack( gpSMCurrentMerc, gpSMCurrentMerc->sLastTarget, FALSE ), 0, FALSE ) || GetUIApsToDisplay( gpSMCurrentMerc ) < 0 )
-        if (!EnoughPoints(gpSMCurrentMerc, MinAPsToAttack(gpSMCurrentMerc, gpSMCurrentMerc.sLastTarget, false), 0, false) || GetUIApsToDisplay(gpSMCurrentMerc) < 0) {
+        if (!EnoughPoints(gpSMCurrentMerc, MinAPsToAttack(gpSMCurrentMerc, gpSMCurrentMerc.sLastTarget, 0), 0, false) || GetUIApsToDisplay(gpSMCurrentMerc) < 0) {
           SetFontBackground(FONT_MCOLOR_BLACK);
           SetFontForeground(FONT_MCOLOR_DKRED);
         } else {
@@ -1559,7 +1558,7 @@ export function RenderSMPanel(pfDirty: Pointer<boolean>): void {
     ClipRect.iTop = INV_INTERFACE_START_Y;
     ClipRect.iBottom = 480;
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+    Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }
 }
@@ -1642,7 +1641,9 @@ function SMInvClickCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   // UINT16 usNewItemIndex;
   let ubSrcID: UINT8;
   let ubDestID: UINT8;
-  let fGoodAPs: boolean;
+  let fGoodAPs: boolean = false;
+  let fGoodAPs__Pointer = createPointer(() => fGoodAPs, (v) => fGoodAPs = v);
+
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -1663,7 +1664,7 @@ function SMInvClickCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
           // usNewItemIndex = gpItemPointer->usItem;
 
           // Try to apply camo....
-          if (ApplyCammo(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
+          if (ApplyCammo(gpSMCurrentMerc, gpItemPointer, fGoodAPs__Pointer)) {
             if (fGoodAPs) {
               // Dirty
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1677,7 +1678,7 @@ function SMInvClickCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
               // Say OK acknowledge....
               DoMercBattleSound(gpSMCurrentMerc, Enum259.BATTLE_SOUND_COOL1);
             }
-          } else if (ApplyCanteen(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
+          } else if (ApplyCanteen(gpSMCurrentMerc, gpItemPointer, fGoodAPs__Pointer)) {
             // Dirty
             if (fGoodAPs) {
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1688,7 +1689,7 @@ function SMInvClickCamoCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
                 EndItemPointer();
               }
             }
-          } else if (ApplyElixir(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
+          } else if (ApplyElixir(gpSMCurrentMerc, gpItemPointer, fGoodAPs__Pointer)) {
             if (fGoodAPs) {
               // Dirty
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1768,7 +1769,7 @@ export function HandleNailsVestFetish(pSoldier: SOLDIERTYPE, uiHandPos: UINT32, 
 
 function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewItemIndex: UINT16, fDeductPoints: boolean): boolean {
   if (_KeyDown(CTRL)) {
-    CleanUpStack(addressof(gpSMCurrentMerc.inv[ubHandPos]), gpItemPointer);
+    CleanUpStack(gpSMCurrentMerc.inv[ubHandPos], gpItemPointer);
     if (gpItemPointer.ubNumberOfObjects == 0) {
       EndItemPointer();
     }
@@ -1872,7 +1873,7 @@ function SMInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(addressof(gpSMCurrentMerc.inv[uiHandPos]), null);
+        CleanUpStack(gpSMCurrentMerc.inv[uiHandPos], null);
         return;
       }
 
@@ -1974,7 +1975,7 @@ function SMInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
 
         if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
           // If it's just been purchased or repaired, mark it as a "new item"
-          fNewItem = (gMoveingItem.uiFlags & (ARMS_INV_JUST_PURCHASED | ARMS_INV_ITEM_REPAIRED));
+          fNewItem = Boolean(gMoveingItem.uiFlags & (ARMS_INV_JUST_PURCHASED | ARMS_INV_ITEM_REPAIRED));
         }
 
         // try to place the item in the cursor into this inventory slot
@@ -1986,7 +1987,7 @@ function SMInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
             // and the cursor is now empty
             if (gpItemPointer == null) {
               // clean up
-              memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
+              resetInventoryInSlot(gMoveingItem);
               SetSkiCursor(Enum317.CURSOR_NORMAL);
             } else {
               // if we're holding something else in the pointer now
@@ -2277,7 +2278,7 @@ function BtnUpdownCallback(btn: GUI_BUTTON, reason: INT32): void {
 function BtnClimbCallback(btn: GUI_BUTTON, reason: INT32): void {
   let fNearHeigherLevel: boolean;
   let fNearLowerLevel: boolean;
-  let bDirection: INT8;
+  let bDirection: INT8 = 0;
 
   if (!(btn.uiFlags & BUTTON_ENABLED))
     return;
@@ -2287,7 +2288,7 @@ function BtnClimbCallback(btn: GUI_BUTTON, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    GetMercClimbDirection(gpSMCurrentMerc.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+    ({ fNearLowerLevel, fNearHeigherLevel } = GetMercClimbDirection(gpSMCurrentMerc.ubID));
 
     if (fNearLowerLevel) {
       BeginSoldierClimbDownRoof(gpSMCurrentMerc);
@@ -2296,7 +2297,7 @@ function BtnClimbCallback(btn: GUI_BUTTON, reason: INT32): void {
       BeginSoldierClimbUpRoof(gpSMCurrentMerc);
     }
 
-    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.sGridNo, gpSMCurrentMerc.bDirection, addressof(bDirection))) {
+    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.sGridNo, gpSMCurrentMerc.bDirection, createPointer(() => bDirection, (v) => bDirection = v))) {
       BeginSoldierClimbFence(gpSMCurrentMerc);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -2352,7 +2353,7 @@ function BtnHandCursorCallback(btn: GUI_BUTTON, reason: INT32): void {
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ToggleHandCursorMode(addressof(guiCurrentEvent));
+    ToggleHandCursorMode(guiCurrentEvent__Pointer);
   }
 }
 
@@ -2361,7 +2362,7 @@ function BtnTalkCallback(btn: GUI_BUTTON, reason: INT32): void {
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ToggleTalkCursorMode(addressof(guiCurrentEvent));
+    ToggleTalkCursorMode(guiCurrentEvent__Pointer);
   }
 }
 
@@ -2583,7 +2584,7 @@ export function InitializeTEAMPanel(): boolean {
 
   // Clear inv display stuff
   for (let i = 0; i < gfTEAM_HandInvDispText.length; i++) {
-    gfTEAM_HandInvDispText[i].fill(false);
+    gfTEAM_HandInvDispText[i].fill(0);
   }
 
   // Create buttons
@@ -3252,14 +3253,14 @@ export function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
     if (gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD]) {
       // Select merc
       InternalSelectSoldier(ubID, true, false, true);
-      MercPtrs[ubID].fFlashLocator = false;
+      MercPtrs[ubID].fFlashLocator = 0;
       ResetMultiSelection();
     } else {
       // Just locate....
       LocateSoldier(ubID, SETLOCATOR);
     }
   } else {
-    if (MercPtrs[ubID].fFlashLocator == false) {
+    if (MercPtrs[ubID].fFlashLocator == 0) {
       if (gGameSettings.fOptions[Enum8.TOPTION_OLD_SELECTION_METHOD]) {
         // If we are currently selected, slide to location
         if (ubID == gusSelectedSoldier) {
@@ -3316,7 +3317,7 @@ export function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
   MercPtrs[ubID].FlashSelCounter = RESETTIMECOUNTER(FLASH_SELECTOR_DELAY);
 
   // LocateSoldier( ubID, FALSE );	// IC - this is already being done outside of this function :)
-  MercPtrs[ubID].fFlashLocator = true;
+  MercPtrs[ubID].fFlashLocator = 1;
   // gbPanelSelectedGuy = ubID;	IC - had to move this outside to make this function versatile
   MercPtrs[ubID].sLocatorFrame = 0;
 
@@ -3336,7 +3337,7 @@ export function ShowRadioLocator(ubID: UINT8, ubLocatorSpeed: UINT8): void {
 }
 
 export function EndRadioLocator(ubID: UINT8): void {
-  MercPtrs[ubID].fFlashLocator = false;
+  MercPtrs[ubID].fFlashLocator = 0;
   MercPtrs[ubID].fShowLocator = false;
 }
 
@@ -3523,7 +3524,7 @@ function RenderSoldierTeamInv(pSoldier: SOLDIERTYPE, sX: INT16, sY: INT16, ubPan
       RestoreExternBackgroundRect(sX, sY, (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Look in primary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, pSoldier.inv[Enum261.HANDPOS], sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][Enum261.HANDPOS]), 0, false, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, pSoldier.inv[Enum261.HANDPOS], sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, createElementPointer(gfTEAM_HandInvDispText[ubPanelNum], Enum261.HANDPOS), 0, false, 0);
     }
 
     if (pSoldier.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
@@ -3531,7 +3532,7 @@ function RenderSoldierTeamInv(pSoldier: SOLDIERTYPE, sX: INT16, sY: INT16, ubPan
       RestoreExternBackgroundRect(sX, (sY + TM_INV_HAND_SEPY), (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Do secondary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, pSoldier.inv[Enum261.SECONDHANDPOS], sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][Enum261.SECONDHANDPOS]), 0, false, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, pSoldier.inv[Enum261.SECONDHANDPOS], sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, createElementPointer(gfTEAM_HandInvDispText[ubPanelNum], Enum261.SECONDHANDPOS), 0, false, 0);
     }
   }
 }

@@ -229,7 +229,7 @@ export function HandleBobbyRGuns(): void {
 }
 
 export function RenderBobbyRGuns(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiGunBackground);
 
@@ -249,7 +249,7 @@ export function RenderBobbyRGuns(): void {
 }
 
 export function DisplayBobbyRBrTitle(): boolean {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // BR title
   hPixHandle = GetVideoObject(guiBrTitle);
@@ -700,16 +700,16 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): boolean {
   let usWidth: UINT32;
   let pTrav: ETRLEObject;
   let pItem: INVTYPE;
-  let uiImage: UINT32;
-  let hPixHandle: HVOBJECT;
+  let uiImage: UINT32 = 0;
+  let hPixHandle: SGPVObject;
 
   PosX = BOBBYR_GRID_PIC_X;
 
   pItem = Item[usIndex];
-  LoadTileGraphicForItem(pItem, addressof(uiImage));
+  LoadTileGraphicForItem(pItem, createPointer(() => uiImage, (v) => uiImage = v));
 
   hPixHandle = GetVideoObject(uiImage);
-  pTrav = hPixHandle.value.pETRLEObject[0];
+  pTrav = hPixHandle.pETRLEObject[0];
 
   // center picture in frame
   usHeight = pTrav.usHeight;

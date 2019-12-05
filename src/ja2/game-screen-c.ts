@@ -82,6 +82,8 @@ export function MainGameScreenInit(): boolean {
 
 export function MainGameScreenShutdown(): boolean {
   ShutdownZBuffer(gpZBuffer);
+  gpZBuffer = <Uint16Array><unknown>null;
+
   ShutdownBackgroundRects();
 
   // Remove video Overlays

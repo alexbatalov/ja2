@@ -21,8 +21,10 @@ export function TownMilitiaTrainingCompleted(pTrainer: SOLDIERTYPE, sMapX: INT16
   let pSectorInfo: SECTORINFO = SectorInfo[SECTOR(sMapX, sMapY)];
   let ubMilitiaTrained: UINT8 = 0;
   let fFoundOne: boolean;
-  let sNeighbourX: INT16;
-  let sNeighbourY: INT16;
+  let sNeighbourX: INT16 = 0;
+  let sNeighbourX__Pointer = createPointer(() => sNeighbourX, (v) => sNeighbourX = v);
+  let sNeighbourY: INT16 = 0;
+  let sNeighbourY__Pointer = createPointer(() => sNeighbourY, (v) => sNeighbourY = v);
   let ubTownId: UINT8;
 
   // get town index
@@ -54,7 +56,7 @@ export function TownMilitiaTrainingCompleted(pTrainer: SOLDIERTYPE, sMapX: INT16
         InitFriendlyTownSectorServer(ubTownId, sMapX, sMapY);
 
         // check other eligible sectors in this town for room for another militia
-        while (ServeNextFriendlySectorInTown(addressof(sNeighbourX), addressof(sNeighbourY))) {
+        while (ServeNextFriendlySectorInTown(sNeighbourX__Pointer, sNeighbourY__Pointer)) {
           // is there room for another militia in this neighbouring sector ?
           if (CountAllMilitiaInSector(sNeighbourX, sNeighbourY) < MAX_ALLOWABLE_MILITIA_PER_SECTOR) {
             // great! Create a new GREEN militia guy in the neighbouring sector
@@ -80,7 +82,7 @@ export function TownMilitiaTrainingCompleted(pTrainer: SOLDIERTYPE, sMapX: INT16
             InitFriendlyTownSectorServer(ubTownId, sMapX, sMapY);
 
             // check other eligible sectors in this town for room for another militia
-            while (ServeNextFriendlySectorInTown(addressof(sNeighbourX), addressof(sNeighbourY))) {
+            while (ServeNextFriendlySectorInTown(sNeighbourX__Pointer, sNeighbourY__Pointer)) {
               // are there any GREEN militia men in the neighbouring sector ?
               if (MilitiaInSectorOfRank(sNeighbourX, sNeighbourY, Enum126.GREEN_MILITIA) > 0) {
                 // great! Promote a GREEN militia guy in the neighbouring sector to a REGULAR

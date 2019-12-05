@@ -149,7 +149,7 @@ export function DeleteMapScreenInterfaceBottom(): void {
 
 export function RenderMapScreenInterfaceBottom(): void {
   // will render the map screen bottom interface
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let bFilename: string /* CHAR8[32] */;
 
   // render whole panel
@@ -755,7 +755,7 @@ function DisplayScrollBarSlider(): void {
   // will display the scroll bar icon
   let ubNumMessages: UINT8;
   let ubSliderOffset: UINT8;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 

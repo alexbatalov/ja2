@@ -262,7 +262,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   let usTextWidth: UINT16;
   let usHeight: UINT16;
   let i: UINT16;
-  let hImageHandle: HVOBJECT;
+  let hImageHandle: SGPVObject;
   let usPosY: UINT16;
   let usPosX: UINT16;
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();

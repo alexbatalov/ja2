@@ -562,7 +562,7 @@ function FadeInFrameBufferRealFade(): void {
     }
 
     // Refresh Screen
-    RefreshScreen(null);
+    RefreshScreen();
 
     // Copy save buffer back
     RestoreExternBackgroundRect(0, 0, 640, 480);

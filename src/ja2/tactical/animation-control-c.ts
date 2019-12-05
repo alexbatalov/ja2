@@ -2937,6 +2937,7 @@ export function InitAnimationSurfacesPerBodytype(): void {
 export function LoadAnimationStateInstructions(): boolean {
   let hFile: HWFILE;
   let uiBytesRead: UINT32;
+  let buffer: Buffer;
 
   // Open ani file
   hFile = FileOpen(ANIMFILENAME, FILE_ACCESS_READ, false);
@@ -2946,8 +2947,13 @@ export function LoadAnimationStateInstructions(): boolean {
   }
 
   // Read in block
-  if ((uiBytesRead = FileRead(hFile, gusAnimInst, sizeof(gusAnimInst))) === -1) {
+  buffer = Buffer.allocUnsafe(MAX_ANIMATIONS * MAX_FRAMES_PER_ANIM * 2);
+  if ((uiBytesRead = FileRead(hFile, buffer, buffer.length)) === -1) {
     return false;
+  }
+
+  for (let i = 0, offset = 0; i < MAX_ANIMATIONS; i++) {
+    offset = readUIntArray(gusAnimInst[i], buffer, offset, 2);
   }
 
   FileClose(hFile);
@@ -3104,7 +3110,7 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: SOLDIERTYPE | null,
 
         // Check for cammo...
         if (pSoldier.bCamo != 0) {
-          zColFilename = "ANIMS\\camo.COL";
+          zColFilename.value = "ANIMS\\camo.COL";
           return 1;
         }
       }
@@ -3112,22 +3118,22 @@ export function GetBodyTypePaletteSubstitutionCode(pSoldier: SOLDIERTYPE | null,
 
     case Enum194.YAF_MONSTER:
 
-      zColFilename = "ANIMS\\MONSTERS\\fm_brite.COL";
+      zColFilename.value = "ANIMS\\MONSTERS\\fm_brite.COL";
       return 1;
 
     case Enum194.YAM_MONSTER:
 
-      zColFilename = "ANIMS\\MONSTERS\\mn_brite.COL";
+      zColFilename.value = "ANIMS\\MONSTERS\\mn_brite.COL";
       return 1;
 
     case Enum194.ADULTFEMALEMONSTER:
 
-      zColFilename = "ANIMS\\MONSTERS\\femmon.COL";
+      zColFilename.value = "ANIMS\\MONSTERS\\femmon.COL";
       return 1;
 
     case Enum194.AM_MONSTER:
 
-      zColFilename = "ANIMS\\MONSTERS\\monster.COL";
+      zColFilename.value = "ANIMS\\MONSTERS\\monster.COL";
       return 1;
 
     case Enum194.QUEENMONSTER:
@@ -3208,11 +3214,11 @@ export function DetermineSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimSt
   let ubWaterHandIndex: UINT8 = 1;
   let cnt: INT32;
   let fAdjustedForItem: boolean = false;
-  let usNewAnimState: UINT16;
+  let usNewAnimState: UINT16 = 0;
 
   ubBodyType = pSoldier.ubBodyType;
 
-  if (SubstituteBodyTypeAnimation(pSoldier, usAnimState, addressof(usNewAnimState))) {
+  if (SubstituteBodyTypeAnimation(pSoldier, usAnimState, createPointer(() => usNewAnimState, (v) => usNewAnimState = v))) {
     usAnimState = usNewAnimState;
   }
 

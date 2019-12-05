@@ -280,10 +280,10 @@ export function HandleAimSort(): void {
 }
 
 export function RenderAimSort(): void {
-  let hSortByHandle: HVOBJECT;
-  let hToAlumniHandle: HVOBJECT;
-  let hToMugShotHandle: HVOBJECT;
-  let hToStatsHandle: HVOBJECT;
+  let hSortByHandle: SGPVObject;
+  let hToAlumniHandle: SGPVObject;
+  let hToMugShotHandle: SGPVObject;
+  let hToStatsHandle: SGPVObject;
 
   DrawAimDefaults();
   // SortBy
@@ -468,7 +468,7 @@ function SelectDescendBoxRegionCallBack(pRegion: MOUSE_REGION, iReason: INT32): 
 }
 
 function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
-  let hSelectLightHandle: HVOBJECT;
+  let hSelectLightHandle: SGPVObject;
 
   ubMode *= 2;
 

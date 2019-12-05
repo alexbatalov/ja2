@@ -487,7 +487,7 @@ export function DisplayEmailHeaders(): void {
 }
 
 export function RenderEmail(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
 
   // get and blt the email list background
@@ -1082,7 +1082,7 @@ function DisplayMessageList(iPageNum: INT32): void {
 }
 
 function DrawLetterIcon(iCounter: INT32, fRead: boolean): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
   // grab video object
@@ -1389,7 +1389,7 @@ function SetUnNewMessages(): void {
 }
 
 function DisplayEmailMessage(pMail: Email | null): INT32 {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCnt: INT32 = 0;
   let iHeight: INT32 = 0;
   let iCounter: INT32 = 1;
@@ -1724,7 +1724,7 @@ export function CreateDestroyNewMailButton(): void {
 
 /* static */ let DisplayNewMailBox__fOldNewMailFlag: boolean = false;
 export function DisplayNewMailBox(): boolean {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // will display a new mail box whenever new mail has arrived
 
@@ -2083,7 +2083,7 @@ export function CreateDestroyDeleteNoticeMailButton(): void {
   return;
 }
 function DisplayDeleteNotice(pMail: Email | null): boolean {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   // will display a delete mail box whenever delete mail has arrived
   if (!fDeleteMailFlag)
     return false;
@@ -2422,7 +2422,7 @@ function DrawEmailMessageDisplayTitleText(iViewerY: INT32): void {
 function DrawLineDividers(): void {
   // this function draws divider lines between lines of text
   let iCounter: INT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   for (iCounter = 1; iCounter < 19; iCounter++) {
     hHandle = GetVideoObject(guiMAILDIVIDER);

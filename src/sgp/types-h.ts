@@ -120,6 +120,15 @@ export function resetSGPRect(o: SGPRect) {
   o.iBottom = 0;
 }
 
+export function SGPRectToRect(o: SGPRect) {
+  return {
+    left: o.iLeft,
+    top: o.iTop,
+    right: o.iRight,
+    bottom: o.iBottom,
+  };
+}
+
 export interface SGPPoint {
   iX: INT32;
   iY: INT32;
@@ -191,6 +200,64 @@ export function copyObjectArray<T>(destination: T[], source: T[], copyFn: (desti
   for (let i = 0; i < arrayLength; i++) {
     copyFn(destination[i], source[i]);
   }
+}
+
+export interface Pointer<T> {
+  value: T;
+}
+
+type PointerValueGetter<T> = () => T;
+type PointerValueSetter<T> = (value: T) => void;
+
+class _Pointer<T> implements Pointer<T> {
+  constructor(private getter: PointerValueGetter<T>, private setter: PointerValueSetter<T>) {
+  }
+
+  get value() {
+    return this.getter();
+  }
+
+  set value(value) {
+    this.setter(value);
+  }
+}
+
+export function createPointer<T>(getter: PointerValueGetter<T>, setter: PointerValueSetter<T>): Pointer<T> {
+  return new _Pointer(getter, setter);
+}
+
+class _ElementPointer<T> implements Pointer<T> {
+  constructor(private arrayLike: { [n: number]: T }, private index: number) {
+  }
+
+  get value() {
+    return this.arrayLike[this.index];
+  }
+
+  set value(value) {
+    this.arrayLike[this.index] = value;
+  }
+}
+
+export function createElementPointer<T>(arrayLike: { [n: number]: T }, index: number): Pointer<T> {
+  return new _ElementPointer(arrayLike, index);
+}
+
+class _PropertyPointer<T, K extends keyof T> implements Pointer<T[K]> {
+  constructor(private obj: T, private prop: K) {
+  }
+
+  get value() {
+    return this.obj[this.prop];
+  }
+
+  set value(value) {
+    this.obj[this.prop] = value;
+  }
+}
+
+export function createPropertyPointer<T, K extends keyof T>(obj: T, prop: K): Pointer<T[K]> {
+  return new _PropertyPointer(obj, prop);
 }
 
 }

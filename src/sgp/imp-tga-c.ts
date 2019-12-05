@@ -313,7 +313,7 @@ function ReadUncompRGBImage(hImage: ImageType, hFile: HWFILE, uiImgID: UINT8, ui
 //
 //**************************************************************************
 
-function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+function ReadRLEColMapImage(hImage: ImageType, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
   return false;
 }
 
@@ -331,7 +331,7 @@ function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
 //
 //**************************************************************************
 
-function ReadRLERGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
+function ReadRLERGBImage(hImage: ImageType, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): boolean {
   return false;
 }
 

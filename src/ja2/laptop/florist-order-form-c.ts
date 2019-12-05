@@ -430,7 +430,7 @@ export function HandleFloristOrderForm(): void {
 }
 
 export function RenderFloristOrderForm(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosX: UINT16;
   let sTemp: string /* wchar_t[640] */;
   let uiStartLoc: UINT32 = 0;
@@ -682,7 +682,7 @@ function SelectFlorsitCheckBoxRegionCallBack(pRegion: MOUSE_REGION, iReason: INT
 }
 
 function DisplayFloristCheckBox(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // check box
   hPixHandle = GetVideoObject(guiFlowerOrderCheckBoxButtonImage);
@@ -930,7 +930,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): boolean {
       let usPosY: UINT16;
       let usPosX: UINT16;
       let usFontHeight: UINT16 = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT());
-      let hImageHandle: HVOBJECT;
+      let hImageHandle: SGPVObject;
 
       // Display the background for the drop down window
       ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X, FLOWER_ORDER_DROP_DOWN_LOCATION_Y, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DROP_DOWN_LOCATION_Y + CreateDestroyFlowerOrderDestDropDown__usHeight, Get16BPPColor(FROMRGB(0, 0, 0)));

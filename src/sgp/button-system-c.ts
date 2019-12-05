@@ -55,18 +55,18 @@ export function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16
   return ButtonPictures[usButtonPicID].vobj.pETRLEObject[iSlot].usWidth;
 }
 
-let GenericButtonGrayed: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOffNormal: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOffHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOnNormal: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOnHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonBackground: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
-export let GenericButtonFillColors: UINT16[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonBackgroundIndex: UINT16[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOffsetX: INT16[] /* [MAX_GENERIC_PICS] */;
-let GenericButtonOffsetY: INT16[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonGrayed: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+let GenericButtonOffNormal: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+let GenericButtonOffHilite: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+let GenericButtonOnNormal: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+let GenericButtonOnHilite: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+let GenericButtonBackground: SGPVObject[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, <SGPVObject><unknown>null);
+export let GenericButtonFillColors: UINT16[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, 0);
+let GenericButtonBackgroundIndex: UINT16[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, 0);
+let GenericButtonOffsetX: INT16[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, 0);
+let GenericButtonOffsetY: INT16[] /* [MAX_GENERIC_PICS] */ = createArray(MAX_GENERIC_PICS, 0);
 
-let GenericButtonIcons: HVOBJECT[] /* [MAX_BUTTON_ICONS] */;
+let GenericButtonIcons: SGPVObject[] /* [MAX_BUTTON_ICONS] */ = createArray(MAX_BUTTON_ICONS, <SGPVObject><unknown>null);
 
 // flag to state we wish to render buttons on the one after the next pass through render buttons
 let fPausedMarkButtonsDirtyFlag: boolean = false;
@@ -338,7 +338,7 @@ export function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal:
 //			structures are simply removed from the button image list. It's up to
 //			the user to actually unload the image.
 //
-function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
+function UseVObjAsButtonImage(hVObject: SGPVObject, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   let UseSlot: UINT32;
   let pTrav: ETRLEObject;
   let MaxHeight: UINT32;
@@ -599,12 +599,12 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all Generic button data
   for (x = 0; x < MAX_GENERIC_PICS; x++) {
-    GenericButtonGrayed[x] = null;
-    GenericButtonOffNormal[x] = null;
-    GenericButtonOffHilite[x] = null;
-    GenericButtonOnNormal[x] = null;
-    GenericButtonOnHilite[x] = null;
-    GenericButtonBackground[x] = null;
+    GenericButtonGrayed[x] = <SGPVObject><unknown>null;
+    GenericButtonOffNormal[x] = <SGPVObject><unknown>null;
+    GenericButtonOffHilite[x] = <SGPVObject><unknown>null;
+    GenericButtonOnNormal[x] = <SGPVObject><unknown>null;
+    GenericButtonOnHilite[x] = <SGPVObject><unknown>null;
+    GenericButtonBackground[x] = <SGPVObject><unknown>null;
     GenericButtonBackgroundIndex[x] = 0;
     GenericButtonFillColors[x] = 0;
     GenericButtonBackgroundIndex[x] = 0;
@@ -614,7 +614,7 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 
   // Blank out all icon images
   for (x = 0; x < MAX_BUTTON_ICONS; x++)
-    GenericButtonIcons[x] = null;
+    GenericButtonIcons[x] = <SGPVObject><unknown>null;
 
   // Load the default generic button images
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -645,13 +645,13 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
   GenericButtonOnHilite[0] = CreateVideoObject(vo_desc);
 
   Pix = 0;
-  if (!GetETRLEPixelValue(addressof(Pix), GenericButtonOffNormal[0], 8, 0, 0)) {
+  if (!GetETRLEPixelValue(createPointer(() => Pix, (v) => Pix = v), GenericButtonOffNormal[0], 8, 0, 0)) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "Couldn't get generic button's background pixel value");
     return false;
   }
 
   if (GETPIXELDEPTH() == 16)
-    GenericButtonFillColors[0] = GenericButtonOffNormal[0].value.p16BPPPalette[Pix];
+    GenericButtonFillColors[0] = GenericButtonOffNormal[0].p16BPPPalette[Pix];
   else if (GETPIXELDEPTH() == 8)
     GenericButtonFillColors[0] = COLOR_DKGREY;
 
@@ -741,7 +741,7 @@ export function UnloadGenericButtonIcon(GenImg: INT16): boolean {
   }
   // If an icon is present in the slot, remove it.
   DeleteVideoObject(GenericButtonIcons[GenImg]);
-  GenericButtonIcons[GenImg] = null;
+  GenericButtonIcons[GenImg] = <SGPVObject><unknown>null;
   return true;
 }
 
@@ -762,37 +762,37 @@ function UnloadGenericButtonImage(GenImg: INT16): boolean {
   // present, and if so, remove it.
   if (GenericButtonGrayed[GenImg] != null) {
     DeleteVideoObject(GenericButtonGrayed[GenImg]);
-    GenericButtonGrayed[GenImg] = null;
+    GenericButtonGrayed[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
   if (GenericButtonOffNormal[GenImg] != null) {
     DeleteVideoObject(GenericButtonOffNormal[GenImg]);
-    GenericButtonOffNormal[GenImg] = null;
+    GenericButtonOffNormal[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
   if (GenericButtonOffHilite[GenImg] != null) {
     DeleteVideoObject(GenericButtonOffHilite[GenImg]);
-    GenericButtonOffHilite[GenImg] = null;
+    GenericButtonOffHilite[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
   if (GenericButtonOnNormal[GenImg] != null) {
     DeleteVideoObject(GenericButtonOnNormal[GenImg]);
-    GenericButtonOnNormal[GenImg] = null;
+    GenericButtonOnNormal[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
   if (GenericButtonOnHilite[GenImg] != null) {
     DeleteVideoObject(GenericButtonOnHilite[GenImg]);
-    GenericButtonOnHilite[GenImg] = null;
+    GenericButtonOnHilite[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
   if (GenericButtonBackground[GenImg] != null) {
     DeleteVideoObject(GenericButtonBackground[GenImg]);
-    GenericButtonBackground[GenImg] = null;
+    GenericButtonBackground[GenImg] = <SGPVObject><unknown>null;
     fDeletedSomething = true;
   }
 
@@ -857,7 +857,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
       return -1;
     }
   } else
-    GenericButtonGrayed[ImgSlot] = null;
+    GenericButtonGrayed[ImgSlot] = <SGPVObject><unknown>null;
 
   if (OffHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -868,7 +868,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
       return -1;
     }
   } else
-    GenericButtonOffHilite[ImgSlot] = null;
+    GenericButtonOffHilite[ImgSlot] = <SGPVObject><unknown>null;
 
   if (OnHiliteName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -879,7 +879,7 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
       return -1;
     }
   } else
-    GenericButtonOnHilite[ImgSlot] = null;
+    GenericButtonOnHilite[ImgSlot] = <SGPVObject><unknown>null;
 
   if (BkGrndName != BUTTON_NO_FILENAME) {
     vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -890,19 +890,19 @@ function LoadGenericButtonImages(GrayName: string /* Pointer<UINT8> */, OffNormN
       return -1;
     }
   } else
-    GenericButtonBackground[ImgSlot] = null;
+    GenericButtonBackground[ImgSlot] = <SGPVObject><unknown>null;
 
   GenericButtonBackgroundIndex[ImgSlot] = Index;
 
   // Get the background fill color from the last (9th) sub-image in the
   // Off-Normal image.
   Pix = 0;
-  if (!GetETRLEPixelValue(addressof(Pix), GenericButtonOffNormal[ImgSlot], 8, 0, 0)) {
+  if (!GetETRLEPixelValue(createPointer(() => Pix, (v) => Pix = v), GenericButtonOffNormal[ImgSlot], 8, 0, 0)) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, "LoadGenericButtonImages: Couldn't get generic button's background pixel value");
     return -1;
   }
 
-  GenericButtonFillColors[ImgSlot] = GenericButtonOffNormal[ImgSlot].value.p16BPPPalette[Pix];
+  GenericButtonFillColors[ImgSlot] = GenericButtonOffNormal[ImgSlot].p16BPPPalette[Pix];
 
   // Set the button's background image adjustement offsets
   GenericButtonOffsetX[ImgSlot] = OffsetX;
@@ -930,32 +930,32 @@ function ShutdownButtonImageManager(): void {
   for (x = 0; x < MAX_GENERIC_PICS; x++) {
     if (GenericButtonGrayed[x] != null) {
       DeleteVideoObject(GenericButtonGrayed[x]);
-      GenericButtonGrayed[x] = null;
+      GenericButtonGrayed[x] = <SGPVObject><unknown>null;
     }
 
     if (GenericButtonOffNormal[x] != null) {
       DeleteVideoObject(GenericButtonOffNormal[x]);
-      GenericButtonOffNormal[x] = null;
+      GenericButtonOffNormal[x] = <SGPVObject><unknown>null;
     }
 
     if (GenericButtonOffHilite[x] != null) {
       DeleteVideoObject(GenericButtonOffHilite[x]);
-      GenericButtonOffHilite[x] = null;
+      GenericButtonOffHilite[x] = <SGPVObject><unknown>null;
     }
 
     if (GenericButtonOnNormal[x] != null) {
       DeleteVideoObject(GenericButtonOnNormal[x]);
-      GenericButtonOnNormal[x] = null;
+      GenericButtonOnNormal[x] = <SGPVObject><unknown>null;
     }
 
     if (GenericButtonOnHilite[x] != null) {
       DeleteVideoObject(GenericButtonOnHilite[x]);
-      GenericButtonOnHilite[x] = null;
+      GenericButtonOnHilite[x] = <SGPVObject><unknown>null;
     }
 
     if (GenericButtonBackground[x] != null) {
       DeleteVideoObject(GenericButtonBackground[x]);
-      GenericButtonBackground[x] = null;
+      GenericButtonBackground[x] = <SGPVObject><unknown>null;
     }
 
     GenericButtonFillColors[x] = 0;
@@ -967,7 +967,7 @@ function ShutdownButtonImageManager(): void {
   // Remove all button icons
   for (x = 0; x < MAX_BUTTON_ICONS; x++) {
     if (GenericButtonIcons[x] != null)
-      GenericButtonIcons[x] = null;
+      GenericButtonIcons[x] = <SGPVObject><unknown>null;
   }
 }
 
@@ -2198,7 +2198,7 @@ function QuickButtonCallbackMButn(reg: MOUSE_REGION, reason: INT32): void {
   let iButtonID: INT32;
   let MouseBtnDown: boolean;
   let StateBefore: boolean;
-  let StateAfter: boolean;
+  let StateAfter: boolean = false;
 
   Assert(reg != null);
 
@@ -2580,7 +2580,7 @@ function DrawHatchOnButton(b: GUI_BUTTON): void {
   ClipRect.iTop = b.Area.RegionTopLeftY;
   ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
-  Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+  Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, ClipRect);
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
@@ -2593,7 +2593,7 @@ function DrawShadeOnButton(b: GUI_BUTTON): void {
   ClipRect.iTop = b.Area.RegionTopLeftY;
   ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
-  Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+  Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
@@ -2711,7 +2711,7 @@ function DrawIconOnButton(b: GUI_BUTTON): void {
   let NewClip: SGPRect = createSGPRect();
   let OldClip: SGPRect = createSGPRect();
   let pTrav: ETRLEObject;
-  let hvObject: HVOBJECT;
+  let hvObject: SGPVObject = <SGPVObject><unknown>undefined;
 
   // If there's an actual icon on this button, try to show it.
   if (b.iIconID >= 0) {
@@ -2767,10 +2767,10 @@ function DrawIconOnButton(b: GUI_BUTTON): void {
 
     // Get the width and height of the icon itself
     if (b.uiFlags & BUTTON_GENERIC)
-      pTrav = GenericButtonIcons[b.iIconID].value.pETRLEObject[b.usIconIndex];
+      pTrav = GenericButtonIcons[b.iIconID].pETRLEObject[b.usIconIndex];
     else {
       hvObject = GetVideoObject(b.iIconID);
-      pTrav = hvObject.value.pETRLEObject[b.usIconIndex];
+      pTrav = hvObject.pETRLEObject[b.usIconIndex];
     }
     IconH = (pTrav.usHeight + pTrav.sOffsetY);
     IconW = (pTrav.usWidth + pTrav.sOffsetX);
@@ -2994,11 +2994,10 @@ function DrawGenericButton(b: GUI_BUTTON): void {
   let oy: INT32;
   let iBorderHeight: INT32;
   let iBorderWidth: INT32;
-  let BPic: HVOBJECT;
+  let BPic: SGPVObject;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let ClipRect: SGPRect = createSGPRect();
-  let pTrav: ETRLEObject;
 
   // Select the graphics to use depending on the current state of the button
   if (b.uiFlags & BUTTON_ENABLED) {
@@ -3032,7 +3031,6 @@ function DrawGenericButton(b: GUI_BUTTON): void {
 
   iBorderWidth = 3;
   iBorderHeight = 2;
-  pTrav = null;
 
   // DB - Added this to support more flexible sizing of border images
   // The 3x2 size was a bit limiting. JA2 should default to the original
@@ -3077,9 +3075,9 @@ function DrawGenericButton(b: GUI_BUTTON): void {
       ImgNum = 1;
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, ClipRect);
     }
 
     if (q == 0)
@@ -3088,22 +3086,22 @@ function DrawGenericButton(b: GUI_BUTTON): void {
       ImgNum = 6;
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, ClipRect);
     }
   }
   // Blit the right side corners
   if (gbPixelDepth == 16) {
-    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, addressof(ClipRect));
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, ClipRect);
   } else if (gbPixelDepth == 8) {
-    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, addressof(ClipRect));
+    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, ClipRect);
   }
 
   if (gbPixelDepth == 16) {
-    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, addressof(ClipRect));
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, ClipRect);
   } else if (gbPixelDepth == 8) {
-    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, addressof(ClipRect));
+    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, ClipRect);
   }
   // Draw the vertical members of the button's borders
   NumChunksHigh--;
@@ -3111,29 +3109,29 @@ function DrawGenericButton(b: GUI_BUTTON): void {
   if (hremain != 0) {
     q = NumChunksHigh;
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, ClipRect);
     }
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, ClipRect);
     }
   }
 
   for (q = 1; q < NumChunksHigh; q++) {
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, ClipRect);
     }
 
     if (gbPixelDepth == 16) {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, addressof(ClipRect));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, ClipRect);
     }
   }
 

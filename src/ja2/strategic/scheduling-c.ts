@@ -522,7 +522,7 @@ export function BumpAnyExistingMerc(sGridNo: INT16): boolean {
   pSoldier = MercPtrs[ubID];
 
   // what if the existing merc is prone?
-  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, Enum193.STANDING, 5, addressof(ubDir), 1, pSoldier);
+  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, Enum193.STANDING, 5, createPointer(() => ubDir, (v) => ubDir = v), 1, pSoldier);
   // sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, sGridNo, 10, &ubDir );
 
   if (sNewGridNo == NOWHERE) {
@@ -540,6 +540,7 @@ function AutoProcessSchedule(pSchedule: SCHEDULENODE, index: INT32): void {
   let sCellY: INT16;
   let sGridNo: INT16;
   let bDirection: INT8;
+  let bDirection__Pointer = createPointer(() => bDirection, (v) => bDirection = v);
   let pSoldier: SOLDIERTYPE;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -570,7 +571,7 @@ function AutoProcessSchedule(pSchedule: SCHEDULENODE, index: INT32): void {
       ({ sCellX, sCellY } = ConvertGridNoToCellXY(pSchedule.usData2[index]));
 
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
-      if (GridNoOnEdgeOfMap(pSchedule.usData2[index], addressof(bDirection))) {
+      if (GridNoOnEdgeOfMap(pSchedule.usData2[index], bDirection__Pointer)) {
         // civ should go off map; this tells us where the civ will return
         pSoldier.sOffWorldGridNo = pSchedule.usData2[index];
         MoveSoldierFromMercToAwaySlot(pSoldier);
@@ -621,7 +622,7 @@ function AutoProcessSchedule(pSchedule: SCHEDULENODE, index: INT32): void {
       ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
-      sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, addressof(bDirection));
+      sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, bDirection__Pointer);
       BumpAnyExistingMerc(sGridNo);
       ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
@@ -1102,7 +1103,7 @@ function SecureSleepSpot(pSoldier: SOLDIERTYPE, usSleepSpot: UINT16): void {
         if (usSleepSpot2 == usSleepSpot) {
           // conflict!
           // usNewSleepSpot = (INT16) FindGridNoFromSweetSpotWithStructData( pSoldier2, pSoldier2->usAnimState, usSleepSpot2, 3, &ubDirection, FALSE );
-          usNewSleepSpot = FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier2, usSleepSpot2, 3, addressof(ubDirection));
+          usNewSleepSpot = FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier2, usSleepSpot2, 3, createPointer(() => ubDirection, (v) => ubDirection = v));
           if (usNewSleepSpot != NOWHERE) {
             ReplaceSleepSpot(pSchedule, usNewSleepSpot);
           }

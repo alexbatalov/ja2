@@ -924,7 +924,7 @@ export function ExternalLoadMap(szFilename: string /* Pointer<UINT16> */): boole
   ProcessFileIO(); // always returns loadsave_screen and changes iostatus to loading_map.
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(null);
+  RefreshScreen();
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return true;
   return false;
@@ -942,7 +942,7 @@ export function ExternalSaveMap(szFilename: string /* Pointer<UINT16> */): boole
     return false;
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(null);
+  RefreshScreen();
   if (ProcessFileIO() == Enum26.EDIT_SCREEN)
     return true;
   return false;

@@ -7,6 +7,15 @@ export interface AILIST {
   pNext: AILIST | null /* Pointer<AILIST> */;
 }
 
+export function createAIList(): AILIST {
+  return {
+    ubID: 0,
+    bPriority: 0,
+    ubUnused: 0,
+    pNext: null,
+  };
+}
+
 export const MAX_AI_PRIORITY = 100;
 
 }

@@ -118,7 +118,7 @@ export function WrapString(pStr: string /* Pointer<INT16> */, usWidth: UINT16, u
   let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
   let fLineSplit: boolean = false;
-  let hFont: HVOBJECT;
+  let hFont: SGPVObject;
 
   // CHECK FOR WRAP
   Cur = 0;

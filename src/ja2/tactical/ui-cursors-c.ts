@@ -4,13 +4,13 @@ let gfCannotGetThrough: boolean = false;
 let gfDisplayFullCountRing: boolean = false;
 
 /* static */ let GetMouseRecalcAndShowAPFlags__fDoNewTile: boolean = false;
-export function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<boolean>): boolean {
+export function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<boolean> | null): boolean {
   let uiCursorFlags: UINT32;
   let fRecalc: boolean = false;
   let fShowAPs: boolean = false;
 
   // SET FLAGS FOR CERTAIN MOUSE MOVEMENTS
-  GetCursorMovementFlags(addressof(uiCursorFlags));
+  uiCursorFlags = GetCursorMovementFlags();
 
   // Force if we are currently cycling guys...
   if (gfUIForceReExamineCursorData) {
@@ -57,7 +57,7 @@ export function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pf
 // FUNCTIONS FOR CURSOR DETERMINATION!
 export function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: UINT16, fActivated: boolean): UINT8 {
   let pSoldier: SOLDIERTYPE;
-  let uiCursorFlags: UINT32;
+  let uiCursorFlags: UINT32 = 0;
   let fShowAPs: boolean = false;
   let fRecalc: boolean = false;
   let sTargetGridNo: INT16 = usMapPos;
@@ -66,7 +66,7 @@ export function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usM
 
   pSoldier = MercPtrs[ubSoldierID];
 
-  fRecalc = GetMouseRecalcAndShowAPFlags(addressof(uiCursorFlags), addressof(fShowAPs));
+  fRecalc = GetMouseRecalcAndShowAPFlags(createPointer(() => uiCursorFlags, (v) => uiCursorFlags = v), createPointer(() => fShowAPs, (v) => fShowAPs = v));
 
   // ATE: Update attacking weapon!
   // CC has added this attackingWeapon stuff and I need to update it constantly for
@@ -574,14 +574,22 @@ function HandleNonActivatedTargetCursor(pSoldier: SOLDIERTYPE, usMapPos: UINT16,
 }
 
 function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRecalc: boolean): void {
-  let usMapPos: UINT16;
-  let pTargetSoldier: SOLDIERTYPE | null = null;
+  let usMapPos: UINT16 = 0;
+  let usMapPos__Pointer = createPointer(() => usMapPos, (v) => usMapPos = v);
+  let pTargetSoldier: SOLDIERTYPE | null = <SOLDIERTYPE><unknown>null;
+  let pTargetSoldier__Pointer = createPointer(() => pTargetSoldier, (v) => pTargetSoldier = v);
   let pSoldier: SOLDIERTYPE;
-  let usFlags: UINT16;
-  let sMouseX: INT16;
-  let sMouseY: INT16;
-  let sCellX: INT16;
-  let sCellY: INT16;
+  let pSoldier__Pointer = createPointer(() => pSoldier, (v) => pSoldier = v);
+  let usFlags: UINT16 = 0;
+  let usFlags__Pointer = createPointer(() => usFlags, (v) => usFlags = v);
+  let sMouseX: INT16 = 0;
+  let sMouseX__Pointer = createPointer(() => sMouseX, (v) => sMouseX = v);
+  let sMouseY: INT16 = 0;
+  let sMouseY__Pointer = createPointer(() => sMouseY, (v) => sMouseY = v);
+  let sCellX: INT16 = 0;
+  let sCellX__Pointer = createPointer(() => sCellX, (v) => sCellX = v);
+  let sCellY: INT16 = 0;
+  let sCellY__Pointer = createPointer(() => sCellY, (v) => sCellY = v);
   let sScreenX: INT16;
   let sScreenY: INT16;
   let fOnGuy: boolean = false;
@@ -599,12 +607,12 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
     // ALWAYS SET AIM LOCATION TO NOTHING
     pSoldier.bAimShotLocation = AIM_SHOT_RANDOM;
 
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(usMapPos__Pointer)) {
       return;
     }
 
     // Determine which body part it's on
-    pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), null);
+    pNode = GetAnimProfileFlags(usMapPos, usFlags__Pointer, pTargetSoldier__Pointer, null);
 
     while (pNode != null) {
       if (pTargetSoldier != null) {
@@ -618,7 +626,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_NORTH_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           if (sCellY > (CELL_Y_SIZE / 2)) {
             fOnGuy = false;
@@ -627,7 +635,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_SOUTH_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           if (sCellY <= (CELL_Y_SIZE / 2)) {
             fOnGuy = false;
@@ -636,7 +644,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_WEST_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           if (sCellX > (CELL_X_SIZE / 2)) {
             fOnGuy = false;
@@ -644,7 +652,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         }
         if (usFlags & TILE_FLAG_EAST_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           if (sCellX <= (CELL_X_SIZE / 2)) {
             fOnGuy = false;
@@ -652,7 +660,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         }
         if (usFlags & TILE_FLAG_TOP_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           // Convert these to screen corrdinates
           ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
@@ -664,7 +672,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
         }
         if (usFlags & TILE_FLAG_BOTTOM_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
+          GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
           // Convert these to screen corrdinates
           ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
@@ -684,7 +692,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
       if (fOnGuy)
         break;
 
-      pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), pNode);
+      pNode = GetAnimProfileFlags(usMapPos, usFlags__Pointer, pTargetSoldier__Pointer, pNode);
     }
 
     if (!fOnGuy) {
@@ -692,7 +700,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
       if (gfUIFullTargetFound) {
         pTargetSoldier = MercPtrs[gusUIFullTargetID];
 
-        if (FindRelativeSoldierPosition(pTargetSoldier, addressof(usFlags), gusMouseXPos, gusMouseYPos)) {
+        if (FindRelativeSoldierPosition(pTargetSoldier, usFlags__Pointer, gusMouseXPos, gusMouseYPos)) {
           fOnGuy = true;
         }
       }
@@ -973,9 +981,11 @@ function HandleActivatedTossCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubIte
 
 /* static */ let HandleNonActivatedTossCursor__fBadCTGH: boolean = false;
 function HandleNonActivatedTossCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fRecalc: boolean, uiCursorFlags: UINT32, ubItemCursor: UINT8): UINT8 {
-  let sFinalGridNo: INT16;
+  let sFinalGridNo: INT16 = 0;
+  let sFinalGridNo__Pointer = createPointer(() => sFinalGridNo, (v) => sFinalGridNo = v);
   let fArmed: boolean = false;
-  let bLevel: INT8;
+  let bLevel: INT8 = 0;
+  let bLevel__Pointer = createPointer(() => bLevel, (v) => bLevel = v);
   let TempObject: OBJECTTYPE = createObjectType();
   let bSlot: INT8;
   let pObj: OBJECTTYPE;
@@ -1055,7 +1065,7 @@ function HandleNonActivatedTossCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fR
         if (bSlot != NO_SLOT) {
           CreateItem(Enum225.UNDER_GLAUNCHER, pSoldier.inv[Enum261.HANDPOS].bAttachStatus[bSlot], TempObject);
 
-          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), addressof(sFinalGridNo), fArmed, addressof(bLevel), true)) {
+          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), sFinalGridNo__Pointer, fArmed, bLevel__Pointer, true)) {
             HandleNonActivatedTossCursor__fBadCTGH = true;
           } else {
             HandleNonActivatedTossCursor__fBadCTGH = false;
@@ -1063,7 +1073,7 @@ function HandleNonActivatedTossCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fR
           BeginPhysicsTrajectoryUI(sFinalGridNo, bLevel, HandleNonActivatedTossCursor__fBadCTGH);
         }
       } else {
-        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), addressof(sFinalGridNo), fArmed, addressof(bLevel), true)) {
+        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), sFinalGridNo__Pointer, fArmed, bLevel__Pointer, true)) {
           HandleNonActivatedTossCursor__fBadCTGH = true;
         } else {
           HandleNonActivatedTossCursor__fBadCTGH = false;
@@ -1128,7 +1138,7 @@ function HandleJarCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, uiCursorFlags: 
 }
 
 function HandleTinCanCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
-  let pStructure: STRUCTURE;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
   let sIntTileGridNo: INT16;
   let pIntTile: LEVELNODE | null;
 
@@ -1136,7 +1146,7 @@ function HandleTinCanCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, uiCursorFlag
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_CAN);
 
   // Check if a door exists here.....
-  pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
+  pIntTile = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
   // We should not have null here if we are given this flag...
   if (pIntTile != null) {
@@ -1212,7 +1222,7 @@ export function HandleEndConfirmCursor(pSoldier: SOLDIERTYPE): void {
 export function HandleLeftClickCursor(pSoldier: SOLDIERTYPE): void {
   let usInHand: UINT16;
   let ubItemCursor: UINT8;
-  let sGridNo: INT16;
+  let sGridNo: INT16 = 0;
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
   usInHand = pSoldier.inv[Enum261.HANDPOS].usItem;
@@ -1229,7 +1239,7 @@ export function HandleLeftClickCursor(pSoldier: SOLDIERTYPE): void {
     return;
   }
 
-  if (!GetMouseMapPos(addressof(sGridNo))) {
+  if (!GetMouseMapPos(createPointer(() => sGridNo, (v) => sGridNo = v))) {
     return;
   }
 

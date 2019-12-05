@@ -649,7 +649,6 @@ export function RemoveGroupFromList(pGroup: GROUP): void {
 
     uniqueIDMask[index] -= mask;
 
-    MemFree(curr);
     curr = null;
   }
 }
@@ -1306,7 +1305,7 @@ export function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: boolean,
 
         if (curr.pSoldier.pMercPath) {
           // remove head from their mapscreen path list
-          curr.pSoldier.pMercPath = RemoveHeadFromStrategicPath(curr.pSoldier.pMercPath);
+          curr.pSoldier.pMercPath = <PathSt>RemoveHeadFromStrategicPath(curr.pSoldier.pMercPath);
         }
 
         // ATE: Alrighty, check if this sector is currently loaded, if so,
@@ -3868,7 +3867,7 @@ function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void 
     fMapPanelDirty = true;
     MapScreenHandle();
     InvalidateScreen();
-    RefreshScreen(null);
+    RefreshScreen();
   }
 
   gfUsePersistantPBI = true;

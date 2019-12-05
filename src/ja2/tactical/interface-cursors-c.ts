@@ -194,7 +194,7 @@ export function SetUICursor(uiNewCursor: UINT32): boolean {
 
 /* static */ let DrawUICursor__fHideCursor: boolean = false;
 export function DrawUICursor(): boolean {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pNode: LEVELNODE;
   let usTileCursor: UINT16;
 
@@ -215,7 +215,7 @@ export function DrawUICursor(): boolean {
     return true;
   }
 
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     gusCurMousePos = usMapPos;
 
     if (guiCurUICursor == Enum210.NO_UICURSOR) {

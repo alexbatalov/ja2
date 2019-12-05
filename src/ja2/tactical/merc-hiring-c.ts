@@ -10,7 +10,7 @@ export let gsMercArriveSectorY: INT16 = 1;
 
 export function HireMerc(pHireMerc: MERC_HIRE_STRUCT): INT8 {
   let pSoldier: SOLDIERTYPE;
-  let iNewIndex: UINT8;
+  let iNewIndex: UINT8 = 0;
   let ubCount: UINT8 = 0;
   let ubCurrentSoldier: UINT8 = pHireMerc.ubProfileID;
   let pMerc: MERCPROFILESTRUCT;
@@ -43,7 +43,7 @@ export function HireMerc(pHireMerc: MERC_HIRE_STRUCT): INT8 {
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
   MercCreateStruct.fCopyProfileItemsOver = pHireMerc.fCopyProfileItemsOver;
 
-  if (!TacticalCreateSoldier(MercCreateStruct, addressof(iNewIndex))) {
+  if (!TacticalCreateSoldier(MercCreateStruct, createPointer(() => iNewIndex, (v) => iNewIndex = v))) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "TacticalCreateSoldier in HireMerc():  Failed to Add Merc");
     return MERC_HIRE_FAILED;
   }

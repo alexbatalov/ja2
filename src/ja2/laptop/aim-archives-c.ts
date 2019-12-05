@@ -248,8 +248,8 @@ export function HandleAimArchives(): void {
 }
 
 export function RenderAimArchives(): void {
-  let hFrameHandle: HVOBJECT;
-  let hFaceHandle: HVOBJECT;
+  let hFrameHandle: SGPVObject;
+  let hFaceHandle: SGPVObject;
   //  HVOBJECT	hBottomButtonHandle;
   let usPosX: UINT16;
   let usPosY: UINT16;
@@ -419,10 +419,10 @@ function DisplayAlumniOldMercPopUp(): void {
   let usTextPosY: UINT16;
   let ubFontHeight: UINT8;
   let ubNumDescLines: UINT8;
-  let hAlumniPopUpHandle: HVOBJECT;
-  let hDoneHandle: HVOBJECT;
-  let hFacePaneHandle: HVOBJECT;
-  let hFaceHandle: HVOBJECT;
+  let hAlumniPopUpHandle: SGPVObject;
+  let hDoneHandle: SGPVObject;
+  let hFacePaneHandle: SGPVObject;
+  let hFaceHandle: SGPVObject;
   //	WRAPPED_STRING *pFirstWrappedString, *pTempWrappedString;
   let usHeight: UINT16 = GetFontHeight(AIM_ALUMNI_POPUP_FONT());
   let sName: string /* wchar_t[AIM_ALUMNI_NAME_SIZE] */;

@@ -731,14 +731,14 @@ export function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLev
   return true;
 }
 
-export function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTypes: Pointer<Pointer<UINT32>>, pubNumHigherTypes: Pointer<UINT8>): boolean {
+export function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTypes: Pointer<UINT32[]>, pubNumHigherTypes: Pointer<UINT8>): boolean {
   let pLand: LEVELNODE | null = null;
   let pOldLand: LEVELNODE | null = null;
   let fTileType: UINT32;
   let ubSrcLogHeight: UINT8;
 
   pubNumHigherTypes.value = 0;
-  puiHigherTypes.value = null;
+  puiHigherTypes.value = [];
 
   // Start at tail and up
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
@@ -768,7 +768,7 @@ export function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiH
 
       (pubNumHigherTypes.value)++;
 
-      puiHigherTypes.value = MemRealloc(puiHigherTypes.value, (pubNumHigherTypes.value) * sizeof(UINT32));
+      puiHigherTypes.value.push(0);
 
       (puiHigherTypes.value)[(pubNumHigherTypes.value) - 1] = fTileType;
     }
@@ -1748,7 +1748,7 @@ export function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: SO
       return false;
     } else {
       // Turn on if we are multi-tiled
-      if (pSoldier.pLevelNode.pStructureData.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
+      if ((<STRUCTURE><unknown>pSoldier.pLevelNode.pStructureData).pDBStructureRef.pDBStructure.ubNumberOfTiles > 1) {
         // If we have more than one tile
         pSoldier.uiStatusFlags |= SOLDIER_MULTITILE_Z;
       } else {

@@ -674,7 +674,7 @@ function ExitHelpScreen(): void {
 }
 
 function DrawHelpScreenBackGround(): boolean {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosX: UINT16;
 
   // Get and display the background image
@@ -1815,7 +1815,7 @@ function RenderTextBufferToScreen(): void {
   SrcRect.iRight = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   SrcRect.iBottom = SrcRect.iTop + HLP_SCRN__HEIGHT_OF_TEXT_AREA - (2 * 8);
 
-  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), addressof(SrcRect));
+  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), SGPRectToRect(SrcRect));
 
   DisplayHelpScreenTextBufferScrollBox();
 }

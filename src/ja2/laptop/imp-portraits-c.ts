@@ -66,7 +66,7 @@ export function HandleIMPPortraits(): void {
 function RenderPortrait(sX: INT16, sY: INT16): boolean {
   // render the portrait of the current picture
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let uiGraphicHandle: UINT32;
 
   if (fCharacterIsMale) {

@@ -10,7 +10,9 @@ export let gusSelectionDensity: UINT16 = 2;
 export let gusSavedSelectionType: UINT16 = Enum33.SMALLSELECTION;
 export let gusSavedBuildingSelectionType: UINT16 = Enum33.AREASELECTION;
 let sGridX: INT16;
+let sGridX__Pointer = createPointer(() => sGridX, (v) => sGridX = v);
 let sGridY: INT16;
+let sGridY__Pointer = createPointer(() => sGridY, (v) => sGridY = v);
 let sBadMarker: INT16 = -1;
 
 export let wszSelType: string[] /* Pointer<UINT16>[6] */ = [
@@ -115,7 +117,7 @@ export function UpdateCursorAreas(): void {
   EnsureSelectionType();
 
   // Determine if the mouse is currently in the world.
-  if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA && GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+  if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA && GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
     iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
     if (gpBuildingLayoutList) {
       gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;

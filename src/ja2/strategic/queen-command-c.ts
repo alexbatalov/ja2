@@ -1183,7 +1183,7 @@ export function EndCaptureSequence(): void {
 export function EnemyCapturesPlayerSoldier(pSoldier: SOLDIERTYPE): void {
   let i: INT32;
   let WorldItem: WORLDITEM = createWorldItem();
-  let fMadeCorpse: boolean;
+  let fMadeCorpse: boolean = false;
   let iNumEnemiesInSector: INT32;
 
   // ATE: Check first if ! in player captured sequence already
@@ -1200,7 +1200,7 @@ export function EnemyCapturesPlayerSoldier(pSoldier: SOLDIERTYPE): void {
   // If this is an EPC , just kill them...
   if (AM_AN_EPC(pSoldier)) {
     pSoldier.bLife = 0;
-    HandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+    HandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
     return;
   }
 

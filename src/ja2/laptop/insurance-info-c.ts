@@ -283,7 +283,7 @@ function DisplaySubmitClaimPage(): void {
 function DisplayPremiumPage(): void {
   let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
@@ -407,7 +407,7 @@ function ChangingInsuranceInfoSubPage(ubSubPageNumber: UINT8): void {
 function DisplayInfoTocPage(): void {
   let sText: string /* wchar_t[800] */;
   let usNewLineOffset: UINT16 = 0;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosY: UINT16;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;

@@ -1035,7 +1035,7 @@ function DrawBox(uiCounter: UINT32): boolean {
   let uiNumTilesWide: UINT32;
   let uiNumTilesHigh: UINT32;
   let uiCount: UINT32 = 0;
-  let hBoxHandle: HVOBJECT;
+  let hBoxHandle: SGPVObject;
   let hSrcVSurface: HVSURFACE;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;

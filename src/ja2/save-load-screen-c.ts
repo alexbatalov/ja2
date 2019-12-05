@@ -128,6 +128,7 @@ let guiBackGroundAddOns: UINT32;
 
 // The string that will contain the game desc text
 let gzGameDescTextField: string /* wchar_t[SIZE_OF_SAVE_GAME_DESC] */;
+let gzGameDescTextField__Pointer = createPointer(() => gzGameDescTextField, (v) => gzGameDescTextField = v);
 
 let gfUserInTextInputMode: boolean = false;
 let gubSaveGameNextPass: UINT8 = 0;
@@ -572,7 +573,7 @@ function ExitSaveLoadScreen(): void {
 }
 
 function RenderSaveLoadScreen(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {
@@ -913,7 +914,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
   let zNumMercsString: string /* CHAR16[128] */;
   let zBalanceString: string /* CHAR16[128] */;
   let SaveGameHeader: SAVED_GAME_HEADER = createSavedGameHeader();
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
   let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT();
   let ubFontColor: UINT8 = SAVE_LOAD_TITLE_COLOR;
@@ -999,7 +1000,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       SaveGameHeader.ubMin = guiMin;
 
       // Get the sector value to save.
-      GetBestPossibleSectorXYZValues(addressof(SaveGameHeader.sSectorX), addressof(SaveGameHeader.sSectorY), addressof(SaveGameHeader.bSectorZ));
+      GetBestPossibleSectorXYZValues(createPropertyPointer(SaveGameHeader, 'sSectorX'), createPropertyPointer(SaveGameHeader, 'sSectorY'), createPropertyPointer(SaveGameHeader, 'bSectorZ'));
 
       //			SaveGameHeader.sSectorX = gWorldSectorX;
       //			SaveGameHeader.sSectorY = gWorldSectorY;
@@ -1123,6 +1124,7 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: SAVED_GAME_HEADER): 
   let hFile: HWFILE;
   let zSavedGameName: string /* CHAR8[512] */;
   let uiNumBytesRead: UINT32;
+  let buffer: Buffer;
 
   // make sure the entry is valid
   if (bEntry < 0 || bEntry > NUM_SAVE_GAMES) {
@@ -1143,12 +1145,14 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: SAVED_GAME_HEADER): 
     }
 
     // Load the Save Game header file
-    uiNumBytesRead = FileRead(hFile, pSaveGameHeader, SAVED_GAME_HEADER_SIZE);
+    buffer = Buffer.allocUnsafe(SAVED_GAME_HEADER_SIZE);
+    uiNumBytesRead = FileRead(hFile, buffer, SAVED_GAME_HEADER_SIZE);
     if (uiNumBytesRead != SAVED_GAME_HEADER_SIZE) {
       FileClose(hFile);
       gbSaveGameArray[bEntry] = 0;
       return false;
     }
+    readSavedGameHeader(pSaveGameHeader, buffer);
 
     FileClose(hFile);
 
@@ -1561,7 +1565,7 @@ function CompareSaveGameVersion(bSaveGameID: INT8): UINT8 {
     ubRetVal = Enum25.SLS_SAVED_GAME_VERSION_OUT_OF_DATE;
   }
 
-  if (strcmp(SaveGameHeader.zGameVersionNumber, czVersionNumber) != 0) {
+  if (SaveGameHeader.zGameVersionNumber !== czVersionNumber) {
     if (ubRetVal == Enum25.SLS_SAVED_GAME_VERSION_OUT_OF_DATE)
       ubRetVal = Enum25.SLS_BOTH_SAVE_GAME_AND_GAME_VERSION_OUT_OF_DATE;
     else
@@ -1817,7 +1821,7 @@ export function DoQuickSave(): boolean {
           }
   */
 
-  if (!SaveGame(0, gzGameDescTextField)) {
+  if (!SaveGame(0, gzGameDescTextField__Pointer)) {
     // Unset the fact that we are saving a game
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
@@ -1871,7 +1875,7 @@ export function IsThereAnySavedGameFiles(): boolean {
 }
 
 function NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(bExitValue: UINT8): void {
-  if (!SaveGame(0, gzGameDescTextField)) {
+  if (!SaveGame(0, gzGameDescTextField__Pointer)) {
     // Unset the fact that we are saving a game
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
@@ -1883,7 +1887,7 @@ function NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(bExitValue: UINT8
 function NotEnoughHardDriveSpaceForNormalSaveMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_OK) {
     // If the game failed to save
-    if (!SaveGame(gbSelectedSaveLocation, gzGameDescTextField)) {
+    if (!SaveGame(gbSelectedSaveLocation, gzGameDescTextField__Pointer)) {
       // Unset the fact that we are saving a game
       gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 
@@ -1995,7 +1999,7 @@ function SaveGameToSlotNum(): void {
   MarkButtonsDirty();
   RenderButtons();
 
-  if (!SaveGame(gbSelectedSaveLocation, gzGameDescTextField)) {
+  if (!SaveGame(gbSelectedSaveLocation, gzGameDescTextField__Pointer)) {
     // Unset the fact that we are saving a game
     gTacticalStatus.uiFlags &= ~LOADING_SAVED_GAME;
 

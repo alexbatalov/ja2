@@ -37,7 +37,7 @@ export function AccumulateBurstLocation(sGridNo: INT16): void {
     gsBurstLocations[gbNumBurstLocations].sGridNo = sGridNo;
 
     // Get cell X, Y from mouse...
-    GetMouseWorldCoords(addressof(gsBurstLocations[gbNumBurstLocations].sX), addressof(gsBurstLocations[gbNumBurstLocations].sY));
+    GetMouseWorldCoords(createPropertyPointer(gsBurstLocations[gbNumBurstLocations], 'sX'), createPropertyPointer(gsBurstLocations[gbNumBurstLocations], 'sY'));
 
     gbNumBurstLocations++;
   }
@@ -108,7 +108,7 @@ export function AIPickBurstLocations(pSoldier: SOLDIERTYPE, bTargets: INT8, pTar
 export function RenderAccumulatedBurstLocations(): void {
   let cnt: INT32;
   let sGridNo: INT16;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   if (!gfBeginBurstSpreadTracking) {
     return;

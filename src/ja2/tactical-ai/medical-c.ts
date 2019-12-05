@@ -166,9 +166,9 @@ function FindBestPatient(pSoldier: SOLDIERTYPE, pfDoClimb: Pointer<boolean>): IN
   let cnt: UINT8;
   let cnt2: UINT8;
   let bBestPriority: INT16 = 0;
-  let sBestAdjGridNo: INT16;
+  let sBestAdjGridNo: INT16 = 0;
   let sPatientGridNo: INT16;
-  let sBestPatientGridNo: INT16;
+  let sBestPatientGridNo: INT16 = 0;
   let sShortestPath: INT16 = 1000;
   let sPathCost: INT16;
   let sOtherMedicPathCost: INT16;
@@ -176,14 +176,18 @@ function FindBestPatient(pSoldier: SOLDIERTYPE, pfDoClimb: Pointer<boolean>): IN
   let pBestPatient: SOLDIERTYPE | null = null;
   let pOtherMedic: SOLDIERTYPE;
   let bPatientPriority: INT8;
-  let ubDirection: UINT8;
-  let sAdjustedGridNo: INT16;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
+  let sAdjustedGridNo: INT16 = 0;
+  let sAdjustedGridNo__Pointer = createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v);
   let sAdjacentGridNo: INT16;
   let sOtherAdjacentGridNo: INT16;
-  let sClimbGridNo: INT16;
+  let sClimbGridNo: INT16 = 0;
+  let sClimbGridNo__Pointer = createPointer(() => sClimbGridNo, (v) => sClimbGridNo = v);
   let sBestClimbGridNo: INT16 = NOWHERE;
   let sShortestClimbPath: INT16 = 1000;
-  let fClimbingNecessary: boolean;
+  let fClimbingNecessary: boolean = false;
+  let fClimbingNecessary__Pointer = createPointer(() => fClimbingNecessary, (v) => fClimbingNecessary = v);
 
   gubGlobalPathFlags = PATH_THROUGH_PEOPLE;
 
@@ -206,14 +210,14 @@ function FindBestPatient(pSoldier: SOLDIERTYPE, pfDoClimb: Pointer<boolean>): IN
       if (bPatientPriority >= bBestPriority) {
         if (!ClimbingNecessary(pSoldier, pPatient.sGridNo, pPatient.bLevel)) {
           sPatientGridNo = pPatient.sGridNo;
-          sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), false, false);
+          sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, false, false);
           if (sAdjacentGridNo == -1 && gAnimControl[pPatient.usAnimState].ubEndHeight == ANIM_PRONE) {
             // prone; could be the base tile is inaccessible but the rest isn't...
             for (cnt2 = 0; cnt2 < Enum245.NUM_WORLD_DIRECTIONS; cnt2++) {
               sPatientGridNo = pPatient.sGridNo + DirectionInc(cnt2);
               if (WhoIsThere2(sPatientGridNo, pPatient.bLevel) == pPatient.ubID) {
                 // patient is also here, try this location
-                sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), false, false);
+                sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, false, false);
                 if (sAdjacentGridNo != -1) {
                   break;
                 }
@@ -235,7 +239,7 @@ function FindBestPatient(pSoldier: SOLDIERTYPE, pfDoClimb: Pointer<boolean>): IN
                 // only switch to this patient if our distance is closer than
                 // the other medic's
                 pOtherMedic = MercPtrs[pPatient.ubAutoBandagingMedic];
-                sOtherAdjacentGridNo = FindAdjacentGridEx(pOtherMedic, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), false, false);
+                sOtherAdjacentGridNo = FindAdjacentGridEx(pOtherMedic, sPatientGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, false, false);
                 if (sOtherAdjacentGridNo != -1) {
                   if (sOtherAdjacentGridNo == pOtherMedic.sGridNo) {
                     sOtherMedicPathCost = 1;
@@ -267,7 +271,7 @@ function FindBestPatient(pSoldier: SOLDIERTYPE, pfDoClimb: Pointer<boolean>): IN
         } else {
           sClimbGridNo = NOWHERE;
           // see if guy on another building etc and we need to climb somewhere
-          sPathCost = EstimatePathCostToLocation(pSoldier, pPatient.sGridNo, pPatient.bLevel, false, addressof(fClimbingNecessary), addressof(sClimbGridNo));
+          sPathCost = EstimatePathCostToLocation(pSoldier, pPatient.sGridNo, pPatient.bLevel, false, fClimbingNecessary__Pointer, sClimbGridNo__Pointer);
           // if we can get there
           if (sPathCost != 0 && fClimbingNecessary && sPathCost < sShortestClimbPath) {
             sBestClimbGridNo = sClimbGridNo;
@@ -339,7 +343,7 @@ export function DecideAutoBandage(pSoldier: SOLDIERTYPE): INT8 {
   }
 
   //	pSoldier->usActionData = FindClosestPatient( pSoldier );
-  pSoldier.bAction = FindBestPatient(pSoldier, addressof(fDoClimb));
+  pSoldier.bAction = FindBestPatient(pSoldier, createPointer(() => fDoClimb, (v) => fDoClimb = v));
   if (pSoldier.bAction != Enum289.AI_ACTION_NONE) {
     pSoldier.usUIMovementMode = Enum193.RUNNING;
     if (bSlot != Enum261.HANDPOS) {

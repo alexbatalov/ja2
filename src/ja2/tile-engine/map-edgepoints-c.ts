@@ -214,7 +214,7 @@ function ValidateEdgepoints(): void {
   gus2ndWestEdgepointArraySize = usValidEdgepoints;
 }
 
-function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex: Pointer<UINT16>, pusArraySize: Pointer<UINT16>): void {
+function CompactEdgepointArray(psArray: Pointer<INT16[]>, pusMiddleIndex: Pointer<UINT16>, pusArraySize: Pointer<UINT16>): void {
   let i: INT32;
   let usArraySize: UINT16;
   let usValidIndex: UINT16 = 0;
@@ -234,17 +234,17 @@ function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex:
       usValidIndex++;
     }
   }
-  psArray.value = MemRealloc(psArray.value, pusArraySize.value * sizeof(INT16));
+  psArray.value = psArray.value.slice(0, pusArraySize.value);
   Assert(psArray.value);
 }
 
-function InternallyClassifyEdgepoints(pSoldier: SOLDIERTYPE, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
+function InternallyClassifyEdgepoints(pSoldier: SOLDIERTYPE, sGridNo: INT16, psArray1: Pointer<INT16[]>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<INT16[]>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
   let i: INT32;
   let us1stBenchmarkID: UINT16;
   let us2ndBenchmarkID: UINT16;
   us1stBenchmarkID = us2ndBenchmarkID = 0xffff;
   if (!(psArray2.value)) {
-    psArray2.value = MemAlloc(sizeof(INT16) * 400);
+    psArray2.value = createArray(400, 0);
   }
   for (i = 0; i < pusArraySize1.value; i++) {
     if (sGridNo == (psArray1.value)[i]) {
@@ -331,7 +331,7 @@ function InternallyClassifyEdgepoints(pSoldier: SOLDIERTYPE, sGridNo: INT16, psA
   }
   // Now compact the primary array, because some edgepoints have been removed.
   CompactEdgepointArray(psArray1, pusMiddleIndex1, pusArraySize1);
-  (psArray2.value) = MemRealloc((psArray2.value), pusArraySize2.value * sizeof(INT16));
+  (psArray2.value) = (psArray2.value).slice(0, pusArraySize2.value);
 }
 
 function ClassifyEdgepoints(): void {
@@ -344,28 +344,28 @@ function ClassifyEdgepoints(): void {
   if (gMapInformation.sNorthGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sNorthGridNo, Enum291.NORTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stNorthEdgepointArray), addressof(gus1stNorthEdgepointMiddleIndex), addressof(gus1stNorthEdgepointArraySize), addressof(gps2ndNorthEdgepointArray), addressof(gus2ndNorthEdgepointMiddleIndex), addressof(gus2ndNorthEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, createPointer(() => gps1stNorthEdgepointArray, (v) => gps1stNorthEdgepointArray = v), createPointer(() => gus1stNorthEdgepointMiddleIndex, (v) => gus1stNorthEdgepointMiddleIndex = v), createPointer(() => gus1stNorthEdgepointArraySize, (v) => gus1stNorthEdgepointArraySize = v), createPointer(() => gps2ndNorthEdgepointArray, (v) => gps2ndNorthEdgepointArray = v), createPointer(() => gus2ndNorthEdgepointMiddleIndex, (v) => gus2ndNorthEdgepointMiddleIndex = v), createPointer(() => gus2ndNorthEdgepointArraySize, (v) => gus2ndNorthEdgepointArraySize = v));
     }
   }
   // east
   if (gMapInformation.sEastGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sEastGridNo, Enum291.EAST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stEastEdgepointArray), addressof(gus1stEastEdgepointMiddleIndex), addressof(gus1stEastEdgepointArraySize), addressof(gps2ndEastEdgepointArray), addressof(gus2ndEastEdgepointMiddleIndex), addressof(gus2ndEastEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, createPointer(() => gps1stEastEdgepointArray, (v) => gps1stEastEdgepointArray = v), createPointer(() => gus1stEastEdgepointMiddleIndex, (v) => gus1stEastEdgepointMiddleIndex = v), createPointer(() => gus1stEastEdgepointArraySize, (v) => gus1stEastEdgepointArraySize = v), createPointer(() => gps2ndEastEdgepointArray, (v) => gps2ndEastEdgepointArray = v), createPointer(() => gus2ndEastEdgepointMiddleIndex, (v) => gus2ndEastEdgepointMiddleIndex = v), createPointer(() => gus2ndEastEdgepointArraySize, (v) => gus2ndEastEdgepointArraySize = v));
     }
   }
   // south
   if (gMapInformation.sSouthGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sSouthGridNo, Enum291.SOUTH_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stSouthEdgepointArray), addressof(gus1stSouthEdgepointMiddleIndex), addressof(gus1stSouthEdgepointArraySize), addressof(gps2ndSouthEdgepointArray), addressof(gus2ndSouthEdgepointMiddleIndex), addressof(gus2ndSouthEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, createPointer(() => gps1stSouthEdgepointArray, (v) => gps1stSouthEdgepointArray = v), createPointer(() => gus1stSouthEdgepointMiddleIndex, (v) => gus1stSouthEdgepointMiddleIndex = v), createPointer(() => gus1stSouthEdgepointArraySize, (v) => gus1stSouthEdgepointArraySize = v), createPointer(() => gps2ndSouthEdgepointArray, (v) => gps2ndSouthEdgepointArray = v), createPointer(() => gus2ndSouthEdgepointMiddleIndex, (v) => gus2ndSouthEdgepointMiddleIndex = v), createPointer(() => gus2ndSouthEdgepointArraySize, (v) => gus2ndSouthEdgepointArraySize = v));
     }
   }
   // west
   if (gMapInformation.sWestGridNo != -1) {
     sGridNo = FindNearestEdgepointOnSpecifiedEdge(gMapInformation.sWestGridNo, Enum291.WEST_EDGEPOINT_SEARCH);
     if (sGridNo != NOWHERE) {
-      InternallyClassifyEdgepoints(Soldier, sGridNo, addressof(gps1stWestEdgepointArray), addressof(gus1stWestEdgepointMiddleIndex), addressof(gus1stWestEdgepointArraySize), addressof(gps2ndWestEdgepointArray), addressof(gus2ndWestEdgepointMiddleIndex), addressof(gus2ndWestEdgepointArraySize));
+      InternallyClassifyEdgepoints(Soldier, sGridNo, createPointer(() => gps1stWestEdgepointArray, (v) => gps1stWestEdgepointArray = v), createPointer(() => gus1stWestEdgepointMiddleIndex, (v) => gus1stWestEdgepointMiddleIndex = v), createPointer(() => gus1stWestEdgepointArraySize, (v) => gus1stWestEdgepointArraySize = v), createPointer(() => gps2ndWestEdgepointArray, (v) => gps2ndWestEdgepointArray = v), createPointer(() => gus2ndWestEdgepointMiddleIndex, (v) => gus2ndWestEdgepointMiddleIndex = v), createPointer(() => gus2ndWestEdgepointArraySize, (v) => gus2ndWestEdgepointArraySize = v));
     }
   }
 }
@@ -1300,7 +1300,8 @@ function VerifyEdgepoint(pSoldier: SOLDIERTYPE, sEdgepoint: INT16): boolean {
   let sXOffset: INT16;
   let sYOffset: INT16;
   let sGridNo: INT16;
-  let bDirection: INT8;
+  let bDirection: INT8 = 0;
+  let bDirection__Pointer = createPointer(() => bDirection, (v) => bDirection = v);
 
   pSoldier.sGridNo = sEdgepoint;
 
@@ -1347,7 +1348,7 @@ function VerifyEdgepoint(pSoldier: SOLDIERTYPE, sEdgepoint: INT16): boolean {
         continue;
       }
 
-      if (GridNoOnEdgeOfMap(sGridNo, addressof(bDirection))) {
+      if (GridNoOnEdgeOfMap(sGridNo, bDirection__Pointer)) {
         // ok!
         return true;
       }

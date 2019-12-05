@@ -168,7 +168,7 @@ export function HandleMercsFiles(): void {
 }
 
 export function RenderMercsFiles(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DrawMecBackGround();
 
@@ -315,8 +315,8 @@ function BtnMercHireButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 function DisplayMercFace(ubMercID: UINT8): boolean {
-  let hFaceHandle: HVOBJECT;
-  let hPortraitHandle: HVOBJECT;
+  let hFaceHandle: SGPVObject;
+  let hPortraitHandle: SGPVObject;
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
   let pMerc: MERCPROFILESTRUCT;
@@ -347,7 +347,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   // if the merc is dead, shadow the face red and put text over top saying the merc is dead
   if (IsMercDead(ubMercID)) {
     // shade the face red, (to signif that he is dead)
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+    hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // get the face object
     hFaceHandle = GetVideoObject(guiMercFace);

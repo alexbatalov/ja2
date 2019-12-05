@@ -24,10 +24,10 @@ interface DIALOGUE_Q_STRUCT {
   iFaceIndex: INT32;
   iTimeStamp: INT32;
   uiSpecialEventFlag: UINT32;
-  uiSpecialEventData: UINT32;
-  uiSpecialEventData2: UINT32;
-  uiSpecialEventData3: UINT32;
-  uiSpecialEventData4: UINT32;
+  uiSpecialEventData: any /* UINT32 */;
+  uiSpecialEventData2: any /* UINT32 */;
+  uiSpecialEventData3: any /* UINT32 */;
+  uiSpecialEventData4: any /* UINT32 */;
   fFromSoldier: boolean;
   fDelayed: boolean;
   fPauseTime: boolean;
@@ -88,7 +88,7 @@ let gubNumStopTimeQuotes: UINT8 = 2;
 
 // QUEUE UP DIALOG!
 const INITIAL_Q_SIZE = 10;
-let ghDialogueQ: HQUEUE = null;
+let ghDialogueQ: DIALOGUE_Q_STRUCT[];
 export let gpCurrentTalkingFace: FACETYPE | null /* Pointer<FACETYPE> */ = null;
 export let gubCurrentTalkingID: UINT8 = NO_PROFILE;
 let gbUIHandlerID: INT8;
@@ -101,11 +101,14 @@ let gsExternPanelYPosition: INT16 = DEFAULT_EXTERN_PANEL_Y_POS;
 
 let gfDialogueQueuePaused: boolean = false;
 let gusSubtitleBoxWidth: UINT16;
+let gusSubtitleBoxWidth__Pointer = createPointer(() => gusSubtitleBoxWidth, (v) => gusSubtitleBoxWidth = v);
 let gusSubtitleBoxHeight: UINT16;
+let gusSubtitleBoxHeight__Pointer = createPointer(() => gusSubtitleBoxHeight, (v) => gusSubtitleBoxHeight = v);
 let giTextBoxOverlay: INT32 = -1;
 export let gfFacePanelActive: boolean = false;
 let guiScreenIDUsedWhenUICreated: UINT32;
 let gzQuoteStr: string /* INT16[QUOTE_MESSAGE_SIZE] */;
+let gzQuoteStr__Pointer = createPointer(() => gzQuoteStr, (v) => gzQuoteStr = v);
 let gTextBoxMouseRegion: MOUSE_REGION = createMouseRegion();
 let gFacePopupMouseRegion: MOUSE_REGION = createMouseRegion();
 let gfUseAlternateDialogueFile: boolean = false;
@@ -119,7 +122,7 @@ export let iDialogueBox: INT32 = -1;
 export let fPausedTimeDuringQuote: boolean = false;
 let fWasPausedDuringDialogue: boolean = false;
 
-let gubLogForMeTooBleeds: INT8 = false;
+let gubLogForMeTooBleeds: INT8 = 0;
 
 // has the text region been created?
 export let fTextBoxMouseRegionCreated: boolean = false;
@@ -153,7 +156,7 @@ export function DialogueActive(): boolean {
 }
 
 export function InitalizeDialogueControl(): boolean {
-  ghDialogueQ = CreateQueue(INITIAL_Q_SIZE, sizeof(DIALOGUE_Q_STRUCT_PTR));
+  ghDialogueQ = [];
 
   // Initalize subtitle popup box
   //
@@ -173,8 +176,7 @@ export function ShutdownDialogueControl(): void {
     EmptyDialogueQueue();
 
     // Delete
-    DeleteQueue(ghDialogueQ);
-    ghDialogueQ = null;
+    ghDialogueQ = <DIALOGUE_Q_STRUCT[]><unknown>null;
   }
 
   // shutdown external static NPC faces
@@ -236,11 +238,10 @@ export function EmptyDialogueQueue(): void {
     */
 
     // Delete list
-    DeleteQueue(ghDialogueQ);
-    ghDialogueQ = null;
+    ghDialogueQ = <DIALOGUE_Q_STRUCT[]><unknown>null;
 
     // Recreate list
-    ghDialogueQ = CreateQueue(INITIAL_Q_SIZE, sizeof(DIALOGUE_Q_STRUCT_PTR));
+    ghDialogueQ = [];
   }
 
   gfWaitingForTriggerTimer = false;
@@ -250,7 +251,7 @@ export function DialogueQueueIsEmpty(): boolean {
   let numDialogueItems: INT32;
 
   if (ghDialogueQ != null) {
-    numDialogueItems = QueueSize(ghDialogueQ);
+    numDialogueItems = ghDialogueQ.length;
 
     if (numDialogueItems == 0) {
       return true;
@@ -274,7 +275,7 @@ export function DialogueQueueIsEmptyOrSomebodyTalkingNow(): boolean {
 
 export function DialogueAdvanceSpeech(): void {
   // Shut them up!
-  InternalShutupaYoFace(gpCurrentTalkingFace.iID, false);
+  InternalShutupaYoFace((<FACETYPE>gpCurrentTalkingFace).iID, false);
 }
 
 export function StopAnyCurrentlyTalkingSpeech(): void {
@@ -330,14 +331,14 @@ export function HandleDialogue(): void {
   let fDoneTalking: boolean = false;
   let pSoldier: SOLDIERTYPE | null = null;
   let zText: string /* CHAR16[512] */;
-  let zMoney: string /* CHAR16[128] */;
+  let zMoney: string /* CHAR16[128] */ = '';
 
   // we don't want to just delay action of some events, we want to pause the whole queue, regardless of the event
   if (gfDialogueQueuePaused) {
     return;
   }
 
-  iQSize = QueueSize(ghDialogueQ);
+  iQSize = ghDialogueQ.length;
 
   if (iQSize == 0 && gpCurrentTalkingFace == null) {
     HandlePendingInitConv();
@@ -512,7 +513,7 @@ export function HandleDialogue(): void {
   // If here, pick current one from queue and play
 
   // Get new one
-  RemfromQueue(ghDialogueQ, addressof(QItem));
+  QItem = <DIALOGUE_Q_STRUCT>ghDialogueQ.shift();
 
   // If we are in auto bandage, ignore any quotes!
   if (gTacticalStatus.fAutoBandageMode) {
@@ -535,7 +536,7 @@ export function HandleDialogue(): void {
     if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
       // Place back in!
       // Add to queue
-      ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
+      ghDialogueQ.push(QItem);
 
       return;
     }
@@ -548,7 +549,7 @@ export function HandleDialogue(): void {
       if ((GetJA2Clock() - QItem.iTimeStamp) < QItem.uiSpecialEventData2) {
         // Place back in!
         // Add to queue
-        ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
+        ghDialogueQ.push(QItem);
 
         return;
       }
@@ -562,7 +563,7 @@ export function HandleDialogue(): void {
     if (SoundIsPlaying(pSoldier.uiBattleSoundID)) {
       // Place back in!
       // Add to queue
-      ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
+      ghDialogueQ.push(QItem);
 
       return;
     }
@@ -657,10 +658,10 @@ export function HandleDialogue(): void {
       // Setup face pointer
       // ATE: THis is working with MARK'S STUFF :(
       // Need this stuff so that bSelectedInfoChar is set...
-      SetInfoChar(pSoldier.ubID);
+      SetInfoChar((<SOLDIERTYPE>pSoldier).ubID);
 
       fShowContractMenu = true;
-      RebuildContractBoxForMerc(pSoldier);
+      RebuildContractBoxForMerc(<SOLDIERTYPE>pSoldier);
       bSelectedContractChar = bSelectedInfoChar;
       pProcessingSoldier = pSoldier;
       fProcessingAMerc = true;
@@ -947,7 +948,7 @@ export function DelayedTacticalCharacterDialogue(pSoldier: SOLDIERTYPE, usQuoteN
   return CharacterDialogue(pSoldier.ubProfile, usQuoteNum, pSoldier.iFaceIndex, DIALOGUE_TACTICAL_UI, true, true);
 }
 
-export function TacticalCharacterDialogueWithSpecialEvent(pSoldier: SOLDIERTYPE, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): boolean {
+export function TacticalCharacterDialogueWithSpecialEvent(pSoldier: SOLDIERTYPE, usQuoteNum: UINT16, uiFlag: UINT32, uiData1: any, uiData2: any): boolean {
   if (pSoldier.ubProfile == NO_PROFILE) {
     return false;
   }
@@ -1062,7 +1063,7 @@ export function TacticalCharacterDialogue(pSoldier: SOLDIERTYPE, usQuoteNum: UIN
 
 // NB;				The queued system is not yet implemented, but will be transpatent to the caller....
 
-export function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean, fDelayed: boolean, uiFlag: UINT32, uiData1: UINT32, uiData2: UINT32): boolean {
+export function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean, fDelayed: boolean, uiFlag: UINT32, uiData1: any, uiData2: any): boolean {
   let QItem: DIALOGUE_Q_STRUCT;
 
   // Allocate new item
@@ -1082,7 +1083,7 @@ export function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuote
   QItem.uiSpecialEventData2 = uiData2;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, QItem);
+  ghDialogueQ.push(QItem);
 
   if (uiFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
     // Increment refrence count...
@@ -1113,7 +1114,7 @@ function CharacterDialogueWithSpecialEventEx(ubCharacterNum: UINT8, usQuoteNum: 
   QItem.uiSpecialEventData3 = uiData3;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, QItem);
+  ghDialogueQ.push(QItem);
 
   if (uiFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
     // Increment refrence count...
@@ -1145,12 +1146,12 @@ export function CharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   fPausedTimeDuringQuote = false;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, QItem);
+  ghDialogueQ.push(QItem);
 
   return true;
 }
 
-export function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
+export function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEventData1: any, uiSpecialEventData2: any, uiSpecialEventData3: any, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
   let QItem: DIALOGUE_Q_STRUCT;
 
   // Allocate new item
@@ -1172,12 +1173,12 @@ export function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpec
   fPausedTimeDuringQuote = false;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, QItem);
+  ghDialogueQ.push(QItem);
 
   return true;
 }
 
-export function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32, uiSpecialEventData1: UINT32, uiSpecialEventData2: UINT32, uiSpecialEventData3: UINT32, uiSpecialEventData4: UINT32, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
+export function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32, uiSpecialEventData1: any, uiSpecialEventData2: any, uiSpecialEventData3: any, uiSpecialEventData4: any, iFaceIndex: INT32, bUIHandlerID: UINT8): boolean {
   let QItem: DIALOGUE_Q_STRUCT;
 
   // Allocate new item
@@ -1200,14 +1201,14 @@ export function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: 
   fPausedTimeDuringQuote = false;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, QItem);
+  ghDialogueQ.push(QItem);
 
   return true;
 }
 
 function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex: INT32, bUIHandlerID: UINT8, fFromSoldier: boolean): boolean {
-  let zSoundString: string /* CHAR8[164] */;
-  let uiSoundID: UINT32;
+  let zSoundString: string /* CHAR8[164] */ = '';
+  let uiSoundID: UINT32 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
   // Check if we are dead now or not....( if from a soldier... )
@@ -1294,7 +1295,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
     return false;
   }
 
-  if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, addressof(uiSoundID), zSoundString)) {
+  if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr__Pointer, createPointer(() => uiSoundID, (v) => uiSoundID = v), createPointer(() => zSoundString, (v) => zSoundString = v))) {
     return false;
   }
 
@@ -1306,7 +1307,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
     SetFaceTalking(iFaceIndex, zSoundString, gzQuoteStr, RATE_11025, 30, 1, MIDDLEPAN);
   }
   // pSoldier can be null here... ( if NOT from an alive soldier )
-  CreateTalkingUI(bUIHandlerID, iFaceIndex, ubCharacterNum, pSoldier, gzQuoteStr);
+  CreateTalkingUI(bUIHandlerID, iFaceIndex, ubCharacterNum, <SOLDIERTYPE>pSoldier, gzQuoteStr);
 
   // Set global handleer ID value, used when face desides it's done...
   gbUIHandlerID = bUIHandlerID;
@@ -1427,7 +1428,7 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 }
 
 // Used to see if the dialog text file exists
-export function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean, ppStr: Pointer<Pointer<UINT8>>): boolean {
+export function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWavFile: boolean, ppStr: Pointer<string> | null): boolean {
   let pFilename: string /* Pointer<UINT8> */;
 
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, fWavFile);
@@ -1440,20 +1441,20 @@ export function DialogueDataFileExistsForProfile(ubCharacterNum: UINT8, usQuoteN
 }
 
 function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT32, zDialogueText: Pointer<string> /* Pointer<UINT16> */, puiSoundID: Pointer<UINT32>, zSoundString: Pointer<string> /* Pointer<CHAR8> */): boolean {
-  let pFilename: string /* Pointer<UINT8> */;
+  let pFilename: string /* Pointer<UINT8> */ = '';
 
   // first things first  - grab the text (if player has SUBTITLE PREFERENCE ON)
   // if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
   {
-    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, addressof(pFilename))) {
-      zDialogueText = LoadEncryptedDataFromFile(pFilename, usQuoteNum * iDataSize, iDataSize);
-      if (zDialogueText[0] == 0) {
-        zDialogueText = swprintf("I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
+    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, createPointer(() => pFilename, (v) => pFilename = v))) {
+      zDialogueText.value = LoadEncryptedDataFromFile(pFilename, usQuoteNum * iDataSize, iDataSize);
+      if (zDialogueText.value == '') {
+        zDialogueText.value = swprintf("I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 
         return false;
       }
     } else {
-      zDialogueText = swprintf("I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
+      zDialogueText.value = swprintf("I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
 
       return false;
     }
@@ -1463,7 +1464,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   pFilename = GetDialogueDataFilename(ubCharacterNum, usQuoteNum, true);
 
   // Copy
-  zSoundString = pFilename;
+  zSoundString.value = pFilename;
 
   // Double check it exists....
 
@@ -1579,7 +1580,7 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: string /* STR16 *
   // Prepare text box
   SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
-  iDialogueBox = PrepareMercPopupBox(iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(gusSubtitleBoxWidth), addressof(gusSubtitleBoxHeight));
+  iDialogueBox = PrepareMercPopupBox(iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, gusSubtitleBoxWidth__Pointer, gusSubtitleBoxHeight__Pointer);
   SET_USE_WINFONTS(false);
 
   VideoOverlayDesc.sLeft = sLeftPosition;
@@ -1639,7 +1640,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
   }
 
   iFaceOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
-  gpCurrentTalkingFace.iVideoOverlay = iFaceOverlay;
+  (<FACETYPE>gpCurrentTalkingFace).iVideoOverlay = iFaceOverlay;
 
   RenderAutoFace(iFaceIndex);
 
@@ -1703,7 +1704,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     VideoOverlayDesc.BltCallback = RenderFaceOverlay;
 
     iFaceOverlay = RegisterVideoOverlay(0, VideoOverlayDesc);
-    gpCurrentTalkingFace.iVideoOverlay = iFaceOverlay;
+    (<FACETYPE>gpCurrentTalkingFace).iVideoOverlay = iFaceOverlay;
 
     RenderAutoFace(iFaceIndex);
 
@@ -2123,7 +2124,7 @@ export function FindDelayForString(sString: string /* STR16 */): UINT32 {
 }
 
 export function BeginLoggingForBleedMeToos(fStart: boolean): void {
-  gubLogForMeTooBleeds = fStart;
+  gubLogForMeTooBleeds = Number(fStart);
 }
 
 export function SetEngagedInConvFromPCAction(pSoldier: SOLDIERTYPE): void {
@@ -2156,7 +2157,7 @@ function CheckForStopTimeQuotes(usQuoteNum: UINT16): void {
     // Stop Time, game
     EnterModalTactical(TACTICAL_MODAL_NOMOUSE);
 
-    gpCurrentTalkingFace.uiFlags |= FACE_MODAL;
+    (<FACETYPE>gpCurrentTalkingFace).uiFlags |= FACE_MODAL;
 
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, "Starting Modal Tactical Quote.");
   }

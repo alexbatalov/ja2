@@ -512,13 +512,13 @@ export interface AnimationSurfaceType {
   ubFlags: UINT8;
   uiNumDirections: UINT32;
   uiNumFramesPerDir: UINT32;
-  hVideoObject: HVOBJECT;
+  hVideoObject: SGPVObject;
   Unused: any;
   bUsageCount: INT8;
   bProfile: INT8;
 }
 
-export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string, bStructDataType: CHAR8, ubFlags: UINT8, uiNumDirections: UINT32, uiNumFramesPerDir: UINT32, hVideoObject: HVOBJECT, Unused: any, bUsageCount: INT8, bProfile: INT8): AnimationSurfaceType {
+export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string, bStructDataType: CHAR8, ubFlags: UINT8, uiNumDirections: UINT32, uiNumFramesPerDir: UINT32, bUsageCount: INT8, bProfile: INT8): AnimationSurfaceType {
   return {
     ubName,
     Filename,
@@ -526,8 +526,8 @@ export function createAnimationSurfaceTypeFrom(ubName: UINT16, Filename: string,
     ubFlags,
     uiNumDirections,
     uiNumFramesPerDir,
-    hVideoObject,
-    Unused,
+    hVideoObject: <SGPVObject><unknown>null,
+    Unused: null,
     bUsageCount,
     bProfile,
   };

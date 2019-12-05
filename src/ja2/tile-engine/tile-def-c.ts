@@ -158,7 +158,7 @@ export function CreateTileDatabase(): void {
       // Build start index list
       gTileTypeStartIndex[cnt1] = gTileDatabaseSize;
 
-      NumRegions = TileSurf.vo.value.usNumberOfObjects;
+      NumRegions = TileSurf.vo.usNumberOfObjects;
 
       // Check for overflow
       if (NumRegions > gNumTilesPerType[cnt1]) {
@@ -178,10 +178,10 @@ export function CreateTileDatabase(): void {
         TileElement.sBuddyNum = -1;
 
         // Check for multi-z stuff
-        if (TileSurf.vo.value.ppZStripInfo != null) {
+        if (TileSurf.vo.ppZStripInfo != null) {
           // Only do this if we are within the # of video objects
-          if (cnt2 < TileSurf.vo.value.usNumberOfObjects) {
-            if (TileSurf.vo.value.ppZStripInfo[cnt2] != null) {
+          if (cnt2 < TileSurf.vo.usNumberOfObjects) {
+            if (TileSurf.vo.ppZStripInfo[cnt2] != null) {
               TileElement.uiFlags |= MULTI_Z_TILE;
             }
           } else {
@@ -322,7 +322,7 @@ export function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT3
     return true;
   }
 
-  if (AnyHeigherLand(iMapIndex, uiNewType, addressof(ubLastHighLevel))) {
+  if (AnyHeigherLand(iMapIndex, uiNewType, createPointer(() => ubLastHighLevel, (v) => ubLastHighLevel = v))) {
     // Check if type exists and get it's index if so
     if ((usTempIndex = TypeExistsInLandLayer(iMapIndex, uiNewType)) !== -1) {
       // Replace with new index
@@ -532,7 +532,7 @@ export function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLeve
   ubSrcLogHeight = GetTileTypeLogicalHeight(uiSrcType);
 
   // Check that src type is not head
-  if (GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel))) {
+  if (GetTypeLandLevel(iMapIndex, uiSrcType, createPointer(() => ubSrcTypeLevel, (v) => ubSrcTypeLevel = v))) {
     if (ubSrcTypeLevel == LANDHEAD) {
       return false;
     }
@@ -571,7 +571,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 
   ubSrcLogHeight = GetTileTypeLogicalHeight(uiSrcType);
 
-  GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel));
+  GetTypeLandLevel(iMapIndex, uiSrcType, createPointer(() => ubSrcTypeLevel, (v) => ubSrcTypeLevel = v));
 
   // Look through all objects and Search for type
   while (pLand != null) {

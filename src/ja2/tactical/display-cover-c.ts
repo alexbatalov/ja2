@@ -75,10 +75,10 @@ let gsLastVisibleToSoldierGridNo: INT16 = NOWHERE;
 //*******  Functions **************************************************
 
 export function DisplayCoverOfSelectedGridNo(): void {
-  let sGridNo: INT16;
+  let sGridNo: INT16 = 0;
   let bStance: INT8;
 
-  GetMouseMapPos(addressof(sGridNo));
+  GetMouseMapPos(createPointer(() => sGridNo, (v) => sGridNo = v));
 
   // Only allowed in if there is someone selected
   if (gusSelectedSoldier == NOBODY) {
@@ -373,7 +373,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: SOLDIERTYPE, sTarge
     }
 
     // if actual LOS check fails, then chance to hit is 0, ignore this guy
-    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.bLevel, bStance, usSightLimit, 1) == 0) {
+    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier.bLevel, bStance, usSightLimit, true) == 0) {
       continue;
     }
 
@@ -522,10 +522,10 @@ export function DisplayRangeToTarget(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16
 }
 
 export function DisplayGridNoVisibleToSoldierGrid(): void {
-  let sGridNo: INT16;
+  let sGridNo: INT16 = 0;
   //	INT8	bStance;
 
-  GetMouseMapPos(addressof(sGridNo));
+  GetMouseMapPos(createPointer(() => sGridNo, (v) => sGridNo = v));
 
   // Only allowed in if there is someone selected
   if (gusSelectedSoldier == NOBODY) {
@@ -761,7 +761,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, 
   let pPersOL: INT8;
   let pbPublOL: INT8;
   let ubID: UINT8;
-  let bAware: UINT8 /* boolean */ = 0;
+  let bAware: boolean = false;
 
   if (fRoof) {
     ubID = WhoIsThere2(sTargetGridNo, 1);
@@ -775,7 +775,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, 
 
     // if soldier is known about (SEEN or HEARD within last few turns)
     if (pPersOL || pbPublOL) {
-      bAware = 1;
+      bAware = true;
     }
   }
 

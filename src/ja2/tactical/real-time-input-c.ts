@@ -20,15 +20,17 @@ export function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
 /* static */ let QueryRTLeftButton__fCanCheckForSpeechAdvance: boolean = false;
 /* static */ let QueryRTLeftButton__sMoveClickGridNo: INT16 = 0;
 function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
-  let usSoldierIndex: UINT16;
+  let usSoldierIndex: UINT16 = 0;
+  let usSoldierIndex__Pointer = createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v);
   let pSoldier: SOLDIERTYPE | null;
-  let uiMercFlags: UINT32;
-  let usMapPos: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let uiMercFlags__Pointer = createPointer(() => uiMercFlags, (v) => uiMercFlags = v);
+  let usMapPos: UINT16 = 0;
   let fDone: boolean = false;
 
   // LEFT MOUSE BUTTON
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    if (!GetMouseMapPos(addressof(usMapPos)) && !gfUIShowExitSouth) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v)) && !gfUIShowExitSouth) {
       return;
     }
 
@@ -147,7 +149,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
             case Enum206.CONFIRM_MOVE_MODE:
 
               // First check if we clicked on a guy, if so, make selected if it's ours
-              if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
+              if (FindSoldierFromMouse(usSoldierIndex__Pointer, uiMercFlags__Pointer)) {
                 // Select guy
                 if ((uiMercFlags & SELECTED_MERC) && !(uiMercFlags & UNCONSCIOUS_MERC) && !(MercPtrs[usSoldierIndex].uiStatusFlags & SOLDIER_VEHICLE)) {
                   puiNewEvent.value = Enum207.M_CHANGE_TO_ADJPOS_MODE;
@@ -303,7 +305,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                           case Enum206.IDLE_MODE:
 
                             // First check if we clicked on a guy, if so, make selected if it's ours
-                            if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
+                            if (FindSoldierFromMouse(usSoldierIndex__Pointer, uiMercFlags__Pointer)) {
                               // Select guy
                               if (uiMercFlags & OWNED_MERC) {
                                 puiNewEvent.value = Enum207.I_SELECT_MERC;
@@ -333,7 +335,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                               if (MercPtrs[gusSelectedSoldier].usAnimState != Enum193.RUNNING) {
                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
                               } else {
-                                MercPtrs[gusSelectedSoldier].fUIMovementFast = 2;
+                                MercPtrs[gusSelectedSoldier].fUIMovementFast = <boolean><unknown>2;
                                 puiNewEvent.value = Enum207.C_MOVE_MERC;
                               }
                             }
@@ -373,7 +375,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                               if (gfUIFullTargetFound && (guiUIFullTargetFlags & OWNED_MERC)) {
                                 if (!(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                                   // Select guy
-                                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == null) {
+                                  if ((pSoldier = GetSoldier(gusUIFullTargetID)) !== null && gpItemPointer == null) {
                                     if (pSoldier.bAssignment >= Enum117.ON_DUTY && !(pSoldier.uiStatusFlags & SOLDIER_VEHICLE)) {
                                       PopupAssignmentMenuInTactical(pSoldier);
                                     } else {
@@ -405,6 +407,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                       ResetMultiSelection();
                                       puiNewEvent.value = Enum207.I_SELECT_MERC;
                                     } else {
+                                      Assert(pSoldier);
                                       if (pSoldier.uiStatusFlags & SOLDIER_MULTI_SELECTED) {
                                         pSoldier.uiStatusFlags &= (~SOLDIER_MULTI_SELECTED);
                                       } else {
@@ -441,7 +444,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                   //}/
                                   // else
                                   {
-                                    let sIntTileGridNo: INT16;
+                                    let sIntTileGridNo: INT16 = 0;
 
                                     if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
                                       BeginDisplayTimedCursor(GetInteractiveTileCursor(guiCurrentUICursor, true), 300);
@@ -449,7 +452,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                       if (pSoldier.usAnimState != Enum193.RUNNING) {
                                         puiNewEvent.value = Enum207.C_MOVE_MERC;
                                       } else {
-                                        if (GetCurInteractiveTileGridNo(addressof(sIntTileGridNo)) != null) {
+                                        if (GetCurInteractiveTileGridNo(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v)) != null) {
                                           pSoldier.fUIMovementFast = true;
                                           puiNewEvent.value = Enum207.C_MOVE_MERC;
                                         }
@@ -460,7 +463,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                 } else if (bReturnCode == 0) {
                                   if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
                                     // First check if we clicked on a guy, if so, make selected if it's ours
-                                    if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags)) && (uiMercFlags & OWNED_MERC)) {
+                                    if (FindSoldierFromMouse(usSoldierIndex__Pointer, uiMercFlags__Pointer) && (uiMercFlags & OWNED_MERC)) {
                                       // Select guy
                                       puiNewEvent.value = Enum207.I_SELECT_MERC;
                                       gfRTClickLeftHoldIntercepted = true;
@@ -626,10 +629,10 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 /* static */ let QueryRTRightButton__fValidDoubleClickPossible: boolean = false;
 function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
       return;
     }
 
@@ -867,10 +870,10 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
 /* static */ let GetRTMousePositionInput__uiMoveTargetSoldierId: UINT32 = NO_SOLDIER;
 /* static */ let GetRTMousePositionInput__fOnValidGuy: boolean = false;
 export function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return;
   }
 

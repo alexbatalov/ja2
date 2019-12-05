@@ -17,15 +17,20 @@ const MAX_FONTS = 25;
 //
 //*******************************************************
 
-export let gSgpPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
-
 interface FontManager {
   usDefaultPixelDepth: UINT16;
-  pTranslationTable: Pointer<FontTranslationTable>;
+  pTranslationTable: FontTranslationTable /* Pointer<FontTranslationTable> */;
 }
 
-let pFManager: Pointer<FontManager>;
-let FontObjs: HVOBJECT[] /* [MAX_FONTS] */;
+function createFontManager(): FontManager {
+  return {
+    usDefaultPixelDepth: 0,
+    pTranslationTable: <FontTranslationTable><unknown>null,
+  };
+}
+
+let pFManager: FontManager /* Pointer<FontManager> */;
+let FontObjs: SGPVObject[] /* [MAX_FONTS] */ = createArray(MAX_FONTS, <SGPVObject><unknown>null);
 let FontsLoaded: INT32 = 0;
 
 // Destination printing parameters
@@ -94,9 +99,9 @@ export function SetFontForeground(ubForeground: UINT8): void {
 
   FontForeground8 = ubForeground;
 
-  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peRed;
-  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peGreen;
-  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubForeground].peBlue;
+  uiRed = FontObjs[FontDefault].pPaletteEntry[ubForeground].peRed;
+  uiGreen = FontObjs[FontDefault].pPaletteEntry[ubForeground].peGreen;
+  uiBlue = FontObjs[FontDefault].pPaletteEntry[ubForeground].peBlue;
 
   FontForeground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -111,9 +116,9 @@ export function SetFontShadow(ubShadow: UINT8): void {
 
   // FontForeground8=ubForeground;
 
-  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peRed;
-  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peGreen;
-  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubShadow].peBlue;
+  uiRed = FontObjs[FontDefault].pPaletteEntry[ubShadow].peRed;
+  uiGreen = FontObjs[FontDefault].pPaletteEntry[ubShadow].peGreen;
+  uiBlue = FontObjs[FontDefault].pPaletteEntry[ubShadow].peBlue;
 
   FontShadow16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 
@@ -146,9 +151,9 @@ export function SetFontBackground(ubBackground: UINT8): void {
 
   FontBackground8 = ubBackground;
 
-  uiRed = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peRed;
-  uiGreen = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peGreen;
-  uiBlue = FontObjs[FontDefault].value.pPaletteEntry[ubBackground].peBlue;
+  uiRed = FontObjs[FontDefault].pPaletteEntry[ubBackground].peRed;
+  uiGreen = FontObjs[FontDefault].pPaletteEntry[ubBackground].peGreen;
+  uiBlue = FontObjs[FontDefault].pPaletteEntry[ubBackground].peBlue;
 
   FontBackground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -186,7 +191,7 @@ function ResetFontObjectPalette(iFont: INT32): boolean {
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
 
-  SetFontObjectPalette8BPP(iFont, FontObjs[iFont].value.pPaletteEntry);
+  SetFontObjectPalette8BPP(iFont, FontObjs[iFont].pPaletteEntry);
 
   return true;
 }
@@ -208,8 +213,8 @@ function SetFontObjectPalette8BPP(iFont: INT32, pPal8: SGPPaletteEntry[]): Uint1
   if ((pPal16 = Create16BPPPalette(pPal8)) == null)
     return <Uint16Array><unknown>null;
 
-  FontObjs[iFont].value.p16BPPPalette = pPal16;
-  FontObjs[iFont].value.pShadeCurrent = pPal16;
+  FontObjs[iFont].p16BPPPalette = pPal16;
+  FontObjs[iFont].pShadeCurrent = pPal16;
 
   return pPal16;
 }
@@ -225,8 +230,8 @@ function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Uint16Array): Uint16Arr
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
 
-  FontObjs[iFont].value.p16BPPPalette = pPal16;
-  FontObjs[iFont].value.pShadeCurrent = pPal16;
+  FontObjs[iFont].p16BPPPalette = pPal16;
+  FontObjs[iFont].pShadeCurrent = pPal16;
 
   return pPal16;
 }
@@ -237,12 +242,12 @@ function SetFontObjectPalette16BPP(iFont: INT32, pPal16: Uint16Array): Uint16Arr
 //	Sets the palette of a font, using a 16 bit palette.
 //
 //*****************************************************************************
-function GetFontObjectPalette16BPP(iFont: INT32): Pointer<UINT16> {
+function GetFontObjectPalette16BPP(iFont: INT32): Uint16Array {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
 
-  return FontObjs[iFont].value.p16BPPPalette;
+  return FontObjs[iFont].p16BPPPalette;
 }
 
 //*****************************************************************************
@@ -251,7 +256,7 @@ function GetFontObjectPalette16BPP(iFont: INT32): Pointer<UINT16> {
 //	Returns the VOBJECT pointer of a font.
 //
 //*****************************************************************************
-export function GetFontObject(iFont: INT32): HVOBJECT {
+export function GetFontObject(iFont: INT32): SGPVObject {
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
   Assert(FontObjs[iFont] != null);
@@ -298,7 +303,7 @@ export function LoadFontFile(filename: string /* Pointer<UINT8> */): INT32 {
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = filename;
 
-  if ((FontObjs[LoadIndex] = CreateVideoObject(addressof(vo_desc))) == null) {
+  if ((FontObjs[LoadIndex] = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, FormatString("Error creating VOBJECT (%s)", filename));
     FatalError("Cannot init FONT file %s", filename);
     return -1;
@@ -323,7 +328,7 @@ export function UnloadFont(FontIndex: UINT32): void {
   Assert(FontObjs[FontIndex] != null);
 
   DeleteVideoObject(FontObjs[FontIndex]);
-  FontObjs[FontIndex] = null;
+  FontObjs[FontIndex] = <SGPVObject><unknown>null;
 }
 
 //*****************************************************************************
@@ -332,8 +337,8 @@ export function UnloadFont(FontIndex: UINT32): void {
 //	Returns the width of a given character in the font.
 //
 //*****************************************************************************
-export function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
-  let pTrav: Pointer<ETRLEObject>;
+export function GetWidth(hSrcVObject: SGPVObject, ssIndex: INT16): UINT32 {
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
@@ -343,8 +348,8 @@ export function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
   }
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[ssIndex]);
-  return (pTrav.value.usWidth + pTrav.value.sOffsetX);
+  pTrav = hSrcVObject.pETRLEObject[ssIndex];
+  return (pTrav.usWidth + pTrav.sOffsetX);
 }
 
 //*****************************************************************************
@@ -356,14 +361,11 @@ export function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 //    'uiCharCount' specifies how many characters of the string are counted.
 //*****************************************************************************
 export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): INT16 {
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   // make sure the character count is legal
   if (uiCharCount > string.length) {
@@ -371,7 +373,7 @@ export function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontS
   } else {
     if (uiCharCount < string.length) {
       // less than the full string, so whack off the end of it (it's temporary anyway)
-      string[uiCharCount] = '\0';
+      string = string.substring(0, uiCharCount);
     }
   }
 
@@ -405,21 +407,18 @@ export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, 
   } else {
     if (uiCharCount < string.length) {
       // less than the full string, so whack off the end of it (it's temporary anyway)
-      string[uiCharCount] = '\0';
+      string = string.substring(0, uiCharCount);
     }
   }
   // now eliminate all '|' characters from the string.
   i = 0;
   while (i < uiCharCount) {
     if (string[i] == '|') {
-      for (index = i; index < uiCharCount; index++) {
-        string[index] = string[index + 1];
-      }
+      string = string.substring(0, i) + string.substring(i + 1);
       uiCharCount--;
       // now we have eliminated the '|' character, so now calculate the size difference of the
       // bolded character.
-      str[0] = string[i];
-      str[1] = 0;
+      str = string[i];
       sBoldDiff += StringPixLength(str, usBoldFont) - StringPixLength(str, usUseFont);
     }
     i++;
@@ -443,15 +442,15 @@ export function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, 
 function StringNPixLength(string: string /* Pointer<UINT16> */, uiMaxCount: UINT32, UseFont: INT32): INT16 {
   let Cur: UINT32;
   let uiCharCount: UINT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
 
   Cur = 0;
   uiCharCount = 0;
-  curletter = string;
+  curletter = 0;
 
-  while ((curletter.value) != '\0' && uiCharCount < uiMaxCount) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length && uiCharCount < uiMaxCount) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
     Cur += GetWidth(FontObjs[UseFont], transletter);
     uiCharCount++;
   }
@@ -467,7 +466,7 @@ function StringNPixLength(string: string /* Pointer<UINT16> */, uiMaxCount: UINT
 //*****************************************************************************
 export function StringPixLength(string: string /* Pointer<UINT16> */, UseFont: INT32): INT16 {
   let Cur: UINT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
 
   if (string == null) {
@@ -475,10 +474,10 @@ export function StringPixLength(string: string /* Pointer<UINT16> */, UseFont: I
   }
 
   Cur = 0;
-  curletter = string;
+  curletter = 0;
 
-  while ((curletter.value) != '\0') {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
     Cur += GetWidth(FontObjs[UseFont], transletter);
   }
   return Cur;
@@ -532,15 +531,15 @@ export function RestoreFontSettings(): void {
 //	Returns the height of a given character in the font.
 //
 //*****************************************************************************
-function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
-  let pTrav: Pointer<ETRLEObject>;
+function GetHeight(hSrcVObject: SGPVObject, ssIndex: INT16): UINT32 {
+  let pTrav: ETRLEObject;
 
   // Assertions
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = addressof(hSrcVObject.value.pETRLEObject[ssIndex]);
-  return (pTrav.value.usHeight + pTrav.value.sOffsetY);
+  pTrav = hSrcVObject.pETRLEObject[ssIndex];
+  return (pTrav.usHeight + pTrav.sOffsetY);
 }
 
 //*****************************************************************************
@@ -567,18 +566,17 @@ export function GetFontHeight(FontNum: INT32): UINT16 {
 //
 //*****************************************************************************
 export function GetIndex(siChar: UINT16): INT16 {
-  let pTrav: Pointer<UINT16>;
+  let pTrav: UINT16;
   let ssCount: UINT16 = 0;
-  let usNumberOfSymbols: UINT16 = pFManager.value.pTranslationTable.value.usNumberOfSymbols;
+  let usNumberOfSymbols: UINT16 = pFManager.pTranslationTable.usNumberOfSymbols;
 
   // search the Translation Table and return the index for the font
-  pTrav = pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues;
   while (ssCount < usNumberOfSymbols) {
-    if (siChar == pTrav.value) {
+    pTrav = pFManager.pTranslationTable.DynamicArrayOf16BitValues[ssCount];
+    if (siChar == pTrav) {
       return ssCount;
     }
     ssCount++;
-    pTrav++;
   }
 
   // If here, present warning and give the first index
@@ -636,20 +634,17 @@ export function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: 
 export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
@@ -657,19 +652,19 @@ export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((curletter.value) != 0) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length)  {
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground8, FontBackground8);
+      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -729,20 +724,17 @@ export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT
 export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
@@ -750,19 +742,19 @@ export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((curletter.value) != 0) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -776,20 +768,17 @@ export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
 function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
@@ -797,19 +786,19 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16>
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((curletter.value) != 0) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -832,35 +821,32 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16>
 function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
 
-  while ((curletter.value) != 0) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontType], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontType], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontType], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion));
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion);
     }
 
     destx += GetWidth(FontObjs[FontType], transletter);
@@ -872,35 +858,32 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
 export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
 
-  while ((curletter.value) != 0) {
-    transletter = GetIndex((curletter++).value);
+  while (curletter < string.length) {
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground8, FontBackground8);
+      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -911,47 +894,44 @@ export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT3
 export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let usOldForeColor: UINT16;
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
 
   usOldForeColor = FontForeground16;
 
-  while ((curletter.value) != 0) {
-    if ((curletter.value) == 180) {
+  while (curletter < string.length) {
+    if (string.charCodeAt(curletter) == 180) {
       curletter++;
-      SetFontForeground((curletter.value));
+      SetFontForeground(string.charCodeAt(curletter));
       curletter++;
-    } else if ((curletter.value) == 181) {
+    } else if (string.charCodeAt(curletter) == 181) {
       FontForeground16 = usOldForeColor;
       curletter++;
     }
 
-    transletter = GetIndex((curletter++).value);
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground8, FontBackground8);
+      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -962,9 +942,8 @@ export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES:
 export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
-  let curletter: string /* Pointer<UINT16> */;
+  let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
-  let argptr: va_list;
   let string: string /* wchar_t[512] */;
   let usOldForeColor: UINT16;
   let uiDestPitchBYTES: UINT32;
@@ -972,11 +951,9 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
 
   Assert(pFontString != null);
 
-  va_start(argptr, pFontString); // Set up variable argument pointer
-  vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
-  va_end(argptr);
+  string = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
-  curletter = string;
+  curletter = 0;
 
   destx = x;
   desty = y;
@@ -986,28 +963,28 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
   // Lock the dest buffer
   pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
 
-  while ((curletter.value) != 0) {
-    if ((curletter.value) == 180) {
+  while (curletter < string.length) {
+    if (string.charCodeAt(curletter) == 180) {
       curletter++;
-      SetFontForeground((curletter.value));
+      SetFontForeground(string.charCodeAt(curletter));
       curletter++;
-    } else if ((curletter.value) == 181) {
+    } else if (string.charCodeAt(curletter) == 181) {
       FontForeground16 = usOldForeColor;
       curletter++;
     }
 
-    transletter = GetIndex((curletter++).value);
+    transletter = GetIndex(string.charCodeAt(curletter++));
 
-    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion))) {
+    if (FontDestWrap && BltIsClipped(FontObjs[FontDefault], destx, desty, transletter, FontDestRegion)) {
       destx = x;
       desty += GetHeight(FontObjs[FontDefault], transletter);
     }
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground8, FontBackground8);
+      Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, addressof(FontDestRegion), FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -1024,8 +1001,8 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
 //	Starts up the font manager system with the appropriate translation table.
 //
 //*****************************************************************************
-export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer<FontTranslationTable>): boolean {
-  let pTransTab: Pointer<FontTranslationTable>;
+export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: FontTranslationTable): boolean {
+  let pTransTab: FontTranslationTable;
   let count: number;
   let uiRight: UINT16;
   let uiBottom: UINT16;
@@ -1037,7 +1014,7 @@ export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: 
 
   //	FontDestBPP=0;
 
-  ({ usWidth, usHeight, ubBitDepth: uiPixelDepth } = GetCurrentVideoSettings());
+  ({ usWidth: uiRight, usHeight: uiBottom, ubBitDepth: uiPixelDepth } = GetCurrentVideoSettings());
   FontDestRegion.iLeft = 0;
   FontDestRegion.iTop = 0;
   FontDestRegion.iRight = uiRight;
@@ -1047,27 +1024,20 @@ export function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: 
   FontDestWrap = false;
 
   // register the appropriate debug topics
-  if (pTransTable == null) {
-    return false;
-  }
   RegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
 
-  if ((pFManager = MemAlloc(sizeof(FontManager))) == null) {
-    return false;
-  }
+  pFManager = createFontManager();
 
-  if ((pTransTab = MemAlloc(sizeof(FontTranslationTable))) == null) {
-    return false;
-  }
+  pTransTab = createFontTranslationTable();
 
-  pFManager.value.pTranslationTable = pTransTab;
-  pFManager.value.usDefaultPixelDepth = usDefaultPixelDepth;
-  pTransTab.value.usNumberOfSymbols = pTransTable.value.usNumberOfSymbols;
-  pTransTab.value.DynamicArrayOf16BitValues = pTransTable.value.DynamicArrayOf16BitValues;
+  pFManager.pTranslationTable = pTransTab;
+  pFManager.usDefaultPixelDepth = usDefaultPixelDepth;
+  pTransTab.usNumberOfSymbols = pTransTable.usNumberOfSymbols;
+  pTransTab.DynamicArrayOf16BitValues = pTransTable.DynamicArrayOf16BitValues;
 
   // Mark all font slots as empty
   for (count = 0; count < MAX_FONTS; count++)
-    FontObjs[count] = null;
+    FontObjs[count] = <SGPVObject><unknown>null;
 
   return true;
 }
@@ -1097,14 +1067,12 @@ export function ShutdownFontManager(): void {
 //*****************************************************************************
 export function DestroyEnglishTransTable(): void {
   if (pFManager) {
-    if (pFManager.value.pTranslationTable != null) {
-      if (pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues != null) {
-        MemFree(pFManager.value.pTranslationTable.value.DynamicArrayOf16BitValues);
+    if (pFManager.pTranslationTable != null) {
+      if (pFManager.pTranslationTable.DynamicArrayOf16BitValues != null) {
+        pFManager.pTranslationTable.DynamicArrayOf16BitValues = <Uint16Array><unknown>null;
       }
 
-      MemFree(pFManager.value.pTranslationTable);
-
-      pFManager.value.pTranslationTable = null;
+      pFManager.pTranslationTable = <FontTranslationTable><unknown>null;
     }
   }
 }
@@ -1114,364 +1082,192 @@ export function DestroyEnglishTransTable(): void {
 //
 // Creates the English text->font map table.
 //*****************************************************************************
-export function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
-  let pTable: Pointer<FontTranslationTable> = null;
-  let temp: string /* Pointer<UINT16> */;
+export function CreateEnglishTransTable(): FontTranslationTable {
+  let pTable: FontTranslationTable;
+  let temp: number /* Pointer<UINT16> */;
 
-  pTable = MemAlloc(sizeof(FontTranslationTable));
+  pTable = createFontTranslationTable();
   // ha ha, we have more than Wizardry now (again)
-  pTable.value.usNumberOfSymbols = 172;
-  pTable.value.DynamicArrayOf16BitValues = MemAlloc(pTable.value.usNumberOfSymbols * 2);
-  temp = pTable.value.DynamicArrayOf16BitValues;
+  pTable.usNumberOfSymbols = 172;
+  pTable.DynamicArrayOf16BitValues = new Uint16Array(pTable.usNumberOfSymbols);
+  temp = 0;
 
-  temp.value = 'A';
-  temp++;
-  temp.value = 'B';
-  temp++;
-  temp.value = 'C';
-  temp++;
-  temp.value = 'D';
-  temp++;
-  temp.value = 'E';
-  temp++;
-  temp.value = 'F';
-  temp++;
-  temp.value = 'G';
-  temp++;
-  temp.value = 'H';
-  temp++;
-  temp.value = 'I';
-  temp++;
-  temp.value = 'J';
-  temp++;
-  temp.value = 'K';
-  temp++;
-  temp.value = 'L';
-  temp++;
-  temp.value = 'M';
-  temp++;
-  temp.value = 'N';
-  temp++;
-  temp.value = 'O';
-  temp++;
-  temp.value = 'P';
-  temp++;
-  temp.value = 'Q';
-  temp++;
-  temp.value = 'R';
-  temp++;
-  temp.value = 'S';
-  temp++;
-  temp.value = 'T';
-  temp++;
-  temp.value = 'U';
-  temp++;
-  temp.value = 'V';
-  temp++;
-  temp.value = 'W';
-  temp++;
-  temp.value = 'X';
-  temp++;
-  temp.value = 'Y';
-  temp++;
-  temp.value = 'Z';
-  temp++;
-  temp.value = 'a';
-  temp++;
-  temp.value = 'b';
-  temp++;
-  temp.value = 'c';
-  temp++;
-  temp.value = 'd';
-  temp++;
-  temp.value = 'e';
-  temp++;
-  temp.value = 'f';
-  temp++;
-  temp.value = 'g';
-  temp++;
-  temp.value = 'h';
-  temp++;
-  temp.value = 'i';
-  temp++;
-  temp.value = 'j';
-  temp++;
-  temp.value = 'k';
-  temp++;
-  temp.value = 'l';
-  temp++;
-  temp.value = 'm';
-  temp++;
-  temp.value = 'n';
-  temp++;
-  temp.value = 'o';
-  temp++;
-  temp.value = 'p';
-  temp++;
-  temp.value = 'q';
-  temp++;
-  temp.value = 'r';
-  temp++;
-  temp.value = 's';
-  temp++;
-  temp.value = 't';
-  temp++;
-  temp.value = 'u';
-  temp++;
-  temp.value = 'v';
-  temp++;
-  temp.value = 'w';
-  temp++;
-  temp.value = 'x';
-  temp++;
-  temp.value = 'y';
-  temp++;
-  temp.value = 'z';
-  temp++;
-  temp.value = '0';
-  temp++;
-  temp.value = '1';
-  temp++;
-  temp.value = '2';
-  temp++;
-  temp.value = '3';
-  temp++;
-  temp.value = '4';
-  temp++;
-  temp.value = '5';
-  temp++;
-  temp.value = '6';
-  temp++;
-  temp.value = '7';
-  temp++;
-  temp.value = '8';
-  temp++;
-  temp.value = '9';
-  temp++;
-  temp.value = '!';
-  temp++;
-  temp.value = '@';
-  temp++;
-  temp.value = '#';
-  temp++;
-  temp.value = '$';
-  temp++;
-  temp.value = '%';
-  temp++;
-  temp.value = '^';
-  temp++;
-  temp.value = '&';
-  temp++;
-  temp.value = '*';
-  temp++;
-  temp.value = '(';
-  temp++;
-  temp.value = ')';
-  temp++;
-  temp.value = '-';
-  temp++;
-  temp.value = '_';
-  temp++;
-  temp.value = '+';
-  temp++;
-  temp.value = '=';
-  temp++;
-  temp.value = '|';
-  temp++;
-  temp.value = '\\';
-  temp++;
-  temp.value = '{';
-  temp++;
-  temp.value = '}'; // 80
-  temp++;
-  temp.value = '[';
-  temp++;
-  temp.value = ']';
-  temp++;
-  temp.value = ':';
-  temp++;
-  temp.value = ';';
-  temp++;
-  temp.value = '"';
-  temp++;
-  temp.value = '\'';
-  temp++;
-  temp.value = '<';
-  temp++;
-  temp.value = '>';
-  temp++;
-  temp.value = ',';
-  temp++;
-  temp.value = '.';
-  temp++;
-  temp.value = '?';
-  temp++;
-  temp.value = '/';
-  temp++;
-  temp.value = ' '; // 93
-  temp++;
+  pTable.DynamicArrayOf16BitValues[temp++] = 'A'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'B'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'C'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'D'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'E'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'F'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'G'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'H'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'I'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'J'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'K'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'L'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'M'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'N'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'O'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'P'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'Q'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'R'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'S'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'T'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'U'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'V'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'W'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'X'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'Y'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'Z'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'a'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'b'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'c'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'd'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'e'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'f'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'g'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'h'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'i'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'j'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'k'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'l'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'm'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'n'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'o'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'p'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'q'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'r'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 's'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 't'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'u'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'v'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'w'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'x'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'y'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = 'z'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '0'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '1'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '2'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '3'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '4'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '5'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '6'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '7'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '8'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '9'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '!'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '@'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '#'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '$'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '%'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '^'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '&'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '*'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '('.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ')'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '-'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '_'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '+'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '='.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '|'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '\\'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '{'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '}'.charCodeAt(0); // 80
+  pTable.DynamicArrayOf16BitValues[temp++] = '['.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ']'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ':'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '.charCodeAt(0);'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '"'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '\''.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '<'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '>'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ','.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '.'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '?'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = '/'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ' '.charCodeAt(0); // 93
 
-  temp.value = 196; // "A" umlaut
-  temp++;
-  temp.value = 214; // "O" umlaut
-  temp++;
-  temp.value = 220; // "U" umlaut
-  temp++;
-  temp.value = 228; // "a" umlaut
-  temp++;
-  temp.value = 246; // "o" umlaut
-  temp++;
-  temp.value = 252; // "u" umlaut
-  temp++;
-  temp.value = 223; // double-s that looks like a beta/B  // 100
-  temp++;
+  pTable.DynamicArrayOf16BitValues[temp++] = 196; // "A" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 214; // "O" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 220; // "U" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 228; // "a" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 246; // "o" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 252; // "u" umlaut
+  pTable.DynamicArrayOf16BitValues[temp++] = 223; // double-s that looks like a beta/B  // 100
   // START OF FUNKY RUSSIAN STUFF
-  temp.value = 1101;
-  temp++;
-  temp.value = 1102;
-  temp++;
-  temp.value = 1103;
-  temp++;
-  temp.value = 1104;
-  temp++;
-  temp.value = 1105;
-  temp++;
-  temp.value = 1106;
-  temp++;
-  temp.value = 1107;
-  temp++;
-  temp.value = 1108;
-  temp++;
-  temp.value = 1109;
-  temp++;
-  temp.value = 1110;
-  temp++;
-  temp.value = 1111;
-  temp++;
-  temp.value = 1112;
-  temp++;
-  temp.value = 1113;
-  temp++;
-  temp.value = 1114;
-  temp++;
-  temp.value = 1115;
-  temp++;
-  temp.value = 1116;
-  temp++;
-  temp.value = 1117;
-  temp++;
-  temp.value = 1118;
-  temp++;
-  temp.value = 1119;
-  temp++;
-  temp.value = 1120;
-  temp++;
-  temp.value = 1121;
-  temp++;
-  temp.value = 1122;
-  temp++;
-  temp.value = 1123;
-  temp++;
-  temp.value = 1124;
-  temp++;
-  temp.value = 1125;
-  temp++;
-  temp.value = 1126;
-  temp++;
-  temp.value = 1127;
-  temp++;
-  temp.value = 1128;
-  temp++;
-  temp.value = 1129;
-  temp++;
-  temp.value = 1130; // 130
-  temp++;
-  temp.value = 1131;
-  temp++;
-  temp.value = 1132;
-  temp++;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1101;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1102;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1103;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1104;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1105;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1106;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1107;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1108;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1109;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1110;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1111;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1112;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1113;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1114;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1115;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1116;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1117;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1118;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1119;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1120;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1121;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1122;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1123;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1124;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1125;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1126;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1127;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1128;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1129;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1130; // 130
+  pTable.DynamicArrayOf16BitValues[temp++] = 1131;
+  pTable.DynamicArrayOf16BitValues[temp++] = 1132;
   // END OF FUNKY RUSSIAN STUFF
-  temp.value = 196; // Д
-  temp++;
-  temp.value = 192; // А
-  temp++;
-  temp.value = 193; // Б
-  temp++;
-  temp.value = 194; // В
-  temp++;
-  temp.value = 199; // З
-  temp++;
-  temp.value = 203; // Л
-  temp++;
-  temp.value = 200; // И
-  temp++;
-  temp.value = 201; // Й				140
-  temp++;
-  temp.value = 202; // К
-  temp++;
-  temp.value = 207; // П
-  temp++;
-  temp.value = 214; // Ц
-  temp++;
-  temp.value = 210; // Т
-  temp++;
-  temp.value = 211; // У
-  temp++;
-  temp.value = 212; // Ф
-  temp++;
-  temp.value = 220; // Ь
-  temp++;
-  temp.value = 217; // Щ
-  temp++;
-  temp.value = 218; // Ъ
-  temp++;
-  temp.value = 219; // Ы				150
-  temp++;
+  pTable.DynamicArrayOf16BitValues[temp++] = 196; // Д
+  pTable.DynamicArrayOf16BitValues[temp++] = 192; // А
+  pTable.DynamicArrayOf16BitValues[temp++] = 193; // Б
+  pTable.DynamicArrayOf16BitValues[temp++] = 194; // В
+  pTable.DynamicArrayOf16BitValues[temp++] = 199; // З
+  pTable.DynamicArrayOf16BitValues[temp++] = 203; // Л
+  pTable.DynamicArrayOf16BitValues[temp++] = 200; // И
+  pTable.DynamicArrayOf16BitValues[temp++] = 201; // Й				140
+  pTable.DynamicArrayOf16BitValues[temp++] = 202; // К
+  pTable.DynamicArrayOf16BitValues[temp++] = 207; // П
+  pTable.DynamicArrayOf16BitValues[temp++] = 214; // Ц
+  pTable.DynamicArrayOf16BitValues[temp++] = 210; // Т
+  pTable.DynamicArrayOf16BitValues[temp++] = 211; // У
+  pTable.DynamicArrayOf16BitValues[temp++] = 212; // Ф
+  pTable.DynamicArrayOf16BitValues[temp++] = 220; // Ь
+  pTable.DynamicArrayOf16BitValues[temp++] = 217; // Щ
+  pTable.DynamicArrayOf16BitValues[temp++] = 218; // Ъ
+  pTable.DynamicArrayOf16BitValues[temp++] = 219; // Ы				150
 
-  temp.value = 228; // д
-  temp++;
-  temp.value = 224; // а
-  temp++;
-  temp.value = 225; // б
-  temp++;
-  temp.value = 226; // в
-  temp++;
-  temp.value = 231; // з
-  temp++;
-  temp.value = 235; // л
-  temp++;
-  temp.value = 232; // и
-  temp++;
-  temp.value = 233; // й
-  temp++;
-  temp.value = 234; // к
-  temp++;
-  temp.value = 239; // п				160
-  temp++;
-  temp.value = 246; // ц
-  temp++;
-  temp.value = 242; // т
-  temp++;
-  temp.value = 243; // у
-  temp++;
-  temp.value = 244; // ф
-  temp++;
-  temp.value = 252; // ь
-  temp++;
-  temp.value = 249; // щ
-  temp++;
-  temp.value = 250; // ъ
-  temp++;
-  temp.value = 251; // ы
-  temp++;
-  temp.value = 204; // М
-  temp++;
-  temp.value = 206; // О				170
-  temp++;
-  temp.value = 236; // м
-  temp++;
-  temp.value = 238; // о
-  temp++;
+  pTable.DynamicArrayOf16BitValues[temp++] = 228; // д
+  pTable.DynamicArrayOf16BitValues[temp++] = 224; // а
+  pTable.DynamicArrayOf16BitValues[temp++] = 225; // б
+  pTable.DynamicArrayOf16BitValues[temp++] = 226; // в
+  pTable.DynamicArrayOf16BitValues[temp++] = 231; // з
+  pTable.DynamicArrayOf16BitValues[temp++] = 235; // л
+  pTable.DynamicArrayOf16BitValues[temp++] = 232; // и
+  pTable.DynamicArrayOf16BitValues[temp++] = 233; // й
+  pTable.DynamicArrayOf16BitValues[temp++] = 234; // к
+  pTable.DynamicArrayOf16BitValues[temp++] = 239; // п				160
+  pTable.DynamicArrayOf16BitValues[temp++] = 246; // ц
+  pTable.DynamicArrayOf16BitValues[temp++] = 242; // т
+  pTable.DynamicArrayOf16BitValues[temp++] = 243; // у
+  pTable.DynamicArrayOf16BitValues[temp++] = 244; // ф
+  pTable.DynamicArrayOf16BitValues[temp++] = 252; // ь
+  pTable.DynamicArrayOf16BitValues[temp++] = 249; // щ
+  pTable.DynamicArrayOf16BitValues[temp++] = 250; // ъ
+  pTable.DynamicArrayOf16BitValues[temp++] = 251; // ы
+  pTable.DynamicArrayOf16BitValues[temp++] = 204; // М
+  pTable.DynamicArrayOf16BitValues[temp++] = 206; // О				170
+  pTable.DynamicArrayOf16BitValues[temp++] = 236; // м
+  pTable.DynamicArrayOf16BitValues[temp++] = 238; // о
 
   return pTable;
 }

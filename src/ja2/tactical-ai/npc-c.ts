@@ -1148,7 +1148,7 @@ export function ResetOncePerConvoRecordsForAllNPCsInLoadedSector(): void {
   }
 }
 
-function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproachData: UINT32, pQuotePtr: NPCQuoteInfo | null): void {
+function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproachData: any, pQuotePtr: NPCQuoteInfo | null): void {
   let pObj: OBJECTTYPE;
   let pSoldier: SOLDIERTYPE;
 
@@ -1168,7 +1168,7 @@ function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproac
   }
 }
 
-export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: UINT32): void {
+export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: any): void {
   let QuoteInfo: NPCQuoteInfo = createNPCQuoteInfo();
   let pQuotePtr: NPCQuoteInfo = QuoteInfo;
   let pNPCQuoteInfoArray: NPCQuoteInfo[];

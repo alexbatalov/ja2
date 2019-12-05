@@ -311,7 +311,8 @@ export function HandleNextTileWaiting(pSoldier: SOLDIERTYPE): boolean {
   let sCost: INT16;
   let sNewGridNo: INT16;
   let sCheckGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
   let bCauseDirection: UINT8;
   let ubPerson: UINT8;
   let fFlags: UINT8 = 0;
@@ -366,19 +367,19 @@ export function HandleNextTileWaiting(pSoldier: SOLDIERTYPE): boolean {
         } else if (!NewOKDestination(pSoldier, pSoldier.sFinalDestination, true, pSoldier.bLevel)) {
           if (pSoldier.fDelayedMovement >= 150) {
             // OK, look around dest for the first one!
-            sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sFinalDestination, 6, addressof(ubDirection));
+            sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sFinalDestination, 6, ubDirection__Pointer);
 
             if (sCheckGridNo == NOWHERE) {
               // If this is nowhere, try harder!
-              sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sFinalDestination, 16, addressof(ubDirection));
+              sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sFinalDestination, 16, ubDirection__Pointer);
             }
           } else {
             // OK, look around dest for the first one!
-            sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.sFinalDestination, 6, addressof(ubDirection));
+            sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.sFinalDestination, 6, ubDirection__Pointer);
 
             if (sCheckGridNo == NOWHERE) {
               // If this is nowhere, try harder!
-              sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.sFinalDestination, 16, addressof(ubDirection));
+              sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.sFinalDestination, 16, ubDirection__Pointer);
             }
           }
         } else {

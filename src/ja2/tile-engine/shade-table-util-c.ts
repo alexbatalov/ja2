@@ -119,6 +119,8 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let uiNumBytesRead: UINT32;
   let ShadeFileName: string /* UINT8[100] */;
   let ptr: number /* Pointer<UINT8> */;
+  let buffer: Buffer;
+
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
@@ -140,9 +142,9 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   // MISSING:  Compare time stamps.
 
   for (i = 0; i < 16; i++) {
-    pObj.value.pShades[i] = MemAlloc(512);
-    Assert(pObj.value.pShades[i]);
-    uiNumBytesRead = FileRead(hfile, pObj.value.pShades[i], 512);
+    buffer = Buffer.allocUnsafe(512);
+    uiNumBytesRead = FileRead(hfile, buffer, 512);
+    pObj.value.pShades[i] = new Uint16Array(buffer.buffer, buffer.byteOffset, 256);
   }
 
   // The file exists, now make sure the
@@ -156,6 +158,8 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   let uiNumBytesWritten: UINT32;
   let ShadeFileName: string /* UINT8[100] */;
   let ptr: number /* Pointer<UINT8> */;
+  let buffer: Buffer;
+
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
@@ -173,8 +177,10 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
     AssertMsg(0, FormatString("Can't create %s", ShadeFileName));
     return false;
   }
+
   for (i = 0; i < 16; i++) {
-    uiNumBytesWritten = FileWrite(hfile, pObj.value.pShades[i], 512);
+    buffer = Buffer.from(pObj.value.pShades[i].buffer, pObj.value.pShades[i].byteOffset, pObj.value.pShades[i].byteLength);
+    uiNumBytesWritten = FileWrite(hfile, buffer, 512);
   }
 
   FileClose(hfile);

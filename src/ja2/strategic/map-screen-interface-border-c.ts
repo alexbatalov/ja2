@@ -105,7 +105,7 @@ export function DeleteMapBorderGraphics(): void {
 
 export function RenderMapBorder(): void {
   // renders the actual border to the guiSAVEBUFFER
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   /*
           if( fDisabledMapBorder )
@@ -159,7 +159,7 @@ void RenderMapBorderCorner( void )
 
 export function RenderMapBorderEtaPopUp(): void {
   // renders map border corner to the FRAME_BUFFER
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   /*
           if( fDisabledMapBorder )
@@ -945,7 +945,7 @@ BOOLEAN ScrollButtonsDisplayingHelpMessage( void )
 function DisplayCurrentLevelMarker(): void {
   // display the current level marker on the map border
 
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   /*
           if( fDisabledMapBorder )

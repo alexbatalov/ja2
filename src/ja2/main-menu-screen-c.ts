@@ -484,7 +484,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
 }
 
 function RenderMainMenu(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // Get and display the background image
   hPixHandle = GetVideoObject(guiMainMenuBackGroundImage);

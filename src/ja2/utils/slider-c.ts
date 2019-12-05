@@ -271,7 +271,7 @@ function RenderSelectedSliderBar(pSlider: SLIDER): void {
 }
 
 function RenderSliderBox(pSlider: SLIDER): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let SrcRect: SGPRect = createSGPRect();
   let DestRect: SGPRect = createSGPRect();
 

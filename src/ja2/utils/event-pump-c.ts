@@ -377,7 +377,7 @@ export function DequeueAllDemandGameEvents(fExecute: boolean): boolean {
 }
 
 function ExecuteGameEvent(pEvent: EVENT): boolean {
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE | null;
 
   // Switch on event type
   switch (pEvent.uiEvent) {
@@ -394,7 +394,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSChangeState(SChangeState, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeState.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SChangeState.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -415,7 +415,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSChangeDest(SChangeDest, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeDest.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SChangeDest.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Event Pump: Invalid Soldier ID #%d", SChangeDest.usSoldierID));
         break;
@@ -436,7 +436,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSSetPosition(SSetPosition, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetPosition.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SSetPosition.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -457,7 +457,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSGetNewPath(SGetNewPath, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SGetNewPath.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SGetNewPath.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -477,7 +477,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSBeginTurn(SBeginTurn, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SBeginTurn.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SBeginTurn.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -498,7 +498,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSChangeStance(SChangeStance, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SChangeStance.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SChangeStance.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -518,7 +518,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSSetDirection(SSetDirection, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetDirection.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SSetDirection.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -539,7 +539,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSSetDesiredDirection(SSetDesiredDirection, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SSetDesiredDirection.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SSetDesiredDirection.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -560,7 +560,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSBeginFireWeapon(SBeginFireWeapon, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SBeginFireWeapon.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SBeginFireWeapon.usSoldierID)) === null) {
         pSoldier = null;
         break;
         // Handle Error?
@@ -585,7 +585,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSFireWeapon(SFireWeapon, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SFireWeapon.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SFireWeapon.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;
@@ -643,7 +643,7 @@ function ExecuteGameEvent(pEvent: EVENT): boolean {
       copyEvSStopMerc(SStopMerc, pEvent.pData);
 
       // Get soldier pointer from ID
-      if (GetSoldier(addressof(pSoldier), SStopMerc.usSoldierID) == false) {
+      if ((pSoldier = GetSoldier(SStopMerc.usSoldierID)) === null) {
         // Handle Error?
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Event Pump: Invalid Soldier ID");
         break;

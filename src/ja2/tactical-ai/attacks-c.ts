@@ -345,7 +345,8 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
   let iTotalThreatValue: INT32;
   let iOppThreatValue: INT32[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
   let sGridNo: INT16;
-  let sEndGridNo: INT16;
+  let sEndGridNo: INT16 = 0;
+  let sEndGridNo__Pointer = createPointer(() => sEndGridNo, (v) => sEndGridNo = v);
   let sFriendTile: INT16[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
   let sOpponentTile: INT16[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
   let bFriendLevel: INT8[] /* [MAXMERCS] */ = createArray(MAXMERCS, 0);
@@ -384,7 +385,8 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
   let iTossRange: INT32;
   let ubSafetyMargin: UINT8 = 0;
   let ubDiff: UINT8;
-  let bEndLevel: INT8;
+  let bEndLevel: INT8 = 0;
+  let bEndLevel__Pointer = createPointer(() => bEndLevel, (v) => bEndLevel = v);
 
   usInHand = pSoldier.inv[Enum261.HANDPOS].usItem;
   usGrenade = NOTHING;
@@ -796,7 +798,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
             continue; // next gridno
           }
         } else {
-          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, pSoldier.inv[Enum261.HANDPOS], sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), true, addressof(bEndLevel), false); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
+          ubChanceToGetThrough = 100 * Number(CalculateLaunchItemChanceToGetThrough(pSoldier, pSoldier.inv[Enum261.HANDPOS], sGridNo, bOpponentLevel[ubLoop], 0, sEndGridNo__Pointer, true, bEndLevel__Pointer, false)); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
           // if we can't possibly get through all the cover
           if (ubChanceToGetThrough == 0) {
             if (bEndLevel == bOpponentLevel[ubLoop] && ubSafetyMargin > 1) {
@@ -923,7 +925,7 @@ export function CalcBestStab(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE, fBlad
   let ubMinAPCost: UINT8;
   let ubMaxPossibleAimTime: UINT8;
   let ubAimTime: UINT8;
-  let ubBestAimTime: UINT8;
+  let ubBestAimTime: UINT8 = 0;
   let ubChanceToHit: UINT8;
   let ubChanceToReallyHit: UINT8;
   let ubBestChanceToHit: UINT8 = 0;
@@ -994,7 +996,7 @@ export function CalcBestStab(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE, fBlad
 
     // calc next attack's minimum stabbing cost (excludes movement & turning)
     // ubRawAPCost = MinAPsToShootOrStab(pSoldier,pOpponent->sGridNo, FALSE) - AP_CHANGE_TARGET;
-    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.sGridNo, false) - AP_CHANGE_TARGET;
+    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.sGridNo, 0) - AP_CHANGE_TARGET;
     // NumMessage("ubRawAPCost to stab this opponent = ",ubRawAPCost);
 
     // determine if this is a surprise stab (must be next to opponent & unseen)
@@ -1117,7 +1119,7 @@ export function CalcTentacleAttack(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE)
   let ubMinAPCost: UINT8;
   let ubMaxPossibleAimTime: UINT8;
   let ubAimTime: UINT8;
-  let ubBestAimTime: UINT8;
+  let ubBestAimTime: UINT8 = 0;
   let ubChanceToHit: UINT8;
   let ubChanceToReallyHit: UINT8;
   let ubBestChanceToHit: UINT8 = 0;
@@ -1160,7 +1162,7 @@ export function CalcTentacleAttack(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE)
 
     // calc next attack's minimum stabbing cost (excludes movement & turning)
     // ubRawAPCost = MinAPsToShootOrStab(pSoldier,pOpponent->sGridNo, FALSE) - AP_CHANGE_TARGET;
-    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.sGridNo, false) - AP_CHANGE_TARGET;
+    ubRawAPCost = MinAPsToAttack(pSoldier, pOpponent.sGridNo, 0) - AP_CHANGE_TARGET;
     // NumMessage("ubRawAPCost to stab this opponent = ",ubRawAPCost);
 
     // determine if this is a surprise stab (for tentacles, enemy must not see us, no dist limit)
@@ -1554,7 +1556,7 @@ export function CanNPCAttack(pSoldier: SOLDIERTYPE): INT8 {
   // NEUTRAL civilians are not allowed to attack, but those that are not
   // neutral (KILLNPC mission guynums, escorted guys) can, if they're armed
   if (PTR_CIVILIAN(pSoldier) && pSoldier.bNeutral) {
-    return false;
+    return 0;
   }
 
   // test if if we are able to attack (in general, not at any specific target)

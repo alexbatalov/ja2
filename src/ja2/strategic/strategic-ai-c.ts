@@ -473,7 +473,7 @@ function ValidateGroup(pGroup: GROUP): void {
     if (!pGroup.fPlayer && (<ENEMYGROUP>pGroup.pEnemyGroup).ubIntention != Enum184.STAGING && (<ENEMYGROUP>pGroup.pEnemyGroup).ubIntention != Enum184.REINFORCEMENTS) {
       if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
         ClearPreviousAIGroupAssignment(pGroup);
-        ReassignAIGroup(addressof(pGroup));
+        ReassignAIGroup(createPointer(() => pGroup, (v) => pGroup = v));
         return;
       }
     }
@@ -820,7 +820,7 @@ export function OkayForEnemyToMoveThroughSector(ubSectorID: UINT8): boolean {
   return true;
 }
 
-function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8): boolean {
+function EnemyPermittedToAttackSector(pGroup: Pointer<GROUP> | null, ubSectorID: UINT8): boolean {
   let pSector: SECTORINFO;
   let fPermittedToAttack: boolean = true;
 
@@ -828,7 +828,7 @@ function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorI
   fPermittedToAttack = OkayForEnemyToMoveThroughSector(ubSectorID);
   if (pGroup && pGroup.value && pSector.ubGarrisonID != NO_GARRISON) {
     if (gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID) {
-      let pPendingGroup: Pointer<GROUP>;
+      let pPendingGroup: GROUP;
       pPendingGroup = GetGroup(gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID);
       if (pPendingGroup == pGroup.value) {
         if (fPermittedToAttack) {
@@ -887,21 +887,21 @@ function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorI
 }
 
 function HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup: GROUP, pEnemyGroup: GROUP): boolean {
-  let usDefencePoints: UINT16;
+  let usDefencePoints: UINT16 = 0;
   let usOffensePoints: UINT16;
   let ubSectorID: UINT8;
 
   ubSectorID = SECTOR(pPlayerGroup.ubSectorX, pPlayerGroup.ubSectorY);
   usOffensePoints = (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumAdmins * 2 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumTroops * 4 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, createPointer(() => usDefencePoints, (v) => usDefencePoints = v))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return false;
   }
   // For now, automatically attack.
   if (pPlayerGroup.ubNextX) {
-    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.ubNextX, pPlayerGroup.ubNextY), Enum172.DIRECT, Enum184.PURSUIT);
+    MoveSAIGroupToSector(createPointer(() => pEnemyGroup, (v) => pEnemyGroup = v), SECTOR(pPlayerGroup.ubNextX, pPlayerGroup.ubNextY), Enum172.DIRECT, Enum184.PURSUIT);
   } else {
-    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.ubSectorX, pPlayerGroup.ubSectorY), Enum172.DIRECT, Enum184.PURSUIT);
+    MoveSAIGroupToSector(createPointer(() => pEnemyGroup, (v) => pEnemyGroup = v), SECTOR(pPlayerGroup.ubSectorX, pPlayerGroup.ubSectorY), Enum172.DIRECT, Enum184.PURSUIT);
   }
   return true;
 }
@@ -911,7 +911,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: GROUP, ubSectorID: UIN
   let pGroup: GROUP;
   let iReinforcementsApproved: INT32;
   let usOffensePoints: UINT16;
-  let usDefencePoints: UINT16;
+  let usDefencePoints: UINT16 = 0;
   let ubEnemies: UINT8;
   pSector = SectorInfo[ubSectorID];
   // First check to see if the player is at his final destination.
@@ -919,7 +919,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: GROUP, ubSectorID: UIN
     return;
   }
   usOffensePoints = pSector.ubNumAdmins * 2 + pSector.ubNumTroops * 4 + pSector.ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, createPointer(() => usDefencePoints, (v) => usDefencePoints = v))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return;
   }
@@ -934,7 +934,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: GROUP, ubSectorID: UIN
 
       ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[pSector.ubGarrisonID].ubComposition);
 
-      MoveSAIGroupToSector(addressof(pGroup), SECTOR(pPlayerGroup.ubSectorX, pPlayerGroup.ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), SECTOR(pPlayerGroup.ubSectorX, pPlayerGroup.ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
       RemoveSoldiersFromGarrisonBasedOnComposition(pSector.ubGarrisonID, pGroup.ubGroupSize);
 
@@ -947,16 +947,16 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: GROUP, ubSectorID: UIN
 function HandleMilitiaNoticedByPatrolGroup(ubSectorID: UINT8, pEnemyGroup: GROUP): boolean {
   // For now, automatically attack.
   let usOffensePoints: UINT16;
-  let usDefencePoints: UINT16;
+  let usDefencePoints: UINT16 = 0;
   let ubSectorX: UINT8 = (ubSectorID % 16) + 1;
   let ubSectorY: UINT8 = (ubSectorID / 16) + 1;
   usOffensePoints = (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumAdmins * 2 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumTroops * 4 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, createPointer(() => usDefencePoints, (v) => usDefencePoints = v))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return false;
   }
 
-  MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
+  MoveSAIGroupToSector(createPointer(() => pEnemyGroup, (v) => pEnemyGroup = v), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
   return false;
 }
@@ -1041,7 +1041,7 @@ function HandleEmptySectorNoticedByPatrolGroup(pGroup: GROUP, ubEmptySectorID: U
   ClearPreviousAIGroupAssignment(pGroup);
 
   gGarrisonGroup[ubGarrisonID].ubPendingGroupID = pGroup.ubGroupID;
-  MoveSAIGroupToSector(addressof(pGroup), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
+  MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), SECTOR(ubSectorX, ubSectorY), Enum172.DIRECT, Enum184.REINFORCEMENTS);
 
   return true;
 }
@@ -1079,7 +1079,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[ubDstGarrisonID].ubComposition);
     RemoveSoldiersFromGarrisonBasedOnComposition(ubSrcGarrisonID, pGroup.ubGroupSize);
     gGarrisonGroup[ubDstGarrisonID].ubPendingGroupID = pGroup.ubGroupID;
-    MoveSAIGroupToSector(addressof(pGroup), ubEmptySectorID, Enum172.DIRECT, Enum184.REINFORCEMENTS);
+    MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubEmptySectorID, Enum172.DIRECT, Enum184.REINFORCEMENTS);
   }
 }
 
@@ -1131,7 +1131,7 @@ function EvaluateGroupSituation(pGroup: GROUP): boolean {
   Assert(pGroup.pEnemyGroup);
   if (pGroup.pEnemyGroup.ubIntention == Enum184.PURSUIT) {
     // Lost the player group that he was going to attack.  Return to original position.
-    ReassignAIGroup(addressof(pGroup));
+    ReassignAIGroup(createPointer(() => pGroup, (v) => pGroup = v));
     return true;
   } else if (pGroup.pEnemyGroup.ubIntention == Enum184.REINFORCEMENTS) {
     // The group has arrived at the location where he is supposed to reinforce.
@@ -1237,7 +1237,7 @@ function EvaluateGroupSituation(pGroup: GROUP): boolean {
   } else {
     // This is a floating group at his final destination...
     if (pGroup.pEnemyGroup.ubIntention != Enum184.STAGING && pGroup.pEnemyGroup.ubIntention != Enum184.REINFORCEMENTS) {
-      ReassignAIGroup(addressof(pGroup));
+      ReassignAIGroup(createPointer(() => pGroup, (v) => pGroup = v));
       return true;
     }
   }
@@ -1249,6 +1249,7 @@ function EvaluateGroupSituation(pGroup: GROUP): boolean {
 export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
   let pSector: SECTORINFO;
   let pEnemyGroup: GROUP | null;
+  let pEnemyGroup__Pointer = createPointer(() => <GROUP>pEnemyGroup, (v) => pEnemyGroup = v);
   let pPlayerGroup: GROUP | null;
   let ubNumEnemies: UINT8;
   let ubSectorID: UINT8;
@@ -1264,7 +1265,7 @@ export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
         // Wake up the queen now, if she hasn't woken up already.
         WakeUpQueen();
         if (pGroup.ubSectorX == 9 && pGroup.ubSectorY == 1 || pGroup.ubSectorX == 3 && pGroup.ubSectorY == 16) {
-          SendGroupToPool(addressof(pGroup));
+          SendGroupToPool(createPointer(() => pGroup, (v) => pGroup = v));
           if (!pGroup) {
             // Group was transferred to the pool
             return true;
@@ -1286,7 +1287,7 @@ export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
       return EvaluateGroupSituation(pEnemyGroup);
     }
     ubSectorID = SECTOR(pEnemyGroup.ubSectorX, pEnemyGroup.ubSectorY);
-    if (pEnemyGroup && pEnemyGroup.ubSectorY > 1 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID - 16))) {
+    if (pEnemyGroup && pEnemyGroup.ubSectorY > 1 && EnemyPermittedToAttackSector(pEnemyGroup__Pointer, (ubSectorID - 16))) {
       pPlayerGroup = FindMovementGroupInSector(pEnemyGroup.ubSectorX, (pEnemyGroup.ubSectorY - 1), true);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1296,7 +1297,7 @@ export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID - 16));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.ubSectorX > 1 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID - 1))) {
+    if (pEnemyGroup && pEnemyGroup.ubSectorX > 1 && EnemyPermittedToAttackSector(pEnemyGroup__Pointer, (ubSectorID - 1))) {
       pPlayerGroup = FindMovementGroupInSector((pEnemyGroup.ubSectorX - 1), pEnemyGroup.ubSectorY, true);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1306,7 +1307,7 @@ export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID - 1));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.ubSectorY < 16 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID + 16))) {
+    if (pEnemyGroup && pEnemyGroup.ubSectorY < 16 && EnemyPermittedToAttackSector(pEnemyGroup__Pointer, (ubSectorID + 16))) {
       pPlayerGroup = FindMovementGroupInSector(pEnemyGroup.ubSectorX, (pEnemyGroup.ubSectorY + 1), true);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1316,7 +1317,7 @@ export function StrategicAILookForAdjacentGroups(pGroup: GROUP): boolean {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID + 16));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.ubSectorX < 16 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID + 1))) {
+    if (pEnemyGroup && pEnemyGroup.ubSectorX < 16 && EnemyPermittedToAttackSector(pEnemyGroup__Pointer, (ubSectorID + 1))) {
       pPlayerGroup = FindMovementGroupInSector((pEnemyGroup.ubSectorX + 1), pEnemyGroup.ubSectorY, true);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1434,7 +1435,7 @@ export function CheckEnemyControlledSector(ubSectorID: UINT8): void {
             }
             // RequestHighPriorityStagingGroupReinforcements( pGroup );
           } else if (SECTOR(pGroup.ubSectorX, pGroup.ubSectorY) != gGarrisonGroup[pSector.ubGarrisonID].ubSectorID) {
-            MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[pSector.ubGarrisonID].ubSectorID, Enum172.DIRECT, pGroup.pEnemyGroup.ubIntention);
+            MoveSAIGroupToSector(createPointer(() => <GROUP>pGroup, (v) => pGroup = v), gGarrisonGroup[pSector.ubGarrisonID].ubSectorID, Enum172.DIRECT, pGroup.pEnemyGroup.ubIntention);
           }
         }
         // else the group is on route to stage hopefully...
@@ -1742,7 +1743,7 @@ function ChooseSuitableGarrisonToProvideReinforcements(iDstGarrisonID: INT32, iR
   return -1;
 }
 
-function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: UINT16, pOptionalGroup: Pointer<Pointer<GROUP>>): void {
+function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: UINT16, pOptionalGroup: Pointer<GROUP> | null): void {
   let pSector: SECTORINFO | null;
   let iChance: INT32;
   let iRandom: INT32;
@@ -1851,9 +1852,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
     ubGroupSize = ((<ENEMYGROUP>pGroup.pEnemyGroup).ubNumTroops + (<ENEMYGROUP>pGroup.pEnemyGroup).ubNumElites + (<ENEMYGROUP>pGroup.pEnemyGroup).ubNumAdmins);
 
     if (ubNumExtraReinforcements) {
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
     } else {
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
     }
     ValidateWeights(14);
     return;
@@ -1910,9 +1911,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       if (ubNumExtraReinforcements) {
         (<ENEMYGROUP>pGroup.pEnemyGroup).ubPendingReinforcements = ubNumExtraReinforcements;
 
-        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
+        MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.STAGING);
       } else {
-        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
+        MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
       }
 
       ValidateWeights(19);
@@ -1922,7 +1923,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
   ValidateWeights(20);
 }
 
-function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<Pointer<GROUP>>): void {
+function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<GROUP> | null): void {
   let pGroup: GROUP;
   let iRandom: INT32;
   let iSrcGarrisonID: INT32;
@@ -1970,7 +1971,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup.ubGroupID;
 
-    MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
+    MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
 
     ValidateWeights(23);
     return;
@@ -1997,7 +1998,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
             RemoveSoldiersFromGarrisonBasedOnComposition(iSrcGarrisonID, pGroup.ubGroupSize);
 
-            MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
+            MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gPatrolGroup[iPatrolID].ubSectorID[1], Enum172.EVASIVE, Enum184.REINFORCEMENTS);
 
             ValidateWeights(24);
 
@@ -2018,7 +2019,8 @@ export function EvaluateQueenSituation(): void {
   let iRandom: INT32;
   let iWeight: INT32;
   let uiOffset: UINT32;
-  let usDefencePoints: UINT16;
+  let usDefencePoints: UINT16 = 0;
+  let usDefencePoints__Pointer = createPointer(() => usDefencePoints, (v) => usDefencePoints = v);
   let iOrigRequestPoints: INT32;
   let iSumOfAllWeights: INT32 = 0;
 
@@ -2087,7 +2089,7 @@ export function EvaluateQueenSituation(): void {
 
       if (iRandom < iWeight && !gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(null, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
         // This is the group that gets the reinforcements!
-        if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
+        if (ReinforcementsApproved(i, usDefencePoints__Pointer)) {
           SendReinforcementsForGarrison(i, usDefencePoints, null);
         } else {
         }
@@ -2940,7 +2942,7 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
 
 export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSectorY: INT16): void {
   let pGroup: GROUP;
-  let pPendingGroup: Pointer<GROUP> = null;
+  let pPendingGroup: GROUP | null = null;
   let pSector: SECTORINFO;
   let ubSectorID: UINT8;
   let ubNumSoldiers: UINT8;
@@ -2996,7 +2998,7 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = Math.max(giReinforcementPool, 0);
 
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, pGroup.pEnemyGroup.ubIntention);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubSectorID, Enum172.EVASIVE, pGroup.pEnemyGroup.ubIntention);
 
       break;
     case Enum213.NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION:
@@ -3017,18 +3019,18 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
         // sector has a garrison
         if (!NumEnemiesInSector(SECTORX(ubSectorID), SECTORY(ubSectorID))) {
           // no enemies are here
-          if (gArmyComp[!gGarrisonGroup[pSector.ubGarrisonID].ubComposition].bPriority) {
+          if (gArmyComp[Number(!gGarrisonGroup[pSector.ubGarrisonID].ubComposition)].bPriority) {
             // the garrison is important
             if (!gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID) {
               // the garrison doesn't have reinforcements already on route.
               gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID = pGroup.ubGroupID;
-              MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
+              MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
               break;
             }
           }
         }
       } else {
-        MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
+        MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
       }
 
       break;
@@ -3046,7 +3048,7 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
         ubSectorID = Enum123.SEC_A10;
       }
 
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubSectorID, Enum172.EVASIVE, Enum184.PURSUIT);
 
       ValidateGroup(pGroup);
       break;
@@ -3056,7 +3058,7 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = Math.max(giReinforcementPool, 0);
       pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, 0, ubNumSoldiers);
-      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
 
       if (gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID) {
         // Clear the pending group's assignment.
@@ -3070,7 +3072,7 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
 
       if (pPendingGroup) {
         // Reassign the pending group
-        ReassignAIGroup(addressof(pPendingGroup));
+        ReassignAIGroup(createPointer(() => <GROUP>pPendingGroup, (v) => pPendingGroup = v));
       }
 
       break;
@@ -3256,10 +3258,10 @@ export function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSect
       pSector.uiTimeLastPlayerLiberated = GetWorldTotalSeconds() - Random(gubHoursGracePeriod * 1800);
     }
     if (gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID) {
-      let pGroup: GROUP | null;
+      let pGroup: GROUP;
       pGroup = GetGroup(gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID);
       if (pGroup) {
-        ReassignAIGroup(addressof(pGroup));
+        ReassignAIGroup(createPointer(() => pGroup, (v) => pGroup = v));
       }
       gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID = 0;
     }
@@ -3383,7 +3385,7 @@ function SectorDistance(ubSectorID1: UINT8, ubSectorID2: UINT8): UINT8 {
 function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldiersRequested: UINT8): void {
   let i: INT32;
   let iBestIndex: INT32;
-  let pGroup: GROUP | null;
+  let pGroup: GROUP;
   let ubBestDist: UINT8;
   let ubDist: UINT8;
   let ubDstSectorX: UINT8;
@@ -3459,7 +3461,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       gGarrisonGroup[iGarrisonID].ubPendingGroupID = pNewGroup.ubGroupID;
       RecalculatePatrolWeight(iBestIndex);
 
-      MoveSAIGroupToSector(addressof(pNewGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
+      MoveSAIGroupToSector(createPointer(() => pNewGroup, (v) => pNewGroup = v), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
     } else {
       // Send the whole group and kill it's patrol assignment.
       gPatrolGroup[iBestIndex].ubGroupID = 0;
@@ -3470,7 +3472,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       // don't work if this is the case.  Teleporting them to their previous sector is the best and easiest way to deal with this.
       SetEnemyGroupSector(pGroup, SECTOR(pGroup.ubSectorX, pGroup.ubSectorY));
 
-      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
+      MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
       ValidateGroup(pGroup);
     }
   } else {
@@ -3483,7 +3485,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
     pGroup.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
     giReinforcementPool -= ubSoldiersRequested;
 
-    MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
+    MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iGarrisonID].ubSectorID, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
     ValidateGroup(pGroup);
   }
 }
@@ -3521,7 +3523,7 @@ function MassFortifyTowns(): void {
     pSector.ubNumTroops = 0;
     pGroup.pEnemyGroup.ubIntention = Enum184.PATROL;
     pGroup.ubMoveType = Enum185.ONE_WAY;
-    ReassignAIGroup(addressof(pGroup));
+    ReassignAIGroup(createPointer(() => pGroup, (v) => pGroup = v));
     ValidateGroup(pGroup);
     RecalculateSectorWeight(Enum123.SEC_A9);
   }
@@ -3839,33 +3841,34 @@ function FindGarrisonIndexForGroupIDPending(ubGroupID: UINT8): INT16 {
   return -1;
 }
 
-function TransferGroupToPool(pGroup: Pointer<Pointer<GROUP>>): void {
-  giReinforcementPool += (pGroup.value).value.ubGroupSize;
+function TransferGroupToPool(pGroup: Pointer<GROUP>): void {
+  giReinforcementPool += (pGroup.value).ubGroupSize;
   RemovePGroup(pGroup.value);
-  pGroup.value = null;
+  pGroup.value = <GROUP><unknown>null;
 }
 
 // NOTE:  Make sure you call SetEnemyGroupSector() first if the group is between sectors!!  See example in ReassignAIGroup()...
-function SendGroupToPool(pGroup: Pointer<Pointer<GROUP>>): void {
-  if ((pGroup.value).value.ubSectorX == 3 && (pGroup.value).value.ubSectorY == 16) {
+function SendGroupToPool(pGroup: Pointer<GROUP>): void {
+  if ((pGroup.value).ubSectorX == 3 && (pGroup.value).ubSectorY == 16) {
     TransferGroupToPool(pGroup);
   } else {
-    (pGroup.value).value.ubSectorIDOfLastReassignment = SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY);
+    (pGroup.value).ubSectorIDOfLastReassignment = SECTOR((pGroup.value).ubSectorX, (pGroup.value).ubSectorY);
     MoveSAIGroupToSector(pGroup, Enum123.SEC_P3, Enum172.EVASIVE, Enum184.REINFORCEMENTS);
   }
 }
 
-function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
+function ReassignAIGroup(pGroup: Pointer<GROUP>): void {
   let i: INT32;
   let iRandom: INT32;
   let iWeight: INT32;
-  let usDefencePoints: UINT16;
+  let usDefencePoints: UINT16 = 0;
+  let usDefencePoints__Pointer = createPointer(() => usDefencePoints, (v) => usDefencePoints = v);
   let iReloopLastIndex: INT32 = -1;
   let ubSectorID: UINT8;
 
-  ubSectorID = SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY);
+  ubSectorID = SECTOR((pGroup.value).ubSectorX, (pGroup.value).ubSectorY);
 
-  (pGroup.value).value.ubSectorIDOfLastReassignment = ubSectorID;
+  (pGroup.value).ubSectorIDOfLastReassignment = ubSectorID;
 
   ClearPreviousAIGroupAssignment(pGroup.value);
 
@@ -3894,7 +3897,7 @@ function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
       if (iRandom < iWeight) {
         if (!gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(null, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
           // This is the group that gets the reinforcements!
-          if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
+          if (ReinforcementsApproved(i, usDefencePoints__Pointer)) {
             SendReinforcementsForGarrison(i, usDefencePoints, pGroup);
             return;
           }
@@ -3920,7 +3923,7 @@ function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
         // if group is requesting reinforcements.
         if (!gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(null, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
           // This is the group that gets the reinforcements!
-          if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
+          if (ReinforcementsApproved(i, usDefencePoints__Pointer)) {
             SendReinforcementsForGarrison(i, usDefencePoints, pGroup);
             return;
           }
@@ -4140,19 +4143,19 @@ function RemoveSoldiersFromGarrisonBasedOnComposition(iGarrisonID: INT32, ubSize
   RecalculateGarrisonWeight(iGarrisonID);
 }
 
-function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8, uiMoveCode: UINT32, ubIntention: UINT8): void {
+function MoveSAIGroupToSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8, uiMoveCode: UINT32, ubIntention: UINT8): void {
   let ubDstSectorX: UINT8;
   let ubDstSectorY: UINT8;
 
   ubDstSectorX = SECTORX(ubSectorID);
   ubDstSectorY = SECTORY(ubSectorID);
 
-  if ((pGroup.value).value.fBetweenSectors) {
-    SetEnemyGroupSector(pGroup.value, SECTOR((pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY));
+  if ((pGroup.value).fBetweenSectors) {
+    SetEnemyGroupSector(pGroup.value, SECTOR((pGroup.value).ubSectorX, (pGroup.value).ubSectorY));
   }
 
-  (pGroup.value).value.pEnemyGroup.value.ubIntention = ubIntention;
-  (pGroup.value).value.ubMoveType = Enum185.ONE_WAY;
+  (<ENEMYGROUP>(pGroup.value).pEnemyGroup).ubIntention = ubIntention;
+  (pGroup.value).ubMoveType = Enum185.ONE_WAY;
 
   if (ubIntention == Enum184.PURSUIT) {
     // Make sure that the group isn't moving into a garrison sector.  These sectors should be using ASSAULT intentions!
@@ -4162,26 +4165,26 @@ function MoveSAIGroupToSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorID: UINT8
     }
   }
 
-  if ((pGroup.value).value.ubSectorX == ubDstSectorX && (pGroup.value).value.ubSectorY == ubDstSectorY) {
+  if ((pGroup.value).ubSectorX == ubDstSectorX && (pGroup.value).ubSectorY == ubDstSectorY) {
     // The destination sector is the current location.  Instead of causing code logic problems,
     // simply process them as if they just arrived.
     if (EvaluateGroupSituation(pGroup.value)) {
       // The group was deleted.
-      pGroup.value = null;
+      pGroup.value = <GROUP><unknown>null;
       return;
     }
   }
 
   switch (uiMoveCode) {
     case Enum172.STAGE:
-      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd((pGroup.value).ubGroupID, (pGroup.value).ubSectorX, (pGroup.value).ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
     case Enum172.EVASIVE:
-      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors((pGroup.value).ubGroupID, (pGroup.value).ubSectorX, (pGroup.value).ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
     case Enum172.DIRECT:
     default:
-      MoveGroupFromSectorToSector((pGroup.value).value.ubGroupID, (pGroup.value).value.ubSectorX, (pGroup.value).value.ubSectorY, ubDstSectorX, ubDstSectorY);
+      MoveGroupFromSectorToSector((pGroup.value).ubGroupID, (pGroup.value).ubSectorX, (pGroup.value).ubSectorY, ubDstSectorX, ubDstSectorY);
       break;
   }
   // Make sure that the group is moving.  If this fails, then the pathing may have failed for some reason.
@@ -4205,7 +4208,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
         Assert(pWaypoint);
         ubDestSectorID = SECTOR(pWaypoint.x, pWaypoint.y);
         SetEnemyGroupSector(pGroup, SECTOR(pGroup.ubSectorX, pGroup.ubSectorY));
-        MoveSAIGroupToSector(addressof(pGroup), ubDestSectorID, Enum172.EVASIVE, (<ENEMYGROUP>pGroup.pEnemyGroup).ubIntention);
+        MoveSAIGroupToSector(createPointer(() => <GROUP>pGroup, (v) => pGroup = v), ubDestSectorID, Enum172.EVASIVE, (<ENEMYGROUP>pGroup.pEnemyGroup).ubIntention);
         ubNumGroupsRedirected++;
       }
     }

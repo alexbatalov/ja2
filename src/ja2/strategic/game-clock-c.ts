@@ -940,7 +940,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
     // UnMarkButtonsDirty( );
 
     // now create the pop up box to say the game is paused
-    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, addressof(usPausedActualWidth), addressof(usPausedActualHeight));
+    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, createPointer(() => usPausedActualWidth, (v) => usPausedActualWidth = v), createPointer(() => usPausedActualHeight, (v) => usPausedActualHeight = v));
   }
 }
 

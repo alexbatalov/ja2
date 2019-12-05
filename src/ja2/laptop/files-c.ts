@@ -198,7 +198,7 @@ export function HandleFiles(): void {
 }
 
 export function RenderFiles(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // render the background
   RenderFilesBackGround();
@@ -225,7 +225,7 @@ export function RenderFiles(): void {
 
 function RenderFilesBackGround(): void {
   // render generic background for file system
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
 
   // get title bar object
@@ -529,7 +529,7 @@ function DisplayFilesList(): void {
   // this function will run through the list of files of files and display the 'sender'
   let pFilesList: FilesUnit | null = pFilesListHead;
   let iCounter: INT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // font stuff
   SetFont(FILES_TEXT_FONT());
@@ -646,7 +646,7 @@ function DisplayFormattedText(): boolean {
   let iOffSet: INT32 = 0;
   let iMessageCode: INT32;
   let sString: string /* wchar_t[2048] */;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let uiFirstTempPicture: UINT32;
   let uiSecondTempPicture: UINT32;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
@@ -840,7 +840,7 @@ function HandleSpecialFiles(ubFormat: UINT8): boolean {
   let WidthList: FileRecordWidth;
 
   let uiPicture: UINT32;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   ClearFileStringList();
@@ -1323,7 +1323,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
   let WidthList: FileRecordWidth;
   let iOffset: INT32 = 0;
   let uiPicture: UINT32;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sTemp: string /* CHAR[128] */;
 

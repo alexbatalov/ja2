@@ -84,7 +84,7 @@ function ConvertRGBDistribution555To565(p16BPPData: Pointer<UINT16>, uiNumberOfP
   }
 }
 
-export function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, sWidth: INT16, sHeight: INT16, cOutputName: string /* STR */, fFlags: UINT32, uiAppDataSize: UINT32): void {
+export function WriteSTIFile(pData: Pointer<INT8>, pPalette: SGPPaletteEntry[], sWidth: INT16, sHeight: INT16, cOutputName: string /* STR */, fFlags: UINT32, uiAppDataSize: UINT32): void {
   let pOutput: Pointer<FILE>;
 
   let uiOriginalSize: UINT32;

@@ -258,12 +258,12 @@ export function BeginLoadScreen(): void {
       SrcRect.iBottom = 480 - 39 * iPercentage / 100;
       BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, SrcRect, DstRect);
       InvalidateScreen();
-      RefreshScreen(null);
+      RefreshScreen();
     }
   }
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));
   InvalidateScreen();
-  RefreshScreen(null);
+  RefreshScreen();
 
   // If we are loading a saved game, use the Loading screen we saved into the SavedGameHeader file
   // ( which gets reloaded into gubLastLoadingScreenID )
@@ -688,7 +688,7 @@ export function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): 
       let bWarpWorldZ: INT8;
       let sWarpGridNo: INT16;
 
-      if (GetWarpOutOfMineCodes(addressof(sWarpWorldX), addressof(sWarpWorldY), addressof(bWarpWorldZ), addressof(sWarpGridNo)) && gbWorldSectorZ >= 2) {
+      if (GetWarpOutOfMineCodes(createPointer(() => sWarpWorldX, (v) => sWarpWorldX = v), createPointer(() => sWarpWorldY, (v) => sWarpWorldY = v), createPointer(() => bWarpWorldZ, (v) => bWarpWorldZ = v), createPointer(() => sWarpGridNo, (v) => sWarpGridNo = v)) && gbWorldSectorZ >= 2) {
         gTacticalStatus.uiFlags |= IN_CREATURE_LAIR;
       } else {
         gTacticalStatus.uiFlags &= (~IN_CREATURE_LAIR);
@@ -1635,7 +1635,8 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
   let pValidSoldier: SOLDIERTYPE = <SOLDIERTYPE><unknown>null;
   let pGroup: GROUP;
   let uiTraverseTime: UINT32 = 0;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
   let ExitGrid: EXITGRID = createExitGrid();
   let bPrevAssignment: INT8;
   let ubPrevGroupID: UINT8;
@@ -1781,7 +1782,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
           EVENT_GetNewSoldierPath(curr.pSoldier, sGridNo, Enum193.WALKING);
         } else {
           // Here, get closest location for exit grid....
-          sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(curr.pSoldier, sAdditionalData, 10, addressof(ubDirection));
+          sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(curr.pSoldier, sAdditionalData, 10, ubDirection__Pointer);
 
           // curr->pSoldier->
           if (sGridNo != NOWHERE) {
@@ -2320,7 +2321,8 @@ function DoneFadeOutAdjacentSector(): void {
   if ((<GROUP>gpAdjacentGroup).fPlayer) {
     // For player groups, update the soldier information
     let curr: PLAYERGROUP | null;
-    let uiAttempts: UINT32;
+    let uiAttempts: UINT32 = 0;
+    let uiAttempts__Pointer = createPointer(() => uiAttempts, (v) => uiAttempts = v);
     let sGridNo: INT16;
     let sOldGridNo: INT16;
     let ubNum: UINT8 = 0;
@@ -2330,7 +2332,7 @@ function DoneFadeOutAdjacentSector(): void {
     while (curr) {
       if (!(curr.pSoldier.uiStatusFlags & SOLDIER_IS_TACTICALLY_VALID)) {
         if (curr.pSoldier.sGridNo != NOWHERE) {
-          sGridNo = PickGridNoToWalkIn(curr.pSoldier, ubDirection, addressof(uiAttempts));
+          sGridNo = PickGridNoToWalkIn(curr.pSoldier, ubDirection, uiAttempts__Pointer);
 
           // If the search algorithm failed due to too many attempts, simply reset the
           // the gridno as the destination is a reserved gridno and we will place the
@@ -2371,7 +2373,7 @@ function SoldierOKForSectorExit(pSoldier: SOLDIERTYPE, bExitDirection: INT8, usA
   let sYMapPos: INT16;
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let sGridNo: INT16;
   let sAPs: INT16;
 
@@ -2433,7 +2435,7 @@ function SoldierOKForSectorExit(pSoldier: SOLDIERTYPE, bExitDirection: INT8, usA
         pSoldier.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.usAnimState].ubEndHeight);
       }
 
-      sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(pSoldier, usAdditionalData, 10, addressof(ubDirection));
+      sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(pSoldier, usAdditionalData, 10, createPointer(() => ubDirection, (v) => ubDirection = v));
 
       if (sGridNo == NOWHERE) {
         return false;
@@ -3723,7 +3725,7 @@ export function CheckAndHandleUnloadingOfCurrentWorld(): boolean {
   // ATE: Change cursor to wait cursor for duration of frame.....
   // save old cursor ID....
   SetCurrentCursorFromDatabase(Enum317.CURSOR_WAIT_NODELAY);
-  RefreshScreen(null);
+  RefreshScreen();
 
   // JA2Gold: Leaving sector, so get rid of ambients!
   DeleteAllAmbients();

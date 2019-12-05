@@ -523,7 +523,7 @@ function TacticalCopySoldierFromProfile(pSoldier: SOLDIERTYPE, pCreateStruct: SO
   // Set profile index!
   pSoldier.ubProfile = ubProfileIndex;
   pSoldier.ubScheduleID = pCreateStruct.ubScheduleID;
-  pSoldier.bHasKeys = pCreateStruct.fHasKeys;
+  pSoldier.bHasKeys = Number(pCreateStruct.fHasKeys);
 
   pSoldier.name = pProfile.zNickname;
 
@@ -877,7 +877,7 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: SOLDIERTYPE, pCreateStruc
   pSoldier.ubCivilianGroup = pCreateStruct.ubCivilianGroup;
 
   pSoldier.ubScheduleID = pCreateStruct.ubScheduleID;
-  pSoldier.bHasKeys = pCreateStruct.fHasKeys;
+  pSoldier.bHasKeys = Number(pCreateStruct.fHasKeys);
   pSoldier.ubSoldierClass = pCreateStruct.ubSoldierClass;
 
   if (pCreateStruct.fVisible) {
@@ -1086,7 +1086,7 @@ export function TacticalRemoveSoldierPointer(pSoldier: SOLDIERTYPE, fRemoveVehic
       // Delete shadow of crow....
       if (pSoldier.pAniTile != null) {
         DeleteAniTile(pSoldier.pAniTile);
-        pSoldier.pAniTile = null;
+        pSoldier.pAniTile = <ANITILE><unknown>null;
       }
 
       if (!(pSoldier.uiStatusFlags & SOLDIER_OFF_MAP)) {
@@ -1825,7 +1825,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): SOLDIERTYP
 export function TacticalCreateAdministrator(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
@@ -1840,7 +1840,7 @@ export function TacticalCreateAdministrator(): SOLDIERTYPE | null {
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, createPointer(() => ubID, (v) => ubID = v));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1853,7 +1853,7 @@ export function TacticalCreateAdministrator(): SOLDIERTYPE | null {
 export function TacticalCreateArmyTroop(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
@@ -1868,7 +1868,7 @@ export function TacticalCreateArmyTroop(): SOLDIERTYPE | null {
   bp.bBodyType = -1;
   bp.ubSoldierClass = Enum262.SOLDIER_CLASS_ARMY;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, createPointer(() => ubID, (v) => ubID = v));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1881,7 +1881,7 @@ export function TacticalCreateArmyTroop(): SOLDIERTYPE | null {
 export function TacticalCreateEliteEnemy(): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
@@ -1904,7 +1904,7 @@ export function TacticalCreateEliteEnemy(): SOLDIERTYPE | null {
   // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
   OkayToUpgradeEliteToSpecialProfiledEnemy(pp);
 
-  pSoldier = TacticalCreateSoldier(pp, addressof(ubID));
+  pSoldier = TacticalCreateSoldier(pp, createPointer(() => ubID, (v) => ubID = v));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1916,7 +1916,7 @@ export function TacticalCreateEliteEnemy(): SOLDIERTYPE | null {
 export function TacticalCreateMilitia(ubMilitiaClass: UINT8): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
 
   bp.bRelativeAttributeLevel = RandomizeRelativeLevel(bp.bRelativeAttributeLevel, ubMilitiaClass);
   bp.bRelativeEquipmentLevel = RandomizeRelativeLevel(bp.bRelativeEquipmentLevel, ubMilitiaClass);
@@ -1927,13 +1927,13 @@ export function TacticalCreateMilitia(ubMilitiaClass: UINT8): SOLDIERTYPE | null
   // bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = -1;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  return TacticalCreateSoldier(pp, addressof(ubID));
+  return TacticalCreateSoldier(pp, createPointer(() => ubID, (v) => ubID = v));
 }
 
 export function TacticalCreateCreature(bCreatureBodyType: INT8): SOLDIERTYPE | null {
   let bp: BASIC_SOLDIERCREATE_STRUCT = createBasicSoldierCreateStruct();
   let pp: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
 
   if (guiCurrentScreen == Enum26.AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(Enum262.SOLDIER_CLASS_CREATURE);
@@ -1947,7 +1947,7 @@ export function TacticalCreateCreature(bCreatureBodyType: INT8): SOLDIERTYPE | n
   bp.bAttitude = Enum242.AGGRESSIVE;
   bp.bBodyType = bCreatureBodyType;
   CreateDetailedPlacementGivenBasicPlacementInfo(pp, bp);
-  return TacticalCreateSoldier(pp, addressof(ubID));
+  return TacticalCreateSoldier(pp, createPointer(() => ubID, (v) => ubID = v));
 }
 
 export function RandomizeRelativeLevel(bRelLevel: INT8, ubSoldierClass: UINT8): INT8 {
@@ -2046,19 +2046,19 @@ export function RandomizeRelativeLevel(bRelLevel: INT8, ubSoldierClass: UINT8): 
 export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   // Create guy # X
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let sWorldX: INT16;
-  let sWorldY: INT16;
+  let sWorldX: INT16 = 0;
+  let sWorldY: INT16 = 0;
   let sSectorX: INT16;
   let sSectorY: INT16;
-  let sGridX: INT16;
-  let sGridY: INT16;
-  let ubID: UINT8;
+  let sGridX: INT16 = 0;
+  let sGridY: INT16 = 0;
+  let ubID: UINT8 = 0;
   let usMapPos: UINT16;
 
-  if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+  if (GetMouseXY(createPointer(() => sGridX, (v) => sGridX = v), createPointer(() => sGridY, (v) => sGridY = v))) {
     usMapPos = MAPROWCOLTOPOS(sGridY, sGridX);
     // Get Grid Coordinates of mouse
-    if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY))) {
+    if (GetMouseWorldCoordsInCenter(createPointer(() => sWorldX, (v) => sWorldX = v), createPointer(() => sWorldY, (v) => sWorldY = v))) {
       ({ sSectorX, sSectorY } = GetCurrentWorldSector());
 
       MercCreateStruct.bTeam = bTeam;
@@ -2070,7 +2070,7 @@ export function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
 
       RandomizeNewSoldierStats(MercCreateStruct);
 
-      if (TacticalCreateSoldier(MercCreateStruct, addressof(ubID))) {
+      if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubID, (v) => ubID = v))) {
         AddSoldierToSector(ubID);
 
         // So we can see them!

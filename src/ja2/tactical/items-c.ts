@@ -1514,7 +1514,7 @@ function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<
 export function ValidMerge(usMerge: UINT16, usItem: UINT16): boolean {
   let usIgnoreResult: UINT16;
   let ubIgnoreType: UINT8;
-  return EvaluateValidMerge(usMerge, usItem, addressof(usIgnoreResult), addressof(ubIgnoreType));
+  return EvaluateValidMerge(usMerge, usItem, createPointer(() => usIgnoreResult, (v) => usIgnoreResult = v), createPointer(() => ubIgnoreType, (v) => ubIgnoreType = v));
 }
 
 export function CalculateObjectWeight(pObject: OBJECTTYPE): UINT8 {
@@ -2206,9 +2206,9 @@ function PerformAttachmentComboMerge(pObj: OBJECTTYPE, bAttachmentComboMerge: IN
 export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYPE, pAttachment: OBJECTTYPE): boolean {
   let bAttachPos: INT8;
   let bSecondAttachPos: INT8; //, bAbility, bSuccess;
-  let usResult: UINT16;
+  let usResult: UINT16 = 0;
   let bLoop: INT8;
-  let ubType: UINT8;
+  let ubType: UINT8 = 0;
   let ubLimit: UINT8;
   let iCheckResult: INT32;
   let bAttachInfoIndex: INT8 = -1;
@@ -2322,13 +2322,13 @@ export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYP
     }
   }
   // check for merges
-  else if (EvaluateValidMerge(pAttachment.usItem, pTargetObj.usItem, addressof(usResult), addressof(ubType))) {
+  else if (EvaluateValidMerge(pAttachment.usItem, pTargetObj.usItem, createPointer(() => usResult, (v) => usResult = v), createPointer(() => ubType, (v) => ubType = v))) {
     if (ubType != Enum226.COMBINE_POINTS) {
-      if (!EnoughPoints(pSoldier, AP_MERGE, 0, true)) {
+      if (!EnoughPoints(<SOLDIERTYPE>pSoldier, AP_MERGE, 0, true)) {
         return false;
       }
 
-      DeductPoints(pSoldier, AP_MERGE, 0);
+      DeductPoints(<SOLDIERTYPE>pSoldier, AP_MERGE, 0);
     }
 
     switch (ubType) {

@@ -197,7 +197,7 @@ function BtnBobbyRShipmentHomeCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 function DisplayShipmentGrid(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   hPixHandle = GetVideoObject(guiBobbyRShipmentGrid);
 

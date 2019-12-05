@@ -825,13 +825,13 @@ function DisableDoubleClk(): void {
   // Obsolete
 }
 
-export function GetMousePos(Point: Pointer<SGPPoint>): void {
+export function GetMousePos(Point: SGPPoint): void {
   let MousePos: POINT = createPoint();
 
   GetCursorPos(MousePos);
 
-  Point.value.iX = MousePos.x;
-  Point.value.iY = MousePos.y;
+  Point.iX = MousePos.x;
+  Point.iY = MousePos.y;
 
   return;
 }
@@ -1221,7 +1221,7 @@ export function RestoreCursorClipRect(): void {
   }
 }
 
-export function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
+export function GetRestrictedClipCursor(pRectangle: SGPRect): void {
   GetClipCursor(pRectangle);
 }
 

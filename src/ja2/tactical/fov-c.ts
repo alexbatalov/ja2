@@ -249,7 +249,8 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
   let ubRoomNo: UINT8;
   let fCheckForRooms: boolean = false;
   let pItemPool: ITEM_POOL | null;
-  let fHiddenStructVisible: boolean;
+  let fHiddenStructVisible: boolean = false;
+  let fHiddenStructVisible__Pointer = createPointer(() => fHiddenStructVisible, (v) => fHiddenStructVisible = v);
   let ubMovementCost: UINT8;
   let fTravelCostObs: boolean;
   let fGoneThroughDoor: UINT8 /* boolean */ = 0;
@@ -259,10 +260,12 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
   let fRevealItems: boolean = true;
   let fStopRevealingItemsAfterThisTile: boolean = false;
   let bTallestStructureHeight: INT8;
-  let iDoorGridNo: INT32;
+  let iDoorGridNo: INT32 = 0;
   let pStructure: STRUCTURE | null;
-  let pDummy: STRUCTURE | null;
-  let bStructHeight: INT8;
+  let pDummy: STRUCTURE | null = null;
+  let pDummy__Pointer = createPointer(() => pDummy, (v) => pDummy = v);
+  let bStructHeight: INT8 = 0;
+  let bStructHeight__Pointer = createPointer(() => bStructHeight, (v) => bStructHeight = v);
   let bThroughWindowDirection: INT8 = <INT8><unknown>undefined;
 
   if (pSoldier.uiStatusFlags & SOLDIER_ENEMY) {
@@ -308,7 +311,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
     range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel), range) + range) / 2;
   }
 
-  BuildSightDir(dir, addressof(Dir[0]), addressof(Dir[1]), addressof(Dir[2]), addressof(Dir[3]), addressof(Dir[4]));
+  BuildSightDir(dir, createElementPointer(Dir, 0), createElementPointer(Dir, 1), createElementPointer(Dir, 2), createElementPointer(Dir, 3), createElementPointer(Dir, 4));
   for (cnt = 0; cnt < 5; cnt++)
     Inc[cnt] = DirectionInc(Dir[cnt]);
 
@@ -407,7 +410,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
       }
 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), addressof(iDoorGridNo));
+        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), createPointer(() => iDoorGridNo, (v) => iDoorGridNo = v));
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
         if (pStructure != null && pStructure.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
@@ -479,11 +482,11 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
           // GET INDEX FOR ITEM HERE
           // if there IS a direction after this one, nextdir WILL NOT be 99
           if (nextDir != 99) {
-            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], Dir[nextDir], ubLevel, addressof(bStructHeight), addressof(pDummy), false);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], Dir[nextDir], ubLevel, bStructHeight__Pointer, pDummy__Pointer, false);
           } else // no "next" direction, so pass in a NOWHERE so that
           // "SpecialViewObstruction" will know not to take it UINT32o consideration
           {
-            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], 30, ubLevel, addressof(bStructHeight), addressof(pDummy), false);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], 30, ubLevel, bStructHeight__Pointer, pDummy__Pointer, false);
           }
 
           if (gfCaves) {
@@ -595,7 +598,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
           // CHECK FOR HIDDEN STRUCTS
           // IF we had a hidden struct here that is not visible ( which will still be true because
           // we set it revealed below...
-          if (DoesGridnoContainHiddenStruct(marker, addressof(fHiddenStructVisible))) {
+          if (DoesGridnoContainHiddenStruct(marker, fHiddenStructVisible__Pointer)) {
             if (!fHiddenStructVisible) {
               gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REDRAW;
               SetRenderFlags(RENDER_FLAG_MARKED);

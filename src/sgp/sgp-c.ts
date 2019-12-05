@@ -114,13 +114,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
 }
 
 function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: number): boolean {
-  let pFontTable: Pointer<FontTranslationTable>;
-
-  // now required by all (even JA2) in order to call ShutdownSGP
-  atexit(SGPExit);
-
-  // First, initialize the registry keys.
-  InitializeRegistryKeys("Wizardry8", "Wizardry8key");
+  let pFontTable: FontTranslationTable;
 
   // Second, read in settings
   GetRuntimeSettings();
@@ -150,14 +144,11 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
 
   FastDebugMsg("Initializing File Manager");
   // Initialize the File Manager
-  if (InitializeFileManager(null) == false) {
+  if (InitializeFileManager('') == false) {
     // We were unable to initialize the file manager
     FastDebugMsg("FAILED : Initializing File Manager");
     return false;
   }
-
-  FastDebugMsg("Initializing Containers Manager");
-  InitializeContainers();
 
   FastDebugMsg("Initializing Input Manager");
   // Initialize the Input Manager
@@ -197,9 +188,6 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
 
   // Create font translation table (store in temp structure)
   pFontTable = CreateEnglishTransTable();
-  if (pFontTable == null) {
-    return false;
-  }
 
   // Initialize Font Manager
   FastDebugMsg("Initializing the Font Manager");
@@ -266,7 +254,6 @@ function ShutdownStandardGamingPlatform(): void {
   ShutdownVideoManager();
 
   ShutdownInputManager();
-  ShutdownContainers();
   ShutdownFileManager();
   ShutdownMutexManager();
 

@@ -559,42 +559,42 @@ function RenderMapEntryPointsAndLights(): void {
   SetFontShadow(FONT_NEARBLACK);
   sGridNo = gMapInformation.sNorthGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "North Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sWestGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "West Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sEastGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "East Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sSouthGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "South Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sCenterGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "Center Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sIsolatedGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL(), FONT_YELLOW, "Isolated Entry Point", FONT_BLACK, true, CENTER_JUSTIFIED);
     }
@@ -603,7 +603,7 @@ function RenderMapEntryPointsAndLights(): void {
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE) {
       sGridNo = LightSprites[i].iY * WORLD_COLS + LightSprites[i].iX;
-      GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+      ({ sScreenX, sScreenY } = GetGridNoScreenPos(sGridNo, 0));
       if (sScreenY >= -50 && sScreenY < 300 && sScreenX >= -40 && sScreenX < 640) {
         if (LightSprites[i].uiFlags & LIGHT_PRIMETIME)
           DisplayWrappedString(sScreenX, (sScreenY - 5), 50, 2, FONT10ARIAL(), FONT_ORANGE, "Prime", FONT_BLACK, true, CENTER_JUSTIFIED);
@@ -653,7 +653,7 @@ function RenderDoorLockInfo(): void {
   let sScreenY: INT16;
   let str: string /* UINT16[50] */;
   for (i = 0; i < gubNumDoors; i++) {
-    GetGridNoScreenPos(DoorTable[i].sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+    ({ sScreenX, sScreenY } = GetGridNoScreenPos(DoorTable[i].sGridNo, 0));
     if (sScreenY > 390)
       continue;
     if (DoorTable[i].ubLockID != 255)
@@ -696,7 +696,7 @@ function RenderDoorLockInfo(): void {
 
 function RenderSelectedItemBlownUp(): void {
   let uiVideoObjectIndex: UINT32;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sScreenX: INT16;
   let sScreenY: INT16;
   let xp: INT16;
@@ -709,7 +709,7 @@ function RenderSelectedItemBlownUp(): void {
   let sOffsetX: INT16;
   let sOffsetY: INT16;
 
-  GetGridNoScreenPos(gsItemGridNo, 0, addressof(sScreenX), addressof(sScreenY));
+  ({ sScreenX, sScreenY } = GetGridNoScreenPos(gsItemGridNo, 0));
 
   if (sScreenY > 340)
     return;
@@ -718,12 +718,12 @@ function RenderSelectedItemBlownUp(): void {
   uiVideoObjectIndex = GetInterfaceGraphicForItem(Item[gpItem.usItem]);
   hVObject = GetVideoObject(uiVideoObjectIndex);
 
-  sWidth = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usWidth;
-  sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetX;
+  sWidth = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usWidth;
+  sOffsetX = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetX;
   xp = sScreenX + (40 - sWidth - sOffsetX * 2) / 2;
 
-  sHeight = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usHeight;
-  sOffsetY = hVObject.value.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetY;
+  sHeight = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usHeight;
+  sOffsetY = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetY;
   yp = sScreenY + (20 - sHeight - sOffsetY * 2) / 2;
 
   BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem.usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), true);
@@ -767,6 +767,7 @@ function RenderSelectedItemBlownUp(): void {
   mprintf(xp, yp, "%d", i);
 
   // If the item is hidden, render a blinking H (just like DG)
+  Assert(gpItemPool);
   if (gWorldItems[gpItemPool.iItemIndex].bVisible == HIDDEN_ITEM || gWorldItems[gpItemPool.iItemIndex].bVisible == BURIED) {
     SetFont(FONT10ARIALBOLD());
     if (GetJA2Clock() % 1000 > 500) {
@@ -777,17 +778,17 @@ function RenderSelectedItemBlownUp(): void {
   }
 }
 
+/* static */ let RenderEditorInfo__iSpewWarning: INT32 = 0;
 function RenderEditorInfo(): void {
   let FPSText: string /* wchar_t[50] */;
-  /* static */ let iSpewWarning: INT32 = 0;
-  let iMapIndex: INT16;
+  let iMapIndex: INT16 = 0;
 
   SetFont(FONT12POINT1());
   SetFontForeground(FONT_BLACK);
   SetFontBackground(FONT_BLACK);
 
   // Display the mapindex position
-  if (GetMouseMapPos(addressof(iMapIndex)))
+  if (GetMouseMapPos(createPointer(() => iMapIndex, (v) => iMapIndex = v)))
     FPSText = swprintf("   (%d)   ", iMapIndex);
   else
     FPSText = "          ";

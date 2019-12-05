@@ -337,7 +337,7 @@ function InitTocMenu(): boolean {
     Enum64.INCORPORATION,
   ];
 
-  let hContentButtonHandle: HVOBJECT;
+  let hContentButtonHandle: SGPVObject;
 
   hContentButtonHandle = GetVideoObject(guiContentButton);
 

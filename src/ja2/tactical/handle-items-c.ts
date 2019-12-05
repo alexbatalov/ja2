@@ -72,14 +72,16 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   let sTargetGridNo: INT16;
   let sAPCost: INT16;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
-  let sAdjustedGridNo: INT16;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
+  let sAdjustedGridNo: INT16 = 0;
+  let sAdjustedGridNo__Pointer = createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v);
   let fDropBomb: boolean = false;
   let fAddingTurningCost: boolean = false;
   let fAddingRaiseGunCost: boolean = false;
   let pIntNode: LEVELNODE | null;
-  let pStructure: STRUCTURE | null;
-  let sGridNo: INT16;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let sGridNo: INT16 = 0;
 
   // Remove any previous actions
   pSoldier.ubPendingAction = NO_PENDING_ACTION;
@@ -95,7 +97,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
 
     if (fFromUI) {
       // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
-      pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
+      pIntNode = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sGridNo, (v) => sGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
       if (pIntNode != null && pTargetSoldier == pSoldier) {
         // Truncate target sioldier
@@ -237,7 +239,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
     // these differences.
     sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 1, pSoldier.bAimTime);
 
-    GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, 1, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
+    ({ fAddingTurningCost, fAddingRaiseGunCost } = GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, 1));
 
     // If we are standing and are asked to turn AND raise gun, ignore raise gun...
     if (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_STAND) {
@@ -259,16 +261,16 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
           // chance of firing burst if we have points... chance decreasing when ordered to do aimed shot
 
           // temporarily set burst to true to calculate action points
-          pSoldier.bDoBurst = true;
-          sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, true, 0);
+          pSoldier.bDoBurst = 1;
+          sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 1, 0);
           // reset burst mode to false (which is what it was at originally)
-          pSoldier.bDoBurst = false;
+          pSoldier.bDoBurst = 0;
 
           if (EnoughPoints(pSoldier, sAPCost, 0, false)) {
             // we have enough points to do this burst, roll the dice and see if we want to change
             if (Random(3 + pSoldier.bAimTime) == 0) {
               DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_LAUGH1);
-              pSoldier.bDoBurst = true;
+              pSoldier.bDoBurst = 1;
               pSoldier.bWeaponMode = Enum265.WM_BURST;
 
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[26], pSoldier.name);
@@ -375,7 +377,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
 
     if (sGotLocation == NOWHERE) {
       // See if we can get there to punch
-      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
       if (sActionGridNo != -1) {
         // OK, we've got somebody...
         sGotLocation = sActionGridNo;
@@ -398,7 +400,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
         pSoldier.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sGotLocation, pSoldier.usUIMovementMode, false, true);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sGotLocation, pSoldier.usUIMovementMode, 0, true);
       } else {
         pSoldier.bAction = Enum289.AI_ACTION_KNIFE_STAB;
         EVENT_SoldierBeginPunchAttack(pSoldier, sAdjustedGridNo, ubDirection);
@@ -418,20 +420,20 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   // USING THE MEDKIT
   if (Item[usHandItem].usItemClass == IC_MEDKIT) {
     // ATE: AI CANNOT GO THROUGH HERE!
-    let usMapPos: UINT16;
+    let usMapPos: UINT16 = 0;
     let fHadToUseCursorPos: boolean = false;
 
     if (gTacticalStatus.fAutoBandageMode) {
       usMapPos = usGridNo;
     } else {
-      GetMouseMapPos(addressof(usMapPos));
+      GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v));
     }
 
     // See if we can get there to stab
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
     if (sActionGridNo == -1) {
       // Try another location...
-      sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
       if (sActionGridNo == -1) {
         return ITEM_HANDLE_CANNOT_GETTO_LOCATION;
@@ -468,7 +470,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
         pSoldier.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
       } else {
         EVENT_SoldierBeginFirstAid(pSoldier, sAdjustedGridNo, ubDirection);
       }
@@ -485,7 +487,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
 
   if (usHandItem == Enum225.WIRECUTTERS) {
     // See if we can get there to stab
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToCutFence(pSoldier);
@@ -501,7 +503,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
           pSoldier.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
         } else {
           EVENT_SoldierBeginCutFence(pSoldier, sAdjustedGridNo, ubDirection);
         }
@@ -523,16 +525,16 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   }
 
   if (usHandItem == Enum225.TOOLKIT) {
-    let ubMercID: UINT8;
+    let ubMercID: UINT8 = 0;
     let fVehicle: boolean = false;
     let sVehicleGridNo: INT16 = -1;
 
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
-    if (IsRepairableStructAtGridNo(usGridNo, addressof(ubMercID)) == 2) {
+    if (IsRepairableStructAtGridNo(usGridNo, createPointer(() => ubMercID, (v) => ubMercID = v)) == 2) {
       let sNewGridNo: INT16;
-      let ubDirection: UINT8;
+      let ubDirection: UINT8 = 0;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, createPointer(() => ubDirection, (v) => ubDirection = v), 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usGridNo = sNewGridNo;
@@ -544,7 +546,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
     }
 
     // See if we can get there to stab
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
     if (sActionGridNo != -1) {
       // Calculate AP costs...
@@ -566,7 +568,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
           pSoldier.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
         } else {
           EVENT_SoldierBeginRepair(pSoldier, sAdjustedGridNo, ubDirection);
         }
@@ -588,15 +590,15 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   }
 
   if (usHandItem == Enum225.GAS_CAN) {
-    let ubMercID: UINT8;
+    let ubMercID: UINT8 = 0;
     let sVehicleGridNo: INT16 = -1;
 
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
-    if (IsRefuelableStructAtGridNo(usGridNo, addressof(ubMercID))) {
+    if (IsRefuelableStructAtGridNo(usGridNo, createPointer(() => ubMercID, (v) => ubMercID = v))) {
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, createPointer(() => ubDirection, (v) => ubDirection = v), 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usGridNo = sNewGridNo;
@@ -606,7 +608,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
     }
 
     // See if we can get there to stab
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
     if (sActionGridNo != -1) {
       // Calculate AP costs...
@@ -625,7 +627,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
           pSoldier.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
         } else {
           EVENT_SoldierBeginRefuel(pSoldier, sAdjustedGridNo, ubDirection);
         }
@@ -647,12 +649,12 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   }
 
   if (usHandItem == Enum225.JAR) {
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToUseJar(pSoldier, sActionGridNo);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOTs, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -664,7 +666,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
           pSoldier.ubPendingActionAnimCount = 0;
 
           // WALK UP TO DEST FIRST
-          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+          EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
         } else {
           EVENT_SoldierBeginTakeBlood(pSoldier, sAdjustedGridNo, ubDirection);
         }
@@ -690,11 +692,11 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
     let pIntTile: LEVELNODE | null;
 
     // Get structure info for in tile!
-    pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(usGridNo), addressof(pStructure));
+    pIntTile = GetCurInteractiveTileGridNoAndStructure(createPointer(() => usGridNo, (v) => usGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
     // We should not have null here if we are given this flag...
     if (pIntTile != null) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), false, true);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, false, true);
 
       if (sActionGridNo != -1) {
         // Calculate AP costs...
@@ -711,7 +713,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
             pSoldier.ubPendingActionAnimCount = 0;
 
             // WALK UP TO DEST FIRST
-            EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+            EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
           } else {
             EVENT_SoldierBeginTakeBlood(pSoldier, usGridNo, ubDirection);
           }
@@ -788,7 +790,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
       pSoldier.ubPendingActionAnimCount = 0;
 
       // WALK UP TO DEST FIRST
-      EVENT_InternalGetNewSoldierPath(pSoldier, usGridNo, pSoldier.usUIMovementMode, false, true);
+      EVENT_InternalGetNewSoldierPath(pSoldier, usGridNo, pSoldier.usUIMovementMode, 0, true);
     } else {
       EVENT_SoldierBeginDropBomb(pSoldier);
     }
@@ -807,14 +809,14 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
   if (Item[usHandItem].usItemClass == IC_BLADE) {
     // See if we can get there to stab
     if (pSoldier.ubBodyType == Enum194.BLOODCAT) {
-      sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
     } else if (CREATURE_OR_BLOODCAT(pSoldier) && PythSpacesAway(pSoldier.sGridNo, usGridNo) > 1) {
-      sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindNextToAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
       if (sActionGridNo == -1) {
-        sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
       }
     } else {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, usGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
     }
 
     if (sActionGridNo != -1) {
@@ -829,7 +831,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
         pSoldier.ubPendingActionAnimCount = 0;
 
         // WALK UP TO DEST FIRST
-        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+        EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
       } else {
         // for the benefit of the AI
         pSoldier.bAction = Enum289.AI_ACTION_KNIFE_STAB;
@@ -859,7 +861,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
     gTacticalStatus.ubAttackBusyCount++;
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("!!!!!!! Starting swipe attack, incrementing a.b.c in HandleItems to %d", gTacticalStatus.ubAttackBusyCount));
 
-    sAPCost = CalcTotalAPsToAttack(pSoldier, sGridNo, false, pSoldier.bAimTime);
+    sAPCost = CalcTotalAPsToAttack(pSoldier, sGridNo, 0, pSoldier.bAimTime);
 
     DeductPoints(pSoldier, sAPCost, 0);
 
@@ -897,7 +899,7 @@ export function HandleItem(pSoldier: SOLDIERTYPE, usGridNo: UINT16, bLevel: INT8
 
       pSoldier.fDontChargeAPsForStanceChange = true;
     } else if (usHandItem == Enum225.GLAUNCHER || usHandItem == Enum225.UNDER_GLAUNCHER) {
-      GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, 1, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
+      ({ fAddingTurningCost, fAddingRaiseGunCost } = GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sTargetGridNo, 1));
 
       // If we are standing and are asked to turn AND raise gun, ignore raise gun...
       if (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_STAND) {
@@ -1061,14 +1063,14 @@ export function HandleSoldierThrowItem(pSoldier: SOLDIERTYPE, sGridNo: INT16): v
 
 export function SoldierGiveItem(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE, pObject: OBJECTTYPE, bInvPos: INT8): void {
   let sActionGridNo: INT16;
-  let sAdjustedGridNo: INT16;
-  let ubDirection: UINT8;
+  let sAdjustedGridNo: INT16 = 0;
+  let ubDirection: UINT8 = 0;
 
   // Remove any previous actions
   pSoldier.ubPendingAction = NO_PENDING_ACTION;
 
   // See if we can get there to stab
-  sActionGridNo = FindAdjacentGridEx(pSoldier, pTargetSoldier.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, pTargetSoldier.sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), true, false);
   if (sActionGridNo != -1) {
     // SEND PENDING ACTION
     pSoldier.ubPendingAction = Enum257.MERC_GIVEITEM;
@@ -1089,7 +1091,7 @@ export function SoldierGiveItem(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTY
     // CHECK IF WE ARE AT THIS GRIDNO NOW
     if (pSoldier.sGridNo != sActionGridNo) {
       // WALK UP TO DEST FIRST
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
     } else {
       EVENT_SoldierBeginGiveItem(pSoldier);
       // CHANGE DIRECTION OF TARGET TO OPPOSIDE DIRECTION!
@@ -1140,14 +1142,14 @@ export function SoldierPickupItem(pSoldier: SOLDIERTYPE, iItemIndex: INT32, sGri
   // CHECK IF NOT AT SAME GRIDNO
   if (pSoldier.sGridNo != sActionGridNo) {
     if (pSoldier.bTeam == gbPlayerNum) {
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, true, true);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 1, true);
 
       // Say it only if we don;t have to go too far!
       if (pSoldier.usPathDataSize > 5) {
         DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_OK1);
       }
     } else {
-      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, false, true);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sActionGridNo, pSoldier.usUIMovementMode, 0, true);
     }
   } else {
     // DO ANIMATION OF PICKUP NOW!
@@ -1172,7 +1174,7 @@ function HandleAutoPlaceFail(pSoldier: SOLDIERTYPE, iItemIndex: INT32, sGridNo: 
   }
 }
 
-export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: Pointer<boolean>): void {
+export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8, pfSelectionList: boolean[] | null): void {
   let pItemPool: ITEM_POOL | null;
   let pItemPoolToDelete: ITEM_POOL | null = null;
   let Object: OBJECTTYPE = createObjectType();
@@ -1183,6 +1185,7 @@ export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32
   let fShouldSayCoolQuote: boolean = false;
   let fDidSayCoolQuote: boolean = false;
   let fSaidBoobyTrapQuote: boolean = false;
+  let fSaidBoobyTrapQuote__Pointer = createPointer(() => fSaidBoobyTrapQuote, (v) => fSaidBoobyTrapQuote = v);
 
   // OK. CHECK IF WE ARE DOING ALL IN THIS POOL....
   if (iItemIndex == ITEM_PICKUP_ACTION_ALL || iItemIndex == ITEM_PICKUP_SELECTION) {
@@ -1195,6 +1198,7 @@ export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32
         fPickup = true;
 
         if (iItemIndex == ITEM_PICKUP_SELECTION) {
+          Assert(pfSelectionList);
           if (!pfSelectionList[cnt]) {
             fPickup = false;
           }
@@ -1205,7 +1209,7 @@ export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32
         cnt++;
 
         if (fPickup) {
-          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool.iItemIndex, false, addressof(fSaidBoobyTrapQuote))) {
+          if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, pItemPool.iItemIndex, false, fSaidBoobyTrapQuote__Pointer)) {
             // Make copy of item
             copyObjectType(Object, gWorldItems[pItemPool.iItemIndex].o);
 
@@ -1279,7 +1283,7 @@ export function SoldierGetItemFromWorld(pSoldier: SOLDIERTYPE, iItemIndex: INT32
   } else {
     // REMOVE ITEM FROM POOL
     if (ItemExistsAtLocation(sGridNo, iItemIndex, pSoldier.bLevel)) {
-      if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, iItemIndex, false, addressof(fSaidBoobyTrapQuote))) {
+      if (ContinuePastBoobyTrap(pSoldier, sGridNo, bZLevel, iItemIndex, false, fSaidBoobyTrapQuote__Pointer)) {
         // Make copy of item
         copyObjectType(Object, gWorldItems[iItemIndex].o);
 
@@ -1376,7 +1380,7 @@ export function HandleSoldierPickupItem(pSoldier: SOLDIERTYPE, iItemIndex: INT32
         // tile
         iItemIndex = FindWorldItemForBombInGridNo(sGridNo, pSoldier.bLevel);
 
-        gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
+        gpBoobyTrapItemPool = <ITEM_POOL>GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
         gpBoobyTrapSoldier = pSoldier;
         gsBoobyTrapGridNo = sGridNo;
         gbBoobyTrapLevel = pSoldier.bLevel;
@@ -1494,14 +1498,14 @@ function RemoveItemGraphicFromWorld(pItem: INVTYPE, sGridNo: INT16, ubLevel: UIN
 
 // INVENTORY POOL STUFF
 export function AddItemToPool(sGridNo: INT16, pObject: OBJECTTYPE, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8): OBJECTTYPE | null {
-  return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, null);
+  return InternalAddItemToPool(createPointer(() => sGridNo, (v) => sGridNo = v), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, null);
 }
 
 export function AddItemToPoolAndGetIndex(sGridNo: INT16, pObject: OBJECTTYPE, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): OBJECTTYPE | null {
-  return InternalAddItemToPool(addressof(sGridNo), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, piItemIndex);
+  return InternalAddItemToPool(createPointer(() => sGridNo, (v) => sGridNo = v), pObject, bVisible, ubLevel, usFlags, bRenderZHeightAboveLevel, piItemIndex);
 }
 
-export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: OBJECTTYPE, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32>): OBJECTTYPE | null {
+export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: OBJECTTYPE, bVisible: INT8, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, piItemIndex: Pointer<INT32> | null): OBJECTTYPE | null {
   let pItemPool: ITEM_POOL | null;
   let pItemPoolTemp: ITEM_POOL | null;
   let iWorldItem: INT32;
@@ -1590,10 +1594,7 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: OBJECTT
         }
         // Else can we place an item on top?
         else if (pStructure.fFlags & (STRUCTURE_GENERIC)) {
-          let ubLevel0: UINT8;
-          let ubLevel1: UINT8;
-          let ubLevel2: UINT8;
-          let ubLevel3: UINT8;
+          let ubLevel: UINT8[] = createArray(4, 0);
 
           // If we are going into a raised struct AND we have above level set to -1
           if (StructureBottomLevel(pStructure) != 1 && fForceOnGround) {
@@ -1601,16 +1602,16 @@ export function InternalAddItemToPool(psGridNo: Pointer<INT16>, pObject: OBJECTT
           }
 
           // Find most dence area...
-          if (StructureDensity(pStructure, addressof(ubLevel0), addressof(ubLevel1), addressof(ubLevel2), addressof(ubLevel3))) {
-            if (ubLevel3 == 0 && ubLevel2 == 0 && ubLevel1 == 0 && ubLevel0 == 0) {
+          if (StructureDensity(pStructure, createElementPointer(ubLevel, 0), createElementPointer(ubLevel, 1), createElementPointer(ubLevel, 2), createElementPointer(ubLevel, 3))) {
+            if (ubLevel[3] == 0 && ubLevel[2] == 0 && ubLevel[1] == 0 && ubLevel[0] == 0) {
               bRenderZHeightAboveLevel = 0;
-            } else if (ubLevel3 >= ubLevel0 && ubLevel3 >= ubLevel2 && ubLevel3 >= ubLevel1) {
+            } else if (ubLevel[3] >= ubLevel[0] && ubLevel[3] >= ubLevel[2] && ubLevel[3] >= ubLevel[1]) {
               bRenderZHeightAboveLevel = CONVERT_INDEX_TO_PIXELS(4);
-            } else if (ubLevel2 >= ubLevel0 && ubLevel2 >= ubLevel1 && ubLevel2 >= ubLevel3) {
+            } else if (ubLevel[2] >= ubLevel[0] && ubLevel[2] >= ubLevel[1] && ubLevel[2] >= ubLevel[3]) {
               bRenderZHeightAboveLevel = CONVERT_INDEX_TO_PIXELS(3);
-            } else if (ubLevel1 >= ubLevel0 && ubLevel1 >= ubLevel2 && ubLevel1 >= ubLevel3) {
+            } else if (ubLevel[1] >= ubLevel[0] && ubLevel[1] >= ubLevel[2] && ubLevel[1] >= ubLevel[3]) {
               bRenderZHeightAboveLevel = CONVERT_INDEX_TO_PIXELS(2);
-            } else if (ubLevel0 >= ubLevel1 && ubLevel0 >= ubLevel2 && ubLevel0 >= ubLevel3) {
+            } else if (ubLevel[0] >= ubLevel[1] && ubLevel[0] >= ubLevel[2] && ubLevel[0] >= ubLevel[3]) {
               bRenderZHeightAboveLevel = CONVERT_INDEX_TO_PIXELS(1);
             }
           }
@@ -1761,7 +1762,7 @@ function ItemExistsAtLocation(sGridNo: INT16, iItemIndex: INT32, ubLevel: UINT8)
   return false;
 }
 
-export function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8, piItemIndex: Pointer<INT32>): boolean {
+export function ItemTypeExistsAtLocation(sGridNo: INT16, usItem: UINT16, ubLevel: UINT8, piItemIndex: Pointer<INT32> | null): boolean {
   let pItemPool: ITEM_POOL | null;
   let pItemPoolTemp: ITEM_POOL | null;
   let fItemFound: boolean = false;
@@ -2699,7 +2700,7 @@ export function RemoveFlashItemSlot(pItemPool: ITEM_POOL | null): boolean {
 
         // Check if we have a callback and call it if so!
         if (FlashItemSlots[uiCount].Callback != null) {
-          FlashItemSlots[uiCount].Callback();
+          (<ITEM_POOL_LOCATOR_HOOK>FlashItemSlots[uiCount].Callback)();
         }
 
         return true;
@@ -2862,7 +2863,7 @@ export function RenderTopmostFlashingItems(): void {
   }
 }
 
-export function VerifyGiveItem(pSoldier: SOLDIERTYPE, ppTargetSoldier: Pointer<Pointer<SOLDIERTYPE>>): boolean {
+export function VerifyGiveItem(pSoldier: SOLDIERTYPE, ppTargetSoldier: Pointer<SOLDIERTYPE>): boolean {
   let pTSoldier: SOLDIERTYPE;
   let usSoldierIndex: UINT16;
   let pObject: OBJECTTYPE | null;
@@ -2919,7 +2920,7 @@ export function VerifyGiveItem(pSoldier: SOLDIERTYPE, ppTargetSoldier: Pointer<P
 }
 
 export function SoldierGiveItemFromAnimation(pSoldier: SOLDIERTYPE): void {
-  let pTSoldier: SOLDIERTYPE;
+  let pTSoldier: SOLDIERTYPE = <SOLDIERTYPE><unknown>undefined;
   let bInvPos: INT8;
   let TempObject: OBJECTTYPE = createObjectType();
   let ubProfile: UINT8;
@@ -2957,7 +2958,7 @@ export function SoldierGiveItemFromAnimation(pSoldier: SOLDIERTYPE): void {
   // ATE: Deduct APs!
   DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
 
-  if (VerifyGiveItem(pSoldier, addressof(pTSoldier))) {
+  if (VerifyGiveItem(pSoldier, createPointer(() => pTSoldier, (v) => pTSoldier = v))) {
     // DAVE! - put stuff here to bring up shopkeeper.......
 
     // if the user just clicked on an arms dealer
@@ -3096,8 +3097,8 @@ export function AdjustGridNoForItemPlacement(pSoldier: SOLDIERTYPE, sGridNo: INT
   let sDesiredLevel: INT16;
   let sActionGridNo: INT16;
   let fStructFound: boolean = false;
-  let ubDirection: UINT8;
-  let sAdjustedGridNo: INT16;
+  let ubDirection: UINT8 = 0;
+  let sAdjustedGridNo: INT16 = 0;
   let ubTargetID: UINT8;
 
   sActionGridNo = sGridNo;
@@ -3108,7 +3109,7 @@ export function AdjustGridNoForItemPlacement(pSoldier: SOLDIERTYPE, sGridNo: INT
     sDesiredLevel = pSoldier.bLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
     pStructure = FindStructure(sGridNo, STRUCTURE_BLOCKSMOVES);
     while (pStructure) {
-      if (!(pStructure.value.fFlags & STRUCTURE_PASSABLE) && pStructure.value.sCubeOffset == sDesiredLevel) {
+      if (!(pStructure.fFlags & STRUCTURE_PASSABLE) && pStructure.sCubeOffset == sDesiredLevel) {
         // Check for openable flag....
         // if ( pStructure->fFlags & ( STRUCTURE_OPENABLE | STRUCTURE_HASITEMONTOP ) )
         {
@@ -3125,7 +3126,7 @@ export function AdjustGridNoForItemPlacement(pSoldier: SOLDIERTYPE, sGridNo: INT
 
   if (fStructFound || (ubTargetID != NOBODY && ubTargetID != pSoldier.ubID)) {
     // GET ADJACENT GRIDNO
-    sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), false, false);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), false, false);
 
     if (sActionGridNo == -1) {
       sActionGridNo = sAdjustedGridNo;
@@ -3331,7 +3332,7 @@ function ContinuePastBoobyTrap(pSoldier: SOLDIERTYPE, sGridNo: INT16, bLevel: IN
 
           // Set things up..
           gpBoobyTrapSoldier = pSoldier;
-          gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
+          gpBoobyTrapItemPool = <ITEM_POOL>GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
           gsBoobyTrapGridNo = sGridNo;
           gbBoobyTrapLevel = pSoldier.bLevel;
           gfDisarmingBuriedBomb = false;
@@ -3347,7 +3348,7 @@ function ContinuePastBoobyTrap(pSoldier: SOLDIERTYPE, sGridNo: INT16, bLevel: IN
         }
       }
 
-      gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
+      gpBoobyTrapItemPool = <ITEM_POOL>GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier.bLevel);
       if (fBoobyTrapKnowledge) {
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
@@ -3457,7 +3458,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
-        SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, true, gbBoobyTrapLevel);
+        SetOffBombsInGridNo(gpBoobyTrapSoldier.ubID, gsBoobyTrapGridNo, true, gbBoobyTrapLevel);
       } else {
         SetOffBoobyTrap(gpBoobyTrapItemPool);
       }
@@ -3528,7 +3529,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
       DoMercBattleSound(gpBoobyTrapSoldier, Enum259.BATTLE_SOUND_CURSE1);
 
       if (gfDisarmingBuriedBomb) {
-        SetOffBombsInGridNo(gpBoobyTrapSoldier.value.ubID, gsBoobyTrapGridNo, true, gbBoobyTrapLevel);
+        SetOffBombsInGridNo(gpBoobyTrapSoldier.ubID, gsBoobyTrapGridNo, true, gbBoobyTrapLevel);
       } else {
         SetOffBoobyTrap(gpBoobyTrapItemPool);
       }
@@ -3546,7 +3547,7 @@ function SwitchMessageBoxCallBack(ubExitValue: UINT8): void {
     // Message that switch is activated...
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[60]);
 
-    SetOffBombsByFrequency(gpTempSoldier.value.ubID, bTempFrequency);
+    SetOffBombsByFrequency(gpTempSoldier.ubID, bTempFrequency);
   }
 }
 
@@ -3708,7 +3709,7 @@ export function MineSpottedDialogueCallBack(): void {
   // ATE: REALLY IMPORTANT - ALL CALLBACK ITEMS SHOULD UNLOCK
   gTacticalStatus.fLockItemLocators = false;
 
-  pItemPool = GetItemPool(gsBoobyTrapGridNo, gbBoobyTrapLevel);
+  pItemPool = <ITEM_POOL>GetItemPool(gsBoobyTrapGridNo, gbBoobyTrapLevel);
 
   guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
 
@@ -3769,7 +3770,7 @@ export function RemoveBlueFlag(sGridNo: INT16, bLevel: INT8): void {
 }
 
 export function MakeNPCGrumpyForMinorOffense(pSoldier: SOLDIERTYPE, pOffendingSoldier: SOLDIERTYPE | null): void {
-  CancelAIAction(pSoldier, true);
+  CancelAIAction(pSoldier, 1);
 
   switch (pSoldier.ubProfile) {
     case Enum268.FREDO:

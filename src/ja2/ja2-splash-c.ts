@@ -47,7 +47,7 @@ export function InitJA2SplashScreen(): void {
 // #endif
 
   InvalidateScreen();
-  RefreshScreen(null);
+  RefreshScreen();
 
   guiSplashStartTime = GetJA2Clock();
 }

@@ -53,8 +53,8 @@ let giCurrentViewLevel: INT32 = ALL_LEVELS_MASK;
 let gbSectorLevels: UINT8[][] /* boolean[16][16] */ = createArrayFrom(16, () => createArray(16, 0));
 let gfGlobalSummaryLoaded: boolean = false;
 
-let gpSectorSummary: Pointer<SUMMARYFILE>[][][] /* [16][16][8] */;
-let gpCurrentSectorSummary: Pointer<SUMMARYFILE>;
+let gpSectorSummary: SUMMARYFILE[][][] /* Pointer<SUMMARYFILE>[16][16][8] */ = createArrayFrom(16, () => createArrayFrom(16, () => createArray(8, <SUMMARYFILE><unknown>null)));
+let gpCurrentSectorSummary: SUMMARYFILE /* Pointer<SUMMARYFILE> */;
 
 let MapRegion: MOUSE_REGION = createMouseRegion();
 
@@ -342,18 +342,15 @@ export function DestroySummaryWindow(): void {
   EnableAllTextFields();
 
   if (gpWorldItemsSummaryArray) {
-    MemFree(gpWorldItemsSummaryArray);
-    gpWorldItemsSummaryArray = null;
+    gpWorldItemsSummaryArray = <WORLDITEM[]><unknown>null;
     gusWorldItemsSummaryArraySize = 0;
   }
   if (gpPEnemyItemsSummaryArray) {
-    MemFree(gpPEnemyItemsSummaryArray);
-    gpPEnemyItemsSummaryArray = null;
+    gpPEnemyItemsSummaryArray = <OBJECTTYPE[]><unknown>null;
     gusPEnemyItemsSummaryArraySize = 0;
   }
   if (gpNEnemyItemsSummaryArray) {
-    MemFree(gpNEnemyItemsSummaryArray);
-    gpNEnemyItemsSummaryArray = null;
+    gpNEnemyItemsSummaryArray = <OBJECTTYPE[]><unknown>null;
     gusNEnemyItemsSummaryArraySize = 0;
   }
   if (gfWorldLoaded) {
@@ -1007,7 +1004,7 @@ export function RenderSummaryWindow(): void {
           gszDisplayName = gszFilename;
           EnableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
           if (gpCurrentSectorSummary) {
-            if (gpCurrentSectorSummary.value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
+            if (gpCurrentSectorSummary.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
               ShowButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
             else
               HideButton(iSummaryButton[Enum58.SUMMARY_UPDATE]);
@@ -1219,7 +1216,7 @@ export function RenderSummaryWindow(): void {
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
-              if (!gfItemDetailsMode || !gpSectorSummary[x][y][0] || gpSectorSummary[x][y][0].value.usNumItems)
+              if (!gfItemDetailsMode || !gpSectorSummary[x][y][0] || gpSectorSummary[x][y][0].usNumItems)
                 continue;
             }
           } else if (giCurrentViewLevel == ALTERNATE_LEVELS_MASK) {
@@ -1239,19 +1236,19 @@ export function RenderSummaryWindow(): void {
               mprintf(MAP_LEFT + x * 13 + 4, ClipRect.iTop + 4, str);
             }
             if (gbSectorLevels[x][y] & ALTERNATE_GROUND_MASK) {
-              if (!gfItemDetailsMode || !gpSectorSummary[x][y][4] || gpSectorSummary[x][y][4].value.usNumItems)
+              if (!gfItemDetailsMode || !gpSectorSummary[x][y][4] || gpSectorSummary[x][y][4].usNumItems)
                 continue;
             }
           } else if (gbSectorLevels[x][y] & giCurrentViewLevel) {
-            if (!gfItemDetailsMode || !gpSectorSummary[x][y][giCurrLevel] || gpSectorSummary[x][y][giCurrLevel].value.usNumItems)
+            if (!gfItemDetailsMode || !gpSectorSummary[x][y][giCurrLevel] || gpSectorSummary[x][y][giCurrLevel].usNumItems)
               continue;
           }
           ClipRect.iLeft = MAP_LEFT + x * 13;
           ClipRect.iRight = ClipRect.iLeft + 12;
           pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-          Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+          Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
           if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-            Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
+            Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
           UnLockVideoSurface(FRAME_BUFFER);
         }
       }
@@ -1307,7 +1304,7 @@ export function RenderSummaryWindow(): void {
 export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, fUpdate: boolean): void {
   let str: string /* UINT16[50] */;
   let szCoord: string /* UINT8[40] */;
-  let ptr: string /* Pointer<UINT16> */;
+  let ptr: number /* Pointer<UINT16> */;
   let x: INT16;
   let y: INT16;
 
@@ -1332,12 +1329,12 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
   // The idea here is to get a pointer to the filename's period, then
   // focus on the character previous to it.  If it is a 1, 2, or 3, then
   // the filename was in a basement level.  Otherwise, it is a ground level.
-  ptr = wcsstr(gszFilename, "_a.dat");
-  if (ptr) {
-    ptr = wcsstr(gszFilename, "_b");
-    if (ptr && ptr[2] >= '1' && ptr[2] <= '3' && ptr[5] == '.') {
+  ptr = gszFilename.indexOf("_a.dat");
+  if (ptr !== -1) {
+    ptr = gszFilename.indexOf("_b");
+    if (ptr !== -1 && gszFilename[ptr + 2] >= '1' && gszFilename[ptr + 2] <= '3' && gszFilename[ptr + 5] == '.') {
       // it's a alternate basement map
-      switch (ptr[2]) {
+      switch (gszFilename[ptr + 2]) {
         case '1':
           gsSectorLayer = ALTERNATE_B1_MASK;
           giCurrLevel = 5;
@@ -1356,10 +1353,10 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
       giCurrLevel = 4;
     }
   } else {
-    ptr = wcsstr(gszFilename, "_b");
-    if (ptr && ptr[2] >= '1' && ptr[2] <= '3' && ptr[3] == '.') {
+    ptr = gszFilename.indexOf("_b");
+    if (ptr !== -1 && gszFilename[ptr + 2] >= '1' && gszFilename[ptr + 2] <= '3' && gszFilename[ptr + 3] == '.') {
       // it's a alternate basement map
-      switch (ptr[2]) {
+      switch (gszFilename[ptr + 2]) {
         case '1':
           gsSectorLayer = BASEMENT1_LEVEL_MASK;
           giCurrLevel = 1;
@@ -1403,9 +1400,9 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
 
     szCoord = sprintf("%S", gszFilename);
     if (gsSectorX > 9)
-      szCoord[3] = '\0';
+      szCoord = szCoord.substring(0, 3);
     else
-      szCoord[2] = '\0';
+      szCoord = szCoord.substring(0, 2);
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     EvaluateWorld(szCoord, giCurrLevel);
 
@@ -1422,7 +1419,7 @@ function SummaryOkayCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function SummaryToggleGridCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderGrid = (btn.uiFlags & BUTTON_CLICKED_ON);
+    gfRenderGrid = Boolean(btn.uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = true;
   }
 }
@@ -1678,7 +1675,7 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
           else if (gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][3])
             gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][3];
           else
-            gpCurrentSectorSummary = null;
+            gpCurrentSectorSummary = <SUMMARYFILE><unknown>null;
           break;
         case GROUND_LEVEL_MASK: // already pointing to the correct level
           gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][0];
@@ -1702,7 +1699,7 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
           else if (gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][7])
             gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][7];
           else
-            gpCurrentSectorSummary = null;
+            gpCurrentSectorSummary = <SUMMARYFILE><unknown>null;
           break;
         case ALTERNATE_GROUND_MASK: // already pointing to the correct level
           gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][4];
@@ -1718,8 +1715,7 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
           break;
       }
       if (gpWorldItemsSummaryArray) {
-        MemFree(gpWorldItemsSummaryArray);
-        gpWorldItemsSummaryArray = null;
+        gpWorldItemsSummaryArray = <WORLDITEM[]><unknown>null;
         gusWorldItemsSummaryArraySize = 0;
       }
       if (gfItemDetailsMode) {
@@ -1779,7 +1775,7 @@ function SummaryToggleLevelCallback(btn: GUI_BUTTON, reason: INT32): void {
 
 function SummaryLoadMapCallback(btn: GUI_BUTTON, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let ptr: string /* Pointer<UINT16> */;
+    let ptr: number /* Pointer<UINT16> */;
     let str: string /* UINT16[50] */;
     gfRenderSummary = true;
 
@@ -1806,12 +1802,12 @@ function SummaryLoadMapCallback(btn: GUI_BUTTON, reason: INT32): void {
       gfMapFileDirty = false;
     }
     RemoveProgressBar(0);
-    ptr = wcsstr(gszDisplayName, "_b");
-    if (!ptr || ptr[3] != '.') {
+    ptr = gszDisplayName.indexOf("_b");
+    if (ptr === -1 || gszDisplayName[ptr + 3] != '.') {
       gsSectorLayer = GROUND_LEVEL_MASK;
       giCurrLevel = 0;
     } else {
-      switch (ptr.charCodeAt(2) - '0'.charCodeAt(0)) {
+      switch (gszDisplayName.charCodeAt(ptr + 2) - '0'.charCodeAt(0)) {
         case 1:
           gsSectorLayer = BASEMENT1_LEVEL_MASK;
           break;
@@ -1911,6 +1907,7 @@ function LoadGlobalSummary(): void {
   let y: INT32;
   let szFilename: string /* UINT8[40] */;
   let szSector: string /* UINT8[6] */;
+  let buffer: Buffer;
 
   console.debug("Executing LoadGlobalSummary()...\n");
 
@@ -1937,6 +1934,7 @@ function LoadGlobalSummary(): void {
   // will be stored in the gbSectorLevels array.  Also, it attempts to load summaries for those
   // maps.  If the summary information isn't found, then the occurrences are recorded and reported
   // to the user when finished to give the option to generate them.
+  buffer = Buffer.allocUnsafe(4);
   for (y = 0; y < 16; y++) {
     for (x = 0; x < 16; x++) {
       gbSectorLevels[x][y] = 0;
@@ -1949,7 +1947,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= GROUND_LEVEL_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 0, dMajorVersion);
       } else {
@@ -1963,7 +1962,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT1_LEVEL_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 1, dMajorVersion);
       } else {
@@ -1977,7 +1977,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT2_LEVEL_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 2, dMajorVersion);
       } else {
@@ -1991,7 +1992,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT3_LEVEL_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 3, dMajorVersion);
       } else {
@@ -2005,7 +2007,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_GROUND_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 4, dMajorVersion);
       } else {
@@ -2019,7 +2022,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 5, dMajorVersion);
       } else {
@@ -2033,7 +2037,8 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B2_MASK;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 6, dMajorVersion);
       } else {
@@ -2048,7 +2053,8 @@ function LoadGlobalSummary(): void {
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
         ;
-        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
+        uiNumBytesRead = FileRead(hfile, buffer, 4);
+        dMajorVersion = buffer.readFloatLE(0);
         FileClose(hfile);
         LoadSummary(szSector, 7, dMajorVersion);
       } else {
@@ -2208,7 +2214,7 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   else
     x = pSector.charCodeAt(1) - '0'.charCodeAt(0) - 1;
   if (gpSectorSummary[x][y][ubLevel]) {
-    gpSectorSummary[x][y][ubLevel] = null;
+    gpSectorSummary[x][y][ubLevel] = <SUMMARYFILE><unknown>null;
   }
   gpSectorSummary[x][y][ubLevel] = createSummaryFile();
   if (gpSectorSummary[x][y][ubLevel])
@@ -2335,8 +2341,7 @@ function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
     SetProgressBarMsgAttributes(0, SMALLCOMPFONT(), FONT_BLACK, FONT_BLACK);
 
     if (gpCurrentSectorSummary) {
-      MemFree(gpCurrentSectorSummary);
-      gpCurrentSectorSummary = null;
+      gpCurrentSectorSummary = <SUMMARYFILE><unknown>null;
     }
 
     str = sprintf("%c%d", String.fromCharCode(gsSelSectorY + 'A'.charCodeAt(0) - 1), gsSelSectorX);
@@ -2506,9 +2511,9 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     gusNEnemyItemsSummaryArraySize = 0;
   }
 
-  if (!gpCurrentSectorSummary.value.uiNumItemsPosition) {
+  if (!gpCurrentSectorSummary.uiNumItemsPosition) {
     // Don't have one, so generate them
-    if (gpCurrentSectorSummary.value.ubSummaryVersion == GLOBAL_SUMMARY_VERSION)
+    if (gpCurrentSectorSummary.ubSummaryVersion == GLOBAL_SUMMARY_VERSION)
       gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     SummaryUpdateCallback(ButtonList[iSummaryButton[Enum58.SUMMARY_UPDATE]], MSYS_CALLBACK_REASON_LBUTTON_UP);
     gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][giCurrLevel];
@@ -2521,7 +2526,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     return;
   }
   // Now fileseek directly to the file position where the number of world items are stored
-  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiNumItemsPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.uiNumItemsPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
@@ -2539,9 +2544,9 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   // Now compare this number with the number the summary thinks we should have.  If they are different,
   // the the summary doesn't match the map.  What we will do is force regenerate the map so that they do
   // match
-  if (uiNumItems != gpCurrentSectorSummary.value.usNumItems && fAllowRecursion) {
+  if (uiNumItems != gpCurrentSectorSummary.usNumItems && fAllowRecursion) {
     FileClose(hfile);
-    gpCurrentSectorSummary.value.uiNumItemsPosition = 0;
+    gpCurrentSectorSummary.uiNumItemsPosition = 0;
     SetupItemDetailsMode(false);
     return;
   }
@@ -2550,7 +2555,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   ShowButton(iSummaryButton[Enum58.SUMMARY_REAL]);
   ShowButton(iSummaryButton[Enum58.SUMMARY_ENEMY]);
   gpWorldItemsSummaryArray = createArrayFrom(uiNumItems, createWorldItem);
-  gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.value.usNumItems;
+  gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.usNumItems;
   buffer = Buffer.allocUnsafe(WORLD_ITEM_SIZE * uiNumItems);
   uiNumBytesRead = FileRead(hfile, buffer, WORLD_ITEM_SIZE * uiNumItems);
   readObjectArray(gpWorldItemsSummaryArray, buffer, 0, readWorldItem);
@@ -2563,12 +2568,12 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   // summary information, then the second pass will repeat the process, except it will record the actual items.
 
   // PASS #1
-  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
   }
-  for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
+  for (i = 0; i < gpCurrentSectorSummary.MapInfo.ubNumIndividuals; i++) {
     buffer = Buffer.allocUnsafe(BASIC_SOLDIER_CREATE_STRUCT_SIZE);
     uiNumBytesRead = FileRead(hfile, buffer, BASIC_SOLDIER_CREATE_STRUCT_SIZE);
     if (uiNumBytesRead != BASIC_SOLDIER_CREATE_STRUCT_SIZE) {
@@ -2620,12 +2625,12 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
   // PASS #2
   // During this pass, simply copy all the data instead of counting it, now that we have already done so.
   usPEnemyIndex = usNEnemyIndex = 0;
-  if (!FileSeek(hfile, gpCurrentSectorSummary.value.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
+  if (!FileSeek(hfile, gpCurrentSectorSummary.uiEnemyPlacementPosition, FILE_SEEK_FROM_START)) {
     // Position couldn't be found!
     FileClose(hfile);
     return;
   }
-  for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
+  for (i = 0; i < gpCurrentSectorSummary.MapInfo.ubNumIndividuals; i++) {
     buffer = Buffer.allocUnsafe(BASIC_SOLDIER_CREATE_STRUCT_SIZE);
     uiNumBytesRead = FileRead(hfile, buffer, BASIC_SOLDIER_CREATE_STRUCT_SIZE);
     if (uiNumBytesRead != BASIC_SOLDIER_CREATE_STRUCT_SIZE) {
@@ -2671,7 +2676,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
 
 function GetCurrentSummaryVersion(): UINT8 {
   if (gpCurrentSectorSummary) {
-    return gpCurrentSectorSummary.value.MapInfo.ubMapVersion;
+    return gpCurrentSectorSummary.MapInfo.ubMapVersion;
   }
   return 0;
 }

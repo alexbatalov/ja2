@@ -37,7 +37,6 @@ const COMPRESS_RUN_MASK = 0x7F;
 // LOCAL global variables
 // *******************************************************************************
 
-let ghVideoObjects: HLIST = null;
 export let gfVideoObjectsInit: boolean = false;
 
 interface VOBJECT_NODE {

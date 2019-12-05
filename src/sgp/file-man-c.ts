@@ -940,67 +940,13 @@ function BuildFileDirectory(): void {
   */
 }
 
-//**************************************************************************
-//
-// GetFilesInDirectory
-//
-//		Gets the files in a directory and the subdirectories.
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		??nov96:HJH		-> creation
-//
-//**************************************************************************
-
-function GetFilesInDirectory(hStack: HCONTAINER, pcDir: string /* Pointer<CHAR> */, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
-  let iNumFiles: INT32;
-  let inFind: WIN32_FIND_DATA;
-  let fMore: boolean;
-  let cName: string /* CHAR[FILENAME_LENGTH] */;
-  let cDir: string /* CHAR[FILENAME_LENGTH] */;
-  let hFileIn: HANDLE;
-
-  fMore = true;
-  iNumFiles = 0;
-
-  while (fMore) {
-    if (pFind.value.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-      if (strcmp(pFind.value.cFileName, ".") != 0 && strcmp(pFind.value.cFileName, "..") != 0) {
-        // a valid directory - recurse and find the files in that directory
-
-        inFind.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
-        cDir = pcDir;
-        addressof(cDir[cDir.length - 3]) = pFind.value.cFileName;
-        addressof(cDir[cDir.length]) = "\\*.*\0";
-        hFileIn = FindFirstFile(cDir, addressof(inFind));
-        iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, addressof(inFind));
-        FindClose(hFileIn);
-      }
-    } else {
-      iNumFiles++;
-      cName = pcDir;
-      addressof(cName[cName.length - 3]) = pFind.value.cFileName;
-      CharLower(cName);
-      hStack = Push(hStack, cName);
-    }
-    pFind.value.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
-    fMore = FindNextFile(hFile, pFind);
-  }
-
-  return iNumFiles;
-}
-
 export function SetFileManCurrentDirectory(pcDirectory: string /* STR */): boolean {
-  return SetCurrentDirectory(pcDirectory);
+  process.chdir(pcDirectory);
+  return true;
 }
 
-export function GetFileManCurrentDirectory(pcDirectory: Pointer<string> /* STRING512 */): boolean {
-  if (GetCurrentDirectory(512, pcDirectory) == 0) {
-    return false;
-  }
-  return true;
+export function GetFileManCurrentDirectory(): string {
+  return process.cwd();
 }
 
 export function MakeFileManDirectory(pcDirectory: string /* STRING512 */): boolean {
@@ -1020,7 +966,7 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
   let zOldDir: string /* CHAR8[512] */;
   let zSubdirectory: string /* CHAR8[512] */;
 
-  GetFileManCurrentDirectory(zOldDir);
+  zOldDir = GetFileManCurrentDirectory();
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
     FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
@@ -1087,7 +1033,7 @@ export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
   let fDone: boolean = false;
   let zOldDir: string /* CHAR8[512] */;
 
-  GetFileManCurrentDirectory(zOldDir);
+  zOldDir = GetFileManCurrentDirectory();
 
   if (!SetFileManCurrentDirectory(pcDirectory)) {
     FastDebugMsg(FormatString("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));

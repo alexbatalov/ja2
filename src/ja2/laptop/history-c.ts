@@ -285,7 +285,7 @@ function RemoveHistory(): void {
 
 function RenderHistoryBackGround(): void {
   // render generic background for history system
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
 
   // get title bar object
@@ -643,7 +643,7 @@ function DisplayHistoryListHeaders(): void {
 
 function DisplayHistoryListBackground(): void {
   // this function will display the History list display background
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
 
   // get shaded line object

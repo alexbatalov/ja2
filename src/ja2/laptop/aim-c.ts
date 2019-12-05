@@ -307,10 +307,10 @@ export function HandleAIM(): void {
 }
 
 export function RenderAIM(): void {
-  let hMemberCardHandle: HVOBJECT;
-  let hPoliciesHandle: HVOBJECT;
-  let hLinksHandle: HVOBJECT;
-  let hHistoryHandle: HVOBJECT;
+  let hMemberCardHandle: SGPVObject;
+  let hPoliciesHandle: SGPVObject;
+  let hLinksHandle: SGPVObject;
+  let hHistoryHandle: SGPVObject;
   //	UINT16	x,y, uiPosX, uiPosY;
 
   DrawAimDefaults();
@@ -419,8 +419,8 @@ export function RemoveAimDefaults(): boolean {
 }
 
 export function DrawAimDefaults(): boolean {
-  let hRustBackGroundHandle: HVOBJECT;
-  let hAimSymbolHandle: HVOBJECT;
+  let hRustBackGroundHandle: SGPVObject;
+  let hAimSymbolHandle: SGPVObject;
   let x: UINT16;
   let y: UINT16;
   let uiPosX: UINT16;
@@ -671,7 +671,7 @@ function DisplayFlowerAd(fInit: boolean, fRedraw: boolean): UINT8 {
   }
 
   if (((uiCurTime - DisplayFlowerAd__uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
-    let hAdHandle: HVOBJECT;
+    let hAdHandle: SGPVObject;
 
     if (DisplayFlowerAd__ubSubImage == AIM_FLOWER_NUM_SUBIMAGES) {
       if (DisplayFlowerAd__ubCount == 0 || fRedraw) {
@@ -725,7 +725,7 @@ function DrawWarningBox(fInit: boolean, fRedraw: boolean): UINT8 {
     let sText: string /* wchar_t[400] */;
     let uiStartLoc: UINT32 = 0;
     let usLocY: UINT16 = AIM_WARNING_TEXT_Y + (GetFontHeight(AIM_WARNING_FONT()) + 2) * 2;
-    let hWarningHandle: HVOBJECT;
+    let hWarningHandle: SGPVObject;
 
     // Warning
     hWarningHandle = GetVideoObject(guiWarning);
@@ -782,7 +782,7 @@ function DisplayAd(fInit: boolean, fRedraw: boolean, usDelay: UINT16, usNumberOf
   }
 
   if (((uiCurTime - DisplayAd__uiLastTime) > usDelay) || fRedraw) {
-    let hAdHandle: HVOBJECT;
+    let hAdHandle: SGPVObject;
 
     if (DisplayAd__ubSubImage == 0) {
       if (DisplayAd__ubCount == 0 || fRedraw) {
@@ -907,7 +907,7 @@ function DisplayBobbyRAd(fInit: boolean, fRedraw: boolean): UINT8 {
   }
 
   if (((uiCurTime - DisplayBobbyRAd__uiLastTime) > usDelay) || fRedraw) {
-    let hAdHandle: HVOBJECT;
+    let hAdHandle: SGPVObject;
 
     // Loop through the first 6 images twice, then start into the later ones
     hAdHandle = GetVideoObject(guiBobbyRAdImages);

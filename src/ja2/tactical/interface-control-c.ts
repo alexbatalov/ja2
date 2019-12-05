@@ -9,6 +9,7 @@ export let guiTacticalInterfaceFlags: UINT32;
 
 let gusUICurIntTileEffectIndex: UINT16;
 let gsUICurIntTileEffectGridNo: INT16;
+let gsUICurIntTileEffectGridNo__Pointer = createPointer(() => gsUICurIntTileEffectGridNo, (v) => gsUICurIntTileEffectGridNo = v);
 let gsUICurIntTileOldShade: UINT8;
 
 export let gfRerenderInterfaceFromHelpText: boolean = false;
@@ -49,7 +50,7 @@ export function RenderTacticalInterface(): void {
 
   switch (gsCurInterfacePanel) {
     case Enum215.SM_PANEL:
-      RenderSMPanel(addressof(fInterfacePanelDirty));
+      RenderSMPanel(fInterfacePanelDirty__Pointer);
       break;
 
     case Enum215.TEAM_PANEL:
@@ -65,13 +66,13 @@ export function RenderTacticalInterface(): void {
 function HandlePausedTacticalRender(): void {
   // for a one frame paused render of tactical
   if (gfPausedTacticalRenderFlags) {
-    gRenderFlags |= gfPausedTacticalRenderFlags;
+    gRenderFlags |= Number(gfPausedTacticalRenderFlags);
     gfPausedTacticalRenderFlags = false;
   }
 
   if (gfPausedTacticalRenderInterfaceFlags) {
     fInterfacePanelDirty = gfPausedTacticalRenderInterfaceFlags;
-    gfPausedTacticalRenderInterfaceFlags = false;
+    gfPausedTacticalRenderInterfaceFlags = 0;
   }
 
   return;
@@ -82,7 +83,7 @@ export function RenderTacticalInterfaceWhileScrolling(): void {
 
   switch (gsCurInterfacePanel) {
     case Enum215.SM_PANEL:
-      RenderSMPanel(addressof(fInterfacePanelDirty));
+      RenderSMPanel(fInterfacePanelDirty__Pointer);
       break;
 
     case Enum215.TEAM_PANEL:
@@ -195,7 +196,7 @@ export function SetUpInterface(): void {
 
   // Check if we are over an interactive tile...
   if (gfUIShowCurIntTile) {
-    pIntTile = GetCurInteractiveTileGridNo(gsUICurIntTileEffectGridNo);
+    pIntTile = GetCurInteractiveTileGridNo(gsUICurIntTileEffectGridNo__Pointer);
 
     if (pIntTile != null) {
       gusUICurIntTileEffectIndex = pIntTile.usIndex;
@@ -244,7 +245,7 @@ export function ResetInterface(): void {
   }
 
   if (fInterfacePanelDirty) {
-    fInterfacePanelDirty = false;
+    fInterfacePanelDirty = 0;
   }
 
   // Reset int tile cursor stuff
@@ -388,7 +389,7 @@ export function RenderTopmostTacticalInterface(): void {
   let sOffsetY: INT16;
   let sTempY_S: INT16;
   let sTempX_S: INT16;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pItemPool: ITEM_POOL | null;
 
   if (gfRerenderInterfaceFromHelpText == true) {
@@ -396,7 +397,7 @@ export function RenderTopmostTacticalInterface(): void {
 
     switch (gsCurInterfacePanel) {
       case Enum215.SM_PANEL:
-        RenderSMPanel(addressof(fInterfacePanelDirty));
+        RenderSMPanel(fInterfacePanelDirty__Pointer);
         break;
 
       case Enum215.TEAM_PANEL:
@@ -572,18 +573,18 @@ export function RenderTopmostTacticalInterface(): void {
   }
 
   // CHECK IF OUR CURSOR IS OVER AN INV POOL
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     if (gfUIOverItemPool) {
       if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
         // Check if we are over an item pool
         if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, pSoldier.bLevel))) {
           let pStructure: STRUCTURE | null = null;
-          let sIntTileGridNo: INT16;
+          let sIntTileGridNo: INT16 = 0;
           let bZLevel: INT8 = 0;
           let sActionGridNo: INT16 = usMapPos;
 
           // Get interactive tile...
-          if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
+          if (ConditionalGetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v), false)) {
             sActionGridNo = sIntTileGridNo;
           }
 
@@ -608,12 +609,12 @@ export function RenderTopmostTacticalInterface(): void {
           // Check if we are over an item pool
           if ((pItemPool = GetItemPool(gfUIOverItemPoolGridNo, bCheckLevel))) {
             let pStructure: STRUCTURE | null = null;
-            let sIntTileGridNo: INT16;
+            let sIntTileGridNo: INT16 = 0;
             let bZLevel: INT8 = 0;
             let sActionGridNo: INT16 = usMapPos;
 
             // Get interactive tile...
-            if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
+            if (ConditionalGetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v), false)) {
               sActionGridNo = sIntTileGridNo;
             }
 

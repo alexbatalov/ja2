@@ -686,7 +686,7 @@ export function ChangeSoldierTeam(pSoldier: SOLDIERTYPE, ubTeam: UINT8): SOLDIER
     MercCreateStruct.fPlayerMerc = true;
   }
 
-  if (TacticalCreateSoldier(MercCreateStruct, addressof(ubID))) {
+  if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubID, (v) => ubID = v))) {
     pNewSoldier = MercPtrs[ubID];
 
     // Copy vital stats back!

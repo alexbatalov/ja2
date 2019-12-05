@@ -282,7 +282,7 @@ export function LoadWorldItemsFromMap(buffer: Buffer, offset: number): number {
   let i: UINT32;
   let uiLevelItems: UINT32 = 0;
   let dummyItem: WORLDITEM = createWorldItem();
-  let iItemIndex: INT32;
+  let iItemIndex: INT32 = 0;
   let uiNumWorldItems: UINT32;
 
   // If any world items exist, we must delete them now.
@@ -369,7 +369,7 @@ export function LoadWorldItemsFromMap(buffer: Buffer, offset: number): number {
           // all armed bombs are buried
           dummyItem.bVisible = BURIED;
         }
-        AddItemToPoolAndGetIndex(dummyItem.sGridNo, dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, addressof(iItemIndex));
+        AddItemToPoolAndGetIndex(dummyItem.sGridNo, dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, createPointer(() => iItemIndex, (v) => iItemIndex = v));
         gWorldItems[iItemIndex].ubNonExistChance = dummyItem.ubNonExistChance;
       }
     }

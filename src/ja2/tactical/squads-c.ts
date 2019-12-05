@@ -349,7 +349,7 @@ export function RemoveCharacterFromSquads(pCharacter: SOLDIERTYPE): boolean {
 
         // Release memory for his personal path, BUT DON'T CLEAR HIS GROUP'S PATH/WAYPOINTS (pass in groupID -1).
         // Just because one guy leaves a group is no reason to cancel movement for the rest of the group.
-        pCharacter.pMercPath = ClearStrategicPathList(pCharacter.pMercPath, -1);
+        pCharacter.pMercPath = <PathSt>ClearStrategicPathList(pCharacter.pMercPath, -1);
 
         // remove character from mvt group
         RemovePlayerFromGroup(SquadMovementGroups[iCounterA], pCharacter);
@@ -587,7 +587,7 @@ export function CopyPathOfCharacterToSquad(pCharacter: SOLDIERTYPE, bSquadValue:
       // valid character, copy paths
 
       // first empty path
-      Squad[bSquadValue][bCounter].pMercPath = ClearStrategicPathList(Squad[bSquadValue][bCounter].pMercPath, -1);
+      Squad[bSquadValue][bCounter].pMercPath = <PathSt>ClearStrategicPathList(Squad[bSquadValue][bCounter].pMercPath, -1);
 
       // then copy
       Squad[bSquadValue][bCounter].pMercPath = CopyPaths(pCharacter.pMercPath, Squad[bSquadValue][bCounter].pMercPath);

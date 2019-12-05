@@ -153,7 +153,7 @@ export function HandleAutoBandage(): boolean {
       // Shadow area
       ShadowVideoSurfaceRect(FRAME_BUFFER, 0, 0, 640, 480);
       InvalidateScreen();
-      RefreshScreen(null);
+      RefreshScreen();
     }
 
     DisplayAutoBandageUpdatePanel();
@@ -289,7 +289,7 @@ export function AutoBandage(fStart: boolean): void {
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Begin auto bandage.");
 
     if (CreateAutoBandageString()) {
-      giBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, addressof(gusTextBoxWidth), addressof(gusTextBoxHeight));
+      giBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, createPointer(() => gusTextBoxWidth, (v) => gusTextBoxWidth = v), createPointer(() => gusTextBoxHeight, (v) => gusTextBoxHeight = v));
     }
 
     aRect.iTop = 0;
@@ -441,7 +441,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   let iCurPixelY: INT32 = 0;
   let sXPosition: INT16 = 0;
   let sYPosition: INT16 = 0;
-  let hBackGroundHandle: HVOBJECT;
+  let hBackGroundHandle: SGPVObject;
   let iCounterA: INT32 = 0;
   let iCounterB: INT32 = 0;
   let iIndex: INT32 = 0;
@@ -869,7 +869,7 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   let pSoldier: SOLDIERTYPE;
   let iCounter: INT32 = 0;
   let iIndexCount: INT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // grab the video object
   hHandle = GetVideoObject(giAutoBandagesSoldierFaces[iIndex]);

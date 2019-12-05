@@ -40,7 +40,7 @@ function GenerateBuilding(sDesiredSpot: INT16): BUILDING | null {
   let pBuilding: BUILDING | null;
   let ubBuildingID: UINT8 = 0;
 
-  pBuilding = CreateNewBuilding(addressof(ubBuildingID));
+  pBuilding = CreateNewBuilding(createPointer(() => ubBuildingID, (v) => ubBuildingID = v));
   if (!pBuilding) {
     return null;
   }

@@ -992,7 +992,7 @@ function HandleShopKeeperInterface(): void {
 }
 
 function RenderShopKeeperInterface(): boolean {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let zMoney: string /* CHAR16[128] */;
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
@@ -1050,7 +1050,7 @@ function RenderShopKeeperInterface(): boolean {
     SrcRect.iRight = SKI_TACTICAL_BACKGROUND_START_X + SKI_TACTICAL_BACKGROUND_START_WIDTH;
     SrcRect.iBottom = SKI_TACTICAL_BACKGROUND_START_Y + SKI_TACTICAL_BACKGROUND_START_HEIGHT;
 
-    BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, 0, 0, SrcRect);
+    BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, 0, 0, SGPRectToRect(SrcRect));
 
     gfRenderScreenOnNextLoop = false;
   }
@@ -1100,7 +1100,7 @@ function RestoreTacticalBackGround(): void {
   SrcRect.iRight = SKI_TACTICAL_BACKGROUND_START_WIDTH;
   SrcRect.iBottom = SKI_TACTICAL_BACKGROUND_START_HEIGHT;
 
-  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_Y, addressof(SrcRect));
+  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, SKI_TACTICAL_BACKGROUND_START_X, SKI_TACTICAL_BACKGROUND_START_Y, SGPRectToRect(SrcRect));
 
   InvalidateRegion(0, 0, 640, 480);
 }
@@ -1115,7 +1115,7 @@ function GetShopKeeperInterfaceUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {}
 
-    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(Event) && Event.usEvent == KEY_DOWN) {
       /*
       //ATM:
 
@@ -1942,8 +1942,8 @@ function DisplayArmsDealerCurrentInventoryPage(): void {
 
 function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, usPosY: UINT16, pItemObject: OBJECTTYPE, fHatchedOut: boolean, ubItemArea: UINT8): UINT32 {
   let zTemp: string /* CHAR16[64] */;
-  let hVObject: HVOBJECT;
-  let hPixHandle: HVOBJECT;
+  let hVObject: SGPVObject;
+  let hPixHandle: SGPVObject;
   let pItem: INVTYPE;
   let pTrav: ETRLEObject;
   let usHeight: UINT32;
@@ -1968,7 +1968,7 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   // Display the item graphic, and price
   pItem = Item[usItemIndex];
   hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-  pTrav = hVObject.value.pETRLEObject[pItem.ubGraphicNum];
+  pTrav = hVObject.pETRLEObject[pItem.ubGraphicNum];
 
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
@@ -3703,7 +3703,7 @@ export function InitShopKeeperSubTitledText(pString: string /* STR16 */): void {
 
     SET_USE_WINFONTS(true);
     SET_WINFONT(giSubTitleWinFont);
-    giPopUpBoxId = PrepareMercPopupBox(giPopUpBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsShopKeeperTalkingText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
+    giPopUpBoxId = PrepareMercPopupBox(giPopUpBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsShopKeeperTalkingText, 300, 0, 0, 0, createPointer(() => usActualWidth, (v) => usActualWidth = v), createPointer(() => usActualHeight, (v) => usActualHeight = v));
     SET_USE_WINFONTS(false);
 
     //		gusPositionOfSubTitlesX = ( 640 - usActualWidth ) / 2 ;
@@ -4886,7 +4886,7 @@ function CanShopkeeperOverrideDialogue(): boolean {
 }
 
 function CrossOutUnwantedItems(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let bSlotId: INT8 = 0;
   let sBoxStartX: INT16 = 0;
   let sBoxStartY: INT16 = 0;
@@ -5132,9 +5132,9 @@ export function DeleteShopKeeperItemDescBox(): void {
 }
 
 function OfferObjectToDealer(pComplexObject: OBJECTTYPE, ubOwnerProfileId: UINT8, bOwnerSlotId: INT8): boolean {
-  let ubTotalSubObjects: UINT8;
-  let ubRepairableSubObjects: UINT8;
-  let ubNonRepairableSubObjects: UINT8;
+  let ubTotalSubObjects: UINT8 = 0;
+  let ubRepairableSubObjects: UINT8 = 0;
+  let ubNonRepairableSubObjects: UINT8 = 0;
   let ubDealerOfferAreaSlotsNeeded: UINT8;
   let ubPlayerOfferAreaSlotsNeeded: UINT8;
   let ubDiff: UINT8;
@@ -5155,7 +5155,7 @@ function OfferObjectToDealer(pComplexObject: OBJECTTYPE, ubOwnerProfileId: UINT8
     SplitComplexObjectIntoSubObjects(pComplexObject);
 
     // determine how many subobjects of each category this complex object will have to be broken up into
-    CountSubObjectsInObject(pComplexObject, addressof(ubTotalSubObjects), addressof(ubRepairableSubObjects), addressof(ubNonRepairableSubObjects));
+    ({ ubTotalSubObjects, ubRepairableSubObjects, ubNonRepairableSubObjects } = CountSubObjectsInObject(pComplexObject));
 
     // in the simplest situation, the # subobjects of each type gives us how many slots of each type are needed
     ubDealerOfferAreaSlotsNeeded = ubRepairableSubObjects;
@@ -5352,30 +5352,35 @@ function SplitComplexObjectIntoSubObjects(pComplexObject: OBJECTTYPE): void {
   Assert(ubNextFreeSlot <= MAX_SUBOBJECTS_PER_OBJECT());
 }
 
-function CountSubObjectsInObject(pComplexObject: OBJECTTYPE, pubTotalSubObjects: Pointer<UINT8>, pubRepairableSubObjects: Pointer<UINT8>, pubNonRepairableSubObjects: Pointer<UINT8>): void {
+function CountSubObjectsInObject(pComplexObject: OBJECTTYPE): { ubTotalSubObjects: UINT8, ubRepairableSubObjects: UINT8, ubNonRepairableSubObjects: UINT8 } {
   let ubSubObject: UINT8;
+  let ubTotalSubObjects: UINT8;
+  let ubRepairableSubObjects: UINT8;
+  let ubNonRepairableSubObjects: UINT8;
 
-  pubTotalSubObjects.value = 0;
-  pubRepairableSubObjects.value = 0;
-  pubNonRepairableSubObjects.value = 0;
+  ubTotalSubObjects = 0;
+  ubRepairableSubObjects = 0;
+  ubNonRepairableSubObjects = 0;
 
   // check every subobject and count it as either repairable or non-
   for (ubSubObject = 0; ubSubObject < MAX_SUBOBJECTS_PER_OBJECT(); ubSubObject++) {
     // if there is something stored there
     if (gSubObject[ubSubObject].usItem != Enum225.NONE) {
-      (pubTotalSubObjects.value)++;
+      ubTotalSubObjects++;
 
       // is it in need of fixing, and also repairable by this dealer?
       // A jammed gun with a 100% status is NOT repairable - shouldn't ever happen
       if ((gSubObject[ubSubObject].bStatus[0] != 100) && CanDealerRepairItem(gbSelectedArmsDealerID, gSubObject[ubSubObject].usItem))
 
       {
-        (pubRepairableSubObjects.value)++;
+        ubRepairableSubObjects++;
       } else {
-        (pubNonRepairableSubObjects.value)++;
+        ubNonRepairableSubObjects++;
       }
     }
   }
+
+  return { ubTotalSubObjects, ubRepairableSubObjects, ubNonRepairableSubObjects };
 }
 
 function AddObjectForEvaluation(pObject: OBJECTTYPE, ubOwnerProfileId: UINT8, bOwnerSlotId: INT8, fFirstOne: boolean): boolean {
@@ -5790,7 +5795,7 @@ function HandlePossibleRepairDelays(): void {
       // b) gives time for the events described in the text of the dealers' excuses to happen (e.g. scouting trip)
       if ((GetWorldTotalMin() - gArmsDealerStatus[gbSelectedArmsDealerID].uiTimePlayerLastInSKI) >= (3 * 60)) {
         // if he should have been finished, but it's only been a few hours since then (not days!)
-        if (RepairmanFixingAnyItemsThatShouldBeDoneNow(uiHoursSinceAnyItemsShouldHaveBeenRepaired) && (uiHoursSinceAnyItemsShouldHaveBeenRepaired < REPAIR_DELAY_IN_HOURS)) {
+        if ((uiHoursSinceAnyItemsShouldHaveBeenRepaired = RepairmanFixingAnyItemsThatShouldBeDoneNow()) !== -1 && (uiHoursSinceAnyItemsShouldHaveBeenRepaired < REPAIR_DELAY_IN_HOURS)) {
           // then there's a fair chance he'll be delayed.  Use pre-chance to hopefully preserve across reloads
           if (PreChance(50)) {
             DelayRepairsInProgressBy((REPAIR_DELAY_IN_HOURS + Random(REPAIR_DELAY_IN_HOURS)) * 60);
@@ -5807,7 +5812,9 @@ function HandlePossibleRepairDelays(): void {
   }
 }
 
-function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepaired: Pointer<UINT32>): boolean {
+function RepairmanFixingAnyItemsThatShouldBeDoneNow(): UINT32 {
+  let uiHoursSinceOldestItemRepaired: UINT32;
+
   let usItemIndex: UINT16;
   let ubElement: UINT8;
   let pDealerItem: DEALER_ITEM_HEADER;
@@ -5819,9 +5826,9 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
 
   // if the dealer is not a repair dealer, return
   if (!DoesDealerDoRepairs(gbSelectedArmsDealerID))
-    return false;
+    return -1;
 
-  puiHoursSinceOldestItemRepaired.value = 0;
+  uiHoursSinceOldestItemRepaired = 0;
 
   // loop through the dealers inventory and check if there are only unrepaired items
   for (usItemIndex = 1; usItemIndex < Enum225.MAXITEMS; usItemIndex++) {
@@ -5848,8 +5855,8 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
               uiWorkingHoursSinceThisItemRepaired = (uiMinutesSinceItWasDone - uiMinutesShopClosedSinceItWasDone) / 60;
 
               // we need to determine how long it's been since the item that's been repaired for the longest time was done
-              if (uiWorkingHoursSinceThisItemRepaired > puiHoursSinceOldestItemRepaired.value) {
-                puiHoursSinceOldestItemRepaired.value = uiWorkingHoursSinceThisItemRepaired;
+              if (uiWorkingHoursSinceThisItemRepaired > uiHoursSinceOldestItemRepaired) {
+                uiHoursSinceOldestItemRepaired = uiWorkingHoursSinceThisItemRepaired;
               }
             }
           }
@@ -5859,7 +5866,7 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(puiHoursSinceOldestItemRepai
   }
 
   // if FALSE returned here, he's either not repairing anything, or none of it's done yet
-  return fFoundOne;
+  return fFoundOne ? uiHoursSinceOldestItemRepaired : -1;
 }
 
 function DelayRepairsInProgressBy(uiMinutesDelayed: UINT32): void {

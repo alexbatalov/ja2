@@ -259,8 +259,8 @@ export function HandleBobbyR(): void {
 }
 
 export function RenderBobbyR(): void {
-  let hPixHandle: HVOBJECT;
-  let hStorePlaqueHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
+  let hStorePlaqueHandle: SGPVObject;
 
   DrawBobbyRWoodBackground();
 
@@ -358,7 +358,7 @@ export function DeleteBobbyRWoodBackground(): boolean {
 }
 
 export function DrawBobbyRWoodBackground(): boolean {
-  let hWoodBackGroundHandle: HVOBJECT;
+  let hWoodBackGroundHandle: SGPVObject;
   let x: UINT16;
   let y: UINT16;
   let uiPosX: UINT16;
@@ -442,7 +442,7 @@ BOOLEAN WebPageTileBackground(UINT8 ubNumX, UINT8 ubNumY, UINT16 usWidth, UINT16
 /* static */ let HandleBobbyRUnderConstructionAni__uiLastTime: UINT32 = 1;
 /* static */ let HandleBobbyRUnderConstructionAni__usCount: UINT16 = 0;
 function HandleBobbyRUnderConstructionAni(fReset: boolean): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   let uiCurTime: UINT32 = GetJA2Clock();
 

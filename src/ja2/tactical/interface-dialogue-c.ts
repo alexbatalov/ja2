@@ -110,7 +110,7 @@ const enum Enum212 {
   HOSPITAL_RANDOM_FREEBIE,
 }
 
-export function InitiateConversation(pDestSoldier: SOLDIERTYPE, pSrcSoldier: SOLDIERTYPE, bApproach: INT8, uiApproachData: UINT32): boolean {
+export function InitiateConversation(pDestSoldier: SOLDIERTYPE, pSrcSoldier: SOLDIERTYPE, bApproach: INT8, uiApproachData: any): boolean {
   // ATE: OK, let's check the status of the Q
   // If it has something in it....delay this until after....
   if (DialogueQueueIsEmptyOrSomebodyTalkingNow()) {
@@ -149,7 +149,7 @@ export function HandlePendingInitConv(): void {
   }
 }
 
-function InternalInitiateConversation(pDestSoldier: SOLDIERTYPE, pSrcSoldier: SOLDIERTYPE, bApproach: INT8, uiApproachData: UINT32): boolean {
+function InternalInitiateConversation(pDestSoldier: SOLDIERTYPE, pSrcSoldier: SOLDIERTYPE, bApproach: INT8, uiApproachData: any): boolean {
   // OK, init talking menu
   let fFromPending: boolean;
 
@@ -463,7 +463,7 @@ export function DeleteTalkingMenu(): void {
   gfIgnoreScrolling = false;
 
   // Set this guy up as NOT engaged in conversation
-  gpDestSoldier.uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
+  (<SOLDIERTYPE>gpDestSoldier).uiStatusFlags &= (~SOLDIER_ENGAGEDINACTION);
 
   // NOT Engaged on conv...
   if (!giNPCReferenceCount) {
@@ -524,8 +524,8 @@ export function RenderTalkingMenu(): void {
   let uiSrcPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
-  let usTextBoxWidth: UINT16;
-  let usTextBoxHeight: UINT16;
+  let usTextBoxWidth: UINT16 = 0;
+  let usTextBoxHeight: UINT16 = 0;
   let zTempString: string /* CHAR16[128] */;
 
   if (!gfInTalkPanel) {
@@ -599,7 +599,7 @@ export function RenderTalkingMenu(): void {
 
       SET_USE_WINFONTS(true);
       SET_WINFONT(giSubTitleWinFont);
-      iInterfaceDialogueBox = PrepareMercPopupBox(iInterfaceDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gTalkPanel.zQuoteStr, TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
+      iInterfaceDialogueBox = PrepareMercPopupBox(iInterfaceDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gTalkPanel.zQuoteStr, TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, createPointer(() => usTextBoxWidth, (v) => usTextBoxWidth = v), createPointer(() => usTextBoxHeight, (v) => usTextBoxHeight = v));
       SET_USE_WINFONTS(false);
 
       gTalkPanel.fSetupSubTitles = false;
@@ -829,7 +829,7 @@ function TalkPanelNameRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32):
 }
 
 // Dirty menu
-export function SetTalkingMenuDirty(fDirtyLevel: boolean): void {
+export function SetTalkingMenuDirty(fDirtyLevel: UINT8 /* boolean */): void {
   gTalkPanel.fDirtyLevel = fDirtyLevel;
 }
 
@@ -900,7 +900,7 @@ export function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolea
         // Delete panel
         DeleteTalkingMenu();
         // reset records which are on a can-say-once-per-convo basis
-        ResetOncePerConvoRecordsForNPC(gpDestSoldier.ubProfile);
+        ResetOncePerConvoRecordsForNPC((<SOLDIERTYPE>gpDestSoldier).ubProfile);
         return true;
       }
     }
@@ -909,7 +909,7 @@ export function HandleTalkingMenuEscape(fCanDelete: boolean, fFromEscKey: boolea
       // Delete panel
       DeleteTalkingMenu();
       // reset records which are on a can-say-once-per-convo basis
-      ResetOncePerConvoRecordsForNPC(gpDestSoldier.ubProfile);
+      ResetOncePerConvoRecordsForNPC((<SOLDIERTYPE>gpDestSoldier).ubProfile);
       return true;
     }
   }
@@ -1234,7 +1234,7 @@ function HandleNPCTrigger(): void {
     // Now start new one...
     if (gfShowDialogueMenu) {
       if (SourceSoldierPointerIsValidAndReachableForGive(pSoldier)) {
-        InitiateConversation(pSoldier, gpSrcSoldier, gubTargetApproach, gubTargetRecord);
+        InitiateConversation(pSoldier, <SOLDIERTYPE>gpSrcSoldier, gubTargetApproach, gubTargetRecord);
         return;
       } else {
         sPlayerGridNo = ClosestPC(pSoldier, null);
@@ -1938,13 +1938,13 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
         {
           let Object: OBJECTTYPE = createObjectType();
           let sGridNo: INT16 = 14952;
-          let iWorldItem: INT32;
+          let iWorldItem: INT32 = 0;
 
           pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
           if (pSoldier) {
             CreateItem(Enum225.MONEY, 1, Object);
             Object.uiMoneyAmount = 10000;
-            AddItemToPoolAndGetIndex(sGridNo, Object, -1, pSoldier.bLevel, 0, 0, addressof(iWorldItem));
+            AddItemToPoolAndGetIndex(sGridNo, Object, -1, pSoldier.bLevel, 0, 0, createPointer(() => iWorldItem, (v) => iWorldItem = v));
 
             // shouldn't have any current action but make sure everything
             // is clear... and set pending action so the guy won't move
@@ -2966,7 +2966,7 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
         if (pSoldier2) {
           // HOSPITAL_PATIENT_DISTANCE
           cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-          for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
+          for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
             // Are we in this sector, On the current squad?
             if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife > 0 && pSoldier.bLife < pSoldier.bLifeMax && pSoldier.bAssignment != Enum117.ASSIGNMENT_HOSPITAL && PythSpacesAway(pSoldier.sGridNo, pSoldier2.sGridNo) < HOSPITAL_PATIENT_DISTANCE) {
               SetSoldierAssignment(pSoldier, Enum117.ASSIGNMENT_HOSPITAL, 0, 0, 0);
@@ -3048,12 +3048,12 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
 
       case Enum213.NPC_ACTION_PLAYER_SAYS_NICE_LATER:
         SetFactTrue(Enum170.FACT_NEED_TO_SAY_SOMETHING);
-        gubNiceNPCProfile = gpDestSoldier.ubProfile;
+        gubNiceNPCProfile = (<SOLDIERTYPE>gpDestSoldier).ubProfile;
         break;
 
       case Enum213.NPC_ACTION_PLAYER_SAYS_NASTY_LATER:
         SetFactTrue(Enum170.FACT_NEED_TO_SAY_SOMETHING);
-        gubNastyNPCProfile = gpDestSoldier.ubProfile;
+        gubNastyNPCProfile = (<SOLDIERTYPE>gpDestSoldier).ubProfile;
         break;
 
       case Enum213.NPC_ACTION_CHOOSE_DOCTOR:
@@ -3998,7 +3998,7 @@ function NPCOpenThing(pSoldier: SOLDIERTYPE, fDoor: boolean): boolean {
   let pStructure: STRUCTURE | null;
   let sStructGridNo: INT16;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let sGridNo: INT16;
   let pDoor: DOOR | null;
 
@@ -4043,7 +4043,7 @@ function NPCOpenThing(pSoldier: SOLDIERTYPE, fDoor: boolean): boolean {
     pDoor.fLocked = false;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, addressof(ubDirection), null, false, true);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), null, false, true);
   if (sActionGridNo == -1) {
     return false;
   }

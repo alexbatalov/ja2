@@ -144,12 +144,12 @@ function UpdateOldVersionMap(): void {
   if (gMapInformation.ubMapVersion < 20) {
     // validate the map entry points as the world boundaries have changed.
     gMapInformation.ubMapVersion = 20;
-    ValidateEntryPointGridNo(addressof(gMapInformation.sNorthGridNo));
-    ValidateEntryPointGridNo(addressof(gMapInformation.sEastGridNo));
-    ValidateEntryPointGridNo(addressof(gMapInformation.sSouthGridNo));
-    ValidateEntryPointGridNo(addressof(gMapInformation.sWestGridNo));
-    ValidateEntryPointGridNo(addressof(gMapInformation.sCenterGridNo));
-    ValidateEntryPointGridNo(addressof(gMapInformation.sIsolatedGridNo));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sNorthGridNo'));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sEastGridNo'));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sSouthGridNo'));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sWestGridNo'));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sCenterGridNo'));
+    ValidateEntryPointGridNo(createPropertyPointer(gMapInformation, 'sIsolatedGridNo'));
   }
   if (gMapInformation.ubMapVersion < 21) {
     let curr: SOLDIERINITNODE | null;

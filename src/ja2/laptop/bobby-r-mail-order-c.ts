@@ -480,7 +480,7 @@ export function HandleBobbyRMailOrder(): void {
   }
 
   if (gfDrawConfirmOrderGrpahic) {
-    let hPixHandle: HVOBJECT;
+    let hPixHandle: SGPVObject;
 
     // Bobbyray title
     hPixHandle = GetVideoObject(guiConfirmGraphic);
@@ -511,7 +511,7 @@ export function HandleBobbyRMailOrder(): void {
 
 export function RenderBobbyRMailOrder(): void {
   let usPosY: UINT16;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usHeight: UINT16; // usWidth,
   let sTemp: string /* CHAR16[128] */;
 
@@ -902,7 +902,7 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
 
 function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, usGridX: UINT16, usGridY: UINT16, iOrderNum: INT32): void {
   let sTemp: string /* wchar_t[20] */;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let iShippingCost: INT32 = 0;
   //	INT32 iTotal;
 
@@ -1182,8 +1182,8 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       let usPosY: UINT16;
       let usPosX: UINT16;
       let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT());
-      let hImageHandle: HVOBJECT;
-      let hArrowHandle: HVOBJECT;
+      let hImageHandle: SGPVObject;
+      let hArrowHandle: SGPVObject;
 
       // Display the background for the drop down window
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_CITY_START_LOCATION_X, BOBBYR_CITY_START_LOCATION_Y, BOBBYR_CITY_START_LOCATION_X + BOBBYR_DROP_DOWN_WIDTH, BOBBYR_CITY_START_LOCATION_Y + BOBBYR_SCROLL_AREA_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -1914,7 +1914,7 @@ export function DestroyBobbyROrderTitle(): void {
 }
 
 export function DrawBobbyROrderTitle(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // Bobbyray title
   hPixHandle = GetVideoObject(guiBobbyRayTitle);

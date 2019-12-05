@@ -464,7 +464,7 @@ function RemovePersonnelGraphics(): void {
 }
 
 export function RenderPersonnel(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
   // re-renders personnel screen
   // render main background
@@ -625,7 +625,7 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
 
 function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: string /* char[100] */;
-  let hFaceHandle: HVOBJECT;
+  let hFaceHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iCounter: INT32 = 7;
 
@@ -668,14 +668,14 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
 
   if (fCurrentTeamMode == true) {
     if (MercPtrs[iId].bLife <= 0) {
-      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+      hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
       // set the red pallete to the face
       SetObjectHandleShade(guiFACE, 0);
     }
   } else {
     if (fDead == true) {
-      hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+      hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
       // set the red pallete to the face
       SetObjectHandleShade(guiFACE, 0);
@@ -1540,7 +1540,7 @@ function SetPersonnelButtonStates(): void {
 }
 
 function RenderPersonnelScreenBackground(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // this fucntion will render the background for the personnel screen
   if (fCurrentTeamMode == true) {
@@ -1665,7 +1665,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
   let iCounter: INT32 = 0;
   let iTotalOnTeam: INT32 = 0;
   let sTemp: string /* char[100] */;
-  let hFaceHandle: HVOBJECT;
+  let hFaceHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pSoldier: SOLDIERTYPE;
   let iId: INT32 = 0;
@@ -1709,7 +1709,7 @@ function DisplayPicturesOfCurrentTeam(): boolean {
       hFaceHandle = GetVideoObject(guiFACE);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
-        hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+        hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
         // set the red pallete to the face
         SetObjectHandleShade(guiFACE, 0);
@@ -1858,7 +1858,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let ubCounter: UINT8 = 0;
   let pSoldier: SOLDIERTYPE;
   let sIndex: INT16;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let pTrav: ETRLEObject;
   let pItem: INVTYPE;
   let PosX: INT16;
@@ -1909,7 +1909,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         pItem = Item[sIndex];
 
         hHandle = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-        pTrav = hHandle.value.pETRLEObject[pItem.ubGraphicNum];
+        pTrav = hHandle.pETRLEObject[pItem.ubGraphicNum];
 
         usHeight = pTrav.usHeight;
         usWidth = pTrav.usWidth;
@@ -3949,7 +3949,7 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
 
 function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, fFired: boolean, fOther: boolean): boolean {
   let sTemp: string /* char[100] */;
-  let hFaceHandle: HVOBJECT;
+  let hFaceHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if ((50 < iId) && (57 > iId)) {
@@ -3972,7 +3972,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
   hFaceHandle = GetVideoObject(guiFACE);
 
   if (fDead) {
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+    hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiFACE, 0);
@@ -4296,7 +4296,7 @@ function DisplayHighLightBox(): boolean {
   // will display highlight box around selected merc
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiBox: UINT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // load graphics
 
@@ -4470,7 +4470,7 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
 function RenderAtmPanel(): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiBox: UINT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // render the ATM panel
   if (fShowAtmPanel) {
@@ -4678,7 +4678,7 @@ function HandleSliderBarClickCallback(pRegion: MOUSE_REGION, iReason: INT32): vo
 }
 
 function RenderSliderBarForPersonnelInventory(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // render slider bar for personnel
   hHandle = GetVideoObject(guiPersonnelInventory);

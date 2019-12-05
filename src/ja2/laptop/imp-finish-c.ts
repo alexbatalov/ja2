@@ -324,7 +324,7 @@ function BtnIMPFinishVoiceCallback(btn: GUI_BUTTON, reason: INT32): void {
 function RenderCharProfileFinishFace(): boolean {
   // render the portrait of the current picture
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let uiGraphicHandle: UINT32;
 
   if (fCharacterIsMale == true) {

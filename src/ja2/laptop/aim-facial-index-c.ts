@@ -217,8 +217,8 @@ function SelectMercFaceMoveRegionCallBack(pRegion: MOUSE_REGION, reason: INT32):
 }
 
 function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): boolean {
-  let hMugShotBorderHandle: HVOBJECT;
-  let hFaceHandle: HVOBJECT;
+  let hMugShotBorderHandle: SGPVObject;
+  let hFaceHandle: SGPVObject;
   let pSoldier: SOLDIERTYPE | null = null;
 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], true);
@@ -237,7 +237,7 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
 
     // if the merc is dead
     // shade the face red, (to signif that he is dead)
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+    hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiAimFiFace[ubMercID], 0);

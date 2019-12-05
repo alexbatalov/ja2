@@ -512,7 +512,7 @@ function HandleCreditScreen(): void {
 
 // rrr
 function RenderCreditScreen(): boolean {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   hPixHandle = GetVideoObject(guiCreditBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, null);
@@ -1144,7 +1144,7 @@ function InitCreditEyeBlinking(): void {
 }
 
 function HandleCreditEyeBlinking(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let ubCnt: UINT8;
 
   hPixHandle = GetVideoObject(guiCreditFaces);

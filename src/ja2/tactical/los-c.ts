@@ -15,37 +15,6 @@ let gusLOSEndSoldier: UINT16 = NOBODY;
 /* static */ let gqStandardWindowBottomHeight: FIXEDPT = INT32_TO_FIXEDPT(WINDOW_BOTTOM_HEIGHT_UNITS);
 /* static */ let gqStandardWindowTopHeight: FIXEDPT = INT32_TO_FIXEDPT(WINDOW_TOP_HEIGHT_UNITS);
 
-const FIXEDPT_MULTIPLY = (a: number, b: number) => ((a / 256) * (b / 256));
-
-function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
-  let uiResult: UINT32;
-
-  asm(`
-    // Load the 32-bit registers with the two values
-    mov eax, uiA
-    mov ebx, uiB
-
-    // Multiply them
-    // Top 32 bits (whole portion) goes into edx
-    // Bottom 32 bits (fractional portion) goes into eax
-    imul ebx
-
-    // Shift the fractional portion back to (lower) 16 bits
-    shr eax, 16
-    // Shift the whole portion to 16 bits, in the upper word
-    shl edx, 16
-
-    // At this point, we have edx xxxx0000 and eax 0000xxxx
-    // Combine the two words into a dword
-    or eax, edx
-
-    // Put the result into a returnable variable
-    mov uiResult, eax
-  `);
-
-  return uiResult;
-}
-
 /* static */ let ddShotgunSpread: DOUBLE[][][] /* [3][BUCKSHOT_SHOTS][2] */ = [
   [
     // spread of about 2 degrees in all directions
@@ -158,9 +127,9 @@ const STANDING_CUBES = 3;
 
 const MAX_LOCAL_STRUCTURES = 20;
 
-let gpLocalStructure: Pointer<STRUCTURE>[] /* [MAX_LOCAL_STRUCTURES] */;
-let guiLocalStructureCTH: UINT32[] /* [MAX_LOCAL_STRUCTURES] */;
-let gubLocalStructureNumTimesHit: UINT8[] /* [MAX_LOCAL_STRUCTURES] */;
+let gpLocalStructure: STRUCTURE[] /* Pointer<STRUCTURE>[MAX_LOCAL_STRUCTURES] */ = createArray(MAX_LOCAL_STRUCTURES, <STRUCTURE><unknown>null);
+let guiLocalStructureCTH: UINT32[] /* [MAX_LOCAL_STRUCTURES] */ = createArray(MAX_LOCAL_STRUCTURES, 0);
+let gubLocalStructureNumTimesHit: UINT8[] /* [MAX_LOCAL_STRUCTURES] */ = createArray(MAX_LOCAL_STRUCTURES, 0);
 
 function FloatToFixed(dN: FLOAT): FIXEDPT {
   let qN: FIXEDPT;
@@ -495,7 +464,7 @@ function ResolveHitOnWall(pStructure: STRUCTURE, iGridNo: INT32, bLOSIndexX: INT
  * - stops at other obstacles
  *
  */
-function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, ubTileSightLimit: UINT8, ubTreeSightReduction: UINT8, bAware: INT8, bCamouflage: INT8, fSmell: boolean, psWindowGridNo: Pointer<INT16>): INT32 {
+function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, ubTileSightLimit: UINT8, ubTreeSightReduction: UINT8, bAware: boolean /* INT8 */, bCamouflage: INT8, fSmell: boolean, psWindowGridNo: Pointer<INT16> | null): INT32 {
   // Parameters...
   // the X,Y,Z triplets should be obvious
   // TileSightLimit is the max # of tiles of distance visible
@@ -1215,8 +1184,8 @@ export function CalculateSoldierZPos(pSoldier: SOLDIERTYPE, ubPosType: UINT8, pd
 }
 
 export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
-  let dStartZPos: FLOAT;
-  let dEndZPos: FLOAT;
+  let dStartZPos: FLOAT = 0;
+  let dEndZPos: FLOAT = 0;
   let fOk: boolean;
   let fSmell: boolean;
   let bEffectiveCamo: INT8;
@@ -1230,7 +1199,7 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | nul
   if (!pEndSoldier) {
     return 0;
   }
-  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
+  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, createPointer(() => dStartZPos, (v) => dStartZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -1255,7 +1224,7 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | nul
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pEndSoldier.sGridNo].sHeight);
     fSmell = true;
   } else {
-    fOk = CalculateSoldierZPos(pEndSoldier, Enum230.LOS_POS, addressof(dEndZPos));
+    fOk = CalculateSoldierZPos(pEndSoldier, Enum230.LOS_POS, createPointer(() => dEndZPos, (v) => dEndZPos = v));
     if (!fOk) {
       return 0;
     }
@@ -1341,33 +1310,13 @@ export function SoldierToLocationWindowTest(pStartSoldier: SOLDIERTYPE | null, s
 
   // We don't want to consider distance limits here so pass in tile sight limit of 255
   // and consider trees as little as possible
-  iRet = LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, true, 0, false, addressof(sWindowGridNo));
+  iRet = LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, true, 0, false, createPointer(() => sWindowGridNo, (v) => sWindowGridNo = v));
 
   return sWindowGridNo;
 }
 
-function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubTileSightLimit: UINT8, bAware: INT8): boolean {
-  let uiLoopLimit: UINT32 = 100000;
-  let uiLoop: UINT32;
-  let uiStartTime: UINT32;
-  let uiEndTime: UINT32;
-
-  let OutFile: Pointer<FILE>;
-
-  uiStartTime = GetJA2Clock();
-  for (uiLoop = 0; uiLoop < uiLoopLimit; uiLoop++) {
-    SoldierToSoldierLineOfSightTest(pStartSoldier, pEndSoldier, ubTileSightLimit, bAware);
-  }
-  uiEndTime = GetJA2Clock();
-  if ((OutFile = fopen("Timing.txt", "a+t")) != null) {
-    fprintf(OutFile, FormatString("Time for %d calls is %d milliseconds\n", uiLoopLimit, uiEndTime - uiStartTime));
-    fclose(OutFile);
-  }
-  return true;
-}
-
 export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: boolean): INT32 {
-  let dStartZPos: FLOAT;
+  let dStartZPos: FLOAT = 0;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -1379,7 +1328,7 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | 
     return 0;
   }
 
-  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
+  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, createPointer(() => dStartZPos, (v) => dStartZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -1407,11 +1356,11 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | 
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: boolean /* INT8 */): INT32 {
   let pEndSoldier: SOLDIERTYPE;
   let ubTargetID: UINT8;
-  let dStartZPos: FLOAT;
-  let dEndZPos: FLOAT;
+  let dStartZPos: FLOAT = 0;
+  let dEndZPos: FLOAT = 0;
   let sXPos: INT16;
   let sYPos: INT16;
   let fOk: boolean;
@@ -1428,7 +1377,7 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | nu
     return 0;
   }
 
-  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
+  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, createPointer(() => dStartZPos, (v) => dStartZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -1448,7 +1397,7 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | nu
       break;
   }
 
-  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
+  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, createPointer(() => dEndZPos, (v) => dEndZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -1460,8 +1409,8 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | nu
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
-  let dStartZPos: FLOAT;
+export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: boolean /* INT8 */): INT32 {
+  let dStartZPos: FLOAT = 0;
   let dEndZPos: FLOAT;
   let sXPos: INT16;
   let sYPos: INT16;
@@ -1471,7 +1420,7 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYP
     return 0;
   }
 
-  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, addressof(dStartZPos));
+  fOk = CalculateSoldierZPos(pStartSoldier, Enum230.LOS_POS, createPointer(() => dStartZPos, (v) => dStartZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -1503,11 +1452,11 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYP
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
 
-export function SoldierToLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function SoldierToLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | null, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: boolean /* INT8 */): INT32 {
   return SoldierTo3DLocationLineOfSightTest(pStartSoldier, sGridNo, 0, 0, ubTileSightLimit, bAware);
 }
 
-export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT8, sEndGridNo: INT16, bEndLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
+export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT8, sEndGridNo: INT16, bEndLevel: INT8, ubTileSightLimit: UINT8, bAware: boolean /* INT8 */): INT32 {
   let dStartZPos: FLOAT;
   let dEndZPos: FLOAT;
   let sStartXPos: INT16;
@@ -1565,6 +1514,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
   let ubAmmoType: UINT8;
   let uiChanceThrough: UINT32;
   let ubSpecial: UINT8 = FIRE_WEAPON_NO_SPECIAL;
+  let ubSpecial__Pointer = createPointer(() => ubSpecial, (v) => ubSpecial = v);
   let sHitBy: INT16;
   let fStopped: boolean = true;
   let bSlot: INT8;
@@ -1717,7 +1667,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
       // shouldn't happen but
       iImpact = 0;
     }
-    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
+    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, ubSpecial__Pointer);
     // handle hit here...
     if ((pFirer.bTeam == 0)) {
       gMercProfiles[pFirer.ubProfile].usShotsHit++;
@@ -1739,7 +1689,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
       // shouldn't happen but
       iImpact = 0;
     }
-    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
+    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, ubSpecial__Pointer);
 
     // accidentally shot
     pTarget.fIntendedTarget = false;
@@ -2458,7 +2408,7 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
 }
 
 function SoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null): UINT8 {
-  let dEndZPos: FLOAT;
+  let dEndZPos: FLOAT = 0;
   let fOk: boolean;
 
   if (pStartSoldier == pEndSoldier) {
@@ -2470,7 +2420,7 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, p
   if (!pEndSoldier) {
     return 0;
   }
-  fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
+  fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, createPointer(() => dEndZPos, (v) => dEndZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -2483,7 +2433,7 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, p
 
 export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null, ubAimLocation: UINT8): UINT8 {
   // does like StS-CTGT but with a particular body part in mind
-  let dEndZPos: FLOAT;
+  let dEndZPos: FLOAT = 0;
   let fOk: boolean;
   let ubPosType: UINT8;
 
@@ -2511,7 +2461,7 @@ export function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: SOLDIE
       break;
   }
 
-  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
+  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, createPointer(() => dEndZPos, (v) => dEndZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -2569,7 +2519,7 @@ export function SoldierToLocationChanceToGetThrough(pStartSoldier: SOLDIERTYPE |
 
 export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE | null, pEndSoldier: SOLDIERTYPE | null): UINT8 {
   // Like a standard CTGT algorithm BUT fakes the start soldier at standing height
-  let dEndZPos: FLOAT;
+  let dEndZPos: FLOAT = 0;
   let fOk: boolean;
   let ubChance: UINT8;
   let usTrueState: UINT16;
@@ -2583,7 +2533,7 @@ export function AISoldierToSoldierChanceToGetThrough(pStartSoldier: SOLDIERTYPE 
   if (!pEndSoldier) {
     return 0;
   }
-  fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, addressof(dEndZPos));
+  fOk = CalculateSoldierZPos(pEndSoldier, Enum230.TARGET_POS, createPointer(() => dEndZPos, (v) => dEndZPos = v));
   if (!fOk) {
     return 0;
   }
@@ -2795,7 +2745,7 @@ DOUBLE CalculateVerticalAngle( SOLDIERTYPE * pFirer, SOLDIERTYPE * pTarget )
 
 export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: boolean, fFake: boolean): INT8 {
   // fFake indicates that we should set things up for a call to ChanceToGetThrough
-  let dStartZ: FLOAT;
+  let dStartZ: FLOAT = 0;
 
   let d2DDistance: FLOAT;
   let dDeltaX: FLOAT;
@@ -2809,10 +2759,14 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
   let ddOrigVerticAngle: DOUBLE;
   let ddHorizAngle: DOUBLE;
   let ddVerticAngle: DOUBLE;
-  let ddAdjustedHorizAngle: DOUBLE;
-  let ddAdjustedVerticAngle: DOUBLE;
-  let ddDummyHorizAngle: DOUBLE;
-  let ddDummyVerticAngle: DOUBLE;
+  let ddAdjustedHorizAngle: DOUBLE = 0;
+  let ddAdjustedHorizAngle__Pointer = createPointer(() => ddAdjustedHorizAngle, (v) => ddAdjustedHorizAngle = v);
+  let ddAdjustedVerticAngle: DOUBLE = 0;
+  let ddAdjustedVerticAngle__Pointer = createPointer(() => ddAdjustedVerticAngle, (v) => ddAdjustedVerticAngle = v);
+  let ddDummyHorizAngle: DOUBLE = 0;
+  let ddDummyHorizAngle__Pointer = createPointer(() => ddDummyHorizAngle, (v) => ddDummyHorizAngle = v);
+  let ddDummyVerticAngle: DOUBLE = 0;
+  let ddDummyVerticAngle__Pointer = createPointer(() => ddDummyVerticAngle, (v) => ddDummyVerticAngle = v);
 
   let pBullet: BULLET;
   let iBullet: INT32;
@@ -2826,7 +2780,7 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
   let ubSpreadIndex: UINT8 = 0;
   let usBulletFlags: UINT16 = 0;
 
-  CalculateSoldierZPos(pFirer, Enum230.FIRING_POS, addressof(dStartZ));
+  CalculateSoldierZPos(pFirer, Enum230.FIRING_POS, createPointer(() => dStartZ, (v) => dStartZ = v));
 
   dStartX = CenterX(pFirer.sGridNo);
   dStartY = CenterY(pFirer.sGridNo);
@@ -2926,7 +2880,7 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
         ddAdjustedHorizAngle = ddHorizAngle;
         ddAdjustedVerticAngle = ddVerticAngle;
       } else {
-        CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, addressof(ddAdjustedHorizAngle), addressof(ddAdjustedVerticAngle));
+        CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, ddAdjustedHorizAngle__Pointer, ddAdjustedVerticAngle__Pointer);
       }
     } else {
       // temporarily set bullet's sHitBy value to 0 to get unadjusted angles
@@ -2935,7 +2889,7 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
       ddHorizAngle = ddAdjustedHorizAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][0];
       ddVerticAngle = ddAdjustedVerticAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][1];
 
-      CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, addressof(ddDummyHorizAngle), addressof(ddDummyVerticAngle));
+      CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, ddDummyHorizAngle__Pointer, ddDummyVerticAngle__Pointer);
       pBullet.sHitBy = sHitBy;
     }
 
@@ -3059,7 +3013,8 @@ export function MoveBullet(iBullet: INT32): void {
 
   let i: INT32;
   let fGoingOver: boolean = false;
-  let fHitStructure: boolean;
+  let fHitStructure: boolean = false;
+  let fHitStructure__Pointer = createPointer(() => fHitStructure, (v) => fHitStructure = v);
 
   let qWallHeight: FIXEDPT;
   let qWindowBottomHeight: FIXEDPT;
@@ -3464,7 +3419,7 @@ export function MoveBullet(iBullet: INT32): void {
                     return;
                   } else {
                     // set pointer to null so that we don't consider hitting this person again
-                    gpLocalStructure[iStructureLoop] = null;
+                    gpLocalStructure[iStructureLoop] = <STRUCTURE><unknown>null;
                   }
                 } else if (pStructure.fFlags & STRUCTURE_WALLNWINDOW && pBullet.qCurrZ >= qWindowBottomHeight && pBullet.qCurrZ <= qWindowTopHeight) {
                   fResolveHit = ResolveHitOnWall(pStructure, iGridNo, pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.ddHorizAngle);
@@ -3473,7 +3428,7 @@ export function MoveBullet(iBullet: INT32): void {
                     if (pBullet.usFlags & BULLET_FLAG_KNIFE) {
                       // knives do get stopped by windows!
 
-                      iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
+                      iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, fHitStructure__Pointer);
                       if (iRemainingImpact <= 0) {
                         // check angle of knife and place on ground appropriately
                         let Object: OBJECTTYPE = createObjectType();
@@ -3519,21 +3474,21 @@ export function MoveBullet(iBullet: INT32): void {
                           BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, true);
                           LocateBullet(pBullet.iBullet);
                           // have to remove this window from future hit considerations so the deleted structure data can't be referenced!
-                          gpLocalStructure[iStructureLoop] = null;
+                          gpLocalStructure[iStructureLoop] = <STRUCTURE><unknown>null;
                         } else {
                           BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, false);
                           LocateBullet(pBullet.iBullet);
-                          gpLocalStructure[iStructureLoop] = null;
+                          gpLocalStructure[iStructureLoop] = <STRUCTURE><unknown>null;
                         }
                       } else {
                         if (pBullet.qIncrY > 0) {
                           BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, true);
                           LocateBullet(pBullet.iBullet);
-                          gpLocalStructure[iStructureLoop] = null;
+                          gpLocalStructure[iStructureLoop] = <STRUCTURE><unknown>null;
                         } else {
                           BulletHitWindow(pBullet, (pBullet.iCurrTileX + pBullet.iCurrTileY * WORLD_COLS), pStructure.usStructureID, false);
                           LocateBullet(pBullet.iBullet);
-                          gpLocalStructure[iStructureLoop] = null;
+                          gpLocalStructure[iStructureLoop] = <STRUCTURE><unknown>null;
                         }
                       }
                       // but the bullet keeps on going!!!
@@ -3548,7 +3503,7 @@ export function MoveBullet(iBullet: INT32): void {
                   }
 
                   if (fResolveHit) {
-                    iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
+                    iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, fHitStructure__Pointer);
                     if (fHitStructure) {
                       // ATE: NOT if we are a special bullet like a LAW trail...
                       if (pStructure.fFlags & STRUCTURE_CORPSE && !(pBullet.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT))) {
@@ -3679,7 +3634,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
   let dTargetX: FLOAT;
   let dTargetY: FLOAT;
   let dTargetZMin: FLOAT;
-  let dTargetZMax: FLOAT;
+  let dTargetZMax: FLOAT = 0;
   let fIntended: boolean;
 
   let uiTileInc: UINT32 = 0;
@@ -3738,7 +3693,7 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
     dTargetX = pTarget.dXPos;
     dTargetY = pTarget.dYPos;
     dTargetZMin = 0.0;
-    CalculateSoldierZPos(pTarget, Enum230.HEIGHT, addressof(dTargetZMax));
+    CalculateSoldierZPos(pTarget, Enum230.HEIGHT, createPointer(() => dTargetZMax, (v) => dTargetZMax = v));
     if (pTarget.bLevel > 0) {
       // on roof
       dTargetZMin += WALL_HEIGHT_UNITS;

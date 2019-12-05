@@ -512,7 +512,7 @@ export interface SOLDIERTYPE {
   fTurningUntilDone: boolean;
   fGettingHit: UINT8 /* boolean */;
   fInNonintAnim: boolean;
-  fFlashLocator: boolean;
+  fFlashLocator: UINT8 /* boolean */;
   sLocatorFrame: INT16;
   fShowLocator: boolean;
   fFlashPortrait: UINT8 /* boolean */;
@@ -677,7 +677,7 @@ export interface SOLDIERTYPE {
   fStopPendingNextTile: boolean;
 
   fForceShade: boolean;
-  pForcedShade: UINT16[] /* Pointer<UINT16> */;
+  pForcedShade: Uint16Array /* Pointer<UINT16> */;
 
   bDisplayDamageCount: INT8;
   fDisplayDamage: boolean /* INT8 */;
@@ -1061,7 +1061,7 @@ export function createSoldierType(): SOLDIERTYPE {
     fTurningUntilDone: false,
     fGettingHit: 0,
     fInNonintAnim: false,
-    fFlashLocator: false,
+    fFlashLocator: 0,
     sLocatorFrame: 0,
     fShowLocator: false,
     fFlashPortrait: 0,
@@ -1198,7 +1198,7 @@ export function createSoldierType(): SOLDIERTYPE {
     sLocatorOffY: 0,
     fStopPendingNextTile: false,
     fForceShade: false,
-    pForcedShade: <UINT16[]><unknown>null,
+    pForcedShade: <Uint16Array><unknown>null,
     bDisplayDamageCount: 0,
     fDisplayDamage: false,
     sDamage: 0,
@@ -1540,7 +1540,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.fTurningUntilDone = false;
   o.fGettingHit = 0;
   o.fInNonintAnim = false;
-  o.fFlashLocator = false;
+  o.fFlashLocator = 0;
   o.sLocatorFrame = 0;
   o.fShowLocator = false;
   o.fFlashPortrait = 0;
@@ -1677,7 +1677,7 @@ export function resetSoldierType(o: SOLDIERTYPE) {
   o.sLocatorOffY = 0;
   o.fStopPendingNextTile = false;
   o.fForceShade = false;
-  o.pForcedShade = <UINT16[]><unknown>null;
+  o.pForcedShade = <Uint16Array><unknown>null;
   o.bDisplayDamageCount = 0;
   o.fDisplayDamage = false;
   o.sDamage = 0;
@@ -2509,7 +2509,7 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   o.fTurningUntilDone = Boolean(buffer.readUInt8(offset++));
   o.fGettingHit = buffer.readUInt8(offset++);
   o.fInNonintAnim = Boolean(buffer.readUInt8(offset++));
-  o.fFlashLocator = Boolean(buffer.readUInt8(offset++));
+  o.fFlashLocator = buffer.readUInt8(offset++);
   o.sLocatorFrame = buffer.readInt16LE(offset); offset += 2;
   o.fShowLocator = Boolean(buffer.readUInt8(offset++));
   o.fFlashPortrait = buffer.readUInt8(offset++);
@@ -2661,7 +2661,7 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   o.fStopPendingNextTile = Boolean(buffer.readUInt8(offset++));
   o.fForceShade = Boolean(buffer.readUInt8(offset++));
   offset += 2; // padding
-  o.pForcedShade = <UINT16[]><unknown>null; offset += 4; // pointer
+  o.pForcedShade = <Uint16Array><unknown>null; offset += 4; // pointer
   o.bDisplayDamageCount = buffer.readInt8(offset++);
   o.fDisplayDamage = Boolean(buffer.readUInt8(offset++));
   o.sDamage = buffer.readInt16LE(offset); offset += 2;
@@ -3036,7 +3036,7 @@ export function writeSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number 
   offset = buffer.writeUInt8(Number(o.fTurningUntilDone), offset);
   offset = buffer.writeUInt8(o.fGettingHit, offset);
   offset = buffer.writeUInt8(Number(o.fInNonintAnim), offset);
-  offset = buffer.writeUInt8(Number(o.fFlashLocator), offset);
+  offset = buffer.writeUInt8(o.fFlashLocator, offset);
   offset = buffer.writeInt16LE(o.sLocatorFrame, offset);
   offset = buffer.writeUInt8(Number(o.fShowLocator), offset);
   offset = buffer.writeUInt8(o.fFlashPortrait, offset);
@@ -3507,7 +3507,7 @@ export const PTR_STANDING = (pSoldier: SOLDIERTYPE) => (gAnimControl[pSoldier.us
 const PTR_PRONE = (pSoldier: SOLDIERTYPE) => (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_PRONE);
 
 // VARIABLES FOR PALETTE REPLACEMENTS FOR HAIR, ETC
-export let gubpNumReplacementsPerRange: Pointer<UINT8>;
+export let gubpNumReplacementsPerRange: UINT8[] /* Pointer<UINT8> */;
 export let gpPalRep: PaletteReplacementType[] /* Pointer<PaletteReplacementType> */;
 
 }

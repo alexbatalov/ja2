@@ -103,7 +103,7 @@ export function SmkShutdown(): void {
   }
 }
 
-export function SmkPlayFlic(cFilename: string /* Pointer<CHAR8> */, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): Pointer<SMKFLIC> {
+export function SmkPlayFlic(cFilename: string /* Pointer<CHAR8> */, uiLeft: UINT32, uiTop: UINT32, fClose: boolean): SMKFLIC | null {
   let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
@@ -121,7 +121,7 @@ export function SmkPlayFlic(cFilename: string /* Pointer<CHAR8> */, uiLeft: UINT
   return pSmack;
 }
 
-function SmkOpenFlic(cFilename: string /* Pointer<CHAR8> */): Pointer<SMKFLIC> {
+function SmkOpenFlic(cFilename: string /* Pointer<CHAR8> */): SMKFLIC | null {
   let pSmack: Pointer<SMKFLIC>;
   let hFile: HANDLE;
 
@@ -171,7 +171,7 @@ function SmkSetBlitPosition(pSmack: Pointer<SMKFLIC>, uiLeft: UINT32, uiTop: UIN
   pSmack.value.uiTop = uiTop;
 }
 
-export function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
+export function SmkCloseFlic(pSmack: SMKFLIC): void {
   // Attempt opening the filename
   FileClose(pSmack.value.hFileHandle);
 

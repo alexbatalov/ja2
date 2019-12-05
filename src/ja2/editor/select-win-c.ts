@@ -104,36 +104,53 @@ export let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = [ createSelectionsFrom
 
 // Number of objects currently in the selection list
 export let iNumOStructsSelected: INT32 = 1;
+export let iNumOStructsSelected__Pointer = createPointer(() => iNumOStructsSelected, (v) => iNumOStructsSelected = v);
 export let iNumOStructs1Selected: INT32 = 1;
+export let iNumOStructs1Selected__Pointer = createPointer(() => iNumOStructs1Selected, (v) => iNumOStructs1Selected = v);
 export let iNumOStructs2Selected: INT32 = 1;
+export let iNumOStructs2Selected__Pointer = createPointer(() => iNumOStructs2Selected, (v) => iNumOStructs2Selected = v);
 export let iNumBanksSelected: INT32 = 1;
+export let iNumBanksSelected__Pointer = createPointer(() => iNumBanksSelected, (v) => iNumBanksSelected = v);
 export let iNumRoadsSelected: INT32 = 1;
+export let iNumRoadsSelected__Pointer = createPointer(() => iNumRoadsSelected, (v) => iNumRoadsSelected = v);
 export let iNumDebrisSelected: INT32 = 1;
+export let iNumDebrisSelected__Pointer = createPointer(() => iNumDebrisSelected, (v) => iNumDebrisSelected = v);
 
 export let iNumWallsSelected: INT32 = 1;
+export let iNumWallsSelected__Pointer = createPointer(() => iNumWallsSelected, (v) => iNumWallsSelected = v);
 export let iNumDoorsSelected: INT32 = 1;
+export let iNumDoorsSelected__Pointer = createPointer(() => iNumDoorsSelected, (v) => iNumDoorsSelected = v);
 export let iNumWindowsSelected: INT32 = 1;
+export let iNumWindowsSelected__Pointer = createPointer(() => iNumWindowsSelected, (v) => iNumWindowsSelected = v);
 export let iNumDecorSelected: INT32 = 1;
+export let iNumDecorSelected__Pointer = createPointer(() => iNumDecorSelected, (v) => iNumDecorSelected = v);
 export let iNumDecalsSelected: INT32 = 1;
+export let iNumDecalsSelected__Pointer = createPointer(() => iNumDecalsSelected, (v) => iNumDecalsSelected = v);
 export let iNumBrokenWallsSelected: INT32 = 1;
+export let iNumBrokenWallsSelected__Pointer = createPointer(() => iNumBrokenWallsSelected, (v) => iNumBrokenWallsSelected = v);
 export let iNumFloorsSelected: INT32 = 1;
+export let iNumFloorsSelected__Pointer = createPointer(() => iNumFloorsSelected, (v) => iNumFloorsSelected = v);
 export let iNumToiletsSelected: INT32 = 1;
+export let iNumToiletsSelected__Pointer = createPointer(() => iNumToiletsSelected, (v) => iNumToiletsSelected = v);
 export let iNumRoofsSelected: INT32 = 1;
+export let iNumRoofsSelected__Pointer = createPointer(() => iNumRoofsSelected, (v) => iNumRoofsSelected = v);
 export let iNumNewRoofsSelected: INT32 = 1;
+export let iNumNewRoofsSelected__Pointer = createPointer(() => iNumNewRoofsSelected, (v) => iNumNewRoofsSelected = v);
 export let iNumRoomsSelected: INT32 = 1;
+export let iNumRoomsSelected__Pointer = createPointer(() => iNumRoomsSelected, (v) => iNumRoomsSelected = v);
 
 // Holds the previous selection list when a selection window is up. Used for canceling the selection window
 let OldSelList: Selections[] /* [MAX_SELECTIONS] */;
 let iOldNumSelList: INT32;
 
 // Global pointers for selection list
-export let pSelList: Pointer<Selections>;
+export let pSelList: Selections[] /* Pointer<Selections> */;
 export let pNumSelList: Pointer<INT32>;
 
 // Global used to indicate which selection to use (changes with the PGUP/PGDWN keys in editor)
 export let iCurBank: INT32 = 0;
 
-let pDispList: Pointer<DisplayList>;
+let pDispList: DisplayList /* Pointer<DisplayList> */;
 let iTopWinCutOff: INT16;
 let iBotWinCutOff: INT16;
 let Selection: DisplayList;
@@ -147,7 +164,7 @@ let SelWinHilightFillColor: UINT16 = 0x000d; // a kind of medium dark blue
 //	Creates a selection window of the given type.
 //
 export function CreateJA2SelectionWindow(sWhat: INT16): void {
-  let pDSpec: Pointer<DisplaySpec>;
+  let pDSpec: DisplaySpec[] /* Pointer<DisplaySpec> */;
   let usNSpecs: UINT16;
 
   fAllDone = false;
@@ -194,113 +211,115 @@ export function CreateJA2SelectionWindow(sWhat: INT16): void {
       pDSpec = OStructs;
       usNSpecs = gusNumOStructs; // OSTRUCTS_NUMELEMENTS;
       pSelList = SelOStructs;
-      pNumSelList = addressof(iNumOStructsSelected);
+      pNumSelList = iNumOStructsSelected__Pointer;
       break;
 
     case Enum59.SELWIN_OSTRUCTS1:
       pDSpec = OStructs1;
       usNSpecs = OSTRUCTS1_NUMELEMENTS;
       pSelList = SelOStructs1;
-      pNumSelList = addressof(iNumOStructs1Selected);
+      pNumSelList = iNumOStructs1Selected__Pointer;
       break;
 
     case Enum59.SELWIN_OSTRUCTS2:
       pDSpec = OStructs2;
       usNSpecs = OSTRUCTS2_NUMELEMENTS;
       pSelList = SelOStructs2;
-      pNumSelList = addressof(iNumOStructs2Selected);
+      pNumSelList = iNumOStructs2Selected__Pointer;
       break;
 
     case Enum59.SELWIN_BANKS:
       pDSpec = BanksList;
       usNSpecs = BANKSLIST_NUMELEMENTS;
       pSelList = SelBanks;
-      pNumSelList = addressof(iNumBanksSelected);
+      pNumSelList = iNumBanksSelected__Pointer;
       break;
 
     case Enum59.SELWIN_ROADS:
       pDSpec = RoadsList;
       usNSpecs = ROADSLIST_NUMELEMENTS;
       pSelList = SelRoads;
-      pNumSelList = addressof(iNumRoadsSelected);
+      pNumSelList = iNumRoadsSelected__Pointer;
       break;
 
     case Enum59.SELWIN_DEBRIS:
       pDSpec = DebrisList;
       usNSpecs = DEBRISLIST_NUMELEMENTS;
       pSelList = SelDebris;
-      pNumSelList = addressof(iNumDebrisSelected);
+      pNumSelList = iNumDebrisSelected__Pointer;
       break;
 
     case Enum59.SELWIN_SINGLEWALL:
       pDSpec = SingleWall;
       usNSpecs = SINGLEWALL_NUMELEMENTS;
       pSelList = SelSingleWall;
-      pNumSelList = addressof(iNumWallsSelected);
+      pNumSelList = iNumWallsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEDOOR:
       pDSpec = SingleDoor;
       usNSpecs = SINGLEDOOR_NUMELEMENTS;
       pSelList = SelSingleDoor;
-      pNumSelList = addressof(iNumDoorsSelected);
+      pNumSelList = iNumDoorsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEWINDOW:
       pDSpec = SingleWindow;
       usNSpecs = SINGLEWINDOW_NUMELEMENTS;
       pSelList = SelSingleWindow;
-      pNumSelList = addressof(iNumWindowsSelected);
+      pNumSelList = iNumWindowsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEROOF:
       pDSpec = SingleRoof;
       usNSpecs = SINGLEROOF_NUMELEMENTS;
       pSelList = SelSingleRoof;
-      pNumSelList = addressof(iNumRoofsSelected);
+      pNumSelList = iNumRoofsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLENEWROOF:
       pDSpec = SingleNewRoof;
       usNSpecs = SINGLENEWROOF_NUMELEMENTS;
       pSelList = SelSingleNewRoof;
-      pNumSelList = addressof(iNumNewRoofsSelected);
+      pNumSelList = iNumNewRoofsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEBROKENWALL:
       pDSpec = SingleBrokenWall;
       usNSpecs = SINGLEBROKENWALL_NUMELEMENTS;
       pSelList = SelSingleBrokenWall;
-      pNumSelList = addressof(iNumBrokenWallsSelected);
+      pNumSelList = iNumBrokenWallsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEDECOR:
       pDSpec = SingleDecor;
       usNSpecs = SINGLEDECOR_NUMELEMENTS;
       pSelList = SelSingleDecor;
-      pNumSelList = addressof(iNumDecorSelected);
+      pNumSelList = iNumDecorSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEDECAL:
       pDSpec = SingleDecal;
       usNSpecs = SINGLEDECAL_NUMELEMENTS;
       pSelList = SelSingleDecal;
-      pNumSelList = addressof(iNumDecalsSelected);
+      pNumSelList = iNumDecalsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLEFLOOR:
       pDSpec = SingleFloor;
       usNSpecs = SINGLEFLOOR_NUMELEMENTS;
       pSelList = SelSingleFloor;
-      pNumSelList = addressof(iNumFloorsSelected);
+      pNumSelList = iNumFloorsSelected__Pointer;
       break;
     case Enum59.SELWIN_SINGLETOILET:
       pDSpec = SingleToilet;
       usNSpecs = SINGLETOILET_NUMELEMENTS;
       pSelList = SelSingleToilet;
-      pNumSelList = addressof(iNumToiletsSelected);
+      pNumSelList = iNumToiletsSelected__Pointer;
       break;
     case Enum59.SELWIN_ROOM:
       pDSpec = Room;
       usNSpecs = ROOM_NUMELEMENTS;
       pSelList = SelRoom;
-      pNumSelList = addressof(iNumRoomsSelected);
+      pNumSelList = iNumRoomsSelected__Pointer;
       break;
+    default:
+      throw new Error('Should be unreachable');
   }
 
-  BuildDisplayWindow(pDSpec, usNSpecs, addressof(pDispList), addressof(SelWinStartPoint), addressof(SelWinEndPoint), addressof(SelWinSpacing), CLEAR_BACKGROUND);
+  BuildDisplayWindow(pDSpec, usNSpecs, createPointer(() => pDispList, (v) => pDispList = v), SelWinStartPoint, SelWinEndPoint, SelWinSpacing, CLEAR_BACKGROUND);
 }
 
 // The selection window method is initialized here.  This is where all the graphics for all
@@ -313,16 +332,16 @@ export function InitJA2SelectionWindow(): void {
   let iCount3: INT32;
 
   let usETRLEObjects: UINT16;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
-  pDispList = null;
+  pDispList = <DisplayList><unknown>null;
 
   // Init the display spec lists for the types of selection windows
 
   // Trees & bushes (The tree button in the "terrain" toolbar)
   for (iCount3 = 0, iCount = 0; iCount < (LASTOSTRUCT - Enum313.FIRSTFULLSTRUCT + 1); iCount++) {
     hVObject = gTileDatabase[gTileTypeStartIndex[Enum313.FIRSTFULLSTRUCT + iCount]].hTileSurface;
-    usETRLEObjects = hVObject.value.usNumberOfObjects;
+    usETRLEObjects = hVObject.usNumberOfObjects;
 
     for (iCount2 = 0; iCount2 < usETRLEObjects; iCount2 += 3, iCount3++) {
       OStructs[iCount3].ubType = DISPLAY_GRAPHIC;
@@ -706,7 +725,7 @@ export function ShutdownJA2SelectionWindow(): void {
     UnloadGenericButtonIcon(iButtonIcons[x]);
 
   if (pDispList != null) {
-    pDispList = TrashList(pDispList);
+    pDispList = <DisplayList>TrashList(pDispList);
   }
   gfRenderWorld = true;
 }
@@ -726,7 +745,7 @@ export function RemoveJA2SelectionWindow(): void {
   gfRenderSquareArea = false;
 
   if (pDispList != null) {
-    pDispList = TrashList(pDispList);
+    pDispList = <DisplayList>TrashList(pDispList);
   }
   gfRenderTaskbar = true;
 
@@ -739,15 +758,12 @@ export function RemoveJA2SelectionWindow(): void {
 //
 //	Free the current display list for the selection window.
 //
-function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
+function TrashList(pNode: DisplayList | null): DisplayList | null {
   if (pNode == null)
     return null;
 
-  if (pNode.value.pNext != null)
-    pNode.value.pNext = TrashList(pNode.value.pNext);
-
-  if (pNode.value.pNext == null)
-    MemFree(pNode);
+  if (pNode.pNext != null)
+    pNode.pNext = TrashList(pNode.pNext);
 
   return null;
 }
@@ -757,6 +773,8 @@ function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
 //
 //	Displays the current selection window
 //
+/* static */ let RenderSelectionWindow__usFillGreen: UINT8 = 0;
+/* static */ let RenderSelectionWindow__usDir: UINT8 = 5;
 export function RenderSelectionWindow(): void {
   let button: GUI_BUTTON;
   let iSX: INT32;
@@ -764,8 +782,6 @@ export function RenderSelectionWindow(): void {
   let iEX: INT32;
   let iEY: INT32;
   let usFillColor: UINT16;
-  /* static */ let usFillGreen: UINT8 = 0;
-  /* static */ let usDir: UINT8 = 5;
 
   if (!fButtonsPresent)
     return;
@@ -808,12 +824,12 @@ export function RenderSelectionWindow(): void {
       iEY = Math.min(359, iEY);
       iEY = Math.max(SelWinStartPoint.iY, iEY);
 
-      usFillColor = Get16BPPColor(FROMRGB(255, usFillGreen, 0));
-      usFillGreen += usDir;
-      if (usFillGreen > 250)
-        usDir = 251;
-      else if (usFillGreen < 5)
-        usDir = 5;
+      usFillColor = Get16BPPColor(FROMRGB(255, RenderSelectionWindow__usFillGreen, 0));
+      RenderSelectionWindow__usFillGreen += RenderSelectionWindow__usDir;
+      if (RenderSelectionWindow__usFillGreen > 250)
+        RenderSelectionWindow__usDir = 251;
+      else if (RenderSelectionWindow__usFillGreen < 5)
+        RenderSelectionWindow__usDir = 5;
 
       ColorFillVideoSurfaceArea(FRAME_BUFFER, iSX, iSY, iEX, iSY + 1, usFillColor);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, iSX, iEY, iEX, iEY + 1, usFillColor);
@@ -831,7 +847,7 @@ export function RenderSelectionWindow(): void {
 //	and drag to get the selection rectangle)
 //
 function SelWinClkCallback(button: GUI_BUTTON, reason: INT32): void {
-  let pNode: Pointer<DisplayList>;
+  let pNode: DisplayList | null;
   let fDone: boolean;
   let iClickX: INT16;
   let iClickY: INT16;
@@ -862,12 +878,12 @@ function SelWinClkCallback(button: GUI_BUTTON, reason: INT32): void {
 
     fDone = false;
     while ((pNode != null) && !fDone) {
-      if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
+      if ((iClickX >= pNode.iX) && (iClickX < (pNode.iX + pNode.iWidth)) && (iClickY >= pNode.iY) && (iClickY < (pNode.iY + pNode.iHeight))) {
         fDone = true;
         if (RemoveFromSelectionList(pNode))
-          pNode.value.fChosen = false;
+          pNode.fChosen = false;
       } else
-        pNode = pNode.value.pNext;
+        pNode = pNode.pNext;
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     button.uiFlags &= (~BUTTON_CLICKED_ON);
@@ -904,15 +920,15 @@ function SelWinClkCallback(button: GUI_BUTTON, reason: INT32): void {
 
         fDone = false;
         while ((pNode != null) && !fDone) {
-          if ((iClickX >= pNode.value.iX) && (iClickX < (pNode.value.iX + pNode.value.iWidth)) && (iClickY >= pNode.value.iY) && (iClickY < (pNode.value.iY + pNode.value.iHeight))) {
+          if ((iClickX >= pNode.iX) && (iClickX < (pNode.iX + pNode.iWidth)) && (iClickY >= pNode.iY) && (iClickY < (pNode.iY + pNode.iHeight))) {
             fDone = true;
             AddToSelectionList(pNode);
-            pNode.value.fChosen = true;
-            iXInc = (pNode.value.iX + pNode.value.iWidth) - iClickX;
-            if (iYInc < ((pNode.value.iY + pNode.value.iHeight) - iClickY))
-              iYInc = (pNode.value.iY + pNode.value.iHeight) - iClickY;
+            pNode.fChosen = true;
+            iXInc = (pNode.iX + pNode.iWidth) - iClickX;
+            if (iYInc < ((pNode.iY + pNode.iHeight) - iClickY))
+              iYInc = (pNode.iY + pNode.iHeight) - iClickY;
           } else
-            pNode = pNode.value.pNext;
+            pNode = pNode.pNext;
         }
       }
     }
@@ -922,7 +938,7 @@ function SelWinClkCallback(button: GUI_BUTTON, reason: INT32): void {
 // When a selection window is up, the file information of the picture will display
 // at the top of the screen.
 export function DisplaySelectionWindowGraphicalInformation(): void {
-  let pNode: Pointer<DisplayList>;
+  let pNode: DisplayList | null;
   let fDone: boolean;
   // UINT16 usObjIndex, usIndex;
   let y: UINT16;
@@ -934,24 +950,24 @@ export function DisplaySelectionWindowGraphicalInformation(): void {
   pNode = pDispList;
   fDone = false;
   while ((pNode != null) && !fDone) {
-    if ((gusMouseXPos >= pNode.value.iX) && (gusMouseXPos < (pNode.value.iX + pNode.value.iWidth)) && (y >= pNode.value.iY) && (y < (pNode.value.iY + pNode.value.iHeight))) {
+    if ((gusMouseXPos >= pNode.iX) && (gusMouseXPos < (pNode.iX + pNode.iWidth)) && (y >= pNode.iY) && (y < (pNode.iY + pNode.iHeight))) {
       fDone = true;
       // pNode->fChosen = TRUE;
       // iXInc = (pNode->iX + pNode->iWidth) - iClickX;
       // if ( iYInc < ((pNode->iY + pNode->iHeight) - iClickY) )
       //	iYInc = (pNode->iY + pNode->iHeight) - iClickY;
     } else
-      pNode = pNode.value.pNext;
+      pNode = pNode.pNext;
   }
   SetFont(FONT12POINT1());
   SetFontForeground(FONT_WHITE);
   if (pNode) {
     // usObjIndex = (UINT16)pNode->uiObjIndx;
     // usIndex = pNode->uiIndex;
-    if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.value.uiObjIndx][0]) {
-      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode.value.uiObjIndx], pNode.value.uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode.value.uiObjIndx]);
+    if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.uiObjIndx][0]) {
+      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode.uiObjIndx]);
     } else {
-      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.value.uiObjIndx], pNode.value.uiIndex, gTileSurfaceName[pNode.value.uiObjIndx]);
+      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTileSurfaceName[pNode.uiObjIndx]);
     }
   }
   mprintf(350, 2, "Current Tileset:  %s", gTilesets[giCurrentTilesetID].zName);
@@ -963,14 +979,14 @@ export function DisplaySelectionWindowGraphicalInformation(): void {
 //	Add an object in the display list to the selection list. If the object already exists in the
 //	selection list, then it's count is incremented.
 //
-function AddToSelectionList(pNode: Pointer<DisplayList>): void {
+function AddToSelectionList(pNode: DisplayList): void {
   let iIndex: INT32;
-  let iUseIndex: INT32;
+  let iUseIndex: INT32 = 0;
   let fDone: boolean;
 
   fDone = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
-    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.uiObjIndx == pSelList[iIndex].uiObject && pNode.uiIndex == pSelList[iIndex].usIndex) {
       fDone = true;
       iUseIndex = iIndex;
     }
@@ -982,8 +998,8 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
   } else {
     // Wasn't in the list, so add to end (if space available)
     if ((pNumSelList.value) < MAX_SELECTIONS) {
-      pSelList[(pNumSelList.value)].uiObject = pNode.value.uiObjIndx;
-      pSelList[(pNumSelList.value)].usIndex = pNode.value.uiIndex;
+      pSelList[(pNumSelList.value)].uiObject = pNode.uiObjIndx;
+      pSelList[(pNumSelList.value)].usIndex = pNode.uiIndex;
       pSelList[(pNumSelList.value)].sCount = 1;
 
       (pNumSelList.value)++;
@@ -998,15 +1014,15 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
 //
 export function ClearSelectionList(): boolean {
   let iIndex: INT32;
-  let pNode: Pointer<DisplayList>;
+  let pNode: DisplayList | null;
 
   if (pNumSelList == null)
     return false;
 
   pNode = pDispList;
   while (pNode != null) {
-    pNode.value.fChosen = false;
-    pNode = pNode.value.pNext;
+    pNode.fChosen = false;
+    pNode = pNode.pNext;
   }
 
   for (iIndex = 0; iIndex < (pNumSelList.value); iIndex++)
@@ -1022,9 +1038,9 @@ export function ClearSelectionList(): boolean {
 //	Removes the object given n a display list from the selection list. If the objects count is
 //	greater than one, then the count is decremented and the object remains in the list.
 //
-function RemoveFromSelectionList(pNode: Pointer<DisplayList>): boolean {
+function RemoveFromSelectionList(pNode: DisplayList): boolean {
   let iIndex: INT32;
-  let iUseIndex: INT32;
+  let iUseIndex: INT32 = 0;
   let fDone: boolean;
   let fRemoved: boolean;
 
@@ -1035,7 +1051,7 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): boolean {
   fRemoved = false;
   fDone = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fDone; iIndex++) {
-    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.uiObjIndx == pSelList[iIndex].uiObject && pNode.uiIndex == pSelList[iIndex].usIndex) {
       fDone = true;
       iUseIndex = iIndex;
     }
@@ -1098,13 +1114,13 @@ export function GetRandomSelection(): INT32 {
 //
 //	Verifies if a particular display list object exists in the current selection list.
 //
-function IsInSelectionList(pNode: Pointer<DisplayList>): boolean {
+function IsInSelectionList(pNode: DisplayList): boolean {
   let iIndex: INT32;
   let fFound: boolean;
 
   fFound = false;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
-    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.uiObjIndx == pSelList[iIndex].uiObject && pNode.uiIndex == pSelList[iIndex].usIndex) {
       fFound = true;
     }
   }
@@ -1119,7 +1135,7 @@ function IsInSelectionList(pNode: Pointer<DisplayList>): boolean {
 //	if found, returns the selection list's index where it can be found. otherwise it
 //	returns -1
 //
-function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
+function FindInSelectionList(pNode: DisplayList): INT32 {
   let iIndex: INT32;
   let iUseIndex: INT32;
   let fFound: boolean;
@@ -1127,7 +1143,7 @@ function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
   fFound = false;
   iUseIndex = -1;
   for (iIndex = 0; iIndex < (pNumSelList.value) && !fFound; iIndex++) {
-    if (pNode.value.uiObjIndx == pSelList[iIndex].uiObject && pNode.value.uiIndex == pSelList[iIndex].usIndex) {
+    if (pNode.uiObjIndx == pSelList[iIndex].uiObject && pNode.uiIndex == pSelList[iIndex].usIndex) {
       fFound = true;
       iUseIndex = iIndex;
     }
@@ -1213,7 +1229,7 @@ function UpClkCallback(button: GUI_BUTTON, reason: INT32): void {
 //	Performs the calculations required to actually scroll a selection window up by one line.
 //
 export function ScrollSelWinUp(): void {
-  let pNode: Pointer<DisplayList>;
+  let pNode: DisplayList | null;
   let iCutOff: INT16;
   let iBotCutOff: INT16;
   let fDone: boolean;
@@ -1224,11 +1240,11 @@ export function ScrollSelWinUp(): void {
 
   fDone = false;
   while ((pNode != null) && !fDone) {
-    if (pNode.value.iY >= iTopWinCutOff) {
-      iCutOff = pNode.value.iY;
-      pNode = pNode.value.pNext;
+    if (pNode.iY >= iTopWinCutOff) {
+      iCutOff = pNode.iY;
+      pNode = pNode.pNext;
     } else {
-      iCutOff = pNode.value.iY;
+      iCutOff = pNode.iY;
       fDone = true;
     }
   }
@@ -1243,7 +1259,7 @@ export function ScrollSelWinUp(): void {
 //	Performs the actual calculations for scrolling a selection window down.
 //
 export function ScrollSelWinDown(): void {
-  let pNode: Pointer<DisplayList>;
+  let pNode: DisplayList | null;
   let iCutOff: INT16;
   let iBotCutOff: INT16;
   let fDone: boolean;
@@ -1253,9 +1269,9 @@ export function ScrollSelWinDown(): void {
 
   fDone = false;
   while ((pNode != null) && !fDone) {
-    if (pNode.value.iY > iTopWinCutOff) {
-      iCutOff = pNode.value.iY;
-      pNode = pNode.value.pNext;
+    if (pNode.iY > iTopWinCutOff) {
+      iCutOff = pNode.iY;
+      pNode = pNode.pNext;
     } else
       fDone = true;
   }
@@ -1300,7 +1316,7 @@ function DrawSelections(): void {
   SetObjectShade(gvoLargeFontType1, 0);
   //	SetObjectShade( gvoLargeFont, 0 );
 
-  DisplayWindowFunc(pDispList, iTopWinCutOff, iBotWinCutOff, addressof(SelWinStartPoint), CLEAR_BACKGROUND);
+  DisplayWindowFunc(pDispList, iTopWinCutOff, iBotWinCutOff, SelWinStartPoint, CLEAR_BACKGROUND);
 
   SetObjectShade(gvoLargeFontType1, 4);
 
@@ -1313,74 +1329,74 @@ function DrawSelections(): void {
 //	Creates a display list from a display specification list. It also sets variables up for
 //	properly scrolling the window etc.
 //
-function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UINT16, pDisplayList: Pointer<Pointer<DisplayList>>, pUpperLeft: Pointer<SGPPoint>, pBottomRight: Pointer<SGPPoint>, pSpacing: Pointer<SGPPoint>, fFlags: UINT16): boolean {
-  let iCurrX: INT32 = pUpperLeft.value.iX;
-  let iCurrY: INT32 = pUpperLeft.value.iY;
+function BuildDisplayWindow(pDisplaySpecs: DisplaySpec[], usNumSpecs: UINT16, pDisplayList: Pointer<DisplayList>, pUpperLeft: SGPPoint, pBottomRight: SGPPoint, pSpacing: SGPPoint, fFlags: UINT16): boolean {
+  let iCurrX: INT32 = pUpperLeft.iX;
+  let iCurrY: INT32 = pUpperLeft.iY;
   let usGreatestHeightInRow: UINT16 = 0;
   let usSpecLoop: UINT16;
   let usETRLELoop: UINT16;
   let usETRLEStart: UINT16;
   let usETRLEEnd: UINT16;
-  let pDisplaySpec: Pointer<DisplaySpec>;
-  let pETRLEObject: Pointer<ETRLEObject>;
-  let pCurNode: Pointer<DisplayList>;
+  let pDisplaySpec: DisplaySpec;
+  let pETRLEObject: ETRLEObject;
+  let pCurNode: DisplayList;
 
   SaveSelectionList();
 
   for (usSpecLoop = 0; usSpecLoop < usNumSpecs; usSpecLoop++) {
-    pDisplaySpec = addressof(pDisplaySpecs[usSpecLoop]);
-    if (pDisplaySpec.value.ubType == DISPLAY_GRAPHIC) {
-      if (!pDisplaySpec.value.hVObject)
+    pDisplaySpec = pDisplaySpecs[usSpecLoop];
+    if (pDisplaySpec.ubType == DISPLAY_GRAPHIC) {
+      if (!pDisplaySpec.hVObject)
         return false;
-      usETRLEStart = pDisplaySpec.value.usStart;
-      usETRLEEnd = pDisplaySpec.value.usEnd;
+      usETRLEStart = pDisplaySpec.usStart;
+      usETRLEEnd = pDisplaySpec.usEnd;
 
       if (usETRLEStart == DISPLAY_ALL_OBJECTS) {
         usETRLEStart = 0;
-        usETRLEEnd = pDisplaySpec.value.hVObject.value.usNumberOfObjects - 1;
+        usETRLEEnd = pDisplaySpec.hVObject.usNumberOfObjects - 1;
       }
 
       if (usETRLEStart > usETRLEEnd)
         return false;
-      if (usETRLEEnd >= pDisplaySpec.value.hVObject.value.usNumberOfObjects)
+      if (usETRLEEnd >= pDisplaySpec.hVObject.usNumberOfObjects)
         return false;
 
       for (usETRLELoop = usETRLEStart; usETRLELoop <= usETRLEEnd; usETRLELoop++) {
-        pETRLEObject = addressof(pDisplaySpec.value.hVObject.value.pETRLEObject[usETRLELoop]);
+        pETRLEObject = pDisplaySpec.hVObject.pETRLEObject[usETRLELoop];
 
-        if ((iCurrX + pETRLEObject.value.usWidth > pBottomRight.value.iX) || (fFlags & ONE_COLUMN)) {
+        if ((iCurrX + pETRLEObject.usWidth > pBottomRight.iX) || (fFlags & ONE_COLUMN)) {
           if (fFlags & ONE_ROW) {
             break;
           }
-          iCurrX = pUpperLeft.value.iX;
-          iCurrY += usGreatestHeightInRow + pSpacing.value.iY;
+          iCurrX = pUpperLeft.iX;
+          iCurrY += usGreatestHeightInRow + pSpacing.iY;
           usGreatestHeightInRow = 0;
         }
 
-        if ((pCurNode = MemAlloc(sizeof(DisplayList))) != false) {
-          pCurNode.value.hObj = pDisplaySpec.value.hVObject;
-          pCurNode.value.uiIndex = usETRLELoop;
-          pCurNode.value.iX = iCurrX;
-          pCurNode.value.iY = iCurrY;
-          pCurNode.value.iWidth = pETRLEObject.value.usWidth;
-          pCurNode.value.iHeight = pETRLEObject.value.usHeight;
-          pCurNode.value.pNext = pDisplayList.value;
-          pCurNode.value.uiObjIndx = pDisplaySpec.value.uiObjIndx;
+        if ((pCurNode = createDisplayList()) != null) {
+          pCurNode.hObj = pDisplaySpec.hVObject;
+          pCurNode.uiIndex = usETRLELoop;
+          pCurNode.iX = iCurrX;
+          pCurNode.iY = iCurrY;
+          pCurNode.iWidth = pETRLEObject.usWidth;
+          pCurNode.iHeight = pETRLEObject.usHeight;
+          pCurNode.pNext = pDisplayList.value;
+          pCurNode.uiObjIndx = pDisplaySpec.uiObjIndx;
 
           if (IsInSelectionList(pCurNode))
-            pCurNode.value.fChosen = true;
+            pCurNode.fChosen = true;
           else
-            pCurNode.value.fChosen = false;
+            pCurNode.fChosen = false;
 
           pDisplayList.value = pCurNode;
         } else
           return false;
 
-        if (pETRLEObject.value.usHeight > usGreatestHeightInRow) {
-          usGreatestHeightInRow = pETRLEObject.value.usHeight;
+        if (pETRLEObject.usHeight > usGreatestHeightInRow) {
+          usGreatestHeightInRow = pETRLEObject.usHeight;
         }
 
-        iCurrX += pETRLEObject.value.usWidth + pSpacing.value.iX;
+        iCurrX += pETRLEObject.usWidth + pSpacing.iX;
       }
     }
   }
@@ -1395,59 +1411,59 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
 //	have been selected (in the selection list) are highlighted and the count placed in the upper
 //	left corner of the image.
 //
-function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBottomCutOff: INT16, pUpperLeft: Pointer<SGPPoint>, fFlags: UINT16): boolean {
+function DisplayWindowFunc(pNode: DisplayList | null, iTopCutOff: INT16, iBottomCutOff: INT16, pUpperLeft: SGPPoint, fFlags: UINT16): boolean {
   let iCurrY: INT16;
   let sTempOffsetX: INT16;
   let sTempOffsetY: INT16;
   let fReturnVal: boolean;
-  let pETRLEObject: Pointer<ETRLEObject>;
+  let pETRLEObject: ETRLEObject;
   let usFillColor: UINT16;
   let sCount: INT16;
 
   if (pNode == null)
     return true;
 
-  if (pNode.value.iY < iTopCutOff)
+  if (pNode.iY < iTopCutOff)
     return true;
 
   fReturnVal = false;
-  if (DisplayWindowFunc(pNode.value.pNext, iTopCutOff, iBottomCutOff, pUpperLeft, fFlags)) {
-    iCurrY = pUpperLeft.value.iY + pNode.value.iY - iTopCutOff;
+  if (DisplayWindowFunc(pNode.pNext, iTopCutOff, iBottomCutOff, pUpperLeft, fFlags)) {
+    iCurrY = pUpperLeft.iY + pNode.iY - iTopCutOff;
 
     if (iCurrY > iBottomCutOff)
       return true;
 
-    pETRLEObject = addressof(pNode.value.hObj.value.pETRLEObject[pNode.value.uiIndex]);
+    pETRLEObject = pNode.hObj.pETRLEObject[pNode.uiIndex];
 
     // We have to store the offset data in temp variables before zeroing them and blitting
-    sTempOffsetX = pETRLEObject.value.sOffsetX;
-    sTempOffsetY = pETRLEObject.value.sOffsetY;
+    sTempOffsetX = pETRLEObject.sOffsetX;
+    sTempOffsetY = pETRLEObject.sOffsetY;
 
     // Set the offsets used for blitting to 0
-    pETRLEObject.value.sOffsetX = 0;
-    pETRLEObject.value.sOffsetY = 0;
+    pETRLEObject.sOffsetX = 0;
+    pETRLEObject.sOffsetY = 0;
 
     if (fFlags & CLEAR_BACKGROUND) {
       usFillColor = SelWinFillColor;
-      if (pNode.value.fChosen)
+      if (pNode.fChosen)
         usFillColor = SelWinHilightFillColor;
 
-      ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.value.iX, iCurrY, pNode.value.iX + pNode.value.iWidth, iCurrY + pNode.value.iHeight, usFillColor);
+      ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode.iX, iCurrY, pNode.iX + pNode.iWidth, iCurrY + pNode.iHeight, usFillColor);
     }
 
     sCount = 0;
-    if (pNode.value.fChosen)
+    if (pNode.fChosen)
       sCount = pSelList[FindInSelectionList(pNode)].sCount;
 
-    SetObjectShade(pNode.value.hObj, DEFAULT_SHADE_LEVEL);
-    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode.value.hObj, pNode.value.uiIndex, pNode.value.iX, iCurrY, VO_BLT_SRCTRANSPARENCY, null);
+    SetObjectShade(pNode.hObj, DEFAULT_SHADE_LEVEL);
+    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode.hObj, pNode.uiIndex, pNode.iX, iCurrY, VO_BLT_SRCTRANSPARENCY, null);
 
     if (sCount != 0) {
-      gprintf(pNode.value.iX, iCurrY, "%d", sCount);
+      gprintf(pNode.iX, iCurrY, "%d", sCount);
     }
 
-    pETRLEObject.value.sOffsetX = sTempOffsetX;
-    pETRLEObject.value.sOffsetY = sTempOffsetY;
+    pETRLEObject.sOffsetX = sTempOffsetX;
+    pETRLEObject.sOffsetY = sTempOffsetY;
   }
 
   return fReturnVal;

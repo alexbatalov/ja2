@@ -129,7 +129,7 @@ export function SoldierHasKey(pSoldier: SOLDIERTYPE, ubKeyID: UINT8): boolean {
   return false;
 }
 
-export function KeyExistsInKeyRing(pSoldier: SOLDIERTYPE, ubKeyID: UINT8, pubPos: Pointer<UINT8>): boolean {
+export function KeyExistsInKeyRing(pSoldier: SOLDIERTYPE, ubKeyID: UINT8, pubPos: Pointer<UINT8> | null): boolean {
   // returns the index into the key ring where the key can be found
   let ubLoop: UINT8;
 

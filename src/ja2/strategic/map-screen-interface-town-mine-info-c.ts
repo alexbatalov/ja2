@@ -598,7 +598,7 @@ function AddInventoryButtonForMapPopUpBox(): void {
   let sWidthA: INT16 = 0;
   let sWidthB: INT16 = 0;
   let sTotalBoxWidth: INT16 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // load the button
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -607,11 +607,11 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   // Calculate smily face positions...
   hHandle = GetVideoObject(uiObject);
-  pTrav = hHandle.value.pETRLEObject[0];
+  pTrav = hHandle.pETRLEObject[0];
 
   sWidthA = pTrav.usWidth;
 
-  pTrav = hHandle.value.pETRLEObject[1];
+  pTrav = hHandle.pETRLEObject[1];
   sWidthB = pTrav.usWidth;
 
   sTotalBoxWidth = sTotalButtonWidth;
@@ -697,7 +697,7 @@ function MapTownMineExitButtonCallBack(btn: GUI_BUTTON, reason: INT32): void {
 
 // get the min width of the town mine info pop up box
 function MinWidthOfTownMineInfoBox(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let sWidthA: INT16 = 0;
   let sWidthB: INT16 = 0;
@@ -711,11 +711,11 @@ function MinWidthOfTownMineInfoBox(): void {
 
   // Calculate smily face positions...
   hHandle = GetVideoObject(uiObject);
-  pTrav = hHandle.value.pETRLEObject[0];
+  pTrav = hHandle.pETRLEObject[0];
 
   sWidthA = pTrav.usWidth;
 
-  pTrav = hHandle.value.pETRLEObject[1];
+  pTrav = hHandle.pETRLEObject[1];
   sWidthB = pTrav.usWidth;
 
   sTotalBoxWidth = sWidthA + sWidthB;

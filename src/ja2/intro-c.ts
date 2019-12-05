@@ -12,7 +12,7 @@ let gfIntroScreenExit: boolean;
 
 let guiIntroExitScreen: UINT32 = Enum26.INTRO_SCREEN;
 
-let gpSmackFlic: Pointer<SMKFLIC> = null;
+let gpSmackFlic: SMKFLIC | null /* Pointer<SMKFLIC> */ = null;
 
 const SMKINTRO_FIRST_VIDEO = 255;
 const SMKINTRO_NO_VIDEO = -1;
@@ -208,7 +208,7 @@ function GetIntroScreenUserInput(): void {
           PrepareToExitIntroScreen();
           break;
         case SPACE:
-          SmkCloseFlic(gpSmackFlic);
+          SmkCloseFlic(<SMKFLIC>gpSmackFlic);
           break;
       }
     }
@@ -217,7 +217,7 @@ function GetIntroScreenUserInput(): void {
   // if the user presses either mouse button
   if (gfLeftButtonState || gfRightButtonState) {
     // advance to the next flic
-    SmkCloseFlic(gpSmackFlic);
+    SmkCloseFlic(<SMKFLIC>gpSmackFlic);
   }
 }
 
@@ -339,7 +339,7 @@ export function SetIntroType(bIntroType: INT8): void {
 }
 
 function DisplaySirtechSplashScreen(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiLogoID: UINT32;
 
@@ -354,7 +354,6 @@ function DisplaySirtechSplashScreen(): void {
   memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
   UnLockVideoSurface(FRAME_BUFFER);
 
-  memset(addressof(VObjectDesc), 0, sizeof(VOBJECT_DESC));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP("INTERFACE\\SirtechSplash.sti");
 
@@ -369,7 +368,7 @@ function DisplaySirtechSplashScreen(): void {
   DeleteVideoObjectFromIndex(uiLogoID);
 
   InvalidateScreen();
-  RefreshScreen(null);
+  RefreshScreen();
 }
 
 }

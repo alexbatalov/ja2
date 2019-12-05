@@ -68,7 +68,7 @@ export function HandleMercsNoAccount(): void {
 }
 
 export function RenderMercsNoAccount(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DrawMecBackGround();
 

@@ -66,7 +66,7 @@ export function RemoveProfileBackGround(): void {
 }
 
 export function RenderProfileBackGround(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCurrentHeight: INT32 = 0;
   let iCounter: INT32 = 0;
 
@@ -114,7 +114,7 @@ export function DeleteIMPSymbol(): void {
 }
 
 export function RenderIMPSymbol(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiIMPSYMBOL);
@@ -147,7 +147,7 @@ export function DeleteBeginIndent(): void {
 }
 
 export function RenderBeginIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiBEGININDENT);
@@ -179,7 +179,7 @@ export function DeleteActivationIndent(): void {
 }
 
 export function RenderActivationIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiACTIVATIONINDENT);
@@ -211,7 +211,7 @@ export function DeleteFrontPageIndent(): void {
 }
 
 export function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiFRONTPAGEINDENT);
@@ -243,7 +243,7 @@ export function DeleteAnalyse(): void {
 }
 
 function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiANALYSE);
@@ -275,7 +275,7 @@ export function DeleteAttributeGraph(): void {
 }
 
 function RenderAttributeGraph(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiATTRIBUTEGRAPH);
@@ -307,7 +307,7 @@ export function DeleteAttributeBarGraph(): void {
 }
 
 function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiATTRIBUTEGRAPHBAR);
@@ -339,7 +339,7 @@ export function DeleteFullNameIndent(): void {
 }
 
 function RenderFullNameIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiFULLNAMEINDENT);
@@ -371,7 +371,7 @@ export function DeleteNickNameIndent(): void {
 }
 
 export function RenderNickNameIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiNICKNAMEINDENT);
@@ -403,7 +403,7 @@ export function DeleteNameIndent(): void {
 }
 
 export function RenderNameIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiNAMEINDENT);
@@ -435,7 +435,7 @@ export function DeleteGenderIndent(): void {
 }
 
 export function RenderGenderIndent(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiGENDERINDENT);
@@ -467,7 +467,7 @@ function DeleteSmallFrame(): void {
 }
 
 function RenderSmallFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSMALLFRAME);
@@ -499,7 +499,7 @@ export function DeleteSmallSilhouette(): void {
 }
 
 function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSMALLSILHOUETTE);
@@ -531,7 +531,7 @@ export function DeleteLargeSilhouette(): void {
 }
 
 export function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiLARGESILHOUETTE);
@@ -563,7 +563,7 @@ export function DeleteAttributeFrame(): void {
 }
 
 export function RenderAttributeFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
   let sCurrentY: INT16 = 0;
 
@@ -590,7 +590,7 @@ export function RenderAttributeFrame(sX: INT16, sY: INT16): void {
 
 export function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void {
   let sCurrentY: INT16 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // valid index?
   if (iIndex == -1) {
@@ -639,7 +639,7 @@ export function DeleteSliderBar(): void {
 }
 
 export function RenderSliderBar(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSLIDERBAR);
@@ -671,7 +671,7 @@ export function DeleteButton2Image(): void {
 }
 
 export function RenderButton2Image(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiBUTTON2IMAGE);
@@ -703,7 +703,7 @@ export function DeleteButton4Image(): void {
 }
 
 export function RenderButton4Image(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiBUTTON4IMAGE);
@@ -735,7 +735,7 @@ export function DeleteButton1Image(): void {
 }
 
 function RenderButton1Image(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiBUTTON1IMAGE);
@@ -767,7 +767,7 @@ export function DeletePortraitFrame(): void {
 }
 
 export function RenderPortraitFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiPORTRAITFRAME);
@@ -799,7 +799,7 @@ export function DeleteMainIndentFrame(): void {
 }
 
 export function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiMAININDENT);
@@ -831,7 +831,7 @@ export function DeleteQtnLongIndentFrame(): void {
 }
 
 export function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiLONGINDENT);
@@ -863,7 +863,7 @@ export function DeleteQtnShortIndentFrame(): void {
 }
 
 export function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSHORTINDENT);
@@ -895,7 +895,7 @@ export function DeleteQtnLongIndentHighFrame(): void {
 }
 
 export function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiLONGHINDENT);
@@ -927,7 +927,7 @@ export function DeleteQtnShortIndentHighFrame(): void {
 }
 
 export function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSHORTHINDENT);
@@ -959,7 +959,7 @@ export function DeleteQtnIndentFrame(): void {
 }
 
 export function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiQINDENT);
@@ -991,7 +991,7 @@ export function DeleteAttrib1IndentFrame(): void {
 }
 
 export function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiA1INDENT);
@@ -1023,7 +1023,7 @@ export function DeleteAttrib2IndentFrame(): void {
 }
 
 export function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiA2INDENT);
@@ -1055,7 +1055,7 @@ export function DeleteAvgMercIndentFrame(): void {
 }
 
 export function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiAVGMERCINDENT);
@@ -1087,7 +1087,7 @@ export function DeleteAboutUsIndentFrame(): void {
 }
 
 export function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiABOUTUSINDENT);
@@ -1119,7 +1119,7 @@ export function DeleteQtnShort2IndentFrame(): void {
 }
 
 export function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSHORT2INDENT);
@@ -1151,7 +1151,7 @@ export function DeleteQtnShort2IndentHighFrame(): void {
 }
 
 export function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // get the video object
   hHandle = GetVideoObject(guiSHORT2HINDENT);

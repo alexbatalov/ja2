@@ -294,6 +294,13 @@ export interface PaletteSubRangeType {
   ubEnd: UINT8;
 }
 
+export function createPaletteSubRangeType(): PaletteSubRangeType {
+  return {
+    ubStart: 0,
+    ubEnd: 0,
+  };
+}
+
 export type PaletteRepID = string /* CHAR8[30] */;
 
 export interface PaletteReplacementType {

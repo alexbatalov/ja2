@@ -3,7 +3,7 @@ namespace ja2 {
 export function TerrainActionPoints(pSoldier: SOLDIERTYPE, sGridno: INT16, bDir: INT8, bLevel: INT8): INT16 {
   let sAPCost: INT16 = 0;
   let sSwitchValue: INT16;
-  let fHiddenStructVisible: boolean; // Used for hidden struct visiblity
+  let fHiddenStructVisible: boolean = false; // Used for hidden struct visiblity
 
   if (pSoldier.bStealthMode)
     sAPCost += AP_STEALTH_MODIFIER;
@@ -20,7 +20,7 @@ export function TerrainActionPoints(pSoldier: SOLDIERTYPE, sGridno: INT16, bDir:
   // Check reality vs what the player knows....
   if (pSoldier.bTeam == gbPlayerNum) {
     // Is this obstcale a hidden tile that has not been revealed yet?
-    if (DoesGridnoContainHiddenStruct(sGridno, addressof(fHiddenStructVisible))) {
+    if (DoesGridnoContainHiddenStruct(sGridno, createPointer(() => fHiddenStructVisible, (v) => fHiddenStructVisible = v))) {
       // Are we not visible, if so use terrain costs!
       if (!fHiddenStructVisible) {
         // Set cost of terrain!
@@ -744,8 +744,10 @@ export function CalcTotalAPsToAttack(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAd
   let sAPCost: UINT16 = 0;
   let usItemNum: UINT16;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
-  let sAdjustedGridNo: INT16;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
+  let sAdjustedGridNo: INT16 = 0;
+  let sAdjustedGridNo__Pointer = createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v);
   let uiItemClass: UINT32;
 
   // LOOK IN BUDDY'S HAND TO DETERMINE WHAT TO DO HERE
@@ -790,17 +792,17 @@ export function CalcTotalAPsToAttack(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAd
           pTarget = MercPtrs[ubGuyThere];
 
           if (pSoldier.ubBodyType == Enum194.BLOODCAT) {
-            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
             if (sGotLocation == -1) {
               sGotLocation = NOWHERE;
             }
           } else {
-            sGotLocation = FindAdjacentPunchTarget(pSoldier, pTarget, addressof(sAdjustedGridNo), addressof(ubDirection));
+            sGotLocation = FindAdjacentPunchTarget(pSoldier, pTarget, sAdjustedGridNo__Pointer, ubDirection__Pointer);
           }
         }
 
         if (sGotLocation == NOWHERE && pSoldier.ubBodyType != Enum194.BLOODCAT) {
-          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
           if (sActionGridNo == -1) {
             sGotLocation = NOWHERE;
@@ -921,10 +923,10 @@ export function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: OBJECTTY
   return (((100 * sTop) / sBottom) + 1) / 2;
 }
 
-export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurningCost: UINT8, pfChargeTurning: Pointer<boolean>, pfChargeRaise: Pointer<boolean>): void {
+export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurningCost: UINT8): { fAddingTurningCost: boolean, fAddingRaiseGunCost: boolean } {
   let ubDirection: UINT8;
-  let uiMercFlags: UINT32;
-  let usTargID: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let usTargID: UINT16 = 0;
   let fAddingTurningCost: boolean = false;
   let fAddingRaiseGunCost: boolean = false;
 
@@ -932,7 +934,7 @@ export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGr
     // OK, get a direction and see if we need to turn...
     if (ubAddTurningCost) {
       // Given a gridno here, check if we are on a guy - if so - get his gridno
-      if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+      if (FindSoldier(sGridNo, createPointer(() => usTargID, (v) => usTargID = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
         sGridNo = MercPtrs[usTargID].sGridNo;
       }
 
@@ -958,13 +960,12 @@ export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGr
     }
   }
 
-  (pfChargeTurning.value) = fAddingTurningCost;
-  (pfChargeRaise.value) = fAddingRaiseGunCost;
+  return { fAddingTurningCost, fAddingRaiseGunCost };
 }
 
 export function MinAPsToShootOrStab(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurningCost: UINT8): UINT8 {
-  let uiMercFlags: UINT32;
-  let usTargID: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let usTargID: UINT16 = 0;
   let bFullAPs: INT8;
   let bAimSkill: INT8;
   let bAPCost: UINT8 = AP_MIN_AIM_ATTACK;
@@ -978,7 +979,7 @@ export function MinAPsToShootOrStab(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAdd
     usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
   }
 
-  GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sGridNo, ubAddTurningCost, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
+  ({ fAddingTurningCost, fAddingRaiseGunCost } = GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sGridNo, ubAddTurningCost));
 
   if (Item[usItem].usItemClass == IC_THROWING_KNIFE) {
     // Do we need to stand up?
@@ -1017,7 +1018,7 @@ export function MinAPsToShootOrStab(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAdd
 
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
-    if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, createPointer(() => usTargID, (v) => usTargID = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usTargID].sGridNo;
     }
   }
@@ -1388,10 +1389,10 @@ export function GetAPsToAutoReload(pSoldier: SOLDIERTYPE): INT8 {
 export function GetAPsToReloadRobot(pSoldier: SOLDIERTYPE, pRobot: SOLDIERTYPE): UINT16 {
   let sAPCost: UINT16 = 0;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
-  let sAdjustedGridNo: INT16;
+  let ubDirection: UINT8 = 0;
+  let sAdjustedGridNo: INT16 = 0;
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), true, false);
 
   sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
@@ -1612,8 +1613,8 @@ export function MinAPsToThrow(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurnin
   let iFullAPs: INT32;
   let iAPCost: INT32 = AP_MIN_AIM_ATTACK;
   let usInHand: UINT16;
-  let usTargID: UINT16;
-  let uiMercFlags: UINT32;
+  let usTargID: UINT16 = 0;
+  let uiMercFlags: UINT32 = 0;
   let ubDirection: UINT8;
 
   // make sure the guy's actually got a throwable item in his hand!
@@ -1625,7 +1626,7 @@ export function MinAPsToThrow(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurnin
 
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
-    if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, createPointer(() => usTargID, (v) => usTargID = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usTargID].sGridNo;
     }
 

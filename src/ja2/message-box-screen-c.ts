@@ -33,8 +33,8 @@ export let gzUserDefinedButton2: string /* CHAR16[128] */;
 
 export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> */, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null, pCenteringRect: SGPRect | null): INT32 {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
-  let usTextBoxWidth: UINT16;
-  let usTextBoxHeight: UINT16;
+  let usTextBoxWidth: UINT16 = 0;
+  let usTextBoxHeight: UINT16 = 0;
   let aRect: SGPRect = createSGPRect();
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
@@ -168,7 +168,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   gMsgBox.bHandled = 0;
 
   // Init message box
-  gMsgBox.iBoxId = PrepareMercPopupBox(iId, ubMercBoxBackground, ubMercBoxBorder, zString, MSGBOX_DEFAULT_WIDTH, 40, 10, 30, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
+  gMsgBox.iBoxId = PrepareMercPopupBox(iId, ubMercBoxBackground, ubMercBoxBorder, zString, MSGBOX_DEFAULT_WIDTH, 40, 10, 30, createPointer(() => usTextBoxWidth, (v) => usTextBoxWidth = v), createPointer(() => usTextBoxHeight, (v) => usTextBoxHeight = v));
 
   if (gMsgBox.iBoxId == -1) {
     return 0;

@@ -138,19 +138,23 @@ let gExitDialog: EXIT_DIALOG_STRUCT = createExitDialogStruct();
 let gubExitGUIDirection: UINT8;
 let gsExitGUIAdditionalData: INT16;
 let gsWarpWorldX: INT16;
+let gsWarpWorldX__Pointer = createPointer(() => gsWarpWorldX, (v) => gsWarpWorldX = v);
 let gsWarpWorldY: INT16;
+let gsWarpWorldY__Pointer = createPointer(() => gsWarpWorldY, (v) => gsWarpWorldY = v);
 let gbWarpWorldZ: INT8;
+let gbWarpWorldZ__Pointer = createPointer(() => gbWarpWorldZ, (v) => gbWarpWorldZ = v);
 let gsWarpGridNo: INT16;
+let gsWarpGridNo__Pointer = createPointer(() => gsWarpGridNo, (v) => gsWarpGridNo = v);
 
 // KM:  New method is coded for more sophistocated rules.  All the information is stored within the gExitDialog struct
 //		 and calculated upon entry to this function instead of passing in multiple arguments and calculating it prior.
 function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): boolean {
-  let uiTraverseTimeInMinutes: UINT32;
+  let uiTraverseTimeInMinutes: UINT32 = 0;
   let pSoldier: SOLDIERTYPE;
   let i: INT32;
   let aRect: SGPRect = createSGPRect();
-  let usTextBoxWidth: UINT16;
-  let usTextBoxHeight: UINT16;
+  let usTextBoxWidth: UINT16 = 0;
+  let usTextBoxHeight: UINT16 = 0;
   let usMapPos: UINT16 = 0;
   let bExitCode: INT8 = -1;
   let OkExitCode: UINT8 /* boolean */;
@@ -179,7 +183,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
       break;
   }
 
-  OkExitCode = OKForSectorExit(bExitCode, usMapPos, addressof(uiTraverseTimeInMinutes));
+  OkExitCode = OKForSectorExit(bExitCode, usMapPos, createPointer(() => uiTraverseTimeInMinutes, (v) => uiTraverseTimeInMinutes = v));
 
   if (uiTraverseTimeInMinutes <= 5) {
     // if the traverse time is short, then traversal is percieved to be instantaneous.
@@ -313,7 +317,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   gExitDialog.ubDirection = ubDirection;
   gExitDialog.sAdditionalData = sAdditionalData;
 
-  gExitDialog.iBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, TacticalStr[Enum335.EXIT_GUI_TITLE_STR], 100, 85, 2, 75, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
+  gExitDialog.iBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, TacticalStr[Enum335.EXIT_GUI_TITLE_STR], 100, 85, 2, 75, createPointer(() => usTextBoxWidth, (v) => usTextBoxWidth = v), createPointer(() => usTextBoxHeight, (v) => usTextBoxHeight = v));
 
   gExitDialog.sX = ((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
   gExitDialog.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
@@ -417,7 +421,7 @@ export function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): 
   gsExitGUIAdditionalData = sAdditionalData;
 
   if (gbWorldSectorZ >= 2 && gubQuest[Enum169.QUEST_CREATURES] == QUESTDONE) {
-    if (GetWarpOutOfMineCodes(addressof(gsWarpWorldX), addressof(gsWarpWorldY), addressof(gbWarpWorldZ), addressof(gsWarpGridNo))) {
+    if (GetWarpOutOfMineCodes(gsWarpWorldX__Pointer, gsWarpWorldY__Pointer, gbWarpWorldZ__Pointer, gsWarpGridNo__Pointer)) {
       // ATE: Check if we are in a creature lair and bring up box if so....
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], Enum26.GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, null);
 

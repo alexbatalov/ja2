@@ -6,10 +6,9 @@ export let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */ = createArra
 export function InitializeRandom(): void {
   // Seed the random-number generator with current time so that
   // the numbers will be different every time we run.
-  srand(time(null));
   // Pregenerate all of the random numbers.
   for (guiPreRandomIndex = 0; guiPreRandomIndex < MAX_PREGENERATED_NUMS; guiPreRandomIndex++) {
-    guiPreRandomNums[guiPreRandomIndex] = rand();
+    guiPreRandomNums[guiPreRandomIndex] = Random(RAND_MAX);
   }
   guiPreRandomIndex = 0;
 }
@@ -20,7 +19,7 @@ export function Random(uiRange: UINT32): UINT32 {
 
   if (uiRange == 0)
     return 0;
-  return rand() * uiRange / RAND_MAX % uiRange;
+  return Math.floor(Math.random() * uiRange) / RAND_MAX % uiRange;
 }
 
 export function Chance(uiChance: UINT32): boolean {

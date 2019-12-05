@@ -338,7 +338,7 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   InvalidateScreen();
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
-  RefreshScreen(null);
+  RefreshScreen();
 }
 
 }

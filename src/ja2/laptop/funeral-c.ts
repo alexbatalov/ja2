@@ -183,7 +183,7 @@ export function HandleFuneral(): void {
 }
 
 export function RenderFuneral(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let i: UINT16;
   let usPosX: UINT16;
   let usStringHeight: UINT16;
@@ -247,7 +247,7 @@ export function RenderFuneral(): void {
 }
 
 function DisplayFuneralRipTombStone(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   // rip tombstone
   hPixHandle = GetVideoObject(guiClosedSign);

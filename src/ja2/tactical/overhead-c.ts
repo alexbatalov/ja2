@@ -576,12 +576,15 @@ let gdRadiansForAngle: FLOAT[] /* [] */ = [
 export function ExecuteOverhead(): boolean {
   let cnt: UINT32;
   let pSoldier: SOLDIERTYPE | null;
-  let sAPCost: INT16;
-  let sBPCost: INT16;
+  let sAPCost: INT16 = 0;
+  let sAPCost__Pointer = createPointer(() => sAPCost, (v) => sAPCost = v);
+  let sBPCost: INT16 = 0;
+  let sBPCost__Pointer = createPointer(() => sBPCost, (v) => sBPCost = v);
   let dXPos: FLOAT;
   let dYPos: FLOAT;
   let dAngle: FLOAT;
-  let fKeepMoving: boolean;
+  let fKeepMoving: boolean = false;
+  let fKeepMoving__Pointer = createPointer(() => fKeepMoving, (v) => fKeepMoving = v);
   let bShadeLevel: INT8;
   let fNoAPsForPendingAction: boolean;
   let sGridNo: INT16;
@@ -839,7 +842,7 @@ export function ExecuteOverhead(): boolean {
                 if ((gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_SPECIALMOVE) && pSoldier.sGridNo != pSoldier.sFinalDestination) {
                 } else {
                   // OK, we're at the MIDDLE of a new tile...
-                  HandleAtNewGridNo(pSoldier, addressof(fKeepMoving));
+                  HandleAtNewGridNo(pSoldier, fKeepMoving__Pointer);
                 }
 
                 if (gTacticalStatus.bBoxingState != Enum247.NOT_BOXING && (gTacticalStatus.bBoxingState == Enum247.BOXING_WAITING_FOR_PLAYER || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING || gTacticalStatus.bBoxingState == Enum247.BOXING)) {
@@ -926,7 +929,7 @@ export function ExecuteOverhead(): boolean {
                       if (pStructure == null) {
                         fKeepMoving = false;
                       } else {
-                        CalcInteractiveObjectAPs(sGridNo, pStructure, addressof(sAPCost), addressof(sBPCost));
+                        CalcInteractiveObjectAPs(sGridNo, pStructure, sAPCost__Pointer, sBPCost__Pointer);
 
                         if (EnoughPoints(pSoldier, sAPCost, sBPCost, true)) {
                           InteractWithInteractiveObject(pSoldier, pStructure, pSoldier.bPendingActionData3);
@@ -1095,7 +1098,7 @@ export function ExecuteOverhead(): boolean {
                     // OK, Now find another dest grindo....
                     if (!(gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_SPECIALMOVE)) {
                       // OK, now we want to see if we can continue to another tile...
-                      if (!HandleGotoNewGridNo(pSoldier, addressof(fKeepMoving), false, pSoldier.usAnimState)) {
+                      if (!HandleGotoNewGridNo(pSoldier, fKeepMoving__Pointer, false, pSoldier.usAnimState)) {
                         continue;
                       }
                     } else {
@@ -1292,7 +1295,8 @@ export function HandleGotoNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer
   let sBPCost: INT16;
   let usNewGridNo: UINT16;
   let sOverFenceGridNo: UINT16;
-  let sMineGridNo: UINT16;
+  let sMineGridNo: UINT16 = 0;
+  let sMineGridNo__Pointer = createPointer(() => sMineGridNo, (v) => sMineGridNo = v);
 
   if (gTacticalStatus.uiFlags & INCOMBAT && fInitialMove) {
     HandleLocateToGuyAsHeWalks(pSoldier);
@@ -1438,7 +1442,7 @@ export function HandleGotoNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer
   }
 
   // just check the tile we're going to walk into
-  if (NearbyGroundSeemsWrong(pSoldier, usNewGridNo, false, addressof(sMineGridNo))) {
+  if (NearbyGroundSeemsWrong(pSoldier, usNewGridNo, false, sMineGridNo__Pointer)) {
     if (pSoldier.uiStatusFlags & SOLDIER_PC) {
       // NearbyGroundSeemsWrong returns true with gridno NOWHERE if
       // we find something by metal detector... we should definitely stop
@@ -1545,15 +1549,15 @@ export function HandleGotoNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer
           EVENT_StopMerc(pSoldier, pSoldier.sGridNo, pSoldier.bDirection);
           fDontContinue = true;
 
-          DishOutGasDamage(pSoldier, pExplosive, true, false, (pExplosive.ubDamage + PreRandom(pExplosive.ubDamage)), (100 * (pExplosive.ubStunDamage + PreRandom((pExplosive.ubStunDamage / 2)))), NOBODY);
+          DishOutGasDamage(pSoldier, pExplosive, 1, false, (pExplosive.ubDamage + PreRandom(pExplosive.ubDamage)), (100 * (pExplosive.ubStunDamage + PreRandom((pExplosive.ubStunDamage / 2)))), NOBODY);
         }
       }
 
       if (!fDontContinue) {
         if ((pSoldier.bOverTerrainType == Enum315.FLAT_FLOOR || pSoldier.bOverTerrainType == Enum315.PAVED_ROAD) && pSoldier.bLevel == 0) {
-          let iMarblesIndex: INT32;
+          let iMarblesIndex: INT32 = 0;
 
-          if (ItemTypeExistsAtLocation(pSoldier.sGridNo, Enum225.MARBLES, 0, addressof(iMarblesIndex))) {
+          if (ItemTypeExistsAtLocation(pSoldier.sGridNo, Enum225.MARBLES, 0, createPointer(() => iMarblesIndex, (v) => iMarblesIndex = v))) {
             // Slip on marbles!
             DoMercBattleSound(pSoldier, Enum259.BATTLE_SOUND_CURSE1);
             if (pSoldier.bTeam == gbPlayerNum) {
@@ -1667,7 +1671,7 @@ export function HandleGotoNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer
 }
 
 function HandleMaryArrival(pSoldier: SOLDIERTYPE | null): void {
-  let sDist: INT16;
+  let sDist: INT16 = 0;
 
   if (!pSoldier) {
     pSoldier = FindSoldierByProfileID(Enum268.MARY, true);
@@ -1681,7 +1685,7 @@ function HandleMaryArrival(pSoldier: SOLDIERTYPE | null): void {
   }
   // new requirements: player close by
   else if (PythSpacesAway(pSoldier.sGridNo, 8228) < 40) {
-    if (ClosestPC(pSoldier, addressof(sDist)) != NOWHERE && sDist > NPC_TALK_RADIUS * 2) {
+    if (ClosestPC(pSoldier, createPointer(() => sDist, (v) => sDist = v)) != NOWHERE && sDist > NPC_TALK_RADIUS * 2) {
       // too far away
       return;
     }
@@ -1697,7 +1701,7 @@ function HandleMaryArrival(pSoldier: SOLDIERTYPE | null): void {
 
 function HandleJohnArrival(pSoldier: SOLDIERTYPE | null): void {
   let pSoldier2: SOLDIERTYPE | null = null;
-  let sDist: INT16;
+  let sDist: INT16 = 0;
 
   if (!pSoldier) {
     pSoldier = FindSoldierByProfileID(Enum268.JOHN, true);
@@ -1707,7 +1711,7 @@ function HandleJohnArrival(pSoldier: SOLDIERTYPE | null): void {
   }
 
   if (PythSpacesAway(pSoldier.sGridNo, 8228) < 40) {
-    if (ClosestPC(pSoldier, addressof(sDist)) != NOWHERE && sDist > NPC_TALK_RADIUS * 2) {
+    if (ClosestPC(pSoldier, createPointer(() => sDist, (v) => sDist = v)) != NOWHERE && sDist > NPC_TALK_RADIUS * 2) {
       // too far away
       return;
     }
@@ -1737,7 +1741,8 @@ function HandleJohnArrival(pSoldier: SOLDIERTYPE | null): void {
 }
 
 function HandleAtNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer<boolean>): boolean {
-  let sMineGridNo: INT16;
+  let sMineGridNo: INT16 = 0;
+  let sMineGridNo__Pointer = createPointer(() => sMineGridNo, (v) => sMineGridNo = v);
   let ubVolume: UINT8;
 
   // ATE; Handle bad guys, as they fade, to cancel it if
@@ -1749,9 +1754,9 @@ function HandleAtNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer<boolean>
       pSoldier.fBeginFade = 0;
 
       if (pSoldier.bLevel > 0 && gpWorldLevelData[pSoldier.sGridNo].pRoofHead != null) {
-        pSoldier.ubFadeLevel = gpWorldLevelData[pSoldier.sGridNo].pRoofHead.value.ubShadeLevel;
+        pSoldier.ubFadeLevel = (<LEVELNODE>gpWorldLevelData[pSoldier.sGridNo].pRoofHead).ubShadeLevel;
       } else {
-        pSoldier.ubFadeLevel = gpWorldLevelData[pSoldier.sGridNo].pLandHead.value.ubShadeLevel;
+        pSoldier.ubFadeLevel = (<LEVELNODE>gpWorldLevelData[pSoldier.sGridNo].pLandHead).ubShadeLevel;
       }
 
       // Set levelnode shade level....
@@ -1865,7 +1870,7 @@ function HandleAtNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer<boolean>
   }
 
   // OK, check for other stuff like mines...
-  if (NearbyGroundSeemsWrong(pSoldier, pSoldier.sGridNo, true, addressof(sMineGridNo))) {
+  if (NearbyGroundSeemsWrong(pSoldier, pSoldier.sGridNo, true, sMineGridNo__Pointer)) {
     if (pSoldier.uiStatusFlags & SOLDIER_PC) {
       // NearbyGroundSeemsWrong returns true with gridno NOWHERE if
       // we find something by metal detector... we should definitely stop
@@ -1968,9 +1973,9 @@ function HandleAtNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer<boolean>
       case Enum268.RAY:
       case Enum268.OLGA:
       case Enum268.TYRONE: {
-        let sDesiredMercDist: INT16;
+        let sDesiredMercDist: INT16 = 0;
 
-        if (ClosestPC(pSoldier, addressof(sDesiredMercDist)) != NOWHERE) {
+        if (ClosestPC(pSoldier, createPointer(() => sDesiredMercDist, (v) => sDesiredMercDist = v)) != NOWHERE) {
           if (sDesiredMercDist <= NPC_TALK_RADIUS * 2) {
             // stop
             CancelAIAction(pSoldier, 1);
@@ -2066,7 +2071,7 @@ export function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean
     // Get guy
     pOldSoldier = MercPtrs[gusSelectedSoldier];
     pOldSoldier.fShowLocator = false;
-    pOldSoldier.fFlashLocator = false;
+    pOldSoldier.fFlashLocator = 0;
 
     // DB This used to say pSoldier... I fixed it
     if (pOldSoldier.bLevel == 0) {
@@ -2219,7 +2224,7 @@ export function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16,
     for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
       if (MercPtrs[cnt].bActive && MercPtrs[cnt].bInSector) {
         // Remove all existing locators...
-        MercPtrs[cnt].fFlashLocator = false;
+        MercPtrs[cnt].fFlashLocator = 0;
       }
     }
   }
@@ -2273,7 +2278,7 @@ export function RebuildAllSoldierShadeTables(): void {
 
 export function HandlePlayerTeamMemberDeath(pSoldier: SOLDIERTYPE): void {
   let cnt: INT32;
-  let iNewSelectedSoldier: INT32;
+  let iNewSelectedSoldier: INT32 = 0;
   let pTeamSoldier: SOLDIERTYPE | null;
   let fMissionFailed: boolean = true;
   let bBuddyIndex: INT8;
@@ -2297,7 +2302,7 @@ export function HandlePlayerTeamMemberDeath(pSoldier: SOLDIERTYPE): void {
   if (!fMissionFailed) {
     if (gTacticalStatus.fAutoBandageMode) {
       if (pSoldier.ubAutoBandagingMedic != NOBODY) {
-        CancelAIAction(MercPtrs[pSoldier.ubAutoBandagingMedic], true);
+        CancelAIAction(MercPtrs[pSoldier.ubAutoBandagingMedic], 1);
       }
     }
 
@@ -2424,7 +2429,7 @@ export function HandleNPCTeamMemberDeath(pSoldierOld: SOLDIERTYPE): void {
       case Enum268.T_REX:
         MakeRemainingTerroristsTougher();
         if (pSoldierOld.ubProfile == Enum268.DRUGGIST) {
-          pOther = FindSoldierByProfileID(Enum268.MANNY, 0);
+          pOther = FindSoldierByProfileID(Enum268.MANNY, false);
           if (pOther && pOther.bActive && pOther.bInSector && pOther.bLife >= OKLIFE) {
             // try to make sure he isn't cowering etc
             pOther.sNoiseGridno = NOWHERE;
@@ -2808,7 +2813,7 @@ export function CivilianGroupMemberChangesSides(pAttacked: SOLDIERTYPE): SOLDIER
 
   // remove anyone (rebels) on our team and put them back in the civ team
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
+  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier = MercPtrs[cnt]) {
     if (pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife) {
       if (pSoldier.ubCivilianGroup == pAttacked.ubCivilianGroup) {
         // should become hostile
@@ -3219,8 +3224,8 @@ export function NewOKDestination(pCurrSoldier: SOLDIERTYPE, sGridNo: INT16, fPeo
       // if ANY direction is valid, consider moving here valid
       for (bLoop = 0; bLoop < Enum245.NUM_WORLD_DIRECTIONS; bLoop++) {
         // ATE: Only if we have a levelnode...
-        if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.value.pStructureData != null) {
-          usStructureID = pCurrSoldier.pLevelNode.value.pStructureData.value.usStructureID;
+        if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.pStructureData != null) {
+          usStructureID = pCurrSoldier.pLevelNode.pStructureData.usStructureID;
         } else {
           usStructureID = INVALID_STRUCTURE_ID;
         }
@@ -3258,7 +3263,7 @@ export function NewOKDestination(pCurrSoldier: SOLDIERTYPE, sGridNo: INT16, fPeo
           // Check if this is a multi-tile
           if ((pStructure.fFlags & STRUCTURE_MOBILE) && (pCurrSoldier.uiStatusFlags & SOLDIER_MULTITILE)) {
             // Check IDs with soldier's ID
-            if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.value.pStructureData != null && pCurrSoldier.pLevelNode.value.pStructureData.value.usStructureID == pStructure.usStructureID) {
+            if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.pStructureData != null && pCurrSoldier.pLevelNode.pStructureData.usStructureID == pStructure.usStructureID) {
               fOKCheckStruct = false;
             }
           }
@@ -3318,8 +3323,8 @@ function NewOKDestinationAndDirection(pCurrSoldier: SOLDIERTYPE, sGridNo: INT16,
 
       {
         // ATE: Only if we have a levelnode...
-        if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.value.pStructureData != null) {
-          usStructureID = pCurrSoldier.pLevelNode.value.pStructureData.value.usStructureID;
+        if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.pStructureData != null) {
+          usStructureID = pCurrSoldier.pLevelNode.pStructureData.usStructureID;
         }
 
         fOk = InternalOkayToAddStructureToWorld(sGridNo, pCurrSoldier.bLevel, pStructureFileRef.pDBStructureRef[gOneCDirection[bLoop]], usStructureID, !fPeopleToo);
@@ -3355,7 +3360,7 @@ function NewOKDestinationAndDirection(pCurrSoldier: SOLDIERTYPE, sGridNo: INT16,
           // Check if this is a multi-tile
           if ((pStructure.fFlags & STRUCTURE_MOBILE) && (pCurrSoldier.uiStatusFlags & SOLDIER_MULTITILE)) {
             // Check IDs with soldier's ID
-            if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.value.pStructureData != null && pCurrSoldier.pLevelNode.value.pStructureData.value.usStructureID == pStructure.usStructureID) {
+            if (pCurrSoldier.pLevelNode != null && pCurrSoldier.pLevelNode.pStructureData != null && pCurrSoldier.pLevelNode.pStructureData.usStructureID == pStructure.usStructureID) {
               fOKCheckStruct = false;
             }
           }
@@ -3457,7 +3462,7 @@ export function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): bool
   return false;
 }
 
-export function FindAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: boolean, fDoor: boolean): INT16 {
+export function FindAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, pubDirection: Pointer<UINT8> | null, psAdjustedGridNo: Pointer<INT16> | null, fForceToPerson: boolean, fDoor: boolean): INT16 {
   // psAdjustedGridNo gets the original gridno or the new one if updated
   // It will ONLY be updated IF we were over a merc, ( it's updated to their gridno )
   // pubDirection gets the direction to the final gridno
@@ -3478,8 +3483,8 @@ export function FindAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, pubDir
   let sSpot: INT16;
   let sOkTest: boolean /* INT16 */;
   let sCloseGridNo: INT16 = NOWHERE;
-  let uiMercFlags: UINT32;
-  let usSoldierIndex: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let usSoldierIndex: UINT16 = 0;
   let ubDir: UINT8;
   let pDoor: STRUCTURE | null;
   // STRUCTURE                            *pWall;
@@ -3546,7 +3551,7 @@ export function FindAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, pubDir
   }
 
   if (fForceToPerson) {
-    if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].sGridNo;
       if (psAdjustedGridNo != null) {
         psAdjustedGridNo.value = sGridNo;
@@ -3722,8 +3727,8 @@ export function FindNextToAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
   let sSpot2: INT16;
   let sOkTest: boolean /* INT16 */;
   let sCloseGridNo: INT16 = NOWHERE;
-  let uiMercFlags: UINT32;
-  let usSoldierIndex: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let usSoldierIndex: UINT16 = 0;
   let ubDir: UINT8;
   let pDoor: STRUCTURE | null;
   let ubWallOrientation: UINT8;
@@ -3750,7 +3755,7 @@ export function FindNextToAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
   }
 
   if (fForceToPerson) {
-    if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usSoldierIndex].sGridNo;
       if (psAdjustedGridNo != null) {
         psAdjustedGridNo.value = sGridNo;
@@ -3847,7 +3852,7 @@ export function FindNextToAdjacentGridEx(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
     ubDir = GetDirectionToGridNoFromGridNo(sSpot, sGridNo);
 
     // don't store path, just measure it
-    if ((NewOKDestinationAndDirection(pSoldier, sSpot, ubDir, true, pSoldier.bLevel) > 0) && ((sDistance = PlotPath(pSoldier, sSpot, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints)) > 0)) {
+    if ((NewOKDestinationAndDirection(pSoldier, sSpot, ubDir, true, pSoldier.bLevel)) && ((sDistance = PlotPath(pSoldier, sSpot, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints)) > 0)) {
       if (sDistance < sClosest) {
         sClosest = sDistance;
         sCloseGridNo = sSpot;
@@ -3960,10 +3965,10 @@ export function FindAdjacentPunchTarget(pSoldier: SOLDIERTYPE, pTargetSoldier: S
 }
 
 export function UIOKMoveDestination(pSoldier: SOLDIERTYPE, usMapPos: UINT16): UINT8 {
-  let fVisible: boolean;
+  let fVisible: boolean = false;
 
   // Check if a hidden tile exists but is not revealed
-  if (DoesGridnoContainHiddenStruct(usMapPos, addressof(fVisible))) {
+  if (DoesGridnoContainHiddenStruct(usMapPos, createPointer(() => fVisible, (v) => fVisible = v))) {
     if (!fVisible) {
       // The player thinks this is OK!
       return 1;
@@ -5155,7 +5160,7 @@ function CheckForLosingEndOfBattle(): boolean {
   let bNumNotOK: INT8 = 0;
   let bNumInBattle: INT8 = 0;
   let bNumNotOKRealMercs: INT8 = 0;
-  let fMadeCorpse: boolean;
+  let fMadeCorpse: boolean = false;
   let fDoCapture: boolean = false;
   let fOnlyEPCsLeft: boolean = true;
   let fMilitiaInSector: boolean = false;
@@ -5248,7 +5253,7 @@ function CheckForLosingEndOfBattle(): boolean {
               // Kill!
               pTeamSoldier.bLife = 0;
 
-              HandleSoldierDeath(pTeamSoldier, addressof(fMadeCorpse));
+              HandleSoldierDeath(pTeamSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
 
               // HandlePlayerTeamMemberDeath( pTeamSoldier );
               // Make corpse..
@@ -5375,7 +5380,8 @@ const MAX_APS_SUPPRESSED = 8;
 function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): void {
   let bTolerance: INT8;
   let sClosestOpponent: INT16;
-  let sClosestOppLoc: INT16;
+  let sClosestOppLoc: INT16 = 0;
+  let sClosestOppLoc__Pointer = createPointer(() => sClosestOppLoc, (v) => sClosestOppLoc = v);
   let ubPointsLost: UINT8;
   let ubTotalPointsLost: UINT8;
   let ubNewStance: UINT8;
@@ -5436,7 +5442,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
             break;
           case ANIM_CROUCH:
             if (ubTotalPointsLost >= AP_PRONE && IsValidStance(pSoldier, ANIM_PRONE)) {
-              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), null);
+              sClosestOpponent = ClosestKnownOpponent(pSoldier, sClosestOppLoc__Pointer, null);
               if (sClosestOpponent == NOWHERE || SpacesAway(pSoldier.sGridNo, sClosestOppLoc) > 8) {
                 if (ubPointsLost < AP_PRONE) {
                   // Have to give APs back so that we can change stance without
@@ -5455,7 +5461,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
               // can't change stance here!
               break;
             } else if (ubTotalPointsLost >= (AP_CROUCH + AP_PRONE) && (gAnimControl[pSoldier.usAnimState].ubEndHeight != ANIM_PRONE) && IsValidStance(pSoldier, ANIM_PRONE)) {
-              sClosestOpponent = ClosestKnownOpponent(pSoldier, addressof(sClosestOppLoc), null);
+              sClosestOpponent = ClosestKnownOpponent(pSoldier, sClosestOppLoc__Pointer, null);
               if (sClosestOpponent == NOWHERE || SpacesAway(pSoldier.sGridNo, sClosestOppLoc) > 8) {
                 if (gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_STAND) {
                   // can only crouch for now
@@ -5528,7 +5534,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
   } // end of loop
 }
 
-export function ProcessImplicationsOfPCAttack(pSoldier: SOLDIERTYPE, ppTarget: Pointer<Pointer<SOLDIERTYPE>>, bReason: INT8): boolean {
+export function ProcessImplicationsOfPCAttack(pSoldier: SOLDIERTYPE, ppTarget: Pointer<SOLDIERTYPE>, bReason: INT8): boolean {
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
   let fEnterCombat: boolean = true;
@@ -5601,7 +5607,7 @@ export function ProcessImplicationsOfPCAttack(pSoldier: SOLDIERTYPE, ppTarget: P
 
       CivilianGroupMemberChangesSides(pTarget);
 
-      if (pTarget.ubProfile != NO_PROFILE && pTarget.bLife >= OKLIFE && pTarget.bVisible == true) {
+      if (pTarget.ubProfile != NO_PROFILE && pTarget.bLife >= OKLIFE && pTarget.bVisible == 1) {
         // trigger quote!
         PauseAITemporarily();
         AddToShouldBecomeHostileOrSayQuoteList(pTarget.ubID);
@@ -5741,7 +5747,7 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: boolean, 
       // stuff that only applies to when we attack
       if (pTarget.ubBodyType != Enum194.CROW) {
         if (pSoldier.bTeam == gbPlayerNum) {
-          fEnterCombat = ProcessImplicationsOfPCAttack(pSoldier, addressof(pTarget), REASON_NORMAL_ATTACK);
+          fEnterCombat = ProcessImplicationsOfPCAttack(pSoldier, createPointer(() => <SOLDIERTYPE>pTarget, (v) => pTarget = v), REASON_NORMAL_ATTACK);
           if (!fEnterCombat) {
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, ">>Not entering combat as a result of PC attack");
           }

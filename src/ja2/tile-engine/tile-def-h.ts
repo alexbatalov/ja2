@@ -59,7 +59,7 @@ export const enum Enum315 {
 
 // These structures are placed in a list and used for all tile imagery
 export interface TILE_IMAGERY {
-  vo: HVOBJECT;
+  vo: SGPVObject;
   fType: UINT32;
   pAuxData: AuxObjectData[] | null /* Pointer<AuxObjectData> */;
   pTileLocData: RelTileLoc[] | null /* Pointer<RelTileLoc> */;
@@ -73,7 +73,7 @@ export interface TILE_IMAGERY {
 
 export function createTileImagery(): TILE_IMAGERY {
   return {
-    vo: null,
+    vo: <SGPVObject><unknown>null,
     fType: 0,
     pAuxData: null,
     pTileLocData: null,
@@ -101,7 +101,7 @@ export function createTileAnimationData(): TILE_ANIMATION_DATA {
 // Tile data element
 export interface TILE_ELEMENT {
   fType: UINT16;
-  hTileSurface: HVOBJECT;
+  hTileSurface: SGPVObject;
   pDBStructureRef: DB_STRUCTURE_REF | null /* Pointer<DB_STRUCTURE_REF> */;
   uiFlags: UINT32;
   pTileLocData: RelTileLoc[] | null /* Pointer<RelTileLoc> */;
@@ -130,7 +130,7 @@ export interface TILE_ELEMENT {
 export function createTileElement(): TILE_ELEMENT {
   return {
     fType: 0,
-    hTileSurface: null,
+    hTileSurface: <SGPVObject><unknown>null,
     pDBStructureRef: null,
     uiFlags: 0,
     pTileLocData: null,
@@ -150,7 +150,7 @@ export function createTileElement(): TILE_ELEMENT {
 
 export function resetTileElement(o: TILE_ELEMENT) {
   o.fType = 0;
-  o.hTileSurface = null;
+  o.hTileSurface = <SGPVObject><unknown>null;
   o.pDBStructureRef = null;
   o.uiFlags = 0;
   o.pTileLocData = null;

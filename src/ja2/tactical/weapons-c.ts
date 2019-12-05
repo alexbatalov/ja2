@@ -446,24 +446,28 @@ export function ArmourVersusExplosivesPercent(pSoldier: SOLDIERTYPE): INT8 {
   return (iHelmet + iVest + iLeg);
 }
 
-function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewImpact: Pointer<INT32>, piImpactForCrits: Pointer<INT32>): void {
+function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8): { iImpact: INT32, iImpactForCrits: INT32 } {
+  let iImpactForCrits: INT32;
+
   switch (ubHitLocation) {
     case AIM_SHOT_HEAD:
       // 1.5x damage from successful hits to the head!
-      piImpactForCrits.value = HEAD_DAMAGE_ADJUSTMENT(iImpact);
-      piNewImpact.value = piImpactForCrits.value;
+      iImpactForCrits = HEAD_DAMAGE_ADJUSTMENT(iImpact);
+      iImpact = iImpactForCrits;
       break;
     case AIM_SHOT_LEGS:
       // half damage for determining critical hits
       // quarter actual damage
-      piImpactForCrits.value = LEGS_DAMAGE_ADJUSTMENT(iImpact);
-      piNewImpact.value = LEGS_DAMAGE_ADJUSTMENT(piImpactForCrits.value);
+      iImpactForCrits = LEGS_DAMAGE_ADJUSTMENT(iImpact);
+      iImpact = LEGS_DAMAGE_ADJUSTMENT(iImpactForCrits);
       break;
     default:
-      piImpactForCrits.value = iImpact;
-      piNewImpact.value = iImpact;
+      iImpactForCrits = iImpact;
+      iImpact = iImpact;
       break;
   }
+
+  return { iImpact, iImpactForCrits };
 }
 
 // #define	TESTGUNJAM
@@ -628,7 +632,8 @@ export function FireWeapon(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean
 export function GetTargetWorldPositions(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
   let dTargetX: FLOAT;
   let dTargetY: FLOAT;
-  let dTargetZ: FLOAT;
+  let dTargetZ: FLOAT = 0;
+  let dTargetZ__Pointer = createPointer(() => dTargetZ, (v) => dTargetZ = v);
   let pTargetSoldier: SOLDIERTYPE | null;
   let bStructHeight: INT8;
   let sXMapPos: INT16;
@@ -664,17 +669,17 @@ export function GetTargetWorldPositions(pSoldier: SOLDIERTYPE, sTargetGridNo: IN
 
     switch (pSoldier.bAimShotLocation) {
       case AIM_SHOT_HEAD:
-        CalculateSoldierZPos(pTargetSoldier, Enum230.HEAD_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.HEAD_TARGET_POS, dTargetZ__Pointer);
         break;
       case AIM_SHOT_TORSO:
-        CalculateSoldierZPos(pTargetSoldier, Enum230.TORSO_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.TORSO_TARGET_POS, dTargetZ__Pointer);
         break;
       case AIM_SHOT_LEGS:
-        CalculateSoldierZPos(pTargetSoldier, Enum230.LEGS_TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.LEGS_TARGET_POS, dTargetZ__Pointer);
         break;
       default:
         // %)@#&(%?
-        CalculateSoldierZPos(pTargetSoldier, Enum230.TARGET_POS, addressof(dTargetZ));
+        CalculateSoldierZPos(pTargetSoldier, Enum230.TARGET_POS, dTargetZ__Pointer);
         break;
     }
   } else {
@@ -716,9 +721,9 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
   let sXMapPos: INT16;
   let sYMapPos: INT16;
   let sAPCost: INT16;
-  let dTargetX: FLOAT;
-  let dTargetY: FLOAT;
-  let dTargetZ: FLOAT;
+  let dTargetX: FLOAT = 0;
+  let dTargetY: FLOAT = 0;
+  let dTargetZ: FLOAT = 0;
   let usItemNum: UINT16;
   let fBuckshot: boolean;
   let ubVolume: UINT8;
@@ -816,7 +821,7 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
 
   // ATE; Moved a whole blotch if logic code for finding target positions to a function
   // so other places can use it
-  GetTargetWorldPositions(pSoldier, sTargetGridNo, addressof(dTargetX), addressof(dTargetY), addressof(dTargetZ));
+  GetTargetWorldPositions(pSoldier, sTargetGridNo, createPointer(() => dTargetX, (v) => dTargetX = v), createPointer(() => dTargetY, (v) => dTargetY = v), createPointer(() => dTargetZ, (v) => dTargetZ = v));
 
   // Some things we don't do for knives...
   if (Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
@@ -1071,7 +1076,7 @@ function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
       iImpact = (iImpact * WEAPON_STATUS_MOD(pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0])) / 100;
 
       // modify by hit location
-      AdjustImpactByHitLocation(iImpact, pSoldier.bAimShotLocation, addressof(iImpact), addressof(iImpactForCrits));
+      ({ iImpact, iImpactForCrits } = AdjustImpactByHitLocation(iImpact, pSoldier.bAimShotLocation));
 
       // bonus for surprise
       if (fSurpriseAttack) {
@@ -1662,7 +1667,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - end of LAW fire"));
       FreeUpAttacker(ubAttackerID);
 
-      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.C1, (sZPos >= WALL_HEIGHT));
+      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.C1, Number(sZPos >= WALL_HEIGHT));
       // FreeUpAttacker( (UINT8) ubAttackerID );
 
       return;
@@ -1675,7 +1680,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("@@@@@@@ Freeing up attacker - end of TANK fire"));
       FreeUpAttacker(ubAttackerID);
 
-      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.TANK_SHELL, (sZPos >= WALL_HEIGHT));
+      IgniteExplosion(ubAttackerID, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, Enum225.TANK_SHELL, Number(sZPos >= WALL_HEIGHT));
       // FreeUpAttacker( (UINT8) ubAttackerID );
 
       return;
@@ -2130,7 +2135,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
   ubTargetID = WhoIsThere2(sGridNo, pSoldier.bTargetLevel);
   // best to use team knowledge as well, in case of spotting for someone else
   if (ubTargetID != NOBODY && pSoldier.bOppList[ubTargetID] == SEEN_CURRENTLY || gbPublicOpplist[pSoldier.bTeam][ubTargetID] == SEEN_CURRENTLY) {
-    iSightRange = SoldierToBodyPartLineOfSightTest(pSoldier, sGridNo, pSoldier.bTargetLevel, pSoldier.bAimShotLocation, (MaxDistanceVisible() * 2), 1);
+    iSightRange = SoldierToBodyPartLineOfSightTest(pSoldier, sGridNo, pSoldier.bTargetLevel, pSoldier.bAimShotLocation, (MaxDistanceVisible() * 2), true);
   }
 
   if (iSightRange == -1) // didn't do a bodypart-based test
@@ -2579,7 +2584,7 @@ export function TotalArmourProtection(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE,
 
     // bDummyStatus = (INT8) pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ];
 
-    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.bVehicleID].sArmourType, addressof(bDummyStatus), iImpact, ubAmmoType);
+    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.bVehicleID].sArmourType, createPointer(() => bDummyStatus, (v) => bDummyStatus = v), iImpact, ubAmmoType);
 
     // pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ] = bDummyStatus;
   } else {
@@ -2606,7 +2611,7 @@ export function TotalArmourProtection(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE,
         bPlatePos = FindAttachment(pArmour, Enum225.CERAMIC_PLATES);
         if (bPlatePos != -1) {
           // bullet got through jacket; apply ceramic plate armour
-          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usAttachItem[bPlatePos]].ubClassIndex, addressof(pArmour.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
+          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usAttachItem[bPlatePos]].ubClassIndex, createElementPointer(pArmour.bAttachStatus, bPlatePos), iImpact, ubAmmoType);
           if (pArmour.bAttachStatus[bPlatePos] < USABLE) {
             // destroy plates!
             pArmour.usAttachItem[bPlatePos] = NOTHING;
@@ -2625,7 +2630,7 @@ export function TotalArmourProtection(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE,
 
       // if the plate didn't stop the bullet...
       if (iImpact > iTotalProtection) {
-        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usItem].ubClassIndex, addressof(pArmour.bStatus[0]), iImpact, ubAmmoType);
+        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.usItem].ubClassIndex, createElementPointer(pArmour.bStatus, 0), iImpact, ubAmmoType);
         if (pArmour.bStatus[0] < USABLE) {
           DeleteObj(pArmour);
           DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
@@ -2636,7 +2641,7 @@ export function TotalArmourProtection(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE,
   return iTotalProtection;
 }
 
-export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
+export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8> | null): INT32 {
   let iImpact: INT32;
   let iFluke: INT32;
   let iBonus: INT32;
@@ -2727,7 +2732,7 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
       iImpact = AMMO_DAMAGE_ADJUSTMENT_HP(iImpact);
     }
 
-    AdjustImpactByHitLocation(iImpact, ubHitLocation, addressof(iImpact), addressof(iImpactForCrits));
+    ({ iImpact, iImpactForCrits } = AdjustImpactByHitLocation(iImpact, ubHitLocation));
 
     switch (ubHitLocation) {
       case AIM_SHOT_HEAD:

@@ -59,10 +59,6 @@ let guiVSurfaceTotalAdded: UINT32 = 0;
 
 export let giMemUsedInSurfaces: INT32;
 
-// OBSOLETE!!!!!!!!!
-let ghVideoSurfaces: HLIST = null;
-// OBSOLETE!!!!!!!!!
-
 let ghPrimary: HVSURFACE = null;
 let ghBackBuffer: HVSURFACE = null;
 export let ghFrameBuffer: HVSURFACE = null;
@@ -452,7 +448,7 @@ function DeletePrimaryVideoSurfaces(): void {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_vs_fx>): boolean {
+export function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: blt_vs_fx | null): boolean {
   let hDestVSurface: HVSURFACE;
   let hSrcVSurface: HVSURFACE;
 
@@ -525,7 +521,7 @@ export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   BltFx.SrcRect.iRight = BltFx.FillRect.iRight = iDestX2;
   BltFx.SrcRect.iBottom = BltFx.FillRect.iBottom = iDestY2;
 
-  return FillSurfaceRect(hDestVSurface, addressof(BltFx));
+  return FillSurfaceRect(hDestVSurface, BltFx);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,7 +530,7 @@ export function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, BkgrndImg: HVOBJECT, Index: UINT16, Ox: INT16, Oy: INT16): boolean {
+export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, BkgrndImg: SGPVObject, Index: UINT16, Ox: INT16, Oy: INT16): boolean {
   let xc: INT16;
   let yc: INT16;
   let hblits: INT16;
@@ -547,13 +543,13 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
   let h: INT16;
   let xo: INT16;
   let yo: INT16;
-  let pTrav: Pointer<ETRLEObject>;
+  let pTrav: ETRLEObject;
   let NewClip: SGPRect = createSGPRect();
   let OldClip: SGPRect = createSGPRect();
 
-  pTrav = addressof(BkgrndImg.value.pETRLEObject[Index]);
-  ph = (pTrav.value.usHeight + pTrav.value.sOffsetY);
-  pw = (pTrav.value.usWidth + pTrav.value.sOffsetX);
+  pTrav = BkgrndImg.pETRLEObject[Index];
+  ph = (pTrav.usHeight + pTrav.sOffsetY);
+  pw = (pTrav.usWidth + pTrav.sOffsetX);
 
   ah = (iDestY2 - iDestY1);
   aw = (iDestX2 - iDestX1);
@@ -649,7 +645,7 @@ export function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURFACE {
+export function CreateVideoSurface(VSurfaceDesc: VSURFACE_DESC): HVSURFACE {
   let lpDD2Object: LPDIRECTDRAW2;
   let SurfaceDescription: DDSURFACEDESC;
   let PixelFormat: DDPIXELFORMAT;
@@ -681,7 +677,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
   //
   // The description structure contains memory usage flag
   //
-  fMemUsage = VSurfaceDesc.value.fCreateFlags;
+  fMemUsage = VSurfaceDesc.fCreateFlags;
 
   //
   // Check creation options
@@ -692,12 +688,12 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
     // Check if creating from file
     //
 
-    if (VSurfaceDesc.value.fCreateFlags & VSURFACE_CREATE_FROMFILE) {
+    if (VSurfaceDesc.fCreateFlags & VSURFACE_CREATE_FROMFILE) {
       //
       // Create himage object from file
       //
 
-      hImage = CreateImage(VSurfaceDesc.value.ImageFile, IMAGE_ALLIMAGEDATA);
+      hImage = CreateImage(VSurfaceDesc.ImageFile, IMAGE_ALLIMAGEDATA);
 
       if (hImage == null) {
         DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, "Invalid Image Filename given");
@@ -718,9 +714,9 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
     // Set values from given description structure
     //
 
-    usHeight = VSurfaceDesc.value.usHeight;
-    usWidth = VSurfaceDesc.value.usWidth;
-    ubBitDepth = VSurfaceDesc.value.ubBitDepth;
+    usHeight = VSurfaceDesc.usHeight;
+    usWidth = VSurfaceDesc.usWidth;
+    ubBitDepth = VSurfaceDesc.ubBitDepth;
   } while (false);
 
   //
@@ -856,7 +852,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
   // Fail if create tried for video but it's in system
   //
 
-  if (VSurfaceDesc.value.fCreateFlags & VSURFACE_VIDEO_MEM_USAGE && SurfaceDescription.ddsCaps.dwCaps & DDSCAPS_SYSTEMMEMORY) {
+  if (VSurfaceDesc.fCreateFlags & VSURFACE_VIDEO_MEM_USAGE && SurfaceDescription.ddsCaps.dwCaps & DDSCAPS_SYSTEMMEMORY) {
     //
     // Return failure due to not in video
     //
@@ -913,7 +909,7 @@ export function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURF
   // Initialize surface with hImage , if given
   //
 
-  if (VSurfaceDesc.value.fCreateFlags & VSURFACE_CREATE_FROMFILE) {
+  if (VSurfaceDesc.fCreateFlags & VSURFACE_CREATE_FROMFILE) {
     tempRect.iLeft = 0;
     tempRect.iTop = 0;
     tempRect.iRight = hImage.value.usWidth - 1;
@@ -1190,7 +1186,7 @@ function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLO
   return true;
 }
 
-export function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPaletteEntry>): boolean {
+export function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: SGPPaletteEntry[]): boolean {
   if (hVSurface.value.pPalette == null) {
     return false;
   }
@@ -1292,88 +1288,9 @@ export function DeleteVideoSurface(hVSurface: HVSURFACE): boolean {
 
 // ********************************************************
 //
-// Clipper manipulation functions
-//
-// ********************************************************
-
-function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRegions: UINT16): boolean {
-  RGNDATA *pRgnData;
-  let cnt: UINT16;
-  let aRect: RECT = createRect();
-  let lpDD2Object: LPDIRECTDRAW2;
-
-  // Get Direct Draw Object
-  lpDD2Object = GetDirectDraw2Object();
-
-  // Assertions
-  Assert(hVSurface != null);
-  Assert(RegionData != null);
-
-  // Varifications
-  if (usNumRegions <= 0) {
-    return false;
-  }
-
-  // If Clipper already created, release
-  if (hVSurface.value.pClipper != null) {
-    // Release Clipper
-    DDReleaseClipper(hVSurface.value.pClipper);
-  }
-
-  // Create Clipper Object
-  DDCreateClipper(lpDD2Object, 0, addressof(hVSurface.value.pClipper));
-
-  // Allocate region data
-  pRgnData = MemAlloc(sizeof(RGNDATAHEADER) + (usNumRegions * sizeof(RECT)));
-  if (!pRgnData) {
-    return false;
-  }
-
-  // Setup header
-  pRgnData.value.rdh.dwSize = sizeof(RGNDATA);
-  pRgnData.value.rdh.iType = RDH_RECTANGLES;
-  pRgnData.value.rdh.nCount = usNumRegions;
-  pRgnData.value.rdh.nRgnSize = usNumRegions * sizeof(RECT);
-  pRgnData.value.rdh.rcBound.top = 0;
-  pRgnData.value.rdh.rcBound.left = 0;
-  pRgnData.value.rdh.rcBound.bottom = hVSurface.value.usHeight;
-  pRgnData.value.rdh.rcBound.right = hVSurface.value.usWidth;
-
-  // Copy rectangles into region
-  for (cnt = 0; cnt < usNumRegions; cnt++) {
-    aRect.top = RegionData[cnt].iTop;
-    aRect.left = RegionData[cnt].iLeft;
-    aRect.bottom = RegionData[cnt].iBottom;
-    aRect.right = RegionData[cnt].iRight;
-
-    memcpy(pRgnData + sizeof(RGNDATAHEADER) + (cnt * sizeof(RECT)), addressof(aRect), sizeof(RECT));
-  }
-
-  // Set items into clipper
-  DDSetClipperList(hVSurface.value.pClipper, pRgnData, 0);
-
-  // Set Clipper into Surface
-  DDSetClipper(hVSurface.value.pSurfaceData, hVSurface.value.pClipper);
-
-  // Delete region data
-  MemFree(pRgnData);
-
-  return true;
-}
-
-// ********************************************************
-//
 // Region manipulation functions
 //
 // ********************************************************
-
-function GetNumRegions(hVSurface: HVSURFACE, puiNumRegions: Pointer<UINT32>): boolean {
-  Assert(hVSurface);
-
-  puiNumRegions.value = ListSize(hVSurface.value.RegionList);
-
-  return true;
-}
 
 function AddVSurfaceRegion(hVSurface: HVSURFACE, pNewRegion: Pointer<VSURFACE_REGION>): boolean {
   Assert(hVSurface != null);
@@ -1381,43 +1298,6 @@ function AddVSurfaceRegion(hVSurface: HVSURFACE, pNewRegion: Pointer<VSURFACE_RE
 
   // Add new region to list
   hVSurface.value.RegionList = AddtoList(hVSurface.value.RegionList, pNewRegion, ListSize(hVSurface.value.RegionList));
-
-  return true;
-}
-
-// Add a group of regions
-function AddVSurfaceRegions(hVSurface: HVSURFACE, ppNewRegions: Pointer<Pointer<VSURFACE_REGION>>, uiNumRegions: UINT16): boolean {
-  let cnt: UINT16;
-
-  Assert(hVSurface != null);
-  Assert(ppNewRegions != null);
-
-  for (cnt = 0; cnt < uiNumRegions; cnt++) {
-    AddVSurfaceRegion(hVSurface, ppNewRegions[cnt]);
-  }
-
-  return true;
-}
-
-function RemoveVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16): boolean {
-  let aRegion: VSURFACE_REGION = createVSurfaceRegion();
-
-  Assert(hVSurface != null);
-
-  return RemfromList(hVSurface.value.RegionList, addressof(aRegion), usIndex);
-}
-
-function ClearAllVSurfaceRegions(hVSurface: HVSURFACE): boolean {
-  let uiListSize: UINT32;
-  let cnt: UINT32;
-
-  Assert(hVSurface != null);
-
-  uiListSize = ListSize(hVSurface.value.RegionList);
-
-  for (cnt = uiListSize - 1; cnt >= 0; cnt--) {
-    RemoveVSurfaceRegion(hVSurface, cnt);
-  }
 
   return true;
 }
@@ -1444,32 +1324,6 @@ function GetVSurfaceRect(hVSurface: HVSURFACE, pRect: Pointer<RECT>): boolean {
   return true;
 }
 
-function ReplaceVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16, aRegion: Pointer<VSURFACE_REGION>): boolean {
-  let OldRegion: VSURFACE_REGION = createVSurfaceRegion();
-
-  Assert(hVSurface != null);
-
-  // Validate index given
-  if (!PeekList(hVSurface.value.RegionList, addressof(OldRegion), usIndex)) {
-    return false;
-  }
-
-  // Replace information
-  hVSurface.value.RegionList = AddtoList(hVSurface.value.RegionList, aRegion, usIndex);
-
-  return true;
-}
-
-function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewRegion: Pointer<VSURFACE_REGION>): boolean {
-  Assert(hVSurface != null);
-  Assert(pNewRegion != null);
-
-  // Add new region to list
-  hVSurface.value.RegionList = AddtoList(hVSurface.value.RegionList, pNewRegion, usIndex);
-
-  return true;
-}
-
 // *******************************************************************
 //
 // Blitting Functions
@@ -1479,7 +1333,7 @@ function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewReg
 // Blt  will use DD Blt or BltFast depending on flags.
 // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
 
-export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): boolean {
+export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: blt_vs_fx | null): boolean {
   let aRegion: VSURFACE_REGION = createVSurfaceRegion();
   let SrcRect: RECT = createRect();
   let DestRect: RECT = createRect();
@@ -1506,7 +1360,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
     if (pBltFx == null) {
       return false;
     }
-    if (!GetVSurfaceRegion(hDestVSurface, pBltFx.value.DestRegion, addressof(aRegion))) {
+    if (!GetVSurfaceRegion(hDestVSurface, pBltFx.DestRegion, addressof(aRegion))) {
       return false;
     }
 
@@ -1578,7 +1432,7 @@ export function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSur
   Assert(hSrcVSurface != null);
 
   // clipping -- added by DB
-  GetVSurfaceRect(hDestVSurface, addressof(DestRect));
+  GetVSurfaceRect(hDestVSurface, DestRect);
   uiWidth = SrcRect.right - SrcRect.left;
   uiHeight = SrcRect.bottom - SrcRect.top;
 
@@ -1790,73 +1644,73 @@ function GetMouseBufferVideoSurface(): HVSURFACE {
 
 // UTILITY FUNCTIONS FOR BLITTING
 
-function ClipReleatedSrcAndDestRectangles(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, DestRect: Pointer<RECT>, SrcRect: Pointer<RECT>): boolean {
+function ClipReleatedSrcAndDestRectangles(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, DestRect: RECT, SrcRect: RECT): boolean {
   Assert(hDestVSurface != null);
   Assert(hSrcVSurface != null);
 
   // Check for invalid start positions and clip by ignoring blit
-  if (DestRect.value.left >= hDestVSurface.value.usWidth || DestRect.value.top >= hDestVSurface.value.usHeight) {
+  if (DestRect.left >= hDestVSurface.value.usWidth || DestRect.top >= hDestVSurface.value.usHeight) {
     return false;
   }
 
-  if (SrcRect.value.left >= hSrcVSurface.value.usWidth || SrcRect.value.top >= hSrcVSurface.value.usHeight) {
+  if (SrcRect.left >= hSrcVSurface.value.usWidth || SrcRect.top >= hSrcVSurface.value.usHeight) {
     return false;
   }
 
   // For overruns
   // Clip destination rectangles
-  if (DestRect.value.right > hDestVSurface.value.usWidth) {
+  if (DestRect.right > hDestVSurface.value.usWidth) {
     // Both have to be modified or by default streching occurs
-    DestRect.value.right = hDestVSurface.value.usWidth;
-    SrcRect.value.right = SrcRect.value.left + (DestRect.value.right - DestRect.value.left);
+    DestRect.right = hDestVSurface.value.usWidth;
+    SrcRect.right = SrcRect.left + (DestRect.right - DestRect.left);
   }
-  if (DestRect.value.bottom > hDestVSurface.value.usHeight) {
+  if (DestRect.bottom > hDestVSurface.value.usHeight) {
     // Both have to be modified or by default streching occurs
-    DestRect.value.bottom = hDestVSurface.value.usHeight;
-    SrcRect.value.bottom = SrcRect.value.top + (DestRect.value.bottom - DestRect.value.top);
+    DestRect.bottom = hDestVSurface.value.usHeight;
+    SrcRect.bottom = SrcRect.top + (DestRect.bottom - DestRect.top);
   }
 
   // Clip src rectangles
-  if (SrcRect.value.right > hSrcVSurface.value.usWidth) {
+  if (SrcRect.right > hSrcVSurface.value.usWidth) {
     // Both have to be modified or by default streching occurs
-    SrcRect.value.right = hSrcVSurface.value.usWidth;
-    DestRect.value.right = DestRect.value.left + (SrcRect.value.right - SrcRect.value.left);
+    SrcRect.right = hSrcVSurface.value.usWidth;
+    DestRect.right = DestRect.left + (SrcRect.right - SrcRect.left);
   }
-  if (SrcRect.value.bottom > hSrcVSurface.value.usHeight) {
+  if (SrcRect.bottom > hSrcVSurface.value.usHeight) {
     // Both have to be modified or by default streching occurs
-    SrcRect.value.bottom = hSrcVSurface.value.usHeight;
-    DestRect.value.bottom = DestRect.value.top + (SrcRect.value.bottom - SrcRect.value.top);
+    SrcRect.bottom = hSrcVSurface.value.usHeight;
+    DestRect.bottom = DestRect.top + (SrcRect.bottom - SrcRect.top);
   }
 
   // For underruns
   // Clip destination rectangles
-  if (DestRect.value.left < 0) {
+  if (DestRect.left < 0) {
     // Both have to be modified or by default streching occurs
-    DestRect.value.left = 0;
-    SrcRect.value.left = SrcRect.value.right - (DestRect.value.right - DestRect.value.left);
+    DestRect.left = 0;
+    SrcRect.left = SrcRect.right - (DestRect.right - DestRect.left);
   }
-  if (DestRect.value.top < 0) {
+  if (DestRect.top < 0) {
     // Both have to be modified or by default streching occurs
-    DestRect.value.top = 0;
-    SrcRect.value.top = SrcRect.value.bottom - (DestRect.value.bottom - DestRect.value.top);
+    DestRect.top = 0;
+    SrcRect.top = SrcRect.bottom - (DestRect.bottom - DestRect.top);
   }
 
   // Clip src rectangles
-  if (SrcRect.value.left < 0) {
+  if (SrcRect.left < 0) {
     // Both have to be modified or by default streching occurs
-    SrcRect.value.left = 0;
-    DestRect.value.left = DestRect.value.right - (SrcRect.value.right - SrcRect.value.left);
+    SrcRect.left = 0;
+    DestRect.left = DestRect.right - (SrcRect.right - SrcRect.left);
   }
-  if (SrcRect.value.top < 0) {
+  if (SrcRect.top < 0) {
     // Both have to be modified or by default streching occurs
-    SrcRect.value.top = 0;
-    DestRect.value.top = DestRect.value.bottom - (SrcRect.value.bottom - SrcRect.value.top);
+    SrcRect.top = 0;
+    DestRect.top = DestRect.bottom - (SrcRect.bottom - SrcRect.top);
   }
 
   return true;
 }
 
-function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): boolean {
+function FillSurface(hDestVSurface: HVSURFACE, pBltFx: blt_vs_fx | null): boolean {
   let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != null);
@@ -1865,7 +1719,7 @@ function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): bool
   }
 
   BlitterFX.dwSize = sizeof(DDBLTFX);
-  BlitterFX.dwFillColor = pBltFx.value.ColorFill;
+  BlitterFX.dwFillColor = pBltFx.ColorFill;
 
   DDBltSurface(hDestVSurface.value.pSurfaceData, null, null, null, DDBLT_COLORFILL, addressof(BlitterFX));
 
@@ -1876,7 +1730,7 @@ function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): bool
   return true;
 }
 
-function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): boolean {
+function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: blt_vs_fx | null): boolean {
   let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != null);
@@ -1885,9 +1739,9 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
   }
 
   BlitterFX.dwSize = sizeof(DDBLTFX);
-  BlitterFX.dwFillColor = pBltFx.value.ColorFill;
+  BlitterFX.dwFillColor = pBltFx.ColorFill;
 
-  DDBltSurface(hDestVSurface.value.pSurfaceData,  addressof(pBltFx.value.FillRect), null, null, DDBLT_COLORFILL, addressof(BlitterFX));
+  DDBltSurface(hDestVSurface.value.pSurfaceData,  addressof(pBltFx.FillRect), null, null, DDBLT_COLORFILL, addressof(BlitterFX));
 
   if (hDestVSurface.value.fFlags & VSURFACE_VIDEO_MEM_USAGE && !hDestVSurface.value.fFlags & VSURFACE_RESERVED_SURFACE) {
     UpdateBackupSurface(hDestVSurface);
@@ -1896,7 +1750,7 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
   return true;
 }
 
-export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>): boolean {
+export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: RECT): boolean {
   let uiDDFlags: UINT32;
   let DestRect: RECT = createRect();
 
@@ -1943,11 +1797,11 @@ export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSUR
     // Setup dest rectangle
     DestRect.top = iDestY;
     DestRect.left = iDestX;
-    DestRect.bottom = iDestY + (SrcRect.value.bottom - SrcRect.value.top);
-    DestRect.right = iDestX + (SrcRect.value.right - SrcRect.value.left);
+    DestRect.bottom = iDestY + (SrcRect.bottom - SrcRect.top);
+    DestRect.right = iDestX + (SrcRect.right - SrcRect.left);
 
     // Do Clipping of rectangles
-    if (!ClipReleatedSrcAndDestRectangles(hDestVSurface, hSrcVSurface, addressof(DestRect), SrcRect)) {
+    if (!ClipReleatedSrcAndDestRectangles(hDestVSurface, hSrcVSurface, DestRect, SrcRect)) {
       // Returns false because dest start is > dest size
       return true;
     }
@@ -1959,7 +1813,7 @@ export function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSUR
 
     // Check for -ve values
 
-    DDBltSurface(hDestVSurface.value.pSurfaceData, addressof(DestRect), hSrcVSurface.value.pSurfaceData, SrcRect, uiDDFlags, null);
+    DDBltSurface(hDestVSurface.value.pSurfaceData, DestRect, hSrcVSurface.value.pSurfaceData, SrcRect, uiDDFlags, null);
   }
 
   // Update backup surface with new data
@@ -2031,13 +1885,13 @@ function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: I
 
   if (!fLowPercentShadeTable) {
     // Now we have the video object and surface, call the shadow function
-    if (!Blt16BPPBufferShadowRect(pBuffer, uiPitch, addressof(area))) {
+    if (!Blt16BPPBufferShadowRect(pBuffer, uiPitch, area)) {
       // Blit has failed if false returned
       return false;
     }
   } else {
     // Now we have the video object and surface, call the shadow function
-    if (!Blt16BPPBufferShadowRectAlternateTable(pBuffer, uiPitch, addressof(area))) {
+    if (!Blt16BPPBufferShadowRectAlternateTable(pBuffer, uiPitch, area)) {
       // Blit has failed if false returned
       return false;
     }
@@ -2115,25 +1969,25 @@ export function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UI
   return true;
 }
 
-export function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: HVOBJECT, iPosX: INT32, iPosY: INT32): boolean {
+export function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: SGPVObject, iPosX: INT32, iPosY: INT32): boolean {
   // Horizontal shadow
-  ShadowVideoSurfaceRect(uiDestVSurface, iPosX + 3, iPosY + hImageHandle.value.pETRLEObject.value.usHeight, iPosX + hImageHandle.value.pETRLEObject.value.usWidth, iPosY + hImageHandle.value.pETRLEObject.value.usHeight + 3);
+  ShadowVideoSurfaceRect(uiDestVSurface, iPosX + 3, iPosY + hImageHandle.pETRLEObject[0].usHeight, iPosX + hImageHandle.pETRLEObject[0].usWidth, iPosY + hImageHandle.pETRLEObject[0].usHeight + 3);
 
   // vertical shadow
-  ShadowVideoSurfaceRect(uiDestVSurface, iPosX + hImageHandle.value.pETRLEObject.value.usWidth, iPosY + 3, iPosX + hImageHandle.value.pETRLEObject.value.usWidth + 3, iPosY + hImageHandle.value.pETRLEObject.value.usHeight);
+  ShadowVideoSurfaceRect(uiDestVSurface, iPosX + hImageHandle.pETRLEObject[0].usWidth, iPosY + 3, iPosX + hImageHandle.pETRLEObject[0].usWidth + 3, iPosY + hImageHandle.pETRLEObject[0].usHeight);
   return true;
 }
 
 function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurface: Pointer<UINT32>): boolean {
-  let hSrcVObject: HVOBJECT;
+  let hSrcVObject: SGPVObject | null;
   let uiVSurface: UINT32;
   let hDesc: VSURFACE_DESC = createVSurfaceDesc();
 
   if ((hSrcVObject = GetVideoObject(uiVObject))) {
     // ATE: Memset
     hDesc.fCreateFlags = VSURFACE_CREATE_DEFAULT;
-    hDesc.usWidth = hSrcVObject.value.pETRLEObject[usSubIndex].usWidth;
-    hDesc.usHeight = hSrcVObject.value.pETRLEObject[usSubIndex].usHeight;
+    hDesc.usWidth = hSrcVObject.pETRLEObject[usSubIndex].usWidth;
+    hDesc.usHeight = hSrcVObject.pETRLEObject[usSubIndex].usHeight;
     hDesc.ubBitDepth = PIXEL_DEPTH;
 
     if ((uiVSurface = AddVideoSurface(hDesc)) !== -1) {

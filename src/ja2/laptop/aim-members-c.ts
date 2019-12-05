@@ -716,9 +716,9 @@ export function RenderAIMMembersTopLevel(): boolean {
 }
 
 export function RenderAIMMembers(): boolean {
-  let hStatsHandle: HVOBJECT;
-  let hPriceHandle: HVOBJECT;
-  let hWeaponBoxHandle: HVOBJECT;
+  let hStatsHandle: SGPVObject;
+  let hPriceHandle: SGPVObject;
+  let hWeaponBoxHandle: SGPVObject;
   let x: UINT16;
   let uiPosX: UINT16;
   let wTemp: string /* wchar_t[50] */;
@@ -1081,7 +1081,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
   let sCenY: INT16;
   let usItem: UINT16;
   let pItem: INVTYPE;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let usHeight: UINT32;
   let usWidth: UINT32;
   let pTrav: ETRLEObject;
@@ -1105,7 +1105,7 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
 
       pItem = Item[usItem];
       hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-      pTrav = hVObject.value.pETRLEObject[pItem.ubGraphicNum];
+      pTrav = hVObject.pETRLEObject[pItem.ubGraphicNum];
 
       usHeight = pTrav.usHeight;
       usWidth = pTrav.usWidth;
@@ -1232,8 +1232,8 @@ function BtnNextButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 function DisplayMercsFace(): boolean {
-  let hFaceHandle: HVOBJECT;
-  let hPortraitHandle: HVOBJECT;
+  let hFaceHandle: SGPVObject;
+  let hPortraitHandle: SGPVObject;
   let sFaceLoc: string /* STR */ = "FACES\\BIGFACES\\";
   let sTemp: string /* char[100] */;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
@@ -1261,7 +1261,7 @@ function DisplayMercsFace(): boolean {
   // if the merc is dead
   if (IsMercDead(gbCurrentSoldier)) {
     // shade the face red, (to signif that he is dead)
-    hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+    hFaceHandle.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // get the face object
     hFaceHandle = GetVideoObject(guiFace);
@@ -1644,13 +1644,13 @@ function DisplayVideoConferencingDisplay(): boolean {
 
   //	if( gfMercIsTalking && !gfIsAnsweringMachineActive)
   if (gfMercIsTalking && gGameSettings.fOptions[Enum8.TOPTION_SUBTITLES]) {
-    let usActualWidth: UINT16;
-    let usActualHeight: UINT16;
+    let usActualWidth: UINT16 = 0;
+    let usActualHeight: UINT16 = 0;
     let usPosX: UINT16;
 
     SET_USE_WINFONTS(true);
     SET_WINFONT(giSubTitleWinFont);
-    iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
+    iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, createPointer(() => usActualWidth, (v) => usActualWidth = v), createPointer(() => usActualHeight, (v) => usActualHeight = v));
     SET_USE_WINFONTS(false);
 
     usPosX = (LAPTOP_SCREEN_LR_X - usActualWidth) / 2;
@@ -1668,7 +1668,7 @@ function DisplayVideoConferencingDisplay(): boolean {
 }
 
 function DisplayMercsVideoFace(): boolean {
-  let hTerminalHandle: HVOBJECT;
+  let hTerminalHandle: SGPVObject;
   let sFaceLoc: string /* STR */ = "FACES\\";
 
   // Get and Blt Terminal Frame
@@ -1730,7 +1730,7 @@ function DisplaySelectLights(fContractDown: boolean, fBuyEquipDown: boolean): vo
 function DisplayMercChargeAmount(): UINT32 {
   let wTemp: string /* wchar_t[50] */;
   let wDollarTemp: string /* wchar_t[50] */;
-  let hImageHandle: HVOBJECT;
+  let hImageHandle: SGPVObject;
 
   if (gubVideoConferencingMode != Enum65.AIM_VIDEO_HIRE_MERC_MODE)
     return 0;
@@ -1790,7 +1790,7 @@ function DisplayMercChargeAmount(): UINT32 {
 /* static */ let InitCreateDeleteAimPopUpBox__fPopUpBoxActive: boolean = false;
 function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string | null /* STR16 */, sString2: string | null /* STR16 */, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hPopupBoxHandle: HVOBJECT;
+  let hPopupBoxHandle: SGPVObject;
   ;
 
   switch (ubFlag) {
@@ -1847,7 +1847,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string | null /* S
     } break;
 
     case Enum66.AIM_POPUP_DISPLAY: {
-      let hPopupBoxHandle: HVOBJECT;
+      let hPopupBoxHandle: SGPVObject;
       let usTempPosY: UINT16 = InitCreateDeleteAimPopUpBox__usPopUpBoxPosY;
 
       if (gubPopUpBoxAction != Enum66.AIM_POPUP_DISPLAY)
@@ -2285,7 +2285,7 @@ function CanMercBeHired(): boolean {
 
 function DisplaySnowBackground(): boolean {
   let uiCurrentTime: UINT32 = 0;
-  let hSnowHandle: HVOBJECT;
+  let hSnowHandle: SGPVObject;
   let ubCount: UINT8;
 
   uiCurrentTime = GetJA2Clock();
@@ -2459,7 +2459,7 @@ function HandleVideoDistortion(): void {
 /* static */ let DisplayTransparentSnow__bCount: INT8 = 0;
 /* static */ let DisplayTransparentSnow__uiLastTime: UINT32 = 0;
 function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8, bForward: boolean): UINT8 {
-  let hFuzzLineHandle: HVOBJECT;
+  let hFuzzLineHandle: SGPVObject;
   let uiCurrentTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
@@ -2505,7 +2505,7 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
 /* static */ let DisplayDistortionLine__ubCount: UINT8 = 255;
 /* static */ let DisplayDistortionLine__uiLastTime: UINT32 = 0;
 function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8): UINT8 {
-  let hFuzzLineHandle: HVOBJECT;
+  let hFuzzLineHandle: SGPVObject;
   let uiCurrentTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
@@ -2714,7 +2714,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
 
     if (gfJustSwitchedVideoConferenceMode) {
       let uiVideoBackgroundGraphic: UINT32;
-      let hImageHandle: HVOBJECT;
+      let hImageHandle: SGPVObject;
 
       // load the answering machine graphic and add it
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2901,7 +2901,7 @@ function InitDeleteVideoConferencePopUp(): boolean {
 
   if (gubVideoConferencingMode == Enum65.AIM_VIDEO_POPDOWN_MODE) {
     let uiVideoBackgroundGraphic: UINT32;
-    let hImageHandle: HVOBJECT;
+    let hImageHandle: SGPVObject;
 
     if (gubPopUpBoxAction == Enum66.AIM_POPUP_DISPLAY) {
       return true;

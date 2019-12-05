@@ -124,7 +124,7 @@ export function RemoveInventoryPoolGraphic(): void {
 
 // blit the background panel for the inventory
 export function BlitInventoryPoolGraphic(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // blit inventory pool graphic to the screen
   hHandle = GetVideoObject(guiMapInventoryPoolBackground);
@@ -178,7 +178,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
   let usHeight: INT16;
   let sX: INT16;
   let sY: INT16;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let pTrav: ETRLEObject;
   let sString: string /* CHAR16[64] */;
   let sWidth: INT16 = 0;
@@ -193,7 +193,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
 
   hHandle = GetVideoObject(GetInterfaceGraphicForItem(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem]));
 
-  pTrav = hHandle.value.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum];
+  pTrav = hHandle.pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
@@ -801,7 +801,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
     fReturn = (uiTotalNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), false)) !== -1;
     Assert(fReturn);
 
-    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
+    fReturn = (uiTotalNumberOfRealItems = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ))) !== -1;
     Assert(fReturn);
 
     if (uiTotalNumberOfRealItems > 0) {
@@ -976,7 +976,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     }
   } else {
     // get total number, visable and invisible
-    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), addressof(uiTotalNumberOfRealItems));
+    fReturn = (uiTotalNumberOfRealItems = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ))) !== -1;
     Assert(fReturn);
 
     fReturn = (uiTotalNumberOfItems = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), false)) !== -1;
@@ -1644,13 +1644,13 @@ function MapScreenSectorInventoryCompare(pNum1: WORLDITEM, pNum2: WORLDITEM): IN
 }
 
 function CanPlayerUseSectorInventory(pSelectedSoldier: SOLDIERTYPE): boolean {
-  let sSectorX: INT16;
-  let sSectorY: INT16;
-  let sSectorZ: INT16;
+  let sSectorX: INT16 = 0;
+  let sSectorY: INT16 = 0;
+  let sSectorZ: INT16 = 0;
   let fInCombat: boolean;
 
   // Get the sector that has a battle
-  fInCombat = GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
+  fInCombat = GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(createPointer(() => sSectorX, (v) => sSectorX = v), createPointer(() => sSectorY, (v) => sSectorY = v), createPointer(() => sSectorZ, (v) => sSectorZ = v));
 
   // if there is a battle going on
   if (fInCombat) {

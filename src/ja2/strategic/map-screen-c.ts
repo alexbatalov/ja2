@@ -867,7 +867,7 @@ function RenderHandPosItem(): void {
 }
 
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   hHandle = GetVideoObject(guiULICONS);
 
@@ -1536,7 +1536,7 @@ function DisplayCharacterInfo(): void {
   MarkAllBoxesAsAltered();
 }
 
-export function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
+export function GetPathTravelTimeDuringPlotting(pPath: PathSt | null): INT32 {
   let iTravelTime: INT32 = 0;
   let pCurrent: WAYPOINT = createWaypoint();
   let pNext: WAYPOINT = createWaypoint();
@@ -1556,7 +1556,7 @@ export function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
     return 0;
   }
 
-  pPath = MoveToBeginningOfPathList(pPath);
+  pPath = <PathSt>MoveToBeginningOfPathList(pPath);
 
   if (fPlotForHelicopter == false) {
     // plotting for a character...
@@ -1605,22 +1605,22 @@ export function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
     iTravelTime = 0;
   }
 
-  while (pPath.value.pNext) {
+  while (pPath.pNext) {
     if (!fSkipFirstNode) {
       // grab the current location
-      pCurrent.x = (pPath.value.uiSectorId % MAP_WORLD_X);
-      pCurrent.y = (pPath.value.uiSectorId / MAP_WORLD_X);
+      pCurrent.x = (pPath.uiSectorId % MAP_WORLD_X);
+      pCurrent.y = (pPath.uiSectorId / MAP_WORLD_X);
 
       // grab the next location
-      pNext.x = (pPath.value.pNext.value.uiSectorId % MAP_WORLD_X);
-      pNext.y = (pPath.value.pNext.value.uiSectorId / MAP_WORLD_X);
+      pNext.x = (pPath.pNext.uiSectorId % MAP_WORLD_X);
+      pNext.y = (pPath.pNext.uiSectorId / MAP_WORLD_X);
 
       iTravelTime += FindTravelTimeBetweenWaypoints(pCurrent, pNext, pGroup);
     } else {
       fSkipFirstNode = false;
     }
 
-    pPath = pPath.value.pNext;
+    pPath = pPath.pNext;
   }
 
   return iTravelTime;
@@ -2545,7 +2545,7 @@ export function MapScreenHandle(): UINT32 {
       // gfFacePanelActive = FALSE;
 
       // make him continue talking
-      ContinueDialogue(MercPtrs[gpCurrentTalkingFace.value.ubSoldierID], false);
+      ContinueDialogue(MercPtrs[gpCurrentTalkingFace.ubSoldierID], false);
 
       // reset diabled flag
       // gpCurrentTalkingFace->fDisabled = FALSE;
@@ -3271,7 +3271,7 @@ function RenderMapCursorsIndexesAnims(): void {
   fDrawCursors = CanDrawSectorCursor();
 
   // if mouse cursor is over a map sector
-  if (fDrawCursors && (GetMouseMapXY(addressof(gsHighlightSectorX), addressof(gsHighlightSectorY)))) {
+  if (fDrawCursors && (GetMouseMapXY(gsHighlightSectorX__Pointer, gsHighlightSectorY__Pointer))) {
     // handle highlighting of sector pointed at ( WHITE )
 
     // if we're over a different sector than when we previously blitted this
@@ -3364,25 +3364,27 @@ function RenderMapCursorsIndexesAnims(): void {
 function HandleMapUI(): UINT32 {
   let uiNewEvent: UINT32 = Enum134.MAP_EVENT_NONE;
   let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
   let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
   let bMapZ: INT8 = 0;
   let sX: INT16;
   let sY: INT16;
   let ubCount: UINT8 = 0;
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
   let fVehicle: boolean = false;
   let MousePos: POINT = createPoint();
   let uiNewScreen: UINT32 = Enum26.MAP_SCREEN;
   let fWasAlreadySelected: boolean;
 
   // Get Input from keyboard
-  GetMapKeyboardInput(addressof(uiNewEvent));
+  uiNewEvent = GetMapKeyboardInput(uiNewEvent);
 
   CreateDestroyMapInvButton();
 
   // Get mouse
-  PollLeftButtonInMapView(addressof(uiNewEvent));
-  PollRightButtonInMapView(addressof(uiNewEvent));
+  uiNewEvent = PollLeftButtonInMapView(uiNewEvent);
+  uiNewEvent = PollRightButtonInMapView(uiNewEvent);
 
   // Switch on event
   switch (uiNewEvent) {
@@ -3390,7 +3392,7 @@ function HandleMapUI(): UINT32 {
       break;
 
     case Enum134.MAP_EVENT_PLOT_PATH:
-      GetMouseMapXY(addressof(sMapX), addressof(sMapY));
+      GetMouseMapXY(sMapX__Pointer, sMapY__Pointer);
 
       /*
                                                        // translate screen values to map grid values for zoomed in
@@ -3486,7 +3488,7 @@ function HandleMapUI(): UINT32 {
     case Enum134.MAP_EVENT_CLICK_SECTOR:
 
       // Get Current mouse position
-      if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
+      if (GetMouseMapXY(sMapX__Pointer, sMapY__Pointer)) {
         /*
                                         if( fZoomFlag == TRUE )
                                         {
@@ -3660,7 +3662,7 @@ function HandleMapUI(): UINT32 {
   return uiNewScreen;
 }
 
-function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
+function GetMapKeyboardInput(uiNewEvent: UINT32): UINT32 {
   let InputEvent: InputAtom = createInputAtom();
   let MousePos: POINT = createPoint();
   let bSquadNumber: INT8;
@@ -3668,8 +3670,10 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   let fCtrl: boolean;
   let fAlt: boolean;
 
-  let sMapX: INT16;
-  let sMapY: INT16;
+  let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
+  let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
 
   fCtrl = _KeyDown(CTRL);
   fAlt = _KeyDown(ALT);
@@ -3727,7 +3731,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             // Non persistant PBI.  Allow ESC to close it and return to mapscreen.
             KillPreBattleInterface();
             gpBattleGroup = null;
-            return;
+            return uiNewEvent;
           }
 
           if (gfInChangeArrivalSectorMode) {
@@ -3739,7 +3743,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             CancelMapUIMessage();
           } else if (IsMapScreenHelpTextUp()) {
             StopMapScreenHelpText();
-          } else if (gpCurrentTalkingFace != null && gpCurrentTalkingFace.value.fTalking) {
+          } else if (gpCurrentTalkingFace != null && gpCurrentTalkingFace.fTalking) {
             // ATE: We want to stop speech if somebody is talking...
             StopAnyCurrentlyTalkingSpeech();
           } else if (fShowUpdateBox) {
@@ -4067,7 +4071,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (fAlt) {
             if (INFORMATION_CHEAT_LEVEL()) {
               // Toggle Frame Rate Display
-              gbFPSDisplay = !gbFPSDisplay;
+              gbFPSDisplay = Number(!gbFPSDisplay);
               DisableFPSOverlay(!gbFPSDisplay);
             }
           }
@@ -4161,7 +4165,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           // Teleport: CTRL-T
           if ((fCtrl) && (CHEATER_CHEAT_LEVEL())) {
             // check if selected dest char,
-            if ((bSelectedDestChar != -1) && (fPlotForHelicopter == false) && (iCurrentMapSectorZ == 0) && (GetMouseMapXY(addressof(sMapX), addressof(sMapY)))) {
+            if ((bSelectedDestChar != -1) && (fPlotForHelicopter == false) && (iCurrentMapSectorZ == 0) && (GetMouseMapXY(sMapX__Pointer, sMapY__Pointer))) {
               let sDeltaX: INT16;
               let sDeltaY: INT16;
               let sPrevX: INT16;
@@ -4315,6 +4319,8 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
       }
     }
   }
+
+  return uiNewEvent;
 }
 
 export function EndMapScreen(fDuringFade: boolean): void {
@@ -4556,7 +4562,7 @@ export function EndMapScreen(fDuringFade: boolean): void {
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
     DeleteVideoObjectFromIndex(uiLaptopOn);
-    RefreshScreen(null);
+    RefreshScreen();
   }
 
   // Kris:  Removes the pre battle interface, but only if it exists.
@@ -4690,9 +4696,11 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
 }
 
 /* static */ let PollLeftButtonInMapView__fLBBeenPressedInMapView: boolean = false;
-function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
-  let sMapX: INT16;
-  let sMapY: INT16;
+function PollLeftButtonInMapView(uiNewEvent: UINT32): UINT32 {
+  let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
+  let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
 
   // if the mouse is currently over the MAP area
   if (gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -4715,13 +4723,13 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
           fShowMapScreenHelpText = false;
           fCharacterInfoPanelDirty = true;
           fMapPanelDirty = true;
-          return;
+          return uiNewEvent;
         }
 
         // if in militia redistribution popup
         if (sSelectedMilitiaTown != 0) {
           // ignore clicks outside the box
-          return;
+          return uiNewEvent;
         }
 
         // left click cancels MAP UI messages, unless we're in confirm map move mode
@@ -4730,20 +4738,20 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
 
           // return unless moving the bullseye
           if (!gfInChangeArrivalSectorMode)
-            return;
+            return uiNewEvent;
         }
 
         // ignore left clicks in the map screen if:
         // game just started or we're in the prebattle interface or if we are about to hit pre-battle
         if ((gTacticalStatus.fDidGameJustStart == true) || (gfPreBattleInterfaceActive == true) || (fDisableMapInterfaceDueToBattle == true)) {
-          return;
+          return uiNewEvent;
         }
 
         // if in "plot route" mode
         if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
           fEndPlotting = false;
 
-          GetMouseMapXY(addressof(sMapX), addressof(sMapY));
+          GetMouseMapXY(sMapX__Pointer, sMapY__Pointer);
 
           /*
                                                   // translate screen values to map grid values for zoomed in
@@ -4764,14 +4772,14 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
             gfAllowSkyriderTooFarQuote = true;
 
             // draw new map route
-            puiNewEvent.value = Enum134.MAP_EVENT_PLOT_PATH;
+            uiNewEvent = Enum134.MAP_EVENT_PLOT_PATH;
           }
         } else // not plotting movement
         {
           // if not plotting a path
           if ((fEndPlotting == false) && (fJustFinishedPlotting == false)) {
             // make this sector selected / trigger movement box / start helicopter plotting / changing arrival sector
-            puiNewEvent.value = Enum134.MAP_EVENT_CLICK_SECTOR;
+            uiNewEvent = Enum134.MAP_EVENT_CLICK_SECTOR;
           }
 
           fEndPlotting = false;
@@ -4784,12 +4792,16 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
   }
 
   fJustFinishedPlotting = false;
+
+  return uiNewEvent;
 }
 
 /* static */ let PollRightButtonInMapView__fRBBeenPressedInMapView: boolean = false;
-function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
-  let sMapX: INT16;
-  let sMapY: INT16;
+function PollRightButtonInMapView(uiNewEvent: UINT32): UINT32 {
+  let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
+  let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
 
   // if the mouse is currently over the MAP area
   if (gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -4810,38 +4822,38 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
           fShowMapScreenHelpText = false;
           fCharacterInfoPanelDirty = true;
           fMapPanelDirty = true;
-          return;
+          return uiNewEvent;
         }
 
         // if in militia redistribution popup
         if (sSelectedMilitiaTown != 0) {
           // ignore clicks outside the box
-          return;
+          return uiNewEvent;
         }
 
         if (gfInChangeArrivalSectorMode) {
           CancelChangeArrivalSectorMode();
           MapScreenMessage(FONT_MCOLOR_LTYELLOW, MSG_MAP_UI_POSITION_MIDDLE, pBullseyeStrings[3]);
-          return;
+          return uiNewEvent;
         }
 
         // right click cancels MAP UI messages, unless we're in confirm map move mode
         if ((giUIMessageOverlay != -1) && !gfInConfirmMapMoveMode) {
           CancelMapUIMessage();
-          return;
+          return uiNewEvent;
         }
 
         // ignore right clicks in the map area if:
         // game just started or we're in the prebattle interface or if we are about to hit pre-battle
         if ((gTacticalStatus.fDidGameJustStart == true) || (gfPreBattleInterfaceActive == true) || (fDisableMapInterfaceDueToBattle == true)) {
-          return;
+          return uiNewEvent;
         }
 
         if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
           // cancel/shorten the path
-          puiNewEvent.value = Enum134.MAP_EVENT_CANCEL_PATH;
+          uiNewEvent = Enum134.MAP_EVENT_CANCEL_PATH;
         } else {
-          if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
+          if (GetMouseMapXY(sMapX__Pointer, sMapY__Pointer)) {
             /*
                                                             if(fZoomFlag)
                                                             {
@@ -4883,6 +4895,8 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
       }
     }
   }
+
+  return uiNewEvent;
 }
 
 function PopupText(pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
@@ -4997,7 +5011,7 @@ export function CreateDestroyMapInvButton(): void {
 function BltCharInvPanel(): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT16>;
-  let hCharListHandle: HVOBJECT;
+  let hCharListHandle: SGPVObject;
   let pSoldier: SOLDIERTYPE | null;
   let sString: string /* CHAR16[32] */;
   let usX: UINT16;
@@ -5195,7 +5209,7 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(addressof(pSoldier.inv[uiHandPos]), null);
+        CleanUpStack(pSoldier.inv[uiHandPos], null);
       }
 
       // remember what it was
@@ -5227,7 +5241,7 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(addressof(pSoldier.inv[uiHandPos]), gpItemPointer);
+        CleanUpStack(pSoldier.inv[uiHandPos], gpItemPointer);
         if (gpItemPointer.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         }
@@ -5240,14 +5254,14 @@ function MAPInvClickCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
         if (ValidAttachment(usNewItemIndex, usOldItemIndex)) {
           // it's an attempt to attach; bring up the inventory panel
           if (!InItemDescriptionBox()) {
-            MAPInternalInitItemDescriptionBox(addressof(pSoldier.inv[uiHandPos]), 0, pSoldier);
+            MAPInternalInitItemDescriptionBox(pSoldier.inv[uiHandPos], 0, pSoldier);
           }
           return;
         } else if (ValidMerge(usNewItemIndex, usOldItemIndex)) {
           // bring up merge requestor
           // TOO PAINFUL TO DO!! --CC
           if (!InItemDescriptionBox()) {
-            MAPInternalInitItemDescriptionBox(addressof(pSoldier.inv[uiHandPos]), 0, pSoldier);
+            MAPInternalInitItemDescriptionBox(pSoldier.inv[uiHandPos], 0, pSoldier);
           }
 
           /*
@@ -5387,25 +5401,9 @@ function MAPBeginItemPointer(pSoldier: SOLDIERTYPE, ubHandPos: UINT8): void {
   }
 }
 
-function MAPBeginKeyRingItemPointer(pSoldier: SOLDIERTYPE, uiKeySlot: UINT8): void {
-  // If not null return
-  if (gpItemPointer != null) {
-    return;
-  }
-
-  // Set mouse
-  guiExternVo = GetInterfaceGraphicForItem(Item[gpItemPointer.usItem]);
-  gusExternVoSubIndex = Item[gpItemPointer.usItem].ubGraphicNum;
-
-  MSYS_ChangeRegionCursor(gMPanelRegion, EXTERN_CURSOR);
-  MSYS_SetCurrentCursor(EXTERN_CURSOR);
-  fMapInventoryItem = true;
-  fTeamPanelDirty = true;
-}
-
 export function MAPEndItemPointer(): void {
   if (gpItemPointer != null) {
-    gpItemPointer = null;
+    gpItemPointer = <OBJECTTYPE><unknown>null;
     MSYS_ChangeRegionCursor(gMPanelRegion, Enum317.CURSOR_NORMAL);
     MSYS_SetCurrentCursor(Enum317.CURSOR_NORMAL);
     fMapInventoryItem = false;
@@ -6395,11 +6393,13 @@ function PlotPermanentPaths(): void {
 }
 
 function PlotTemporaryPaths(): void {
-  let sMapX: INT16;
-  let sMapY: INT16;
+  let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
+  let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
 
   // check to see if we have in fact moved are are plotting a path?
-  if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
+  if (GetMouseMapXY(sMapX__Pointer, sMapY__Pointer)) {
     if (fPlotForHelicopter == true) {
       Assert(fShowAircraftFlag == true);
       /*
@@ -6509,7 +6509,7 @@ export function RenderMapRegionBackground(): void {
 }
 
 function RenderTeamRegionBackground(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // renders to save buffer when dirty flag set
   if (fTeamPanelDirty == false) {
@@ -6554,7 +6554,7 @@ function RenderTeamRegionBackground(): void {
 }
 
 function RenderCharacterInfoBackground(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // will render the background for the character info panel
 
@@ -7052,10 +7052,10 @@ function HandleSpontanousTalking(): void {
 }
 
 function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): boolean {
-  let ppMovePath: Pointer<PathStPtr> = null;
+  let ppMovePath: PathSt | null = null;
   let fLastSectorInPath: boolean = false;
   let iVehicleId: INT32 = -1;
-  let pPreviousMercPath: PathStPtr = null;
+  let pPreviousMercPath: PathSt | null = null;
 
   // see if we have clicked on the last sector in the characters path
 
@@ -7066,8 +7066,8 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): boolean {
       TakeOffHelicopter();
 
       // rebuild waypoints - helicopter
-      ppMovePath = addressof(pVehicleList[iHelicopterVehicleId].pMercPath);
-      RebuildWayPointsForGroupPath(ppMovePath.value, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
+      ppMovePath = pVehicleList[iHelicopterVehicleId].pMercPath;
+      RebuildWayPointsForGroupPath(ppMovePath, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
       // pointer to previous helicopter path
       pPreviousMercPath = gpHelicopterPreviousMercPath;
@@ -7101,10 +7101,10 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): boolean {
         }
 
         // rebuild waypoints - vehicles
-        ppMovePath = addressof(pVehicleList[iVehicleId].pMercPath);
+        ppMovePath = pVehicleList[iVehicleId].pMercPath;
       } else {
         // rebuild waypoints - mercs on foot
-        ppMovePath = addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
+        ppMovePath = Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath;
       }
 
       RebuildWayPointsForAllSelectedCharsGroups();
@@ -7122,7 +7122,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): boolean {
     EndConfirmMapMoveMode();
 
     // if we really did plot a path (this will skip message if left click on current sector with no path)
-    if (GetLengthOfPath(ppMovePath.value) > 0) {
+    if (GetLengthOfPath(ppMovePath) > 0) {
       // then verbally confirm this destination!
       HandleNewDestConfirmation(sX, sY);
     } else // NULL path confirmed
@@ -7148,7 +7148,7 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
   let fGroupIDRebuilt: boolean[] /* [256] */ = createArray(256, false);
   let pSoldier: SOLDIERTYPE;
   let iVehicleId: INT32;
-  let ppMovePath: Pointer<PathStPtr> = null;
+  let ppMovePath: PathSt | null = null;
   let ubGroupId: UINT8;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -7166,18 +7166,18 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
         }
 
         // vehicles
-        ppMovePath = addressof(pVehicleList[iVehicleId].pMercPath);
+        ppMovePath = pVehicleList[iVehicleId].pMercPath;
         ubGroupId = pVehicleList[iVehicleId].ubMovementGroup;
       } else {
         // mercs on foot
-        ppMovePath = addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
+        ppMovePath = Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath;
         ubGroupId = pSoldier.ubGroupID;
       }
 
       // if we haven't already rebuilt this group
       if (!fGroupIDRebuilt[ubGroupId]) {
         // rebuild it now
-        RebuildWayPointsForGroupPath(ppMovePath.value, ubGroupId);
+        RebuildWayPointsForGroupPath(ppMovePath, ubGroupId);
 
         // mark it as rebuilt
         fGroupIDRebuilt[ubGroupId] = true;
@@ -7188,11 +7188,13 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
 
 function UpdateCursorIfInLastSector(): void {
   let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
   let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
 
   // check to see if we are plotting a path, if so, see if we are highlighting the last sector int he path, if so, change the cursor
   if ((bSelectedDestChar != -1) || (fPlotForHelicopter == true)) {
-    GetMouseMapXY(addressof(sMapX), addressof(sMapY));
+    GetMouseMapXY(sMapX__Pointer, sMapY__Pointer);
 
     // translate screen values to map grid values for zoomed in
     if (fZoomFlag) {
@@ -7205,7 +7207,7 @@ function UpdateCursorIfInLastSector(): void {
     if (fShowAircraftFlag == false) {
       if (bSelectedDestChar != -1) {
         // c heck if we are in the last sector of the characters path?
-        if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])))) {
+        if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((Menptr[gCharactersList[bSelectedDestChar].usSolID]))) {
           // set cursor to checkmark
           ChangeMapScreenMaskCursor(Enum317.CURSOR_CHECKMARK);
         } else if (fCheckCursorWasSet) {
@@ -7363,7 +7365,7 @@ function DestroyTheItemInCursor(): void {
   // actually destroy this item
   // End Item pickup
   MAPEndItemPointer();
-  gpItemPointer = null;
+  gpItemPointer = <OBJECTTYPE><unknown>null;
 }
 
 function TrashItemMessageBoxCallBack(bExitValue: UINT8): void {
@@ -8547,7 +8549,7 @@ function HandleAssignmentsDoneAndAwaitingFurtherOrders(): void {
 
 function DisplayIconsForMercsAsleep(): void {
   // run throught he list of grunts to see who is asleep and who isn't
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32;
   let pSoldier: SOLDIERTYPE;
 
@@ -8587,7 +8589,7 @@ function CheckForAndRenderNewMailOverlay(): void {
           let area: SGPRect = createSGPRectFrom(463, 417, 477, 425);
 
           pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-          Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(area));
+          Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, area);
           UnLockVideoSurface(FRAME_BUFFER);
         }
         InvalidateRegion(463, 417, 481, 430);
@@ -8727,7 +8729,7 @@ function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: b
   Assert(pSoldier);
   Assert(pSoldier.bActive);
 
-  if (CanEntireMovementGroupMercIsInMove(pSoldier, addressof(bErrorNumber))) {
+  if (CanEntireMovementGroupMercIsInMove(pSoldier, createPointer(() => bErrorNumber, (v) => bErrorNumber = v))) {
     return true;
   } else {
     // function may fail without returning any specific error # (-1).
@@ -8822,11 +8824,13 @@ function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
 }
 
 function CancelOrShortenPlottedPath(): void {
-  let sMapX: INT16;
-  let sMapY: INT16;
+  let sMapX: INT16 = 0;
+  let sMapX__Pointer = createPointer(() => sMapX, (v) => sMapX = v);
+  let sMapY: INT16 = 0;
+  let sMapY__Pointer = createPointer(() => sMapY, (v) => sMapY = v);
   let uiReturnValue: UINT32;
 
-  GetMouseMapXY(addressof(sMapX), addressof(sMapY));
+  GetMouseMapXY(sMapX__Pointer, sMapY__Pointer);
 
   /*
           // translate zoom in to zoom out coords
@@ -8983,7 +8987,7 @@ export function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: bo
   fTeamPanelDirty = true;
 }
 
-export function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
+export function CopyPathToAllSelectedCharacters(pPath: PathSt | null): void {
   let iCounter: INT32 = 0;
   let pSoldier: SOLDIERTYPE;
 
@@ -9663,7 +9667,7 @@ export function RememberPreviousPathForAllSelectedChars(): void {
 function RestorePreviousPaths(): void {
   let iCounter: INT32 = 0;
   let pSoldier: SOLDIERTYPE;
-  let ppMovePath: Pointer<PathStPtr> = null;
+  let ppMovePath: Pointer<PathSt | null>;
   let ubGroupId: UINT8 = 0;
   let fPathChanged: boolean = false;
 
@@ -9671,7 +9675,7 @@ function RestorePreviousPaths(): void {
   Assert((bSelectedDestChar != -1) || (fPlotForHelicopter == true));
 
   if (fPlotForHelicopter == true) {
-    ppMovePath = addressof(pVehicleList[iHelicopterVehicleId].pMercPath);
+    ppMovePath = createPropertyPointer(pVehicleList[iHelicopterVehicleId], 'pMercPath');
     ubGroupId = pVehicleList[iHelicopterVehicleId].ubMovementGroup;
 
     // if the helicopter had a previous path
@@ -9711,13 +9715,13 @@ function RestorePreviousPaths(): void {
         pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
         if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
-          ppMovePath = addressof(pVehicleList[pSoldier.bVehicleID].pMercPath);
+          ppMovePath = createPropertyPointer(pVehicleList[pSoldier.bVehicleID], 'pMercPath');
           ubGroupId = pVehicleList[pSoldier.bVehicleID].ubMovementGroup;
         } else if (pSoldier.bAssignment == Enum117.VEHICLE) {
-          ppMovePath = addressof(pVehicleList[pSoldier.iVehicleId].pMercPath);
+          ppMovePath = createPropertyPointer(pVehicleList[pSoldier.iVehicleId], 'pMercPath');
           ubGroupId = pVehicleList[pSoldier.iVehicleId].ubMovementGroup;
         } else if (pSoldier.bAssignment < Enum117.ON_DUTY) {
-          ppMovePath = addressof(pSoldier.pMercPath);
+          ppMovePath = createPropertyPointer(pSoldier, 'pMercPath');
           ubGroupId = pSoldier.ubGroupID;
         } else {
           // invalid pSoldier - that guy can't possibly be moving, he's on a non-vehicle assignment!

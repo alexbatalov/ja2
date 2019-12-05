@@ -146,7 +146,7 @@ function SelectInsuranceCommentLinkRegionCallBack(pRegion: MOUSE_REGION, iReason
 
 function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT16): boolean {
   let sText: string /* wchar_t[800] */;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let sNumPixels: UINT16 = 0;
 
   // Get and display the insurance bullet

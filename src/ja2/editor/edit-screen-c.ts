@@ -45,7 +45,7 @@ export let gfFakeLights: boolean = false;
 
 export let gsLightRadius: INT16 = 5;
 
-let gfOldDoVideoScroll: boolean; // Saved for returning to previous settings
+let gfOldDoVideoScroll: UINT8 /* boolean */; // Saved for returning to previous settings
 let gubOldCurScrollSpeedID: UINT8; // Saved for returning to previous settings
 
 export let iOldTaskMode: INT32 = Enum36.TASK_OPTIONS;
@@ -62,7 +62,7 @@ export let fDontUseRandom: boolean = false;
 
 let TestButtons: INT32[] /* [10] */;
 
-let gCursorNode: Pointer<LEVELNODE> = null;
+let gCursorNode: LEVELNODE | null /* Pointer<LEVELNODE> */ = null;
 // LEVELNODE *gBasicCursorNode = NULL;
 let gsCursorGridNo: INT16;
 
@@ -93,7 +93,9 @@ let fSelectionWindow: boolean = false;
 let gfRealGunNut: boolean = true;
 
 let sGridX: INT16;
+let sGridX__Pointer = createPointer(() => sGridX, (v) => sGridX = v);
 let sGridY: INT16;
+let sGridY__Pointer = createPointer(() => sGridY, (v) => sGridY = v);
 let iMapIndex: UINT32;
 let fNewMap: boolean = false;
 
@@ -498,99 +500,101 @@ function RemoveTempMouseCursorObject(): void {
 // Whenever the editor wishes to show an object in the world, it will temporarily attach it to
 // the mouse cursor, to indicate what is about to be drawn.
 function DrawTempMouseCursorObject(): boolean {
-  let sMouseX_M: INT16;
-  let sMouseY_M: INT16;
-  let usUseIndex: UINT16;
-  let usUseObjIndex: UINT16;
+  let sMouseX_M: INT16 = 0;
+  let sMouseY_M: INT16 = 0;
+  let usUseIndex: UINT16 = 0;
+  let usUseIndex__Pointer = createPointer(() => usUseIndex, (v) => usUseIndex = v);
+  let usUseObjIndex: UINT16 = 0;
+  let usUseObjIndex__Pointer = createPointer(() => usUseObjIndex, (v) => usUseObjIndex = v);
 
   switch (iDrawMode) {
     case Enum38.DRAW_MODE_ROOM:
       pSelList = SelRoom;
-      pNumSelList = addressof(iNumRoomsSelected);
+      pNumSelList = iNumRoomsSelected__Pointer;
       return false; // a special case where we just want to get the info and not display a cursor.
     case Enum38.DRAW_MODE_NEWROOF:
       pSelList = SelSingleNewRoof;
-      pNumSelList = addressof(iNumNewRoofsSelected);
+      pNumSelList = iNumNewRoofsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_WALLS:
       pSelList = SelSingleWall;
-      pNumSelList = addressof(iNumWallsSelected);
+      pNumSelList = iNumWallsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_DOORS:
       pSelList = SelSingleDoor;
-      pNumSelList = addressof(iNumDoorsSelected);
+      pNumSelList = iNumDoorsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_WINDOWS:
       pSelList = SelSingleWindow;
-      pNumSelList = addressof(iNumWindowsSelected);
+      pNumSelList = iNumWindowsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_ROOFS:
       pSelList = SelSingleRoof;
-      pNumSelList = addressof(iNumRoofsSelected);
+      pNumSelList = iNumRoofsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_BROKEN_WALLS:
       pSelList = SelSingleBrokenWall;
-      pNumSelList = addressof(iNumBrokenWallsSelected);
+      pNumSelList = iNumBrokenWallsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_DECOR:
       pSelList = SelSingleDecor;
-      pNumSelList = addressof(iNumDecorSelected);
+      pNumSelList = iNumDecorSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_DECALS:
       pSelList = SelSingleDecal;
-      pNumSelList = addressof(iNumDecalsSelected);
+      pNumSelList = iNumDecalsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_FLOORS:
       pSelList = SelSingleFloor;
-      pNumSelList = addressof(iNumFloorsSelected);
+      pNumSelList = iNumFloorsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_TOILET:
       pSelList = SelSingleToilet;
-      pNumSelList = addressof(iNumToiletsSelected);
+      pNumSelList = iNumToiletsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_BANKS:
       pSelList = SelBanks;
-      pNumSelList = addressof(iNumBanksSelected);
+      pNumSelList = iNumBanksSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_ROADS:
       pSelList = SelRoads;
-      pNumSelList = addressof(iNumRoadsSelected);
+      pNumSelList = iNumRoadsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_OSTRUCTS:
       pSelList = SelOStructs;
-      pNumSelList = addressof(iNumOStructsSelected);
+      pNumSelList = iNumOStructsSelected__Pointer;
       break;
     case Enum38.DRAW_MODE_OSTRUCTS1:
       pSelList = SelOStructs1;
-      pNumSelList = addressof(iNumOStructs1Selected);
+      pNumSelList = iNumOStructs1Selected__Pointer;
       break;
     case Enum38.DRAW_MODE_OSTRUCTS2:
       pSelList = SelOStructs2;
-      pNumSelList = addressof(iNumOStructs2Selected);
+      pNumSelList = iNumOStructs2Selected__Pointer;
       break;
     case Enum38.DRAW_MODE_DEBRIS:
       pSelList = SelDebris;
-      pNumSelList = addressof(iNumDebrisSelected);
+      pNumSelList = iNumDebrisSelected__Pointer;
       break;
   }
 
-  if (GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M))) {
+  if (GetMouseXY(createPointer(() => sMouseX_M, (v) => sMouseX_M = v), createPointer(() => sMouseY_M, (v) => sMouseY_M = v))) {
     if ((iCurBankMapIndex = MAPROWCOLTOPOS(sMouseY_M, sMouseX_M)) < 0x8000) {
       // Hook into the smart methods to override the selection window methods.
       if (iDrawMode == Enum38.DRAW_MODE_SMART_WALLS) {
-        if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
+        if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, usUseObjIndex__Pointer, usUseIndex__Pointer)) {
           return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_DOORS) {
-        if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
+        if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, usUseObjIndex__Pointer, usUseIndex__Pointer)) {
           return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_WINDOWS) {
-        if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
+        if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, usUseObjIndex__Pointer, usUseIndex__Pointer)) {
           return false;
         }
       } else if (iDrawMode == Enum38.DRAW_MODE_SMART_BROKEN_WALLS) {
-        if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
+        if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, usUseObjIndex__Pointer, usUseIndex__Pointer)) {
           return false;
         }
         if (usUseObjIndex == 0xffff || usUseIndex == 0xffff) {
@@ -600,9 +604,9 @@ function DrawTempMouseCursorObject(): boolean {
         usUseIndex = pSelList[iCurBank].usIndex;
         usUseObjIndex = pSelList[iCurBank].uiObject;
       }
-      gCursorNode = ForceStructToTail(iCurBankMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
+      gCursorNode = <LEVELNODE>ForceStructToTail(iCurBankMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
       // ATE: Set this levelnode as dynamic!
-      gCursorNode.value.uiFlags |= LEVELNODE_DYNAMIC;
+      gCursorNode.uiFlags |= LEVELNODE_DYNAMIC;
       return true;
     } else
       return false;
@@ -616,8 +620,10 @@ export function ShowCurrentDrawingMode(): void {
   let ClipRect: SGPRect = createSGPRect();
   let NewRect: SGPRect = createSGPRect();
   let iShowMode: INT32;
-  let usUseIndex: UINT16;
-  let usObjIndex: UINT16;
+  let usUseIndex: UINT16 = 0;
+  let usUseIndex__Pointer = createPointer(() => usUseIndex, (v) => usUseIndex = v);
+  let usObjIndex: UINT16 = 0;
+  let usObjIndex__Pointer = createPointer(() => usObjIndex, (v) => usObjIndex = v);
   let iStartX: INT32 = 50;
   let iStartY: INT32 = 440;
   let iPicHeight: INT32;
@@ -771,36 +777,36 @@ export function ShowCurrentDrawingMode(): void {
       }
       break;
     case Enum38.DRAW_MODE_SMART_WALLS:
-      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+      if (GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
+        if (CalcWallInfoUsingSmartMethod(iMapIndex, usObjIndex__Pointer, usUseIndex__Pointer))
           break;
       }
-      CalcSmartWallDefault(addressof(usObjIndex), addressof(usUseIndex));
+      CalcSmartWallDefault(usObjIndex__Pointer, usUseIndex__Pointer);
       break;
     case Enum38.DRAW_MODE_SMART_DOORS:
-      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+      if (GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcDoorInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
+        if (CalcDoorInfoUsingSmartMethod(iMapIndex, usObjIndex__Pointer, usUseIndex__Pointer))
           break;
       }
-      CalcSmartDoorDefault(addressof(usObjIndex), addressof(usUseIndex));
+      CalcSmartDoorDefault(usObjIndex__Pointer, usUseIndex__Pointer);
       break;
     case Enum38.DRAW_MODE_SMART_WINDOWS:
-      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+      if (GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcWindowInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
+        if (CalcWindowInfoUsingSmartMethod(iMapIndex, usObjIndex__Pointer, usUseIndex__Pointer))
           break;
       }
-      CalcSmartWindowDefault(addressof(usObjIndex), addressof(usUseIndex));
+      CalcSmartWindowDefault(usObjIndex__Pointer, usUseIndex__Pointer);
       break;
     case Enum38.DRAW_MODE_SMART_BROKEN_WALLS:
-      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+      if (GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcBrokenWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
+        if (CalcBrokenWallInfoUsingSmartMethod(iMapIndex, usObjIndex__Pointer, usUseIndex__Pointer))
           break;
       }
-      CalcSmartBrokenWallDefault(addressof(usObjIndex), addressof(usUseIndex));
+      CalcSmartBrokenWallDefault(usObjIndex__Pointer, usUseIndex__Pointer);
       break;
 
     case Enum38.DRAW_MODE_PLACE_ITEM:
@@ -810,7 +816,7 @@ export function ShowCurrentDrawingMode(): void {
 
   // If we actually have something to draw, draw it
   if ((usUseIndex != 0xffff) && (usObjIndex != 0xffff)) {
-    pETRLEObject = gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex];
+    pETRLEObject = gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.pETRLEObject[usUseIndex];
 
     iPicWidth = pETRLEObject.usWidth;
     iPicHeight = pETRLEObject.usHeight;
@@ -1336,7 +1342,7 @@ function HandleKeyboardShortcuts(): void {
               let usRoofType: UINT16;
               let usTileIndex: UINT16;
               pSelList = SelSingleRoof;
-              pNumSelList = addressof(iNumRoofsSelected);
+              pNumSelList = iNumRoofsSelected__Pointer;
               usRoofType = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
               if (usRoofType == 0xffff)
                 usRoofType = Enum313.FIRSTROOF;
@@ -1494,7 +1500,7 @@ function HandleKeyboardShortcuts(): void {
             }
             break;
           case 'f'.charCodeAt(0):
-            gbFPSDisplay = !gbFPSDisplay;
+            gbFPSDisplay = Number(!gbFPSDisplay);
             DisableFPSOverlay(!gbFPSDisplay);
             break;
           case 'g'.charCodeAt(0): // ground
@@ -1679,7 +1685,7 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case Enum37.ACTION_QUICK_ERASE:
-      if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) && GetMouseXY(addressof(sGridX), addressof(sGridY))) {
+      if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) && GetMouseXY(sGridX__Pointer, sGridY__Pointer)) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
         if (iMapIndex < 0x8000) {
@@ -1946,12 +1952,12 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case Enum37.ACTION_COPY_MERC_PLACEMENT:
-      GetMouseXY(addressof(sGridX), addressof(sGridY));
+      GetMouseXY(sGridX__Pointer, sGridY__Pointer);
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       CopyMercPlacement(iMapIndex);
       break;
     case Enum37.ACTION_PASTE_MERC_PLACEMENT:
-      GetMouseXY(addressof(sGridX), addressof(sGridY));
+      GetMouseXY(sGridX__Pointer, sGridY__Pointer);
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       PasteMercPlacement(iMapIndex);
       break;
@@ -2008,14 +2014,14 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case Enum37.ACTION_WALL_PASTE1: // Doors		//** Changes needed
-      GetMouseXY(addressof(sGridX), addressof(sGridY));
+      GetMouseXY(sGridX__Pointer, sGridY__Pointer);
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
       AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL18, true);
       break;
 
     case Enum37.ACTION_WALL_PASTE2: // Windows	//** Changes Needed
-      GetMouseXY(addressof(sGridX), addressof(sGridY));
+      GetMouseXY(sGridX__Pointer, sGridY__Pointer);
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
       AddWallToStructLayer(iMapIndex, Enum312.FIRSTWALL19, true);
@@ -2378,7 +2384,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 //	Displays the image of the currently highlighted tileset slot image. Usually this is for
 //	8 bit image (.STI) files
 //
-function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
+function ShowCurrentSlotImage(hVObj: SGPVObject, iWindow: INT32): void {
   let ClipRect: SGPRect = createSGPRect();
   let NewRect: SGPRect = createSGPRect();
   let iStartX: INT32;
@@ -2402,7 +2408,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   GetClippingRect(ClipRect);
   SetClippingRect(NewRect);
 
-  pETRLEObject = hVObj.value.pETRLEObject[0];
+  pETRLEObject = hVObj.pETRLEObject[0];
 
   iPicWidth = pETRLEObject.usWidth;
   iPicHeight = pETRLEObject.usHeight;
@@ -2511,9 +2517,9 @@ export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
   let pSoldier: SOLDIERTYPE | null;
   let fSoldierLight: boolean;
   let fRemovedLight: boolean;
-  let iMapIndex: INT32;
-  let uiLastLightType: UINT32;
-  let pLastLightName: string /* Pointer<UINT8> */;
+  let iMapIndex: INT32 = 0;
+  let uiLastLightType: UINT32 = 0;
+  let pLastLightName: string /* Pointer<UINT8> */ = '';
 
   fRemovedLight = false;
 
@@ -2548,7 +2554,7 @@ export function RemoveLight(iMapX: INT16, iMapY: INT16): boolean {
     // Assuming that the light naming convention doesn't change, then this following conversion
     // should work.  Basically, the radius values aren't stored in the lights, so I have pull
     // the radius out of the filename.  Ex:  L-RO5.LHT
-    usRadius = pLastLightName[4] - 0x30;
+    usRadius = pLastLightName.charCodeAt(4) - 0x30;
     AddLightToUndoList(iMapIndex, usRadius, uiLastLightType);
   }
 
@@ -2643,7 +2649,7 @@ function CheckForSlantRoofs(): boolean {
   let usCheck: UINT16;
 
   pSelList = SelRoom;
-  pNumSelList = addressof(iNumRoomsSelected);
+  pNumSelList = iNumRoomsSelected__Pointer;
 
   usCheck = GetRandomIndexByRange(Enum313.FIRSTROOF, LASTROOF);
   if (usCheck != 0xffff)
@@ -2683,7 +2689,7 @@ function CheckForFences(): boolean {
   let T: TILE_ELEMENT;
 
   pSelList = SelOStructs2;
-  pNumSelList = addressof(iNumOStructs2Selected);
+  pNumSelList = iNumOStructs2Selected__Pointer;
 
   fFence = true;
 
@@ -2733,7 +2739,7 @@ function HandleMouseClicksInGameScreen(): void {
   let sX: INT16;
   let sY: INT16;
   let fPrevState: boolean;
-  if (!GetMouseXY(addressof(sGridX), addressof(sGridY)))
+  if (!GetMouseXY(sGridX__Pointer, sGridY__Pointer))
     return;
   if (iCurrentTaskbar == Enum36.TASK_OPTIONS || iCurrentTaskbar == Enum36.TASK_NONE) {
     // if in taskbar modes which don't process clicks in the world.
@@ -3005,11 +3011,11 @@ function HandleMouseClicksInGameScreen(): void {
 }
 
 function DoIRenderASpecialMouseCursor(): boolean {
-  let sMouseX_M: INT16;
-  let sMouseY_M: INT16;
+  let sMouseX_M: INT16 = 0;
+  let sMouseY_M: INT16 = 0;
 
   // Draw basic mouse
-  if (GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M))) {
+  if (GetMouseXY(createPointer(() => sMouseX_M, (v) => sMouseX_M = v), createPointer(() => sMouseY_M, (v) => sMouseY_M = v))) {
     if ((gsCursorGridNo = MAPROWCOLTOPOS(sMouseY_M, sMouseX_M)) < 0x8000) {
       // Add basic cursor
       // gBasicCursorNode = AddTopmostToTail( gsCursorGridNo, FIRSTPOINTERS1 );
@@ -3250,7 +3256,7 @@ export function EditScreenHandle(): UINT32 {
   }
 
   // Calculate general mouse information
-  GetMouseXY(addressof(sGridX), addressof(sGridY));
+  GetMouseXY(sGridX__Pointer, sGridY__Pointer);
   iMapIndex = sGridY * WORLD_COLS + sGridX;
 
   DetermineUndoState();
@@ -3311,7 +3317,7 @@ export function EditScreenHandle(): UINT32 {
 
   if (gfRenderWorld) {
     if (gCursorNode)
-      gCursorNode.value.uiFlags &= (~LEVELNODE_REVEAL);
+      gCursorNode.uiFlags &= (~LEVELNODE_REVEAL);
 
     // This flag is the beast that makes the renderer do everything
     MarkWorldDirty();

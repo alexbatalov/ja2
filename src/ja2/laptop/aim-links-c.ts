@@ -105,7 +105,7 @@ export function HandleAimLinks(): void {
 }
 
 export function RenderAimLinks(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DrawAimDefaults();
   DisableAimButton();

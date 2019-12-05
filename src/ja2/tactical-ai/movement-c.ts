@@ -276,7 +276,7 @@ export function InternalGoAsFarAsPossibleTowards(pSoldier: SOLDIERTYPE, sDesGrid
   let sAPCost: INT16;
   let sTempDest: INT16;
   let sGoToGrid: INT16;
-  let sOrigin: INT16;
+  let sOrigin: INT16 = 0;
   let usMaxDist: UINT16;
   let ubDirection: UINT8;
   let ubDirsLeft: UINT8;
@@ -299,7 +299,7 @@ export function InternalGoAsFarAsPossibleTowards(pSoldier: SOLDIERTYPE, sDesGrid
   sTempDest = -1;
 
   // obtain maximum roaming distance from soldier's sOrigin
-  usMaxDist = RoamingRange(pSoldier, addressof(sOrigin));
+  usMaxDist = RoamingRange(pSoldier, createPointer(() => sOrigin, (v) => sOrigin = v));
 
   if (pSoldier.bOrders <= Enum241.CLOSEPATROL && (pSoldier.bTeam == CIV_TEAM || pSoldier.ubProfile != NO_PROFILE)) {
     if ((ubRoomRequired = InARoom(pSoldier.usPatrolGrid[0])) !== -1) {

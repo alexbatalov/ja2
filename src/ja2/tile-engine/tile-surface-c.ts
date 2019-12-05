@@ -8,8 +8,8 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
   // Add tile surface
   let pTileSurf: TILE_IMAGERY;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hVObject: HVOBJECT;
-  let hImage: HIMAGE;
+  let hVObject: SGPVObject;
+  let hImage: ImageType;
   let cStructureFilename: string /* SGPFILENAME */;
   let cEndOfName: number /* STR */;
   let pStructureFileRef: STRUCTURE_FILE_REF | null;
@@ -48,7 +48,7 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
   cStructureFilename += STRUCTURE_FILE_EXTENSION;
   if (FileExists(cStructureFilename)) {
     pStructureFileRef = LoadStructureFile(cStructureFilename);
-    if (pStructureFileRef == null || hVObject.value.usNumberOfObjects != pStructureFileRef.usNumberOfStructures) {
+    if (pStructureFileRef == null || hVObject.usNumberOfObjects != pStructureFileRef.usNumberOfStructures) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       SET_ERROR("Structure file error: %s", cStructureFilename);
@@ -76,15 +76,15 @@ export function LoadTileSurface(cFilename: string /* Pointer<char> */): TILE_IMA
   if (pStructureFileRef && pStructureFileRef.pAuxData != null) {
     pTileSurf.pAuxData = pStructureFileRef.pAuxData;
     pTileSurf.pTileLocData = pStructureFileRef.pTileLocData;
-  } else if (hImage.value.uiAppDataSize == hVObject.value.usNumberOfObjects * AUX_OBJECT_DATA_SIZE) {
+  } else if (hImage.uiAppDataSize == hVObject.usNumberOfObjects * AUX_OBJECT_DATA_SIZE) {
     // Valid auxiliary data, so make a copy of it for TileSurf
-    pTileSurf.pAuxData = MemAlloc(hImage.value.uiAppDataSize);
+    pTileSurf.pAuxData = createArrayFrom(hVObject.usNumberOfObjects, createAuxObjectData);
     if (pTileSurf.pAuxData == null) {
       DestroyImage(hImage);
       DeleteVideoObject(hVObject);
       return null;
     }
-    copyObjectArray(pTileSurf.pAuxData, hImage.value.pAppData, copyAuxObjectData);
+    readObjectArray(pTileSurf.pAuxData, hImage.pAppData, 0, readAuxObjectData);
   } else {
     pTileSurf.pAuxData = null;
   }

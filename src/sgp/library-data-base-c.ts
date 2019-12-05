@@ -247,7 +247,7 @@ function InitializeLibrary(pLibraryName: string /* STR */, pLibHeader: LibraryHe
   return true;
 }
 
-export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32): UINT32 {
+export function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: Buffer, uiBytesToRead: UINT32): UINT32 {
   let uiOffsetInLibrary: UINT32;
   let uiLength: UINT32;
   let hLibraryFile: HANDLE;

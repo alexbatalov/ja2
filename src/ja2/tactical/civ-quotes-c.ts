@@ -133,7 +133,9 @@ let gCivQuoteData: QUOTE_SYSTEM_STRUCT = createQuoteSystemStruct();
 
 let gzCivQuote: string /* INT16[320] */;
 let gusCivQuoteBoxWidth: UINT16;
+let gusCivQuoteBoxWidth__Pointer = createPointer(() => gusCivQuoteBoxWidth, (v) => gusCivQuoteBoxWidth = v);
 let gusCivQuoteBoxHeight: UINT16;
+let gusCivQuoteBoxHeight__Pointer = createPointer(() => gusCivQuoteBoxHeight, (v) => gusCivQuoteBoxHeight = v);
 
 function CopyNumEntriesIntoQuoteStruct(): void {
   let cnt: INT32;
@@ -349,7 +351,7 @@ export function BeginCivQuote(pCiv: SOLDIERTYPE, ubCivQuoteID: UINT8, ubEntryID:
   // Prepare text box
   SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
-  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, addressof(gusCivQuoteBoxWidth), addressof(gusCivQuoteBoxHeight));
+  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, gusCivQuoteBoxWidth__Pointer, gusCivQuoteBoxHeight__Pointer);
   SET_USE_WINFONTS(false);
 
   // OK, find center for box......
@@ -639,7 +641,8 @@ export function StartCivQuote(pCiv: SOLDIERTYPE): void {
   let ubEntryID: UINT8 = 0;
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let ubCivHintToUse: UINT8;
+  let ubCivHintToUse: UINT8 = 0;
+  let ubCivHintToUse__Pointer = createPointer(() => ubCivHintToUse, (v) => ubCivHintToUse = v);
 
   // ATE: Check for old quote.....
   // This could have been stored on last attempt...
@@ -648,10 +651,10 @@ export function StartCivQuote(pCiv: SOLDIERTYPE): void {
     // CAN'T USE HINTS, since we just did one...
     pCiv.bCurrentCivQuote = -1;
     pCiv.bCurrentCivQuoteDelta = 0;
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), false);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, ubCivHintToUse__Pointer, false);
   } else {
     // Determine which quote to say.....
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), true);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, ubCivHintToUse__Pointer, true);
   }
 
   // Determine entry id

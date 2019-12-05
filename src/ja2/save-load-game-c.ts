@@ -630,8 +630,8 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
   let fLockPauseStateBeforeSaving: boolean = gfLockPauseState;
   let iSaveLoadGameMessageBoxID: INT32 = -1;
   let usPosX: UINT16;
-  let usActualWidth: UINT16;
-  let usActualHeight: UINT16;
+  let usActualWidth: UINT16 = 0;
+  let usActualHeight: UINT16 = 0;
   let fWePausedIt: boolean = false;
   let buffer: Buffer;
 
@@ -648,7 +648,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
     }
 
     // Place a message on the screen telling the user that we are saving the game
-    iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, zSaveLoadText[Enum371.SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
+    iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, zSaveLoadText[Enum371.SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, createPointer(() => usActualWidth, (v) => usActualWidth = v), createPointer(() => usActualHeight, (v) => usActualHeight = v));
     usPosX = (640 - usActualWidth) / 2;
 
     RenderMercPopUpBoxFromIndex(iSaveLoadGameMessageBoxID, usPosX, 160, FRAME_BUFFER);
@@ -657,7 +657,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
-    RefreshScreen(null);
+    RefreshScreen();
 
     if (RemoveMercPopupBoxFromIndex(iSaveLoadGameMessageBoxID)) {
       iSaveLoadGameMessageBoxID = -1;
@@ -695,12 +695,12 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
     // if we are saving the quick save,
     if (ubSaveGameID == 0) {
-        pGameDesc = pMessageStrings[Enum333.MSG_QUICKSAVE_NAME];
+        pGameDesc.value = pMessageStrings[Enum333.MSG_QUICKSAVE_NAME];
     }
 
     // If there was no string, add one
-    if (pGameDesc[0] == '\0')
-      pGameDesc = pMessageStrings[Enum333.MSG_NODESC];
+    if (pGameDesc.value == '')
+      pGameDesc.value = pMessageStrings[Enum333.MSG_NODESC];
 
     // Check to see if the save directory exists
     if (FileGetAttributes(saveDir) == 0xFFFFFFFF) {
@@ -738,7 +738,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
     //
 
     SaveGameHeader.uiSavedGameVersion = guiSavedGameVersion;
-    SaveGameHeader.sSavedGameDesc = pGameDesc;
+    SaveGameHeader.sSavedGameDesc = pGameDesc.value;
     SaveGameHeader.zGameVersionNumber = czVersionNumber;
 
     SaveGameHeader.uiFlags;
@@ -752,7 +752,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
     copyGameOptions(SaveGameHeader.sInitialGameOptions, gGameOptions);
 
     // Get the sector value to save.
-    GetBestPossibleSectorXYZValues(addressof(SaveGameHeader.sSectorX), addressof(SaveGameHeader.sSectorY), addressof(SaveGameHeader.bSectorZ));
+    GetBestPossibleSectorXYZValues(createPropertyPointer(SaveGameHeader, 'sSectorX'), createPropertyPointer(SaveGameHeader, 'sSectorY'), createPropertyPointer(SaveGameHeader, 'bSectorZ'));
 
     /*
 
@@ -2254,7 +2254,8 @@ function LoadSoldierStructure(hFile: HWFILE): boolean {
   let uiNumBytesRead: UINT32 = 0;
   let SavedSoldierInfo: SOLDIERTYPE = createSoldierType();
   let uiSaveSize: UINT32 = SOLDIER_TYPE_SIZE;
-  let ubId: UINT8;
+  let ubId: UINT8 = 0;
+  let ubId__Pointer = createPointer(() => ubId, (v) => ubId = v);
   let ubOne: UINT8 = 1;
   let ubActive: UINT8 = 1;
   let uiPercentage: UINT32;
@@ -2310,20 +2311,20 @@ function LoadSoldierStructure(hFile: HWFILE): boolean {
       // Make sure all the pointer references are NULL'ed out.
       SavedSoldierInfo.pTempObject = null;
       SavedSoldierInfo.pKeyRing = <KEY_ON_RING[]><unknown>null;
-      SavedSoldierInfo.p8BPPPalette = null;
-      SavedSoldierInfo.p16BPPPalette = null;
-      memset(SavedSoldierInfo.pShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_SHADES);
-      memset(SavedSoldierInfo.pGlowShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * 20);
-      SavedSoldierInfo.pCurrentShade = null;
+      SavedSoldierInfo.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
+      SavedSoldierInfo.p16BPPPalette = <Uint16Array><unknown>null;
+      SavedSoldierInfo.pShades.fill(<Uint16Array><unknown>null);
+      SavedSoldierInfo.pGlowShades.fill(<Uint16Array><unknown>null);
+      SavedSoldierInfo.pCurrentShade = <Uint16Array><unknown>null;
       SavedSoldierInfo.pThrowParams = null;
       SavedSoldierInfo.pLevelNode = null;
       SavedSoldierInfo.pExternShadowLevelNode = null;
       SavedSoldierInfo.pRoofUILevelNode = null;
       SavedSoldierInfo.pBackGround = null;
       SavedSoldierInfo.pZBackground = null;
-      SavedSoldierInfo.pForcedShade = null;
-      SavedSoldierInfo.pMercPath = null;
-      memset(SavedSoldierInfo.pEffectShades, 0, sizeof(UINT16 /* Pointer<UINT16> */) * NUM_SOLDIER_EFFECTSHADES);
+      SavedSoldierInfo.pForcedShade = <Uint16Array><unknown>null;
+      SavedSoldierInfo.pMercPath = <PathSt><unknown>null;
+      SavedSoldierInfo.pEffectShades.fill(<Uint16Array><unknown>null);
 
       // if the soldier wasnt active, dont add them now.  Advance to the next merc
       // if( !SavedSoldierInfo.bActive )
@@ -2336,7 +2337,7 @@ function LoadSoldierStructure(hFile: HWFILE): boolean {
       CreateStruct.fUseExistingSoldier = true;
       CreateStruct.pExistingSoldier = SavedSoldierInfo;
 
-      if (!TacticalCreateSoldier(CreateStruct, addressof(ubId)))
+      if (!TacticalCreateSoldier(CreateStruct, ubId__Pointer))
         return false;
 
       // Load the pMercPath
@@ -3338,7 +3339,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): boolean {
   // move to beginning of list
   pTempPath = MoveToBeginningOfPathList(pTempPath);
 
-  Menptr[ubID].pMercPath = pTempPath;
+  Menptr[ubID].pMercPath = <PathSt>pTempPath;
   if (Menptr[ubID].pMercPath)
     Menptr[ubID].pMercPath.pPrev = null;
 

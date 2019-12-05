@@ -18,7 +18,8 @@ function DecideActionSchedule(pSoldier: SOLDIERTYPE): INT8 {
   let usGridNo2: UINT16;
   let sX: INT16;
   let sY: INT16;
-  let bDirection: INT8;
+  let bDirection: INT8 = 0;
+  let bDirection__Pointer = createPointer(() => bDirection, (v) => bDirection = v);
   let pStructure: STRUCTURE | null;
   let fDoUseDoor: boolean;
   let pDoorStatus: DOOR_STATUS | null;
@@ -128,7 +129,7 @@ function DecideActionSchedule(pSoldier: SOLDIERTYPE): INT8 {
               pSoldier.usPatrolGrid[0] = pSoldier.sGridNo;
             }
           } else {
-            if (GridNoOnEdgeOfMap(usGridNo2, addressof(bDirection))) {
+            if (GridNoOnEdgeOfMap(usGridNo2, bDirection__Pointer)) {
               // told to go to edge of map, so go off at that point!
               pSoldier.ubQuoteActionID = GetTraversalQuoteActionID(bDirection);
             }
@@ -241,7 +242,7 @@ function DecideActionSchedule(pSoldier: SOLDIERTYPE): INT8 {
               pSoldier.usPatrolGrid[0] = pSoldier.sGridNo;
             }
           } else {
-            if (GridNoOnEdgeOfMap(usGridNo2, addressof(bDirection))) {
+            if (GridNoOnEdgeOfMap(usGridNo2, bDirection__Pointer)) {
               // told to go to edge of map, so go off at that point!
               pSoldier.ubQuoteActionID = GetTraversalQuoteActionID(bDirection);
             }
@@ -293,7 +294,7 @@ function DecideActionSchedule(pSoldier: SOLDIERTYPE): INT8 {
 
         case 1: // near edge
 
-          pSoldier.usActionData = FindNearbyPointOnEdgeOfMap(pSoldier, addressof(bDirection));
+          pSoldier.usActionData = FindNearbyPointOnEdgeOfMap(pSoldier, bDirection__Pointer);
           if (pSoldier.usActionData == NOWHERE) {
             // what the heck??
             // ABORT!
@@ -415,8 +416,10 @@ function DecideActionBoxerEnteringRing(pSoldier: SOLDIERTYPE): INT8 {
 function DecideActionNamedNPC(pSoldier: SOLDIERTYPE): INT8 {
   let sDesiredMercLoc: INT16;
   let ubDesiredMercDir: UINT8;
-  let ubDesiredMerc: UINT8;
-  let sDesiredMercDist: INT16;
+  let ubDesiredMerc: UINT8 = 0;
+  let ubDesiredMerc__Pointer = createPointer(() => ubDesiredMerc, (v) => ubDesiredMerc = v);
+  let sDesiredMercDist: INT16 = 0;
+  let sDesiredMercDist__Pointer = createPointer(() => sDesiredMercDist, (v) => sDesiredMercDist = v);
 
   // if a quote record has been set and we're not doing movement, then
   // it means we have to wait until someone is nearby and then see
@@ -424,7 +427,7 @@ function DecideActionNamedNPC(pSoldier: SOLDIERTYPE): INT8 {
 
   // is this person close enough to trigger event?
   if (pSoldier.ubQuoteRecord && pSoldier.ubQuoteActionID == Enum290.QUOTE_ACTION_ID_TURNTOWARDSPLAYER) {
-    sDesiredMercLoc = ClosestPC(pSoldier, addressof(sDesiredMercDist));
+    sDesiredMercLoc = ClosestPC(pSoldier, sDesiredMercDist__Pointer);
     if (sDesiredMercLoc != NOWHERE) {
       if (sDesiredMercDist <= NPC_TALK_RADIUS * 2) {
         pSoldier.ubQuoteRecord = 0;
@@ -452,7 +455,7 @@ function DecideActionNamedNPC(pSoldier: SOLDIERTYPE): INT8 {
     ///////////////
     // CHECK TO SEE IF WE WANT TO GO UP TO PERSON AND SAY SOMETHING
     ///////////////
-    pSoldier.usActionData = NPCConsiderInitiatingConv(pSoldier, addressof(ubDesiredMerc));
+    pSoldier.usActionData = NPCConsiderInitiatingConv(pSoldier, ubDesiredMerc__Pointer);
     if (pSoldier.usActionData != NOWHERE) {
       return Enum289.AI_ACTION_APPROACH_MERC;
     }
@@ -465,7 +468,7 @@ function DecideActionNamedNPC(pSoldier: SOLDIERTYPE): INT8 {
     case Enum268.RAY:
     case Enum268.OLGA:
     case Enum268.TYRONE:
-      sDesiredMercLoc = ClosestPC(pSoldier, addressof(sDesiredMercDist));
+      sDesiredMercLoc = ClosestPC(pSoldier, sDesiredMercDist__Pointer);
       if (sDesiredMercLoc != NOWHERE) {
         if (sDesiredMercDist <= NPC_TALK_RADIUS * 2) {
           AddToShouldBecomeHostileOrSayQuoteList(pSoldier.ubID);
@@ -897,16 +900,20 @@ function DecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
 }
 
 function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
-  let iDummy: INT32;
+  let iDummy: INT32 = 0;
+  let iDummy__Pointer = createPointer(() => iDummy, (v) => iDummy = v);
   let ubNoiseDir: UINT8;
   let sNoiseGridNo: INT16;
-  let iNoiseValue: INT32;
+  let iNoiseValue: INT32 = 0;
+  let iNoiseValue__Pointer = createPointer(() => iNoiseValue, (v) => iNoiseValue = v);
   let iChance: INT32;
   let iSneaky: INT32;
   let sClosestFriend: INT16;
   let fCivilian: boolean = (PTR_CIVILIAN(pSoldier) && (pSoldier.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.bNeutral || (pSoldier.ubBodyType >= Enum194.FATCIV && pSoldier.ubBodyType <= Enum194.CRIPPLECIV)));
-  let fClimb: boolean;
-  let fReachable: boolean;
+  let fClimb: boolean = false;
+  let fClimb__Pointer = createPointer(() => fClimb, (v) => fClimb = v);
+  let fReachable: boolean = false;
+  let fReachable__Pointer = createPointer(() => fReachable, (v) => fReachable = v);
 
   if (fCivilian) {
     if (pSoldier.uiStatusFlags & SOLDIER_COWERING) {
@@ -928,7 +935,7 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
   }
 
   // determine the most important noise heard, and its relative value
-  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, addressof(iNoiseValue), addressof(fClimb), addressof(fReachable));
+  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, iNoiseValue__Pointer, fClimb__Pointer, fReachable__Pointer);
   // NumMessage("iNoiseValue = ",iNoiseValue);
 
   if (sNoiseGridNo == NOWHERE) {
@@ -1148,7 +1155,7 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
     // SEEK FRIEND WHO LAST RADIOED IN TO REPORT NOISE
     ////////////////////////////////////////////////////////////////////////////
 
-    sClosestFriend = ClosestReachableFriendInTrouble(pSoldier, addressof(fClimb));
+    sClosestFriend = ClosestReachableFriendInTrouble(pSoldier, fClimb__Pointer);
 
     // if there is a friend alive & reachable who last radioed in
     if (sClosestFriend != NOWHERE) {
@@ -1298,7 +1305,7 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
 
       if (PreRandom(100) < iChance) {
         pSoldier.bAIMorale = CalcMorale(pSoldier);
-        pSoldier.usActionData = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, addressof(iDummy));
+        pSoldier.usActionData = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, iDummy__Pointer);
 
         if (pSoldier.usActionData != NOWHERE) {
           return Enum289.AI_ACTION_TAKE_COVER;
@@ -1339,7 +1346,8 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
 
 export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): INT8 {
   let bActionReturned: INT8;
-  let iDummy: INT32;
+  let iDummy: INT32 = 0;
+  let iDummy__Pointer = createPointer(() => iDummy, (v) => iDummy = v);
   let iChance: INT16;
   let sClosestOpponent: INT16;
   let sClosestFriend: INT16;
@@ -1357,7 +1365,8 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
   let bWatchPts: INT8 = 0;
   let bHighestWatchLoc: INT8;
   let BestThrow: ATTACKTYPE = createAttackType();
-  let fClimb: boolean;
+  let fClimb: boolean = false;
+  let fClimb__Pointer = createPointer(() => fClimb, (v) => fClimb = v);
   let fCivilian: boolean = (PTR_CIVILIAN(pSoldier) && (pSoldier.ubCivilianGroup == Enum246.NON_CIV_GROUP || (pSoldier.bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier.ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier.ubBodyType >= Enum194.FATCIV && pSoldier.ubBodyType <= Enum194.CRIPPLECIV)));
 
   // if we have absolutely no action points, we can't do a thing under RED!
@@ -1537,7 +1546,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
   ////////////////////////////////////////////////////////////////////////
 
   // can't do this in realtime, because the player could be shooting a gun or whatever at the same time!
-  if (gfTurnBasedAI && !fCivilian && !bInWater && !bInGas && !(pSoldier.uiStatusFlags & SOLDIER_BOXER) && (CanNPCAttack(pSoldier) == true)) {
+  if (gfTurnBasedAI && !fCivilian && !bInWater && !bInGas && !(pSoldier.uiStatusFlags & SOLDIER_BOXER) && (CanNPCAttack(pSoldier) == 1)) {
     BestThrow.ubPossible = false; // by default, assume Throwing isn't possible
 
     CheckIfTossPossible(pSoldier, BestThrow);
@@ -1642,7 +1651,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
       iChance = gbDiff[DIFF_RADIO_RED_ALERT][SoldierDifficultyLevel(pSoldier)];
     else // subsequent radioing (only to update enemy positions, request help)
       // base chance depends on how much new info we have to radio to the others
-      iChance = 10 * WhatIKnowThatPublicDont(pSoldier, 0); // use 10 * for RED alert
+      iChance = 10 * WhatIKnowThatPublicDont(pSoldier, false); // use 10 * for RED alert
 
     // if I actually know something they don't and I ain't swimming (deep water)
     if (iChance && !bInDeepWater) {
@@ -1886,7 +1895,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
         // if SEEKING is possible and at least as desirable as helping or hiding
         if ((bSeekPts > -90) && (bSeekPts >= bHelpPts) && (bSeekPts >= bHidePts) && (bSeekPts >= bWatchPts)) {
           // get the location of the closest reachable opponent
-          sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, addressof(fClimb));
+          sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, fClimb__Pointer);
 
           // if there is an opponent reachable
           if (sClosestDisturbance != NOWHERE) {
@@ -1981,7 +1990,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
 
         // if HELPING is possible and at least as desirable as seeking or hiding
         if ((bHelpPts > -90) && (bHelpPts >= bSeekPts) && (bHelpPts >= bHidePts) && (bHelpPts >= bWatchPts)) {
-          sClosestFriend = ClosestReachableFriendInTrouble(pSoldier, addressof(fClimb));
+          sClosestFriend = ClosestReachableFriendInTrouble(pSoldier, fClimb__Pointer);
 
           if (sClosestFriend != NOWHERE) {
             //////////////////////////////////////////////////////////////////////
@@ -2011,11 +2020,11 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
             // TAKE BEST NEARBY COVER FROM ALL KNOWN OPPONENTS
             //////////////////////////////////////////////////////////////////////
 
-            pSoldier.usActionData = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, addressof(iDummy));
+            pSoldier.usActionData = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, iDummy__Pointer);
 
             // let's be a bit cautious about going right up to a location without enough APs to shoot
             if (pSoldier.usActionData != NOWHERE) {
-              sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, addressof(fClimb));
+              sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, fClimb__Pointer);
               if (sClosestDisturbance != NOWHERE && (SpacesAway(pSoldier.usActionData, sClosestDisturbance) < 5 || SpacesAway(pSoldier.usActionData, sClosestDisturbance) + 5 < SpacesAway(pSoldier.sGridNo, sClosestDisturbance))) {
                 // either moving significantly closer or into very close range
                 // ensure will we have enough APs for a possible crouch plus a shot
@@ -2190,7 +2199,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
   ////////////////////////////////////////////////////////////////////////////
 
   // if not in combat or under fire, and we COULD have moved, just chose not to
-  if ((pSoldier.bAlertStatus != Enum243.STATUS_BLACK) && !pSoldier.bUnderFire && ubCanMove && (!gfTurnBasedAI || pSoldier.bActionPoints >= pSoldier.bInitialActionPoints) && (ClosestReachableDisturbance(pSoldier, true, addressof(fClimb)) == NOWHERE)) {
+  if ((pSoldier.bAlertStatus != Enum243.STATUS_BLACK) && !pSoldier.bUnderFire && ubCanMove && (!gfTurnBasedAI || pSoldier.bActionPoints >= pSoldier.bInitialActionPoints) && (ClosestReachableDisturbance(pSoldier, 1, fClimb__Pointer) == NOWHERE)) {
     // addition:  if soldier is bleeding then reduce bleeding and do nothing
     if (pSoldier.bBleeding > MIN_BLEEDING_THRESHOLD) {
       // reduce bleeding by 1 point per AP (in RT, APs will get recalculated so it's okay)
@@ -2250,7 +2259,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
 }
 
 function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
-  let iCoverPercentBetter: INT32;
+  let iCoverPercentBetter: INT32 = 0;
   let iOffense: INT32;
   let iDefense: INT32;
   let iChance: INT32;
@@ -2274,10 +2283,11 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   let BestStab: ATTACKTYPE = createAttackType();
   let BestAttack: ATTACKTYPE = createAttackType();
   let fCivilian: boolean = (PTR_CIVILIAN(pSoldier) && (pSoldier.ubCivilianGroup == Enum246.NON_CIV_GROUP || pSoldier.bNeutral || (pSoldier.ubBodyType >= Enum194.FATCIV && pSoldier.ubBodyType <= Enum194.CRIPPLECIV)));
-  let ubBestStance: UINT8;
+  let ubBestStance: UINT8 = 0;
   let ubStanceCost: UINT8;
   let fChangeStanceFirst: boolean; // before firing
-  let fClimb: boolean;
+  let fClimb: boolean = false;
+  let fClimb__Pointer = createPointer(() => fClimb, (v) => fClimb = v);
   let ubBurstAPs: UINT8;
   let ubOpponentDir: UINT8;
   let sCheckGridNo: INT16;
@@ -2552,7 +2562,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
               // if our attitude is NOT aggressive
               if (pSoldier.bAttitude != Enum242.AGGRESSIVE || BestShot.ubChanceToReallyHit < 60) {
                 // get the location of the closest CONSCIOUS reachable opponent
-                sClosestDisturbance = ClosestReachableDisturbance(pSoldier, 0, addressof(fClimb));
+                sClosestDisturbance = ClosestReachableDisturbance(pSoldier, 0, fClimb__Pointer);
 
                 // if we found one
                 if (sClosestDisturbance != NOWHERE) {
@@ -2774,7 +2784,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   // if soldier has enough APs left to move at least 1 square's worth,
   // and either he can't attack any more, or his attack did wound someone
   if ((ubCanMove && !SkipCoverCheck && !gfHiddenInterrupt && ((ubBestAttackAction == Enum289.AI_ACTION_NONE) || pSoldier.bLastAttackHit) && (pSoldier.bTeam != gbPlayerNum || pSoldier.fAIFlags & AI_RTP_OPTION_CAN_SEEK_COVER) && !(pSoldier.uiStatusFlags & SOLDIER_BOXER)) || fAllowCoverCheck) {
-    sBestCover = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, addressof(iCoverPercentBetter));
+    sBestCover = FindBestNearbyCover(pSoldier, pSoldier.bAIMorale, createPointer(() => iCoverPercentBetter, (v) => iCoverPercentBetter = v));
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -3107,7 +3117,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   // and we see the location of at least 2 opponents
   if ((gTacticalStatus.ubSpottersCalledForBy != NOBODY) && (pSoldier.bActionPoints >= AP_RADIO) && (pSoldier.bOppCnt > 1) && !fCivilian && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1) && !bInDeepWater) {
     // base chance depends on how much new info we have to radio to the others
-    iChance = 25 * WhatIKnowThatPublicDont(pSoldier, 1); // just count them
+    iChance = 25 * WhatIKnowThatPublicDont(pSoldier, true); // just count them
 
     // if I actually know something they don't
     if (iChance) {
@@ -3205,7 +3215,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
       iChance = gbDiff[DIFF_RADIO_RED_ALERT][SoldierDifficultyLevel(pSoldier)];
     else // subsequent radioing (only to update enemy positions, request help)
       // base chance depends on how much new info we have to radio to the others
-      iChance = 10 * WhatIKnowThatPublicDont(pSoldier, 0); // use 10 * for RED alert
+      iChance = 10 * WhatIKnowThatPublicDont(pSoldier, false); // use 10 * for RED alert
 
     // if I actually know something they don't and I ain't swimming (deep water)
     if (iChance && !bInDeepWater) {
@@ -3356,9 +3366,12 @@ function DecideActionEscort(pSoldier: SOLDIERTYPE): INT8 {
 
 export function DecideAlertStatus(pSoldier: SOLDIERTYPE): void {
   let bOldStatus: INT8;
-  let iDummy: INT32;
-  let fClimbDummy: boolean;
-  let fReachableDummy: boolean;
+  let iDummy: INT32 = 0;
+  let iDummy__Pointer = createPointer(() => iDummy, (v) => iDummy = v);
+  let fClimbDummy: boolean = false;
+  let fClimbDummy__Pointer = createPointer(() => fClimbDummy, (v) => fClimbDummy = v);
+  let fReachableDummy: boolean = false;
+  let fReachableDummy__Pointer = createPointer(() => fReachableDummy, (v) => fReachableDummy = v);
 
   // THE FOUR (4) POSSIBLE ALERT STATUSES ARE:
   // GREEN - No one seen, no suspicious noise heard, go about regular duties
@@ -3402,7 +3415,7 @@ export function DecideAlertStatus(pSoldier: SOLDIERTYPE): void {
             // if we are NOT aware of any uninvestigated noises right now
             // and we are not currently in the middle of an action
             // (could still be on his way heading to investigate a noise!)
-            if ((MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE) && !pSoldier.bActionInProgress) {
+            if ((MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) == NOWHERE) && !pSoldier.bActionInProgress) {
               // then drop back to GREEN status
               pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
               CheckForChangingOrders(pSoldier);
@@ -3416,7 +3429,7 @@ export function DecideAlertStatus(pSoldier: SOLDIERTYPE): void {
             pSoldier.bAlertStatus = Enum243.STATUS_RED;
           } else {
             // if we ARE aware of any uninvestigated noises right now
-            if (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) != NOWHERE) {
+            if (MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) != NOWHERE) {
               // then move up to YELLOW status
               pSoldier.bAlertStatus = Enum243.STATUS_YELLOW;
             }
@@ -3452,7 +3465,7 @@ export function DecideAlertStatus(pSoldier: SOLDIERTYPE): void {
           SetNewSituation(pSoldier);
 
           // current action will be canceled. if noise is no longer important
-          if ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE)) {
+          if ((pSoldier.bAlertStatus == Enum243.STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, iDummy__Pointer, fClimbDummy__Pointer, fReachableDummy__Pointer) == NOWHERE)) {
             // then drop back to GREEN status
             pSoldier.bAlertStatus = Enum243.STATUS_GREEN;
             CheckForChangingOrders(pSoldier);

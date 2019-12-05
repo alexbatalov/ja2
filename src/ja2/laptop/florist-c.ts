@@ -111,7 +111,7 @@ export function HandleFlorist(): void {
 }
 
 export function RenderFlorist(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let i: UINT16;
   let usPosY: UINT16;
   let ubTextCounter: UINT8;
@@ -180,7 +180,7 @@ export function InitFloristDefaults(): boolean {
 }
 
 export function DisplayFloristDefaults(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   WebPageTileBackground(4, 4, FLORIST_BACKGROUND_WIDTH, FLORIST_BACKGROUND_HEIGHT, guiFloristBackground);
 

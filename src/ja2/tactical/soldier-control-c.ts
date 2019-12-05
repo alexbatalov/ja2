@@ -156,14 +156,12 @@ let gsFullTileDirections: INT16[] /* [MAX_FULLTILE_DIRECTIONS] */ = [
 
 // Palette ranges
 let guiNumPaletteSubRanges: UINT32;
-let guipPaletteSubRanges: Pointer<PaletteSubRangeType> = null;
 // Palette replacements
 let guiNumReplacements: UINT32;
-let guipPaletteReplacements: Pointer<PaletteReplacementType> = null;
 
 export let gfGetNewPathThroughPeople: boolean = false;
 
-let gpPaletteSubRanges: Pointer<PaletteSubRangeType>;
+let gpPaletteSubRanges: PaletteSubRangeType[] /* Pointer<PaletteSubRangeType> */;
 
 function HandleVehicleMovementSound(pSoldier: SOLDIERTYPE, fOn: boolean): void {
   let pVehicle: VEHICLETYPE = pVehicleList[pSoldier.bVehicleID];
@@ -229,7 +227,7 @@ function HandleCrowShadowNewGridNo(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.ubBodyType == Enum194.CROW) {
     if (pSoldier.pAniTile != null) {
       DeleteAniTile(pSoldier.pAniTile);
-      pSoldier.pAniTile = null;
+      pSoldier.pAniTile = <ANITILE><unknown>null;
     }
 
     if (pSoldier.sGridNo != NOWHERE) {
@@ -246,7 +244,7 @@ function HandleCrowShadowNewGridNo(pSoldier: SOLDIERTYPE): void {
 
         AniParams.uiUserData3 = pSoldier.bDirection;
 
-        pSoldier.pAniTile = CreateAnimationTile(AniParams);
+        pSoldier.pAniTile = <ANITILE>CreateAnimationTile(AniParams);
 
         HandleCrowShadowVisibility(pSoldier);
       }
@@ -259,7 +257,7 @@ function HandleCrowShadowRemoveGridNo(pSoldier: SOLDIERTYPE): void {
     if (pSoldier.usAnimState == Enum193.CROW_FLY) {
       if (pSoldier.pAniTile != null) {
         DeleteAniTile(pSoldier.pAniTile);
-        pSoldier.pAniTile = null;
+        pSoldier.pAniTile = <ANITILE><unknown>null;
       }
     }
   }
@@ -269,7 +267,7 @@ function HandleCrowShadowNewDirection(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.ubBodyType == Enum194.CROW) {
     if (pSoldier.usAnimState == Enum193.CROW_FLY) {
       if (pSoldier.pAniTile != null) {
-        pSoldier.pAniTile.value.uiUserData3 = pSoldier.bDirection;
+        pSoldier.pAniTile.uiUserData3 = pSoldier.bDirection;
       }
     }
   }
@@ -279,8 +277,8 @@ function HandleCrowShadowNewPosition(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.ubBodyType == Enum194.CROW) {
     if (pSoldier.usAnimState == Enum193.CROW_FLY) {
       if (pSoldier.pAniTile != null) {
-        pSoldier.pAniTile.value.sRelativeX = pSoldier.sX;
-        pSoldier.pAniTile.value.sRelativeY = pSoldier.sY;
+        pSoldier.pAniTile.sRelativeX = pSoldier.sX;
+        pSoldier.pAniTile.sRelativeY = pSoldier.sY;
       }
     }
   }
@@ -476,7 +474,7 @@ export function DoNinjaAttack(pSoldier: SOLDIERTYPE): void {
     if (uiSoundID != SOUND_ERROR) {
       pSoldier.uiBattleSoundID = uiSoundID;
 
-      if (pSoldier.ubProfile != NO_PROFILE) {
+      if (pSoldier.ubProfile != <number><unknown>NO_PROFILE) {
         // Get soldier's face ID
         iFaceIndex = pSoldier.iFaceIndex;
 
@@ -613,8 +611,7 @@ export function DeleteSoldier(pSoldier: SOLDIERTYPE): boolean {
 
     // Delete key ring
     if (pSoldier.pKeyRing) {
-      MemFree(pSoldier.pKeyRing);
-      pSoldier.pKeyRing = null;
+      pSoldier.pKeyRing = <KEY_ON_RING[]><unknown>null;
     }
 
     // Delete faces
@@ -622,33 +619,28 @@ export function DeleteSoldier(pSoldier: SOLDIERTYPE): boolean {
 
     // FREE PALETTES
     if (pSoldier.p8BPPPalette != null) {
-      MemFree(pSoldier.p8BPPPalette);
-      pSoldier.p8BPPPalette = null;
+      pSoldier.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
     }
 
     if (pSoldier.p16BPPPalette != null) {
-      MemFree(pSoldier.p16BPPPalette);
-      pSoldier.p16BPPPalette = null;
+      pSoldier.p16BPPPalette = <Uint16Array><unknown>null;
     }
 
     for (cnt = 0; cnt < NUM_SOLDIER_SHADES; cnt++) {
       if (pSoldier.pShades[cnt] != null) {
-        MemFree(pSoldier.pShades[cnt]);
-        pSoldier.pShades[cnt] = null;
+        pSoldier.pShades[cnt] = <Uint16Array><unknown>null;
       }
     }
     for (cnt = 0; cnt < NUM_SOLDIER_EFFECTSHADES; cnt++) {
       if (pSoldier.pEffectShades[cnt] != null) {
-        MemFree(pSoldier.pEffectShades[cnt]);
-        pSoldier.pEffectShades[cnt] = null;
+        pSoldier.pEffectShades[cnt] = <Uint16Array><unknown>null;
       }
     }
 
     // Delete glows
     for (cnt = 0; cnt < 20; cnt++) {
       if (pSoldier.pGlowShades[cnt] != null) {
-        MemFree(pSoldier.pGlowShades[cnt]);
-        pSoldier.pGlowShades[cnt] = null;
+        pSoldier.pGlowShades[cnt] = <Uint16Array><unknown>null;
       }
     }
 
@@ -897,7 +889,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
   let sBPCost: INT16 = 0;
   let uiOldAnimFlags: UINT32;
   let uiNewAnimFlags: UINT32;
-  let usSubState: UINT16;
+  let usSubState: UINT16 = 0;
   let usItem: UINT16;
   let fTryingToRestart: boolean = false;
 
@@ -1094,7 +1086,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
     }
 
     // SUBSTITUDE VARIOUS REG ANIMATIONS WITH ODD BODY TYPES
-    if (SubstituteBodyTypeAnimation(pSoldier, usNewState, addressof(usSubState))) {
+    if (SubstituteBodyTypeAnimation(pSoldier, usNewState, createPointer(() => usSubState, (v) => usSubState = v))) {
       usNewState = usSubState;
     }
 
@@ -1201,7 +1193,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
     // check new gridno, etc
     // ATE: Added: Make check that old anim is not a moving one as well
     if (gAnimControl[usNewState].uiFlags & ANIM_MOVING && !(gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_MOVING) || (gAnimControl[usNewState].uiFlags & ANIM_MOVING && fForce)) {
-      let fKeepMoving: boolean;
+      let fKeepMoving: boolean = false;
 
       if (usNewState == Enum193.CRAWLING && pSoldier.usDontUpdateNewGridNoOnMoveAnimChange == LOCKED_NO_NEWGRIDNO) {
         // Turn off lock once we are crawling once...
@@ -1215,7 +1207,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
 
           if (!(gAnimControl[usNewState].uiFlags & ANIM_SPECIALMOVE)) {
             // Handle goto new tile...
-            if (HandleGotoNewGridNo(pSoldier, addressof(fKeepMoving), true, usNewState)) {
+            if (HandleGotoNewGridNo(pSoldier, createPointer(() => fKeepMoving, (v) => fKeepMoving = v), true, usNewState)) {
               if (!fKeepMoving) {
                 return false;
               }
@@ -1460,8 +1452,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
 
         // Delete shadow of crow....
         if (pSoldier.pAniTile != null) {
-          DeleteAniTile(pSoldier.pAniTile);
-          pSoldier.pAniTile = null;
+          pSoldier.pAniTile = <ANITILE><unknown>null;
         }
         break;
 
@@ -2194,9 +2185,9 @@ export function EVENT_FireSoldierWeapon(pSoldier: SOLDIERTYPE, sTargetGridNo: IN
 function SelectFireAnimation(pSoldier: SOLDIERTYPE, ubHeight: UINT8): UINT16 {
   let sDist: INT16;
   let usItem: UINT16;
-  let dTargetX: FLOAT;
-  let dTargetY: FLOAT;
-  let dTargetZ: FLOAT;
+  let dTargetX: FLOAT = 0;
+  let dTargetY: FLOAT = 0;
+  let dTargetZ: FLOAT = 0;
   let fDoLowShot: boolean = false;
 
   // Do different things if we are a monster
@@ -2224,7 +2215,7 @@ function SelectFireAnimation(pSoldier: SOLDIERTYPE, ubHeight: UINT8): UINT16 {
         return Enum193.QUEEN_SPIT;
         break;
     }
-    return true;
+    return 1;
   }
 
   if (pSoldier.ubBodyType == Enum194.ROBOTNOWEAPON) {
@@ -2272,7 +2263,7 @@ function SelectFireAnimation(pSoldier: SOLDIERTYPE, ubHeight: UINT8): UINT16 {
         sDist = PythSpacesAway(pSoldier.sGridNo, pSoldier.sTargetGridNo);
 
         // ATE: OK, SEE WERE WE ARE TARGETING....
-        GetTargetWorldPositions(pSoldier, pSoldier.sTargetGridNo, addressof(dTargetX), addressof(dTargetY), addressof(dTargetZ));
+        GetTargetWorldPositions(pSoldier, pSoldier.sTargetGridNo, createPointer(() => dTargetX, (v) => dTargetX = v), createPointer(() => dTargetY, (v) => dTargetY = v), createPointer(() => dTargetZ, (v) => dTargetZ = v));
 
         // CalculateSoldierZPos( pSoldier, FIRING_POS, &dFirerZ );
 
@@ -2682,12 +2673,12 @@ export function EVENT_SoldierGotHit(pSoldier: SOLDIERTYPE, usWeaponIndex: UINT16
 
   // OK, If we are a vehicle.... damage vehicle...( people inside... )
   if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
-    SoldierTakeDamage(pSoldier, ANIM_CROUCH, sDamage, sBreathLoss, ubReason, pSoldier.ubAttackerID, NOWHERE, false, true);
+    SoldierTakeDamage(pSoldier, ANIM_CROUCH, sDamage, sBreathLoss, ubReason, pSoldier.ubAttackerID, NOWHERE, 0, true);
     return;
   }
 
   // DEDUCT LIFE
-  ubCombinedLoss = SoldierTakeDamage(pSoldier, ANIM_CROUCH, sDamage, sBreathLoss, ubReason, pSoldier.ubAttackerID, NOWHERE, false, true);
+  ubCombinedLoss = SoldierTakeDamage(pSoldier, ANIM_CROUCH, sDamage, sBreathLoss, ubReason, pSoldier.ubAttackerID, NOWHERE, 0, true);
 
   // ATE: OK, Let's check our ASSIGNMENT state,
   // If anything other than on a squad or guard, make them guard....
@@ -3195,7 +3186,7 @@ export function EVENT_InternalGetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGrid
   let usAnimState: UINT16;
   let usMoveAnimState: UINT16 = usMovementAnim;
   let sMercGridNo: INT16;
-  let usPathingData: UINT16[] /* [MAX_PATH_LIST_SIZE] */;
+  let usPathingData: UINT16[] /* [MAX_PATH_LIST_SIZE] */ = createArray(MAX_PATH_LIST_SIZE, 0);
   let ubPathingMaxDirection: UINT8;
   let fAdvancePath: boolean = true;
   let fFlags: UINT8 = 0;
@@ -3225,7 +3216,7 @@ export function EVENT_InternalGetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGrid
     } else {
       fFlags = PATH_IGNORE_PERSON_AT_DEST;
     }
-    pSoldier.fDelayedMovement = false;
+    pSoldier.fDelayedMovement = 0;
   }
 
   if (gfGetNewPathThroughPeople) {
@@ -3257,9 +3248,9 @@ export function EVENT_InternalGetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGrid
     if (uiDist > 0) {
       // Add one to path data size....
       if (fAdvancePath) {
-        memcpy(usPathingData, pSoldier.usPathingData, sizeof(usPathingData));
+        copyArray(usPathingData, pSoldier.usPathingData);
         ubPathingMaxDirection = usPathingData[MAX_PATH_LIST_SIZE - 1];
-        memcpy(addressof(pSoldier.usPathingData[1]), usPathingData, sizeof(usPathingData) - sizeof(UINT16));
+        pSoldier.usPathingData.copyWithin(0, 1);
 
         // If we have reach the max, go back one sFinalDest....
         if (pSoldier.usPathDataSize == MAX_PATH_LIST_SIZE) {
@@ -3342,7 +3333,7 @@ export function EVENT_InternalGetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGrid
 
 export function EVENT_GetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
   // ATE: Default restart of animation to TRUE
-  EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, usMovementAnim, false, true);
+  EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, usMovementAnim, 0, true);
 }
 
 // Change our state based on stance, to stop!
@@ -3443,13 +3434,13 @@ export function ChangeSoldierStance(pSoldier: SOLDIERTYPE, ubDesiredStance: UINT
 
 export function EVENT_InternalSetSoldierDestination(pSoldier: SOLDIERTYPE, usNewDirection: UINT16, fFromMove: boolean, usAnimState: UINT16): void {
   let usNewGridNo: UINT16;
-  let sXPos: INT16;
-  let sYPos: INT16;
+  let sXPos: INT16 = 0;
+  let sYPos: INT16 = 0;
 
   // Get dest gridno, convert to center coords
   usNewGridNo = NewGridNo(pSoldier.sGridNo, DirectionInc(usNewDirection));
 
-  ConvertMapPosToWorldTileCenter(usNewGridNo, addressof(sXPos), addressof(sYPos));
+  ConvertMapPosToWorldTileCenter(usNewGridNo, createPointer(() => sXPos, (v) => sXPos = v), createPointer(() => sYPos, (v) => sYPos = v));
 
   // Save new dest gridno, x, y
   pSoldier.sDestination = usNewGridNo;
@@ -3914,7 +3905,7 @@ export function ConvertAniCodeToAniFrame(pSoldier: SOLDIERTYPE, usAniFrame: UINT
     return true;
   }
 
-  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
+  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.usNumberOfObjects) {
     // Debug msg here....
     //		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Soldier Animation: Wrong Number of frames per number of objects: %d vs %d, %S",  gAnimSurfaceDatabase[ usAnimSurface ].uiNumFramesPerDir, gAnimSurfaceDatabase[ usAnimSurface ].hVideoObject->usNumberOfObjects, gAnimControl[ pSoldier->usAnimState ].zAnimStr );
 
@@ -4232,7 +4223,7 @@ let gOrangeGlowG: UINT8[] /* [] */ = [
 export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
   let usAnimSurface: UINT16;
   let usPaletteAnimSurface: UINT16;
-  let zColFilename: string /* CHAR8[100] */;
+  let zColFilename: string /* CHAR8[100] */ = '';
   let iWhich: INT32;
   let cnt: INT32;
   let bBodyTypePalette: INT8;
@@ -4242,8 +4233,7 @@ export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
   // PPaletteEntry Pal[256];
 
   if (pSoldier.p8BPPPalette != null) {
-    MemFree(pSoldier.p8BPPPalette);
-    pSoldier.p8BPPPalette = null;
+    pSoldier.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
   }
 
   // Allocate mem for new palette
@@ -4256,13 +4246,13 @@ export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
     return false;
   }
 
-  if ((bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(pSoldier, pSoldier.ubBodyType, zColFilename)) == -1) {
+  if ((bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(pSoldier, pSoldier.ubBodyType, createPointer(() => zColFilename, (v) => zColFilename = v))) == -1) {
     // ATE: here we want to use the breath cycle for the palette.....
     usPaletteAnimSurface = LoadSoldierAnimationSurface(pSoldier, Enum193.STANDING);
 
     if (usPaletteAnimSurface != INVALID_ANIMATION_SURFACE) {
       // Use palette from HVOBJECT, then use substitution for pants, etc
-      memcpy(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usPaletteAnimSurface].hVideoObject.value.pPaletteEntry, sizeof(pSoldier.p8BPPPalette) * 256);
+      copyObjectArray(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usPaletteAnimSurface].hVideoObject.pPaletteEntry, copySGPPaletteEntry);
 
       // Substitute based on head, etc
       SetPaletteReplacement(pSoldier.p8BPPPalette, pSoldier.HeadPal);
@@ -4272,15 +4262,15 @@ export function CreateSoldierPalettes(pSoldier: SOLDIERTYPE): boolean {
     }
   } else if (bBodyTypePalette == 0) {
     // Use palette from hvobject
-    memcpy(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pPaletteEntry, sizeof(pSoldier.p8BPPPalette) * 256);
+    copyObjectArray(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usAnimSurface].hVideoObject.pPaletteEntry, copySGPPaletteEntry);
   } else {
     // Use col file
     if (CreateSGPPaletteFromCOLFile(Temp8BPPPalette, zColFilename)) {
       // Copy into palette
-      memcpy(pSoldier.p8BPPPalette, Temp8BPPPalette, sizeof(pSoldier.p8BPPPalette) * 256);
+      copyObjectArray(pSoldier.p8BPPPalette, Temp8BPPPalette, copySGPPaletteEntry);
     } else {
       // Use palette from hvobject
-      memcpy(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pPaletteEntry, sizeof(pSoldier.p8BPPPalette) * 256);
+      copyObjectArray(pSoldier.p8BPPPalette, gAnimSurfaceDatabase[usAnimSurface].hVideoObject.pPaletteEntry, copySGPPaletteEntry);
     }
   }
 
@@ -4533,83 +4523,99 @@ export function LoadPaletteData(): boolean {
   let hFile: HWFILE;
   let cnt: UINT32;
   let cnt2: UINT32;
+  let sizeBuffer: Buffer;
+  let dataBuffer: Buffer;
 
   hFile = FileOpen(PALETTEFILENAME, FILE_ACCESS_READ, false);
 
+  sizeBuffer = Buffer.allocUnsafe(4);
+
   // Read # of types
-  if (!FileRead(hFile, addressof(guiNumPaletteSubRanges), sizeof(guiNumPaletteSubRanges))) {
+  if (!FileRead(hFile, sizeBuffer, 4)) {
     return false;
   }
+  guiNumPaletteSubRanges = sizeBuffer.readUInt32LE(0);
 
   // Malloc!
-  gpPaletteSubRanges = MemAlloc(sizeof(PaletteSubRangeType) * guiNumPaletteSubRanges);
-  gubpNumReplacementsPerRange = MemAlloc(sizeof(UINT8) * guiNumPaletteSubRanges);
+  gpPaletteSubRanges = createArrayFrom(guiNumPaletteSubRanges, createPaletteSubRangeType);
+  gubpNumReplacementsPerRange = createArray(guiNumPaletteSubRanges, 0);
 
   // Read # of types for each!
   for (cnt = 0; cnt < guiNumPaletteSubRanges; cnt++) {
-    if (!FileRead(hFile, addressof(gubpNumReplacementsPerRange[cnt]), sizeof(UINT8))) {
+    if (!FileRead(hFile, sizeBuffer, 1)) {
       return false;
     }
+    gubpNumReplacementsPerRange[cnt] = sizeBuffer.readUInt8(0);
   }
 
   // Loop for each one, read in data
   for (cnt = 0; cnt < guiNumPaletteSubRanges; cnt++) {
-    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubStart), sizeof(UINT8))) {
+    if (!FileRead(hFile, sizeBuffer, 1)) {
       return false;
     }
-    if (!FileRead(hFile, addressof(gpPaletteSubRanges[cnt].ubEnd), sizeof(UINT8))) {
+    gpPaletteSubRanges[cnt].ubStart = sizeBuffer.readUInt8(0);
+    if (!FileRead(hFile, sizeBuffer, 1)) {
       return false;
     }
+    gpPaletteSubRanges[cnt].ubEnd = sizeBuffer.readUInt8(0);
   }
 
   // Read # of palettes
-  if (!FileRead(hFile, addressof(guiNumReplacements), sizeof(guiNumReplacements))) {
+  if (!FileRead(hFile, sizeBuffer, 4)) {
     return false;
   }
+  guiNumReplacements = sizeBuffer.readUInt32LE(0);
 
   // Malloc!
-  gpPalRep = MemAlloc(sizeof(PaletteReplacementType) * guiNumReplacements);
+  gpPalRep = createArrayFrom(guiNumReplacements, createPaletteReplacementType);
 
   // Read!
+  dataBuffer = Buffer.allocUnsafe(30);
   for (cnt = 0; cnt < guiNumReplacements; cnt++) {
     // type
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubType), sizeof(gpPalRep[cnt].ubType))) {
+    if (!FileRead(hFile, sizeBuffer, 1)) {
       return false;
     }
+    gpPalRep[cnt].ubType = sizeBuffer.readUInt8(0);
 
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ID), sizeof(gpPalRep[cnt].ID))) {
+    if (!FileRead(hFile, dataBuffer, 30)) {
       return false;
     }
+    gpPalRep[cnt].ID = readStringNL(dataBuffer, 'ascii', 0, 30);
 
     // # entries
-    if (!FileRead(hFile, addressof(gpPalRep[cnt].ubPaletteSize), sizeof(gpPalRep[cnt].ubPaletteSize))) {
+    if (!FileRead(hFile, sizeBuffer, 1)) {
       return false;
     }
+    gpPalRep[cnt].ubPaletteSize = sizeBuffer.readUInt8(0);
 
     // Malloc
-    gpPalRep[cnt].r = MemAlloc(gpPalRep[cnt].ubPaletteSize);
+    gpPalRep[cnt].r = createArray(gpPalRep[cnt].ubPaletteSize, 0);
     if (gpPalRep[cnt].r == null) {
       return false;
     }
-    gpPalRep[cnt].g = MemAlloc(gpPalRep[cnt].ubPaletteSize);
+    gpPalRep[cnt].g = createArray(gpPalRep[cnt].ubPaletteSize, 0);
     if (gpPalRep[cnt].g == null) {
       return false;
     }
-    gpPalRep[cnt].b = MemAlloc(gpPalRep[cnt].ubPaletteSize);
+    gpPalRep[cnt].b = createArray(gpPalRep[cnt].ubPaletteSize, 0);
     if (gpPalRep[cnt].b == null) {
       return false;
     }
 
     for (cnt2 = 0; cnt2 < gpPalRep[cnt].ubPaletteSize; cnt2++) {
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].r[cnt2]), sizeof(UINT8), null)) {
+      if (!FileRead(hFile, sizeBuffer, 1)) {
         return false;
       }
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].g[cnt2]), sizeof(UINT8), null)) {
+      gpPalRep[cnt].r[cnt2] = sizeBuffer.readUInt8(0);
+      if (!FileRead(hFile, sizeBuffer, 1)) {
         return false;
       }
-      if (!FileRead(hFile, addressof(gpPalRep[cnt].b[cnt2]), sizeof(UINT8), null)) {
+      gpPalRep[cnt].g[cnt2] = sizeBuffer.readUInt8(0);
+      if (!FileRead(hFile, sizeBuffer, 1)) {
         return false;
       }
+      gpPalRep[cnt].b[cnt2] = sizeBuffer.readUInt8(0);
     }
   }
 
@@ -4644,35 +4650,29 @@ export function DeletePaletteData(): boolean {
 
   // Free!
   if (gpPaletteSubRanges != null) {
-    MemFree(gpPaletteSubRanges);
-    gpPaletteSubRanges = null;
+    gpPaletteSubRanges = <PaletteSubRangeType[]><unknown>null;
   }
 
   if (gubpNumReplacementsPerRange != null) {
-    MemFree(gubpNumReplacementsPerRange);
-    gubpNumReplacementsPerRange = null;
+    gubpNumReplacementsPerRange = <UINT8[]><unknown>null;
   }
 
   for (cnt = 0; cnt < guiNumReplacements; cnt++) {
     // Free
     if (gpPalRep[cnt].r != null) {
-      MemFree(gpPalRep[cnt].r);
-      gpPalRep[cnt].r = null;
+      gpPalRep[cnt].r = <UINT8[]><unknown>null;
     }
     if (gpPalRep[cnt].g != null) {
-      MemFree(gpPalRep[cnt].g);
-      gpPalRep[cnt].g = null;
+      gpPalRep[cnt].g = <UINT8[]><unknown>null;
     }
     if (gpPalRep[cnt].b != null) {
-      MemFree(gpPalRep[cnt].b);
-      gpPalRep[cnt].b = null;
+      gpPalRep[cnt].b = <UINT8[]><unknown>null;
     }
   }
 
   // Free
   if (gpPalRep != null) {
-    MemFree(gpPalRep);
-    gpPalRep = null;
+    gpPalRep = <PaletteReplacementType[]><unknown>null;
   }
 
   return true;
@@ -4779,9 +4779,9 @@ export function MoveMercFacingDirection(pSoldier: SOLDIERTYPE, fReverse: boolean
 }
 
 export function BeginSoldierClimbUpRoof(pSoldier: SOLDIERTYPE): void {
-  let bNewDirection: INT8;
+  let bNewDirection: INT8 = 0;
 
-  if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection)) && (pSoldier.bLevel == 0)) {
+  if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, createPointer(() => bNewDirection, (v) => bNewDirection = v)) && (pSoldier.bLevel == 0)) {
     if (EnoughPoints(pSoldier, GetAPsToClimbRoof(pSoldier, false), 0, true)) {
       if (pSoldier.bTeam == gbPlayerNum) {
         // OK, SET INTERFACE FIRST
@@ -4801,9 +4801,9 @@ export function BeginSoldierClimbUpRoof(pSoldier: SOLDIERTYPE): void {
 }
 
 export function BeginSoldierClimbFence(pSoldier: SOLDIERTYPE): void {
-  let bDirection: INT8;
+  let bDirection: INT8 = 0;
 
-  if (FindFenceJumpDirection(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bDirection))) {
+  if (FindFenceJumpDirection(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, createPointer(() => bDirection, (v) => bDirection = v))) {
     pSoldier.sTempNewGridNo = NewGridNo(pSoldier.sGridNo, DirectionInc(bDirection));
     pSoldier.fDontChargeTurningAPs = true;
     EVENT_InternalSetSoldierDesiredDirection(pSoldier, bDirection, false, pSoldier.usAnimState);
@@ -5224,8 +5224,8 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
             bVisible = 1;
           }
 
-          AddItemToPool(pSoldier.sGridNo, addressof(pSoldier.inv[Enum261.HANDPOS]), bVisible, pSoldier.bLevel, 0, -1);
-          DeleteObj(addressof(pSoldier.inv[Enum261.HANDPOS]));
+          AddItemToPool(pSoldier.sGridNo, pSoldier.inv[Enum261.HANDPOS], bVisible, pSoldier.bLevel, 0, -1);
+          DeleteObj(pSoldier.inv[Enum261.HANDPOS]);
         }
       }
     }
@@ -5598,7 +5598,7 @@ export function InternalDoMercBattleSound(pSoldier: SOLDIERTYPE, ubBattleSoundID
   spParms.uiPan = SoundDir(pSoldier.sGridNo);
   spParms.uiPriority = GROUP_PLAYER;
 
-  if ((uiSoundID = SoundPlay(zFilename, addressof(spParms))) == SOUND_ERROR) {
+  if ((uiSoundID = SoundPlay(zFilename, spParms)) == SOUND_ERROR) {
     return false;
   } else {
     pSoldier.uiBattleSoundID = uiSoundID;
@@ -5667,7 +5667,7 @@ function PreloadSoldierBattleSounds(pSoldier: SOLDIERTYPE, fRemove: boolean): bo
 
 export function CheckSoldierHitRoof(pSoldier: SOLDIERTYPE): boolean {
   // Check if we are near a lower level
-  let bNewDirection: INT8;
+  let bNewDirection: INT8 = 0;
   let fReturnVal: boolean = false;
   let sNewGridNo: INT16;
   // Default to true
@@ -5677,7 +5677,7 @@ export function CheckSoldierHitRoof(pSoldier: SOLDIERTYPE): boolean {
     return false;
   }
 
-  if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection)) && (pSoldier.bLevel > 0)) {
+  if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, createPointer(() => bNewDirection, (v) => bNewDirection = v)) && (pSoldier.bLevel > 0)) {
     // ONly if standing!
     if (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_STAND) {
       // We are near a lower level.
@@ -5733,9 +5733,9 @@ export function CheckSoldierHitRoof(pSoldier: SOLDIERTYPE): boolean {
 }
 
 export function BeginSoldierClimbDownRoof(pSoldier: SOLDIERTYPE): void {
-  let bNewDirection: INT8;
+  let bNewDirection: INT8 = 0;
 
-  if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection)) && (pSoldier.bLevel > 0)) {
+  if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, createPointer(() => bNewDirection, (v) => bNewDirection = v)) && (pSoldier.bLevel > 0)) {
     if (EnoughPoints(pSoldier, GetAPsToClimbRoof(pSoldier, true), 0, true)) {
       if (pSoldier.bTeam == gbPlayerNum) {
         // OK, SET INTERFACE FIRST
@@ -5998,14 +5998,14 @@ function CheckForFullStructures(pSoldier: SOLDIERTYPE): void {
   // This function checks to see if we are near a specific structure type which requires us to blit a
   // small obscuring peice
   let sGridNo: INT16;
-  let usFullTileIndex: UINT16;
+  let usFullTileIndex: UINT16 = 0;
   let cnt: INT32;
 
   // Check in all 'Above' directions
   for (cnt = 0; cnt < MAX_FULLTILE_DIRECTIONS; cnt++) {
     sGridNo = pSoldier.sGridNo + gsFullTileDirections[cnt];
 
-    if (CheckForFullStruct(sGridNo, addressof(usFullTileIndex))) {
+    if (CheckForFullStruct(sGridNo, createPointer(() => usFullTileIndex, (v) => usFullTileIndex = v))) {
       // Add one for the item's obsuring part
       pSoldier.usFrontArcFullTileList[cnt] = usFullTileIndex + 1;
       pSoldier.usFrontArcFullTileGridNos[cnt] = sGridNo;
@@ -6021,8 +6021,8 @@ function CheckForFullStructures(pSoldier: SOLDIERTYPE): void {
 }
 
 function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): boolean {
-  let pStruct: Pointer<LEVELNODE> = null;
-  let pOldStruct: Pointer<LEVELNODE> = null;
+  let pStruct: LEVELNODE | null = null;
+  let pOldStruct: LEVELNODE;
   let fTileFlags: UINT32;
 
   pStruct = gpWorldLevelData[sGridNo].pStructHead;
@@ -6030,19 +6030,19 @@ function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): boolean 
   // Look through all structs and Search for type
 
   while (pStruct != null) {
-    if (pStruct.value.usIndex != NO_TILE && pStruct.value.usIndex < Enum312.NUMBEROFTILES) {
-      fTileFlags = GetTileFlags(pStruct.value.usIndex);
+    if (pStruct.usIndex != NO_TILE && pStruct.usIndex < Enum312.NUMBEROFTILES) {
+      fTileFlags = GetTileFlags(pStruct.usIndex);
 
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
 
       // if( (pOldStruct->pStructureData!=NULL) && ( pOldStruct->pStructureData->fFlags&STRUCTURE_TREE ) )
       if (fTileFlags & FULL3D_TILE) {
         // CHECK IF THIS TREE IS FAIRLY ALONE!
         if (FullStructAlone(sGridNo, 2)) {
           // Return true and return index
-          pusIndex.value = pOldStruct.value.usIndex;
+          pusIndex.value = pOldStruct.usIndex;
           return true;
         } else {
           return false;
@@ -6051,7 +6051,7 @@ function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): boolean 
     } else {
       // Advance to next
       pOldStruct = pStruct;
-      pStruct = pStruct.value.pNext;
+      pStruct = pStruct.pNext;
     }
   }
 
@@ -6337,7 +6337,7 @@ function HandleAnimationProfile(pSoldier: SOLDIERTYPE, usAnimState: UINT16, fRem
   //#endif
 }
 
-export function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: LEVELNODE | null): LEVELNODE | null {
+export function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<SOLDIERTYPE | null>, pGivenNode: LEVELNODE | null): LEVELNODE | null {
   let pNode: LEVELNODE | null;
 
   (ppTargSoldier.value) = null;
@@ -6413,7 +6413,7 @@ function GetProfileFlagsFromGridno(pSoldier: SOLDIERTYPE, usAnimState: UINT16, s
 export function EVENT_SoldierBeginGiveItem(pSoldier: SOLDIERTYPE): void {
   let pTSoldier: SOLDIERTYPE;
 
-  if (VerifyGiveItem(pSoldier, addressof(pTSoldier))) {
+  if (VerifyGiveItem(pSoldier, createPointer(() => pTSoldier, (v) => pTSoldier = v))) {
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
     pSoldier.bDesiredDirection = pSoldier.bPendingActionData3;
     pSoldier.bDirection = pSoldier.bPendingActionData3;
@@ -6792,10 +6792,10 @@ export function EVENT_SoldierBeginFirstAid(pSoldier: SOLDIERTYPE, sGridNo: INT16
 
 export function EVENT_SoldierEnterVehicle(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirection: UINT8): void {
   let pTSoldier: SOLDIERTYPE;
-  let uiMercFlags: UINT32;
-  let usSoldierIndex: UINT16;
+  let uiMercFlags: UINT32 = 0;
+  let usSoldierIndex: UINT16 = 0;
 
-  if (FindSoldier(sGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+  if (FindSoldier(sGridNo, createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
     pTSoldier = MercPtrs[usSoldierIndex];
 
     // Enter vehicle...
@@ -7405,7 +7405,7 @@ export function ContinueMercMovement(pSoldier: SOLDIERTYPE): void {
       SetUIBusy(pSoldier.ubID);
 
       // OK, try and get a path to out dest!
-      EVENT_InternalGetNewSoldierPath(pSoldier, sGridNo, pSoldier.usUIMovementMode, false, true);
+      EVENT_InternalGetNewSoldierPath(pSoldier, sGridNo, pSoldier.usUIMovementMode, 0, true);
     }
   }
 }
@@ -7566,62 +7566,71 @@ export function SelectMoveAnimationFromStance(pSoldier: SOLDIERTYPE): void {
   }
 }
 
-function GetActualSoldierAnimDims(pSoldier: SOLDIERTYPE, psHeight: Pointer<INT16>, psWidth: Pointer<INT16>): void {
+function GetActualSoldierAnimDims(pSoldier: SOLDIERTYPE): { sHeight: INT16, sWidth: INT16 } {
+  let sHeight: INT16;
+  let sWidth: INT16;
+
   let usAnimSurface: UINT16;
   let pTrav: ETRLEObject;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    psHeight.value = 5;
-    psWidth.value = 5;
+    sHeight = 5;
+    sWidth = 5;
 
-    return;
+    return { sHeight, sWidth };
   }
 
   if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
-    psHeight.value = 5;
-    psWidth.value = 5;
-    return;
+    sHeight = 5;
+    sWidth = 5;
+    return { sHeight, sWidth };
   }
 
   // OK, noodle here on what we should do... If we take each frame, it will be different slightly
   // depending on the frame and the value returned here will vary thusly. However, for the
   // uses of this function, we should be able to use just the first frame...
 
-  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
+  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.usNumberOfObjects) {
     let i: number = 0;
   }
 
-  pTrav = gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pETRLEObject[pSoldier.usAniFrame];
+  pTrav = gAnimSurfaceDatabase[usAnimSurface].hVideoObject.pETRLEObject[pSoldier.usAniFrame];
 
-  psHeight.value = pTrav.usHeight;
-  psWidth.value = pTrav.usWidth;
+  sHeight = pTrav.usHeight;
+  sWidth = pTrav.usWidth;
+
+  return { sHeight, sWidth };
 }
 
-function GetActualSoldierAnimOffsets(pSoldier: SOLDIERTYPE, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
+function GetActualSoldierAnimOffsets(pSoldier: SOLDIERTYPE): { sOffsetX: INT16, sOffsetY: INT16 } {
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+
   let usAnimSurface: UINT16;
   let pTrav: ETRLEObject;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    sOffsetX.value = 0;
-    sOffsetY.value = 0;
+    sOffsetX = 0;
+    sOffsetY = 0;
 
-    return;
+    return { sOffsetX, sOffsetY };
   }
 
   if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
-    sOffsetX.value = 0;
-    sOffsetY.value = 0;
-    return;
+    sOffsetX = 0;
+    sOffsetY = 0;
+    return { sOffsetX, sOffsetY };
   }
 
-  pTrav = gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.pETRLEObject[pSoldier.usAniFrame];
+  pTrav = gAnimSurfaceDatabase[usAnimSurface].hVideoObject.pETRLEObject[pSoldier.usAniFrame];
 
-  sOffsetX.value = pTrav.sOffsetX;
-  sOffsetY.value = pTrav.sOffsetY;
+  sOffsetX = pTrav.sOffsetX;
+  sOffsetY = pTrav.sOffsetY;
+  return { sOffsetX, sOffsetY };
 }
 
 function SetSoldierLocatorOffsets(pSoldier: SOLDIERTYPE): void {
@@ -7631,8 +7640,8 @@ function SetSoldierLocatorOffsets(pSoldier: SOLDIERTYPE): void {
   let sOffsetY: INT16;
 
   // OK, from our animation, get height, width
-  GetActualSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
-  GetActualSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
+  ({ sHeight, sWidth } = GetActualSoldierAnimDims(pSoldier));
+  ({ sOffsetX, sOffsetY } = GetActualSoldierAnimOffsets(pSoldier));
 
   // OK, here, use the difference between center of animation ( sWidth/2 ) and our offset!
   // pSoldier->sLocatorOffX = ( abs( sOffsetX ) ) - ( sWidth / 2 );
@@ -8116,10 +8125,10 @@ export function EVENT_SoldierBeginCutFence(pSoldier: SOLDIERTYPE, sGridNo: INT16
 
 export function EVENT_SoldierBeginRepair(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirection: UINT8): void {
   let bRepairItem: INT8;
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
 
   // Make sure we have a structure here....
-  bRepairItem = IsRepairableStructAtGridNo(sGridNo, addressof(ubID));
+  bRepairItem = IsRepairableStructAtGridNo(sGridNo, createPointer(() => ubID, (v) => ubID = v));
 
   if (bRepairItem) {
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
@@ -8146,11 +8155,11 @@ export function EVENT_SoldierBeginRepair(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
 }
 
 export function EVENT_SoldierBeginRefuel(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirection: UINT8): void {
-  let bRefuelItem: INT8;
-  let ubID: UINT8;
+  let bRefuelItem: boolean /* INT8 */;
+  let ubID: UINT8 = 0;
 
   // Make sure we have a structure here....
-  bRefuelItem = IsRefuelableStructAtGridNo(sGridNo, addressof(ubID));
+  bRefuelItem = IsRefuelableStructAtGridNo(sGridNo, createPointer(() => ubID, (v) => ubID = v));
 
   if (bRefuelItem) {
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
@@ -8342,14 +8351,14 @@ export function SetSoldierCowerState(pSoldier: SOLDIERTYPE, fOn: boolean): void 
 export function MercStealFromMerc(pSoldier: SOLDIERTYPE, pTarget: SOLDIERTYPE): void {
   let sActionGridNo: INT16;
   let sGridNo: INT16;
-  let sAdjustedGridNo: INT16;
-  let ubDirection: UINT8;
+  let sAdjustedGridNo: INT16 = 0;
+  let ubDirection: UINT8 = 0;
 
   // OK, find an adjacent gridno....
   sGridNo = pTarget.sGridNo;
 
   // See if we can get there to punch
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), true, false);
   if (sActionGridNo != -1) {
     // SEND PENDING ACTION
     pSoldier.ubPendingAction = Enum257.MERC_STEAL;

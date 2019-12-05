@@ -228,7 +228,7 @@ export function HandleInsuranceContract(): void {
 }
 
 export function RenderInsuranceContract(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let sText: string /* wchar_t[800] */;
   let ubCount: UINT8 = 0;
   let sMercID: INT16;
@@ -364,7 +364,7 @@ function BtnInsContractNextButtonCallBack(btn: GUI_BUTTON, reason: INT32): void 
 
 function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosX: UINT16;
   let usPosY: UINT16;
   let uiInsMercFaceImage: UINT32;
@@ -423,7 +423,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
   if (IsMercDead(ubMercID)) {
     // if the merc is dead
     // shade the face red, (to signify that he is dead)
-    hPixHandle.value.pShades[0] = Create16BPPPaletteShaded(hPixHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
+    hPixHandle.pShades[0] = Create16BPPPaletteShaded(hPixHandle.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, true);
 
     // set the red pallete to the face
     SetObjectHandleShade(uiInsMercFaceImage, 0);

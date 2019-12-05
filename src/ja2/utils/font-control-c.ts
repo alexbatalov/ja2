@@ -5,72 +5,72 @@ export let gfUseWinFonts: boolean = false;
 
 // Global variables for video objects
 export let gpLargeFontType1: INT32;
-export let gvoLargeFontType1: HVOBJECT;
+export let gvoLargeFontType1: SGPVObject;
 
 export let gpSmallFontType1: INT32;
-let gvoSmallFontType1: HVOBJECT;
+let gvoSmallFontType1: SGPVObject;
 
 export let gpTinyFontType1: INT32;
-let gvoTinyFontType1: HVOBJECT;
+let gvoTinyFontType1: SGPVObject;
 
 export let gp12PointFont1: INT32;
-let gvo12PointFont1: HVOBJECT;
+let gvo12PointFont1: SGPVObject;
 
 export let gpClockFont: INT32;
-let gvoClockFont: HVOBJECT;
+let gvoClockFont: SGPVObject;
 
 export let gpCompFont: INT32;
-let gvoCompFont: HVOBJECT;
+let gvoCompFont: SGPVObject;
 
 export let gpSmallCompFont: INT32;
-let gvoSmallCompFont: HVOBJECT;
+let gvoSmallCompFont: SGPVObject;
 
 export let gp10PointRoman: INT32;
-let gvo10PointRoman: HVOBJECT;
+let gvo10PointRoman: SGPVObject;
 
 export let gp12PointRoman: INT32;
-let gvo12PointRoman: HVOBJECT;
+let gvo12PointRoman: SGPVObject;
 
 export let gp14PointSansSerif: INT32;
-let gvo14PointSansSerif: HVOBJECT;
+let gvo14PointSansSerif: SGPVObject;
 
 // INT32						gpMilitaryFont1;
 // HVOBJECT				gvoMilitaryFont1;
 
 export let gp10PointArial: INT32;
-let gvo10PointArial: HVOBJECT;
+let gvo10PointArial: SGPVObject;
 
 export let gp10PointArialBold: INT32;
-let gvo10PointArialBold: HVOBJECT;
+let gvo10PointArialBold: SGPVObject;
 
 export let gp14PointArial: INT32;
-let gvo14PointArial: HVOBJECT;
+let gvo14PointArial: SGPVObject;
 
 export let gp12PointArial: INT32;
-let gvo12PointArial: HVOBJECT;
+let gvo12PointArial: SGPVObject;
 
 export let gpBlockyFont: INT32;
-let gvoBlockyFont: HVOBJECT;
+let gvoBlockyFont: SGPVObject;
 
 export let gpBlockyFont2: INT32;
-let gvoBlockyFont2: HVOBJECT;
+let gvoBlockyFont2: SGPVObject;
 
 export let gp12PointArialFixedFont: INT32;
-let gvo12PointArialFixedFont: HVOBJECT;
+let gvo12PointArialFixedFont: SGPVObject;
 
 export let gp16PointArial: INT32;
-let gvo16PointArial: HVOBJECT;
+let gvo16PointArial: SGPVObject;
 
 export let gpBlockFontNarrow: INT32;
-let gvoBlockFontNarrow: HVOBJECT;
+let gvoBlockFontNarrow: SGPVObject;
 
 export let gp14PointHumanist: INT32;
-let gvo14PointHumanist: HVOBJECT;
+let gvo14PointHumanist: SGPVObject;
 
 // FIXME: Language-specific code
 // #ifdef ENGLISH
 export let gpHugeFont: INT32;
-let gvoHugeFont: HVOBJECT;
+let gvoHugeFont: SGPVObject;
 // #endif
 
 export let giSubTitleWinFont: INT32;
@@ -270,7 +270,7 @@ export function ShutdownFonts(): void {
 
 // Set shades for fonts
 export function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
-  let pFont: HVOBJECT;
+  let pFont: SGPVObject;
 
   if (bColorID <= 0) {
     return false;
@@ -281,21 +281,21 @@ export function SetFontShade(uiFontID: UINT32, bColorID: INT8): boolean {
 
   pFont = GetFontObject(uiFontID);
 
-  pFont.value.pShadeCurrent = pFont.value.pShades[bColorID];
+  pFont.pShadeCurrent = pFont.pShades[bColorID];
 
   return true;
 }
 
-function CreateFontPaletteTables(pObj: HVOBJECT): boolean {
+function CreateFontPaletteTables(pObj: SGPVObject): boolean {
   let count: UINT32;
   let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   for (count = 0; count < 16; count++) {
-    if ((count == 4) && (pObj.value.p16BPPPalette == pObj.value.pShades[count]))
-      pObj.value.pShades[count] = null;
-    else if (pObj.value.pShades[count] != null) {
-      MemFree(pObj.value.pShades[count]);
-      pObj.value.pShades[count] = null;
+    if ((count == 4) && (pObj.p16BPPPalette == pObj.pShades[count]))
+      pObj.pShades[count] = <Uint16Array><unknown>null;
+    else if (pObj.pShades[count] != null) {
+      MemFree(pObj.pShades[count]);
+      pObj.pShades[count] = <Uint16Array><unknown>null;
     }
   }
 
@@ -306,28 +306,28 @@ function CreateFontPaletteTables(pObj: HVOBJECT): boolean {
     Pal[count].peBlue = 255;
   }
 
-  pObj.value.pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 0, 0, true);
-  pObj.value.pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 255, true);
-  pObj.value.pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 255, 0, true);
-  pObj.value.pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 0, true);
-  pObj.value.pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, false);
+  pObj.pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 255, 0, 0, true);
+  pObj.pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 0, 0, 255, true);
+  pObj.pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 0, 255, 0, true);
+  pObj.pShades[FONT_SHADE_YELLOW] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 255, 255, 0, true);
+  pObj.pShades[FONT_SHADE_NEUTRAL] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 255, 255, 255, false);
 
-  pObj.value.pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 255, 255, 255, true);
+  pObj.pShades[FONT_SHADE_WHITE] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 255, 255, 255, true);
 
   // the rest are darkening tables, right down to all-black.
-  pObj.value.pShades[0] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 165, 165, 165, false);
-  pObj.value.pShades[7] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 135, 135, 135, false);
-  pObj.value.pShades[8] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 105, 105, 105, false);
-  pObj.value.pShades[9] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 75, 75, 75, false);
-  pObj.value.pShades[10] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 45, 45, 45, false);
-  pObj.value.pShades[11] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 36, 36, 36, false);
-  pObj.value.pShades[12] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 27, 27, 27, false);
-  pObj.value.pShades[13] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 18, 18, 18, false);
-  pObj.value.pShades[14] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 9, 9, 9, false);
-  pObj.value.pShades[15] = Create16BPPPaletteShaded(pObj.value.pPaletteEntry, 0, 0, 0, false);
+  pObj.pShades[0] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 165, 165, 165, false);
+  pObj.pShades[7] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 135, 135, 135, false);
+  pObj.pShades[8] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 105, 105, 105, false);
+  pObj.pShades[9] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 75, 75, 75, false);
+  pObj.pShades[10] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 45, 45, 45, false);
+  pObj.pShades[11] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 36, 36, 36, false);
+  pObj.pShades[12] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 27, 27, 27, false);
+  pObj.pShades[13] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 18, 18, 18, false);
+  pObj.pShades[14] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 9, 9, 9, false);
+  pObj.pShades[15] = Create16BPPPaletteShaded(pObj.pPaletteEntry, 0, 0, 0, false);
 
   // Set current shade table to neutral color
-  pObj.value.pShadeCurrent = pObj.value.pShades[4];
+  pObj.pShadeCurrent = pObj.pShades[4];
 
   // check to make sure every table got a palette
   // for(count=0; (count < HVOBJECT_SHADE_TABLES) && (pObj->pShades[count]!=NULL); count++);

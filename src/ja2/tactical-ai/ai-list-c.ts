@@ -14,8 +14,8 @@ namespace ja2 {
 
 const AI_LIST_SIZE = TOTAL_SOLDIERS;
 
-let gAIList: AILIST[] /* [AI_LIST_SIZE] */;
-let gpFirstAIListEntry: Pointer<AILIST> = null;
+let gAIList: AILIST[] /* [AI_LIST_SIZE] */ = createArrayFrom(AI_LIST_SIZE, createAIList);
+let gpFirstAIListEntry: AILIST | null /* Pointer<AILIST> */ = null;
 
 function ClearAIList(): void {
   let ubLoop: UINT8;
@@ -28,10 +28,10 @@ function ClearAIList(): void {
   gpFirstAIListEntry = null; // ??
 }
 
-function DeleteAIListEntry(pEntry: Pointer<AILIST>): void {
-  pEntry.value.ubID = NOBODY;
-  pEntry.value.bPriority = 0;
-  pEntry.value.pNext = null;
+function DeleteAIListEntry(pEntry: AILIST): void {
+  pEntry.ubID = NOBODY;
+  pEntry.bPriority = 0;
+  pEntry.pNext = null;
 }
 
 function FindEmptyAIListEntry(): UINT8 {
@@ -46,24 +46,24 @@ function FindEmptyAIListEntry(): UINT8 {
   return AI_LIST_SIZE;
 }
 
-function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): Pointer<AILIST> {
+function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): AILIST {
   gAIList[ubNewEntry].ubID = ubID;
   gAIList[ubNewEntry].bPriority = bPriority;
   gAIList[ubNewEntry].pNext = null;
-  return addressof(gAIList[ubNewEntry]);
+  return gAIList[ubNewEntry];
 }
 
 export function RemoveFirstAIListEntry(): UINT8 {
-  let pOldFirstEntry: Pointer<AILIST>;
+  let pOldFirstEntry: AILIST | null;
   let ubID: UINT8;
 
   while (gpFirstAIListEntry != null) {
     // record pointer to start of list, and advance head ptr
     pOldFirstEntry = gpFirstAIListEntry;
-    gpFirstAIListEntry = gpFirstAIListEntry.value.pNext;
+    gpFirstAIListEntry = gpFirstAIListEntry.pNext;
 
     // record ID, and delete old now unused entry
-    ubID = pOldFirstEntry.value.ubID;
+    ubID = pOldFirstEntry.ubID;
     DeleteAIListEntry(pOldFirstEntry);
 
     // make sure conditions still met
@@ -76,33 +76,33 @@ export function RemoveFirstAIListEntry(): UINT8 {
 }
 
 function RemoveAIListEntryForID(ubID: UINT8): void {
-  let pEntry: Pointer<AILIST>;
-  let pPrevEntry: Pointer<AILIST>;
+  let pEntry: AILIST | null;
+  let pPrevEntry: AILIST | null;
 
   pEntry = gpFirstAIListEntry;
   pPrevEntry = null;
 
   while (pEntry != null) {
-    if (pEntry.value.ubID == ubID) {
+    if (pEntry.ubID == ubID) {
       if (pEntry == gpFirstAIListEntry) {
         RemoveFirstAIListEntry();
       } else {
-        pPrevEntry.value.pNext = pEntry.value.pNext;
+        (<AILIST>pPrevEntry).pNext = pEntry.pNext;
         DeleteAIListEntry(pEntry);
       }
       return;
     }
     pPrevEntry = pEntry;
-    pEntry = pEntry.value.pNext;
+    pEntry = pEntry.pNext;
   }
   // none found, that's okay
 }
 
 function InsertIntoAIList(ubID: UINT8, bPriority: INT8): boolean {
   let ubNewEntry: UINT8;
-  let pEntry: Pointer<AILIST>;
-  let pNewEntry: Pointer<AILIST>;
-  let pPrevEntry: Pointer<AILIST> = null;
+  let pEntry: AILIST;
+  let pNewEntry: AILIST;
+  let pPrevEntry: AILIST | null = null;
 
   ubNewEntry = FindEmptyAIListEntry();
 
@@ -117,24 +117,24 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): boolean {
   } else {
     pEntry = gpFirstAIListEntry;
     do {
-      if (bPriority > pEntry.value.bPriority) {
+      if (bPriority > pEntry.bPriority) {
         // insert before this entry
-        pNewEntry.value.pNext = pEntry;
+        pNewEntry.pNext = pEntry;
         if (pEntry == gpFirstAIListEntry) {
           // inserting at head of list
           gpFirstAIListEntry = pNewEntry;
         } else {
           Assert(pPrevEntry != null);
-          pPrevEntry.value.pNext = pNewEntry;
+          pPrevEntry.pNext = pNewEntry;
         }
         return true;
-      } else if (pEntry.value.pNext == null) {
+      } else if (pEntry.pNext == null) {
         // end of list!
-        pEntry.value.pNext = pNewEntry;
+        pEntry.pNext = pNewEntry;
         return true;
       }
       pPrevEntry = pEntry;
-      pEntry = pEntry.value.pNext;
+      pEntry = pEntry.pNext;
       AssertMsg(pEntry != gpFirstAIListEntry, "Fatal error: Loop in AI list!");
     } while (pEntry != null);
   }
@@ -143,7 +143,7 @@ function InsertIntoAIList(ubID: UINT8, bPriority: INT8): boolean {
   return false;
 }
 
-function SatisfiesAIListConditions(pSoldier: SOLDIERTYPE, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: boolean): boolean {
+function SatisfiesAIListConditions(pSoldier: SOLDIERTYPE, pubDoneCount: Pointer<UINT8> | null, fDoRandomChecks: boolean): boolean {
   if ((gTacticalStatus.bBoxingState == Enum247.BOXING) && !(pSoldier.uiStatusFlags & SOLDIER_BOXER)) {
     return false;
   }
@@ -222,7 +222,7 @@ export function MoveToFrontOfAIList(ubID: UINT8): boolean {
   // front of the list
   let bPriority: INT8;
   let ubNewEntry: UINT8;
-  let pNewEntry: Pointer<AILIST>;
+  let pNewEntry: AILIST;
 
   if (!SatisfiesAIListConditions(MercPtrs[ubID], null, false)) {
     // can't do dat!
@@ -234,12 +234,12 @@ export function MoveToFrontOfAIList(ubID: UINT8): boolean {
   if (gpFirstAIListEntry == null) {
     return InsertIntoAIList(ubID, MAX_AI_PRIORITY);
   } else {
-    bPriority = gpFirstAIListEntry.value.bPriority;
+    bPriority = gpFirstAIListEntry.bPriority;
     ubNewEntry = FindEmptyAIListEntry();
     pNewEntry = CreateNewAIListEntry(ubNewEntry, ubID, bPriority);
 
     // insert at front
-    pNewEntry.value.pNext = gpFirstAIListEntry;
+    pNewEntry.pNext = gpFirstAIListEntry;
     gpFirstAIListEntry = pNewEntry;
     return true;
   }
@@ -249,10 +249,11 @@ export function BuildAIListForTeam(bTeam: INT8): boolean {
   // loop through all non-player-team guys and add to list
   let uiLoop: UINT32;
   let fInsertRet: boolean;
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
   let fRet: boolean = false;
   let ubCount: UINT8 = 0;
   let ubDoneCount: UINT8 = 0;
+  let ubDoneCount__Pointer = createPointer(() => ubDoneCount, (v) => ubDoneCount = v);
   let bPriority: INT8;
 
   // this team is being given control so reset their muzzle flashes
@@ -265,17 +266,17 @@ export function BuildAIListForTeam(bTeam: INT8): boolean {
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     // non-null merc slot ensures active
     pSoldier = MercSlots[uiLoop];
-    if (pSoldier && pSoldier.value.bTeam == bTeam) {
-      if (!SatisfiesAIListConditions(pSoldier, addressof(ubDoneCount), true)) {
+    if (pSoldier && pSoldier.bTeam == bTeam) {
+      if (!SatisfiesAIListConditions(pSoldier, ubDoneCount__Pointer, true)) {
         continue;
       }
 
-      bPriority = pSoldier.value.bAlertStatus;
-      if (pSoldier.value.bVisible == true) {
+      bPriority = pSoldier.bAlertStatus;
+      if (pSoldier.bVisible == 1) {
         bPriority += 3;
       }
 
-      fInsertRet = InsertIntoAIList(pSoldier.value.ubID, bPriority);
+      fInsertRet = InsertIntoAIList(pSoldier.ubID, bPriority);
       if (fInsertRet == false) {
         // wtf???
         break;

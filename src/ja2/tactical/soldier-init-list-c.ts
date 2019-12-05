@@ -402,7 +402,7 @@ export function AddPlacementToWorld(curr: SOLDIERINITNODE): boolean {
   let ubProfile: UINT8;
   let tempDetailedPlacement: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let pSoldier: SOLDIERTYPE | null;
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
   // First check if this guy has a profile and if so check his location such that it matches!
   // Get profile from placement info
 
@@ -515,7 +515,7 @@ export function AddPlacementToWorld(curr: SOLDIERINITNODE): boolean {
     }
   }
 
-  if (pSoldier = TacticalCreateSoldier(tempDetailedPlacement, addressof(ubID))) {
+  if (pSoldier = TacticalCreateSoldier(tempDetailedPlacement, createPointer(() => ubID, (v) => ubID = v))) {
     curr.pSoldier = pSoldier;
     curr.ubSoldierID = ubID;
     AddSoldierToSectorNoCalculateDirection(ubID);
@@ -646,21 +646,36 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
   let ubMaxNum: UINT8;
   let bTeam: INT8 = ENEMY_TEAM;
   let ubElitePDSlots: UINT8 = 0;
+  let ubElitePDSlots__Pointer = createPointer(() => ubElitePDSlots, (v) => ubElitePDSlots = v);
   let ubEliteDSlots: UINT8 = 0;
+  let ubEliteDSlots__Pointer = createPointer(() => ubEliteDSlots, (v) => ubEliteDSlots = v);
   let ubElitePSlots: UINT8 = 0;
+  let ubElitePSlots__Pointer = createPointer(() => ubElitePSlots, (v) => ubElitePSlots = v);
   let ubEliteBSlots: UINT8 = 0;
+  let ubEliteBSlots__Pointer = createPointer(() => ubEliteBSlots, (v) => ubEliteBSlots = v);
   let ubTroopPDSlots: UINT8 = 0;
+  let ubTroopPDSlots__Pointer = createPointer(() => ubTroopPDSlots, (v) => ubTroopPDSlots = v);
   let ubTroopDSlots: UINT8 = 0;
+  let ubTroopDSlots__Pointer = createPointer(() => ubTroopDSlots, (v) => ubTroopDSlots = v);
   let ubTroopPSlots: UINT8 = 0;
+  let ubTroopPSlots__Pointer = createPointer(() => ubTroopPSlots, (v) => ubTroopPSlots = v);
   let ubTroopBSlots: UINT8 = 0;
+  let ubTroopBSlots__Pointer = createPointer(() => ubTroopBSlots, (v) => ubTroopBSlots = v);
   let ubAdminPDSlots: UINT8 = 0;
+  let ubAdminPDSlots__Pointer = createPointer(() => ubAdminPDSlots, (v) => ubAdminPDSlots = v);
   let ubAdminDSlots: UINT8 = 0;
+  let ubAdminDSlots__Pointer = createPointer(() => ubAdminDSlots, (v) => ubAdminDSlots = v);
   let ubAdminPSlots: UINT8 = 0;
+  let ubAdminPSlots__Pointer = createPointer(() => ubAdminPSlots, (v) => ubAdminPSlots = v);
   let ubAdminBSlots: UINT8 = 0;
+  let ubAdminBSlots__Pointer = createPointer(() => ubAdminBSlots, (v) => ubAdminBSlots = v);
   let ubFreeSlots: UINT8;
-  let pCurrSlots: Pointer<UINT8> = null;
-  let pCurrTotal: Pointer<UINT8> = null;
+  let pCurrSlots: Pointer<UINT8>;
+  let pCurrTotal: Pointer<UINT8>;
   let ubCurrClass: UINT8;
+  let ubTotalAdmin__Pointer = createPointer(() => ubTotalAdmin, (v) => ubTotalAdmin = v);
+  let ubTotalTroops__Pointer = createPointer(() => ubTotalTroops, (v) => ubTotalTroops = v);
+  let ubTotalElite__Pointer = createPointer(() => ubTotalElite, (v) => ubTotalElite = v);
 
   ResetMortarsOnTeamCount();
 
@@ -728,17 +743,19 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
     // First, prepare the counters.
     switch (ubCurrClass) {
       case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-        pCurrSlots = addressof(ubAdminPDSlots);
-        pCurrTotal = addressof(ubTotalAdmin);
+        pCurrSlots = ubAdminPDSlots__Pointer;
+        pCurrTotal = ubTotalAdmin__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
-        pCurrSlots = addressof(ubElitePDSlots);
-        pCurrTotal = addressof(ubTotalElite);
+        pCurrSlots = ubElitePDSlots__Pointer;
+        pCurrTotal = ubTotalElite__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ARMY:
-        pCurrSlots = addressof(ubTroopPDSlots);
-        pCurrTotal = addressof(ubTotalTroops);
+        pCurrSlots = ubTroopPDSlots__Pointer;
+        pCurrTotal = ubTotalTroops__Pointer;
         break;
+      default:
+        throw new Error('Should be unreachable');
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = gSoldierInitHead;
@@ -775,17 +792,19 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
     // First, prepare the counters.
     switch (ubCurrClass) {
       case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-        pCurrSlots = addressof(ubAdminPSlots);
-        pCurrTotal = addressof(ubTotalAdmin);
+        pCurrSlots = ubAdminPSlots__Pointer;
+        pCurrTotal = ubTotalAdmin__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
-        pCurrSlots = addressof(ubElitePSlots);
-        pCurrTotal = addressof(ubTotalElite);
+        pCurrSlots = ubElitePSlots__Pointer;
+        pCurrTotal = ubTotalElite__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ARMY:
-        pCurrSlots = addressof(ubTroopPSlots);
-        pCurrTotal = addressof(ubTotalTroops);
+        pCurrSlots = ubTroopPSlots__Pointer;
+        pCurrTotal = ubTotalTroops__Pointer;
         break;
+      default:
+        throw new Error('Should be unreachable');
     }
     // Now, loop through the priority existance and non detailed placement section of the list.
     curr = mark;
@@ -822,17 +841,19 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
     // First, prepare the counters.
     switch (ubCurrClass) {
       case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-        pCurrSlots = addressof(ubAdminDSlots);
-        pCurrTotal = addressof(ubTotalAdmin);
+        pCurrSlots = ubAdminDSlots__Pointer;
+        pCurrTotal = ubTotalAdmin__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
-        pCurrSlots = addressof(ubEliteDSlots);
-        pCurrTotal = addressof(ubTotalElite);
+        pCurrSlots = ubEliteDSlots__Pointer;
+        pCurrTotal = ubTotalElite__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ARMY:
-        pCurrSlots = addressof(ubTroopDSlots);
-        pCurrTotal = addressof(ubTotalTroops);
+        pCurrSlots = ubTroopDSlots__Pointer;
+        pCurrTotal = ubTotalTroops__Pointer;
         break;
+      default:
+        throw new Error('Should be unreachable');
     }
     // Now, loop through the priority existance and detailed placement section of the list.
     curr = mark;
@@ -883,7 +904,7 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
         curr.pBasicPlacement.ubSoldierClass = Enum262.SOLDIER_CLASS_ADMINISTRATOR;
         ubTotalAdmin--;
       } else
-        Assert(0);
+        Assert(false);
       if (AddPlacementToWorld(curr)) {
         ubMaxNum--;
       } else
@@ -901,17 +922,19 @@ export function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTo
     // First, prepare the counters.
     switch (ubCurrClass) {
       case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-        pCurrSlots = addressof(ubAdminBSlots);
-        pCurrTotal = addressof(ubTotalAdmin);
+        pCurrSlots = ubAdminBSlots__Pointer;
+        pCurrTotal = ubTotalAdmin__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
-        pCurrSlots = addressof(ubEliteBSlots);
-        pCurrTotal = addressof(ubTotalElite);
+        pCurrSlots = ubEliteBSlots__Pointer;
+        pCurrTotal = ubTotalElite__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ARMY:
-        pCurrSlots = addressof(ubTroopBSlots);
-        pCurrTotal = addressof(ubTotalTroops);
+        pCurrSlots = ubTroopBSlots__Pointer;
+        pCurrTotal = ubTotalTroops__Pointer;
         break;
+      default:
+        throw new Error('Should be unreachable')
     }
     // Now, loop through the regular basic placements section of the list.
     curr = mark;
@@ -1007,12 +1030,18 @@ export function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, u
   let fDoPlacement: boolean;
   let bTeam: INT8 = ENEMY_TEAM;
   let ubEliteSlots: UINT8 = 0;
+  let ubEliteSlots__Pointer = createPointer(() => ubEliteSlots, (v) => ubEliteSlots = v);
   let ubRegSlots: UINT8 = 0;
+  let ubRegSlots__Pointer = createPointer(() => ubRegSlots, (v) => ubRegSlots = v);
   let ubGreenSlots: UINT8 = 0;
+  let ubGreenSlots__Pointer = createPointer(() => ubGreenSlots, (v) => ubGreenSlots = v);
   let ubFreeSlots: UINT8;
-  let pCurrSlots: Pointer<UINT8> = null;
-  let pCurrTotal: Pointer<UINT8> = null;
+  let pCurrSlots: Pointer<UINT8>;
+  let pCurrTotal: Pointer<UINT8>;
   let ubCurrClass: UINT8;
+  let ubNumGreen__Pointer = createPointer(() => ubNumGreen, (v) => ubNumGreen = v);
+  let ubNumRegs__Pointer = createPointer(() => ubNumRegs, (v) => ubNumRegs = v);
+  let ubNumElites__Pointer = createPointer(() => ubNumElites, (v) => ubNumElites = v);
 
   ubMaxNum = ubNumGreen + ubNumRegs + ubNumElites;
 
@@ -1091,17 +1120,19 @@ export function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, u
     // First, prepare the counters.
     switch (ubCurrClass) {
       case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
-        pCurrSlots = addressof(ubGreenSlots);
-        pCurrTotal = addressof(ubNumGreen);
+        pCurrSlots = ubGreenSlots__Pointer;
+        pCurrTotal = ubNumGreen__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
-        pCurrSlots = addressof(ubEliteSlots);
-        pCurrTotal = addressof(ubNumElites);
+        pCurrSlots = ubEliteSlots__Pointer;
+        pCurrTotal = ubNumElites__Pointer;
         break;
       case Enum262.SOLDIER_CLASS_ARMY:
-        pCurrSlots = addressof(ubRegSlots);
-        pCurrTotal = addressof(ubNumRegs);
+        pCurrSlots = ubRegSlots__Pointer;
+        pCurrTotal = ubNumRegs__Pointer;
         break;
+      default:
+        throw new Error('Should be unreachable');
     }
     // Now, loop through the basic placement of the list.
     curr = mark; // mark is the marker where the basic placements start.
@@ -1670,7 +1701,7 @@ export function AddProfilesUsingProfileInsertionData(): void {
       MercCreateStruct.sSectorY = gWorldSectorY;
       MercCreateStruct.bSectorZ = gbWorldSectorZ;
 
-      pSoldier = TacticalCreateSoldier(MercCreateStruct, addressof(ubID));
+      pSoldier = TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubID, (v) => ubID = v));
     }
     if (pSoldier) {
       // Now, insert the soldier.

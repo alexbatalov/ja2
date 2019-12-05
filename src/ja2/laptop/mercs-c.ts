@@ -145,6 +145,7 @@ let gusPositionOfSpecksDialogBox_X: UINT16;
 let gsSpeckDialogueTextPopUp: string /* wchar_t[900] */;
 let gusSpeckDialogueX: UINT16;
 let gusSpeckDialogueActualWidth: UINT16;
+let gusSpeckDialogueActualWidth__Pointer = createPointer(() => gusSpeckDialogueActualWidth, (v) => gusSpeckDialogueActualWidth = v);
 
 let gfInMercSite: boolean = false; // this flag is set when inide of the merc site
 
@@ -483,7 +484,7 @@ export function HandleMercs(): void {
 }
 
 export function RenderMercs(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DrawMecBackGround();
 
@@ -1307,7 +1308,7 @@ function HandleTalkingSpeck(): void {
 }
 
 export function DisplayTextForSpeckVideoPopUp(pString: string /* STR16 */): void {
-  let usActualHeight: UINT16;
+  let usActualHeight: UINT16 = 0;
   let iOldMercPopUpBoxId: INT32 = iMercPopUpBox;
 
   // If the user has selected no subtitles
@@ -1335,7 +1336,7 @@ export function DisplayTextForSpeckVideoPopUp(pString: string /* STR16 */): void
   // Create the popup box
   SET_USE_WINFONTS(true);
   SET_WINFONT(giSubTitleWinFont);
-  iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, addressof(gusSpeckDialogueActualWidth), addressof(usActualHeight));
+  iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, gusSpeckDialogueActualWidth__Pointer, createPointer(() => usActualHeight, (v) => usActualHeight = v));
   SET_USE_WINFONTS(false);
 
   gusSpeckDialogueX = (LAPTOP_SCREEN_LR_X - gusSpeckDialogueActualWidth - LAPTOP_SCREEN_UL_X) / 2 + LAPTOP_SCREEN_UL_X;
@@ -1940,7 +1941,7 @@ export function GetMercSiteBackOnline(): void {
 }
 
 function DrawMercVideoBackGround(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   hPixHandle = GetVideoObject(guiMercVideoPopupBackground);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, null);

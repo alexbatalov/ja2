@@ -157,7 +157,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   let uiVideoObject: UINT32;
   let iFaceIndex: INT32;
   let ETRLEObject: ETRLEObject = createETRLEObject();
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject | null;
   let uiCount: UINT32;
   let Pal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
@@ -253,18 +253,18 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
       Pal[uiCount].peBlue = 255;
     }
 
-    hVObject.value.pShades[FLASH_PORTRAIT_NOSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
-    hVObject.value.pShades[FLASH_PORTRAIT_STARTSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
-    hVObject.value.pShades[FLASH_PORTRAIT_ENDSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, true);
-    hVObject.value.pShades[FLASH_PORTRAIT_DARKSHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, true);
-    hVObject.value.pShades[FLASH_PORTRAIT_LITESHADE] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, false);
+    hVObject.pShades[FLASH_PORTRAIT_NOSHADE] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 255, 255, 255, false);
+    hVObject.pShades[FLASH_PORTRAIT_STARTSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
+    hVObject.pShades[FLASH_PORTRAIT_ENDSHADE] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 250, 25, 25, true);
+    hVObject.pShades[FLASH_PORTRAIT_DARKSHADE] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 100, 100, 100, true);
+    hVObject.pShades[FLASH_PORTRAIT_LITESHADE] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 100, 100, 100, false);
 
     for (uiCount = 0; uiCount < 256; uiCount++) {
       Pal[uiCount].peRed = (uiCount % 128) + 128;
       Pal[uiCount].peGreen = (uiCount % 128) + 128;
       Pal[uiCount].peBlue = (uiCount % 128) + 128;
     }
-    hVObject.value.pShades[FLASH_PORTRAIT_GRAYSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
+    hVObject.pShades[FLASH_PORTRAIT_GRAYSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, false);
   }
 
   // Get FACE height, width
@@ -275,7 +275,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   pFace.usFaceHeight = ETRLEObject.usHeight;
 
   // OK, check # of items
-  if (hVObject.value.usNumberOfObjects == 8) {
+  if (hVObject.usNumberOfObjects == 8) {
     pFace.fInvalidAnim = false;
 
     // Get EYE height, width
@@ -908,11 +908,11 @@ function GetXYForIconPlacement(pFace: FACETYPE, ubIndex: UINT16, sFaceX: INT16, 
   let usWidth: UINT16;
   let usHeight: UINT16;
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   // Get height, width of icon...
   hVObject = GetVideoObject(guiPORTRAITICONS);
-  pTrav = hVObject.value.pETRLEObject[ubIndex];
+  pTrav = hVObject.pETRLEObject[ubIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
@@ -928,11 +928,11 @@ function GetXYForRightIconPlacement(pFace: FACETYPE, ubIndex: UINT16, sFaceX: IN
   let usWidth: UINT16;
   let usHeight: UINT16;
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   // Get height, width of icon...
   hVObject = GetVideoObject(guiPORTRAITICONS);
-  pTrav = hVObject.value.pETRLEObject[ubIndex];
+  pTrav = hVObject.pETRLEObject[ubIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
@@ -959,6 +959,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
   let uiRenderBuffer: UINT32;
   let sPtsAvailable: INT16 = 0;
   let usMaximumPts: UINT16 = 0;
+  let usMaximumPts__Pointer = createPointer(() => usMaximumPts, (v) => usMaximumPts = v);
   let sString: string /* CHAR16[32] */;
   let usTextWidth: UINT16;
   let fAtGunRange: boolean = false;
@@ -1124,7 +1125,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
 
         sIconIndex = 1;
         fDoIcon = true;
-        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.ubSoldierID], addressof(usMaximumPts), false);
+        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.ubSoldierID], usMaximumPts__Pointer, false);
         fShowNumber = true;
         fShowMaximum = true;
 
@@ -1159,19 +1160,19 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
 
         switch (MercPtrs[pFace.ubSoldierID].bAssignment) {
           case (Enum117.TRAIN_SELF):
-            sPtsAvailable = GetSoldierTrainingPts(MercPtrs[pFace.ubSoldierID], MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, addressof(usMaximumPts));
+            sPtsAvailable = GetSoldierTrainingPts(MercPtrs[pFace.ubSoldierID], MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, usMaximumPts__Pointer);
             break;
           case (Enum117.TRAIN_BY_OTHER):
-            sPtsAvailable = GetSoldierStudentPts(MercPtrs[pFace.ubSoldierID], MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, addressof(usMaximumPts));
+            sPtsAvailable = GetSoldierStudentPts(MercPtrs[pFace.ubSoldierID], MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, usMaximumPts__Pointer);
             break;
           case (Enum117.TRAIN_TOWN):
-            sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.ubSoldierID], addressof(usMaximumPts));
+            sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.ubSoldierID], usMaximumPts__Pointer);
             // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
             sPtsAvailable = (sPtsAvailable + 5) / 10;
             usMaximumPts = (usMaximumPts + 5) / 10;
             break;
           case (Enum117.TRAIN_TEAMMATE):
-            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.ubSoldierID], null, MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, addressof(usMaximumPts));
+            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.ubSoldierID], null, MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, usMaximumPts__Pointer);
             break;
         }
         break;
@@ -1180,7 +1181,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
 
         sIconIndex = 0;
         fDoIcon = true;
-        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.ubSoldierID], addressof(usMaximumPts), false);
+        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.ubSoldierID], usMaximumPts__Pointer, false);
         fShowNumber = true;
         fShowMaximum = true;
 

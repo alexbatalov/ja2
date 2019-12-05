@@ -144,7 +144,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   let item: INVTYPE;
   let SaveRect: SGPRect = createSGPRect();
   let NewRect: SGPRect = createSGPRect();
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let uiVideoObjectIndex: UINT32;
   let usUselessWidth: UINT16;
   let usUselessHeight: UINT16;
@@ -231,7 +231,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       return;
   }
   // Allocate memory to store all the item pointers.
-  eInfo.pusItemIndex = MemAlloc(sizeof(UINT16) * eInfo.sNumItems);
+  eInfo.pusItemIndex = createArray(eInfo.sNumItems, 0);
 
   // Disable the appropriate scroll buttons based on the saved scroll index if applicable
   // Left most scroll position
@@ -293,8 +293,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
-      sWidth = hVObject.value.pETRLEObject[item.ubGraphicNum].usWidth;
-      sOffset = hVObject.value.pETRLEObject[item.ubGraphicNum].sOffsetX;
+      sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
+      sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
       BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, 0, false);
@@ -406,8 +406,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
           DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
           // Calculate the center position of the graphic in a 60 pixel wide area.
-          sWidth = hVObject.value.pETRLEObject[item.ubGraphicNum].usWidth;
-          sOffset = hVObject.value.pETRLEObject[item.ubGraphicNum].sOffsetX;
+          sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
+          sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
           sStart = x + (60 - sWidth - sOffset * 2) / 2;
 
           if (sWidth) {
@@ -449,7 +449,7 @@ export function RenderEditorItemsInfo(): void {
   let uiSrcPitchBYTES: UINT32;
   let uiDestPitchBYTES: UINT32;
   let item: INVTYPE;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let uiVideoObjectIndex: UINT32;
   let i: INT16;
   let minIndex: INT16;
@@ -460,7 +460,8 @@ export function RenderEditorItemsInfo(): void {
   let x: INT16;
   let y: INT16;
   let usNumItems: UINT16;
-  let usQuantity: UINT16;
+  let usQuantity: UINT16 = 0;
+  let usQuantity__Pointer = createPointer(() => usQuantity, (v) => usQuantity = v);
 
   if (!eInfo.fActive) {
     return;
@@ -491,8 +492,8 @@ export function RenderEditorItemsInfo(): void {
       hVObject = GetVideoObject(uiVideoObjectIndex);
       x = (eInfo.sHilitedItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sHilitedItemIndex % 2) * 40;
-      sWidth = hVObject.value.pETRLEObject[item.ubGraphicNum].usWidth;
-      sOffset = hVObject.value.pETRLEObject[item.ubGraphicNum].sOffsetX;
+      sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
+      sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
         BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), true);
@@ -507,8 +508,8 @@ export function RenderEditorItemsInfo(): void {
       hVObject = GetVideoObject(uiVideoObjectIndex);
       x = (eInfo.sSelItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sSelItemIndex % 2) * 40;
-      sWidth = hVObject.value.pETRLEObject[item.ubGraphicNum].usWidth;
-      sOffset = hVObject.value.pETRLEObject[item.ubGraphicNum].sOffsetX;
+      sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
+      sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
       sStart = x + (60 - sWidth - sOffset * 2) / 2;
       if (sWidth) {
         BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), true);
@@ -518,7 +519,7 @@ export function RenderEditorItemsInfo(): void {
   // draw the numbers of each visible item that currently resides in the world.
   maxIndex = Math.min(maxIndex, eInfo.sNumItems - 1);
   for (i = minIndex; i <= maxIndex; i++) {
-    usNumItems = CountNumberOfEditorPlacementsInWorld(i, addressof(usQuantity));
+    usNumItems = CountNumberOfEditorPlacementsInWorld(i, usQuantity__Pointer);
     if (usNumItems) {
       x = (i / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (i % 2) * 40;
@@ -590,7 +591,7 @@ export function ClearEditorItemsInfo(): void {
 
 export function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): void {
   let sIndex: INT16;
-  let usQuantity: UINT16;
+  let usQuantity: UINT16 = 0;
   // Calc base index from scrolling index
   sIndex = eInfo.sScrollIndex * 2;
   // Determine if the index is in the first row or second row from mouse YPos.
@@ -631,7 +632,7 @@ export function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: I
       } else if (sIndex < eInfo.sNumItems) {
         eInfo.sSelItemIndex = sIndex;
         gfRenderTaskbar = true;
-        if (CountNumberOfEditorPlacementsInWorld(eInfo.sSelItemIndex, addressof(usQuantity))) {
+        if (CountNumberOfEditorPlacementsInWorld(eInfo.sSelItemIndex, createPointer(() => usQuantity, (v) => usQuantity = v))) {
           FindNextItemOfSelectedType();
         }
       }
@@ -673,7 +674,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
   let pObject: OBJECTTYPE;
   let pItem: INVTYPE;
   let pItemPool: ITEM_POOL | null;
-  let iItemIndex: INT32;
+  let iItemIndex: INT32 = 0;
   let bVisibility: INT8 = INVISIBLE;
   let fFound: boolean = false;
   let pIPCurr: IPListNode | null;
@@ -753,7 +754,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
       break;
   }
 
-  pObject = <OBJECTTYPE>InternalAddItemToPool(addressof(sGridNo), tempObject, bVisibility, 0, usFlags, 0, addressof(iItemIndex));
+  pObject = <OBJECTTYPE>InternalAddItemToPool(createPointer(() => sGridNo, (v) => sGridNo = v), tempObject, bVisibility, 0, usFlags, 0, createPointer(() => iItemIndex, (v) => iItemIndex = v));
   if (tempObject.usItem != Enum225.OWNERSHIP) {
     gWorldItems[iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
   } else {

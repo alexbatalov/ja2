@@ -530,13 +530,13 @@ export function LaptopScreenShutdown(): boolean {
   return true;
 }
 
+/* static */ let EnterLaptop__fEnteredFromGameStartup: boolean = true;
 function EnterLaptop(): boolean {
   // Create, load, initialize data -- just entered the laptop.
 
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iCounter: INT32 = 0;
 
-  /* static */ let fEnteredFromGameStartup: boolean = true;
   // we are re entering due to message box, leave NOW!
   if (fExitDueToMessageBox == true) {
     return true;
@@ -806,7 +806,7 @@ export function ExitLaptop(): void {
 }
 
 function RenderLapTopImage(): void {
-  let hLapTopHandle: HVOBJECT;
+  let hLapTopHandle: SGPVObject;
 
   if ((fMaximizingProgram == true) || (fMinizingProgram == true)) {
     return;
@@ -978,9 +978,8 @@ export function RenderLaptop(): void {
   MarkButtonsDirty();
 }
 
+/* static */ let EnterNewLaptopMode__fOldLoadFlag: boolean = false;
 function EnterNewLaptopMode(): void {
-  /* static */ let fOldLoadFlag: boolean = false;
-
   if (fExitingLaptopFlag) {
     return;
   }
@@ -1091,13 +1090,13 @@ function EnterNewLaptopMode(): void {
     return;
   }
 
-  if ((fOldLoadFlag) && (!fLoadPendingFlag)) {
-    fOldLoadFlag = false;
-  } else if ((fLoadPendingFlag) && (!fOldLoadFlag)) {
+  if ((EnterNewLaptopMode__fOldLoadFlag) && (!fLoadPendingFlag)) {
+    EnterNewLaptopMode__fOldLoadFlag = false;
+  } else if ((fLoadPendingFlag) && (!EnterNewLaptopMode__fOldLoadFlag)) {
     ExitLaptopMode(guiPreviousLaptopMode);
-    fOldLoadFlag = true;
+    EnterNewLaptopMode__fOldLoadFlag = true;
     return;
-  } else if ((fOldLoadFlag) && (fLoadPendingFlag)) {
+  } else if ((EnterNewLaptopMode__fOldLoadFlag) && (fLoadPendingFlag)) {
     return;
   } else {
     // do not exit previous mode if coming from sliding bar handler
@@ -1513,7 +1512,7 @@ export function LaptopScreenHandle(): UINT32 {
       BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, DstRect, SrcRect2);
       InvalidateScreen();
       // gfPrintFrameBuffer = TRUE;
-      RefreshScreen(null);
+      RefreshScreen();
     }
     fReDrawScreenFlag = true;
   }
@@ -2092,7 +2091,7 @@ export function LeaveLapTopScreen(): boolean {
         BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, DstRect, SrcRect2);
         InvalidateScreen();
         // gfPrintFrameBuffer = TRUE;
-        RefreshScreen(null);
+        RefreshScreen();
       }
     }
   }
@@ -2441,33 +2440,33 @@ function AnimateButton(uiIconID: UINT32, usX: UINT16, usY: UINT16): void {
   return;
 }
 
+/* static */ let WWWRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let WWWRegionMvtCallback__iFrame: INT32 = 0;
 function WWWRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    WWWRegionMvtCallback__iBaseTime = 0;
+    WWWRegionMvtCallback__iFrame = 0;
     hLapTopIconHandle = GetVideoObject(guiWWWICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_WWW_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, WWWRegionMvtCallback__iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_WWW_Y, VO_BLT_SRCTRANSPARENCY, null);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
   }
 }
 
+/* static */ let EmailRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let EmailRegionMvtCallback__iFrame: INT32 = 0;
 function EmailRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    EmailRegionMvtCallback__iBaseTime = 0;
+    EmailRegionMvtCallback__iFrame = 0;
     DrawLapTopText();
     hLapTopIconHandle = GetVideoObject(guiMAILICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_MAIL_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, EmailRegionMvtCallback__iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_MAIL_Y, VO_BLT_SRCTRANSPARENCY, null);
     if (fUnReadMailFlag) {
       hLapTopIconHandle = GetVideoObject(guiUNREAD);
       BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, 0, LAPTOP_ICONS_X + CHECK_X, LAPTOP_ICONS_MAIL_Y + CHECK_Y, VO_BLT_SRCTRANSPARENCY, null);
@@ -2478,66 +2477,66 @@ function EmailRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   }
 }
 
+/* static */ let FinancialRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let FinancialRegionMvtCallback__iFrame: INT32 = 0;
 function FinancialRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    FinancialRegionMvtCallback__iBaseTime = 0;
+    FinancialRegionMvtCallback__iFrame = 0;
     hLapTopIconHandle = GetVideoObject(guiFINANCIALICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X - 4, LAPTOP_ICONS_FINANCIAL_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, FinancialRegionMvtCallback__iFrame, LAPTOP_ICONS_X - 4, LAPTOP_ICONS_FINANCIAL_Y, VO_BLT_SRCTRANSPARENCY, null);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
   }
 }
 
+/* static */ let HistoryRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let HistoryRegionMvtCallback__iFrame: INT32 = 0;
 function HistoryRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    HistoryRegionMvtCallback__iBaseTime = 0;
+    HistoryRegionMvtCallback__iFrame = 0;
 
     hLapTopIconHandle = GetVideoObject(guiHISTORYICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_HISTORY_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, HistoryRegionMvtCallback__iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_HISTORY_Y, VO_BLT_SRCTRANSPARENCY, null);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
   }
 }
 
+/* static */ let FilesRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let FilesRegionMvtCallback__iFrame: INT32 = 0;
 function FilesRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    FilesRegionMvtCallback__iBaseTime = 0;
+    FilesRegionMvtCallback__iFrame = 0;
     hLapTopIconHandle = GetVideoObject(guiFILESICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_FILES_Y + 7, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, FilesRegionMvtCallback__iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_FILES_Y + 7, VO_BLT_SRCTRANSPARENCY, null);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
   }
 }
 
+/* static */ let PersonnelRegionMvtCallback__iBaseTime: INT32 = 0;
+/* static */ let PersonnelRegionMvtCallback__iFrame: INT32 = 0;
 function PersonnelRegionMvtCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iFrame: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    iBaseTime = 0;
-    iFrame = 0;
+    PersonnelRegionMvtCallback__iBaseTime = 0;
+    PersonnelRegionMvtCallback__iFrame = 0;
 
     hLapTopIconHandle = GetVideoObject(guiPERSICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_PERSONNEL_Y, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, PersonnelRegionMvtCallback__iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_PERSONNEL_Y, VO_BLT_SRCTRANSPARENCY, null);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2685,7 +2684,7 @@ function DisplayBookMarks(): void {
   // will look at bookmarklist and set accordingly
   let iCounter: INT32 = 1;
   // load images
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   // laptop icons
   let sX: INT16;
   let sY: INT16;
@@ -2870,18 +2869,17 @@ function DeleteBookmarkRegions(): void {
   MSYS_RemoveRegion(gBookmarkMouseRegions[iCounter]);
 }
 
+// checks to see if a bookmark needs to be created or destroyed
+/* static */ let CreateDestoryBookMarkRegions__fOldShowBookmarks: boolean = false;
 function CreateDestoryBookMarkRegions(): void {
-  // checks to see if a bookmark needs to be created or destroyed
-  /* static */ let fOldShowBookmarks: boolean = false;
-
-  if ((gfShowBookmarks) && (!fOldShowBookmarks)) {
+  if ((gfShowBookmarks) && (!CreateDestoryBookMarkRegions__fOldShowBookmarks)) {
     // create regions
     CreateBookMarkMouseRegions();
-    fOldShowBookmarks = true;
-  } else if ((!gfShowBookmarks) && (fOldShowBookmarks)) {
+    CreateDestoryBookMarkRegions__fOldShowBookmarks = true;
+  } else if ((!gfShowBookmarks) && (CreateDestoryBookMarkRegions__fOldShowBookmarks)) {
     // destroy bookmarks
     DeleteBookmarkRegions();
-    fOldShowBookmarks = false;
+    CreateDestoryBookMarkRegions__fOldShowBookmarks = false;
   }
 }
 
@@ -3076,14 +3074,14 @@ function LoadLoadPending(): boolean {
   return true;
 }
 
+/* static */ let DisplayLoadPending_iBaseTime: INT32 = 0;
+/* static */ let DisplayLoadPending__iTotalTime: INT32 = 0;
 function DisplayLoadPending(): boolean {
   // this function will display the load pending and return if the load is done
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iTotalTime: INT32 = 0;
   let iTempTime: INT32 = 0;
   let iCounter: INT32 = 0;
   let iDifference: INT32 = 0;
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   let iLoadTime: INT32;
   let iUnitTime: INT32;
   let uiTempLaptopMode: UINT32 = 0;
@@ -3122,21 +3120,21 @@ function DisplayLoadPending(): boolean {
     fDoneLoadPending = false;
     fFastLoadFlag = false;
     fConnectingToSubPage = false;
-    iBaseTime = 0;
-    iTotalTime = 0;
+    DisplayLoadPending_iBaseTime = 0;
+    DisplayLoadPending__iTotalTime = 0;
     return false;
   }
   // if total time is exceeded, return (TRUE)
-  if (iBaseTime == 0) {
-    iBaseTime = GetJA2Clock();
+  if (DisplayLoadPending_iBaseTime == 0) {
+    DisplayLoadPending_iBaseTime = GetJA2Clock();
   }
 
-  if (iTotalTime >= iLoadTime) {
+  if (DisplayLoadPending__iTotalTime >= iLoadTime) {
     // done loading, redraw screen
     fLoadPendingFlag = false;
     fFastLoadFlag = false;
-    iTotalTime = 0;
-    iBaseTime = 0;
+    DisplayLoadPending__iTotalTime = 0;
+    DisplayLoadPending_iBaseTime = 0;
     fDoneLoadPending = true;
     fConnectingToSubPage = false;
     fPausedReDrawScreenFlag = true;
@@ -3144,15 +3142,15 @@ function DisplayLoadPending(): boolean {
     return true;
   }
 
-  iDifference = GetJA2Clock() - iBaseTime;
+  iDifference = GetJA2Clock() - DisplayLoadPending_iBaseTime;
 
   // difference has been long enough or we are redrawing the screen
   if ((iDifference) > iUnitTime) {
     // LONG ENOUGH TIME PASSED
     iCounter = 0;
-    iBaseTime = GetJA2Clock();
-    iTotalTime += iDifference;
-    iTempTime = iTotalTime;
+    DisplayLoadPending_iBaseTime = GetJA2Clock();
+    DisplayLoadPending__iTotalTime += iDifference;
+    iTempTime = DisplayLoadPending__iTotalTime;
   }
 
   // new mail, don't redraw
@@ -3200,7 +3198,7 @@ function DisplayLoadPending(): boolean {
 
   // check to see if we are only updating screen, but not passed a new element in the load pending display
 
-  iTempTime = iTotalTime;
+  iTempTime = DisplayLoadPending__iTotalTime;
   // decide how many time units are to be displayed, based on amount of time passed
   while (iTempTime > 0) {
     hLapTopIconHandle = GetVideoObject(guiGRAPHBAR);
@@ -3249,11 +3247,12 @@ function BtnErrorCallback(btn: GUI_BUTTON, reason: INT32): void {
     }
   }
 }
+
+/* static */ let CreateDestroyErrorButton__fOldErrorFlag: boolean = false;
 function CreateDestroyErrorButton(): void {
-  /* static */ let fOldErrorFlag: boolean = false;
-  if ((fErrorFlag) && (!fOldErrorFlag)) {
+  if ((fErrorFlag) && (!CreateDestroyErrorButton__fOldErrorFlag)) {
     // create inventory button
-    fOldErrorFlag = true;
+    CreateDestroyErrorButton__fOldErrorFlag = true;
 
     // load image and create error confirm button
     giErrorButtonImage[0] = LoadButtonImage("LAPTOP\\errorbutton.sti", -1, 0, -1, 1, -1);
@@ -3267,9 +3266,9 @@ function CreateDestroyErrorButton(): void {
 
     // add region
     MSYS_AddRegion(pScreenMask);
-  } else if ((!fErrorFlag) && (fOldErrorFlag)) {
+  } else if ((!fErrorFlag) && (CreateDestroyErrorButton__fOldErrorFlag)) {
     // done dsiplaying, get rid of button and screen mask
-    fOldErrorFlag = false;
+    CreateDestroyErrorButton__fOldErrorFlag = false;
 
     RemoveButton(giErrorButton[0]);
     UnloadButtonImage(giErrorButtonImage[0]);
@@ -3284,7 +3283,7 @@ function CreateDestroyErrorButton(): void {
 
 function DisplayErrorBox(): void {
   // this function will display the error graphic
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
   if (!fErrorFlag)
     return;
 
@@ -3614,7 +3613,7 @@ export function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: string /* Poin
 
 // places a tileable pattern down
 export function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): boolean {
-  let hBackGroundHandle: HVOBJECT;
+  let hBackGroundHandle: SGPVObject;
   let x: UINT16;
   let y: UINT16;
   let uiPosX: UINT16;
@@ -3637,7 +3636,7 @@ export function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UIN
 
 function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: string /* STR16 */, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): boolean {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
-  let hImageHandle: HVOBJECT;
+  let hImageHandle: SGPVObject;
 
   Assert(uiBackgroundGraphic);
 
@@ -3921,7 +3920,7 @@ function HandleSlidingTitleBar(): void {
 
 function ShowLights(): void {
   // will show lights depending on state
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   if (fPowerLightOn == true) {
     hHandle = GetVideoObject(guiLIGHTS);
@@ -3940,9 +3939,9 @@ function ShowLights(): void {
   }
 }
 
+/* static */ let FlickerHDLight__iBaseTime: INT32 = 0;
+/* static */ let FlickerHDLight__iTotalDifference: INT32 = 0;
 function FlickerHDLight(): void {
-  /* static */ let iBaseTime: INT32 = 0;
-  /* static */ let iTotalDifference: INT32 = 0;
   let iDifference: INT32 = 0;
 
   if (fLoadPendingFlag == true) {
@@ -3953,27 +3952,27 @@ function FlickerHDLight(): void {
     return;
   }
 
-  if (iBaseTime == 0) {
-    iBaseTime = GetJA2Clock();
+  if (FlickerHDLight__iBaseTime == 0) {
+    FlickerHDLight__iBaseTime = GetJA2Clock();
   }
 
-  iDifference = GetJA2Clock() - iBaseTime;
+  iDifference = GetJA2Clock() - FlickerHDLight__iBaseTime;
 
-  if ((iTotalDifference > HD_FLICKER_TIME) && (fLoadPendingFlag == false)) {
-    iBaseTime = GetJA2Clock();
+  if ((FlickerHDLight__iTotalDifference > HD_FLICKER_TIME) && (fLoadPendingFlag == false)) {
+    FlickerHDLight__iBaseTime = GetJA2Clock();
     fHardDriveLightOn = false;
-    iBaseTime = 0;
-    iTotalDifference = 0;
+    FlickerHDLight__iBaseTime = 0;
+    FlickerHDLight__iTotalDifference = 0;
     fFlickerHD = false;
     InvalidateRegion(88, 466, 102, 477);
     return;
   }
 
   if (iDifference > FLICKER_TIME) {
-    iTotalDifference += iDifference;
+    FlickerHDLight__iTotalDifference += iDifference;
 
     if (fLoadPendingFlag == true) {
-      iTotalDifference = 0;
+      FlickerHDLight__iTotalDifference = 0;
     }
 
     if ((Random(2)) == 0) {
@@ -3987,28 +3986,28 @@ function FlickerHDLight(): void {
   return;
 }
 
+/* static */ let ExitLaptopDone__fOldLeaveLaptopState: boolean = false;
+/* static */ let ExitLaptopDone__iBaseTime: INT32 = 0;
 function ExitLaptopDone(): boolean {
   // check if this is the first time, to reset counter
 
-  /* static */ let fOldLeaveLaptopState: boolean = false;
-  /* static */ let iBaseTime: INT32 = 0;
   let iDifference: INT32 = 0;
 
-  if (fOldLeaveLaptopState == false) {
-    fOldLeaveLaptopState = true;
-    iBaseTime = GetJA2Clock();
+  if (ExitLaptopDone__fOldLeaveLaptopState == false) {
+    ExitLaptopDone__fOldLeaveLaptopState = true;
+    ExitLaptopDone__iBaseTime = GetJA2Clock();
   }
 
   fPowerLightOn = false;
 
   InvalidateRegion(44, 466, 58, 477);
   // get the current difference
-  iDifference = GetJA2Clock() - iBaseTime;
+  iDifference = GetJA2Clock() - ExitLaptopDone__iBaseTime;
 
   // did we wait long enough?
   if (iDifference > EXIT_LAPTOP_DELAY_TIME) {
-    iBaseTime = 0;
-    fOldLeaveLaptopState = false;
+    ExitLaptopDone__iBaseTime = 0;
+    ExitLaptopDone__fOldLeaveLaptopState = false;
     return true;
   } else {
     return false;
@@ -4207,7 +4206,7 @@ function SetCurrentToLastProgramOpened(): void {
 }
 
 export function BlitTitleBarIcons(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   // will blit the icons for the title bar of the program we are in
   switch (guiCurrentLaptopMode) {
     case (Enum95.LAPTOP_MODE_HISTORY):
@@ -4403,7 +4402,7 @@ export function PrintDate(): void {
 }
 
 function DisplayTaskBarIcons(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   //	UINT16 usPosX;
 
   //	usPosX = 83;
@@ -4484,7 +4483,7 @@ export function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT3
 export function RenderWWWProgramTitleBar(): boolean {
   // will render the title bar for the www program
   let uiTITLEFORWWW: UINT32;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let iIndex: INT32 = 0;
   let sString: string /* CHAR16[256] */;
@@ -4618,7 +4617,7 @@ function LaptopProgramIconMinimizeCallback(pRegion: MOUSE_REGION, iReason: INT32
 
 export function DisplayProgramBoundingBox(fMarkButtons: boolean): void {
   // the border fot eh program
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   hHandle = GetVideoObject(guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 1, 25, 23, VO_BLT_SRCTRANSPARENCY, null);
@@ -4648,20 +4647,19 @@ export function DisplayProgramBoundingBox(fMarkButtons: boolean): void {
   return;
 }
 
+/* static */ let CreateDestroyMouseRegionForNewMailIcon__fCreated: boolean = false;
 function CreateDestroyMouseRegionForNewMailIcon(): void {
-  /* static */ let fCreated: boolean = false;
-
   //. will toggle creation/destruction of the mouse regions used by the new mail icon
 
-  if (fCreated == false) {
-    fCreated = true;
+  if (CreateDestroyMouseRegionForNewMailIcon__fCreated == false) {
+    CreateDestroyMouseRegionForNewMailIcon__fCreated = true;
     MSYS_DefineRegion(gNewMailIconRegion, LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == false));
 
     MSYS_DefineRegion(gNewFileIconRegion, LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
     CreateFileAndNewEmailIconFastHelpText(Enum376.LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == false));
   } else {
-    fCreated = false;
+    CreateDestroyMouseRegionForNewMailIcon__fCreated = false;
     MSYS_RemoveRegion(gNewMailIconRegion);
     MSYS_RemoveRegion(gNewFileIconRegion);
   }
@@ -4823,7 +4821,7 @@ function HandleAltTabKeyInLaptop(): void {
 // display the 2 second book mark instruction
 /* static */ let DisplayWebBookMarkNotify__fOldShow: boolean = false;
 function DisplayWebBookMarkNotify(): void {
-  let hLapTopIconHandle: HVOBJECT;
+  let hLapTopIconHandle: SGPVObject;
 
   // handle the timer for this thing
   HandleWebBookMarkNotifyTimer();

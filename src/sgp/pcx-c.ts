@@ -276,25 +276,25 @@ function BlitPcxToBuffer(pCurrentPcxObject: PcxObject, pBuffer: Uint8Array, usBu
   return true;
 }
 
-function SetPcxPalette(pCurrentPcxObject: PcxObject, hImage: HIMAGE): boolean {
+function SetPcxPalette(pCurrentPcxObject: PcxObject, hImage: ImageType): boolean {
   let Index: UINT16;
   let pubPalette: Uint8Array;
 
   pubPalette = pCurrentPcxObject.ubPalette;
 
   // Allocate memory for palette
-  hImage.value.pPalette = createArrayFrom(256, createSGPPaletteEntry);
+  hImage.pPalette = createArrayFrom(256, createSGPPaletteEntry);
 
-  if (hImage.value.pPalette == null) {
+  if (hImage.pPalette == null) {
     return false;
   }
 
   // Initialize the proper palette entries
   for (Index = 0; Index < 256; Index++) {
-    hImage.value.pPalette[Index].peRed = pubPalette[Index * 3];
-    hImage.value.pPalette[Index].peGreen = pubPalette[Index * 3 + 1];
-    hImage.value.pPalette[Index].peBlue = pubPalette[Index * 3 + 2];
-    hImage.value.pPalette[Index].peFlags = 0;
+    hImage.pPalette[Index].peRed = pubPalette[Index * 3];
+    hImage.pPalette[Index].peGreen = pubPalette[Index * 3 + 1];
+    hImage.pPalette[Index].peBlue = pubPalette[Index * 3 + 2];
+    hImage.pPalette[Index].peFlags = 0;
   }
 
   return true;

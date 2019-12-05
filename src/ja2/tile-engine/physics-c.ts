@@ -189,7 +189,8 @@ function SimulateObject(pObject: REAL_OBJECT, deltaT: FLOAT): void {
   let DeltaTime: FLOAT = 0;
   let CurrentTime: FLOAT = 0;
   let TargetTime: FLOAT = DeltaTime;
-  let iCollisionID: INT32;
+  let iCollisionID: INT32 = 0;
+  let iCollisionID__Pointer = createPointer(() => iCollisionID, (v) => iCollisionID = v);
   let fEndThisObject: boolean = false;
 
   if (!PhysicsUpdateLife(pObject, deltaT)) {
@@ -213,7 +214,7 @@ function SimulateObject(pObject: REAL_OBJECT, deltaT: FLOAT): void {
         break;
       }
 
-      if (!PhysicsHandleCollisions(pObject, addressof(iCollisionID), DeltaTime)) {
+      if (!PhysicsHandleCollisions(pObject, iCollisionID__Pointer, DeltaTime)) {
         fEndThisObject = true;
         break;
       }
@@ -496,10 +497,10 @@ function PhysicsCheckForCollisions(pObject: REAL_OBJECT, piCollisionID: Pointer<
   let iCollisionCode: INT32 = Enum229.COLLISION_NONE;
   let fDoCollision: boolean = false;
   let dElasity: FLOAT = 1;
-  let usStructureID: UINT16;
-  let dNormalX: FLOAT;
-  let dNormalY: FLOAT;
-  let dNormalZ: FLOAT;
+  let usStructureID: UINT16 = 0;
+  let dNormalX: FLOAT = 0;
+  let dNormalY: FLOAT = 0;
+  let dNormalZ: FLOAT = 0;
   let sGridNo: INT16;
 
   // Checkf for collisions
@@ -522,7 +523,7 @@ function PhysicsCheckForCollisions(pObject: REAL_OBJECT, piCollisionID: Pointer<
 
   // SKIP FIRST GRIDNO, WE'LL COLLIDE WITH OURSELVES....
   if (pObject.fTestObject != TEST_OBJECT_NO_COLLISIONS) {
-    iCollisionCode = CheckForCollision(dX, dY, dZ, dDeltaX, dDeltaY, dDeltaZ, addressof(usStructureID), addressof(dNormalX), addressof(dNormalY), addressof(dNormalZ));
+    iCollisionCode = CheckForCollision(dX, dY, dZ, dDeltaX, dDeltaY, dDeltaZ, createPointer(() => usStructureID, (v) => usStructureID = v), createPointer(() => dNormalX, (v) => dNormalX = v), createPointer(() => dNormalY, (v) => dNormalY = v), createPointer(() => dNormalZ, (v) => dNormalZ = v));
   } else if (pObject.fTestObject == TEST_OBJECT_NO_COLLISIONS) {
     iCollisionCode = Enum229.COLLISION_NONE;
 
@@ -874,7 +875,7 @@ function PhysicsMoveObject(pObject: REAL_OBJECT): boolean {
   let sNewGridNo: INT16;
   let sTileIndex: INT16;
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   // Determine new gridno
   sNewGridNo = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
@@ -986,7 +987,7 @@ function PhysicsMoveObject(pObject: REAL_OBJECT): boolean {
       if (pObject.pNode != null) {
         // OK, get offsets
         hVObject = gTileDatabase[pObject.pNode.usIndex].hTileSurface;
-        pTrav = hVObject.value.pETRLEObject[gTileDatabase[pObject.pNode.usIndex].usRegionIndex];
+        pTrav = hVObject.pETRLEObject[gTileDatabase[pObject.pNode.usIndex].usRegionIndex];
 
         // Add new object / update position
         // Update position data
@@ -1111,7 +1112,7 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   let sSrcX: INT16;
   let sSrcY: INT16;
   let dRange: FLOAT;
-  let sEndGridNo: INT16;
+  let sEndGridNo: INT16 = 0;
 
   // Get XY from gridno
   ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
@@ -1141,7 +1142,7 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   vForce.y = dForce * vDirNormal.y;
   vForce.z = dForce * vDirNormal.z;
 
-  CalculateObjectTrajectory(sEndZ, pItem, vPosition, vForce, addressof(sEndGridNo));
+  CalculateObjectTrajectory(sEndZ, pItem, vPosition, vForce, createPointer(() => sEndGridNo, (v) => sEndGridNo = v));
 
   return sEndGridNo;
 }
@@ -1392,7 +1393,7 @@ export function CalculateLaunchItemAngle(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
 function CalculateLaunchItemBasicParams(pSoldier: SOLDIERTYPE, pItem: OBJECTTYPE, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pdMagForce: Pointer<FLOAT>, pdDegrees: Pointer<FLOAT>, psFinalGridNo: Pointer<INT16>, fArmed: boolean): void {
   let sInterGridNo: INT16;
   let sStartZ: INT16;
-  let dMagForce: FLOAT;
+  let dMagForce: FLOAT = 0;
   let dMaxForce: FLOAT;
   let dMinForce: FLOAT;
   let dDegrees: FLOAT;
@@ -1472,7 +1473,7 @@ function CalculateLaunchItemBasicParams(pSoldier: SOLDIERTYPE, pItem: OBJECTTYPE
 
   if (!fLauncher) {
     // Find force for basic
-    FindBestForceForTrajectory(pSoldier.sGridNo, sGridNo, sStartZ, sEndZ, dDegrees, pItem, psFinalGridNo, addressof(dMagForce));
+    FindBestForceForTrajectory(pSoldier.sGridNo, sGridNo, sStartZ, sEndZ, dDegrees, pItem, psFinalGridNo, createPointer(() => dMagForce, (v) => dMagForce = v));
 
     // Adjust due to max range....
     dMaxForce = CalculateSoldierMaxForce(pSoldier, dDegrees, pItem, fArmed);
@@ -1533,8 +1534,8 @@ function CalculateLaunchItemBasicParams(pSoldier: SOLDIERTYPE, pItem: OBJECTTYPE
 }
 
 export function CalculateLaunchItemChanceToGetThrough(pSoldier: SOLDIERTYPE, pItem: OBJECTTYPE, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: boolean, pbLevel: Pointer<INT8>, fFromUI: boolean): boolean {
-  let dForce: FLOAT;
-  let dDegrees: FLOAT;
+  let dForce: FLOAT = 0;
+  let dDegrees: FLOAT = 0;
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
@@ -1544,7 +1545,7 @@ export function CalculateLaunchItemChanceToGetThrough(pSoldier: SOLDIERTYPE, pIt
   let vDirNormal: vector_3 = createVector3();
 
   // Ge7t basic launch params...
-  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), psFinalGridNo, fArmed);
+  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, createPointer(() => dForce, (v) => dForce = v), createPointer(() => dDegrees, (v) => dDegrees = v), psFinalGridNo, fArmed);
 
   // Get XY from gridno
   ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));
@@ -1588,11 +1589,11 @@ export function CalculateLaunchItemChanceToGetThrough(pSoldier: SOLDIERTYPE, pIt
 }
 
 function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
-  let dMagForce: FLOAT;
+  let dMagForce: FLOAT = 0;
   let sSrcGridNo: INT16;
   let sDestGridNo: INT16;
   let Object: OBJECTTYPE = createObjectType();
-  let sFinalGridNo: INT16;
+  let sFinalGridNo: INT16 = 0;
 
   // OK, use a fake gridno, find the new gridno based on range, use height of merc, end height of ground,
   // 45 degrees
@@ -1602,7 +1603,7 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
   // Use a grenade objecttype
   CreateItem(Enum225.HAND_GRENADE, 100, Object);
 
-  FindBestForceForTrajectory(sSrcGridNo, sDestGridNo, GET_SOLDIER_THROW_HEIGHT(0), 0, dDegrees, Object, addressof(sFinalGridNo), addressof(dMagForce));
+  FindBestForceForTrajectory(sSrcGridNo, sDestGridNo, GET_SOLDIER_THROW_HEIGHT(0), 0, dDegrees, Object, createPointer(() => sFinalGridNo, (v) => sFinalGridNo = v), createPointer(() => dMagForce, (v) => dMagForce = v));
 
   return dMagForce;
 }
@@ -1625,15 +1626,15 @@ const MIN_MISS_BY = 1;
 const MAX_MISS_RADIUS = 5;
 
 export function CalculateLaunchItemParamsForThrow(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pItem: OBJECTTYPE, bMissBy: INT8, ubActionCode: UINT8, uiActionData: UINT32): void {
-  let dForce: FLOAT;
-  let dDegrees: FLOAT;
+  let dForce: FLOAT = 0;
+  let dDegrees: FLOAT = 0;
   let sDestX: INT16;
   let sDestY: INT16;
   let sSrcX: INT16;
   let sSrcY: INT16;
   let vForce: vector_3 = createVector3();
   let vDirNormal: vector_3 = createVector3();
-  let sFinalGridNo: INT16;
+  let sFinalGridNo: INT16 = 0;
   let fArmed: boolean = false;
   let usLauncher: UINT16;
   let sStartZ: INT16;
@@ -1700,7 +1701,7 @@ export function CalculateLaunchItemParamsForThrow(pSoldier: SOLDIERTYPE, sGridNo
   }
 
   // Get basic launch params...
-  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), addressof(sFinalGridNo), fArmed);
+  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, createPointer(() => dForce, (v) => dForce = v), createPointer(() => dDegrees, (v) => dDegrees = v), createPointer(() => sFinalGridNo, (v) => sFinalGridNo = v), fArmed);
 
   // Get XY from gridno
   ({ sX: sDestX, sY: sDestY } = ConvertGridNoToCenterCellXY(sGridNo));

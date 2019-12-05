@@ -341,7 +341,7 @@ export function BuildTileShadeTables(): void {
   let fForceRebuildForSlot: boolean = false;
 
   // Set the directory to the shadetable directory
-  GetFileManCurrentDirectory(DataDir);
+  DataDir = GetFileManCurrentDirectory();
   ShadeTableDir = sprintf("%s\\ShadeTables", DataDir);
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
     AssertMsg(0, "Can't set the directory to Data\\ShadeTable.  Kris' big problem!");

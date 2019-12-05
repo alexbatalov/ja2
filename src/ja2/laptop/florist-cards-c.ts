@@ -102,7 +102,7 @@ export function RenderFloristCards(): void {
   let usPosY: UINT16;
   let sTemp: string /* wchar_t[640] */;
   let uiStartLoc: UINT32 = 0;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usHeightOffset: UINT16;
 
   DisplayFloristDefaults();

@@ -40,6 +40,15 @@ export interface ZStripInfo {
   pbZChange: Int8Array /* Pointer<INT8> */; // change to the Z value in each strip (after the first)
 }
 
+export function createZStripInfo(): ZStripInfo {
+  return {
+    bInitialZChange: 0,
+    ubFirstZStripWidth: 0,
+    ubNumberOfZChanges: 0,
+    pbZChange: <Int8Array><unknown>null,
+  };
+}
+
 export interface SixteenBPPObjectInfo {
   p16BPPData: Uint16Array /* Pointer<UINT16> */;
   usRegionIndex: UINT16;
@@ -136,7 +145,7 @@ export interface VOBJECT_DESC {
   ImageFile: string /* SGPFILENAME */; // Filename of image data to use
   /*   } */
   /*   struct { */
-  hImage: HIMAGE;
+  hImage: ImageType;
   /*   } */
   /* } */
   ubBitDepth: UINT8; // BPP, ignored if given from file
@@ -146,7 +155,7 @@ export function createVObjectDesc(): VOBJECT_DESC {
   return {
     fCreateFlags: 0,
     ImageFile: "",
-    hImage: null,
+    hImage: <ImageType><unknown>null,
     ubBitDepth: 0,
   };
 }

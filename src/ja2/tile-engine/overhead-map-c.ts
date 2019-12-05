@@ -11,26 +11,26 @@ const NORMAL_MAP_SCREEN_TY = 860;
 const FASTMAPROWCOLTOPOS = (r: number, c: number) => ((r) * WORLD_COLS + (c));
 
 interface SMALL_TILE_SURF {
-  vo: HVOBJECT;
+  vo: SGPVObject;
   fType: UINT32;
 }
 
 function createSmallTileSurf(): SMALL_TILE_SURF {
   return {
-    vo: null,
+    vo: <SGPVObject><unknown>null,
     fType: 0,
   };
 }
 
 interface SMALL_TILE_DB {
-  vo: HVOBJECT;
+  vo: SGPVObject;
   usSubIndex: UINT16;
   fType: UINT32;
 }
 
 function createSmallTileDb(): SMALL_TILE_DB {
   return {
-    vo: null,
+    vo: <SGPVObject><unknown>null,
     usSubIndex: 0,
     fType: 0,
   };
@@ -54,7 +54,7 @@ let gsOveritemPoolGridNo: INT16;
 export function InitNewOverheadDB(ubTilesetID: UINT8): void {
   let uiLoop: UINT32;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let cFileBPP: string /* CHAR8[128] */;
   let cAdjustedFile: string /* CHAR8[128] */;
   let cnt1: UINT32;
@@ -104,7 +104,7 @@ export function InitNewOverheadDB(ubTilesetID: UINT8): void {
     // Get number of regions
     s = gSmTileSurf[cnt1];
 
-    NumRegions = s.vo.value.usNumberOfObjects;
+    NumRegions = s.vo.usNumberOfObjects;
 
     // Check for overflow
     if (NumRegions > gNumTilesPerType[cnt1]) {
@@ -158,7 +158,7 @@ function DeleteOverheadDB(): void {
   }
 }
 
-function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Pointer<ITEM_POOL>>, ubRadius: UINT8, bLevel: INT8): boolean {
+function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<ITEM_POOL>, ubRadius: UINT8, bLevel: INT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -205,7 +205,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
   return fFound;
 }
 
-function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<Pointer<SOLDIERTYPE>>, ubRadius: UINT8): boolean {
+function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<SOLDIERTYPE>, ubRadius: UINT8): boolean {
   let sTop: INT16;
   let sBottom: INT16;
   let sLeft: INT16;
@@ -280,7 +280,7 @@ function DisplayMercNameInOverhead(pSoldier: SOLDIERTYPE): void {
 
 /* static */ let HandleOverheadMap__fFirst: boolean = true;
 export function HandleOverheadMap(): void {
-  let pSoldier: SOLDIERTYPE;
+  let pSoldier: SOLDIERTYPE = <SOLDIERTYPE><unknown>undefined;
 
   if (HandleOverheadMap__fFirst) {
     HandleOverheadMap__fFirst = false;
@@ -340,23 +340,25 @@ export function HandleOverheadMap(): void {
   }
 
   if (!gfEditMode && !gfTacticalPlacementGUIActive) {
-    let usMapPos: INT16;
-    let pItemPool: Pointer<ITEM_POOL>;
+    let usMapPos: INT16 = 0;
+    let usMapPos__Pointer = createPointer(() => usMapPos, (v) => usMapPos = v);
+    let pItemPool: ITEM_POOL = <ITEM_POOL><unknown>undefined;
+    let pItemPool__Pointer = createPointer(() => pItemPool, (v) => pItemPool = v);
 
     gfUIHandleSelectionAboveGuy = false;
 
     HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), null, true);
 
-    if (GetOverheadMouseGridNo(addressof(usMapPos))) {
+    if (GetOverheadMouseGridNo(usMapPos__Pointer)) {
       // ATE: Find the closest item pool within 5 tiles....
-      if (GetClosestItemPool(usMapPos, addressof(pItemPool), 1, 0)) {
-        let pStructure: Pointer<STRUCTURE> = null;
-        let sIntTileGridNo: INT16;
+      if (GetClosestItemPool(usMapPos, pItemPool__Pointer, 1, 0)) {
+        let pStructure: STRUCTURE = <STRUCTURE><unknown>undefined;
+        let sIntTileGridNo: INT16 = 0;
         let bZLevel: INT8 = 0;
         let sActionGridNo: INT16 = usMapPos;
 
         // Get interactive tile...
-        if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false)) {
+        if (ConditionalGetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v), false)) {
           sActionGridNo = sIntTileGridNo;
         }
 
@@ -366,11 +368,11 @@ export function HandleOverheadMap(): void {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, gusMouseYPos);
 
           gfOverItemPool = true;
-          gsOveritemPoolGridNo = pItemPool.value.sGridNo;
+          gsOveritemPoolGridNo = pItemPool.sGridNo;
         }
       }
 
-      if (GetClosestItemPool(usMapPos, addressof(pItemPool), 1, 1)) {
+      if (GetClosestItemPool(usMapPos, pItemPool__Pointer, 1, 1)) {
         let bZLevel: INT8 = 0;
         let sActionGridNo: INT16 = usMapPos;
 
@@ -378,13 +380,13 @@ export function HandleOverheadMap(): void {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, (gusMouseYPos - 5));
 
           gfOverItemPool = true;
-          gsOveritemPoolGridNo = pItemPool.value.sGridNo;
+          gsOveritemPoolGridNo = pItemPool.sGridNo;
         }
       }
     }
 
-    if (GetOverheadMouseGridNoForFullSoldiersGridNo(addressof(usMapPos))) {
-      if (GetClosestMercInOverheadMap(usMapPos, addressof(pSoldier), 1)) {
+    if (GetOverheadMouseGridNoForFullSoldiersGridNo(usMapPos__Pointer)) {
+      if (GetClosestMercInOverheadMap(usMapPos, createPointer(() => pSoldier, (v) => pSoldier = v), 1)) {
         if (pSoldier.bTeam == gbPlayerNum) {
           gfUIHandleSelectionAboveGuy = true;
           gsSelectedGuy = pSoldier.ubID;
@@ -422,7 +424,7 @@ export function InOverheadMap(): boolean {
 
 export function GoIntoOverheadMap(): void {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   gfInOverheadMap = true;
 
@@ -448,9 +450,9 @@ export function GoIntoOverheadMap(): void {
 
   // Add shades to persons....
   hVObject = GetVideoObject(uiPERSONS);
-  hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, false);
-  hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, false);
-  hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, false);
+  hVObject.pShades[0] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 256, 256, 256, false);
+  hVObject.pShades[1] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 310, 310, 310, false);
+  hVObject.pShades[2] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 0, 0, 0, false);
 
   gfOverheadMapDirty = true;
 
@@ -478,7 +480,7 @@ function HandleOverheadUI(): void {
   let ubID: UINT8;
 
   // CHECK FOR MOUSE OVER REGIONS...
-  if (GetOverheadMouseGridNo(addressof(sMousePos))) {
+  if (GetOverheadMouseGridNo(createPointer(() => sMousePos, (v) => sMousePos = v))) {
     // Look quickly for a soldier....
     ubID = QuickFindSoldier(sMousePos);
 
@@ -567,7 +569,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
   let pNode: LEVELNODE | null;
   let pTile: SMALL_TILE_DB;
   let sHeight: INT16;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sX1: INT16;
   let sX2: INT16;
   let sY1: INT16;
@@ -619,7 +621,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
             sX = sTempPosX_S;
             sY = sTempPosY_S - sHeight + (gsRenderHeight / 5);
 
-            pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
+            pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
             // RENDER!
             // BltVideoObjectFromIndex(  FRAME_BUFFER, SGR1, gSmallTileDatabase[ gpWorldLevelData[ usTileIndex ].pLandHead->usIndex ], sX, sY, VO_BLT_SRCTRANSPARENCY, NULL );
@@ -697,7 +699,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
                 sY += (gsRenderHeight / 5);
 
-                pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
+                pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
                 // RENDER!
                 Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
@@ -716,7 +718,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
               sY += (gsRenderHeight / 5);
 
-              pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
+              pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
               // RENDER!
               Blt8BPPDataTo16BPPBufferShadow(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
@@ -744,7 +746,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
                 sY += (gsRenderHeight / 5);
 
-                pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
+                pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
                 // RENDER!
                 Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
@@ -819,7 +821,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
                   sY += (gsRenderHeight / 5);
 
-                  pTile.vo.value.pShadeCurrent = gSmTileSurf[pTile.fType].vo.value.pShades[pNode.ubShadeLevel];
+                  pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
                   // RENDER!
                   Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, pTile.vo, sX, sY, pTile.usSubIndex);
@@ -907,7 +909,7 @@ function RenderOverheadOverlays(): void {
   let pWorldItem: WORLDITEM;
   let i: UINT32;
   let pSoldier: SOLDIERTYPE;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sX: INT16;
   let sY: INT16;
   let end: UINT16;
@@ -968,7 +970,7 @@ function RenderOverheadOverlays(): void {
         SetObjectShade(hVObject, 2);
       }
     }
-    if (gfEditMode && gpSelected && gpSelected.value.pSoldier == pSoldier) {
+    if (gfEditMode && gpSelected && gpSelected.pSoldier == pSoldier) {
       // editor:  show the selected edited merc as the yellow one.
       Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 0);
     } else
@@ -1408,10 +1410,10 @@ function CopyOverheadDBShadetablesFromTileset(): void {
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
     pTileSurf = gTileSurfaceArray[uiLoop];
 
-    gSmTileSurf[uiLoop].vo.value.fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;
+    gSmTileSurf[uiLoop].vo.fFlags |= VOBJECT_FLAG_SHADETABLE_SHARED;
 
     for (uiLoop2 = 0; uiLoop2 < HVOBJECT_SHADE_TABLES; uiLoop2++) {
-      gSmTileSurf[uiLoop].vo.value.pShades[uiLoop2] = pTileSurf.vo.value.pShades[uiLoop2];
+      gSmTileSurf[uiLoop].vo.pShades[uiLoop2] = pTileSurf.vo.pShades[uiLoop2];
     }
   }
 }

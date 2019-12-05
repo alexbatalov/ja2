@@ -92,7 +92,7 @@ export interface GUI_BUTTON {
   uiOldFlags: UINT32; // Old flags from previous render loop
   XLoc: INT16; // Coordinates where button is on the screen
   YLoc: INT16;
-  UserData: INT32[] /* [4] */; // Place holder for user data etc.
+  UserData: any[] /* INT32[4] */; // Place holder for user data etc.
   Group: INT16; // Group this button belongs to (see DOCs)
   bDefaultStatus: INT8;
   // Button disabled style

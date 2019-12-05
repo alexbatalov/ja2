@@ -30,13 +30,16 @@ const FONT_BCOLOR_PURPLE = 160;
 
 export interface FontTranslationTable {
   usNumberOfSymbols: UINT16;
-  DynamicArrayOf16BitValues: Pointer<UINT16>;
+  DynamicArrayOf16BitValues: Uint16Array /* Pointer<UINT16> */;
 }
 
-const SetFontDestObject = (x: number) => (SetFontDestBuffer(x, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, FontDestWrap));
+export function createFontTranslationTable(): FontTranslationTable {
+  return {
+    usNumberOfSymbols: 0,
+    DynamicArrayOf16BitValues: <Uint16Array><unknown>null,
+  };
+}
 
-const SetFontDestClip = (x1: number, y1: number, x2: number, y2: number) => (SetFontDestBuffer(FontDestBuffer, x1, y1, x2, y2, FontDestWrap));
-const SetFontDestWrap = (x: boolean) => (SetFontDestBuffer(FontDestBuffer, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, x));
 // functions
 
 // Function for displaying coded test. Since it's slower to do this, it's separate from  the normal fuctions

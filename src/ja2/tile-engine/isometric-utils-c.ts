@@ -214,10 +214,10 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT): { d
 }
 
 export function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
-  let sWorldX: INT16;
-  let sWorldY: INT16;
+  let sWorldX: INT16 = 0;
+  let sWorldY: INT16 = 0;
 
-  if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
+  if (!GetMouseWorldCoords(createPointer(() => sWorldX, (v) => sWorldX = v), createPointer(() => sWorldY, (v) => sWorldY = v))) {
     (psMouseX.value) = 0;
     (psMouseY.value) = 0;
     return false;
@@ -231,10 +231,10 @@ export function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): 
 }
 
 export function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): boolean {
-  let sWorldX: INT16;
-  let sWorldY: INT16;
+  let sWorldX: INT16 = 0;
+  let sWorldY: INT16 = 0;
 
-  if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
+  if (!GetMouseWorldCoords(createPointer(() => sWorldX, (v) => sWorldX = v), createPointer(() => sWorldY, (v) => sWorldY = v))) {
     return false;
   }
 
@@ -294,11 +294,11 @@ export function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<
 }
 
 export function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): boolean {
-  let sMouseX: INT16;
-  let sMouseY: INT16;
+  let sMouseX: INT16 = 0;
+  let sMouseY: INT16 = 0;
 
   // Get grid position
-  if (!GetMouseXY(addressof(sMouseX), addressof(sMouseY))) {
+  if (!GetMouseXY(createPointer(() => sMouseX, (v) => sMouseX = v), createPointer(() => sMouseY, (v) => sMouseY = v))) {
     return false;
   }
 
@@ -312,8 +312,8 @@ export function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: 
 /* static */ let GetMouseMapPos__sSameCursorPos: INT16;
 /* static */ let GetMouseMapPos__uiOldFrameNumber: UINT32 = 99999;
 export function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
-  let sWorldX: INT16;
-  let sWorldY: INT16;
+  let sWorldX: INT16 = 0;
+  let sWorldY: INT16 = 0;
 
   // Check if this is the same frame as before, return already calculated value if so!
   if (GetMouseMapPos__uiOldFrameNumber == guiGameCycleCounter && !guiForceRefreshMousePositionCalculation) {
@@ -328,7 +328,7 @@ export function GetMouseMapPos(psMapPos: Pointer<INT16>): boolean {
   GetMouseMapPos__uiOldFrameNumber = guiGameCycleCounter;
   guiForceRefreshMousePositionCalculation = false;
 
-  if (GetMouseXY(addressof(sWorldX), addressof(sWorldY))) {
+  if (GetMouseXY(createPointer(() => sWorldX, (v) => sWorldX = v), createPointer(() => sWorldY, (v) => sWorldY = v))) {
     psMapPos.value = MAPROWCOLTOPOS(sWorldY, sWorldX);
     GetMouseMapPos__sSameCursorPos = (psMapPos.value);
     return true;
@@ -620,10 +620,10 @@ export function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: SGPRect):
   }
 }
 
-export function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): boolean {
-  if ((sXPos >= pRect.value.iLeft) && (sXPos <= pRect.value.iRight) && (sYPos >= pRect.value.iTop) && (sYPos <= pRect.value.iBottom)) {
-    (sXRel.value) = pRect.value.iLeft - sXPos;
-    (sYRel.value) = sYPos - pRect.value.iTop;
+export function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: SGPRect, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): boolean {
+  if ((sXPos >= pRect.iLeft) && (sXPos <= pRect.iRight) && (sYPos >= pRect.iTop) && (sYPos <= pRect.iBottom)) {
+    (sXRel.value) = pRect.iLeft - sXPos;
+    (sYRel.value) = sYPos - pRect.iTop;
 
     return true;
   } else {
@@ -933,7 +933,7 @@ export function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): b
   return false;
 }
 
-export function FindFenceJumpDirection(pSoldier: SOLDIERTYPE, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): boolean {
+export function FindFenceJumpDirection(pSoldier: SOLDIERTYPE, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8> | null): boolean {
   let cnt: INT32;
   let sNewGridNo: INT16;
   let sOtherSideOfFence: INT16;
@@ -972,7 +972,9 @@ export function FindFenceJumpDirection(pSoldier: SOLDIERTYPE, sGridNo: INT16, bS
   }
 
   if (fFound) {
-    pbDirection.value = bMinDirection;
+    if (pbDirection) {
+      pbDirection.value = bMinDirection;
+    }
     return true;
   }
 

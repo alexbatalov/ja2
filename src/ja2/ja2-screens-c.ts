@@ -67,14 +67,6 @@ export function DisplayFrameRate(): void {
     VideoOverlayDesc.pzText = swprintf("%ld", Math.min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
     UpdateVideoOverlay(VideoOverlayDesc, giCounterPeriodOverlay, false);
-
-    if (GetMouseMapPos(addressof(usMapPos))) {
-      // gprintfdirty( 0, 315, L"(%d)",usMapPos);
-      // mprintf( 0,315,L"(%d)",usMapPos);
-    } else {
-      // gprintfdirty( 0, 315, L"(%d %d)",gusMouseXPos, gusMouseYPos - INTERFACE_START_Y );
-      // mprintf( 0,315,L"(%d %d)",gusMouseXPos, gusMouseYPos - INTERFACE_START_Y );
-    }
   }
 
   if ((gTacticalStatus.uiFlags & GODMODE)) {
@@ -205,7 +197,7 @@ export function InitScreenHandle(): UINT32 {
 
     vs_desc.ImageFile = "ja2_logo.STI";
 
-    hVSurface = CreateVideoSurface(addressof(vs_desc));
+    hVSurface = CreateVideoSurface(vs_desc);
     if (!hVSurface)
       AssertMsg(0, "Failed to load ja2_logo.sti!");
 
@@ -579,7 +571,7 @@ const SMILY_END_DELAY = 1000;
 export function SexScreenHandle(): UINT32 {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sX: INT16;
   let sY: INT16;
 
@@ -645,7 +637,7 @@ export function SexScreenHandle(): UINT32 {
 
   // Calculate smily face positions...
   hVObject = GetVideoObject(SexScreenHandle__guiSMILY);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
 
   sX = ((640 - pTrav.usWidth) / 2);
   sY = ((480 - pTrav.usHeight) / 2);

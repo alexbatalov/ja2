@@ -227,7 +227,7 @@ export function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
     InvalidateRegion(pCurr.usBarLeft, pCurr.usBarTop, pCurr.usBarRight, pCurr.usBarBottom);
     ExecuteBaseDirtyRectQueue();
     EndFrameBufferRender();
-    RefreshScreen(null);
+    RefreshScreen();
   }
 
   // update music here

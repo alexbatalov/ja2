@@ -14,6 +14,14 @@ export interface AUDIO_GAP {
   pNext: AUDIO_GAP | null /* Pointer<AUDIO_GAP> */;
 }
 
+export function createAudioGap(): AUDIO_GAP {
+  return {
+    uiStart: 0,
+    uiEnd: 0,
+    pNext: null,
+  };
+}
+
 export const FACE_AUTO_DISPLAY_BUFFER = 0xFFFFF000;
 export const FACE_AUTO_RESTORE_BUFFER = 0xFFFFFF00;
 export const FACE_NO_RESTORE_BUFFER = 0xFFFFFFF0;
@@ -147,8 +155,8 @@ export interface FACETYPE {
 
   uiVideoObject: UINT32;
 
-  uiUserData1: UINT32;
-  uiUserData2: UINT32;
+  uiUserData1: any /* UINT32 */;
+  uiUserData2: any /* UINT32 */;
 
   fCompatibleItems: boolean;
   fOldCompatibleItems: boolean;

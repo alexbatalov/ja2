@@ -441,7 +441,7 @@ function HandleGIOScreen(): void {
 }
 
 function RenderGIOScreen(): boolean {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosY: UINT16;
 
   // Get the main background screen graphic and blt it

@@ -1470,7 +1470,7 @@ function GetSlotInvHeightWidth(ubPos: UINT8): { sWidth: INT16, sHeight: INT16 } 
   return { sWidth, sHeight };
 }
 
-export function HandleNewlyAddedItems(pSoldier: SOLDIERTYPE, fDirtyLevel: Pointer<boolean>): void {
+export function HandleNewlyAddedItems(pSoldier: SOLDIERTYPE, fDirtyLevel: Pointer<UINT8>): void {
   let cnt: UINT32;
   let sX: INT16;
   let sY: INT16;
@@ -1567,7 +1567,7 @@ export function InitItemInterface(): void {
 
 /* static */ let INVRenderItem__pStr: string /* INT16[100] */;
 /* static */ let INVRenderItem__pStr2: string /* INT16[100] */;
-export function INVRenderItem(uiBuffer: UINT32, pSoldier: SOLDIERTYPE | null, pObject: OBJECTTYPE, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: boolean, sOutlineColor: INT16): void {
+export function INVRenderItem(uiBuffer: UINT32, pSoldier: SOLDIERTYPE | null, pObject: OBJECTTYPE, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8> | null, ubStatusIndex: UINT8, fOutline: boolean, sOutlineColor: INT16): void {
   let uiStringLength: UINT16;
   let pItem: INVTYPE;
   let pTrav: ETRLEObject;
@@ -1577,12 +1577,12 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: SOLDIERTYPE | null, pO
   let sCenY: INT16;
   let sNewY: INT16;
   let sNewX: INT16;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let fLineSplit: boolean = false;
-  let sFontX2: INT16;
-  let sFontY2: INT16;
-  let sFontX: INT16;
-  let sFontY: INT16;
+  let sFontX2: INT16 = 0;
+  let sFontY2: INT16 = 0;
+  let sFontX: INT16 = 0;
+  let sFontY: INT16 = 0;
 
   if (pObject.usItem == NOTHING) {
     return;
@@ -1597,7 +1597,7 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: SOLDIERTYPE | null, pO
   if (fDirtyLevel == DIRTYLEVEL2) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
     hVObject = GetVideoObject(GetInterfaceGraphicForItem(pItem));
-    pTrav = hVObject.value.pETRLEObject[pItem.ubGraphicNum];
+    pTrav = hVObject.pETRLEObject[pItem.ubGraphicNum];
     usHeight = pTrav.usHeight;
     usWidth = pTrav.usWidth;
 
@@ -2124,7 +2124,7 @@ export function InternalInitItemDescriptionBox(pObject: OBJECTTYPE, sX: INT16, s
 }
 
 function ReloadItemDesc(): boolean {
-  if (!LoadTileGraphicForItem(Item[gpItemDescObject.usItem], addressof(guiItemGraphic))) {
+  if (!LoadTileGraphicForItem(Item[gpItemDescObject.usItem], createPointer(() => guiItemGraphic, (v) => guiItemGraphic = v))) {
     return false;
   }
 
@@ -2382,7 +2382,7 @@ export function RenderItemDescriptionBox(): void {
   let sCenX: INT16;
   let sCenY: INT16;
   let sStrX: INT16;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sTempString: string /* CHAR16[128] */;
 
   let uiStringLength: UINT16;
@@ -2398,7 +2398,7 @@ export function RenderItemDescriptionBox(): void {
   if ((guiCurrentItemDescriptionScreen == Enum26.MAP_SCREEN) && (gfInItemDescBox)) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
     hVObject = GetVideoObject(guiItemGraphic);
-    pTrav = hVObject.value.pETRLEObject[0];
+    pTrav = hVObject.pETRLEObject[0];
     usHeight = pTrav.usHeight;
     usWidth = pTrav.usWidth;
 
@@ -2787,7 +2787,7 @@ export function RenderItemDescriptionBox(): void {
   } else if (gfInItemDescBox) {
     // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
     hVObject = GetVideoObject(guiItemGraphic);
-    pTrav = hVObject.value.pETRLEObject[0];
+    pTrav = hVObject.pETRLEObject[0];
     usHeight = pTrav.usHeight;
     usWidth = pTrav.usWidth;
 
@@ -3153,7 +3153,7 @@ export function RenderItemDescriptionBox(): void {
   }
 }
 
-export function HandleItemDescriptionBox(pfDirty: Pointer<boolean>): void {
+export function HandleItemDescriptionBox(pfDirty: Pointer<UINT8>): void {
   if (fItemDescDelete) {
     DeleteItemDescriptionBox();
     fItemDescDelete = false;
@@ -3461,23 +3461,23 @@ function SoldierCanSeeCatchComing(pSoldier: SOLDIERTYPE, sSrcGridNo: INT16): boo
 /* static */ let DrawItemTileCursor__uiOldCursorId: UINT32 = 0;
 /* static */ let DrawItemTileCursor__usOldMousePos: UINT16 = 0;
 export function DrawItemTileCursor(): void {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let usIndex: UINT16;
-  let ubSoldierID: UINT8;
+  let ubSoldierID: UINT8 = 0;
   let sAPCost: INT16;
   let fRecalc: boolean;
-  let uiCursorFlags: UINT32;
-  let sFinalGridNo: INT16;
+  let uiCursorFlags: UINT32 = 0;
+  let sFinalGridNo: INT16 = 0;
   let uiCursorId: UINT32 = Enum317.CURSOR_ITEM_GOOD_THROW;
   let pSoldier: SOLDIERTYPE;
   let fGiveItem: boolean = false;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let sEndZ: INT16 = 0;
   let sDist: INT16;
-  let bLevel: INT8;
+  let bLevel: INT8 = 0;
 
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     if (gfUIFullTargetFound) {
       // Force mouse position to guy...
       usMapPos = MercPtrs[gusUIFullTargetID].sGridNo;
@@ -3496,7 +3496,7 @@ export function DrawItemTileCursor(): void {
     gfUIHandleShowMoveGrid = 0;
 
     // If we are over a talkable guy, set flag
-    if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), true, false, true)) {
+    if (IsValidTalkableNPCFromMouse(createPointer(() => ubSoldierID, (v) => ubSoldierID = v), true, false, true)) {
       fGiveItem = true;
     }
 
@@ -3506,7 +3506,7 @@ export function DrawItemTileCursor(): void {
     }
 
     // Get recalc and cursor flags
-    fRecalc = GetMouseRecalcAndShowAPFlags(addressof(uiCursorFlags), null);
+    fRecalc = GetMouseRecalcAndShowAPFlags(createPointer(() => uiCursorFlags, (v) => uiCursorFlags = v), null);
 
     // OK, if we begin to move, reset the cursor...
     if (uiCursorFlags & MOUSE_MOVING) {
@@ -3582,7 +3582,7 @@ export function DrawItemTileCursor(): void {
 
         if (!(uiCursorFlags & MOUSE_MOVING)) {
           // Find adjacent gridno...
-          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, addressof(ubDirection), null, false, false);
+          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, gusCurMousePos, createPointer(() => ubDirection, (v) => ubDirection = v), null, false, false);
           if (sActionGridNo == -1) {
             sActionGridNo = gusCurMousePos;
           }
@@ -3661,7 +3661,7 @@ export function DrawItemTileCursor(): void {
             }
 
             // Calculate chance to throw here.....
-            if (!CalculateLaunchItemChanceToGetThrough(gpItemPointerSoldier, gpItemPointer, usMapPos, gsInterfaceLevel, ((gsInterfaceLevel * 256) + sEndZ), addressof(sFinalGridNo), false, addressof(bLevel), true)) {
+            if (!CalculateLaunchItemChanceToGetThrough(gpItemPointerSoldier, gpItemPointer, usMapPos, gsInterfaceLevel, ((gsInterfaceLevel * 256) + sEndZ), createPointer(() => sFinalGridNo, (v) => sFinalGridNo = v), false, createPointer(() => bLevel, (v) => bLevel = v), true)) {
               gfBadThrowItemCTGH = true;
             } else {
               gfBadThrowItemCTGH = false;
@@ -3709,7 +3709,7 @@ function IsValidAmmoToReloadRobot(pSoldier: SOLDIERTYPE, pObject: OBJECTTYPE): b
 export function HandleItemPointerClick(usMapPos: UINT16): boolean {
   // Determine what to do
   let ubDirection: UINT8;
-  let ubSoldierID: UINT8;
+  let ubSoldierID: UINT8 = 0;
   let usItem: UINT16;
   let sAPCost: INT16;
   let pSoldier: SOLDIERTYPE;
@@ -3760,7 +3760,7 @@ export function HandleItemPointerClick(usMapPos: UINT16): boolean {
   }
 
   // SEE IF WE ARE OVER A TALKABLE GUY!
-  if (IsValidTalkableNPCFromMouse(addressof(ubSoldierID), true, false, true)) {
+  if (IsValidTalkableNPCFromMouse(createPointer(() => ubSoldierID, (v) => ubSoldierID = v), true, false, true)) {
     fGiveItem = true;
   }
 
@@ -3814,12 +3814,12 @@ export function HandleItemPointerClick(usMapPos: UINT16): boolean {
         // Check if we can reload robot....
         if (IsValidAmmoToReloadRobot(MercPtrs[ubSoldierID], TempObject)) {
           let sActionGridNo: INT16;
-          let ubDirection: UINT8;
-          let sAdjustedGridNo: INT16;
+          let ubDirection: UINT8 = 0;
+          let sAdjustedGridNo: INT16 = 0;
 
           // Walk up to him and reload!
           // See if we can get there to stab
-          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, MercPtrs[ubSoldierID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+          sActionGridNo = FindAdjacentGridEx(gpItemPointerSoldier, MercPtrs[ubSoldierID].sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v), true, false);
 
           if (sActionGridNo != -1 && gbItemPointerSrcSlot != NO_SLOT) {
             // Make a temp object for ammo...
@@ -3840,7 +3840,7 @@ export function HandleItemPointerClick(usMapPos: UINT16): boolean {
               gpItemPointerSoldier.ubPendingAction = Enum257.MERC_RELOADROBOT;
 
               // WALK UP TO DEST FIRST
-              EVENT_InternalGetNewSoldierPath(gpItemPointerSoldier, sActionGridNo, gpItemPointerSoldier.usUIMovementMode, false, false);
+              EVENT_InternalGetNewSoldierPath(gpItemPointerSoldier, sActionGridNo, gpItemPointerSoldier.usUIMovementMode, 0, false);
             } else {
               EVENT_SoldierBeginReloadRobot(gpItemPointerSoldier, sAdjustedGridNo, ubDirection, gbItemPointerSrcSlot);
             }
@@ -4114,7 +4114,7 @@ export function InitItemStackPopup(pSoldier: SOLDIERTYPE, ubPosition: UINT8, sIn
   let aRect: SGPRect = createSGPRect();
   let ubLimit: UINT8;
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let cnt: INT32;
   let usPopupWidth: UINT16;
   let sItemSlotWidth: INT16;
@@ -4130,7 +4130,7 @@ export function InitItemStackPopup(pSoldier: SOLDIERTYPE, ubPosition: UINT8, sIn
 
   // Determine # of items
   gpItemPopupObject = pSoldier.inv[ubPosition];
-  ubLimit = ItemSlotLimit(gpItemPopupObject.value.usItem, ubPosition);
+  ubLimit = ItemSlotLimit(gpItemPopupObject.usItem, ubPosition);
 
   // Return false if #objects not >1
   if (ubLimit < 1) {
@@ -4152,7 +4152,7 @@ export function InitItemStackPopup(pSoldier: SOLDIERTYPE, ubPosition: UINT8, sIn
 
   // Get size
   hVObject = GetVideoObject(guiItemPopupBoxes);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
   usPopupWidth = pTrav.usWidth;
 
   // Determine position, height and width of mouse region, area
@@ -4238,7 +4238,7 @@ export function RenderItemStackPopup(fFullRender: boolean): void {
   let pTrav: ETRLEObject;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let cnt: UINT32;
   let sX: INT16;
   let sY: INT16;
@@ -4256,14 +4256,14 @@ export function RenderItemStackPopup(fFullRender: boolean): void {
   }
   // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
   hVObject = GetVideoObject(guiItemPopupBoxes);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
   for (cnt = 0; cnt < gubNumItemPopups; cnt++) {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, gsItemPopupX + (cnt * usWidth), gsItemPopupY, VO_BLT_SRCTRANSPARENCY, null);
 
-    if (cnt < gpItemPopupObject.value.ubNumberOfObjects) {
+    if (cnt < gpItemPopupObject.ubNumberOfObjects) {
       sX = (gsItemPopupX + (cnt * usWidth) + 11);
       sY = (gsItemPopupY + 3);
 
@@ -4313,7 +4313,7 @@ export function InitKeyRingPopup(pSoldier: SOLDIERTYPE, sInvX: INT16, sInvY: INT
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let aRect: SGPRect = createSGPRect();
   let pTrav: ETRLEObject;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let cnt: INT32;
   let usPopupWidth: UINT16;
   let usPopupHeight: UINT16;
@@ -4349,7 +4349,7 @@ export function InitKeyRingPopup(pSoldier: SOLDIERTYPE, sInvX: INT16, sInvY: INT
 
   // Get size
   hVObject = GetVideoObject(guiItemPopupBoxes);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
   usPopupWidth = pTrav.usWidth;
   usPopupHeight = pTrav.usHeight;
 
@@ -4405,7 +4405,7 @@ export function RenderKeyRingPopup(fFullRender: boolean): void {
   let pTrav: ETRLEObject;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let cnt: UINT32;
   let pObject: OBJECTTYPE = createObjectType();
   let sKeyRingItemWidth: INT16 = 0;
@@ -4436,7 +4436,7 @@ export function RenderKeyRingPopup(fFullRender: boolean): void {
 
   // TAKE A LOOK AT THE VIDEO OBJECT SIZE ( ONE OF TWO SIZES ) AND CENTER!
   hVObject = GetVideoObject(guiItemPopupBoxes);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
@@ -4671,7 +4671,7 @@ function ItemPopupRegionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
       // fInterfacePanelDirty = DIRTYLEVEL2;
       // RenderItemStackPopup( FALSE );
     } else {
-      if (uiItemPos < gpItemPopupObject.value.ubNumberOfObjects) {
+      if (uiItemPos < gpItemPopupObject.ubNumberOfObjects) {
         // Here, grab an item and put in cursor to swap
         // RemoveObjFrom( OBJECTTYPE * pObj, UINT8 ubRemoveIndex )
         GetObjFrom(gpItemPopupObject, uiItemPos, gItemPointer);
@@ -4690,7 +4690,7 @@ function ItemPopupRegionCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
           BeginSkiItemPointer(Enum252.PLAYERS_INVENTORY, -1, !gfKeyState[CTRL]);
 
           // if we've just removed the last one there
-          if (gpItemPopupObject.value.ubNumberOfObjects == 0) {
+          if (gpItemPopupObject.ubNumberOfObjects == 0) {
             // we must immediately get out of item stack popup, because the item has been deleted (memset to 0), and
             // errors like a right bringing up an item description for item 0 could happen then.  ARM.
             DeleteItemStackPopup();
@@ -5313,7 +5313,7 @@ export function RenderItemPickupMenu(): void {
         sCenY = sY;
 
         // ATE: Adjust to basic shade.....
-        gTileDatabase[usItemTileIndex].hTileSurface.value.pShadeCurrent = gTileDatabase[usItemTileIndex].hTileSurface.value.pShades[4];
+        gTileDatabase[usItemTileIndex].hTileSurface.pShadeCurrent = gTileDatabase[usItemTileIndex].hTileSurface.pShades[4];
 
         // else
         {

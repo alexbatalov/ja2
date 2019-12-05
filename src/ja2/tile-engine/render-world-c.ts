@@ -2,7 +2,7 @@ namespace ja2 {
 
 let fLandLayerDirty: boolean = true;
 
-export let gpZBuffer: Pointer<UINT16> = null;
+export let gpZBuffer: Uint16Array = <Uint16Array><unknown>null;
 let gfTagAnimatedTiles: boolean = true;
 
 let gsCurrentGlowFrame: INT16 = 0;
@@ -729,13 +729,13 @@ export function RenderSetShadows(fShadows: boolean): void {
 /* static */ let RenderTiles__ubLevelNodeStartIndex: UINT8[] /* [NUM_RENDER_FX_TYPES] */ = createArray(Enum306.NUM_RENDER_FX_TYPES, 0);
 /* static */ let RenderTiles__iTileMapPos: INT32[] /* [500] */ = createArray(500, 0);
 /* static */ let RenderTiles__RenderFXList: RenderFXType[] /* [NUM_RENDER_FX_TYPES] */ = createArrayFrom(Enum306.NUM_RENDER_FX_TYPES, createRenderFXType);
-function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT32, iStartPointX_S: INT32, iStartPointY_S: INT32, iEndXS: INT32, iEndYS: INT32, ubNumLevels: UINT8, puiLevels: Pointer<UINT32>, psLevelIDs: Pointer<UINT16>): void {
+function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT32, iStartPointX_S: INT32, iStartPointY_S: INT32, iEndXS: INT32, iEndYS: INT32, ubNumLevels: UINT8, puiLevels: UINT32[], psLevelIDs: UINT16[]): void {
   //#if 0
 
   let pNode: LEVELNODE | null; //, *pLand, *pStruct; //*pObject, *pTopmost, *pMerc;
   let pSoldier: SOLDIERTYPE | null;
   let pSelSoldier: SOLDIERTYPE | null;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject = <SGPVObject><unknown>undefined;
   let pTrav: ETRLEObject;
   let TileElem: TILE_ELEMENT = <TILE_ELEMENT><unknown>undefined;
   let uiDestPitchBYTES: UINT32;
@@ -756,8 +756,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   let dTempY_S: FLOAT;
   let uiTileIndex: UINT32;
   let usImageIndex: UINT16;
-  let pShadeTable: Pointer<UINT16>;
-  let pDirtyBackPtr: Pointer<UINT16>;
+  let pShadeTable: Uint16Array;
   let uiBrushWidth: UINT32;
   let uiBrushHeight: UINT32;
   let uiDirtyFlags: UINT32;
@@ -794,7 +793,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   let usOutlineColor: UINT16 = 0;
 
   let uiMapPosIndex: UINT32;
-  let bBlitClipVal: boolean /* UINT8 */;
+  let bBlitClipVal: UINT8;
   let bItemCount: INT8;
   let bVisibleItemCount: INT8;
   // UINT16			us16BPPIndex;
@@ -827,7 +826,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   usImageIndex = 0;
   sZLevel = 0;
   uiDirtyFlags = 0;
-  pShadeTable = null;
+  pShadeTable = <Uint16Array><unknown>null;
 
   // Begin Render Loop
   iAnchorPosX_M = iStartPointX_M;
@@ -851,9 +850,6 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   }
 
   // if((uiFlags&TILES_TYPE_MASK)==TILES_STATIC_LAND)
-  GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M));
-
-  pDirtyBackPtr = null;
 
   if (gTacticalStatus.uiFlags & TRANSLUCENCY_TYPE)
     fTranslucencyType = true;
@@ -982,7 +978,6 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               }
 
               fRenderTile = true;
-              pDirtyBackPtr = null;
               if (uiLevelNodeFlags & LEVELNODE_REVEAL) {
                 if (!fDynamic)
                   fRenderTile = false;
@@ -1105,7 +1100,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   }
 
                   if ((uiLevelNodeFlags & LEVELNODE_CACHEDANITILE)) {
-                    hVObject = gpTileCache[pNode.pAniTile.sCachedTileID].pImagery.vo;
+                    hVObject = (<TILE_IMAGERY>gpTileCache[pNode.pAniTile.sCachedTileID].pImagery).vo;
                     usImageIndex = pNode.pAniTile.sCurrentFrame;
                     uiAniTileFlags = pNode.pAniTile.uiFlags;
 
@@ -1160,8 +1155,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                       sYPos -= sTileHeight;
 
                     if (!(uiFlags & TILES_DIRTY)) {
-                      hVObject.value.pShadeCurrent = hVObject.value.pShades[pNode.ubShadeLevel];
-                      hVObject.value.pShade8 = ubColorTables[pNode.ubShadeLevel];
+                      hVObject.pShadeCurrent = hVObject.pShades[pNode.ubShadeLevel];
+                      hVObject.pShade8 = ubColorTables[pNode.ubShadeLevel];
                     }
                   }
 
@@ -1642,7 +1637,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                 // RENDER
                 if (fTileInvisible) {
                 } else if (uiLevelNodeFlags & LEVELNODE_DISPLAY_AP && !(uiFlags & TILES_DIRTY)) {
-                  pTrav = hVObject.value.pETRLEObject[usImageIndex];
+                  pTrav = hVObject.pETRLEObject[usImageIndex];
                   sXPos += pTrav.sOffsetX;
                   sYPos += pTrav.sOffsetY;
 
@@ -1703,7 +1698,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
-                  if (bBlitClipVal == false) {
+                  if (bBlitClipVal == 0) {
                     if (fZBlit) {
                       if (fObscuredBlitter) {
                         Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline);
@@ -1713,7 +1708,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     } else {
                       Blt8BPPDataTo16BPPBufferOutline(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline);
                     }
-                  } else if (bBlitClipVal == true) {
+                  } else if (bBlitClipVal == 1) {
                     if (fZBlit) {
                       if (fObscuredBlitter) {
                         Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
@@ -1736,21 +1731,21 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
                   if (fShadowBlitter) {
-                    if (bBlitClipVal == false) {
+                    if (bBlitClipVal == 0) {
                       Blt8BPPDataTo16BPPBufferShadowZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
                     } else {
                       Blt8BPPDataTo16BPPBufferShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
                     }
                   } else {
-                    if (bBlitClipVal == false) {
+                    if (bBlitClipVal == 0) {
                       Blt8BPPDataTo16BPPBufferOutlineZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline);
-                    } else if (bBlitClipVal == true) {
+                    } else if (bBlitClipVal == 1) {
                       Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, gClippingRect);
                     }
                   }
                 } else if (uiFlags & TILES_DIRTY) {
                   if (!(uiLevelNodeFlags & LEVELNODE_LASTDYNAMIC)) {
-                    pTrav = hVObject.value.pETRLEObject[usImageIndex];
+                    pTrav = hVObject.pETRLEObject[usImageIndex];
                     uiBrushHeight = pTrav.usHeight;
                     uiBrushWidth = pTrav.usWidth;
                     sXPos += pTrav.sOffsetX;
@@ -1800,7 +1795,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     } else {
                       bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
 
-                      if (bBlitClipVal == true) {
+                      if (bBlitClipVal == 1) {
                         if (fPixelate) {
                           if (fTranslucencyType) {
                             // if(fZWrite)
@@ -1881,7 +1876,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                           }
                         } else
                           Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                      } else if (bBlitClipVal == false) {
+                      } else if (bBlitClipVal == 0) {
                         if (fPixelate) {
                           if (fTranslucencyType) {
                             if (fZWrite)
@@ -2157,7 +2152,7 @@ function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScroll
 
 export function RenderWorld(): void {
   let TileElem: TILE_ELEMENT;
-  let pAnimData: TILE_ANIMATION_DATA | nulls;
+  let pAnimData: TILE_ANIMATION_DATA | null;
   let cnt: UINT32 = 0;
 
   gfRenderFullThisFrame = false;
@@ -2390,7 +2385,7 @@ function RenderStaticWorld(): void {
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
 
   // Clear z-buffer
-  memset(gpZBuffer, LAND_Z_LEVEL, 1280 * gsVIEWPORT_END_Y);
+  gpZBuffer.fill(LAND_Z_LEVEL, 0, 1280 * gsVIEWPORT_END_Y / 2);
 
   FreeBackgroundRectType(BGND_FLAG_ANIMATED);
   InvalidateBackgroundRects();
@@ -2842,12 +2837,16 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 /* static */ let ScrollWorld__fFirstTimeInSlideToMode: boolean = true;
 export function ScrollWorld(): void {
   let ScrollFlags: UINT32 = 0;
+  let ScrollFlags__Pointer = createPointer(() => ScrollFlags, (v) => ScrollFlags = v);
   let fDoScroll: boolean = false;
   let fMovedPos: boolean = false;
   let fAGoodMove: boolean = false;
-  let sTempRenderCenterX: INT16;
-  let sTempRenderCenterY: INT16;
-  let bDirection: INT8;
+  let sTempRenderCenterX: INT16 = 0;
+  let sTempRenderCenterX__Pointer = createPointer(() => sTempRenderCenterX, (v) => sTempRenderCenterX = v);
+  let sTempRenderCenterY: INT16 = 0;
+  let sTempRenderCenterY__Pointer = createPointer(() => sTempRenderCenterY, (v) => sTempRenderCenterY = v);
+  let bDirection: INT8 = 0;
+  let bDirection__Pointer = createPointer(() => bDirection, (v) => bDirection = v);
   let sScrollXStep: INT16 = -1;
   let sScrollYStep: INT16 = -1;
   let fIgnoreInput: boolean = false;
@@ -2894,7 +2893,7 @@ export function ScrollWorld(): void {
         ScrollFlags = 0;
         fDoScroll = false;
         //
-        if (SoldierLocationRelativeToScreen(gTacticalStatus.sSlideTarget, gTacticalStatus.sSlideReason, addressof(bDirection), addressof(ScrollFlags)) && GridNoOnVisibleWorldTile(gTacticalStatus.sSlideTarget)) {
+        if (SoldierLocationRelativeToScreen(gTacticalStatus.sSlideTarget, gTacticalStatus.sSlideReason, bDirection__Pointer, ScrollFlags__Pointer) && GridNoOnVisibleWorldTile(gTacticalStatus.sSlideTarget)) {
           ScrollFlags = gScrollDirectionFlags[bDirection];
           fDoScroll = true;
           fIgnoreInput = true;
@@ -3003,7 +3002,7 @@ export function ScrollWorld(): void {
       ScrollFlags = SCROLL_DOWNRIGHT;
     }
 
-    fAGoodMove = HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, addressof(sTempRenderCenterX), addressof(sTempRenderCenterY), true);
+    fAGoodMove = HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, sTempRenderCenterX__Pointer, sTempRenderCenterY__Pointer, true);
   }
 
   // Has this been an OK scroll?
@@ -3030,7 +3029,7 @@ export function ScrollWorld(): void {
       gfScrollInertia++;
 
       // Now we actually begin our scrolling
-      HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, addressof(sTempRenderCenterX), addressof(sTempRenderCenterY), false);
+      HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, sTempRenderCenterX__Pointer, sTempRenderCenterY__Pointer, false);
     }
   } else {
     // ATE: Also if scroll pending never got to scroll....
@@ -3455,7 +3454,7 @@ const Z_STRIP_DELTA_Y = (Z_SUBLAYERS * 10);
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -3486,15 +3485,15 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   let usCount: UINT16;
   let usZIndex: UINT16;
   let usZStartCols: UINT16;
-  let pZArray: Pointer<INT8>;
-  let pZInfo: Pointer<ZStripInfo>;
+  let pZArray: Int8Array;
+  let pZInfo: ZStripInfo;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -3533,41 +3532,41 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  p16BPPPalette = hSrcVObject.value.pShadeCurrent;
+  p16BPPPalette = hSrcVObject.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  if (hSrcVObject.value.ppZStripInfo == null) {
+  if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
-  pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
+  pZInfo = hSrcVObject.ppZStripInfo[usIndex];
   if (pZInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
-  usZStartLevel = (usZValue + (pZInfo.value.bInitialZChange * Z_STRIP_DELTA_Y));
+  usZStartLevel = (usZValue + (pZInfo.bInitialZChange * Z_STRIP_DELTA_Y));
   // set to odd number of pixels for first column
 
-  if (LeftSkip > pZInfo.value.ubFirstZStripWidth) {
-    usZStartCols = (LeftSkip - pZInfo.value.ubFirstZStripWidth);
+  if (LeftSkip > pZInfo.ubFirstZStripWidth) {
+    usZStartCols = (LeftSkip - pZInfo.ubFirstZStripWidth);
     usZStartCols = 20 - (usZStartCols % 20);
-  } else if (LeftSkip < pZInfo.value.ubFirstZStripWidth)
-    usZStartCols = (pZInfo.value.ubFirstZStripWidth - LeftSkip);
+  } else if (LeftSkip < pZInfo.ubFirstZStripWidth)
+    usZStartCols = (pZInfo.ubFirstZStripWidth - LeftSkip);
   else
     usZStartCols = 20;
 
   usZColsToGo = usZStartCols;
 
-  pZArray = pZInfo.value.pbZChange;
+  pZArray = pZInfo.pbZChange;
 
-  if (LeftSkip >= pZInfo.value.ubFirstZStripWidth) {
+  if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.value.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -3852,7 +3851,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let usHeight: UINT32;
@@ -3883,15 +3882,15 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   let usCount: UINT16;
   let usZIndex: UINT16;
   let usZStartCols: UINT16;
-  let pZArray: Pointer<INT8>;
-  let pZInfo: Pointer<ZStripInfo>;
+  let pZArray: Int8Array;
+  let pZInfo: ZStripInfo;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -3930,41 +3929,41 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  p16BPPPalette = hSrcVObject.value.pShadeCurrent;
+  p16BPPPalette = hSrcVObject.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  if (hSrcVObject.value.ppZStripInfo == null) {
+  if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
-  pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
+  pZInfo = hSrcVObject.ppZStripInfo[usIndex];
   if (pZInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
-  usZStartLevel = (usZValue + (pZInfo.value.bInitialZChange * Z_STRIP_DELTA_Y));
+  usZStartLevel = (usZValue + (pZInfo.bInitialZChange * Z_STRIP_DELTA_Y));
   // set to odd number of pixels for first column
 
-  if (LeftSkip > pZInfo.value.ubFirstZStripWidth) {
-    usZStartCols = (LeftSkip - pZInfo.value.ubFirstZStripWidth);
+  if (LeftSkip > pZInfo.ubFirstZStripWidth) {
+    usZStartCols = (LeftSkip - pZInfo.ubFirstZStripWidth);
     usZStartCols = 20 - (usZStartCols % 20);
-  } else if (LeftSkip < pZInfo.value.ubFirstZStripWidth)
-    usZStartCols = (pZInfo.value.ubFirstZStripWidth - LeftSkip);
+  } else if (LeftSkip < pZInfo.ubFirstZStripWidth)
+    usZStartCols = (pZInfo.ubFirstZStripWidth - LeftSkip);
   else
     usZStartCols = 20;
 
   usZColsToGo = usZStartCols;
 
-  pZArray = pZInfo.value.pbZChange;
+  pZArray = pZInfo.pbZChange;
 
-  if (LeftSkip >= pZInfo.value.ubFirstZStripWidth) {
+  if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.value.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -4252,7 +4251,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
         // render at all
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
   let p16BPPPalette: Pointer<UINT16>;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
@@ -4284,15 +4283,15 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   let usCount: UINT16;
   let usZIndex: UINT16;
   let usZStartCols: UINT16;
-  let pZArray: Pointer<INT8>;
-  let pZInfo: Pointer<ZStripInfo>;
+  let pZArray: Int8Array;
+  let pZInfo: ZStripInfo;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -4333,41 +4332,41 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  p16BPPPalette = hSrcVObject.value.pShadeCurrent;
+  p16BPPPalette = hSrcVObject.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  if (hSrcVObject.value.ppZStripInfo == null) {
+  if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
-  pZInfo = hSrcVObject.value.ppZStripInfo[usIndex];
+  pZInfo = hSrcVObject.ppZStripInfo[usIndex];
   if (pZInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
-  usZStartLevel = (usZValue + (pZInfo.value.bInitialZChange * Z_STRIP_DELTA_Y));
+  usZStartLevel = (usZValue + (pZInfo.bInitialZChange * Z_STRIP_DELTA_Y));
   // set to odd number of pixels for first column
 
-  if (LeftSkip > pZInfo.value.ubFirstZStripWidth) {
-    usZStartCols = (LeftSkip - pZInfo.value.ubFirstZStripWidth);
+  if (LeftSkip > pZInfo.ubFirstZStripWidth) {
+    usZStartCols = (LeftSkip - pZInfo.ubFirstZStripWidth);
     usZStartCols = 20 - (usZStartCols % 20);
-  } else if (LeftSkip < pZInfo.value.ubFirstZStripWidth)
-    usZStartCols = (pZInfo.value.ubFirstZStripWidth - LeftSkip);
+  } else if (LeftSkip < pZInfo.ubFirstZStripWidth)
+    usZStartCols = (pZInfo.ubFirstZStripWidth - LeftSkip);
   else
     usZStartCols = 20;
 
   usZColsToGo = usZStartCols;
 
-  pZArray = pZInfo.value.pbZChange;
+  pZArray = pZInfo.pbZChange;
 
-  if (LeftSkip >= pZInfo.value.ubFirstZStripWidth) {
+  if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.value.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -4668,7 +4667,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
   let usHeight: UINT32;
@@ -4699,15 +4698,15 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   let usCount: UINT16;
   let usZIndex: UINT16;
   let usZStartCols: UINT16;
-  let pZArray: Pointer<INT8>;
-  let pZInfo: Pointer<ZStripInfo>;
+  let pZArray: Int8Array;
+  let pZInfo: ZStripInfo;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -4748,40 +4747,40 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  if (hSrcVObject.value.ppZStripInfo == null) {
+  if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
-  pZInfo = hSrcVObject.value.ppZStripInfo[sZIndex];
+  pZInfo = hSrcVObject.ppZStripInfo[sZIndex];
   if (pZInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
-  usZStartLevel = (usZValue + (pZInfo.value.bInitialZChange * Z_SUBLAYERS * 10));
+  usZStartLevel = (usZValue + (pZInfo.bInitialZChange * Z_SUBLAYERS * 10));
 
-  if (LeftSkip > pZInfo.value.ubFirstZStripWidth) {
-    usZStartCols = (LeftSkip - pZInfo.value.ubFirstZStripWidth);
+  if (LeftSkip > pZInfo.ubFirstZStripWidth) {
+    usZStartCols = (LeftSkip - pZInfo.ubFirstZStripWidth);
     usZStartCols = 20 - (usZStartCols % 20);
-  } else if (LeftSkip < pZInfo.value.ubFirstZStripWidth)
-    usZStartCols = (pZInfo.value.ubFirstZStripWidth - LeftSkip);
+  } else if (LeftSkip < pZInfo.ubFirstZStripWidth)
+    usZStartCols = (pZInfo.ubFirstZStripWidth - LeftSkip);
   else
     usZStartCols = 20;
 
   // set to odd number of pixels for first column
   usZColsToGo = usZStartCols;
 
-  pZArray = pZInfo.value.pbZChange;
+  pZArray = pZInfo.pbZChange;
 
   if (LeftSkip >= usZColsToGo) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.value.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -5132,7 +5131,7 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16): { sNewScreenX: I
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5162,15 +5161,15 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   let usCount: UINT16;
   let usZIndex: UINT16;
   let usZStartCols: UINT16;
-  let pZArray: Pointer<INT8>;
-  let pZInfo: Pointer<ZStripInfo>;
+  let pZArray: Int8Array;
+  let pZInfo: ZStripInfo;
 
   // Assertions
   Assert(hSrcVObject != null);
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -5209,40 +5208,40 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  if (hSrcVObject.value.ppZStripInfo == null) {
+  if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
   // setup for the z-column blitting stuff
-  pZInfo = hSrcVObject.value.ppZStripInfo[sZIndex];
+  pZInfo = hSrcVObject.ppZStripInfo[sZIndex];
   if (pZInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
     return false;
   }
 
-  usZStartLevel = (usZValue + (pZInfo.value.bInitialZChange * Z_SUBLAYERS * 10));
+  usZStartLevel = (usZValue + (pZInfo.bInitialZChange * Z_SUBLAYERS * 10));
 
-  if (LeftSkip > pZInfo.value.ubFirstZStripWidth) {
-    usZStartCols = (LeftSkip - pZInfo.value.ubFirstZStripWidth);
+  if (LeftSkip > pZInfo.ubFirstZStripWidth) {
+    usZStartCols = (LeftSkip - pZInfo.ubFirstZStripWidth);
     usZStartCols = 20 - (usZStartCols % 20);
-  } else if (LeftSkip < pZInfo.value.ubFirstZStripWidth)
-    usZStartCols = (pZInfo.value.ubFirstZStripWidth - LeftSkip);
+  } else if (LeftSkip < pZInfo.ubFirstZStripWidth)
+    usZStartCols = (pZInfo.ubFirstZStripWidth - LeftSkip);
   else
     usZStartCols = 20;
 
   // set to odd number of pixels for first column
   usZColsToGo = usZStartCols;
 
-  pZArray = pZInfo.value.pbZChange;
+  pZArray = pZInfo.pbZChange;
 
   if (LeftSkip >= usZColsToGo) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.value.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -5654,7 +5653,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let TileElem: TILE_ELEMENT;
-  let bBlitClipVal: boolean /* INT8 */;
+  let bBlitClipVal: INT8;
   let pObject: LEVELNODE | null;
 
   // Begin Render Loop
@@ -5705,7 +5704,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
         if (gpWorldLevelData[usTileIndex].uiFlags & MAPELEMENT_REEVALUATE_REDUNDENCY) {
           bBlitClipVal = BltIsClippedOrOffScreen(TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex, gClippingRect);
 
-          if (bBlitClipVal == false) {
+          if (bBlitClipVal == 0) {
             // Set flag to not evaluate again!
             gpWorldLevelData[usTileIndex].uiFlags &= (~MAPELEMENT_REEVALUATE_REDUNDENCY);
 
@@ -5870,7 +5869,7 @@ function ResetRenderParameters(): void {
   gClippingRect = gOldClipRect;
 }
 
-function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5886,7 +5885,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -5903,7 +5902,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
     return false;
   }
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
@@ -5990,8 +5989,8 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   return true;
 }
 
-function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
-  let p16BPPPalette: Pointer<UINT16>;
+function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+  let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6008,7 +6007,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -6025,10 +6024,10 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
     return false;
   }
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  p16BPPPalette = hSrcVObject.value.pShadeCurrent;
+  p16BPPPalette = hSrcVObject.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
   asm(`
@@ -6099,8 +6098,8 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   return true;
 }
 
-function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
-  let p16BPPPalette: Pointer<UINT16>;
+function IsTileRedundent(pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+  let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6116,7 +6115,7 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -6133,9 +6132,9 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
     return false;
   }
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
   ZPtr = pZBuffer + (1280 * iTempY) + (iTempX * 2);
-  p16BPPPalette = hSrcVObject.value.pShadeCurrent;
+  p16BPPPalette = hSrcVObject.pShadeCurrent;
   LineSkip = (1280 - (usWidth * 2));
 
   asm(`

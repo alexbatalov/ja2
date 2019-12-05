@@ -26,7 +26,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
   let bDirection: INT8;
   let iLoop: INT32;
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
-  let ubNewIndex: UINT8;
+  let ubNewIndex: UINT8 = 0;
 
   // Depeding on stance and direction facing, add guy!
 
@@ -53,7 +53,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
       MercCreateStruct.sInsertionGridNo = sGridNo;
 
       // Get Grid Corrdinates of mouse
-      if (TacticalCreateSoldier(MercCreateStruct, addressof(ubNewIndex))) {
+      if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubNewIndex, (v) => ubNewIndex = v))) {
         // Get pointer to soldier
         pPlanSoldier = <SOLDIERTYPE>GetSoldier(ubNewIndex);
 
@@ -122,7 +122,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
         MercCreateStruct.sInsertionGridNo = sGridNo;
 
         // Get Grid Corrdinates of mouse
-        if (TacticalCreateSoldier(MercCreateStruct, addressof(ubNewIndex))) {
+        if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubNewIndex, (v) => ubNewIndex = v))) {
           // Get pointer to soldier
           pPlanSoldier = <SOLDIERTYPE>GetSoldier(ubNewIndex);
 

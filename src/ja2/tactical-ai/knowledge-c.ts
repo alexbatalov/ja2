@@ -88,7 +88,7 @@ export function CallEldinTo(sGridNo: INT16): void {
     // new situation for Eldin
     pSoldier = FindSoldierByProfileID(Enum268.ELDIN, false);
     if (pSoldier && pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && (pSoldier.bAlertStatus == Enum243.STATUS_GREEN || pSoldier.ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
-      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), 1)) {
+      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), true)) {
         // sees the player now!
         TriggerNPCWithIHateYouQuote(Enum268.ELDIN);
         SetNewSituation(pSoldier);
@@ -111,15 +111,15 @@ export function CallEldinTo(sGridNo: INT16): void {
   }
 }
 
-export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Pointer<INT32>, pfClimbingNecessary: Pointer<boolean>, pfReachable: Pointer<boolean>): INT16 {
+export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Pointer<INT32> | null, pfClimbingNecessary: Pointer<boolean> | null, pfReachable: Pointer<boolean> | null): INT16 {
   let uiLoop: UINT32;
-  let pbPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
-  let psLastLoc: Pointer<INT16>;
-  let psNoiseGridNo: Pointer<INT16>;
-  let pbNoiseLevel: Pointer<INT8>;
-  let pbLastLevel: Pointer<INT8>;
-  let pubNoiseVolume: Pointer<UINT8>;
+  let pbPersOL: INT8;
+  let pbPublOL: INT8;
+  let psLastLoc: INT16;
+  let psNoiseGridNo: INT16;
+  let pbNoiseLevel: INT8;
+  let pbLastLevel: INT8;
+  let pubNoiseVolume: UINT8;
   let iDistAway: INT32;
   let iNoiseValue: INT32;
   let iBestValue: INT32 = -10000;
@@ -129,15 +129,15 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
   let fClimbingNecessary: boolean = false;
   let pTemp: SOLDIERTYPE;
 
-  pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.bTeam]);
-  psNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.bTeam]);
-  pbNoiseLevel = addressof(gbPublicNoiseLevel[pSoldier.bTeam]);
+  pubNoiseVolume = gubPublicNoiseVolume[pSoldier.bTeam];
+  psNoiseGridNo = gsPublicNoiseGridno[pSoldier.bTeam];
+  pbNoiseLevel = gbPublicNoiseLevel[pSoldier.bTeam];
 
-  psLastLoc = gsLastKnownOppLoc[pSoldier.ubID];
+  psLastLoc = gsLastKnownOppLoc[pSoldier.ubID][0];
 
   // hang pointers at start of this guy's personal and public opponent opplists
-  pbPersOL = pSoldier.bOppList;
-  pbPublOL = gbPublicOpplist[pSoldier.bTeam];
+  pbPersOL = pSoldier.bOppList[0];
+  pbPublOL = gbPublicOpplist[pSoldier.bTeam][0];
 
   // look through this man's personal & public opplists for opponents heard
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
@@ -151,29 +151,29 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
     if (CONSIDERED_NEUTRAL(pSoldier, pTemp) || (pSoldier.bSide == pTemp.bSide))
       continue; // next merc
 
-    pbPersOL = pSoldier.bOppList + pTemp.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pTemp.ubID;
-    psLastLoc = gsLastKnownOppLoc[pSoldier.ubID] + pTemp.ubID;
-    pbLastLevel = gbLastKnownOppLevel[pSoldier.ubID] + pTemp.ubID;
+    pbPersOL = pSoldier.bOppList[pTemp.ubID];
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam][pTemp.ubID];
+    psLastLoc = gsLastKnownOppLoc[pSoldier.ubID][pTemp.ubID];
+    pbLastLevel = gbLastKnownOppLevel[pSoldier.ubID][pTemp.ubID];
 
     // if this guy's been personally heard within last 3 turns
-    if (pbPersOL.value < NOT_HEARD_OR_SEEN) {
+    if (pbPersOL < NOT_HEARD_OR_SEEN) {
       // calculate how far this noise was, and its relative "importance"
-      iDistAway = SpacesAway(pSoldier.sGridNo, psLastLoc.value);
-      iNoiseValue = (pbPersOL.value) * iDistAway; // always a negative number!
+      iDistAway = SpacesAway(pSoldier.sGridNo, psLastLoc);
+      iNoiseValue = (pbPersOL) * iDistAway; // always a negative number!
 
       if (iNoiseValue > iBestValue) {
         iBestValue = iNoiseValue;
-        sBestGridNo = psLastLoc.value;
-        bBestLevel = pbLastLevel.value;
+        sBestGridNo = psLastLoc;
+        bBestLevel = pbLastLevel;
       }
     }
 
     // if this guy's been publicly heard within last 3 turns
-    if (pbPublOL.value < NOT_HEARD_OR_SEEN) {
+    if (pbPublOL < NOT_HEARD_OR_SEEN) {
       // calculate how far this noise was, and its relative "importance"
       iDistAway = SpacesAway(pSoldier.sGridNo, gsPublicLastKnownOppLoc[pSoldier.bTeam][pTemp.ubID]);
-      iNoiseValue = (pbPublOL.value) * iDistAway; // always a negative number!
+      iNoiseValue = (pbPublOL) * iDistAway; // always a negative number!
 
       if (iNoiseValue > iBestValue) {
         iBestValue = iNoiseValue;
@@ -204,17 +204,17 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
 
   // if any recent PUBLIC "misc. noise" is also known
   if ((pSoldier.bTeam != CIV_TEAM) || (pSoldier.ubCivilianGroup == Enum246.KINGPIN_CIV_GROUP)) {
-    if (psNoiseGridNo.value != NOWHERE) {
+    if (psNoiseGridNo != NOWHERE) {
       // if we are NOT there (at the noise gridno)
-      if (pbNoiseLevel.value != pSoldier.bLevel || PythSpacesAway(pSoldier.sGridNo, psNoiseGridNo.value) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo.value, pbNoiseLevel.value, 0, MaxDistanceVisible(), false) == 0) {
+      if (pbNoiseLevel != pSoldier.bLevel || PythSpacesAway(pSoldier.sGridNo, psNoiseGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo, pbNoiseLevel, 0, MaxDistanceVisible(), false) == 0) {
         // calculate how far this noise was, and its relative "importance"
-        iDistAway = SpacesAway(pSoldier.sGridNo, psNoiseGridNo.value);
-        iNoiseValue = ((pubNoiseVolume.value / 2) - 6) * iDistAway;
+        iDistAway = SpacesAway(pSoldier.sGridNo, psNoiseGridNo);
+        iNoiseValue = ((pubNoiseVolume / 2) - 6) * iDistAway;
 
         if (iNoiseValue > iBestValue) {
           iBestValue = iNoiseValue;
-          sBestGridNo = psNoiseGridNo.value;
-          bBestLevel = pbNoiseLevel.value;
+          sBestGridNo = psNoiseGridNo;
+          bBestLevel = pbNoiseLevel;
         }
       }
     }
@@ -239,7 +239,7 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
     if (pfReachable.value) {
       // if there is a climb involved then we should store the location
       // of where we have to climb to instead
-      sClimbingGridNo = GetInterveningClimbingLocation(pSoldier, sBestGridNo, bBestLevel, addressof(fClimbingNecessary));
+      sClimbingGridNo = GetInterveningClimbingLocation(pSoldier, sBestGridNo, bBestLevel, createPointer(() => fClimbingNecessary, (v) => fClimbingNecessary = v));
       if (fClimbingNecessary) {
         if (sClimbingGridNo == NOWHERE) {
           // can't investigate!
@@ -268,8 +268,8 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
 export function WhatIKnowThatPublicDont(pSoldier: SOLDIERTYPE, ubInSightOnly: boolean /* UINT8 */): INT16 {
   let ubTotal: UINT8 = 0;
   let uiLoop: UINT32;
-  let pbPersOL: Pointer<INT8>;
-  let pbPublOL: Pointer<INT8>;
+  let pbPersOL: INT8;
+  let pbPublOL: INT8;
   let pTemp: SOLDIERTYPE;
 
   // if merc knows of a more important misc. noise than his team does
@@ -279,8 +279,8 @@ export function WhatIKnowThatPublicDont(pSoldier: SOLDIERTYPE, ubInSightOnly: bo
   }
 
   // hang pointers at start of this guy's personal and public opponent opplists
-  pbPersOL = addressof(pSoldier.bOppList[0]);
-  pbPublOL = addressof(gbPublicOpplist[pSoldier.bTeam][0]);
+  pbPersOL = pSoldier.bOppList[0];
+  pbPublOL = gbPublicOpplist[pSoldier.bTeam][0];
 
   // for every opponent
   //	for (iLoop = 0; iLoop < MAXMERCS; iLoop++,pbPersOL++,pbPublOL++)
@@ -300,18 +300,18 @@ export function WhatIKnowThatPublicDont(pSoldier: SOLDIERTYPE, ubInSightOnly: bo
       continue; // next merc
     }
 
-    pbPersOL = pSoldier.bOppList + pTemp.ubID;
-    pbPublOL = gbPublicOpplist[pSoldier.bTeam] + pTemp.ubID;
+    pbPersOL = pSoldier.bOppList[pTemp.ubID];
+    pbPublOL = gbPublicOpplist[pSoldier.bTeam][pTemp.ubID];
 
     // if we're only interested in guys currently is sight, and he's not
     if (ubInSightOnly) {
-      if ((pbPersOL.value == SEEN_CURRENTLY) && (pbPublOL.value != SEEN_CURRENTLY)) {
+      if ((pbPersOL == SEEN_CURRENTLY) && (pbPublOL != SEEN_CURRENTLY)) {
         // just count the number of them
         ubTotal++;
       }
     } else {
       // add value of personal knowledge compared to public knowledge to total
-      ubTotal += gubKnowledgeValue[pbPublOL.value - OLDEST_HEARD_VALUE][pbPersOL.value - OLDEST_HEARD_VALUE];
+      ubTotal += gubKnowledgeValue[pbPublOL - OLDEST_HEARD_VALUE][pbPersOL - OLDEST_HEARD_VALUE];
     }
   }
 

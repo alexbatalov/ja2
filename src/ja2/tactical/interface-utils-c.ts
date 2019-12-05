@@ -162,7 +162,7 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
   let usLineColor: UINT16;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // Erase what was there
   if (fErase) {

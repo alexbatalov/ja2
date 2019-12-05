@@ -390,7 +390,7 @@ function DrawAimPolicyMenu(): boolean {
   let usHeight: UINT16;
   let uiStartLoc: UINT32 = 0;
   let sText: string /* wchar_t[400] */;
-  let hContentButtonHandle: HVOBJECT;
+  let hContentButtonHandle: SGPVObject;
   let ubLocInFile: UINT8[] /* [] */ = [
     Enum68.DEFINITIONS,
     Enum68.LENGTH_OF_ENGAGEMENT,

@@ -123,7 +123,7 @@ export function HandleInsurance(): void {
 
 export function RenderInsurance(): void {
   let sText: string /* wchar_t[800] */;
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
 
   DisplayInsuranceDefaults();
 
@@ -228,7 +228,7 @@ export function InitInsuranceDefaults(): boolean {
 }
 
 export function DisplayInsuranceDefaults(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let i: UINT8;
   let usPosY: UINT16;
 

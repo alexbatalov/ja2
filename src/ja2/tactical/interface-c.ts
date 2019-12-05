@@ -43,12 +43,16 @@ export let gusOldSelectedSoldier: UINT16 = NO_SOLDIER;
 // OVerlay ID
 let giPopupSlideMessageOverlay: INT32 = -1;
 let gusOverlayPopupBoxWidth: UINT16;
+let gusOverlayPopupBoxWidth__Pointer = createPointer(() => gusOverlayPopupBoxWidth, (v) => gusOverlayPopupBoxWidth = v);
 let gusOverlayPopupBoxHeight: UINT16;
+let gusOverlayPopupBoxHeight__Pointer = createPointer(() => gusOverlayPopupBoxHeight, (v) => gusOverlayPopupBoxHeight = v);
 let gpOverrideMercBox: MercPopUpBox = createMercPopUpBox();
 
 export let giUIMessageOverlay: INT32 = -1;
 let gusUIMessageWidth: UINT16;
+let gusUIMessageWidth__Pointer = createPointer(() => gusUIMessageWidth, (v) => gusUIMessageWidth = v);
 let gusUIMessageHeight: UINT16;
+let gusUIMessageHeight__Pointer = createPointer(() => gusUIMessageHeight, (v) => gusUIMessageHeight = v);
 let gpUIMessageOverrideMercBox: MercPopUpBox = createMercPopUpBox();
 export let guiUIMessageTime: UINT32 = 0;
 let iOverlayMessageBox: INT32 = -1;
@@ -153,6 +157,7 @@ let giDownArrowRect: UINT32;
 
 export let fFirstTimeInGameScreen: boolean = true;
 export let fInterfacePanelDirty: UINT8 = DIRTYLEVEL2;
+export let fInterfacePanelDirty__Pointer = createPointer(() => fInterfacePanelDirty, (v) => fInterfacePanelDirty = v);
 export let gsInterfaceLevel: INT16 = Enum214.I_GROUND_LEVEL;
 let gsCurrentSoldierGridNo: INT16 = 0;
 export let gsCurInterfacePanel: INT16 = Enum215.TEAM_PANEL;
@@ -382,7 +387,7 @@ export function ShutdownCurrentPanel(): void {
 }
 
 export function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
-  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: SOLDIERTYPE;
 
   // Disable faces
   SetAllAutoFacesInactive();
@@ -816,17 +821,16 @@ function BtnMovementCallback(btn: GUI_BUTTON, reason: INT32): void {
   }
 }
 
+/* static */ let HandleUpDownArrowBackgrounds__uiOldShowUpDownArrows: UINT32 = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 function HandleUpDownArrowBackgrounds(): void {
-  /* static */ let uiOldShowUpDownArrows: UINT32 = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
-
   // Check for change in mode
-  if (guiShowUPDownArrows != uiOldShowUpDownArrows || gfUIRefreshArrows) {
+  if (guiShowUPDownArrows != HandleUpDownArrowBackgrounds__uiOldShowUpDownArrows || gfUIRefreshArrows) {
     gfUIRefreshArrows = false;
 
     // Hide position of new ones
     GetArrowsBackground();
 
-    uiOldShowUpDownArrows = guiShowUPDownArrows;
+    HandleUpDownArrowBackgrounds__uiOldShowUpDownArrows = guiShowUPDownArrows;
   }
 }
 
@@ -949,8 +953,8 @@ export function EraseRenderArrows(): void {
 
 function GetArrowsBackground(): void {
   let pSoldier: SOLDIERTYPE;
-  let sMercScreenX: INT16;
-  let sMercScreenY: INT16;
+  let sMercScreenX: INT16 = 0;
+  let sMercScreenY: INT16 = 0;
   let sArrowHeight: UINT16 = ARROWS_HEIGHT;
   let sArrowWidth: UINT16 = ARROWS_WIDTH;
 
@@ -963,7 +967,7 @@ function GetArrowsBackground(): void {
     pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
     // Get screen position of our guy
-    GetSoldierTRUEScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
+    ({ sMercScreenX, sMercScreenY } = GetSoldierTRUEScreenPos(pSoldier));
 
     if (guiShowUPDownArrows & ARROWS_SHOW_UP_BESIDE) {
       // Setup blt rect
@@ -1130,8 +1134,10 @@ export function GetSoldierAboveGuyPositions(pSoldier: SOLDIERTYPE, psX: Pointer<
 
 export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let pSoldier: SOLDIERTYPE;
-  let sXPos: INT16;
-  let sYPos: INT16;
+  let sXPos: INT16 = 0;
+  let sXPos__Pointer = createPointer(() => sXPos, (v) => sXPos = v);
+  let sYPos: INT16 = 0;
+  let sYPos__Pointer = createPointer(() => sYPos, (v) => sYPos = v);
   let sX: INT16;
   let sY: INT16;
   let iBack: INT32;
@@ -1154,7 +1160,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
   if (pSoldier.fFlashLocator) {
     if (pSoldier.bVisible == -1) {
-      pSoldier.fFlashLocator = false;
+      pSoldier.fFlashLocator = 0;
     } else {
       if (TIMECOUNTERDONE(pSoldier.BlinkSelCounter, 80)) {
         pSoldier.BlinkSelCounter = RESETTIMECOUNTER(80);
@@ -1182,14 +1188,14 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
       //}
       if (pSoldier.fFlashLocator == pSoldier.ubNumLocateCycles) {
-        pSoldier.fFlashLocator = false;
+        pSoldier.fFlashLocator = 0;
         pSoldier.fShowLocator = false;
       }
 
       // if ( pSoldier->fShowLocator )
       {
         // Render the beastie
-        GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), true);
+        GetSoldierAboveGuyPositions(pSoldier, sXPos__Pointer, sYPos__Pointer, true);
 
         // Adjust for bars!
         sXPos += 25;
@@ -1249,7 +1255,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     return;
   }
 
-  GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), false);
+  GetSoldierAboveGuyPositions(pSoldier, sXPos__Pointer, sYPos__Pointer, false);
 
   // Display name
   SetFont(TINYFONT1());
@@ -1391,7 +1397,7 @@ export function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
 function RenderOverlayMessage(pBlitter: VIDEO_OVERLAY): void {
   // Override it!
-  OverrideMercPopupBox(addressof(gpOverrideMercBox));
+  OverrideMercPopupBox(gpOverrideMercBox);
 
   RenderMercPopupBox(pBlitter.sX, pBlitter.sY, pBlitter.uiDestBuff);
 
@@ -1408,12 +1414,12 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT
   SlideString = swprintf(pFontString, ...args); // process gprintf string (get output str)
 
   // Override it!
-  OverrideMercPopupBox(addressof(gpOverrideMercBox));
+  OverrideMercPopupBox(gpOverrideMercBox);
 
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, addressof(gusOverlayPopupBoxWidth), addressof(gusOverlayPopupBoxHeight));
+  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, gusOverlayPopupBoxWidth__Pointer, gusOverlayPopupBoxHeight__Pointer);
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -1613,23 +1619,6 @@ export function RestoreInterface(): void {
   MSYS_ChangeRegionCursor(gUserTurnRegion, Enum317.CURSOR_WAIT);
 }
 
-function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
-
-  BltVideoSurface(pBlitter.value.uiDestBuff, guiINTEXT, 0, pBlitter.value.pBackground.value.sLeft, pBlitter.value.pBackground.value.sTop, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
-
-  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
-
-  SetFont(pBlitter.value.uiFontID);
-  SetFontBackground(pBlitter.value.ubFontBack);
-  SetFontForeground(pBlitter.value.ubFontFore);
-
-  mprintf_buffer(pDestBuf, uiDestPitchBYTES, pBlitter.value.uiFontID, pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.zText);
-
-  UnLockVideoSurface(pBlitter.value.uiDestBuff);
-}
-
 export function DirtyMercPanelInterface(pSoldier: SOLDIERTYPE, ubDirtyLevel: UINT8): void {
   if (pSoldier.bTeam == gbPlayerNum) {
     // ONly set to a higher level!
@@ -1688,7 +1677,7 @@ export function InitDoorOpenMenu(pSoldier: SOLDIERTYPE, pStructure: STRUCTURE, u
   // Center on guy
   // Locate to guy first.....
   LocateSoldier(pSoldier.ubID, 0);
-  GetSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
+  ({ sHeight, sWidth } = GetSoldierAnimDims(pSoldier));
   ({ sScreenX, sScreenY } = GetSoldierScreenPos(pSoldier));
   gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
   gOpenDoorMenu.sY = sScreenY - ((BUTTON_PANEL_HEIGHT - sHeight) / 2);
@@ -2138,7 +2127,7 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: stri
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
 
   // Override it!
-  OverrideMercPopupBox(addressof(gpUIMessageOverrideMercBox));
+  OverrideMercPopupBox(gpUIMessageOverrideMercBox);
 
   // SetPrepareMercPopupFlags( MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS );
 
@@ -2149,7 +2138,7 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: stri
   }
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, gusUIMessageWidth__Pointer, gusUIMessageHeight__Pointer);
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2194,12 +2183,12 @@ export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Poin
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
 
   // Override it!
-  OverrideMercPopupBox(addressof(gpUIMessageOverrideMercBox));
+  OverrideMercPopupBox(gpUIMessageOverrideMercBox);
 
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, gusUIMessageWidth__Pointer, gusUIMessageHeight__Pointer);
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2777,8 +2766,29 @@ interface AIMCUBE_UI_DATA {
   ubPowerIndex: UINT8;
 }
 
+function createAimCubeUIData(): AIMCUBE_UI_DATA {
+  return {
+    bHeight: 0,
+    bPower: 0,
+    sGridNo: 0,
+    ubLevel: 0,
+    pSoldier: <SOLDIERTYPE><unknown>null,
+    fShowHeight: false,
+    fShowPower: false,
+    fActiveHeightBar: false,
+    fActivePowerBar: false,
+    fAtEndHeight: false,
+    sTargetGridNo: 0,
+    dInitialForce: 0,
+    dForce: 0,
+    dDegrees: 0,
+    dMaxForce: 0,
+    ubPowerIndex: 0,
+  };
+}
+
 /* static */ let gfInAimCubeUI: boolean = false;
-/* static */ let gCubeUIData: AIMCUBE_UI_DATA;
+/* static */ let gCubeUIData: AIMCUBE_UI_DATA = createAimCubeUIData();
 
 const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h: number) => (32 + (h * 64));
 
@@ -2801,7 +2811,7 @@ function CalculateAimCubeUIPhysics(): void {
       gCubeUIData.dForce = gCubeUIData.dMaxForce;
     }
 
-    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, gCubeUIData.pSoldier.inv[Enum261.HANDPOS], addressof(gCubeUIData.sTargetGridNo));
+    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, gCubeUIData.pSoldier.inv[Enum261.HANDPOS], createPropertyPointer(gCubeUIData, 'sTargetGridNo'));
   }
 }
 
@@ -2859,7 +2869,7 @@ function IncrementAimCubeUI(): void {
     if (gCubeUIData.bHeight == 3) {
       if (gCubeUIData.fAtEndHeight) {
         gCubeUIData.bHeight = 0;
-        gCubeUIData.fAtEndHeight = 0;
+        gCubeUIData.fAtEndHeight = false;
       } else {
         gCubeUIData.fAtEndHeight = true;
       }
@@ -2912,8 +2922,8 @@ function ResetAimCubeAI(): void {
 }
 
 export function RenderAimCubeUI(): void {
-  let sScreenX: INT16;
-  let sScreenY: INT16;
+  let sScreenX: INT16 = 0;
+  let sScreenY: INT16 = 0;
   let cnt: INT32;
   let sBarHeight: INT16;
   let iBack: INT32;
@@ -2923,7 +2933,7 @@ export function RenderAimCubeUI(): void {
     // OK, given height
     if (gCubeUIData.fShowHeight) {
       // Determine screen location....
-      GetGridNoScreenPos(gCubeUIData.sGridNo, gCubeUIData.ubLevel, addressof(sScreenX), addressof(sScreenY));
+      ({ sScreenX, sScreenY } = GetGridNoScreenPos(gCubeUIData.sGridNo, gCubeUIData.ubLevel));
 
       // Save background
       iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, null, sScreenX, (sScreenY - 70), (sScreenX + 40), (sScreenY + 50));

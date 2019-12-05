@@ -960,7 +960,7 @@ export function CheckAndUpdateBasedOnContractTimes(): void {
 
 export function HandleDisplayOfSelectedMercArrows(): void {
   let sYPosition: INT16 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let ubCount: UINT8 = 0;
   // blit an arrow by the name of each merc in a selected list
   if (bSelectedInfoChar == -1) {
@@ -3179,7 +3179,7 @@ function CanMoveBoxSoldierMoveStrategically(pSoldier: SOLDIERTYPE, fShowErrorMes
   Assert(pSoldier);
   Assert(pSoldier.bActive);
 
-  if (CanCharacterMoveInStrategic(pSoldier, addressof(bErrorNumber))) {
+  if (CanCharacterMoveInStrategic(pSoldier, createPointer(() => bErrorNumber, (v) => bErrorNumber = v))) {
     return true;
   } else {
     // function may fail without returning any specific error # (-1).
@@ -3636,7 +3636,7 @@ export function DisplaySoldierUpdateBox(): void {
   let iFaceX: INT32 = 0;
   let iFaceY: INT32 = 0;
   let fFourWideMode: boolean = false;
-  let hBackGroundHandle: HVOBJECT;
+  let hBackGroundHandle: SGPVObject;
   let iCounter: INT32 = 0;
   let sString: string /* CHAR16[32] */;
   let sX: INT16 = 0;
@@ -5031,7 +5031,7 @@ export function TurnOffSectorLocator(): void {
 export function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubLocatorID: UINT8): void {
   let ubBaseFrame: UINT8 = 0;
   let uiTimer: UINT32 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let sScreenX: INT16;
   let sScreenY: INT16;
 

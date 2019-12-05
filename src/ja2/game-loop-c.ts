@@ -194,7 +194,7 @@ export function GameLoop(): void {
     guiCurrentScreen = uiOldScreen;
   }
 
-  RefreshScreen(null);
+  RefreshScreen();
 
   guiGameCycleCounter++;
 

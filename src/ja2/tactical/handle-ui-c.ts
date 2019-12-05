@@ -48,7 +48,7 @@ let gfUIInterfaceSetBusy: boolean = false;
 let guiUIInterfaceBusyTime: UINT32 = 0;
 
 let gfTacticalForceNoCursor: boolean /* UINT32 */ = false;
-let gpInvTileThatCausedMoveConfirm: Pointer<LEVELNODE> = null;
+let gpInvTileThatCausedMoveConfirm: LEVELNODE /* Pointer<LEVELNODE> */;
 export let gfResetUIMovementOptimization: boolean = false;
 let gfResetUIItemCursorOptimization: boolean = false;
 let gfBeginVehicleCursor: boolean = false;
@@ -129,6 +129,7 @@ let gEvents: UI_EVENT[] /* [NUM_UI_EVENTS] */ = [
 export let gCurrentUIMode: UI_MODE = Enum206.IDLE_MODE;
 let gOldUIMode: UI_MODE = Enum206.IDLE_MODE;
 export let guiCurrentEvent: UINT32 = Enum207.I_DO_NOTHING;
+export let guiCurrentEvent__Pointer = createPointer(() => guiCurrentEvent, (v) => guiCurrentEvent = v);
 let guiOldEvent: UINT32 = Enum207.I_DO_NOTHING;
 export let guiCurrentUICursor: UINT32 = Enum210.NO_UICURSOR;
 let guiNewUICursor: UINT32 = Enum210.NORMAL_SNAPUICURSOR;
@@ -197,7 +198,7 @@ export let gfUIOverItemPool: boolean = false;
 export let gfUIOverItemPoolGridNo: INT16 = 0;
 export let gsCurrentActionPoints: INT16 = 1;
 export let gfUIHandlePhysicsTrajectory: boolean = false;
-export let gfUIMouseOnValidCatcher: UINT8 /* boolean */ = false;
+export let gfUIMouseOnValidCatcher: UINT8 /* boolean */ = 0;
 export let gubUIValidCatcherID: UINT8 = 0;
 
 export let gfUIConfirmExitArrows: boolean = false;
@@ -237,12 +238,13 @@ let gfUINewStateForIntTile: boolean = false;
 export let gfUIForceReExamineCursorData: boolean = false;
 
 // MAIN TACTICAL UI HANDLER
-/* static */ let HandleTacticalUI__pOldIntTile: Pointer<LEVELNODE> = null;
+/* static */ let HandleTacticalUI__pOldIntTile: LEVELNODE | null /* Pointer<LEVELNODE> */;
 export function HandleTacticalUI(): UINT32 {
   let ReturnVal: UINT32 = Enum26.GAME_SCREEN;
-  let uiNewEvent: UINT32;
-  let usMapPos: UINT16;
-  let pIntTile: Pointer<LEVELNODE>;
+  let uiNewEvent: UINT32 = 0;
+  let uiNewEvent__Pointer = createPointer(() => uiNewEvent, (v) => uiNewEvent = v);
+  let usMapPos: UINT16 = 0;
+  let pIntTile: LEVELNODE | null;
 
   // RESET FLAGS
   gfUIDisplayActionPoints = false;
@@ -314,22 +316,22 @@ export function HandleTacticalUI(): UINT32 {
     // IF WE ARE NOT IN COMBAT OR IN REALTIME COMBAT
     if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
       // FROM MOUSE POSITION
-      GetRTMousePositionInput(addressof(uiNewEvent));
+      GetRTMousePositionInput(uiNewEvent__Pointer);
       // FROM KEYBOARD POLLING
-      GetPolledKeyboardInput(addressof(uiNewEvent));
+      GetPolledKeyboardInput(uiNewEvent__Pointer);
       // FROM MOUSE CLICKS
-      GetRTMouseButtonInput(addressof(uiNewEvent));
+      GetRTMouseButtonInput(uiNewEvent__Pointer);
       // FROM KEYBOARD
-      GetKeyboardInput(addressof(uiNewEvent));
+      GetKeyboardInput(uiNewEvent__Pointer);
     } else {
       // FROM MOUSE POSITION
-      GetTBMousePositionInput(addressof(uiNewEvent));
+      GetTBMousePositionInput(uiNewEvent__Pointer);
       // FROM KEYBOARD POLLING
-      GetPolledKeyboardInput(addressof(uiNewEvent));
+      GetPolledKeyboardInput(uiNewEvent__Pointer);
       // FROM MOUSE CLICKS
-      GetTBMouseButtonInput(addressof(uiNewEvent));
+      GetTBMouseButtonInput(uiNewEvent__Pointer);
       // FROM KEYBOARD
-      GetKeyboardInput(addressof(uiNewEvent));
+      GetKeyboardInput(uiNewEvent__Pointer);
     }
   } else {
     uiNewEvent = guiPendingOverrideEvent;
@@ -347,14 +349,14 @@ export function HandleTacticalUI(): UINT32 {
   gfUIFullTargetFound = false;
   gfUISelectiveTargetFound = false;
 
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     // Look for soldier full
-    if (FindSoldier(usMapPos, addressof(gusUIFullTargetID), addressof(guiUIFullTargetFlags), (FINDSOLDIERSAMELEVEL(gsInterfaceLevel)))) {
+    if (FindSoldier(usMapPos, createPointer(() => gusUIFullTargetID, (v) => gusUIFullTargetID = v), createPointer(() => guiUIFullTargetFlags, (v) => guiUIFullTargetFlags = v), (FINDSOLDIERSAMELEVEL(gsInterfaceLevel)))) {
       gfUIFullTargetFound = true;
     }
 
     // Look for soldier selective
-    if (FindSoldier(usMapPos, addressof(gusUISelectiveTargetID), addressof(guiUISelectiveTargetFlags), FINDSOLDIERSELECTIVESAMELEVEL(gsInterfaceLevel))) {
+    if (FindSoldier(usMapPos, createPointer(() => gusUISelectiveTargetID, (v) => gusUISelectiveTargetID = v), createPointer(() => guiUISelectiveTargetFlags, (v) => guiUISelectiveTargetFlags = v), FINDSOLDIERSELECTIVESAMELEVEL(gsInterfaceLevel))) {
       gfUISelectiveTargetFound = true;
     }
   }
@@ -450,10 +452,11 @@ export function HandleTacticalUI(): UINT32 {
 }
 
 /* static */ let SetUIMouseCursor__sOldExitGridNo: INT16 = NOWHERE;
-/* static */ let SetUIMouseCursor__fOkForExit: boolean = false;
+/* static */ let SetUIMouseCursor__fOkForExit: UINT8 /* boolean */ = 0;
 function SetUIMouseCursor(): void {
   let uiCursorFlags: UINT32;
-  let uiTraverseTimeInMinutes: UINT32;
+  let uiTraverseTimeInMinutes: UINT32 = 0;
+  let uiTraverseTimeInMinutes__Pointer = createPointer(() => uiTraverseTimeInMinutes, (v) => uiTraverseTimeInMinutes = v);
   let fForceUpdateNewCursor: boolean = false;
   let fUpdateNewCursor: boolean = true;
 
@@ -461,7 +464,7 @@ function SetUIMouseCursor(): void {
   // If not in move mode, return!
   if (gCurrentUIMode == Enum206.MOVE_MODE) {
     if (gfUIConfirmExitArrows) {
-      GetCursorMovementFlags(addressof(uiCursorFlags));
+      uiCursorFlags = GetCursorMovementFlags();
 
       if (uiCursorFlags & MOUSE_MOVING) {
         gfUIConfirmExitArrows = false;
@@ -472,7 +475,7 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = false;
       ErasePath(true);
 
-      if (OKForSectorExit(Enum186.EAST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.EAST_STRATEGIC_MOVE, 0, uiTraverseTimeInMinutes__Pointer)) {
         if (gfUIConfirmExitArrows) {
           guiNewUICursor = Enum210.CONFIRM_EXIT_EAST_UICURSOR;
         } else {
@@ -491,7 +494,7 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = false;
       ErasePath(true);
 
-      if (OKForSectorExit(Enum186.WEST_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.WEST_STRATEGIC_MOVE, 0, uiTraverseTimeInMinutes__Pointer)) {
         if (gfUIConfirmExitArrows) {
           guiNewUICursor = Enum210.CONFIRM_EXIT_WEST_UICURSOR;
         } else {
@@ -510,7 +513,7 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = false;
       ErasePath(true);
 
-      if (OKForSectorExit(Enum186.NORTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.NORTH_STRATEGIC_MOVE, 0, uiTraverseTimeInMinutes__Pointer)) {
         if (gfUIConfirmExitArrows) {
           guiNewUICursor = Enum210.CONFIRM_EXIT_NORTH_UICURSOR;
         } else {
@@ -529,7 +532,7 @@ function SetUIMouseCursor(): void {
       gfUIDisplayActionPoints = false;
       ErasePath(true);
 
-      if (OKForSectorExit(Enum186.SOUTH_STRATEGIC_MOVE, 0, addressof(uiTraverseTimeInMinutes))) {
+      if (OKForSectorExit(Enum186.SOUTH_STRATEGIC_MOVE, 0, uiTraverseTimeInMinutes__Pointer)) {
         if (gfUIConfirmExitArrows) {
           guiNewUICursor = Enum210.CONFIRM_EXIT_SOUTH_UICURSOR;
         } else {
@@ -580,18 +583,18 @@ function SetUIMouseCursor(): void {
     }
 
     if (gfUIShowExitExitGrid) {
-      let usMapPos: UINT16;
+      let usMapPos: UINT16 = 0;
       let ubRoomNum: UINT8;
 
       gfUIDisplayActionPoints = false;
       ErasePath(true);
 
-      if (GetMouseMapPos(addressof(usMapPos))) {
+      if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
         if (gusSelectedSoldier != NOBODY && MercPtrs[gusSelectedSoldier].bLevel == 0) {
           // ATE: Is this place revealed?
           if ((ubRoomNum = InARoom(usMapPos)) === -1 || ((ubRoomNum = InARoom(usMapPos)) !== -1 && gpWorldLevelData[usMapPos].uiFlags & MAPELEMENT_REVEALED)) {
             if (SetUIMouseCursor__sOldExitGridNo != usMapPos) {
-              SetUIMouseCursor__fOkForExit = OKForSectorExit(-1, usMapPos, addressof(uiTraverseTimeInMinutes));
+              SetUIMouseCursor__fOkForExit = OKForSectorExit(-1, usMapPos, uiTraverseTimeInMinutes__Pointer);
               SetUIMouseCursor__sOldExitGridNo = usMapPos;
             }
 
@@ -644,7 +647,7 @@ export function SetUIKeyboardHook(KeyboardHookFnc: UIKEYBOARD_HOOK | null): void
 }
 
 function ClearEvent(pUIEvent: UI_EVENT): void {
-  memset(pUIEvent.uiParams, 0, sizeof(pUIEvent.uiParams));
+  pUIEvent.uiParams.fill(0);
   pUIEvent.fDoneMenu = false;
   pUIEvent.fFirstTime = true;
   pUIEvent.uiMenuPreviousMode = 0;
@@ -670,13 +673,13 @@ function UIHandleExit(pUIEvent: UI_EVENT): UINT32 {
 /* static */ let UIHandleNewMerc__ubTemp: UINT8 = 3;
 /* static */ let UIHandleNewMerc__iSoldierCount: INT32 = 0;
 function UIHandleNewMerc(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: INT16;
+  let usMapPos: INT16 = 0;
   let HireMercStruct: MERC_HIRE_STRUCT = createMercHireStruct();
   let bReturnCode: INT8;
   let pSoldier: SOLDIERTYPE;
 
   // Get Grid Corrdinates of mouse
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     UIHandleNewMerc__ubTemp += 2;
 
     HireMercStruct.ubProfileID = UIHandleNewMerc__ubTemp;
@@ -713,13 +716,13 @@ function UIHandleNewMerc(pUIEvent: UI_EVENT): UINT32 {
 
 function UIHandleNewBadMerc(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let usRandom: UINT16;
 
   // Get map postion and place the enemy there.
-  if (GetMouseMapPos(addressof(usMapPos))) {
+  if (GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     // Are we an OK dest?
-    if (!IsLocationSittable(usMapPos, 0)) {
+    if (!IsLocationSittable(usMapPos, false)) {
       return Enum26.GAME_SCREEN;
     }
 
@@ -803,7 +806,7 @@ export function UIHandleEndTurn(pUIEvent: UI_EVENT | null): UINT32 {
     if (FileExists("..\\AutoSave.pls") && CanGameBeSaved()) {
       // Save the game
       guiPreviousOptionScreen = guiCurrentScreen;
-      SaveGame(SAVE__END_TURN_NUM, "End Turn Auto Save");
+      SaveGame(SAVE__END_TURN_NUM, createPointer(() => "End Turn Auto Save", (v) => {}));
     }
 
     // End our turn!
@@ -869,7 +872,7 @@ export function ChangeInterfaceLevel(sLevel: INT16): void {
   ErasePath(false);
 }
 
-export function UIHandleChangeLevel(pUIEvent: UI_EVENT): UINT32 {
+export function UIHandleChangeLevel(pUIEvent: UI_EVENT | null): UINT32 {
   if (gsInterfaceLevel == 0) {
     ChangeInterfaceLevel(1);
   } else if (gsInterfaceLevel == 1) {
@@ -903,16 +906,16 @@ function UIHandleSelectMerc(pUIEvent: UI_EVENT): UINT32 {
 /* static */ let UIHandleMOnTerrain__fOverItems: boolean;
 function UIHandleMOnTerrain(pUIEvent: UI_EVENT | null): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let fSetCursor: boolean = false;
   let uiCursorFlags: UINT32;
   let pIntNode: LEVELNODE | null;
   let ExitGrid: EXITGRID = createExitGrid();
-  let sIntTileGridNo: INT16;
+  let sIntTileGridNo: INT16 = 0;
   let fContinue: boolean = true;
   let pItemPool: ITEM_POOL | null;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -981,14 +984,14 @@ function UIHandleMOnTerrain(pUIEvent: UI_EVENT | null): UINT32 {
     }
 
     // DO SOME CURSOR POSITION FLAGS SETTING
-    GetCursorMovementFlags(addressof(uiCursorFlags));
+    uiCursorFlags = GetCursorMovementFlags();
 
     if (gusSelectedSoldier != NO_SOLDIER) {
       // Get Soldier Pointer
       pSoldier = <SOLDIERTYPE>GetSoldier(gusSelectedSoldier);
 
       // Get interactvie tile node
-      pIntNode = GetCurInteractiveTileGridNo(addressof(sIntTileGridNo));
+      pIntNode = GetCurInteractiveTileGridNo(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v));
 
       // Check were we are
       // CHECK IF WE CAN MOVE HERE
@@ -1046,7 +1049,7 @@ function UIHandleMOnTerrain(pUIEvent: UI_EVENT | null): UINT32 {
   {
     // if ( fSetCursor && guiNewUICursor != ENTER_VEHICLE_UICURSOR )
     if (fSetCursor && !gfBeginVehicleCursor) {
-      SetMovementModeCursor(pSoldier);
+      SetMovementModeCursor(<SOLDIERTYPE>pSoldier);
     }
   }
 
@@ -1130,11 +1133,11 @@ function UIHandlePositionMenu(pUIEvent: UI_EVENT): UINT32 {
 }
 
 function UIHandleAOnTerrain(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
   //	INT16							sTargetXPos, sTargetYPos;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -1231,13 +1234,13 @@ function UIHandleAChangeToMove(pUIEvent: UI_EVENT): UINT32 {
 }
 
 function UIHandleCWait(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
   let fSetCursor: boolean;
   let uiCursorFlags: UINT32;
   let pInvTile: LEVELNODE | null;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -1250,7 +1253,7 @@ function UIHandleCWait(pUIEvent: UI_EVENT): UINT32 {
       return Enum26.GAME_SCREEN;
     }
 
-    GetCursorMovementFlags(addressof(uiCursorFlags));
+    uiCursorFlags = GetCursorMovementFlags();
 
     if (pInvTile != null) {
       fSetCursor = HandleUIMovementCursor(pSoldier, uiCursorFlags, usMapPos, MOVEUI_TARGET_INTTILES);
@@ -1289,23 +1292,23 @@ function UIHandleCWait(pUIEvent: UI_EVENT): UINT32 {
 // NOTE, ONCE AT THIS FUNCTION, WE HAVE ASSUMED TO HAVE CHECKED FOR ENOUGH APS THROUGH
 // SelectedMercCanAffordMove
 function UIHandleCMoveMerc(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
   let sDestGridNo: INT16;
   let sActionGridNo: INT16;
-  let pStructure: STRUCTURE | null;
-  let ubDirection: UINT8;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let ubDirection: UINT8 = 0;
   let fAllMove: number /* boolean */;
   let bLoop: INT8;
   let pIntTile: LEVELNODE | null;
-  let sIntTileGridNo: INT16;
+  let sIntTileGridNo: INT16 = 0;
   let fOldFastMove: boolean;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     fAllMove = gfUIAllMoveOn;
     gfUIAllMoveOn = 0;
 
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
       return Enum26.GAME_SCREEN;
     }
 
@@ -1373,11 +1376,11 @@ function UIHandleCMoveMerc(pUIEvent: UI_EVENT): UINT32 {
         sDestGridNo = usMapPos;
 
         // Get structure info for in tile!
-        pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
+        pIntTile = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
         // We should not have null here if we are given this flag...
         if (pIntTile != null) {
-          sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, false, true);
+          sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), null, false, true);
           if (sActionGridNo != -1) {
             SetUIBusy(pSoldier.ubID);
 
@@ -1386,7 +1389,7 @@ function UIHandleCMoveMerc(pUIEvent: UI_EVENT): UINT32 {
 
             // check if we are at this location
             if (pSoldier.sGridNo == sDestGridNo) {
-              StartInteractiveObject(sIntTileGridNo, pStructure.value.usStructureID, pSoldier, ubDirection);
+              StartInteractiveObject(sIntTileGridNo, pStructure.usStructureID, pSoldier, ubDirection);
               InteractWithInteractiveObject(pSoldier, pStructure, ubDirection);
               return Enum26.GAME_SCREEN;
             }
@@ -1514,7 +1517,8 @@ function UIHandleMAdjustStanceMode(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
   let fCheck: boolean = false;
   let iPosDiff: INT32;
-  let bNewDirection: INT8;
+  let bNewDirection: INT8 = 0;
+  let bNewDirection__Pointer = createPointer(() => bNewDirection, (v) => bNewDirection = v);
 
   // Change cusror to normal
   guiNewUICursor = Enum210.NO_UICURSOR;
@@ -1537,14 +1541,14 @@ function UIHandleMAdjustStanceMode(pUIEvent: UI_EVENT): UINT32 {
     if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
       // IF we are on a basic level...(temp)
       if (pSoldier.bLevel == 0) {
-        if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
+        if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, bNewDirection__Pointer)) {
           UIHandleMAdjustStanceMode__ubNearHeigherLevel = true;
         }
       }
 
       // IF we are higher...
       if (pSoldier.bLevel > 0) {
-        if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
+        if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, bNewDirection__Pointer)) {
           UIHandleMAdjustStanceMode__ubNearLowerLevel = true;
         }
       }
@@ -1695,9 +1699,9 @@ function UIHandleAChangeToConfirmAction(pUIEvent: UI_EVENT): UINT32 {
 
 function UIHandleCAOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -1716,8 +1720,8 @@ function UIHandleMercAttack(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE |
   let bTargetLevel: INT8;
   let usItem: UINT16;
   let pIntNode: LEVELNODE | null;
-  let pStructure: STRUCTURE | null;
-  let sGridNo: INT16;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let sGridNo: INT16 = 0;
   let sNewGridNo: INT16;
   let ubItemCursor: UINT8;
 
@@ -1740,7 +1744,7 @@ function UIHandleMercAttack(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE |
   usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
   // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
-  pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
+  pIntNode = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sGridNo, (v) => sGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
   if (pTargetSoldier != null) {
     sTargetGridNo = pTargetSoldier.sGridNo;
@@ -1841,13 +1845,13 @@ function AttackRequesterCallback(bExitValue: UINT8): void {
 }
 
 function UIHandleCAMercShoot(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
   let pTSoldier: SOLDIERTYPE | null = null;
   let fDidRequester: boolean = false;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
       return Enum26.GAME_SCREEN;
     }
 
@@ -1889,10 +1893,10 @@ function UIHandleAEndAction(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
   let sTargetXPos: INT16;
   let sTargetYPos: INT16;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
   // Get gridno at this location
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -1924,10 +1928,10 @@ function UIHandleCAEndConfirmAction(pUIEvent: UI_EVENT): UINT32 {
 }
 
 function UIHandleIOnTerrain(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
   // Get gridno at this location
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -2018,9 +2022,9 @@ function GetAdjustedAnimHeight(ubAnimHeight: UINT8, bChange: INT8): UINT8 {
 
 export function HandleObjectHighlighting(): void {
   let pSoldier: SOLDIERTYPE;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return;
   }
 
@@ -2082,7 +2086,7 @@ export function AdjustSoldierCreationStartValues(): void {
 export function SelectedMercCanAffordAttack(): boolean {
   let pSoldier: SOLDIERTYPE | null;
   let pTargetSoldier: SOLDIERTYPE;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let sTargetGridNo: INT16;
   let fEnoughPoints: boolean = true;
   let sAPCost: INT16;
@@ -2090,7 +2094,7 @@ export function SelectedMercCanAffordAttack(): boolean {
   let usInHand: UINT16;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
       return true;
     }
 
@@ -2145,12 +2149,12 @@ export function SelectedMercCanAffordMove(): boolean {
   let pSoldier: SOLDIERTYPE | null;
   let sAPCost: UINT16 = 0;
   let sBPCost: INT16 = 0;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pIntTile: LEVELNODE | null;
 
   // Get soldier
   if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
-    if (!GetMouseMapPos(addressof(usMapPos))) {
+    if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
       return true;
     }
 
@@ -2183,31 +2187,37 @@ export function SelectedMercCanAffordMove(): boolean {
   return false;
 }
 
-export function GetMercClimbDirection(ubSoldierID: UINT8, pfGoDown: Pointer<boolean>, pfGoUp: Pointer<boolean>): void {
-  let bNewDirection: INT8;
+export function GetMercClimbDirection(ubSoldierID: UINT8): { fNearLowerLevel: boolean, fNearHeigherLevel: boolean } {
+  let fNearLowerLevel: boolean;
+  let fNearHeigherLevel: boolean;
+
+  let bNewDirection: INT8 = 0;
+  let bNewDirection__Pointer = createPointer(() => bNewDirection, (v) => bNewDirection = v);
   let pSoldier: SOLDIERTYPE | null;
 
-  pfGoDown.value = false;
-  pfGoUp.value = false;
+  fNearLowerLevel = false;
+  fNearHeigherLevel = false;
 
   if ((pSoldier = GetSoldier(ubSoldierID)) === null) {
-    return;
+    return { fNearLowerLevel, fNearHeigherLevel };
   }
 
   // Check if we are close / can climb
   if (pSoldier.bLevel == 0) {
     // See if we are not in a building!
-    if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
-      pfGoUp.value = true;
+    if (FindHeigherLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, bNewDirection__Pointer)) {
+      fNearHeigherLevel = true;
     }
   }
 
   // IF we are higher...
   if (pSoldier.bLevel > 0) {
-    if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, addressof(bNewDirection))) {
-      pfGoDown.value = true;
+    if (FindLowerLevel(pSoldier, pSoldier.sGridNo, pSoldier.bDirection, bNewDirection__Pointer)) {
+      fNearLowerLevel = true;
     }
   }
+
+  return { fNearLowerLevel, fNearHeigherLevel };
 }
 
 function RemoveTacticalCursor(): void {
@@ -2220,10 +2230,10 @@ function UIHandlePOPUPMSG(pUIEvent: UI_EVENT): UINT32 {
 }
 
 function UIHandleHCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -2271,7 +2281,7 @@ function UIHandleOpenDoorMenu(pUIEvent: UI_EVENT): UINT32 {
   return Enum26.GAME_SCREEN;
 }
 
-export function ToggleHandCursorMode(puiNewEvent: UINT32): void {
+export function ToggleHandCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.HANDCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2280,7 +2290,7 @@ export function ToggleHandCursorMode(puiNewEvent: UINT32): void {
   }
 }
 
-export function ToggleTalkCursorMode(puiNewEvent: UINT32): void {
+export function ToggleTalkCursorMode(puiNewEvent: Pointer<UINT32>): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.TALKCURSOR_MODE) {
     puiNewEvent.value = Enum207.A_CHANGE_TO_MOVE;
@@ -2289,7 +2299,7 @@ export function ToggleTalkCursorMode(puiNewEvent: UINT32): void {
   }
 }
 
-export function ToggleLookCursorMode(puiNewEvent: UINT32): void {
+export function ToggleLookCursorMode(puiNewEvent: Pointer<UINT32> | null): void {
   // Toggle modes
   if (gCurrentUIMode == Enum206.LOOKCURSOR_MODE) {
     guiPendingOverrideEvent = Enum207.A_CHANGE_TO_MOVE;
@@ -2304,10 +2314,10 @@ export function UIHandleOnMerc(fMovementMode: boolean): boolean {
   let pSoldier: SOLDIERTYPE;
   let usSoldierIndex: UINT16;
   let uiMercFlags: UINT32;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let fFoundMerc: boolean = false;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return true;
   }
 
@@ -2578,34 +2588,36 @@ function UIHandleILoadFifthLevel(pUIEvent: UI_EVENT): UINT32 {
 /* static */ let GetCursorMovementFlags__usOldMapPos: UINT16 = 32000;
 /* static */ let GetCursorMovementFlags__uiSameFrameCursorFlags: UINT32;
 /* static */ let GetCursorMovementFlags__uiOldFrameNumber: UINT32 = 99999;
-export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
-  let usMapPos: UINT16;
+export function GetCursorMovementFlags(): UINT32 {
+  let uiCursorFlags: UINT32;
+
+  let usMapPos: UINT16 = 0;
   let sXPos: INT16;
   let sYPos: INT16;
 
   // Check if this is the same frame as before, return already calculated value if so!
   if (GetCursorMovementFlags__uiOldFrameNumber == guiGameCycleCounter) {
-    (puiCursorFlags.value) = GetCursorMovementFlags__uiSameFrameCursorFlags;
-    return;
+    uiCursorFlags = GetCursorMovementFlags__uiSameFrameCursorFlags;
+    return uiCursorFlags;
   }
 
-  GetMouseMapPos(addressof(usMapPos));
+  GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v));
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(usMapPos));
 
-  puiCursorFlags.value = 0;
+  uiCursorFlags = 0;
 
   if (gusMouseXPos != GetCursorMovementFlags__usOldMouseXPos || gusMouseYPos != GetCursorMovementFlags__usOldMouseYPos) {
-    (puiCursorFlags.value) |= MOUSE_MOVING;
+    uiCursorFlags |= MOUSE_MOVING;
 
     // IF CURSOR WAS PREVIOUSLY STATIONARY, MAKE THE ADDITIONAL CHECK OF GRID POS CHANGE
     if (GetCursorMovementFlags__fStationary && GetCursorMovementFlags__usOldMapPos == usMapPos) {
-      (puiCursorFlags.value) |= MOUSE_MOVING_IN_TILE;
+      uiCursorFlags |= MOUSE_MOVING_IN_TILE;
     } else {
       GetCursorMovementFlags__fStationary = false;
-      (puiCursorFlags.value) |= MOUSE_MOVING_NEW_TILE;
+      uiCursorFlags |= MOUSE_MOVING_NEW_TILE;
     }
   } else {
-    (puiCursorFlags.value) |= MOUSE_STATIONARY;
+    uiCursorFlags |= MOUSE_STATIONARY;
     GetCursorMovementFlags__fStationary = true;
   }
 
@@ -2614,7 +2626,9 @@ export function GetCursorMovementFlags(puiCursorFlags: Pointer<UINT32>): void {
   GetCursorMovementFlags__usOldMouseYPos = gusMouseYPos;
 
   GetCursorMovementFlags__uiOldFrameNumber = guiGameCycleCounter;
-  GetCursorMovementFlags__uiSameFrameCursorFlags = (puiCursorFlags.value);
+  GetCursorMovementFlags__uiSameFrameCursorFlags = uiCursorFlags;
+
+  return uiCursorFlags;
 }
 
 /* static */ let HandleUIMovementCursor__usTargetID: UINT16 = NOBODY;
@@ -2757,19 +2771,26 @@ export function HandleUIMovementCursor(pSoldier: SOLDIERTYPE, uiCursorFlags: UIN
 }
 
 function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UINT32): INT8 {
-  let sAPCost: INT16;
-  let sBPCost: INT16;
+  let sAPCost: INT16 = 0;
+  let sAPCost__Pointer = createPointer(() => sAPCost, (v) => sAPCost = v);
+  let sBPCost: INT16 = 0;
+  let sBPCost__Pointer = createPointer(() => sBPCost, (v) => sBPCost = v);
   let sActionGridNo: INT16;
-  let pStructure: STRUCTURE | null;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let pStructure__Pointer = createPointer(() => pStructure, (v) => pStructure = v);
   let fOnInterTile: boolean = false;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
   //	ITEM_POOL					*pItemPool;
-  let sAdjustedGridNo: INT16;
-  let sIntTileGridNo: INT16;
+  let sAdjustedGridNo: INT16 = 0;
+  let sAdjustedGridNo__Pointer = createPointer(() => sAdjustedGridNo, (v) => sAdjustedGridNo = v);
+  let sIntTileGridNo: INT16 = 0;
+  let sIntTileGridNo__Pointer = createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v);
   let pIntTile: LEVELNODE | null;
   let bReturnCode: INT8 = 0;
   let fPlot: UINT8 /* boolean */;
-  let ubMercID: UINT8;
+  let ubMercID: UINT8 = 0;
+  let ubMercID__Pointer = createPointer(() => ubMercID, (v) => ubMercID = v);
 
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (gTacticalStatus.uiFlags & TURNBASED) || _KeyDown(SHIFT)) {
     fPlot = PLOT;
@@ -2785,15 +2806,15 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
   // IF WE ARE OVER AN INTERACTIVE TILE, GIVE GRIDNO OF POSITION
   if (uiFlags == MOVEUI_TARGET_INTTILES) {
     // Get structure info for in tile!
-    pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
+    pIntTile = GetCurInteractiveTileGridNoAndStructure(sIntTileGridNo__Pointer, pStructure__Pointer);
 
     // We should not have null here if we are given this flag...
     if (pIntTile != null) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, false, true);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, ubDirection__Pointer, null, false, true);
       if (sActionGridNo == -1) {
         sActionGridNo = sIntTileGridNo;
       }
-      CalcInteractiveObjectAPs(sIntTileGridNo, pStructure, addressof(sAPCost), addressof(sBPCost));
+      CalcInteractiveObjectAPs(sIntTileGridNo, pStructure, sAPCost__Pointer, sBPCost__Pointer);
       // sAPCost += UIPlotPath( pSoldier, sActionGridNo, NO_COPYROUTE, PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
       sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
 
@@ -2808,7 +2829,7 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
       sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
     }
   } else if (uiFlags == MOVEUI_TARGET_WIREFENCE) {
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), null, false, true);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, null, false, true);
     if (sActionGridNo == -1) {
       sAPCost = 0;
     } else {
@@ -2822,7 +2843,7 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
       }
     }
   } else if (uiFlags == MOVEUI_TARGET_JAR) {
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), null, false, true);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, null, false, true);
     if (sActionGridNo == -1) {
       sActionGridNo = usMapPos;
     }
@@ -2837,11 +2858,11 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
     }
   } else if (uiFlags == MOVEUI_TARGET_CAN) {
     // Get structure info for in tile!
-    pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
+    pIntTile = GetCurInteractiveTileGridNoAndStructure(sIntTileGridNo__Pointer, pStructure__Pointer);
 
     // We should not have null here if we are given this flag...
     if (pIntTile != null) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, addressof(ubDirection), null, false, true);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, ubDirection__Pointer, null, false, true);
       if (sActionGridNo != -1) {
         sAPCost = AP_ATTACH_CAN;
         sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.bActionPoints);
@@ -2856,18 +2877,18 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
     }
   } else if (uiFlags == MOVEUI_TARGET_REPAIR) {
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
-    if (IsRepairableStructAtGridNo(usMapPos, addressof(ubMercID)) == 2) {
+    if (IsRepairableStructAtGridNo(usMapPos, ubMercID__Pointer) == 2) {
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, ubDirection__Pointer, 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usMapPos = sNewGridNo;
       }
     }
 
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), null, false, true);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, null, false, true);
     if (sActionGridNo == -1) {
       sActionGridNo = usMapPos;
     }
@@ -2882,18 +2903,18 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
     }
   } else if (uiFlags == MOVEUI_TARGET_REFUEL) {
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
-    if (IsRefuelableStructAtGridNo(usMapPos, addressof(ubMercID)) == 2) {
+    if (IsRefuelableStructAtGridNo(usMapPos, ubMercID__Pointer) == <boolean><unknown>2) {
       let sNewGridNo: INT16;
       let ubDirection: UINT8;
 
-      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 0, MercPtrs[ubMercID]);
+      sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, ubDirection__Pointer, 0, MercPtrs[ubMercID]);
 
       if (sNewGridNo != NOWHERE) {
         usMapPos = sNewGridNo;
       }
     }
 
-    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), null, false, true);
+    sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, null, false, true);
     if (sActionGridNo == -1) {
       sActionGridNo = usMapPos;
     }
@@ -2938,7 +2959,7 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
       }
 
       if (sGotLocation == NOWHERE) {
-        sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
         if (sActionGridNo == -1) {
           sGotLocation = NOWHERE;
@@ -2965,7 +2986,7 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
   } else if (uiFlags == MOVEUI_TARGET_STEAL) {
     // Check if we are on a target
     if (gfUIFullTargetFound) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
       if (sActionGridNo == -1) {
         sActionGridNo = sAdjustedGridNo;
       }
@@ -2989,11 +3010,11 @@ function DrawUIMovementPath(pSoldier: SOLDIERTYPE, usMapPos: UINT16, uiFlags: UI
     gsUIHandleShowMoveGridLocation = usMapPos;
   } else if (uiFlags == MOVEUI_TARGET_MERCSFORAID) {
     if (gfUIFullTargetFound) {
-      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+      sActionGridNo = FindAdjacentGridEx(pSoldier, MercPtrs[gusUIFullTargetID].sGridNo, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
       // Try again at another gridno...
       if (sActionGridNo == -1) {
-        sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, addressof(ubDirection), addressof(sAdjustedGridNo), true, false);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, ubDirection__Pointer, sAdjustedGridNo__Pointer, true, false);
 
         if (sActionGridNo == -1) {
           sActionGridNo = sAdjustedGridNo;
@@ -3046,9 +3067,9 @@ export function UIMouseOnValidAttackLocation(pSoldier: SOLDIERTYPE): boolean {
   let fGuyHere: boolean = false;
   let pTSoldier: SOLDIERTYPE;
   let ubItemCursor: UINT8;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return false;
   }
 
@@ -3365,8 +3386,8 @@ function SetConfirmMovementModeCursor(pSoldier: SOLDIERTYPE, fFromMove: boolean)
 function UIHandleLCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
   let sFacingDir: INT16;
-  let sXPos: INT16;
-  let sYPos: INT16;
+  let sXPos: INT16 = 0;
+  let sYPos: INT16 = 0;
 
   guiNewUICursor = Enum210.LOOK_UICURSOR;
 
@@ -3385,7 +3406,7 @@ function UIHandleLCOnTerrain(pUIEvent: UI_EVENT): UINT32 {
     return Enum26.GAME_SCREEN;
   }
 
-  GetMouseXY(addressof(sXPos), addressof(sYPos));
+  GetMouseXY(createPointer(() => sXPos, (v) => sXPos = v), createPointer(() => sYPos, (v) => sYPos = v));
 
   // Get direction from mouse pos
   sFacingDir = GetDirectionFromXY(sXPos, sYPos, pSoldier);
@@ -3446,12 +3467,12 @@ function MakeSoldierTurn(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16): boo
 }
 
 function UIHandleLCLook(pUIEvent: UI_EVENT): UINT32 {
-  let sXPos: INT16;
-  let sYPos: INT16;
+  let sXPos: INT16 = 0;
+  let sYPos: INT16 = 0;
   let pSoldier: SOLDIERTYPE | null;
   let cnt: INT32;
 
-  if (!GetMouseXY(addressof(sXPos), addressof(sYPos))) {
+  if (!GetMouseXY(createPointer(() => sXPos, (v) => sXPos = v), createPointer(() => sYPos, (v) => sYPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3480,9 +3501,9 @@ function UIHandleLCLook(pUIEvent: UI_EVENT): UINT32 {
 
 function UIHandleTOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let ubTargID: UINT8;
+  let ubTargID: UINT8 = 0;
   let uiRange: UINT32;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let fValidTalkableGuy: boolean = false;
   let sTargetGridNo: INT16;
   let sDistVisible: INT16;
@@ -3492,7 +3513,7 @@ function UIHandleTOnTerrain(pUIEvent: UI_EVENT): UINT32 {
     return Enum26.GAME_SCREEN;
   }
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3507,7 +3528,7 @@ function UIHandleTOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   UIHandleOnMerc(false);
 
   // CHECK FOR VALID TALKABLE GUY HERE
-  fValidTalkableGuy = IsValidTalkableNPCFromMouse(addressof(ubTargID), false, true, false);
+  fValidTalkableGuy = IsValidTalkableNPCFromMouse(createPointer(() => ubTargID, (v) => ubTargID = v), false, true, false);
 
   // USe cursor based on distance
   // Get distance away
@@ -3742,7 +3763,7 @@ export function EndMultiSoldierSelection(fAcknowledge: boolean): void {
 
   // If here, select the first guy...
   if (pFirstSoldier != null && !fSelectedSoldierInBatch) {
-    SelectSoldier(pFirstSoldier.value.ubID, true, true);
+    SelectSoldier(pFirstSoldier.ubID, true, true);
   }
 }
 
@@ -3866,8 +3887,10 @@ export function ResetMultiSelection(): void {
 function UIHandleRubberBandOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE;
   let cnt: INT32;
-  let sScreenX: INT16;
-  let sScreenY: INT16;
+  let sScreenX: INT16 = 0;
+  let sScreenX__Pointer = createPointer(() => sScreenX, (v) => sScreenX = v);
+  let sScreenY: INT16 = 0;
+  let sScreenY__Pointer = createPointer(() => sScreenY, (v) => sScreenY = v);
   let iTemp: INT32;
   let aRect: SGPRect = createSGPRect();
   let fAtLeastOne: boolean = false;
@@ -3899,7 +3922,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: UI_EVENT): UINT32 {
     // Check if this guy is OK to control....
     if (OK_CONTROLLABLE_MERC(pSoldier) && !(pSoldier.uiStatusFlags & (SOLDIER_VEHICLE | SOLDIER_PASSENGER | SOLDIER_DRIVER))) {
       // Get screen pos of gridno......
-      GetGridNoScreenXY(pSoldier.sGridNo, addressof(sScreenX), addressof(sScreenY));
+      GetGridNoScreenXY(pSoldier.sGridNo, sScreenX__Pointer, sScreenY__Pointer);
 
       // ATE: If we are in a hiehger interface level, subttrasct....
       if (gsInterfaceLevel == 1) {
@@ -3926,7 +3949,7 @@ function UIHandleRubberBandOnTerrain(pUIEvent: UI_EVENT): UINT32 {
       }
 
       // Get screen pos of gridno......
-      GetGridNoScreenXY(pSoldier.sGridNo, addressof(sScreenX), addressof(sScreenY));
+      GetGridNoScreenXY(pSoldier.sGridNo, sScreenX__Pointer, sScreenY__Pointer);
 
       // ATE: If we are in a hiehger interface level, subttrasct....
       if (gsInterfaceLevel == 1) {
@@ -3945,14 +3968,14 @@ function UIHandleRubberBandOnTerrain(pUIEvent: UI_EVENT): UINT32 {
 
 function UIHandleJumpOverOnTerrain(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
 
   // Here, first get map screen
   if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return Enum26.GAME_SCREEN;
   }
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -3974,7 +3997,7 @@ function UIHandleJumpOverOnTerrain(pUIEvent: UI_EVENT): UINT32 {
 
 function UIHandleJumpOver(pUIEvent: UI_EVENT): UINT32 {
   let pSoldier: SOLDIERTYPE | null;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let bDirection: INT8;
 
   // Here, first get map screen
@@ -3982,7 +4005,7 @@ function UIHandleJumpOver(pUIEvent: UI_EVENT): UINT32 {
     return Enum26.GAME_SCREEN;
   }
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return Enum26.GAME_SCREEN;
   }
 
@@ -4160,21 +4183,21 @@ export function HandleTalkInit(): boolean {
   let pSoldier: SOLDIERTYPE | null;
   let pTSoldier: SOLDIERTYPE;
   let uiRange: UINT32;
-  let usMapPos: UINT16;
+  let usMapPos: UINT16 = 0;
   let sGoodGridNo: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let ubQuoteNum: UINT8;
   let ubDiceRoll: UINT8;
   let sDistVisible: INT16;
   let sActionGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
 
   // Get soldier
   if ((pSoldier = GetSoldier(gusSelectedSoldier)) === null) {
     return false;
   }
 
-  if (!GetMouseMapPos(addressof(usMapPos))) {
+  if (!GetMouseMapPos(createPointer(() => usMapPos, (v) => usMapPos = v))) {
     return false;
   }
 
@@ -4279,7 +4302,7 @@ export function HandleTalkInit(): boolean {
 
       if (uiRange > NPC_TALK_RADIUS) {
         // First get an adjacent gridno....
-        sActionGridNo = FindAdjacentGridEx(pSoldier, pTSoldier.sGridNo, addressof(ubDirection), null, false, true);
+        sActionGridNo = FindAdjacentGridEx(pSoldier, pTSoldier.sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), null, false, true);
 
         if (sActionGridNo == -1) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[Enum335.NO_PATH]);
@@ -4293,7 +4316,7 @@ export function HandleTalkInit(): boolean {
 
         // Walk up and talk to buddy....
         gfNPCCircularDistLimit = true;
-        sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, pSoldier.usUIMovementMode, pTSoldier.sGridNo, (NPC_TALK_RADIUS - 1), addressof(ubNewDirection), true);
+        sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, pSoldier.usUIMovementMode, pTSoldier.sGridNo, (NPC_TALK_RADIUS - 1), createPointer(() => ubNewDirection, (v) => ubNewDirection = v), true);
         gfNPCCircularDistLimit = false;
 
         // First calculate APs and validate...
@@ -4376,9 +4399,9 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: SOLDIERTYPE, usMapP
   let uiCursorFlags: UINT32;
   let pIntTile: LEVELNODE | null;
   let sActionGridNo: INT16;
-  let sIntTileGridNo: INT16;
+  let sIntTileGridNo: INT16 = 0;
   let fContinue: boolean = true;
-  let pStructure: STRUCTURE | null = null;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
   let fPoolContainsHiddenItems: boolean = false;
   let pTSoldier: SOLDIERTYPE;
 
@@ -4388,7 +4411,7 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: SOLDIERTYPE, usMapP
     UIHandleInteractiveTilesAndItemsOnTerrain__fOverEnemy = false;
   }
 
-  GetCursorMovementFlags(addressof(uiCursorFlags));
+  uiCursorFlags = GetCursorMovementFlags();
 
   // Default gridno to mouse pos
   sActionGridNo = usMapPos;
@@ -4463,8 +4486,8 @@ function UIHandleInteractiveTilesAndItemsOnTerrain(pSoldier: SOLDIERTYPE, usMapP
   }
 
   // If we are over an interactive struct, adjust gridno to this....
-  pIntTile = ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), false);
-  gpInvTileThatCausedMoveConfirm = pIntTile;
+  pIntTile = ConditionalGetCurInteractiveTileGridNoAndStructure(createPointer(() => sIntTileGridNo, (v) => sIntTileGridNo = v), createPointer(() => pStructure, (v) => pStructure = v), false);
+  gpInvTileThatCausedMoveConfirm = <LEVELNODE>pIntTile;
 
   if (pIntTile != null) {
     sActionGridNo = sIntTileGridNo;
@@ -4604,7 +4627,7 @@ export function GotoHeigherStance(pSoldier: SOLDIERTYPE): void {
 
       // Nowhere
       // Try to climb
-      GetMercClimbDirection(pSoldier.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+      ({ fNearLowerLevel, fNearHeigherLevel } = GetMercClimbDirection(pSoldier.ubID));
 
       if (fNearHeigherLevel) {
         BeginSoldierClimbUpRoof(pSoldier);
@@ -4642,7 +4665,7 @@ export function GotoLowerStance(pSoldier: SOLDIERTYPE): void {
 
       // Nowhere
       // Try to climb
-      GetMercClimbDirection(pSoldier.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
+      ({ fNearLowerLevel, fNearHeigherLevel } = GetMercClimbDirection(pSoldier.ubID));
 
       if (fNearLowerLevel) {
         BeginSoldierClimbDownRoof(pSoldier);
@@ -4762,7 +4785,8 @@ export function IsValidJumpLocation(pSoldier: SOLDIERTYPE, sGridNo: INT16, fChec
   let cnt: INT32;
   let ubGuyThere: UINT8;
   let ubMovementCost: UINT8;
-  let iDoorGridNo: INT32;
+  let iDoorGridNo: INT32 = 0;
+  let iDoorGridNo__Pointer = createPointer(() => iDoorGridNo, (v) => iDoorGridNo = v);
 
   // First check that action point cost is zero so far
   // ie: NO PATH!
@@ -4778,7 +4802,7 @@ export function IsValidJumpLocation(pSoldier: SOLDIERTYPE, sGridNo: INT16, fChec
     // ATE: Check our movement costs for going through walls!
     ubMovementCost = gubWorldMovementCosts[sIntSpot][sDirs[cnt]][pSoldier.bLevel];
     if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), addressof(iDoorGridNo));
+      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (pSoldier.bTeam == gbPlayerNum), iDoorGridNo__Pointer);
     }
 
     // If we have hit an obstacle, STOP HERE

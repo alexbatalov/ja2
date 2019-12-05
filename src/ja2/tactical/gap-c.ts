@@ -1,6 +1,6 @@
 namespace ja2 {
 
-function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Pointer<AudioGapList>): void {
+function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: AudioGapList): void {
   // This procedure will load in the appropriate .gap file, corresponding
   // to the .wav file in szSoundEffects indexed by uiSampleNum
   // The procedure will then allocate and load in the AUDIO_GAP information,
@@ -10,24 +10,25 @@ function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Poi
   let pFile: HWFILE;
   let pSourceFileName: string /* STR */;
   let pDestFileName: string /* STR */;
-  let sFileName: string /* char[256] */;
+  let sFileName: string /* char[256] */ = '';
   let counter: UINT8 = 0;
-  let pCurrentGap: Pointer<AUDIO_GAP>;
-  let pPreviousGap: Pointer<AUDIO_GAP>;
+  let pCurrentGap: AUDIO_GAP | null = null;
+  let pPreviousGap: AUDIO_GAP | null = null;
   let Start: UINT32;
   let uiNumBytesRead: UINT32;
 
   let End: UINT32;
+  let buffer: Buffer;
 
   pSourceFileName = zSoundFile;
   pDestFileName = sFileName;
   // Initialize GapList
-  pGapList.value.size = 0;
-  pGapList.value.current_time = 0;
-  pGapList.value.pHead = 0;
-  pGapList.value.pCurrent = 0;
-  pGapList.value.audio_gap_active = false;
-  pPreviousGap = pCurrentGap = 0;
+  pGapList.size = 0;
+  pGapList.current_time = 0;
+  pGapList.pHead = null;
+  pGapList.pCurrent = null;
+  pGapList.audio_gap_active = false;
+  pPreviousGap = pCurrentGap = null;
   // DebugMsg(TOPIC_JA2, DBG_LEVEL_3,String("File is %s", szSoundEffects[uiSampleNum]));
   // Get filename
   pDestFileName = pSourceFileName;
@@ -37,10 +38,7 @@ function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Poi
     counter++;
   }
 
-  pDestFileName[counter + 1] = 'g';
-  pDestFileName[counter + 2] = 'a';
-  pDestFileName[counter + 3] = 'p';
-  pDestFileName[counter + 4] = '\0';
+  pDestFileName = pDestFileName.substring(0, counter + 1) + 'gap';
 
   pFile = FileOpen(pDestFileName, FILE_ACCESS_READ, false);
   if (pFile) {
@@ -48,74 +46,77 @@ function AudioGapListInit(zSoundFile: string /* Pointer<CHAR8> */, pGapList: Poi
     // gap file exists
     // now read in the AUDIO_GAPs
 
+    buffer = Buffer.allocUnsafe(4);
+
     // fread(&Start,sizeof(UINT32), 1, pFile);
-    FileRead(pFile, addressof(Start), sizeof(UINT32), addressof(uiNumBytesRead));
+    uiNumBytesRead = FileRead(pFile, buffer, 4);
+    Start = buffer.readUInt32LE(0);
 
     //	while ( !feof(pFile) )
     while (!FileCheckEndOfFile(pFile)) {
       // can read the first element, there exists a second
       // fread(&End, sizeof(UINT32),1,pFile);
-      FileRead(pFile, addressof(End), sizeof(UINT32), addressof(uiNumBytesRead));
+      uiNumBytesRead = FileRead(pFile, buffer, 4);
+      End = buffer.readUInt32LE(0);
 
       // allocate space for AUDIO_GAP
-      pCurrentGap = MemAlloc(sizeof(AUDIO_GAP));
-      if (pPreviousGap != 0)
-        pPreviousGap.value.pNext = pCurrentGap;
+      pCurrentGap = createAudioGap();
+      if (pPreviousGap != null)
+        pPreviousGap.pNext = pCurrentGap;
       else {
         // Start of list
-        pGapList.value.pCurrent = pCurrentGap;
-        pGapList.value.pHead = pCurrentGap;
+        pGapList.pCurrent = pCurrentGap;
+        pGapList.pHead = pCurrentGap;
       }
 
-      pGapList.value.size++;
-      pCurrentGap.value.pNext = 0;
-      pCurrentGap.value.uiStart = Start;
-      pCurrentGap.value.uiEnd = End;
+      pGapList.size++;
+      pCurrentGap.pNext = null;
+      pCurrentGap.uiStart = Start;
+      pCurrentGap.uiEnd = End;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Gap Start %d and Ends %d", Start, End));
 
       // Increment pointer
       pPreviousGap = pCurrentGap;
 
       //	fread(&Start,sizeof(UINT32), 1, pFile);
-      FileRead(pFile, addressof(Start), sizeof(UINT32), addressof(uiNumBytesRead));
+      uiNumBytesRead = FileRead(pFile, buffer, 4);
+      Start = buffer.readUInt32LE(0);
     }
 
-    pGapList.value.audio_gap_active = false;
-    pGapList.value.current_time = 0;
+    pGapList.audio_gap_active = false;
+    pGapList.current_time = 0;
 
     // fclose(pFile);
     FileClose(pFile);
   }
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList.value.size));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList.size));
 }
 
-export function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
+export function AudioGapListDone(pGapList: AudioGapList): void {
   // This procedure will go through the  AudioGapList and free space/nullify pointers
   // for any allocated elements
 
-  let pCurrent: Pointer<AUDIO_GAP>;
-  let pNext: Pointer<AUDIO_GAP>;
-  if (pGapList.value.pHead != 0) {
-    pCurrent = pGapList.value.pHead;
-    pNext = pCurrent.value.pNext;
+  let pCurrent: AUDIO_GAP | null;
+  let pNext: AUDIO_GAP | null;
+  if (pGapList.pHead != null) {
+    pCurrent = pGapList.pHead;
+    pNext = pCurrent.pNext;
     // There are elements in the list
-    while (pNext != 0) {
+    while (pNext != null) {
       // kill pCurrent
-      MemFree(pCurrent);
       pCurrent = pNext;
-      pNext = pNext.value.pNext;
+      pNext = pNext.pNext;
     }
     // now kill the last element
-    MemFree(pCurrent);
-    pCurrent = 0;
+    pCurrent = null;
   }
-  pGapList.value.pHead = 0;
-  pGapList.value.pCurrent = 0;
-  pGapList.value.size = 0;
+  pGapList.pHead = null;
+  pGapList.pCurrent = null;
+  pGapList.size = 0;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Audio Gap List Deleted"));
 }
 
-export function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): void {
+export function PollAudioGap(uiSampleNum: UINT32, pGapList: AudioGapList): void {
   // This procedure will access the AudioGapList pertaining to the .wav about
   // to be played and sets the audio_gap_active flag. This is done by
   // going to the current AUDIO_GAP element in the AudioGapList, comparing to see if
@@ -125,54 +126,55 @@ export function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList
   // set flag FALSE
 
   let time: UINT32;
-  let pCurrent: Pointer<AUDIO_GAP>;
+  let pCurrent: AUDIO_GAP | null;
 
   if (!pGapList) {
     // no gap list, return
     return;
   }
 
-  if (pGapList.value.size > 0) {
+  if (pGapList.size > 0) {
     time = SoundGetPosition(uiSampleNum);
     //  DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Sound Sample Time is %d", time) );
   } else {
-    pGapList.value.audio_gap_active = (false);
+    pGapList.audio_gap_active = (false);
     return;
   }
 
   // set current ot head of gap list for this sound
-  pCurrent = pGapList.value.pHead;
+  pCurrent = pGapList.pHead;
+  Assert(pCurrent);
 
   // check to see if we have fallen behind
-  if ((time > pCurrent.value.uiEnd)) {
+  if ((time > pCurrent.uiEnd)) {
     // fallen behind
     // catchup
-    while (time > pCurrent.value.uiEnd) {
-      pCurrent = pCurrent.value.pNext;
+    while (time > pCurrent.uiEnd) {
+      pCurrent = pCurrent.pNext;
       if (!pCurrent) {
-        pGapList.value.audio_gap_active = (false);
+        pGapList.audio_gap_active = (false);
         return;
       }
     }
   }
 
   // check to see if time is within the next AUDIO_GAPs start time
-  if ((time > pCurrent.value.uiStart) && (time < pCurrent.value.uiEnd)) {
-    if ((time > pCurrent.value.uiStart) && (time < pCurrent.value.uiEnd)) {
+  if ((time > pCurrent.uiStart) && (time < pCurrent.uiEnd)) {
+    if ((time > pCurrent.uiStart) && (time < pCurrent.uiEnd)) {
       // we are within the time frame
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Gap Started at %d", time));
-      pGapList.value.audio_gap_active = (true);
-    } else if ((time > pCurrent.value.uiEnd) && (pGapList.value.audio_gap_active == true)) {
+      pGapList.audio_gap_active = (true);
+    } else if ((time > pCurrent.uiEnd) && (pGapList.audio_gap_active == true)) {
       // reset if already set
-      pGapList.value.audio_gap_active = (false);
+      pGapList.audio_gap_active = (false);
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Gap Ended at %d", time));
     }
   } else {
-    pGapList.value.audio_gap_active = (false);
+    pGapList.audio_gap_active = (false);
   }
 }
 
-export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
+export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: AudioGapList | null): UINT32 {
   let spParms: SOUNDPARMS = createSoundParams();
 
   spParms.uiSpeed = usRate;

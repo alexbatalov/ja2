@@ -43,7 +43,7 @@ export interface DisplaySpec {
   ubType: UINT8;
   /* union { */
   /*   struct { */
-  hVObject: HVOBJECT;
+  hVObject: SGPVObject;
   usStart: UINT16;
   usEnd: UINT16;
   uiObjIndx: UINT32;
@@ -55,7 +55,7 @@ export interface DisplaySpec {
 }
 
 export interface DisplayList {
-  hObj: HVOBJECT;
+  hObj: SGPVObject;
   uiIndex: UINT16;
   iX: INT16;
   iY: INT16;
@@ -64,6 +64,20 @@ export interface DisplayList {
   uiObjIndx: UINT32;
   fChosen: boolean;
   pNext: DisplayList | null /* Pointer<DisplayList> */;
+}
+
+export function createDisplayList(): DisplayList {
+  return {
+    hObj: <SGPVObject><unknown>null,
+    uiIndex: 0,
+    iX: 0,
+    iY: 0,
+    iWidth: 0,
+    iHeight: 0,
+    uiObjIndx: 0,
+    fChosen: false,
+    pNext: null,
+  };
 }
 
 export interface Selections {

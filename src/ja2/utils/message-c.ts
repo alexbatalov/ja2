@@ -573,7 +573,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: string 
     usColor = INTERFACE_COLOR;
   }
 
-  pStringWrapperHead = LineWrap(uiFont, LINE_WIDTH, addressof(usLineWidthIfWordIsWiderThenWidth), DestString);
+  pStringWrapperHead = LineWrap(uiFont, LINE_WIDTH, createPointer(() => usLineWidthIfWordIsWiderThenWidth, (v) => usLineWidthIfWordIsWiderThenWidth = v), DestString);
   pStringWrapper = pStringWrapperHead;
   if (!pStringWrapper)
     return;
@@ -724,7 +724,7 @@ export function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: s
     usColor = INTERFACE_COLOR;
   }
 
-  pStringWrapperHead = LineWrap(uiFont, MAP_LINE_WIDTH, addressof(usLineWidthIfWordIsWiderThenWidth), DestString);
+  pStringWrapperHead = LineWrap(uiFont, MAP_LINE_WIDTH, createPointer(() => usLineWidthIfWordIsWiderThenWidth, (v) => usLineWidthIfWordIsWiderThenWidth = v), DestString);
   pStringWrapper = pStringWrapperHead;
   if (!pStringWrapper)
     return;

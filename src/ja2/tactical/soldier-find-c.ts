@@ -37,11 +37,11 @@ let gSoldierStack: SOLDIER_STACK_TYPE = createSoldierStackType();
 let gfHandleStack: boolean = false;
 
 export function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): boolean {
-  let sMapPos: INT16;
+  let sMapPos: INT16 = 0;
 
   pMercFlags.value = 0;
 
-  if (GetMouseMapPos(addressof(sMapPos))) {
+  if (GetMouseMapPos(createPointer(() => sMapPos, (v) => sMapPos = v))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
       return true;
     }
@@ -51,11 +51,11 @@ export function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlag
 }
 
 function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): boolean {
-  let sMapPos: INT16;
+  let sMapPos: INT16 = 0;
 
   pMercFlags.value = 0;
 
-  if (GetMouseMapPos(addressof(sMapPos))) {
+  if (GetMouseMapPos(createPointer(() => sMapPos, (v) => sMapPos = v))) {
     if (FindSoldier(sMapPos, pusSoldierIndex, pMercFlags, FINDSOLDIERSAMELEVEL(gsInterfaceLevel))) {
       return true;
     }
@@ -332,12 +332,12 @@ export function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pM
 }
 
 export function CycleSoldierFindStack(usMapPos: UINT16): boolean {
-  let usSoldierIndex: UINT16;
-  let uiMercFlags: UINT32;
+  let usSoldierIndex: UINT16 = 0;
+  let uiMercFlags: UINT32 = 0;
 
   // Have we initalized for this yet?
   if (!gfHandleStack) {
-    if (FindSoldier(usMapPos, addressof(usSoldierIndex), addressof(uiMercFlags), FINDSOLDIERSAMELEVEL(gsInterfaceLevel) | FIND_SOLDIER_BEGINSTACK)) {
+    if (FindSoldier(usMapPos, createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FINDSOLDIERSAMELEVEL(gsInterfaceLevel) | FIND_SOLDIER_BEGINSTACK)) {
       gfHandleStack = true;
     }
   }
@@ -465,28 +465,32 @@ function GetSoldierScreenRect(pSoldier: SOLDIERTYPE, pRect: SGPRect): void {
   pRect.iRight = sMercScreenX + pSoldier.sBoundingBoxWidth;
 }
 
-export function GetSoldierAnimDims(pSoldier: SOLDIERTYPE, psHeight: Pointer<INT16>, psWidth: Pointer<INT16>): void {
+export function GetSoldierAnimDims(pSoldier: SOLDIERTYPE): { sHeight: INT16, sWidth: INT16 } {
+  let sHeight: INT16;
+  let sWidth: INT16;
+
   let usAnimSurface: UINT16;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    psHeight.value = 5;
-    psWidth.value = 5;
+    sHeight = 5;
+    sWidth = 5;
 
-    return;
+    return { sHeight, sWidth };
   }
 
   // OK, noodle here on what we should do... If we take each frame, it will be different slightly
   // depending on the frame and the value returned here will vary thusly. However, for the
   // uses of this function, we should be able to use just the first frame...
 
-  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.value.usNumberOfObjects) {
+  if (pSoldier.usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject.usNumberOfObjects) {
     let i: number = 0;
   }
 
-  psHeight.value = pSoldier.sBoundingBoxHeight;
-  psWidth.value = pSoldier.sBoundingBoxWidth;
+  sHeight = pSoldier.sBoundingBoxHeight;
+  sWidth = pSoldier.sBoundingBoxWidth;
+  return { sHeight, sWidth };
 }
 
 export function GetSoldierAnimOffsets(pSoldier: SOLDIERTYPE): { sOffsetX: INT16, sOffsetY: INT16 } {
@@ -565,7 +569,7 @@ export function GetSoldierScreenPos(pSoldier: SOLDIERTYPE): { sScreenX: INT16, s
 }
 
 // THE TRUE SCREN RECT DOES NOT TAKE THE OFFSETS OF BUDDY INTO ACCOUNT!
-export function GetSoldierTRUEScreenPos(pSoldier: SOLDIERTYPE, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
+export function GetSoldierTRUEScreenPos(pSoldier: SOLDIERTYPE): { sMercScreenX: INT16, sMercScreenY: INT16 } {
   let sMercScreenX: INT16;
   let sMercScreenY: INT16;
   let dOffsetX: FLOAT;
@@ -577,9 +581,9 @@ export function GetSoldierTRUEScreenPos(pSoldier: SOLDIERTYPE, psScreenX: Pointe
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier.usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    psScreenX.value = 0;
-    psScreenY.value = 0;
-    return;
+    sMercScreenX = 0;
+    sMercScreenY = 0;
+    return { sMercScreenX, sMercScreenY };
   }
 
   // Get 'TRUE' merc position
@@ -601,8 +605,7 @@ export function GetSoldierTRUEScreenPos(pSoldier: SOLDIERTYPE, psScreenX: Pointe
 
   sMercScreenY -= pSoldier.sHeightAdjustment;
 
-  psScreenX.value = sMercScreenX;
-  psScreenY.value = sMercScreenY;
+  return { sMercScreenX, sMercScreenY };
 }
 
 export function GridNoOnScreen(sGridNo: INT16): boolean {
@@ -722,14 +725,14 @@ export function IsPointInSoldierBoundingBox(pSoldier: SOLDIERTYPE, sX: INT16, sY
 
 export function FindRelativeSoldierPosition(pSoldier: SOLDIERTYPE, usFlags: Pointer<UINT16>, sX: INT16, sY: INT16): boolean {
   let aRect: SGPRect = createSGPRect();
-  let sRelX: INT16;
-  let sRelY: INT16;
+  let sRelX: INT16 = 0;
+  let sRelY: INT16 = 0;
   let dRelPer: FLOAT;
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, aRect);
 
-  if (IsPointInScreenRectWithRelative(sX, sY, aRect, addressof(sRelX), addressof(sRelY))) {
+  if (IsPointInScreenRectWithRelative(sX, sY, aRect, createPointer(() => sRelX, (v) => sRelX = v), createPointer(() => sRelY, (v) => sRelY = v))) {
     dRelPer = sRelY / (aRect.iBottom - aRect.iTop);
 
     // Determine relative positions
@@ -786,7 +789,7 @@ export function QuickFindSoldier(sGridNo: INT16): UINT8 {
   return NOBODY;
 }
 
-export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
+export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8): { sScreenX: INT16, sScreenY: INT16 } {
   let sScreenX: INT16;
   let sScreenY: INT16;
   let dOffsetX: FLOAT;
@@ -820,8 +823,7 @@ export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Po
     sScreenY -= ROOF_LEVEL_HEIGHT;
   }
 
-  psScreenX.value = sScreenX;
-  psScreenY.value = sScreenY;
+  return { sScreenX, sScreenY };
 }
 
 }

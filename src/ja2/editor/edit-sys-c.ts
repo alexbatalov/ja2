@@ -5,7 +5,6 @@ export let gfWarning: UINT8 /* boolean */ = 0;
 let gfDoFill: boolean = false;
 export let CurrentPaste: UINT16 = NO_TILE;
 let gDebrisPaste: UINT16 = NO_TILE;
-let gChangeElevation: UINT16 = false;
 let CurrentStruct: UINT16 = NO_TILE;
 let gDoBanks: UINT32 = NO_BANKS;
 let gDoCliffs: UINT32 = NO_CLIFFS;
@@ -617,8 +616,8 @@ export function PasteTextureCommon(iMapIndex: UINT32): void {
 function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   let NewTile: UINT16;
   let ubLastHighLevel: UINT8;
-  let puiDeletedTypes: Pointer<UINT32> = null;
-  let ubNumTypes: UINT8;
+  let puiDeletedTypes: UINT32[] = [];
+  let ubNumTypes: UINT8 = 0;
   let cnt: UINT8;
 
   // Here we do the following:
@@ -632,11 +631,11 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   // I don't know is the right way to do it!
   // return;
 
-  if (iMapIndex < 0x8000 && AnyHeigherLand(iMapIndex, fNewType, addressof(ubLastHighLevel))) {
+  if (iMapIndex < 0x8000 && AnyHeigherLand(iMapIndex, fNewType, createPointer(() => ubLastHighLevel, (v) => ubLastHighLevel = v))) {
     AddToUndoList(iMapIndex);
 
     // - For all heigher level, remove
-    RemoveHigherLandLevels(iMapIndex, fNewType, addressof(puiDeletedTypes), addressof(ubNumTypes));
+    RemoveHigherLandLevels(iMapIndex, fNewType, createPointer(() => puiDeletedTypes, (v) => puiDeletedTypes = v), createPointer(() => ubNumTypes, (v) => ubNumTypes = v));
 
     // Set with a radius of 1 and smooth according to height difference
     SetLowerLandIndexWithRadius(iMapIndex, fNewType, 1, true);
@@ -645,8 +644,6 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
     for (cnt = 0; cnt < ubNumTypes; cnt++) {
       SmoothTerrainRadius(iMapIndex, puiDeletedTypes[cnt], 1, true);
     }
-
-    MemFree(puiDeletedTypes);
   } else if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
 
@@ -654,7 +651,7 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
     SetLandIndex(iMapIndex, NewTile, fNewType, false);
 
     // Smooth item then adding here
-    SmoothTerrain(iMapIndex, fNewType, addressof(NewTile), false);
+    NewTile = SmoothTerrain(iMapIndex, fNewType, false);
 
     if (NewTile != NO_TILE) {
       // Change tile

@@ -254,11 +254,11 @@ export function HandleStructChangeFromGridNo(pSoldier: SOLDIERTYPE, sGridNo: INT
 
 export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean): UINT32 {
   let pIntNode: LEVELNODE | null;
-  let pStructure: STRUCTURE | null;
-  let sGridNo: INT16;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let sGridNo: INT16 = 0;
 
   // OK, first see if we have an in tile...
-  pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
+  pIntNode = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sGridNo, (v) => sGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
   if (pIntNode != null && pStructure != null) {
     if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
@@ -288,8 +288,8 @@ export function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: boolean)
 
 export function SetActionModeDoorCursorText(): void {
   let pIntNode: LEVELNODE | null;
-  let pStructure: STRUCTURE | null;
-  let sGridNo: INT16;
+  let pStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let sGridNo: INT16 = 0;
 
   // If we are over a merc, don't
   if (gfUIFullTargetFound) {
@@ -297,7 +297,7 @@ export function SetActionModeDoorCursorText(): void {
   }
 
   // OK, first see if we have an in tile...
-  pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
+  pIntNode = GetCurInteractiveTileGridNoAndStructure(createPointer(() => sGridNo, (v) => sGridNo = v), createPointer(() => pStructure, (v) => pStructure = v));
 
   if (pIntNode != null && pStructure != null) {
     if (pStructure.fFlags & STRUCTURE_ANYDOOR) {
@@ -325,7 +325,7 @@ function GetLevelNodeScreenRect(pNode: LEVELNODE, pRect: SGPRect, sXPos: INT16, 
   ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
   if (pNode.uiFlags & LEVELNODE_CACHEDANITILE) {
-    pTrav = (<TILE_IMAGERY>gpTileCache[pNode.pAniTile.sCachedTileID].pImagery).vo.value.pETRLEObject[pNode.pAniTile.sCurrentFrame];
+    pTrav = (<TILE_IMAGERY>gpTileCache[pNode.pAniTile.sCachedTileID].pImagery).vo.pETRLEObject[pNode.pAniTile.sCurrentFrame];
   } else {
     TileElem = gTileDatabase[pNode.usIndex];
 
@@ -340,7 +340,7 @@ function GetLevelNodeScreenRect(pNode: LEVELNODE, pRect: SGPRect, sXPos: INT16, 
       }
     }
 
-    pTrav = TileElem.hTileSurface.value.pETRLEObject[TileElem.usRegionIndex];
+    pTrav = TileElem.hTileSurface.pETRLEObject[TileElem.usRegionIndex];
   }
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
@@ -504,7 +504,7 @@ export function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): LEVELNODE
   return pNode;
 }
 
-export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: boolean): LEVELNODE | null {
+export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<STRUCTURE | null>, fRejectOnTopItems: boolean): LEVELNODE | null {
   let pNode: LEVELNODE | null;
   let pStructure: STRUCTURE | null;
 
@@ -533,7 +533,7 @@ export function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Poi
   return pNode;
 }
 
-export function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>): LEVELNODE | null {
+export function GetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<STRUCTURE | null>): LEVELNODE | null {
   return ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo, ppStructure, true);
 }
 
@@ -709,7 +709,7 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
 
 // This function will check the video object at SrcX and SrcY for the lack of transparency
 // will return true if data found, else false
-export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): boolean {
+export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: SGPVObject, usIndex: UINT16, iTestX: INT32, iTestY: INT32): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -724,7 +724,7 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, us
   Assert(hSrcVObject != null);
 
   // Get Offsets from Index into structure
-  pTrav = hSrcVObject.value.pETRLEObject[usIndex];
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
   uiOffset = pTrav.uiDataOffset;
@@ -735,7 +735,7 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, us
   iStartPos = 0;
   LineSkip = usWidth;
 
-  SrcPtr = hSrcVObject.value.pPixData + uiOffset;
+  SrcPtr = hSrcVObject.pPixData + uiOffset;
 
   asm(`
     mov esi, SrcPtr

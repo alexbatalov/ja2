@@ -1284,7 +1284,7 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
   // any shots left now are "strays" - not enough to completely fill a magazine of this type
   if (ubShotsLeft > 0) {
     // handle "stray" ammo - add it to the dealer's stray pile
-    pubStrayAmmo = gArmsDealersInventory[ubArmsDealer][usItemIndex].ubStrayAmmo;
+    pubStrayAmmo = createPropertyPointer(gArmsDealersInventory[ubArmsDealer][usItemIndex], 'ubStrayAmmo');
     pubStrayAmmo.value += ubShotsLeft;
 
     // if dealer has accumulated enough stray ammo to make another full magazine, convert it!
@@ -2181,8 +2181,8 @@ function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UIN
 }
 
 export function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
-  let uiOpeningTime: UINT32;
-  let uiClosingTime: UINT32;
+  let uiOpeningTime: UINT32 = 0;
+  let uiClosingTime: UINT32 = 0;
   let uiMinutesClosedOvernight: UINT32;
   let uiDelayInDays: UINT32 = 0;
   let uiDoneToday: UINT32;
@@ -2192,7 +2192,7 @@ export function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFre
   // convert world time into 24hr military time for the day he's gonna start on it
   uiTimeWhenFreeToStartIt = uiTimeWhenFreeToStartIt % NUM_MIN_IN_DAY;
 
-  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == false) {
+  if (GetArmsDealerShopHours(ubArmsDealer, createPointer(() => uiOpeningTime, (v) => uiOpeningTime = v), createPointer(() => uiClosingTime, (v) => uiClosingTime = v)) == false) {
     return 0;
   }
 
@@ -2218,15 +2218,15 @@ export function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFre
 }
 
 export function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32, uiEndTime: UINT32): UINT32 {
-  let uiOpeningTime: UINT32;
-  let uiClosingTime: UINT32;
+  let uiOpeningTime: UINT32 = 0;
+  let uiClosingTime: UINT32 = 0;
   let uiMinutesClosedOvernight: UINT32;
   let uiDaysDifference: UINT32 = 0;
   let uiMinutesClosed: UINT32 = 0;
 
   Assert(uiStartTime <= uiEndTime);
 
-  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == false) {
+  if (GetArmsDealerShopHours(ubArmsDealer, createPointer(() => uiOpeningTime, (v) => uiOpeningTime = v), createPointer(() => uiClosingTime, (v) => uiClosingTime = v)) == false) {
     return 0;
   }
 

@@ -506,7 +506,7 @@ function HandleOptionsScreen(): void {
 }
 
 function RenderOptionsScreen(): void {
-  let hPixHandle: HVOBJECT;
+  let hPixHandle: SGPVObject;
   let usPosY: UINT16;
   let cnt: UINT8;
   let usWidth: UINT16 = 0;

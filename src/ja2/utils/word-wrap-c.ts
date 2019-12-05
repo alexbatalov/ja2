@@ -292,9 +292,9 @@ export function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UI
 
   // If we are to a Single char for a word ( like in Taiwan )
   if (gfUseSingleCharWordsForWordWrap) {
-    pFirstWrappedString = LineWrapForSingleCharWords(uiFont, usWidth, addressof(usLineWidthIfWordIsWiderThenWidth), pString);
+    pFirstWrappedString = LineWrapForSingleCharWords(uiFont, usWidth, createPointer(() => usLineWidthIfWordIsWiderThenWidth, (v) => usLineWidthIfWordIsWiderThenWidth = v), pString);
   } else {
-    pFirstWrappedString = LineWrap(uiFont, usWidth, addressof(usLineWidthIfWordIsWiderThenWidth), pString);
+    pFirstWrappedString = LineWrap(uiFont, usWidth, createPointer(() => usLineWidthIfWordIsWiderThenWidth, (v) => usLineWidthIfWordIsWiderThenWidth = v), pString);
   }
 
   // if an error occured and a word was bigger then the width passed in, reset the width

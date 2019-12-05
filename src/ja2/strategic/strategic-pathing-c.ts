@@ -1713,7 +1713,7 @@ function ClearPathForSoldier(pSoldier: SOLDIERTYPE): void {
   let pVehicle: VEHICLETYPE | null = null;
 
   // clear the soldier's mercpath
-  pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, pSoldier.ubGroupID);
+  pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, pSoldier.ubGroupID);
 
   // if a vehicle
   if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {

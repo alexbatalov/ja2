@@ -1670,7 +1670,7 @@ function HealCharacters(pDoctor: SOLDIERTYPE, sX: INT16, sY: INT16, bZ: INT8): v
   // if there is anybody who can be healed right now
   if (ubTotalNumberOfPatients > 0) {
     // get available healing pts
-    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, addressof(usMax), true);
+    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, createPointer(() => usMax, (v) => usMax = v), true);
     usRemainingHealingPts = usAvailableHealingPts;
 
     // find how many healing points can be evenly distributed to each wounded, healable merc
@@ -2286,7 +2286,7 @@ function RepairObject(pSoldier: SOLDIERTYPE, pOwner: SOLDIERTYPE, pObj: OBJECTTY
       // repairable, try to repair it
 
       // void DoActualRepair( SOLDIERTYPE * pSoldier, UINT16 usItem, INT8 * pbStatus, UINT8 * pubRepairPtsLeft )
-      DoActualRepair(pSoldier, pObj.usItem, addressof(pObj.bStatus[ubLoop]), pubRepairPtsLeft);
+      DoActualRepair(pSoldier, pObj.usItem, createElementPointer(pObj.bStatus, ubLoop), pubRepairPtsLeft);
 
       fSomethingWasRepaired = true;
 
@@ -2313,7 +2313,7 @@ function RepairObject(pSoldier: SOLDIERTYPE, pOwner: SOLDIERTYPE, pObj: OBJECTTY
       if (IsItemRepairable(pObj.usAttachItem[ubLoop], pObj.bAttachStatus[ubLoop])) {
         // repairable, try to repair it
 
-        DoActualRepair(pSoldier, pObj.usAttachItem[ubLoop], addressof(pObj.bAttachStatus[ubLoop]), pubRepairPtsLeft);
+        DoActualRepair(pSoldier, pObj.usAttachItem[ubLoop], createElementPointer(pObj.bAttachStatus, ubLoop), pubRepairPtsLeft);
 
         fSomethingWasRepaired = true;
 
@@ -2341,12 +2341,14 @@ function RepairObject(pSoldier: SOLDIERTYPE, pOwner: SOLDIERTYPE, pObj: OBJECTTY
 function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
   let usMax: UINT16 = 0;
   let ubRepairPtsLeft: UINT8 = 0;
+  let ubRepairPtsLeft__Pointer = createPointer(() => ubRepairPtsLeft, (v) => ubRepairPtsLeft = v);
   let ubItemsInPocket: UINT8 = 0;
   let ubObjectInPocketCounter: UINT8 = 0;
   let ubInitialRepairPts: UINT8 = 0;
   let ubRepairPtsUsed: UINT8 = 0;
   let bPocket: INT8 = 0;
   let fNothingLeftToRepair: boolean = false;
+  let fNothingLeftToRepair__Pointer = createPointer(() => fNothingLeftToRepair, (v) => fNothingLeftToRepair = v);
   let bLoop: INT8;
   let bLoopStart: INT8;
   let bLoopEnd: INT8;
@@ -2354,7 +2356,7 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
   let pObj: OBJECTTYPE;
 
   // grab max number of repair pts open to this soldier
-  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, addressof(usMax), true);
+  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, createPointer(() => usMax, (v) => usMax = v), true);
 
   // no points
   if (ubRepairPtsLeft == 0) {
@@ -2369,7 +2371,7 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.bVehicleUnderRepairID != -1) {
     if (CanCharacterRepairVehicle(pSoldier, pSoldier.bVehicleUnderRepairID)) {
       // attempt to fix vehicle
-      ubRepairPtsLeft -= RepairVehicle(pSoldier.bVehicleUnderRepairID, ubRepairPtsLeft, addressof(fNothingLeftToRepair));
+      ubRepairPtsLeft -= RepairVehicle(pSoldier.bVehicleUnderRepairID, ubRepairPtsLeft, fNothingLeftToRepair__Pointer);
     }
   }
   // check if we are repairing a robot
@@ -2385,10 +2387,10 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
       }
 
       // robot
-      ubRepairPtsLeft -= HandleRepairOfRobotBySoldier(pSoldier, ubRepairPtsLeft, addressof(fNothingLeftToRepair));
+      ubRepairPtsLeft -= HandleRepairOfRobotBySoldier(pSoldier, ubRepairPtsLeft, fNothingLeftToRepair__Pointer);
     }
   } else {
-    fAnyOfSoldiersOwnItemsWereFixed = UnjamGunsOnSoldier(pSoldier, pSoldier, addressof(ubRepairPtsLeft));
+    fAnyOfSoldiersOwnItemsWereFixed = UnjamGunsOnSoldier(pSoldier, pSoldier, ubRepairPtsLeft__Pointer);
 
     // repair items on self
     for (bLoop = 0; bLoop < 2; bLoop++) {
@@ -2404,7 +2406,7 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
       for (bPocket = bLoopStart; bPocket <= bLoopEnd; bPocket++) {
         pObj = pSoldier.inv[bPocket];
 
-        if (RepairObject(pSoldier, pSoldier, pObj, ubRepairPtsLeft)) {
+        if (RepairObject(pSoldier, pSoldier, pObj, ubRepairPtsLeft__Pointer)) {
           fAnyOfSoldiersOwnItemsWereFixed = true;
 
           // quit looking if we're already out
@@ -2423,7 +2425,7 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
     }
 
     // repair items on others
-    RepairItemsOnOthers(pSoldier, ubRepairPtsLeft);
+    RepairItemsOnOthers(pSoldier, ubRepairPtsLeft__Pointer);
   }
 
   // what are the total amount of pts used by character?
@@ -2617,7 +2619,8 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
   let sTownTrainingPts: INT16;
   let TownTrainer: TOWN_TRAINER_TYPE[] /* [MAX_CHARACTER_COUNT] */ = createArrayFrom(MAX_CHARACTER_COUNT, createTownTrainerType);
   let ubTownTrainers: UINT8;
-  let usMaxPts: UINT16;
+  let usMaxPts: UINT16 = 0;
+  let usMaxPts__Pointer = createPointer(() => usMaxPts, (v) => usMaxPts = v);
   let fSamSiteInSector: boolean = false;
   let fTrainingCompleted: boolean = false;
 
@@ -2655,7 +2658,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
       if (pTrainer.bActive && (pTrainer.sSectorX == sMapX) && (pTrainer.sSectorY == sMapY) && (pTrainer.bSectorZ == bZ)) {
         // if he's training teammates in this stat
         if ((pTrainer.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.fMercAsleep == false)) {
-          sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, null, ubStat, fAtGunRange, addressof(usMaxPts));
+          sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, null, ubStat, fAtGunRange, usMaxPts__Pointer);
 
           // if he's the best trainer so far for this stat
           if (sTrainingPtsDueToInstructor > sBestTrainingPts) {
@@ -2676,7 +2679,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
       if ((pStudent.bAssignment == Enum117.TRAIN_SELF) || (pStudent.bAssignment == Enum117.TRAIN_BY_OTHER)) {
         if (EnoughTimeOnAssignment(pStudent) && (pStudent.fMercAsleep == false)) {
           // figure out how much the grunt can learn in one training period
-          sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.bTrainStat, fAtGunRange, addressof(usMaxPts));
+          sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.bTrainStat, fAtGunRange, usMaxPts__Pointer);
 
           // if he's getting help
           if (pStudent.bAssignment == Enum117.TRAIN_BY_OTHER) {
@@ -2694,7 +2697,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
               // if ( EnoughTimeOnAssignment( pTrainer ) )
               {
                 // valid trainer is available, this gives the student a large training bonus!
-                sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pStudent, pStudent.bTrainStat, fAtGunRange, addressof(usMaxPts));
+                sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pStudent, pStudent.bTrainStat, fAtGunRange, usMaxPts__Pointer);
 
                 // add the bonus to what merc can learn on his own
                 sTotalTrainingPts += sTrainingPtsDueToInstructor;
@@ -2718,7 +2721,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].bTeam].bLastID; uiCnt++, pTrainer = MercPtrs[uiCnt]) {
       if (pTrainer.bActive && (pTrainer.sSectorX == sMapX) && (pTrainer.sSectorY == sMapY) && (pTrainer.bSectorZ == bZ)) {
         if ((pTrainer.bAssignment == Enum117.TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.fMercAsleep == false)) {
-          sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, addressof(usMaxPts));
+          sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, usMaxPts__Pointer);
 
           // if he's actually worth anything
           if (sTownTrainingPts > 0) {
@@ -3003,8 +3006,9 @@ export function GetSoldierStudentPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fA
 
   let sBestTrainingPts: INT16;
   let sTrainingPtsDueToInstructor: INT16;
-  let usMaxTrainerPts: UINT16;
-  let usBestMaxTrainerPts: UINT16;
+  let usMaxTrainerPts: UINT16 = 0;
+  let usMaxTrainerPts__Pointer = createPointer(() => usMaxTrainerPts, (v) => usMaxTrainerPts = v);
+  let usBestMaxTrainerPts: UINT16 = 0;
   let uiCnt: UINT32;
   let pTrainer: SOLDIERTYPE;
 
@@ -3078,7 +3082,7 @@ export function GetSoldierStudentPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fA
       // if he's training teammates in this stat
       // NB skip the EnoughTime requirement to display what the value should be even if haven't been training long yet...
       if ((pTrainer.bAssignment == Enum117.TRAIN_TEAMMATE) && (pTrainer.bTrainStat == bTrainStat) && (pTrainer.fMercAsleep == false)) {
-        sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, addressof(usMaxTrainerPts));
+        sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, usMaxTrainerPts__Pointer);
 
         // if he's the best trainer so far for this stat
         if (sTrainingPtsDueToInstructor > sBestTrainingPts) {
@@ -8854,6 +8858,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: SOLDI
   let sTrainingPts: INT16 = 0;
   let fAtGunRange: boolean = false;
   let usMaxPts: UINT16;
+  let usMaxPts__Pointer = createPointer(() => usMaxPts, (v) => usMaxPts = v);
 
   // this function only makes sense for training teammates or by others, not for self training which doesn't require partners
   Assert((bTargetAssignment == Enum117.TRAIN_TEAMMATE) || (bTargetAssignment == Enum117.TRAIN_BY_OTHER));
@@ -8878,10 +8883,10 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: SOLDI
 
         if (pSoldier.bAssignment == Enum117.TRAIN_TEAMMATE) {
           // pSoldier is the instructor, target is the student
-          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pSoldier, pTargetSoldier, bTargetStat, fAtGunRange, addressof(usMaxPts));
+          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pSoldier, pTargetSoldier, bTargetStat, fAtGunRange, usMaxPts__Pointer);
         } else {
           // target is the instructor, pSoldier is the student
-          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pTargetSoldier, pSoldier, bTargetStat, fAtGunRange, addressof(usMaxPts));
+          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pTargetSoldier, pSoldier, bTargetStat, fAtGunRange, usMaxPts__Pointer);
         }
 
         if (sTrainingPts > 0) {
@@ -8899,12 +8904,14 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: SOLDI
 export function UnEscortEPC(pSoldier: SOLDIERTYPE): void {
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     let fGotInfo: boolean;
-    let usQuoteNum: UINT16;
-    let usFactToSetToTrue: UINT16;
+    let usQuoteNum: UINT16 = 0;
+    let usQuoteNum__Pointer = createPointer(() => usQuoteNum, (v) => usQuoteNum = v);
+    let usFactToSetToTrue: UINT16 = 0;
+    let usFactToSetToTrue__Pointer = createPointer(() => usFactToSetToTrue, (v) => usFactToSetToTrue = v);
 
     SetupProfileInsertionDataForSoldier(pSoldier);
 
-    fGotInfo = GetInfoForAbandoningEPC(pSoldier.ubProfile, addressof(usQuoteNum), addressof(usFactToSetToTrue));
+    fGotInfo = GetInfoForAbandoningEPC(pSoldier.ubProfile, usQuoteNum__Pointer, usFactToSetToTrue__Pointer);
     if (fGotInfo) {
       // say quote usQuoteNum
       gMercProfiles[pSoldier.ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
@@ -8924,7 +8931,7 @@ export function UnEscortEPC(pSoldier: SOLDIERTYPE): void {
       pSoldier2 = FindSoldierByProfileID(Enum268.MARY, true);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(Enum268.MARY, addressof(usQuoteNum), addressof(usFactToSetToTrue));
+        fGotInfo = GetInfoForAbandoningEPC(Enum268.MARY, usQuoteNum__Pointer, usFactToSetToTrue__Pointer);
         if (fGotInfo) {
           // say quote usQuoteNum
           gMercProfiles[Enum268.MARY].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
@@ -8943,7 +8950,7 @@ export function UnEscortEPC(pSoldier: SOLDIERTYPE): void {
       pSoldier2 = FindSoldierByProfileID(Enum268.JOHN, true);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(Enum268.JOHN, addressof(usQuoteNum), addressof(usFactToSetToTrue));
+        fGotInfo = GetInfoForAbandoningEPC(Enum268.JOHN, usQuoteNum__Pointer, usFactToSetToTrue__Pointer);
         if (fGotInfo) {
           // say quote usQuoteNum
           gMercProfiles[Enum268.JOHN].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;

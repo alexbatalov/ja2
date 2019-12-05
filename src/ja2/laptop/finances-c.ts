@@ -386,7 +386,7 @@ export function HandleFinances(): void {
 }
 
 export function RenderFinances(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // draw background
   RenderBackGround();
@@ -468,7 +468,7 @@ function RemoveFinances(): void {
 
 function RenderBackGround(): void {
   // render generic background for Finance system
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iCounter: INT32 = 0;
 
   // get title bar object
@@ -492,7 +492,7 @@ function DrawSummary(): void {
 
 function DrawSummaryLines(): void {
   // draw divider lines on screen
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // the summary LINE object handle
   hHandle = GetVideoObject(guiLINE);
@@ -530,7 +530,7 @@ function DrawAPageOfRecords(): void {
 function DrawRecordsBackGround(): void {
   // proceudre will draw the background for the list of financial records
   let iCounter: INT32 = 6;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // render the generic background
   RenderBackGround();

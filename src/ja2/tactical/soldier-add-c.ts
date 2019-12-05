@@ -163,7 +163,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: SOLDIERTYPE, sSwe
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(addressof(soldier), NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(soldier, NOWHERE, 0, Enum193.WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -740,7 +740,7 @@ export function CanSoldierReachGridNoInGivenTileLimit(pSoldier: SOLDIERTYPE, sGr
     return false;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), null, false, false);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, createPointer(() => ubDirection, (v) => ubDirection = v), null, false, false);
 
   if (sActionGridNo == -1) {
     sActionGridNo = sGridNo;
@@ -892,7 +892,8 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE, 
 
 export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boolean, fUseAnimation: boolean, usAnimState: UINT16, usAnimCode: UINT16): boolean {
   let ubDirection: UINT8;
-  let ubCalculatedDirection: UINT8;
+  let ubCalculatedDirection: UINT8 = 0;
+  let ubCalculatedDirection__Pointer = createPointer(() => ubCalculatedDirection, (v) => ubCalculatedDirection = v);
   let pSoldier: SOLDIERTYPE;
   let sGridNo: INT16;
   let sExitGridNo: INT16;
@@ -934,7 +935,7 @@ export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boo
 
     // Add to interface if the are ours
     if (pSoldier.bTeam == CREATURE_TEAM) {
-      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 7, addressof(ubCalculatedDirection), false);
+      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 7, ubCalculatedDirection__Pointer, false);
       if (fCalculateDirection)
         ubDirection = ubCalculatedDirection;
       else
@@ -944,11 +945,11 @@ export function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: boo
         // Add the soldier to the respective entrypoint.  This is an error condition.
       }
       if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
-        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 12, addressof(ubCalculatedDirection), false, pSoldier.ubInsertionDirection);
+        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, Enum193.STANDING, pSoldier.sInsertionGridNo, 12, ubCalculatedDirection__Pointer, false, pSoldier.ubInsertionDirection);
         // ATE: Override insertion direction
         pSoldier.ubInsertionDirection = ubCalculatedDirection;
       } else {
-        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sInsertionGridNo, 7, addressof(ubCalculatedDirection));
+        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sInsertionGridNo, 7, ubCalculatedDirection__Pointer);
 
         // ATE: Error condition - if nowhere use insertion gridno!
         if (sGridNo == NOWHERE) {
@@ -1012,7 +1013,7 @@ export function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, 
 function InternalSoldierInSectorSleep(pSoldier: SOLDIERTYPE, sGridNo: INT16, fDoTransition: boolean): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let sGoodGridNo: INT16;
   let usAnim: UINT16 = Enum193.SLEEPING;
 
@@ -1025,7 +1026,7 @@ function InternalSoldierInSectorSleep(pSoldier: SOLDIERTYPE, sGridNo: INT16, fDo
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, usAnim, sGridNo, 5, addressof(ubNewDirection), false);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, usAnim, sGridNo, 5, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), false);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1051,7 +1052,7 @@ function InternalSoldierInSectorSleep(pSoldier: SOLDIERTYPE, sGridNo: INT16, fDo
 function SoldierInSectorIncompaciated(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let sGoodGridNo: INT16;
 
   if (!pSoldier.bInSector) {
@@ -1059,7 +1060,7 @@ function SoldierInSectorIncompaciated(pSoldier: SOLDIERTYPE, sGridNo: INT16): vo
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STAND_FALLFORWARD_STOP, sGridNo, 5, addressof(ubNewDirection), false);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.STAND_FALLFORWARD_STOP, sGridNo, 5, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), false);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1084,7 +1085,7 @@ void SoldierInSectorSleep( SOLDIERTYPE *pSoldier, INT16 sGridNo )
 export function SoldierInSectorPatient(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let sGoodGridNo: INT16;
 
   if (!pSoldier.bInSector) {
@@ -1092,7 +1093,7 @@ export function SoldierInSectorPatient(pSoldier: SOLDIERTYPE, sGridNo: INT16): v
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_PATIENT, sGridNo, 5, addressof(ubNewDirection), false);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_PATIENT, sGridNo, 5, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), false);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1114,7 +1115,7 @@ export function SoldierInSectorPatient(pSoldier: SOLDIERTYPE, sGridNo: INT16): v
 export function SoldierInSectorDoctor(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let sGoodGridNo: INT16;
 
   if (!pSoldier.bInSector) {
@@ -1122,7 +1123,7 @@ export function SoldierInSectorDoctor(pSoldier: SOLDIERTYPE, sGridNo: INT16): vo
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_DOCTOR, sGridNo, 5, addressof(ubNewDirection), false);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_DOCTOR, sGridNo, 5, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), false);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1144,7 +1145,7 @@ export function SoldierInSectorDoctor(pSoldier: SOLDIERTYPE, sGridNo: INT16): vo
 export function SoldierInSectorRepair(pSoldier: SOLDIERTYPE, sGridNo: INT16): void {
   let sWorldX: INT16;
   let sWorldY: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let sGoodGridNo: INT16;
 
   if (!pSoldier.bInSector) {
@@ -1152,7 +1153,7 @@ export function SoldierInSectorRepair(pSoldier: SOLDIERTYPE, sGridNo: INT16): vo
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_REPAIRMAN, sGridNo, 5, addressof(ubNewDirection), false);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, Enum193.BEING_REPAIRMAN, sGridNo, 5, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), false);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1175,7 +1176,7 @@ function AddSoldierToSectorGridNo(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirec
   let sWorldX: INT16;
   let sWorldY: INT16;
   let sNewGridNo: INT16;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let ubInsertionCode: UINT8;
   let fUpdateFinalPosition: boolean = true;
 
@@ -1236,7 +1237,7 @@ function AddSoldierToSectorGridNo(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubDirec
     // If just arriving, set a destination to walk into from!
     if (ubInsertionCode == Enum175.INSERTION_CODE_ARRIVING_GAME) {
       // Find a sweetspot near...
-      sNewGridNo = FindGridNoFromSweetSpot(pSoldier, gMapInformation.sNorthGridNo, 4, addressof(ubNewDirection));
+      sNewGridNo = FindGridNoFromSweetSpot(pSoldier, gMapInformation.sNorthGridNo, 4, createPointer(() => ubNewDirection, (v) => ubNewDirection = v));
       EVENT_GetNewSoldierPath(pSoldier, sNewGridNo, Enum193.WALKING);
     }
 

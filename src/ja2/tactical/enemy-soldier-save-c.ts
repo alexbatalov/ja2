@@ -233,7 +233,7 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
             usCheckSum = sizeBuffer.readUInt16LE(0);
 
             // verify the checksum equation (anti-hack) -- see save
-            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
               // Hacker has modified the stats on the enemy placements.
               FileClose(hfile);
@@ -385,7 +385,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
             }
           }
 
-          curr.pDetailedPlacement.fHasKeys = pSoldier.bHasKeys;
+          curr.pDetailedPlacement.fHasKeys = Boolean(pSoldier.bHasKeys);
           curr.pDetailedPlacement.sSectorX = pSoldier.sSectorX;
           curr.pDetailedPlacement.sSectorY = pSoldier.sSectorY;
           curr.pDetailedPlacement.bSectorZ = pSoldier.bSectorZ;
@@ -397,7 +397,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
           // left the map, so randomize the start locations either current position or original position.
           if (PreRandom(2)) {
             // use current position
-            curr.pDetailedPlacement.fOnRoof = pSoldier.bLevel;
+            curr.pDetailedPlacement.fOnRoof = Boolean(pSoldier.bLevel);
             curr.pDetailedPlacement.sInsertionGridNo = pSoldier.sGridNo;
           } else {
             // use original position
@@ -576,7 +576,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
             break FAIL_SAVE;
           }
           // insert a checksum equation (anti-hack)
-          usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+          usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
           sizeBuffer.writeUInt16LE(usCheckSum, 0);
           uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
           if (uiNumBytesWritten != 2) {
@@ -625,10 +625,10 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
   let ubNumTroops: UINT8 = 0;
   let ubNumAdmins: UINT8 = 0;
   let ubNumCreatures: UINT8 = 0;
-  let ubStrategicElites: UINT8;
-  let ubStrategicTroops: UINT8;
-  let ubStrategicAdmins: UINT8;
-  let ubStrategicCreatures: UINT8;
+  let ubStrategicElites: UINT8 = 0;
+  let ubStrategicTroops: UINT8 = 0;
+  let ubStrategicAdmins: UINT8 = 0;
+  let ubStrategicCreatures: UINT8 = 0;
   let sizeBuffer: Buffer = Buffer.allocUnsafe(4);
   let dataBuffer: Buffer;
 
@@ -650,7 +650,6 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
     let pSector: UNDERGROUND_SECTORINFO | null;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-      FileClose(hfile);
       return false;
     }
   } else {
@@ -665,7 +664,7 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Get the number of enemies form the temp file
-    CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(addressof(ubStrategicElites), addressof(ubStrategicTroops), addressof(ubStrategicAdmins), addressof(ubStrategicCreatures));
+    CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(createPointer(() => ubStrategicElites, (v) => ubStrategicElites = v), createPointer(() => ubStrategicTroops, (v) => ubStrategicTroops = v), createPointer(() => ubStrategicAdmins, (v) => ubStrategicAdmins = v), createPointer(() => ubStrategicCreatures, (v) => ubStrategicCreatures = v));
 
     // If any of the counts differ from what is in memory
     if (ubStrategicElites != ubNumElites || ubStrategicTroops != ubNumTroops || ubStrategicAdmins != ubNumAdmins || ubStrategicCreatures != ubNumCreatures) {
@@ -838,7 +837,7 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
           usCheckSum = sizeBuffer.readUInt16LE(0);
 
           // verify the checksum equation (anti-hack) -- see save
-          usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+          usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
           if (usCheckSum != usFileCheckSum) {
             // Hacker has modified the stats on the enemy placements.
             FileClose(hfile);
@@ -1115,7 +1114,7 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
             usCheckSum = sizeBuffer.readUInt16LE(0);
 
             // verify the checksum equation (anti-hack) -- see save
-            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+            usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
 // Hacker has modified the stats on the enemy placements.
               FileClose(hfile);
@@ -1271,7 +1270,7 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
             curr.pDetailedPlacement.bBodyType = pSoldier.ubBodyType;
             curr.pDetailedPlacement.ubCivilianGroup = pSoldier.ubCivilianGroup;
             curr.pDetailedPlacement.ubScheduleID = pSoldier.ubScheduleID;
-            curr.pDetailedPlacement.fHasKeys = pSoldier.bHasKeys;
+            curr.pDetailedPlacement.fHasKeys = Boolean(pSoldier.bHasKeys);
             curr.pDetailedPlacement.sSectorX = pSoldier.sSectorX;
             curr.pDetailedPlacement.sSectorY = pSoldier.sSectorY;
             curr.pDetailedPlacement.bSectorZ = pSoldier.bSectorZ;
@@ -1283,7 +1282,7 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
             // left the map, so randomize the start locations either current position or original position.
             if (PreRandom(2)) {
               // use current position
-              curr.pDetailedPlacement.fOnRoof = pSoldier.bLevel;
+              curr.pDetailedPlacement.fOnRoof = Boolean(pSoldier.bLevel);
               curr.pDetailedPlacement.sInsertionGridNo = pSoldier.sGridNo;
             } else {
               // use original position
@@ -1435,7 +1434,7 @@ export function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSecto
           return false;
         }
         // insert a checksum equation (anti-hack)
-        usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + curr.pDetailedPlacement.fOnRoof * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+        usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
         sizeBuffer.writeUInt16LE(usCheckSum, 0);
         uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
         if (uiNumBytesWritten != 2) {

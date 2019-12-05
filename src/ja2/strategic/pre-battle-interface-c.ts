@@ -551,7 +551,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, 0, 0, 261, 359);
   PlayJA2SampleFromFile("SOUNDS\\Laptop power up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
   InvalidateScreen();
-  RefreshScreen(null);
+  RefreshScreen();
 
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
@@ -580,7 +580,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, PBIRect, DstRect);
 
     InvalidateScreen();
-    RefreshScreen(null);
+    RefreshScreen();
 
     // Restore the previous rect.
     BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, DstRect.iLeft, DstRect.iTop, (DstRect.iRight - DstRect.iLeft + 1), (DstRect.iBottom - DstRect.iTop + 1));
@@ -694,7 +694,7 @@ function RenderPBHeader(): { x: INT32, width: INT32 } {
 
 export function RenderPreBattleInterface(): void {
   let pGroup: GROUP | null;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let i: INT32;
   let x: INT32;
   let y: INT32;
@@ -969,7 +969,7 @@ function AutoResolveBattleCallback(btn: GUI_BUTTON, reason: INT32): void {
         InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
-        RefreshScreen(null);
+        RefreshScreen();
         KillPreBattleInterface();
         StopTimeCompression();
         SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
@@ -997,7 +997,7 @@ function GoToSectorCallback(btn: GUI_BUTTON, reason: INT32): void {
         InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
         ExecuteBaseDirtyRectQueue();
         EndFrameBufferRender();
-        RefreshScreen(null);
+        RefreshScreen();
         KillPreBattleInterface();
         StopTimeCompression();
         SetMusicMode(Enum328.MUSIC_TACTICAL_NOTHING);
@@ -1011,7 +1011,7 @@ function GoToSectorCallback(btn: GUI_BUTTON, reason: INT32): void {
       InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
-      RefreshScreen(null);
+      RefreshScreen();
       if (gubPBSectorX == gWorldSectorX && gubPBSectorY == gWorldSectorY && !gbWorldSectorZ) {
         gfGotoSectorTransition = true;
       }
@@ -1060,7 +1060,7 @@ function RetreatMercsCallback(btn: GUI_BUTTON, reason: INT32): void {
       InvalidateRegion(btn.Area.RegionTopLeftX, btn.Area.RegionTopLeftY, btn.Area.RegionBottomRightX, btn.Area.RegionBottomRightY);
       ExecuteBaseDirtyRectQueue();
       EndFrameBufferRender();
-      RefreshScreen(null);
+      RefreshScreen();
       KillPreBattleInterface();
       StopTimeCompression();
       gpBattleGroup = null;

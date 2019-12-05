@@ -397,6 +397,7 @@ let gItemListBox: SCROLL_BOX = createScrollBox(); // The Npc Scroll box
 let gpActiveListBox: SCROLL_BOX; // Only 1 scroll box is active at a time, this is set to it.
 
 export let gsQdsEnteringGridNo: INT16 = 0;
+export let gsQdsEnteringGridNo__Pointer = createPointer(() => gsQdsEnteringGridNo, (v) => gsQdsEnteringGridNo = v);
 
 let gubTextEntryAction: UINT8 = Enum166.QD_DROP_DOWN_NO_ACTION;
 let gfTextEntryActive: boolean = false;
@@ -1488,7 +1489,7 @@ function DisplaySelectedListBox(): void {
   let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT()) + 2;
   let usPosX: UINT16;
   let usPosY: UINT16;
-  let hImageHandle: HVOBJECT;
+  let hImageHandle: SGPVObject;
 
   // DEBUG: make sure it wont go over array bounds
   if (gpActiveListBox.usMaxArrayIndex == 0) {
@@ -2355,7 +2356,7 @@ function AddNPCToGridNo(iGridNo: INT32): void {
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let sSectorX: INT16;
   let sSectorY: INT16;
-  let ubID: UINT8;
+  let ubID: UINT8 = 0;
 
   ({ sSectorX, sSectorY } = GetCurrentWorldSector());
 
@@ -2368,7 +2369,7 @@ function AddNPCToGridNo(iGridNo: INT32): void {
 
   //	RandomizeNewSoldierStats( &MercCreateStruct );
 
-  if (TacticalCreateSoldier(MercCreateStruct, addressof(ubID))) {
+  if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => ubID, (v) => ubID = v))) {
     AddSoldierToSector(ubID);
 
     // So we can see them!
@@ -3119,7 +3120,7 @@ function DisplayQDSCurrentlyQuoteNum(): void {
   // Display the box frame
   ColorFillVideoSurfaceArea(FRAME_BUFFER, QDS_CURRENT_QUOTE_NUM_BOX_X, QDS_CURRENT_QUOTE_NUM_BOX_Y, QDS_CURRENT_QUOTE_NUM_BOX_X + QDS_CURRENT_QUOTE_NUM_BOX_WIDTH, QDS_CURRENT_QUOTE_NUM_BOX_Y + QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT, Get16BPPColor(FROMRGB(32, 41, 53)));
 
-  zTemp = swprintf("'%s' is currently saying quote #%d", gMercProfiles[gTalkingMercSoldier.ubProfile].zNickname, giSelectedMercCurrentQuote - 1);
+  zTemp = swprintf("'%s' is currently saying quote #%d", gMercProfiles[(<SOLDIERTYPE>gTalkingMercSoldier).ubProfile].zNickname, giSelectedMercCurrentQuote - 1);
 
   // Display the text box caption
   usPosY = QDS_CURRENT_QUOTE_NUM_BOX_Y + 4;

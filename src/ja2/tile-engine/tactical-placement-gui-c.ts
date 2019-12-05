@@ -239,7 +239,7 @@ function RenderTacticalPlacementGUI(): void {
   }
   // If the display is dirty render the entire panel.
   if (gfTacticalPlacementGUIDirty) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, giOverheadPanelImage, 0, 0, 320, VO_BLT_SRCTRANSPARENCY, 0);
+    BltVideoObjectFromIndex(FRAME_BUFFER, giOverheadPanelImage, 0, 0, 320, VO_BLT_SRCTRANSPARENCY, null);
     InvalidateRegion(0, 0, 320, 480);
     gfTacticalPlacementGUIDirty = false;
     MarkButtonsDirty();
@@ -326,7 +326,7 @@ function RenderTacticalPlacementGUI(): void {
       }
     }
     pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, addressof(gTPClipRect), usHatchColor);
+    Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, gTPClipRect, usHatchColor);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(true, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -679,13 +679,13 @@ function SelectNextUnplacedUnit(): void {
 
 export function HandleTacticalPlacementClicksInOverheadMap(reg: MOUSE_REGION, reason: INT32): void {
   let i: INT32;
-  let sGridNo: INT16;
+  let sGridNo: INT16 = 0;
   let fInvalidArea: boolean = false;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if we have a selected merc, move him to the new closest map edgepoint of his side.
     if (gfValidCursor) {
       if (gbSelectedMercID != -1) {
-        if (GetOverheadMouseGridNo(addressof(sGridNo))) {
+        if (GetOverheadMouseGridNo(createPointer(() => sGridNo, (v) => sGridNo = v))) {
           // we have clicked within a valid part of the map.
           BeginMapEdgepointSearch();
 
@@ -764,7 +764,7 @@ function PutDownMercPiece(iPlacement: INT32): void {
   let sGridNo: INT16;
   let sCellX: INT16;
   let sCellY: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
 
   let pSoldier: SOLDIERTYPE;
   pSoldier = gMercPlacement[iPlacement].pSoldier;
@@ -790,7 +790,7 @@ function PutDownMercPiece(iPlacement: INT32): void {
   }
   if (gMercPlacement[iPlacement].fPlaced)
     PickUpMercPiece(iPlacement);
-  sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sInsertionGridNo, 4, addressof(ubDirection));
+  sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.sInsertionGridNo, 4, createPointer(() => ubDirection, (v) => ubDirection = v));
   if (sGridNo != NOWHERE) {
     ({ sCellX, sCellY } = ConvertGridNoToCellXY(sGridNo));
     EVENT_SetSoldierPosition(pSoldier, sCellX, sCellY);

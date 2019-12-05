@@ -79,7 +79,7 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
   let ubRandomHandIndex: UINT8; // Index value into random animation table to use base don what is in the guys hand...
   let usItem: UINT16;
   let pAnimDef: RANDOM_ANI_DEF;
-  let ubNewDirection: UINT8;
+  let ubNewDirection: UINT8 = 0;
   let ubDesiredHeight: UINT8;
   let bOKFireWeapon: UINT8 /* boolean */;
   let bWeaponJammed: UINT8 /* boolean */;
@@ -183,11 +183,11 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
           // re-enable sight
           gTacticalStatus.uiFlags &= (~DISALLOW_SIGHT);
           {
-            let sXPos: INT16;
-            let sYPos: INT16;
+            let sXPos: INT16 = 0;
+            let sYPos: INT16 = 0;
 
             // usNewGridNo = NewGridNo( (UINT16)pSoldier->sGridNo, (UINT16)DirectionInc( pSoldier->bDirection ) );
-            ConvertMapPosToWorldTileCenter(pSoldier.sTempNewGridNo, addressof(sXPos), addressof(sYPos));
+            ConvertMapPosToWorldTileCenter(pSoldier.sTempNewGridNo, createPointer(() => sXPos, (v) => sXPos = v), createPointer(() => sYPos, (v) => sYPos = v));
             EVENT_SetSoldierPosition(pSoldier, sXPos, sYPos);
           }
           // Move two CC directions
@@ -371,14 +371,14 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
         case 440:
           // CODE: Set buddy as dead!
           {
-            let fMadeCorpse: boolean;
+            let fMadeCorpse: boolean = false;
 
             // ATE: Piggyback here on stopping the burn sound...
             if (pSoldier.usAnimState == Enum193.CHARIOTS_OF_FIRE || pSoldier.usAnimState == Enum193.BODYEXPLODING) {
               SoundStop(pSoldier.uiPendingActionData1);
             }
 
-            CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+            CheckForAndHandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
 
             if (fMadeCorpse) {
               return false;
@@ -889,7 +889,7 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
           //	sNewGridNo =  FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 5, &ubNewDirection );
           // sNewGridNo =  FindRandomGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 3, &ubNewDirection );
 
-          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.sGridNo, 3, addressof(ubNewDirection), Enum245.SOUTHEAST);
+          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.sGridNo, 3, createPointer(() => ubNewDirection, (v) => ubNewDirection = v), Enum245.SOUTHEAST);
 
           // Check for merc arrives quotes...
           HandleMercArrivesQuotes(pSoldier);
@@ -1371,10 +1371,10 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
           // ATE: Only do if we're not inspecial case...
           if (!(pSoldier.uiStatusFlags & SOLDIER_NPC_DOING_PUNCH)) {
             let pTSoldier: SOLDIERTYPE;
-            let uiMercFlags: UINT32;
-            let usSoldierIndex: UINT16;
+            let uiMercFlags: UINT32 = 0;
+            let usSoldierIndex: UINT16 = 0;
 
-            if (FindSoldier(pSoldier.sTargetGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+            if (FindSoldier(pSoldier.sTargetGridNo, createPointer(() => usSoldierIndex, (v) => usSoldierIndex = v), createPointer(() => uiMercFlags, (v) => uiMercFlags = v), FIND_SOLDIER_GRIDNO)) {
               pTSoldier = <SOLDIERTYPE>GetSoldier(usSoldierIndex);
 
               // IF WE ARE AN ANIMAL, CAR, MONSTER, DONT'T DODGE
@@ -1557,9 +1557,9 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
                   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Ani: Death sequence needed for animation %d", pSoldier.usAnimState));
               }
             } else {
-              let fMadeCorpse: boolean;
+              let fMadeCorpse: boolean = false;
 
-              CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+              CheckForAndHandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
 
               // ATE: Needs to be FALSE!
               return false;
@@ -3070,15 +3070,15 @@ export function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: SOLDIERTYPE): 
         default:
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Soldier Control: Death state %d has no death hit", pSoldier.usAnimState));
           {
-            let fMadeCorpse: boolean;
-            CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+            let fMadeCorpse: boolean = false;
+            CheckForAndHandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
           }
           break;
       }
     } else {
-      let fMadeCorpse: boolean;
+      let fMadeCorpse: boolean = false;
 
-      CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+      CheckForAndHandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
     }
     return true;
   }

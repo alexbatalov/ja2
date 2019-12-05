@@ -349,7 +349,7 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
   }
 }
 
-function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Pointer<Pointer<STRUCTURE>>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, fSubSequentMultiTilesTransitionDamage: boolean, ubOwner: UINT8, bLevel: INT8): UINT8 {
+function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Pointer<STRUCTURE | null>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, fSubSequentMultiTilesTransitionDamage: boolean, ubOwner: UINT8, bLevel: INT8): UINT8 {
   let sX: INT16;
   let sY: INT16;
   let pBase: STRUCTURE;
@@ -448,10 +448,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Po
 
       if (fContinue) {
         // Remove the beast!
-        while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pCurrent.usStructureID) {
+        while ((ppNextCurrent.value) != null && (ppNextCurrent.value).usStructureID == pCurrent.usStructureID) {
           // the next structure will also be deleted so we had better
           // skip past it!
-          (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
+          (ppNextCurrent.value) = (ppNextCurrent.value).pNext;
         }
 
         // Replace with explosion debris if there are any....
@@ -624,10 +624,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: STRUCTURE, ppNextCurrent: Po
                 pAttachedBase = FindBaseStructure(pAttached);
                 if (pAttachedBase) {
                   // Remove the beast!
-                  while ((ppNextCurrent.value) != null && (ppNextCurrent.value).value.usStructureID == pAttachedBase.usStructureID) {
+                  while ((ppNextCurrent.value) != null && (ppNextCurrent.value).usStructureID == pAttachedBase.usStructureID) {
                     // the next structure will also be deleted so we had better
                     // skip past it!
-                    (ppNextCurrent.value) = (ppNextCurrent.value).value.pNext;
+                    (ppNextCurrent.value) = (ppNextCurrent.value).pNext;
                   }
 
                   pAttachedNode = FindLevelNodeBasedOnStructure(pAttachedBase.sGridNo, pAttachedBase);
@@ -877,18 +877,19 @@ let gStruct: STRUCTURE | null;
 function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<boolean>, fOnlyWalls: boolean, bMultiStructSpecialFlag: INT8, fSubSequentMultiTilesTransitionDamage: UINT8 /* boolean */, ubOwner: UINT8, bLevel: INT8): void {
   let pCurrent: STRUCTURE | null;
   let pNextCurrent: STRUCTURE | null;
+  let pNextCurrent__Pointer = createPointer(() => pNextCurrent, (v) => pNextCurrent = v);
   let pStructure: STRUCTURE | null;
   let pBaseStructure: STRUCTURE | null;
   let sDesiredLevel: INT16;
-  let ppTile: DB_STRUCTURE_TILE[];
+  let ppTile: DB_STRUCTURE_TILE[] = <DB_STRUCTURE_TILE[]><unknown>undefined;
   let ubLoop: UINT8;
   let ubLoop2: UINT8;
   let sNewGridNo: INT16;
   let sNewGridNo2: INT16;
-  let sBaseGridNo: INT16;
+  let sBaseGridNo: INT16 = 0;
   let fToBreak: boolean = false;
   let fMultiStructure: boolean = false;
-  let ubNumberOfTiles: UINT8;
+  let ubNumberOfTiles: UINT8 = 0;
   let fMultiStructSpecialFlag: boolean = false;
   let fExplodeDamageReturn: UINT8 /* boolean */ = 0;
 
@@ -928,7 +929,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
 
     // Check level!
     if (pCurrent.sCubeOffset == sDesiredLevel) {
-      fExplodeDamageReturn = ExplosiveDamageStructureAtGridNo(pCurrent, addressof(pNextCurrent), sGridNo, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, false, ubOwner, bLevel);
+      fExplodeDamageReturn = ExplosiveDamageStructureAtGridNo(pCurrent, pNextCurrent__Pointer, sGridNo, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, false, ubOwner, bLevel);
 
       // Are we overwritting damage due to multi-tile...?
       if (fExplodeDamageReturn) {
@@ -966,7 +967,7 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
               if (pStructure) {
                 fMultiStructSpecialFlag = ((pStructure.fFlags & STRUCTURE_SPECIAL) != 0);
 
-                if ((bMultiStructSpecialFlag == fMultiStructSpecialFlag)) {
+                if ((bMultiStructSpecialFlag == Number(fMultiStructSpecialFlag))) {
                   // If we just damaged it, use same damage value....
                   if (fMultiStructSpecialFlag) {
                     ExplosiveDamageGridNo(sNewGridNo2, sWoundAmt, uiDist, pfRecompileMovementCosts, fOnlyWalls, bMultiStructSpecialFlag, 1, ubOwner, bLevel);
@@ -1026,7 +1027,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   pSoldier.ubMiscSoldierFlags |= SOLDIER_MISC_HURT_BY_EXPLOSION;
 
   if (ubOwner != NOBODY && MercPtrs[ubOwner].bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
-    ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
+    ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], createPointer(() => pSoldier, (v) => pSoldier = v), REASON_EXPLOSION);
   }
 
   return true;
@@ -1133,7 +1134,7 @@ export function DishOutGasDamage(pSoldier: SOLDIERTYPE, pExplosive: EXPLOSIVETYP
     }
 
     if (ubOwner != NOBODY && MercPtrs[ubOwner].bTeam == gbPlayerNum && pSoldier.bTeam != gbPlayerNum) {
-      ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], addressof(pSoldier), REASON_EXPLOSION);
+      ProcessImplicationsOfPCAttack(MercPtrs[ubOwner], createPointer(() => pSoldier, (v) => pSoldier = v), REASON_EXPLOSION);
     }
   }
   return fRecompileMovementCosts;
@@ -1151,6 +1152,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   let sX: INT16;
   let sY: INT16;
   let fRecompileMovementCosts: boolean = false;
+  let fRecompileMovementCosts__Pointer = createPointer(() => fRecompileMovementCosts, (v) => fRecompileMovementCosts = v);
   let fSmokeEffect: boolean = false;
   let fStunEffect: boolean = false;
   let bSmokeEffectType: INT8 = 0;
@@ -1259,20 +1261,20 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
         sStructDmgAmt = sWoundAmt;
       }
 
-      ExplosiveDamageGridNo(sGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), false, -1, 0, ubOwner, bLevel);
+      ExplosiveDamageGridNo(sGridNo, sStructDmgAmt, uiDist, fRecompileMovementCosts__Pointer, false, -1, 0, ubOwner, bLevel);
 
       // ATE: Look for damage to walls ONLY for next two gridnos
       sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.NORTH));
 
       if (GridNoOnVisibleWorldTile(sNewGridNo)) {
-        ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), true, -1, 0, ubOwner, bLevel);
+        ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, fRecompileMovementCosts__Pointer, true, -1, 0, ubOwner, bLevel);
       }
 
       // ATE: Look for damage to walls ONLY for next two gridnos
       sNewGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.WEST));
 
       if (GridNoOnVisibleWorldTile(sNewGridNo)) {
-        ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, addressof(fRecompileMovementCosts), true, -1, 0, ubOwner, bLevel);
+        ExplosiveDamageGridNo(sNewGridNo, sStructDmgAmt, uiDist, fRecompileMovementCosts__Pointer, true, -1, 0, ubOwner, bLevel);
       }
     }
 
@@ -1508,14 +1510,16 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
 }
 
 function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEffect: boolean, uiCurRange: INT32, piMaxRange: Pointer<INT32>, pubKeepGoing: Pointer<UINT8>): void {
-  let bStructHeight: INT8;
+  let bStructHeight: INT8 = 0;
+  let bStructHeight__Pointer = createPointer(() => bStructHeight, (v) => bStructHeight = v);
   let ubMovementCost: UINT8;
   let Blocking: INT8;
   let BlockingTemp: INT8;
   let fTravelCostObs: boolean = false;
   let uiRangeReduce: UINT32;
   let sNewGridNo: INT16;
-  let pBlockingStructure: STRUCTURE | null;
+  let pBlockingStructure: STRUCTURE | null = <STRUCTURE><unknown>null;
+  let pBlockingStructure__Pointer = createPointer(() => pBlockingStructure, (v) => pBlockingStructure = v);
   let fBlowWindowSouth: boolean = false;
   let fReduceRay: boolean = true;
 
@@ -1535,7 +1539,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
     }
   }
 
-  Blocking = GetBlockingStructureInfo(uiNewSpot, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
+  Blocking = GetBlockingStructureInfo(uiNewSpot, ubDir, 0, bLevel, bStructHeight__Pointer, pBlockingStructure__Pointer, true);
 
   if (pBlockingStructure) {
     if (pBlockingStructure.fFlags & STRUCTURE_CAVEWALL) {
@@ -1561,7 +1565,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         // will override there...
         sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.WEST));
 
-        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
+        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, bStructHeight__Pointer, pBlockingStructure__Pointer, true);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
           // If open, fTravelCostObs set to false and reduce range....
           fTravelCostObs = false;
@@ -1576,7 +1580,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       if (fTravelCostObs) {
         sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.NORTH));
 
-        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
+        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, bStructHeight__Pointer, pBlockingStructure__Pointer, true);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
           // If open, fTravelCostObs set to false and reduce range....
           fTravelCostObs = false;
@@ -1606,7 +1610,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       // will override there...
       sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.WEST));
 
-      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
+      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, bStructHeight__Pointer, pBlockingStructure__Pointer, true);
       if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
         fTravelCostObs = false;
         fReduceRay = false;
@@ -1618,7 +1622,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       }
 
       sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(Enum245.NORTH));
-      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, addressof(bStructHeight), addressof(pBlockingStructure), true);
+      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, bStructHeight__Pointer, pBlockingStructure__Pointer, true);
 
       if (pBlockingStructure && pBlockingStructure.pDBStructureRef.pDBStructure.ubDensity <= 15) {
         fTravelCostObs = false;
@@ -1636,7 +1640,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
   if (Blocking != NOTHING_BLOCKING && !fTravelCostObs) {
     // ATE: Tall things should blaock all
     if (bStructHeight == 4) {
-      (pubKeepGoing.value) = false;
+      (pubKeepGoing.value) = 0;
     } else {
       // If we are smoke, reduce range variably....
       if (fReduceRay) {
@@ -1664,16 +1668,16 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       }
 
       if (uiCurRange <= (piMaxRange.value)) {
-        (pubKeepGoing.value) = true;
+        (pubKeepGoing.value) = 1;
       } else {
-        (pubKeepGoing.value) = false;
+        (pubKeepGoing.value) = 0;
       }
     }
   } else {
     if (fTravelCostObs) {
-      (pubKeepGoing.value) = false;
+      (pubKeepGoing.value) = 0;
     } else {
-      (pubKeepGoing.value) = true;
+      (pubKeepGoing.value) = 1;
     }
   }
 }
@@ -1684,14 +1688,18 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
   let uiBranchSpot: INT32;
   let cnt: INT32;
   let branchCnt: INT32;
-  let uiTempRange: INT32;
-  let ubBranchRange: INT32;
+  let uiTempRange: INT32 = 0;
+  let uiTempRange__Pointer = createPointer(() => uiTempRange, (v) => uiTempRange = v);
+  let ubBranchRange: INT32 = 0;
+  let ubBranchRange__Pointer = createPointer(() => ubBranchRange, (v) => ubBranchRange = v);
   let ubDir: UINT8;
   let ubBranchDir: UINT8;
-  let ubKeepGoing: UINT8;
+  let ubKeepGoing: UINT8 = 0;
+  let ubKeepGoing__Pointer = createPointer(() => ubKeepGoing, (v) => ubKeepGoing = v);
   let sRange: INT16;
   let fRecompileMovement: boolean = false;
   let fAnyMercHit: boolean = false;
+  let fAnyMercHit__Pointer = createPointer(() => fAnyMercHit, (v) => fAnyMercHit = v);
   let fSmokeEffect: boolean = false;
 
   switch (usItem) {
@@ -1719,7 +1727,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
   sRange = ubRadius * 2;
 
   // first, affect main spot
-  if (ExpAffect(sGridNo, sGridNo, 0, usItem, ubOwner, fSubsequent, addressof(fAnyMercHit), bLevel, iSmokeEffectID)) {
+  if (ExpAffect(sGridNo, sGridNo, 0, usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
     fRecompileMovement = true;
   }
 
@@ -1744,7 +1752,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
         ubKeepGoing = 0;
       } else {
         // Check if struct is a tree, etc and reduce range...
-        GetRayStopInfo(uiNewSpot, ubDir, bLevel, fSmokeEffect, cnt, addressof(uiTempRange), addressof(ubKeepGoing));
+        GetRayStopInfo(uiNewSpot, ubDir, bLevel, fSmokeEffect, cnt, uiTempRange__Pointer, ubKeepGoing__Pointer);
       }
 
       if (ubKeepGoing) {
@@ -1752,7 +1760,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
 
         // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
         // ok, do what we do here...
-        if (ExpAffect(sGridNo, uiNewSpot, cnt / 2, usItem, ubOwner, fSubsequent, addressof(fAnyMercHit), bLevel, iSmokeEffectID)) {
+        if (ExpAffect(sGridNo, uiNewSpot, cnt / 2, usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
           fRecompileMovement = true;
         }
 
@@ -1779,12 +1787,12 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
 
             if (uiNewSpot != uiBranchSpot) {
               // Check if struct is a tree, etc and reduce range...
-              GetRayStopInfo(uiNewSpot, ubBranchDir, bLevel, fSmokeEffect, branchCnt, addressof(ubBranchRange), addressof(ubKeepGoing));
+              GetRayStopInfo(uiNewSpot, ubBranchDir, bLevel, fSmokeEffect, branchCnt, ubBranchRange__Pointer, ubKeepGoing__Pointer);
 
               if (ubKeepGoing) {
                 // ok, do what we do here
                 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
-                if (ExpAffect(sGridNo, uiNewSpot, ((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, addressof(fAnyMercHit), bLevel, iSmokeEffectID)) {
+                if (ExpAffect(sGridNo, uiNewSpot, ((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
                   fRecompileMovement = true;
                 }
                 uiBranchSpot = uiNewSpot;

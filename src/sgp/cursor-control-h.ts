@@ -34,17 +34,17 @@ export interface CursorFileData {
   uiIndex: UINT32;
   ubFlags: UINT8;
   ubNumberOfFrames: UINT8;
-  hVObject: HVOBJECT;
+  hVObject: SGPVObject;
 }
 
-export function createCursorFileDataFrom(ubFilename: string, fLoaded: boolean, uiIndex: UINT32, ubFlags: UINT8, ubNumberOfFrames: UINT8, hVObject: HVOBJECT): CursorFileData {
+export function createCursorFileDataFrom(ubFilename: string, fLoaded: boolean, uiIndex: UINT32, ubFlags: UINT8, ubNumberOfFrames: UINT8): CursorFileData {
   return {
     ubFilename,
     fLoaded,
     uiIndex,
     ubFlags,
     ubNumberOfFrames,
-    hVObject,
+    hVObject: <SGPVObject><unknown>null,
   };
 }
 

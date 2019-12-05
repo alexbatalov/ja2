@@ -106,7 +106,7 @@ export interface SGPVSurface {
   p16BPPPalette: Pointer<UINT16>; // A 16BPP palette used for 8->16 blits
   TransparentColor: COLORVAL; // Defaults to 0,0,0
   pClipper: PTR; // A void pointer encapsolated as a clipper Surface
-  RegionList: HLIST; // A List of regions within the video Surface
+  RegionList: VSURFACE_REGION[]; // A List of regions within the video Surface
 }
 
 export type HVSURFACE = Pointer<SGPVSurface>;

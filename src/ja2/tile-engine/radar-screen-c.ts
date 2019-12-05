@@ -40,7 +40,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let zFilename: string /* CHAR8[260] */;
   let cnt: INT32;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   zFilename = aFilename;
 
@@ -75,8 +75,8 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
 
     if ((hVObject = GetVideoObject(gusRadarImage))) {
       // ATE: Add a shade table!
-      hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, false);
-      hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, false);
+      hVObject.pShades[0] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 255, 255, 255, false);
+      hVObject.pShades[1] = Create16BPPPaletteShaded(hVObject.pPaletteEntry, 100, 100, 100, false);
     }
   }
 
@@ -501,7 +501,7 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
   let sCounter: INT16 = 0;
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let uiHandle: UINT32;
 
   if ((fRenderRadarScreen == false) && (CreateDestroyMouseRegionsForSquadList__fCreated == false)) {

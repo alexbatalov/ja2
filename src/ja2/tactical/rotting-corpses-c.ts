@@ -532,13 +532,12 @@ function FreeCorpsePalettes(pCorpse: ROTTING_CORPSE): void {
   let cnt: INT32;
 
   // Free palettes
-  MemFree(pCorpse.p8BPPPalette);
-  MemFree(pCorpse.p16BPPPalette);
+  pCorpse.p8BPPPalette = <SGPPaletteEntry[]><unknown>null;
+  pCorpse.p16BPPPalette = <Uint16Array><unknown>null;
 
   for (cnt = 0; cnt < NUM_CORPSE_SHADES; cnt++) {
     if (pCorpse.pShades[cnt] != null) {
-      MemFree(pCorpse.pShades[cnt]);
-      pCorpse.pShades[cnt] = null;
+      pCorpse.pShades[cnt] = <Uint16Array><unknown>null;
     }
   }
 }
@@ -565,13 +564,13 @@ function RemoveCorpse(iCorpseID: INT32): void {
 }
 
 function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
-  let zColFilename: string /* CHAR8[100] */;
+  let zColFilename: string /* CHAR8[100] */ = '';
   let bBodyTypePalette: INT8;
   let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
 
   pCorpse.p8BPPPalette = createArrayFrom(256, createSGPPaletteEntry);
 
-  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(null, pCorpse.def.ubBodyType, zColFilename);
+  bBodyTypePalette = GetBodyTypePaletteSubstitutionCode(null, pCorpse.def.ubBodyType, createPointer(() => zColFilename, (v) => zColFilename = v));
 
   // If this corpse has cammo,
   if (pCorpse.def.ubType == Enum249.ROTTING_STAGE2) {
@@ -583,7 +582,7 @@ function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
 
   if (bBodyTypePalette == -1) {
     // Use palette from HVOBJECT, then use substitution for pants, etc
-    memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+    copyObjectArray(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.pPaletteEntry, copySGPPaletteEntry);
 
     // Substitute based on head, etc
     SetPaletteReplacement(pCorpse.p8BPPPalette, pCorpse.def.HeadPal);
@@ -592,15 +591,15 @@ function CreateCorpsePalette(pCorpse: ROTTING_CORPSE): boolean {
     SetPaletteReplacement(pCorpse.p8BPPPalette, pCorpse.def.SkinPal);
   } else if (bBodyTypePalette == 0) {
     // Use palette from hvobject
-    memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+    copyObjectArray(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.pPaletteEntry, copySGPPaletteEntry);
   } else {
     // Use col file
     if (CreateSGPPaletteFromCOLFile(Temp8BPPPalette, zColFilename)) {
       // Copy into palette
-      memcpy(pCorpse.p8BPPPalette, Temp8BPPPalette, sizeof(pCorpse.p8BPPPalette) * 256);
+      copyObjectArray(pCorpse.p8BPPPalette, Temp8BPPPalette, copySGPPaletteEntry);
     } else {
       // Use palette from hvobject
-      memcpy(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.value.pPaletteEntry, sizeof(pCorpse.p8BPPPalette) * 256);
+      copyObjectArray(pCorpse.p8BPPPalette, (<TILE_IMAGERY>gpTileCache[pCorpse.iCachedTileID].pImagery).vo.pPaletteEntry, copySGPPaletteEntry);
     }
   }
 
@@ -801,9 +800,9 @@ export function FindNearestRottingCorpse(pSoldier: SOLDIERTYPE): INT16 {
 function AddCrowToCorpse(pCorpse: ROTTING_CORPSE): void {
   let MercCreateStruct: SOLDIERCREATE_STRUCT = createSoldierCreateStruct();
   let bBodyType: INT8 = Enum194.CROW;
-  let iNewIndex: UINT8;
+  let iNewIndex: UINT8 = 0;
   let sGridNo: INT16;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let pSoldier: SOLDIERTYPE;
   let ubRoomNum: UINT8;
 
@@ -823,10 +822,10 @@ function AddCrowToCorpse(pCorpse: ROTTING_CORPSE): void {
   MercCreateStruct.sInsertionGridNo = pCorpse.def.sGridNo;
   RandomizeNewSoldierStats(MercCreateStruct);
 
-  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex)) != null) {
+  if (TacticalCreateSoldier(MercCreateStruct, createPointer(() => iNewIndex, (v) => iNewIndex = v)) != null) {
     pSoldier = MercPtrs[iNewIndex];
 
-    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.def.sGridNo, 2, addressof(ubDirection));
+    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.def.sGridNo, 2, createPointer(() => ubDirection, (v) => ubDirection = v));
 
     if (sGridNo != NOWHERE) {
       pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_GRIDNO;
@@ -871,14 +870,14 @@ export function HandleCrowLeave(pSoldier: SOLDIERTYPE): void {
 }
 
 export function HandleCrowFlyAway(pSoldier: SOLDIERTYPE): void {
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
   let sGridNo: INT16;
 
   // Set desired height
   pSoldier.sDesiredHeight = 100;
 
   // Change to fly animation
-  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.sGridNo, 5, addressof(ubDirection));
+  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.sGridNo, 5, createPointer(() => ubDirection, (v) => ubDirection = v));
   pSoldier.usUIMovementMode = Enum193.CROW_FLY;
   SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier.usUIMovementMode);
 }

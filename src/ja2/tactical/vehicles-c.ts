@@ -687,7 +687,7 @@ export function MoveCharactersPathToVehicle(pSoldier: SOLDIERTYPE): boolean {
   // check if character is in fact in a vehicle
   if ((pSoldier.bAssignment != Enum117.VEHICLE) && (!(pSoldier.uiStatusFlags & SOLDIER_VEHICLE))) {
     // now clear soldier's path
-    pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, 0);
+    pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, 0);
     return false;
   }
 
@@ -704,14 +704,14 @@ export function MoveCharactersPathToVehicle(pSoldier: SOLDIERTYPE): boolean {
     // check if vehicle has mvt group, if not, get one for it
     if ((iId >= ubNumberOfVehicles) || (iId < 0)) {
       // now clear soldier's path
-      pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, 0);
+      pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, 0);
       return false;
     }
 
     // now check if vehicle is valid
     if (pVehicleList[iId].fValid == false) {
       // now clear soldier's path
-      pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, 0);
+      pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, 0);
       return false;
     }
   }
@@ -728,7 +728,7 @@ export function MoveCharactersPathToVehicle(pSoldier: SOLDIERTYPE): boolean {
   pVehicleList[iId].pMercPath = MoveToBeginningOfPathList(pVehicleList[iId].pMercPath);
 
   // now clear soldier's path
-  pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, 0);
+  pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, 0);
 
   return true;
 }
@@ -778,7 +778,7 @@ function CopyVehiclePathToSoldier(pSoldier: SOLDIERTYPE): boolean {
   // clear grunt path
   if (pSoldier.pMercPath) {
     // clear soldier's path
-    pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, 0);
+    pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, 0);
   }
 
   // now copy over
@@ -808,7 +808,7 @@ export function SetUpMvtGroupForVehicle(pSoldier: SOLDIERTYPE): boolean {
 
   if (pSoldier.pMercPath) {
     // clear soldier's path
-    pSoldier.pMercPath = ClearStrategicPathList(pSoldier.pMercPath, pSoldier.ubGroupID);
+    pSoldier.pMercPath = <PathSt>ClearStrategicPathList(pSoldier.pMercPath, pSoldier.ubGroupID);
   }
 
   // if no group, create one for vehicle
@@ -1181,7 +1181,8 @@ function GetVehicleSoldierPointerFromPassenger(pSrcSoldier: SOLDIERTYPE): SOLDIE
 
 export function ExitVehicle(pSoldier: SOLDIERTYPE): boolean {
   let pVehicle: SOLDIERTYPE | null;
-  let ubDirection: UINT8;
+  let ubDirection: UINT8 = 0;
+  let ubDirection__Pointer = createPointer(() => ubDirection, (v) => ubDirection = v);
   let sGridNo: INT16;
 
   // Get vehicle from soldier...
@@ -1193,11 +1194,11 @@ export function ExitVehicle(pSoldier: SOLDIERTYPE): boolean {
 
   // TEST IF IT'S VALID...
   if (pVehicle.uiStatusFlags & SOLDIER_VEHICLE) {
-    sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, addressof(ubDirection), 3, pVehicle);
+    sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 5, ubDirection__Pointer, 3, pVehicle);
 
     if (sGridNo == NOWHERE) {
       // ATE: BUT we need a place, widen the search
-      sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 20, addressof(ubDirection), 3, pVehicle);
+      sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.usUIMovementMode, 20, ubDirection__Pointer, 3, pVehicle);
     }
 
     // OK, remove....
@@ -1330,7 +1331,7 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
       // EVENT_InitNewSoldierAnim( pSoldier, VEHICLE_DIE, 0, FALSE );
       // TacticalRemoveSoldier( pSoldier->ubID );
 
-      CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
+      CheckForAndHandleSoldierDeath(pSoldier, createPointer(() => fMadeCorpse, (v) => fMadeCorpse = v));
     }
 
     // Kill all in vehicle...

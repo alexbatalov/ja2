@@ -328,7 +328,7 @@ export function IsCuttableWireFenceAtGridNo(sGridNo: INT16): boolean {
   return FindCuttableWireFenceAtGridNo(sGridNo) != null;
 }
 
-export function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): UINT8 {
+export function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8> | null): UINT8 {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
@@ -353,7 +353,7 @@ export function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>
   return 0;
 }
 
-export function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): boolean {
+export function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8> | null): boolean {
   let ubMerc: UINT8;
 
   // OK, first look for a vehicle....

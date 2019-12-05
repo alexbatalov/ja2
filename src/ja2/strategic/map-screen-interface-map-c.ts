@@ -305,7 +305,9 @@ export let sSelMapY: UINT16 = 1;
 
 // highlighted sector
 export let gsHighlightSectorX: INT16 = -1;
+export let gsHighlightSectorX__Pointer = createPointer(() => gsHighlightSectorX, (v) => gsHighlightSectorX = v);
 export let gsHighlightSectorY: INT16 = -1;
+export let gsHighlightSectorY__Pointer = createPointer(() => gsHighlightSectorY, (v) => gsHighlightSectorY = v);
 
 // the current sector Z value of the map being displayed
 export let iCurrentMapSectorZ: INT32 = 0;
@@ -381,10 +383,10 @@ let gOldClipRect: SGPRect = createSGPRect();
 let FullScreenRect: SGPRect = createSGPRectFrom(0, 0, 640, 480);
 
 // temp helicopter path
-export let pTempHelicopterPath: PathStPtr = null;
+export let pTempHelicopterPath: PathSt | null = null;
 
 // character temp path
-export let pTempCharacterPath: PathStPtr = null;
+export let pTempCharacterPath: PathSt | null = null;
 
 // draw temp path?
 export let fDrawTempHeliPath: boolean = false;
@@ -858,7 +860,7 @@ function DrawTownLabels(pString: string /* STR16 */, pStringA: string /* STR16 *
 function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
   let ubCounter: UINT8 = 0;
   let ubIconPosition: UINT8 = 0;
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
   let pSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
@@ -880,7 +882,7 @@ function ShowOnDutyTeam(sMapX: INT16, sMapY: INT16): INT32 {
 function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let ubCounter: UINT8;
   let ubIconPosition: UINT8;
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
   let pSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
@@ -910,7 +912,7 @@ function ShowAssignedTeam(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
 function ShowVehicles(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
   let ubCounter: UINT8;
   let ubIconPosition: UINT8;
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
   let pVehicleSoldier: SOLDIERTYPE;
 
   hIconHandle = GetVideoObject(guiCHARICONS);
@@ -946,7 +948,7 @@ function ShowVehicles(sMapX: INT16, sMapY: INT16, iCount: INT32): INT32 {
 }
 
 function ShowEnemiesInSector(sSectorX: INT16, sSectorY: INT16, sNumberOfEnemies: INT16, ubIconPosition: UINT8): void {
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
   let ubEnemy: UINT8 = 0;
 
   // get the video object
@@ -961,7 +963,7 @@ function ShowEnemiesInSector(sSectorX: INT16, sSectorY: INT16, sNumberOfEnemies:
 function ShowUncertainNumberEnemiesInSector(sSectorX: INT16, sSectorY: INT16): void {
   let sXPosition: INT16 = 0;
   let sYPosition: INT16 = 0;
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
 
   // grab the x and y postions
   sXPosition = sSectorX;
@@ -1478,14 +1480,14 @@ export function PlotPathForCharacter(pCharacter: SOLDIERTYPE, sX: INT16, sY: INT
   }
 
   // make sure we are at the beginning
-  pCharacter.pMercPath = MoveToBeginningOfPathList(pCharacter.pMercPath);
+  pCharacter.pMercPath = <PathSt>MoveToBeginningOfPathList(pCharacter.pMercPath);
 
   // will plot a path from current position to sX, sY
   // get last sector in characters list, build new path, remove tail section, move to beginning of list, and append onto old list
-  pCharacter.pMercPath = AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.pMercPath);
+  pCharacter.pMercPath = <PathSt>AppendStrategicPath(MoveToBeginningOfPathList(BuildAStrategicPath(null, GetLastSectorIdInCharactersPath(pCharacter), (sX + sY * (MAP_WORLD_X)), GetSoldierGroupId(pCharacter), fTacticalTraversal /*, FALSE */)), pCharacter.pMercPath);
 
   // move to beginning of list
-  pCharacter.pMercPath = MoveToBeginningOfPathList(pCharacter.pMercPath);
+  pCharacter.pMercPath = <PathSt>MoveToBeginningOfPathList(pCharacter.pMercPath);
 
   // check if in vehicle, if so, copy path to vehicle
   if ((pCharacter.bAssignment == Enum117.VEHICLE) || (pCharacter.uiStatusFlags & SOLDIER_VEHICLE)) {
@@ -1547,7 +1549,7 @@ export function ClearPathAfterThisSectorForCharacter(pCharacter: SOLDIERTYPE, sX
       pVehicle = pVehicleList[pCharacter.iVehicleId];
     } else {
       // foot soldier
-      pCharacter.pMercPath = ClearStrategicPathListAfterThisSector(pCharacter.pMercPath, sX, sY, pCharacter.ubGroupID);
+      pCharacter.pMercPath = <PathSt>ClearStrategicPathListAfterThisSector(pCharacter.pMercPath, sX, sY, pCharacter.ubGroupID);
     }
 
     // if there's an associated vehicle structure
@@ -1569,7 +1571,7 @@ export function ClearPathAfterThisSectorForCharacter(pCharacter: SOLDIERTYPE, sX
 
 export function CancelPathForCharacter(pCharacter: SOLDIERTYPE): void {
   // clear out character's entire path list, he and his squad will stay/return to his current sector.
-  pCharacter.pMercPath = ClearStrategicPathList(pCharacter.pMercPath, pCharacter.ubGroupID);
+  pCharacter.pMercPath = <PathSt>ClearStrategicPathList(pCharacter.pMercPath, pCharacter.ubGroupID);
   // NOTE: This automatically calls RemoveGroupWaypoints() internally for valid movement groups
 
   // This causes the group to effectively reverse directions (even if they've never actually left), so handle that.
@@ -1666,7 +1668,7 @@ function CopyPathToCharactersSquadIfInOne(pCharacter: SOLDIERTYPE): void {
 }
 
 export function DisplaySoldierPath(pCharacter: SOLDIERTYPE): void {
-  let pPath: PathStPtr = null;
+  let pPath: PathSt | null = null;
 
   /* ARM: Hopefully no longer required once using GetSoldierMercPathPtr() ???
           // check if in vehicle, if so, copy path to vehicle
@@ -1811,20 +1813,20 @@ export function ClearPathAfterThisSectorForHelicopter(sX: INT16, sY: INT16): UIN
 export function GetLastSectorOfHelicoptersPath(): INT16 {
   // will return the last sector of the helicopter's current path
   let sLastSector: INT16 = pVehicleList[iHelicopterVehicleId].sSectorX + pVehicleList[iHelicopterVehicleId].sSectorY * MAP_WORLD_X;
-  let pNode: PathStPtr = null;
+  let pNode: PathSt | null = null;
 
   pNode = pVehicleList[iHelicopterVehicleId].pMercPath;
 
   while (pNode) {
-    sLastSector = (pNode.value.uiSectorId);
-    pNode = pNode.value.pNext;
+    sLastSector = (pNode.uiSectorId);
+    pNode = pNode.pNext;
   }
 
   return sLastSector;
 }
 
-function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathStPtr): boolean {
-  let pCurrentNode: PathStPtr = null;
+function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathSt | null): boolean {
+  let pCurrentNode: PathSt | null = null;
   let fSpeedFlag: boolean = false;
   let fUpDate: boolean = false;
   let iDifference: INT32 = 0;
@@ -1841,30 +1843,30 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
   let iDirection: INT32 = 0;
   let fUTurnFlag: boolean = false;
   let fNextNode: boolean = false;
-  let pTempNode: PathStPtr = null;
-  let pNode: PathStPtr = null;
-  let pPastNode: PathStPtr = null;
-  let pNextNode: PathStPtr = null;
+  let pTempNode: PathSt | null = null;
+  let pNode: PathSt | null = null;
+  let pPastNode: PathSt | null = null;
+  let pNextNode: PathSt | null = null;
   let ubCounter: UINT32 = 1;
-  let hMapHandle: HVOBJECT;
+  let hMapHandle: SGPVObject;
 
   if (pPath == null) {
     return false;
   }
 
-  while (pPath.value.pPrev) {
-    pPath = pPath.value.pPrev;
+  while (pPath.pPrev) {
+    pPath = pPath.pPrev;
   }
 
   pNode = pPath;
 
   iDirection = -1;
-  if (pNode.value.pNext)
-    pNextNode = pNode.value.pNext;
+  if (pNode.pNext)
+    pNextNode = pNode.pNext;
   else
     pNextNode = null;
-  if (pNode.value.pPrev)
-    pPastNode = pNode.value.pPrev;
+  if (pNode.pPrev)
+    pPastNode = pNode.pPrev;
   else
     pPastNode = null;
 
@@ -1873,31 +1875,31 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
   while (pNode) {
     fUTurnFlag = false;
     if ((pPastNode) && (pNextNode)) {
-      iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
-      iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
+      iDeltaA = pNode.uiSectorId - pPastNode.uiSectorId;
+      iDeltaB = pNode.uiSectorId - pNextNode.uiSectorId;
       if (iDeltaA == 0)
         return false;
-      if (pNode.value.fSpeed)
+      if (pNode.fSpeed)
         fSpeedFlag = false;
       else
         fSpeedFlag = true;
       if (!fZoomFlag) {
-        iX = (pNode.value.uiSectorId % MAP_WORLD_X);
-        iY = (pNode.value.uiSectorId / MAP_WORLD_X);
+        iX = (pNode.uiSectorId % MAP_WORLD_X);
+        iY = (pNode.uiSectorId / MAP_WORLD_X);
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
       iArrowX = iX;
       iArrowY = iY;
-      if ((pPastNode.value.pPrev) && (pNextNode.value.pNext)) {
+      if ((pPastNode.pPrev) && (pNextNode.pNext)) {
         fUTurnFlag = false;
         // check to see if out-of sector U-turn
         // for placement of arrows
-        iDeltaB1 = pNextNode.value.uiSectorId - pNextNode.value.pNext.value.uiSectorId;
+        iDeltaB1 = pNextNode.uiSectorId - pNextNode.pNext.uiSectorId;
         if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == -1)) {
           fUTurnFlag = true;
         } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
@@ -1918,9 +1920,9 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
           fUTurnFlag = false;
       }
 
-      if ((pPastNode.value.uiSectorId == pNextNode.value.uiSectorId)) {
-        if (pPastNode.value.uiSectorId + WORLD_MAP_X == pNode.value.uiSectorId) {
-          if (!(pNode.value.fSpeed))
+      if ((pPastNode.uiSectorId == pNextNode.uiSectorId)) {
+        if (pPastNode.uiSectorId + WORLD_MAP_X == pNode.uiSectorId) {
+          if (!(pNode.fSpeed))
             fSpeedFlag = true;
           else
             fSpeedFlag = false;
@@ -1942,7 +1944,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
             iArrowX += NORTH_OFFSET_X;
             iArrowY += NORTH_OFFSET_Y;
           }
-        } else if (pPastNode.value.uiSectorId - WORLD_MAP_X == pNode.value.uiSectorId) {
+        } else if (pPastNode.uiSectorId - WORLD_MAP_X == pNode.uiSectorId) {
           if (fZoomFlag) {
             iDirection = N_TO_S_ZOOM_LINE;
             if (fSpeedFlag)
@@ -1960,7 +1962,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
             iArrowX += SOUTH_OFFSET_X;
             iArrowY += SOUTH_OFFSET_Y;
           }
-        } else if (pPastNode.value.uiSectorId + 1 == pNode.value.uiSectorId) {
+        } else if (pPastNode.uiSectorId + 1 == pNode.uiSectorId) {
           if (fZoomFlag) {
             iDirection = E_TO_W_ZOOM_LINE;
             if (fSpeedFlag)
@@ -2225,25 +2227,25 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
       }
     } else {
       if (!fZoomFlag) {
-        iX = (pNode.value.uiSectorId % MAP_WORLD_X);
-        iY = (pNode.value.uiSectorId / MAP_WORLD_X);
+        iX = (pNode.uiSectorId % MAP_WORLD_X);
+        iY = (pNode.uiSectorId / MAP_WORLD_X);
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
       iArrowX = iX;
       iArrowY = iY;
-      if ((pNode.value.fSpeed))
+      if ((pNode.fSpeed))
         fSpeedFlag = false;
       else
         fSpeedFlag = true;
       // display enter and exit 'X's
       if (pPastNode) {
         fUTurnFlag = true;
-        iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
+        iDeltaA = pNode.uiSectorId - pPastNode.uiSectorId;
         if (iDeltaA == -1) {
           if (fZoomFlag) {
             iDirection = ZOOM_RED_X_WEST;
@@ -2274,8 +2276,8 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
       }
       if (pNextNode) {
         fUTurnFlag = false;
-        iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
-        if ((pNode.value.fSpeed))
+        iDeltaB = pNode.uiSectorId - pNextNode.uiSectorId;
+        if ((pNode.fSpeed))
           fSpeedFlag = false;
         else
           fSpeedFlag = true;
@@ -2380,11 +2382,11 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
     // check to see if there is a turn
 
     pPastNode = pNode;
-    pNode = pNode.value.pNext;
+    pNode = pNode.pNext;
     if (!pNode)
       return false;
-    if (pNode.value.pNext)
-      pNextNode = pNode.value.pNext;
+    if (pNode.pNext)
+      pNextNode = pNode.pNext;
     else
       pNextNode = null;
   }
@@ -2392,7 +2394,7 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
   return true;
 }
 
-function AnimateRoute(pPath: PathStPtr): void {
+function AnimateRoute(pPath: PathSt | null): void {
   // set buffer
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
@@ -2452,13 +2454,13 @@ function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY:
   return;
 }
 
-/* static */ let TraceCharAnimatedRoute__pCurrentNode: PathStPtr = null;
+/* static */ let TraceCharAnimatedRoute__pCurrentNode: PathSt | null = null;
 /* static */ let TraceCharAnimatedRoute__bCurrentChar: INT8 = -1;
 /* static */ let TraceCharAnimatedRoute__fUpDateFlag: boolean = false;
 /* static */ let TraceCharAnimatedRoute__fPauseFlag: boolean = true;
 /* static */ let TraceCharAnimatedRoute__ubCounter: UINT8 = 1;
-function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpDate: boolean): boolean {
-  let hMapHandle: HVOBJECT;
+function TraceCharAnimatedRoute(pPath: PathSt | null, fCheckFlag: boolean, fForceUpDate: boolean): boolean {
+  let hMapHandle: SGPVObject;
   let fSpeedFlag: boolean = false;
   let fUpDate: boolean = false;
   let iDifference: INT32 = 0;
@@ -2477,10 +2479,10 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   let iDirection: INT32 = -1;
   let fUTurnFlag: boolean = false;
   let fNextNode: boolean = false;
-  let pTempNode: PathStPtr = null;
-  let pNode: PathStPtr = null;
-  let pPastNode: PathStPtr = null;
-  let pNextNode: PathStPtr = null;
+  let pTempNode: PathSt | null = null;
+  let pNode: PathSt | null = null;
+  let pPastNode: PathSt | null = null;
+  let pNextNode: PathSt | null = null;
 
   // must be plotting movement
   if ((bSelectedDestChar == -1) && (fPlotForHelicopter == false)) {
@@ -2547,7 +2549,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
       // reset pause flag
       break;
     } else
-      pTempNode = pTempNode.value.pNext;
+      pTempNode = pTempNode.pNext;
   }
 
   // if deleted, restart at beginnning
@@ -2564,50 +2566,50 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
 
   // Handle drawing of arrow
   pNode = TraceCharAnimatedRoute__pCurrentNode;
-  if ((!pNode.value.pPrev) && (TraceCharAnimatedRoute__ubCounter == 1) && (fForceUpDate)) {
+  if ((!pNode.pPrev) && (TraceCharAnimatedRoute__ubCounter == 1) && (fForceUpDate)) {
     TraceCharAnimatedRoute__ubCounter = 0;
     return false;
   } else if ((TraceCharAnimatedRoute__ubCounter == 1) && (fForceUpDate)) {
-    pNode = TraceCharAnimatedRoute__pCurrentNode.value.pPrev;
+    pNode = <PathSt>TraceCharAnimatedRoute__pCurrentNode.pPrev;
   }
-  if (pNode.value.pNext)
-    pNextNode = pNode.value.pNext;
+  if (pNode.pNext)
+    pNextNode = pNode.pNext;
   else
     pNextNode = null;
 
-  if (pNode.value.pPrev)
-    pPastNode = pNode.value.pPrev;
+  if (pNode.pPrev)
+    pPastNode = pNode.pPrev;
   else
     pPastNode = null;
 
   // go through characters list and display arrows for path
   fUTurnFlag = false;
   if ((pPastNode) && (pNextNode)) {
-    iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
-    iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
-    if (!pNode.value.fSpeed)
+    iDeltaA = pNode.uiSectorId - pPastNode.uiSectorId;
+    iDeltaB = pNode.uiSectorId - pNextNode.uiSectorId;
+    if (!pNode.fSpeed)
       fSpeedFlag = true;
     else
       fSpeedFlag = false;
     if (iDeltaA == 0)
       return false;
     if (!fZoomFlag) {
-      iX = (pNode.value.uiSectorId % MAP_WORLD_X);
-      iY = (pNode.value.uiSectorId / MAP_WORLD_X);
+      iX = (pNode.uiSectorId % MAP_WORLD_X);
+      iY = (pNode.uiSectorId / MAP_WORLD_X);
       iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
       iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     } else {
-      ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.value.uiSectorId % MAP_WORLD_X)), ((pNode.value.uiSectorId / MAP_WORLD_X))));
+      ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
       iY = sY - MAP_GRID_Y;
       iX = sX - MAP_GRID_X;
     }
     iArrowX = iX;
     iArrowY = iY;
-    if ((pPastNode.value.pPrev) && (pNextNode.value.pNext)) {
+    if ((pPastNode.pPrev) && (pNextNode.pNext)) {
       fUTurnFlag = false;
       // check to see if out-of sector U-turn
       // for placement of arrows
-      iDeltaB1 = pNextNode.value.uiSectorId - pNextNode.value.pNext.value.uiSectorId;
+      iDeltaB1 = pNextNode.uiSectorId - pNextNode.pNext.uiSectorId;
       if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == -1)) {
         fUTurnFlag = true;
       } else if ((iDeltaB1 == -WORLD_MAP_X) && (iDeltaA == -WORLD_MAP_X) && (iDeltaB == 1)) {
@@ -2628,8 +2630,8 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
         fUTurnFlag = false;
     }
 
-    if ((pPastNode.value.uiSectorId == pNextNode.value.uiSectorId)) {
-      if (pPastNode.value.uiSectorId + WORLD_MAP_X == pNode.value.uiSectorId) {
+    if ((pPastNode.uiSectorId == pNextNode.uiSectorId)) {
+      if (pPastNode.uiSectorId + WORLD_MAP_X == pNode.uiSectorId) {
         if (fZoomFlag) {
           iDirection = S_TO_N_ZOOM_LINE;
           if (!TraceCharAnimatedRoute__ubCounter)
@@ -2652,7 +2654,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowX += NORTH_OFFSET_X;
           iArrowY += NORTH_OFFSET_Y;
         }
-      } else if (pPastNode.value.uiSectorId - WORLD_MAP_X == pNode.value.uiSectorId) {
+      } else if (pPastNode.uiSectorId - WORLD_MAP_X == pNode.uiSectorId) {
         if (fZoomFlag) {
           iDirection = N_TO_S_ZOOM_LINE;
           if (!TraceCharAnimatedRoute__ubCounter)
@@ -2674,7 +2676,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
           iArrowX += SOUTH_OFFSET_X;
           iArrowY += SOUTH_OFFSET_Y;
         }
-      } else if (pPastNode.value.uiSectorId + 1 == pNode.value.uiSectorId) {
+      } else if (pPastNode.uiSectorId + 1 == pNode.uiSectorId) {
         if (fZoomFlag) {
           iDirection = E_TO_W_ZOOM_LINE;
           if (!TraceCharAnimatedRoute__ubCounter)
@@ -3007,17 +3009,17 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   }
 
   else {
-    iX = (pNode.value.uiSectorId % MAP_WORLD_X);
-    iY = (pNode.value.uiSectorId / MAP_WORLD_X);
+    iX = (pNode.uiSectorId % MAP_WORLD_X);
+    iY = (pNode.uiSectorId / MAP_WORLD_X);
     iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
     iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     if (pPastNode) {
-      iPastX = (pPastNode.value.uiSectorId % MAP_WORLD_X);
-      iPastY = (pPastNode.value.uiSectorId / MAP_WORLD_X);
+      iPastX = (pPastNode.uiSectorId % MAP_WORLD_X);
+      iPastY = (pPastNode.uiSectorId / MAP_WORLD_X);
       iPastX = (iPastX * MAP_GRID_X) + MAP_VIEW_START_X;
       iPastY = (iPastY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     }
-    if (pNode.value.fSpeed)
+    if (pNode.fSpeed)
       fSpeedFlag = true;
     else
       fSpeedFlag = false;
@@ -3027,7 +3029,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
     if (pPastNode) {
       // red 'X'
       fUTurnFlag = true;
-      iDeltaA = pNode.value.uiSectorId - pPastNode.value.uiSectorId;
+      iDeltaA = pNode.uiSectorId - pPastNode.uiSectorId;
       if (iDeltaA == -1) {
         iDirection = RED_X_WEST;
         // iX+=RED_WEST_OFF_X;
@@ -3044,7 +3046,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
     }
     if (pNextNode) {
       fUTurnFlag = false;
-      iDeltaB = pNode.value.uiSectorId - pNextNode.value.uiSectorId;
+      iDeltaB = pNode.uiSectorId - pNextNode.uiSectorId;
       if (iDeltaB == -1) {
         iDirection = GREEN_X_EAST;
         if (!TraceCharAnimatedRoute__ubCounter)
@@ -3097,7 +3099,7 @@ function TraceCharAnimatedRoute(pPath: PathStPtr, fCheckFlag: boolean, fForceUpD
   }
   if (fNextNode) {
     if (!TraceCharAnimatedRoute__ubCounter) {
-      TraceCharAnimatedRoute__pCurrentNode = TraceCharAnimatedRoute__pCurrentNode.value.pNext;
+      TraceCharAnimatedRoute__pCurrentNode = TraceCharAnimatedRoute__pCurrentNode.pNext;
       if (!TraceCharAnimatedRoute__pCurrentNode)
         TraceCharAnimatedRoute__fPauseFlag = true;
     }
@@ -3333,7 +3335,9 @@ const ICON_WIDTH = 8;
 
 function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   let sExiting: INT32 = 0;
+  let sExiting__Pointer = createPointer(() => sExiting, (v) => sExiting = v);
   let sEntering: INT32 = 0;
+  let sEntering__Pointer = createPointer(() => sEntering, (v) => sEntering = v);
   let sDest: INT16 = 0;
   let sSource: INT16 = 0;
   let sOffsetX: INT16 = 0;
@@ -3343,8 +3347,9 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
   let sXPosition: INT16 = 0;
   let sYPosition: INT16 = 0;
   let iCounter: INT32 = 0;
-  let hIconHandle: HVOBJECT;
+  let hIconHandle: SGPVObject;
   let fAboutToEnter: boolean = false;
+  let fAboutToEnter__Pointer = createPointer(() => fAboutToEnter, (v) => fAboutToEnter = v);
   let sString: string /* CHAR16[32] */;
   let sTextXOffset: INT16 = 0;
   let sTextYOffset: INT16 = 0;
@@ -3387,7 +3392,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
 
     // if not at edge of map
     if (sDest != sSource) {
-      if (PlayersBetweenTheseSectors(SECTOR(sSource % MAP_WORLD_X, sSource / MAP_WORLD_X), SECTOR(sDest % MAP_WORLD_X, sDest / MAP_WORLD_X), addressof(sExiting), addressof(sEntering), addressof(fAboutToEnter))) {
+      if (PlayersBetweenTheseSectors(SECTOR(sSource % MAP_WORLD_X, sSource / MAP_WORLD_X), SECTOR(sDest % MAP_WORLD_X, sDest / MAP_WORLD_X), sExiting__Pointer, sEntering__Pointer, fAboutToEnter__Pointer)) {
         // someone is leaving
 
         // now find position
@@ -3538,17 +3543,17 @@ export function DisplayDistancesForHelicopter(): void {
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let sString: string /* CHAR16[32] */;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let sTotalOfTrip: INT16 = 0;
   let iTime: INT32 = 0;
-  let sMapX: INT16;
-  let sMapY: INT16;
+  let sMapX: INT16 = 0;
+  let sMapY: INT16 = 0;
   let sYPosition: INT16 = 0;
   let sNumSafeSectors: INT16;
   let sNumUnSafeSectors: INT16;
   let uiTripCost: UINT32;
 
-  if (GetMouseMapXY(addressof(sMapX), addressof(sMapY)) && !fZoomFlag && (sMapY >= 13)) {
+  if (GetMouseMapXY(createPointer(() => sMapX, (v) => sMapX = v), createPointer(() => sMapY, (v) => sMapY = v)) && !fZoomFlag && (sMapY >= 13)) {
     sYPosition = MAP_HELICOPTER_UPPER_ETA_POPUP_Y;
   } else {
     sYPosition = MAP_HELICOPTER_ETA_POPUP_Y;
@@ -3663,7 +3668,7 @@ export function DisplayPositionOfHelicopter(): void {
   let maxX: UINT16;
   let maxY: UINT16;
   let pGroup: GROUP;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let iNumberOfPeopleInHelicopter: INT32 = 0;
   let sString: string /* CHAR16[4] */;
 
@@ -3796,7 +3801,7 @@ function DisplayDestinationOfHelicopter(): void {
   let sMapY: INT16;
   let x: UINT32;
   let y: UINT32;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   AssertMsg((DisplayDestinationOfHelicopter__sOldMapX >= 0) && (DisplayDestinationOfHelicopter__sOldMapX < 640), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapX = %d", DisplayDestinationOfHelicopter__sOldMapX));
   AssertMsg((DisplayDestinationOfHelicopter__sOldMapY >= 0) && (DisplayDestinationOfHelicopter__sOldMapY < 480), FormatString("DisplayDestinationOfHelicopter: Invalid sOldMapY = %d", DisplayDestinationOfHelicopter__sOldMapY));
@@ -3898,7 +3903,7 @@ export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClicked
 }
 
 function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let uiDestPitchBYTES: UINT32;
   let pDestBuf2: Pointer<UINT8>;
   let sScreenX: INT16;
@@ -4342,7 +4347,7 @@ export function RemoveMilitiaPopUpBox(): void {
 }
 
 export function DrawMilitiaPopUpBox(): boolean {
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let pTrav: ETRLEObject;
 
   if (!fShowMilitia) {
@@ -4389,7 +4394,7 @@ export function DrawMilitiaPopUpBox(): boolean {
   ShowHighLightedSectorOnMilitiaMap();
 
   hVObject = GetVideoObject(guiMilitia);
-  pTrav = hVObject.value.pETRLEObject[0];
+  pTrav = hVObject.pETRLEObject[0];
 
   InvalidateRegion(MAP_MILITIA_BOX_POS_X, MAP_MILITIA_BOX_POS_Y, MAP_MILITIA_BOX_POS_X + pTrav.usWidth, MAP_MILITIA_BOX_POS_Y + pTrav.usHeight);
 
@@ -4448,7 +4453,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
   let iNumberOfElites: INT32 = 0;
   let iTotalNumberOfTroops: INT32 = 0;
   let iCurrentTroopIcon: INT32 = 0;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let iCurrentIcon: INT32 = 0;
   let sX: INT16;
   let sY: INT16;
@@ -4544,7 +4549,7 @@ function GetBaseSectorForCurrentTown(): INT16 {
 
 function ShowHighLightedSectorOnMilitiaMap(): void {
   // show the highlighted sector on the militia map
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
 
@@ -4617,7 +4622,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
   let sX: INT16 = 0;
   let sY: INT16 = 0;
   let iCounter: INT32 = 0;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let pTrav: ETRLEObject;
 
   if (CreateDestroyMilitiaSectorButtons__sOldSectorValue == sSectorMilitiaMapSector && fShowMilitia && sSelectedMilitiaTown && !CreateDestroyMilitiaSectorButtons__fCreated && sSectorMilitiaMapSector != -1) {
@@ -4647,7 +4652,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
       SpecifyButtonDownTextColors(giMapMilitiaButton[iCounter], gsMilitiaSectorButtonColors[iCounter], FONT_BLACK);
 
       hVObject = GetVideoObject(guiMilitia);
-      pTrav = hVObject.value.pETRLEObject[0];
+      pTrav = hVObject.pETRLEObject[0];
 
       SetButtonFastHelpText(giMapMilitiaButton[iCounter], pMilitiaButtonsHelpText[iCounter]);
     }
@@ -4766,7 +4771,7 @@ function DisplayUnallocatedMilitia(): void {
   let iCurrentIcon: INT32 = 0;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
 
   // get number of each
   iNumberOfGreens = sGreensOnCursor;
@@ -5162,7 +5167,7 @@ function DrawTownMilitiaForcesOnMap(): void {
   let iNumberOfGreens: INT32 = 0;
   let iNumberOfRegulars: INT32 = 0;
   let iNumberOfElites: INT32 = 0;
-  let hVObject: HVOBJECT;
+  let hVObject: SGPVObject;
   let sSectorX: INT16 = 0;
   let sSectorY: INT16 = 0;
 
@@ -5336,7 +5341,7 @@ function ShadeSubLevelsNotVisited(): void {
 }
 
 function HandleLowerLevelMapBlit(): void {
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   // blits the sub level maps
   switch (iCurrentMapSectorZ) {
@@ -5349,6 +5354,8 @@ function HandleLowerLevelMapBlit(): void {
     case (3):
       hHandle = GetVideoObject(guiSubLevel3);
       break;
+    default:
+      throw new Error('Should be unreachable');
   }
 
   // handle the blt of the sublevel
@@ -5555,7 +5562,7 @@ function ShowSAMSitesOnStrategicMap(): void {
   let sSectorY: INT16 = 0;
   let sX: INT16 = 0;
   let sY: INT16 = 0;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
   let ubVidObjIndex: INT8 = 0;
   let pDestBuf2: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
@@ -5785,7 +5792,7 @@ function ShowItemsOnMap(): void {
   RestoreClipRegionToFullScreen();
 }
 
-function DrawMapBoxIcon(hIconHandle: HVOBJECT, usVOIndex: UINT16, sMapX: INT16, sMapY: INT16, ubIconPosition: UINT8): void {
+function DrawMapBoxIcon(hIconHandle: SGPVObject, usVOIndex: UINT16, sMapX: INT16, sMapY: INT16, ubIconPosition: UINT8): void {
   let iRowNumber: INT32;
   let iColumnNumber: INT32;
   let iX: INT32;
@@ -5834,7 +5841,7 @@ function DrawOrta(): void {
   let sX: INT16;
   let sY: INT16;
   let ubVidObjIndex: UINT8;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   if (fZoomFlag) {
     pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
@@ -5863,7 +5870,7 @@ function DrawTixa(): void {
   let sX: INT16;
   let sY: INT16;
   let ubVidObjIndex: UINT8;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   if (fZoomFlag) {
     pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
@@ -5888,7 +5895,7 @@ function DrawTixa(): void {
 function DrawBullseye(): void {
   let sX: INT16;
   let sY: INT16;
-  let hHandle: HVOBJECT;
+  let hHandle: SGPVObject;
 
   ({ sX, sY } = GetScreenXYFromMapXY(gsMercArriveSectorX, gsMercArriveSectorY));
   sY -= 2;
