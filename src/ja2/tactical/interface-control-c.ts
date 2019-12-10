@@ -286,8 +286,8 @@ let guiColors: UINT32[] /* [12] */ = [
 /* static */ let RenderRubberBanding__uiTimeOfLastUpdate: INT32 = 0;
 function RenderRubberBanding(): void {
   let usLineColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let iLeft: INT16;
   let iRight: INT16;
   let iTop: INT16;
@@ -316,7 +316,7 @@ function RenderRubberBanding(): void {
   }
 
   // Draw rectangle.....
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y);
 
   usLineColor = Get16BPPColor(guiColors[RenderRubberBanding__iFlashColor]);

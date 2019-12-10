@@ -95,18 +95,34 @@ export interface SGPVSurface {
   usHeight: UINT16; // Height of Video Surface
   usWidth: UINT16; // Width of Video Surface
   ubBitDepth: UINT8; // BPP ALWAYS 16!
-  pSurfaceData: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
-  pSurfaceData1: PTR; // Direct Draw One Interface
-  pSavedSurfaceData1: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+  pSurfaceData: Uint8ClampedArray /* PTR */; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+  pSurfaceData1: Uint8ClampedArray /* PTR */; // Direct Draw One Interface
+  pSavedSurfaceData1: Uint8ClampedArray /* PTR */; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
                            // pSavedSurfaceData is used to hold all video memory Surfaces so that they my be restored
-  pSavedSurfaceData: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+  pSavedSurfaceData: Uint8ClampedArray /* PTR */; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
                           // pSavedSurfaceData is used to hold all video memory Surfaces so that they my be restored
   fFlags: UINT32; // Used to describe memory usage, etc
-  pPalette: PTR; // A void pointer, but for this implementation a DDPalette
-  p16BPPPalette: Pointer<UINT16>; // A 16BPP palette used for 8->16 blits
+  pPalette: SGPPaletteEntry[] /* PTR */; // A void pointer, but for this implementation a DDPalette
+  p16BPPPalette: Uint16Array /* Pointer<UINT16> */; // A 16BPP palette used for 8->16 blits
   TransparentColor: COLORVAL; // Defaults to 0,0,0
-  pClipper: PTR; // A void pointer encapsolated as a clipper Surface
-  RegionList: VSURFACE_REGION[]; // A List of regions within the video Surface
+  pClipper: any /* PTR */; // A void pointer encapsolated as a clipper Surface
+}
+
+export function createSGPVSurface(): SGPVSurface {
+  return {
+    usHeight: 0,
+    usWidth: 0,
+    ubBitDepth: 0,
+    pSurfaceData: <Uint8ClampedArray><unknown>null,
+    pSurfaceData1: <Uint8ClampedArray><unknown>null,
+    pSavedSurfaceData1: <Uint8ClampedArray><unknown>null,
+    pSavedSurfaceData: <Uint8ClampedArray><unknown>null,
+    fFlags: 0,
+    pPalette: <SGPPaletteEntry[]><unknown>null,
+    p16BPPPalette: <Uint16Array><unknown>null,
+    TransparentColor: 0,
+    pClipper: 0,
+  };
 }
 
 export type HVSURFACE = Pointer<SGPVSurface>;

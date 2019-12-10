@@ -6,8 +6,20 @@ export interface NODE {
   nRedSum: UINT32; // Sum of red components
   nGreenSum: UINT32; // Sum of green components
   nBlueSum: UINT32; // Sum of blue components
-  pChild: Pointer<NODE>[] /* [8] */; // Pointers to child nodes
-  pNext: Pointer<NODE>; // Pointer to next reducible node
+  pChild: NODE[] /* [8] */; // Pointers to child nodes
+  pNext: NODE | null; // Pointer to next reducible node
+}
+
+export function createNode(): NODE {
+  return {
+    bIsLeaf: false,
+    nPixelCount: 0,
+    nRedSum: 0,
+    nGreenSum: 0,
+    nBlueSum: 0,
+    pChild: createArray(8, <NODE><unknown>null),
+    pNext: null,
+  };
 }
 
 }

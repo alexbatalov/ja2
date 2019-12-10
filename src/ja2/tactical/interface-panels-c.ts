@@ -1549,15 +1549,15 @@ export function RenderSMPanel(pfDirty: Pointer<UINT8>): void {
   HandleRenderInvSlots(gpSMCurrentMerc, pfDirty.value);
 
   if (gfSMDisableForItems && (pfDirty.value) != DIRTYLEVEL0) {
-    let pDestBuf: Pointer<UINT8>;
-    let uiDestPitchBYTES: UINT32;
+    let pDestBuf: Uint8ClampedArray;
+    let uiDestPitchBYTES: UINT32 = 0;
     let ClipRect: SGPRect = createSGPRect();
 
     ClipRect.iLeft = 87;
     ClipRect.iRight = 536;
     ClipRect.iTop = INV_INTERFACE_START_Y;
     ClipRect.iBottom = 480;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }

@@ -5373,8 +5373,8 @@ function HandlePersonnelKeyboard(): void {
 function RenderRectangleForPersonnelTransactionAmount(): void {
   let iLength: INT32 = 0;
   let iHeight: INT32 = GetFontHeight(ATM_FONT());
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let sTempString: string /* CHAR16[32] */;
   let sZero: string /* CHAR16[2] */ = "0";
   let iCounter: INT32 = 0;
@@ -5398,7 +5398,7 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
   // grab total length
   iLength = StringPixLength(sTempString, ATM_FONT());
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES);
   RectangleDraw(true, (ATM_DISPLAY_X + ATM_DISPLAY_WIDTH) - iLength - 2, ATM_DISPLAY_Y + 35, ATM_DISPLAY_X + ATM_DISPLAY_WIDTH + 1, ATM_DISPLAY_Y + iHeight + 36, Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);

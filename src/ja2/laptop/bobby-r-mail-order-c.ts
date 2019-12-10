@@ -1544,8 +1544,8 @@ function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: MOUSE_REGION, iRea
 }
 
 function DrawGoldRectangle(bCityNum: INT8): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usWidth: UINT16;
   let usTempHeight: UINT16;
   let usTempPosY: UINT16;
@@ -1576,7 +1576,7 @@ function DrawGoldRectangle(bCityNum: INT8): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SCROLL_AREA_X, usPosY, BOBBYR_SCROLL_AREA_X + usWidth, usPosY + usHeight, Get16BPPColor(FROMRGB(186, 165, 68)));
 
   // display the line
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw the gold highlite line on the top and left

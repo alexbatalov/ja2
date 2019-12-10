@@ -200,8 +200,8 @@ function SetStringVideoOverlayPosition(pStringSt: ScrollStringSt, usX: UINT16, u
 }
 
 function BlitString(pBlitter: VIDEO_OVERLAY): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
 
   // gprintfdirty(pBlitter->sX,pBlitter->sY, pBlitter->zText);
   // RestoreExternBackgroundRect(pBlitter->sX,pBlitter->sY, pBlitter->sX+StringPixLength(pBlitter->zText,pBlitter->uiFontID ), pBlitter->sY+GetFontHeight(pBlitter->uiFontID ));
@@ -210,7 +210,7 @@ function BlitString(pBlitter: VIDEO_OVERLAY): void {
     return;
   }
 
-  pDestBuf = LockVideoSurface(pBlitter.uiDestBuff, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(pBlitter.uiDestBuff, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetFont(pBlitter.uiFontID);
 
   SetFontBackground(pBlitter.ubFontBack);

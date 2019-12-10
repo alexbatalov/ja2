@@ -631,8 +631,8 @@ export function ShowCurrentDrawingMode(): void {
   let sTempOffsetX: INT16;
   let sTempOffsetY: INT16;
   let pETRLEObject: ETRLEObject;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usFillColor: UINT16;
   let iIndexToUse: INT32;
 
@@ -842,7 +842,7 @@ export function ShowCurrentDrawingMode(): void {
 
   // Set the color for the window's border. Blueish color = Normal, Red = Fake lighting is turned on
   usFillColor = GenericButtonFillColors[0];
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   if (gbPixelDepth == 16)
     RectangleDraw(false, 0, 400, 99, 458, usFillColor, pDestBuf);
   else if (gbPixelDepth == 8)
@@ -2334,7 +2334,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   let iStartY: INT32;
   let iPicHeight: INT32;
   let iPicWidth: INT32;
-  let hvSurface: HVSURFACE;
+  let hvSurface: SGPVSurface;
   let iWinWidth: INT32;
   let iWinHeight: INT32;
   let vSfx: blt_vs_fx = createBltVsFx();
@@ -2351,8 +2351,8 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 
   hvSurface = GetVideoSurface(vSurface);
 
-  iPicWidth = hvSurface.value.usWidth;
-  iPicHeight = hvSurface.value.usHeight;
+  iPicWidth = hvSurface.usWidth;
+  iPicHeight = hvSurface.usHeight;
 
   if (iPicWidth > iWinWidth) {
     ClipRect.iLeft = (iPicWidth - iWinWidth) / 2;

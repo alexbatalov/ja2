@@ -202,8 +202,8 @@ export function RenderRadarScreen(): void {
   let sXSoldRadar: INT16;
   let sYSoldRadar: INT16;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let cnt: UINT32;
   let sHeight: INT16;
@@ -287,7 +287,7 @@ export function RenderRadarScreen(): void {
   sRadarBRX = ((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
   sRadarBRY = ((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, RADAR_WINDOW_X, gsRadarY, (RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1), (gsRadarY + RADAR_WINDOW_HEIGHT - 1));
 

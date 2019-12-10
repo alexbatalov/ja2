@@ -76,4 +76,13 @@ export interface GETFILESTRUCT {
   uiFileAttribs: UINT32;
 }
 
+export function createGetFileStruct(): GETFILESTRUCT {
+  return {
+    iFindHandle: 0,
+    zFileName: '',
+    uiFileSize: 0,
+    uiFileAttribs: 0,
+  };
+}
+
 }

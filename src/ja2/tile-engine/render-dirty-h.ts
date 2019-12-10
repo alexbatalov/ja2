@@ -28,8 +28,8 @@ export interface BACKGROUND_SAVE {
   fFreeMemory: boolean;
   fZBuffer: boolean;
   uiFlags: UINT32;
-  pSaveArea: Int16Array | null;
-  pZSaveArea: Int16Array | null;
+  pSaveArea: Uint8ClampedArray | null;
+  pZSaveArea: Uint8ClampedArray | null;
   sLeft: INT16;
   sTop: INT16;
   sRight: INT16;
@@ -87,7 +87,7 @@ export interface VIDEO_OVERLAY {
   fDeletionPending: boolean;
   uiBackground: INT32;
   pBackground: BACKGROUND_SAVE | null;
-  pSaveArea: Int16Array | null;
+  pSaveArea: Uint8ClampedArray | null;
   uiUserData: UINT32[] /* [5] */;
   uiFontID: UINT32;
   sX: INT16;

@@ -2,20 +2,13 @@ namespace ja2 {
 
 // Prototype Declarations
 
-let ghInstance: HINSTANCE;
+export let ghInstance: HTMLElement;
 
 // Global Variable Declarations
-
-// moved from header file: 24mar98:HJH
-export let giStartMem: UINT32;
-export let gbPixelDepth: UINT8; // GLOBAL RUN-TIME SETTINGS
-
-let guiMouseWheelMsg: UINT32; // For mouse wheel messages
 
 let gfApplicationActive: boolean;
 export let gfProgramIsRunning: boolean;
 let gfGameInitialized: boolean = false;
-export let giStartMem: UINT32;
 export let gfDontUseDDBlits: boolean = false;
 
 // There were TWO of them??!?! -- DB
@@ -28,96 +21,8 @@ let gfIgnoreMessages: boolean = false;
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
 export let gbPixelDepth: UINT8 = PIXEL_DEPTH;
 
-function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam: LPARAM): INT32 {
-  /* static */ let fRestore: boolean = false;
-
-  if (gfIgnoreMessages)
-    return DefWindowProc(hWindow, Message, wParam, lParam);
-
-  // ATE: This is for older win95 or NT 3.51 to get MOUSE_WHEEL Messages
-  if (Message == guiMouseWheelMsg) {
-    QueueEvent(MOUSE_WHEEL, wParam, lParam);
-    return 0;
-  }
-
-  switch (Message) {
-    case WM_MOUSEWHEEL: {
-      QueueEvent(MOUSE_WHEEL, wParam, lParam);
-      break;
-    }
-
-    case WM_ACTIVATEAPP:
-      switch (wParam) {
-        case true: // We are restarting DirectDraw
-          if (fRestore == true) {
-            RestoreVideoManager();
-            RestoreVideoSurfaces(); // Restore any video surfaces
-
-            // unpause the JA2 Global clock
-            if (!gfPauseDueToPlayerGamePause) {
-              PauseTime(false);
-            }
-            gfApplicationActive = true;
-          }
-          break;
-        case false: // We are suspending direct draw
-                    // pause the JA2 Global clock
-          PauseTime(true);
-          SuspendVideoManager();
-          // suspend movement timer, to prevent timer crash if delay becomes long
-          // * it doesn't matter whether the 3-D engine is actually running or not, or if it's even been initialized
-          // * restore is automatic, no need to do anything on reactivation
-
-          gfApplicationActive = false;
-          fRestore = true;
-          break;
-      }
-      break;
-
-    case WM_CREATE:
-      break;
-
-    case WM_DESTROY:
-      ShutdownStandardGamingPlatform();
-      ShowCursor(true);
-      PostQuitMessage(0);
-      break;
-
-    case WM_SETFOCUS:
-      RestoreCursorClipRect();
-
-      break;
-
-    case WM_KILLFOCUS:
-      // Set a flag to restore surfaces once a WM_ACTIVEATEAPP is received
-      fRestore = true;
-      break;
-
-    case WM_DEVICECHANGE: {
-      let pHeader: Pointer<DEV_BROADCAST_HDR> = lParam;
-
-      // if a device has been removed
-      if (wParam == DBT_DEVICEREMOVECOMPLETE) {
-        // if its  a disk
-        if (pHeader.value.dbch_devicetype == DBT_DEVTYP_VOLUME) {
-          // check to see if the play cd is still in the cdrom
-          if (!CheckIfGameCdromIsInCDromDrive()) {
-          }
-        }
-      }
-    } break;
-
-    default:
-      return DefWindowProc(hWindow, Message, wParam, lParam);
-  }
-  return 0;
-}
-
-function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: number): boolean {
+function InitializeStandardGamingPlatform(hInstance: HTMLElement): boolean {
   let pFontTable: FontTranslationTable;
-
-  // Second, read in settings
-  GetRuntimeSettings();
 
   // Initialize the Debug Manager - success doesn't matter
   InitializeDebugManager();
@@ -131,14 +36,6 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
   if (InitializeMemoryManager() == false) {
     // We were unable to initialize the memory manager
     FastDebugMsg("FAILED : Initializing Memory Manager");
-    return false;
-  }
-
-  FastDebugMsg("Initializing Mutex Manager");
-  // Initialize the Dirty Rectangle Manager
-  if (InitializeMutexManager() == false) {
-    // We were unable to initialize the game
-    FastDebugMsg("FAILED : Initializing Mutex Manager");
     return false;
   }
 
@@ -160,7 +57,7 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
 
   FastDebugMsg("Initializing Video Manager");
   // Initialize DirectDraw (DirectX 2)
-  if (InitializeVideoManager(hInstance, sCommandShow, WindowProcedure) == false) {
+  if (InitializeVideoManager(hInstance) == false) {
     // We were unable to initialize the video manager
     FastDebugMsg("FAILED : Initializing Video Manager");
     return false;
@@ -196,8 +93,6 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
     FastDebugMsg("FAILED : Initializing Font Manager");
     return false;
   }
-  // Don't need this thing anymore, so get rid of it (but don't de-alloc the contents)
-  MemFree(pFontTable);
 
   FastDebugMsg("Initializing Sound Manager");
   // Initialize the Sound Manager (DirectSound)
@@ -218,9 +113,6 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: nu
     FastDebugMsg("FAILED : Initializing Game Manager");
     return false;
   }
-
-  // Register mouse wheel message
-  guiMouseWheelMsg = RegisterWindowMessage(MSH_MOUSEWHEEL);
 
   gfGameInitialized = true;
 
@@ -255,7 +147,6 @@ function ShutdownStandardGamingPlatform(): void {
 
   ShutdownInputManager();
   ShutdownFileManager();
-  ShutdownMutexManager();
 
   ShutdownMemoryManager(); // must go last (except for Debug), for MemDebugCounter to work right...
 
@@ -267,42 +158,13 @@ function ShutdownStandardGamingPlatform(): void {
   ShutdownDebugManager();
 }
 
-function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: LPSTR, sCommandShow: number): number {
-  let Message: MSG;
-  let hPrevInstanceWindow: HWND;
-
-  // Make sure that only one instance of this application is running at once
-  // // Look for prev instance by searching for the window
-  hPrevInstanceWindow = FindWindowEx(null, null, APPLICATION_NAME, APPLICATION_NAME);
-
-  // One is found, bring it up!
-  if (hPrevInstanceWindow != null) {
-    SetForegroundWindow(hPrevInstanceWindow);
-    ShowWindow(hPrevInstanceWindow, SW_RESTORE);
-    return 0;
-  }
-
+export function WinMain(hInstance: HTMLElement): number {
   ghInstance = hInstance;
-
-  // Copy commandline!
-  strncpy(gzCommandLine, pCommandLine, 100);
-  gzCommandLine[99] = '\0';
-
-  // Process the command line BEFORE initialization
-  ProcessJa2CommandLineBeforeInitialization(pCommandLine);
-
-  // Mem Usage
-  giStartMem = MemGetFree() / 1024;
-
-  // Handle Check for CD
-  if (!HandleJA2CDCheck()) {
-    return 0;
-  }
 
   ShowCursor(false);
 
   // Inititialize the SGP
-  if (InitializeStandardGamingPlatform(hInstance, sCommandShow) == false) {
+  if (InitializeStandardGamingPlatform(hInstance) == false) {
     // We failed to initialize the SGP
     return 0;
   }
@@ -319,108 +181,24 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
 
   // At this point the SGP is set up, which means all I/O, Memory, tools, etc... are available. All we need to do is
   // attend to the gaming mechanics themselves
-  while (gfProgramIsRunning) {
-    if (PeekMessage(addressof(Message), null, 0, 0, PM_NOREMOVE)) {
-      // We have a message on the WIN95 queue, let's get it
-      if (!GetMessage(addressof(Message), null, 0, 0)) {
-        // It's quitting time
-        return Message.wParam;
-      }
-      // Ok, now that we have the message, let's handle it
-      TranslateMessage(addressof(Message));
-      DispatchMessage(addressof(Message));
-    } else {
-      // Windows hasn't processed any messages, therefore we handle the rest
-      if (gfApplicationActive == false) {
-        // Well we got nothing to do but to wait for a message to activate
-        WaitMessage();
-      } else {
-        // Well, the game is active, so we handle the game stuff
-        GameLoop();
+  requestAnimationFrame(render);
 
-        // After this frame, reset input given flag
-        gfSGPInputReceived = false;
-      }
-    }
+  function render() {
+    GameLoop();
+
+    gfSGPInputReceived = false;
+
+    requestAnimationFrame(render);
   }
 
   // This is the normal exit point
   FastDebugMsg("Exiting Game");
-  PostQuitMessage(0);
 
   // SGPExit() will be called next through the atexit() mechanism...  This way we correctly process both normal exits and
   // emergency aborts (such as those caused by a failed assertion).
 
   // return wParam of the last message received
-  return Message.wParam;
-}
-
-function SGPExit(): void {
-  /* static */ let fAlreadyExiting: boolean = false;
-  let fUnloadScreens: boolean = true;
-
-  // helps prevent heap crashes when multiple assertions occur and call us
-  if (fAlreadyExiting) {
-    return;
-  }
-
-  fAlreadyExiting = true;
-  gfProgramIsRunning = false;
-
-  ShutdownStandardGamingPlatform();
-  ShowCursor(true);
-  if (gzErrorMsg.length) {
-    MessageBox(null, gzErrorMsg, "Error", MB_OK | MB_ICONERROR);
-  }
-}
-
-function GetRuntimeSettings(): void {
-  // Runtime settings - for now use INI file - later use registry
-  let ExeDir: string /* STRING512 */;
-  let INIFile: string /* STRING512 */;
-
-  // Get Executable Directory
-  GetExecutableDirectory(ExeDir);
-  // Adjust Current Dir
-  INIFile = sprintf("%s\\sgp.ini", ExeDir);
-
-  gbPixelDepth = GetPrivateProfileInt("SGP", "PIXEL_DEPTH", PIXEL_DEPTH, INIFile);
-}
-
-export function ShutdownWithErrorBox(pcMessage: string /* Pointer<CHAR8> */): void {
-  strncpy(gzErrorMsg, pcMessage, 255);
-  gzErrorMsg[255] = '\0';
-  gfIgnoreMessages = true;
-
-  exit(0);
-}
-
-function ProcessJa2CommandLineBeforeInitialization(pCommandLine: string /* Pointer<CHAR8> */): void {
-  let cSeparators: string /* CHAR8[] */ = "\t =";
-  let pCopy: string /* Pointer<CHAR8> */ = null;
-  let pToken: string /* Pointer<CHAR8> */;
-
-  pCopy = MemAlloc(pCommandLine.length + 1);
-
-  Assert(pCopy);
-  if (!pCopy)
-    return;
-
-  memcpy(pCopy, pCommandLine, pCommandLine.length + 1);
-
-  pToken = strtok(pCopy, cSeparators);
-  while (pToken) {
-    // if its the NO SOUND option
-    if (!_strnicmp(pToken, "/NOSOUND", 8)) {
-      // disable the sound
-      SoundEnableSound(false);
-    }
-
-    // get the next token
-    pToken = strtok(null, cSeparators);
-  }
-
-  MemFree(pCopy);
+  return 0;
 }
 
 }

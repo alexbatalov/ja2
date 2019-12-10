@@ -92,6 +92,7 @@ function STCILoadRGB(hImage: ImageType, fContents: UINT16, hFile: HWFILE, pHeade
     hImage.pCompressedImageData = buffer;
     hImage.p8BPPData = buffer;
     hImage.p16BPPData = new Uint16Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / 2);
+    hImage.pPixData8 = buffer;
 
     hImage.fFlags |= IMAGE_BITMAPDATA;
 

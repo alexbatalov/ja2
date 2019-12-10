@@ -495,7 +495,7 @@ export function SaveFontSettings(): void {
   SaveFontDestBuffer = FontDestBuffer;
   SaveFontDestPitch = FontDestPitch;
   SaveFontDestBPP = FontDestBPP;
-  SaveFontDestRegion = FontDestRegion;
+  copySGPRect(SaveFontDestRegion, FontDestRegion);
   SaveFontDestWrap = FontDestWrap;
   SaveFontForeground16 = FontForeground16;
   SaveFontShadow16 = FontShadow16;
@@ -516,7 +516,7 @@ export function RestoreFontSettings(): void {
   FontDestBuffer = SaveFontDestBuffer;
   FontDestPitch = SaveFontDestPitch;
   FontDestBPP = SaveFontDestBPP;
-  FontDestRegion = SaveFontDestRegion;
+  copySGPRect(FontDestRegion, SaveFontDestRegion);
   FontDestWrap = SaveFontDestWrap;
   FontForeground16 = SaveFontForeground16;
   FontShadow16 = SaveFontShadow16;
@@ -637,8 +637,8 @@ export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
   let string: string /* wchar_t[512] */;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   Assert(pFontString != null);
 
@@ -646,11 +646,11 @@ export function mprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
 
   curletter = 0;
 
-  destx = x;
-  desty = y;
+  destx = Math.floor(x);
+  desty = Math.floor(y);
 
   // Lock the dest buffer
-  pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FontDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   while (curletter < string.length)  {
     transletter = GetIndex(string.charCodeAt(curletter++));
@@ -727,8 +727,8 @@ export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
   let string: string /* wchar_t[512] */;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   Assert(pFontString != null);
 
@@ -740,7 +740,7 @@ export function gprintf(x: INT32, y: INT32, pFontString: string /* Pointer<UINT1
   desty = y;
 
   // Lock the dest buffer
-  pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FontDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   while (curletter < string.length) {
     transletter = GetIndex(string.charCodeAt(curletter++));
@@ -771,8 +771,8 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16>
   let curletter: number /* Pointer<UINT16> */;
   let transletter: UINT16;
   let string: string /* wchar_t[512] */;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   Assert(pFontString != null);
 
@@ -784,7 +784,7 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16>
   desty = y;
 
   // Lock the dest buffer
-  pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FontDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   while (curletter < string.length) {
     transletter = GetIndex(string.charCodeAt(curletter++));
@@ -818,7 +818,7 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: string /* Pointer<UINT16>
 // the parameters are identical to printf. The resulting string may be no longer
 // than 512 word-characters.
 //*****************************************************************************
-function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
+function gprintf_buffer(pDestBuf: Uint8ClampedArray, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
   let curletter: number /* Pointer<UINT16> */;
@@ -855,7 +855,7 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
   return 0;
 }
 
-export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
+export function mprintf_buffer(pDestBuf: Uint8ClampedArray, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
   let curletter: number /* Pointer<UINT16> */;
@@ -891,7 +891,7 @@ export function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT3
   return 0;
 }
 
-export function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
+export function mprintf_buffer_coded(pDestBuf: Uint8ClampedArray, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: string /* Pointer<UINT16> */, ...args: any[]): UINT32 {
   let destx: INT32;
   let desty: INT32;
   let curletter: number /* Pointer<UINT16> */;
@@ -946,8 +946,8 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
   let transletter: UINT16;
   let string: string /* wchar_t[512] */;
   let usOldForeColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   Assert(pFontString != null);
 
@@ -961,7 +961,7 @@ export function mprintf_coded(x: INT32, y: INT32, pFontString: string /* Pointer
   usOldForeColor = FontForeground16;
 
   // Lock the dest buffer
-  pDestBuf = LockVideoSurface(FontDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FontDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   while (curletter < string.length) {
     if (string.charCodeAt(curletter) == 180) {

@@ -269,14 +269,14 @@ function FadeFrameBufferVersionOne(): void {
   let cX: INT32;
   let cY: INT32;
   let uiDestPitchBYTES: UINT32;
-  let pBuf: Pointer<UINT16>;
+  let pBuf: Uint8ClampedArray;
   let bR: INT16;
   let bG: INT16;
   let bB: INT16;
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -315,8 +315,8 @@ function FadeInBackBufferVersionOne(): void {
   let cY: INT32;
   let uiDestPitchBYTES: UINT32;
   let uiSrcPitchBYTES: UINT32;
-  let pSrcBuf: Pointer<UINT16>;
-  let pDestBuf: Pointer<UINT16>;
+  let pSrcBuf: Uint8ClampedArray;
+  let pDestBuf: Uint8ClampedArray;
   let bR: INT16;
   let bG: INT16;
   let bB: INT16;
@@ -324,8 +324,8 @@ function FadeInBackBufferVersionOne(): void {
   let s16BPPSrc: UINT16;
   let bFadeVal: INT16 = (gsFadeLimit - gsFadeCount) * gbFadeValue;
 
-  pDestBuf = LockVideoSurface(BACKBUFFER, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(BACKBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -366,14 +366,14 @@ function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
   let iStartX: INT32;
   let iStartY: INT32;
   let uiDestPitchBYTES: UINT32;
-  let pBuf: Pointer<UINT16>;
+  let pBuf: Uint8ClampedArray;
   let bR: INT16;
   let bG: INT16;
   let bB: INT16;
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   iStartX = gsFadeCount % 2;
   iStartY = 0;
@@ -572,10 +572,10 @@ function FadeInFrameBufferRealFade(): void {
 }
 
 function UpdateSaveBufferWithBackbuffer(): boolean {
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;
@@ -583,8 +583,8 @@ function UpdateSaveBufferWithBackbuffer(): boolean {
   // Update saved buffer - do for the viewport size ony!
   ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
 
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   if (gbPixelDepth == 16) {
     // BLIT HERE

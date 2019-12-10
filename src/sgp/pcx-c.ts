@@ -36,7 +36,12 @@ export function LoadPCXFileToImage(hImage: ImageType, fContents: UINT16): boolea
   // Read and allocate bitmap block if requested
   if (fContents & IMAGE_BITMAPDATA) {
     // Allocate memory for buffer
-    hImage.p8BPPData = new Uint8Array(hImage.usWidth * hImage.usHeight);
+    const buffer = Buffer.allocUnsafe(hImage.usWidth * hImage.usHeight);
+    hImage.pImageData = buffer;
+    hImage.pCompressedImageData = buffer;
+    hImage.p8BPPData = buffer;
+    hImage.p16BPPData = new Uint16Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / 2);
+    hImage.pPixData8 = hImage.p8BPPData;
 
     if (!BlitPcxToBuffer(pPcxObject, hImage.p8BPPData, hImage.usWidth, hImage.usHeight, 0, 0, false)) {
       hImage.p8BPPData = <Uint8Array><unknown>null;

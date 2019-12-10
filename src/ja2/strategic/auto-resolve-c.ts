@@ -622,8 +622,8 @@ export function AutoResolveScreenHandle(): UINT32 {
     return Enum26.MAP_SCREEN;
   }
   if (gpAR.fEnteringAutoResolve) {
-    let pDestBuf: Pointer<UINT8>;
-    let uiDestPitchBYTES: UINT32;
+    let pDestBuf: Uint8ClampedArray;
+    let uiDestPitchBYTES: UINT32 = 0;
     let ClipRect: SGPRect = createSGPRect();
     gpAR.fEnteringAutoResolve = false;
     // Take the framebuffer, shade it, and save it to the SAVEBUFFER.
@@ -631,7 +631,7 @@ export function AutoResolveScreenHandle(): UINT32 {
     ClipRect.iTop = 0;
     ClipRect.iRight = 640;
     ClipRect.iBottom = 480;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
@@ -905,14 +905,14 @@ function RenderSoldierCell(pCell: SOLDIERCELL): void {
 
   if (pCell.pSoldier.bLife > 0 && pCell.pSoldier.bLife < OKLIFE && !(pCell.uiFlags & (CELL_HITBYATTACKER | CELL_HITLASTFRAME | CELL_CREATURE))) {
     // Merc is unconcious (and not taking damage), so darken his portrait.
-    let pDestBuf: Pointer<UINT8>;
-    let uiDestPitchBYTES: UINT32;
+    let pDestBuf: Uint8ClampedArray;
+    let uiDestPitchBYTES: UINT32 = 0;
     let ClipRect: SGPRect = createSGPRect();
     ClipRect.iLeft = pCell.xp + 3 + x;
     ClipRect.iTop = pCell.yp + 3;
     ClipRect.iRight = pCell.xp + 33 + x;
     ClipRect.iBottom = pCell.yp + 29;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }
@@ -1047,11 +1047,11 @@ function BuildInterfaceBuffer(): void {
 
 function ExpandWindow(): void {
   let OldRect: SGPRect = createSGPRect();
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiCurrentTime: UINT32;
   let uiTimeRange: UINT32;
   let uiPercent: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
   let i: INT32;
 
   if (!gpAR.ExRect.iLeft && !gpAR.ExRect.iRight) {
@@ -1122,7 +1122,7 @@ function ExpandWindow(): void {
   }
 
   // The new rect now determines the state of the current rectangle.
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, gpAR.ExRect.iLeft, gpAR.ExRect.iTop, gpAR.ExRect.iRight, gpAR.ExRect.iBottom, Get16BPPColor(FROMRGB(200, 200, 100)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
@@ -1387,7 +1387,7 @@ function AutoBandageMercs(): UINT32 {
 
 function RenderAutoResolve(): void {
   let i: INT32;
-  let hVSurface: HVSURFACE;
+  let hVSurface: SGPVSurface;
   let xp: INT32;
   let yp: INT32;
   let pCell: SOLDIERCELL | null = null;
@@ -1440,7 +1440,7 @@ function RenderAutoResolve(): void {
   gpAR.fRenderAutoResolve = false;
 
   hVSurface = GetVideoSurface(gpAR.iInterfaceBuffer);
-  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.Rect.iLeft, gpAR.Rect.iTop, VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoSurfaceToVideoSurface(<SGPVSurface>ghFrameBuffer, hVSurface, 0, gpAR.Rect.iLeft, gpAR.Rect.iTop, VO_BLT_SRCTRANSPARENCY, null);
 
   for (i = 0; i < gpAR.ubMercs; i++) {
     RenderSoldierCell(gpMercs[i]);
@@ -2599,16 +2599,16 @@ function RenderSoldierCellHealth(pCell: SOLDIERCELL): void {
   let yp: INT32;
   let pStr: string /* Pointer<UINT16> */;
   let str: string /* UINT16[20] */;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
-  let uiSrcPitchBYTES: UINT32;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let uiDestPitchBYTES: UINT32 = 0;
   let usColor: UINT16;
 
   SetFont(SMALLCOMPFONT());
   // Restore the background before drawing text.
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(gpAR.iInterfaceBuffer, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(gpAR.iInterfaceBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
   xp = pCell.xp + 2;
   yp = pCell.yp + 32;
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, xp, yp, xp - gpAR.Rect.iLeft, yp - gpAR.Rect.iTop, 46, 10);

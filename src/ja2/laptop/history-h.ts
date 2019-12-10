@@ -1,6 +1,8 @@
 namespace ja2 {
 
-export const HISTORY_DATA_FILE = "TEMP\\History.dat";
+const path: typeof import('path') = require('path');
+
+export const HISTORY_DATA_FILE = path.join('Temp', 'History.dat');
 
 // the financial structure
 export interface HistoryUnit {

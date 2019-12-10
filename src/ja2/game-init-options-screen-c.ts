@@ -137,13 +137,13 @@ let guiGIOCancelButton: UINT32;
 let giGIOCancelBtnImage: INT32;
 
 // checkbox to toggle the Diff level
-let guiDifficultySettingsToggles: UINT32[] /* [NUM_DIFF_SETTINGS] */;
+let guiDifficultySettingsToggles: UINT32[] /* [NUM_DIFF_SETTINGS] */ = createArray(Enum3.NUM_DIFF_SETTINGS, 0);
 
 // checkbox to toggle Game style
-let guiGameStyleToggles: UINT32[] /* [NUM_GAME_STYLES] */;
+let guiGameStyleToggles: UINT32[] /* [NUM_GAME_STYLES] */ = createArray(Enum4.NUM_GAME_STYLES, 0);
 
 // checkbox to toggle Gun options
-let guiGunOptionToggles: UINT32[] /* [NUM_GUN_OPTIONS] */;
+let guiGunOptionToggles: UINT32[] /* [NUM_GUN_OPTIONS] */ = createArray(Enum5.NUM_GUN_OPTIONS, 0);
 
 // JA2Gold: no more timed turns setting
 /*
@@ -153,7 +153,7 @@ void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
 // checkbox to toggle Save style
-let guiGameSaveToggles: UINT32[] /* [NUM_SAVE_OPTIONS] */;
+let guiGameSaveToggles: UINT32[] /* [NUM_SAVE_OPTIONS] */ = createArray(Enum6.NUM_SAVE_OPTIONS, 0);
 
 ////////////////////////////////////////////
 //

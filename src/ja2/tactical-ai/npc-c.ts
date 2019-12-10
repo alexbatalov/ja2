@@ -473,11 +473,11 @@ function ApproachedForFirstTime(pNPCProfile: MERCPROFILESTRUCT, bApproach: INT8)
   }
 }
 
-function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubRecord: UINT8, pNPCQuoteInfoArray: NPCQuoteInfo[], ppResultQuoteInfo: Pointer<Pointer<NPCQuoteInfo>>, pubQuoteNum: Pointer<UINT8>): UINT8 {
+function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubRecord: UINT8, pNPCQuoteInfoArray: NPCQuoteInfo[], ppResultQuoteInfo: Pointer<NPCQuoteInfo | null> | null, pubQuoteNum: Pointer<UINT8> | null): UINT8 {
   // This function returns the opinion level required of the "most difficult" quote
   // that the NPC is willing to say to the merc.  It can also provide the quote #.
   let pNPCProfile: MERCPROFILESTRUCT;
-  let pNPCQuoteInfo: NPCQuoteInfo;
+  let pNPCQuoteInfo: NPCQuoteInfo = <NPCQuoteInfo><unknown>null;
   let ubTalkDesire: UINT8;
   let ubLoop: UINT8;
   let ubQuote: UINT8;
@@ -597,7 +597,7 @@ function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubReco
   }
 }
 
-function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJECTTYPE, pNPCQuoteInfoArray: NPCQuoteInfo[], ppResultQuoteInfo: Pointer<Pointer<NPCQuoteInfo>>, pubQuoteNum: Pointer<UINT8>): UINT8 {
+function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJECTTYPE, pNPCQuoteInfoArray: NPCQuoteInfo[], ppResultQuoteInfo: Pointer<NPCQuoteInfo | null>, pubQuoteNum: Pointer<UINT8>): UINT8 {
   // This function returns the opinion level required of the "most difficult" quote
   // that the NPC is willing to say to the merc.  It can also provide the quote #.
   let pNPCProfile: MERCPROFILESTRUCT;
@@ -682,14 +682,14 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
             if (usItemToConsider == Enum225.MONEY && pNPCQuoteInfo.sActionData == Enum213.NPC_ACTION_DARREN_GIVEN_CASH) {
               if (pObj.uiMoneyAmount < 1000) {
                 // refuse, bet too low - record 15
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[15]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[15];
                 (pubQuoteNum.value) = 15;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               } else if (pObj.uiMoneyAmount > 5000) {
                 // refuse, bet too high - record 16
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[16]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[16];
                 (pubQuoteNum.value) = 16;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               } else {
                 // accept - record 17
                 /*
@@ -714,7 +714,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 // else use record 18
                 if (!(gpNPCQuoteInfoArray[Enum268.DARREN][17].fFlags & QUOTE_FLAG_SAID)) // record 17 not used
                 {
-                  (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[17]);
+                  (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[17];
                   (pubQuoteNum.value) = 17;
                 } else {
                   // find Kingpin, if he's in his house, invoke the script to move him to the bar
@@ -725,39 +725,39 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                   if (pKingpin && (ubKingpinRoom = InARoom(pKingpin.sGridNo)) !== -1) {
                     if (IN_KINGPIN_HOUSE(ubKingpinRoom)) {
                       // first boxer, bring kingpin over
-                      (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[17]);
+                      (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[17];
                       (pubQuoteNum.value) = 17;
                     } else {
-                      (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[31]);
+                      (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[31];
                       (pubQuoteNum.value) = 31;
                     }
                   } else {
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[31]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[31];
                     (pubQuoteNum.value) = 31;
                   }
                 }
 
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               }
             }
             break;
           case Enum268.ANGEL:
-            if (usItemToConsider == Enum225.MONEY && pNPCQuoteInfo.value.sActionData == Enum213.NPC_ACTION_ANGEL_GIVEN_CASH) {
+            if (usItemToConsider == Enum225.MONEY && pNPCQuoteInfo.sActionData == Enum213.NPC_ACTION_ANGEL_GIVEN_CASH) {
               if (pObj.uiMoneyAmount < Item[Enum225.LEATHER_JACKET_W_KEVLAR].usPrice) {
                 // refuse, bet too low - record 8
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[8]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[8];
                 (pubQuoteNum.value) = 8;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               } else if (pObj.uiMoneyAmount > Item[Enum225.LEATHER_JACKET_W_KEVLAR].usPrice) {
                 // refuse, bet too high - record 9
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[9]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[9];
                 (pubQuoteNum.value) = 9;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               } else {
                 // accept - record 10
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[10]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[10];
                 (pubQuoteNum.value) = 10;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               }
             }
             break;
@@ -765,9 +765,9 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
             if (usItemToConsider == Enum225.MONEY) {
               if (gMercProfiles[ubMerc].bSex == Enum272.FEMALE) {
                 // say quote about not catering to women!
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[5]);
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[5];
                 (pubQuoteNum.value) = 5;
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               }
               switch (pObj.uiMoneyAmount) {
                 case 100:
@@ -777,9 +777,9 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                     TriggerNPCRecord(Enum268.MADAME, 16);
                   } else {
                     // see default case
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[25]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[25];
                     (pubQuoteNum.value) = 25;
-                    return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                    return (ppResultQuoteInfo.value).ubOpinionRequired;
                   }
                   break;
                 case 500:
@@ -789,9 +789,9 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                     TriggerNPCRecord(Enum268.MADAME, 17);
                   } else {
                     // see default case
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[25]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[25];
                     (pubQuoteNum.value) = 25;
-                    return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                    return (ppResultQuoteInfo.value).ubOpinionRequired;
                   }
                   break;
                 case 300:
@@ -801,9 +801,9 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                     TriggerNPCRecord(Enum268.MADAME, 18);
                   } else {
                     // see default case
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[25]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[25];
                     (pubQuoteNum.value) = 25;
-                    return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                    return (ppResultQuoteInfo.value).ubOpinionRequired;
                   }
                   break;
                 case 400:
@@ -814,17 +814,17 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                     break;
                   } else {
                     // see default case
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[25]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[25];
                     (pubQuoteNum.value) = 25;
-                    return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                    return (ppResultQuoteInfo.value).ubOpinionRequired;
                   }
                   break;
                 default:
                   // play quotes 39-42 (plus 44 if quest 22 on) plus 43 if >1 PC
                   // and return money
-                  (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[25]);
+                  (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[25];
                   (pubQuoteNum.value) = 25;
-                  return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                  return (ppResultQuoteInfo.value).ubOpinionRequired;
               }
             }
             break;
@@ -855,30 +855,30 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 } else if (CheckFact(Enum170.FACT_VINCE_EXPECTING_MONEY, ubNPC) == false && pNPCQuoteInfo.sActionData != Enum213.NPC_ACTION_DONT_ACCEPT_ITEM) {
                   // just accept cash!
                   if (ubNPC == Enum268.VINCE) {
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[8]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[8];
                   } else {
-                    (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[7]);
+                    (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[7];
                   }
-                  return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                  return (ppResultQuoteInfo.value).ubOpinionRequired;
                 } else {
                   // handle the player giving NPC some money
                   HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.uiMoneyAmount, pubQuoteNum);
-                  (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[pubQuoteNum.value]);
-                  return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                  (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[pubQuoteNum.value];
+                  return (ppResultQuoteInfo.value).ubOpinionRequired;
                 }
               } else {
                 // handle the player giving NPC some money
                 HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.uiMoneyAmount, pubQuoteNum);
-                (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[pubQuoteNum.value]);
-                return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+                (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[pubQuoteNum.value];
+                return (ppResultQuoteInfo.value).ubOpinionRequired;
               }
             }
             break;
           case Enum268.KINGPIN:
             if (usItemToConsider == Enum225.MONEY && gubQuest[Enum169.QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
               HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.uiMoneyAmount, pubQuoteNum);
-              (ppResultQuoteInfo.value) = addressof(pNPCQuoteInfoArray[pubQuoteNum.value]);
-              return (ppResultQuoteInfo.value).value.ubOpinionRequired;
+              (ppResultQuoteInfo.value) = pNPCQuoteInfoArray[pubQuoteNum.value];
+              return (ppResultQuoteInfo.value).ubOpinionRequired;
             }
             break;
           default:
@@ -1170,15 +1170,17 @@ function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproac
 
 export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: any): void {
   let QuoteInfo: NPCQuoteInfo = createNPCQuoteInfo();
-  let pQuotePtr: NPCQuoteInfo = QuoteInfo;
+  let pQuotePtr: NPCQuoteInfo | null = QuoteInfo;
+  let pQuotePtr__Pointer = createPointer(() => pQuotePtr, (v) => pQuotePtr = v);
   let pNPCQuoteInfoArray: NPCQuoteInfo[];
   let pProfile: MERCPROFILESTRUCT;
   let ubLoop: UINT8;
   let ubQuoteNum: UINT8;
-  let ubRecordNum: UINT8;
+  let ubRecordNum: UINT8 = 0;
+  let ubRecordNum__Pointer = createPointer(() => ubRecordNum, (v) => ubRecordNum = v);
   let pSoldier: SOLDIERTYPE | null;
   let uiDay: UINT32;
-  let pObj: OBJECTTYPE;
+  let pObj: OBJECTTYPE = <OBJECTTYPE><unknown>null;
   let pNPC: SOLDIERTYPE;
   let fAttemptingToGiveItem: boolean;
 
@@ -1236,7 +1238,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
         uiDay = GetWorldDay();
         if (uiDay > pProfile.ubLastDateSpokenTo)
         {
-          NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+          NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
           if (pQuotePtr != null) {
             // converse using this approach instead!
             if (fAttemptingToGiveItem) {
@@ -1256,7 +1258,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
         }
       } else {
         // try special initial quote first
-        NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+        NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
         if (pQuotePtr != null) {
           // converse using this approach instead!
           if (fAttemptingToGiveItem) {
@@ -1266,7 +1268,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           return;
         }
 
-        NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+        NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
         if (pQuotePtr != null) {
           // converse using this approach instead!
           if (fAttemptingToGiveItem) {
@@ -1312,7 +1314,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           if (pProfile.ubLastDateSpokenTo > 0) {
             uiDay = GetWorldDay();
             if (uiDay > pProfile.ubLastDateSpokenTo) {
-              NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+              NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
               if (pQuotePtr != null) {
                 // converse using this approach instead!
                 Converse(ubNPC, ubMerc, Enum296.APPROACH_SPECIAL_INITIAL_QUOTE, 0);
@@ -1325,7 +1327,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
               }
             }
           } else {
-            NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+            NPCConsiderTalking(ubNPC, ubMerc, Enum296.APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
             if (pQuotePtr != null) {
               // converse using this approach instead!
               Converse(ubNPC, ubMerc, Enum296.APPROACH_INITIAL_QUOTE, 0);
@@ -1334,15 +1336,15 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
 
           // If we are approaching because we want to give an item, do something different
           pObj = uiApproachData;
-          NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+          NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
           break;
         case Enum296.TRIGGER_NPC:
           // if triggering, pass in the approach data as the record to consider
           DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
-          NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+          NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
           break;
         default:
-          NPCConsiderTalking(ubNPC, ubMerc, bApproach, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
+          NPCConsiderTalking(ubNPC, ubMerc, bApproach, 0, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
           break;
       }
       if (pQuotePtr == null) {
@@ -1590,7 +1592,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           // stupid hack CC
           if (pSoldier && ubNPC == Enum268.KYLE) {
             // make sure he has keys
-            pSoldier.bHasKeys = true;
+            pSoldier.bHasKeys = 1;
           }
           if (pSoldier && pSoldier.sGridNo == pQuotePtr.usGoToGridno) {
             // search for quotes to trigger immediately!
@@ -2077,7 +2079,7 @@ export function NPCHasUnusedHostileRecord(ubNPC: UINT8, ubApproach: UINT8): bool
 export function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJECTTYPE): boolean {
   // Check if we have a quote that could be used, that applies to this item
   let pNPCQuoteInfoArray: NPCQuoteInfo[];
-  let pQuotePtr: NPCQuoteInfo;
+  let pQuotePtr: NPCQuoteInfo | null = <NPCQuoteInfo><unknown>null;
   let ubOpinion: UINT8;
   let ubQuoteNum: UINT8;
 
@@ -2088,7 +2090,7 @@ export function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJECT
 
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
-  ubOpinion = NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubQuoteNum));
+  ubOpinion = NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, createPointer(() => pQuotePtr, (v) => pQuotePtr = v), createPointer(() => ubQuoteNum, (v) => ubQuoteNum = v));
 
   if (pQuotePtr) {
     return true;
@@ -2630,7 +2632,8 @@ export function UpdateDarrelScriptToGoTo(pSoldier: SOLDIERTYPE): void {
   // change destination in Darrel record 10 to go to a gridno adjacent to the
   // soldier's gridno, and destination in record 11
   let sAdjustedGridNo: INT16;
-  let ubDummyDirection: UINT8;
+  let ubDummyDirection: UINT8 = 0;
+  let ubDummyDirection__Pointer = createPointer(() => ubDummyDirection, (v) => ubDummyDirection = v);
   let pDarrel: SOLDIERTYPE | null;
 
   pDarrel = FindSoldierByProfileID(Enum268.DARREL, false);
@@ -2639,10 +2642,10 @@ export function UpdateDarrelScriptToGoTo(pSoldier: SOLDIERTYPE): void {
   }
 
   // find a spot to an alternate location nearby
-  sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.sGridNo, 5, addressof(ubDummyDirection));
+  sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.sGridNo, 5, ubDummyDirection__Pointer);
   if (sAdjustedGridNo == NOWHERE) {
     // yikes! try again with a bigger radius!
-    sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.sGridNo, 10, addressof(ubDummyDirection));
+    sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.sGridNo, 10, ubDummyDirection__Pointer);
     if (sAdjustedGridNo == NOWHERE) {
       // ok, now we're completely foobar
       return;

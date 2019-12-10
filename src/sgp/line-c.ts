@@ -63,8 +63,10 @@ function ClipPoint(x: number, y: number): boolean {
 
 function Clip2D(ix0: Pointer<number>, iy0: Pointer<number>, ix1: Pointer<number>, iy1: Pointer<number>): boolean {
   let visible: boolean;
-  let te: FLOAT;
-  let tl: FLOAT;
+  let te: FLOAT = 0;
+  let te__Pointer = createPointer(() => te, (v) => te = v);
+  let tl: FLOAT = 0;
+  let tl__Pointer = createPointer(() => tl, (v) => tl = v);
   let dx: FLOAT;
   let dy: FLOAT;
   let x0: FLOAT;
@@ -86,10 +88,10 @@ function Clip2D(ix0: Pointer<number>, iy0: Pointer<number>, ix1: Pointer<number>
   else {
     te = 0.0;
     tl = 1.0;
-    if (Clipt(dx, giClipXMin - x0, addressof(te), addressof(tl))) {
-      if (Clipt(-dx, x0 - giClipXMax, addressof(te), addressof(tl))) {
-        if (Clipt(dy, giClipYMin - y0, addressof(te), addressof(tl))) {
-          if (Clipt(-dy, y0 - giClipYMax, addressof(te), addressof(tl))) {
+    if (Clipt(dx, giClipXMin - x0, te__Pointer, tl__Pointer)) {
+      if (Clipt(-dx, x0 - giClipXMax, te__Pointer, tl__Pointer)) {
+        if (Clipt(dy, giClipYMin - y0, te__Pointer, tl__Pointer)) {
+          if (Clipt(-dy, y0 - giClipYMax, te__Pointer, tl__Pointer)) {
             visible = true;
             if (tl < 1.0) {
               x1 = x0 + tl * dx;
@@ -114,7 +116,7 @@ function Clip2D(ix0: Pointer<number>, iy0: Pointer<number>, ix1: Pointer<number>
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Uint8ClampedArray): void {
   let Temp: number;
   let AdjUp: number;
   let AdjDown: number;
@@ -127,12 +129,15 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
   let FinalPixelCount: number;
   let i: number;
   let RunLength: number;
-  let ScreenWidth: number = giImageWidth / 2;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let ScreenWidth: number = giImageWidth / 4;
+  let rgb = GetRGBColor(Color);
+  let r = SGPGetRValue(rgb);
+  let g = SGPGetGValue(rgb);
+  let b = SGPGetBValue(rgb);
+  let offset: number;
 
   if (fClip) {
-    if (!Clip2D(addressof(XStart), addressof(YStart), addressof(XEnd), addressof(YEnd)))
+    if (!Clip2D(createPointer(() => XStart, (v) => XStart = v), createPointer(() => YStart, (v) => YStart = v), createPointer(() => XEnd, (v) => XEnd = v), createPointer(() => YEnd, (v) => YEnd = v)))
       return;
   }
 
@@ -148,7 +153,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
   }
 
   // point to the bitmap address first pixel to draw
-  ScreenPtr = ScreenPtr + YStart * giImageWidth + XStart * 2;
+  offset = YStart * giImageWidth + XStart * 4;
 
   /*	Figure out whether we're going left or right, and how far we're
           going horizontally */
@@ -166,27 +171,33 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
   if (XDelta == 0) {
     /* Vertical line */
     for (i = 0; i <= YDelta; i++) {
-      ScreenPtr[0] = col1;
-      ScreenPtr[1] = col2;
-      ScreenPtr += giImageWidth;
+      ScreenPtr[offset] = r;
+      ScreenPtr[offset + 1] = g;
+      ScreenPtr[offset + 2] = b;
+      ScreenPtr[offset + 3] = 0xFF;
+      offset += giImageWidth;
     }
     return;
   }
   if (YDelta == 0) {
     /* Horizontal line */
     for (i = 0; i <= XDelta; i++) {
-      ScreenPtr[0] = col1;
-      ScreenPtr[1] = col2;
-      ScreenPtr += XAdvance * 2;
+      ScreenPtr[offset] = r;
+      ScreenPtr[offset + 1] = g;
+      ScreenPtr[offset + 2] = b;
+      ScreenPtr[offset + 3] = 0xFF;
+      offset += XAdvance * 4;
     }
     return;
   }
   if (XDelta == YDelta) {
     /* Diagonal line */
     for (i = 0; i <= XDelta; i++) {
-      ScreenPtr[0] = col1;
-      ScreenPtr[1] = col2;
-      ScreenPtr += (XAdvance * 2) + giImageWidth;
+      ScreenPtr[offset] = r;
+      ScreenPtr[offset + 1] = g;
+      ScreenPtr[offset + 2] = b;
+      ScreenPtr[offset + 3] = 0xFF;
+      offset += (XAdvance * 4) + giImageWidth;
     }
     return;
   }
@@ -230,7 +241,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
       ErrorTerm += YDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawHorizontalRun(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
+    offset = DrawHorizontalRun(ScreenPtr, offset, XAdvance, InitialPixelCount, Color, ScreenWidth);
     /* Draw all full runs */
     for (i = 0; i < (YDelta - 1); i++) {
       RunLength = WholeStep; /* run is at least this long */
@@ -241,16 +252,16 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawHorizontalRun(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
+      offset = DrawHorizontalRun(ScreenPtr, offset, XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawHorizontalRun(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
+    offset = DrawHorizontalRun(ScreenPtr, offset, XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   } else {
     /* Y major line */
 
     /* Minimum # of pixels in a run in this line */
-    WholeStep = YDelta / XDelta;
+    WholeStep = Math.trunc(YDelta / XDelta);
 
     /* Error term adjust each time X steps by 1; used to tell when 1 extra
        pixel should be drawn as part of a run, to account for
@@ -267,7 +278,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
     /* The initial and last runs are partial, because X advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional advance, we
@@ -284,7 +295,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
       ErrorTerm += XDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawVerticalRun(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
+    offset = DrawVerticalRun(ScreenPtr, offset, XAdvance, InitialPixelCount, Color, ScreenWidth);
 
     /* Draw all full runs */
     for (i = 0; i < (XDelta - 1); i++) {
@@ -296,18 +307,21 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawVerticalRun(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
+      offset = DrawVerticalRun(ScreenPtr, offset, XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawVerticalRun(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
+    offset = DrawVerticalRun(ScreenPtr, offset, XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   }
 }
 
 // Draws a pixel in the specified color
-export function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
-  let col2: INT8 = sColor >> 8;
-  let col1: INT8 = sColor & 0x00ff;
+export function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, pScreen: Uint8ClampedArray): void {
+  let rgb = GetRGBColor(sColor);
+  let r = SGPGetRValue(rgb);
+  let g = SGPGetGValue(rgb);
+  let b = SGPGetBValue(rgb);
+  let offset: number;
 
   if (fClip) {
     if (!ClipPoint(xp, yp))
@@ -315,50 +329,56 @@ export function PixelDraw(fClip: boolean, xp: INT32, yp: INT32, sColor: INT16, p
   }
 
   // point to the bitmap address first pixel to draw
-  pScreen += yp * giImageWidth + xp * 2;
+  offset = yp * giImageWidth * 4 + xp * 4;
 
-  pScreen[0] = col1;
-  pScreen[1] = col2;
+  pScreen[offset] = r;
+  pScreen[offset + 1] = g;
+  pScreen[offset + 2] = b;
+  pScreen[offset + 3] = 0xFF;
 }
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+function DrawHorizontalRun(ScreenPtr: Uint8ClampedArray, offset: number, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): number {
   let i: number;
-  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let rgb = GetRGBColor(Color);
+  let r = SGPGetRValue(rgb);
+  let g = SGPGetGValue(rgb);
+  let b = SGPGetBValue(rgb);
 
   for (i = 0; i < RunLength; i++) {
-    WorkingScreenPtr[0] = col1;
-    WorkingScreenPtr[1] = col2;
-    WorkingScreenPtr += XAdvance * 2;
+    ScreenPtr[offset] = r;
+    ScreenPtr[offset + 1] = g;
+    ScreenPtr[offset + 2] = b;
+    ScreenPtr[offset + 3] = 0xFF;
+    offset += XAdvance * 4;
   }
   /* Advance to the next scan line */
-  WorkingScreenPtr += giImageWidth;
-  ScreenPtr.value = WorkingScreenPtr;
+  return offset;
 }
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+function DrawVerticalRun(ScreenPtr: Uint8ClampedArray, offset: number, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): number {
   let i: number;
-  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let rgb = GetRGBColor(Color);
+  let r = SGPGetRValue(rgb);
+  let g = SGPGetGValue(rgb);
+  let b = SGPGetBValue(rgb);
 
   for (i = 0; i < RunLength; i++) {
-    WorkingScreenPtr[0] = col1;
-    WorkingScreenPtr[1] = col2;
-    WorkingScreenPtr += giImageWidth;
+    ScreenPtr[offset] = r;
+    ScreenPtr[offset + 1] = g;
+    ScreenPtr[offset + 2] = b;
+    ScreenPtr[offset + 3] = 0xFF;
+    offset += giImageWidth * 4;
   }
   /* Advance to the next column */
-  WorkingScreenPtr += XAdvance * 2;
-  ScreenPtr.value = WorkingScreenPtr;
+  return offset;
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-export function RectangleDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Uint8ClampedArray): void {
   LineDraw(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -374,7 +394,7 @@ export function RectangleDraw(fClip: boolean, XStart: number, YStart: number, XE
  ***********************************************************************************/
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-export function RectangleDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+export function RectangleDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Uint8ClampedArray): void {
   LineDraw8(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -382,7 +402,7 @@ export function RectangleDraw8(fClip: boolean, XStart: number, YStart: number, X
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Pointer<char>): void {
+function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number, YEnd: number, Color: number, ScreenPtr: Uint8ClampedArray): void {
   let Temp: number;
   let AdjUp: number;
   let AdjDown: number;
@@ -396,11 +416,12 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
   let i: number;
   let RunLength: number;
   let ScreenWidth: number = giImageWidth;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let col2: number = Color >> 8;
+  let col1: number = Color & 0x00FF;
+  let offset: number;
 
   if (fClip) {
-    if (!Clip2D(addressof(XStart), addressof(YStart), addressof(XEnd), addressof(YEnd)))
+    if (!Clip2D(createPointer(() => XStart, (v) => XStart = v), createPointer(() => YStart, (v) => YStart = v), createPointer(() => XEnd, (v) => XEnd = v), createPointer(() => YEnd, (v) => YEnd = v)))
       return;
   }
 
@@ -416,7 +437,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
   }
 
   // point to the bitmap address first pixel to draw
-  ScreenPtr = ScreenPtr + YStart * giImageWidth + XStart;
+  offset = YStart * giImageWidth + XStart;
 
   /*	Figure out whether we're going left or right, and how far we're
           going horizontally */
@@ -434,24 +455,24 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
   if (XDelta == 0) {
     /* Vertical line */
     for (i = 0; i <= YDelta; i++) {
-      ScreenPtr.value = col1;
-      ScreenPtr += giImageWidth;
+      ScreenPtr[offset] = col1;
+      offset += giImageWidth;
     }
     return;
   }
   if (YDelta == 0) {
     /* Horizontal line */
     for (i = 0; i <= XDelta; i++) {
-      ScreenPtr.value = col1;
-      ScreenPtr += XAdvance;
+      ScreenPtr[offset] = col1;
+      offset += XAdvance;
     }
     return;
   }
   if (XDelta == YDelta) {
     /* Diagonal line */
     for (i = 0; i <= XDelta; i++) {
-      ScreenPtr.value = col1;
-      ScreenPtr += (XAdvance + giImageWidth);
+      ScreenPtr[offset] = col1;
+      offset += (XAdvance + giImageWidth);
     }
     return;
   }
@@ -495,7 +516,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
       ErrorTerm += YDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
+    offset = DrawHorizontalRun8(ScreenPtr, offset, XAdvance, InitialPixelCount, Color, ScreenWidth);
     /* Draw all full runs */
     for (i = 0; i < (YDelta - 1); i++) {
       RunLength = WholeStep; /* run is at least this long */
@@ -506,10 +527,10 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
+      offset = DrawHorizontalRun8(ScreenPtr, offset, XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
+    offset = DrawHorizontalRun8(ScreenPtr, offset, XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   } else {
     /* Y major line */
@@ -549,7 +570,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
       ErrorTerm += XDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawVerticalRun8(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
+    offset = DrawVerticalRun8(ScreenPtr, offset, XAdvance, InitialPixelCount, Color, ScreenWidth);
 
     /* Draw all full runs */
     for (i = 0; i < (XDelta - 1); i++) {
@@ -561,46 +582,42 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawVerticalRun8(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
+      offset = DrawVerticalRun8(ScreenPtr, offset, XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawVerticalRun8(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
+    offset = DrawVerticalRun8(ScreenPtr, offset, XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   }
 }
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+function DrawHorizontalRun8(ScreenPtr: Uint8ClampedArray, offset: number, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): number {
   let i: number;
-  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let col2: number = Color >> 8;
+  let col1: number = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
-    WorkingScreenPtr.value = col1;
-    WorkingScreenPtr += XAdvance;
+    ScreenPtr[offset] = col1;
+    offset += XAdvance;
   }
   /* Advance to the next scan line */
-  WorkingScreenPtr += giImageWidth;
-  ScreenPtr.value = WorkingScreenPtr;
+  return offset;
 }
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): void {
+function DrawVerticalRun8(ScreenPtr: Uint8ClampedArray, offset: number, XAdvance: number, RunLength: number, Color: number, ScreenWidth: number): number {
   let i: number;
-  let WorkingScreenPtr: Pointer<char> = ScreenPtr.value;
-  let col2: char = Color >> 8;
-  let col1: char = Color & 0x00FF;
+  let col2: number = Color >> 8;
+  let col1: number = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
-    WorkingScreenPtr.value = col1;
-    WorkingScreenPtr += giImageWidth;
+    ScreenPtr[offset] = col1;
+    offset += giImageWidth;
   }
   /* Advance to the next column */
-  WorkingScreenPtr += XAdvance;
-  ScreenPtr.value = WorkingScreenPtr;
+  return offset;
 }
 
 }

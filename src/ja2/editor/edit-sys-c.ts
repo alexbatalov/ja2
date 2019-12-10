@@ -179,7 +179,7 @@ export function PasteDebris(iMapIndex: UINT32): void {
 
   // Get selection list for debris
   pSelList = SelDebris;
-  pNumSelList = addressof(iNumDebrisSelected);
+  pNumSelList = iNumDebrisSelected__Pointer;
 
   if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
@@ -203,25 +203,25 @@ export function PasteDebris(iMapIndex: UINT32): void {
 
 export function PasteSingleWall(iMapIndex: UINT32): void {
   pSelList = SelSingleWall;
-  pNumSelList = addressof(iNumWallsSelected);
+  pNumSelList = iNumWallsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleDoor(iMapIndex: UINT32): void {
   pSelList = SelSingleDoor;
-  pNumSelList = addressof(iNumDoorsSelected);
+  pNumSelList = iNumDoorsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleWindow(iMapIndex: UINT32): void {
   pSelList = SelSingleWindow;
-  pNumSelList = addressof(iNumWindowsSelected);
+  pNumSelList = iNumWindowsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleRoof(iMapIndex: UINT32): void {
   pSelList = SelSingleRoof;
-  pNumSelList = addressof(iNumRoofsSelected);
+  pNumSelList = iNumRoofsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
@@ -239,7 +239,7 @@ export function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   let usWallOrientation: UINT16;
 
   pSelList = SelSingleBrokenWall;
-  pNumSelList = addressof(iNumBrokenWallsSelected);
+  pNumSelList = iNumBrokenWallsSelected__Pointer;
 
   usIndex = pSelList[iCurBank].usIndex;
   usObjIndex = pSelList[iCurBank].uiObject;
@@ -255,25 +255,25 @@ export function PasteSingleBrokenWall(iMapIndex: UINT32): void {
 
 export function PasteSingleDecoration(iMapIndex: UINT32): void {
   pSelList = SelSingleDecor;
-  pNumSelList = addressof(iNumDecorSelected);
+  pNumSelList = iNumDecorSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleDecal(iMapIndex: UINT32): void {
   pSelList = SelSingleDecal;
-  pNumSelList = addressof(iNumDecalsSelected);
+  pNumSelList = iNumDecalsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleFloor(iMapIndex: UINT32): void {
   pSelList = SelSingleFloor;
-  pNumSelList = addressof(iNumFloorsSelected);
+  pNumSelList = iNumFloorsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
 export function PasteSingleToilet(iMapIndex: UINT32): void {
   pSelList = SelSingleToilet;
-  pNumSelList = addressof(iNumToiletsSelected);
+  pNumSelList = iNumToiletsSelected__Pointer;
   PasteSingleWallCommon(iMapIndex);
 }
 
@@ -362,7 +362,7 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
 //	Returns a randomly picked object index given the current selection list, and the type or types of objects we want
 //	from that list. If no such objects are in the list, we return 0xffff (-1).
 export function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
-  let usPickList: UINT16[] /* [50] */;
+  let usPickList: UINT16[] /* [50] */ = createArray(50, 0);
   let usNumInPickList: UINT16;
   let usWhich: UINT16;
   let usObject: UINT16;
@@ -379,7 +379,7 @@ export function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16):
 }
 
 function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
-  let usPickList: UINT16[] /* [50] */;
+  let usPickList: UINT16[] /* [50] */ = createArray(50, 0);
   let usNumInPickList: UINT16;
   let i: UINT16;
   let usObject: UINT16;
@@ -394,7 +394,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
       usNumInPickList++;
     }
   }
-  return (usNumInPickList) ? usPickList[rand() % usNumInPickList] : 0xffff;
+  return (usNumInPickList) ? usPickList[Math.floor(Math.random() * usNumInPickList)] : 0xffff;
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -404,7 +404,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
 //
 export function PasteStructure(iMapIndex: UINT32): void {
   pSelList = SelOStructs;
-  pNumSelList = addressof(iNumOStructsSelected);
+  pNumSelList = iNumOStructsSelected__Pointer;
 
   PasteStructureCommon(iMapIndex);
 }
@@ -416,7 +416,7 @@ export function PasteStructure(iMapIndex: UINT32): void {
 //
 export function PasteStructure1(iMapIndex: UINT32): void {
   pSelList = SelOStructs1;
-  pNumSelList = addressof(iNumOStructs1Selected);
+  pNumSelList = iNumOStructs1Selected__Pointer;
 
   PasteStructureCommon(iMapIndex);
 }
@@ -428,7 +428,7 @@ export function PasteStructure1(iMapIndex: UINT32): void {
 //
 export function PasteStructure2(iMapIndex: UINT32): void {
   pSelList = SelOStructs2;
-  pNumSelList = addressof(iNumOStructs2Selected);
+  pNumSelList = iNumOStructs2Selected__Pointer;
 
   PasteStructureCommon(iMapIndex);
 }
@@ -471,7 +471,7 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
       usUseObjIndex = pSelList[iRandSelIndex].uiObject;
 
       // Check with Structure Database (aka ODB) if we can put the object here!
-      fOkayToAdd = OkayToAddStructureToWorld(iMapIndex, 0, gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef, INVALID_STRUCTURE_ID);
+      fOkayToAdd = OkayToAddStructureToWorld(iMapIndex, 0, <DB_STRUCTURE_REF>gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef, INVALID_STRUCTURE_ID);
       if (fOkayToAdd || (gTileDatabase[(gTileTypeStartIndex[usUseObjIndex] + usUseIndex)].pDBStructureRef == null)) {
         // Actual structure info is added by the functions below
         AddStructToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
@@ -499,7 +499,7 @@ export function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: b
   let usIndex: UINT16;
 
   pSelList = SelBanks;
-  pNumSelList = addressof(iNumBanksSelected);
+  pNumSelList = iNumBanksSelected__Pointer;
 
   usUseIndex = pSelList[iCurBank].usIndex;
   usUseObjIndex = pSelList[iCurBank].uiObject;
@@ -542,7 +542,7 @@ export function PasteRoads(iMapIndex: UINT32): void {
   let usUseIndex: UINT16;
 
   pSelList = SelRoads;
-  pNumSelList = addressof(iNumRoadsSelected);
+  pNumSelList = iNumRoadsSelected__Pointer;
 
   usUseIndex = pSelList[iCurBank].usIndex;
 
@@ -593,7 +593,7 @@ export function PasteTextureCommon(iMapIndex: UINT32): void {
     }
 
     // Compare heights and do appropriate action
-    if (AnyHeigherLand(iMapIndex, CurrentPaste, addressof(ubLastHighLevel))) {
+    if (AnyHeigherLand(iMapIndex, CurrentPaste, createPointer(() => ubLastHighLevel, (v) => ubLastHighLevel = v))) {
       // Here we do the following:
       // - Remove old type from layer
       // - Smooth World with old type
@@ -810,8 +810,9 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
   let iNewIndex: INT32;
   let fDoPaste: boolean = false;
   let leftmost: INT32;
-  let ubLastHighLevel: UINT8;
-  let puiSmoothTiles: Pointer<UINT32> = null;
+  let ubLastHighLevel: UINT8 = 0;
+  let ubLastHighLevel__Pointer = createPointer(() => ubLastHighLevel, (v) => ubLastHighLevel = v);
+  let puiSmoothTiles: UINT32[] = [];
   let sNumSmoothTiles: INT16 = 0;
   let usTemp: UINT16;
   let NewTile: UINT16; //,Dummy;
@@ -849,7 +850,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
             usTemp = Math.floor(Math.random() * 10) + 1;
             NewTile = GetTileIndexFromTypeSubIndex(uiNewType, usTemp);
             SetLandIndex(iNewIndex, NewTile, uiNewType, false);
-          } else if (AnyHeigherLand(iNewIndex, uiNewType, addressof(ubLastHighLevel))) {
+          } else if (AnyHeigherLand(iNewIndex, uiNewType, ubLastHighLevel__Pointer)) {
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
@@ -865,8 +866,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 
             // If we are top-most, add to smooth list
             sNumSmoothTiles++;
-            puiSmoothTiles = MemRealloc(puiSmoothTiles, sNumSmoothTiles * sizeof(UINT32));
-            puiSmoothTiles[sNumSmoothTiles - 1] = iNewIndex;
+            puiSmoothTiles.push(iNewIndex);
           }
         }
       }
@@ -887,12 +887,12 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 // ATE FIXES
 function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
   let usIndex: UINT16;
-  let ubTypeLevel: UINT8;
+  let ubTypeLevel: UINT8 = 0;
   let NewTile: UINT16;
 
   // CHECK IF THIS TEXTURE EXISTS!
   if ((usIndex = TypeExistsInLandLayer(sGridNo, usType)) !== -1) {
-    if (GetTypeLandLevel(sGridNo, usType, addressof(ubTypeLevel))) {
+    if (GetTypeLandLevel(sGridNo, usType, createPointer(() => ubTypeLevel, (v) => ubTypeLevel = v))) {
       // If top-land , do not change
       if (ubTypeLevel != LANDHEAD) {
         PasteExistingTexture(sGridNo, usIndex);
@@ -955,7 +955,7 @@ export function RaiseWorldLand(): void {
   let fRaiseSet: boolean;
   let fSomethingRaised: boolean = false;
   let ubLoop: UINT8;
-  let usIndex: UINT16;
+  let usIndex: UINT16 = 0;
   let fStopRaise: boolean = false;
   let iCounterA: INT32 = 0;
   let iCounterB: INT32 = 0;

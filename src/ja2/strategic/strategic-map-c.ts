@@ -1221,82 +1221,86 @@ export function UpdateMercInSector(pSoldier: SOLDIERTYPE, sSectorX: INT16, sSect
         }
       }
 
-    MAPEDGEPOINT_SEARCH_FAILED:
+      MAPEDGEPOINT_SEARCH_FAILED:
+      while (true) {
 
-      if (pSoldier.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
-        // override orders
-        pSoldier.bOrders = Enum241.STATIONARY;
-      }
+        if (pSoldier.ubProfile != NO_PROFILE && gMercProfiles[pSoldier.ubProfile].ubMiscFlags3 & PROFILE_MISC_FLAG3_PERMANENT_INSERTION_CODE) {
+          // override orders
+          pSoldier.bOrders = Enum241.STATIONARY;
+        }
 
-      // Use insertion direction from loaded map!
-      switch (pSoldier.ubStrategicInsertionCode) {
-        case Enum175.INSERTION_CODE_NORTH:
-          pSoldier.sInsertionGridNo = gMapInformation.sNorthGridNo;
-          if (!gfEditMode && gMapInformation.sNorthGridNo == -1)
-            fError = true;
-          break;
-        case Enum175.INSERTION_CODE_SOUTH:
-          pSoldier.sInsertionGridNo = gMapInformation.sSouthGridNo;
-          if (!gfEditMode && gMapInformation.sSouthGridNo == -1)
-            fError = true;
-          break;
-        case Enum175.INSERTION_CODE_EAST:
-          pSoldier.sInsertionGridNo = gMapInformation.sEastGridNo;
-          if (!gfEditMode && gMapInformation.sEastGridNo == -1)
-            fError = true;
-          break;
-        case Enum175.INSERTION_CODE_WEST:
-          pSoldier.sInsertionGridNo = gMapInformation.sWestGridNo;
-          if (!gfEditMode && gMapInformation.sWestGridNo == -1)
-            fError = true;
-          break;
-        case Enum175.INSERTION_CODE_CENTER:
-          pSoldier.sInsertionGridNo = gMapInformation.sCenterGridNo;
-          if (!gfEditMode && gMapInformation.sCenterGridNo == -1)
-            fError = true;
-          break;
-        case Enum175.INSERTION_CODE_GRIDNO:
-          pSoldier.sInsertionGridNo = pSoldier.usStrategicInsertionData;
-          break;
-
-        case Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX:
-          pSoldier.sInsertionGridNo = SearchForClosestPrimaryMapEdgepoint(pSoldier.sPendingActionData2, pSoldier.usStrategicInsertionData);
-          if (pSoldier.sInsertionGridNo == NOWHERE) {
-            ScreenMsg(FONT_RED, MSG_ERROR, "Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier.name);
-            pSoldier.ubStrategicInsertionCode = pSoldier.usStrategicInsertionData;
-            goto("MAPEDGEPOINT_SEARCH_FAILED");
-          }
-          break;
-        case Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX:
-          pSoldier.sInsertionGridNo = SearchForClosestSecondaryMapEdgepoint(pSoldier.sPendingActionData2, pSoldier.usStrategicInsertionData);
-          if (pSoldier.sInsertionGridNo == NOWHERE) {
-            ScreenMsg(FONT_RED, MSG_ERROR, "Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier.name);
-            pSoldier.ubStrategicInsertionCode = pSoldier.usStrategicInsertionData;
-            goto("MAPEDGEPOINT_SEARCH_FAILED");
-          }
-          break;
-
-        case Enum175.INSERTION_CODE_ARRIVING_GAME:
-          // Are we in Omerta!
-          if (sSectorX == gWorldSectorX && gWorldSectorX == 9 && sSectorY == gWorldSectorY && gWorldSectorY == 1 && bSectorZ == gbWorldSectorZ && gbWorldSectorZ == 0) {
-            // Try another location and walk into map
-            pSoldier.sInsertionGridNo = 4379;
-          } else {
-            pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
+        // Use insertion direction from loaded map!
+        switch (pSoldier.ubStrategicInsertionCode) {
+          case Enum175.INSERTION_CODE_NORTH:
             pSoldier.sInsertionGridNo = gMapInformation.sNorthGridNo;
-          }
-          break;
-        case Enum175.INSERTION_CODE_CHOPPER:
-          // Try another location and walk into map
-          // Add merc to chopper....
-          // pSoldier->sInsertionGridNo = 4058;
-          AddMercToHeli(pSoldier.ubID);
-          return;
-          break;
-        default:
-          pSoldier.sInsertionGridNo = 12880;
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Improper insertion code %d given to UpdateMercsInSector", pSoldier.ubStrategicInsertionCode));
-          break;
+            if (!gfEditMode && gMapInformation.sNorthGridNo == -1)
+              fError = true;
+            break;
+          case Enum175.INSERTION_CODE_SOUTH:
+            pSoldier.sInsertionGridNo = gMapInformation.sSouthGridNo;
+            if (!gfEditMode && gMapInformation.sSouthGridNo == -1)
+              fError = true;
+            break;
+          case Enum175.INSERTION_CODE_EAST:
+            pSoldier.sInsertionGridNo = gMapInformation.sEastGridNo;
+            if (!gfEditMode && gMapInformation.sEastGridNo == -1)
+              fError = true;
+            break;
+          case Enum175.INSERTION_CODE_WEST:
+            pSoldier.sInsertionGridNo = gMapInformation.sWestGridNo;
+            if (!gfEditMode && gMapInformation.sWestGridNo == -1)
+              fError = true;
+            break;
+          case Enum175.INSERTION_CODE_CENTER:
+            pSoldier.sInsertionGridNo = gMapInformation.sCenterGridNo;
+            if (!gfEditMode && gMapInformation.sCenterGridNo == -1)
+              fError = true;
+            break;
+          case Enum175.INSERTION_CODE_GRIDNO:
+            pSoldier.sInsertionGridNo = pSoldier.usStrategicInsertionData;
+            break;
+
+          case Enum175.INSERTION_CODE_PRIMARY_EDGEINDEX:
+            pSoldier.sInsertionGridNo = SearchForClosestPrimaryMapEdgepoint(pSoldier.sPendingActionData2, pSoldier.usStrategicInsertionData);
+            if (pSoldier.sInsertionGridNo == NOWHERE) {
+              ScreenMsg(FONT_RED, MSG_ERROR, "Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier.name);
+              pSoldier.ubStrategicInsertionCode = pSoldier.usStrategicInsertionData;
+              continue MAPEDGEPOINT_SEARCH_FAILED;
+            }
+            break;
+          case Enum175.INSERTION_CODE_SECONDARY_EDGEINDEX:
+            pSoldier.sInsertionGridNo = SearchForClosestSecondaryMapEdgepoint(pSoldier.sPendingActionData2, pSoldier.usStrategicInsertionData);
+            if (pSoldier.sInsertionGridNo == NOWHERE) {
+              ScreenMsg(FONT_RED, MSG_ERROR, "Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier.name);
+              pSoldier.ubStrategicInsertionCode = pSoldier.usStrategicInsertionData;
+              continue MAPEDGEPOINT_SEARCH_FAILED;
+            }
+            break;
+
+          case Enum175.INSERTION_CODE_ARRIVING_GAME:
+            // Are we in Omerta!
+            if (sSectorX == gWorldSectorX && gWorldSectorX == 9 && sSectorY == gWorldSectorY && gWorldSectorY == 1 && bSectorZ == gbWorldSectorZ && gbWorldSectorZ == 0) {
+              // Try another location and walk into map
+              pSoldier.sInsertionGridNo = 4379;
+            } else {
+              pSoldier.ubStrategicInsertionCode = Enum175.INSERTION_CODE_NORTH;
+              pSoldier.sInsertionGridNo = gMapInformation.sNorthGridNo;
+            }
+            break;
+          case Enum175.INSERTION_CODE_CHOPPER:
+            // Try another location and walk into map
+            // Add merc to chopper....
+            // pSoldier->sInsertionGridNo = 4058;
+            AddMercToHeli(pSoldier.ubID);
+            return;
+            break;
+          default:
+            pSoldier.sInsertionGridNo = 12880;
+            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Improper insertion code %d given to UpdateMercsInSector", pSoldier.ubStrategicInsertionCode));
+            break;
+        }
+
+        break;
       }
 
       if (fError) {
@@ -1808,29 +1812,32 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
     }
 
     // ATE: Do another round, removing guys from group that can't go on...
-  BEGINNING_LOOP:
-
-    curr = pGroup.pPlayerList;
-    while (curr) {
-      if (!OK_CONTROLLABLE_MERC(curr.pSoldier)) {
-        RemoveCharacterFromSquads(curr.pSoldier);
-        goto("BEGINNING_LOOP");
+    BEGINNING_LOOP:
+    while (true) {
+      curr = pGroup.pPlayerList;
+      while (curr) {
+        if (!OK_CONTROLLABLE_MERC(curr.pSoldier)) {
+          RemoveCharacterFromSquads(curr.pSoldier);
+          continue BEGINNING_LOOP;
+        }
+        curr = curr.next;
       }
-      curr = curr.next;
-    }
 
-    // OK, setup TacticalOverhead polling system that will notify us once everybody
-    // has made it to our destination.
-    if (ubTacticalDirection != 255) {
-      SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN, ubNum, ubJumpCode, 0, 0);
-    } else {
-      // Add new wait action here...
-      SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO, ubNum, ubJumpCode, 0, 0);
-    }
+      // OK, setup TacticalOverhead polling system that will notify us once everybody
+      // has made it to our destination.
+      if (ubTacticalDirection != 255) {
+        SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALKOFF_SCREEN, ubNum, ubJumpCode, 0, 0);
+      } else {
+        // Add new wait action here...
+        SetActionToDoOnceMercsGetToLocation(Enum238.WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO, ubNum, ubJumpCode, 0, 0);
+      }
 
-    // Lock UI!
-    guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
-    HandleTacticalUI();
+      // Lock UI!
+      guiPendingOverrideEvent = Enum207.LU_BEGINUILOCK;
+      HandleTacticalUI();
+
+      break;
+    }
   }
 }
 

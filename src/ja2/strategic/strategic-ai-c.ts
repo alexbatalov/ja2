@@ -602,20 +602,20 @@ export function InitStrategicAI(): void {
     // and adjust them accordingly.
     for (i = 0; i < Enum174.NUM_ARMY_COMPOSITIONS; i++) {
       if (i != Enum174.QUEEN_DEFENCE) {
-        gArmyComp[i].bDesiredPopulation = Math.min(MAX_STRATEGIC_TEAM_SIZE, (gArmyComp[i].bDesiredPopulation * giForcePercentage / 100));
+        gArmyComp[i].bDesiredPopulation = Math.min(MAX_STRATEGIC_TEAM_SIZE, Math.trunc(gArmyComp[i].bDesiredPopulation * giForcePercentage / 100));
         if (gArmyComp[i].bStartPopulation != MAX_STRATEGIC_TEAM_SIZE) {
           // if the value is MAX_STRATEGIC_TEAM_SIZE, then that means the particular sector is a spawning location.
           // Don't modify the value if it is MAX_STRATEGIC_TEAM_SIZE.  Everything else is game.
-          gArmyComp[i].bStartPopulation = Math.min(MAX_STRATEGIC_TEAM_SIZE, (gArmyComp[i].bStartPopulation * giForcePercentage / 100));
+          gArmyComp[i].bStartPopulation = Math.min(MAX_STRATEGIC_TEAM_SIZE, Math.trunc(gArmyComp[i].bStartPopulation * giForcePercentage / 100));
         }
       } else {
-        gArmyComp[i].bDesiredPopulation = Math.min(32, (gArmyComp[i].bDesiredPopulation * giForcePercentage / 100));
+        gArmyComp[i].bDesiredPopulation = Math.min(32, Math.trunc(gArmyComp[i].bDesiredPopulation * giForcePercentage / 100));
         gArmyComp[i].bStartPopulation = gArmyComp[i].bDesiredPopulation;
       }
     }
     for (i = 0; i < giPatrolArraySize; i++) {
       // force modified range within 1-MAX_STRATEGIC_TEAM_SIZE.
-      gPatrolGroup[i].bSize = Math.max(gubMinEnemyGroupSize, Math.min(MAX_STRATEGIC_TEAM_SIZE, (gPatrolGroup[i].bSize * giForcePercentage / 100)));
+      gPatrolGroup[i].bSize = Math.max(gubMinEnemyGroupSize, Math.min(MAX_STRATEGIC_TEAM_SIZE, Math.trunc(gPatrolGroup[i].bSize * giForcePercentage / 100)));
     }
   }
 
@@ -648,7 +648,7 @@ export function InitStrategicAI(): void {
         // if population is less than maximum
         if (iStartPop != MAX_STRATEGIC_TEAM_SIZE) {
           // then vary it a bit (+/- 25%)
-          iStartPop = iStartPop * (100 + (Random(51) - 25)) / 100;
+          iStartPop = Math.trunc(iStartPop * (100 + (Random(51) - 25)) / 100);
         }
 
         iStartPop = Math.max(gubMinEnemyGroupSize, Math.min(MAX_STRATEGIC_TEAM_SIZE, iStartPop));
@@ -656,7 +656,7 @@ export function InitStrategicAI(): void {
       cnt = iStartPop;
 
       if (iAdminChance) {
-        pSector.ubNumAdmins = iAdminChance * iStartPop / 100;
+        pSector.ubNumAdmins = Math.trunc(iAdminChance * iStartPop / 100);
       } else
         while (cnt--) {
           // for each person, randomly determine the types of each soldier.
@@ -698,13 +698,13 @@ export function InitStrategicAI(): void {
     if (iWeight > 0) {
       // modify it by it's priority.
       // generates a value between 2 and 100
-      iWeight = iWeight * iPriority / 96;
+      iWeight = Math.trunc(iWeight * iPriority / 96);
       iWeight = Math.max(iWeight, 2);
       giRequestPoints += iWeight;
     } else if (iWeight < 0) {
       // modify it by it's reverse priority
       // generates a value between -2 and -100
-      iWeight = iWeight * (100 - iPriority) / 96;
+      iWeight = Math.trunc(iWeight * (100 - iPriority) / 96);
       iWeight = Math.min(iWeight, -2);
       giReinforcementPoints -= iWeight;
     }

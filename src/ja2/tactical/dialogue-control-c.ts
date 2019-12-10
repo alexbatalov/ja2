@@ -1824,10 +1824,10 @@ export function HandleDialogueEnd(pFace: FACETYPE): void {
 }
 
 function RenderFaceOverlay(pBlitter: VIDEO_OVERLAY): void {
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let sFontX: INT16;
   let sFontY: INT16;
   let pSoldier: SOLDIERTYPE | null;
@@ -1885,8 +1885,8 @@ function RenderFaceOverlay(pBlitter: VIDEO_OVERLAY): void {
     // BlinkAutoFace( gpCurrentTalkingFace->iID );
     // MouthAutoFace( gpCurrentTalkingFace->iID );
 
-    pDestBuf = LockVideoSurface(pBlitter.uiDestBuff, addressof(uiDestPitchBYTES));
-    pSrcBuf = LockVideoSurface(gpCurrentTalkingFace.uiAutoDisplayBuffer, addressof(uiSrcPitchBYTES));
+    pDestBuf = LockVideoSurface(pBlitter.uiDestBuff, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+    pSrcBuf = LockVideoSurface(gpCurrentTalkingFace.uiAutoDisplayBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (pBlitter.sX + 14), (pBlitter.sY + 6), 0, 0, gpCurrentTalkingFace.usFaceWidth, gpCurrentTalkingFace.usFaceHeight);
 

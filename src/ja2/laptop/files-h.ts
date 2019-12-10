@@ -1,6 +1,8 @@
 namespace ja2 {
 
-export const FILES_DAT_FILE = "TEMP\\files.dat";
+const path: typeof import('path') = require('path');
+
+export const FILES_DAT_FILE = path.join('Temp', 'files.dat');
 
 export interface FilesUnit {
   ubCode: UINT8; // the code index in the files code table

@@ -52,8 +52,8 @@ export interface SAMPLETAG {
   uiSpeed: UINT32; // Playback frequency
   fStereo: boolean; // Stereo/Mono
   ubBits: UINT8; // 8/16 bits
-  pData: PTR; // pointer to sample data memory
-  pSoundStart: PTR; // pointer to start of sound data
+  pData: Buffer | null /* PTR */; // pointer to sample data memory
+  pSoundStart: number /* PTR */; // pointer to start of sound data
   uiCacheHits: UINT32;
 
   uiTimeNext: UINT32; // Random sound data
@@ -78,11 +78,69 @@ export interface SAMPLETAG {
   uiADPCMBlockSize: UINT32; // Block size for compressed files
 }
 
+export function createSampleTag(): SAMPLETAG {
+  return {
+    pName: '',
+    uiSize: 0,
+    uiSoundSize: 0,
+    uiFlags: 0,
+    uiSpeed: 0,
+    fStereo: false,
+    ubBits: 0,
+    pData: null,
+    pSoundStart: 0,
+    uiCacheHits: 0,
+    uiTimeNext: 0,
+    uiTimeMin: 0,
+    uiTimeMax: 0,
+    uiSpeedMin: 0,
+    uiSpeedMax: 0,
+    uiVolMin: 0,
+    uiVolMax: 0,
+    uiPanMin: 0,
+    uiPanMax: 0,
+    uiPriority: 0,
+    uiInstances: 0,
+    uiMaxInstances: 0,
+    uiAilWaveFormat: 0,
+    uiADPCMBlockSize: 0,
+  };
+}
+
+export function resetSampleTag(o: SAMPLETAG) {
+  o.pName = '';
+  o.uiSize = 0;
+  o.uiSoundSize = 0;
+  o.uiFlags = 0;
+  o.uiSpeed = 0;
+  o.fStereo = false;
+  o.ubBits = 0;
+  o.pData = null;
+  o.pSoundStart = 0;
+  o.uiCacheHits = 0;
+  o.uiTimeNext = 0;
+  o.uiTimeMin = 0;
+  o.uiTimeMax = 0;
+  o.uiSpeedMin = 0;
+  o.uiSpeedMax = 0;
+  o.uiVolMin = 0;
+  o.uiVolMax = 0;
+  o.uiPanMin = 0;
+  o.uiPanMax = 0;
+  o.uiPriority = 0;
+  o.uiInstances = 0;
+  o.uiMaxInstances = 0;
+  o.uiAilWaveFormat = 0;
+  o.uiADPCMBlockSize = 0;
+}
+
 // Structure definition for slots in the sound output
 //		These are used for both the cached and double-buffered
 //		streams
+export type SoundTagCallback = (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: any) => void;
+export type EndOfSoundCallback = (a: any) => void;
 export interface SOUNDTAG {
-  pSample: Pointer<SAMPLETAG>;
+  pSample: SAMPLETAG | null;
   uiSample: UINT32;
   hMSS: HSAMPLE;
   hMSSStream: HSTREAM;
@@ -90,9 +148,9 @@ export interface SOUNDTAG {
   uiFlags: UINT32;
   uiSoundID: UINT32;
   uiPriority: UINT32;
-  pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void;
-  pData: Pointer<void>;
-  EOSCallback: ((a: any) => void) | null;
+  pCallback: SoundTagCallback | null;
+  pData: any;
+  EOSCallback: EndOfSoundCallback | null;
   pCallbackData: any;
   uiTimeStamp: UINT32;
   fLooping: boolean;
@@ -102,6 +160,54 @@ export interface SOUNDTAG {
   uiFadeVolume: UINT32;
   uiFadeRate: UINT32;
   uiFadeTime: UINT32;
+}
+
+export function createSoundTag(): SOUNDTAG {
+  return {
+    pSample: null,
+    uiSample: 0,
+    hMSS: 0,
+    hMSSStream: 0,
+    hM3D: 0,
+    uiFlags: 0,
+    uiSoundID: 0,
+    uiPriority: 0,
+    pCallback:  null,
+    pData: 0,
+    EOSCallback: null,
+    pCallbackData: 0,
+    uiTimeStamp: 0,
+    fLooping: false,
+    hFile: 0,
+    fMusic: false,
+    fStopAtZero: false,
+    uiFadeVolume: 0,
+    uiFadeRate: 0,
+    uiFadeTime: 0,
+  };
+}
+
+export function resetSoundTag(o: SOUNDTAG) {
+  o.pSample = null;
+  o.uiSample = 0;
+  o.hMSS = 0;
+  o.hMSSStream = 0;
+  o.hM3D = 0;
+  o.uiFlags = 0;
+  o.uiSoundID = 0;
+  o.uiPriority = 0;
+  o.pCallback =  null;
+  o.pData = 0;
+  o.EOSCallback = null;
+  o.pCallbackData = 0;
+  o.uiTimeStamp = 0;
+  o.fLooping = false;
+  o.hFile = 0;
+  o.fMusic = false;
+  o.fStopAtZero = false;
+  o.uiFadeVolume = 0;
+  o.uiFadeRate = 0;
+  o.uiFadeTime = 0;
 }
 
 // Structure definition for sound parameters being passed down to

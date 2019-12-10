@@ -828,7 +828,7 @@ function HandleNode_Default(pCurrent: CRDT_NODE): void {
 }
 
 function DisplayCreditNode(pCurrent: CRDT_NODE): boolean {
-  let hVSurface: HVSURFACE;
+  let hVSurface: SGPVSurface;
 
   // Currently, we have no need to display a node that doesnt have a string
   if (pCurrent.pString == null)
@@ -862,7 +862,7 @@ function DisplayCreditNode(pCurrent: CRDT_NODE): boolean {
 
   hVSurface = GetVideoSurface(pCurrent.uiVideoSurfaceImage);
 
-  BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.sPosX, pCurrent.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, null);
+  BltVideoSurfaceToVideoSurface(<SGPVSurface>ghFrameBuffer, hVSurface, 0, pCurrent.sPosX, pCurrent.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, null);
 
   return true;
 }

@@ -338,23 +338,13 @@ function CreateFontPaletteTables(pObj: SGPVObject): boolean {
 }
 
 export function WFGetFontHeight(FontNum: INT32): UINT16 {
-  if (USE_WINFONTS()) {
-    // return how many Y pixels we used
-    return GetWinFontHeight("a\0", GET_WINFONT());
-  } else {
-    // return how many Y pixels we used
-    return GetFontHeight(FontNum);
-  }
+  // return how many Y pixels we used
+  return GetFontHeight(FontNum);
 }
 
 export function WFStringPixLength(string: string /* Pointer<UINT16> */, UseFont: INT32): INT16 {
-  if (USE_WINFONTS()) {
-    // return how many Y pixels we used
-    return WinFontStringPixLength(string, GET_WINFONT());
-  } else {
-    // return how many Y pixels we used
-    return StringPixLength(string, UseFont);
-  }
+  // return how many Y pixels we used
+  return StringPixLength(string, UseFont);
 }
 
 }

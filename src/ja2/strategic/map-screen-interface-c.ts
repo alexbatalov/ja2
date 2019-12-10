@@ -2066,8 +2066,8 @@ function DisplayUserDefineHelpTextRegions(pRegion: FASTHELPREGION): void {
   let iW: INT32;
   let iH: INT32;
   let iNumberOfLines: INT32 = 1;
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
 
   // grab the color for the background region
   usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
@@ -2100,7 +2100,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: FASTHELPREGION): void {
   if ((iY + iH) >= SCREEN_HEIGHT)
     iY = (SCREEN_HEIGHT - iH - 15);
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
   RectangleDraw(true, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);

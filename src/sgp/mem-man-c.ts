@@ -102,24 +102,6 @@ export function InitializeMemoryManager(): boolean {
 
 //**************************************************************************
 //
-// MemDebug
-//
-//		To set whether or not we should print debug info.
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		12sep96:HJH		-> modified for use by Wizardry
-//
-//**************************************************************************
-
-function MemDebug(f: boolean): void {
-  gfMemDebug = f;
-}
-
-//**************************************************************************
-//
 // MemShutdown
 //
 //		Shuts down the memory manager.
@@ -157,47 +139,6 @@ export function ShutdownMemoryManager(): void {
   fMemManagerInit = false;
 }
 
-function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
-  let ptr: PTR;
-
-  if (!fMemManagerInit)
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemAllocLocked: Warning -- Memory manager not initialized!!! "));
-
-  ptr = VirtualAlloc(null, uiSize, MEM_COMMIT, PAGE_READWRITE);
-
-  if (ptr) {
-    VirtualLock(ptr, uiSize);
-
-    guiMemTotal += uiSize;
-    guiMemAlloced += uiSize;
-    MemDebugCounter++;
-  } else {
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemAllocLocked failed: %d bytes", uiSize));
-  }
-
-  return ptr;
-}
-
-function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
-  if (!fMemManagerInit)
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemFreeLocked: Warning -- Memory manager not initialized!!! "));
-
-  if (ptr != null) {
-    VirtualUnlock(ptr, uiSize);
-    VirtualFree(ptr, uiSize, MEM_RELEASE);
-
-    guiMemTotal -= uiSize;
-    guiMemFreed += uiSize;
-  } else {
-    DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, FormatString("MemFreeLocked ERROR: NULL ptr received, size %d", uiSize));
-  }
-
-  // count even a NULL ptr as a MemFree, not because it's really a memory leak, but because it is still an error of some
-  // sort (nobody should ever be freeing NULL pointers), and this will help in tracking it down if the above DbgMessage
-  // is not noticed.
-  MemDebugCounter--;
-}
-
 //**************************************************************************
 //
 // MemGetFree
@@ -213,55 +154,7 @@ function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
 //**************************************************************************
 
 export function MemGetFree(): UINT32 {
-  let ms: MEMORYSTATUS;
-
-  ms.dwLength = sizeof(MEMORYSTATUS);
-  GlobalMemoryStatus(addressof(ms));
-
-  return ms.dwAvailPhys;
-}
-
-//**************************************************************************
-//
-// MemGetTotalSystem
-//
-//
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		May98:HJH		-> Carter
-//
-//**************************************************************************
-
-function MemGetTotalSystem(): UINT32 {
-  let ms: MEMORYSTATUS;
-
-  ms.dwLength = sizeof(MEMORYSTATUS);
-  GlobalMemoryStatus(addressof(ms));
-
-  return ms.dwTotalPhys;
-}
-
-//**************************************************************************
-//
-// MemCheckPool
-//
-//
-//
-// Parameter List :
-// Return Value :
-// Modification history :
-//
-//		23sep96:HJH		-> modified for use by Wizardry
-//
-//**************************************************************************
-
-function MemCheckPool(): boolean {
-  let fRet: boolean = true;
-
-  return fRet;
+  return process.memoryUsage().heapTotal;
 }
 
 }

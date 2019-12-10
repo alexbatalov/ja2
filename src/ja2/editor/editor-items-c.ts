@@ -137,10 +137,10 @@ export function EntryInitEditorItemsInfo(): void {
 
 export function InitEditorItemsInfo(uiItemType: UINT32): void {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
-  let uiSrcPitchBYTES: UINT32;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let uiDestPitchBYTES: UINT32 = 0;
   let item: INVTYPE;
   let SaveRect: SGPRect = createSGPRect();
   let NewRect: SGPRect = createSGPRect();
@@ -255,8 +255,8 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
     return;
   }
 
-  pDestBuf = LockVideoSurface(eInfo.uiBuffer, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(eInfo.uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   // copy a blank chunk of the editor interface to the new buffer.
   for (i = 0; i < eInfo.sWidth; i += 60) {
@@ -444,10 +444,10 @@ export function DetermineItemsScrolling(): void {
 }
 
 export function RenderEditorItemsInfo(): void {
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
-  let uiSrcPitchBYTES: UINT32;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let uiDestPitchBYTES: UINT32 = 0;
   let item: INVTYPE;
   let hVObject: SGPVObject;
   let uiVideoObjectIndex: UINT32;
@@ -470,8 +470,8 @@ export function RenderEditorItemsInfo(): void {
     // Mouse has moved out of the items display region -- so nothing can be highlighted.
     eInfo.sHilitedItemIndex = -1;
   }
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(eInfo.uiBuffer, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(eInfo.uiBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   // copy the items buffer to the editor bar
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 110, 360, 60 * eInfo.sScrollIndex, 0, 360, 80);

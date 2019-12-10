@@ -36,10 +36,10 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   let usTextBoxWidth: UINT16 = 0;
   let usTextBoxHeight: UINT16 = 0;
   let aRect: SGPRect = createSGPRect();
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let sButtonX: INT16;
   let sButtonY: INT16;
   let sBlankSpace: INT16;
@@ -179,8 +179,8 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   gMsgBox.usHeight = usTextBoxHeight;
 
   // Determine position ( centered in rect )
-  gMsgBox.sX = ((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
-  gMsgBox.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
+  gMsgBox.sX = (Math.trunc(((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
+  gMsgBox.sY = (Math.trunc(((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
 
   if (guiCurrentScreen == Enum26.GAME_SCREEN) {
     gfStartedFromGameScreen = true;
@@ -206,8 +206,8 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
   }
 
   // Save what we have under here...
-  pDestBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0, 0, gMsgBox.sX, gMsgBox.sY, usTextBoxWidth, usTextBoxHeight);
 
@@ -521,10 +521,10 @@ function NumberedMsgBoxCallback(btn: GUI_BUTTON, reason: INT32): void {
 }
 
 function ExitMsgBox(ubExitCode: INT8): UINT32 {
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let pPosition: SGPPoint = createSGPPoint();
 
   // Delete popup!
@@ -608,8 +608,8 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   // if ur in a non gamescreen and DONT want the msg box to use the save buffer, unset gfDontOverRideSaveBuffer in ur callback
   if (((gMsgBox.uiExitScreen != Enum26.GAME_SCREEN) || (fRestoreBackgroundForMessageBox == true)) && gfDontOverRideSaveBuffer) {
     // restore what we have under here...
-    pSrcBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, addressof(uiSrcPitchBYTES));
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pSrcBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, gMsgBox.sX, gMsgBox.sY, 0, 0, gMsgBox.usWidth, gMsgBox.usHeight);
 

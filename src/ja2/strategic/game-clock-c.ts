@@ -66,9 +66,9 @@ let gubUnusedTimePadding: UINT8[] /* [TIME_PADDINGBYTES] */ = createArray(TIME_P
 export function InitNewGameClock(): void {
   guiGameClock = STARTING_TIME;
   guiPreviousGameClock = STARTING_TIME;
-  guiDay = (guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
-  guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
+  guiDay = Math.floor(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.floor((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.floor((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
   gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
   guiTimeCurrentSectorWasLastLoaded = 0;
   guiGameSecondsPerRealSecond = 0;
@@ -101,11 +101,11 @@ export function GetWorldDayInSeconds(): UINT32 {
 }
 
 export function GetWorldDayInMinutes(): UINT32 {
-  return (guiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN;
+  return Math.floor((guiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
 }
 
 export function GetFutureDayInMinutes(uiDay: UINT32): UINT32 {
-  return (uiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN;
+  return Math.floor((uiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
 }
 
 // this function returns the amount of minutes there has been from start of game to midnight of the uiDay.
@@ -164,9 +164,9 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   guiPreviousGameClock = guiGameClock;
 
   // Calculate the day, hour, and minutes.
-  guiDay = (guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
-  guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
+  guiDay = Math.floor(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.floor((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.floor((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
 
   gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 
@@ -222,9 +222,9 @@ export function RenderClock(sX: INT16, sY: INT16): void {
   RestoreExternBackgroundRect(sX, sY, CLOCK_STRING_WIDTH, CLOCK_STRING_HEIGHT);
 
   if ((gfPauseDueToPlayerGamePause == false)) {
-    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(gswzWorldTimeStr, CLOCK_FONT())) / 2, sY, gswzWorldTimeStr);
+    mprintf(sX + Math.floor((CLOCK_STRING_WIDTH - StringPixLength(gswzWorldTimeStr, CLOCK_FONT())) / 2), sY, gswzWorldTimeStr);
   } else {
-    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2, sY, pPausedGameText[0]);
+    mprintf(sX + Math.floor((CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2), sY, pPausedGameText[0]);
   }
 }
 

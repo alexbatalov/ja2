@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const util: typeof import('util') = require('util');
+
 // *** SIR-TECH TYPE DEFINITIONS ***
 
 // These two types are defined by VC6 and were causing redefinition
@@ -48,6 +50,13 @@ export function createRect(): RECT {
     right: 0,
     bottom: 0,
   };
+}
+
+export function copyRect(destination: RECT, source: RECT) {
+  destination.left = source.left;
+  destination.top = source.top;
+  destination.right = source.right;
+  destination.bottom = source.bottom;
 }
 
 export interface POINT {
@@ -258,6 +267,17 @@ class _PropertyPointer<T, K extends keyof T> implements Pointer<T[K]> {
 
 export function createPropertyPointer<T, K extends keyof T>(obj: T, prop: K): Pointer<T[K]> {
   return new _PropertyPointer(obj, prop);
+}
+
+export function sprintf(format: string, ...args: any[]): string {
+  return util.format(format, ...args);
+}
+
+export function swprintf(format: string, ...args: any[]): string {
+  return util.format(format, ...args);
+}
+
+export function asm(s: string) {
 }
 
 }

@@ -367,31 +367,17 @@ export function DrawTextToScreen(pStr: string /* STR16 */, usLocX: UINT16, usLoc
 
   SetFont(ulFont);
 
-  if (USE_WINFONTS()) {
-    let Color: COLORVAL = FROMRGB(255, 255, 255);
-    SetWinFontForeColor(GET_WINFONT(), Color);
-  } else {
-    SetFontForeground(ubColor);
-    SetFontBackground(ubBackGroundColor);
-  }
+  SetFontForeground(ubColor);
+  SetFontBackground(ubBackGroundColor);
 
   if (ulFlags & TEXT_SHADOWED)
     ShadowText(FRAME_BUFFER, pStr, ulFont, (usPosX - 1), (usPosY - 1));
 
-  if (USE_WINFONTS()) {
-    if (fDirty) {
-      gprintfdirty(usPosX, usPosY, pStr);
-      WinFont_mprintf(GET_WINFONT(), usPosX, usPosY, pStr);
-    } else {
-      WinFont_mprintf(GET_WINFONT(), usPosX, usPosY, pStr);
-    }
+  if (fDirty) {
+    gprintfdirty(usPosX, usPosY, pStr);
+    mprintf(usPosX, usPosY, pStr);
   } else {
-    if (fDirty) {
-      gprintfdirty(usPosX, usPosY, pStr);
-      mprintf(usPosX, usPosY, pStr);
-    } else {
-      mprintf(usPosX, usPosY, pStr);
-    }
+    mprintf(usPosX, usPosY, pStr);
   }
 
   if (IAN_WRAP_NO_SHADOW & ulFlags) {
@@ -749,6 +735,8 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
 
           // add the word (with the space) to the line
           zLineString += zWordString;
+
+          zWordString = '';
         } else {
           // can't fit this word!
 
@@ -787,6 +775,8 @@ export function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth:
 
           // reset width
           usLocalWidth = usWidth;
+
+          zWordString = '';
         }
       } // end of this word was NOT a special code
     }
@@ -1416,6 +1406,8 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
 
           // add the word (with the space) to the line
           zLineString += zWordString;
+
+          zWordString = '';
         } else {
           // can't fit this word!
 
@@ -1439,6 +1431,8 @@ export function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: 
 
           // reset width
           usLocalWidth = usWidth;
+
+          zWordString = '';
         }
       } // end of this word was NOT a special code
     }

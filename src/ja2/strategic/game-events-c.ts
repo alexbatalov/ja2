@@ -412,7 +412,6 @@ export function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): bool
         } else {
           gpEventList = (<STRATEGICEVENT>gpEventList).next;
         }
-        MemFree(curr);
         // ValidateGameEvents();
         return true;
       }

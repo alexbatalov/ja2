@@ -67,7 +67,7 @@ const HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER = () => (GetFontHeight(HELP_SCREEN_TE
 const HLP_SCRN__MAX_NUMBER_PIXELS_DISPLAYED_IN_TEXT_BUFFER = HELP_SCREEN_DEFUALT_LOC_HEIGHT;
 const HLP_SCRN__HEIGHT_OF_TEXT_BUFFER = () => (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER() * HLP_SCRN__MAX_NUMBER_OF_LINES_IN_BUFFER);
 
-const HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER = () => (HLP_SCRN__HEIGHT_OF_TEXT_AREA / HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER());
+const HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER = () => Math.trunc(HLP_SCRN__HEIGHT_OF_TEXT_AREA / HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER());
 
 const HLP_SCRN__HEIGHT_OF_TEXT_AREA = 228;
 
@@ -295,14 +295,14 @@ let gHelpScreenDontShowHelpAgainToggle: UINT32;
 // MOUSE_REGION    HelpScreenDontShowHelpAgainToggleTextRegion;
 // void		HelpScreenDontShowHelpAgainToggleTextRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
-let giHelpScreenButtonsImage: INT32[] /* [HELP_SCREEN_NUM_BTNS] */;
-let guiHelpScreenBtns: UINT32[] /* [HELP_SCREEN_NUM_BTNS] */;
+let giHelpScreenButtonsImage: INT32[] /* [HELP_SCREEN_NUM_BTNS] */ = createArray(HELP_SCREEN_NUM_BTNS, 0);
+let guiHelpScreenBtns: UINT32[] /* [HELP_SCREEN_NUM_BTNS] */ = createArray(HELP_SCREEN_NUM_BTNS, 0);
 
 let giExitBtnImage: INT32;
 let guiHelpScreenExitBtn: UINT32;
 
-let giHelpScreenScrollArrows: INT32[] /* [2] */;
-let guiHelpScreenScrollArrowImage: UINT32[] /* [2] */;
+let giHelpScreenScrollArrows: INT32[] /* [2] */ = createArray(2, 0);
+let guiHelpScreenScrollArrowImage: UINT32[] /* [2] */ = createArray(2, 0);
 
 // ggg
 
@@ -323,67 +323,72 @@ export function InitHelpScreenSystem(): void {
 
 export function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: boolean): boolean {
   // if the screen is being forsced to come up ( user pressed 'h' )
-  if (fForceHelpScreenToComeUp) {
-    // Set thefact that the user broughtthe help screen up
-    gHelpScreen.fForceHelpScreenToComeUp = true;
+  let go: string = '';
 
-    goto("HELP_SCREEN_SHOULD_COME_UP");
-  }
+  do {
+    switch (go) {
+      default:
+        if (fForceHelpScreenToComeUp) {
+          // Set thefact that the user broughtthe help screen up
+          gHelpScreen.fForceHelpScreenToComeUp = true;
 
-  // if we are already in the help system, return true
-  if (gHelpScreen.uiFlags & HELP_SCREEN_ACTIVE) {
-    return true;
-  }
+          go = "HELP_SCREEN_SHOULD_COME_UP";
+          continue;
+        }
 
-  // has the player been in the screen before
-  if ((gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen >> ubScreenID) & 0x01) {
-    goto("HELP_SCREEN_WAIT_1_FRAME");
-  }
+        // if we are already in the help system, return true
+        if (gHelpScreen.uiFlags & HELP_SCREEN_ACTIVE) {
+          return true;
+        }
 
-  // if we have already been in the screen, and the user DIDNT press 'h', leave
-  if (gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen) {
-    return false;
-  }
+        // has the player been in the screen before
+        if ((gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen >> ubScreenID) & 0x01) {
+          go = "HELP_SCREEN_WAIT_1_FRAME";
+          continue;
+        }
 
-  // should the screen come up, based on the users choice for it automatically coming up
-  //	if( !( gHelpScreen.fHideHelpInAllScreens ) )
-  {
-    //		goto HELP_SCREEN_WAIT_1_FRAME;
-  }
+        // if we have already been in the screen, and the user DIDNT press 'h', leave
+        if (gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen) {
+          return false;
+        }
 
-  // the help screen shouldnt come up
-  return false;
+        // should the screen come up, based on the users choice for it automatically coming up
+        //	if( !( gHelpScreen.fHideHelpInAllScreens ) )
+        {
+          //		goto HELP_SCREEN_WAIT_1_FRAME;
+        }
 
-HELP_SCREEN_WAIT_1_FRAME:
+        // the help screen shouldnt come up
+        return false;
+      case 'HELP_SCREEN_WAIT_1_FRAME':
+        // we have to wait 1 frame while the screen renders
+        if (gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount < 2) {
+          gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount += 1;
 
-  // we have to wait 1 frame while the screen renders
-  if (gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount < 2) {
-    gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount += 1;
+          UnmarkButtonsDirty();
 
-    UnmarkButtonsDirty();
+          return false;
+        }
+      case 'HELP_SCREEN_SHOULD_COME_UP':
+        // Record which screen it is
 
-    return false;
-  }
+        // if its mapscreen
+        if (ubScreenID == Enum17.HELP_SCREEN_MAPSCREEN) {
+          // determine which screen it is ( is any mercs hired, did game just start )
+          gHelpScreen.bCurrentHelpScreen = HelpScreenDetermineWhichMapScreenHelpToShow();
+        } else {
+          gHelpScreen.bCurrentHelpScreen = ubScreenID;
+        }
 
-HELP_SCREEN_SHOULD_COME_UP:
+        // mark it that the help screnn is enabled
+        gHelpScreen.uiFlags |= HELP_SCREEN_ACTIVE;
 
-  // Record which screen it is
+        // reset
+        gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
 
-  // if its mapscreen
-  if (ubScreenID == Enum17.HELP_SCREEN_MAPSCREEN) {
-    // determine which screen it is ( is any mercs hired, did game just start )
-    gHelpScreen.bCurrentHelpScreen = HelpScreenDetermineWhichMapScreenHelpToShow();
-  } else {
-    gHelpScreen.bCurrentHelpScreen = ubScreenID;
-  }
-
-  // mark it that the help screnn is enabled
-  gHelpScreen.uiFlags |= HELP_SCREEN_ACTIVE;
-
-  // reset
-  gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
-
-  return true;
+        return true;
+    }
+  } while (true);
 }
 
 export function HelpScreenHandler(): void {
@@ -1803,8 +1808,8 @@ function RenderCurrentHelpScreenTextToBuffer(): void {
 }
 
 function RenderTextBufferToScreen(): void {
-  let hDestVSurface: HVSURFACE;
-  let hSrcVSurface: HVSURFACE;
+  let hDestVSurface: SGPVSurface;
+  let hSrcVSurface: SGPVSurface;
   let SrcRect: SGPRect = createSGPRect();
 
   hDestVSurface = GetVideoSurface(guiRENDERBUFFER);
@@ -1837,12 +1842,12 @@ function ChangeHelpScreenSubPage(): void {
 }
 
 function ClearHelpScreenTextBuffer(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   // CLEAR THE FRAME BUFFER
-  pDestBuf = LockVideoSurface(guiHelpScreenTextBufferSurface, addressof(uiDestPitchBYTES));
-  memset(pDestBuf, 0, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER() * uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(guiHelpScreenTextBufferSurface, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pDestBuf.fill(0, 0, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER() * uiDestPitchBYTES);
   UnLockVideoSurface(guiHelpScreenTextBufferSurface);
   InvalidateScreen();
 }
@@ -1888,8 +1893,8 @@ function ChangeTopLineInTextBufferByAmount(iAmouontToMove: INT32): void {
 function DisplayHelpScreenTextBufferScrollBox(): void {
   let iSizeOfBox: INT32;
   let iTopPosScrollBox: INT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let usPosX: UINT16;
 
   if (gHelpScreen.bNumberOfButtons != 0) {
@@ -1913,7 +1918,7 @@ function DisplayHelpScreenTextBufferScrollBox(): void {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(227, 198, 88)));
 
     // display the line
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
     // draw the gold highlite line on the top and left
@@ -2003,14 +2008,14 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(): { iHeightOfScrollBo
     // no need to calc the top spot for the box
     iTopPosScrollBox = HLP_SCRN__SCROLL_POSY();
   } else {
-    iSizeOfBox = (dPercentSizeOfBox * HLP_SCRN__HEIGHT_OF_SCROLL_AREA + 0.5);
+    iSizeOfBox = Math.trunc(dPercentSizeOfBox * HLP_SCRN__HEIGHT_OF_SCROLL_AREA + 0.5);
 
     //
     // next, calculate the top position of the box
     //
     dTemp = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / gHelpScreen.usTotalNumberOfLinesInBuffer) * gHelpScreen.iLineAtTopOfTextBuffer;
 
-    iTopPosScrollBox = (dTemp + .5) + HLP_SCRN__SCROLL_POSY();
+    iTopPosScrollBox = Math.trunc((dTemp + .5) + HLP_SCRN__SCROLL_POSY());
   }
 
   iHeightOfScrollBox = iSizeOfBox;

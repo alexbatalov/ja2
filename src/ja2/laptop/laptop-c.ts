@@ -300,19 +300,19 @@ let fTabHandled: boolean = false;
 let fForward: boolean = true;
 
 // BUTTON IMAGES
-let giLapTopButton: INT32[] /* [MAX_BUTTON_COUNT] */;
-let giLapTopButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */;
-let giErrorButton: INT32[] /* [1] */;
-let giErrorButtonImage: INT32[] /* [1] */;
+let giLapTopButton: INT32[] /* [MAX_BUTTON_COUNT] */ = createArray(MAX_BUTTON_COUNT, 0);
+let giLapTopButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */ = createArray(MAX_BUTTON_COUNT, 0);
+let giErrorButton: INT32[] /* [1] */ = createArray(1, 0);
+let giErrorButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
-let gLaptopButton: INT32[] /* [7] */;
-let gLaptopButtonImage: INT32[] /* [7] */;
+let gLaptopButton: INT32[] /* [7] */ = createArray(7, 0);
+let gLaptopButtonImage: INT32[] /* [7] */ = createArray(7, 0);
 
 // minimize button
-let gLaptopMinButton: INT32[] /* [1] */;
-let gLaptopMinButtonImage: INT32[] /* [1] */;
+let gLaptopMinButton: INT32[] /* [1] */ = createArray(1, 0);
+let gLaptopMinButtonImage: INT32[] /* [1] */ = createArray(1, 0);
 
-let gLaptopProgramStates: INT32[] /* [LAPTOP_PROGRAM_HISTORY + 1] */;
+let gLaptopProgramStates: INT32[] /* [LAPTOP_PROGRAM_HISTORY + 1] */ = createArray(Enum93.LAPTOP_PROGRAM_HISTORY + 1, 0);
 
 // process of mazimizing
 let fMaximizingProgram: boolean = false;
@@ -324,7 +324,7 @@ let bProgramBeingMaximized: INT8 = -1;
 let fMinizingProgram: boolean = false;
 
 // process openned queue
-let gLaptopProgramQueueList: INT32[] /* [6] */;
+let gLaptopProgramQueueList: INT32[] /* [6] */ = createArray(6, 0);;
 
 // state of createion of minimize button
 let fCreateMinimizeButton: boolean = false;
@@ -342,7 +342,7 @@ let fFlickerHD: boolean = false;
 let LaptopScreenRect: SGPRect = createSGPRectFrom(LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19);
 
 // the sub pages vistsed or not status within the web browser
-let gfWWWaitSubSitesVisitedFlags: boolean[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
+let gfWWWaitSubSitesVisitedFlags: boolean[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */ = createArray(Enum95.LAPTOP_MODE_SIRTECH - Enum95.LAPTOP_MODE_WWW, false);
 
 // INT32 iBookMarkList[MAX_BOOKMARKS];
 
@@ -4241,11 +4241,11 @@ export function BlitTitleBarIcons(): void {
 }
 
 function DrawDeskTopBackground(): boolean {
-  let hSrcVSurface: HVSURFACE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT8>;
+  let hSrcVSurface: SGPVSurface;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let clip: SGPRect = createSGPRect();
 
   // set clipping region
@@ -4254,11 +4254,11 @@ function DrawDeskTopBackground(): boolean {
   clip.iTop = 0;
   clip.iBottom = 408 + 19;
   // get surfaces
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   if ((hSrcVSurface = GetVideoSurface(guiDESKTOP)) === null) {
     return false;
   }
-  pSrcBuf = LockVideoSurface(guiDESKTOP, addressof(uiSrcPitchBYTES));
+  pSrcBuf = LockVideoSurface(guiDESKTOP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   // blit .pcx for the background onto desktop
   Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, LAPTOP_SCREEN_UL_X - 2, LAPTOP_SCREEN_UL_Y - 3, clip);

@@ -345,12 +345,12 @@ function HandleHelpScreenInput(): void {
 }
 
 export function ClearMainMenu(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   // CLEAR THE FRAME BUFFER
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pDestBuf.fill(0);
   UnLockVideoSurface(FRAME_BUFFER);
   InvalidateScreen();
 }

@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 let gfWasInMeanwhile: boolean = false;
 
 ///////////////////////////////////////////////////////////////
@@ -65,7 +67,7 @@ function writeTempNPCQuoteInfoSave(o: TempNPCQuoteInfoSave, buffer: Buffer, offs
   return offset;
 }
 
-const NPC_TEMP_QUOTE_FILE = "Temp\\NpcQuote.tmp";
+const NPC_TEMP_QUOTE_FILE = path.join('Temp', 'NpcQuote.tmp');
 
 ///////////////////////////////////////////////////////////////
 //
@@ -2432,48 +2434,48 @@ export function GetMapTempFileName(uiType: UINT32, sMapX: INT16, sMapY: INT16, b
 
   switch (uiType) {
     case SF_ITEM_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\i_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "i_" + zTempName);
       break;
 
     case SF_ROTTING_CORPSE_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\r_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "r_" + zTempName);
       break;
 
     case SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\m_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "m_" + zTempName);
       break;
 
     case SF_DOOR_TABLE_TEMP_FILES_EXISTS:
-      pMapName = sprintf("%s\\d_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "d_" + zTempName);
       break;
 
     case SF_REVEALED_STATUS_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\v_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "v_" + zTempName);
       break;
 
     case SF_DOOR_STATUS_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\ds_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "ds_" + zTempName);
       break;
 
     case SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\e_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "e_" + zTempName);
       break;
 
     case SF_CIV_PRESERVED_TEMP_FILE_EXISTS:
       // NB save game version 0 is "saving game"
       if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion != 0 && guiSaveGameVersion < 78) {
-        pMapName = sprintf("%s\\c_%s", MAPS_DIR, zTempName);
+        pMapName = path.join(MAPS_DIR, "c_" + zTempName);
       } else {
-        pMapName = sprintf("%s\\cc_%s", MAPS_DIR, zTempName);
+        pMapName = path.join(MAPS_DIR, "cc_" + zTempName);
       }
       break;
 
     case SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\sm_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "sm_" + zTempName);
       break;
 
     case SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS:
-      pMapName = sprintf("%s\\l_%s", MAPS_DIR, zTempName);
+      pMapName = path.join(MAPS_DIR, "l_" + zTempName);
       break;
 
     default:

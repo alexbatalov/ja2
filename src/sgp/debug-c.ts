@@ -31,7 +31,7 @@ export let giProfileCount: INT32;
 let gubAssertString: string /* UINT8[128] */;
 
 const MAX_MSG_LENGTH2 = 512;
-let gbTmpDebugString: string[] /* UINT8[8][MAX_MSG_LENGTH2] */;
+let gbTmpDebugString: string[] /* UINT8[8][MAX_MSG_LENGTH2] */ = createArray(8, '');
 let gubStringIndex: UINT8 = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in

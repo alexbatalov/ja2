@@ -49,21 +49,42 @@ export function DisableUndo(): void {
 // undo node data element
 interface undo_struct {
   iMapIndex: INT32;
-  pMapTile: Pointer<MAP_ELEMENT>;
+  pMapTile: MAP_ELEMENT;
   fLightSaved: boolean; // determines that a light has been saved
   ubLightRadius: UINT8; // the radius of the light to build if undo is called
   ubLightID: UINT8; // only applies if a light was saved.
   ubRoomNum: UINT8;
 }
 
+function createUndoStruct(): undo_struct {
+  return {
+    iMapIndex: 0,
+    pMapTile: <MAP_ELEMENT><unknown>null,
+    fLightSaved: false,
+    ubLightRadius: 0,
+    ubLightID: 0,
+    ubRoomNum: 0,
+  };
+}
+
 // Undo stack node
 interface undo_stack {
   iCmdCount: INT32;
-  pData: Pointer<undo_struct>;
-  pNext: Pointer<undo_stack>;
+  pData: undo_struct;
+  pNext: undo_stack | null;
   iUndoType: INT32;
 }
-let gpTileUndoStack: Pointer<undo_stack> = null;
+
+function createUndoStack(): undo_stack {
+  return {
+    iCmdCount: 0,
+    pData: <undo_struct><unknown>null,
+    pNext: null,
+    iUndoType: 0,
+  };
+}
+
+let gpTileUndoStack: undo_stack | null /* Pointer<undo_stack> */ = null;
 
 let fNewUndoCmd: boolean = true;
 let gfIgnoreUndoCmdsForLights: boolean = false;
@@ -72,39 +93,49 @@ let gfIgnoreUndoCmdsForLights: boolean = false;
 // With this, new undo commands will not duplicate saves in the same command.  This will
 // increase speed, and save memory.
 interface MapIndexBinaryTree {
-  left: Pointer<MapIndexBinaryTree>;
-  right: Pointer<MapIndexBinaryTree>;
+  left: MapIndexBinaryTree | null /* Pointer<MapIndexBinaryTree> */;
+  right: MapIndexBinaryTree | null /* Pointer<MapIndexBinaryTree> */;
 
   usMapIndex: UINT16;
 }
 
-let top: Pointer<MapIndexBinaryTree> = null;
+function createMapIndexBinaryTree(): MapIndexBinaryTree {
+  return {
+    left: null,
+    right: null,
+    usMapIndex: 0,
+  };
+}
+
+let top: MapIndexBinaryTree | null /* Pointer<MapIndexBinaryTree> */ = null;
 
 // Recursively deletes all nodes below the node passed including itself.
-function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
-  if ((node.value).value.left)
-    DeleteTreeNode(addressof((node.value).value.left));
-  if ((node.value).value.right)
-    DeleteTreeNode(addressof((node.value).value.right));
-  MemFree(node.value);
-  node.value = null;
+function DeleteTreeNode(node: MapIndexBinaryTree): void {
+  if (node.left) {
+    DeleteTreeNode(node.left);
+    node.left = null;
+  }
+  if (node.right) {
+    DeleteTreeNode(node.right);
+    node.right = null;
+  }
 }
 
 // Recursively delete all nodes (from the top down).
 function ClearUndoMapIndexTree(): void {
   if (top)
-    DeleteTreeNode(addressof(top));
+    DeleteTreeNode(top);
 }
 
 function AddMapIndexToTree(usMapIndex: UINT16): boolean {
-  let curr: Pointer<MapIndexBinaryTree>;
-  let parent: Pointer<MapIndexBinaryTree>;
+  let curr: MapIndexBinaryTree | null;
+  let parent: MapIndexBinaryTree | null;
   if (!top) {
-    top = MemAlloc(sizeof(MapIndexBinaryTree));
+    top = createMapIndexBinaryTree();
     Assert(top);
-    top.value.usMapIndex = usMapIndex;
-    top.value.left = null;
-    top.value.right = null;
+    top.usMapIndex = usMapIndex;
+    top.left = null;
+    top.right = null;
     return true;
   }
   curr = top;
@@ -114,24 +145,25 @@ function AddMapIndexToTree(usMapIndex: UINT16): boolean {
   // tree.
   while (curr) {
     parent = curr;
-    if (curr.value.usMapIndex == usMapIndex) // found a match, so stop
+    if (curr.usMapIndex == usMapIndex) // found a match, so stop
       return false;
     // if the mapIndex is < node's mapIndex, then go left, else right
-    curr = (usMapIndex < curr.value.usMapIndex) ? curr.value.left : curr.value.right;
+    curr = (usMapIndex < curr.usMapIndex) ? curr.left : curr.right;
   }
   // if we made it this far, then curr is null and parent is pointing
   // directly above.
   // Create the new node and fill in the information.
-  curr = MemAlloc(sizeof(MapIndexBinaryTree));
+  curr = createMapIndexBinaryTree();
   Assert(curr);
-  curr.value.usMapIndex = usMapIndex;
-  curr.value.left = null;
-  curr.value.right = null;
+  Assert(parent);
+  curr.usMapIndex = usMapIndex;
+  curr.left = null;
+  curr.right = null;
   // Now link the new node to the parent.
-  if (curr.value.usMapIndex < parent.value.usMapIndex)
-    parent.value.left = curr;
+  if (curr.usMapIndex < parent.usMapIndex)
+    parent.left = curr;
   else
-    parent.value.right = curr;
+    parent.right = curr;
   return true;
 }
 //*************************************************************************
@@ -141,25 +173,26 @@ function AddMapIndexToTree(usMapIndex: UINT16): boolean {
 //*************************************************************************
 
 function DeleteTopStackNode(): boolean {
-  let pCurrent: Pointer<undo_stack>;
+  let pCurrent: undo_stack;
 
+  Assert(gpTileUndoStack);
   pCurrent = gpTileUndoStack;
 
   DeleteStackNodeContents(pCurrent);
 
   // Remove node from stack, and free it's memory
-  gpTileUndoStack = gpTileUndoStack.value.pNext;
+  gpTileUndoStack = gpTileUndoStack.pNext;
   MemFree(pCurrent);
 
   return true;
 }
 
-function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack> {
-  let pCurrent: Pointer<undo_stack>;
-  let pNextNode: Pointer<undo_stack>;
+function DeleteThisStackNode(pThisNode: undo_stack): undo_stack | null {
+  let pCurrent: undo_stack;
+  let pNextNode: undo_stack | null;
 
   pCurrent = pThisNode;
-  pNextNode = pThisNode.value.pNext;
+  pNextNode = pThisNode.pNext;
 
   // Remove node from stack, and free it's memory
   DeleteStackNodeContents(pCurrent);
@@ -168,106 +201,95 @@ function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack
   return pNextNode;
 }
 
-function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): boolean {
-  let pData: Pointer<undo_struct>;
-  let pMapTile: Pointer<MAP_ELEMENT>;
-  let pLandNode: Pointer<LEVELNODE>;
-  let pObjectNode: Pointer<LEVELNODE>;
-  let pStructNode: Pointer<LEVELNODE>;
-  let pShadowNode: Pointer<LEVELNODE>;
-  let pMercNode: Pointer<LEVELNODE>;
-  let pTopmostNode: Pointer<LEVELNODE>;
-  let pRoofNode: Pointer<LEVELNODE>;
-  let pOnRoofNode: Pointer<LEVELNODE>;
-  let pStructureNode: Pointer<STRUCTURE>;
+function DeleteStackNodeContents(pCurrent: undo_stack): boolean {
+  let pData: undo_struct;
+  let pMapTile: MAP_ELEMENT | null;
+  let pLandNode: LEVELNODE | null;
+  let pObjectNode: LEVELNODE | null;
+  let pStructNode: LEVELNODE | null;
+  let pShadowNode: LEVELNODE | null;
+  let pMercNode: LEVELNODE | null;
+  let pTopmostNode: LEVELNODE | null;
+  let pRoofNode: LEVELNODE | null;
+  let pOnRoofNode: LEVELNODE | null;
+  let pStructureNode: STRUCTURE | null;
 
-  pData = pCurrent.value.pData;
-  pMapTile = pData.value.pMapTile;
+  pData = pCurrent.pData;
+  pMapTile = pData.pMapTile;
 
   if (!pMapTile)
     return true; // light was saved -- mapelement wasn't saved.
 
   // Free the memory associated with the map tile liked lists
-  pLandNode = pMapTile.value.pLandHead;
+  pLandNode = pMapTile.pLandHead;
   while (pLandNode != null) {
-    pMapTile.value.pLandHead = pLandNode.value.pNext;
-    MemFree(pLandNode);
-    pLandNode = pMapTile.value.pLandHead;
+    pMapTile.pLandHead = pLandNode.pNext;
+    pLandNode = pMapTile.pLandHead;
   }
 
-  pObjectNode = pMapTile.value.pObjectHead;
+  pObjectNode = pMapTile.pObjectHead;
   while (pObjectNode != null) {
-    pMapTile.value.pObjectHead = pObjectNode.value.pNext;
-    MemFree(pObjectNode);
-    pObjectNode = pMapTile.value.pObjectHead;
+    pMapTile.pObjectHead = pObjectNode.pNext;
+    pObjectNode = pMapTile.pObjectHead;
   }
 
-  pStructNode = pMapTile.value.pStructHead;
+  pStructNode = pMapTile.pStructHead;
   while (pStructNode != null) {
-    pMapTile.value.pStructHead = pStructNode.value.pNext;
-    MemFree(pStructNode);
-    pStructNode = pMapTile.value.pStructHead;
+    pMapTile.pStructHead = pStructNode.pNext;
+    pStructNode = pMapTile.pStructHead;
   }
 
-  pShadowNode = pMapTile.value.pShadowHead;
+  pShadowNode = pMapTile.pShadowHead;
   while (pShadowNode != null) {
-    pMapTile.value.pShadowHead = pShadowNode.value.pNext;
-    MemFree(pShadowNode);
-    pShadowNode = pMapTile.value.pShadowHead;
+    pMapTile.pShadowHead = pShadowNode.pNext;
+    pShadowNode = pMapTile.pShadowHead;
   }
 
-  pMercNode = pMapTile.value.pMercHead;
+  pMercNode = pMapTile.pMercHead;
   while (pMercNode != null) {
-    pMapTile.value.pMercHead = pMercNode.value.pNext;
-    MemFree(pMercNode);
-    pMercNode = pMapTile.value.pMercHead;
+    pMapTile.pMercHead = pMercNode.pNext;
+    pMercNode = pMapTile.pMercHead;
   }
 
-  pRoofNode = pMapTile.value.pRoofHead;
+  pRoofNode = pMapTile.pRoofHead;
   while (pRoofNode != null) {
-    pMapTile.value.pRoofHead = pRoofNode.value.pNext;
-    MemFree(pRoofNode);
-    pRoofNode = pMapTile.value.pRoofHead;
+    pMapTile.pRoofHead = pRoofNode.pNext;
+    pRoofNode = pMapTile.pRoofHead;
   }
 
-  pOnRoofNode = pMapTile.value.pOnRoofHead;
+  pOnRoofNode = pMapTile.pOnRoofHead;
   while (pOnRoofNode != null) {
-    pMapTile.value.pOnRoofHead = pOnRoofNode.value.pNext;
-    MemFree(pOnRoofNode);
-    pOnRoofNode = pMapTile.value.pOnRoofHead;
+    pMapTile.pOnRoofHead = pOnRoofNode.pNext;
+    pOnRoofNode = pMapTile.pOnRoofHead;
   }
 
-  pTopmostNode = pMapTile.value.pTopmostHead;
+  pTopmostNode = pMapTile.pTopmostHead;
   while (pTopmostNode != null) {
-    pMapTile.value.pTopmostHead = pTopmostNode.value.pNext;
-    MemFree(pTopmostNode);
-    pTopmostNode = pMapTile.value.pTopmostHead;
+    pMapTile.pTopmostHead = pTopmostNode.pNext;
+    pTopmostNode = pMapTile.pTopmostHead;
   }
 
-  pStructureNode = pMapTile.value.pStructureHead;
+  pStructureNode = pMapTile.pStructureHead;
   while (pStructureNode) {
-    pMapTile.value.pStructureHead = pStructureNode.value.pNext;
-    if (pStructureNode.value.usStructureID > INVALID_STRUCTURE_ID) {
+    pMapTile.pStructureHead = pStructureNode.pNext;
+    if (pStructureNode.usStructureID > INVALID_STRUCTURE_ID) {
       // Okay to delete the structure data -- otherwise, this would be
       // merc structure data that we DON'T want to delete, because the merc node
       // that hasn't been modified will still use this structure data!
-      MemFree(pStructureNode);
     }
-    pStructureNode = pMapTile.value.pStructureHead;
+    pStructureNode = pMapTile.pStructureHead;
   }
 
   // Free the map tile structure itself
-  MemFree(pMapTile);
 
   // Free the undo struct
-  MemFree(pData);
 
   return true;
 }
 
 function CropStackToMaxLength(iMaxCmds: INT32): void {
   let iCmdCount: INT32;
-  let pCurrent: Pointer<undo_stack>;
+  let pCurrent: undo_stack | null;
 
   iCmdCount = 0;
   pCurrent = gpTileUndoStack;
@@ -277,16 +299,16 @@ function CropStackToMaxLength(iMaxCmds: INT32): void {
     return;
 
   while ((iCmdCount <= (iMaxCmds - 1)) && (pCurrent != null)) {
-    if (pCurrent.value.iCmdCount == 1)
+    if (pCurrent.iCmdCount == 1)
       iCmdCount++;
-    pCurrent = pCurrent.value.pNext;
+    pCurrent = pCurrent.pNext;
   }
 
   // If the max number of commands was reached, and there is something
   // to crop, from the rest of the stack, remove it.
   if ((iCmdCount >= iMaxCmds) && pCurrent != null) {
-    while (pCurrent.value.pNext != null)
-      pCurrent.value.pNext = DeleteThisStackNode(pCurrent.value.pNext);
+    while (pCurrent.pNext != null)
+      pCurrent.pNext = DeleteThisStackNode(pCurrent.pNext);
   }
 }
 
@@ -297,8 +319,8 @@ function CropStackToMaxLength(iMaxCmds: INT32): void {
 // our saved light, then we intend on erasing the light upon undo execution, otherwise, we
 // save the light radius and light ID, so that we place it during undo execution.
 export function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UINT8): void {
-  let pNode: Pointer<undo_stack>;
-  let pUndoInfo: Pointer<undo_struct>;
+  let pNode: undo_stack;
+  let pUndoInfo: undo_struct;
 
   if (!gfUndoEnabled)
     return;
@@ -310,28 +332,21 @@ export function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLigh
   if (gfIgnoreUndoCmdsForLights)
     return;
 
-  pNode = MemAlloc(sizeof(undo_stack));
-  if (!pNode)
-    return;
+  pNode = createUndoStack();
+  pUndoInfo = createUndoStruct();
 
-  pUndoInfo = MemAlloc(sizeof(undo_struct));
-  if (!pUndoInfo) {
-    MemFree(pNode);
-    return;
-  }
-
-  pUndoInfo.value.fLightSaved = true;
+  pUndoInfo.fLightSaved = true;
   // if ubLightRadius is 0, then we don't need to save the light information because we
   // will erase it when it comes time to execute the undo command.
-  pUndoInfo.value.ubLightRadius = iLightRadius;
-  pUndoInfo.value.ubLightID = ubLightID;
-  pUndoInfo.value.iMapIndex = iMapIndex;
-  pUndoInfo.value.pMapTile = null;
+  pUndoInfo.ubLightRadius = iLightRadius;
+  pUndoInfo.ubLightID = ubLightID;
+  pUndoInfo.iMapIndex = iMapIndex;
+  pUndoInfo.pMapTile = <MAP_ELEMENT><unknown>null;
 
   // Add to undo stack
-  pNode.value.iCmdCount = 1;
-  pNode.value.pData = pUndoInfo;
-  pNode.value.pNext = gpTileUndoStack;
+  pNode.iCmdCount = 1;
+  pNode.pData = pUndoInfo;
+  pNode.pNext = gpTileUndoStack;
   gpTileUndoStack = pNode;
 
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
@@ -361,60 +376,54 @@ export function AddToUndoList(iMapIndex: INT32): boolean {
 }
 
 function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): boolean {
-  let pNode: Pointer<undo_stack>;
-  let pUndoInfo: Pointer<undo_struct>;
-  let pData: Pointer<MAP_ELEMENT>;
-  let pStructure: Pointer<STRUCTURE>;
+  let pNode: undo_stack;
+  let pUndoInfo: undo_struct;
+  let pData: MAP_ELEMENT;
+  let pStructure: STRUCTURE | null;
   let iCoveredMapIndex: INT32;
   let ubLoop: UINT8;
 
-  if ((pNode = MemAlloc(sizeof(undo_stack))) == null) {
+  if ((pNode = createUndoStack()) == null) {
     return false;
   }
 
-  if ((pUndoInfo = MemAlloc(sizeof(undo_struct))) == null) {
-    MemFree(pNode);
+  if ((pUndoInfo = createUndoStruct()) == null) {
     return false;
   }
 
-  if ((pData = MemAlloc(sizeof(MAP_ELEMENT))) == null) {
-    MemFree(pNode);
-    MemFree(pUndoInfo);
+  if ((pData = createMapElement()) == null) {
     return false;
   }
 
   // Init map element struct
-  pData.value.pLandHead = pData.value.pLandStart = null;
-  pData.value.pObjectHead = null;
-  pData.value.pStructHead = null;
-  pData.value.pShadowHead = null;
-  pData.value.pMercHead = null;
-  pData.value.pRoofHead = null;
-  pData.value.pOnRoofHead = null;
-  pData.value.pTopmostHead = null;
-  pData.value.pStructureHead = pData.value.pStructureTail = null;
-  pData.value.sHeight = 0;
+  pData.pLandHead = pData.pLandStart = null;
+  pData.pObjectHead = null;
+  pData.pStructHead = null;
+  pData.pShadowHead = null;
+  pData.pMercHead = null;
+  pData.pRoofHead = null;
+  pData.pOnRoofHead = null;
+  pData.pTopmostHead = null;
+  pData.pStructureHead = pData.pStructureTail = null;
+  pData.sHeight = 0;
 
   // Copy the world map's tile
   if (CopyMapElementFromWorld(pData, iMapIndex) == false) {
-    MemFree(pNode);
-    MemFree(pUndoInfo);
-    MemFree(pData);
     return false;
   }
 
   // copy the room number information (it's not in the mapelement structure)
-  pUndoInfo.value.ubRoomNum = gubWorldRoomInfo[iMapIndex];
+  pUndoInfo.ubRoomNum = gubWorldRoomInfo[iMapIndex];
 
-  pUndoInfo.value.fLightSaved = false;
-  pUndoInfo.value.ubLightRadius = 0;
-  pUndoInfo.value.ubLightID = 0;
-  pUndoInfo.value.pMapTile = pData;
-  pUndoInfo.value.iMapIndex = iMapIndex;
+  pUndoInfo.fLightSaved = false;
+  pUndoInfo.ubLightRadius = 0;
+  pUndoInfo.ubLightID = 0;
+  pUndoInfo.pMapTile = pData;
+  pUndoInfo.iMapIndex = iMapIndex;
 
-  pNode.value.pData = pUndoInfo;
-  pNode.value.iCmdCount = iCmdCount;
-  pNode.value.pNext = gpTileUndoStack;
+  pNode.pData = pUndoInfo;
+  pNode.iCmdCount = iCmdCount;
+  pNode.pNext = gpTileUndoStack;
   gpTileUndoStack = pNode;
 
   // loop through pData->pStructureHead list
@@ -423,15 +432,15 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): boolean {
   //   reference the db structure
   //   if number of tiles > 1
   //     add all covered tiles to undo list
-  pStructure = pData.value.pStructureHead;
+  pStructure = <STRUCTURE><unknown>pData.pStructureHead;
   while (pStructure) {
-    for (ubLoop = 1; ubLoop < pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
+    for (ubLoop = 1; ubLoop < pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles; ubLoop++) {
       // this loop won't execute for single-tile structures; for multi-tile structures, we have to
       // add to the undo list all the other tiles covered by the structure
-      iCoveredMapIndex = pStructure.value.sBaseGridNo + pStructure.value.pDBStructureRef.value.ppTile[ubLoop].value.sPosRelToBase;
+      iCoveredMapIndex = pStructure.sBaseGridNo + pStructure.pDBStructureRef.ppTile[ubLoop].sPosRelToBase;
       AddToUndoList(iCoveredMapIndex);
     }
-    pStructure = pStructure.value.pNext;
+    pStructure = pStructure.pNext;
   }
 
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
@@ -440,33 +449,33 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): boolean {
 }
 
 function CheckMapIndexForMultiTileStructures(usMapIndex: UINT16): void {
-  let pStructure: Pointer<STRUCTURE>;
+  let pStructure: STRUCTURE | null;
   let ubLoop: UINT8;
   let iCoveredMapIndex: INT32;
 
   pStructure = gpWorldLevelData[usMapIndex].pStructureHead;
   while (pStructure) {
-    if (pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles > 1) {
-      for (ubLoop = 0; ubLoop < pStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
+    if (pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles > 1) {
+      for (ubLoop = 0; ubLoop < pStructure.pDBStructureRef.pDBStructure.ubNumberOfTiles; ubLoop++) {
         // for multi-tile structures we have to add, to the undo list, all the other tiles covered by the structure
-        if (pStructure.value.fFlags & STRUCTURE_BASE_TILE) {
-          iCoveredMapIndex = usMapIndex + pStructure.value.pDBStructureRef.value.ppTile[ubLoop].value.sPosRelToBase;
+        if (pStructure.fFlags & STRUCTURE_BASE_TILE) {
+          iCoveredMapIndex = usMapIndex + pStructure.pDBStructureRef.ppTile[ubLoop].sPosRelToBase;
         } else {
-          iCoveredMapIndex = pStructure.value.sBaseGridNo + pStructure.value.pDBStructureRef.value.ppTile[ubLoop].value.sPosRelToBase;
+          iCoveredMapIndex = pStructure.sBaseGridNo + pStructure.pDBStructureRef.ppTile[ubLoop].sPosRelToBase;
         }
         AddToUndoList(iCoveredMapIndex);
       }
     }
-    pStructure = pStructure.value.pNext;
+    pStructure = pStructure.pNext;
   }
 }
 
-function CheckForMultiTilesInTreeAndAddToUndoList(node: Pointer<MapIndexBinaryTree>): void {
-  CheckMapIndexForMultiTileStructures(node.value.usMapIndex);
-  if (node.value.left)
-    CheckForMultiTilesInTreeAndAddToUndoList(node.value.left);
-  if (node.value.right)
-    CheckForMultiTilesInTreeAndAddToUndoList(node.value.right);
+function CheckForMultiTilesInTreeAndAddToUndoList(node: MapIndexBinaryTree): void {
+  CheckMapIndexForMultiTileStructures(node.usMapIndex);
+  if (node.left)
+    CheckForMultiTilesInTreeAndAddToUndoList(node.left);
+  if (node.right)
+    CheckForMultiTilesInTreeAndAddToUndoList(node.right);
 }
 
 export function RemoveAllFromUndoList(): boolean {
@@ -482,7 +491,7 @@ export function ExecuteUndoList(): boolean {
   let iCmdCount: INT32;
   let iCurCount: INT32;
   let iUndoMapIndex: INT32;
-  let fExitGrid: boolean;
+  let fExitGrid: boolean = false;
 
   if (!gfUndoEnabled)
     return false;
@@ -492,15 +501,15 @@ export function ExecuteUndoList(): boolean {
     return true;
 
   // Get number of stack entries for this command (top node will tell this)
-  iCmdCount = gpTileUndoStack.value.iCmdCount;
+  iCmdCount = gpTileUndoStack.iCmdCount;
 
   // Execute each stack node in command, and remove each from stack.
   iCurCount = 0;
   while ((iCurCount < iCmdCount) && (gpTileUndoStack != null)) {
-    iUndoMapIndex = gpTileUndoStack.value.pData.value.iMapIndex;
+    iUndoMapIndex = gpTileUndoStack.pData.iMapIndex;
 
     // Find which map tile we are to "undo"
-    if (gpTileUndoStack.value.pData.value.fLightSaved) {
+    if (gpTileUndoStack.pData.fLightSaved) {
       // We saved a light, so delete that light
       let sX: INT16;
       let sY: INT16;
@@ -508,20 +517,20 @@ export function ExecuteUndoList(): boolean {
       // add lights to the undo list.  That would cause problems...
       gfIgnoreUndoCmdsForLights = true;
       ({ sX, sY } = ConvertGridNoToXY(iUndoMapIndex));
-      if (!gpTileUndoStack.value.pData.value.ubLightRadius)
+      if (!gpTileUndoStack.pData.ubLightRadius)
         RemoveLight(sX, sY);
       else
-        PlaceLight(gpTileUndoStack.value.pData.value.ubLightRadius, sX, sY, gpTileUndoStack.value.pData.value.ubLightID);
+        PlaceLight(gpTileUndoStack.pData.ubLightRadius, sX, sY, gpTileUndoStack.pData.ubLightID);
       // Turn off the flag so lights can again be added to the undo list.
       gfIgnoreUndoCmdsForLights = false;
     } else {
       // We execute the undo command node by simply swapping the contents
       // of the undo's MAP_ELEMENT with the world's element.
       fExitGrid = ExitGridAtGridNo(iUndoMapIndex);
-      SwapMapElementWithWorld(iUndoMapIndex, gpTileUndoStack.value.pData.value.pMapTile);
+      SwapMapElementWithWorld(iUndoMapIndex, createPropertyPointer(gpTileUndoStack.pData, 'pMapTile'));
 
       // copy the room number information back
-      gubWorldRoomInfo[iUndoMapIndex] = gpTileUndoStack.value.pData.value.ubRoomNum;
+      gubWorldRoomInfo[iUndoMapIndex] = gpTileUndoStack.pData.ubRoomNum;
 
       // Now we smooth out the changes...
       // SmoothUndoMapTileTerrain( iUndoMapIndex, gpTileUndoStack->pData->pMapTile );
@@ -552,75 +561,75 @@ export function ExecuteUndoList(): boolean {
   return true;
 }
 
-function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEMENT>): void {
-  let pWorldLand: Pointer<LEVELNODE>;
-  let pUndoLand: Pointer<LEVELNODE>;
-  let pLand: Pointer<LEVELNODE>;
-  let pWLand: Pointer<LEVELNODE>;
+function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: MAP_ELEMENT): void {
+  let pWorldLand: LEVELNODE | null;
+  let pUndoLand: LEVELNODE | null;
+  let pLand: LEVELNODE | null;
+  let pWLand: LEVELNODE | null;
   let uiCheckType: UINT32;
   let uiWCheckType: UINT32;
   let fFound: boolean;
 
-  pUndoLand = pUndoTile.value.pLandHead;
+  pUndoLand = pUndoTile.pLandHead;
   pWorldLand = gpWorldLevelData[iWorldTile].pLandHead;
 
   if (pUndoLand == null) {
     // nothing in the old tile, so smooth the entire land in world's tile
     pLand = gpWorldLevelData[iWorldTile].pLandHead;
     while (pLand != null) {
-      uiCheckType = GetTileType(pLand.value.usIndex);
+      uiCheckType = GetTileType(pLand.usIndex);
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
-      pLand = pLand.value.pNext;
+      pLand = pLand.pNext;
     }
   } else if (gpWorldLevelData[iWorldTile].pLandHead == null) {
     // Nothing in world's tile, so smooth out the land in the old tile.
     pLand = pUndoLand;
     while (pLand != null) {
-      uiCheckType = GetTileType(pLand.value.usIndex);
+      uiCheckType = GetTileType(pLand.usIndex);
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
-      pLand = pLand.value.pNext;
+      pLand = pLand.pNext;
     }
   } else {
     pLand = pUndoLand;
     while (pLand != null) {
-      uiCheckType = GetTileType(pLand.value.usIndex);
+      uiCheckType = GetTileType(pLand.usIndex);
 
       fFound = false;
       pWLand = pWorldLand;
       while (pWLand != null && !fFound) {
-        uiWCheckType = GetTileType(pWLand.value.usIndex);
+        uiWCheckType = GetTileType(pWLand.usIndex);
 
         if (uiCheckType == uiWCheckType)
           fFound = true;
 
-        pWLand = pWLand.value.pNext;
+        pWLand = pWLand.pNext;
       }
 
       if (!fFound)
         SmoothTerrainRadius(iWorldTile, uiCheckType, 1, true);
 
-      pLand = pLand.value.pNext;
+      pLand = pLand.pNext;
     }
 
     pWLand = pWorldLand;
     while (pWLand != null) {
-      uiWCheckType = GetTileType(pWLand.value.usIndex);
+      uiWCheckType = GetTileType(pWLand.usIndex);
 
       fFound = false;
       pLand = pUndoLand;
       while (pLand != null && !fFound) {
-        uiCheckType = GetTileType(pLand.value.usIndex);
+        uiCheckType = GetTileType(pLand.usIndex);
 
         if (uiCheckType == uiWCheckType)
           fFound = true;
 
-        pLand = pLand.value.pNext;
+        pLand = pLand.pNext;
       }
 
       if (!fFound)
         SmoothTerrainRadius(iWorldTile, uiWCheckType, 1, true);
 
-      pWLand = pWLand.value.pNext;
+      pWLand = pWLand.pNext;
     }
   }
 }
@@ -628,27 +637,27 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
 // Because of the potentially huge amounts of memory that can be allocated due to the inefficient
 // undo methods coded by Bret, it is feasible that it could fail.  Instead of using assertions to
 // terminate the program, destroy the memory allocated thusfar.
-function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_ELEMENT>): void {
-  let pLevelNode: Pointer<LEVELNODE>;
-  let pStructure: Pointer<STRUCTURE>;
+function DeleteMapElementContentsAfterCreationFail(pNewMapElement: MAP_ELEMENT): void {
+  let pLevelNode: LEVELNODE | null;
+  let pStructure: STRUCTURE | null;
   let x: INT32;
   for (x = 0; x < 9; x++) {
     if (x == 1)
       continue;
-    pLevelNode = pNewMapElement.value.pLevelNodes[x];
+    pLevelNode = pNewMapElement.pLevelNodes[x];
     while (pLevelNode) {
-      let temp: Pointer<LEVELNODE>;
+      let temp: LEVELNODE | null;
       temp = pLevelNode;
-      pLevelNode = pLevelNode.value.pNext;
-      MemFree(temp);
+      pLevelNode = pLevelNode.pNext;
+      temp = null;
     }
   }
-  pStructure = pNewMapElement.value.pStructureHead;
+  pStructure = pNewMapElement.pStructureHead;
   while (pStructure) {
-    let temp: Pointer<STRUCTURE>;
+    let temp: STRUCTURE | null;
     temp = pStructure;
-    pStructure = pStructure.value.pNext;
-    MemFree(temp);
+    pStructure = pStructure.pNext;
+    temp = null;
   }
 }
 
@@ -674,29 +683,29 @@ function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_E
                 };
         }; // ( 4 byte union )
 */
-function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex: INT32): boolean {
-  let pOldMapElement: Pointer<MAP_ELEMENT>;
-  let pOldLevelNode: Pointer<LEVELNODE>;
-  let pLevelNode: Pointer<LEVELNODE>;
-  let pNewLevelNode: Pointer<LEVELNODE>;
-  let tail: Pointer<LEVELNODE>;
+function CopyMapElementFromWorld(pNewMapElement: MAP_ELEMENT, iMapIndex: INT32): boolean {
+  let pOldMapElement: MAP_ELEMENT;
+  let pOldLevelNode: LEVELNODE | null;
+  let pLevelNode: LEVELNODE;
+  let pNewLevelNode: LEVELNODE | null;
+  let tail: LEVELNODE | null;
   let x: INT32;
 
-  let pOldStructure: Pointer<STRUCTURE>;
+  let pOldStructure: STRUCTURE | null;
 
   // Get a pointer to the current map index
-  pOldMapElement = addressof(gpWorldLevelData[iMapIndex]);
+  pOldMapElement = gpWorldLevelData[iMapIndex];
 
   // Save the structure information from the mapelement
-  pOldStructure = pOldMapElement.value.pStructureHead;
+  pOldStructure = pOldMapElement.pStructureHead;
   if (pOldStructure) {
-    let pNewStructure: Pointer<STRUCTURE>;
-    let pStructure: Pointer<STRUCTURE>;
-    let tail: Pointer<STRUCTURE>;
+    let pNewStructure: STRUCTURE | null;
+    let pStructure: STRUCTURE;
+    let tail: STRUCTURE | null;
     tail = null;
     pNewStructure = null;
     while (pOldStructure) {
-      pStructure = MemAlloc(sizeof(STRUCTURE));
+      pStructure = createStructure();
       if (!pStructure) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
         return false;
@@ -704,29 +713,29 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       if (!tail) {
         // first node in structure list
         tail = pStructure;
-        tail.value = pOldStructure.value;
-        tail.value.pPrev = null;
-        tail.value.pNext = null;
+        tail = pOldStructure;
+        tail.pPrev = null;
+        tail.pNext = null;
       } else {
         // add to the end of the levelnode list
-        tail.value.pNext = pStructure;
-        pStructure.value = pOldStructure.value;
-        pStructure.value.pPrev = tail;
-        pStructure.value.pNext = null;
-        tail = tail.value.pNext;
+        tail.pNext = pStructure;
+        pStructure = pOldStructure;
+        pStructure.pPrev = tail;
+        pStructure.pNext = null;
+        tail = tail.pNext;
       }
       // place the new node inside of the new map element
       if (!pNewStructure) {
-        pNewMapElement.value.pStructureHead = pStructure;
+        pNewMapElement.pStructureHead = pStructure;
         pNewStructure = pStructure;
       } else {
-        pNewStructure.value.pNext = pStructure;
-        pNewStructure = pNewStructure.value.pNext;
+        pNewStructure.pNext = pStructure;
+        pNewStructure = pNewStructure.pNext;
       }
-      pOldStructure = pOldStructure.value.pNext;
+      pOldStructure = pOldStructure.pNext;
     }
     if (tail) {
-      pNewMapElement.value.pStructureTail = tail;
+      pNewMapElement.pStructureTail = tail;
     }
   }
 
@@ -736,11 +745,11 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
     if (x == 1 || x == 5) // skip the pLandStart and pMercLevel LEVELNODES
       continue;
     tail = null;
-    pOldLevelNode = pOldMapElement.value.pLevelNodes[x];
+    pOldLevelNode = pOldMapElement.pLevelNodes[x];
     pNewLevelNode = null;
     while (pOldLevelNode) {
       // copy the level node
-      pLevelNode = MemAlloc(sizeof(LEVELNODE));
+      pLevelNode = createLevelNode();
       if (!pLevelNode) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
         return false;
@@ -748,37 +757,37 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
       if (!tail) {
         // first node in levelnode list
         tail = pLevelNode;
-        tail.value = pOldLevelNode.value;
+        tail = pOldLevelNode;
         if (!x) // land layer only
-          tail.value.pPrevNode = null;
-        tail.value.pNext = null;
+          tail.pPrevNode = null;
+        tail.pNext = null;
       } else {
         // add to the end of the levelnode list
-        tail.value.pNext = pLevelNode;
-        pLevelNode.value = pOldLevelNode.value;
+        tail.pNext = pLevelNode;
+        pLevelNode = pOldLevelNode;
         if (!x) // land layer only
-          pLevelNode.value.pPrevNode = tail;
-        pLevelNode.value.pNext = null;
-        tail = tail.value.pNext;
+          pLevelNode.pPrevNode = tail;
+        pLevelNode.pNext = null;
+        tail = tail.pNext;
       }
       // place the new node inside of the new map element
       if (!pNewLevelNode) {
-        pNewMapElement.value.pLevelNodes[x] = pLevelNode;
+        pNewMapElement.pLevelNodes[x] = pLevelNode;
         pNewLevelNode = pLevelNode;
       } else {
-        pNewLevelNode.value.pNext = pLevelNode;
-        pNewLevelNode = pNewLevelNode.value.pNext;
+        pNewLevelNode.pNext = pLevelNode;
+        pNewLevelNode = pNewLevelNode.pNext;
       }
       // Handle levelnode layer specific stuff
       switch (x) {
         case 0: // LAND LAYER
-          if (pOldLevelNode == pOldMapElement.value.pLandStart) {
+          if (pOldLevelNode == pOldMapElement.pLandStart) {
             // set the new landstart to point to the new levelnode.
-            pNewMapElement.value.pLandStart = pNewLevelNode;
+            pNewMapElement.pLandStart = pNewLevelNode;
           }
           break;
         case 2: // OBJECT LAYER
-          if (pOldLevelNode.value.pItemPool) {
+          if (pOldLevelNode.pItemPool) {
             // save the item pool?
                                           // pNewLevelNode->pItemPool = (ITEM_POOL*)MemAlloc( sizeof( ITEM_POOL ) );
           }
@@ -786,28 +795,28 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
         case 3: // STRUCT LAYER
         case 6: // ROOF LAYER
         case 7: // ON ROOF LAYER
-          if (pOldLevelNode.value.pStructureData) {
+          if (pOldLevelNode.pStructureData) {
             // make sure the structuredata pointer points to the parallel structure
-            let pOld: Pointer<STRUCTURE>;
-            let pNew: Pointer<STRUCTURE>;
+            let pOld: STRUCTURE | null;
+            let pNew: STRUCTURE | null;
             // both lists are exactly the same size and contain the same information,
             // but the addresses are different.  We will traverse the old list until
             // we find the match, then
-            pOld = pOldMapElement.value.pStructureHead;
-            pNew = pNewMapElement.value.pStructureHead;
+            pOld = pOldMapElement.pStructureHead;
+            pNew = pNewMapElement.pStructureHead;
             while (pOld) {
               Assert(pNew);
-              if (pOld == pOldLevelNode.value.pStructureData) {
-                pNewLevelNode.value.pStructureData = pNew;
+              if (pOld == pOldLevelNode.pStructureData) {
+                pNewLevelNode.pStructureData = pNew;
                 break;
               }
-              pOld = pOld.value.pNext;
-              pNew = pNew.value.pNext;
+              pOld = pOld.pNext;
+              pNew = pNew.pNext;
             }
             // Kris:
             // If this assert should fail, that means there is something wrong with
             // the preservation of the structure data within the mapelement.
-            if (pOld != pOldLevelNode.value.pStructureData) {
+            if (pOld != pOldLevelNode.pStructureData) {
               // OUCH!!! THIS IS HAPPENING.  DISABLED IT FOR LINDA'S SAKE
               Assert(1);
             }
@@ -815,27 +824,27 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
           break;
       }
       // Done, go to next node in this level
-      pOldLevelNode = pOldLevelNode.value.pNext;
+      pOldLevelNode = pOldLevelNode.pNext;
     }
     // Done, go to next level
   }
 
   // Save the rest of the information in the mapelement.
-  pNewMapElement.value.uiFlags = pOldMapElement.value.uiFlags;
-  pNewMapElement.value.sSumRealLights[0] = pOldMapElement.value.sSumRealLights[0];
-  pNewMapElement.value.sSumRealLights[1] = pOldMapElement.value.sSumRealLights[1];
-  pNewMapElement.value.sHeight = pOldMapElement.value.sHeight;
-  pNewMapElement.value.ubTerrainID = pOldMapElement.value.ubTerrainID;
-  pNewMapElement.value.ubReservedSoldierID = pOldMapElement.value.ubReservedSoldierID;
+  pNewMapElement.uiFlags = pOldMapElement.uiFlags;
+  pNewMapElement.sSumRealLights[0] = pOldMapElement.sSumRealLights[0];
+  pNewMapElement.sSumRealLights[1] = pOldMapElement.sSumRealLights[1];
+  pNewMapElement.sHeight = pOldMapElement.sHeight;
+  pNewMapElement.ubTerrainID = pOldMapElement.ubTerrainID;
+  pNewMapElement.ubReservedSoldierID = pOldMapElement.ubReservedSoldierID;
 
   return true;
 }
 
 function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_ELEMENT>): boolean {
-  let pCurrentMapElement: Pointer<MAP_ELEMENT>;
+  let pCurrentMapElement: MAP_ELEMENT;
   let TempMapElement: MAP_ELEMENT;
 
-  pCurrentMapElement = addressof(gpWorldLevelData[iMapIndex]);
+  pCurrentMapElement = gpWorldLevelData[iMapIndex];
 
   // Transfer the merc level node from the current world to the undo mapelement
   // that will replace it.  We do this, because mercs aren't associated with
@@ -844,8 +853,8 @@ function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_
   gpWorldLevelData[iMapIndex].pMercHead = null;
 
   // Swap the mapelements
-  TempMapElement = pCurrentMapElement.value;
-  pCurrentMapElement.value = pUndoMapElement.value;
+  TempMapElement = pCurrentMapElement;
+  pCurrentMapElement = pUndoMapElement.value;
   pUndoMapElement.value = TempMapElement;
 
   return true;

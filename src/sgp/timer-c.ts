@@ -2,8 +2,13 @@ namespace ja2 {
 
 let guiStartupTime: UINT32;
 let guiCurrentTime: UINT32;
+let timerId: NodeJS.Timeout;
 
-function Clock(hWindow: HWND, uMessage: UINT32, idEvent: UINT32, dwTime: number): void {
+export function GetTickCount(): number {
+  return Date.now();
+}
+
+function Clock(): void {
   guiCurrentTime = GetTickCount();
   if (guiCurrentTime < guiStartupTime) {
     // Adjust guiCurrentTime because of loopback on the timer value
@@ -17,14 +22,14 @@ function Clock(hWindow: HWND, uMessage: UINT32, idEvent: UINT32, dwTime: number)
 export function InitializeClockManager(): boolean {
   // Register the start time (use WIN95 API call)
   guiCurrentTime = guiStartupTime = GetTickCount();
-  SetTimer(ghWindow, MAIN_TIMER_ID, 10, Clock);
+  timerId = setInterval(Clock, 10);
 
   return true;
 }
 
 export function ShutdownClockManager(): void {
   // Make sure we kill the timer
-  KillTimer(ghWindow, MAIN_TIMER_ID);
+  clearInterval(timerId);
 }
 
 export function GetClock(): TIMER {

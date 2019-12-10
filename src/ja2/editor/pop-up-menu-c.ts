@@ -202,15 +202,15 @@ function RenderPopupMenu(): void {
   let ubColumn: UINT8;
   let ubEntry: UINT8;
   let ubCounter: UINT8;
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let usLineColor: UINT16;
   let usStringWidth: UINT16;
   let usStart: UINT16;
 
   // Draw the menu
   ColorFillVideoSurfaceArea(FRAME_BUFFER, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, Get16BPPColor(FROMRGB(128, 128, 128)));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   usLineColor = Get16BPPColor(FROMRGB(64, 64, 64));
   RectangleDraw(true, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, usLineColor, pDestBuf);

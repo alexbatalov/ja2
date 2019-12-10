@@ -33,7 +33,21 @@ interface TOP_MESSAGE {
   sWorldRenderY: INT16;
 }
 
-let gTopMessage: TOP_MESSAGE;
+function createTopMessage(): TOP_MESSAGE {
+  return {
+    uiSurface: 0,
+    bCurrentMessage: 0,
+    uiTimeOfLastUpdate: 0,
+    uiTimeSinceLastBeep: 0,
+    bAnimate: 0,
+    bYPos: 0,
+    fCreated: false,
+    sWorldRenderX: 0,
+    sWorldRenderY: 0,
+  };
+}
+
+let gTopMessage: TOP_MESSAGE = createTopMessage();
 export let gfTopMessageDirty: boolean = false;
 
 let gMenuOverlayRegion: MOUSE_REGION = createMouseRegion();
@@ -93,7 +107,7 @@ const enum Enum208 {
   NUM_ICON_IMAGES,
 }
 
-let iIconImages: INT32[] /* [NUM_ICON_IMAGES] */;
+let iIconImages: INT32[] /* [NUM_ICON_IMAGES] */ = createArray(Enum208.NUM_ICON_IMAGES, 0);
 
 const enum Enum209 {
   WALK_ICON,
@@ -119,7 +133,7 @@ const enum Enum209 {
   NUM_ICONS,
 }
 
-let iActionIcons: INT32[] /* [NUM_ICONS] */;
+let iActionIcons: INT32[] /* [NUM_ICONS] */ = createArray(Enum209.NUM_ICONS, 0);
 
 // GLOBAL INTERFACE SURFACES
 export let guiRENDERBUFFER: UINT32;
@@ -1453,15 +1467,15 @@ function DrawBarsInUIBox(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWid
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let bBandage: INT8;
 
   // Draw breath points
 
   // Draw new size
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 640, (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y));
 
   // get amt bandaged

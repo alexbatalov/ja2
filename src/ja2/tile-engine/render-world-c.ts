@@ -2,7 +2,7 @@ namespace ja2 {
 
 let fLandLayerDirty: boolean = true;
 
-export let gpZBuffer: Uint16Array = <Uint16Array><unknown>null;
+export let gpZBuffer: Uint8ClampedArray = <Uint8ClampedArray><unknown>null;
 let gfTagAnimatedTiles: boolean = true;
 
 let gsCurrentGlowFrame: INT16 = 0;
@@ -738,8 +738,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   let hVObject: SGPVObject = <SGPVObject><unknown>undefined;
   let pTrav: ETRLEObject;
   let TileElem: TILE_ELEMENT = <TILE_ELEMENT><unknown>undefined;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8> = null;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray = <Uint8ClampedArray><unknown>null;
   let usAnimSurface: UINT16;
   let bXOddFlag: boolean /* INT8 */ = false;
   let iAnchorPosX_M: INT32;
@@ -814,10 +814,11 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   let fObscuredBlitter: boolean;
   let sModifiedTileHeight: INT16;
   let fDoRow: boolean;
-  let pShadeStart: Pointer<Pointer<INT16>>;
+  let pShades: Uint16Array[];
+  let pShadeStart: number;
 
-  let uiSaveBufferPitchBYTES: UINT32;
-  let pSaveBuf: Pointer<UINT8>;
+  let uiSaveBufferPitchBYTES: UINT32 = 0;
+  let pSaveBuf: Uint8ClampedArray;
   let pItemPool: ITEM_POOL = <ITEM_POOL><unknown>null;
   let fHiddenTile: boolean = false;
   let uiAniTileFlags: UINT32 = 0;
@@ -835,7 +836,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   iAnchorPosY_S = iStartPointY_S;
 
   if (!(uiFlags & TILES_DIRTY))
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   if (uiFlags & TILES_DYNAMIC_CHECKFOR_INT_TILE) {
     if (ShouldCheckForMouseDetections()) {
@@ -1489,16 +1490,18 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                       }
 
                       if (pSoldier.bLevel == 0) {
-                        pShadeStart = addressof(pSoldier.pGlowShades[0]);
+                        pShades = pSoldier.pGlowShades;
+                        pShadeStart = 0;
                       } else {
-                        pShadeStart = addressof(pSoldier.pShades[20]);
+                        pShades = pSoldier.pShades;
+                        pShadeStart = 20;
                       }
 
                       // Set shade
                       // If a bad guy is highlighted
                       if (gfUIHandleSelectionAboveGuy == true && MercPtrs[gsSelectedGuy].bSide != gbPlayerNum) {
                         if (gsSelectedGuy == pSoldier.ubID) {
-                          pShadeTable = pShadeStart[gsGlowFrames[gsCurrentGlowFrame] + bGlowShadeOffset];
+                          pShadeTable = pShades[pShadeStart + gsGlowFrames[gsCurrentGlowFrame] + bGlowShadeOffset];
                           gsForceSoldierZLevel = TOPMOST_Z_LEVEL;
                         } else {
                           // Are we dealing with a not-so visible merc?
@@ -1513,14 +1516,14 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                         if (gTacticalStatus.ubCurrentTeam != OUR_TEAM) {
                           // Does he have baton?
                           if ((pSoldier.uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
-                            pShadeTable = pShadeStart[gpGlowFramePointer[gsCurrentGlowFrame] + bGlowShadeOffset];
+                            pShadeTable = pShades[pShadeStart + gpGlowFramePointer[gsCurrentGlowFrame] + bGlowShadeOffset];
 
                             if (gpGlowFramePointer[gsCurrentGlowFrame] >= 7) {
                               gsForceSoldierZLevel = TOPMOST_Z_LEVEL;
                             }
                           }
                         } else {
-                          pShadeTable = pShadeStart[gpGlowFramePointer[gsCurrentGlowFrame] + bGlowShadeOffset];
+                          pShadeTable = pShades[pShadeStart + gpGlowFramePointer[gsCurrentGlowFrame] + bGlowShadeOffset];
 
                           if (gpGlowFramePointer[gsCurrentGlowFrame] >= 7) {
                             gsForceSoldierZLevel = TOPMOST_Z_LEVEL;
@@ -1821,7 +1824,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             }
 
                             if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
+                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiSaveBufferPitchBYTES, (v) => uiSaveBufferPitchBYTES = v));
 
                               // BLIT HERE
                               Blt8BPPDataTo16BPPBufferTransShadowClip(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
@@ -1864,7 +1867,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                           }
 
                           if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
+                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiSaveBufferPitchBYTES, (v) => uiSaveBufferPitchBYTES = v));
 
                             // BLIT HERE
                             Blt8BPPDataTo16BPPBufferTransZClip(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
@@ -1902,7 +1905,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             }
 
                             if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
+                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiSaveBufferPitchBYTES, (v) => uiSaveBufferPitchBYTES = v));
 
                               // BLIT HERE
                               Blt8BPPDataTo16BPPBufferTransShadow(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
@@ -1947,7 +1950,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             Blt8BPPDataTo16BPPBufferTransZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
 
                           if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
+                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiSaveBufferPitchBYTES, (v) => uiSaveBufferPitchBYTES = v));
 
                             // BLIT HERE
                             Blt8BPPDataTo16BPPBufferTransZ(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
@@ -2048,7 +2051,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   UnLockVideoSurface(FRAME_BUFFER);
                 ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, (iTempPosX_S + 40), (Math.min(iTempPosY_S + 20, 360)), Get16BPPColor(FROMRGB(0, 0, 0)));
                 if (!(uiFlags & TILES_DIRTY))
-                  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+                  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
               }
             }
           }
@@ -2124,7 +2127,7 @@ function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScroll
 
   if (!gfDoVideoScroll) {
     // Clear z-buffer
-    memset(gpZBuffer, LAND_Z_LEVEL, 1280 * gsVIEWPORT_END_Y);
+    gpZBuffer.fill(LAND_Z_LEVEL, 1280 * gsVIEWPORT_END_Y);
 
     RenderStaticWorldRect(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, false);
 
@@ -2266,12 +2269,12 @@ export function RenderWorld(): void {
 
   if (gTacticalStatus.uiFlags & SHOW_Z_BUFFER) {
     // COPY Z BUFFER TO FRAME BUFFER
-    let uiDestPitchBYTES: UINT32;
-    let pDestBuf: Pointer<UINT16>;
+    let uiDestPitchBYTES: UINT32 = 0;
+    let pDestBuf: Uint8ClampedArray;
     let cnt: UINT32;
     let zVal: INT16;
 
-    pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(guiRENDERBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     for (cnt = 0; cnt < (640 * 480); cnt++) {
       // Get Z value
@@ -3454,8 +3457,8 @@ const Z_STRIP_DELTA_Y = (Z_SUBLAYERS * 10);
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
-  let p16BPPPalette: Pointer<UINT16>;
+function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+  let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -3851,8 +3854,8 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
-  let p16BPPPalette: Pointer<UINT16>;
+function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+  let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -4251,8 +4254,8 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
         // render at all
 
 **********************************************************************************************/
-function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
-  let p16BPPPalette: Pointer<UINT16>;
+function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null): boolean {
+  let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
   let usHeight: UINT32;
@@ -4667,7 +4670,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
   let uiOffset: UINT32;
   let uiLineFlag: UINT32;
   let usHeight: UINT32;
@@ -5131,7 +5134,7 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16): { sNewScreenX: I
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, sZIndex: INT16, p16BPPPalette: Uint16Array): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -5543,8 +5546,8 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
   let usTileIndex: UINT16;
   let sX: INT16;
   let sY: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   // Begin Render Loop
   sAnchorPosX_M = sStartPointX_M;
@@ -5552,7 +5555,7 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
   sAnchorPosX_S = sStartPointX_S;
   sAnchorPosY_S = sStartPointY_S;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   do {
     fEndRenderRow = false;
@@ -5650,8 +5653,8 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   let sY: INT16;
   let sWorldX: INT16;
   let sZLevel: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let TileElem: TILE_ELEMENT;
   let bBlitClipVal: INT8;
   let pObject: LEVELNODE | null;
@@ -5662,7 +5665,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   sAnchorPosX_S = sStartPointX_S;
   sAnchorPosY_S = sStartPointY_S;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // Get VObject for firt land peice!
   TileElem = gTileDatabase[Enum312.FIRSTTEXTURE1];
@@ -5869,7 +5872,7 @@ function ResetRenderParameters(): void {
   gClippingRect = gOldClipRect;
 }
 
-function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
@@ -6098,7 +6101,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   return true;
 }
 
-function IsTileRedundent(pZBuffer: Uint16Array, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
+function IsTileRedundent(pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
   let p16BPPPalette: Uint16Array;
   let uiOffset: UINT32;
   let usHeight: UINT32;

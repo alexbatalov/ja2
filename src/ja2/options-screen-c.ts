@@ -138,7 +138,7 @@ let guiDoneButton: UINT32;
 let giDoneBtnImage: INT32;
 
 // checkbox to toggle tracking mode on or off
-let guiOptionsToggles: UINT32[] /* [NUM_GAME_OPTIONS] */;
+let guiOptionsToggles: UINT32[] /* [NUM_GAME_OPTIONS] */ = createArray(Enum8.NUM_GAME_OPTIONS, 0);
 
 // Mouse regions for the name of the option
 let gSelectedOptionTextRegion: MOUSE_REGION[] /* [NUM_GAME_OPTIONS] */ = createArrayFrom(Enum8.NUM_GAME_OPTIONS, createMouseRegion);

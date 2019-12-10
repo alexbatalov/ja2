@@ -62,6 +62,13 @@ export function copySGPPaletteEntry(destination: SGPPaletteEntry, source: SGPPal
   destination.peFlags = source.peFlags;
 }
 
+export function resetSGPPaletteEntry(o: SGPPaletteEntry) {
+  o.peRed = 0;
+  o.peGreen = 0;
+  o.peBlue = 0;
+  o.peFlags = 0;
+}
+
 export const SGP_PALETTE_ENTRY_SIZE = 4;
 
 export function readSGPPaletteEntry(o: SGPPaletteEntry, buffer: Buffer, offset: number = 0): number {
@@ -289,9 +296,9 @@ export function createImageType(): ImageType {
 
 export type HIMAGE = Pointer<ImageType>;
 
-export const SGPGetRValue = (rgb: number) => ((rgb));
-export const SGPGetBValue = (rgb: number) => (((rgb) >> 16));
-export const SGPGetGValue = (rgb: number) => ((((rgb)) >> 8));
+export const SGPGetRValue = (rgb: number) => ((rgb) & 0xFF);
+export const SGPGetBValue = (rgb: number) => (((rgb) >> 16) & 0xFF);
+export const SGPGetGValue = (rgb: number) => ((((rgb)) >> 8) & 0xFF);
 
 // *****************************************************************************
 //

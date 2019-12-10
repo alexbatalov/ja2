@@ -199,7 +199,7 @@ function LoadImageData(hImage: ImageType, fContents: UINT16): boolean {
   return fReturnVal;
 }
 
-export function CopyImageToBuffer(hImage: ImageType, fBufferType: UINT32, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
+export function CopyImageToBuffer(hImage: ImageType, fBufferType: UINT32, pDestBuf: Uint8Array | Uint8ClampedArray, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   // Use blitter based on type of image
   Assert(hImage != null);
 
@@ -223,7 +223,7 @@ export function CopyImageToBuffer(hImage: ImageType, fBufferType: UINT32, pDestB
   return false;
 }
 
-function Copy8BPPImageTo8BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
+function Copy8BPPImageTo8BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array | Uint8ClampedArray, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
@@ -280,7 +280,7 @@ function Copy8BPPImageTo8BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDe
   return true;
 }
 
-function Copy16BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
+function Copy16BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array | Uint8ClampedArray, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;
@@ -348,7 +348,7 @@ function Extract16BPPCompressedImageToBuffer(hImage: ImageType, pDestBuf: Uint8A
   return false;
 }
 
-function Copy8BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
+function Copy8BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array | Uint8ClampedArray, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: SGPRect): boolean {
   let uiSrcStart: UINT32;
   let uiDestStart: UINT32;
   let uiNumLines: UINT32;

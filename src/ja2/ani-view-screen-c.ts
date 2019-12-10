@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+
 export let gfAniEditMode: boolean = false;
 /* static */ let usStartAnim: UINT16 = 0;
 /* static */ let ubStartHeight: UINT8 = 0;
@@ -126,7 +128,7 @@ export function AniEditScreenHandle(): UINT32 {
       gTacticalStatus.uiFlags &= (~LOADING_SAVED_GAME);
 
       if (fOKFiles) {
-        MemFree(pusStates);
+        pusStates = <UINT16[]><unknown>null;
       }
 
       fOKFiles = false;
@@ -240,7 +242,7 @@ function GetAnimStateFromName(zName: string /* Pointer<INT8> */): UINT16 {
 }
 
 function BuildListFile(): void {
-  let infoFile: Pointer<FILE>;
+  let infoFile: number;
   let currFilename: string /* char[128] */;
   let numEntries: number = 0;
   let cnt: number;
@@ -248,32 +250,21 @@ function BuildListFile(): void {
   let zError: string /* INT16[128] */;
 
   // Verify the existance of the header text file.
-  infoFile = fopen("ANITEST.DAT", "rb");
-  if (!infoFile) {
+  if (!fs.existsSync('ANITEST.DAT')) {
     return;
   }
-  // count STIs inside header and verify each one's existance.
-  while (!feof(infoFile)) {
-    fgets(currFilename, 128, infoFile);
-    // valid entry in header, continue on...
 
-    numEntries++;
-  }
-  fseek(infoFile, 0, SEEK_SET); // reset header file
+  // count STIs inside header and verify each one's existance.
+  const fileNames = fs.readFileSync('ANITEST.DAT', { encoding: 'ascii' }).split('\n');
+  numEntries = fileNames.length;
 
   // Allocate array
-  pusStates = MemAlloc(sizeof(UINT16) * numEntries);
+  pusStates = createArray(numEntries, 0);
 
   fOKFiles = true;
 
   cnt = 0;
-  while (!feof(infoFile)) {
-    fgets(currFilename, 128, infoFile);
-
-    // Remove newline
-    currFilename[currFilename.length - 1] = '\0';
-    currFilename[currFilename.length - 1] = '\0';
-
+  for (currFilename of fileNames) {
     usState = GetAnimStateFromName(currFilename);
 
     if (usState != 5555) {
@@ -283,7 +274,6 @@ function BuildListFile(): void {
     } else {
       zError = swprintf("Animation str %S is not known: ", currFilename);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, null, null);
-      fclose(infoFile);
       return;
     }
   }

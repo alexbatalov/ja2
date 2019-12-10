@@ -216,10 +216,10 @@ function RenderTacticalPlacementGUI(): void {
   let height: INT32;
   let iStartY: INT32;
   let pSoldier: SOLDIERTYPE;
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let usHatchColor: UINT16;
   let str: string /* UINT16[128] */;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
   let ubColor: UINT8;
   if (gfTacticalPlacementFirstTime) {
     gfTacticalPlacementFirstTime = false;
@@ -325,7 +325,7 @@ function RenderTacticalPlacementGUI(): void {
           break;
       }
     }
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, gTPClipRect, usHatchColor);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(true, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);

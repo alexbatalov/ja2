@@ -89,38 +89,11 @@ let fSoundSystemInit: boolean = false; // Startup called T/F
 let gfEnableStartup: boolean = true; // Allow hardware to starup
 
 // Sample cache list for files loaded
-let pSampleList: SAMPLETAG[] /* [SOUND_MAX_CACHED] */;
+let pSampleList: SAMPLETAG[] /* [SOUND_MAX_CACHED] */ = createArrayFrom(SOUND_MAX_CACHED, createSampleTag);
 // Sound channel list for output channels
-let pSoundList: SOUNDTAG[] /* [SOUND_MAX_CHANNELS] */;
+let pSoundList: SOUNDTAG[] /* [SOUND_MAX_CHANNELS] */ = createArrayFrom(SOUND_MAX_CHANNELS, createSoundTag);
 
 // 3D sound globals
-let gpProviderName: string /* Pointer<CHAR8> */ = null;
-let gh3DProvider: HPROVIDER = 0;
-let gh3DListener: H3DPOBJECT = 0;
-let gfUsingEAX: boolean = true;
-let guiRoomTypeIndex: UINT32 = 0;
-
-let pEAXRoomTypes: string[] /* Pointer<CHAR8>[EAXROOMTYPE_NUM_TYPES] */ = [
-  // None
-  "PLAIN",
-
-  // S,M,L Cave
-  "STONECORRIDOR",
-  "CAVE",
-  "CONCERTHALL",
-
-  // S,M,L Room
-  "LIVINGROOM",
-  "ROOM",
-  "AUDITORIUM",
-
-  // Flat open, valley
-  "CITY",
-  "MOUNTAINS",
-
-  // Swimming
-  "UNDERWATER",
-];
 
 //*******************************************************************************
 // High Level Interface
@@ -153,7 +126,7 @@ export function InitializeSoundManager(): boolean {
     ShutdownSoundManager();
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
-    memset(addressof(pSoundList[uiCount]), 0, sizeof(SOUNDTAG));
+  pSoundList.forEach(resetSoundTag);
 
   if (gfEnableStartup && SoundInitHardware())
     fSoundSystemInit = true;
@@ -163,9 +136,6 @@ export function InitializeSoundManager(): boolean {
   guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY;
   guiSoundMemoryUsed = 0;
   guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;
-
-  if (gpProviderName && !gh3DProvider)
-    Sound3DInitProvider(gpProviderName);
 
   return true;
 }
@@ -178,9 +148,6 @@ export function InitializeSoundManager(): boolean {
 //
 //*******************************************************************************
 export function ShutdownSoundManager(): void {
-  if (gh3DProvider)
-    Sound3DShutdownProvider();
-
   SoundStopAll();
   SoundStopMusic();
   SoundShutdownCache();
@@ -375,36 +342,6 @@ export function SoundPlayRandom(pFilename: string /* STR */, pParms: RANDOMPARMS
 }
 
 //*******************************************************************************
-// SoundStreamCallback
-//
-//	Plays a sound through streaming, and executes a callback for each buffer
-//	loaded.
-//
-//	Returns:	If successful, it returns the sample index it is loaded to, else
-//						SOUND_ERROR is returned.
-//
-//*******************************************************************************
-function SoundStreamCallback(pFilename: string /* STR */, pParms: SOUNDPARMS, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: any) => void, pData: any): UINT32 {
-  let uiChannel: UINT32;
-  let uiSoundID: UINT32;
-
-  if (fSoundSystemInit) {
-    if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
-      uiSoundID = SoundStartStream(pFilename, uiChannel, pParms);
-      if (uiSoundID != SOUND_ERROR) {
-        AIL_auto_service_stream(pSoundList[uiChannel].hMSSStream, false);
-        pSoundList[uiChannel].pCallback = pCallback;
-        pSoundList[uiChannel].pData = pData;
-        pSoundList[uiChannel].uiFlags |= SOUND_CALLBACK;
-
-        return uiSoundID;
-      }
-    }
-  }
-  return SOUND_ERROR;
-}
-
-//*******************************************************************************
 // SoundIsPlaying
 //
 //		Returns TRUE/FALSE that an instance of a sound is still playing.
@@ -477,130 +414,6 @@ export function SoundStop(uiSoundID: UINT32): boolean {
 }
 
 //*******************************************************************************
-// SoundStopGroup
-//
-//		Stops multiple instances of sounds that have the indicated priority. This
-//	is useful for silencing all ambient sounds when switching to menus, etc.
-//
-//	Returns:	TRUE if samples were actually stopped, FALSE if none were found
-//
-//*******************************************************************************
-function SoundStopGroup(uiPriority: UINT32): boolean {
-  let uiCount: UINT32;
-  let fStopped: boolean = false;
-
-  if (fSoundSystemInit) {
-    for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-      if ((pSoundList[uiCount].hMSS != null) || (pSoundList[uiCount].hMSSStream != null) || (pSoundList[uiCount].hM3D != null)) {
-        if (pSoundList[uiCount].uiPriority == uiPriority) {
-          SoundStop(pSoundList[uiCount].uiSoundID);
-          fStopped = true;
-        }
-      }
-    }
-  }
-
-  return fStopped;
-}
-
-//*******************************************************************************
-// SoundSetMemoryLimit
-//
-//		Specifies how much memory the sound system is allowed to dynamically
-// allocate. Once this limit is reached, the cache code will start dropping the
-// least-used samples. You should always set the limit higher by a good margin
-// than your actual memory requirements, to give the cache some elbow room.
-//
-//	Returns:	TRUE if the limit was set, or FALSE if the memory already used is
-//						greater than the limit requested.
-//
-//*******************************************************************************
-function SoundSetMemoryLimit(uiLimit: UINT32): boolean {
-  if (guiSoundMemoryLimit < guiSoundMemoryUsed)
-    return false;
-
-  guiSoundMemoryLimit = uiLimit;
-  return true;
-}
-
-//*******************************************************************************
-// SoundGetSystemInfo
-//
-//		Returns information about the capabilities of the hardware. Currently does
-//	nothing.
-//
-//	Returns:	FALSE, always
-//
-//*******************************************************************************
-function SoundGetSystemInfo(): boolean {
-  return false;
-}
-
-//*******************************************************************************
-// SoundSetDigitalVolume
-//
-//		Sets the master volume for the digital section. All sample volumes will be
-//	affected by this setting.
-//
-//	Returns:	TRUE, always
-//
-//*******************************************************************************
-function SoundSetDigitalVolume(uiVolume: UINT32): boolean {
-  let uiVolClip: UINT32;
-
-  if (fSoundSystemInit) {
-    uiVolClip = Math.min(uiVolume, 127);
-    AIL_set_digital_master_volume(hSoundDriver, uiVolClip);
-  }
-  return true;
-}
-
-//*******************************************************************************
-// SoundGetDigitalVolume
-//
-//		Returns the current value of the digital master volume.
-//
-//	Returns:	0-127
-//
-//*******************************************************************************
-function SoundGetDigitalVolume(uiVolume: UINT32): UINT32 {
-  if (fSoundSystemInit)
-    return AIL_digital_master_volume(hSoundDriver);
-  else
-    return 0;
-}
-
-//*****************************************************************************************
-// SoundSetDefaultVolume
-//
-// Sets the volume to use when a default is not chosen.
-//
-// Returns BOOLEAN            -
-//
-// UINT32 uiVolume            -
-//
-// Created:  3/28/00 Derek Beland
-//*****************************************************************************************
-function SoundSetDefaultVolume(uiVolume: UINT32): void {
-  guiSoundDefaultVolume = Math.min(uiVolume, 127);
-}
-
-//*****************************************************************************************
-// SoundGetDefaultVolume
-//
-//
-//
-// Returns UINT32             -
-//
-// UINT32 uiVolume            -
-//
-// Created:  3/28/00 Derek Beland
-//*****************************************************************************************
-function SoundGetDefaultVolume(): UINT32 {
-  return guiSoundDefaultVolume;
-}
-
-//*******************************************************************************
 // SoundStopAll
 //
 //		Stops all currently playing sounds.
@@ -618,46 +431,6 @@ export function SoundStopAll(): boolean {
   }
 
   return true;
-}
-
-//*****************************************************************************************
-// SoundSetFadeVolume
-//
-// Sets a target volume to fade towards. The fade volume is updated in SoundServiceStreams.
-//
-// Returns BOOLEAN            - TRUE if the fading volume was set, FALSE otherwise
-//
-// UINT32 uiSoundID           - ID of sound
-// UINT32 uiVolume            - Volume to fade towards (0-127)
-// UINT32 uiRate              - Total time taken to change volume
-// BOOLEAN fStopAtZero        - If TRUE, sample is stopped when volume reaches zero
-//
-// Created:  3/17/00 Derek Beland
-//*****************************************************************************************
-function SoundSetFadeVolume(uiSoundID: UINT32, uiVolume: UINT32, uiRate: UINT32, fStopAtZero: boolean): boolean {
-  let uiSound: UINT32;
-  let uiVolCap: UINT32;
-  let uiVolumeDiff: UINT32;
-
-  if (fSoundSystemInit) {
-    uiVolCap = Math.min(uiVolume, 127);
-
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      uiVolumeDiff = Math.abs(uiVolCap - SoundGetVolumeIndex(uiSound));
-
-      if (!uiVolumeDiff)
-        return false;
-
-      pSoundList[uiSound].uiFadeVolume = uiVolCap;
-      pSoundList[uiSound].fStopAtZero = fStopAtZero;
-      pSoundList[uiSound].uiFadeRate = uiRate / uiVolumeDiff;
-      pSoundList[uiSound].uiFadeTime = GetTickCount();
-
-      return true;
-    }
-  }
-
-  return false;
 }
 
 //*******************************************************************************
@@ -749,72 +522,6 @@ export function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): boolean {
 }
 
 //*******************************************************************************
-// SoundSetFrequency
-//
-//		Sets the frequency on a currently playing sound.
-//
-//	Returns:	TRUE if the frequency was actually set on the sample, FALSE if the
-//						sample had already expired or couldn't be found
-//
-//*******************************************************************************
-function SoundSetFrequency(uiSoundID: UINT32, uiFreq: UINT32): boolean {
-  let uiSound: UINT32;
-  let uiFreqCap: UINT32;
-
-  if (fSoundSystemInit) {
-    uiFreqCap = Math.min(uiFreq, 44100);
-
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null)
-        AIL_set_sample_playback_rate(pSoundList[uiSound].hMSS, uiFreqCap);
-
-      if (pSoundList[uiSound].hMSSStream != null)
-        AIL_set_stream_playback_rate(pSoundList[uiSound].hMSSStream, uiFreqCap);
-
-      if (pSoundList[uiSound].hM3D != null)
-        AIL_set_3D_sample_playback_rate(pSoundList[uiSound].hM3D, uiFreqCap);
-
-      return true;
-    }
-  }
-
-  return false;
-}
-
-//*******************************************************************************
-// SoundSetLoop
-//
-//		Sets the loop on a currently playing sound.
-//
-//	Returns:	TRUE if the loop was actually set on the sample, FALSE if the
-//						sample had already expired or couldn't be found
-//
-//*******************************************************************************
-function SoundSetLoop(uiSoundID: UINT32, uiLoop: UINT32): boolean {
-  let uiSound: UINT32;
-  let uiLoopCap: UINT32;
-
-  if (fSoundSystemInit) {
-    uiLoopCap = Math.min(uiLoop, 10000);
-
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null)
-        AIL_set_sample_loop_count(pSoundList[uiSound].hMSS, uiLoopCap);
-
-      if (pSoundList[uiSound].hMSSStream != null)
-        AIL_set_stream_loop_count(pSoundList[uiSound].hMSSStream, uiLoopCap);
-
-      if (pSoundList[uiSound].hM3D != null)
-        AIL_set_3D_sample_loop_count(pSoundList[uiSound].hM3D, uiLoopCap);
-
-      return true;
-    }
-  }
-
-  return false;
-}
-
-//*******************************************************************************
 // SoundGetVolume
 //
 //		Returns the current volume setting of a sound that is playing. If the sound
@@ -853,81 +560,6 @@ function SoundGetVolumeIndex(uiChannel: UINT32): UINT32 {
 
     if (pSoundList[uiChannel].hM3D != null)
       return AIL_3D_sample_volume(pSoundList[uiChannel].hM3D);
-  }
-
-  return SOUND_ERROR;
-}
-
-//*******************************************************************************
-// SoundGetPan
-//
-//		Returns the current pan setting of a sound that is playing. If the sound
-//	has expired, or could not be found, SOUND_ERROR is returned.
-//
-//*******************************************************************************
-function SoundGetPan(uiSoundID: UINT32): UINT32 {
-  let uiSound: UINT32;
-
-  if (fSoundSystemInit) {
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null)
-        return AIL_sample_pan(pSoundList[uiSound].hMSS);
-
-      if (pSoundList[uiSound].hMSSStream != null)
-        return AIL_stream_pan(pSoundList[uiSound].hMSSStream);
-    }
-  }
-
-  return SOUND_ERROR;
-}
-
-//*******************************************************************************
-// SoundGetFrequency
-//
-//		Returns the current frequency setting of a sound that is playing. If the sound
-//	has expired, or could not be found, SOUND_ERROR is returned.
-//
-//*******************************************************************************
-function SoundGetFrequency(uiSoundID: UINT32): UINT32 {
-  let uiSound: UINT32;
-
-  if (fSoundSystemInit) {
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null)
-        return AIL_sample_playback_rate(pSoundList[uiSound].hMSS);
-
-      if (pSoundList[uiSound].hMSSStream != null)
-        return AIL_stream_playback_rate(pSoundList[uiSound].hMSSStream);
-
-      if (pSoundList[uiSound].hM3D != null)
-        return AIL_3D_sample_playback_rate(pSoundList[uiSound].hM3D);
-    }
-  }
-
-  return SOUND_ERROR;
-}
-
-//*******************************************************************************
-// SoundGetLoop
-//
-//		Returns the current loop count of a sound that is playing. If the sound
-//	has expired, or could not be found, SOUND_ERROR is returned.
-//
-//*******************************************************************************
-function SoundGetLoop(uiSoundID: UINT32): UINT32 {
-  let uiSound: UINT32;
-
-  if (fSoundSystemInit) {
-    if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null)
-        return AIL_sample_loop_count(pSoundList[uiSound].hMSS);
-
-      if (pSoundList[uiSound].hMSSStream != null)
-        return AIL_stream_loop_count(pSoundList[uiSound].hMSSStream);
-
-      if (pSoundList[uiSound].hM3D != null)
-        return AIL_3D_sample_loop_count(pSoundList[uiSound].hM3D);
-    }
   }
 
   return SOUND_ERROR;
@@ -1176,43 +808,6 @@ export function SoundGetPosition(uiSoundID: UINT32): UINT32 {
   return 0;
 }
 
-//*****************************************************************************************
-//
-//  SoundGetMilliSecondPosition
-//
-//  Get the sounds total length and our current position within that
-//  sound in milliseconds
-//
-//
-//  Returns BOOLEAN:	TRUE if the sound exists.
-//
-//  Created by:     Gilles Beauparlant
-//  Created on:     7/23/99
-//
-//*****************************************************************************************
-function SoundGetMilliSecondPosition(uiSoundID: UINT32, puiTotalMilliseconds: Pointer<UINT32>, puiCurrentMilliseconds: Pointer<UINT32>): boolean {
-  let uiSound: UINT32;
-
-  if (fSoundSystemInit) {
-    uiSound = SoundGetIndexByID(uiSoundID);
-    if (uiSound != NO_SAMPLE) {
-      if (pSoundList[uiSound].hMSS != null) {
-        AIL_sample_ms_position(pSoundList[uiSound].hMSS, puiTotalMilliseconds, puiCurrentMilliseconds);
-        return true;
-      }
-
-      if (pSoundList[uiSound].hMSSStream != null) {
-        AIL_stream_ms_position(pSoundList[uiSound].hMSSStream, puiTotalMilliseconds, puiCurrentMilliseconds);
-        return true;
-      }
-    }
-  }
-
-  puiTotalMilliseconds.value = 0;
-  puiCurrentMilliseconds.value = 0;
-  return false;
-}
-
 //*******************************************************************************
 // Cacheing Subsystem
 //*******************************************************************************
@@ -1227,7 +822,7 @@ function SoundInitCache(): boolean {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++)
-    memset(addressof(pSampleList[uiCount]), 0, sizeof(SAMPLETAG));
+    resetSampleTag(pSampleList[uiCount]);
 
   return true;
 }
@@ -1242,24 +837,6 @@ function SoundInitCache(): boolean {
 //*******************************************************************************
 function SoundShutdownCache(): boolean {
   SoundEmptyCache();
-  return true;
-}
-
-//*******************************************************************************
-// SoundSetCacheThreshold
-//
-//		Sets the sound size above which samples will be played double-buffered,
-// below which they will be loaded into the cache.
-//
-//	Returns: TRUE, always
-//
-//*******************************************************************************
-function SoundSetCacheThreshhold(uiThreshold: UINT32): boolean {
-  if (uiThreshold == 0)
-    guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;
-  else
-    guiSoundCacheThreshold = uiThreshold;
-
   return true;
 }
 
@@ -1340,48 +917,6 @@ export function SoundUnlockSample(pFilename: string /* STR */): UINT32 {
   return NO_SAMPLE;
 }
 
-//*******************************************************************************
-// SoundFreeSample
-//
-//		Releases the resources associated with a sample from the cache.
-//
-//	Returns: The sample index if successful, NO_SAMPLE if the file wasn't found
-//						in the cache.
-//
-//*******************************************************************************
-function SoundFreeSample(pFilename: string /* STR */): UINT32 {
-  let uiSample: UINT32;
-
-  if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
-    if (!SoundSampleIsPlaying(uiSample)) {
-      SoundFreeSampleIndex(uiSample);
-      return uiSample;
-    }
-  }
-
-  return NO_SAMPLE;
-}
-
-//*******************************************************************************
-// SoundFreeGroup
-//
-//		Releases a group of samples with a given priority. Does not take into
-// account locked/unlocked status.
-//
-//	Returns:	TRUE if samples were freed, FALSE if none
-//
-// NOTE:
-//		This function is going to be removed! If you are attempting to stop all
-// random sounds, call SoundStopAllRandom instead.
-//
-//*******************************************************************************
-function SoundFreeGroup(uiPriority: UINT32): boolean {
-  let fFreed: boolean = false;
-
-  SoundStopGroup(uiPriority);
-
-  return fFreed;
-}
 //*******************************************************************************
 // SoundGetCached
 //
@@ -1548,36 +1083,6 @@ function SoundGetEmptySample(): UINT32 {
   }
 
   return NO_SAMPLE;
-}
-
-//*******************************************************************************
-// SoundProcessWAVHeader
-//
-//		Reads the information contained in the header of a loaded WAV file, and
-//	transfers it to the system structures for that slot.
-//
-//	Returns:	TRUE if a good header was processed, FALSE if an error occurred.
-//
-//*******************************************************************************
-function SoundProcessWAVHeader(uiSample: UINT32): boolean {
-  let pChunk: Pointer<CHAR8>;
-  let ailInfo: AILSOUNDINFO;
-
-  pChunk = pSampleList[uiSample].pData;
-  if (!AIL_WAV_info(pChunk, addressof(ailInfo)))
-    return false;
-
-  pSampleList[uiSample].uiSpeed = ailInfo.rate;
-  pSampleList[uiSample].fStereo = (ailInfo.channels == 2);
-  pSampleList[uiSample].ubBits = ailInfo.bits;
-
-  pSampleList[uiSample].pSoundStart = ailInfo.data_ptr;
-  pSampleList[uiSample].uiSoundSize = ailInfo.data_len;
-
-  pSampleList[uiSample].uiAilWaveFormat = ailInfo.format;
-  pSampleList[uiSample].uiADPCMBlockSize = ailInfo.block_size;
-
-  return true;
 }
 
 //*******************************************************************************
@@ -1986,13 +1491,12 @@ function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms
 // static value that is incremented each time.
 //
 //*******************************************************************************
+/* static */ let SoundGetUniqueID__uiNextID: UINT32 = 0;
 function SoundGetUniqueID(): UINT32 {
-  /* static */ let uiNextID: UINT32 = 0;
+  if (SoundGetUniqueID__uiNextID == SOUND_ERROR)
+    SoundGetUniqueID__uiNextID++;
 
-  if (uiNextID == SOUND_ERROR)
-    uiNextID++;
-
-  return uiNextID++;
+  return SoundGetUniqueID__uiNextID++;
 }
 
 //*******************************************************************************
@@ -2105,15 +1609,6 @@ export function SoundGetDriverHandle(): HDIGDRIVER {
   return hSoundDriver;
 }
 
-// FUNCTIONS TO SET / RESET SAMPLE FLAGS
-function SoundSetSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
-  // CHECK FOR VALUE SAMPLE
-  if ((pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED)) {
-    // SET
-    pSampleList[uiSample].uiFlags |= uiFlags;
-  }
-}
-
 export function SoundRemoveSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
   // CHECK FOR VALID SAMPLE
   if ((pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED)) {
@@ -2137,88 +1632,6 @@ function SoundSampleIsInUse(uiSample: UINT32): boolean {
   }
 
   return false;
-}
-
-//*****************************************************************************************
-// SoundFileIsPlaying
-//
-// Returns true or false on whether a certain file is currently being played. This function
-// will only work on sounds loaded into the cache, it will NOT work on streamed sounds.
-//
-// Returns BOOLEAN            -
-//
-// CHAR8 *pFilename           -
-//
-// Created:  2/24/00 Derek Beland
-//*****************************************************************************************
-function SoundFileIsPlaying(pFilename: string /* Pointer<CHAR8> */): boolean {
-  let uiCount: UINT32;
-
-  for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-    if (SoundIndexIsPlaying(uiCount)) {
-      if (stricmp(pSampleList[pSoundList[uiCount].uiSample].pName, pFilename) == 0)
-        return true;
-    }
-  }
-
-  return false;
-}
-//*****************************************************************************************
-// SoundSampleSetVolumeRange
-//
-// Sets the minimum and maximum volume for a sample.
-//
-// Returns nothing.
-//
-// UINT32 uiSample            - Sample handle
-// UINT32 uiVolMin            - Minimum volume
-// UINT32 uiVolMax            - Maximum volume
-//
-// Created:  10/29/97 Andrew Emmons
-//*****************************************************************************************
-function SoundSampleSetVolumeRange(uiSample: UINT32, uiVolMin: UINT32, uiVolMax: UINT32): void {
-  Assert((uiSample >= 0) && (uiSample < SOUND_MAX_CACHED));
-
-  pSampleList[uiSample].uiVolMin = uiVolMin;
-  pSampleList[uiSample].uiVolMax = uiVolMax;
-}
-
-//*****************************************************************************************
-// SoundSampleSetPanRange
-//
-// Sets the left/right pan values for a sample.
-//
-// Returns nothing.
-//
-// UINT32 uiSample            - Sample handle
-// UINT32 uiPanMin            - Left setting
-// UINT32 uiPanMax            - Right setting
-//
-// Created:  10/29/97 Andrew Emmons
-//*****************************************************************************************
-function SoundSampleSetPanRange(uiSample: UINT32, uiPanMin: UINT32, uiPanMax: UINT32): void {
-  Assert((uiSample >= 0) && (uiSample < SOUND_MAX_CACHED));
-
-  pSampleList[uiSample].uiPanMin = uiPanMin;
-  pSampleList[uiSample].uiPanMax = uiPanMax;
-}
-
-//*****************************************************************************************
-// SoundSetMusic
-//
-// Marks a sample as being music. Cannot be stopped by anything other than SoundStopMusic.
-//
-// Returns nothing.
-//
-// UINT32 uiSound             - Sound instance to stop
-//
-// Created:  3/16/00 Derek Beland
-//*****************************************************************************************
-function SoundSetMusic(uiSoundID: UINT32): void {
-  let uiSound: UINT32 = SoundGetIndexByID(uiSoundID);
-
-  if (uiSound != NO_SAMPLE)
-    pSoundList[uiSound].fMusic = true;
 }
 
 //*****************************************************************************************
@@ -2246,616 +1659,6 @@ function SoundStopMusic(): boolean {
   }
 
   return fStopped;
-}
-
-//*****************************************************************************************
-//
-//
-//
-//
-// New 3D Sound Code
-//
-//
-//
-//
-//*****************************************************************************************
-
-//*****************************************************************************************
-// Sound3DSetProvider
-//
-// Sets the name of the 3D provider to initialize with.
-//
-// Returns nothing.
-//
-// CHAR8 *pProviderName       - Pointer to provider name
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetProvider(pProviderName: string /* Pointer<CHAR8> */): void {
-  Assert(pProviderName);
-
-  if (pProviderName) {
-    gpProviderName = MemAlloc(pProviderName.length + 1);
-    gpProviderName = pProviderName;
-  }
-}
-
-//*****************************************************************************************
-// Sound3DInitProvider
-//
-// Attempt
-//
-// Returns BOOLEAN            -
-//
-// CHAR8 *pProviderName       -
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DInitProvider(pProviderName: string /* Pointer<CHAR8> */): boolean {
-  let hEnum: HPROENUM = HPROENUM_FIRST;
-  let hProvider: HPROVIDER = 0;
-  let fDone: boolean = false;
-  let pName: string /* Pointer<CHAR8> */;
-  let iResult: INT32;
-
-  // 3D sound providers depend on the 2D sound system being initialized first
-  if (!fSoundSystemInit || !pProviderName)
-    return false;
-
-  // We're already booted up
-  if (gh3DProvider)
-    return true;
-
-  while (!fDone) {
-    if (!AIL_enumerate_3D_providers(addressof(hEnum), addressof(hProvider), addressof(pName)))
-      fDone = true;
-    else if (hProvider) {
-      if (strcmp(pProviderName, pName) == 0) {
-        fDone = true;
-        if (AIL_open_3D_provider(hProvider) == M3D_NOERR) {
-          gh3DProvider = hProvider;
-
-          // Create a "listener" which represents our position in space
-          gh3DListener = AIL_open_3D_listener(gh3DProvider);
-          if (!gh3DListener) {
-            AIL_close_3D_provider(gh3DProvider);
-            return false;
-          }
-          Sound3DSetListener(0.0, 0.0, 0.0);
-
-          AIL_3D_provider_attribute(gh3DProvider, "EAX environment selection", addressof(iResult));
-          if (iResult != (-1))
-            gfUsingEAX = true;
-
-          return true;
-        }
-      }
-    }
-  }
-
-  // We didn't find a provider with a matching name that would boot up
-  return false;
-}
-
-//*****************************************************************************************
-// Sound3DShutdownProvider
-//
-// Shuts down and deallocates the 3D sound system
-//
-// Returns nothing.
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DShutdownProvider(): void {
-  Sound3DStopAll();
-
-  if (gh3DListener) {
-    AIL_close_3D_listener(gh3DListener);
-    gh3DListener = 0;
-  }
-
-  if (gh3DProvider) {
-    AIL_close_3D_provider(gh3DProvider);
-    gh3DProvider = 0;
-  }
-}
-
-//*****************************************************************************************
-// Sound3DSetPosition
-//
-// Sets the 3-space position of a sound sample.
-//
-// Returns nothing.
-//
-// UINT32 uiSample            - ID of sample
-// FLOAT flX                  - X coordinate
-// FLOAT flY                  - Y coordinate
-// FLOAT flZ                  - Z coordinate
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetPosition(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
-  let uiChannel: UINT32;
-
-  if (fSoundSystemInit && gh3DProvider) {
-    if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != null) {
-        AIL_set_3D_position(pSoundList[uiChannel].hM3D, flX, flY, flZ);
-      }
-    }
-  }
-}
-
-//*****************************************************************************************
-// Sound3DSetVelocity
-//
-// Sets the velocity of a sample. This is important for calculation of doppler effect (pitch
-// shifting, think of a train whistle as it passes by you).
-//
-// Returns nothing.
-//
-// UINT32 uiSample            - ID of sample
-// FLOAT flX                  - X coordinate
-// FLOAT flY                  - Y coordinate
-// FLOAT flZ                  - Z coordinate
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetVelocity(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
-  let uiChannel: UINT32;
-
-  if (fSoundSystemInit && gh3DProvider) {
-    if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != null) {
-      }
-    }
-  }
-}
-
-//*****************************************************************************************
-// Sound3DSetListener
-//
-// Sets the listener location. This should be set to the current camera location.
-//
-// Returns nothing.
-//
-// FLOAT flX                  - X coordinate
-// FLOAT flY                  - Y coordinate
-// FLOAT flZ                  - Z coordinate
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetListener(flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
-  if (fSoundSystemInit && gh3DListener)
-    AIL_set_3D_position(gh3DListener, flX, flY, flZ);
-}
-
-//*****************************************************************************************
-// Sound3DSetFacing
-//
-// Sets the orientation of the listener. The inputs are two vectors that are *always* at
-// right angles to each other. The first is the facing vector, and the second is the up
-// vector, which points out of the top of the listeners head.
-//
-// Returns nothing.
-//
-// FLOAT flXFace              - X coordinate facing
-// FLOAT flYFace              - Y coordinate facing
-// FLOAT flZFace              - Z coordinate facing
-// FLOAT flXUp                - X coordinate up
-// FLOAT flYUp                - Y coordinate up
-// FLOAT flZUp                - Z coordinate up
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetFacing(flXFace: FLOAT, flYFace: FLOAT, flZFace: FLOAT, flXUp: FLOAT, flYUp: FLOAT, flZUp: FLOAT): void {
-  if (fSoundSystemInit && gh3DListener)
-    AIL_set_3D_orientation(gh3DListener, flXFace, flYFace, flZFace, flXUp, flYUp, flZUp);
-}
-
-//*****************************************************************************************
-// Sound3DSetDirection
-//
-// Sets the orientation of the listener. The inputs are two vectors that are *always* at
-// right angles to each other. The first is the facing vector, and the second is the up
-// vector, which points out of the top of the listeners head.
-//
-// Returns nothing.
-//
-// FLOAT flXFace              - X coordinate facing
-// FLOAT flYFace              - Y coordinate facing
-// FLOAT flZFace              - Z coordinate facing
-// FLOAT flXUp                - X coordinate up
-// FLOAT flYUp                - Y coordinate up
-// FLOAT flZUp                - Z coordinate up
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetDirection(uiSample: UINT32, flXFace: FLOAT, flYFace: FLOAT, flZFace: FLOAT, flXUp: FLOAT, flYUp: FLOAT, flZUp: FLOAT): void {
-  let uiChannel: UINT32;
-
-  if (fSoundSystemInit && gh3DProvider) {
-    if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != null) {
-        AIL_set_3D_orientation(pSoundList[uiChannel].hM3D, flXFace, flYFace, flZFace, flXUp, flYUp, flZUp);
-      }
-    }
-  }
-}
-
-//*****************************************************************************************
-// Sound3DSetFalloff
-//
-// Sets the falloff of the sound which determines the maximum radius at which the sample
-// produces any sound, and the minimum distance before the sound volume begins to fall off
-// towards zero.
-//
-// Returns nothing.
-//
-// UINT32 uiSample            - Sample index
-// FLOAT flMax                - Point at which the sound volume is zero
-// FLOAT flMin                - Point at which the sound volume begins to fall off
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetFalloff(uiSample: UINT32, flMax: FLOAT, flMin: FLOAT): void {
-  let uiChannel: UINT32;
-  // max = far
-  // min = near
-
-  if (fSoundSystemInit && gh3DProvider) {
-    if ((uiChannel = SoundGetIndexByID(uiSample)) != NO_SAMPLE) {
-      if (pSoundList[uiChannel].hM3D != null) {
-        AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, flMax, flMin);
-      }
-    }
-  }
-}
-
-//*****************************************************************************************
-// Sound3DActiveSounds
-//
-// Returns the number of active sounds.
-//
-// Returns INT32              - Number of 3D sounds playing
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DActiveSounds(): INT32 {
-  return AIL_active_3D_sample_count(gh3DProvider);
-}
-
-//*****************************************************************************************
-// Sound3DSetEnvironment
-//
-// Sets the current environment type for the listener. This determines which atmospheric
-// effects are applied to the 3D sounds. Eg. Caves, underwater, etc.
-//
-// Returns nothing.
-//
-// INT32 iEnvironment         - Index of environment type
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetEnvironment(iEnvironment: INT32): void {
-  if (fSoundSystemInit && gh3DProvider) {
-  }
-}
-
-//*****************************************************************************************
-// Sound3DPlay
-//
-// Starts a 3D sample playing.
-//
-// Returns UINT32             - Sound index
-//
-// STR pFilename              - Pointer to filename of sound
-// SOUNDPARMS *pParms         - Parameter struct (or NULL for defaults)
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DPlay(pFilename: string /* STR */, pParms: Pointer<SOUND3DPARMS>): UINT32 {
-  let uiSample: UINT32;
-  let uiChannel: UINT32;
-
-  if (fSoundSystemInit && gh3DProvider) {
-    if ((uiSample = SoundLoadSample(pFilename)) != NO_SAMPLE) {
-      if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
-        return Sound3DStartSample(uiSample, uiChannel, pParms);
-      }
-    } else {
-      FastDebugMsg(FormatString("Sound3DPlay: ERROR: Failed loading sample %s\n", pFilename));
-    }
-  }
-
-  return SOUND_ERROR;
-}
-
-//*******************************************************************************
-// Sound3DStartSample
-//
-//		Starts up a sample on the specified channel. Override parameters are passed
-//	in through the structure pointer pParms. Any entry with a value of 0xffffffff
-//	will be filled in by the system.
-//
-//	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
-//
-//*******************************************************************************
-function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUND3DPARMS>): UINT32 {
-  let uiSoundID: UINT32;
-  let AILString: string /* CHAR8[200] */;
-
-  if (!fSoundSystemInit || !gh3DProvider)
-    return SOUND_ERROR;
-
-  // Stereo samples have no purpose in 3D, nor MP3 files
-  if (pSampleList[uiSample].fStereo || strstr(pSampleList[uiSample].pName, ".MP3"))
-    return SOUND_ERROR;
-
-  if ((pSoundList[uiChannel].hM3D = AIL_allocate_3D_sample_handle(gh3DProvider)) == null) {
-    AILString = sprintf("AIL3D Error: %s", AIL_last_error());
-    DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
-    return SOUND_ERROR;
-  }
-
-  if (!AIL_set_3D_sample_file(pSoundList[uiChannel].hM3D, pSampleList[uiSample].pData)) {
-    AIL_release_3D_sample_handle(pSoundList[uiChannel].hM3D);
-    pSoundList[uiChannel].hM3D = null;
-
-    AILString = sprintf("AIL3D Set Sample Error: %s", AIL_last_error());
-    DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
-    return SOUND_ERROR;
-  }
-
-  // Store the natural playback rate before we modify it below
-  pSampleList[uiSample].uiSpeed = AIL_3D_sample_playback_rate(pSoundList[uiChannel].hM3D);
-
-  if (pSampleList[uiSample].uiFlags & SAMPLE_RANDOM) {
-    if ((pSampleList[uiSample].uiSpeedMin != SOUND_PARMS_DEFAULT) && (pSampleList[uiSample].uiSpeedMax != SOUND_PARMS_DEFAULT)) {
-      let uiSpeed: UINT32 = pSampleList[uiSample].uiSpeedMin + Random(pSampleList[uiSample].uiSpeedMax - pSampleList[uiSample].uiSpeedMin);
-
-      AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, uiSpeed);
-    }
-  } else {
-    if ((pParms != null) && (pParms.value.uiSpeed != SOUND_PARMS_DEFAULT))
-      AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, pParms.value.uiSpeed);
-  }
-
-  if ((pParms != null) && (pParms.value.uiPitchBend != SOUND_PARMS_DEFAULT)) {
-    let uiRate: UINT32 = AIL_3D_sample_playback_rate(pSoundList[uiChannel].hM3D);
-    let uiBend: UINT32 = uiRate * pParms.value.uiPitchBend / 100;
-    AIL_set_3D_sample_playback_rate(pSoundList[uiChannel].hM3D, uiRate + (Random(uiBend * 2) - uiBend));
-  }
-
-  if ((pParms != null) && (pParms.value.uiVolume != SOUND_PARMS_DEFAULT))
-    AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, pParms.value.uiVolume);
-  else
-    AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, guiSoundDefaultVolume);
-
-  if ((pParms != null) && (pParms.value.uiLoop != SOUND_PARMS_DEFAULT)) {
-    AIL_set_3D_sample_loop_count(pSoundList[uiChannel].hM3D, pParms.value.uiLoop);
-
-    // If looping infinately, lock the sample so it can't be unloaded
-    // and mark it as a looping sound
-    if (pParms.value.uiLoop == 0) {
-      pSampleList[uiSample].uiFlags |= SAMPLE_LOCKED;
-      pSoundList[uiChannel].fLooping = true;
-    }
-  }
-
-  if ((pParms != null) && (pParms.value.uiPriority != SOUND_PARMS_DEFAULT))
-    pSoundList[uiChannel].uiPriority = pParms.value.uiPriority;
-  else
-    pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
-
-  if ((pParms != null) && (pParms.value.EOSCallback != SOUND_PARMS_DEFAULT)) {
-    pSoundList[uiChannel].EOSCallback = pParms.value.EOSCallback;
-    pSoundList[uiChannel].pCallbackData = pParms.value.pCallbackData;
-  } else {
-    pSoundList[uiChannel].EOSCallback = null;
-    pSoundList[uiChannel].pCallbackData = null;
-  }
-
-  AIL_set_3D_position(pSoundList[uiChannel].hM3D, pParms.value.Pos.flX, pParms.value.Pos.flY, pParms.value.Pos.flZ);
-  AIL_set_3D_velocity_vector(pSoundList[uiChannel].hM3D, pParms.value.Pos.flVelX, pParms.value.Pos.flVelY, pParms.value.Pos.flVelZ);
-  AIL_set_3D_orientation(pSoundList[uiChannel].hM3D, pParms.value.Pos.flFaceX, pParms.value.Pos.flFaceY, pParms.value.Pos.flFaceZ, pParms.value.Pos.flUpX, pParms.value.Pos.flUpY, pParms.value.Pos.flUpZ);
-  //	AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, pParms->Pos.flFalloffMax, pParms->Pos.flFalloffMin);
-  AIL_set_3D_sample_distances(pSoundList[uiChannel].hM3D, 99999999.9, 99999999.9);
-
-  uiSoundID = SoundGetUniqueID();
-  pSoundList[uiChannel].uiSoundID = uiSoundID;
-  pSoundList[uiChannel].uiSample = uiSample;
-  pSoundList[uiChannel].uiTimeStamp = GetTickCount();
-
-  pSampleList[uiSample].uiCacheHits++;
-
-  AIL_start_3D_sample(pSoundList[uiChannel].hM3D);
-
-  return uiSoundID;
-}
-
-//*****************************************************************************************
-// Sound3DStopAll
-//
-// Stops all currently playing 3D samples.
-//
-// Returns nothing.
-//
-// Created:  8/17/99 Derek Beland
-//*****************************************************************************************
-function Sound3DStopAll(): void {
-  let uiChannel: UINT32;
-
-  // Stop all currently playing random sounds
-  for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hM3D != null)
-      SoundStopIndex(uiChannel);
-  }
-}
-
-//*******************************************************************************
-// Sound3DStartRandom
-//
-//	Starts an instance of a random sample.
-//
-//	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
-//
-//*******************************************************************************
-function Sound3DStartRandom(uiSample: UINT32, pPos: Pointer<SOUND3DPOS>): UINT32 {
-  let uiChannel: UINT32;
-  let uiSoundID: UINT32;
-  let sp3DParms: SOUND3DPARMS;
-
-  if (pPos && ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR)) {
-    memset(addressof(sp3DParms), 0xff, sizeof(SOUND3DPARMS));
-
-    //		sp3DParms.uiSpeed=pSampleList[uiSample].uiSpeedMin+Random(pSampleList[uiSample].uiSpeedMax-pSampleList[uiSample].uiSpeedMin);
-    sp3DParms.uiLoop = 1;
-    sp3DParms.uiPriority = pSampleList[uiSample].uiPriority;
-
-    //		memcpy(&sp3DParms.Pos, pPos, sizeof(SOUND3DPOS));
-
-    sp3DParms.Pos.flX = pPos.value.flX;
-    sp3DParms.Pos.flY = pPos.value.flY;
-    sp3DParms.Pos.flZ = pPos.value.flZ;
-
-    sp3DParms.Pos.flVelX = pPos.value.flVelX;
-    sp3DParms.Pos.flVelY = pPos.value.flVelY;
-    sp3DParms.Pos.flVelZ = pPos.value.flVelZ;
-
-    sp3DParms.Pos.flFaceX = pPos.value.flFaceX;
-    sp3DParms.Pos.flFaceY = pPos.value.flFaceY;
-    sp3DParms.Pos.flFaceZ = pPos.value.flFaceZ;
-
-    sp3DParms.Pos.flUpX = pPos.value.flUpX;
-    sp3DParms.Pos.flUpY = pPos.value.flUpY;
-    sp3DParms.Pos.flUpZ = pPos.value.flUpZ;
-
-    sp3DParms.Pos.flFalloffMax = pPos.value.flFalloffMax;
-    sp3DParms.Pos.flFalloffMin = pPos.value.flFalloffMin;
-
-    sp3DParms.Pos.uiVolume = pPos.value.uiVolume;
-    sp3DParms.uiVolume = pPos.value.uiVolume;
-
-    if ((uiSoundID = Sound3DStartSample(uiSample, uiChannel, addressof(sp3DParms))) != SOUND_ERROR) {
-      pSampleList[uiSample].uiTimeNext = GetTickCount() + pSampleList[uiSample].uiTimeMin + Random(pSampleList[uiSample].uiTimeMax - pSampleList[uiSample].uiTimeMin);
-      pSampleList[uiSample].uiInstances++;
-      return uiSoundID;
-    }
-  }
-
-  return NO_SAMPLE;
-}
-
-//*****************************************************************************************
-// Sound3DSetRoomType
-//
-// Sets the environment presets (reverb, chorus, etc) for 3D sounds. Currently only
-// has effect for EAX cards.
-//
-// Returns nothing.
-//
-// UINT32 uiRoomType          - Index of room type (see Soundman.h e_EAXRoomTypes)
-//
-// Created:  8/23/99 Derek Beland
-//*****************************************************************************************
-function Sound3DSetRoomType(uiRoomType: UINT32): void {
-  if (gh3DProvider && gfUsingEAX && (guiRoomTypeIndex != uiRoomType)) {
-    let cName: string /* CHAR8[128] */;
-
-    cName = sprintf("EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
-
-    AIL_set_3D_provider_preference(gh3DProvider, cName, (addressof(uiRoomType)));
-    guiRoomTypeIndex = uiRoomType;
-  }
-}
-
-//*****************************************************************************************
-// Sound3DChannelsUsed
-//
-//
-//
-// Returns UINT32             -
-//
-// Created:  5/26/00 Derek Beland
-//*****************************************************************************************
-function Sound3DChannelsInUse(): UINT32 {
-  let uiChannel: UINT32;
-  let uiUsed: UINT32 = 0;
-
-  // Stop all currently playing random sounds
-  for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hM3D != null)
-      uiUsed++;
-  }
-
-  return uiUsed;
-}
-
-//*****************************************************************************************
-// SoundStreamsInUse
-//
-//
-//
-// Returns UINT32             -
-//
-// Created:  5/26/00 Derek Beland
-//*****************************************************************************************
-function SoundStreamsInUse(): UINT32 {
-  let uiChannel: UINT32;
-  let uiUsed: UINT32 = 0;
-
-  // Stop all currently playing random sounds
-  for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hMSSStream != null)
-      uiUsed++;
-  }
-
-  return uiUsed;
-}
-
-//*****************************************************************************************
-// Sound2DChannelsInUse
-//
-//
-//
-// Returns UINT32             -
-//
-// Created:  5/26/00 Derek Beland
-//*****************************************************************************************
-function Sound2DChannelsInUse(): UINT32 {
-  let uiChannel: UINT32;
-  let uiUsed: UINT32 = 0;
-
-  // Stop all currently playing random sounds
-  for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (pSoundList[uiChannel].hMSS != null)
-      uiUsed++;
-  }
-
-  return uiUsed;
-}
-
-//*****************************************************************************************
-// SoundChannelsInUse
-//
-//
-//
-// Returns UINT32             -
-//
-// Created:  5/26/00 Derek Beland
-//*****************************************************************************************
-function SoundTotalChannelsInUse(): UINT32 {
-  let uiChannel: UINT32;
-  let uiUsed: UINT32 = 0;
-
-  // Stop all currently playing random sounds
-  for (uiChannel = 0; uiChannel < SOUND_MAX_CHANNELS; uiChannel++) {
-    if (SoundIndexIsPlaying(uiChannel))
-      uiUsed++;
-  }
-
-  return uiUsed;
 }
 
 }

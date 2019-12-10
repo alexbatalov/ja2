@@ -19,7 +19,7 @@ export function Random(uiRange: UINT32): UINT32 {
 
   if (uiRange == 0)
     return 0;
-  return Math.floor(Math.random() * uiRange) / RAND_MAX % uiRange;
+  return Math.floor(Math.random() * uiRange);
 }
 
 export function Chance(uiChance: UINT32): boolean {

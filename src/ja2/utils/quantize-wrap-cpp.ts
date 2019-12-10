@@ -6,7 +6,7 @@ export interface RGBValues {
   b: UINT8;
 }
 
-export function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): boolean {
+export function QuantizeImage(pDest: Uint8ClampedArray, pSrc: Uint8ClampedArray, sWidth: INT16, sHeight: INT16, pPalette: SGPPaletteEntry[]): boolean {
   let sNumColors: INT16;
 
   // FIRST CREATE PALETTE
@@ -16,7 +16,7 @@ export function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidt
 
   sNumColors = q.GetColorCount();
 
-  memset(pPalette, 0, sizeof(SGPPaletteEntry) * 256);
+  pPalette.forEach(resetSGPPaletteEntry);
 
   q.GetColorTable(pPalette);
 
@@ -27,7 +27,7 @@ export function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidt
   return true;
 }
 
-function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, sNumColors: INT16, pTable: Pointer<SGPPaletteEntry>): void {
+function MapPalette(pDest: Uint8ClampedArray, pSrc: Uint8ClampedArray, sWidth: INT16, sHeight: INT16, sNumColors: INT16, pTable: SGPPaletteEntry[]): void {
   let cX: INT32;
   let cY: INT32;
   let cnt: INT32;
@@ -37,32 +37,27 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
   let vTableVal: vector_3 = createVector3();
   let vSrcVal: vector_3 = createVector3();
   let vDiffVal: vector_3 = createVector3();
-  let pData: Pointer<UINT8>;
-  let pRGBData: Pointer<RGBValues>;
-
-  pRGBData = pSrc;
 
   for (cX = 0; cX < sWidth; cX++) {
     for (cY = 0; cY < sHeight; cY++) {
       // OK, FOR EACH PALETTE ENTRY, FIND CLOSEST
       bBest = 0;
       dLowestDist = 9999999;
-      pData = addressof(pSrc[(cY * sWidth) + cX]);
 
       for (cnt = 0; cnt < sNumColors; cnt++) {
-        vSrcVal.x = pRGBData[(cY * sWidth) + cX].r;
-        vSrcVal.y = pRGBData[(cY * sWidth) + cX].g;
-        vSrcVal.z = pRGBData[(cY * sWidth) + cX].b;
+        vSrcVal.x = pSrc[((cY * sWidth) + cX * 3)];
+        vSrcVal.y = pSrc[((cY * sWidth) + cX * 3) + 1];
+        vSrcVal.z = pSrc[((cY * sWidth) + cX * 3) + 2];
 
         vTableVal.x = pTable[cnt].peRed;
         vTableVal.y = pTable[cnt].peGreen;
         vTableVal.z = pTable[cnt].peBlue;
 
         // Get Dist
-        vDiffVal = VSubtract(addressof(vSrcVal), addressof(vTableVal));
+        vDiffVal = VSubtract(vSrcVal, vTableVal);
 
         // Get mag dist
-        dCubeDist = VGetLength(addressof(vDiffVal));
+        dCubeDist = VGetLength(vDiffVal);
 
         if (dCubeDist < dLowestDist) {
           dLowestDist = dCubeDist;
@@ -72,10 +67,7 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
 
       // Now we have the lowest value
       // Set into dest
-      pData = addressof(pDest[(cY * sWidth) + cX]);
-
-      // Set!
-      pData.value = bBest;
+      pDest[(cY * sWidth) + cX] = bBest;
     }
   }
 }

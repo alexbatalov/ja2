@@ -122,7 +122,7 @@ export function createSGPVObject(): SGPVObject {
     pPixData: <Buffer><unknown>null,
     pETRLEObject: <ETRLEObject[]><unknown>null,
     p16BPPObject: <SixteenBPPObjectInfo[]><unknown>null,
-    pShades: <Uint16Array[]><unknown>null,
+    pShades: createArray(HVOBJECT_SHADE_TABLES, <Uint16Array><unknown>null),
     pShadeCurrent: <Uint16Array><unknown>null,
     pGlow: <Uint16Array><unknown>null,
     pShade8: <Uint8Array><unknown>null,

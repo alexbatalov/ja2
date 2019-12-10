@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export let gTileSurfaceArray: TILE_IMAGERY[] /* Pointer<TILE_IMAGERY>[NUMBEROFTILETYPES] */;
+export let gTileSurfaceArray: TILE_IMAGERY[] /* Pointer<TILE_IMAGERY>[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, <TILE_IMAGERY><unknown>null);
 export let gbDefaultSurfaceUsed: boolean[] /* UINT8[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, false);
 export let gbSameAsDefaultSurfaceUsed: boolean[] /* UINT8[NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, false);
 

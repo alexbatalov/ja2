@@ -994,8 +994,8 @@ function HandleShopKeeperInterface(): void {
 function RenderShopKeeperInterface(): boolean {
   let hPixHandle: SGPVObject;
   let zMoney: string /* CHAR16[128] */;
-  let hDestVSurface: HVSURFACE;
-  let hSrcVSurface: HVSURFACE;
+  let hDestVSurface: SGPVSurface;
+  let hSrcVSurface: SGPVSurface;
   let SrcRect: SGPRect = createSGPRect();
 
   if (InItemDescriptionBox() && pShopKeeperItemDescObject != null) {
@@ -1083,8 +1083,8 @@ function RenderShopKeeperInterface(): boolean {
 }
 
 function RestoreTacticalBackGround(): void {
-  let hDestVSurface: HVSURFACE;
-  let hSrcVSurface: HVSURFACE;
+  let hDestVSurface: SGPVSurface;
+  let hSrcVSurface: SGPVSurface;
   let SrcRect: SGPRect = createSGPRect();
 
   // Restore the background before blitting the text back on
@@ -2322,8 +2322,8 @@ function RepairIsDone(usItemIndex: UINT16, ubElement: UINT8): boolean {
   [ 0, 1, 0, 1, 0, 1, 0, 1 ],
 ];
 export function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let ClipRect: SGPRect = createSGPRect();
 
   ClipRect.iLeft = usPosX;
@@ -2331,7 +2331,7 @@ export function DrawHatchOnInventory(uiSurface: UINT32, usPosX: UINT16, usPosY: 
   ClipRect.iTop = usPosY;
   ClipRect.iBottom = usPosY + usHeight;
 
-  pDestBuf = LockVideoSurface(uiSurface, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(uiSurface, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   Blt16BPPBufferPixelateRect(pDestBuf, uiDestPitchBYTES, ClipRect, DrawHatchOnInventory__Pattern);
   UnLockVideoSurface(uiSurface);
 }

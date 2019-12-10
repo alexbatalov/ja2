@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -147,13 +149,13 @@ export let gusShadeLevels: UINT16[][] /* [16][3] */ = [
 export let gfLoadShadeTablesFromTextFile: boolean = false;
 
 export function LoadShadeTablesFromTextFile(): void {
-  let fp: Pointer<FILE>;
+  let fp: number;
   let i: INT32;
   let j: INT32;
   let num: INT32;
   let str: string /* UINT8[10] */;
   if (gfLoadShadeTablesFromTextFile) {
-    fp = fopen("ShadeTables.txt", "r");
+    fp = fs.openSync("ShadeTables.txt", "r");
     Assert(fp);
     if (fp) {
       for (i = 0; i < 16; i++) {
@@ -163,7 +165,7 @@ export function LoadShadeTablesFromTextFile(): void {
           gusShadeLevels[i][j] = num;
         }
       }
-      fclose(fp);
+      fs.closeSync(fp);
     }
   }
 }
@@ -1782,7 +1784,6 @@ export function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
   }
 
   usName = sprintf("LTO%d.LHT", iRadius);
-  pLightNames[iLight] = MemAlloc(usName.length + 1);
   pLightNames[iLight] = usName;
 
   return iLight;
@@ -1804,7 +1805,6 @@ function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16)
   }
 
   usName = sprintf("LTS%d-%d.LHT", iRadius1, iRadius2);
-  pLightNames[iLight] = MemAlloc(usName.length + 1);
   pLightNames[iLight] = usName;
 
   return iLight;
@@ -1825,7 +1825,6 @@ function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: IN
     LightGenerateElliptical(iLight, ubIntensity, (iRadius1 * DISTANCE_SCALE), (iRadius2 * DISTANCE_SCALE));
 
   usName = sprintf("LTE%d-%d.LHT", iRadius1, iRadius2);
-  pLightNames[iLight] = MemAlloc(usName.length + 1);
   pLightNames[iLight] = usName;
 
   return iLight;
@@ -2637,7 +2636,6 @@ function LightLoad(pFilename: string /* STR */): INT32 {
 
       FileClose(hFile);
 
-      pLightNames[iLight] = MemAlloc(pFilename.length + 1);
       pLightNames[iLight] = pFilename;
     } else
       return -1;
@@ -3025,13 +3023,13 @@ function LightSpriteDirty(iSprite: INT32): boolean {
   return true;
 }
 
-function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: SGPPaletteEntry[]): boolean {
+function CreateObjectPalette(pObj: SGPVObject, uiBase: UINT32, pShadePal: SGPPaletteEntry[]): boolean {
   let uiCount: UINT32;
 
-  pObj.value.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], true);
+  pObj.pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], true);
 
   for (uiCount = 1; uiCount < 16; uiCount++) {
-    pObj.value.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], false);
+    pObj.pShades[uiBase + uiCount] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[uiCount][0], gusShadeLevels[uiCount][1], gusShadeLevels[uiCount][2], false);
   }
 
   return true;
@@ -3060,7 +3058,7 @@ function CreateSoldierShadedPalette(pSoldier: SOLDIERTYPE, uiBase: UINT32, pShad
 
 **********************************************************************************************/
 
-export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: boolean): boolean {
+export function CreateTilePaletteTables(pObj: SGPVObject, uiTileIndex: UINT32, fForce: boolean): boolean {
   let uiCount: UINT32;
   let LightPal: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let fLoaded: boolean = false;
@@ -3080,9 +3078,9 @@ export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fFo
     // This is expensive as hell to call!
     for (uiCount = 0; uiCount < 256; uiCount++) {
       // combine the rgb of the light color with the object's palette
-      LightPal[uiCount].peRed = (Math.min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[0].peRed, 255));
-      LightPal[uiCount].peGreen = (Math.min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[0].peGreen, 255));
-      LightPal[uiCount].peBlue = (Math.min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[0].peBlue, 255));
+      LightPal[uiCount].peRed = (Math.min(pObj.pPaletteEntry[uiCount].peRed + gpLightColors[0].peRed, 255));
+      LightPal[uiCount].peGreen = (Math.min(pObj.pPaletteEntry[uiCount].peGreen + gpLightColors[0].peGreen, 255));
+      LightPal[uiCount].peBlue = (Math.min(pObj.pPaletteEntry[uiCount].peBlue + gpLightColors[0].peBlue, 255));
     }
     // build the shade tables
     CreateObjectPalette(pObj, 0, LightPal);
@@ -3098,25 +3096,25 @@ export function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fFo
   if (gubNumLightColors == 2) {
     // build the second light's palette and table
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (Math.min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[1].peRed, 255));
-      LightPal[uiCount].peGreen = (Math.min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[1].peGreen, 255));
-      LightPal[uiCount].peBlue = (Math.min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[1].peBlue, 255));
+      LightPal[uiCount].peRed = (Math.min(pObj.pPaletteEntry[uiCount].peRed + gpLightColors[1].peRed, 255));
+      LightPal[uiCount].peGreen = (Math.min(pObj.pPaletteEntry[uiCount].peGreen + gpLightColors[1].peGreen, 255));
+      LightPal[uiCount].peBlue = (Math.min(pObj.pPaletteEntry[uiCount].peBlue + gpLightColors[1].peBlue, 255));
     }
     CreateObjectPalette(pObj, 16, LightPal);
 
     // build a table that is a mix of the first two
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      LightPal[uiCount].peRed = (Math.min(pObj.value.pPaletteEntry[uiCount].peRed + gpLightColors[2].peRed, 255));
-      LightPal[uiCount].peGreen = (Math.min(pObj.value.pPaletteEntry[uiCount].peGreen + gpLightColors[2].peGreen, 255));
-      LightPal[uiCount].peBlue = (Math.min(pObj.value.pPaletteEntry[uiCount].peBlue + gpLightColors[2].peBlue, 255));
+      LightPal[uiCount].peRed = (Math.min(pObj.pPaletteEntry[uiCount].peRed + gpLightColors[2].peRed, 255));
+      LightPal[uiCount].peGreen = (Math.min(pObj.pPaletteEntry[uiCount].peGreen + gpLightColors[2].peGreen, 255));
+      LightPal[uiCount].peBlue = (Math.min(pObj.pPaletteEntry[uiCount].peBlue + gpLightColors[2].peBlue, 255));
     }
     CreateObjectPalette(pObj, 32, LightPal);
   }
 
   // build neutral palette as well!
   // Set current shade table to neutral color
-  pObj.value.pShadeCurrent = pObj.value.pShades[4];
-  pObj.value.pGlow = pObj.value.pShades[0];
+  pObj.pShadeCurrent = pObj.pShades[4];
+  pObj.pGlow = pObj.pShades[0];
 
   return true;
 }

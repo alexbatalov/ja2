@@ -9,7 +9,7 @@ let gdXStep: FLOAT;
 let gdYStep: FLOAT;
 let giMiniMap: INT32;
 let gi8BitMiniMap: INT32;
-let ghvSurface: HVSURFACE;
+let ghvSurface: SGPVSurface;
 
 // Utililty file for sub-sampling/creating our radar screen maps
 // Loops though our maps directory and reads all .map files, subsamples an area, color
@@ -39,7 +39,7 @@ export function MapUtilScreenInit(): boolean {
 /* static */ let MapUtilScreenHandle__sFiles: INT16 = 0;
 /* static */ let MapUtilScreenHandle__sCurFile: INT16 = 0;
 /* static */ let MapUtilScreenHandle__FileList: Pointer<FDLG_LIST> = null;
-/* static */ let MapUtilScreenHandle__p24BitDest: Pointer<UINT8> = null;
+/* static */ let MapUtilScreenHandle__p24BitDest: Uint8ClampedArray = null;
 /* static */ let MapUtilScreenHandle__p24BitValues: RGBValues[] /* Pointer<RGBValues> */ = <RGBValues[]><unknown>null;
 export function MapUtilScreenHandle(): UINT32 {
   let InputEvent: InputAtom = createInputAtom();
@@ -50,11 +50,11 @@ export function MapUtilScreenHandle(): UINT32 {
   let usWidth: UINT16;
   let usHeight: UINT16;
   let ubBitDepth: UINT8;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT16>;
-  let pDataPtr: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
+  let pDataPtr: Uint8ClampedArray;
 
   let uiRGBColor: UINT32;
 
@@ -187,8 +187,8 @@ export function MapUtilScreenHandle(): UINT32 {
   dX = dStartX;
   dY = dStartY;
 
-  pDestBuf = LockVideoSurface(giMiniMap, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(giMiniMap, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   for (iX = 0; iX < 88; iX++) {
     dY = dStartY;
@@ -253,8 +253,8 @@ export function MapUtilScreenHandle(): UINT32 {
   BltVideoSurface(FRAME_BUFFER, giMiniMap, 0, 20, 360, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
 
   // QUantize!
-  pDataPtr = LockVideoSurface(gi8BitMiniMap, addressof(uiSrcPitchBYTES));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDataPtr = LockVideoSurface(gi8BitMiniMap, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   QuantizeImage(pDataPtr, MapUtilScreenHandle__p24BitDest, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
   SetVideoSurfacePalette(ghvSurface, pPalette);
   // Blit!

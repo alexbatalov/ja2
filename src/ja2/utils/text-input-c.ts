@@ -1158,14 +1158,14 @@ function RenderInactiveTextFieldNode(pNode: TEXTINPUTNODE): void {
   mprintf(pNode.region.RegionTopLeftX + 3, pNode.region.RegionTopLeftY + usOffset, str);
   RestoreFontSettings();
   if (!pNode.fEnabled && pColors.fUseDisabledAutoShade) {
-    let pDestBuf: Pointer<UINT8>;
-    let uiDestPitchBYTES: UINT32;
+    let pDestBuf: Uint8ClampedArray;
+    let uiDestPitchBYTES: UINT32 = 0;
     let ClipRect: SGPRect = createSGPRect();
     ClipRect.iLeft = pNode.region.RegionTopLeftX;
     ClipRect.iRight = pNode.region.RegionBottomRightX;
     ClipRect.iTop = pNode.region.RegionTopLeftY;
     ClipRect.iBottom = pNode.region.RegionBottomRightY;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }

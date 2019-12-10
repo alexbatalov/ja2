@@ -1036,11 +1036,11 @@ function DrawBox(uiCounter: UINT32): boolean {
   let uiNumTilesHigh: UINT32;
   let uiCount: UINT32 = 0;
   let hBoxHandle: SGPVObject;
-  let hSrcVSurface: HVSURFACE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT8>;
+  let hSrcVSurface: SGPVSurface;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let clip: SGPRect = createSGPRect();
   let usTopX: UINT16;
   let usTopY: UINT16;
@@ -1089,11 +1089,11 @@ function DrawBox(uiCounter: UINT32): boolean {
 
   // blit in texture first, then borders
   // blit in surface
-  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].uiBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   if ((hSrcVSurface = GetVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface)) === null) {
     return false;
   }
-  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface, addressof(uiSrcPitchBYTES));
+  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
   Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, clip);
   UnLockVideoSurface(PopUpBoxList[uiCounter].iBackGroundSurface);
   UnLockVideoSurface(PopUpBoxList[uiCounter].uiBuffer);

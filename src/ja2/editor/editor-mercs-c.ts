@@ -2539,9 +2539,9 @@ function PointInRect(pRect: SGPRect, x: INT32, y: INT32): boolean {
 }
 
 function DrawRect(pRect: SGPRect, color: INT16): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, pRect.iLeft + MERCPANEL_X, pRect.iTop + MERCPANEL_Y, pRect.iRight + MERCPANEL_X, pRect.iBottom + MERCPANEL_Y, color, pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
@@ -2550,12 +2550,12 @@ function DrawRect(pRect: SGPRect, color: INT16): void {
 
 function RenderSelectedMercsInventory(): void {
   let i: INT32;
-  let pSrc: Pointer<UINT8>;
-  let pDst: Pointer<UINT8>;
+  let pSrc: Uint8ClampedArray;
+  let pDst: Uint8ClampedArray;
   let xp: INT32;
   let yp: INT32;
-  let uiSrcPitchBYTES: UINT32;
-  let uiDstPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let uiDstPitchBYTES: UINT32 = 0;
   let pItemName: string /* UINT16[100] */;
   let ubFontColor: UINT8;
   if (gsSelectedMercID == -1)
@@ -2565,8 +2565,8 @@ function RenderSelectedMercsInventory(): void {
       // Render the current image.
       xp = mercRects[i].iLeft + 4 + MERCPANEL_X;
       yp = mercRects[i].iTop + MERCPANEL_Y;
-      pDst = LockVideoSurface(FRAME_BUFFER, addressof(uiDstPitchBYTES));
-      pSrc = LockVideoSurface(guiMercInvPanelBuffers[i], addressof(uiSrcPitchBYTES));
+      pDst = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDstPitchBYTES, (v) => uiDstPitchBYTES = v));
+      pSrc = LockVideoSurface(guiMercInvPanelBuffers[i], createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
       Blt16BPPTo16BPPTrans(pDst, uiDstPitchBYTES, pSrc, uiSrcPitchBYTES, xp, yp, 0, 0, i < 3 ? 22 : 44, 15, 0);
       UnLockVideoSurface(FRAME_BUFFER);
       UnLockVideoSurface(guiMercInvPanelBuffers[i]);

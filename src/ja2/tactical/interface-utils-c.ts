@@ -82,8 +82,8 @@ export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT1
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let bBandage: INT8;
 
@@ -97,7 +97,7 @@ export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT1
     return;
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO MAX LIFE
@@ -159,8 +159,8 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let hHandle: SGPVObject;
 
@@ -196,7 +196,7 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
     BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, null);
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   if (pSoldier.bBreathMax <= 97) {
@@ -251,8 +251,8 @@ export function DrawMoraleUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
 
   // Erase what was there
@@ -265,7 +265,7 @@ export function DrawMoraleUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
     return;
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO BREATH
@@ -291,8 +291,8 @@ export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT
   let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let sValue: INT16;
 
@@ -325,7 +325,7 @@ export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT
     // RestoreExternBackgroundRect( sXPos, (INT16)(sYPos - sHeight), sWidth, (INT16)(sHeight + 1 ) );
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO BREATH

@@ -1794,7 +1794,7 @@ export function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
           } else if (fCtrl) {
             if (INFORMATION_CHEAT_LEVEL()) {
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Memory Used: %d + %d = %d vs: %d", guiMemTotal, giMemUsedInSurfaces, (guiMemTotal + giMemUsedInSurfaces), (giStartingMemValue - MemGetFree()));
+              // display memory usage
             }
           } else {
             // nothing in hand and the Map Screen button for whichever panel we're in must be enabled

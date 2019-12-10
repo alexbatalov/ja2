@@ -109,9 +109,6 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   let MaxWidth: UINT32;
   let ThisHeight: UINT32;
   let ThisWidth: UINT32;
-  let MemBefore: UINT32;
-  let MemAfter: UINT32;
-  let MemUsed: UINT32;
 
   AssertMsg(filename != BUTTON_NO_FILENAME, "Attempting to LoadButtonImage() with null filename.");
   AssertMsg(filename.length, "Attempting to LoadButtonImage() with empty filename string.");
@@ -132,13 +129,10 @@ export function LoadButtonImage(filename: string /* Pointer<UINT8> */, Grayed: I
   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   vo_desc.ImageFile = filename;
 
-  MemBefore = MemGetFree();
   if ((ButtonPictures[UseSlot].vobj = CreateVideoObject(vo_desc)) == null) {
     DbgMessage(TOPIC_BUTTON_HANDLER, DBG_LEVEL_0, FormatString("Couldn't create VOBJECT for %s", filename));
     return -1;
   }
-  MemAfter = MemGetFree();
-  MemUsed = MemBefore - MemAfter;
 
   // Init the QuickButton image structure with indexes to use
   ButtonPictures[UseSlot].Grayed = Grayed;
@@ -2572,35 +2566,35 @@ function DrawQuickButton(b: GUI_BUTTON): void {
 }
 
 function DrawHatchOnButton(b: GUI_BUTTON): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let ClipRect: SGPRect = createSGPRect();
   ClipRect.iLeft = b.Area.RegionTopLeftX;
   ClipRect.iRight = b.Area.RegionBottomRightX - 1;
   ClipRect.iTop = b.Area.RegionTopLeftY;
   ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
-  pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(ButtonDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, ClipRect);
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
 function DrawShadeOnButton(b: GUI_BUTTON): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let ClipRect: SGPRect = createSGPRect();
   ClipRect.iLeft = b.Area.RegionTopLeftX;
   ClipRect.iRight = b.Area.RegionBottomRightX - 1;
   ClipRect.iTop = b.Area.RegionTopLeftY;
   ClipRect.iBottom = b.Area.RegionBottomRightY - 1;
-  pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(ButtonDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
 function DrawDefaultOnButton(b: GUI_BUTTON): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
-  pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
+  pDestBuf = LockVideoSurface(ButtonDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   if (b.bDefaultStatus == Enum28.DEFAULT_STATUS_DARKBORDER || b.bDefaultStatus == Enum28.DEFAULT_STATUS_WINDOWS95) {
     // left (one thick)
@@ -2995,8 +2989,8 @@ function DrawGenericButton(b: GUI_BUTTON): void {
   let iBorderHeight: INT32;
   let iBorderWidth: INT32;
   let BPic: SGPVObject;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let ClipRect: SGPRect = createSGPRect();
 
   // Select the graphics to use depending on the current state of the button
@@ -3063,7 +3057,7 @@ function DrawGenericButton(b: GUI_BUTTON): void {
   }
 
   // Lock the dest buffer
-  pDestBuf = LockVideoSurface(ButtonDestBuffer, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(ButtonDestBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   GetClippingRect(ClipRect);
 

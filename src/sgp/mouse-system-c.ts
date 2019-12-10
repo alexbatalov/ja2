@@ -978,11 +978,17 @@ function GetNumberOfLinesInHeight(pStringA: string /* STR16 */): INT16 {
 
   pString = pStringA;
 
+  if (pString.charCodeAt(pString.length - 1) !== 13) {
+    pString += '\n';
+  }
+
   // tokenize
+  let start = 0;
   let pos = pString.indexOf("\n");
 
   while (pos !== -1) {
-    pos = pString.indexOf("\n", pos);
+    start = pos + 1;
+    pos = pString.indexOf("\n", start);
     sCounter++;
   }
 
@@ -1015,7 +1021,7 @@ function DisplayFastHelp(region: MOUSE_REGION): void {
     if ((iX + iW) >= SCREEN_WIDTH)
       iX = (SCREEN_WIDTH - iW - 4);
 
-    iY = region.RegionTopLeftY - (iH * 3 / 4);
+    iY = region.RegionTopLeftY - Math.floor(iH * 3 / 4);
     if (iY < 0)
       iY = 0;
 
@@ -1027,9 +1033,9 @@ function DisplayFastHelp(region: MOUSE_REGION): void {
       region.uiFlags |= MSYS_GOT_BACKGROUND;
       region.uiFlags |= MSYS_HAS_BACKRECT;
     } else {
-      let pDestBuf: Pointer<UINT8>;
-      let uiDestPitchBYTES: UINT32;
-      pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+      let pDestBuf: Uint8ClampedArray;
+      let uiDestPitchBYTES: UINT32 = 0;
+      pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       RectangleDraw(true, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
       RectangleDraw(true, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
@@ -1051,16 +1057,22 @@ function GetWidthOfString(pStringA: string /* STR16 */): INT16 {
   let sWidth: INT16 = 0;
   pString = pStringA;
 
+  if (pString.charCodeAt(pString.length - 1) !== 13) {
+    pString += '\n';
+  }
+
   // tokenize
+  let start = 0;
   let pos = pString.indexOf("\n");
 
   while (pos !== -1) {
-    pToken = pString.substring(pos);
+    pToken = pString.substring(start, pos);
     if (sWidth < StringPixLength(pToken, FONT10ARIAL())) {
       sWidth = StringPixLength(pToken, FONT10ARIAL());
     }
 
-    pos = pString.indexOf("\n", pos);
+    start = pos + 1;
+    pos = pString.indexOf("\n", start);
   }
 
   return sWidth;
@@ -1076,11 +1088,16 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
 
   pString = pStringA;
 
+  if (pString.charCodeAt(pString.length - 1) !== 13) {
+    pString += '\n';
+  }
+
   // tokenize
+  let start = 0;
   let pos = pString.indexOf("\n");
 
   while (pos !== -1) {
-    pToken = pString.substring(pos);
+    pToken = pString.substring(start, pos);
     iLength = pToken.length;
     for (i = 0; i < iLength; i++) {
       uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL(), FONT10ARIALBOLD(), i, pToken);
@@ -1092,9 +1109,10 @@ function DisplayHelpTokenizedString(pStringA: string /* STR16 */, sX: INT16, sY:
         SetFont(FONT10ARIAL());
         SetFontForeground(FONT_BEIGE);
       }
-      mprintf(sX + uiCursorXPos, sY + iCounter * (GetFontHeight(FONT10ARIAL()) + 1), "%c", pToken[i]);
+      mprintf(sX + uiCursorXPos, sY + iCounter * (GetFontHeight(FONT10ARIAL()) + 1), "%s", pToken[i]);
     }
-    pos = pString.indexOf("\n", pos);
+    start = pos + 1;
+    pos = pString.indexOf("\n", start);
     iCounter++;
   }
 }

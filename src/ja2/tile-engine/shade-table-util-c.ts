@@ -1,12 +1,12 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 const SHADE_TABLE_DIR = "ShadeTables";
 
 export let gfForceBuildShadeTables: boolean = false;
 
 export function DetermineRGBDistributionSettings(): void {
-  let DataDir: string /* STRING512 */;
-  let ExecDir: string /* STRING512 */;
   let ShadeTableDir: string /* STRING512 */;
   let uiRBitMask: UINT32;
   let uiGBitMask: UINT32;
@@ -24,8 +24,7 @@ export function DetermineRGBDistributionSettings(): void {
   // First, determine if we have a file saved.  If not, then this is the first time, and
   // all shade tables will have to be built and saved to disk.  This can be time consuming, adding up to
   // 3-4 seconds to the time of a map load.
-  GetExecutableDirectory(ExecDir);
-  ShadeTableDir = sprintf("%s\\Data\\%s", ExecDir, SHADE_TABLE_DIR);
+  ShadeTableDir = path.join(JA2_DATA_DIR, SHADE_TABLE_DIR);
 
   // Check to make sure we have a ShadeTable directory.  If we don't create one!
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
@@ -109,11 +108,10 @@ export function DetermineRGBDistributionSettings(): void {
   }
 
   // We're done, so restore the executable directory to JA2\Data.
-  DataDir = sprintf("%s\\Data", ExecDir);
-  SetFileManCurrentDirectory(DataDir);
+  SetFileManCurrentDirectory(JA2_DATA_DIR);
 }
 
-export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
+export function LoadShadeTable(pObj: SGPVObject, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesRead: UINT32;
@@ -144,7 +142,7 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   for (i = 0; i < 16; i++) {
     buffer = Buffer.allocUnsafe(512);
     uiNumBytesRead = FileRead(hfile, buffer, 512);
-    pObj.value.pShades[i] = new Uint16Array(buffer.buffer, buffer.byteOffset, 256);
+    pObj.pShades[i] = new Uint16Array(buffer.buffer, buffer.byteOffset, 256);
   }
 
   // The file exists, now make sure the
@@ -152,7 +150,7 @@ export function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   return true;
 }
 
-export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean {
+export function SaveShadeTable(pObj: SGPVObject, uiTileTypeIndex: UINT32): boolean {
   let hfile: HWFILE;
   let i: INT32;
   let uiNumBytesWritten: UINT32;
@@ -179,7 +177,7 @@ export function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): boolean
   }
 
   for (i = 0; i < 16; i++) {
-    buffer = Buffer.from(pObj.value.pShades[i].buffer, pObj.value.pShades[i].byteOffset, pObj.value.pShades[i].byteLength);
+    buffer = Buffer.from(pObj.pShades[i].buffer, pObj.pShades[i].byteOffset, pObj.pShades[i].byteLength);
     uiNumBytesWritten = FileWrite(hfile, buffer, 512);
   }
 

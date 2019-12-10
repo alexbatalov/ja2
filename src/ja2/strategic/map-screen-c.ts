@@ -598,8 +598,8 @@ function ContractBoxGlow(): void {
 /* static */ let ContractListRegionBoxGlow__fDelta: boolean = false;
 function ContractListRegionBoxGlow(usCount: UINT16): void {
   let usColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usY: INT16 = 0;
   let sYAdd: INT16 = 0;
 
@@ -636,7 +636,7 @@ function ContractListRegionBoxGlow(usCount: UINT16): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[ContractListRegionBoxGlow__iColorNum].ubRed, GlowColorsA[ContractListRegionBoxGlow__iColorNum].ubGreen, GlowColorsA[ContractListRegionBoxGlow__iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, TIME_REMAINING_X, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT()) + 2, usColor, pDestBuf);
   InvalidateRegion(TIME_REMAINING_X - 1, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT()) + 3);
@@ -654,8 +654,8 @@ function ContractListRegionBoxGlow(usCount: UINT16): void {
 /* static */ let GlowFace__fOldFaceGlow: boolean = false;
 function GlowFace(): void {
   let usColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usY: INT16 = 0;
 
   // not glowing right now, leave
@@ -690,7 +690,7 @@ function GlowFace(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[GlowFace__iColorNum].ubRed, GlowColorsA[GlowFace__iColorNum].ubGreen, GlowColorsA[GlowFace__iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, 9, 18, 60, 63, usColor, pDestBuf);
   InvalidateRegion(9, 18, 61, 64);
@@ -706,8 +706,8 @@ function GlowFace(): void {
 /* static */ let GlowItem__fOldItemGlow: boolean = false;
 function GlowItem(): void {
   let usColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usY: INT16 = 0;
 
   // not glowing right now, leave
@@ -748,7 +748,7 @@ function GlowItem(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[GlowItem__iColorNum].ubRed, GlowColorsA[GlowItem__iColorNum].ubGreen, GlowColorsA[GlowItem__iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, 3, 80, 64, 104, usColor, pDestBuf);
   InvalidateRegion(3, 80, 65, 105);
@@ -760,8 +760,8 @@ function GlowItem(): void {
 /* static */ let GlowTrashCan__fOldTrashCanGlow: boolean = false;
 function GlowTrashCan(): void {
   let usColor: UINT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usY: INT16 = 0;
 
   if (fShowInventoryFlag == false) {
@@ -789,7 +789,7 @@ function GlowTrashCan(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[GlowTrashCan__iColorNum].ubRed, GlowColorsA[GlowTrashCan__iColorNum].ubGreen, GlowColorsA[GlowTrashCan__iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(true, TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, usColor, pDestBuf);
   InvalidateRegion(TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH + 1, TRASH_CAN_Y + TRASH_CAN_HEIGHT + 1);
@@ -1665,8 +1665,8 @@ function DisplayGroundEta(): void {
 /* static */ let HighLightAssignLine__fDelta: boolean = false;
 /* static */ let HighLightAssignLine__uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
 function HighLightAssignLine(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16;
   let usCount: INT16 = 0;
   let usX: UINT16;
@@ -1705,7 +1705,7 @@ function HighLightAssignLine(): void {
     usY += 6;
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -1740,8 +1740,8 @@ function HighLightAssignLine(): void {
 /* static */ let HighLightDestLine__fDelta: boolean = false;
 /* static */ let HighLightDestLine__uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
 function HighLightDestLine(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16;
   let usCount: UINT16 = 0;
   let usX: UINT16;
@@ -1772,7 +1772,7 @@ function HighLightDestLine(): void {
   else
     HighLightDestLine__iColorNum--;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -1808,8 +1808,8 @@ function HighLightDestLine(): void {
 /* static */ let HighLightSleepLine__fDelta: boolean = false;
 /* static */ let HighLightSleepLine__uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
 function HighLightSleepLine(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16;
   let usCount: UINT16 = 0;
   let usX: UINT16;
@@ -1842,7 +1842,7 @@ function HighLightSleepLine(): void {
   else
     HighLightSleepLine__iColorNum--;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -4632,8 +4632,8 @@ function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY
 function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fStationary: boolean): void {
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   Assert((sMapX >= 1) && (sMapX <= 16));
   Assert((sMapY >= 1) && (sMapY <= 16));
@@ -4668,7 +4668,7 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
   */
 
   // blit in the highlighted sector
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
@@ -4900,8 +4900,8 @@ function PollRightButtonInMapView(uiNewEvent: UINT32): UINT32 {
 }
 
 function PopupText(pFontString: string /* Pointer<UINT16> */, ...args: any[]): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let sX: INT16;
   let sY: INT16;
   let PopupString: string /* wchar_t[512] */;
@@ -4912,7 +4912,7 @@ function PopupText(pFontString: string /* Pointer<UINT16> */, ...args: any[]): v
 
   BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, null);
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   SetFont(LARGEFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
@@ -5009,8 +5009,8 @@ export function CreateDestroyMapInvButton(): void {
 }
 
 function BltCharInvPanel(): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let hCharListHandle: SGPVObject;
   let pSoldier: SOLDIERTYPE | null;
   let sString: string /* CHAR16[32] */;
@@ -5023,7 +5023,7 @@ function BltCharInvPanel(): void {
 
   pSoldier = GetSoldier(gCharactersList[bSelectedInfoChar].usSolID);
 
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   hCharListHandle = GetVideoObject(guiMAPINV);
   Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hCharListHandle, PLAYER_INFO_X, PLAYER_INFO_Y, 0);
   UnLockVideoSurface(guiSAVEBUFFER);
@@ -8584,11 +8584,11 @@ function CheckForAndRenderNewMailOverlay(): void {
         // button is up, so draw the icon normally
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, null);
         if (!(ButtonList[guiMapBottomExitButtons[Enum144.MAP_EXIT_TO_LAPTOP]].uiFlags & BUTTON_ENABLED)) {
-          let uiDestPitchBYTES: UINT32;
-          let pDestBuf: Pointer<UINT8>;
+          let uiDestPitchBYTES: UINT32 = 0;
+          let pDestBuf: Uint8ClampedArray;
           let area: SGPRect = createSGPRectFrom(463, 417, 477, 425);
 
-          pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+          pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
           Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, area);
           UnLockVideoSurface(FRAME_BUFFER);
         }

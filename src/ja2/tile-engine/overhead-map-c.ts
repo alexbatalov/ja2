@@ -564,8 +564,8 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
   let usTileIndex: UINT32;
   let sX: INT16;
   let sY: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let pNode: LEVELNODE | null;
   let pTile: SMALL_TILE_DB;
   let sHeight: INT16;
@@ -596,7 +596,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
     // Zero out area!
     // ColorFillVideoSurfaceArea( FRAME_BUFFER, 0, 0, (INT16)(640), (INT16)(gsVIEWPORT_WINDOW_END_Y), Get16BPPColor( FROMRGB( 0, 0, 0 ) ) );
 
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     do {
       fEndRenderRow = false;
@@ -879,10 +879,10 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 
     // Update the save buffer
     {
-      let uiDestPitchBYTES: UINT32;
-      let uiSrcPitchBYTES: UINT32;
-      let pDestBuf: Pointer<UINT8>;
-      let pSrcBuf: Pointer<UINT8>;
+      let uiDestPitchBYTES: UINT32 = 0;
+      let uiSrcPitchBYTES: UINT32 = 0;
+      let pDestBuf: Uint8ClampedArray;
+      let pSrcBuf: Uint8ClampedArray;
       let usWidth: UINT16;
       let usHeight: UINT16;
       let ubBitDepth: UINT8;
@@ -890,8 +890,8 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
       // Update saved buffer - do for the viewport size ony!
       ({ usWidth, usHeight, ubBitDepth } = GetCurrentVideoSettings());
 
-      pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
-      pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+      pSrcBuf = LockVideoSurface(guiRENDERBUFFER, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
+      pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
       if (gbPixelDepth == 16) {
         // BLIT HERE
@@ -905,7 +905,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
 }
 
 function RenderOverheadOverlays(): void {
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let pWorldItem: WORLDITEM;
   let i: UINT32;
   let pSoldier: SOLDIERTYPE;
@@ -914,10 +914,10 @@ function RenderOverheadOverlays(): void {
   let sY: INT16;
   let end: UINT16;
   let usLineColor: UINT16 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
   let ubPassengers: UINT8 = 0;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   hVObject = GetVideoObject(uiPERSONS);
 
   // SOLDIER OVERLAY

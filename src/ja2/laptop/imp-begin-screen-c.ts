@@ -470,9 +470,9 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
 /* static */ let DisplayFullNameStringCursor__fIncrement: boolean = true;
 function DisplayFullNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
 
   if (DisplayFullNameStringCursor__uiBaseTime == 0) {
     DisplayFullNameStringCursor__uiBaseTime = GetJA2Clock();
@@ -502,7 +502,7 @@ function DisplayFullNameStringCursor(): void {
     DisplayFullNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
@@ -520,9 +520,9 @@ function DisplayFullNameStringCursor(): void {
 /* static */ let DisplayNickNameStringCursor__fIncrement: boolean = true;
 function DisplayNickNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
 
   if (DisplayNickNameStringCursor__uiBaseTime == 0) {
     DisplayNickNameStringCursor__uiBaseTime = GetJA2Clock();
@@ -552,7 +552,7 @@ function DisplayNickNameStringCursor(): void {
     DisplayNickNameStringCursor__uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
@@ -622,9 +622,9 @@ function DisplayPlayerNickNameString(): void {
 /* static */ let DisplayMaleGlowCursor__fIncrement: boolean = true;
 function DisplayMaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
 
   if (DisplayMaleGlowCursor__uiBaseTime == 0) {
     DisplayMaleGlowCursor__uiBaseTime = GetJA2Clock();
@@ -654,7 +654,7 @@ function DisplayMaleGlowCursor(): void {
     DisplayMaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
@@ -672,9 +672,9 @@ function DisplayMaleGlowCursor(): void {
 /* static */ let DisplayFemaleGlowCursor__fIncrement: boolean = true;
 function DisplayFemaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
 
   if (DisplayFemaleGlowCursor__uiBaseTime == 0) {
     DisplayFemaleGlowCursor__uiBaseTime = GetJA2Clock();
@@ -704,7 +704,7 @@ function DisplayFemaleGlowCursor(): void {
     DisplayFemaleGlowCursor__uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle

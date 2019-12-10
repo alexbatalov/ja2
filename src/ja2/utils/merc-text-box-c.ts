@@ -268,11 +268,11 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let usStringPixLength: UINT16;
   let DestRect: SGPRect = createSGPRect();
-  let hSrcVSurface: HVSURFACE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT8>;
+  let hSrcVSurface: SGPVSurface;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let ubFontColor: UINT8;
   let ubFontShadowColor: UINT8;
   let usColorVal: UINT16;
@@ -362,7 +362,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
   // make sure the area isnt bigger then the background texture
   if ((usWidth >= MERC_BACKGROUND_WIDTH) || usHeight >= MERC_BACKGROUND_HEIGHT) {
     if (iBoxId == -1) {
-      MemFree(pPopUpTextBox);
+      pPopUpTextBox = <MercPopUpBox><unknown>null;
     }
 
     return -1;
@@ -393,7 +393,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
     // Set source transparcenty
     SetVideoSurfaceTransparency(pPopUpTextBox.uiSourceBufferIndex, FROMRGB(255, 255, 0));
 
-    pDestBuf = LockVideoSurface(pPopUpTextBox.uiSourceBufferIndex, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(pPopUpTextBox.uiSourceBufferIndex, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     usColorVal = Get16BPPColor(FROMRGB(255, 255, 0));
     usLoopEnd = (usWidth * usHeight);
@@ -408,8 +408,8 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
       AssertMsg(false, FormatString("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.uiMercTextPopUpBackground));
     }
 
-    pDestBuf = LockVideoSurface(pPopUpTextBox.uiSourceBufferIndex, addressof(uiDestPitchBYTES));
-    pSrcBuf = LockVideoSurface(pPopUpTextBox.uiMercTextPopUpBackground, addressof(uiSrcPitchBYTES));
+    pDestBuf = LockVideoSurface(pPopUpTextBox.uiSourceBufferIndex, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+    pSrcBuf = LockVideoSurface(pPopUpTextBox.uiMercTextPopUpBackground, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
     Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, 0, 0, DestRect);
 

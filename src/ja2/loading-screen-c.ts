@@ -174,7 +174,7 @@ export function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 // and refreshing the screen with it.
 export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
-  let hVSurface: HVSURFACE;
+  let hVSurface: SGPVSurface;
   let uiLoadScreen: UINT32;
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
@@ -323,7 +323,7 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   } else if ((uiLoadScreen = AddVideoSurface(vs_desc)) !== -1) {
     // Blit the background image
     hVSurface = GetVideoSurface(uiLoadScreen);
-    BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, null);
+    BltVideoSurfaceToVideoSurface(<SGPVSurface>ghFrameBuffer, hVSurface, 0, 0, 0, 0, null);
     DeleteVideoSurfaceFromIndex(uiLoadScreen);
   } else {
     // Failed to load the file, so use a black screen and print out message.

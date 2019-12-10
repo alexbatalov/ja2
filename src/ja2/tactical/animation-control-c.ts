@@ -1008,10 +1008,10 @@ let gusNothingBreath: UINT16[] /* [] */ = [
   Enum195.RGFNOTHING_STD,
 ];
 
-let gubAnimSurfaceIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
-let gubAnimSurfaceMidWaterSubIndex: UINT16[][][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES][2] */;
-let gubAnimSurfaceItemSubIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
-export let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
+let gubAnimSurfaceIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */ = createArrayFrom(Enum194.TOTALBODYTYPES, () => createArray(Enum193.NUMANIMATIONSTATES, 0));
+let gubAnimSurfaceMidWaterSubIndex: UINT16[][][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES][2] */ = createArrayFrom(Enum194.TOTALBODYTYPES, () => createArrayFrom(Enum193.NUMANIMATIONSTATES, () => createArray(2, 0)));
+let gubAnimSurfaceItemSubIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */ = createArrayFrom(Enum194.TOTALBODYTYPES, () => createArray(Enum193.NUMANIMATIONSTATES, 0));
+export let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */ = createArrayFrom(Enum194.TOTALBODYTYPES, () => createArray(Enum193.NUMANIMATIONSTATES, 0));
 
 let gRifleInjuredSub: ANIMSUBTYPE[] /* [] */ = [
   createAnimationSubTypeFrom(Enum193.WALKING, [ Enum195.RGMHURTWALKINGR, Enum195.BGMHURTWALKINGR, Enum195.RGMHURTWALKINGR, Enum195.RGFHURTWALKINGR ]),

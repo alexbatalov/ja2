@@ -495,21 +495,21 @@ function EnterSaveLoadScreen(): boolean {
   gfLoadedGame = false;
 
   if (gfLoadGameUponEntry) {
-    let uiDestPitchBYTES: UINT32;
-    let pDestBuf: Pointer<UINT8>;
+    let uiDestPitchBYTES: UINT32 = 0;
+    let pDestBuf: Uint8ClampedArray;
 
     // unmark the 2 buttons from being dirty
     ButtonList[guiSlgCancelBtn].uiFlags |= BUTTON_FORCE_UNDIRTY;
     ButtonList[guiSlgSaveLoadBtn].uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     // CLEAR THE FRAME BUFFER
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+    pDestBuf.fill(0);
     UnLockVideoSurface(FRAME_BUFFER);
 
     // CLEAR THE guiRENDERBUFFER
-    pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
-    memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(guiRENDERBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+    pDestBuf.fill(0);
     UnLockVideoSurface(guiRENDERBUFFER);
   }
 

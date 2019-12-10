@@ -1,6 +1,8 @@
 namespace ja2 {
 
-export const FINANCES_DATA_FILE = "TEMP\\finances.dat";
+const path: typeof import('path') = require('path');
+
+export const FINANCES_DATA_FILE = path.join('Temp', 'finances.dat');
 
 // the financial structure
 export interface FinanceUnit {

@@ -1045,8 +1045,8 @@ export function ReadInDistancesBetweenTowns(): void {
   buffer = Buffer.allocUnsafe(4 * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS);
   FileRead(hFileHandle, buffer, (4 * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS));
 
-  for (let i = 0; i < Enum135.NUM_TOWNS; i++) {
-    readIntArray(iTownDistances[i], buffer, i * Enum135.NUM_TOWNS * Enum135.NUM_TOWNS, 4);
+  for (let i = 0, offset = 0; i < Enum135.NUM_TOWNS; i++) {
+    offset = readIntArray(iTownDistances[i], buffer, offset, 4);
   }
 
   // close file

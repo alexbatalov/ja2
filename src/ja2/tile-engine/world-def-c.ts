@@ -192,7 +192,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: string[] /* [][32] */, ubTiles
   let INIFile: string /* STRING512 */;
 
   // Get Executable Directory
-  GetExecutableDirectory(ExeDir);
+  ExeDir = GetExecutableDirectory();
 
   // Adjust Current Dir
   // CHECK IF DEFAULT INI OVERRIDE FILE EXISTS

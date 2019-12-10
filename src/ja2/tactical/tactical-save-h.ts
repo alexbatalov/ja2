@@ -1,6 +1,6 @@
 namespace ja2 {
 
-export const MAPS_DIR = "Temp\\";
+export const MAPS_DIR = "Temp";
 
 // Defines used for the bUseMercGridNoPlacement contained in the the merc profile struct
 const enum Enum278 {

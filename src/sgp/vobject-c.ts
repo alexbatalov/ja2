@@ -49,7 +49,7 @@ interface VOBJECT_NODE {
 
 function createVObjectNode(): VOBJECT_NODE {
   return {
-    hVObject: null,
+    hVObject: <SGPVObject><unknown>null,
     uiIndex: 0,
     next: null,
     prev: null,
@@ -155,12 +155,12 @@ export function GetVideoObject(uiIndex: UINT32): SGPVObject {
 }
 
 export function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: blt_fx | null): boolean {
-  let pBuffer: Pointer<UINT16>;
-  let uiPitch: UINT32;
+  let pBuffer: Uint8ClampedArray;
+  let uiPitch: UINT32 = 0;
   let hSrcVObject: SGPVObject;
 
   // Lock video surface
-  pBuffer = LockVideoSurface(uiDestVSurface, addressof(uiPitch));
+  pBuffer = LockVideoSurface(uiDestVSurface, createPointer(() => uiPitch, (v) => uiPitch = v));
 
   if (pBuffer == null) {
     return false;
@@ -226,11 +226,11 @@ export function DeleteVideoObjectFromIndex(uiVObject: UINT32): boolean {
 // There are two types, a BltFast and a Blt. BltFast is 10% faster, uses no
 // clipping lists
 export function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: SGPVObject, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: blt_fx | null): boolean {
-  let pBuffer: Pointer<UINT16>;
-  let uiPitch: UINT32;
+  let pBuffer: Uint8ClampedArray;
+  let uiPitch: UINT32 = 0;
 
   // Lock video surface
-  pBuffer = LockVideoSurface(uiDestVSurface, addressof(uiPitch));
+  pBuffer = LockVideoSurface(uiDestVSurface, createPointer(() => uiPitch, (v) => uiPitch = v));
 
   if (pBuffer == null) {
     return false;
@@ -407,7 +407,6 @@ export function DeleteVideoObject(hVObject: SGPVObject): boolean {
   if (hVObject.ppZStripInfo != null) {
     for (usLoop = 0; usLoop < hVObject.usNumberOfObjects; usLoop++) {
       if (hVObject.ppZStripInfo[usLoop] != null) {
-        hVObject.ppZStripInfo[usLoop].pbZChange = null;
         hVObject.ppZStripInfo[usLoop] = <ZStripInfo><unknown>null;
       }
     }
@@ -432,7 +431,7 @@ export function DeleteVideoObject(hVObject: SGPVObject): boolean {
 // *******************************************************************
 
 // High level blit function encapsolates ALL effects and BPP
-function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: blt_fx | null): boolean {
+function BltVideoObjectToBuffer(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: blt_fx | null): boolean {
   // Assertions
   Assert(pBuffer != null);
 
@@ -586,11 +585,11 @@ UINT32	uiPitch;
         given image coordinates. The value returned is an 8-bit palette index
 ********************************************************************************************/
 export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: SGPVObject, usETRLEIndex: UINT16, usX: UINT16, usY: UINT16): boolean {
-  let pCurrent: Pointer<UINT8>;
+  let pCurrent: number;
   let usLoopX: UINT16 = 0;
   let usLoopY: UINT16 = 0;
   let ubRunLength: UINT16;
-  let pETRLEObject: Pointer<ETRLEObject>;
+  let pETRLEObject: ETRLEObject;
 
   // Do a bunch of checks
   if (hVObject == null) {
@@ -600,25 +599,28 @@ export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: SGPVObject, 
     return false;
   }
 
-  pETRLEObject = addressof(hVObject.pETRLEObject[usETRLEIndex]);
+  pETRLEObject = hVObject.pETRLEObject[usETRLEIndex];
 
-  if (usX >= pETRLEObject.value.usWidth) {
+  if (usX >= pETRLEObject.usWidth) {
     return false;
   }
-  if (usY >= pETRLEObject.value.usHeight) {
+  if (usY >= pETRLEObject.usHeight) {
     return false;
   }
 
   // Assuming everything's okay, go ahead and look...
-  pCurrent = addressof((hVObject.pPixData)[pETRLEObject.value.uiDataOffset]);
+  pCurrent = pETRLEObject.uiDataOffset;
 
   // Skip past all uninteresting scanlines
+  let pPixData = hVObject.pPixData;
+  let byte = pPixData[pCurrent];
   while (usLoopY < usY) {
-    while (pCurrent.value != 0) {
-      if (pCurrent.value & COMPRESS_TRANSPARENT) {
+    byte = pPixData[pCurrent];
+    while (byte != 0) {
+      if (byte & COMPRESS_TRANSPARENT) {
         pCurrent++;
       } else {
-        pCurrent += pCurrent.value & COMPRESS_RUN_MASK;
+        pCurrent += byte & COMPRESS_RUN_MASK;
       }
     }
     usLoopY++;
@@ -626,9 +628,9 @@ export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: SGPVObject, 
 
   // Now look in this scanline for the appropriate byte
   do {
-    ubRunLength = pCurrent.value & COMPRESS_RUN_MASK;
+    ubRunLength = byte & COMPRESS_RUN_MASK;
 
-    if (pCurrent.value & COMPRESS_TRANSPARENT) {
+    if (byte & COMPRESS_TRANSPARENT) {
       if (usLoopX + ubRunLength >= usX) {
         pDest.value = 0;
         return true;
@@ -639,7 +641,7 @@ export function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: SGPVObject, 
       if (usLoopX + ubRunLength >= usX) {
         // skip to the correct byte; skip at least 1 to get past the byte defining the run
         pCurrent += (usX - usLoopX) + 1;
-        pDest.value = pCurrent.value;
+        pDest.value = byte;
         return true;
       } else {
         pCurrent += ubRunLength + 1;
@@ -696,12 +698,12 @@ export function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pE
 }
 
 export function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
-  let pBuffer: Pointer<UINT16>;
-  let uiPitch: UINT32;
+  let pBuffer: Uint8ClampedArray;
+  let uiPitch: UINT32 = 0;
   let hSrcVObject: SGPVObject;
 
   // Lock video surface
-  pBuffer = LockVideoSurface(uiDestVSurface, addressof(uiPitch));
+  pBuffer = LockVideoSurface(uiDestVSurface, createPointer(() => uiPitch, (v) => uiPitch = v));
 
   if (pBuffer == null) {
     return false;
@@ -725,10 +727,10 @@ export function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObj
 }
 
 export function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: SGPVObject, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: boolean): boolean {
-  let pBuffer: Pointer<UINT16>;
-  let uiPitch: UINT32;
+  let pBuffer: Uint8ClampedArray;
+  let uiPitch: UINT32 = 0;
   // Lock video surface
-  pBuffer = LockVideoSurface(uiDestVSurface, addressof(uiPitch));
+  pBuffer = LockVideoSurface(uiDestVSurface, createPointer(() => uiPitch, (v) => uiPitch = v));
 
   if (pBuffer == null) {
     return false;
@@ -747,12 +749,12 @@ export function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: SGPVO
 }
 
 export function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32): boolean {
-  let pBuffer: Pointer<UINT16>;
-  let uiPitch: UINT32;
+  let pBuffer: Uint8ClampedArray;
+  let uiPitch: UINT32 = 0;
   let hSrcVObject: SGPVObject;
 
   // Lock video surface
-  pBuffer = LockVideoSurface(uiDestVSurface, addressof(uiPitch));
+  pBuffer = LockVideoSurface(uiDestVSurface, createPointer(() => uiPitch, (v) => uiPitch = v));
 
   if (pBuffer == null) {
     return false;

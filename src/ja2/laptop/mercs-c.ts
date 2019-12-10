@@ -1015,15 +1015,15 @@ function HandleCurrentMercDistortion(): void {
 /* static */ let PixelateVideoMercImage__ubPixelationAmount: UINT8 = 255;
 function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
   let uiCurTime: UINT32 = GetJA2Clock();
-  let pBuffer: Pointer<UINT16> = null;
+  let pBuffer: Uint8ClampedArray;
   let DestColor: UINT16;
-  let uiPitch: UINT32;
+  let uiPitch: UINT32 = 0;
   let i: UINT16;
   let j: UINT16;
   let fReturnStatus: boolean = false;
   i = 0;
 
-  pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
+  pBuffer = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiPitch, (v) => uiPitch = v));
   Assert(pBuffer);
 
   if (PixelateVideoMercImage__ubPixelationAmount == 255) {
@@ -1061,7 +1061,7 @@ function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, us
   } else
     i = i;
 
-  uiPitch /= 2;
+  uiPitch /= 4;
   i = j = 0;
   DestColor = pBuffer[(j * uiPitch) + i];
 
@@ -1086,10 +1086,10 @@ function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, us
 
 /* static */ let DistortVideoMercImage__usDistortionValue: UINT16 = 255;
 function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usHeight: UINT16): boolean {
-  let uiPitch: UINT32;
+  let uiPitch: UINT32 = 0;
   let i: UINT16;
   let j: UINT16;
-  let pBuffer: Pointer<UINT16> = null;
+  let pBuffer: Uint8ClampedArray;
   let DestColor: UINT16;
   let uiColor: UINT32;
   let red: UINT8;
@@ -1098,10 +1098,10 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   let uiReturnValue: boolean;
   let usEndOnLine: UINT16 = 0;
 
-  pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
+  pBuffer = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiPitch, (v) => uiPitch = v));
   Assert(pBuffer);
 
-  uiPitch /= 2;
+  uiPitch /= 4;
   j = MERC_VIDEO_FACE_Y;
   i = MERC_VIDEO_FACE_X;
 

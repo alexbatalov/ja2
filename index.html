@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Jagged Alliance 2</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <script src="out/main.js"></script>
+    <style type="text/css">
+    body {
+      background-color: #000;
+      margin: 0;
+    }
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="ja2"></div>
+    </div>
+  </body>
+</html>

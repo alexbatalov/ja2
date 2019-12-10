@@ -3,7 +3,7 @@ namespace ja2 {
 // Macro to convert sector coordinates (1-16,1-16) to 0-255
 export const SECTOR = (x: number, y: number) => ((y - 1) * 16 + x - 1);
 export const SECTORX = (SectorID: number) => ((SectorID % 16) + 1);
-export const SECTORY = (SectorID: number) => ((SectorID / 16) + 1);
+export const SECTORY = (SectorID: number) => (Math.trunc(SectorID / 16) + 1);
 
 // Sector enumerations
 //

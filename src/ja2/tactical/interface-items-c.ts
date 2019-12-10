@@ -5244,8 +5244,8 @@ export function RenderItemPickupMenu(): void {
   let sFontY: INT16;
   let sNewX: INT16;
   let sNewY: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let pStr: string /* INT16[100] */;
   let usSubRegion: UINT16;
   let usHeight: UINT16;
@@ -5292,7 +5292,7 @@ export function RenderItemPickupMenu(): void {
     sX = ITEMPICK_GRAPHIC_X + gItemPickupMenu.sX;
     sY = ITEMPICK_GRAPHIC_Y + gItemPickupMenu.sY;
 
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     SetFont(ITEMDESC_FONT());
     SetFontBackground(FONT_MCOLOR_BLACK);

@@ -41,7 +41,7 @@ let guiTacticalLeaveScreen: boolean = false;
 export function MainGameScreenInit(): boolean {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC = createVideoOverlayDesc();
 
-  gpZBuffer = InitZBuffer(1280, 480);
+  gpZBuffer = InitZBuffer(640 * 4, 480);
   InitializeBackgroundRects();
 
   // EnvSetTimeInHours(ENV_TIME_12);
@@ -82,7 +82,7 @@ export function MainGameScreenInit(): boolean {
 
 export function MainGameScreenShutdown(): boolean {
   ShutdownZBuffer(gpZBuffer);
-  gpZBuffer = <Uint16Array><unknown>null;
+  gpZBuffer = <Uint8ClampedArray><unknown>null;
 
   ShutdownBackgroundRects();
 

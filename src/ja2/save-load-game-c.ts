@@ -3892,19 +3892,6 @@ function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): boolean {
   return true;
 }
 
-export function DoesUserHaveEnoughHardDriveSpace(): boolean {
-  let uiBytesFree: UINT32 = 0;
-
-  uiBytesFree = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
-
-  // check to see if there is enough hard drive space
-  if (uiBytesFree < REQUIRED_FREE_SPACE) {
-    return false;
-  }
-
-  return true;
-}
-
 export function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
   // if the current sector is valid
   if (gfWorldLoaded) {

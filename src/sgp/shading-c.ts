@@ -3,8 +3,8 @@ namespace ja2 {
 let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => createArrayFrom(256, createSGPPaletteEntry));
 export let ubColorTables: Uint8Array[] /* [HVOBJECT_SHADE_TABLES + 3][256] */ = createArrayFrom(HVOBJECT_SHADE_TABLES + 3, () => new Uint8Array(256));
 
-let IntensityTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
-let ShadeTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
+export let IntensityTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
+export let ShadeTable: Uint16Array /* UINT16[65536] */ = new Uint16Array(65536);
 export let White16BPPPalette: Uint16Array /* UINT16[256] */ = new Uint16Array(256);
 let guiShadePercent: FLOAT = 0.48;
 let guiBrightPercent: FLOAT = 1.1;
@@ -185,7 +185,7 @@ export function BuildShadeTable(): void {
     for (green = 0; green < 256; green += 4)
       for (blue = 0; blue < 256; blue += 4) {
         index = Get16BPPColor(FROMRGB(red, green, blue));
-        ShadeTable[index] = Get16BPPColor(FROMRGB(red * guiShadePercent, green * guiShadePercent, blue * guiShadePercent));
+        ShadeTable[index] = Get16BPPColor(FROMRGB(Math.trunc(red * guiShadePercent), Math.trunc(green * guiShadePercent), Math.trunc(blue * guiShadePercent)));
       }
 
   White16BPPPalette.fill(65535);
@@ -213,7 +213,7 @@ export function BuildIntensityTable(): void {
     for (green = 0; green < 256; green += 4)
       for (blue = 0; blue < 256; blue += 4) {
         index = Get16BPPColor(FROMRGB(red, green, blue));
-        IntensityTable[index] = Get16BPPColor(FROMRGB(red * dShadedPercent, green * dShadedPercent, blue * dShadedPercent));
+        IntensityTable[index] = Get16BPPColor(FROMRGB(Math.trunc(red * dShadedPercent), Math.trunc(green * dShadedPercent), Math.trunc(blue * dShadedPercent)));
       }
 }
 

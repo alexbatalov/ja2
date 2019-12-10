@@ -674,8 +674,8 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
 }
 
 function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16): void {
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let iFaceIndex: INT32;
 
@@ -686,7 +686,7 @@ function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sF
       // If we are highlighted, do this now!
       if ((pFace.uiFlags & FACE_SHOW_WHITE_HILIGHT)) {
         // Lock buffer
-        pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.usFaceWidth + 4, sFaceY + pFace.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -699,7 +699,7 @@ function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sF
         if (pFace.ubSoldierID != NOBODY) {
           if (MercPtrs[pFace.ubSoldierID].bLife >= OKLIFE) {
             // Lock buffer
-            pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+            pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
             SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.usFaceWidth + 4, sFaceY + pFace.usFaceHeight + 4);
 
             if (MercPtrs[pFace.ubSoldierID].bStealthMode) {
@@ -717,7 +717,7 @@ function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sF
       } else {
         // ATE: Zero out any highlight boxzes....
         // Lock buffer
-        pDestBuf = LockVideoSurface(pFace.uiAutoDisplayBuffer, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(pFace.uiAutoDisplayBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, pFace.usFaceX - 2, pFace.usFaceY - 1, pFace.usFaceX + pFace.usFaceWidth + 4, pFace.usFaceY + pFace.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
@@ -732,7 +732,7 @@ function HandleFaceHilights(pFace: FACETYPE, uiBuffer: UINT32, sFaceX: INT16, sF
 
   if ((pFace.fCompatibleItems && !gFacesData[iFaceIndex].fDisabled)) {
     // Lock buffer
-    pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(uiBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.usFaceWidth + 4, sFaceY + pFace.usFaceHeight + 4);
 
     usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
@@ -972,8 +972,8 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
   let sY1: INT16;
   let sY2: INT16;
   let sX2: INT16;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usLineColor: UINT16;
   let bNumRightIcons: INT8 = 0;
 
@@ -1051,7 +1051,7 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, false);
 
         // Draw box
-        pDestBuf = LockVideoSurface(uiRenderBuffer, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(uiRenderBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
         usLineColor = Get16BPPColor(FROMRGB(105, 8, 9));
@@ -1672,10 +1672,10 @@ export function HandleTalkingAutoFaces(): void {
 
 function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDestTop: INT16, sSrcLeft: INT16, sSrcTop: INT16, sWidth: INT16, sHeight: INT16): boolean {
   let pFace: FACETYPE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
 
   // Check face index
   if (iFaceIndex == -1) {
@@ -1689,8 +1689,8 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
     return false;
   }
 
-  pDestBuf = LockVideoSurface(pFace.uiAutoDisplayBuffer, addressof(uiDestPitchBYTES));
-  pSrcBuf = LockVideoSurface(pFace.uiAutoRestoreBuffer, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(pFace.uiAutoDisplayBuffer, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pSrcBuf = LockVideoSurface(pFace.uiAutoRestoreBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sDestLeft, sDestTop, sSrcLeft, sSrcTop, sWidth, sHeight);
 

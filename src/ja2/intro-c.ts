@@ -12,8 +12,6 @@ let gfIntroScreenExit: boolean;
 
 let guiIntroExitScreen: UINT32 = Enum26.INTRO_SCREEN;
 
-let gpSmackFlic: SMKFLIC | null /* Pointer<SMKFLIC> */ = null;
-
 const SMKINTRO_FIRST_VIDEO = 255;
 const SMKINTRO_NO_VIDEO = -1;
 
@@ -118,22 +116,7 @@ function EnterIntroScreen(): boolean {
     return true;
   }
 
-  // initialize smacker
-  SmkInitialize(ghWindow, 640, 480);
-
-  // get the index opf the first video to watch
-  iFirstVideoID = GetNextIntroVideo(SMKINTRO_FIRST_VIDEO);
-
-  if (iFirstVideoID != -1) {
-    StartPlayingIntroFlic(iFirstVideoID);
-
-    guiIntroExitScreen = Enum26.INTRO_SCREEN;
-  }
-
-  // Got no intro video, exit
-  else {
-    PrepareToExitIntroScreen();
-  }
+  PrepareToExitIntroScreen();
 
   return true;
 }
@@ -142,8 +125,6 @@ function RenderIntroScreen(): void {
 }
 
 function ExitIntroScreen(): void {
-  // shutdown smaker
-  SmkShutdown();
 }
 
 function HandleIntroScreen(): void {
@@ -154,21 +135,11 @@ function HandleIntroScreen(): void {
     return;
 
   // handle smaker each frame
-  fFlicStillPlaying = SmkPollFlics();
+  fFlicStillPlaying = false;
 
-  // if the flic is not playing
-  if (!fFlicStillPlaying) {
-    let iNextVideoToPlay: INT32 = -1;
+  PrepareToExitIntroScreen();
+  giCurrentIntroBeingPlayed = -1;
 
-    iNextVideoToPlay = GetNextIntroVideo(giCurrentIntroBeingPlayed);
-
-    if (iNextVideoToPlay != -1) {
-      StartPlayingIntroFlic(iNextVideoToPlay);
-    } else {
-      PrepareToExitIntroScreen();
-      giCurrentIntroBeingPlayed = -1;
-    }
-  }
 
   InvalidateScreen();
 }
@@ -208,7 +179,6 @@ function GetIntroScreenUserInput(): void {
           PrepareToExitIntroScreen();
           break;
         case SPACE:
-          SmkCloseFlic(<SMKFLIC>gpSmackFlic);
           break;
       }
     }
@@ -217,7 +187,6 @@ function GetIntroScreenUserInput(): void {
   // if the user presses either mouse button
   if (gfLeftButtonState || gfRightButtonState) {
     // advance to the next flic
-    SmkCloseFlic(<SMKFLIC>gpSmackFlic);
   }
 }
 
@@ -313,21 +282,6 @@ function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
   return iStringToUse;
 }
 
-function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
-  if (iIndexOfFlicToPlay != -1) {
-    // start playing a flic
-    gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, true);
-
-    if (gpSmackFlic != null) {
-      giCurrentIntroBeingPlayed = iIndexOfFlicToPlay;
-    } else {
-      // do a check
-
-      DoScreenIndependantMessageBox(gzIntroScreen[Enum19.INTRO_TXT__CANT_FIND_INTRO], MSG_BOX_FLAG_OK, CDromEjectionErrorMessageBoxCallBack);
-    }
-  }
-}
-
 export function SetIntroType(bIntroType: INT8): void {
   if (bIntroType == Enum21.INTRO_BEGINING) {
     gbIntroScreenMode = Enum21.INTRO_BEGINING;
@@ -343,15 +297,15 @@ function DisplaySirtechSplashScreen(): void {
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
   let uiLogoID: UINT32;
 
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
 
   // JA3Gold: do nothing until we have a graphic to replace Talonsoft's
   // return;
 
   // CLEAR THE FRAME BUFFER
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-  memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+  pDestBuf.fill(0);
   UnLockVideoSurface(FRAME_BUFFER);
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

@@ -134,9 +134,9 @@ function DisplayPlayerActivationString(): void {
 /* static */ let DisplayActivationStringCursor__fIncrement: boolean = true;
 function DisplayActivationStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  let uiDestPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32 = 0;
   let uiDeltaTime: UINT32 = 0;
-  let pDestBuf: Pointer<UINT8>;
+  let pDestBuf: Uint8ClampedArray;
 
   if (DisplayActivationStringCursor__uiBaseTime == 0) {
     DisplayActivationStringCursor__uiBaseTime = GetJA2Clock();
@@ -166,7 +166,7 @@ function DisplayActivationStringCursor(): void {
     DisplayActivationStringCursor__uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state

@@ -520,10 +520,10 @@ export function RenderTalkingMenu(): void {
   let sX: INT16;
   let sY: INT16;
   let ubCharacterNum: UINT8 = gTalkPanel.ubCharNum;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let usTextBoxWidth: UINT16 = 0;
   let usTextBoxHeight: UINT16 = 0;
   let zTempString: string /* CHAR16[128] */;
@@ -554,8 +554,8 @@ export function RenderTalkingMenu(): void {
     // Set font settings back
     SetFontShadow(DEFAULT_SHADOW);
 
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
-    pSrcBuf = LockVideoSurface(gTalkPanel.uiSaveBuffer, addressof(uiSrcPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
+    pSrcBuf = LockVideoSurface(gTalkPanel.uiSaveBuffer, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (gTalkPanel.sX + TALK_PANEL_FACE_X), (gTalkPanel.sY + TALK_PANEL_FACE_Y), 0, 0, pFace.usFaceWidth, pFace.usFaceHeight);
 

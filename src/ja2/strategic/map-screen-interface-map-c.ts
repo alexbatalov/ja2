@@ -552,23 +552,23 @@ function HandleShowingOfEnemiesWithMilitiaOn(): void {
 }
 
 export function DrawMap(): boolean {
-  let hSrcVSurface: HVSURFACE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT8>;
+  let hSrcVSurface: SGPVSurface;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let clip: SGPRect = createSGPRect();
   let cnt: INT16;
   let cnt2: INT16;
   let iCounter: INT32 = 0;
 
   if (!iCurrentMapSectorZ) {
-    pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
     if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
       return false;
     }
-    pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+    pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
     // clip blits to mapscreen region
     // ClipBlitsToMapViewRegion( );
@@ -596,15 +596,15 @@ export function DrawMap(): boolean {
       clip.iBottom=clip.iTop + MapScreenRect.iBottom - MapScreenRect.iTop;
       */
 
-      if (clip.iBottom > hSrcVSurface.value.usHeight) {
-        clip.iBottom = hSrcVSurface.value.usHeight;
+      if (clip.iBottom > hSrcVSurface.usHeight) {
+        clip.iBottom = hSrcVSurface.usHeight;
       }
 
-      if (clip.iRight > hSrcVSurface.value.usWidth) {
-        clip.iRight = hSrcVSurface.value.usWidth;
+      if (clip.iRight > hSrcVSurface.usWidth) {
+        clip.iRight = hSrcVSurface.usWidth;
       }
 
-      Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 2, addressof(clip));
+      Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y - 2, clip);
     } else {
       Blt8BPPDataTo16BPPBufferHalf(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, MAP_VIEW_START_X + 1, MAP_VIEW_START_Y);
     }
@@ -1044,15 +1044,15 @@ function ShowTeamAndVehicles(fShowFlags: INT32): void {
 function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   let sScreenX: INT16;
   let sScreenY: INT16;
-  let hSrcVSurface: HVSURFACE;
+  let hSrcVSurface: SGPVSurface;
   // HVSURFACE hSAMSurface;
   // HVSURFACE hMineSurface;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
-  let pSrcBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
+  let pSrcBuf: Uint8ClampedArray;
   let clip: SGPRect = createSGPRect();
-  let pOriginalPallette: Pointer<UINT16>;
+  let pOriginalPallette: Uint16Array;
 
   // get original video surface palette
   if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
@@ -1064,7 +1064,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
   // CHECKF( GetVideoSurface( &hMineSurface, guiMINEICON ) );
   // get original video surface palette
 
-  pOriginalPallette = hSrcVSurface.value.p16BPPPalette;
+  pOriginalPallette = hSrcVSurface.p16BPPPalette;
 
   if (fZoomFlag)
     ShadeMapElemZoomIn(sMapX, sMapY, iColor);
@@ -1111,16 +1111,16 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
           return false;
         }
 
-        hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapLTGreenPalette;
         // hMineSurface->p16BPPPalette = pMapLTGreenPalette;
         // hSAMSurface->p16BPPPalette = pMapLTGreenPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
@@ -1137,16 +1137,16 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapDKGreenPalette;
         // hMineSurface->p16BPPPalette = pMapDKGreenPalette;
         // hSAMSurface->p16BPPPalette = pMapDKGreenPalette;
 
         /// lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
@@ -1163,16 +1163,16 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapLTRedPalette;
         // hMineSurface->p16BPPPalette = pMapLTRedPalette;
         // hSAMSurface->p16BPPPalette = pMapLTRedPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
@@ -1189,16 +1189,16 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapDKRedPalette;
         // hMineSurface->p16BPPPalette = pMapDKRedPalette;
         // hSAMSurface->p16BPPPalette = pMapDKRedPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         Blt8BPPDataTo16BPPBufferHalfRect(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
 
@@ -1215,7 +1215,7 @@ function ShadeMapElem(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean {
     if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
       return false;
     }
-    hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
+    hSrcVSurface.p16BPPPalette = pOriginalPallette;
     // hMineSurface->p16BPPPalette = pOriginalPallette;
     // hSAMSurface->p16BPPPalette = pOriginalPallette;
   }
@@ -1228,14 +1228,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   let sScreenY: INT16;
   let iX: INT32;
   let iY: INT32;
-  let hSrcVSurface: HVSURFACE;
-  let uiDestPitchBYTES: UINT32;
-  let uiSrcPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT16>;
+  let hSrcVSurface: SGPVSurface;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiSrcPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   // UINT8 *pDestBuf2;
-  let pSrcBuf: Pointer<UINT8>;
+  let pSrcBuf: Uint8ClampedArray;
   let clip: SGPRect = createSGPRect();
-  let pOriginalPallette: Pointer<UINT16>;
+  let pOriginalPallette: Uint16Array;
 
   // get sX and sY
   iX = sMapX;
@@ -1252,7 +1252,7 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
     return false;
   }
-  pOriginalPallette = hSrcVSurface.value.p16BPPPalette;
+  pOriginalPallette = hSrcVSurface.p16BPPPalette;
 
   if ((iX > MapScreenRect.iLeft - MAP_GRID_X * 2) && (iX < MapScreenRect.iRight) && (iY > MapScreenRect.iTop - MAP_GRID_Y * 2) && (iY < MapScreenRect.iBottom)) {
     sScreenX = iX;
@@ -1311,14 +1311,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapLTGreenPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapLTGreenPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         // now blit
         Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
@@ -1334,14 +1334,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapDKGreenPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapDKGreenPalette;
 
         /// lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         // now blit
         Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
@@ -1357,14 +1357,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapLTRedPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapLTRedPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         // now blit
         Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
@@ -1380,14 +1380,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        hSrcVSurface.value.p16BPPPalette = pMapDKRedPalette;
+        hSrcVSurface.p16BPPPalette = <Uint16Array>pMapDKRedPalette;
 
         // lock source and dest buffers
-        pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+        pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
         if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
           return false;
         }
-        pSrcBuf = LockVideoSurface(guiBIGMAP, addressof(uiSrcPitchBYTES));
+        pSrcBuf = LockVideoSurface(guiBIGMAP, createPointer(() => uiSrcPitchBYTES, (v) => uiSrcPitchBYTES = v));
 
         // now blit
         Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, sScreenX, sScreenY, clip);
@@ -1404,14 +1404,14 @@ function ShadeMapElemZoomIn(sMapX: INT16, sMapY: INT16, iColor: INT32): boolean 
   if ((hSrcVSurface = GetVideoSurface(guiBIGMAP)) === null) {
     return false;
   }
-  hSrcVSurface.value.p16BPPPalette = pOriginalPallette;
+  hSrcVSurface.p16BPPPalette = pOriginalPallette;
 
   return true;
 }
 
 export function InitializePalettesForMap(): boolean {
   // init palettes
-  let hSrcVSurface: HVSURFACE;
+  let hSrcVSurface: SGPVSurface;
   let pPalette: SGPPaletteEntry[] /* [256] */ = createArrayFrom(256, createSGPPaletteEntry);
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
   let uiTempMap: UINT32;
@@ -3904,14 +3904,14 @@ export function CheckForClickOverHelicopterIcon(sClickedSectorX: INT16, sClicked
 
 function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
   let hHandle: SGPVObject;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf2: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf2: Uint8ClampedArray;
   let sScreenX: INT16;
   let sScreenY: INT16;
 
   hHandle = GetVideoObject(guiMINEICON);
 
-  pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
   UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -4032,8 +4032,8 @@ function AdjustXForLeftMapEdge(wString: string /* STR16 */, sX: INT16): INT16 {
 function BlitTownGridMarkers(): void {
   let sScreenX: INT16 = 0;
   let sScreenY: INT16 = 0;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16 = 0;
   let iCounter: INT32 = 0;
   let sWidth: INT16 = 0;
@@ -4043,7 +4043,7 @@ function BlitTownGridMarkers(): void {
   usColor = Get16BPPColor(FROMRGB(100, 100, 100));
 
   // blit in the highlighted sector
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
@@ -4100,8 +4100,8 @@ function BlitTownGridMarkers(): void {
 function BlitMineGridMarkers(): void {
   let sScreenX: INT16 = 0;
   let sScreenY: INT16 = 0;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16 = 0;
   let iCounter: INT32 = 0;
   let sWidth: INT16 = 0;
@@ -4111,7 +4111,7 @@ function BlitMineGridMarkers(): void {
   usColor = Get16BPPColor(FROMRGB(100, 100, 100));
 
   // blit in the highlighted sector
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
@@ -5564,8 +5564,8 @@ function ShowSAMSitesOnStrategicMap(): void {
   let sY: INT16 = 0;
   let hHandle: SGPVObject;
   let ubVidObjIndex: INT8 = 0;
-  let pDestBuf2: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf2: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let wString: string /* CHAR16[40] */;
 
   if (fShowAircraftFlag) {
@@ -5583,7 +5583,7 @@ function ShowSAMSitesOnStrategicMap(): void {
     sSectorY = gpSamSectorY[iCounter];
 
     if (fZoomFlag) {
-      pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+      pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
       UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -5648,8 +5648,8 @@ function ShowSAMSitesOnStrategicMap(): void {
 function BlitSAMGridMarkers(): void {
   let sScreenX: INT16 = 0;
   let sScreenY: INT16 = 0;
-  let uiDestPitchBYTES: UINT32;
-  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let pDestBuf: Uint8ClampedArray;
   let usColor: UINT16 = 0;
   let iCounter: INT32 = 0;
   let sWidth: INT16 = 0;
@@ -5658,7 +5658,7 @@ function BlitSAMGridMarkers(): void {
   // get 16 bpp color
   usColor = Get16BPPColor(FROMRGB(100, 100, 100));
 
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
@@ -5836,15 +5836,15 @@ function DrawMapBoxIcon(hIconHandle: SGPVObject, usVOIndex: UINT16, sMapX: INT16
 }
 
 function DrawOrta(): void {
-  let pDestBuf2: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf2: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let sX: INT16;
   let sY: INT16;
   let ubVidObjIndex: UINT8;
   let hHandle: SGPVObject;
 
   if (fZoomFlag) {
-    pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
     UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -5865,15 +5865,15 @@ function DrawOrta(): void {
 }
 
 function DrawTixa(): void {
-  let pDestBuf2: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf2: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
   let sX: INT16;
   let sY: INT16;
   let ubVidObjIndex: UINT8;
   let hHandle: SGPVObject;
 
   if (fZoomFlag) {
-    pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf2 = LockVideoSurface(guiSAVEBUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, MAP_VIEW_START_X + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_GRID_Y - 1, MAP_VIEW_WIDTH + 1, MAP_VIEW_HEIGHT - 9);
     UnLockVideoSurface(guiSAVEBUFFER);
 

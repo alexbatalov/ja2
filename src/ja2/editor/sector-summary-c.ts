@@ -793,8 +793,9 @@ function RenderItemDetails(): void {
 }
 
 export function RenderSummaryWindow(): void {
-  let pDestBuf: Pointer<UINT8>;
-  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Uint8ClampedArray;
+  let uiDestPitchBYTES: UINT32 = 0;
+  let uiDestPitchBYTES__Pointer = createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v);
   let ClipRect: SGPRect = createSGPRect();
   let i: INT32;
   let x: INT32;
@@ -1129,7 +1130,7 @@ export function RenderSummaryWindow(): void {
     // Draw the mode tabs
     SetFontForeground(FONT_YELLOW);
     mprintf(354, 18, "Summary");
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, uiDestPitchBYTES__Pointer);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(true, 350, 15, 405, 28, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -1144,7 +1145,7 @@ export function RenderSummaryWindow(): void {
       SetFontForeground(FONT_RED);
     }
     mprintf(354, 33, "Items");
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, uiDestPitchBYTES__Pointer);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(true, 350, 30, 405, 43, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -1180,7 +1181,7 @@ export function RenderSummaryWindow(): void {
     }
     if (gfRenderGrid) {
       let pos: UINT16;
-      pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+      pDestBuf = LockVideoSurface(FRAME_BUFFER, uiDestPitchBYTES__Pointer);
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       for (i = 1; i <= 15; i++) {
         // draw vertical lines
@@ -1245,7 +1246,7 @@ export function RenderSummaryWindow(): void {
           }
           ClipRect.iLeft = MAP_LEFT + x * 13;
           ClipRect.iRight = ClipRect.iLeft + 12;
-          pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+          pDestBuf = LockVideoSurface(FRAME_BUFFER, uiDestPitchBYTES__Pointer);
           Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
           if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
             Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, ClipRect);
@@ -1256,7 +1257,7 @@ export function RenderSummaryWindow(): void {
   }
 
   if (gfGlobalSummaryExists) {
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, uiDestPitchBYTES__Pointer);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     // Render the grid for the map currently residing in memory (blue).
     if (gfWorldLoaded && !gfTempFile && gsSectorX) {
@@ -1603,7 +1604,7 @@ function CreateGlobalSummary(): void {
 
   gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
-  GetExecutableDirectory(ExecDir);
+  ExecDir = GetExecutableDirectory();
   Dir = sprintf("%s\\DevInfo", ExecDir);
 
   // Directory doesn't exist, so create it, and continue.
@@ -1915,7 +1916,7 @@ function LoadGlobalSummary(): void {
   gusNumberOfMapsToBeForceUpdated = 0;
   gfGlobalSummaryExists = false;
   // Set current directory to JA2\DevInfo which contains all of the summary data
-  GetExecutableDirectory(ExecDir);
+  ExecDir = GetExecutableDirectory();
   DevInfoDir = sprintf("%s\\DevInfo", ExecDir);
   MapsDir = sprintf("%s\\Data\\Maps", ExecDir);
 
@@ -2081,7 +2082,7 @@ function GenerateSummaryList(): void {
   let Dir: string /* STRING512 */;
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
-  GetExecutableDirectory(ExecDir);
+  ExecDir = GetExecutableDirectory();
   Dir = sprintf("%s\\DevInfo", ExecDir);
   if (!SetFileManCurrentDirectory(Dir)) {
     // Directory doesn't exist, so create it, and continue.

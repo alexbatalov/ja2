@@ -6,7 +6,13 @@ namespace ja2 {
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling
 // the interface.
 
-export let gfKeyState: boolean[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
+const WM_MOUSEMOVE = 0x0200;
+const WM_LBUTTONDOWN = 0x0201;
+const WM_LBUTTONUP = 0x0202;
+const WM_RBUTTONDOWN = 0x0204;
+const WM_RBUTTONUP = 0x0205;
+
+export let gfKeyState: boolean[] /* [256] */ = createArray(256, false); // TRUE = Pressed, FALSE = Not Pressed
 let fCursorWasClipped: boolean = false;
 let gCursorClipRect: RECT = createRect();
 
@@ -49,26 +55,29 @@ export let gfSGPInputReceived: boolean = false;
 // This is the WIN95 hook specific data and defines used to handle the keyboard and
 // mouse hook
 
-let ghKeyboardHook: HHOOK;
-let ghMouseHook: HHOOK;
-
 // If the following pointer is non NULL then input characters are redirected to
 // the related string
 
 let gfCurrentStringInputState: boolean;
-let gpCurrentStringDescriptor: Pointer<StringInput>;
+let gpCurrentStringDescriptor: StringInput | null;
 
 // Local function headers
 
+export function ClipCursor(pos: RECT | null): void {
+}
+
+export function GetCursorPos(pos: POINT): void {
+  pos.x = gusMouseXPos;
+  pos.y = gusMouseYPos;
+}
+
+export function ShowCursor(show: boolean): void {
+  ghInstance.style.cursor = show ? '' : 'none';
+}
+
 // These are the hook functions for both keyboard and mouse
 
-function KeyboardHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
-  if (Code < 0)
-  {
-    // Do not handle this message, pass it on to another window
-    return CallNextHookEx(ghKeyboardHook, Code, wParam, lParam);
-  }
-
+function KeyboardHandler(Code: number, wParam: number, lParam: number): boolean {
   if (lParam & TRANSITION_MASK) {
     // The key has been released
     KeyUp(wParam, lParam);
@@ -82,19 +91,13 @@ function KeyboardHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT 
   return true;
 }
 
-function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
+function MouseHandler(Code: number, wParam: number, lParam: number): boolean {
   let uiParam: UINT32;
-
-  if (Code < 0)
-  {
-    // Do not handle this message, pass it on to another window
-    return CallNextHookEx(ghMouseHook, Code, wParam, lParam);
-  }
 
   switch (wParam) {
     case WM_LBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = ((lParam).value.pt).x;
-      gusMouseYPos = ((lParam).value.pt).y;
+      gusMouseXPos = lParam & 0xFFFF;
+      gusMouseYPos = (lParam >> 16) & 0xFFFF;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -106,8 +109,8 @@ function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_LBUTTONUP: // Update the current mouse position
-      gusMouseXPos = ((lParam).value.pt).x;
-      gusMouseYPos = ((lParam).value.pt).y;
+      gusMouseXPos = lParam & 0xFFFF;
+      gusMouseYPos = (lParam >> 16) & 0xFFFF;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -119,8 +122,8 @@ function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_UP, 0, uiParam);
       break;
     case WM_RBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = ((lParam).value.pt).x;
-      gusMouseYPos = ((lParam).value.pt).y;
+      gusMouseXPos = lParam & 0xFFFF;
+      gusMouseYPos = (lParam >> 16) & 0xFFFF;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -132,8 +135,8 @@ function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_RBUTTONUP: // Update the current mouse position
-      gusMouseXPos = ((lParam).value.pt).x;
-      gusMouseYPos = ((lParam).value.pt).y;
+      gusMouseXPos = lParam & 0xFFFF;
+      gusMouseYPos = (lParam >> 16) & 0xFFFF;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -145,8 +148,8 @@ function MouseHandler(Code: number, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_UP, 0, uiParam);
       break;
     case WM_MOUSEMOVE: // Update the current mouse position
-      gusMouseXPos = ((lParam).value.pt).x;
-      gusMouseYPos = ((lParam).value.pt).y;
+      gusMouseXPos = lParam & 0xFFFF;
+      gusMouseYPos = (lParam >> 16) & 0xFFFF;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -165,7 +168,7 @@ export function InitializeInputManager(): boolean {
   // Link to debugger
   RegisterDebugTopic(TOPIC_INPUT, "Input Manager");
   // Initialize the gfKeyState table to FALSE everywhere
-  memset(gfKeyState, false, 256);
+  gfKeyState.fill(false);
   // Initialize the Event Queue
   gusQueueCount = 0;
   gusHeadIndex = 0;
@@ -173,9 +176,9 @@ export function InitializeInputManager(): boolean {
   // By default, we will not queue mousemove events
   gfTrackMousePos = false;
   // Initialize other variables
-  gfShiftState = false;
-  gfAltState = false;
-  gfCtrlState = false;
+  gfShiftState = 0;
+  gfAltState = 0;
+  gfCtrlState = 0;
   // Initialize variables pertaining to DOUBLE CLIK stuff
   gfTrackDblClick = true;
   guiDoubleClkDelay = DBL_CLK_TIME;
@@ -193,12 +196,27 @@ export function InitializeInputManager(): boolean {
   // Initialize the string input mechanism
   gfCurrentStringInputState = false;
   gpCurrentStringDescriptor = null;
-  // Activate the hook functions for both keyboard and Mouse
-  ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHandler, 0, GetCurrentThreadId());
-  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, FormatString("Set keyboard hook returned %d", ghKeyboardHook));
 
-  ghMouseHook = SetWindowsHookEx(WH_MOUSE, MouseHandler, 0, GetCurrentThreadId());
-  DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, FormatString("Set mouse hook returned %d", ghMouseHook));
+  window.addEventListener('keyup', (ev) => {
+    KeyboardHandler(0, ev.keyCode, TRANSITION_MASK);
+  });
+
+  window.addEventListener('keydown', (ev) => {
+    KeyboardHandler(0, ev.keyCode, 0);
+  });
+
+  ghInstance.addEventListener('mousemove', (ev) => {
+    MouseHandler(0, WM_MOUSEMOVE, (ev.offsetY << 16) | ev.offsetX);
+  });
+
+  ghInstance.addEventListener('mousedown', (ev) => {
+    MouseHandler(0, ev.button === 0 ? WM_LBUTTONDOWN : WM_RBUTTONDOWN, (ev.offsetY << 16) | ev.offsetX);
+  });
+
+  ghInstance.addEventListener('mouseup', (ev) => {
+    MouseHandler(0, ev.button === 0 ? WM_LBUTTONUP : WM_RBUTTONUP, (ev.offsetY << 16) | ev.offsetX);
+  });
+
   return true;
 }
 
@@ -206,8 +224,6 @@ export function ShutdownInputManager(): void {
   // There's very little to do when shutting down the input manager. In the future, this is where the keyboard and
   // mouse hooks will be destroyed
   UnRegisterDebugTopic(TOPIC_INPUT, "Input Manager");
-  UnhookWindowsHookEx(ghKeyboardHook);
-  UnhookWindowsHookEx(ghMouseHook);
 }
 
 function QueuePureEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
@@ -381,7 +397,7 @@ export function DequeueEvent(Event: InputAtom): boolean {
   }
 }
 
-function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
+function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: boolean /* UINT8 */): void {
   let ubKey: UINT32;
   let ubChar: UINT16;
   let MousePos: POINT = createPoint();
@@ -679,7 +695,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
 
   // Find ucChar by translating ubKey using the gsKeyTranslationTable. If the SHIFT, ALT or CTRL key are down, then
   // the index into the translation table us changed from ubKey to ubKey+256, ubKey+512 and ubKey+768 respectively
-  if (gfShiftState == true) {
+  if (gfShiftState == 1) {
     // SHIFT is pressed, hence we add 256 to ubKey before translation to ubChar
     ubChar = gsKeyTranslationTable[ubKey + 256];
   } else {
@@ -690,11 +706,11 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
     // Just something i found, and thought u should know about.  DF.
     //
 
-    if (gfAltState == true) {
+    if (gfAltState == 1) {
       // ALT is pressed, hence ubKey is multiplied by 3 before translation to ubChar
       ubChar = gsKeyTranslationTable[ubKey + 512];
     } else {
-      if (gfCtrlState == true) {
+      if (gfCtrlState == 1) {
         // CTRL is pressed, hence ubKey is multiplied by 4 before translation to ubChar
         ubChar = gsKeyTranslationTable[ubKey + 768];
       } else {
@@ -742,9 +758,8 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
     // else if the alt tab key was pressed
     else if (ubChar == TAB && gfAltState) {
       // therefore minimize the application
-      ShowWindow(ghWindow, SW_MINIMIZE);
       gfKeyState[ALT] = false;
-      gfAltState = false;
+      gfAltState = 0;
     }
   }
 }
@@ -785,28 +800,24 @@ function KeyUp(usParam: UINT32, uiParam: UINT32): void {
   // Are we RELEASING one of SHIFT, ALT or CTRL ???
   if (usParam == 16) {
     // SHIFT key is RELEASED
-    gfShiftState = false;
+    gfShiftState = 0;
     gfKeyState[16] = false;
   } else {
     if (usParam == 17) {
       // CTRL key is RELEASED
-      gfCtrlState = false;
+      gfCtrlState = 0;
       gfKeyState[17] = false;
     } else {
       if (usParam == 18) {
         // ALT key is RELEASED
-        gfAltState = false;
+        gfAltState = 0;
         gfKeyState[18] = false;
       } else {
         if (usParam == SNAPSHOT) {
           // DB this used to be keyed to SCRL_LOCK
           // which I believe Luis gave the wrong value
           //#ifndef JA2
-          if (_KeyDown(CTRL))
-            VideoCaptureToggle();
-          else
-            //#endif
-            PrintScreen();
+          PrintScreen();
         } else {
           // No special keys have been pressed
           // Call KeyChange() and pass FALSE to indicate key has been PRESSED and not RELEASED
@@ -815,14 +826,6 @@ function KeyUp(usParam: UINT32, uiParam: UINT32): void {
       }
     }
   }
-}
-
-function EnableDoubleClk(): void {
-  // Obsolete
-}
-
-function DisableDoubleClk(): void {
-  // Obsolete
 }
 
 export function GetMousePos(Point: SGPPoint): void {
@@ -834,103 +837,6 @@ export function GetMousePos(Point: SGPPoint): void {
   Point.iY = MousePos.y;
 
   return;
-}
-
-// These functions will be used for string input
-
-// Since all string input will have to be handle by reentrant capable functions (since we must attend
-// to windows messaging as well as network traffic related issues), whenever there is ongoing string input
-// going on, we must use InitStringInput() and HandleStringInput() to get the job done. HandleStringInput()
-// will return TRUE as long as the string input is going on, and FALSE when its done
-//
-// During string input, all keyboard are rerouted to the string and hence are not queued up on the
-// event queue or registered in the state table. Also note that several string inputs can occur
-// at the same time. Use the SetStringFocus() function to manager the focus for multiple
-// string inputs
-
-function InitStringInput(pInputString: string /* Pointer<UINT16> */, usLength: UINT16, pFilter: string /* Pointer<UINT16> */): Pointer<StringInput> {
-  let pStringDescriptor: Pointer<StringInput>;
-
-  if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == null) {
-    //
-    // Hum we failed to allocate memory for the string descriptor
-    //
-
-    DbgMessage(TOPIC_INPUT, DBG_LEVEL_1, "Failed to allocate memory for string descriptor");
-    return null;
-  } else {
-    if ((pStringDescriptor.value.pOriginalString = MemAlloc(usLength * 2)) == null) {
-      //
-      // free up structure before aborting
-      //
-
-      MemFree(pStringDescriptor);
-      DbgMessage(TOPIC_INPUT, DBG_LEVEL_1, "Failed to allocate memory for string duplicate");
-      return null;
-    }
-
-    memcpy(pStringDescriptor.value.pOriginalString, pInputString, usLength * 2);
-
-    pStringDescriptor.value.pString = pInputString;
-    pStringDescriptor.value.pFilter = pFilter;
-    pStringDescriptor.value.usMaxStringLength = usLength;
-    pStringDescriptor.value.usStringOffset = 0;
-    pStringDescriptor.value.usCurrentStringLength = 0;
-    while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && ((pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset).value != 0)) {
-      //
-      // Find the last character in the string
-      //
-
-      pStringDescriptor.value.usStringOffset++;
-      pStringDescriptor.value.usCurrentStringLength++;
-    }
-
-    if (pStringDescriptor.value.usStringOffset == pStringDescriptor.value.usMaxStringLength) {
-      //
-      // Hum the current string has no null terminator. Invalidate the string and
-      // start from scratch
-      //
-
-      memset(pStringDescriptor.value.pString, 0, usLength * 2);
-      pStringDescriptor.value.usStringOffset = 0;
-      pStringDescriptor.value.usCurrentStringLength = 0;
-    }
-
-    pStringDescriptor.value.fInsertMode = false;
-    pStringDescriptor.value.fFocus = false;
-    pStringDescriptor.value.pPreviousString = null;
-    pStringDescriptor.value.pNextString = null;
-
-    return pStringDescriptor;
-  }
-}
-
-function LinkPreviousString(pCurrentString: Pointer<StringInput>, pPreviousString: Pointer<StringInput>): void {
-  if (pCurrentString != null) {
-    if (pCurrentString.value.pPreviousString != null) {
-      pCurrentString.value.pPreviousString.value.pNextString = null;
-    }
-
-    pCurrentString.value.pPreviousString = pPreviousString;
-
-    if (pPreviousString != null) {
-      pPreviousString.value.pNextString = pCurrentString;
-    }
-  }
-}
-
-function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Pointer<StringInput>): void {
-  if (pCurrentString != null) {
-    if (pCurrentString.value.pNextString != null) {
-      pCurrentString.value.pNextString.value.pPreviousString = null;
-    }
-
-    pCurrentString.value.pNextString = pNextString;
-
-    if (pNextString != null) {
-      pNextString.value.pPreviousString = pCurrentString;
-    }
-  }
 }
 
 function CharacterIsValid(usCharacter: UINT16, pFilter: string /* Pointer<UINT16> */): boolean {
@@ -957,234 +863,143 @@ function RedirectToString(usInputCharacter: UINT16): void {
     // Handle the new character input
     switch (usInputCharacter) {
       case ENTER: // ENTER is pressed, the last character field should be set to ENTER
-        if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = true;
-          gpCurrentStringDescriptor.value.usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.pNextString != null) {
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.pNextString;
+          gpCurrentStringDescriptor.fFocus = true;
+          gpCurrentStringDescriptor.usLastCharacter = 0;
         } else {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
           gfCurrentStringInputState = false;
         }
         break;
       case ESC: // ESC was pressed, the last character field should be set to ESC
-        gpCurrentStringDescriptor.value.fFocus = false;
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.fFocus = false;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         gfCurrentStringInputState = false;
         break;
       case SHIFT_TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor.value.pPreviousString != null) {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
-          gpCurrentStringDescriptor.value.fFocus = true;
-          gpCurrentStringDescriptor.value.usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.pPreviousString != null) {
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.pPreviousString;
+          gpCurrentStringDescriptor.fFocus = true;
+          gpCurrentStringDescriptor.usLastCharacter = 0;
         }
         break;
       case TAB: // TAB was pressed, the last character field should be set to TAB
-        if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = true;
-          gpCurrentStringDescriptor.value.usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.pNextString != null) {
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.pNextString;
+          gpCurrentStringDescriptor.fFocus = true;
+          gpCurrentStringDescriptor.usLastCharacter = 0;
         }
         break;
       case UPARROW: // The UPARROW was pressed, the last character field should be set to UPARROW
-        if (gpCurrentStringDescriptor.value.pPreviousString != null) {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pPreviousString;
-          gpCurrentStringDescriptor.value.fFocus = true;
-          gpCurrentStringDescriptor.value.usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.pPreviousString != null) {
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.pPreviousString;
+          gpCurrentStringDescriptor.fFocus = true;
+          gpCurrentStringDescriptor.usLastCharacter = 0;
         }
         break;
       case DNARROW: // The DNARROW was pressed, the last character field should be set to DNARROW
-        if (gpCurrentStringDescriptor.value.pNextString != null) {
-          gpCurrentStringDescriptor.value.fFocus = false;
-          gpCurrentStringDescriptor = gpCurrentStringDescriptor.value.pNextString;
-          gpCurrentStringDescriptor.value.fFocus = true;
-          gpCurrentStringDescriptor.value.usLastCharacter = 0;
+        if (gpCurrentStringDescriptor.pNextString != null) {
+          gpCurrentStringDescriptor.fFocus = false;
+          gpCurrentStringDescriptor = gpCurrentStringDescriptor.pNextString;
+          gpCurrentStringDescriptor.fFocus = true;
+          gpCurrentStringDescriptor.usLastCharacter = 0;
         }
         break;
       case LEFTARROW: // The LEFTARROW was pressed, move one character to the left
-        if (gpCurrentStringDescriptor.value.usStringOffset > 0) {
+        if (gpCurrentStringDescriptor.usStringOffset > 0) {
           // Decrement the offset
-          gpCurrentStringDescriptor.value.usStringOffset--;
+          gpCurrentStringDescriptor.usStringOffset--;
         }
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       case RIGHTARROW: // The RIGHTARROW was pressed, move one character to the right
-        if (gpCurrentStringDescriptor.value.usStringOffset < gpCurrentStringDescriptor.value.usCurrentStringLength) {
+        if (gpCurrentStringDescriptor.usStringOffset < gpCurrentStringDescriptor.usCurrentStringLength) {
           // Ok we can move the cursor one up without going past the end of string
-          gpCurrentStringDescriptor.value.usStringOffset++;
+          gpCurrentStringDescriptor.usStringOffset++;
         }
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       case BACKSPACE: // Delete the character preceding the cursor
-        if (gpCurrentStringDescriptor.value.usStringOffset > 0) {
+        if (gpCurrentStringDescriptor.usStringOffset > 0) {
           // Ok, we are not at the beginning of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex <= gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
+          for (usIndex = gpCurrentStringDescriptor.usStringOffset; usIndex <= gpCurrentStringDescriptor.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            (gpCurrentStringDescriptor.value.pString + usIndex - 1).value = (gpCurrentStringDescriptor.value.pString + usIndex).value;
+            (gpCurrentStringDescriptor.pString + usIndex - 1).value = (gpCurrentStringDescriptor.pString + usIndex).value;
           }
-          gpCurrentStringDescriptor.value.usStringOffset--;
-          gpCurrentStringDescriptor.value.usCurrentStringLength--;
+          gpCurrentStringDescriptor.usStringOffset--;
+          gpCurrentStringDescriptor.usCurrentStringLength--;
         }
 
         break;
       case DEL: // Delete the character which follows the cursor
-        if (gpCurrentStringDescriptor.value.usStringOffset < gpCurrentStringDescriptor.value.usCurrentStringLength) {
+        if (gpCurrentStringDescriptor.usStringOffset < gpCurrentStringDescriptor.usCurrentStringLength) {
           // Ok we are not at the end of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor.value.usStringOffset; usIndex < gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex++) {
+          for (usIndex = gpCurrentStringDescriptor.usStringOffset; usIndex < gpCurrentStringDescriptor.usCurrentStringLength; usIndex++) {
             // Shift the characters one at a time
-            (gpCurrentStringDescriptor.value.pString + usIndex).value = (gpCurrentStringDescriptor.value.pString + usIndex + 1).value;
+            (gpCurrentStringDescriptor.pString + usIndex).value = (gpCurrentStringDescriptor.pString + usIndex + 1).value;
           }
-          gpCurrentStringDescriptor.value.usCurrentStringLength--;
+          gpCurrentStringDescriptor.usCurrentStringLength--;
         }
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       case INSERT: // Toggle insert mode
-        if (gpCurrentStringDescriptor.value.fInsertMode == true) {
-          gpCurrentStringDescriptor.value.fInsertMode = false;
+        if (gpCurrentStringDescriptor.fInsertMode == true) {
+          gpCurrentStringDescriptor.fInsertMode = false;
         } else {
-          gpCurrentStringDescriptor.value.fInsertMode = true;
+          gpCurrentStringDescriptor.fInsertMode = true;
         }
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       case HOME: // Go to the beginning of the input string
-        gpCurrentStringDescriptor.value.usStringOffset = 0;
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usStringOffset = 0;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       case END
           : // Go to the end of the input string
-        gpCurrentStringDescriptor.value.usStringOffset = gpCurrentStringDescriptor.value.usCurrentStringLength;
-        gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+        gpCurrentStringDescriptor.usStringOffset = gpCurrentStringDescriptor.usCurrentStringLength;
+        gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         break;
       default: //
         // normal input
         //
-        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor.value.pFilter) == true) {
-          if (gpCurrentStringDescriptor.value.fInsertMode == true) {
+        if (CharacterIsValid(usInputCharacter, gpCurrentStringDescriptor.pFilter) == true) {
+          if (gpCurrentStringDescriptor.fInsertMode == true) {
             // Before we can shift characters for the insert, we must make sure we have the space
-            if (gpCurrentStringDescriptor.value.usCurrentStringLength < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
+            if (gpCurrentStringDescriptor.usCurrentStringLength < (gpCurrentStringDescriptor.usMaxStringLength - 1)) {
               // Before we can add a new character we must shift existing ones to for the insert
-              for (usIndex = gpCurrentStringDescriptor.value.usCurrentStringLength; usIndex > gpCurrentStringDescriptor.value.usStringOffset; usIndex--) {
+              for (usIndex = gpCurrentStringDescriptor.usCurrentStringLength; usIndex > gpCurrentStringDescriptor.usStringOffset; usIndex--) {
                 // Shift the characters one at a time
-                (gpCurrentStringDescriptor.value.pString + usIndex).value = (gpCurrentStringDescriptor.value.pString + usIndex - 1).value;
+                (gpCurrentStringDescriptor.pString + usIndex).value = (gpCurrentStringDescriptor.pString + usIndex - 1).value;
               }
               // Ok now we introduce the new character
-              (gpCurrentStringDescriptor.value.pString + usIndex).value = usInputCharacter;
-              gpCurrentStringDescriptor.value.usStringOffset++;
-              gpCurrentStringDescriptor.value.usCurrentStringLength++;
+              (gpCurrentStringDescriptor.pString + usIndex).value = usInputCharacter;
+              gpCurrentStringDescriptor.usStringOffset++;
+              gpCurrentStringDescriptor.usCurrentStringLength++;
             }
           } else {
             // Ok, add character to string (by overwriting)
-            if (gpCurrentStringDescriptor.value.usStringOffset < (gpCurrentStringDescriptor.value.usMaxStringLength - 1)) {
+            if (gpCurrentStringDescriptor.usStringOffset < (gpCurrentStringDescriptor.usMaxStringLength - 1)) {
               // Ok, we have not exceeded the maximum number of characters yet
-              (gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset).value = usInputCharacter;
-              gpCurrentStringDescriptor.value.usStringOffset++;
+              (gpCurrentStringDescriptor.pString + gpCurrentStringDescriptor.usStringOffset).value = usInputCharacter;
+              gpCurrentStringDescriptor.usStringOffset++;
             }
             // Did we push back the current string length (i.e. add character to end of string)
-            if (gpCurrentStringDescriptor.value.usStringOffset > gpCurrentStringDescriptor.value.usCurrentStringLength) {
+            if (gpCurrentStringDescriptor.usStringOffset > gpCurrentStringDescriptor.usCurrentStringLength) {
               // Add a NULL character
-              (gpCurrentStringDescriptor.value.pString + gpCurrentStringDescriptor.value.usStringOffset).value = 0;
-              gpCurrentStringDescriptor.value.usCurrentStringLength++;
+              (gpCurrentStringDescriptor.pString + gpCurrentStringDescriptor.usStringOffset).value = 0;
+              gpCurrentStringDescriptor.usCurrentStringLength++;
             }
           }
-          gpCurrentStringDescriptor.value.usLastCharacter = usInputCharacter;
+          gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
         }
         break;
     }
-  }
-}
-
-function GetStringInputState(): UINT16 {
-  if (gpCurrentStringDescriptor != null) {
-    return gpCurrentStringDescriptor.value.usLastCharacter;
-  } else {
-    return 0;
-  }
-}
-
-function StringInputHasFocus(): boolean {
-  return gfCurrentStringInputState;
-}
-
-function SetStringFocus(pStringDescriptor: Pointer<StringInput>): boolean {
-  if (pStringDescriptor != null) {
-    if (gpCurrentStringDescriptor != null) {
-      gpCurrentStringDescriptor.value.fFocus = false;
-    }
-    // Ok overide current entry
-    gfCurrentStringInputState = true;
-    gpCurrentStringDescriptor = pStringDescriptor;
-    gpCurrentStringDescriptor.value.fFocus = true;
-    gpCurrentStringDescriptor.value.usLastCharacter = 0;
-    return true;
-  } else {
-    if (gpCurrentStringDescriptor != null) {
-      gpCurrentStringDescriptor.value.fFocus = false;
-    }
-    // Ok overide current entry
-    gfCurrentStringInputState = false;
-    gpCurrentStringDescriptor = null;
-    return true;
-  }
-}
-
-function GetCursorPositionInString(pStringDescriptor: Pointer<StringInput>): UINT16 {
-  return pStringDescriptor.value.usStringOffset;
-}
-
-function StringHasFocus(pStringDescriptor: Pointer<StringInput>): boolean {
-  if (pStringDescriptor != null) {
-    return pStringDescriptor.value.fFocus;
-  } else {
-    return false;
-  }
-}
-
-function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
-  memcpy(pStringDescriptor.value.pString, pStringDescriptor.value.pOriginalString, pStringDescriptor.value.usMaxStringLength * 2);
-
-  pStringDescriptor.value.usStringOffset = 0;
-  pStringDescriptor.value.usCurrentStringLength = 0;
-  while ((pStringDescriptor.value.usStringOffset < pStringDescriptor.value.usMaxStringLength) && ((pStringDescriptor.value.pString + pStringDescriptor.value.usStringOffset).value != 0)) {
-    //
-    // Find the last character in the string
-    //
-
-    pStringDescriptor.value.usStringOffset++;
-    pStringDescriptor.value.usCurrentStringLength++;
-  }
-
-  if (pStringDescriptor.value.usStringOffset == pStringDescriptor.value.usMaxStringLength) {
-    //
-    // Hum the current string has no null terminator. Invalidate the string and
-    // start from scratch
-    //
-    memset(pStringDescriptor.value.pString, 0, pStringDescriptor.value.usMaxStringLength * 2);
-    pStringDescriptor.value.usStringOffset = 0;
-    pStringDescriptor.value.usCurrentStringLength = 0;
-  }
-
-  pStringDescriptor.value.fInsertMode = false;
-}
-
-function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
-  // Make sure we have a valid pStringDescriptor
-  if (pStringDescriptor != null) {
-    // make sure the gpCurrentStringDescriptor is NULL if necessary
-    if (pStringDescriptor == gpCurrentStringDescriptor) {
-      gpCurrentStringDescriptor = null;
-      gfCurrentStringInputState = false;
-    }
-    // Make sure we have a valid string within the string descriptor
-    if (pStringDescriptor.value.pOriginalString != null) {
-      // free up the string
-      MemFree(pStringDescriptor.value.pOriginalString);
-    }
-    // free up the descriptor
-    MemFree(pStringDescriptor);
   }
 }
 
@@ -1200,13 +1015,16 @@ export function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, us
   TempRect.iRight = usX2;
   TempRect.iBottom = usY2;
 
-  RestrictMouseCursor(addressof(TempRect));
+  RestrictMouseCursor(TempRect);
 }
 
 export function RestrictMouseCursor(pRectangle: SGPRect): void {
   // Make a copy of our rect....
-  memcpy(addressof(gCursorClipRect), pRectangle, sizeof(gCursorClipRect));
-  ClipCursor(pRectangle);
+  gCursorClipRect.left = pRectangle.iLeft;
+  gCursorClipRect.top = pRectangle.iTop;
+  gCursorClipRect.right = pRectangle.iRight;
+  gCursorClipRect.bottom = pRectangle.iBottom;
+  ClipCursor(gCursorClipRect);
   fCursorWasClipped = true;
 }
 
@@ -1217,12 +1035,15 @@ export function FreeMouseCursor(): void {
 
 export function RestoreCursorClipRect(): void {
   if (fCursorWasClipped) {
-    ClipCursor(addressof(gCursorClipRect));
+    ClipCursor(gCursorClipRect);
   }
 }
 
 export function GetRestrictedClipCursor(pRectangle: SGPRect): void {
-  GetClipCursor(pRectangle);
+  pRectangle.iLeft = gCursorClipRect.left;
+  pRectangle.iTop = gCursorClipRect.top;
+  pRectangle.iRight = gCursorClipRect.right;
+  pRectangle.iBottom = gCursorClipRect.bottom;
 }
 
 export function IsCursorRestricted(): boolean {
@@ -1246,11 +1067,9 @@ export function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): voi
   // Adjust coords based on our resolution
   flNewXPos = (uiNewXPos / SCREEN_WIDTH) * 65536;
   flNewYPos = (uiNewYPos / SCREEN_HEIGHT) * 65536;
-
-  mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, flNewXPos, flNewYPos, 0, 0);
 }
 
-function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): boolean {
+function InputEventInside(Event: InputAtom, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): boolean {
   let uiEventX: UINT32;
   let uiEventY: UINT32;
 
@@ -1262,14 +1081,9 @@ function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32,
 
 export function DequeueAllKeyBoardEvents(): void {
   let InputEvent: InputAtom = createInputAtom();
-  let KeyMessage: MSG;
-
-  // dequeue all the events waiting in the windows queue
-  while (PeekMessage(addressof(KeyMessage), ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
-    ;
 
   // Deque all the events waiting in the SGP queue
-  while (DequeueEvent(addressof(InputEvent)) == true) {
+  while (DequeueEvent(InputEvent) == true) {
     // dont do anything
   }
 }
@@ -1308,12 +1122,6 @@ function HandleSingleClicksAndButtonRepeats(): void {
   } else {
     guiRightButtonRepeatTimer = 0;
   }
-}
-
-function GetMouseWheelDeltaValue(wParam: UINT32): INT16 {
-  let sDelta: INT16 = HIWORD(wParam);
-
-  return sDelta / WHEEL_DELTA;
 }
 
 }

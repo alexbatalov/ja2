@@ -5,21 +5,11 @@ export let guiSplashStartTime: UINT32 = 0;
 
 // Simply create videosurface, load image, and draw it to the screen.
 export function InitJA2SplashScreen(): void {
-  let uiLogoID: UINT32 = 0;
-  let CurrentDir: string /* STRING512 */;
-  let DataDir: string /* STRING512 */;
-  let hVSurface: HVSURFACE;
-  let VSurfaceDesc: VSURFACE_DESC = createVSurfaceDesc();
-  let i: INT32 = 0;
-
   InitializeJA2Clock();
   // InitializeJA2TimerID();
   // Get Executable Directory
-  GetExecutableDirectory(CurrentDir);
-
   // Adjust Current Dir
-  DataDir = sprintf("%s\\Data", CurrentDir);
-  if (!SetFileManCurrentDirectory(DataDir)) {
+  if (!SetFileManCurrentDirectory(JA2_DATA_DIR)) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not find data directory, shutting down");
     return;
   }

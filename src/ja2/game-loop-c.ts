@@ -15,8 +15,6 @@ let gubCheckForFreeSpaceOnHardDriveCount: UINT8 = DONT_CHECK_FOR_FREE_SPACE;
 export function InitializeGame(): boolean {
   let uiIndex: UINT32;
 
-  giStartingMemValue = MemGetFree();
-
   ClearAllDebugTopics();
   RegisterJA2DebugTopic(TOPIC_JA2OPPLIST, "Reg");
   // RegisterJA2DebugTopic( TOPIC_MEMORY_MANAGER, "Reg" );
@@ -120,39 +118,6 @@ export function GameLoop(): void {
 
   if (gfGlobalError) {
     guiCurrentScreen = Enum26.ERROR_SCREEN;
-  }
-
-  // if we are to check for free space on the hard drive
-  if (gubCheckForFreeSpaceOnHardDriveCount < DONT_CHECK_FOR_FREE_SPACE) {
-    // only if we are in a screen that can get this check
-    if (guiCurrentScreen == Enum26.MAP_SCREEN || guiCurrentScreen == Enum26.GAME_SCREEN || guiCurrentScreen == Enum26.SAVE_LOAD_SCREEN) {
-      if (gubCheckForFreeSpaceOnHardDriveCount < 1) {
-        gubCheckForFreeSpaceOnHardDriveCount++;
-      } else {
-        // Make sure the user has enough hard drive space
-        if (!DoesUserHaveEnoughHardDriveSpace()) {
-          let zText: string /* CHAR16[512] */;
-          let zSpaceOnDrive: string /* CHAR16[512] */;
-          let uiSpaceOnDrive: UINT32;
-          let zSizeNeeded: string /* CHAR16[512] */;
-
-          zSizeNeeded = swprintf("%d", REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
-          zSizeNeeded = InsertCommasForDollarFigure(zSizeNeeded);
-
-          uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
-
-          zSpaceOnDrive = swprintf("%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
-
-          zText = swprintf(pMessageStrings[Enum333.MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
-
-          if (guiPreviousOptionScreen == Enum26.MAP_SCREEN)
-            DoMapMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.MAP_SCREEN, MSG_BOX_FLAG_OK, null);
-          else
-            DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zText, Enum26.GAME_SCREEN, MSG_BOX_FLAG_OK, null, null);
-        }
-        gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
-      }
-    }
   }
 
   // ATE: Force to be in message box screen!

@@ -165,16 +165,16 @@ export function InitScreenInitialize(): boolean {
   return true;
 }
 
+/* static */ let InitScreenHandle__hVSurface: SGPVSurface;
+/* static */ let InitScreenHandle__ubCurrentScreen: UINT8 = 255;
 export function InitScreenHandle(): UINT32 {
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
-  /* static */ let hVSurface: HVSURFACE;
-  /* static */ let ubCurrentScreen: UINT8 = 255;
 
-  if (ubCurrentScreen == 255) {
+  if (InitScreenHandle__ubCurrentScreen == 255) {
 // FIXME: Language-specific code
 // #ifdef ENGLISH
     if (gfDoneWithSplashScreen) {
-      ubCurrentScreen = 0;
+      InitScreenHandle__ubCurrentScreen = 0;
     } else {
       SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
       return Enum26.INTRO_SCREEN;
@@ -184,7 +184,7 @@ export function InitScreenHandle(): UINT32 {
 // #endif
   }
 
-  if (ubCurrentScreen == 0) {
+  if (InitScreenHandle__ubCurrentScreen == 0) {
     if (gzCommandLine === "-NODD") {
       gfDontUseDDBlits = true;
     }
@@ -197,12 +197,12 @@ export function InitScreenHandle(): UINT32 {
 
     vs_desc.ImageFile = "ja2_logo.STI";
 
-    hVSurface = CreateVideoSurface(vs_desc);
-    if (!hVSurface)
-      AssertMsg(0, "Failed to load ja2_logo.sti!");
+    InitScreenHandle__hVSurface = CreateVideoSurface(vs_desc);
+    if (!InitScreenHandle__hVSurface)
+      AssertMsg(false, "Failed to load ja2_logo.sti!");
 
     // BltVideoSurfaceToVideoSurface( ghFrameBuffer, hVSurface, 0, 0, 0, VS_BLT_FAST, NULL );
-    ubCurrentScreen = 1;
+    InitScreenHandle__ubCurrentScreen = 1;
 
     // Init screen
 
@@ -222,7 +222,7 @@ export function InitScreenHandle(): UINT32 {
     InvalidateScreen();
 
     // Delete video Surface
-    DeleteVideoSurface(hVSurface);
+    DeleteVideoSurface(InitScreenHandle__hVSurface);
     // ATE: Set to true to reset before going into main screen!
 
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
@@ -230,25 +230,25 @@ export function InitScreenHandle(): UINT32 {
     return Enum26.INIT_SCREEN;
   }
 
-  if (ubCurrentScreen == 1) {
-    ubCurrentScreen = 2;
+  if (InitScreenHandle__ubCurrentScreen == 1) {
+    InitScreenHandle__ubCurrentScreen = 2;
     return InitializeJA2();
   }
 
-  if (ubCurrentScreen == 2) {
+  if (InitScreenHandle__ubCurrentScreen == 2) {
     InitMainMenu();
-    ubCurrentScreen = 3;
+    InitScreenHandle__ubCurrentScreen = 3;
     return Enum26.INIT_SCREEN;
   }
 
   // Let one frame pass....
-  if (ubCurrentScreen == 3) {
-    ubCurrentScreen = 4;
+  if (InitScreenHandle__ubCurrentScreen == 3) {
+    InitScreenHandle__ubCurrentScreen = 4;
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     return Enum26.INIT_SCREEN;
   }
 
-  if (ubCurrentScreen == 4) {
+  if (InitScreenHandle__ubCurrentScreen == 4) {
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     InitNewGame(false);
   }

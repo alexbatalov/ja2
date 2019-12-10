@@ -1,6 +1,7 @@
 namespace ja2 {
 
 const fs: typeof import('fs') = require('fs');
+const path: typeof import('path') = require('path');
 
 //**************************************************************************
 //
@@ -49,52 +50,6 @@ const PRINT_DEBUG_INFO = () => FileDebugPrint();
 export let gFileDataBase: DatabaseManagerHeaderStruct = createDatabaseManagerHeaderStruct();
 
 // FileSystem gfs;
-
-let Win32FindInfo: WIN32_FIND_DATA[] /* [20] */;
-let fFindInfoInUse: boolean[] /* [20] */ = [
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-];
-let hFindInfoHandle: HANDLE[] /* [20] */ = [
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-  INVALID_HANDLE_VALUE,
-];
 
 //**************************************************************************
 //
@@ -941,8 +896,12 @@ function BuildFileDirectory(): void {
 }
 
 export function SetFileManCurrentDirectory(pcDirectory: string /* STR */): boolean {
-  process.chdir(pcDirectory);
-  return true;
+  try {
+    process.chdir(pcDirectory);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function GetFileManCurrentDirectory(): string {
@@ -958,68 +917,9 @@ export function MakeFileManDirectory(pcDirectory: string /* STRING512 */): boole
 // Use EraseDirectory() to simply delete directory contents without deleting the directory itself
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRecursive: boolean): boolean {
-  let sFindData: WIN32_FIND_DATA;
-  let SearchHandle: HANDLE;
-  const pFileSpec: string /* Pointer<CHAR8> */ = "*.*";
-  let fDone: boolean = false;
-  let fRetval: boolean = false;
-  let zOldDir: string /* CHAR8[512] */;
-  let zSubdirectory: string /* CHAR8[512] */;
+  console.log('RemoveFileManDirectory:', pcDirectory);
 
-  zOldDir = GetFileManCurrentDirectory();
-
-  if (!SetFileManCurrentDirectory(pcDirectory)) {
-    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
-    return (false); // Error going into directory
-  }
-
-  // If there are files in the directory, DELETE THEM
-  SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
-  if (SearchHandle != INVALID_HANDLE_VALUE) {
-    fDone = false;
-    do {
-      // if the object is a directory
-      if (GetFileAttributes(sFindData.cFileName) == FILE_ATTRIBUTE_DIRECTORY) {
-        // only go in if the fRecursive flag is TRUE (like Deltree)
-        if (fRecursive) {
-          zSubdirectory = sprintf("%s\\%s", pcDirectory, sFindData.cFileName);
-
-          if ((strcmp(sFindData.cFileName, ".") != 0) && (strcmp(sFindData.cFileName, "..") != 0)) {
-            if (!RemoveFileManDirectory(zSubdirectory, true)) {
-              FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - Recursive call on %s failed", zSubdirectory));
-              break;
-            }
-          }
-        }
-        // otherwise, all the individual files will be deleted, but the subdirectories remain, causing
-        // RemoveDirectory() at the end to fail, thus this function will return FALSE in that event (failure)
-      } else {
-        FileDelete(sFindData.cFileName);
-      }
-
-      // find the next file in the directory
-      fRetval = FindNextFile(SearchHandle, addressof(sFindData));
-      if (fRetval == 0) {
-        fDone = true;
-      }
-    } while (!fDone);
-
-    // very important: close the find handle, or subsequent RemoveDirectory() calls will fail
-    FindClose(SearchHandle);
-  }
-
-  if (!SetFileManCurrentDirectory(zOldDir)) {
-    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
-    return (false); // Error returning from subdirectory
-  }
-
-  // The directory MUST be empty
-  fRetval = RemoveDirectory(pcDirectory);
-  if (!fRetval) {
-    FastDebugMsg(FormatString("RemoveFileManDirectory: ERROR - RemoveDirectory on %s failed, error %d", pcDirectory, GetLastError()));
-  }
-
-  return fRetval;
+  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1027,188 +927,42 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
-  let sFindData: WIN32_FIND_DATA;
-  let SearchHandle: HANDLE;
-  const pFileSpec: string /* Pointer<CHAR8> */ = "*.*";
-  let fDone: boolean = false;
-  let zOldDir: string /* CHAR8[512] */;
+  console.log('EraseDirectory:', pcDirectory);
 
-  zOldDir = GetFileManCurrentDirectory();
+  const fileNames = fs.readdirSync(pcDirectory);
+  for (let i = 0; i < fileNames.length; i++) {
+    const filePath = path.join(pcDirectory, fileNames[i]);
 
-  if (!SetFileManCurrentDirectory(pcDirectory)) {
-    FastDebugMsg(FormatString("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", pcDirectory, GetLastError()));
-    return (false); // Error going into directory
-  }
-
-  // If there are files in the directory, DELETE THEM
-  SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
-  if (SearchHandle != INVALID_HANDLE_VALUE) {
-    fDone = false;
-    do {
-      // if it's a file, not a directory
-      if (GetFileAttributes(sFindData.cFileName) != FILE_ATTRIBUTES_DIRECTORY) {
-        FileDelete(sFindData.cFileName);
-      }
-
-      // find the next file in the directory
-      if (!FindNextFile(SearchHandle, addressof(sFindData))) {
-        fDone = true;
-      }
-    } while (!fDone);
-
-    // very important: close the find handle, or subsequent RemoveDirectory() calls will fail
-    FindClose(SearchHandle);
-  }
-
-  if (!SetFileManCurrentDirectory(zOldDir)) {
-    FastDebugMsg(FormatString("EraseDirectory: ERROR - SetFileManCurrentDirectory on %s failed, error %d", zOldDir, GetLastError()));
-    return (false); // Error returning from directory
-  }
-
-  return true;
-}
-
-export function GetExecutableDirectory(pcDirectory: Pointer<string> /* STRING512 */): boolean {
-  let ModuleFilename: string /* SGPFILENAME */;
-  let cnt: UINT32;
-
-  if (GetModuleFileName(null, ModuleFilename, sizeof(ModuleFilename)) == 0) {
-    return false;
-  }
-
-  // Now get directory
-  pcDirectory = ModuleFilename;
-
-  for (cnt = pcDirectory.length - 1; cnt >= 0; cnt--) {
-    if (pcDirectory[cnt] == '\\') {
-      pcDirectory[cnt] = '\0';
-      break;
+    // if it's a file, not a directory
+    if (FileGetAttributes(filePath) != FILE_ATTRIBUTES_DIRECTORY) {
+      // FileDelete(filePath);
     }
   }
 
   return true;
 }
 
-export function GetFileFirst(pSpec: string /* Pointer<CHAR8> */, pGFStruct: Pointer<GETFILESTRUCT>): boolean {
-  let x: INT32;
-  let iWhich: INT32 = 0;
-  let fFound: boolean;
-
-  if (pSpec == null) {
-    return false;
-  }
-  if (pGFStruct == null) {
-    return false;
-  }
-
-  fFound = false;
-  for (x = 0; x < 20 && !fFound; x++) {
-    if (!fFindInfoInUse[x]) {
-      iWhich = x;
-      fFound = true;
-    }
-  }
-
-  if (!fFound)
-    return false;
-
-  pGFStruct.value.iFindHandle = iWhich;
-
-  hFindInfoHandle[iWhich] = FindFirstFile(pSpec, addressof(Win32FindInfo[iWhich]));
-
-  if (hFindInfoHandle[iWhich] == INVALID_HANDLE_VALUE)
-    return false;
-  fFindInfoInUse[iWhich] = true;
-
-  W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[iWhich]));
-
-  return true;
-}
-
-export function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): boolean {
-  if (pGFStruct == null) {
-    return false;
-  }
-
-  if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], addressof(Win32FindInfo[pGFStruct.value.iFindHandle]))) {
-    W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[pGFStruct.value.iFindHandle]));
-    return true;
-  }
-  return false;
-}
-
-export function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
-  if (pGFStruct == null)
-    return;
-
-  FindClose(hFindInfoHandle[pGFStruct.value.iFindHandle]);
-  hFindInfoHandle[pGFStruct.value.iFindHandle] = INVALID_HANDLE_VALUE;
-  fFindInfoInUse[pGFStruct.value.iFindHandle] = false;
-
-  return;
-}
-
-function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer<WIN32_FIND_DATA>): void {
-  let uiAttribMask: UINT32;
-
-  // Copy the filename
-  pGFStruct.value.zFileName = pW32Struct.value.cFileName;
-
-  // Get file size
-  if (pW32Struct.value.nFileSizeHigh != 0)
-    pGFStruct.value.uiFileSize = 0xffffffff;
-  else
-    pGFStruct.value.uiFileSize = pW32Struct.value.nFileSizeLow;
-
-  // Copy the file attributes
-  pGFStruct.value.uiFileAttribs = 0;
-
-  for (uiAttribMask = 0x80000000; uiAttribMask > 0; uiAttribMask >>= 1) {
-    switch (pW32Struct.value.dwFileAttributes & uiAttribMask) {
-      case FILE_ATTRIBUTE_ARCHIVE:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_ARCHIVE;
-        break;
-
-      case FILE_ATTRIBUTE_DIRECTORY:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_DIRECTORY;
-        break;
-
-      case FILE_ATTRIBUTE_HIDDEN:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_HIDDEN;
-        break;
-
-      case FILE_ATTRIBUTE_NORMAL:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_NORMAL;
-        break;
-
-      case FILE_ATTRIBUTE_READONLY:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_READONLY;
-        break;
-
-      case FILE_ATTRIBUTE_SYSTEM:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_SYSTEM;
-        break;
-
-      case FILE_ATTRIBUTE_TEMPORARY:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_TEMPORARY;
-        break;
-
-      case FILE_ATTRIBUTE_COMPRESSED:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_COMPRESSED;
-        break;
-
-      case FILE_ATTRIBUTE_OFFLINE:
-        pGFStruct.value.uiFileAttribs |= FILE_IS_OFFLINE;
-        break;
-    }
-  }
+export function GetExecutableDirectory(): string {
+  return '';
 }
 
 export function FileGetAttributes(strFilename: string /* STR */): UINT32 {
   let uiAttribs: UINT32 = 0;
   let uiFileAttrib: UINT32 = 0;
 
-  uiAttribs = GetFileAttributes(strFilename);
+  try {
+    const stats = fs.statSync(strFilename);
+
+    if (stats.isFile()) {
+      uiAttribs |= FILE_ATTRIBUTE_NORMAL;
+    }
+
+    if (stats.isDirectory()) {
+      uiAttribs |= FILE_ATTRIBUTE_DIRECTORY;
+    }
+  } catch {
+    uiAttribs = 0xFFFFFFFF;
+  }
 
   if (uiAttribs == 0xFFFFFFFF)
     return uiAttribs;
@@ -1241,7 +995,7 @@ export function FileGetAttributes(strFilename: string /* STR */): UINT32 {
 }
 
 export function FileClearAttributes(strFilename: string /* STR */): boolean {
-  return SetFileAttributes(strFilename, FILE_ATTRIBUTE_NORMAL);
+  return true;
 }
 
 // returns true if at end of file, else false
@@ -1403,48 +1157,6 @@ export function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
     }
   }
   return 0;
-}
-
-export function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
-  let zExecDir: string /* STRING512 */;
-  let zDrive: string /* STRING512 */;
-  let zDir: string /* STRING512 */;
-  let zFileName: string /* STRING512 */;
-  let zExt: string /* STRING512 */;
-
-  let uiFreeSpace: UINT32 = 0;
-
-  GetExecutableDirectory(zExecDir);
-
-  // get the drive letter from the exec dir
-  _splitpath(zExecDir, zDrive, zDir, zFileName, zExt);
-
-  zDrive = sprintf("%s\\", zDrive);
-
-  uiFreeSpace = GetFreeSpaceOnHardDrive(zDrive);
-
-  return uiFreeSpace;
-}
-
-function GetFreeSpaceOnHardDrive(pzDriveLetter: string /* STR */): UINT32 {
-  let uiBytesFree: UINT32 = 0;
-
-  let uiSectorsPerCluster: UINT32 = 0;
-  let uiBytesPerSector: UINT32 = 0;
-  let uiNumberOfFreeClusters: UINT32 = 0;
-  let uiTotalNumberOfClusters: UINT32 = 0;
-
-  if (!GetDiskFreeSpace(pzDriveLetter, addressof(uiSectorsPerCluster), addressof(uiBytesPerSector), addressof(uiNumberOfFreeClusters), addressof(uiTotalNumberOfClusters))) {
-    let uiLastError: UINT32 = GetLastError();
-    let zString: string /* char[1024] */;
-    FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, null);
-
-    return true;
-  }
-
-  uiBytesFree = uiBytesPerSector * uiNumberOfFreeClusters * uiSectorsPerCluster;
-
-  return uiBytesFree;
 }
 
 }
