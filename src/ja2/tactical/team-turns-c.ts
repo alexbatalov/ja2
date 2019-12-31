@@ -1131,7 +1131,7 @@ export function CalcInterruptDuelPts(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8,
   // LOSE one point for each 2 additional opponents he currently sees, above 2
   if (pSoldier.bOppCnt > 2) {
     // subtract 1 here so there is a penalty of 1 for seeing 3 enemies
-    bPoints -= (pSoldier.bOppCnt - 1) / 2;
+    bPoints -= Math.trunc((pSoldier.bOppCnt - 1) / 2);
   }
 
   // LOSE one point if he's trying to interrupt only by hearing
@@ -1148,7 +1148,7 @@ export function CalcInterruptDuelPts(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8,
   // then give bonus
   if ((gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier.bTeam != gTacticalStatus.ubCurrentTeam)) {
     // passive player gets penalty due to range
-    bPoints -= (ubDistance / 10);
+    bPoints -= Math.trunc(ubDistance / 10);
   } else {
     // either non-combat or the player with the current turn... i.e. active...
     // unfortunately we can't use opplist here to record whether or not we saw this guy before, because at this point
@@ -1156,12 +1156,12 @@ export function CalcInterruptDuelPts(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8,
 
     // this soldier is moving, so give them a bonus for crawling or swatting at long distances
     if (!gbSeenOpponents[ubOpponentID][pSoldier.ubID]) {
-      if (pSoldier.usAnimState == Enum193.SWATTING && ubDistance > (MaxDistanceVisible() / 2)) // more than 1/2 sight distance
+      if (pSoldier.usAnimState == Enum193.SWATTING && ubDistance > Math.trunc(MaxDistanceVisible() / 2)) // more than 1/2 sight distance
       {
         bPoints++;
-      } else if (pSoldier.usAnimState == Enum193.CRAWLING && ubDistance > (MaxDistanceVisible() / 4)) // more than 1/4 sight distance
+      } else if (pSoldier.usAnimState == Enum193.CRAWLING && ubDistance > Math.trunc(MaxDistanceVisible() / 4)) // more than 1/4 sight distance
       {
-        bPoints += ubDistance / STRAIGHT;
+        bPoints += Math.trunc(ubDistance / STRAIGHT);
       }
     }
   }
@@ -1212,7 +1212,7 @@ export function CalcInterruptDuelPts(pSoldier: SOLDIERTYPE, ubOpponentID: UINT8,
 
   if (TANK(pSoldier)) {
     // reduce interrupt possibilities for tanks!
-    bPoints /= 2;
+    bPoints = Math.trunc(bPoints / 2);
   }
 
   if (bPoints >= AUTOMATIC_INTERRUPT) {
@@ -1643,10 +1643,10 @@ export function NPCFirstDraw(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE)
     // roll the dice!
     // e.g. if level 5, roll Random( 3 + 1 ) + 2 for result from 2 to 5
     // if level 4, roll Random( 2 + 1 ) + 2 for result from 2 to 4
-    ubSmallerHalf = EffectiveExpLevel(pSoldier) / 2;
+    ubSmallerHalf = Math.trunc(EffectiveExpLevel(pSoldier) / 2);
     ubLargerHalf = EffectiveExpLevel(pSoldier) - ubSmallerHalf;
 
-    ubTargetSmallerHalf = EffectiveExpLevel(pTargetSoldier) / 2;
+    ubTargetSmallerHalf = Math.trunc(EffectiveExpLevel(pTargetSoldier) / 2);
     ubTargetLargerHalf = EffectiveExpLevel(pTargetSoldier) - ubTargetSmallerHalf;
     if (gMercProfiles[pTargetSoldier.ubProfile].bApproached & gbFirstApproachFlags[Enum296.APPROACH_THREATEN - 1]) {
       // gains 1 to 2 points

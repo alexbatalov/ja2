@@ -450,15 +450,15 @@ export function RenderTopmostTacticalInterface(): void {
             RenderTopmostTacticalInterface__uiBogTarget = AddVideoObject(VObjectDesc);
           }
 
-          if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt].sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt].sPlannedTargetX / CELL_X_SIZE)))) {
+          if (GridNoOnScreen(MAPROWCOLTOPOS(Math.trunc(MercPtrs[cnt].sPlannedTargetY / CELL_Y_SIZE), Math.trunc(MercPtrs[cnt].sPlannedTargetX / CELL_X_SIZE)))) {
             // GET SCREEN COORDINATES
             sOffsetX = (MercPtrs[cnt].sPlannedTargetX - gsRenderCenterX);
             sOffsetY = (MercPtrs[cnt].sPlannedTargetY - gsRenderCenterY);
 
             ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
-            sX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
-            sY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
+            sX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
+            sY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
 
             // Adjust for offset position on screen
             sX -= gsRenderWorldOffsetX;
@@ -527,7 +527,7 @@ export function RenderTopmostTacticalInterface(): void {
             sDamageX += 25;
             sDamageY += 10;
           } else {
-            sDamageX = pSoldier.sDamageX + (sMercScreenX + (2 * 30 / 3));
+            sDamageX = pSoldier.sDamageX + (sMercScreenX + Math.trunc(2 * 30 / 3));
             sDamageY = pSoldier.sDamageY + (sMercScreenY - 5);
 
             sDamageX -= sOffsetX;

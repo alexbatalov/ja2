@@ -921,7 +921,7 @@ export function CheckAndUpdateBasedOnContractTimes(): void {
         iTimeRemaining = Menptr[gCharactersList[iCounter].usSolID].iEndofContractTime - GetWorldTotalMin();
         if (iTimeRemaining > 60 * 24) {
           // more than a day, display in green
-          iTimeRemaining /= (60 * 24);
+          iTimeRemaining = Math.trunc(iTimeRemaining / (60 * 24));
 
           // check if real change in contract time
           if (iTimeRemaining != iOldContractTimes[iCounter]) {
@@ -933,7 +933,7 @@ export function CheckAndUpdateBasedOnContractTimes(): void {
           }
         } else {
           // less than a day, display hours left in red
-          iTimeRemaining /= 60;
+          iTimeRemaining = Math.trunc(iTimeRemaining / 60);
 
           // check if real change in contract time
           if (iTimeRemaining != iOldContractTimes[iCounter]) {
@@ -2090,7 +2090,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: FASTHELPREGION): void {
     iX = (SCREEN_WIDTH - iW - 4);
 
   // what about the y value?
-  iY = pRegion.iY - (iH * 3 / 4);
+  iY = pRegion.iY - Math.trunc(iH * 3 / 4);
 
   // not far enough
   if (iY < 0)
@@ -3603,10 +3603,10 @@ export function AddSoldierToUpdateBox(pSoldier: SOLDIERTYPE): void {
 
       if (gMercProfiles[pSoldier.ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex.toString().padStart(2, '0'));
       } else {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex.toString().padStart(3, '0'));
       }
 
       // load the face
@@ -3679,7 +3679,7 @@ export function DisplaySoldierUpdateBox(): void {
   }
 
   // get number of rows
-  iNumberHigh = (fFourWideMode ? iNumberOfMercsOnUpdatePanel / NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE : iNumberOfMercsOnUpdatePanel / NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE);
+  iNumberHigh = (fFourWideMode ? Math.trunc(iNumberOfMercsOnUpdatePanel / NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE) : Math.trunc(iNumberOfMercsOnUpdatePanel / NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE));
 
   // number of columns
   iNumberWide = (fFourWideMode ? NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE : NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE);
@@ -3713,7 +3713,7 @@ export function DisplaySoldierUpdateBox(): void {
   iUpdatePanelHeight = (iNumberHigh + 1) * TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS;
 
   // get the x,y offsets on the screen of the panel
-  iX = 290 + (336 - iUpdatePanelWidth) / 2;
+  iX = 290 + Math.trunc((336 - iUpdatePanelWidth) / 2);
 
   //	iY = 28 + ( 288 - iUpdatePanelHeight ) / 2;
 
@@ -3746,7 +3746,7 @@ export function DisplaySoldierUpdateBox(): void {
 
     // get the face x and y
     iFaceX = iX + (iCounter % iNumberWide) * TACT_UPDATE_MERC_FACE_X_WIDTH;
-    iFaceY = iY + (iCounter / iNumberWide) * TACT_UPDATE_MERC_FACE_X_HEIGHT;
+    iFaceY = iY + Math.trunc(iCounter / iNumberWide) * TACT_UPDATE_MERC_FACE_X_HEIGHT;
 
     BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 20, iFaceX, iFaceY, VO_BLT_SRCTRANSPARENCY, null);
   }
@@ -3759,7 +3759,7 @@ export function DisplaySoldierUpdateBox(): void {
 
     // get the face x and y
     iFaceX = iX + (iCounter % iNumberWide) * TACT_UPDATE_MERC_FACE_X_WIDTH;
-    iFaceY = iY + (iCounter / iNumberWide) * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y;
+    iFaceY = iY + Math.trunc(iCounter / iNumberWide) * TACT_UPDATE_MERC_FACE_X_HEIGHT + REASON_FOR_SOLDIER_UPDATE_OFFSET_Y;
 
     // now get the face
     if (pUpdateSoldierBox[iCounter]) {
@@ -4068,27 +4068,27 @@ function RenderSoldierSmallFaceForUpdatePanel(iIndex: INT32, iX: INT32, iY: INT3
     return;
 
   // yellow one for bleeding
-  iStartY = iY + 29 - 27 * pSoldier.bLifeMax / 100;
+  iStartY = iY + 29 - Math.trunc(27 * pSoldier.bLifeMax / 100);
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
-  iStartY += 27 * pSoldier.bBleeding / 100;
+  iStartY += Math.trunc(27 * pSoldier.bBleeding / 100);
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
 
   // red one for actual health
-  iStartY = iY + 29 - 27 * pSoldier.bLife / 100;
+  iStartY = iY + 29 - Math.trunc(27 * pSoldier.bLife / 100);
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 36, iStartY, iX + 37, iY + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 37, iStartY, iX + 38, iY + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
-  iStartY = iY + 29 - 27 * pSoldier.bBreathMax / 100;
+  iStartY = iY + 29 - Math.trunc(27 * pSoldier.bBreathMax / 100);
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 39, iStartY, iX + 40, iY + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 40, iStartY, iX + 41, iY + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
-  iStartY = iY + 29 - 27 * pSoldier.bMorale / 100;
+  iStartY = iY + 29 - Math.trunc(27 * pSoldier.bMorale / 100);
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 42, iStartY, iX + 43, iY + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(guiSAVEBUFFER, iX + 43, iStartY, iX + 44, iY + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 

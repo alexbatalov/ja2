@@ -274,7 +274,7 @@ export function AttemptToCrowbarLock(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolea
   // possibly damage crowbar
   bStress = Math.min(EffectiveStrength(pSoldier), LockTable[pDoor.ubLockID].ubSmashDifficulty + 30);
   // reduce crowbar status by random % between 0 and 5%
-  DamageObj(pSoldier.inv[bSlot], PreRandom(bStress / 20));
+  DamageObj(pSoldier.inv[bSlot], PreRandom(Math.trunc(bStress / 20)));
 
   // did we succeed?
 
@@ -410,10 +410,10 @@ export function AttemptToPickLock(pSoldier: SOLDIERTYPE, pDoor: DOOR): boolean {
   }
   if (iResult > 0) {
     // MECHANICAL GAIN:  Picked open a lock
-    StatChange(pSoldier, MECHANAMT, (pLock.ubPickDifficulty / 5), 0);
+    StatChange(pSoldier, MECHANAMT, Math.trunc(pLock.ubPickDifficulty / 5), 0);
 
     // DEXTERITY GAIN:  Picked open a lock
-    StatChange(pSoldier, DEXTAMT, (pLock.ubPickDifficulty / 10), 0);
+    StatChange(pSoldier, DEXTAMT, Math.trunc(pLock.ubPickDifficulty / 10), 0);
 
     // succeeded!
     pDoor.fLocked = false;

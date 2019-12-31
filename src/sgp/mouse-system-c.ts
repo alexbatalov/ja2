@@ -1021,7 +1021,7 @@ function DisplayFastHelp(region: MOUSE_REGION): void {
     if ((iX + iW) >= SCREEN_WIDTH)
       iX = (SCREEN_WIDTH - iW - 4);
 
-    iY = region.RegionTopLeftY - Math.floor(iH * 3 / 4);
+    iY = region.RegionTopLeftY - Math.trunc(iH * 3 / 4);
     if (iY < 0)
       iY = 0;
 

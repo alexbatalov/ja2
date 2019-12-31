@@ -214,6 +214,10 @@ class _OBJECTTYPE implements OBJECTTYPE {
     return this.sharedBuffer.readUInt8(6);
   }
 
+  set bGunAmmoStatus(value) {
+    this.sharedBuffer.writeUInt8(value, 6);
+  }
+
   get bMoneyStatus() {
     return this.sharedBuffer.readInt8(0);
   }

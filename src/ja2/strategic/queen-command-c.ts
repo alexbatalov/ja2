@@ -1309,7 +1309,7 @@ export function EnemyCapturesPlayerSoldier(pSoldier: SOLDIERTYPE): void {
   }
 
   // Set his life to 50% + or - 10 HP.
-  pSoldier.bLife = pSoldier.bLifeMax / 2;
+  pSoldier.bLife = Math.trunc(pSoldier.bLifeMax / 2);
   if (pSoldier.bLife <= 35) {
     pSoldier.bLife = 35;
   } else if (pSoldier.bLife >= 45) {

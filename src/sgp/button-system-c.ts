@@ -2772,11 +2772,11 @@ function DrawIconOnButton(b: GUI_BUTTON): void {
     // Compute coordinates for centering the icon on the button or
     // use the offset system.
     if (b.bIconXOffset == -1)
-      xp = (((width - 6) - IconW) / 2) + IconX;
+      xp = Math.trunc(((width - 6) - IconW) / 2) + IconX;
     else
       xp = b.Area.RegionTopLeftX + b.bIconXOffset;
     if (b.bIconYOffset == -1)
-      yp = (((height - 4) - IconH) / 2) + IconY;
+      yp = Math.trunc(((height - 4) - IconH) / 2) + IconY;
     else
       yp = b.Area.RegionTopLeftY + b.bIconYOffset;
 
@@ -2868,7 +2868,7 @@ function DrawTextOnButton(b: GUI_BUTTON): void {
 
     // Compute the coordinates to center the text
     if (b.bTextYOffset == -1)
-      yp = (((height)-GetFontHeight(b.usFont)) / 2) + TextY - 1;
+      yp = Math.trunc(((height)-GetFontHeight(b.usFont)) / 2) + TextY - 1;
     else
       yp = b.Area.RegionTopLeftY + b.bTextYOffset;
     if (b.bTextXOffset == -1) {
@@ -2881,7 +2881,7 @@ function DrawTextOnButton(b: GUI_BUTTON): void {
           break;
         case BUTTON_TEXT_CENTER:
         default:
-          xp = (((width - 6) - StringPixLength(b.string, b.usFont)) / 2) + TextX;
+          xp = Math.trunc(((width - 6) - StringPixLength(b.string, b.usFont)) / 2) + TextX;
           break;
       }
     } else
@@ -2948,7 +2948,7 @@ function DrawTextOnButton(b: GUI_BUTTON): void {
               xp++, yp++;
             break;
           case BUTTON_TEXT_CENTER:
-            xp = b.Area.RegionTopLeftX + 3 + b.sWrappedWidth / 2;
+            xp = b.Area.RegionTopLeftX + 3 + Math.trunc(b.sWrappedWidth / 2);
 
             if (b.fShiftText && b.uiFlags & BUTTON_CLICKED_ON)
               xp++, yp++;
@@ -3033,8 +3033,8 @@ function DrawGenericButton(b: GUI_BUTTON): void {
   // Compute the number of button "chunks" needed to be blitted
   width = b.Area.RegionBottomRightX - b.Area.RegionTopLeftX;
   height = b.Area.RegionBottomRightY - b.Area.RegionTopLeftY;
-  NumChunksWide = width / iBorderWidth;
-  NumChunksHigh = height / iBorderHeight;
+  NumChunksWide = Math.trunc(width / iBorderWidth);
+  NumChunksHigh = Math.trunc(height / iBorderHeight);
   hremain = height % iBorderHeight;
   wremain = width % iBorderWidth;
 

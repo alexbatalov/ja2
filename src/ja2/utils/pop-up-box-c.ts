@@ -1079,8 +1079,8 @@ function DrawBox(uiCounter: UINT32): boolean {
   Assert(usTopY + usHeight <= 479);
 
   // subtract 4 because the 2 2-pixel corners are handled separately
-  uiNumTilesWide = ((usWidth - 4) / BORDER_WIDTH);
-  uiNumTilesHigh = ((usHeight - 4) / BORDER_HEIGHT);
+  uiNumTilesWide = Math.trunc((usWidth - 4) / BORDER_WIDTH);
+  uiNumTilesHigh = Math.trunc((usHeight - 4) / BORDER_HEIGHT);
 
   clip.iLeft = 0;
   clip.iRight = clip.iLeft + usWidth;

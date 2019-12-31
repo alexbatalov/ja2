@@ -224,17 +224,18 @@ export function BeginLoadScreen(): void {
     uiStartTime = GetJA2Clock();
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
     PlayJA2SampleFromFile("SOUNDS\\Final Psionic Blast 01 (16-44).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    iPercentage = 100; // FIXME: Synchronous rendering
     while (iPercentage < 100) {
       uiCurrTime = GetJA2Clock();
-      iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
+      iPercentage = Math.trunc((uiCurrTime - uiStartTime) * 100 / uiTimeRange);
       iPercentage = Math.min(iPercentage, 100);
 
       // Factor the percentage so that it is modified by a gravity falling acceleration effect.
       iFactor = (iPercentage - 50) * 2;
       if (iPercentage < 50)
-        iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+        iPercentage = Math.trunc(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
       else
-        iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
+        iPercentage = Math.trunc(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
 
       if (iPercentage > 50) {
         // iFactor = (iPercentage - 50) * 2;
@@ -252,10 +253,10 @@ export function BeginLoadScreen(): void {
         //	}
       }
 
-      SrcRect.iLeft = 536 * iPercentage / 100;
-      SrcRect.iRight = 640 - iPercentage / 20;
-      SrcRect.iTop = 367 * iPercentage / 100;
-      SrcRect.iBottom = 480 - 39 * iPercentage / 100;
+      SrcRect.iLeft = Math.trunc(536 * iPercentage / 100);
+      SrcRect.iRight = 640 - Math.trunc(iPercentage / 20);
+      SrcRect.iTop = 367 * Math.trunc(iPercentage / 100);
+      SrcRect.iBottom = 480 - Math.trunc(39 * iPercentage / 100);
       BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, SrcRect, DstRect);
       InvalidateScreen();
       RefreshScreen();
@@ -1396,7 +1397,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
     if (pUnderground && (pUnderground.fVisited || gfGettingNameFromSaveLoadScreen)) {
       bMineIndex = GetIdOfMineForSector(sSectorX, sSectorY, bSectorZ);
       if (bMineIndex != -1) {
-        zString = swprintf("%c%d: %s %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
+        zString = swprintf("%s%d: %s %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pTownNames[GetTownAssociatedWithMine(bMineIndex)], pwMineStrings[0]);
       } else
         switch (SECTOR(sSectorX, sSectorY)) {
           case Enum123.SEC_A10:
@@ -1415,7 +1416,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
             zString = swprintf("P3: %s", pLandTypeStrings[Enum127.SHELTER]);
             break;
           default:
-            zString = swprintf("%c%d: %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
+            zString = swprintf("%s%d: %s", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX, pLandTypeStrings[Enum127.CREATURE_LAIR]);
             break;
         }
     } else {
@@ -1427,7 +1428,7 @@ export function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: IN
     ubSectorID = SECTOR(sSectorX, sSectorY);
     pSector = SectorInfo[ubSectorID];
     ubLandType = pSector.ubTraversability[4];
-    zString = swprintf("%c%d: ", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX);
+    zString = swprintf("%s%d: ", String.fromCharCode('A'.charCodeAt(0) + sSectorY - 1), sSectorX);
 
     if (bTownNameID == Enum135.BLANK_SECTOR) {
       // OK, build string id like J11
@@ -2162,7 +2163,7 @@ function SetupTacticalTraversalInformation(): void {
     if (guiAdjacentTraverseTime <= 5) {
       // Determine 'mirror' gridno...
       // Convert to absolute xy
-      ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.sX / CELL_X_SIZE), (pSoldier.sY / CELL_Y_SIZE)));
+      ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY(Math.trunc(pSoldier.sX / CELL_X_SIZE), Math.trunc(pSoldier.sY / CELL_Y_SIZE)));
 
       // Get 'mirror', depending on what direction...
       switch (gubTacticalDirection) {
@@ -2878,6 +2879,7 @@ export function SaveStrategicInfoToSavedFile(hFile: HWFILE): boolean {
 
   // Save the Sector Info
   uiSize = SECTOR_INFO_SIZE * 256;
+  buffer = Buffer.allocUnsafe(uiSize);
   writeObjectArray(SectorInfo, buffer, 0, writeSectorInfo);
 
   uiNumBytesWritten = FileWrite(hFile, buffer, uiSize);
@@ -3564,7 +3566,7 @@ export function HandleSlayDailyEvent(): void {
   // ATE: This function is used to check for the ultimate last day SLAY can stay for
   // he may decide to leave randomly while asleep...
   // if the user hasnt renewed yet, and is still leaving today
-  if ((pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
+  if (Math.trunc(pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
     pSoldier.ubLeaveHistoryCode = Enum83.HISTORY_SLAY_MYSTERIOUSLY_LEFT;
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);
   }

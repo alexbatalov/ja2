@@ -17,6 +17,6 @@ export const MAPLENGTH = (MAPHEIGHT * MAPWIDTH);
 //                                                |Check for map bounds------------------------------------------|   |Invalid-|   |Valid-------------------|
 export const MAPROWCOLTOPOS = (r: number, c: number) => (((r < 0) || (r >= WORLD_ROWS) || (c < 0) || (c >= WORLD_COLS)) ? (0xffff) : ((r) * WORLD_COLS + (c)));
 
-export const GETWORLDINDEXFROMWORLDCOORDS = (r: number, c: number) => ((r / CELL_X_SIZE)) * WORLD_COLS + ((c / CELL_Y_SIZE));
+export const GETWORLDINDEXFROMWORLDCOORDS = (r: number, c: number) => (Math.trunc(r / CELL_X_SIZE)) * WORLD_COLS + (Math.trunc(c / CELL_Y_SIZE));
 
 }

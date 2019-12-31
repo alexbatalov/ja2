@@ -91,7 +91,7 @@ const BOBBYR_UNDERCONSTRUCTION_ANI_DELAY = 150;
 const BOBBYR_UNDERCONSTRUCTION_NUM_FRAMES = 5;
 
 const BOBBYR_UNDERCONSTRUCTION_WIDTH = 414;
-const BOBBYR_UNDERCONSTRUCTION_X = LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X - BOBBYR_UNDERCONSTRUCTION_WIDTH) / 2;
+const BOBBYR_UNDERCONSTRUCTION_X = LAPTOP_SCREEN_UL_X + Math.trunc((LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X - BOBBYR_UNDERCONSTRUCTION_WIDTH) / 2);
 const BOBBYR_UNDERCONSTRUCTION_Y = 175;
 const BOBBYR_UNDERCONSTRUCTION1_Y = 378;
 
@@ -574,7 +574,7 @@ export function DailyUpdateOfBobbyRaysNewInventory(): void {
     // if the item isn't already on order
     if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder == 0) {
       // if the qty on hand is half the desired amount or fewer
-      if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand <= (StoreInventory[usItemIndex][Enum112.BOBBY_RAY_NEW] / 2)) {
+      if (LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand <= Math.trunc(StoreInventory[usItemIndex][Enum112.BOBBY_RAY_NEW] / 2)) {
         // remember value of the "previously eligible" flag
         fPrevElig = LaptopSaveInfo.BobbyRayInventory[i].fPreviouslyEligible;
 
@@ -670,7 +670,7 @@ function OrderBobbyRItem(usItemIndex: UINT16): void {
   let uiArrivalTime: UINT32;
 
   // add the new item to the queue.  The new item will arrive in 'uiArrivalTime' minutes.
-  uiArrivalTime = BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME + Random(BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME / 2);
+  uiArrivalTime = BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME + Random(Math.trunc(BOBBY_R_NEW_PURCHASE_ARRIVAL_TIME / 2));
   uiArrivalTime += GetWorldTotalMin();
   AddStrategicEvent(Enum132.EVENT_UPDATE_BOBBY_RAY_INVENTORY, uiArrivalTime, usItemIndex);
 }

@@ -1479,11 +1479,11 @@ export function CalculateHealingPointsForDoctor(pDoctor: SOLDIERTYPE, pusMaxPts:
   }
 
   // calculate effective doctoring rate (adjusted for drugs, alcohol, etc.)
-  usHealPts = (EffectiveMedical(pDoctor) * ((EffectiveDexterity(pDoctor) + EffectiveWisdom(pDoctor)) / 2) * (100 + (5 * EffectiveExpLevel(pDoctor)))) / DOCTORING_RATE_DIVISOR;
+  usHealPts = Math.trunc((EffectiveMedical(pDoctor) * Math.trunc((EffectiveDexterity(pDoctor) + EffectiveWisdom(pDoctor)) / 2) * (100 + (5 * EffectiveExpLevel(pDoctor)))) / DOCTORING_RATE_DIVISOR);
 
   // calculate normal doctoring rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  pusMaxPts.value = (pDoctor.bMedical * ((pDoctor.bDexterity + pDoctor.bWisdom) / 2) * (100 + (5 * pDoctor.bExpLevel))) / DOCTORING_RATE_DIVISOR;
+  pusMaxPts.value = Math.trunc((pDoctor.bMedical * Math.trunc((pDoctor.bDexterity + pDoctor.bWisdom) / 2) * (100 + (5 * pDoctor.bExpLevel))) / DOCTORING_RATE_DIVISOR);
 
   // adjust for fatigue
   usHealPts = ReducePointsForFatigue(pDoctor, usHealPts);
@@ -1503,7 +1503,7 @@ export function CalculateHealingPointsForDoctor(pDoctor: SOLDIERTYPE, pusMaxPts:
     // no med kit left?
     // if he's working with only a first aid kit, the doctoring rate is halved!
     // for simplicity, we're ignoring the situation where a nearly empty medical bag in is hand and the rest are just first aid kits
-    usHealPts /= bMedFactor;
+    usHealPts = Math.trunc(usHealPts / bMedFactor);
   } else {
     usHealPts = 0;
   }
@@ -1529,11 +1529,11 @@ export function CalculateRepairPointsForRepairman(pSoldier: SOLDIERTYPE, pusMaxP
   }
 
   // calculate effective repair rate (adjusted for drugs, alcohol, etc.)
-  usRepairPts = (EffectiveMechanical(pSoldier) * EffectiveDexterity(pSoldier) * (100 + (5 * EffectiveExpLevel(pSoldier)))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
+  usRepairPts = Math.trunc((EffectiveMechanical(pSoldier) * EffectiveDexterity(pSoldier) * (100 + (5 * EffectiveExpLevel(pSoldier)))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY));
 
   // calculate normal repair rate - what it would be if his stats were "normal" (ignoring drugs, fatigue, equipment condition)
   // and equipment was not a hindrance
-  pusMaxPts.value = (pSoldier.bMechanical * pSoldier.bDexterity * (100 + (5 * pSoldier.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
+  pusMaxPts.value = Math.trunc((pSoldier.bMechanical * pSoldier.bDexterity * (100 + (5 * pSoldier.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY));
 
   // adjust for fatigue
   usRepairPts = ReducePointsForFatigue(pSoldier, usRepairPts);
@@ -1553,7 +1553,7 @@ export function CalculateRepairPointsForRepairman(pSoldier: SOLDIERTYPE, pusMaxP
   }
 
   // adjust for equipment
-  usRepairPts = (usRepairPts * ubKitEffectiveness) / 100;
+  usRepairPts = Math.trunc((usRepairPts * ubKitEffectiveness) / 100);
 
   // return current repair pts
   return usRepairPts;
@@ -1674,7 +1674,7 @@ function HealCharacters(pDoctor: SOLDIERTYPE, sX: INT16, sY: INT16, bZ: INT8): v
     usRemainingHealingPts = usAvailableHealingPts;
 
     // find how many healing points can be evenly distributed to each wounded, healable merc
-    usEvenHealingAmount = usRemainingHealingPts / ubTotalNumberOfPatients;
+    usEvenHealingAmount = Math.trunc(usRemainingHealingPts / ubTotalNumberOfPatients);
 
     // heal each of the healable mercs by this equal amount
     for (cnt = 0, pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier.bTeam].bLastID; cnt++, pTeamSoldier = MercPtrs[cnt]) {
@@ -1725,9 +1725,9 @@ function HealCharacters(pDoctor: SOLDIERTYPE, sX: INT16, sY: INT16, bZ: INT8): v
     usUsedHealingPts = usAvailableHealingPts - usRemainingHealingPts;
 
     // increment skills based on healing pts used
-    StatChange(pDoctor, MEDICALAMT, (usUsedHealingPts / 100), 0);
-    StatChange(pDoctor, DEXTAMT, (usUsedHealingPts / 200), 0);
-    StatChange(pDoctor, WISDOMAMT, (usUsedHealingPts / 200), 0);
+    StatChange(pDoctor, MEDICALAMT, Math.trunc(usUsedHealingPts / 100), 0);
+    StatChange(pDoctor, DEXTAMT, Math.trunc(usUsedHealingPts / 200), 0);
+    StatChange(pDoctor, WISDOMAMT, Math.trunc(usUsedHealingPts / 200), 0);
   }
 
   // if there's nobody else here who can EVER be helped by this doctor (regardless of whether they got healing this hour)
@@ -1882,7 +1882,7 @@ function HealPatient(pPatient: SOLDIERTYPE, pDoctor: SOLDIERTYPE, usHundredthsHe
   usTotalHundredthsUsed = usHundredthsHealed; // we'll subtract any unused amount later if we become fully healed...
 
   // convert fractions into full points
-  usHealingPtsLeft = pPatient.sFractLife / 100;
+  usHealingPtsLeft = Math.trunc(pPatient.sFractLife / 100);
   pPatient.sFractLife %= 100;
 
   // if we haven't accumulated any full points yet
@@ -1949,14 +1949,14 @@ function HealPatient(pPatient: SOLDIERTYPE, pDoctor: SOLDIERTYPE, usHundredthsHe
         // The medFactor here doesn't affect how much the doctor can heal (that's already factored into lower healing pts)
         // but it does effect how fast the medkit is used up!  First aid kits disappear at double their doctoring rate!
         bPointsUsed = UseKitPoints(pDoctor.inv[bPocket], (bPointsToUse * bMedFactor), pDoctor);
-        bPointsHealed = bPointsUsed / bMedFactor;
+        bPointsHealed = Math.trunc(bPointsUsed / bMedFactor);
 
         bPointsToUse -= bPointsHealed;
         usHealingPtsLeft -= bPointsHealed;
         usTotalFullPtsUsed += bPointsHealed;
 
         // heal person the amount / POINT_COST_PER_HEALTH_BELOW_OKLIFE
-        pPatient.bLife += (bPointsHealed / POINT_COST_PER_HEALTH_BELOW_OKLIFE);
+        pPatient.bLife += Math.trunc(bPointsHealed / POINT_COST_PER_HEALTH_BELOW_OKLIFE);
 
         // if we're done all we're supposed to, or the guy's at OKLIFE, bail
         if ((bPointsToUse <= 0) || (pPatient.bLife >= OKLIFE)) {
@@ -1986,7 +1986,7 @@ function HealPatient(pPatient: SOLDIERTYPE, pDoctor: SOLDIERTYPE, usHundredthsHe
         // The medFactor here doesn't affect how much the doctor can heal (that's already factored into lower healing pts)
         // but it does effect how fast the medkit is used up!  First aid kits disappear at double their doctoring rate!
         bPointsUsed = UseKitPoints(pDoctor.inv[bPocket], (bPointsToUse * bMedFactor), pDoctor);
-        bPointsHealed = bPointsUsed / bMedFactor;
+        bPointsHealed = Math.trunc(bPointsUsed / bMedFactor);
 
         bPointsToUse -= bPointsHealed;
         usHealingPtsLeft -= bPointsHealed;
@@ -2078,7 +2078,7 @@ function HealHospitalPatient(pPatient: SOLDIERTYPE, usHealingPtsLeft: UINT16): v
     usHealingPtsLeft -= bPointsToUse;
 
     // heal person the amount / POINT_COST_PER_HEALTH_BELOW_OKLIFE
-    pPatient.bLife += (bPointsToUse / POINT_COST_PER_HEALTH_BELOW_OKLIFE);
+    pPatient.bLife += Math.trunc(bPointsToUse / POINT_COST_PER_HEALTH_BELOW_OKLIFE);
   }
 
   // critical condition handled, now solve normal healing
@@ -2246,7 +2246,7 @@ function DoActualRepair(pSoldier: SOLDIERTYPE, usItem: UINT16, pbStatus: Pointer
   usDamagePts = 100 - pbStatus.value;
 
   // adjust that by the repair cost adjustment percentage
-  usDamagePts = (usDamagePts * sRepairCostAdj) / 100;
+  usDamagePts = Math.trunc((usDamagePts * sRepairCostAdj) / 100);
 
   // do we have enough pts to fully repair the item?
   if (pubRepairPtsLeft.value >= usDamagePts) {
@@ -2256,7 +2256,7 @@ function DoActualRepair(pSoldier: SOLDIERTYPE, usItem: UINT16, pbStatus: Pointer
   } else // not enough, partial fix only, if any at all
   {
     // fix what we can - add pts left adjusted by the repair cost
-    usPtsFixed = (pubRepairPtsLeft.value * 100) / sRepairCostAdj;
+    usPtsFixed = Math.trunc((pubRepairPtsLeft.value * 100) / sRepairCostAdj);
 
     // if we have enough to actually fix anything
     // NOTE: a really crappy repairman with only 1 pt/hr CAN'T repair electronics or difficult items!
@@ -2378,12 +2378,12 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
   else if (pSoldier.fFixingRobot) {
     if (CanCharacterRepairRobot(pSoldier)) {
       // repairing the robot is very slow & difficult
-      ubRepairPtsLeft /= 2;
-      ubInitialRepairPts /= 2;
+      ubRepairPtsLeft = Math.trunc(ubRepairPtsLeft / 2);
+      ubInitialRepairPts = Math.trunc(ubInitialRepairPts / 2);
 
       if (!(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
-        ubRepairPtsLeft /= 2;
-        ubInitialRepairPts /= 2;
+        ubRepairPtsLeft = Math.trunc(ubRepairPtsLeft / 2);
+        ubInitialRepairPts = Math.trunc(ubInitialRepairPts / 2);
       }
 
       // robot
@@ -2432,8 +2432,8 @@ function HandleRepairBySoldier(pSoldier: SOLDIERTYPE): void {
   ubRepairPtsUsed = ubInitialRepairPts - ubRepairPtsLeft;
   if (ubRepairPtsUsed > 0) {
     // improve stats
-    StatChange(pSoldier, MECHANAMT, (ubRepairPtsUsed / 2), 0);
-    StatChange(pSoldier, DEXTAMT, (ubRepairPtsUsed / 2), 0);
+    StatChange(pSoldier, MECHANAMT, Math.trunc(ubRepairPtsUsed / 2), 0);
+    StatChange(pSoldier, DEXTAMT, Math.trunc(ubRepairPtsUsed / 2), 0);
 
     // check if kit damaged/depleted
     if ((Random(100)) < (ubRepairPtsUsed * 5)) // CJC: added a x5 as this wasn't going down anywhere fast enough
@@ -2518,12 +2518,12 @@ function RestCharacter(pSoldier: SOLDIERTYPE): void {
   // handle the sleep of this character, update bBreathMax based on sleep they have
   let bMaxBreathRegain: INT8 = 0;
 
-  bMaxBreathRegain = 50 / CalcSoldierNeedForSleep(pSoldier);
+  bMaxBreathRegain = Math.trunc(50 / CalcSoldierNeedForSleep(pSoldier));
 
   // if breath max is below the "really tired" threshold
   if (pSoldier.bBreathMax < BREATHMAX_PRETTY_TIRED) {
     // real tired, rest rate is 50% higher (this is to prevent absurdly long sleep times for totally exhausted mercs)
-    bMaxBreathRegain = (bMaxBreathRegain * 3 / 2);
+    bMaxBreathRegain = Math.trunc(bMaxBreathRegain * 3 / 2);
   }
 
   pSoldier.bBreathMax += bMaxBreathRegain;
@@ -2566,7 +2566,7 @@ function FatigueCharacter(pSoldier: SOLDIERTYPE): void {
   }
 
   bDivisor = 24 - CalcSoldierNeedForSleep(pSoldier);
-  bMaxBreathLoss = 50 / bDivisor;
+  bMaxBreathLoss = Math.trunc(50 / bDivisor);
 
   if (bMaxBreathLoss < 2) {
     bMaxBreathLoss = 2;
@@ -2578,7 +2578,7 @@ function FatigueCharacter(pSoldier: SOLDIERTYPE): void {
     // Soldier is on foot and travelling.  Factor encumbrance into fatigue rate.
     iPercentEncumbrance = CalculateCarriedWeight(pSoldier);
     if (iPercentEncumbrance > 100) {
-      iBreathLoss = (bMaxBreathLoss * iPercentEncumbrance / 100);
+      iBreathLoss = Math.trunc(bMaxBreathLoss * iPercentEncumbrance / 100);
       bMaxBreathLoss = Math.min(127, iBreathLoss);
     }
   }
@@ -2586,7 +2586,7 @@ function FatigueCharacter(pSoldier: SOLDIERTYPE): void {
   // if breath max is below the "really tired" threshold
   if (pSoldier.bBreathMax < BREATHMAX_PRETTY_TIRED) {
     // real tired, fatigue rate is 50% higher
-    bMaxBreathLoss = (bMaxBreathLoss * 3 / 2);
+    bMaxBreathLoss = Math.trunc(bMaxBreathLoss * 3 / 2);
   }
 
   pSoldier.bBreathMax -= bMaxBreathLoss;
@@ -2883,7 +2883,7 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: SOLDIERTYPE, pSt
 
     // factor in their mutual relationship
     bOpinionFactor = gMercProfiles[pStudent.ubProfile].bMercOpinion[pInstructor.ubProfile];
-    bOpinionFactor += gMercProfiles[pInstructor.ubProfile].bMercOpinion[pStudent.ubProfile] / 2;
+    bOpinionFactor += Math.trunc(gMercProfiles[pInstructor.ubProfile].bMercOpinion[pStudent.ubProfile] / 2);
   }
 
   // check to see if student better than/equal to instructor's effective skill, if so, return 0
@@ -2893,10 +2893,10 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: SOLDIERTYPE, pSt
   }
 
   // calculate effective training pts
-  sTrainingPts = (bTrainerEffSkill - bTraineeSkill) * (bTraineeEffWisdom + (EffectiveWisdom(pInstructor) + EffectiveLeadership(pInstructor)) / 2) / INSTRUCTED_TRAINING_DIVISOR;
+  sTrainingPts = Math.trunc((bTrainerEffSkill - bTraineeSkill) * Math.trunc(bTraineeEffWisdom + (EffectiveWisdom(pInstructor) + EffectiveLeadership(pInstructor)) / 2) / INSTRUCTED_TRAINING_DIVISOR);
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = (bTrainerNatSkill - bTraineeSkill) * (bTraineeNatWisdom + (pInstructor.bWisdom + pInstructor.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR;
+  pusMaxPts.value = Math.trunc((bTrainerNatSkill - bTraineeSkill) * Math.trunc(bTraineeNatWisdom + (pInstructor.bWisdom + pInstructor.bLeadership) / 2) / INSTRUCTED_TRAINING_DIVISOR);
 
   // put in a minimum (that can be reduced due to instructor being tired?)
   if (pusMaxPts.value == 0) {
@@ -2916,7 +2916,7 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: SOLDIERTYPE, pSt
   }
 
   // teaching bonus is counted as normal, but gun range bonus is not
-  pusMaxPts.value += (((bTrainingBonus + bOpinionFactor) * pusMaxPts.value) / 100);
+  pusMaxPts.value += Math.trunc(((bTrainingBonus + bOpinionFactor) * pusMaxPts.value) / 100);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
@@ -2924,7 +2924,7 @@ export function GetBonusTrainingPtsDueToInstructor(pInstructor: SOLDIERTYPE, pSt
   }
 
   // adjust for any training bonuses and for the relationship
-  sTrainingPts += (((bTrainingBonus + bOpinionFactor) * sTrainingPts) / 100);
+  sTrainingPts += Math.trunc(((bTrainingBonus + bOpinionFactor) * sTrainingPts) / 100);
 
   // adjust for instructor fatigue
   sTrainingPts = ReducePointsForFatigue(pInstructor, sTrainingPts);
@@ -2980,10 +2980,10 @@ export function GetSoldierTrainingPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, f
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = Math.max(((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(Math.trunc((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
-  sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  sTrainingPts = Math.max(Math.trunc((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
@@ -2991,7 +2991,7 @@ export function GetSoldierTrainingPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, f
   }
 
   // adjust for any training bonuses
-  sTrainingPts += ((bTrainingBonus * sTrainingPts) / 100);
+  sTrainingPts += Math.trunc((bTrainingBonus * sTrainingPts) / 100);
 
   // adjust for fatigue
   sTrainingPts = ReducePointsForFatigue(pSoldier, sTrainingPts);
@@ -3055,10 +3055,10 @@ export function GetSoldierStudentPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fA
   }
 
   // calculate normal training pts - what it would be if his stats were "normal" (ignoring drugs, fatigue)
-  pusMaxPts.value = Math.max(((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  pusMaxPts.value = Math.max(Math.trunc((pSoldier.bWisdom * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // calculate effective training pts
-  sTrainingPts = Math.max(((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
+  sTrainingPts = Math.max(Math.trunc((EffectiveWisdom(pSoldier) * (TRAINING_RATING_CAP - bSkill)) / SELF_TRAINING_DIVISOR), 1);
 
   // get special bonus if we're training marksmanship and we're in the gun range sector in Alma
   if ((bTrainStat == Enum118.MARKSMANSHIP) && fAtGunRange) {
@@ -3066,7 +3066,7 @@ export function GetSoldierStudentPts(pSoldier: SOLDIERTYPE, bTrainStat: INT8, fA
   }
 
   // adjust for any training bonuses
-  sTrainingPts += ((bTrainingBonus * sTrainingPts) / 100);
+  sTrainingPts += Math.trunc((bTrainingBonus * sTrainingPts) / 100);
 
   // adjust for fatigue
   sTrainingPts = ReducePointsForFatigue(pSoldier, sTrainingPts);
@@ -3166,11 +3166,11 @@ function TrainTownInSector(pTrainer: SOLDIERTYPE, sMapX: INT16, sMapY: INT16, sT
   }
 
   // trainer gains leadership - training argument is FALSE, because the trainer is not the one training!
-  StatChange(pTrainer, LDRAMT, (1 + (sTrainingPts / 200)), 0);
+  StatChange(pTrainer, LDRAMT, (1 + Math.trunc(sTrainingPts / 200)), 0);
   //	StatChange( pTrainer, WISDOMAMT, (UINT16) ( 1 + ( sTrainingPts / 400 ) ), FALSE );
 
   // increase town's training completed percentage
-  pSectorInfo.ubMilitiaTrainingPercentDone += (sTrainingPts / 100);
+  pSectorInfo.ubMilitiaTrainingPercentDone += Math.trunc(sTrainingPts / 100);
   pSectorInfo.ubMilitiaTrainingHundredths += (sTrainingPts % 100);
 
   if (pSectorInfo.ubMilitiaTrainingHundredths >= 100) {
@@ -3223,9 +3223,9 @@ export function GetTownTrainPtsForCharacter(pTrainer: SOLDIERTYPE, pusMaxPts: Po
   }
 
   // adjust for teaching bonus (a percentage)
-  sTotalTrainingPts += ((bTrainingBonus * sTotalTrainingPts) / 100);
+  sTotalTrainingPts += Math.trunc((bTrainingBonus * sTotalTrainingPts) / 100);
   // teach bonus is considered "normal" - it's always there
-  pusMaxPts.value += ((bTrainingBonus * pusMaxPts.value) / 100);
+  pusMaxPts.value += Math.trunc((bTrainingBonus * pusMaxPts.value) / 100);
 
   // adjust for fatigue of trainer
   sTotalTrainingPts = ReducePointsForFatigue(pTrainer, sTotalTrainingPts);
@@ -3415,10 +3415,10 @@ function HandleHealingByNaturalCauses(pSoldier: SOLDIERTYPE): void {
   }
 
   // what percentage of health is he down to
-  uiPercentHealth = (pSoldier.bLife * 100) / pSoldier.bLifeMax;
+  uiPercentHealth = Math.trunc((pSoldier.bLife * 100) / pSoldier.bLifeMax);
 
   // gain that many hundredths of life points back, divided by the activity level modifier
-  pSoldier.sFractLife += (uiPercentHealth / bActivityLevelDivisor);
+  pSoldier.sFractLife += Math.trunc(uiPercentHealth / bActivityLevelDivisor);
 
   // now update the real life values
   UpDateSoldierLife(pSoldier);
@@ -3428,7 +3428,7 @@ function HandleHealingByNaturalCauses(pSoldier: SOLDIERTYPE): void {
 
 function UpDateSoldierLife(pSoldier: SOLDIERTYPE): void {
   // update soldier life, make sure we don't go out of bounds
-  pSoldier.bLife += pSoldier.sFractLife / 100;
+  pSoldier.bLife += Math.trunc(pSoldier.sFractLife / 100);
 
   // keep remaining fract of life
   pSoldier.sFractLife %= 100;
@@ -7207,7 +7207,7 @@ function PositionCursorForTacticalAssignmentBox(): void {
   iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
   if (gGameSettings.fOptions[Enum8.TOPTION_DONT_MOVE_MOUSE] == false) {
-    SimulateMouseMovement(pPosition.iX + pDimensions.iRight - 6, pPosition.iY + (iFontHeight / 2) + 2);
+    SimulateMouseMovement(pPosition.iX + pDimensions.iRight - 6, pPosition.iY + Math.trunc(iFontHeight / 2) + 2);
   }
 }
 
@@ -9011,7 +9011,7 @@ function CalcSoldierNeedForSleep(pSoldier: SOLDIERTYPE): UINT8 {
   // base comes from profile
   ubNeedForSleep = gMercProfiles[pSoldier.ubProfile].ubNeedForSleep;
 
-  ubPercentHealth = pSoldier.bLife / pSoldier.bLifeMax;
+  ubPercentHealth = Math.trunc(pSoldier.bLife / pSoldier.bLifeMax);
 
   if (ubPercentHealth < 75) {
     ubNeedForSleep++;

@@ -138,24 +138,6 @@ function FreeStructureFileRef(pFileRef: STRUCTURE_FILE_REF): void {
   let usLoop: UINT16;
 
   Assert(pFileRef != null);
-  if (pFileRef.pDBStructureRef != null) {
-    for (usLoop = 0; usLoop < pFileRef.usNumberOfStructures; usLoop++) {
-      if (pFileRef.pDBStructureRef[usLoop].ppTile) {
-        MemFree(pFileRef.pDBStructureRef[usLoop].ppTile);
-      }
-    }
-    MemFree(pFileRef.pDBStructureRef);
-  }
-  if (pFileRef.pubStructureData != null) {
-    MemFree(pFileRef.pubStructureData);
-  }
-  if (pFileRef.pAuxData != null) {
-    MemFree(pFileRef.pAuxData);
-    if (pFileRef.pTileLocData != null) {
-      MemFree(pFileRef.pTileLocData);
-    }
-  }
-  MemFree(pFileRef);
 }
 
 export function FreeAllStructureFiles(): void {
@@ -335,7 +317,7 @@ function CreateFileStructureArrays(pFileRef: STRUCTURE_FILE_REF, uiDataSize: UIN
       pCurrent += DB_STRUCTURE_TILE_SIZE;
     }
     // scale hit points down to something reasonable...
-    uiHitPoints = Math.floor((uiHitPoints * 100) / 255);
+    uiHitPoints = Math.trunc((uiHitPoints * 100) / 255);
     /*
     if (uiHitPoints > 255)
     {
@@ -983,7 +965,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: STRUCTURE |
   if (DeleteStructureFromWorld(pBaseStructure) == false) {
     return null;
   }
-  pNewBaseStructure = InternalAddStructureToWorld(sGridNo, (sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
+  pNewBaseStructure = InternalAddStructureToWorld(sGridNo, Math.trunc(sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
   if (pNewBaseStructure == null) {
     return null;
   }
@@ -1325,9 +1307,9 @@ export function DamageStructure(pStructure: STRUCTURE | null, ubDamage: UINT8, u
   // Account for armour!
   if (ubReason == STRUCTURE_DAMAGE_EXPLOSION) {
     if (pStructure.fFlags & STRUCTURE_EXPLOSIVE) {
-      ubArmour = gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] / 3;
+      ubArmour = Math.trunc(gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] / 3);
     } else {
-      ubArmour = gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] / 2;
+      ubArmour = Math.trunc(gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] / 2);
     }
 
     if (ubArmour > ubDamage) {
@@ -1555,7 +1537,7 @@ export function AddZStripInfoToVObject(hVObject: SGPVObject, pStructureFileRef: 
       sSTIStep = hVObject.usNumberOfObjects;
       sSTIStartIndex = 0;
     } else {
-      sSTIStep = (hVObject.usNumberOfObjects / pStructureFileRef.usNumberOfStructures);
+      sSTIStep = Math.trunc(hVObject.usNumberOfObjects / pStructureFileRef.usNumberOfStructures);
     }
   } else {
     sSTIStep = 1;
@@ -1612,12 +1594,12 @@ export function AddZStripInfoToVObject(hVObject: SGPVObject, pStructureFileRef: 
 
             // if (pDBStructure->fFlags & (STRUCTURE_MOBILE ) )
             {
-              sOffsetX = sOffsetX + (WORLD_TILE_X / 2);
-              sOffsetY = sOffsetY + (WORLD_TILE_Y / 2);
+              sOffsetX = sOffsetX + Math.trunc(WORLD_TILE_X / 2);
+              sOffsetY = sOffsetY + Math.trunc(WORLD_TILE_Y / 2);
             }
             // adjust for the tile offset
-            sOffsetX = sOffsetX - pDBStructure.bZTileOffsetX * (WORLD_TILE_X / 2) + pDBStructure.bZTileOffsetY * (WORLD_TILE_X / 2);
-            sOffsetY = sOffsetY - pDBStructure.bZTileOffsetY * (WORLD_TILE_Y / 2);
+            sOffsetX = sOffsetX - pDBStructure.bZTileOffsetX * Math.trunc(WORLD_TILE_X / 2) + pDBStructure.bZTileOffsetY * Math.trunc(WORLD_TILE_X / 2);
+            sOffsetY = sOffsetY - pDBStructure.bZTileOffsetY * Math.trunc(WORLD_TILE_Y / 2);
           }
 
           // figure out how much of the image is on each side of
@@ -1625,31 +1607,31 @@ export function AddZStripInfoToVObject(hVObject: SGPVObject, pStructureFileRef: 
           if (sOffsetX <= 0) {
             // note that the adjustments here by (WORLD_TILE_X / 2) are to account for the X difference
             // between the blit position and the bottom corner of the base tile
-            sRightHalfWidth = usWidth + sOffsetX - (WORLD_TILE_X / 2);
+            sRightHalfWidth = usWidth + sOffsetX - Math.trunc(WORLD_TILE_X / 2);
 
             if (sRightHalfWidth >= 0) {
               // Case 1: negative image offset, image straddles bottom corner
 
               // negative of a negative is positive
-              sLeftHalfWidth = -sOffsetX + (WORLD_TILE_X / 2);
+              sLeftHalfWidth = -sOffsetX + Math.trunc(WORLD_TILE_X / 2);
             } else {
               // Case 2: negative image offset, image all on left side
 
               // bump up the LeftHalfWidth to the right edge of the last tile-half,
               // so we can calculate the size of the leftmost portion accurately
               // NB subtracting a negative to add the absolute value
-              sLeftHalfWidth = usWidth - (sRightHalfWidth % (WORLD_TILE_X / 2));
+              sLeftHalfWidth = usWidth - (sRightHalfWidth % Math.trunc(WORLD_TILE_X / 2));
               sRightHalfWidth = 0;
             }
-          } else if (sOffsetX < (WORLD_TILE_X / 2)) {
-            sLeftHalfWidth = (WORLD_TILE_X / 2) - sOffsetX;
+          } else if (sOffsetX < Math.trunc(WORLD_TILE_X / 2)) {
+            sLeftHalfWidth = Math.trunc(WORLD_TILE_X / 2) - sOffsetX;
             sRightHalfWidth = usWidth - sLeftHalfWidth;
             if (sRightHalfWidth <= 0) {
               // Case 3: positive offset < 20, image all on left side
               // should never happen because these images are multi-tile!
               sRightHalfWidth = 0;
               // fake the left width to one half-tile
-              sLeftHalfWidth = (WORLD_TILE_X / 2);
+              sLeftHalfWidth = Math.trunc(WORLD_TILE_X / 2);
             } else {
               // Case 4: positive offset < 20, image straddles bottom corner
 
@@ -1663,30 +1645,30 @@ export function AddZStripInfoToVObject(hVObject: SGPVObject, pStructureFileRef: 
           }
 
           if (sLeftHalfWidth > 0) {
-            ubNumIncreasing = sLeftHalfWidth / (WORLD_TILE_X / 2);
+            ubNumIncreasing = Math.trunc(sLeftHalfWidth / Math.trunc(WORLD_TILE_X / 2));
           }
           if (sRightHalfWidth > 0) {
             ubNumStable = 1;
-            if (sRightHalfWidth > (WORLD_TILE_X / 2)) {
-              ubNumDecreasing = sRightHalfWidth / (WORLD_TILE_X / 2);
+            if (sRightHalfWidth > Math.trunc(WORLD_TILE_X / 2)) {
+              ubNumDecreasing = Math.trunc(sRightHalfWidth / Math.trunc(WORLD_TILE_X / 2));
             }
           }
           if (sLeftHalfWidth > 0) {
-            pCurr.ubFirstZStripWidth = sLeftHalfWidth % (WORLD_TILE_X / 2);
+            pCurr.ubFirstZStripWidth = sLeftHalfWidth % Math.trunc(WORLD_TILE_X / 2);
             if (pCurr.ubFirstZStripWidth == 0) {
               ubNumIncreasing--;
-              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2);
+              pCurr.ubFirstZStripWidth = Math.trunc(WORLD_TILE_X / 2);
             }
           } else // right side only; offset is at least 20 (= WORLD_TILE_X / 2)
           {
             if (sOffsetX > WORLD_TILE_X) {
-              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2) - (sOffsetX - WORLD_TILE_X) % (WORLD_TILE_X / 2);
+              pCurr.ubFirstZStripWidth = Math.trunc(WORLD_TILE_X / 2) - (sOffsetX - WORLD_TILE_X) % Math.trunc(WORLD_TILE_X / 2);
             } else {
               pCurr.ubFirstZStripWidth = WORLD_TILE_X - sOffsetX;
             }
             if (pCurr.ubFirstZStripWidth == 0) {
               ubNumDecreasing--;
-              pCurr.ubFirstZStripWidth = (WORLD_TILE_X / 2);
+              pCurr.ubFirstZStripWidth = Math.trunc(WORLD_TILE_X / 2);
             }
           }
 

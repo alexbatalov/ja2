@@ -259,7 +259,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: SOLDIERTYPE, sS
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((pSoldier.sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((pSoldier.sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = pSoldier.sGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -291,7 +291,7 @@ export function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: SOLDIERTYPE, sS
 
   if (fFound) {
     // Set direction to center of map!
-    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -322,7 +322,7 @@ export function FindClosestExitGrid(pSoldier: SOLDIERTYPE, sSrcGridNo: INT16, ub
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSrcGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSrcGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSrcGridNo + (WORLD_COLS * cnt1) + cnt2;

@@ -59,7 +59,7 @@ export function LoadRadarScreenBitmap(aFilename: string /* Pointer<CHAR8> */): b
     // Remove extension
     for (cnt = zFilename.length - 1; cnt >= 0; cnt--) {
       if (zFilename[cnt] == '.') {
-        zFilename = zFilename.substring(cnt);
+        zFilename = zFilename.substring(0, cnt);
       }
     }
 
@@ -131,8 +131,8 @@ function RadarRegionMoveCallback(pRegion: MOUSE_REGION, iReason: INT32): void {
   if (iReason == MSYS_CALLBACK_REASON_MOVE) {
     if (pRegion.ButtonState & MSYS_LEFT_BUTTON) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.RelativeXPos - Math.trunc(RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.RelativeYPos - Math.trunc(RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
 
@@ -153,8 +153,8 @@ function RadarRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (!InOverheadMap()) {
       // Use relative coordinates to set center of viewport
-      sRadarX = pRegion.RelativeXPos - (RADAR_WINDOW_WIDTH / 2);
-      sRadarY = pRegion.RelativeYPos - (RADAR_WINDOW_HEIGHT / 2);
+      sRadarX = pRegion.RelativeXPos - Math.trunc(RADAR_WINDOW_WIDTH / 2);
+      sRadarY = pRegion.RelativeYPos - Math.trunc(RADAR_WINDOW_HEIGHT / 2);
 
       AdjustWorldCenterFromRadarCoords(sRadarX, sRadarY);
     } else {
@@ -258,8 +258,8 @@ export function RenderRadarScreen(): void {
 
   // Get corners in screen coords
   // TOP LEFT
-  sX_S = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
-  sY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
+  sX_S = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sY_S = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   sTopLeftWorldX = sScreenCenterX - sX_S;
   sTopLeftWorldY = sScreenCenterY - sY_S;
@@ -274,18 +274,18 @@ export function RenderRadarScreen(): void {
   sBottomRightWorldY = sScreenCenterY + sY_S;
 
   // Determine radar coordinates
-  sRadarCX = (gsCX * gdScaleX);
-  sRadarCY = (gsCY * gdScaleY);
+  sRadarCX = Math.trunc(gsCX * gdScaleX);
+  sRadarCY = Math.trunc(gsCY * gdScaleY);
 
   sWidth = (RADAR_WINDOW_WIDTH);
   sHeight = (RADAR_WINDOW_HEIGHT);
   sX = RADAR_WINDOW_X;
   sY = gsRadarY;
 
-  sRadarTLX = ((sTopLeftWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
-  sRadarTLY = ((sTopLeftWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
-  sRadarBRX = ((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
-  sRadarBRY = ((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
+  sRadarTLX = Math.trunc((sTopLeftWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
+  sRadarTLY = Math.trunc((sTopLeftWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
+  sRadarBRX = Math.trunc((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
+  sRadarBRY = Math.trunc((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, createPointer(() => uiDestPitchBYTES, (v) => uiDestPitchBYTES = v));
 
@@ -449,23 +449,23 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
   let sNumYSteps: INT16;
 
   // Use radar scale values to get screen values, then convert ot map values, rounding to nearest middle tile
-  sScreenX = (sRadarX / gdScaleX);
-  sScreenY = (sRadarY / gdScaleY);
+  sScreenX = Math.trunc(sRadarX / gdScaleX);
+  sScreenY = Math.trunc(sRadarY / gdScaleY);
 
   // Adjust to viewport start!
-  sScreenX -= ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
-  sScreenY -= ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
+  sScreenX -= Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sScreenY -= Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   // Make sure these coordinates are multiples of scroll steps
-  sNumXSteps = sScreenX / SCROLL_X_STEP;
-  sNumYSteps = sScreenY / SCROLL_Y_STEP;
+  sNumXSteps = Math.trunc(sScreenX / SCROLL_X_STEP);
+  sNumYSteps = Math.trunc(sScreenY / SCROLL_Y_STEP);
 
   sScreenX = (sNumXSteps * SCROLL_X_STEP);
   sScreenY = (sNumYSteps * SCROLL_Y_STEP);
 
   // Adjust back
-  sScreenX += ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
-  sScreenY += ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
+  sScreenX += Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sScreenY += Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   // Subtract world center
   // sScreenX += gsCX;
@@ -520,12 +520,12 @@ function CreateDestroyMouseRegionsForSquadList(): boolean {
 
     for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
       // run through list of squads and place appropriatly
-      if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
+      if (sCounter < Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) {
         // left half of list
-        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y() + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (Enum275.NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + Math.trunc(sCounter * Math.trunc((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + Math.trunc(RADAR_WINDOW_WIDTH / 2) - 1, (SQUAD_WINDOW_TM_Y() + ((sCounter + 1) * Math.trunc((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       } else {
         // right half of list
-        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y() + (((sCounter + 1) - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + Math.trunc(RADAR_WINDOW_WIDTH / 2), (SQUAD_WINDOW_TM_Y() + ((sCounter - Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) * Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y() + (((sCounter + 1) - Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) * Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       }
 
       // set user data
@@ -585,10 +585,10 @@ function RenderSquadList(): void {
 
   for (sCounter = 0; sCounter < Enum275.NUMBER_OF_SQUADS; sCounter++) {
     // run through list of squads and place appropriatly
-    if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
-      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
+    if (sCounter < Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) {
+      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y() + (sCounter * Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), Math.trunc(RADAR_WINDOW_WIDTH / 2) - 1, ((Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
     } else {
-      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y() + ((sCounter - (Enum275.NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
+      ({ sX, sY } = FindFontCenterCoordinates(RADAR_WINDOW_X + Math.trunc(RADAR_WINDOW_WIDTH / 2), (SQUAD_WINDOW_TM_Y() + ((sCounter - Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) * Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), Math.trunc(RADAR_WINDOW_WIDTH / 2) - 1, ((Math.trunc(2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / Enum275.NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT()));
     }
 
     // highlight line?
@@ -608,10 +608,10 @@ function RenderSquadList(): void {
 
     SetFontBackground(FONT_BLACK);
 
-    if (sCounter < Enum275.NUMBER_OF_SQUADS / 2) {
+    if (sCounter < Math.trunc(Enum275.NUMBER_OF_SQUADS / 2)) {
       sX = RADAR_WINDOW_X + 2;
     } else {
-      sX = RADAR_WINDOW_X + (RADAR_WINDOW_WIDTH / 2) - 2;
+      sX = RADAR_WINDOW_X + Math.trunc(RADAR_WINDOW_WIDTH / 2) - 2;
     }
     mprintf(sX, sY, pSquadMenuStrings[sCounter]);
   }

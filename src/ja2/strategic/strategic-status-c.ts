@@ -48,7 +48,7 @@ export function CalcDeathRate(): UINT8 {
   // give the player a grace period of 1 day
   if (gStrategicStatus.uiManDaysPlayed > 0) {
     // calculates the player's current death rate
-    uiDeathRate = ((gStrategicStatus.ubMercDeaths * DEATH_RATE_SEVERITY * 100) / gStrategicStatus.uiManDaysPlayed);
+    uiDeathRate = Math.trunc((gStrategicStatus.ubMercDeaths * DEATH_RATE_SEVERITY * 100) / gStrategicStatus.uiManDaysPlayed);
   }
 
   return uiDeathRate;
@@ -122,7 +122,7 @@ export function MercThinksHisMoraleIsTooLow(pSoldier: SOLDIERTYPE): boolean {
 
   // morale tolerance is based directly upon reputation tolerance
   // above 50, morale is GOOD, never below tolerance then
-  bMoraleTolerance = (100 - bRepTolerance) / 2;
+  bMoraleTolerance = Math.trunc((100 - bRepTolerance) / 2);
 
   if (pSoldier.bMorale < bMoraleTolerance) {
     // too low - sorry
@@ -143,9 +143,9 @@ export function UpdateLastDayOfPlayerActivity(usDay: UINT16): void {
 function LackOfProgressTolerance(): UINT8 {
   if (gGameOptions.ubDifficultyLevel >= Enum9.DIF_LEVEL_HARD) {
     // give an EXTRA day over normal
-    return 7 - Enum9.DIF_LEVEL_MEDIUM + gStrategicStatus.ubHighestProgress / 42;
+    return 7 - Enum9.DIF_LEVEL_MEDIUM + Math.trunc(gStrategicStatus.ubHighestProgress / 42);
   } else {
-    return 6 - gGameOptions.ubDifficultyLevel + gStrategicStatus.ubHighestProgress / 42;
+    return 6 - gGameOptions.ubDifficultyLevel + Math.trunc(gStrategicStatus.ubHighestProgress / 42);
   }
 }
 
@@ -256,7 +256,7 @@ export function HandleEnricoEmail(): void {
   // reset # of new sectors visited 'today'
   // grant some leeway for the next day, could have started moving
   // at night...
-  gStrategicStatus.ubNumNewSectorsVisitedToday = Math.min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
+  gStrategicStatus.ubNumNewSectorsVisitedToday = Math.trunc(Math.min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3);
 }
 
 export function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {

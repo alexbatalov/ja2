@@ -416,7 +416,7 @@ function IncrementCurrentPageHistoryDisplay(): boolean {
 
   // is the file long enough?
   //  if( ( FileGetSize( hFileHandle ) - 1 ) / ( NUM_RECORDS_PER_PAGE * ( sizeof( UINT8 ) + sizeof( UINT32 ) + 3*sizeof( UINT8 )+ sizeof(INT16) + sizeof( INT16 ) ) ) + 1 < ( UINT32 )( iCurrentHistoryPage + 1 ) )
-  if (uiFileSize / uiSizeOfRecordsOnEachPage + 1 < (iCurrentHistoryPage + 1)) {
+  if (Math.trunc(uiFileSize / uiSizeOfRecordsOnEachPage) + 1 < (iCurrentHistoryPage + 1)) {
     // nope
     FileClose(hFileHandle);
     return false;
@@ -691,7 +691,7 @@ function DrawHistoryRecordsText(): void {
       SetFontForeground(FONT_RED);
     }
     // get and write the date
-    sString = swprintf("%d", (pCurHistory.uiDate / (24 * 60)));
+    sString = swprintf("%d", Math.trunc(pCurHistory.uiDate / (24 * 60)));
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT()));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
@@ -827,7 +827,7 @@ function DisplayPageNumberAndDateRange(): void {
   sString = swprintf("%s  %d / %d", pHistoryHeaders[1], iCurrentHistoryPage, iLastPage + 1);
   mprintf(PAGE_NUMBER_X, PAGE_NUMBER_Y, sString);
 
-  sString = swprintf("%s %d - %d", pHistoryHeaders[2], pCurrentHistory.uiDate / (24 * 60), uiLastDate / (24 * 60));
+  sString = swprintf("%s %d - %d", pHistoryHeaders[2], Math.trunc(pCurrentHistory.uiDate / (24 * 60)), Math.trunc(uiLastDate / (24 * 60)));
   mprintf(HISTORY_DATE_X, HISTORY_DATE_Y, sString);
 
   // reset shadow
@@ -1069,7 +1069,7 @@ function LoadInHistoryRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
+  if (Math.trunc((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD)) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
@@ -1155,7 +1155,7 @@ function WriteOutHistoryRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD) + 1 < uiPage) {
+  if (Math.trunc((FileGetSize(hFileHandle) - 1) / (NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD)) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
@@ -1262,7 +1262,7 @@ function SetLastPageInHistoryRecords(): void {
   // done with file, close it
   FileClose(hFileHandle);
 
-  guiLastPageInHistoryRecordsList = ReadInLastElementOfHistoryListAndReturnIdNumber() / NUM_RECORDS_PER_PAGE;
+  guiLastPageInHistoryRecordsList = Math.trunc(ReadInLastElementOfHistoryListAndReturnIdNumber() / NUM_RECORDS_PER_PAGE);
 
   return;
 }
@@ -1299,7 +1299,7 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   FileClose(hFileHandle);
 
   // file size  / sizeof record in bytes is id
-  return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD);
+  return Math.trunc((iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD));
 }
 
 function AppendHistoryToEndOfFile(pHistory: HistoryUnit | null): boolean {
@@ -1458,7 +1458,7 @@ function GetNumberOfHistoryPages(): INT32 {
   uiFileSize = FileGetSize(hFileHandle) - 1;
   uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (1 + 4 + 3 * 1 + 2 + 2));
 
-  iNumberOfHistoryPages = (uiFileSize / uiSizeOfRecordsOnEachPage);
+  iNumberOfHistoryPages = Math.trunc(uiFileSize / uiSizeOfRecordsOnEachPage);
 
   FileClose(hFileHandle);
 

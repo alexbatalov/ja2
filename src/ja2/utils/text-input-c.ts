@@ -978,8 +978,8 @@ function MouseMovedInTextRegionCallback(reg: MOUSE_REGION, reason: INT32): void 
       iClickX = gusMouseXPos - reg.RegionTopLeftX;
       iCurrCharPos = 0;
       gubCursorPos = 0;
-      iNextCharPos = StringPixLengthArg(pColors.usFont, 1, gpActive.szString) / 2;
-      while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive.ubStrLen) {
+      iNextCharPos = Math.trunc(StringPixLengthArg(pColors.usFont, 1, gpActive.szString) / 2);
+      while (iCurrCharPos + Math.trunc((iNextCharPos - iCurrCharPos) / 2) < iClickX && gubCursorPos < gpActive.ubStrLen) {
         gubCursorPos++;
         iCurrCharPos = iNextCharPos;
         iNextCharPos = StringPixLengthArg(pColors.usFont, gubCursorPos + 1, gpActive.szString);
@@ -1018,8 +1018,8 @@ function MouseClickedInTextRegionCallback(reg: MOUSE_REGION, reason: INT32): voi
     iClickX = gusMouseXPos - reg.RegionTopLeftX;
     iCurrCharPos = 0;
     gubCursorPos = 0;
-    iNextCharPos = StringPixLengthArg(pColors.usFont, 1, gpActive.szString) / 2;
-    while (iCurrCharPos + (iNextCharPos - iCurrCharPos) / 2 < iClickX && gubCursorPos < gpActive.ubStrLen) {
+    iNextCharPos = Math.trunc(StringPixLengthArg(pColors.usFont, 1, gpActive.szString) / 2);
+    while (iCurrCharPos + Math.trunc((iNextCharPos - iCurrCharPos) / 2) < iClickX && gubCursorPos < gpActive.ubStrLen) {
       gubCursorPos++;
       iCurrCharPos = iNextCharPos;
       iNextCharPos = StringPixLengthArg(pColors.usFont, gubCursorPos + 1, gpActive.szString);
@@ -1055,7 +1055,7 @@ function RenderActiveTextField(): void {
 
   SaveFontSettings();
   SetFont(pColors.usFont);
-  usOffset = ((gpActive.region.RegionBottomRightY - gpActive.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
+  usOffset = Math.trunc((gpActive.region.RegionBottomRightY - gpActive.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
   RenderBackgroundField(gpActive);
   if (gfHiliteMode && gubStartHilite != gubEndHilite) {
     // Some or all of the text is hilighted, so we will use a different method.
@@ -1126,7 +1126,7 @@ export function RenderInactiveTextField(ubID: UINT8): void {
     return;
   SaveFontSettings();
   SetFont(pColors.usFont);
-  usOffset = ((pNode.region.RegionBottomRightY - pNode.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
+  usOffset = Math.trunc((pNode.region.RegionBottomRightY - pNode.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
   SetFontForeground(pColors.ubForeColor);
   SetFontShadow(pColors.ubShadowColor);
   SetFontBackground(0);
@@ -1151,7 +1151,7 @@ function RenderInactiveTextFieldNode(pNode: TEXTINPUTNODE): void {
     SetFontForeground(pColors.ubForeColor);
     SetFontShadow(pColors.ubShadowColor);
   }
-  usOffset = ((pNode.region.RegionBottomRightY - pNode.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
+  usOffset = Math.trunc((pNode.region.RegionBottomRightY - pNode.region.RegionTopLeftY - GetFontHeight(pColors.usFont)) / 2);
   SetFontBackground(0);
   RenderBackgroundField(pNode);
   str = DoublePercentileCharacterFromStringIntoString(pNode.szString);
@@ -1459,11 +1459,11 @@ export function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): voi
       if (curr.fUserField)
         AssertMsg(0, FormatString("Attempting to illegally set text into user field %d", curr.ubID));
       curr.szString = '';
-      curr.szString += String.fromCharCode((usTime / 600) + 0x30); // 10 hours
-      curr.szString += String.fromCharCode((usTime / 60 % 10) + 0x30); // 1 hour
+      curr.szString += String.fromCharCode(Math.trunc(usTime / 600) + 0x30); // 10 hours
+      curr.szString += String.fromCharCode((Math.trunc(usTime / 60) % 10) + 0x30); // 1 hour
       usTime %= 60; // truncate the hours
       curr.szString += ':';
-      curr.szString += String.fromCharCode((usTime / 10) + 0x30); // 10 minutes
+      curr.szString += String.fromCharCode(Math.trunc(usTime / 10) + 0x30); // 10 minutes
       curr.szString += String.fromCharCode((usTime % 10) + 0x30); // 1 minute;
       return;
     }

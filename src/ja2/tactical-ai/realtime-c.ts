@@ -44,7 +44,7 @@ export function RealtimeDelay(pSoldier: SOLDIERTYPE): UINT16 {
       let ubRoom: UINT8;
 
       if ((ubRoom = InARoom(pSoldier.sGridNo)) !== -1 && IN_BROTHEL(ubRoom)) {
-        return (REALTIME_AI_DELAY() / 3);
+        return Math.trunc(REALTIME_AI_DELAY() / 3);
       }
     }
 
@@ -151,7 +151,7 @@ export function RTHandleAI(pSoldier: SOLDIERTYPE): void {
           let ubRoom: UINT8;
 
           if ((ubRoom = InARoom(pSoldier.sGridNo)) !== -1 && IN_BROTHEL(ubRoom)) {
-            pSoldier.usActionData /= 3;
+            pSoldier.usActionData = Math.trunc(pSoldier.usActionData / 3);
           }
         }
       }

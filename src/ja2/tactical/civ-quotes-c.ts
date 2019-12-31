@@ -355,8 +355,8 @@ export function BeginCivQuote(pCiv: SOLDIERTYPE, ubCivQuoteID: UINT8, ubEntryID:
   SET_USE_WINFONTS(false);
 
   // OK, find center for box......
-  sX = sX - (gusCivQuoteBoxWidth / 2);
-  sY = sY - (gusCivQuoteBoxHeight / 2);
+  sX = sX - Math.trunc(gusCivQuoteBoxWidth / 2);
+  sY = sY - Math.trunc(gusCivQuoteBoxHeight / 2);
 
   // OK, limit to screen......
   {

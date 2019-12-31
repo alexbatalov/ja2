@@ -298,7 +298,6 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
 
     // Load appropriate images
     if (LoadTextMercPopupImages(ubBackgroundIndex, ubBorderIndex) == false) {
-      MemFree(pPopUpTextBox);
       return -1;
     }
   } else {
@@ -338,7 +337,7 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
 
   usNumberVerticalPixels = IanWrappedStringHeight(0, 0, usTextWidth, 2, TEXT_POPUP_FONT(), MERC_TEXT_COLOR, pString, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
-  usNumberOfLines = usNumberVerticalPixels / TEXT_POPUP_GAP_BN_LINES;
+  usNumberOfLines = Math.trunc(usNumberVerticalPixels / TEXT_POPUP_GAP_BN_LINES);
 
   usHeight = usNumberVerticalPixels + MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X * 2;
 

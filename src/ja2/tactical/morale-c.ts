@@ -57,10 +57,10 @@ export function GetMoraleModifier(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.uiStatusFlags & SOLDIER_PC) {
     if (pSoldier.bMorale > 50) {
       // give +1 at 55, +3 at 65, up to +5 at 95 and above
-      return (pSoldier.bMorale - 45) / 10;
+      return Math.trunc((pSoldier.bMorale - 45) / 10);
     } else {
       // give penalties down to -20 at 0 (-2 at 45, -4 by 40...)
-      return (pSoldier.bMorale - 50) * 2 / 5;
+      return Math.trunc((pSoldier.bMorale - 50) * 2 / 5);
     }
   } else {
     // use AI morale
@@ -84,9 +84,9 @@ function DecayTacticalMorale(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.bTacticalMoraleMod != 0) {
     // decay the modifier!
     if (pSoldier.bTacticalMoraleMod > 0) {
-      pSoldier.bTacticalMoraleMod = Math.max(0, pSoldier.bTacticalMoraleMod - (8 - pSoldier.bTacticalMoraleMod / 10));
+      pSoldier.bTacticalMoraleMod = Math.max(0, pSoldier.bTacticalMoraleMod - (8 - Math.trunc(pSoldier.bTacticalMoraleMod / 10)));
     } else {
-      pSoldier.bTacticalMoraleMod = Math.min(0, pSoldier.bTacticalMoraleMod + (6 + pSoldier.bTacticalMoraleMod / 10));
+      pSoldier.bTacticalMoraleMod = Math.min(0, pSoldier.bTacticalMoraleMod + (6 + Math.trunc(pSoldier.bTacticalMoraleMod / 10)));
     }
   }
 }
@@ -94,9 +94,9 @@ function DecayTacticalMorale(pSoldier: SOLDIERTYPE): void {
 function DecayStrategicMorale(pSoldier: SOLDIERTYPE): void {
   // decay the modifier!
   if (pSoldier.bStrategicMoraleMod > 0) {
-    pSoldier.bStrategicMoraleMod = Math.max(0, pSoldier.bStrategicMoraleMod - (8 - pSoldier.bStrategicMoraleMod / 10));
+    pSoldier.bStrategicMoraleMod = Math.max(0, pSoldier.bStrategicMoraleMod - (8 - Math.trunc(pSoldier.bStrategicMoraleMod / 10)));
   } else {
-    pSoldier.bStrategicMoraleMod = Math.min(0, pSoldier.bStrategicMoraleMod + (6 + pSoldier.bStrategicMoraleMod / 10));
+    pSoldier.bStrategicMoraleMod = Math.min(0, pSoldier.bStrategicMoraleMod + (6 + Math.trunc(pSoldier.bStrategicMoraleMod / 10)));
   }
 }
 
@@ -207,8 +207,8 @@ export function RefreshSoldierMorale(pSoldier: SOLDIERTYPE): void {
   iActualMorale = DEFAULT_MORALE + pSoldier.bTeamMoraleMod + pSoldier.bTacticalMoraleMod + pSoldier.bStrategicMoraleMod + (CurrentPlayerProgressPercentage() / 5);
 
   // ATE: Modify morale based on drugs....
-  iActualMorale += ((pSoldier.bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
-  iActualMorale += ((pSoldier.bDrugEffect[DRUG_TYPE_ALCOHOL] * ALCOHOL_EFFECT_MORALE_MOD) / 100);
+  iActualMorale += Math.trunc((pSoldier.bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
+  iActualMorale += Math.trunc((pSoldier.bDrugEffect[DRUG_TYPE_ALCOHOL] * ALCOHOL_EFFECT_MORALE_MOD) / 100);
 
   iActualMorale = Math.min(100, iActualMorale);
   iActualMorale = Math.max(0, iActualMorale);
@@ -385,7 +385,7 @@ export function HandleMoraleEvent(pSoldier: SOLDIERTYPE | null, bMoraleEvent: IN
           // CJC: adding to SOLDIER_IN_SECTOR check special stuff because the old sector values might
           // be appropriate (because in transit going out of that sector!)
 
-          if (SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ) || (pTeamSoldier.fBetweenSectors && ((pTeamSoldier.ubPrevSectorID % 16) + 1) == sMapX && ((pTeamSoldier.ubPrevSectorID / 16) + 1) == sMapY && (pTeamSoldier.bSectorZ == bMapZ))) {
+          if (SOLDIER_IN_SECTOR(pTeamSoldier, sMapX, sMapY, bMapZ) || (pTeamSoldier.fBetweenSectors && ((pTeamSoldier.ubPrevSectorID % 16) + 1) == sMapX && (Math.trunc(pTeamSoldier.ubPrevSectorID / 16) + 1) == sMapY && (pTeamSoldier.bSectorZ == bMapZ))) {
             switch (gMercProfiles[pTeamSoldier.ubProfile].bAttitude) {
               case Enum271.ATT_AGGRESSIVE:
                 // double the penalty - these guys REALLY hate running away
@@ -654,10 +654,10 @@ export function HourlyMoraleUpdate(): void {
               // scale according to how close to we are to snapping
               // KM : Divide by 0 error found.  Wrapped into an if statement.
               if (pProfile.bHatedTime[bHated]) {
-                bOpinion = (bOpinion) * (pProfile.bHatedTime[bHated] - pProfile.bHatedCount[bHated]) / pProfile.bHatedTime[bHated];
+                bOpinion = Math.trunc((bOpinion) * (pProfile.bHatedTime[bHated] - pProfile.bHatedCount[bHated]) / pProfile.bHatedTime[bHated]);
               }
 
-              if (pProfile.bHatedCount[bHated] <= pProfile.bHatedTime[bHated] / 2) {
+              if (pProfile.bHatedCount[bHated] <= Math.trunc(pProfile.bHatedTime[bHated] / 2)) {
                 // Augh, we're teamed with someone we hate!  We HATE this!!  Ignore everyone else!
                 fFoundHated = true;
                 break;
@@ -677,9 +677,9 @@ export function HourlyMoraleUpdate(): void {
         // If teamed with someone we hated, team opinion is automatically minimum
         bActualTeamOpinion = HATED_OPINION;
       } else if (bNumTeamMembers > 0) {
-        bActualTeamOpinion = (iTotalOpinions / bNumTeamMembers);
+        bActualTeamOpinion = Math.trunc(iTotalOpinions / bNumTeamMembers);
         // give bonus/penalty for highest leadership value on team
-        bActualTeamOpinion += (bHighestTeamLeadership - 50) / 10;
+        bActualTeamOpinion += Math.trunc((bHighestTeamLeadership - 50) / 10);
       } else // alone
       {
         bActualTeamOpinion = 0;
@@ -697,9 +697,9 @@ export function HourlyMoraleUpdate(): void {
       // this should range between -75 and +75
       bTeamMoraleModDiff = bActualTeamOpinion - pSoldier.bTeamMoraleMod;
       if (bTeamMoraleModDiff > 0) {
-        bTeamMoraleModChange = 1 + bTeamMoraleModDiff / 10;
+        bTeamMoraleModChange = 1 + Math.trunc(bTeamMoraleModDiff / 10);
       } else if (bTeamMoraleModDiff < 0) {
-        bTeamMoraleModChange = -1 + bTeamMoraleModDiff / 10;
+        bTeamMoraleModChange = -1 + Math.trunc(bTeamMoraleModDiff / 10);
       } else {
         bTeamMoraleModChange = 0;
       }

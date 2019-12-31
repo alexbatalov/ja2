@@ -308,8 +308,8 @@ function ValidateSkillsList(): void {
 
   // special check for lockpicking
   iValue = pProfile.bMechanical;
-  iValue = (iValue * pProfile.bWisdom) / 100;
-  iValue = (iValue * pProfile.bDexterity) / 100;
+  iValue = Math.trunc((iValue * pProfile.bWisdom) / 100);
+  iValue = Math.trunc((iValue * pProfile.bDexterity) / 100);
   if (iValue + gbSkillTraitBonus[Enum269.LOCKPICKING] < 50) {
     // not good enough for lockpicking!
 

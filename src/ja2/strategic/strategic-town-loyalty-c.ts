@@ -169,7 +169,7 @@ export function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
         gTownLoyalty[bTownId].ubRating = 0;
       } else {
         // starting loyalty is halved - locals not sure what to make of the player's presence
-        gTownLoyalty[bTownId].ubRating /= 2;
+        gTownLoyalty[bTownId].ubRating = Math.trunc(gTownLoyalty[bTownId].ubRating / 2);
       }
     }
 
@@ -210,7 +210,7 @@ export function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): 
 
   // modify loyalty change by town's individual attitude toward rebelling (20 is typical)
   uiLoyaltyIncrease *= (5 * gubTownRebelSentiment[bTownId]);
-  uiLoyaltyIncrease /= 100;
+  uiLoyaltyIncrease = Math.trunc(uiLoyaltyIncrease / 100);
 
   // this whole thing is a hack to avoid rolling over the -32 to 32k range on the sChange value
   // only do a maximum of 10000 pts at a time...
@@ -244,7 +244,7 @@ export function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): 
 
   // modify loyalty change by town's individual attitude toward rebelling (20 is typical)
   uiLoyaltyDecrease *= 100;
-  uiLoyaltyDecrease /= (5 * gubTownRebelSentiment[bTownId]);
+  uiLoyaltyDecrease = Math.trunc(uiLoyaltyDecrease / (5 * gubTownRebelSentiment[bTownId]));
 
   // this whole thing is a hack to avoid rolling over the -32 to 32k range on the sChange value
   // only do a maximum of 10000 pts at a time...
@@ -275,7 +275,7 @@ function UpdateTownLoyaltyRating(bTownId: INT8): void {
   // remember previous loyalty value
   ubOldLoyaltyRating = gTownLoyalty[bTownId].ubRating;
 
-  sRatingChange = gTownLoyalty[bTownId].sChange / GAIN_PTS_PER_LOYALTY_PT;
+  sRatingChange = Math.trunc(gTownLoyalty[bTownId].sChange / GAIN_PTS_PER_LOYALTY_PT);
 
   // if loyalty is ready to increase
   if (sRatingChange > 0) {
@@ -627,7 +627,7 @@ export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: bool
   if (!fIntentional) {
     // accidental killing, reduce value
     iLoyaltyChange *= REDUCTION_FOR_UNINTENTIONAL_KILLING;
-    iLoyaltyChange /= 100;
+    iLoyaltyChange = Math.trunc(iLoyaltyChange / 100);
   }
 
   // check if LOS between any civ, killer and killed
@@ -684,7 +684,7 @@ export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: bool
 
       // not really player's fault, reduce penalty, because some will believe it to be a lie
       iLoyaltyChange *= REDUCTION_FOR_MURDER_NOT_OUR_FAULT;
-      iLoyaltyChange /= 100;
+      iLoyaltyChange = Math.trunc(iLoyaltyChange / 100);
 
       // debug message
       ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "You're being blamed for a death you didn't cause!");
@@ -712,7 +712,7 @@ export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: bool
       } else {
         // reduce, we're expected to provide some protection, but not miracles
         iLoyaltyChange *= REDUCTION_FOR_MURDER_OF_INNOCENT_BY_ENEMY_IN_OUR_SECTOR;
-        iLoyaltyChange /= 100;
+        iLoyaltyChange = Math.trunc(iLoyaltyChange / 100);
 
         // lose loyalty
         fIncrement = false;
@@ -727,7 +727,7 @@ export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: bool
       if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == false) {
         // on our side, penalty
         iLoyaltyChange *= REDUCTION_FOR_MURDER_BY_REBEL;
-        iLoyaltyChange /= 100;
+        iLoyaltyChange = Math.trunc(iLoyaltyChange / 100);
 
         // lose loyalty
         fIncrement = false;
@@ -790,7 +790,7 @@ export function HandleMurderOfCivilian(pSoldier: SOLDIERTYPE, fIntentional: bool
 
   // this is a hack: to avoid having to adjust the values, divide by 1.75 to compensate for the distance 0
   iLoyaltyChange *= 100;
-  iLoyaltyChange /= (100 + (25 * LOYALTY_EVENT_DISTANCE_THRESHOLD));
+  iLoyaltyChange = Math.trunc(iLoyaltyChange / (100 + (25 * LOYALTY_EVENT_DISTANCE_THRESHOLD)));
 
   AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
 }
@@ -868,7 +868,7 @@ function HandleLoyaltyForDemolitionOfBuilding(pSoldier: SOLDIERTYPE, sPointsDmg:
   } else if (pSoldier.ubCivilianGroup == Enum246.REBEL_CIV_GROUP) {
     // the rebels did it...are they on our side
     if (CheckFact(Enum170.FACT_REBELS_HATE_PLAYER, 0) == false) {
-      sLoyaltyValue /= DIVISOR_FOR_REBEL_BUILDING_DMG;
+      sLoyaltyValue = Math.trunc(sLoyaltyValue / DIVISOR_FOR_REBEL_BUILDING_DMG);
 
       // decrement loyalty value for rebels on our side dmging town
       DecrementTownLoyalty(bTownId, sLoyaltyValue);
@@ -937,9 +937,6 @@ export function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSec
     if (uiNewTotal < uiNumberOfItems) {
       AddWorldItemsToUnLoadedSector(sSectorX, sSectorY, sSectorZ, 0, uiNumberOfItems, pItemList, true);
     }
-
-    // mem free
-    MemFree(pItemList);
   } else // handle a loaded sector
   {
     for (iCounter = 0; iCounter < guiNumWorldItems; iCounter++) {
@@ -1160,7 +1157,7 @@ export function ReduceLoyaltyForRebelsBetrayed(): void {
       }
     } else {
       // loyalty in other places is also strongly affected by this falling out with rebels, but this is not permanent
-      SetTownLoyalty(bTownId, (gTownLoyalty[bTownId].ubRating / 3));
+      SetTownLoyalty(bTownId, Math.trunc(gTownLoyalty[bTownId].ubRating / 3));
     }
   }
 }
@@ -1399,7 +1396,7 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
     }
 
     // calculate loyalty affects as adjusted for distance to this town
-    iDistanceAdjustedLoyalty = (iLoyaltyChange * (100 + iPercentAdjustment)) / 100;
+    iDistanceAdjustedLoyalty = Math.trunc((iLoyaltyChange * (100 + iPercentAdjustment)) / 100);
 
     if (iDistanceAdjustedLoyalty == 0) {
       // no measurable effect, skip this town
@@ -1510,7 +1507,7 @@ export function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): boolean {
   let bTownBattleId: INT8 = 0;
 
   // get town id for sector
-  bTownBattleId = GetTownIdForSector((sWorldSectorLocationOfFirstBattle % MAP_WORLD_X), (sWorldSectorLocationOfFirstBattle / MAP_WORLD_X));
+  bTownBattleId = GetTownIdForSector((sWorldSectorLocationOfFirstBattle % MAP_WORLD_X), Math.trunc(sWorldSectorLocationOfFirstBattle / MAP_WORLD_X));
 
   return bTownId == bTownBattleId;
 }
@@ -1524,9 +1521,9 @@ function PlayerStrength(): UINT32 {
   for (ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
     if (pSoldier.bActive) {
-      if (pSoldier.bInSector || (pSoldier.fBetweenSectors && ((pSoldier.ubPrevSectorID % 16) + 1) == gWorldSectorX && ((pSoldier.ubPrevSectorID / 16) + 1) == gWorldSectorY && (pSoldier.bSectorZ == gbWorldSectorZ))) {
+      if (pSoldier.bInSector || (pSoldier.fBetweenSectors && ((pSoldier.ubPrevSectorID % 16) + 1) == gWorldSectorX && (Math.trunc(pSoldier.ubPrevSectorID / 16) + 1) == gWorldSectorY && (pSoldier.bSectorZ == gbWorldSectorZ))) {
         // count this person's strength (condition), calculated as life reduced up to half according to maxbreath
-        uiStrength = pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200;
+        uiStrength = Math.trunc(pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200);
         uiTotal += uiStrength;
       }
     }
@@ -1544,7 +1541,7 @@ function EnemyStrength(): UINT32 {
     pSoldier = MercPtrs[ubLoop];
     if (pSoldier.bActive && pSoldier.bInSector && !pSoldier.bNeutral) {
       // count this person's strength (condition), calculated as life reduced up to half according to maxbreath
-      uiStrength = pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200;
+      uiStrength = Math.trunc(pSoldier.bLife * (pSoldier.bBreathMax + 100) / 200);
       uiTotal += uiStrength;
     }
   }

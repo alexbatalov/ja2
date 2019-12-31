@@ -410,7 +410,7 @@ function CalcThreateningEffectiveness(ubMerc: UINT8): INT32 {
     iDeadliness = -30;
   }
 
-  return (EffectiveLeadership(pSoldier) + iStrength + iDeadliness) / 2;
+  return Math.trunc((EffectiveLeadership(pSoldier) + iStrength + iDeadliness) / 2);
 }
 
 export function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
@@ -431,22 +431,22 @@ export function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): 
   // ARM: NOTE - for towns which don't use loyalty (San Mona, Estoni, Tixa, Orta )
   // loyalty will always remain 0 (this was OKed by Ian)
   iTownVal = gTownLoyalty[pNPCProfile.bTown].ubRating;
-  iTownVal = iTownVal * pNPCProfile.bTownAttachment / 100;
+  iTownVal = Math.trunc(iTownVal * pNPCProfile.bTownAttachment / 100);
 
   if (bApproach == Enum296.NPC_INITIATING_CONV || bApproach == Enum296.APPROACH_GIVINGITEM) {
     iApproachVal = 100;
   } else if (bApproach == Enum296.APPROACH_THREATEN) {
-    iEffectiveLeadership = CalcThreateningEffectiveness(ubMerc) * pMercProfile.usApproachFactor[bApproach - 1] / 100;
-    iApproachVal = pNPCProfile.ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50;
+    iEffectiveLeadership = Math.trunc(CalcThreateningEffectiveness(ubMerc) * pMercProfile.usApproachFactor[bApproach - 1] / 100);
+    iApproachVal = Math.trunc(pNPCProfile.ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50);
   } else {
-    iEffectiveLeadership = (pMercProfile.bLeadership) * pMercProfile.usApproachFactor[bApproach - 1] / 100;
-    iApproachVal = pNPCProfile.ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50;
+    iEffectiveLeadership = Math.trunc((pMercProfile.bLeadership) * pMercProfile.usApproachFactor[bApproach - 1] / 100);
+    iApproachVal = Math.trunc(pNPCProfile.ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50);
   }
   // NB if town attachment is less than 100% then we should make personal value proportionately more important!
   if (pNPCProfile.bTownAttachment < 100) {
-    iPersonalVal = iPersonalVal * (100 + (100 - pNPCProfile.bTownAttachment)) / 100;
+    iPersonalVal = Math.trunc(iPersonalVal * (100 + (100 - pNPCProfile.bTownAttachment)) / 100);
   }
-  iWillingness = (iPersonalVal / 2 + iTownVal / 2) * iApproachVal / 100 - gubTeamPenalty;
+  iWillingness = Math.trunc((Math.trunc(iPersonalVal / 2) + Math.trunc(iTownVal / 2)) * iApproachVal / 100) - gubTeamPenalty;
 
   if (bApproach == Enum296.NPC_INITIATING_CONV) {
     iWillingness -= INITIATING_FACTOR;
@@ -465,7 +465,7 @@ function ApproachedForFirstTime(pNPCProfile: MERCPROFILESTRUCT, bApproach: INT8)
 
   pNPCProfile.bApproached |= gbFirstApproachFlags[bApproach - 1];
   for (ubLoop = 1; ubLoop <= NUM_REAL_APPROACHES; ubLoop++) {
-    uiTemp = pNPCProfile.ubApproachVal[ubLoop - 1] * pNPCProfile.ubApproachMod[bApproach - 1][ubLoop - 1] / 100;
+    uiTemp = Math.trunc(pNPCProfile.ubApproachVal[ubLoop - 1] * pNPCProfile.ubApproachMod[bApproach - 1][ubLoop - 1] / 100);
     if (uiTemp > 255) {
       uiTemp = 255;
     }
@@ -773,7 +773,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 case 100:
                 case 200: // Carla
                   if (CheckFact(Enum170.FACT_CARLA_AVAILABLE, 0)) {
-                    gMercProfiles[Enum268.MADAME].bNPCData += (pObj.uiMoneyAmount / 100);
+                    gMercProfiles[Enum268.MADAME].bNPCData += Math.trunc(pObj.uiMoneyAmount / 100);
                     TriggerNPCRecord(Enum268.MADAME, 16);
                   } else {
                     // see default case
@@ -785,7 +785,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 case 500:
                 case 1000: // Cindy
                   if (CheckFact(Enum170.FACT_CINDY_AVAILABLE, 0)) {
-                    gMercProfiles[Enum268.MADAME].bNPCData += (pObj.uiMoneyAmount / 500);
+                    gMercProfiles[Enum268.MADAME].bNPCData += Math.trunc(pObj.uiMoneyAmount / 500);
                     TriggerNPCRecord(Enum268.MADAME, 17);
                   } else {
                     // see default case
@@ -797,7 +797,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 case 300:
                 case 600: // Bambi
                   if (CheckFact(Enum170.FACT_BAMBI_AVAILABLE, 0)) {
-                    gMercProfiles[Enum268.MADAME].bNPCData += (pObj.uiMoneyAmount / 300);
+                    gMercProfiles[Enum268.MADAME].bNPCData += Math.trunc(pObj.uiMoneyAmount / 300);
                     TriggerNPCRecord(Enum268.MADAME, 18);
                   } else {
                     // see default case
@@ -809,7 +809,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: OBJ
                 case 400:
                 case 800: // Maria?
                   if (gubQuest[Enum169.QUEST_RESCUE_MARIA] == QUESTINPROGRESS) {
-                    gMercProfiles[Enum268.MADAME].bNPCData += (pObj.uiMoneyAmount / 400);
+                    gMercProfiles[Enum268.MADAME].bNPCData += Math.trunc(pObj.uiMoneyAmount / 400);
                     TriggerNPCRecord(Enum268.MADAME, 19);
                     break;
                   } else {

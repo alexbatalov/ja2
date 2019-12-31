@@ -150,9 +150,9 @@ export class CQuantizer {
 
   GetPaletteColors(pTree: NODE, prgb: SGPPaletteEntry[], pIndex: Pointer<UINT32>): void {
     if (pTree.bIsLeaf) {
-      prgb[pIndex.value].peRed = ((pTree.nRedSum) / (pTree.nPixelCount));
-      prgb[pIndex.value].peGreen = ((pTree.nGreenSum) / (pTree.nPixelCount));
-      prgb[pIndex.value].peBlue = ((pTree.nBlueSum) / (pTree.nPixelCount));
+      prgb[pIndex.value].peRed = Math.trunc((pTree.nRedSum) / (pTree.nPixelCount));
+      prgb[pIndex.value].peGreen = Math.trunc((pTree.nGreenSum) / (pTree.nPixelCount));
+      prgb[pIndex.value].peBlue = Math.trunc((pTree.nBlueSum) / (pTree.nPixelCount));
       prgb[pIndex.value].peFlags = 0;
       (pIndex.value)++;
     } else {

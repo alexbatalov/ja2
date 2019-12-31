@@ -202,9 +202,9 @@ const enum Enum219 {
   NUM_TEAM_BUTTON_IMAGES,
 }
 
-let iSMPanelImages: INT32[] /* [NUM_SM_BUTTON_IMAGES] */;
-let iBurstButtonImages: INT32[] /* [NUM_WEAPON_MODES] */;
-let iTEAMPanelImages: INT32[] /* [NUM_TEAM_BUTTON_IMAGES] */;
+let iSMPanelImages: INT32[] /* [NUM_SM_BUTTON_IMAGES] */ = createArray(Enum218.NUM_SM_BUTTON_IMAGES, 0);
+let iBurstButtonImages: INT32[] /* [NUM_WEAPON_MODES] */ = createArray(Enum265.NUM_WEAPON_MODES, 0);
+let iTEAMPanelImages: INT32[] /* [NUM_TEAM_BUTTON_IMAGES] */ = createArray(Enum219.NUM_TEAM_BUTTON_IMAGES, 0);
 
 let giSMStealthImages: INT32 = -1;
 export let giSMStealthButton: INT32 = -1;
@@ -1365,72 +1365,72 @@ export function RenderSMPanel(pfDirty: Pointer<UINT8>): void {
         mprintf(137, (347 + cnt * 10), pShortAttributeStrings[cnt + 5]);
       }
 
-      mprintf(SM_ARMOR_LABEL_X - StringPixLength(pInvPanelTitleStrings[0], BLOCKFONT2()) / 2, SM_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
-      mprintf(SM_ARMOR_PERCENT_X, SM_ARMOR_PERCENT_Y, "%%");
+      mprintf(Math.trunc(SM_ARMOR_LABEL_X - StringPixLength(pInvPanelTitleStrings[0], BLOCKFONT2()) / 2), SM_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
+      mprintf(SM_ARMOR_PERCENT_X, SM_ARMOR_PERCENT_Y, "%");
 
       mprintf(SM_WEIGHT_LABEL_X - StringPixLength(pInvPanelTitleStrings[1], BLOCKFONT2()), SM_WEIGHT_LABEL_Y, pInvPanelTitleStrings[1]);
-      mprintf(SM_WEIGHT_PERCENT_X, SM_WEIGHT_PERCENT_Y, "%%");
+      mprintf(SM_WEIGHT_PERCENT_X, SM_WEIGHT_PERCENT_Y, "%");
 
       mprintf(SM_CAMMO_LABEL_X - StringPixLength(pInvPanelTitleStrings[2], BLOCKFONT2()), SM_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
-      mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, "%%");
+      mprintf(SM_CAMMO_PERCENT_X, SM_CAMMO_PERCENT_Y, "%");
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeAgilityTime, (gpSMCurrentMerc.usValueGoneUp & AGIL_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bAgility);
+      sString = swprintf("%s", gpSMCurrentMerc.bAgility.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeDexterityTime, (gpSMCurrentMerc.usValueGoneUp & DEX_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bDexterity);
+      sString = swprintf("%s", gpSMCurrentMerc.bDexterity.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeStrengthTime, (gpSMCurrentMerc.usValueGoneUp & STRENGTH_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bStrength);
+      sString = swprintf("%s", gpSMCurrentMerc.bStrength.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeLeadershipTime, (gpSMCurrentMerc.usValueGoneUp & LDR_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bLeadership);
+      sString = swprintf("%s", gpSMCurrentMerc.bLeadership.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeWisdomTime, (gpSMCurrentMerc.usValueGoneUp & WIS_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bWisdom);
+      sString = swprintf("%s", gpSMCurrentMerc.bWisdom.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeLevelTime, (gpSMCurrentMerc.usValueGoneUp & LVL_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bExpLevel);
+      sString = swprintf("%s", gpSMCurrentMerc.bExpLevel.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeMarksmanshipTime, (gpSMCurrentMerc.usValueGoneUp & MRK_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bMarksmanship);
+      sString = swprintf("%s", gpSMCurrentMerc.bMarksmanship.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeExplosivesTime, (gpSMCurrentMerc.usValueGoneUp & EXP_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bExplosive);
+      sString = swprintf("%s", gpSMCurrentMerc.bExplosive.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeMechanicalTime, (gpSMCurrentMerc.usValueGoneUp & MECH_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bMechanical);
+      sString = swprintf("%s", gpSMCurrentMerc.bMechanical.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.uiChangeMedicalTime, (gpSMCurrentMerc.usValueGoneUp & MED_INCREASE ? true : false));
 
-      sString = swprintf("%2d", gpSMCurrentMerc.bMedical);
+      sString = swprintf("%s", gpSMCurrentMerc.bMedical.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
@@ -1443,17 +1443,17 @@ export function RenderSMPanel(pfDirty: Pointer<UINT8>): void {
       }
 
       // Display armour value!
-      sString = swprintf("%3d", ArmourPercent(gpSMCurrentMerc));
+      sString = swprintf("%s", ArmourPercent(gpSMCurrentMerc).toString().padStart(3));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       // Display wieght value!
-      sString = swprintf("%3d", CalculateCarriedWeight(gpSMCurrentMerc));
+      sString = swprintf("%s", CalculateCarriedWeight(gpSMCurrentMerc).toString().padStart(3));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 
       // Display cammo value!
-      sString = swprintf("%3d", gpSMCurrentMerc.bCamo);
+      sString = swprintf("%s", gpSMCurrentMerc.bCamo.toString().padStart(3));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2()));
       mprintf(usX, usY, sString);
 

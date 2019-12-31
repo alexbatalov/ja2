@@ -140,7 +140,7 @@ const BOBBYR_BACK_BUTTON_Y = 400 + LAPTOP_SCREEN_WEB_DELTA_Y + 4;
 const BOBBYR_HOME_BUTTON_X = 515;
 const BOBBYR_HOME_BUTTON_Y = BOBBYR_BACK_BUTTON_Y;
 
-const BOBBYR_SHIPMENT_BUTTON_X = (LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X - 75) / 2);
+const BOBBYR_SHIPMENT_BUTTON_X = Math.trunc(LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X - 75) / 2);
 const BOBBYR_SHIPMENT_BUTTON_Y = BOBBYR_BACK_BUTTON_Y;
 
 const SHIPPING_SPEED_LIGHT_WIDTH = 9;
@@ -936,7 +936,7 @@ function DisplayShippingCosts(fCalledFromOrderPage: boolean, iSubTotal: INT32, u
         usStandardCost = 0;
     }
 
-    iShippingCost = ((gpNewBobbyrShipments[iOrderNum].uiPackageWeight / 10) * usStandardCost + .5);
+    iShippingCost = Math.trunc((gpNewBobbyrShipments[iOrderNum].uiPackageWeight / 10) * usStandardCost + .5);
   }
 
   // erase the old area
@@ -1110,7 +1110,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): boolean {
       // the scroll area itself
       usPosX = BOBBYR_SCROLL_AREA_X;
       usPosY = BOBBYR_SCROLL_UP_ARROW_Y + BOBBYR_SCROLL_ARROW_HEIGHT;
-      usHeight = BOBBYR_SCROLL_AREA_HEIGHT_MINUS_ARROWS / BOBBYR_ORDER_NUM_SHIPPING_CITIES;
+      usHeight = Math.trunc(BOBBYR_SCROLL_AREA_HEIGHT_MINUS_ARROWS / BOBBYR_ORDER_NUM_SHIPPING_CITIES);
       for (i = 0; i < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1; i++) {
         MSYS_DefineRegion(gSelectedScrollAreaDropDownRegion[i], usPosX, usPosY, (usPosX + BOBBYR_SCROLL_ARROW_WIDTH), (usPosY + usHeight), MSYS_PRIORITY_HIGH + 1, Enum317.CURSOR_LAPTOP_SCREEN, SelectScrollAreaDropDownMovementCallBack, SelectScrollAreaDropDownRegionCallBack);
         MSYS_AddRegion(gSelectedScrollAreaDropDownRegion[i]);
@@ -1365,7 +1365,7 @@ function DisplayShippingLocationCity(): void {
   sTemp = "$0";
 
   if (gbSelectedCity != -1) {
-    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", Math.trunc(BobbyROrderLocations[gbSelectedCity].usOverNightExpress / GetWeightBasedOnMetricOption(1)));
     sTemp = InsertCommasForDollarFigure(sTemp);
     sTemp = InsertDollarSignInToString(sTemp);
   }
@@ -1374,7 +1374,7 @@ function DisplayShippingLocationCity(): void {
   usPosY += BOBBYR_GRID_ROW_OFFSET;
 
   if (gbSelectedCity != -1) {
-    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].us2DaysService / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", Math.trunc(BobbyROrderLocations[gbSelectedCity].us2DaysService / GetWeightBasedOnMetricOption(1)));
     sTemp = InsertCommasForDollarFigure(sTemp);
     sTemp = InsertDollarSignInToString(sTemp);
   }
@@ -1383,7 +1383,7 @@ function DisplayShippingLocationCity(): void {
   usPosY += BOBBYR_GRID_ROW_OFFSET;
 
   if (gbSelectedCity != -1) {
-    sTemp = swprintf("%d", (BobbyROrderLocations[gbSelectedCity].usStandardService / GetWeightBasedOnMetricOption(1)));
+    sTemp = swprintf("%d", Math.trunc(BobbyROrderLocations[gbSelectedCity].usStandardService / GetWeightBasedOnMetricOption(1)));
     sTemp = InsertCommasForDollarFigure(sTemp);
     sTemp = InsertDollarSignInToString(sTemp);
   }
@@ -1564,9 +1564,9 @@ function DrawGoldRectangle(bCityNum: INT8): void {
   usWidth = BOBBYR_SCROLL_AREA_WIDTH - 5;
   usTempHeight = (BOBBYR_SCROLL_AREA_HEIGHT - 2 * BOBBYR_SCROLL_ARROW_HEIGHT) - 8;
 
-  usHeight = usTempHeight / (BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1);
+  usHeight = Math.trunc(usTempHeight / (BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1));
 
-  usPosY = usTempPosY + (((BOBBYR_SCROLL_AREA_HEIGHT - 2 * BOBBYR_SCROLL_ARROW_HEIGHT) / (BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1)) * bCityNum);
+  usPosY = usTempPosY + (Math.trunc((BOBBYR_SCROLL_AREA_HEIGHT - 2 * BOBBYR_SCROLL_ARROW_HEIGHT) / (BOBBYR_ORDER_NUM_SHIPPING_CITIES + 1)) * bCityNum);
 
   temp = BOBBYR_SCROLL_AREA_Y + BOBBYR_SCROLL_AREA_HEIGHT - BOBBYR_SCROLL_ARROW_HEIGHT - usHeight - 1;
 
@@ -1640,7 +1640,7 @@ function CalcCostFromWeightOfPackage(ubTypeOfService: UINT8): UINT32 {
     uiTotalWeight = MIN_SHIPPING_WEIGHT;
   }
 
-  uiTotalCost = ((uiTotalWeight / 10) * usStandardCost + .5);
+  uiTotalCost = Math.trunc((uiTotalWeight / 10) * usStandardCost + .5);
 
   return uiTotalCost;
 }

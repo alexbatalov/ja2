@@ -1,6 +1,7 @@
 namespace ja2 {
 
 const fs: typeof import('fs') = require('fs');
+const path: typeof import('path') = require('path');
 
 let guiNumTileCacheStructs: UINT32 = 0;
 let guiMaxTileCacheSize: UINT32 = 50;
@@ -48,7 +49,7 @@ export function InitTileCache(): boolean {
         gpTileCacheStructInfo[cnt].zRootName = GetRootName(gpTileCacheStructInfo[cnt].Filename);
 
         // Load struc data....
-        gpTileCacheStructInfo[cnt].pStructureFileRef = LoadStructureFile(gpTileCacheStructInfo[cnt].Filename);
+        gpTileCacheStructInfo[cnt].pStructureFileRef = LoadStructureFile(path.join(tileCacheDirName, fileNames[i]));
 
         if (gpTileCacheStructInfo[cnt].zRootName.toLowerCase() == "l_dead1") {
           giDefaultStructIndex = cnt;
@@ -73,11 +74,11 @@ export function DeleteTileCache(): void {
         DeleteTileSurface(<TILE_IMAGERY>gpTileCache[cnt].pImagery);
       }
     }
-    MemFree(gpTileCache);
+    gpTileCache.length = 0;
   }
 
   if (gpTileCacheStructInfo != null) {
-    MemFree(gpTileCacheStructInfo);
+    gpTileCacheStructInfo.length = 0;
   }
 
   guiCurTileCacheSize = 0;

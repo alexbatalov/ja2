@@ -144,7 +144,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       break;
 
     case FADE_OUT_SQUARE:
-      gsFadeLimit = (640 / (SQUARE_STEP * 2));
+      gsFadeLimit = Math.trunc(640 / (SQUARE_STEP * 2));
       giX1 = 0;
       giX2 = 640;
       giY1 = 0;
@@ -160,7 +160,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       break;
 
     case FADE_IN_VERSION_ONE:
-      gsFadeLimit = 255 / bFadeValue;
+      gsFadeLimit = Math.trunc(255 / bFadeValue);
       gFadeFunction = FadeInBackBufferVersionOne;
       break;
 
@@ -170,12 +170,12 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       giX2 = 320;
       giY1 = 240;
       giY2 = 240;
-      gsFadeLimit = (640 / (SQUARE_STEP * 2));
+      gsFadeLimit = Math.trunc(640 / (SQUARE_STEP * 2));
       gfFadeIn = true;
       break;
 
     case FADE_OUT_VERSION_FASTER:
-      gsFadeLimit = (255 / bFadeValue) * 2;
+      gsFadeLimit = Math.trunc(255 / bFadeValue) * 2;
       gFadeFunction = <FADE_FUNCTION>FadeFrameBufferVersionFaster;
 
       // SetMusicFadeSpeed( 25 );
@@ -184,7 +184,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
     case FADE_OUT_VERSION_SIDE:
       // Copy frame buffer to save buffer
-      gsFadeLimit = (640 / 8);
+      gsFadeLimit = Math.trunc(640 / 8);
       gFadeFunction = FadeFrameBufferSide;
 
       // SetMusicFadeSpeed( 25 );

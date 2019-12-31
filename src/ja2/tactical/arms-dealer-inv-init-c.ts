@@ -827,8 +827,8 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
 
   // figure out the appropriate range of coolness based on player's maximum progress so far
 
-  ubMinCoolness = HighestPlayerProgressPercentage() / 10;
-  ubMaxCoolness = (HighestPlayerProgressPercentage() / 10) + 1;
+  ubMinCoolness = Math.trunc(HighestPlayerProgressPercentage() / 10);
+  ubMaxCoolness = Math.trunc(HighestPlayerProgressPercentage() / 10) + 1;
 
   // Tony has the better stuff sooner (than Bobby R's)
   if (bArmsDealer == Enum197.ARMS_DEALER_TONY) {
@@ -927,12 +927,12 @@ export function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, 
       ubChance += (5 * ubItemCoolness);
 
       // ARM: New - keep stuff on the shelves longer
-      ubChance /= 2;
+      ubChance = Math.trunc(ubChance / 2);
     }
 
     // used items are traded more rarely
     if (fUsed) {
-      ubChance /= 2;
+      ubChance = Math.trunc(ubChance / 2);
     }
   }
 
@@ -1009,10 +1009,10 @@ export function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT
   // randomize the amount. 33% of the time we add to it, 33% we subtract from it, rest leave it alone
   switch (Random(3)) {
     case 0:
-      ubNumReordered += ubNumReordered / 2;
+      ubNumReordered += Math.trunc(ubNumReordered / 2);
       break;
     case 1:
-      ubNumReordered -= ubNumReordered / 2;
+      ubNumReordered -= Math.trunc(ubNumReordered / 2);
       break;
   }
 

@@ -141,7 +141,7 @@ export function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirectio
   while (usMenuHeight >= usY && (ubDirection == DIR_UPLEFT || ubDirection == DIR_UPRIGHT) || 480 - usMenuHeight >= usY && (ubDirection == DIR_DOWNLEFT || ubDirection == DIR_DOWNRIGHT)) {
     // menu has too many entries.  Increase the number of columns until the height is
     // less than the max height.
-    gPopup.ubMaxEntriesPerColumn = (gPopup.ubNumEntries + gPopup.ubColumns) / (gPopup.ubColumns + 1);
+    gPopup.ubMaxEntriesPerColumn = Math.trunc((gPopup.ubNumEntries + gPopup.ubColumns) / (gPopup.ubColumns + 1));
     usMenuHeight = gPopup.ubMaxEntriesPerColumn * gusEntryHeight + 3;
     gPopup.ubColumns++;
   }
@@ -240,7 +240,7 @@ function RenderPopupMenu(): void {
       // two padded gPopup.usFont spaces not stored in the string.
       usStringWidth = 14 + StringPixLength(GetPopupMenuString(ubCounter), gPopup.usFont);
       // Horizontally center the string inside the popup menu
-      usX = usStart + (gPopup.ubColumnWidth[ubColumn] - usStringWidth) / 2;
+      usX = usStart + Math.trunc((gPopup.ubColumnWidth[ubColumn] - usStringWidth) / 2);
       usY = gPopup.usTop + 1 + ubEntry * gusEntryHeight;
       if (ubCounter == gPopup.ubSelectedIndex - 1) {
         // This is the highlighted menu entry.
@@ -270,7 +270,7 @@ function GetPopupIndexFromMousePosition(): UINT8 {
     // as an extra pixel at the top of the region which is ignored in menu selection,
     // divide this number by the height of a menu entry, then add one.  This will
     // return the menu index from 1 (at the top) to n (at the bottom).
-    ubNumEntriesDown = (gusMouseYPos - gPopup.usTop - 1) / gusEntryHeight + 1;
+    ubNumEntriesDown = Math.trunc((gusMouseYPos - gPopup.usTop - 1) / gusEntryHeight) + 1;
     usRelX = gusMouseXPos - gPopup.usLeft;
     ubCount = 0;
     while (usRelX > gPopup.ubColumnWidth[ubCount]) {

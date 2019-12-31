@@ -1740,7 +1740,7 @@ function UIHandleMercAttack(pSoldier: SOLDIERTYPE, pTargetSoldier: SOLDIERTYPE |
   }
 
   // Set aim time to one in UI
-  pSoldier.bAimTime = (pSoldier.bShownAimTime / 2);
+  pSoldier.bAimTime = Math.trunc(pSoldier.bShownAimTime / 2);
   usItem = pSoldier.inv[Enum261.HANDPOS].usItem;
 
   // ATE: Check if we are targeting an interactive tile, and adjust gridno accordingly...
@@ -2130,7 +2130,7 @@ export function SelectedMercCanAffordAttack(): boolean {
           sTargetGridNo = usMapPos;
         }
 
-        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 1, (pSoldier.bShownAimTime / 2));
+        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, 1, Math.trunc(pSoldier.bShownAimTime / 2));
 
         if (EnoughPoints(pSoldier, sAPCost, 0, true)) {
           return true;
@@ -3706,8 +3706,8 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
 
   ({ sScreenX: sTempX_S, sScreenY: sTempY_S } = FromCellToScreenCoordinates(sOffsetX, sOffsetY));
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
+  sScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
+  sScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
 
   // Adjust for offset position on screen
   sScreenX -= gsRenderWorldOffsetX;
@@ -3720,7 +3720,7 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
   sScreenY += gsRenderHeight;
 
   // Adjust y offset!
-  sScreenY += (WORLD_TILE_Y / 2);
+  sScreenY += Math.trunc(WORLD_TILE_Y / 2);
 
   (pScreenX.value) = sScreenX;
   (pScreenY.value) = sScreenY;

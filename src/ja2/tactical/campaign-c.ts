@@ -169,21 +169,21 @@ function ProcessStatChange(pProfile: MERCPROFILESTRUCT, ubStat: UINT8, usNumChan
       if (ubStat != EXPERAMT) {
         // NON-experience level changes, actual usChance depends on bCurrentRating
         // Base usChance is '100 - bCurrentRating'
-        usChance = 100 - (bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint));
+        usChance = 100 - (bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint));
 
         // prevent training beyond the training cap
-        if ((ubReason == FROM_TRAINING) && (bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint) >= TRAINING_RATING_CAP)) {
+        if ((ubReason == FROM_TRAINING) && (bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint) >= TRAINING_RATING_CAP)) {
           usChance = 0;
         }
       } else {
         // Experience level changes, actual usChance depends on level
         // Base usChance is '100 - (10 * current level)'
-        usChance = 100 - 10 * (bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint));
+        usChance = 100 - 10 * (bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint));
       }
 
       // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
       if (usChance > 0 && fAffectedByWisdom) {
-        usChance += (usChance * (pProfile.bWisdom + (pProfile.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.bExpLevel)) - 50)) / 100;
+        usChance += Math.trunc((usChance * (pProfile.bWisdom + Math.trunc(pProfile.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.bExpLevel)) - 50)) / 100);
       }
 
       /*
@@ -206,7 +206,7 @@ function ProcessStatChange(pProfile: MERCPROFILESTRUCT, ubStat: UINT8, usNumChan
         // as long as we're not dealing with exp_level changes (already added above!)
         // and it's not from training, and the exp level isn't max'ed out already
         if ((ubStat != EXPERAMT) && (ubReason != FROM_TRAINING)) {
-          uiEffLevel = pProfile.bExpLevel + (pProfile.sExpLevelGain / usSubpointsPerLevel);
+          uiEffLevel = pProfile.bExpLevel + Math.trunc(pProfile.sExpLevelGain / usSubpointsPerLevel);
 
           // if level is not at maximum
           if (uiEffLevel < MAXEXPLEVEL) {
@@ -231,7 +231,7 @@ function ProcessStatChange(pProfile: MERCPROFILESTRUCT, ubStat: UINT8, usNumChan
           case WISDOMAMT:
           case STRAMT:
             // Base usChance is 'bCurrentRating - 1', since these must remain at 1-100
-            usChance = bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint) - 1;
+            usChance = bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint) - 1;
             break;
 
           case MEDICALAMT:
@@ -240,17 +240,17 @@ function ProcessStatChange(pProfile: MERCPROFILESTRUCT, ubStat: UINT8, usNumChan
           case MARKAMT:
           case LDRAMT:
             // Base usChance is 'bCurrentRating', these can drop to 0
-            usChance = bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint);
+            usChance = bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint);
             break;
         }
       } else {
         // Experience level changes, actual usChance depends on level
         // Base usChance is '10 * (current level - 1)'
-        usChance = 10 * (bCurrentRating + (pProfile[psStatGainPtr] / usSubpointsPerPoint) - 1);
+        usChance = 10 * (bCurrentRating + Math.trunc(pProfile[psStatGainPtr] / usSubpointsPerPoint) - 1);
 
         // if there IS a usChance, adjust it for high or low wisdom (50 is avg)
         if (usChance > 0 && fAffectedByWisdom) {
-          usChance -= (usChance * (pProfile.bWisdom + (pProfile.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.bExpLevel)) - 50)) / 100;
+          usChance -= Math.trunc((usChance * (pProfile.bWisdom + Math.trunc(pProfile.sWisdomGain / SubpointsPerPoint(WISDOMAMT, pProfile.bExpLevel)) - 50)) / 100);
         }
 
         // if there's ANY usChance, minimum usChance is 1% regardless of wisdom
@@ -266,7 +266,7 @@ function ProcessStatChange(pProfile: MERCPROFILESTRUCT, ubStat: UINT8, usNumChan
         // as long as we're not dealing with exp_level changes (already added above!)
         // and it's not from training, and the exp level isn't max'ed out already
         if ((ubStat != EXPERAMT) && (ubReason != FROM_TRAINING)) {
-          uiEffLevel = pProfile.bExpLevel + (pProfile.sExpLevelGain / usSubpointsPerLevel);
+          uiEffLevel = pProfile.bExpLevel + Math.trunc(pProfile.sExpLevelGain / usSubpointsPerLevel);
 
           // if level is not at minimum
           if (uiEffLevel > 1) {
@@ -793,7 +793,7 @@ function ProcessUpdateStats(pProfile: MERCPROFILESTRUCT, pSoldier: SOLDIERTYPE |
 
     // Calc how many full points worth of stat changes we have accumulated in this stat (positive OR negative!)
     // NOTE: for simplicity, this hopes nobody will go up more than one level at once, which would change the subpoints/pt
-    sPtsChanged = (pProfile[psStatGainPtr]) / usSubpointsPerPoint;
+    sPtsChanged = Math.trunc((pProfile[psStatGainPtr]) / usSubpointsPerPoint);
 
     // gone too high or too low?..handle the fact
     if ((pProfile[pbStatPtr] + sPtsChanged) > bMaxStatValue) {
@@ -839,7 +839,7 @@ function CalcNewSalary(uiOldSalary: UINT32, fIncrease: boolean, uiMaxLimit: UINT
   if (fIncrease) {
     uiNewSalary = (uiOldSalary * SALARY_CHANGE_PER_LEVEL);
   } else {
-    uiNewSalary = (uiOldSalary / SALARY_CHANGE_PER_LEVEL);
+    uiNewSalary = Math.trunc(uiOldSalary / SALARY_CHANGE_PER_LEVEL);
   }
 
   // round it off to a reasonable multiple
@@ -882,7 +882,7 @@ function RoundOffSalary(uiSalary: UINT32): UINT32 {
   if (uiSalary % uiMultiple) {
     // then we have to make it so, as Picard would say <- We have to wonder how much Alex gets out
     // and while we're at it, we round up to next higher multiple if halfway
-    uiSalary = ((uiSalary + (uiMultiple / 2)) / uiMultiple) * uiMultiple;
+    uiSalary = Math.trunc((uiSalary + Math.trunc(uiMultiple / 2)) / uiMultiple) * uiMultiple;
   }
 
   return uiSalary;
@@ -946,7 +946,7 @@ export function HandleUnhiredMercImprovement(pProfile: MERCPROFILESTRUCT): void 
     // 80 wisdom gives 8 rolls per stat per day, 10 stats, avg success rate 40% = 32pts per day,
     // so about 10 working days to hit lvl 2.  This seems high, but mercs don't actually "work" that often, and it's twice
     // as long to hit level 3.  If we go lower, attribs & skills will barely move.
-    usNumChances = (pProfile.bWisdom / 10);
+    usNumChances = Math.trunc(pProfile.bWisdom / 10);
     for (ubStat = FIRST_CHANGEABLE_STAT; ubStat <= LAST_CHANGEABLE_STAT; ubStat++) {
       ProfileStatChange(pProfile, ubStat, usNumChances, FROM_SUCCESS);
     }
@@ -965,7 +965,7 @@ export function HandleUnhiredMercImprovement(pProfile: MERCPROFILESTRUCT): void 
     } while (ubStat == EXPERAMT);
 
     // try to improve that one stat
-    ProfileStatChange(pProfile, ubStat, (pProfile.bWisdom / 2), FROM_TRAINING);
+    ProfileStatChange(pProfile, ubStat, Math.trunc(pProfile.bWisdom / 2), FROM_TRAINING);
   }
 
   ProfileUpdateStats(pProfile);
@@ -1073,7 +1073,7 @@ export function CurrentPlayerProgressPercentage(): UINT8 {
 
   // Kris:  Make sure you don't divide by zero!!!
   if (uiPossibleIncome > 0) {
-    ubCurrentProgress = ((uiCurrentIncome * PROGRESS_PORTION_INCOME) / uiPossibleIncome);
+    ubCurrentProgress = Math.trunc((uiCurrentIncome * PROGRESS_PORTION_INCOME) / uiPossibleIncome);
   } else {
     ubCurrentProgress = 0;
   }
@@ -1095,7 +1095,7 @@ export function CurrentPlayerProgressPercentage(): UINT8 {
       break;
   }
 
-  usKillsProgress = gStrategicStatus.usPlayerKills / ubKillsPerPoint;
+  usKillsProgress = Math.trunc(gStrategicStatus.usPlayerKills / ubKillsPerPoint);
   if (usKillsProgress > PROGRESS_PORTION_KILLS) {
     usKillsProgress = PROGRESS_PORTION_KILLS;
   }

@@ -807,13 +807,13 @@ function DecideActionGreen(pSoldier: SOLDIERTYPE): INT8 {
       case Enum242.DEFENSIVE:
         break;
       case Enum242.BRAVESOLO:
-        iChance /= 2;
+        iChance = Math.trunc(iChance / 2);
         break; // loners
       case Enum242.BRAVEAID:
         iChance += 10;
         break; // friendly
       case Enum242.CUNNINGSOLO:
-        iChance /= 2;
+        iChance = Math.trunc(iChance / 2);
         break; // loners
       case Enum242.CUNNINGAID:
         iChance += 10;
@@ -985,7 +985,7 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
     // if I actually know something they don't and I ain't swimming (deep water)
     if (iChance && !DeepWater(pSoldier.sGridNo)) {
       // CJC: this addition allows for varying difficulty levels for soldier types
-      iChance += gbDiff[DIFF_RADIO_RED_ALERT][SoldierDifficultyLevel(pSoldier)] / 2;
+      iChance += Math.trunc(gbDiff[DIFF_RADIO_RED_ALERT][SoldierDifficultyLevel(pSoldier)] / 2);
 
       // Alex: this addition replaces the sectorValue/2 in original JA
       // iChance += gsDiff[DIFF_RADIO_RED_ALERT][GameOption[ENEMYDIFFICULTY]] / 2;
@@ -1076,7 +1076,7 @@ function DecideActionYellow(pSoldier: SOLDIERTYPE): INT8 {
 
     if (fReachable) {
       // remember that noise value is negative, and closer to 0 => more important!
-      iChance = 95 + (iNoiseValue / 3);
+      iChance = 95 + Math.trunc(iNoiseValue / 3);
       iSneaky = 30;
 
       // increase
@@ -1590,7 +1590,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
       // sight range), and there's at least one other team-mate around, and
       // spotters haven't already been called for, then DO SO!
 
-      if ((CalcMaxTossRange(pSoldier, pSoldier.inv[BestThrow.bWeaponIn].usItem, true) > MaxDistanceVisible()) && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1) && (gTacticalStatus.ubSpottersCalledForBy == NOBODY)) {
+      if (BestThrow.bWeaponIn !== NO_SLOT && (CalcMaxTossRange(pSoldier, pSoldier.inv[BestThrow.bWeaponIn].usItem, true) > MaxDistanceVisible()) && (gTacticalStatus.Team[pSoldier.bTeam].bMenInSector > 1) && (gTacticalStatus.ubSpottersCalledForBy == NOBODY)) {
         // then call for spotters!  Uses up the rest of his turn (whatever
         // that may be), but from now on, BLACK AI NPC may radio sightings!
         gTacticalStatus.ubSpottersCalledForBy = pSoldier.ubID;
@@ -1716,10 +1716,10 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
           case Enum244.MORALE_NORMAL:
             break;
           case Enum244.MORALE_CONFIDENT:
-            iChance /= 2;
+            iChance = Math.trunc(iChance / 2);
             break;
           case Enum244.MORALE_FEARLESS:
-            iChance /= 3;
+            iChance = Math.trunc(iChance / 3);
             break;
         }
       }
@@ -2220,7 +2220,7 @@ export function DecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8): 
   if (!fCivilian && !bInWater && (gAnimControl[pSoldier.usAnimState].ubHeight == ANIM_STAND) && IsValidStance(pSoldier, ANIM_CROUCH)) {
     sClosestOpponent = ClosestKnownOpponent(pSoldier, null, null);
 
-    if ((sClosestOpponent != NOWHERE && PythSpacesAway(pSoldier.sGridNo, sClosestOpponent) < (MaxDistanceVisible() * 3) / 2) || PreRandom(4) == 0) {
+    if ((sClosestOpponent != NOWHERE && PythSpacesAway(pSoldier.sGridNo, sClosestOpponent) < Math.trunc((MaxDistanceVisible() * 3) / 2)) || PreRandom(4) == 0) {
       if (!gfTurnBasedAI || GetAPsToChangeStance(pSoldier, ANIM_CROUCH) <= pSoldier.bActionPoints) {
         pSoldier.usActionData = ANIM_CROUCH;
         return Enum289.AI_ACTION_CHANGE_STANCE;
@@ -2421,7 +2421,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
 
   // offer surrender?
 
-  if (pSoldier.bTeam == ENEMY_TEAM && pSoldier.bVisible == 1 && !(gTacticalStatus.fEnemyFlags & ENEMY_OFFERED_SURRENDER) && pSoldier.bLife >= pSoldier.bLifeMax / 2) {
+  if (pSoldier.bTeam == ENEMY_TEAM && pSoldier.bVisible == 1 && !(gTacticalStatus.fEnemyFlags & ENEMY_OFFERED_SURRENDER) && pSoldier.bLife >= Math.trunc(pSoldier.bLifeMax / 2)) {
     if (gTacticalStatus.Team[MILITIA_TEAM].bMenInSector == 0 && NumPCsInSector() < 4 && gTacticalStatus.Team[ENEMY_TEAM].bMenInSector >= NumPCsInSector() * 3) {
       // if( GetWorldDay() > STARTDAY_ALLOW_PLAYER_CAPTURE_FOR_RESCUE && !( gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE ) )
       {
@@ -2761,7 +2761,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
   }
 
   // NB a desire of 4 or more is only achievable by brave/aggressive guys with high morale
-  if (pSoldier.bActionPoints == pSoldier.bInitialActionPoints && ubBestAttackAction == Enum289.AI_ACTION_FIRE_GUN && (pSoldier.bShock == 0) && (pSoldier.bLife >= pSoldier.bLifeMax / 2) && BestAttack.ubChanceToReallyHit < 30 && (PythSpacesAway(pSoldier.sGridNo, BestAttack.sTarget) > Weapon[pSoldier.inv[BestAttack.bWeaponIn].usItem].usRange / CELL_X_SIZE) && RangeChangeDesire(pSoldier) >= 4) {
+  if (pSoldier.bActionPoints == pSoldier.bInitialActionPoints && ubBestAttackAction == Enum289.AI_ACTION_FIRE_GUN && (pSoldier.bShock == 0) && (pSoldier.bLife >= Math.trunc(pSoldier.bLifeMax / 2)) && BestAttack.ubChanceToReallyHit < 30 && (PythSpacesAway(pSoldier.sGridNo, BestAttack.sTarget) > Math.trunc(Weapon[pSoldier.inv[BestAttack.bWeaponIn].usItem].usRange / CELL_X_SIZE)) && RangeChangeDesire(pSoldier) >= 4) {
     // okay, really got to wonder about this... could taking cover be an option?
     if (ubCanMove && pSoldier.bOrders != Enum241.STATIONARY && !gfHiddenInterrupt && !(pSoldier.uiStatusFlags & SOLDIER_BOXER)) {
       // make militia a bit more cautious
@@ -2800,22 +2800,22 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
     // based on how we feel about the situation, decide whether to attack first
     switch (pSoldier.bAIMorale) {
       case Enum244.MORALE_FEARLESS:
-        iOffense += iOffense / 2; // increase 50%
+        iOffense += Math.trunc(iOffense / 2); // increase 50%
         break;
 
       case Enum244.MORALE_CONFIDENT:
-        iOffense += iOffense / 4; // increase 25%
+        iOffense += Math.trunc(iOffense / 4); // increase 25%
         break;
 
       case Enum244.MORALE_NORMAL:
         break;
 
       case Enum244.MORALE_WORRIED:
-        iDefense += iDefense / 4; // increase 25%
+        iDefense += Math.trunc(iDefense / 4); // increase 25%
         break;
 
       case Enum244.MORALE_HOPELESS:
-        iDefense += iDefense / 2; // increase 50%
+        iDefense += Math.trunc(iDefense / 2); // increase 50%
         break;
     }
 
@@ -2951,7 +2951,7 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
           if (TANK(pSoldier)) {
             iChance = 100;
           } else {
-            iChance = (25 / (BestAttack.ubAimTime + 1));
+            iChance = Math.trunc(25 / (BestAttack.ubAimTime + 1));
             switch (pSoldier.bAttitude) {
               case Enum242.DEFENSIVE:
                 iChance += -5;
@@ -3280,16 +3280,16 @@ function DecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
           case Enum244.MORALE_NORMAL:
             break;
           case Enum244.MORALE_CONFIDENT:
-            iChance /= 2;
+            iChance = Math.trunc(iChance / 2);
             break;
           case Enum244.MORALE_FEARLESS:
-            iChance /= 3;
+            iChance = Math.trunc(iChance / 3);
             break;
         }
       }
 
       // reduce chance because we're in combat
-      iChance /= 2;
+      iChance = Math.trunc(iChance / 2);
 
       if (PreRandom(100) < iChance) {
         return Enum289.AI_ACTION_RED_ALERT;

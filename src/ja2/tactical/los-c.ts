@@ -136,7 +136,7 @@ function FloatToFixed(dN: FLOAT): FIXEDPT {
   // verify that dN is within the range storable by FIXEDPT?
 
   // first get the whole part
-  qN = (dN * FIXEDPT_FRACTIONAL_RESOLUTION);
+  qN = Math.trunc(dN * FIXEDPT_FRACTIONAL_RESOLUTION);
 
   // qN = INT32_TO_FIXEDPT( (INT32)dN );
   // now add the fractional part
@@ -552,7 +552,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   if (!bAware && !fSmell) {
     // trees are x3 as good at reducing sight if looker is unaware
     // and increase that up to double for camouflage!
-    ubTreeSightReduction = (ubTreeSightReduction * 3) * (100 + bCamouflage) / 100;
+    ubTreeSightReduction = Math.trunc((ubTreeSightReduction * 3) * (100 + bCamouflage) / 100);
   }
   // verify start and end to make sure we'll always be inside the map
 
@@ -570,7 +570,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   dDeltaZ = dEndZ - dStartZ;
 
   dDistance = Distance3D(dDeltaX, dDeltaY, CONVERT_HEIGHTUNITS_TO_DISTANCE(dDeltaZ));
-  iDistance = dDistance;
+  iDistance = Math.trunc(dDistance);
 
   if (iDistance == 0) {
     return 0;
@@ -661,9 +661,9 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   // plus a fractional part equal to half of the difference between the delta and
   // the increment times the distance
 
-  qCurrX = FloatToFixed(dStartX) + qIncrX + (FloatToFixed(dDeltaX) - qIncrX * iDistance) / 2;
-  qCurrY = FloatToFixed(dStartY) + qIncrY + (FloatToFixed(dDeltaY) - qIncrY * iDistance) / 2;
-  qCurrZ = FloatToFixed(dStartZ) + qIncrZ + (FloatToFixed(dDeltaZ) - qIncrZ * iDistance) / 2;
+  qCurrX = FloatToFixed(dStartX) + qIncrX + Math.trunc((FloatToFixed(dDeltaX) - qIncrX * iDistance) / 2);
+  qCurrY = FloatToFixed(dStartY) + qIncrY + Math.trunc((FloatToFixed(dDeltaY) - qIncrY * iDistance) / 2);
+  qCurrZ = FloatToFixed(dStartZ) + qIncrZ + Math.trunc((FloatToFixed(dDeltaZ) - qIncrZ * iDistance) / 2);
 
   iCurrTileX = FIXEDPT_TO_TILE_NUM(qCurrX);
   iCurrTileY = FIXEDPT_TO_TILE_NUM(qCurrY);
@@ -722,10 +722,10 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
         if (qIncrX > 0) {
           qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
-          iStepsToTravelX = qDistToTravelX / qIncrX;
+          iStepsToTravelX = Math.trunc(qDistToTravelX / qIncrX);
         } else if (qIncrX < 0) {
           qDistToTravelX = qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
-          iStepsToTravelX = qDistToTravelX / -qIncrX;
+          iStepsToTravelX = Math.trunc(qDistToTravelX / -qIncrX);
         } else {
           // make sure we don't consider X a limit :-)
           iStepsToTravelX = 1000000;
@@ -733,10 +733,10 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
         if (qIncrY > 0) {
           qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
-          iStepsToTravelY = qDistToTravelY / qIncrY;
+          iStepsToTravelY = Math.trunc(qDistToTravelY / qIncrY);
         } else if (qIncrY < 0) {
           qDistToTravelY = qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
-          iStepsToTravelY = qDistToTravelY / -qIncrY;
+          iStepsToTravelY = Math.trunc(qDistToTravelY / -qIncrY);
         } else {
           // make sure we don't consider Y a limit :-)
           iStepsToTravelY = 1000000;
@@ -886,7 +886,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
                       if (iLoop > CLOSE_TO_FIRER) {
                         if (iLoop > 100) {
                           // at longer range increase the value of tree cover
-                          iAdjSightLimit -= (ubTreeSightReduction * iLoop) / 100;
+                          iAdjSightLimit -= Math.trunc((ubTreeSightReduction * iLoop) / 100);
                         } else {
                           // use standard value
                           iAdjSightLimit -= ubTreeSightReduction;
@@ -1020,7 +1020,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
   // it adds the difference between the original and adjusted sight limit, = the amount of cover
   // it then scales the value based on the difference between the original sight limit and the
   //   very maximum possible in best lighting conditions
-  return (iDistance + (iSightLimit - iAdjSightLimit)) * (MaxDistanceVisible() * CELL_X_SIZE) / iSightLimit;
+  return Math.trunc((iDistance + (iSightLimit - iAdjSightLimit)) * (MaxDistanceVisible() * CELL_X_SIZE) / iSightLimit);
 }
 
 export function CalculateSoldierZPos(pSoldier: SOLDIERTYPE, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): boolean {
@@ -1253,7 +1253,7 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | nul
     if (pEndSoldier.ubBodyType == Enum194.BLOODCAT) {
       bEffectiveCamo = 100 - pEndSoldier.bTilesMoved * 5;
     } else {
-      bEffectiveCamo = pEndSoldier.bCamo * (100 - pEndSoldier.bTilesMoved * 5) / 100;
+      bEffectiveCamo = Math.trunc(pEndSoldier.bCamo * (100 - pEndSoldier.bTilesMoved * 5) / 100);
     }
     bEffectiveCamo = Math.max(bEffectiveCamo, 0);
 
@@ -1264,7 +1264,7 @@ export function SoldierToSoldierLineOfSightTest(pStartSoldier: SOLDIERTYPE | nul
         case Enum315.LOW_GRASS:
         case Enum315.HIGH_GRASS:
           iTemp = ubTileSightLimit;
-          iTemp -= iTemp * (bEffectiveCamo / 3) / 100;
+          iTemp -= Math.trunc(iTemp * Math.trunc(bEffectiveCamo / 3) / 100);
           ubTileSightLimit = iTemp;
           break;
         default:
@@ -1296,7 +1296,7 @@ export function SoldierToLocationWindowTest(pStartSoldier: SOLDIERTYPE | null, s
   if (!pStartSoldier) {
     return 0;
   }
-  dStartZPos = FixedToFloat(((gqStandardWindowTopHeight + gqStandardWindowBottomHeight) / 2));
+  dStartZPos = FixedToFloat(Math.trunc((gqStandardWindowTopHeight + gqStandardWindowBottomHeight) / 2));
   if (pStartSoldier.bLevel > 0) {
     // on a roof
     dStartZPos += WALL_HEIGHT_UNITS;
@@ -1305,8 +1305,8 @@ export function SoldierToLocationWindowTest(pStartSoldier: SOLDIERTYPE | null, s
   dEndZPos = dStartZPos;
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sEndGridNo));
-  sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   // We don't want to consider distance limits here so pass in tile sight limit of 255
   // and consider trees as little as possible
@@ -1350,8 +1350,8 @@ export function SoldierTo3DLocationLineOfSightTest(pStartSoldier: SOLDIERTYPE | 
   }
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
-  sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
@@ -1403,8 +1403,8 @@ export function SoldierToBodyPartLineOfSightTest(pStartSoldier: SOLDIERTYPE | nu
   }
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
-  sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
@@ -1446,8 +1446,8 @@ export function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: SOLDIERTYP
   }
 
   ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
-  sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   return LineOfSightTest(CenterX(pStartSoldier.sGridNo), CenterY(pStartSoldier.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
@@ -1476,16 +1476,16 @@ export function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLev
   dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sStartGridNo].sHeight);
 
   ({ sX: sStartXPos, sY: sStartYPos } = ConvertGridNoToXY(sStartGridNo));
-  sStartXPos = sStartXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sStartYPos = sStartYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sStartXPos = sStartXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sStartYPos = sStartYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   dEndZPos = STANDING_LOS_POS + bEndLevel * HEIGHT_UNITS;
   // add in ground height
   dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sEndGridNo].sHeight);
 
   ({ sX: sEndXPos, sY: sEndYPos } = ConvertGridNoToXY(sEndGridNo));
-  sEndXPos = sEndXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-  sEndYPos = sEndYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+  sEndXPos = sEndXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+  sEndYPos = sEndYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
   return LineOfSightTest(sStartXPos, sStartYPos, dStartZPos, sEndXPos, sEndYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, false, null);
 }
@@ -1657,7 +1657,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
       sHitBy = pBullet.sHitBy;
     } else {
       // hard to aim at something far away being reported by someone else!
-      sHitBy = pBullet.sHitBy / 2;
+      sHitBy = Math.trunc(pBullet.sHitBy / 2);
     }
     // hit the intended target which was in our LOS
     // reduce due to range
@@ -1697,7 +1697,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
 
   if (ubAmmoType == Enum286.AMMO_MONSTER) {
     if (bHeadSlot != NO_SLOT) {
-      pTarget.inv[bHeadSlot].bStatus[0] -= ((iImpact / 2) + Random((iImpact / 2)));
+      pTarget.inv[bHeadSlot].bStatus[0] -= (Math.trunc(iImpact / 2) + Random(Math.trunc(iImpact / 2)));
       if (pTarget.inv[bHeadSlot].bStatus[0] <= USABLE) {
         if (pTarget.inv[bHeadSlot].bStatus[0] <= 0) {
           DeleteObj(pTarget.inv[bHeadSlot]);
@@ -1710,7 +1710,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
     // bullet to the head may damage any head item
     bHeadSlot = Enum261.HEAD1POS + Random(2);
     if (pTarget.inv[bHeadSlot].usItem != NOTHING) {
-      pTarget.inv[bHeadSlot].bStatus[0] -= (Random(iImpact / 2));
+      pTarget.inv[bHeadSlot].bStatus[0] -= (Random(Math.trunc(iImpact / 2)));
       if (pTarget.inv[bHeadSlot].bStatus[0] < 0) {
         // just break it...
         pTarget.inv[bHeadSlot].bStatus[0] = 1;
@@ -1740,7 +1740,7 @@ function BulletHitMerc(pBullet: BULLET, pStructure: STRUCTURE, fIntended: boolea
   SWeaponHit.usWeaponIndex = pFirer.usAttackingWeapon;
   SWeaponHit.sDamage = iDamage;
   // breath loss is based on original impact of bullet
-  SWeaponHit.sBreathLoss = ((iImpact * BP_GET_WOUNDED * (pTarget.bBreathMax * 100 - pTarget.sBreathRed)) / 10000);
+  SWeaponHit.sBreathLoss = Math.trunc((iImpact * BP_GET_WOUNDED * (pTarget.bBreathMax * 100 - pTarget.sBreathRed)) / 10000);
   SWeaponHit.usDirection = GetDirectionFromGridNo(pFirer.sGridNo, pTarget);
   SWeaponHit.sXPos = pTarget.dXPos;
   SWeaponHit.sYPos = pTarget.dYPos;
@@ -1856,27 +1856,27 @@ function BulletMissed(pBullet: BULLET, pFirer: SOLDIERTYPE): void {
 function ChanceOfBulletHittingStructure(iDistance: INT32, iDistanceToTarget: INT32, sHitBy: INT16): UINT32 {
   let iCloseToCoverPenalty: INT32;
 
-  if (iDistance / CELL_X_SIZE > MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE) {
+  if (Math.trunc(iDistance / CELL_X_SIZE) > MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE) {
     return MAX_CHANCE_OF_HITTING_STRUCTURE;
   } else {
-    iCloseToCoverPenalty = iDistance / 5 - (iDistanceToTarget - iDistance);
+    iCloseToCoverPenalty = Math.trunc(iDistance / 5) - (iDistanceToTarget - iDistance);
     if (iCloseToCoverPenalty < 0) {
       iCloseToCoverPenalty = 0;
     }
     if (sHitBy < 0) {
       // add 20% to distance so that misses hit nearer obstacles a bit more
-      iDistance += iDistance / 5;
+      iDistance += Math.trunc(iDistance / 5);
     }
-    if (((iDistance + iCloseToCoverPenalty) / CELL_X_SIZE) > MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE) {
+    if (Math.trunc((iDistance + iCloseToCoverPenalty) / CELL_X_SIZE) > MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE) {
       return MAX_CHANCE_OF_HITTING_STRUCTURE;
     } else {
-      return guiStructureHitChance[(iDistance + iCloseToCoverPenalty) / CELL_X_SIZE];
+      return guiStructureHitChance[Math.trunc((iDistance + iCloseToCoverPenalty) / CELL_X_SIZE)];
     }
   }
 }
 
 function StructureResistanceIncreasedByRange(iImpactReduction: INT32, iGunRange: INT32, iDistance: INT32): INT32 {
-  return iImpactReduction * (100 + PERCENT_BULLET_SLOWED_BY_RANGE * (iDistance - iGunRange) / iGunRange) / 100;
+  return Math.trunc(iImpactReduction * (100 + Math.trunc(PERCENT_BULLET_SLOWED_BY_RANGE * (iDistance - iGunRange) / iGunRange)) / 100);
   /*
   if ( iDistance > iGunRange )
   {
@@ -2028,7 +2028,7 @@ function CTGTHandleBulletStructureInteraction(pBullet: BULLET, pStructure: STRUC
   // iCurrImpact = BulletImpactReducedByRange( pBullet->iImpact, pBullet->iLoop, pBullet->iRange );
   iCurrImpact = pBullet.iImpact;
   // multiply impact reduction by 100 to retain fractions for a bit...
-  iImpactReduction = gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] * pStructure.pDBStructureRef.pDBStructure.ubDensity / 100;
+  iImpactReduction = Math.trunc(gubMaterialArmour[pStructure.pDBStructureRef.pDBStructure.ubArmour] * pStructure.pDBStructureRef.pDBStructure.ubDensity / 100);
   iImpactReduction = StructureResistanceIncreasedByRange(iImpactReduction, pBullet.iRange, pBullet.iLoop);
   switch (pBullet.pFirer.inv[pBullet.pFirer.ubAttackingHand].ubGunAmmoType) {
     case Enum286.AMMO_HP:
@@ -2234,10 +2234,10 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
 
         if (pBullet.qIncrX > 0) {
           qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
-          iStepsToTravelX = qDistToTravelX / pBullet.qIncrX;
+          iStepsToTravelX = Math.trunc(qDistToTravelX / pBullet.qIncrX);
         } else if (pBullet.qIncrX < 0) {
           qDistToTravelX = pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
-          iStepsToTravelX = qDistToTravelX / (-pBullet.qIncrX);
+          iStepsToTravelX = Math.trunc(qDistToTravelX / (-pBullet.qIncrX));
         } else {
           // make sure we don't consider X a limit :-)
           iStepsToTravelX = 1000000;
@@ -2245,10 +2245,10 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
 
         if (pBullet.qIncrY > 0) {
           qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
-          iStepsToTravelY = qDistToTravelY / pBullet.qIncrY;
+          iStepsToTravelY = Math.trunc(qDistToTravelY / pBullet.qIncrY);
         } else if (pBullet.qIncrY < 0) {
           qDistToTravelY = pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
-          iStepsToTravelY = qDistToTravelY / (-pBullet.qIncrY);
+          iStepsToTravelY = Math.trunc(qDistToTravelY / (-pBullet.qIncrY));
         } else {
           // make sure we don't consider Y a limit :-)
           iStepsToTravelY = 1000000;
@@ -2300,7 +2300,7 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
                   // hit someone?
                   if (fIntended) {
                     // gotcha! ... return chance to get through
-                    iChanceToGetThrough = iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact;
+                    iChanceToGetThrough = Math.trunc(iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact);
                     return iChanceToGetThrough;
                   } else {
                     gubLocalStructureNumTimesHit[iStructureLoop]++;
@@ -2357,8 +2357,8 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
         } while ((pBullet.bLOSIndexX == bOldLOSIndexX) && (pBullet.bLOSIndexY == bOldLOSIndexY) && (pBullet.iCurrCubesZ == iOldCubesZ));
 
         DebugLOS(FormatString("  CTGT at %ld %ld %ld after moving in nonempty tile from %ld %ld %ld", pBullet.bLOSIndexX, pBullet.bLOSIndexY, pBullet.iCurrCubesZ, bOldLOSIndexX, bOldLOSIndexY, iOldCubesZ));
-        pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
-        pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
+        pBullet.iCurrTileX = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE);
+        pBullet.iCurrTileY = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE);
       }
     } while ((pBullet.iLoop < pBullet.iDistanceLimit) && (pBullet.iCurrTileX == iOldTileX) && (pBullet.iCurrTileY == iOldTileY));
 
@@ -2372,7 +2372,7 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
       // beyond max effective range, bullet starts to drop!
       // since we're doing an increment based on distance, not time, the
       // decrement is scaled down depending on how fast the bullet is (effective range)
-      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
+      pBullet.qIncrZ -= Math.trunc(INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2));
     }
 
     // end of the tile...
@@ -2386,7 +2386,7 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
           iTotalStructureImpact = Math.min(iTotalStructureImpact, pBullet.iImpact);
 
           // add to "impact reduction" based on strength of structure weighted by probability of hitting it
-          pBullet.iImpactReduction += (iTotalStructureImpact * guiLocalStructureCTH[iStructureLoop]) / 100;
+          pBullet.iImpactReduction += Math.trunc((iTotalStructureImpact * guiLocalStructureCTH[iStructureLoop]) / 100);
         }
       }
       if (pBullet.iImpactReduction >= pBullet.iImpact) {
@@ -2399,7 +2399,7 @@ function CalcChanceToGetThrough(pBullet: BULLET): UINT8 {
   // but we shouldn't(?) need to check it because the target is there!
 
   // try simple chance to get through, ignoring range effects
-  iChanceToGetThrough = iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact;
+  iChanceToGetThrough = Math.trunc(iChanceToGetThrough * (pBullet.iImpact - pBullet.iImpactReduction) / pBullet.iImpact);
 
   if (iChanceToGetThrough < 0) {
     iChanceToGetThrough = 0;
@@ -2507,8 +2507,8 @@ export function SoldierToLocationChanceToGetThrough(pStartSoldier: SOLDIERTYPE |
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
     ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
-    sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-    sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+    sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+    sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
     // set startsoldier's target ID ... need an ID stored in case this
     // is the AI calculating cover to a location where he might not be any more
@@ -2587,8 +2587,8 @@ export function AISoldierToLocationChanceToGetThrough(pStartSoldier: SOLDIERTYPE
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
     ({ sX: sXPos, sY: sYPos } = ConvertGridNoToXY(sGridNo));
-    sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
-    sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
+    sXPos = sXPos * CELL_X_SIZE + Math.trunc(CELL_X_SIZE / 2);
+    sYPos = sYPos * CELL_Y_SIZE + Math.trunc(CELL_Y_SIZE / 2);
 
     // set startsoldier's target ID ... need an ID stored in case this
     // is the AI calculating cover to a location where he might not be any more
@@ -2626,9 +2626,9 @@ function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, 
     // chance of shooting over target is 60 for horizontal shots, up to 80% for shots at 22.5 degrees,
     // and then down again to 50% for shots at 45+%.
     if (ddAbsVerticAngle < DEGREES_22_5) {
-      uiChanceOfMissAbove = 60 + (20 * (ddAbsVerticAngle) / DEGREES_22_5);
+      uiChanceOfMissAbove = Math.trunc(60 + (20 * (ddAbsVerticAngle) / DEGREES_22_5));
     } else if (ddAbsVerticAngle < DEGREES_45) {
-      uiChanceOfMissAbove = 80 - (30.0 * (ddAbsVerticAngle - DEGREES_22_5) / DEGREES_22_5);
+      uiChanceOfMissAbove = Math.trunc(80 - (30.0 * (ddAbsVerticAngle - DEGREES_22_5) / DEGREES_22_5));
     } else {
       uiChanceOfMissAbove = 50;
     }
@@ -2680,8 +2680,8 @@ function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, 
 }
 
 function FireBullet(pFirer: SOLDIERTYPE, pBullet: BULLET, fFake: boolean): INT8 {
-  pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
-  pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
+  pBullet.iCurrTileX = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE);
+  pBullet.iCurrTileY = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE);
   pBullet.bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrX) % CELL_X_SIZE);
   pBullet.bLOSIndexY = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrY) % CELL_Y_SIZE);
   pBullet.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(FIXEDPT_TO_INT32(pBullet.qCurrZ));
@@ -2714,7 +2714,7 @@ function FireBullet(pFirer: SOLDIERTYPE, pBullet: BULLET, fFake: boolean): INT8 
     if (Item[pFirer.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
       pBullet.usClockTicksPerUpdate = 30;
     } else {
-      pBullet.usClockTicksPerUpdate = Weapon[pFirer.usAttackingWeapon].ubBulletSpeed / 10;
+      pBullet.usClockTicksPerUpdate = Math.trunc(Weapon[pFirer.usAttackingWeapon].ubBulletSpeed / 10);
     }
 
     HandleBulletSpecialFlags(pBullet.iBullet);
@@ -2827,7 +2827,7 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
         ubShots = BUCKSHOT_SHOTS;
         // but you can't really aim the damn things very well!
         if (sHitBy > 0) {
-          sHitBy = sHitBy / 2;
+          sHitBy = Math.trunc(sHitBy / 2);
         }
         if (FindAttachment(pFirer.inv[pFirer.ubAttackingHand], Enum225.DUCKBILL) != NO_SLOT) {
           ubSpreadIndex = 1;
@@ -2915,15 +2915,15 @@ export function FireBulletGivenTarget(pFirer: SOLDIERTYPE, dEndX: FLOAT, dEndY: 
     // NB we can only apply correction for leftovers if the bullet is going to hit
     // because otherwise the increments are not right for the calculations!
     if (pBullet.sHitBy >= 0) {
-      pBullet.qCurrX += (FloatToFixed(dDeltaX) - pBullet.qIncrX * iDistance) / 2;
-      pBullet.qCurrY += (FloatToFixed(dDeltaY) - pBullet.qIncrY * iDistance) / 2;
-      pBullet.qCurrZ += (FloatToFixed(dDeltaZ) - pBullet.qIncrZ * iDistance) / 2;
+      pBullet.qCurrX += Math.trunc((FloatToFixed(dDeltaX) - pBullet.qIncrX * iDistance) / 2);
+      pBullet.qCurrY += Math.trunc((FloatToFixed(dDeltaY) - pBullet.qIncrY * iDistance) / 2);
+      pBullet.qCurrZ += Math.trunc((FloatToFixed(dDeltaZ) - pBullet.qIncrZ * iDistance) / 2);
     }
 
     pBullet.iImpact = ubImpact;
 
     pBullet.iRange = GunRange(pFirer.inv[pFirer.ubAttackingHand]);
-    pBullet.sTargetGridNo = (dEndX) / CELL_X_SIZE + (dEndY) / CELL_Y_SIZE * WORLD_COLS;
+    pBullet.sTargetGridNo = Math.trunc(Math.trunc(dEndX) / CELL_X_SIZE) + Math.trunc(Math.trunc(dEndY) / CELL_Y_SIZE) * WORLD_COLS;
 
     pBullet.bStartCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dStartZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pFirer.sGridNo].sHeight));
     pBullet.bEndCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dEndZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pBullet.sTargetGridNo].sHeight));
@@ -3316,10 +3316,10 @@ export function MoveBullet(iBullet: INT32): void {
 
         if (pBullet.qIncrX > 0) {
           qDistToTravelX = INT32_TO_FIXEDPT(CELL_X_SIZE) - (pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE));
-          iStepsToTravelX = qDistToTravelX / pBullet.qIncrX;
+          iStepsToTravelX = Math.trunc(qDistToTravelX / pBullet.qIncrX);
         } else if (pBullet.qIncrX < 0) {
           qDistToTravelX = pBullet.qCurrX % INT32_TO_FIXEDPT(CELL_X_SIZE);
-          iStepsToTravelX = qDistToTravelX / (-pBullet.qIncrX);
+          iStepsToTravelX = Math.trunc(qDistToTravelX / (-pBullet.qIncrX));
         } else {
           // make sure we don't consider X a limit :-)
           iStepsToTravelX = 1000000;
@@ -3327,10 +3327,10 @@ export function MoveBullet(iBullet: INT32): void {
 
         if (pBullet.qIncrY > 0) {
           qDistToTravelY = INT32_TO_FIXEDPT(CELL_Y_SIZE) - (pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE));
-          iStepsToTravelY = qDistToTravelY / pBullet.qIncrY;
+          iStepsToTravelY = Math.trunc(qDistToTravelY / pBullet.qIncrY);
         } else if (pBullet.qIncrY < 0) {
           qDistToTravelY = pBullet.qCurrY % INT32_TO_FIXEDPT(CELL_Y_SIZE);
-          iStepsToTravelY = qDistToTravelY / (-pBullet.qIncrY);
+          iStepsToTravelY = Math.trunc(qDistToTravelY / (-pBullet.qIncrY));
         } else {
           // make sure we don't consider Y a limit :-)
           iStepsToTravelY = 1000000;
@@ -3342,7 +3342,7 @@ export function MoveBullet(iBullet: INT32): void {
         // special coding (compared with other versions above) to deal with
         // bullets hitting the ground
         if (pBullet.qCurrZ + pBullet.qIncrZ * iStepsToTravel < qLandHeight) {
-          iStepsToTravel = Math.min(iStepsToTravel, Math.abs((pBullet.qCurrZ - qLandHeight) / pBullet.qIncrZ));
+          iStepsToTravel = Math.min(iStepsToTravel, Math.abs(Math.trunc((pBullet.qCurrZ - qLandHeight) / pBullet.qIncrZ)));
           pBullet.qCurrX += pBullet.qIncrX * iStepsToTravel;
           pBullet.qCurrY += pBullet.qIncrY * iStepsToTravel;
           pBullet.qCurrZ += pBullet.qIncrZ * iStepsToTravel;
@@ -3584,8 +3584,8 @@ export function MoveBullet(iBullet: INT32): void {
             }
           }
         } while ((pBullet.bLOSIndexX == bOldLOSIndexX) && (pBullet.bLOSIndexY == bOldLOSIndexY) && (pBullet.iCurrCubesZ == iOldCubesZ));
-        pBullet.iCurrTileX = FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE;
-        pBullet.iCurrTileY = FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE;
+        pBullet.iCurrTileX = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrX) / CELL_X_SIZE);
+        pBullet.iCurrTileY = Math.trunc(FIXEDPT_TO_INT32(pBullet.qCurrY) / CELL_Y_SIZE);
       }
     } while ((pBullet.iCurrTileX == iOldTileX) && (pBullet.iCurrTileY == iOldTileY));
 
@@ -3603,9 +3603,9 @@ export function MoveBullet(iBullet: INT32): void {
       // beyond max effective range, bullet starts to drop!
       // since we're doing an increment based on distance, not time, the
       // decrement is scaled down depending on how fast the bullet is (effective range)
-      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
+      pBullet.qIncrZ -= Math.trunc(INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2));
     } else if ((pBullet.usFlags & BULLET_FLAG_FLAME) && (pBullet.iLoop > pBullet.iRange)) {
-      pBullet.qIncrZ -= INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2);
+      pBullet.qIncrZ -= Math.trunc(INT32_TO_FIXEDPT(100) / (pBullet.iRange * 2));
     }
 
     // check to see if bullet is close to target
@@ -3652,8 +3652,8 @@ export function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOA
   let bLOSIndexY: INT8;
   let iCurrCubesZ: INT32;
 
-  sX = (dX / CELL_X_SIZE);
-  sY = (dY / CELL_Y_SIZE);
+  sX = Math.trunc(dX / CELL_X_SIZE);
+  sY = Math.trunc(dY / CELL_Y_SIZE);
   sZ = dZ;
 
   // Check if gridno is in bounds....

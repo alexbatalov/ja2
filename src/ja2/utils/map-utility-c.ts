@@ -159,7 +159,7 @@ export function MapUtilScreenHandle(): UINT32 {
 
   gfOverheadMapDirty = true;
 
-  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, true);
+  RenderOverheadMap(0, Math.trunc(WORLD_COLS / 2), 0, 0, 640, 320, true);
 
   TrashOverheadMap();
 
@@ -195,13 +195,13 @@ export function MapUtilScreenHandle(): UINT32 {
 
     for (iY = 0; iY < 44; iY++) {
       // OK, AVERAGE PIXELS
-      iSubX1 = dX - WINDOW_SIZE;
+      iSubX1 = Math.trunc(dX - WINDOW_SIZE);
 
-      iSubX2 = dX + WINDOW_SIZE;
+      iSubX2 = Math.trunc(dX + WINDOW_SIZE);
 
-      iSubY1 = dY - WINDOW_SIZE;
+      iSubY1 = Math.trunc(dY - WINDOW_SIZE);
 
-      iSubY2 = dY + WINDOW_SIZE;
+      iSubY2 = Math.trunc(dY + WINDOW_SIZE);
 
       iCount = 0;
       bR = bG = bB = 0;
@@ -209,7 +209,7 @@ export function MapUtilScreenHandle(): UINT32 {
       for (iWindowX = iSubX1; iWindowX < iSubX2; iWindowX++) {
         for (iWindowY = iSubY1; iWindowY < iSubY2; iWindowY++) {
           if (iWindowX >= 0 && iWindowX < 640 && iWindowY >= 0 && iWindowY < 320) {
-            s16BPPSrc = pSrcBuf[(iWindowY * (uiSrcPitchBYTES / 2)) + iWindowX];
+            s16BPPSrc = pSrcBuf[(iWindowY * Math.trunc(uiSrcPitchBYTES / 2)) + iWindowX];
 
             uiRGBColor = GetRGBColor(s16BPPSrc);
 
@@ -224,19 +224,19 @@ export function MapUtilScreenHandle(): UINT32 {
       }
 
       if (iCount > 0) {
-        bAvR = bR / iCount;
-        bAvG = bG / iCount;
-        bAvB = bB / iCount;
+        bAvR = Math.trunc(bR / iCount);
+        bAvG = Math.trunc(bG / iCount);
+        bAvB = Math.trunc(bB / iCount);
 
         sDest16BPPColor = Get16BPPColor(FROMRGB(bAvR, bAvG, bAvB));
       }
 
       // Write into dest!
-      pDestBuf[(iY * (uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
+      pDestBuf[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
 
-      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].r = bAvR;
-      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].g = bAvG;
-      MapUtilScreenHandle__p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].b = bAvB;
+      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].r = bAvR;
+      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].g = bAvG;
+      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].b = bAvB;
 
       // Increment
       dY += gdYStep;

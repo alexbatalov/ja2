@@ -294,7 +294,6 @@ function CreateFontPaletteTables(pObj: SGPVObject): boolean {
     if ((count == 4) && (pObj.p16BPPPalette == pObj.pShades[count]))
       pObj.pShades[count] = <Uint16Array><unknown>null;
     else if (pObj.pShades[count] != null) {
-      MemFree(pObj.pShades[count]);
       pObj.pShades[count] = <Uint16Array><unknown>null;
     }
   }

@@ -64,11 +64,11 @@ function AdjustClockToEventStamp(pEvent: STRATEGICEVENT, uiAdjustment: UINT32): 
   uiAdjustment -= uiDiff;
 
   // Calculate the day, hour, and minutes.
-  guiDay = (guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
-  guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
+  guiDay = Math.trunc(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.trunc((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.trunc((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
 
-  gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  gswzWorldTimeStr = swprintf("%s %d, %s:%s", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour.toString().padStart(2, '0'), guiMin.toString().padStart(2, '0'));
 
   return uiAdjustment;
 }

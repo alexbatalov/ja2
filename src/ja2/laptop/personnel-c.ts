@@ -634,9 +634,9 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
   // special case?..player generated merc
   if (fCurrentTeamMode == true) {
     if ((50 < MercPtrs[iId].ubProfile) && (57 > MercPtrs[iId].ubProfile)) {
-      sTemp = sprintf("%s%03d.sti", FACES_DIR, gMercProfiles[MercPtrs[iId].ubProfile].ubFaceIndex);
+      sTemp = sprintf("%s%s.sti", FACES_DIR, gMercProfiles[MercPtrs[iId].ubProfile].ubFaceIndex.toString().padStart(3, '0'));
     } else {
-      sTemp = sprintf("%s%02d.sti", FACES_DIR, Menptr[iId].ubProfile);
+      sTemp = sprintf("%s%s.sti", FACES_DIR, Menptr[iId].ubProfile.toString().padStart(2, '0'));
     }
   } else {
     // if this is not a valid merc
@@ -645,9 +645,9 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
     }
 
     if ((50 < iId) && (57 > iId)) {
-      sTemp = sprintf("%s%03d.sti", FACES_DIR, gMercProfiles[iId].ubFaceIndex);
+      sTemp = sprintf("%s%s.sti", FACES_DIR, gMercProfiles[iId].ubFaceIndex.toString().padStart(3, '0'));
     } else {
-      sTemp = sprintf("%s%02d.sti", FACES_DIR, iId);
+      sTemp = sprintf("%s%2.sti", FACES_DIR, iId.toString().padStart(2, '0'));
     }
   }
 
@@ -1330,7 +1330,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
         // check we have shot at least once
         if (gMercProfiles[Menptr[iId].ubProfile].usShotsFired > 0) {
-          uiHits /= gMercProfiles[Menptr[iId].ubProfile].usShotsFired;
+          uiHits = Math.trunc(uiHits / gMercProfiles[Menptr[iId].ubProfile].usShotsFired);
         } else {
           // no, set hit % to 0
           uiHits = 0;
@@ -1644,7 +1644,7 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   if ((CreateDestroyMouseRegionsForPersonnelPortraits__fCreated == false) && (fCreatePersonnelPortraitMouseRegions == true)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
-      MSYS_DefineRegion(gPortraitMouseRegions[sCounter], (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
+      MSYS_DefineRegion(gPortraitMouseRegions[sCounter], (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + Math.trunc(sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + Math.trunc(sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, Enum317.CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
       MSYS_SetRegionUserData(gPortraitMouseRegions[sCounter], 0, sCounter);
       MSYS_AddRegion(gPortraitMouseRegions[sCounter]);
     }
@@ -1690,12 +1690,12 @@ function DisplayPicturesOfCurrentTeam(): boolean {
     if ((MercPtrs[iId + iCnt].bActive == true)) {
       // found the next actual guy
       if ((50 < MercPtrs[iId + iCnt].ubProfile) && (57 > MercPtrs[iId + iCnt].ubProfile)) {
-        sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[MercPtrs[iId + iCnt].ubProfile].ubFaceIndex);
+        sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, gMercProfiles[MercPtrs[iId + iCnt].ubProfile].ubFaceIndex.toString().padStart(3, '0'));
       } else {
         if (Menptr[iId + iCnt].ubProfile < 100) {
-          sTemp = sprintf("%s%02d.sti", SMALL_FACES_DIR, Menptr[iId + iCnt].ubProfile);
+          sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, Menptr[iId + iCnt].ubProfile.toString().padStart(2, '0'));
         } else {
-          sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, Menptr[iId + iCnt].ubProfile);
+          sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, Menptr[iId + iCnt].ubProfile.toString().padStart(3, '0'));
         }
       }
 
@@ -1715,11 +1715,11 @@ function DisplayPicturesOfCurrentTeam(): boolean {
         SetObjectHandleShade(guiFACE, 0);
       }
 
-      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + Math.trunc(iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         // if the merc is dead, display it
-        DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+        DrawTextToScreen(AimPopUpText[Enum357.AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + Math.trunc(iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + Math.trunc(SMALL_PORT_HEIGHT / 2)), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL(), 145, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       }
 
       DeleteVideoObjectFromIndex(guiFACE);
@@ -1914,8 +1914,8 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         usHeight = pTrav.usHeight;
         usWidth = pTrav.usWidth;
 
-        sCenX = PosX + (Math.abs(57 - usWidth) / 2) - pTrav.sOffsetX;
-        sCenY = PosY + (Math.abs(22 - usHeight) / 2) - pTrav.sOffsetY;
+        sCenX = PosX + Math.trunc(Math.abs(57 - usWidth) / 2) - pTrav.sOffsetX;
+        sCenY = PosY + Math.trunc(Math.abs(22 - usHeight) / 2) - pTrav.sOffsetY;
 
         // shadow
         // BltVideoObjectOutlineShadowFromIndex( FRAME_BUFFER, GetInterfaceGraphicForItem( pItem ), pItem->ubGraphicNum, sCenX-2, sCenY+2);
@@ -2225,10 +2225,10 @@ function GetTotalDailyCostOfCurrentTeam(): INT32 {
         // daily rate
         if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCostOfTeam += gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+          iCostOfTeam += Math.trunc(gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14);
         } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCostOfTeam += gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
+          iCostOfTeam += Math.trunc(gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7);
         } else {
           iCostOfTeam += gMercProfiles[pSoldier.ubProfile].sSalary;
         }
@@ -2269,10 +2269,10 @@ function GetLowestDailyCostOfCurrentTeam(): INT32 {
         // daily rate
         if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCost = gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+          iCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14);
         } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCost = gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
+          iCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7);
         } else {
           iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
         }
@@ -2323,10 +2323,10 @@ function GetHighestDailyCostOfCurrentTeam(): INT32 {
         // daily rate
         if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
           // 2 week contract
-          iCost = gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14;
+          iCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14);
         } else if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
           // 1 week contract
-          iCost = gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7;
+          iCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7);
         } else {
           iCost = gMercProfiles[pSoldier.ubProfile].sSalary;
         }
@@ -2997,7 +2997,7 @@ function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
   if (GetNumberOfMercsOnPlayersTeam() != 0 && GetNumberOfMercsOnPlayersTeam() == bNumberOfPows && iStat == 0) {
     return -1;
   } else if ((ubNumberOfMercsInCalculation - bNumberOfPows) > 0) {
-    return iTotalStatValue / (ubNumberOfMercsInCalculation - bNumberOfPows);
+    return Math.trunc(iTotalStatValue / (ubNumberOfMercsInCalculation - bNumberOfPows));
   } else {
     return 0;
   }
@@ -3131,7 +3131,7 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
   }
 
   if (GetNumberOfPastMercsOnPlayersTeam() > 0) {
-    return iTotalStatValue / GetNumberOfPastMercsOnPlayersTeam();
+    return Math.trunc(iTotalStatValue / GetNumberOfPastMercsOnPlayersTeam());
   } else {
     return 0;
   }
@@ -3953,12 +3953,12 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
   let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
 
   if ((50 < iId) && (57 > iId)) {
-    sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[iId].ubFaceIndex);
+    sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, gMercProfiles[iId].ubFaceIndex.toString().padStart(3, '0'));
   } else {
     if (iId < 100) {
-      sTemp = sprintf("%s%02d.sti", SMALL_FACES_DIR, iId);
+      sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, iId.toString().padEnd(2, '0'));
     } else {
-      sTemp = sprintf("%s%03d.sti", SMALL_FACES_DIR, iId);
+      sTemp = sprintf("%s%s.sti", SMALL_FACES_DIR, iId.toString().padEnd(3, '0'));
     }
   }
 
@@ -3978,7 +3978,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: boolean, 
     SetObjectHandleShade(guiFACE, 0);
   }
 
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + Math.trunc(iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, null);
 
   /*
    text on the Small portrait
@@ -4127,7 +4127,7 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
 
         // check we have shot at least once
         if (gMercProfiles[iId].usShotsFired > 0) {
-          uiHits /= gMercProfiles[iId].usShotsFired;
+          uiHits = Math.trunc(uiHits / gMercProfiles[iId].usShotsFired);
         } else {
           // no, set hit % to 0
           uiHits = 0;
@@ -4315,7 +4315,7 @@ function DisplayHighLightBox(): boolean {
 
   // blit it
   hHandle = GetVideoObject(uiBox);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, null);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + Math.trunc(iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, null);
 
   // deleteit
   DeleteVideoObjectFromIndex(uiBox);
@@ -4441,6 +4441,10 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
   let pSoldier: SOLDIERTYPE;
   let cnt: INT32 = 0;
   let iCounter: INT32 = 0;
+
+  if (iSlot === -1) {
+    return -1;
+  }
 
   // set current soldier
   pSoldier = MercPtrs[cnt];
@@ -4617,7 +4621,7 @@ function FindPositionOfPersInvSlider(): void {
   }
 
   // get the subregion sizes
-  sSizeOfEachSubRegion = ((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
+  sSizeOfEachSubRegion = Math.trunc((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
 
   // get slider position
   guiSliderPosition = uiCurrentInventoryIndex * sSizeOfEachSubRegion;
@@ -4652,7 +4656,7 @@ function HandleSliderBarClickCallback(pRegion: MOUSE_REGION, iReason: INT32): vo
     GetCursorPos(MousePos);
 
     // get the subregion sizes
-    sSizeOfEachSubRegion = ((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
+    sSizeOfEachSubRegion = Math.trunc((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
 
     // get the cursor placement
     sYPositionOnBar = MousePos.y - Y_OF_PERSONNEL_SCROLL_REGION;
@@ -4662,7 +4666,7 @@ function HandleSliderBarClickCallback(pRegion: MOUSE_REGION, iReason: INT32): vo
     }
 
     // get the actual item position
-    iCurrentItemValue = sYPositionOnBar / sSizeOfEachSubRegion;
+    iCurrentItemValue = Math.trunc(sYPositionOnBar / sSizeOfEachSubRegion);
 
     if (uiCurrentInventoryIndex != iCurrentItemValue) {
       // get slider position
@@ -5487,15 +5491,15 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
             }
           }
           // if there is going to be a both days and hours left on the contract
-          if (iTimeLeftOnContract / uiMinutesInDay) {
-            sString = swprintf("%d%s %d%s / %d%s", (iTimeLeftOnContract / uiMinutesInDay), gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+          if (Math.trunc(iTimeLeftOnContract / uiMinutesInDay)) {
+            sString = swprintf("%d%s %d%s / %d%s", Math.trunc(iTimeLeftOnContract / uiMinutesInDay), gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], Math.trunc((iTimeLeftOnContract % uiMinutesInDay) / 60), gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
             mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
           }
 
           // else there is under a day left
           else {
             // DEF: removed 2/7/99
-            sString = swprintf("%d%s / %d%s", (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+            sString = swprintf("%d%s / %d%s", Math.trunc((iTimeLeftOnContract % uiMinutesInDay) / 60), gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
             mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[Enum110.PRSNL_TXT_CURRENT_CONTRACT]);
           }
         } else if (Menptr[iId].ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
@@ -5593,13 +5597,13 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           // daily rate
           if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
             // 2 week contract
-            sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].uiBiWeeklySalary / 14);
+            sStringA = swprintf("%d", Math.trunc(gMercProfiles[Menptr[iId].ubProfile].uiBiWeeklySalary / 14));
             sStringA = InsertCommasForDollarFigure(sStringA);
             sStringA = InsertDollarSignInToString(sStringA);
             sString = swprintf("%s", sStringA);
           } else if (Menptr[iId].bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
             // 1 week contract
-            sStringA = swprintf("%d", gMercProfiles[Menptr[iId].ubProfile].uiWeeklySalary / 7);
+            sStringA = swprintf("%d", Math.trunc(gMercProfiles[Menptr[iId].ubProfile].uiWeeklySalary / 7));
             sStringA = InsertCommasForDollarFigure(sStringA);
             sStringA = InsertDollarSignInToString(sStringA);
             sString = swprintf("%s", sStringA);

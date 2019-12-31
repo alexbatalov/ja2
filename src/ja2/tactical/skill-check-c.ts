@@ -8,8 +8,8 @@ export function EffectiveStrength(pSoldier: SOLDIERTYPE): INT8 {
   // 1/2 full strength
   // plus 1/2 strength scaled according to how hurt we are
   bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
-  iEffStrength = pSoldier.bStrength / 2;
-  iEffStrength += (pSoldier.bStrength / 2) * (pSoldier.bLife + bBandaged / 2) / (pSoldier.bLifeMax);
+  iEffStrength = Math.trunc(pSoldier.bStrength / 2);
+  iEffStrength += Math.trunc(pSoldier.bStrength / 2) * Math.trunc((pSoldier.bLife + Math.trunc(bBandaged / 2)) / (pSoldier.bLifeMax));
 
   // ATE: Make sure at least 2...
   iEffStrength = Math.max(iEffStrength, 2);
@@ -35,7 +35,7 @@ export function EffectiveAgility(pSoldier: SOLDIERTYPE): INT8 {
   iEffAgility = EffectStatForBeingDrunk(pSoldier, iEffAgility);
 
   if (pSoldier.sWeightCarriedAtTurnStart > 100) {
-    iEffAgility = (iEffAgility * 100) / pSoldier.sWeightCarriedAtTurnStart;
+    iEffAgility = Math.trunc((iEffAgility * 100) / pSoldier.sWeightCarriedAtTurnStart);
   }
 
   return iEffAgility;
@@ -81,7 +81,7 @@ export function EffectiveLeadership(pSoldier: SOLDIERTYPE): INT8 {
   bDrunkLevel = GetDrunkLevel(pSoldier);
 
   if (bDrunkLevel == FEELING_GOOD) {
-    iEffLeadership = (iEffLeadership * 120 / 100);
+    iEffLeadership = Math.trunc(iEffLeadership * 120 / 100);
   }
 
   return iEffLeadership;
@@ -161,13 +161,13 @@ function GetPenaltyForFatigue(pSoldier: SOLDIERTYPE): UINT8 {
 }
 
 export function ReducePointsForFatigue(pSoldier: SOLDIERTYPE, usPoints: UINT16): UINT16 {
-  usPoints -= (usPoints * GetPenaltyForFatigue(pSoldier)) / 100;
+  usPoints -= Math.trunc((usPoints * GetPenaltyForFatigue(pSoldier)) / 100);
   return usPoints;
 }
 
 export function GetSkillCheckPenaltyForFatigue(pSoldier: SOLDIERTYPE, iSkill: INT32): INT32 {
   // use only half the full effect of fatigue for skill checks
-  return ((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2;
+  return Math.trunc(((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2);
 }
 
 export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT8): INT32 {
@@ -195,9 +195,9 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
         break;
       }
       // adjust skill based on wisdom (knowledge)
-      iSkill = iSkill * (EffectiveWisdom(pSoldier) + 100) / 200;
+      iSkill = Math.trunc(iSkill * (EffectiveWisdom(pSoldier) + 100) / 200);
       // and dexterity (clumsy?)
-      iSkill = iSkill * (EffectiveDexterity(pSoldier) + 100) / 200;
+      iSkill = Math.trunc(iSkill * (EffectiveDexterity(pSoldier) + 100) / 200);
       // factor in experience
       iSkill = iSkill + EffectiveExpLevel(pSoldier) * 3;
       if (HAS_SKILL_TRAIT(pSoldier, Enum269.LOCKPICKING)) {
@@ -206,7 +206,7 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       }
       if (bReason == Enum255.ELECTRONIC_LOCKPICKING_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // if we are unfamiliar with electronics...
-        iSkill /= 2;
+        iSkill = Math.trunc(iSkill / 2);
       }
       // adjust chance based on status of kit
       bSlot = FindObj(pSoldier, Enum225.LOCKSMITHKIT);
@@ -214,7 +214,7 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
         // this should never happen, but might as well check...
         iSkill = 0;
       }
-      iSkill = iSkill * pSoldier.inv[bSlot].bStatus[0] / 100;
+      iSkill = Math.trunc(iSkill * pSoldier.inv[bSlot].bStatus[0] / 100);
       break;
     case Enum255.ATTACHING_DETONATOR_CHECK:
     case Enum255.ATTACHING_REMOTE_DETONATOR_CHECK:
@@ -222,9 +222,9 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       if (iSkill == 0) {
         break;
       }
-      iSkill = (iSkill * 3 + EffectiveDexterity(pSoldier)) / 4;
+      iSkill = Math.trunc((iSkill * 3 + EffectiveDexterity(pSoldier)) / 4);
       if (bReason == Enum255.ATTACHING_REMOTE_DETONATOR_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
-        iSkill /= 2;
+        iSkill = Math.trunc(iSkill / 2);
       }
       break;
     case Enum255.PLANTING_BOMB_CHECK:
@@ -232,18 +232,18 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       iSkill = EffectiveExplosive(pSoldier) * 7;
       iSkill += EffectiveWisdom(pSoldier) * 2;
       iSkill += EffectiveExpLevel(pSoldier) * 10;
-      iSkill = iSkill / 10; // bring the value down to a percentage
+      iSkill = Math.trunc(iSkill / 10); // bring the value down to a percentage
 
       if (bReason == Enum255.PLANTING_REMOTE_BOMB_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // deduct only a bit...
-        iSkill = (iSkill * 3) / 4;
+        iSkill = Math.trunc((iSkill * 3) / 4);
       }
 
       // Ok, this is really damn easy, so skew the values...
       // e.g. if calculated skill is 84, skewed up to 96
       // 51 to 84
       // 22 stays as is
-      iSkill = (iSkill + 100 * (iSkill / 25)) / (iSkill / 25 + 1);
+      iSkill = Math.trunc((iSkill + Math.trunc(100 * (iSkill / 25))) / Math.trunc(iSkill / 25 + 1));
       break;
 
     case Enum255.DISARM_TRAP_CHECK:
@@ -256,9 +256,9 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       }
       iSkill += EffectiveDexterity(pSoldier) * 2;
       iSkill += EffectiveExpLevel(pSoldier) * 10;
-      iSkill = iSkill / 10; // bring the value down to a percentage
+      iSkill = Math.trunc(iSkill / 10); // bring the value down to a percentage
       // penalty based on poor wisdom
-      iSkill -= (100 - EffectiveWisdom(pSoldier)) / 5;
+      iSkill -= Math.trunc((100 - EffectiveWisdom(pSoldier)) / 5);
       break;
 
     case Enum255.DISARM_ELECTRONIC_TRAP_CHECK:
@@ -271,12 +271,12 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       }
       iSkill += EffectiveDexterity(pSoldier) * 2;
       iSkill += EffectiveExpLevel(pSoldier) * 10;
-      iSkill = iSkill / 10; // bring the value down to a percentage
+      iSkill = Math.trunc(iSkill / 10); // bring the value down to a percentage
       // penalty based on poor wisdom
-      iSkill -= (100 - EffectiveWisdom(pSoldier)) / 5;
+      iSkill -= Math.trunc((100 - EffectiveWisdom(pSoldier)) / 5);
 
       if (!(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
-        iSkill = (iSkill * 3) / 4;
+        iSkill = Math.trunc((iSkill * 3) / 4);
       }
       break;
 
@@ -290,15 +290,15 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
       iSkill = EffectiveStrength(pSoldier);
       break;
     case Enum255.UNJAM_GUN_CHECK:
-      iSkill = 30 + EffectiveMechanical(pSoldier) / 2;
+      iSkill = 30 + Math.trunc(EffectiveMechanical(pSoldier) / 2);
       break;
     case Enum255.NOTICE_DART_CHECK:
       // only a max of ~20% chance
-      iSkill = EffectiveWisdom(pSoldier) / 10 + EffectiveExpLevel(pSoldier);
+      iSkill = Math.trunc(EffectiveWisdom(pSoldier) / 10) + EffectiveExpLevel(pSoldier);
       break;
     case Enum255.LIE_TO_QUEEN_CHECK:
       // competitive check vs the queen's wisdom and leadership... poor guy!
-      iSkill = 50 * (EffectiveWisdom(pSoldier) + EffectiveLeadership(pSoldier)) / (gMercProfiles[Enum268.QUEEN].bWisdom + gMercProfiles[Enum268.QUEEN].bLeadership);
+      iSkill = 50 * Math.trunc((EffectiveWisdom(pSoldier) + EffectiveLeadership(pSoldier)) / (gMercProfiles[Enum268.QUEEN].bWisdom + gMercProfiles[Enum268.QUEEN].bLeadership));
       break;
     case Enum255.ATTACHING_SPECIAL_ITEM_CHECK:
     case Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK:
@@ -307,14 +307,14 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
         break;
       }
       // adjust skill based on wisdom (knowledge)
-      iSkill = iSkill * (EffectiveWisdom(pSoldier) + 100) / 200;
+      iSkill = Math.trunc(iSkill * (EffectiveWisdom(pSoldier) + 100) / 200);
       // and dexterity (clumsy?)
-      iSkill = iSkill * (EffectiveDexterity(pSoldier) + 100) / 200;
+      iSkill = Math.trunc(iSkill * (EffectiveDexterity(pSoldier) + 100) / 200);
       // factor in experience
       iSkill = iSkill + EffectiveExpLevel(pSoldier) * 3;
       if (bReason == Enum255.ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK && !(HAS_SKILL_TRAIT(pSoldier, Enum269.ELECTRONICS))) {
         // if we are unfamiliar with electronics...
-        iSkill /= 2;
+        iSkill = Math.trunc(iSkill / 2);
       }
       break;
     default:
@@ -390,7 +390,7 @@ export function SkillCheck(pSoldier: SOLDIERTYPE, bReason: INT8, bChanceMod: INT
   } else {
     // A buddy might make a positive comment based on our success;
     // Increase the chance for people with higher skill and for more difficult tasks
-    iChance = 15 + iSkill / 20 + (-bChanceMod) / 20;
+    iChance = 15 + Math.trunc(iSkill / 20) + Math.trunc((-bChanceMod) / 20);
     if (iRoll < iChance) {
       // If a buddy of this merc is standing around nearby, they'll make a positive comment.
       iLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -432,13 +432,13 @@ export function CalcTrapDetectLevel(pSoldier: SOLDIERTYPE, fExamining: boolean):
   //     less 1 pt for every 20 wisdom MISSING
 
   bDetectLevel = EffectiveExpLevel(pSoldier);
-  bDetectLevel += (EffectiveExplosive(pSoldier) / 40);
-  bDetectLevel -= ((100 - EffectiveWisdom(pSoldier)) / 20);
+  bDetectLevel += Math.trunc(EffectiveExplosive(pSoldier) / 40);
+  bDetectLevel -= Math.trunc((100 - EffectiveWisdom(pSoldier)) / 20);
 
   // if the examining flag is true, this isn't just a casual glance
   // and the merc should have a higher chance
   if (fExamining) {
-    bDetectLevel += PreRandom(bDetectLevel / 3 + 2);
+    bDetectLevel += PreRandom(Math.trunc(bDetectLevel / 3) + 2);
   }
 
   // if substantially bleeding, or still in serious shock, randomly lower value

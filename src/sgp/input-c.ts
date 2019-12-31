@@ -206,15 +206,21 @@ export function InitializeInputManager(): boolean {
   });
 
   ghInstance.addEventListener('mousemove', (ev) => {
-    MouseHandler(0, WM_MOUSEMOVE, (ev.offsetY << 16) | ev.offsetX);
+    const offsetX = Math.max(Math.min(ev.offsetX, SCREEN_WIDTH), 0);
+    const offsetY = Math.max(Math.min(ev.offsetY, SCREEN_HEIGHT), 0);
+    MouseHandler(0, WM_MOUSEMOVE, (offsetY << 16) | offsetX);
   });
 
   ghInstance.addEventListener('mousedown', (ev) => {
-    MouseHandler(0, ev.button === 0 ? WM_LBUTTONDOWN : WM_RBUTTONDOWN, (ev.offsetY << 16) | ev.offsetX);
+    const offsetX = Math.max(Math.min(ev.offsetX, SCREEN_WIDTH), 0);
+    const offsetY = Math.max(Math.min(ev.offsetY, SCREEN_HEIGHT), 0);
+    MouseHandler(0, ev.button === 0 ? WM_LBUTTONDOWN : WM_RBUTTONDOWN, (offsetY << 16) | offsetX);
   });
 
   ghInstance.addEventListener('mouseup', (ev) => {
-    MouseHandler(0, ev.button === 0 ? WM_LBUTTONUP : WM_RBUTTONUP, (ev.offsetY << 16) | ev.offsetX);
+    const offsetX = Math.max(Math.min(ev.offsetX, SCREEN_WIDTH), 0);
+    const offsetY = Math.max(Math.min(ev.offsetY, SCREEN_HEIGHT), 0);
+    MouseHandler(0, ev.button === 0 ? WM_LBUTTONUP : WM_RBUTTONUP, (offsetY << 16) | offsetX);
   });
 
   return true;

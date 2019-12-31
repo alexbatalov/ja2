@@ -356,7 +356,7 @@ export function MercDailyUpdate(): void {
 
         if (Random(100) < uiChance) {
           pProfile.bMercStatus = MERC_WORKING_ELSEWHERE;
-          pProfile.uiDayBecomesAvailable = 1 + Random(6 + (pProfile.bExpLevel / 2)); // 1-(6 to 11) days
+          pProfile.uiDayBecomesAvailable = 1 + Random(6 + Math.trunc(pProfile.bExpLevel / 2)); // 1-(6 to 11) days
         }
       }
     }
@@ -584,14 +584,14 @@ export function SoldierHasWorseEquipmentThanUsedTo(pSoldier: SOLDIERTYPE): boole
   // Modify these values based on morale - lower opinion of equipment if morale low, increase if high
   // this of course assumes default morale is 50
   if (bBestGun != -1) {
-    bBestGun = (bBestGun * (50 + pSoldier.bMorale)) / 100;
+    bBestGun = Math.trunc((bBestGun * (50 + pSoldier.bMorale)) / 100);
   }
   if (bBestArmour != -1) {
-    bBestArmour = (bBestArmour * (50 + pSoldier.bMorale)) / 100;
+    bBestArmour = Math.trunc((bBestArmour * (50 + pSoldier.bMorale)) / 100);
   }
 
   // OK, check values!
-  if ((bBestGun != -1 && bBestGun < (gMercProfiles[pSoldier.ubProfile].bMainGunAttractiveness / 2)) || (bBestArmour != -1 && bBestArmour < (gMercProfiles[pSoldier.ubProfile].bArmourAttractiveness / 2))) {
+  if ((bBestGun != -1 && bBestGun < Math.trunc(gMercProfiles[pSoldier.ubProfile].bMainGunAttractiveness / 2)) || (bBestArmour != -1 && bBestArmour < Math.trunc(gMercProfiles[pSoldier.ubProfile].bArmourAttractiveness / 2))) {
     // Pipe up!
     return true;
   }
@@ -692,7 +692,7 @@ export function UpdateBuddyAndHatedCounters(): void {
                     if (pProfile.bHatedCount[iLoop] == 0 && pSoldier.bInSector && gTacticalStatus.fEnemyInSector) {
                       // just reduced count to 0 but we have enemy in sector...
                       pProfile.bHatedCount[iLoop] = 1;
-                    } else if (pProfile.bHatedCount[iLoop] > 0 && (pProfile.bHatedCount[iLoop] == pProfile.bHatedTime[iLoop] / 2 || (pProfile.bHatedCount[iLoop] < pProfile.bHatedTime[iLoop] / 2 && pProfile.bHatedCount[iLoop] % TIME_BETWEEN_HATED_COMPLAINTS == 0))) {
+                    } else if (pProfile.bHatedCount[iLoop] > 0 && (pProfile.bHatedCount[iLoop] == Math.trunc(pProfile.bHatedTime[iLoop] / 2) || (pProfile.bHatedCount[iLoop] < Math.trunc(pProfile.bHatedTime[iLoop] / 2) && pProfile.bHatedCount[iLoop] % TIME_BETWEEN_HATED_COMPLAINTS == 0))) {
                       // complain!
                       if (iLoop == 0) {
                         TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_HATED_MERC_ONE);
@@ -754,7 +754,7 @@ export function UpdateBuddyAndHatedCounters(): void {
                     if (pProfile.bLearnToHateCount == 0 && pSoldier.bInSector && gTacticalStatus.fEnemyInSector) {
                       // just reduced count to 0 but we have enemy in sector...
                       pProfile.bLearnToHateCount = 1;
-                    } else if (pProfile.bLearnToHateCount > 0 && (pProfile.bLearnToHateCount == pProfile.bLearnToHateTime / 2 || pProfile.bLearnToHateCount < pProfile.bLearnToHateTime / 2 && pProfile.bLearnToHateCount % TIME_BETWEEN_HATED_COMPLAINTS == 0)) {
+                    } else if (pProfile.bLearnToHateCount > 0 && (pProfile.bLearnToHateCount == Math.trunc(pProfile.bLearnToHateTime / 2) || pProfile.bLearnToHateCount < Math.trunc(pProfile.bLearnToHateTime / 2) && pProfile.bLearnToHateCount % TIME_BETWEEN_HATED_COMPLAINTS == 0)) {
                       // complain!
                       TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_LEARNED_TO_HATE_MERC);
                       StopTimeCompression();
@@ -773,9 +773,9 @@ export function UpdateBuddyAndHatedCounters(): void {
                         TacticalCharacterDialogue(pSoldier, Enum202.QUOTE_LEARNED_TO_HATE_MERC);
                       }
                     }
-                    if (pProfile.bLearnToHateCount < pProfile.bLearnToHateTime / 2) {
+                    if (pProfile.bLearnToHateCount < Math.trunc(pProfile.bLearnToHateTime / 2)) {
                       // gradual opinion drop
-                      pProfile.bMercOpinion[ubOtherProfileID] += (HATED_OPINION - pProfile.bMercOpinion[ubOtherProfileID]) / (pProfile.bLearnToHateCount + 1);
+                      pProfile.bMercOpinion[ubOtherProfileID] += Math.trunc((HATED_OPINION - pProfile.bMercOpinion[ubOtherProfileID]) / (pProfile.bLearnToHateCount + 1));
                     }
                   } else {
                     if (!fUpdatedTimeTillNextHatedComplaint) {
@@ -801,9 +801,9 @@ export function UpdateBuddyAndHatedCounters(): void {
                     // add to liked!
                     pProfile.bBuddy[2] = pProfile.bLearnToLike;
                     pProfile.bMercOpinion[ubOtherProfileID] = BUDDY_OPINION;
-                  } else if (pProfile.bLearnToLikeCount < pProfile.bLearnToLikeTime / 2) {
+                  } else if (pProfile.bLearnToLikeCount < Math.trunc(pProfile.bLearnToLikeTime / 2)) {
                     // increase opinion of them!
-                    pProfile.bMercOpinion[ubOtherProfileID] += (BUDDY_OPINION - pProfile.bMercOpinion[ubOtherProfileID]) / (pProfile.bLearnToLikeCount + 1);
+                    pProfile.bMercOpinion[ubOtherProfileID] += Math.trunc((BUDDY_OPINION - pProfile.bMercOpinion[ubOtherProfileID]) / (pProfile.bLearnToLikeCount + 1));
                     break;
                   }
                 }

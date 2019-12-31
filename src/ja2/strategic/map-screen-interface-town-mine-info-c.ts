@@ -249,7 +249,7 @@ function AddTextToTownBox(): void {
     // town control
     wString = swprintf("%s:", pwTownInfoStrings[2]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", (GetTownSectorsUnderControl(ubTownId) * 100) / GetTownSectorSize(ubTownId));
+    wString = swprintf("%d%%%%", Math.trunc((GetTownSectorsUnderControl(ubTownId) * 100) / GetTownSectorSize(ubTownId)));
     hStringHandle = AddSecondColumnMonoString(wString);
   }
 
@@ -268,7 +268,7 @@ function AddTextToTownBox(): void {
     // Associated Mine: Sector
     wString = swprintf("%s:", pwTownInfoStrings[4]);
     hStringHandle = AddMonoString(wString);
-    wString = GetShortSectorString((sMineSector % MAP_WORLD_X), (sMineSector / MAP_WORLD_X));
+    wString = GetShortSectorString((sMineSector % MAP_WORLD_X), Math.trunc(sMineSector / MAP_WORLD_X));
     hStringHandle = AddSecondColumnMonoString(wString);
   }
 }
@@ -337,14 +337,14 @@ function AddTextToMineBox(): void {
       // production rate (current production as a percentage of potential production)
       wString = swprintf("%s:", pwMineStrings[10]);
       hStringHandle = AddMonoString(wString);
-      wString = swprintf("%d%%%%", (PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex));
+      wString = swprintf("%d%%%%", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
       hStringHandle = AddSecondColumnMonoString(wString);
     }
 
     // town control percentage
     wString = swprintf("%s:", pwMineStrings[12]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", (GetTownSectorsUnderControl(gMineLocation[ubMineIndex].bAssociatedTown) * 100) / GetTownSectorSize(gMineLocation[ubMineIndex].bAssociatedTown));
+    wString = swprintf("%d%%%%", Math.trunc((GetTownSectorsUnderControl(gMineLocation[ubMineIndex].bAssociatedTown) * 100) / GetTownSectorSize(gMineLocation[ubMineIndex].bAssociatedTown)));
     hStringHandle = AddSecondColumnMonoString(wString);
 
     ubTown = gMineLocation[ubMineIndex].bAssociatedTown;
@@ -619,14 +619,14 @@ function AddInventoryButtonForMapPopUpBox(): void {
   GetBoxSize(ghTownMineBox, pDimensions);
   GetBoxPosition(ghTownMineBox, pPosition);
 
-  sX = pPosition.iX + (pDimensions.iRight - sTotalBoxWidth) / 3;
+  sX = pPosition.iX + Math.trunc((pDimensions.iRight - sTotalBoxWidth) / 3);
   sY = pPosition.iY + pDimensions.iBottom - ((BOX_BUTTON_HEIGHT + 5));
 
   guiMapButtonInventoryImage[0] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 0, -1, 2, -1);
 
   guiMapButtonInventory[0] = CreateIconAndTextButton(guiMapButtonInventoryImage[0], pMapPopUpInventoryText[0], BLOCKFONT2(), FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK(), MapTownMineInventoryButtonCallBack);
 
-  sX = sX + sWidthA + (pDimensions.iRight - sTotalBoxWidth) / 3;
+  sX = sX + sWidthA + Math.trunc((pDimensions.iRight - sTotalBoxWidth) / 3);
   sY = pPosition.iY + pDimensions.iBottom - ((BOX_BUTTON_HEIGHT + 5));
 
   guiMapButtonInventoryImage[1] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 1, -1, 3, -1);

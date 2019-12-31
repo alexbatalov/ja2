@@ -234,6 +234,7 @@ export function LoadEnemySoldiersFromTempFile(): boolean {
 
             // verify the checksum equation (anti-hack) -- see save
             usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+            usFileCheckSum %= 2 ** 16;
             if (usCheckSum != usFileCheckSum) {
               // Hacker has modified the stats on the enemy placements.
               FileClose(hfile);
@@ -577,6 +578,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
           }
           // insert a checksum equation (anti-hack)
           usCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+          usCheckSum %= 2 ** 16;
           sizeBuffer.writeUInt16LE(usCheckSum, 0);
           uiNumBytesWritten = FileWrite(hfile, sizeBuffer, 2);
           if (uiNumBytesWritten != 2) {
@@ -838,6 +840,7 @@ export function NewWayOfLoadingEnemySoldiersFromTempFile(): boolean {
 
           // verify the checksum equation (anti-hack) -- see save
           usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+          usFileCheckSum %= 2 ** 16;
           if (usCheckSum != usFileCheckSum) {
             // Hacker has modified the stats on the enemy placements.
             FileClose(hfile);
@@ -1115,6 +1118,7 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
 
             // verify the checksum equation (anti-hack) -- see save
             usFileCheckSum = curr.pDetailedPlacement.bLife * 7 + curr.pDetailedPlacement.bLifeMax * 8 - curr.pDetailedPlacement.bAgility * 2 + curr.pDetailedPlacement.bDexterity * 1 + curr.pDetailedPlacement.bExpLevel * 5 - curr.pDetailedPlacement.bMarksmanship * 9 + curr.pDetailedPlacement.bMedical * 10 + curr.pDetailedPlacement.bMechanical * 3 + curr.pDetailedPlacement.bExplosive * 4 + curr.pDetailedPlacement.bLeadership * 5 + curr.pDetailedPlacement.bStrength * 7 + curr.pDetailedPlacement.bWisdom * 11 + curr.pDetailedPlacement.bMorale * 7 + curr.pDetailedPlacement.bAIMorale * 3 - curr.pDetailedPlacement.bBodyType * 7 + 4 * 6 + curr.pDetailedPlacement.sSectorX * 7 - curr.pDetailedPlacement.ubSoldierClass * 4 + curr.pDetailedPlacement.bTeam * 7 + curr.pDetailedPlacement.bDirection * 5 + Number(curr.pDetailedPlacement.fOnRoof) * 17 + curr.pDetailedPlacement.sInsertionGridNo * 1 + 3;
+            usFileCheckSum %= 2 ** 16;
             if (usCheckSum != usFileCheckSum) {
 // Hacker has modified the stats on the enemy placements.
               FileClose(hfile);
@@ -1124,7 +1128,7 @@ export function NewWayOfLoadingCiviliansFromTempFile(): boolean {
             if (curr.pDetailedPlacement.bLife < curr.pDetailedPlacement.bLifeMax) {
               // Add 4 life for every hour that passes.
               let iNewLife: INT32;
-              iNewLife = curr.pDetailedPlacement.bLife + uiTimeSinceLastLoaded / 15;
+              iNewLife = curr.pDetailedPlacement.bLife + Math.trunc(uiTimeSinceLastLoaded / 15);
               iNewLife = Math.min(curr.pDetailedPlacement.bLifeMax, iNewLife);
               curr.pDetailedPlacement.bLife = iNewLife;
             }

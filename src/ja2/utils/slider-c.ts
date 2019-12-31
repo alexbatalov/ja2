@@ -186,7 +186,7 @@ export function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPo
       pNewSlider.ubSliderWidth = STEEL_SLIDER_WIDTH;
       pNewSlider.ubSliderHeight = STEEL_SLIDER_HEIGHT;
 
-      MSYS_DefineRegion(pNewSlider.ScrollAreaMouseRegion, (usPosX - pNewSlider.usWidth / 2), usPosY, (usPosX + pNewSlider.usWidth / 2), (pNewSlider.usPosY + pNewSlider.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_DefineRegion(pNewSlider.ScrollAreaMouseRegion, (usPosX - Math.trunc(pNewSlider.usWidth / 2)), usPosY, (usPosX + Math.trunc(pNewSlider.usWidth / 2)), (pNewSlider.usPosY + pNewSlider.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
       MSYS_SetRegionUserData(pNewSlider.ScrollAreaMouseRegion, 1, pNewSlider.uiSliderID);
       break;
 
@@ -282,8 +282,8 @@ function RenderSliderBox(pSlider: SLIDER): void {
     SrcRect.iRight = pSlider.ubSliderWidth;
     SrcRect.iBottom = pSlider.ubSliderHeight;
 
-    DestRect.iLeft = pSlider.usPosX - pSlider.ubSliderWidth / 2;
-    DestRect.iTop = pSlider.usCurrentSliderBoxPosition - pSlider.ubSliderHeight / 2;
+    DestRect.iLeft = pSlider.usPosX - Math.trunc(pSlider.ubSliderWidth / 2);
+    DestRect.iTop = pSlider.usCurrentSliderBoxPosition - Math.trunc(pSlider.ubSliderHeight / 2);
     DestRect.iRight = DestRect.iLeft + pSlider.ubSliderWidth;
     DestRect.iBottom = DestRect.iTop + pSlider.ubSliderHeight;
 
@@ -533,7 +533,7 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
     dNewIncrement = (usPos / pSlider.usWidth) * pSlider.usNumberOfIncrements;
   }
 
-  pSlider.usCurrentIncrement = (dNewIncrement + .5);
+  pSlider.usCurrentIncrement = Math.trunc(dNewIncrement + .5);
 
   CalculateNewSliderBoxPosition(pSlider);
 
@@ -577,7 +577,7 @@ function CalculateNewSliderBoxPosition(pSlider: SLIDER): void {
     else if (pSlider.usCurrentIncrement == 0) {
       pSlider.usCurrentSliderBoxPosition = pSlider.usPosY; // - pSlider->ubSliderHeight / 2;
     } else {
-      pSlider.usCurrentSliderBoxPosition = pSlider.usPosY + ((pSlider.usHeight / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosY + (Math.trunc(pSlider.usHeight / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
     }
 
     usMaxPos = pSlider.usPosY + pSlider.usHeight; // - pSlider->ubSliderHeight//2 + 1;
@@ -590,7 +590,7 @@ function CalculateNewSliderBoxPosition(pSlider: SLIDER): void {
     if (pSlider.usCurrentIncrement == (pSlider.usNumberOfIncrements)) {
       pSlider.usCurrentSliderBoxPosition = pSlider.usPosX + pSlider.usWidth - 8 + 1; // - minus box width
     } else {
-      pSlider.usCurrentSliderBoxPosition = pSlider.usPosX + ((pSlider.usWidth / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
+      pSlider.usCurrentSliderBoxPosition = pSlider.usPosX + (Math.trunc(pSlider.usWidth / pSlider.usNumberOfIncrements) * pSlider.usCurrentIncrement);
     }
     usMaxPos = pSlider.usPosX + pSlider.usWidth - 8 + 1;
 

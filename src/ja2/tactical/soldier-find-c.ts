@@ -543,8 +543,8 @@ export function GetSoldierScreenPos(pSoldier: SOLDIERTYPE): { sScreenX: INT16, s
 
   // pTrav = &(gAnimSurfaceDatabase[ usAnimSurface ].hVideoObject->pETRLEObject[ pSoldier->usAniFrame ] );
 
-  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
+  sMercScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+  sMercScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S);
 
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
@@ -592,8 +592,8 @@ export function GetSoldierTRUEScreenPos(pSoldier: SOLDIERTYPE): { sMercScreenX: 
 
   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
+  sMercScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+  sMercScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S);
 
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
@@ -661,7 +661,7 @@ export function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT
   sY = CenterY(sGridNo);
 
   // Get screen coordinates for current position of soldier
-  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY((sX / CELL_X_SIZE), (sY / CELL_Y_SIZE)));
+  ({ sScreenX: sWorldX, sScreenY: sWorldY } = GetWorldXYAbsoluteScreenXY(Math.trunc(sX / CELL_X_SIZE), Math.trunc(sY / CELL_Y_SIZE)));
 
   // Find the diustance from render center to true world center
   sDistToCenterX = gsRenderCenterX - gCenterWorldX;
@@ -806,8 +806,8 @@ export function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8): { sScreenX: 
 
   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
+  sScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+  sScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S);
 
   // Adjust starting screen coordinates
   sScreenX -= gsRenderWorldOffsetX;

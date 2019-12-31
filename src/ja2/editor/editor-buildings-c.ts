@@ -104,7 +104,6 @@ export function DeleteBuildingLayout(): void {
   while (gpBuildingLayoutList) {
     curr = gpBuildingLayoutList;
     gpBuildingLayoutList = gpBuildingLayoutList.next;
-    MemFree(curr);
   }
   gpBuildingLayoutList = null;
   gsBuildingLayoutAnchorGridNo = -1;

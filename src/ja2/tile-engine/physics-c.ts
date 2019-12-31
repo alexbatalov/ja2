@@ -127,7 +127,7 @@ export function CreatePhysicalObject(pGameObj: OBJECTTYPE, dLifeLength: FLOAT, x
   pObject.InitialForce = VMultScalar(pObject.InitialForce, 1.5);
 
   // Calculate gridNo
-  pObject.sGridNo = MAPROWCOLTOPOS((yPos / CELL_Y_SIZE), (xPos / CELL_X_SIZE));
+  pObject.sGridNo = MAPROWCOLTOPOS(Math.trunc(yPos / CELL_Y_SIZE), Math.trunc(xPos / CELL_X_SIZE));
   pObject.iID = iObjectIndex;
   pObject.pNode = null;
   pObject.pShadow = null;
@@ -662,7 +662,7 @@ function PhysicsCheckForCollisions(pObject: REAL_OBJECT, piCollisionID: Pointer<
         // Break window!
         PhysicsDebugMsg(FormatString("Object %d: Collision Window", pObject.iID));
 
-        sGridNo = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
+        sGridNo = MAPROWCOLTOPOS(Math.trunc(pObject.Position.y / CELL_Y_SIZE), Math.trunc(pObject.Position.x / CELL_X_SIZE));
 
         ObjectHitWindow(sGridNo, usStructureID, false, true);
       }
@@ -703,7 +703,7 @@ function PhysicsCheckForCollisions(pObject: REAL_OBJECT, piCollisionID: Pointer<
       pObject.fApplyFriction = true;
       pObject.AppliedMu = (1.54 * TIME_MULTI);
 
-      sGridNo = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
+      sGridNo = MAPROWCOLTOPOS(Math.trunc(pObject.Position.y / CELL_Y_SIZE), Math.trunc(pObject.Position.x / CELL_X_SIZE));
 
       // Make thing unalive...
       pObject.fAlive = false;
@@ -878,7 +878,7 @@ function PhysicsMoveObject(pObject: REAL_OBJECT): boolean {
   let hVObject: SGPVObject;
 
   // Determine new gridno
-  sNewGridNo = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
+  sNewGridNo = MAPROWCOLTOPOS(Math.trunc(pObject.Position.y / CELL_Y_SIZE), Math.trunc(pObject.Position.x / CELL_X_SIZE));
 
   if (pObject.fFirstTimeMoved) {
     pObject.fFirstTimeMoved = false;
@@ -1315,7 +1315,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: OBJECTTYPE, vPosition
   }
 
   // Calculate gridno from last position
-  sGridNo = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
+  sGridNo = MAPROWCOLTOPOS(Math.trunc(pObject.Position.y / CELL_Y_SIZE), Math.trunc(pObject.Position.x / CELL_X_SIZE));
 
   PhysicsDeleteObject(pObject);
 
@@ -1360,9 +1360,9 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: OBJECTTYPE, 
 
     // If NOT from UI, use exact collision position
     if (fFromUI) {
-      (psNewGridNo.value) = MAPROWCOLTOPOS((pObject.Position.y / CELL_Y_SIZE), (pObject.Position.x / CELL_X_SIZE));
+      (psNewGridNo.value) = MAPROWCOLTOPOS(Math.trunc(pObject.Position.y / CELL_Y_SIZE), Math.trunc(pObject.Position.x / CELL_X_SIZE));
     } else {
-      (psNewGridNo.value) = MAPROWCOLTOPOS((pObject.EndedWithCollisionPosition.y / CELL_Y_SIZE), (pObject.EndedWithCollisionPosition.x / CELL_X_SIZE));
+      (psNewGridNo.value) = MAPROWCOLTOPOS(Math.trunc(pObject.EndedWithCollisionPosition.y / CELL_Y_SIZE), Math.trunc(pObject.EndedWithCollisionPosition.x / CELL_X_SIZE));
     }
 
     (pbLevel.value) = GET_OBJECT_LEVEL(pObject.EndedWithCollisionPosition.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[(psNewGridNo.value)].sHeight));
@@ -1489,7 +1489,7 @@ function CalculateLaunchItemBasicParams(pSoldier: SOLDIERTYPE, pItem: OBJECTTYPE
     // ATE: If we are a mortar, make sure we are at min.
     if (fMortar || fGLauncher) {
       // find min force
-      dMinForce = CalculateForceFromRange((sMinRange / 10), (Math.PI / 4));
+      dMinForce = CalculateForceFromRange(Math.trunc(sMinRange / 10), (Math.PI / 4));
 
       if (dMagForce < dMinForce) {
         dMagForce = dMinForce;
@@ -1674,13 +1674,13 @@ export function CalculateLaunchItemParamsForThrow(pSoldier: SOLDIERTYPE, sGridNo
 
     // scale if pyth spaces away is too far
     if (PythSpacesAway(sGridNo, pSoldier.sGridNo) < (bMaxRadius / 1.5)) {
-      bMaxRadius = PythSpacesAway(sGridNo, pSoldier.sGridNo) / 2;
+      bMaxRadius = Math.trunc(PythSpacesAway(sGridNo, pSoldier.sGridNo) / 2);
     }
 
     // Get radius
     fScale = (bMissBy / MAX_MISS_BY);
 
-    bMaxMissRadius = (bMaxRadius * fScale);
+    bMaxMissRadius = Math.trunc(bMaxRadius * fScale);
 
     // Limit max radius...
     if (bMaxMissRadius > 4) {
@@ -1839,7 +1839,7 @@ function AttemptToCatchObject(pObject: REAL_OBJECT): boolean {
 
   // OK, get chance to catch
   // base it on...? CC? Dexterity?
-  ubChanceToCatch = 50 + EffectiveDexterity(pSoldier) / 2;
+  ubChanceToCatch = 50 + Math.trunc(EffectiveDexterity(pSoldier) / 2);
 
   pObject.fCatchCheckDone = true;
 
@@ -2100,7 +2100,7 @@ function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadiu
       sY = sY * -1;
     }
 
-    leftmost = ((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
 
     sGridNo = sSweetGridNo + (WORLD_COLS * sY) + sX;
 

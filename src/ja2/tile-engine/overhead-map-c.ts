@@ -183,7 +183,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<ITE
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -229,7 +229,7 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -258,12 +258,12 @@ function DisplayMercNameInOverhead(pSoldier: SOLDIERTYPE): void {
   let sY: INT16;
 
   // Get Screen position of guy.....
-  ({ sScreenX: sWorldScreenX, sScreenY: sWorldScreenY } = GetWorldXYAbsoluteScreenXY((pSoldier.sX / CELL_X_SIZE), (pSoldier.sY / CELL_Y_SIZE)));
+  ({ sScreenX: sWorldScreenX, sScreenY: sWorldScreenY } = GetWorldXYAbsoluteScreenXY(Math.trunc(pSoldier.sX / CELL_X_SIZE), Math.trunc(pSoldier.sY / CELL_Y_SIZE)));
 
-  sWorldScreenX = gsStartRestrictedX + (sWorldScreenX / 5) + 5;
-  sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.sGridNo].sHeight / 5) - 8;
+  sWorldScreenX = gsStartRestrictedX + Math.trunc(sWorldScreenX / 5) + 5;
+  sWorldScreenY = gsStartRestrictedY + Math.trunc(sWorldScreenY / 5) + Math.trunc(pSoldier.sHeightAdjustment / 5) + Math.trunc(gpWorldLevelData[pSoldier.sGridNo].sHeight / 5) - 8;
 
-  sWorldScreenY += (gsRenderHeight / 5);
+  sWorldScreenY += Math.trunc(gsRenderHeight / 5);
 
   // Display name
   SetFont(TINYFONT1());
@@ -313,7 +313,7 @@ export function HandleOverheadMap(): void {
   RestoreBackgroundRects();
 
   // RENDER!!!!!!!!
-  RenderOverheadMap(0, (WORLD_COLS / 2), 0, 0, 640, 320, false);
+  RenderOverheadMap(0, Math.trunc(WORLD_COLS / 2), 0, 0, 640, 320, false);
 
   HandleTalkingAutoFaces();
 
@@ -539,7 +539,7 @@ function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
 
   sTileHeight = gpWorldLevelData[sGridNo].sHeight;
 
-  sModifiedTileHeight = (((sTileHeight / 80) - 1) * 80);
+  sModifiedTileHeight = ((Math.trunc(sTileHeight / 80) - 1) * 80);
 
   if (sModifiedTileHeight < 0) {
     sModifiedTileHeight = 0;
@@ -612,14 +612,14 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
         usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
 
         if (usTileIndex < GRIDSIZE) {
-          sHeight = (GetOffsetLandHeight(usTileIndex) / 5);
+          sHeight = Math.trunc(GetOffsetLandHeight(usTileIndex) / 5);
 
           pNode = gpWorldLevelData[usTileIndex].pLandStart;
           while (pNode != null) {
             pTile = gSmTileDB[pNode.usIndex];
 
             sX = sTempPosX_S;
-            sY = sTempPosY_S - sHeight + (gsRenderHeight / 5);
+            sY = sTempPosY_S - sHeight + Math.trunc(gsRenderHeight / 5);
 
             pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
@@ -678,8 +678,8 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
         usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
 
         if (usTileIndex < GRIDSIZE) {
-          sHeight = (GetOffsetLandHeight(usTileIndex) / 5);
-          sModifiedHeight = (GetModifiedOffsetLandHeight(usTileIndex) / 5);
+          sHeight = Math.trunc(GetOffsetLandHeight(usTileIndex) / 5);
+          sModifiedHeight = Math.trunc(GetModifiedOffsetLandHeight(usTileIndex) / 5);
 
           pNode = gpWorldLevelData[usTileIndex].pObjectHead;
           while (pNode != null) {
@@ -697,7 +697,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
                   sY -= sHeight;
                 }
 
-                sY += (gsRenderHeight / 5);
+                sY += Math.trunc(gsRenderHeight / 5);
 
                 pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
@@ -716,7 +716,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
               sX = sTempPosX_S;
               sY = sTempPosY_S - sHeight;
 
-              sY += (gsRenderHeight / 5);
+              sY += Math.trunc(gsRenderHeight / 5);
 
               pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
@@ -736,7 +736,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
                 pTile = gSmTileDB[pNode.usIndex];
 
                 sX = sTempPosX_S;
-                sY = sTempPosY_S - (gTileDatabase[pNode.usIndex].sOffsetHeight / 5);
+                sY = sTempPosY_S - Math.trunc(gTileDatabase[pNode.usIndex].sOffsetHeight / 5);
 
                 if (gTileDatabase[pNode.usIndex].uiFlags & IGNORE_WORLD_HEIGHT) {
                   sY -= sModifiedHeight;
@@ -744,7 +744,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
                   sY -= sHeight;
                 }
 
-                sY += (gsRenderHeight / 5);
+                sY += Math.trunc(gsRenderHeight / 5);
 
                 pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
@@ -806,7 +806,7 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
           usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
 
           if (usTileIndex < GRIDSIZE) {
-            sHeight = (GetOffsetLandHeight(usTileIndex) / 5);
+            sHeight = Math.trunc(GetOffsetLandHeight(usTileIndex) / 5);
 
             pNode = gpWorldLevelData[usTileIndex].pRoofHead;
             while (pNode != null) {
@@ -815,11 +815,11 @@ export function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, 
                   pTile = gSmTileDB[pNode.usIndex];
 
                   sX = sTempPosX_S;
-                  sY = sTempPosY_S - (gTileDatabase[pNode.usIndex].sOffsetHeight / 5) - sHeight;
+                  sY = sTempPosY_S - Math.trunc(gTileDatabase[pNode.usIndex].sOffsetHeight / 5) - sHeight;
 
-                  sY -= (WALL_HEIGHT / 5);
+                  sY -= Math.trunc(WALL_HEIGHT / 5);
 
-                  sY += (gsRenderHeight / 5);
+                  sY += Math.trunc(gsRenderHeight / 5);
 
                   pTile.vo.pShadeCurrent = gSmTileSurf[pTile.fType].vo.pShades[pNode.ubShadeLevel];
 
@@ -950,12 +950,12 @@ function RenderOverheadOverlays(): void {
       continue;
     }
 
-    sY -= (GetOffsetLandHeight(pSoldier.sGridNo) / 5);
+    sY -= Math.trunc(GetOffsetLandHeight(pSoldier.sGridNo) / 5);
 
     // Adjust for height...
-    sY -= (pSoldier.sHeightAdjustment / 5);
+    sY -= Math.trunc(pSoldier.sHeightAdjustment / 5);
 
-    sY += (gsRenderHeight / 5);
+    sY += Math.trunc(gsRenderHeight / 5);
 
     // Adjust shade a bit...
     SetObjectShade(hVObject, 0);
@@ -1021,9 +1021,9 @@ function RenderOverheadOverlays(): void {
       // adjust for position.
       // sX += 2;
       sY += 6;
-      sY -= (GetOffsetLandHeight(pWorldItem.sGridNo) / 5);
+      sY -= Math.trunc(GetOffsetLandHeight(pWorldItem.sGridNo) / 5);
 
-      sY += (gsRenderHeight / 5);
+      sY += Math.trunc(gsRenderHeight / 5);
 
       if (gfRadarCurrentGuyFlash) {
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
@@ -1283,9 +1283,9 @@ function GetOverheadScreenXYFromGridNo(sGridNo: INT16): { sScreenX: INT16, sScre
   let sScreenX: INT16;
   let sScreenY: INT16;
 
-  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((CenterX(sGridNo) / CELL_X_SIZE), (CenterY(sGridNo) / CELL_Y_SIZE)));
-  sScreenX /= 5;
-  sScreenY /= 5;
+  ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY(Math.trunc(CenterX(sGridNo) / CELL_X_SIZE), Math.trunc(CenterY(sGridNo) / CELL_Y_SIZE)));
+  sScreenX = Math.trunc(sScreenX / 5);
+  sScreenY = Math.trunc(sScreenY / 5);
 
   sScreenX += 5;
   sScreenY += 5;
@@ -1311,7 +1311,7 @@ export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
     ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
-    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS(Math.trunc(uiCellY / CELL_Y_SIZE), Math.trunc(uiCellX / CELL_X_SIZE));
 
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
@@ -1319,7 +1319,7 @@ export function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): boolean {
     ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
-    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS(Math.trunc(uiCellY / CELL_Y_SIZE), Math.trunc(uiCellX / CELL_X_SIZE));
 
     return true;
   } else {
@@ -1342,7 +1342,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
-    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS(Math.trunc(uiCellY / CELL_Y_SIZE), Math.trunc(uiCellX / CELL_X_SIZE));
 
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(psGridNo.value)].sHeight;
@@ -1350,7 +1350,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     ({ uiCellX, uiCellY } = GetFromAbsoluteScreenXYWorldXY(sWorldScreenX, sWorldScreenY));
 
     // Get gridNo
-    (psGridNo.value) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
+    (psGridNo.value) = MAPROWCOLTOPOS(Math.trunc(uiCellY / CELL_Y_SIZE), Math.trunc(uiCellX / CELL_X_SIZE));
 
     return true;
   } else {
@@ -1370,13 +1370,13 @@ export function CalculateRestrictedMapCoords(bDirection: INT8, sEndXS: INT16, sE
       sX1 = 0;
       sX2 = sEndXS;
       sY1 = 0;
-      sY2 = (Math.abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
+      sY2 = Math.trunc(Math.abs(NORMAL_MAP_SCREEN_TY - gsTLY) / 5);
       break;
 
     case Enum245.WEST:
 
       sX1 = 0;
-      sX2 = (Math.abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
+      sX2 = Math.trunc(Math.abs(-NORMAL_MAP_SCREEN_X - gsTLX) / 5);
       sY1 = 0;
       sY2 = sEndYS;
       break;
@@ -1385,13 +1385,13 @@ export function CalculateRestrictedMapCoords(bDirection: INT8, sEndXS: INT16, sE
 
       sX1 = 0;
       sX2 = sEndXS;
-      sY1 = (NORMAL_MAP_SCREEN_HEIGHT - Math.abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5;
+      sY1 = Math.trunc((NORMAL_MAP_SCREEN_HEIGHT - Math.abs(NORMAL_MAP_SCREEN_BY - gsBLY)) / 5);
       sY2 = sEndYS;
       break;
 
     case Enum245.EAST:
 
-      sX1 = (NORMAL_MAP_SCREEN_WIDTH - Math.abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5;
+      sX1 = Math.trunc((NORMAL_MAP_SCREEN_WIDTH - Math.abs(NORMAL_MAP_SCREEN_X - gsTRX)) / 5);
       sX2 = sEndXS;
       sY1 = 0;
       sY2 = sEndYS;

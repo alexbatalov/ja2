@@ -223,7 +223,7 @@ function GetDayCredits(usDayNumber: UINT32): UINT32 {
 
   while (pFinance) {
     // if a credit and it occurs on day passed
-    if ((pFinance.iAmount < 0) && ((pFinance.uiDate / (60 * 24)) == usDayNumber))
+    if ((pFinance.iAmount < 0) && (Math.trunc(pFinance.uiDate / (60 * 24)) == usDayNumber))
       uiCredits += ((pFinance.iAmount));
 
     // next finance record
@@ -239,7 +239,7 @@ function GetDayDebits(usDayNumber: UINT32): UINT32 {
   let pFinance: FinanceUnit | null = pFinanceListHead;
 
   while (pFinance) {
-    if ((pFinance.iAmount > 0) && ((pFinance.uiDate / (60 * 24)) == usDayNumber))
+    if ((pFinance.iAmount > 0) && (Math.trunc(pFinance.uiDate / (60 * 24)) == usDayNumber))
       uiDebits += ((pFinance.iAmount));
 
     // next finance record
@@ -255,7 +255,7 @@ function GetTotalToDay(sTimeInMins: INT32): INT32 {
   let pFinance: FinanceUnit | null = pFinanceListHead;
 
   while (pFinance) {
-    if (((pFinance.uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
+    if ((Math.trunc(pFinance.uiDate / (60 * 24)) <= Math.trunc(sTimeInMins / (24 * 60))))
       uiTotal += ((pFinance.iAmount));
 
     // next finance record
@@ -266,7 +266,7 @@ function GetTotalToDay(sTimeInMins: INT32): INT32 {
 }
 function GetYesterdaysIncome(): INT32 {
   // get income for yesterday
-  return GetDayDebits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
+  return GetDayDebits(Math.trunc((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(Math.trunc((GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
 }
 
 export function GetCurrentBalance(): INT32 {
@@ -308,7 +308,7 @@ function GetProjectedBalance(): INT32 {
 
 function GetConfidenceValue(): INT32 {
   // return confidence that the projected income is infact correct
-  return (GetWorldMinutesInDay() * 100) / (60 * 24);
+  return Math.trunc((GetWorldMinutesInDay() * 100) / (60 * 24));
 }
 
 export function GameInitFinances(): void {
@@ -625,7 +625,7 @@ function DrawRecordsText(): void {
   // loop through record list
   for (iCounter; iCounter < NUM_RECORDS_PER_PAGE; iCounter++) {
     // get and write the date
-    sString = swprintf("%d", (<FinanceUnit>pCurFinance).uiDate / (24 * 60));
+    sString = swprintf("%d", Math.trunc((<FinanceUnit>pCurFinance).uiDate / (24 * 60)));
 
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT()));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT()) + 6)), sString);
@@ -1473,7 +1473,7 @@ function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
   FileClose(hFileHandle);
 
   // file size -1 / sizeof record in bytes is id
-  return (iFileSize - 1) / (4 + 4 + 1 + 1 + 4);
+  return Math.trunc((iFileSize - 1) / (4 + 4 + 1 + 1 + 4));
 }
 
 function SetLastPageInRecords(): void {
@@ -1505,7 +1505,7 @@ function SetLastPageInRecords(): void {
   // done with file, close it
   FileClose(hFileHandle);
 
-  guiLastPageInRecordsList = (ReadInLastElementOfFinanceListAndReturnIdNumber() - 1) / NUM_RECORDS_PER_PAGE;
+  guiLastPageInRecordsList = Math.trunc((ReadInLastElementOfFinanceListAndReturnIdNumber() - 1) / NUM_RECORDS_PER_PAGE);
 
   return;
 }
@@ -1585,7 +1585,7 @@ function LoadInRecords(uiPage: UINT32): boolean {
   }
 
   // is the file long enough?
-  if ((FileGetSize(hFileHandle) - 4 - 1) / (NUM_RECORDS_PER_PAGE * (4 + 4 + 1 + 1 + 4)) + 1 < uiPage) {
+  if (Math.trunc((FileGetSize(hFileHandle) - 4 - 1) / (NUM_RECORDS_PER_PAGE * (4 + 4 + 1 + 1 + 4))) + 1 < uiPage) {
     // nope
     FileClose(hFileHandle);
     return false;
@@ -1779,13 +1779,13 @@ function GetPreviousDaysBalance(): INT32 {
     iBalanceToDate = buffer.readInt32LE(10);
 
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
       fOkToContinue = true;
     }
 
-    if (iDateInMinutes / (24 * 60) >= 2) {
+    if (Math.trunc(iDateInMinutes / (24 * 60)) >= 2) {
       // there are no entries for the previous day
-      if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
+      if (Math.trunc(uiDate / (24 * 60)) < Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
         fGoneTooFar = true;
       }
     } else {
@@ -1863,7 +1863,7 @@ function GetTodaysBalance(): INT32 {
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       fOkToContinue = true;
     }
 
@@ -1944,16 +1944,16 @@ function GetPreviousDaysIncome(): INT32 {
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
       fOkToContinue = true;
     }
 
     // there are no entries for the previous day
-    if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
+    if (Math.trunc(uiDate / (24 * 60)) < Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
       fGoneTooFar = true;
     }
 
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
       fOkToIncrement = true;
     }
@@ -2033,11 +2033,11 @@ function GetTodaysDaysIncome(): INT32 {
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       fOkToContinue = true;
     }
 
-    if ((uiDate / (24 * 60)) > (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) > Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
       fOkToIncrement = true;
     }
@@ -2150,11 +2150,11 @@ function GetTodaysOtherDeposits(): INT32 {
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       fOkToContinue = true;
     }
 
-    if ((uiDate / (24 * 60)) > (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) > Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
       fOkToIncrement = true;
     }
@@ -2241,16 +2241,16 @@ function GetYesterdaysOtherDeposits(): INT32 {
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
       fOkToContinue = true;
     }
 
     // there are no entries for the previous day
-    if ((uiDate / (24 * 60)) < (iDateInMinutes / (24 * 60)) - 2) {
+    if (Math.trunc(uiDate / (24 * 60)) < Math.trunc(iDateInMinutes / (24 * 60)) - 2) {
       fGoneTooFar = true;
     }
 
-    if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 1) {
+    if (Math.trunc(uiDate / (24 * 60)) == Math.trunc(iDateInMinutes / (24 * 60)) - 1) {
       // now ok to increment amount
       fOkToIncrement = true;
     }

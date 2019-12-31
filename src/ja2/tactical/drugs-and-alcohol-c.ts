@@ -146,11 +146,11 @@ export function ApplyDrugs(pSoldier: SOLDIERTYPE, pObject: OBJECTTYPE): boolean 
   } else {
     if (ubDrugType == DRUG_TYPE_REGENERATION) {
       // each use of a regen booster over 1, each day, reduces the effect
-      bRegenPointsGained = REGEN_POINTS_PER_BOOSTER * pObject.bStatus[0] / 100;
+      bRegenPointsGained = Math.trunc(REGEN_POINTS_PER_BOOSTER * pObject.bStatus[0] / 100);
       // are there fractional %s left over?
-      if ((pObject.bStatus[0] % (100 / REGEN_POINTS_PER_BOOSTER)) != 0) {
+      if ((pObject.bStatus[0] % Math.trunc(100 / REGEN_POINTS_PER_BOOSTER)) != 0) {
         // chance of an extra point
-        if (PreRandom(100 / REGEN_POINTS_PER_BOOSTER) < (pObject.bStatus[0] % (100 / REGEN_POINTS_PER_BOOSTER))) {
+        if (PreRandom(Math.trunc(100 / REGEN_POINTS_PER_BOOSTER)) < (pObject.bStatus[0] % Math.trunc(100 / REGEN_POINTS_PER_BOOSTER))) {
           bRegenPointsGained++;
         }
       }
@@ -216,7 +216,7 @@ export function HandleEndTurnDrugAdjustments(pSoldier: SOLDIERTYPE): void {
         pSoldier.bDrugEffectRate[cnt] = 0;
 
         // Once for each 'level' of crash....
-        iNumLoops = (pSoldier.bDrugSideEffect[cnt] / ubDrugSideEffect[cnt]) + 1;
+        iNumLoops = Math.trunc(pSoldier.bDrugSideEffect[cnt] / ubDrugSideEffect[cnt]) + 1;
 
         for (cnt2 = 0; cnt2 < iNumLoops; cnt2++) {
           // OK, give a much BIGGER morale downer
@@ -346,7 +346,7 @@ export function GetDrunkLevel(pSoldier: SOLDIERTYPE): INT8 {
   }
 
   // Calculate how many dinks we have had....
-  bNumDrinks = (pSoldier.bDrugEffect[DRUG_TYPE_ALCOHOL] / ubDrugEffect[DRUG_TYPE_ALCOHOL]);
+  bNumDrinks = Math.trunc(pSoldier.bDrugEffect[DRUG_TYPE_ALCOHOL] / ubDrugEffect[DRUG_TYPE_ALCOHOL]);
 
   if (bNumDrinks <= 3) {
     return FEELING_GOOD;
@@ -358,7 +358,7 @@ export function GetDrunkLevel(pSoldier: SOLDIERTYPE): INT8 {
 }
 
 export function EffectStatForBeingDrunk(pSoldier: SOLDIERTYPE, iStat: INT32): INT32 {
-  return iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100;
+  return Math.trunc(iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100);
 }
 
 export function MercUnderTheInfluence(pSoldier: SOLDIERTYPE): boolean {

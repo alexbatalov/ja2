@@ -12,7 +12,7 @@ export function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: 
 
 export function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   pusUseIndex.value = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
-  pusObjIndex.value = Enum313.FIRSTDOOR + gubDoorUIValue / 2;
+  pusObjIndex.value = Enum313.FIRSTDOOR + Math.trunc(gubDoorUIValue / 2);
 }
 
 export function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
@@ -50,7 +50,7 @@ function CalcSmartDoorIndex(usWallOrientation: UINT16): UINT16 {
 }
 
 function CalcSmartDoorType(): UINT16 {
-  return (Enum313.FIRSTDOOR + gubDoorUIValue / 2);
+  return (Enum313.FIRSTDOOR + Math.trunc(gubDoorUIValue / 2));
 }
 
 function CalcSmartBrokenWallIndex(usWallOrientation: UINT16): UINT16 {

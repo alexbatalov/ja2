@@ -187,11 +187,11 @@ const SBEHIND_RATIO = 0;
 const BEHIND_RATIO = 0;
 
 // looking distance defines
-export const BEHIND = (BEHIND_RATIO * STRAIGHT_RANGE);
-export const SBEHIND = (SBEHIND_RATIO * STRAIGHT_RANGE);
-export const SIDE = (SIDE_RATIO * STRAIGHT_RANGE);
-export const ANGLE = (ANGLE_RATIO * STRAIGHT_RANGE);
-export const STRAIGHT = (STRAIGHT_RATIO * STRAIGHT_RANGE);
+export const BEHIND = Math.trunc(BEHIND_RATIO * STRAIGHT_RANGE);
+export const SBEHIND = Math.trunc(SBEHIND_RATIO * STRAIGHT_RANGE);
+export const SIDE = Math.trunc(SIDE_RATIO * STRAIGHT_RANGE);
+export const ANGLE = Math.trunc(ANGLE_RATIO * STRAIGHT_RANGE);
+export const STRAIGHT = Math.trunc(STRAIGHT_RATIO * STRAIGHT_RANGE);
 
 // opplist value constants
 const HEARD_3_TURNS_AGO = -4;

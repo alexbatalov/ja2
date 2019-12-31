@@ -104,7 +104,7 @@ export function HireMerc(pHireMerc: MERC_HIRE_STRUCT): INT8 {
 
   if (DidGameJustStart()) {
     // Set time of initial merc arrival in minutes
-    pHireMerc.uiTimeTillMercArrives = (STARTING_TIME + FIRST_ARRIVAL_DELAY) / NUM_SEC_IN_MIN;
+    pHireMerc.uiTimeTillMercArrives = Math.trunc((STARTING_TIME + FIRST_ARRIVAL_DELAY) / NUM_SEC_IN_MIN);
 
 // ATE: Insert for demo , not using the heli sequence....
     // Set insertion for first time in chopper
@@ -432,7 +432,7 @@ function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sCols: INT16;
   let sResult: INT16;
 
-  sRows = Math.abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
+  sRows = Math.abs(Math.trunc(sOrigin / MAP_WORLD_X) - Math.trunc(sDest / MAP_WORLD_X));
   sCols = Math.abs((sOrigin % MAP_WORLD_X) - (sDest % MAP_WORLD_X));
 
   // apply Pythagoras's theorem for right-handed triangle:
@@ -482,7 +482,7 @@ function CheckForValidArrivalSector(): void {
   sRight = ubRadius;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSectorGridNo + (MAP_WORLD_X * cnt1)) / MAP_WORLD_X) * MAP_WORLD_X;
+    leftmost = Math.trunc((sSectorGridNo + (MAP_WORLD_X * cnt1)) / MAP_WORLD_X) * MAP_WORLD_X;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sSectorGridNo2 = sSectorGridNo + (MAP_WORLD_X * cnt1) + cnt2;

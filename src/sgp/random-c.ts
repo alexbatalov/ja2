@@ -31,7 +31,7 @@ export function PreRandom(uiRange: UINT32): UINT32 {
   if (!uiRange)
     return 0;
   // Extract the current pregenerated number
-  uiNum = guiPreRandomNums[guiPreRandomIndex] * uiRange / RAND_MAX % uiRange;
+  uiNum = Math.trunc(guiPreRandomNums[guiPreRandomIndex] * uiRange / RAND_MAX) % uiRange;
   // Replace the current pregenerated number with a new one.
 
   // This was removed in the name of optimization.  Uncomment if you hate recycling.

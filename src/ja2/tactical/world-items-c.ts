@@ -1,28 +1,24 @@
 namespace ja2 {
 
 // Global dynamic array of all of the items in a loaded map.
-export let gWorldItems: WORLDITEM[] /* Pointer<WORLDITEM> */ = <WORLDITEM[]><unknown>null;
+export let gWorldItems: WORLDITEM[] /* Pointer<WORLDITEM> */ = [];
 export let guiNumWorldItems: UINT32 = 0;
 
-export let gWorldBombs: WORLDBOMB[] /* Pointer<WORLDBOMB> */ = <WORLDBOMB[]><unknown>null;
+export let gWorldBombs: WORLDBOMB[] /* Pointer<WORLDBOMB> */ = [];
 export let guiNumWorldBombs: UINT32 = 0;
 
 function GetFreeWorldBombIndex(): INT32 {
   let uiCount: UINT32;
   let newWorldBombs: WORLDBOMB[];
-  let uiOldNumWorldBombs: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
     if (gWorldBombs[uiCount].fExists == false)
       return uiCount;
   }
 
-  uiOldNumWorldBombs = guiNumWorldBombs;
   guiNumWorldBombs += 10;
   // Allocate new table with max+10 items.
-  newWorldBombs = gWorldBombs.concat(createArrayFrom(10, createWorldBomb));
-
-  gWorldBombs = newWorldBombs;
+  gWorldBombs.push(...createArrayFrom(10, createWorldBomb));
 
   // Return uiCount.....
   return uiCount;
@@ -157,20 +153,15 @@ export function FindPanicBombsAndTriggers(): void {
 
 function GetFreeWorldItemIndex(): INT32 {
   let uiCount: UINT32;
-  let newWorldItems: WORLDITEM[];
-  let uiOldNumWorldItems: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
     if (gWorldItems[uiCount].fExists == false)
       return uiCount;
   }
 
-  uiOldNumWorldItems = guiNumWorldItems;
   guiNumWorldItems += 10;
   // Allocate new table with max+10 items.
-  newWorldItems = gWorldItems.concat(createArrayFrom(10, createWorldItem));
-
-  gWorldItems = newWorldItems;
+  gWorldItems.push(...createArrayFrom(10, createWorldItem));
 
   // Return uiCount.....
   return uiCount;
@@ -246,11 +237,11 @@ export function TrashWorldItems(): void {
         RemoveItemFromPool(gWorldItems[i].sGridNo, i, gWorldItems[i].ubLevel);
       }
     }
-    gWorldItems = <WORLDITEM[]><unknown>null;
+    gWorldItems.length = 0;
     guiNumWorldItems = 0;
   }
   if (gWorldBombs) {
-    gWorldBombs = <WORLDBOMB[]><unknown>null;
+    gWorldBombs.length = 0;
     guiNumWorldBombs = 0;
   }
 }
@@ -324,7 +315,7 @@ export function LoadWorldItemsFromMap(buffer: Buffer, offset: number): number {
               if (usReplacement) {
                 // everything else can be the same? no.
                 bAmmo = dummyItem.o.ubGunShotsLeft;
-                bNewAmmo = (Weapon[usReplacement].ubMagSize * bAmmo) / Weapon[dummyItem.o.usItem].ubMagSize;
+                bNewAmmo = Math.trunc((Weapon[usReplacement].ubMagSize * bAmmo) / Weapon[dummyItem.o.usItem].ubMagSize);
                 if (bAmmo > 0 && bNewAmmo == 0) {
                   bNewAmmo = 1;
                 }
@@ -340,7 +331,7 @@ export function LoadWorldItemsFromMap(buffer: Buffer, offset: number): number {
 
                 // go through status values and scale up/down
                 for (ubLoop = 0; ubLoop < dummyItem.o.ubNumberOfObjects; ubLoop++) {
-                  dummyItem.o.bStatus[ubLoop] = dummyItem.o.bStatus[ubLoop] * Magazine[Item[usReplacement].ubClassIndex].ubMagSize / Magazine[Item[dummyItem.o.usItem].ubClassIndex].ubMagSize;
+                  dummyItem.o.bStatus[ubLoop] = Math.trunc(dummyItem.o.bStatus[ubLoop] * Magazine[Item[usReplacement].ubClassIndex].ubMagSize / Magazine[Item[dummyItem.o.usItem].ubClassIndex].ubMagSize);
                 }
 
                 // then replace item #

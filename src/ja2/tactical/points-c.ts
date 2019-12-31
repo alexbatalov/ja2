@@ -87,7 +87,7 @@ export function TerrainActionPoints(pSoldier: SOLDIERTYPE, sGridno: INT16, bDir:
   }
 
   if (bDir & 1) {
-    sAPCost = (sAPCost * 14) / 10;
+    sAPCost = Math.trunc((sAPCost * 14) / 10);
   }
 
   return sAPCost;
@@ -165,7 +165,7 @@ export function TerrainBreathPoints(pSoldier: SOLDIERTYPE, sGridno: INT16, bDir:
       return 0;
   }
 
-  iPoints = iPoints * BreathPointAdjustmentForCarriedWeight(pSoldier) / 100;
+  iPoints = Math.trunc(iPoints * BreathPointAdjustmentForCarriedWeight(pSoldier) / 100);
 
   // ATE - MAKE MOVEMENT ALWAYS WALK IF IN WATER
   if (gpWorldLevelData[sGridno].ubTerrainID == Enum315.DEEP_WATER || gpWorldLevelData[sGridno].ubTerrainID == Enum315.MED_WATER || gpWorldLevelData[sGridno].ubTerrainID == Enum315.LOW_WATER) {
@@ -237,7 +237,7 @@ export function ActionPointCost(pSoldier: SOLDIERTYPE, sGridNo: INT16, bDir: INT
       case Enum193.RUNNING:
       case Enum193.ADULTMONSTER_WALKING:
       case Enum193.BLOODCAT_RUN:
-        sPoints = ((sTileCost / RUNDIVISOR));
+        sPoints = (Math.trunc(sTileCost / RUNDIVISOR));
         break;
 
       case Enum193.CROW_FLY:
@@ -304,7 +304,7 @@ export function EstimateActionPointCost(pSoldier: SOLDIERTYPE, sGridNo: INT16, b
       case Enum193.RUNNING:
       case Enum193.ADULTMONSTER_WALKING:
       case Enum193.BLOODCAT_RUN:
-        sPoints = ((sTileCost / RUNDIVISOR));
+        sPoints = (Math.trunc(sTileCost / RUNDIVISOR));
         break;
 
       case Enum193.CROW_FLY:
@@ -471,14 +471,14 @@ export function DeductPoints(pSoldier: SOLDIERTYPE, sAPCost: INT16, sBPCost: INT
     }
 
     // Get new breath
-    bNewBreath = (pSoldier.bBreathMax - (pSoldier.sBreathRed / 100));
+    bNewBreath = (pSoldier.bBreathMax - Math.trunc(pSoldier.sBreathRed / 100));
 
     if (bNewBreath > 100) {
       bNewBreath = 100;
     }
     if (bNewBreath < 0) {
       // Take off 1 AP per 5 breath... rem adding a negative subtracts
-      pSoldier.bActionPoints += (bNewBreath / 5);
+      pSoldier.bActionPoints += Math.trunc(bNewBreath / 5);
       if (pSoldier.bActionPoints < 0) {
         pSoldier.bActionPoints = 0;
       }
@@ -517,11 +517,11 @@ function AdjustBreathPts(pSold: SOLDIERTYPE, sBPCost: INT16): INT16 {
   // adjust breath factor for current life deficiency (but add 1/2 bandaging)
   ubBandaged = pSold.bLifeMax - pSold.bLife - pSold.bBleeding;
   // sBreathFactor += (pSold->bLifeMax - (pSold->bLife + (ubBandaged / 2)));
-  sBreathFactor += 100 * (pSold.bLifeMax - (pSold.bLife + (ubBandaged / 2))) / pSold.bLifeMax;
+  sBreathFactor += Math.trunc(100 * (pSold.bLifeMax - (pSold.bLife + Math.trunc(ubBandaged / 2))) / pSold.bLifeMax);
 
   if (pSold.bStrength > 80) {
     // give % reduction to breath costs for high strength mercs
-    sBreathFactor -= (pSold.bStrength - 80) / 2;
+    sBreathFactor -= Math.trunc((pSold.bStrength - 80) / 2);
   }
 
   /*	THIS IS OLD JAGGED ALLIANCE STUFF (left for possible future reference)
@@ -546,10 +546,10 @@ function AdjustBreathPts(pSold: SOLDIERTYPE, sBPCost: INT16): INT16 {
     sBPCost = 0;
   } else if (sBPCost > 0) // breath DECREASE
     // increase breath COST by breathFactor
-    sBPCost = ((sBPCost * sBreathFactor) / 100);
+    sBPCost = Math.trunc((sBPCost * sBreathFactor) / 100);
   else // breath INCREASE
     // decrease breath GAIN by breathFactor
-    sBPCost = ((sBPCost * 100) / sBreathFactor);
+    sBPCost = Math.trunc((sBPCost * 100) / sBreathFactor);
 
   return sBPCost;
 }
@@ -585,7 +585,7 @@ export function UnusedAPsToBreath(pSold: SOLDIERTYPE): void {
     sBreathPerAP = GetBreathPerAP(pSold, pSold.usAnimState);
 
     // adjust for carried weight
-    sBreathPerAP = sBreathPerAP * 100 / BreathPointAdjustmentForCarriedWeight(pSold);
+    sBreathPerAP = Math.trunc(sBreathPerAP * 100 / BreathPointAdjustmentForCarriedWeight(pSold));
 
     // If this value is -ve, we have a gain, else we have a loos which we should not really do
     // We just want to limit this to no gain if we were doing stuff...
@@ -643,7 +643,7 @@ export function UnusedAPsToBreath(pSold: SOLDIERTYPE): void {
       }
 
       // adjust for carried weight
-      sBreathPerAP = sBreathPerAP * 100 / BreathPointAdjustmentForCarriedWeight(pSold);
+      sBreathPerAP = Math.trunc(sBreathPerAP * 100 / BreathPointAdjustmentForCarriedWeight(pSold));
 
       sBreathChange = (AP_MAXIMUM - sUnusedAPs) * sBreathPerAP;
     } else {
@@ -733,9 +733,9 @@ export function CalcAPsToBurst(bBaseActionPoints: INT8, pObj: OBJECTTYPE): UINT8
 
     bAttachPos = FindAttachment(pObj, Enum225.SPRING_AND_BOLT_UPGRADE);
     if (bAttachPos != -1) {
-      return (Math.max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM) * 100) / (100 + pObj.bAttachStatus[bAttachPos] / 5);
+      return Math.trunc((Math.max(3, Math.trunc((AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM)) * 100) / (100 + Math.trunc(pObj.bAttachStatus[bAttachPos] / 5)));
     } else {
-      return Math.max(3, (AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM);
+      return Math.max(3, Math.trunc((AP_BURST * bBaseActionPoints + (AP_MAXIMUM - 1)) / AP_MAXIMUM));
     }
   }
 }
@@ -890,7 +890,7 @@ function CalcAimSkill(pSoldier: SOLDIERTYPE, usWeapon: UINT16): INT8 {
   // if ( Item[ usInHand ].usItemClass == IC_BLADE )
   {
     // KNIVES: modify aiming cost by avg of attacker's DEXTERITY & AGILITY
-    bAimSkill = (EffectiveDexterity(pSoldier) + EffectiveAgility(pSoldier)) / 2;
+    bAimSkill = (EffectiveDexterity(pSoldier) + Math.trunc(EffectiveAgility(pSoldier)) / 2);
     // return( 4 );
   }
   return bAimSkill;
@@ -910,17 +910,17 @@ export function BaseAPsToShootOrStab(bAPs: INT8, bAimSkill: INT8, pObj: OBJECTTY
   // Shots per turn rating is for max. aimSkill(100), drops down to 1/2 at = 0
   // DIVIDE BY 4 AT THE END HERE BECAUSE THE SHOTS PER TURN IS NOW QUADRUPLED!
   // NB need to define shots per turn for ALL Weapons then.
-  sBottom = ((50 + (bAimSkill / 2)) * Weapon[pObj.usItem].ubShotsPer4Turns) / 4;
+  sBottom = Math.trunc(((50 + Math.trunc(bAimSkill / 2)) * Weapon[pObj.usItem].ubShotsPer4Turns) / 4);
 
   bAttachPos = FindAttachment(pObj, Enum225.SPRING_AND_BOLT_UPGRADE);
   if (bAttachPos != -1) {
-    sBottom = (sBottom * (100 + pObj.bAttachStatus[bAttachPos] / 5)) / 100;
+    sBottom = Math.trunc((sBottom * (100 + Math.trunc(pObj.bAttachStatus[bAttachPos] / 5))) / 100);
   }
 
   // add minimum aiming time to the overall minimum AP_cost
   //     This here ROUNDS UP fractions of 0.5 or higher using integer math
   //     This works because 'top' is 2x what it really should be throughout
-  return (((100 * sTop) / sBottom) + 1) / 2;
+  return Math.trunc((Math.trunc((100 * sTop) / sBottom) + 1) / 2);
 }
 
 export function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurningCost: UINT8): { fAddingTurningCost: boolean, fAddingRaiseGunCost: boolean } {
@@ -1664,12 +1664,12 @@ export function MinAPsToThrow(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubAddTurnin
   // tosses per turn is for max dexterity, drops down to 1/2 at dexterity = 0
   // bottom = (TOSSES_PER_10TURNS * (50 + (ptr->dexterity / 2)) / 10);
   // else
-  iBottom = (TOSSES_PER_10TURNS * (50 + (pSoldier.bDexterity / 2)) / 10);
+  iBottom = Math.trunc(TOSSES_PER_10TURNS * (50 + Math.trunc(pSoldier.bDexterity / 2)) / 10);
 
   // add minimum aiming time to the overall minimum AP_cost
   //     This here ROUNDS UP fractions of 0.5 or higher using integer math
   //     This works because 'top' is 2x what it really should be throughout
-  iAPCost += (((100 * iTop) / iBottom) + 1) / 2;
+  iAPCost += Math.trunc((Math.trunc((100 * iTop) / iBottom) + 1) / 2);
 
   // the minimum AP cost of ANY throw can NEVER be more than merc has APs!
   if (iAPCost > iFullAPs)

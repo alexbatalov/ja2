@@ -28,7 +28,7 @@ function readStringSaveStruct(o: StringSaveStruct, buffer: Buffer, offset: numbe
   o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
   offset = readUIntArray(o.uiPadding, buffer, offset, 4);
   o.usColor = buffer.readUInt16LE(offset); offset += 2;
-  o.fBeginningOfNewString = Boolean(buffer.readUInt32LE(offset));
+  o.fBeginningOfNewString = Boolean(buffer.readUInt8(offset++));
   offset++; // padding
   return offset;
 }
@@ -40,7 +40,7 @@ function writeStringSaveStruct(o: StringSaveStruct, buffer: Buffer, offset: numb
   offset = writeUIntArray(o.uiPadding, buffer, offset, 4);
   offset = buffer.writeUInt16LE(o.usColor, offset);
   offset = buffer.writeUInt8(Number(o.fBeginningOfNewString), offset);
-  buffer.fill(0, offset, offset + 1); offset++; // padding
+  offset = writePadding(buffer, offset, 1); // padding
   return offset;
 }
 
@@ -240,8 +240,6 @@ export function ClearDisplayedListOfTacticalStrings(): void {
 
       // Remove our sorry ass
       RemoveStringVideoOverlay(gpDisplayList[cnt]);
-      MemFree(gpDisplayList[cnt].pString16);
-      MemFree(gpDisplayList[cnt]);
 
       // Free slot
       gpDisplayList[cnt] = <ScrollStringSt><unknown>null;
@@ -290,7 +288,7 @@ export function ScrollString(): void {
   }
 
   if ((iNumberOfMessagesOnQueue * 1000) >= iMaxAge) {
-    iNumberOfMessagesOnQueue = (iMaxAge / 1000);
+    iNumberOfMessagesOnQueue = Math.trunc(iMaxAge / 1000);
   } else if (iNumberOfMessagesOnQueue < 0) {
     iNumberOfMessagesOnQueue = 0;
   }
@@ -305,8 +303,6 @@ export function ScrollString(): void {
       if ((suiTimer - gpDisplayList[cnt].uiTimeOfLastUpdate) > (iMaxAge - (1000 * iNumberOfMessagesOnQueue))) {
         // Remove our sorry ass
         RemoveStringVideoOverlay(gpDisplayList[cnt]);
-        MemFree(gpDisplayList[cnt].pString16);
-        MemFree(gpDisplayList[cnt]);
 
         // Free slot
         gpDisplayList[cnt] = <ScrollStringSt><unknown>null;
@@ -775,12 +771,6 @@ function AddStringToMapScreenMessageList(pString: string /* STR16 */, usColor: U
 
   // always store the new message at the END index
 
-  // check if slot is being used, if so, clear it up
-  if (gMapScreenMessageList[gubEndOfMapScreenMessageList] != null) {
-    MemFree(gMapScreenMessageList[gubEndOfMapScreenMessageList].pString16);
-    MemFree(gMapScreenMessageList[gubEndOfMapScreenMessageList]);
-  }
-
   // store the new message there
   gMapScreenMessageList[gubEndOfMapScreenMessageList] = pStringSt;
 
@@ -1098,8 +1088,8 @@ export function ClearTacticalMessageQueue(): void {
   while (pStringSt) {
     pOtherStringSt = pStringSt;
     pStringSt = pStringSt.pNext;
-    MemFree(pOtherStringSt.pString16);
-    MemFree(pOtherStringSt);
+    pOtherStringSt.pString16 = '';
+    pOtherStringSt = null;
   }
 
   pStringS = null;
@@ -1131,8 +1121,8 @@ export function FreeGlobalMessageList(): void {
   for (iCounter = 0; iCounter < 256; iCounter++) {
     // check if next unit is empty, if not...clear it up
     if (gMapScreenMessageList[iCounter] != null) {
-      MemFree(gMapScreenMessageList[iCounter].pString16);
-      MemFree(gMapScreenMessageList[iCounter]);
+      gMapScreenMessageList[iCounter].pString16 = '';
+      gMapScreenMessageList[iCounter] = <ScrollStringSt><unknown>null;
     }
   }
 

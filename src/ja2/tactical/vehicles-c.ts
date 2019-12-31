@@ -1392,7 +1392,7 @@ export function RepairVehicle(iVehicleId: INT32, bRepairPtsLeft: INT8, pfNothing
   bOldLife = pVehicleSoldier.bLife;
 
   // Repair
-  pVehicleSoldier.bLife += (bRepairPtsLeft / VEHICLE_REPAIR_POINTS_DIVISOR);
+  pVehicleSoldier.bLife += Math.trunc(bRepairPtsLeft / VEHICLE_REPAIR_POINTS_DIVISOR);
 
   // Check
   if (pVehicleSoldier.bLife > pVehicleSoldier.bLifeMax) {

@@ -739,8 +739,8 @@ export function GetScreenXYFromMapXY(sMapX: INT16, sMapY: INT16): { sX: INT16, s
   let sXTempOff: INT16 = 1;
   let sYTempOff: INT16 = 1;
   if (fZoomFlag) {
-    sX = ((sMapX / 2 + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
-    sY = ((sMapY / 2 + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
+    sX = ((Math.trunc(sMapX / 2) + sXTempOff) * MAP_GRID_ZOOM_X) + MAP_VIEW_START_X;
+    sY = ((Math.trunc(sMapY / 2) + sYTempOff) * MAP_GRID_ZOOM_Y) + MAP_VIEW_START_Y;
   } else {
     sX = (sMapX * MAP_GRID_X) + MAP_VIEW_START_X;
     sY = (sMapY * MAP_GRID_Y) + MAP_VIEW_START_Y;
@@ -795,11 +795,11 @@ function ShowTownText(): void {
       }
 
       if (!fZoomFlag) {
-        usX = (MAP_VIEW_START_X + MAP_GRID_X + (pTownPoints[bTown].x * MAP_GRID_X) / 10);
-        usY = (MAP_VIEW_START_Y + MAP_GRID_Y + ((pTownPoints[bTown].y * MAP_GRID_Y) / 10) + 1);
+        usX = (MAP_VIEW_START_X + MAP_GRID_X + Math.trunc((pTownPoints[bTown].x * MAP_GRID_X) / 10));
+        usY = (MAP_VIEW_START_Y + MAP_GRID_Y + Math.trunc((pTownPoints[bTown].y * MAP_GRID_Y) / 10) + 1);
       } else {
-        usX = (MAP_VIEW_START_X + MAP_GRID_X + MAP_GRID_ZOOM_X - iZoomX + (pTownPoints[bTown].x * MAP_GRID_ZOOM_X) / 10);
-        usY = (MAP_VIEW_START_Y + MAP_GRID_Y + MAP_GRID_ZOOM_Y - iZoomY + ((pTownPoints[bTown].y * MAP_GRID_ZOOM_Y) / 10) + 1);
+        usX = (MAP_VIEW_START_X + MAP_GRID_X + MAP_GRID_ZOOM_X - iZoomX + Math.trunc((pTownPoints[bTown].x * MAP_GRID_ZOOM_X) / 10));
+        usY = (MAP_VIEW_START_Y + MAP_GRID_Y + MAP_GRID_ZOOM_Y - iZoomY + Math.trunc((pTownPoints[bTown].y * MAP_GRID_ZOOM_Y) / 10) + 1);
         //			usX = 2 * pTownPoints[ bTown  ].x - iZoomX - MAP_VIEW_START_X + MAP_GRID_X;
         //			usY = 2 * pTownPoints[ bTown  ].y - iZoomY - MAP_VIEW_START_Y + MAP_GRID_Y;
       }
@@ -830,7 +830,7 @@ function DrawTownLabels(pString: string /* STR16 */, pStringA: string /* STR16 *
   ClipBlitsToMapViewRegion();
 
   // we're CENTERING the first string AROUND usFirstX, so calculate the starting X
-  usFirstX -= StringPixLength(pString, MAP_FONT()) / 2;
+  usFirstX -= Math.trunc(StringPixLength(pString, MAP_FONT()) / 2);
 
   // print first string
   gprintfdirty(usFirstX, usFirstY, pString);
@@ -1885,11 +1885,11 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
         fSpeedFlag = true;
       if (!fZoomFlag) {
         iX = (pNode.uiSectorId % MAP_WORLD_X);
-        iY = (pNode.uiSectorId / MAP_WORLD_X);
+        iY = Math.trunc(pNode.uiSectorId / MAP_WORLD_X);
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), Math.trunc((pNode.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
@@ -2228,11 +2228,11 @@ function TracePathRoute(fCheckFlag: boolean, fForceUpDate: boolean, pPath: PathS
     } else {
       if (!fZoomFlag) {
         iX = (pNode.uiSectorId % MAP_WORLD_X);
-        iY = (pNode.uiSectorId / MAP_WORLD_X);
+        iY = Math.trunc(pNode.uiSectorId / MAP_WORLD_X);
         iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
         iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
       } else {
-        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
+        ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), Math.trunc((pNode.uiSectorId / MAP_WORLD_X))));
         iY = sY - MAP_GRID_Y;
         iX = sX - MAP_GRID_X;
       }
@@ -2447,7 +2447,7 @@ function RestoreArrowBackgroundsForTrace(iArrow: INT32, iArrowX: INT32, iArrowY:
   }
 
   if (!fZoom)
-    RestoreExternBackgroundRect((iX), (iY), DMAP_GRID_X / 2, DMAP_GRID_Y / 2);
+    RestoreExternBackgroundRect((iX), (iY), Math.trunc(DMAP_GRID_X / 2), Math.trunc(DMAP_GRID_Y / 2));
   else
     RestoreExternBackgroundRect((iX), (iY), DMAP_GRID_ZOOM_X, DMAP_GRID_ZOOM_Y);
 
@@ -2595,11 +2595,11 @@ function TraceCharAnimatedRoute(pPath: PathSt | null, fCheckFlag: boolean, fForc
       return false;
     if (!fZoomFlag) {
       iX = (pNode.uiSectorId % MAP_WORLD_X);
-      iY = (pNode.uiSectorId / MAP_WORLD_X);
+      iY = Math.trunc(pNode.uiSectorId / MAP_WORLD_X);
       iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
       iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     } else {
-      ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), ((pNode.uiSectorId / MAP_WORLD_X))));
+      ({ sX, sY } = GetScreenXYFromMapXYStationary(((pNode.uiSectorId % MAP_WORLD_X)), Math.trunc((pNode.uiSectorId / MAP_WORLD_X))));
       iY = sY - MAP_GRID_Y;
       iX = sX - MAP_GRID_X;
     }
@@ -3010,12 +3010,12 @@ function TraceCharAnimatedRoute(pPath: PathSt | null, fCheckFlag: boolean, fForc
 
   else {
     iX = (pNode.uiSectorId % MAP_WORLD_X);
-    iY = (pNode.uiSectorId / MAP_WORLD_X);
+    iY = Math.trunc(pNode.uiSectorId / MAP_WORLD_X);
     iX = (iX * MAP_GRID_X) + MAP_VIEW_START_X;
     iY = (iY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     if (pPastNode) {
       iPastX = (pPastNode.uiSectorId % MAP_WORLD_X);
-      iPastY = (pPastNode.uiSectorId / MAP_WORLD_X);
+      iPastY = Math.trunc(pPastNode.uiSectorId / MAP_WORLD_X);
       iPastX = (iPastX * MAP_GRID_X) + MAP_VIEW_START_X;
       iPastY = (iPastY * MAP_GRID_Y) + MAP_VIEW_START_Y;
     }
@@ -3392,7 +3392,7 @@ function ShowPeopleInMotion(sX: INT16, sY: INT16): void {
 
     // if not at edge of map
     if (sDest != sSource) {
-      if (PlayersBetweenTheseSectors(SECTOR(sSource % MAP_WORLD_X, sSource / MAP_WORLD_X), SECTOR(sDest % MAP_WORLD_X, sDest / MAP_WORLD_X), sExiting__Pointer, sEntering__Pointer, fAboutToEnter__Pointer)) {
+      if (PlayersBetweenTheseSectors(SECTOR(sSource % MAP_WORLD_X, Math.trunc(sSource / MAP_WORLD_X)), SECTOR(sDest % MAP_WORLD_X, Math.trunc(sDest / MAP_WORLD_X)), sExiting__Pointer, sEntering__Pointer, fAboutToEnter__Pointer)) {
         // someone is leaving
 
         // now find position
@@ -3641,7 +3641,7 @@ export function DisplayDistancesForHelicopter(): void {
   // add travel time for any prior path segments (stored in the helicopter's mercpath, but waypoints aren't built)
   iTime += GetPathTravelTimeDuringPlotting(pVehicleList[iHelicopterVehicleId].pMercPath);
 
-  sString = swprintf("%d%s %d%s", iTime / 60, gsTimeStrings[0], iTime % 60, gsTimeStrings[1]);
+  sString = swprintf("%d%s %d%s", Math.trunc(iTime / 60), gsTimeStrings[0], iTime % 60, gsTimeStrings[1]);
   ({ sX, sY } = FindFontRightCoordinates(MAP_HELICOPTER_ETA_POPUP_X + 5, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT())), MAP_HELICOPTER_ETA_POPUP_WIDTH, 0, sString, MAP_FONT()));
   mprintf(sX, (sYPosition + 5 + 4 * GetFontHeight(MAP_FONT())), sString);
 
@@ -3744,8 +3744,8 @@ export function DisplayPositionOfHelicopter(): void {
       AssertMsg((maxY >= 0) && (maxY < 640), FormatString("DisplayPositionOfHelicopter: Invalid maxY = %d", maxY));
 
       // IMPORTANT: Since min can easily be larger than max, we gotta cast to as signed value
-      x = (minX + flRatio * (maxX - minX));
-      y = (minY + flRatio * (maxY - minY));
+      x = Math.trunc(minX + flRatio * (maxX - minX));
+      y = Math.trunc(minY + flRatio * (maxY - minY));
 
       /*
                               if( fZoomFlag )
@@ -3817,7 +3817,7 @@ function DisplayDestinationOfHelicopter(): void {
     // get destination
     sSector = GetLastSectorIdInVehiclePath(iHelicopterVehicleId);
     sMapX = sSector % MAP_WORLD_X;
-    sMapY = sSector / MAP_WORLD_X;
+    sMapY = Math.trunc(sSector / MAP_WORLD_X);
 
     x = MAP_VIEW_START_X + (MAP_GRID_X * sMapX) + 1;
     y = MAP_VIEW_START_Y + (MAP_GRID_Y * sMapY) + 3;
@@ -3918,11 +3918,11 @@ function BlitMineIcon(sMapX: INT16, sMapY: INT16): void {
   if (fZoomFlag) {
     ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((sMapX), (sMapY)));
     // when zoomed, the x,y returned is the CENTER of the map square in question
-    BltVideoObject(guiSAVEBUFFER, hHandle, 0, sScreenX - MAP_GRID_ZOOM_X / 4, sScreenY - MAP_GRID_ZOOM_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 0, sScreenX - Math.trunc(MAP_GRID_ZOOM_X / 4), sScreenY - Math.trunc(MAP_GRID_ZOOM_Y / 4), VO_BLT_SRCTRANSPARENCY, null);
   } else {
     ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((sMapX), (sMapY)));
     // when not zoomed, the x,y returned is the top left CORNER of the map square in question
-    BltVideoObject(guiSAVEBUFFER, hHandle, 1, sScreenX + MAP_GRID_X / 4, sScreenY + MAP_GRID_Y / 4, VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObject(guiSAVEBUFFER, hHandle, 1, sScreenX + Math.trunc(MAP_GRID_X / 4), sScreenY + Math.trunc(MAP_GRID_Y / 4), VO_BLT_SRCTRANSPARENCY, null);
   }
 }
 
@@ -3938,12 +3938,12 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
     ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((sMapX), (sMapY)));
 
     // set coordinates for start of mine text
-    sScreenY += MAP_GRID_ZOOM_Y / 2 + 1; // slightly below
+    sScreenY += Math.trunc(MAP_GRID_ZOOM_Y / 2) + 1; // slightly below
   } else {
     ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((sMapX), (sMapY)));
 
     // set coordinates for start of mine text
-    sScreenX += MAP_GRID_X / 2; // centered around middle of mine square
+    sScreenX += Math.trunc(MAP_GRID_X / 2); // centered around middle of mine square
     sScreenY += MAP_GRID_Y + 1; // slightly below
   }
 
@@ -3960,24 +3960,24 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
   // display associated town name, followed by "mine"
   wString = swprintf("%s %s", pTownNames[GetTownAssociatedWithMine(GetMineIndexForSector(sMapX, sMapY))], pwMineStrings[0]);
   sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
-  mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+  mprintf((sScreenX - Math.trunc(StringPixLength(wString, MAP_FONT()) / 2)), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
   ubLineCnt++;
 
   // check if mine is empty (abandoned) or running out
   if (gMineStatus[ubMineIndex].fEmpty) {
     wString = swprintf("%s", pwMineStrings[5]);
     sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+    mprintf((sScreenX - Math.trunc(StringPixLength(wString, MAP_FONT()) / 2)), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fShutDown) {
     wString = swprintf("%s", pwMineStrings[6]);
     sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+    mprintf((sScreenX - Math.trunc(StringPixLength(wString, MAP_FONT()) / 2)), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   } else if (gMineStatus[ubMineIndex].fRunningOut) {
     wString = swprintf("%s", pwMineStrings[7]);
     sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
-    mprintf((sScreenX - StringPixLength(wString, MAP_FONT()) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+    mprintf((sScreenX - Math.trunc(StringPixLength(wString, MAP_FONT()) / 2)), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
 
@@ -4000,12 +4000,12 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
 
     // if potential is not nil, show percentage of the two
     if (GetMaxPeriodicRemovalFromMine(ubMineIndex) > 0) {
-      wSubString = swprintf(" (%d%%%%)", (PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex));
+      wSubString = swprintf(" (%d%%%%)", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
       wString += wSubString;
     }
 
     sScreenX = AdjustXForLeftMapEdge(wString, sScreenX);
-    mprintf((sScreenX - StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
+    mprintf((sScreenX - Math.trunc(StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2)), sScreenY + ubLineCnt * GetFontHeight(MAP_FONT()), wString);
     ubLineCnt++;
   }
 
@@ -4020,7 +4020,7 @@ function AdjustXForLeftMapEdge(wString: string /* STR16 */, sX: INT16): INT16 {
     // it's ok to cut strings off in zoomed mode
     return sX;
 
-  sStartingX = sX - (StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2);
+  sStartingX = (sX - Math.trunc(StringPixLengthArg(MAP_FONT(), wString.length, wString) / 2));
   sPastEdge = (MAP_VIEW_START_X + 23) - sStartingX;
 
   if (sPastEdge > 0)
@@ -4053,7 +4053,7 @@ function BlitTownGridMarkers(): void {
     // skip Orta/Tixa until found
     if (((fFoundOrta != false) || (pTownNamesList[iCounter] != Enum135.ORTA)) && ((pTownNamesList[iCounter] != Enum135.TIXA) || (fFoundTixa != false))) {
       if (fZoomFlag) {
-        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X)));
+        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXYStationary((pTownLocationsList[iCounter] % MAP_WORLD_X), Math.trunc(pTownLocationsList[iCounter] / MAP_WORLD_X)));
         sScreenX -= MAP_GRID_X - 1;
         sScreenY -= MAP_GRID_Y;
 
@@ -4061,7 +4061,7 @@ function BlitTownGridMarkers(): void {
         sHeight = 2 * MAP_GRID_Y;
       } else {
         // get location on screen
-        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X)));
+        ({ sX: sScreenX, sY: sScreenY } = GetScreenXYFromMapXY((pTownLocationsList[iCounter] % MAP_WORLD_X), Math.trunc(pTownLocationsList[iCounter] / MAP_WORLD_X)));
         sWidth = MAP_GRID_X - 1;
         sHeight = MAP_GRID_Y;
 
@@ -4418,7 +4418,7 @@ export function CreateDestroyMilitiaPopUPRegions(): void {
 
   if (fShowMilitia && sSelectedMilitiaTown && !gfMilitiaPopupCreated) {
     for (iCounter = 0; iCounter < 9; iCounter++) {
-      MSYS_DefineRegion(gMapScreenMilitiaBoxRegions[iCounter], (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT), (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (((iCounter) % MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (((iCounter) / MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_HEIGHT), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, MilitiaRegionMoveCallback, MilitiaRegionClickCallback);
+      MSYS_DefineRegion(gMapScreenMilitiaBoxRegions[iCounter], (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + Math.trunc(iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT), (MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + (((iCounter) % MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_WIDTH), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc((iCounter) / MILITIA_BOX_ROWS) + 1) * MILITIA_BOX_BOX_HEIGHT), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, MilitiaRegionMoveCallback, MilitiaRegionClickCallback);
 
       MSYS_SetRegionUserData(gMapScreenMilitiaBoxRegions[iCounter], 0, iCounter);
     }
@@ -4470,7 +4470,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
     // grab current sector value
-    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
+    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + Math.trunc(iCounter / MILITIA_BOX_ROWS) * (16));
 
     sSectorX = SECTORX(sCurrentSectorValue);
     sSectorY = SECTORY(sCurrentSectorValue);
@@ -4491,7 +4491,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
     // printf number of troops
     SetFont(FONT10ARIAL());
     sString = swprintf("%d", iTotalNumberOfTroops);
-    ({ sX, sY } = FindFontRightCoordinates((MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH)), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT)), MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL()));
+    ({ sX, sY } = FindFontRightCoordinates((MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH)), (MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT)), MILITIA_BOX_BOX_WIDTH, 0, sString, FONT10ARIAL()));
 
     if (StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != Enum135.BLANK_SECTOR && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) {
       if (sSectorMilitiaMapSector != iCounter) {
@@ -4506,7 +4506,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
       // get screen x and y coords
       if (sSectorMilitiaMapSector == iCounter) {
         sX = (iCurrentTroopIcon % POPUP_MILITIA_ICONS_PER_ROW) * MEDIUM_MILITIA_ICON_SPACING + MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH) + 2;
-        sY = (iCurrentTroopIcon / POPUP_MILITIA_ICONS_PER_ROW) * (MEDIUM_MILITIA_ICON_SPACING - 1) + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT) + 3;
+        sY = Math.trunc(iCurrentTroopIcon / POPUP_MILITIA_ICONS_PER_ROW) * (MEDIUM_MILITIA_ICON_SPACING - 1) + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT) + 3;
 
         if (iCurrentTroopIcon < iNumberOfGreens) {
           iCurrentIcon = 5;
@@ -4517,7 +4517,7 @@ function RenderIconsPerSectorForSelectedTown(): void {
         }
       } else {
         sX = (iCurrentTroopIcon % POPUP_MILITIA_ICONS_PER_ROW) * MEDIUM_MILITIA_ICON_SPACING + MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH) + 3;
-        sY = (iCurrentTroopIcon / POPUP_MILITIA_ICONS_PER_ROW) * (MEDIUM_MILITIA_ICON_SPACING) + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT) + 3;
+        sY = Math.trunc(iCurrentTroopIcon / POPUP_MILITIA_ICONS_PER_ROW) * (MEDIUM_MILITIA_ICON_SPACING) + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT) + 3;
 
         if (iCurrentTroopIcon < iNumberOfGreens) {
           iCurrentIcon = 8;
@@ -4555,7 +4555,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
 
   if (sSectorMilitiaMapSector != -1) {
     sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH);
-    sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
+    sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
     // get the object
     hVObject = GetVideoObject(guiMilitiaSectorHighLight);
@@ -4566,7 +4566,7 @@ function ShowHighLightedSectorOnMilitiaMap(): void {
 
   if (sSectorMilitiaMapSectorOutline != -1) {
     sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((sSectorMilitiaMapSectorOutline % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH);
-    sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((sSectorMilitiaMapSectorOutline / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
+    sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(sSectorMilitiaMapSectorOutline / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
     // get the object
     hVObject = GetVideoObject(guiMilitiaSectorOutline);
@@ -4633,7 +4633,7 @@ export function CreateDestroyMilitiaSectorButtons(): void {
     for (iCounter = 0; iCounter < 3; iCounter++) {
       // set screen x and y positions
       sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH);
-      sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
+      sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
       // adjust offsets
       sX += MILITIA_BTN_OFFSET_X;
@@ -4707,7 +4707,7 @@ function SetMilitiaMapButtonsText(): void {
 
   // grab the appropriate global sector value in the world
   sBaseSectorValue = GetBaseSectorForCurrentTown();
-  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
+  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + Math.trunc(sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
   iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
   iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA];
@@ -4742,21 +4742,21 @@ function MilitiaButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
 
   // get the sector value for the upper left corner
   sBaseSectorValue = GetBaseSectorForCurrentTown();
-  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
+  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + Math.trunc(sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
-      DropAPersonInASector((iValue), ((sGlobalMapSector % 16) + 1), ((sGlobalMapSector / 16) + 1));
+      DropAPersonInASector((iValue), ((sGlobalMapSector % 16) + 1), (Math.trunc(sGlobalMapSector / 16) + 1));
     }
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_DWN) {
     btn.uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (btn.uiFlags & BUTTON_CLICKED_ON) {
       btn.uiFlags &= ~(BUTTON_CLICKED_ON);
-      PickUpATownPersonFromSector((iValue), ((sGlobalMapSector % 16) + 1), ((sGlobalMapSector / 16) + 1));
+      PickUpATownPersonFromSector((iValue), ((sGlobalMapSector % 16) + 1), (Math.trunc(sGlobalMapSector / 16) + 1));
     }
   }
 }
@@ -4788,7 +4788,7 @@ function DisplayUnallocatedMilitia(): void {
   for (iCurrentTroopIcon = 0; iCurrentTroopIcon < iTotalNumberOfTroops; iCurrentTroopIcon++) {
     // get screen x and y coords
     sX = (iCurrentTroopIcon % NUMBER_OF_MILITIA_ICONS_PER_LOWER_ROW) * MEDIUM_MILITIA_ICON_SPACING + MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + 1;
-    sY = (iCurrentTroopIcon / NUMBER_OF_MILITIA_ICONS_PER_LOWER_ROW) * MEDIUM_MILITIA_ICON_SPACING + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_LOWER_ROW_Y;
+    sY = Math.trunc(iCurrentTroopIcon / NUMBER_OF_MILITIA_ICONS_PER_LOWER_ROW) * MEDIUM_MILITIA_ICON_SPACING + MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_LOWER_ROW_Y;
 
     if (iCurrentTroopIcon < iNumberOfGreens) {
       iCurrentIcon = 8;
@@ -4810,7 +4810,7 @@ function IsThisMilitiaTownSectorAllowable(sSectorIndexValue: INT16): boolean {
 
   // is this sector allowed to be clicked on?
   sBaseSectorValue = GetBaseSectorForCurrentTown();
-  sGlobalMapSector = sBaseSectorValue + ((sSectorIndexValue % MILITIA_BOX_ROWS) + (sSectorIndexValue / MILITIA_BOX_ROWS) * 16);
+  sGlobalMapSector = sBaseSectorValue + ((sSectorIndexValue % MILITIA_BOX_ROWS) + Math.trunc(sSectorIndexValue / MILITIA_BOX_ROWS) * 16);
 
   sSectorX = SECTORX(sGlobalMapSector);
   sSectorY = SECTORY(sGlobalMapSector);
@@ -4865,7 +4865,7 @@ function HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(sTownValue: INT16): voi
   // find number of sectors under player's control
   while (pTownNamesList[iCounter] != 0) {
     if (pTownNamesList[iCounter] == sTownValue) {
-      if (SectorOursAndPeaceful((pTownLocationsList[iCounter] % MAP_WORLD_X), (pTownLocationsList[iCounter] / MAP_WORLD_X), 0)) {
+      if (SectorOursAndPeaceful((pTownLocationsList[iCounter] % MAP_WORLD_X), Math.trunc(pTownLocationsList[iCounter] / MAP_WORLD_X), 0)) {
         iCount = 0;
         iNumberThatCanFitInSector = MAX_ALLOWABLE_MILITIA_PER_SECTOR;
         iNumberThatCanFitInSector -= SectorInfo[STRATEGIC_INDEX_TO_SECTOR_INFO(pTownLocationsList[iCounter])].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA];
@@ -4962,7 +4962,7 @@ function HandleEveningOutOfTroopsAmongstSectors(): void {
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
     // grab current sector value
-    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
+    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + Math.trunc(iCounter / MILITIA_BOX_ROWS) * (16));
 
     sSectorX = SECTORX(sCurrentSectorValue);
     sSectorY = SECTORY(sCurrentSectorValue);
@@ -5008,10 +5008,10 @@ function HandleEveningOutOfTroopsAmongstSectors(): void {
         sSector = SECTOR(sSectorX, sSectorY);
 
         // distribute here
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] = (iNumberOfGreens / iNumberUnderControl);
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] = (iNumberOfRegulars / iNumberUnderControl);
-        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] = (iNumberOfElites / iNumberUnderControl);
-        sTotalSoFar = ((iNumberOfGreens / iNumberUnderControl) + (iNumberOfRegulars / iNumberUnderControl) + (iNumberOfElites / iNumberUnderControl));
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] = Math.trunc(iNumberOfGreens / iNumberUnderControl);
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] = Math.trunc(iNumberOfRegulars / iNumberUnderControl);
+        SectorInfo[sSector].ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] = Math.trunc(iNumberOfElites / iNumberUnderControl);
+        sTotalSoFar = (Math.trunc(iNumberOfGreens / iNumberUnderControl) + Math.trunc(iNumberOfRegulars / iNumberUnderControl) + Math.trunc(iNumberOfElites / iNumberUnderControl));
 
         // add leftovers that weren't included in the div operation
         if ((iNumberLeftOverGreen) && (sTotalSoFar < MAX_ALLOWABLE_MILITIA_PER_SECTOR)) {
@@ -5145,12 +5145,12 @@ function RenderShadingForUnControlledSectors(): void {
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
     // grab current sector value
-    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
+    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + Math.trunc(iCounter / MILITIA_BOX_ROWS) * (16));
 
     if ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].bNameId != Enum135.BLANK_SECTOR) && ((StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(sCurrentSectorValue)].fEnemyControlled) || (NumHostilesInSector(SECTORX(sCurrentSectorValue), SECTORY(sCurrentSectorValue), 0)))) {
       // shade this sector, not under our control
       sX = MAP_MILITIA_BOX_POS_X + MAP_MILITIA_MAP_X + ((iCounter % MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_WIDTH);
-      sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + ((iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
+      sY = MAP_MILITIA_BOX_POS_Y + MAP_MILITIA_MAP_Y + (Math.trunc(iCounter / MILITIA_BOX_ROWS) * MILITIA_BOX_BOX_HEIGHT);
 
       ShadowVideoSurfaceRect(FRAME_BUFFER, sX, sY, sX + MILITIA_BOX_BOX_WIDTH - 1, sY + MILITIA_BOX_BOX_HEIGHT - 1);
     }
@@ -5273,7 +5273,7 @@ function CheckAndUpdateStatesOfSelectedMilitiaSectorButtons(): void {
 
   // grab the appropriate global sector value in the world
   sBaseSectorValue = GetBaseSectorForCurrentTown();
-  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + (sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
+  sGlobalMapSector = sBaseSectorValue + ((sSectorMilitiaMapSector % MILITIA_BOX_ROWS) + Math.trunc(sSectorMilitiaMapSector / MILITIA_BOX_ROWS) * (16));
 
   iNumberOfGreens = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] + sGreensOnCursor;
   iNumberOfRegulars = SectorInfo[sGlobalMapSector].ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] + sRegularsOnCursor;
@@ -5616,7 +5616,7 @@ function ShowSAMSitesOnStrategicMap(): void {
       wString = pLandTypeStrings[Enum127.SAM_SITE];
 
       // we're CENTERING the first string AROUND sX, so calculate the starting X value
-      sX -= StringPixLength(wString, MAP_FONT()) / 2;
+      sX -= Math.trunc(StringPixLength(wString, MAP_FONT()) / 2);
 
       // if within view region...render, else don't
       if ((sX > MAP_VIEW_START_X + MAP_VIEW_WIDTH) || (sX < MAP_VIEW_START_X) || (sY > MAP_VIEW_START_Y + MAP_VIEW_HEIGHT) || (sY < MAP_VIEW_START_Y)) {
@@ -5719,7 +5719,7 @@ function CanMilitiaAutoDistribute(): boolean {
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
     // grab current sector value
-    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
+    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + Math.trunc(iCounter / MILITIA_BOX_ROWS) * (16));
 
     sSectorX = SECTORX(sCurrentSectorValue);
     sSectorY = SECTORY(sCurrentSectorValue);
@@ -5804,7 +5804,7 @@ function DrawMapBoxIcon(hIconHandle: SGPVObject, usVOIndex: UINT16, sMapX: INT16
   }
 
   iColumnNumber = ubIconPosition % MERC_ICONS_PER_LINE;
-  iRowNumber = ubIconPosition / MERC_ICONS_PER_LINE;
+  iRowNumber = Math.trunc(ubIconPosition / MERC_ICONS_PER_LINE);
 
   if (!fZoomFlag) {
     iX = MAP_VIEW_START_X + (sMapX * MAP_GRID_X) + MAP_X_ICON_OFFSET + (3 * iColumnNumber);
@@ -5960,7 +5960,7 @@ export function CanRedistributeMilitiaInSector(sClickedSectorX: INT16, sClickedS
   // render icons for map
   for (iCounter = 0; iCounter < 9; iCounter++) {
     // grab current sector value
-    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + (iCounter / MILITIA_BOX_ROWS) * (16));
+    sCurrentSectorValue = sBaseSectorValue + ((iCounter % MILITIA_BOX_ROWS) + Math.trunc(iCounter / MILITIA_BOX_ROWS) * (16));
 
     sSectorX = SECTORX(sCurrentSectorValue);
     sSectorY = SECTORY(sCurrentSectorValue);

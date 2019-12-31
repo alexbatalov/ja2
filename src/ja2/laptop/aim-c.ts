@@ -144,7 +144,7 @@ let gSelectedHistoryRegion: MOUSE_REGION = createMouseRegion();
 // Links
 let gSelectedLinksRegion: MOUSE_REGION = createMouseRegion();
 
-let guiBottomButtons: UINT32[] /* [NUM_AIM_SCREENS] */;
+let guiBottomButtons: UINT32[] /* [NUM_AIM_SCREENS] */ = createArray(NUM_AIM_SCREENS, 0);
 let guiBottomButtonImage: INT32;
 
 // Banner Area

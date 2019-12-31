@@ -441,7 +441,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
   let x: INT32;
   let FListNode: FDLG_LIST | null;
 
-  sSelName = usRelativeYPos / 15;
+  sSelName = Math.trunc(usRelativeYPos / 15);
 
   // This is a field in the text editmode, but clicked via mouse.
   SetActiveField(1);
@@ -699,8 +699,8 @@ function ProcessFileIO(): UINT32 {
       SetFontShadow(FONT_DKKHAKI);
       SetFontBackground(0);
       zOrigName = swprintf("Saving map:  %s", gzFilename);
-      usStartX = 320 - StringPixLength(zOrigName, LARGEFONT1()) / 2;
-      usStartY = 180 - GetFontHeight(LARGEFONT1()) / 2;
+      usStartX = 320 - Math.trunc(StringPixLength(zOrigName, LARGEFONT1()) / 2);
+      usStartY = 180 - Math.trunc(GetFontHeight(LARGEFONT1()) / 2);
       mprintf(usStartX, usStartY, zOrigName);
 
       InvalidateScreen();

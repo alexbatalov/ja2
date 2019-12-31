@@ -213,7 +213,7 @@ export function InitScreenHandle(): UINT32 {
 
     // mprintf( 10, 420, zVersionLabel );
 
-    mprintf(10, 430, "%s: %s (%S)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
+    mprintf(10, 430, "%s: %s (%s)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
 
     if (gfDontUseDDBlits) {
       mprintf(10, 440, "Using software blitters");
@@ -639,8 +639,8 @@ export function SexScreenHandle(): UINT32 {
   hVObject = GetVideoObject(SexScreenHandle__guiSMILY);
   pTrav = hVObject.pETRLEObject[0];
 
-  sX = ((640 - pTrav.usWidth) / 2);
-  sY = ((480 - pTrav.usHeight) / 2);
+  sX = Math.trunc((640 - pTrav.usWidth) / 2);
+  sY = Math.trunc((480 - pTrav.usHeight) / 2);
 
   if (SexScreenHandle__bCurFrame < 24) {
     BltVideoObjectFromIndex(FRAME_BUFFER, SexScreenHandle__guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, null);

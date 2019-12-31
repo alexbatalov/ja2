@@ -142,8 +142,8 @@ export function RenderAccumulatedBurstLocations(): void {
       // Calculate guy's position
       ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[sGridNo].sHeight;
+      sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+      sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S) - gpWorldLevelData[sGridNo].sHeight;
 
       // Adjust for offset position on screen
       sXPos -= gsRenderWorldOffsetX;

@@ -63,14 +63,14 @@ function ShadesCalculatePalette(pSrcPalette: SGPPaletteEntry[], pDestPalette: SG
 
   for (cnt = 0; cnt < 256; cnt++) {
     if (fMono) {
-      lumin = (pSrcPalette[cnt].peRed * 299 / 1000) + (pSrcPalette[cnt].peGreen * 587 / 1000) + (pSrcPalette[cnt].peBlue * 114 / 1000);
-      rmod = usRed * lumin / 255;
-      gmod = usGreen * lumin / 255;
-      bmod = usBlue * lumin / 255;
+      lumin = Math.trunc(pSrcPalette[cnt].peRed * 299 / 1000) + Math.trunc(pSrcPalette[cnt].peGreen * 587 / 1000) + Math.trunc(pSrcPalette[cnt].peBlue * 114 / 1000);
+      rmod = Math.trunc(usRed * lumin / 255);
+      gmod = Math.trunc(usGreen * lumin / 255);
+      bmod = Math.trunc(usBlue * lumin / 255);
     } else {
-      rmod = (usRed * pSrcPalette[cnt].peRed / 255);
-      gmod = (usGreen * pSrcPalette[cnt].peGreen / 255);
-      bmod = (usBlue * pSrcPalette[cnt].peBlue / 255);
+      rmod = Math.trunc(usRed * pSrcPalette[cnt].peRed / 255);
+      gmod = Math.trunc(usGreen * pSrcPalette[cnt].peGreen / 255);
+      bmod = Math.trunc(usBlue * pSrcPalette[cnt].peBlue / 255);
     }
 
     pDestPalette[cnt].peRed = Math.min(rmod, 255);

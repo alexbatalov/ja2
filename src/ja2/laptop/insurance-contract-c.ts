@@ -47,7 +47,7 @@ const INS_CTRCT_PREMIUM_OWING_OFFSET_Y = 160;
 const INS_CTRCT_OG_BOX_OFFSET_X = 92;
 const INS_CTRCT_OG_BOX_WIDTH = 35;
 
-const INS_CTRCT_ACCEPT_BTN_X = (132 / 2 - 43 / 2); // 6
+const INS_CTRCT_ACCEPT_BTN_X = (Math.trunc(132 / 2) - Math.trunc(43 / 2)); // 6
 const INS_CTRCT_ACCEPT_BTN_Y = 193;
 
 const INS_CTRCT_CLEAR_BTN_X = 86;
@@ -905,7 +905,7 @@ export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8):
   pProfile = gMercProfiles[ubMercID];
 
   // calculate the degree of training
-  sTotalSkill = (pProfile.bMarksmanship + pProfile.bMedical + pProfile.bMechanical + pProfile.bExplosive + pProfile.bLeadership) / 5;
+  sTotalSkill = Math.trunc((pProfile.bMarksmanship + pProfile.bMedical + pProfile.bMechanical + pProfile.bExplosive + pProfile.bLeadership) / 5);
   flSkillFactor = DiffFromNormRatio(sTotalSkill, INS_CTRCT_SKILL_BASE);
 
   // calc relative fitness level
@@ -928,7 +928,7 @@ export function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8):
   }
 
   // premium depend on merc's salary, the base insurance rate, and the individual's risk factor at this time
-  uiDailyInsurancePremium = (((pProfile.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
+  uiDailyInsurancePremium = Math.trunc(((pProfile.sSalary * INSURANCE_PREMIUM_RATE * flRiskFactor) / 100) + 0.5);
   // multiply by the insurance contract length
   uiTotalInsurancePremium = uiDailyInsurancePremium * iLength;
 
@@ -1024,13 +1024,13 @@ export function AddLifeInsurancePayout(pSoldier: SOLDIERTYPE): boolean {
   uiCostPerDay = pProfile.sSalary;
 
   // consider weekly salary / day
-  if ((pProfile.uiWeeklySalary / 7) < uiCostPerDay) {
-    uiCostPerDay = (pProfile.uiWeeklySalary / 7);
+  if (Math.trunc(pProfile.uiWeeklySalary / 7) < uiCostPerDay) {
+    uiCostPerDay = Math.trunc(pProfile.uiWeeklySalary / 7);
   }
 
   // consider biweekly salary / day
-  if ((pProfile.uiBiWeeklySalary / 14) < uiCostPerDay) {
-    uiCostPerDay = (pProfile.uiBiWeeklySalary / 14);
+  if (Math.trunc(pProfile.uiBiWeeklySalary / 14) < uiCostPerDay) {
+    uiCostPerDay = Math.trunc(pProfile.uiBiWeeklySalary / 14);
   }
 
   // calculate how many full, insured days of work the merc is going to miss
@@ -1227,7 +1227,7 @@ function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: SOLDIERTYPE): UIN
 }
 
 function GetTimeRemainingOnSoldiersContract(pSoldier: SOLDIERTYPE): UINT32 {
-  let iDayMercLeaves: INT32 = (pSoldier.iEndofContractTime / 1440) - 1;
+  let iDayMercLeaves: INT32 = Math.trunc(pSoldier.iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time left would be different if we did the calc
   // at 11:59 or 12:01 ( noon )
@@ -1362,7 +1362,7 @@ function CalcStartDayOfInsurance(pSoldier: SOLDIERTYPE): INT32 {
     uiDayToStartInsurance = GetWorldDay();
   } else {
     // Get tomorows date ( and convert it to days )
-    uiDayToStartInsurance = GetMidnightOfFutureDayInMinutes(1) / 1440;
+    uiDayToStartInsurance = Math.trunc(GetMidnightOfFutureDayInMinutes(1) / 1440);
   }
 
   return uiDayToStartInsurance;

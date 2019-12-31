@@ -190,17 +190,17 @@ export function ShootingStanceChange(pSoldier: SOLDIERTYPE, pAttack: ATTACKTYPE,
         break;
     }
 
-    uiChanceOfDamage = SoldierToLocationChanceToGetThrough(pSoldier, pAttack.sTarget, pSoldier.bTargetLevel, pSoldier.bTargetCubeLevel, pAttack.ubOpponent) * CalcChanceToHitGun(pSoldier, pAttack.sTarget, pAttack.ubAimTime, AIM_SHOT_TORSO) / 100;
+    uiChanceOfDamage = Math.trunc(SoldierToLocationChanceToGetThrough(pSoldier, pAttack.sTarget, pSoldier.bTargetLevel, pSoldier.bTargetCubeLevel, pAttack.ubOpponent) * CalcChanceToHitGun(pSoldier, pAttack.sTarget, pAttack.ubAimTime, AIM_SHOT_TORSO) / 100);
     if (uiChanceOfDamage > 0) {
       uiStanceBonus = 0;
       // artificially augment "chance of damage" to reflect penalty to be shot at various stances
       switch (pSoldier.usAnimState) {
         case Enum193.CROUCHING:
-          if (iRange > POINT_BLANK_RANGE + 10 * (AIM_PENALTY_TARGET_CROUCHED / 3)) {
+          if (iRange > POINT_BLANK_RANGE + 10 * Math.trunc(AIM_PENALTY_TARGET_CROUCHED / 3)) {
             uiStanceBonus = AIM_BONUS_CROUCHING;
           } else if (iRange > POINT_BLANK_RANGE) {
             // reduce chance to hit with distance to the prone/immersed target
-            uiStanceBonus = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
+            uiStanceBonus = 3 * Math.trunc((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
           }
           break;
         case Enum193.PRONE:
@@ -210,7 +210,7 @@ export function ShootingStanceChange(pSoldier: SOLDIERTYPE, pAttack: ATTACKTYPE,
           } else // if (iRange > POINT_BLANK_RANGE)
           {
             // reduce chance to hit with distance to the prone/immersed target
-            uiStanceBonus = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
+            uiStanceBonus = 3 * Math.trunc((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
           }
           break;
         default:
@@ -234,7 +234,7 @@ export function ShootingStanceChange(pSoldier: SOLDIERTYPE, pAttack: ATTACKTYPE,
   pSoldier.usAnimState = usRealAnimState;
 
   // return 0 or the best height value to be at
-  if (bBestStanceDiff == 0 || ((uiBestChanceOfDamage - uiCurrChanceOfDamage) / bBestStanceDiff) < uiMinimumStanceBonusPerChange) {
+  if (bBestStanceDiff == 0 || Math.trunc((uiBestChanceOfDamage - uiCurrChanceOfDamage) / bBestStanceDiff) < uiMinimumStanceBonusPerChange) {
     // better off not changing our stance!
     return 0;
   } else {
@@ -606,7 +606,7 @@ export function RandDestWithinRange(pSoldier: SOLDIERTYPE): INT16 {
 
     // determine maximum horizontal limits
     sOrigX = usOrigin % MAXCOL;
-    sOrigY = usOrigin / MAXCOL;
+    sOrigY = Math.trunc(usOrigin / MAXCOL);
 
     sMaxLeft = Math.min(usMaxDist, sOrigX);
     sMaxRight = Math.min(usMaxDist, MAXCOL - (sOrigX + 1));
@@ -627,7 +627,7 @@ export function RandDestWithinRange(pSoldier: SOLDIERTYPE): INT16 {
 
       if (fLimited) {
         sX = pSoldier.sGridNo % MAXCOL + sXOffset;
-        sY = pSoldier.sGridNo / MAXCOL + sYOffset;
+        sY = Math.trunc(pSoldier.sGridNo / MAXCOL) + sYOffset;
         if (sX < sOrigX - sMaxLeft || sX > sOrigX + sMaxRight) {
           continue;
         }
@@ -1161,7 +1161,7 @@ export function EstimatePathCostToLocation(pSoldier: SOLDIERTYPE, sDestGridNo: I
           } else {
             sPathCost += AP_CLIMBOFFROOF;
             // add in an estimate of getting there after climbing down, *but not on top of roof*
-            sPathCost += (AP_MOVEMENT_FLAT + WALKCOST) * PythSpacesAway(sClimbGridNo, sDestGridNo) / 2;
+            sPathCost += Math.trunc((AP_MOVEMENT_FLAT + WALKCOST) * PythSpacesAway(sClimbGridNo, sDestGridNo) / 2);
           }
           pfClimbingNecessary.value = true;
           psClimbGridNo.value = sClimbGridNo;
@@ -1524,7 +1524,7 @@ export function CalcMorale(pSoldier: SOLDIERTYPE): INT8 {
 
     iPercent = ThreatPercent[bMostRecentOpplistValue - OLDEST_HEARD_VALUE];
 
-    sOppThreatValue = (iPercent * CalcManThreatValue(pOpponent, pSoldier.sGridNo, false, pSoldier)) / 100;
+    sOppThreatValue = Math.trunc((iPercent * CalcManThreatValue(pOpponent, pSoldier.sGridNo, false, pSoldier)) / 100);
 
     // sprintf(tempstr,"Known opponent %s, opplist status %d, percent %d, threat = %d",
     //           ExtMen[pOpponent->ubID].name,ubMostRecentOpplistValue,ubPercent,sOppThreatValue);
@@ -1576,7 +1576,7 @@ export function CalcMorale(pSoldier: SOLDIERTYPE): INT8 {
         }
       }
 
-      sFrndThreatValue = (iPercent * CalcManThreatValue(pFriend, pOpponent.sGridNo, false, pSoldier)) / 100;
+      sFrndThreatValue = Math.trunc((iPercent * CalcManThreatValue(pFriend, pOpponent.sGridNo, false, pSoldier)) / 100);
 
       // sprintf(tempstr,"Known by friend %s, opplist status %d, percent %d, threat = %d",
       //         ExtMen[pFriend->ubID].name,pFriend->bOppList[pOpponent->ubID],ubPercent,sFrndThreatValue);
@@ -1597,10 +1597,10 @@ export function CalcMorale(pSoldier: SOLDIERTYPE): INT8 {
     sMorale = 500; // our morale is just incredible
   else {
     // now divide sOutTotalThreat by sTheirTotalThreat to get the REAL value
-    iOurTotalThreat /= iTheirTotalThreat;
+    iOurTotalThreat = Math.trunc(iOurTotalThreat / iTheirTotalThreat);
 
     // calculate the morale (100 is even, < 100 is us losing, > 100 is good)
-    sMorale = ((100 * iOurTotalThreat) / iTheirTotalThreat);
+    sMorale = Math.trunc((100 * iOurTotalThreat) / iTheirTotalThreat);
   }
 
   if (sMorale <= 25) // odds 1:4 or worse
@@ -1717,7 +1717,7 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
     // bleeding (more attactive!) (1-100)
     iThreatValue += pEnemy.bBleeding;
     // decrease according to distance
-    iThreatValue = (iThreatValue * 10) / (10 + PythSpacesAway(sMyGrid, pEnemy.sGridNo));
+    iThreatValue = Math.trunc((iThreatValue * 10) / (10 + PythSpacesAway(sMyGrid, pEnemy.sGridNo)));
   } else {
     // ADD twice the man's level (2-20)
     iThreatValue += pEnemy.bExpLevel;
@@ -1726,17 +1726,17 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
     iThreatValue += CalcActionPoints(pEnemy);
 
     // ADD 1/2 of man's current action points (4-17)
-    iThreatValue += (pEnemy.bActionPoints / 2);
+    iThreatValue += Math.trunc(pEnemy.bActionPoints / 2);
 
     // ADD 1/10 of man's current health (0-10)
-    iThreatValue += (pEnemy.bLife / 10);
+    iThreatValue += Math.trunc(pEnemy.bLife / 10);
 
     if (pEnemy.bAssignment < Enum117.ON_DUTY) {
       // ADD 1/4 of man's protection percentage (0-25)
-      iThreatValue += ArmourPercent(pEnemy) / 4;
+      iThreatValue += Math.trunc(ArmourPercent(pEnemy) / 4);
 
       // ADD 1/5 of man's marksmanship skill (0-20)
-      iThreatValue += (pEnemy.bMarksmanship / 5);
+      iThreatValue += Math.trunc(pEnemy.bMarksmanship / 5);
 
       if (Item[pEnemy.inv[Enum261.HANDPOS].usItem].usItemClass & IC_WEAPON) {
         // ADD the deadliness of the item(weapon) he's holding (0-50)
@@ -1745,10 +1745,10 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
     }
 
     // SUBTRACT 1/5 of man's bleeding (0-20)
-    iThreatValue -= (pEnemy.bBleeding / 5);
+    iThreatValue -= Math.trunc(pEnemy.bBleeding / 5);
 
     // SUBTRACT 1/10 of man's breath deficiency (0-10)
-    iThreatValue -= ((100 - pEnemy.bBreath) / 10);
+    iThreatValue -= Math.trunc((100 - pEnemy.bBreath) / 10);
 
     // SUBTRACT man's current shock value
     iThreatValue -= pEnemy.bShock;
@@ -1758,11 +1758,11 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
   if (sMyGrid != NOWHERE) {
     // ADD 10% if man's already been shooting at me
     if (pEnemy.sLastTarget == sMyGrid) {
-      iThreatValue += (iThreatValue / 10);
+      iThreatValue += Math.trunc(iThreatValue / 10);
     } else {
       // ADD 5% if man's already facing me
       if (pEnemy.bDirection == atan8(CenterX(pEnemy.sGridNo), CenterY(pEnemy.sGridNo), CenterX(sMyGrid), CenterY(sMyGrid))) {
-        iThreatValue += (iThreatValue / 20);
+        iThreatValue += Math.trunc(iThreatValue / 20);
       }
     }
   }
@@ -1774,13 +1774,13 @@ export function CalcManThreatValue(pEnemy: SOLDIERTYPE, sMyGrid: INT16, ubReduce
       // Reduce iThreatValue to same % as the chance HE has shoot through at ME
       // iThreatValue = (iThreatValue * ChanceToGetThrough( pEnemy, myGrid, FAKE, ACTUAL, TESTWALLS, 9999, M9PISTOL, NOT_FOR_LOS)) / 100;
       // iThreatValue = (iThreatValue * SoldierTo3DLocationChanceToGetThrough( pEnemy, myGrid, FAKE, ACTUAL, TESTWALLS, 9999, M9PISTOL, NOT_FOR_LOS)) / 100;
-      iThreatValue = (iThreatValue * SoldierToLocationChanceToGetThrough(pEnemy, sMyGrid, pMe.bLevel, 0, pMe.ubID)) / 100;
+      iThreatValue = Math.trunc((iThreatValue * SoldierToLocationChanceToGetThrough(pEnemy, sMyGrid, pMe.bLevel, 0, pMe.ubID)) / 100);
     }
   } else {
     // if he's still something of a threat
     if (iThreatValue > 0) {
       // drastically reduce his threat value (divide by 5 to 18)
-      iThreatValue /= (4 + (OKLIFE - pEnemy.bLife));
+      iThreatValue = Math.trunc(iThreatValue / (4 + (OKLIFE - pEnemy.bLife)));
     }
   }
 
@@ -1905,7 +1905,7 @@ export function SoldierDifficultyLevel(pSoldier: SOLDIERTYPE): UINT8 {
   // difficulty modifier ranges from 0 to 100
   // and we want to end up with a number between 0 and 4 (4=hardest)
   // to a base of 1, divide by 34 to get a range from 1 to 3
-  bDifficultyBase = 1 + (CalcDifficultyModifier(pSoldier.ubSoldierClass) / 34);
+  bDifficultyBase = 1 + Math.trunc(CalcDifficultyModifier(pSoldier.ubSoldierClass) / 34);
 
   switch (pSoldier.ubSoldierClass) {
     case Enum262.SOLDIER_CLASS_ADMINISTRATOR:
@@ -1935,10 +1935,10 @@ export function SoldierDifficultyLevel(pSoldier: SOLDIERTYPE): UINT8 {
 
     default:
       if (pSoldier.bTeam == CREATURE_TEAM) {
-        bDifficulty = bDifficultyBase + pSoldier.bLevel / 4;
+        bDifficulty = Math.trunc(bDifficultyBase + pSoldier.bLevel / 4);
       } else // civ...
       {
-        bDifficulty = (bDifficultyBase + pSoldier.bLevel / 4) - 1;
+        bDifficulty = Math.trunc(bDifficultyBase + pSoldier.bLevel / 4) - 1;
       }
       break;
   }

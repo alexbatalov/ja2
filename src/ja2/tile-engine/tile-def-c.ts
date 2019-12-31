@@ -6,9 +6,9 @@ namespace ja2 {
 export let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */ = createArrayFrom(Enum312.NUMBEROFTILES, createTileElement);
 export let gTileDatabaseSize: UINT16;
 export let gusNumAnimatedTiles: UINT16 = 0;
-export let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */;
+export let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */ = createArray(MAX_ANIMATED_TILES, 0);
 
-export let gTileTypeStartIndex: UINT16[] /* [NUMBEROFTILETYPES] */;
+export let gTileTypeStartIndex: UINT16[] /* [NUMBEROFTILETYPES] */ = createArray(Enum313.NUMBEROFTILETYPES, 0);
 
 export let gubEncryptionArray2: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = [
   [ 81, 168, 102, 49, 61, 70, 172, 127, 7, 148, 115, 179, 10, 117, 253, 35, 30, 218, 76, 63, 116, 210, 241, 65, 169, 157, 4, 9, 29, 205, 160, 111, 41, 213, 193, 190, 86, 19, 207, 133, 25, 190, 187, 131, 66, 196, 253, 227, 163 ],
@@ -251,7 +251,7 @@ export function CreateTileDatabase(): void {
 
         SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, TileElement, TileSurf.bRaisedObjectType);
 
-        gTileDatabase[gTileDatabaseSize] = TileElement;
+        copyTileElement(gTileDatabase[gTileDatabaseSize], TileElement);
         gTileDatabaseSize++;
       }
 
@@ -271,7 +271,7 @@ export function CreateTileDatabase(): void {
           TileElement.ubFullTile = 0;
           TileElement.uiFlags |= UNDERFLOW_FILLER;
 
-          gTileDatabase[gTileDatabaseSize] = TileElement;
+          copyTileElement(gTileDatabase[gTileDatabaseSize], TileElement);
           gTileDatabaseSize++;
         }
       }
@@ -365,7 +365,7 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
   // fNewCommand = fFirstDrawMode; //NEW_UNDO_COMMAND;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;

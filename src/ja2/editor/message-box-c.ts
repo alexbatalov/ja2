@@ -21,8 +21,8 @@ export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
   if (sPixLen > 600)
     sPixLen = 600;
 
-  sStartX = (640 - sPixLen) / 2;
-  sStartY = (480 - 96) / 2;
+  sStartX = Math.trunc((640 - sPixLen) / 2);
+  sStartY = Math.trunc((480 - 96) / 2);
 
   gfMessageBoxResult = false;
 
@@ -34,9 +34,9 @@ export function CreateMessageBox(wzString: string /* Pointer<UINT16> */): void {
   iMsgBoxOkImg = LoadButtonImage("EDITOR//ok.sti", 0, 1, 2, 3, 4);
   iMsgBoxCancelImg = LoadButtonImage("EDITOR//cancel.sti", 0, 1, 2, 3, 4);
 
-  iMsgBoxOk = QuickCreateButton(iMsgBoxOkImg, (sStartX + (sPixLen / 2) - 35), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxOkClkCallback);
+  iMsgBoxOk = QuickCreateButton(iMsgBoxOkImg, (sStartX + Math.trunc(sPixLen / 2) - 35), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxOkClkCallback);
 
-  iMsgBoxCancel = QuickCreateButton(iMsgBoxCancelImg, (sStartX + (sPixLen / 2) + 5), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxCnclClkCallback);
+  iMsgBoxCancel = QuickCreateButton(iMsgBoxCancelImg, (sStartX + Math.trunc(sPixLen / 2) + 5), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxCnclClkCallback);
 
   MsgBoxRect.iLeft = sStartX;
   MsgBoxRect.iTop = sStartY;

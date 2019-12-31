@@ -230,7 +230,7 @@ function HandleActivatedTargetCursor(pSoldier: SOLDIERTYPE, usMapPos: UINT16, fS
   { DetermineCursorBodyLocation(gusSelectedSoldier, true, true); }
 
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, (pSoldier.bShownAimTime / 2));
+    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, Math.trunc(pSoldier.bShownAimTime / 2));
     gfUIDisplayActionPoints = true;
     gfUIDisplayActionPointsCenter = true;
 
@@ -243,7 +243,7 @@ function HandleActivatedTargetCursor(pSoldier: SOLDIERTYPE, usMapPos: UINT16, fS
       bFutureAim = (pSoldier.bShownAimTime + 2);
 
       if (bFutureAim <= REFINE_AIM_5) {
-        sAPCosts = MinAPsToAttack(pSoldier, usMapPos, 1) + (bFutureAim / 2);
+        sAPCosts = MinAPsToAttack(pSoldier, usMapPos, 1) + Math.trunc(bFutureAim / 2);
 
         // Determine if we can afford!
         if (!EnoughPoints(pSoldier, sAPCosts, 0, false)) {
@@ -505,7 +505,7 @@ function HandleNonActivatedTargetCursor(pSoldier: SOLDIERTYPE, usMapPos: UINT16,
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     DetermineCursorBodyLocation(gusSelectedSoldier, fShowAPs, fRecalc);
 
-    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, (pSoldier.bShownAimTime / 2));
+    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, Math.trunc(pSoldier.bShownAimTime / 2));
 
     gfUIDisplayActionPoints = true;
     gfUIDisplayActionPointsCenter = true;
@@ -628,7 +628,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           // Check if we are in north half of tile!
           GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
-          if (sCellY > (CELL_Y_SIZE / 2)) {
+          if (sCellY > Math.trunc(CELL_Y_SIZE / 2)) {
             fOnGuy = false;
           }
         }
@@ -637,7 +637,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           // Check if we are in north half of tile!
           GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
-          if (sCellY <= (CELL_Y_SIZE / 2)) {
+          if (sCellY <= Math.trunc(CELL_Y_SIZE / 2)) {
             fOnGuy = false;
           }
         }
@@ -646,7 +646,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           // Check if we are in north half of tile!
           GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
-          if (sCellX > (CELL_X_SIZE / 2)) {
+          if (sCellX > Math.trunc(CELL_X_SIZE / 2)) {
             fOnGuy = false;
           }
         }
@@ -654,7 +654,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           // Check if we are in north half of tile!
           GetMouseXYWithRemainder(sMouseX__Pointer, sMouseY__Pointer, sCellX__Pointer, sCellY__Pointer);
 
-          if (sCellX <= (CELL_X_SIZE / 2)) {
+          if (sCellX <= Math.trunc(CELL_X_SIZE / 2)) {
             fOnGuy = false;
           }
         }
@@ -666,7 +666,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
 
           // Check for Below...
-          if (sScreenX > (WORLD_TILE_Y / 2)) {
+          if (sScreenX > Math.trunc(WORLD_TILE_Y / 2)) {
             fOnGuy = false;
           }
         }
@@ -678,7 +678,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: boolean, fRec
           ({ sScreenX, sScreenY } = FromCellToScreenCoordinates(sCellX, sCellY));
 
           // Check for Below...
-          if (sScreenX <= (WORLD_TILE_Y / 2)) {
+          if (sScreenX <= Math.trunc(WORLD_TILE_Y / 2)) {
             fOnGuy = false;
           }
         }
@@ -781,7 +781,7 @@ function HandleKnifeCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fActivated: b
 
     // Calculate action points
     if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, (pSoldier.bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, Math.trunc(pSoldier.bShownAimTime / 2));
       gfUIDisplayActionPoints = true;
       gfUIDisplayActionPointsCenter = true;
 
@@ -796,7 +796,7 @@ function HandleKnifeCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fActivated: b
 
       bFutureAim = (REFINE_KNIFE_2);
 
-      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, (bFutureAim / 2));
+      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, Math.trunc(bFutureAim / 2));
 
       // Determine if we can afford!
       if (!EnoughPoints(pSoldier, sAPCosts, 0, false)) {
@@ -878,7 +878,7 @@ function HandlePunchCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fActivated: b
 
     // Calculate action points
     if (gTacticalStatus.uiFlags & TURNBASED) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, (pSoldier.bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, Math.trunc(pSoldier.bShownAimTime / 2));
       gfUIDisplayActionPoints = true;
       gfUIDisplayActionPointsCenter = true;
 
@@ -893,7 +893,7 @@ function HandlePunchCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fActivated: b
 
       bFutureAim = (REFINE_PUNCH_2);
 
-      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, (bFutureAim / 2));
+      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, Math.trunc(bFutureAim / 2));
 
       // Determine if we can afford!
       if (!EnoughPoints(pSoldier, sAPCosts, 0, false)) {
@@ -1017,7 +1017,7 @@ function HandleNonActivatedTossCursor(pSoldier: SOLDIERTYPE, sGridNo: UINT16, fR
   // Add APs....
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if (ubItemCursor == TRAJECTORYCURS) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, (pSoldier.bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, 1, Math.trunc(pSoldier.bShownAimTime / 2));
     } else {
       gsCurrentActionPoints = MinAPsToThrow(pSoldier, sGridNo, 1);
     }
@@ -1343,7 +1343,7 @@ export function HandleRightClickAdjustCursor(pSoldier: SOLDIERTYPE, usMapPos: IN
         bFutureAim = (pSoldier.bShownAimTime + 2);
 
         if (bFutureAim <= REFINE_AIM_5) {
-          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, (bFutureAim / 2));
+          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, Math.trunc(bFutureAim / 2));
 
           // Determine if we can afford!
           if (EnoughPoints(pSoldier, sAPCosts, 0, false)) {
@@ -1377,7 +1377,7 @@ export function HandleRightClickAdjustCursor(pSoldier: SOLDIERTYPE, usMapPos: IN
       bFutureAim = (pSoldier.bShownAimTime + REFINE_PUNCH_2);
 
       if (bFutureAim <= REFINE_PUNCH_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, (bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, Math.trunc(bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, false)) {
@@ -1411,7 +1411,7 @@ export function HandleRightClickAdjustCursor(pSoldier: SOLDIERTYPE, usMapPos: IN
       bFutureAim = (pSoldier.bShownAimTime + REFINE_KNIFE_2);
 
       if (bFutureAim <= REFINE_KNIFE_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, (bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, 1, Math.trunc(bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, false)) {

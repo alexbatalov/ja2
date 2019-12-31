@@ -109,7 +109,6 @@ export function RemoveSoldierNodeFromInitList(pNode: SOLDIERINITNODE | null): vo
     (<SOLDIERINITNODE>pNode.prev).next = pNode.next;
     (<SOLDIERINITNODE>pNode.next).prev = pNode.prev;
   }
-  MemFree(pNode);
 }
 
 // These serialization functions are assuming the passing of a valid file
@@ -1077,7 +1076,6 @@ export function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, u
         curr.pBasicPlacement.bAttitude = Random(Enum242.MAXATTITUDES);
         if (curr.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr.pDetailedPlacement);
           curr.pDetailedPlacement = null;
           curr.pBasicPlacement.fDetailedPlacement = false;
           curr.pBasicPlacement.bRelativeAttributeLevel = RandomizeRelativeLevel(curr.pBasicPlacement.bRelativeAttributeLevel, curr.pBasicPlacement.ubSoldierClass);
@@ -1211,7 +1209,6 @@ export function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, u
         curr.pBasicPlacement.bAttitude = Random(Enum242.MAXATTITUDES);
         if (curr.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr.pDetailedPlacement);
           curr.pDetailedPlacement = null;
           curr.pBasicPlacement.fDetailedPlacement = false;
           curr.pBasicPlacement.bRelativeAttributeLevel = RandomizeRelativeLevel(curr.pBasicPlacement.bRelativeAttributeLevel, curr.pBasicPlacement.ubSoldierClass);
@@ -1331,7 +1328,6 @@ export function AddSoldierInitListCreatures(fQueen: boolean, ubNumLarvae: UINT8,
           Assert(0);
         if (curr.pDetailedPlacement) {
           // delete the detailed placement information.
-          MemFree(curr.pDetailedPlacement);
           curr.pDetailedPlacement = null;
           curr.pBasicPlacement.fDetailedPlacement = false;
         }
@@ -1417,7 +1413,6 @@ export function EvaluateDeathEffectsToSoldierInitList(pSoldier: SOLDIERTYPE): vo
         // RECORD UBNODEID IN TEMP FILE.
 
         curr.pSoldier = null;
-        MemFree(curr.pDetailedPlacement);
         curr.pDetailedPlacement = null;
         return;
       }
@@ -1433,7 +1428,6 @@ function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
   while (curr) {
     if (curr.ubNodeID == ubNodeID) {
       if (curr.pDetailedPlacement) {
-        MemFree(curr.pDetailedPlacement);
         curr.pDetailedPlacement = null;
         return;
       }
@@ -1922,7 +1916,6 @@ export function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
   while (curr) {
     if (curr.pDetailedPlacement) {
       if (curr.pBasicPlacement.bTeam == ENEMY_TEAM) {
-        MemFree(curr.pDetailedPlacement);
         curr.pDetailedPlacement = null;
         curr.pBasicPlacement.fDetailedPlacement = false;
         curr.pBasicPlacement.fPriorityExistance = false;

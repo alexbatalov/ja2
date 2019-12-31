@@ -514,11 +514,11 @@ export function GetSoundEffectsVolume(): UINT32 {
 }
 
 export function CalculateSpeechVolume(uiVolume: UINT32): UINT32 {
-  return ((uiVolume / HIGHVOLUME) * guiSpeechVolume + .5);
+  return Math.trunc((uiVolume / HIGHVOLUME) * guiSpeechVolume + .5);
 }
 
 export function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
-  return ((uiVolume / HIGHVOLUME) * guiSoundEffectsVolume + .5);
+  return Math.trunc((uiVolume / HIGHVOLUME) * guiSoundEffectsVolume + .5);
 }
 
 export function SoundDir(sGridNo: INT16): INT8 {
@@ -541,7 +541,7 @@ export function SoundDir(sGridNo: INT16): INT8 {
   ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
-  sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
+  sMiddleX = gsTopLeftWorldX + Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2);
 
   sDif = sMiddleX - sScreenX;
 
@@ -549,7 +549,7 @@ export function SoundDir(sGridNo: INT16): INT8 {
     // OK, NOT the middle.
 
     // Is it outside the screen?
-    if (sAbsDif > ((gsBottomRightWorldX - gsTopLeftWorldX) / 2)) {
+    if (sAbsDif > Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2)) {
       // yes, outside...
       if (sDif > 0) {
         // return( FARLEFT );
@@ -591,8 +591,8 @@ export function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
-  sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
-  sMiddleY = gsTopLeftWorldY + (gsBottomRightWorldY - gsTopLeftWorldY) / 2;
+  sMiddleX = gsTopLeftWorldX + Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2);
+  sMiddleY = gsTopLeftWorldY + Math.trunc((gsBottomRightWorldY - gsTopLeftWorldY) / 2);
 
   sDifX = sMiddleX - sScreenX;
   sDifY = sMiddleY - sScreenY;
@@ -604,7 +604,7 @@ export function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
     // OK, NOT the middle.
 
     // Is it outside the screen?
-    if (sAbsDifX > ((gsBottomRightWorldX - gsTopLeftWorldX) / 2) || sAbsDifY > ((gsBottomRightWorldY - gsTopLeftWorldY) / 2)) {
+    if (sAbsDifX > Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2) || sAbsDifY > Math.trunc((gsBottomRightWorldY - gsTopLeftWorldY) / 2)) {
       return Math.max(LOWVOLUME, (bInitialVolume - SOUND_FAR_VOLUME_MOD));
     }
   }
@@ -827,7 +827,7 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
   ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
-  sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
+  sMiddleX = gsTopLeftWorldX + Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2);
 
   sDif = sMiddleX - sScreenX;
 
@@ -835,7 +835,7 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
     // OK, NOT the middle.
 
     // Is it outside the screen?
-    if (sAbsDif > ((gsBottomRightWorldX - gsTopLeftWorldX) / 2)) {
+    if (sAbsDif > Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2)) {
       // yes, outside...
       if (sDif > 0) {
         // return( FARLEFT );
@@ -881,8 +881,8 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   ({ sScreenX, sScreenY } = GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY)));
 
   // Get middle of where we are now....
-  sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
-  sMiddleY = gsTopLeftWorldY + (gsBottomRightWorldY - gsTopLeftWorldY) / 2;
+  sMiddleX = gsTopLeftWorldX + Math.trunc((gsBottomRightWorldX - gsTopLeftWorldX) / 2);
+  sMiddleY = gsTopLeftWorldY + Math.trunc((gsBottomRightWorldY - gsTopLeftWorldY) / 2);
 
   sDifX = sMiddleX - sScreenX;
   sDifY = sMiddleY - sScreenY;
@@ -905,7 +905,7 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // Scale
-  return (bInitialVolume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
+  return (bInitialVolume * Math.trunc((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
 export function SetPositionSndsVolumeAndPanning(): void {

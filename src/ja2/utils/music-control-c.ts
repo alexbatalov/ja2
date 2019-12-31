@@ -417,10 +417,10 @@ function FadeMusicForXSeconds(uiDelay: UINT32): void {
   let sNumVolumeSteps: INT16;
 
   // get # time steps in delay....
-  sNumTimeSteps = (uiDelay / 10);
+  sNumTimeSteps = Math.trunc(uiDelay / 10);
 
   // Devide this by music volume...
-  sNumVolumeSteps = (uiMusicVolume / sNumTimeSteps);
+  sNumVolumeSteps = Math.trunc(uiMusicVolume / sNumTimeSteps);
 
   // Set fade delay...
   SetMusicFadeSpeed(sNumVolumeSteps);

@@ -676,7 +676,7 @@ export function CreateVideoSurface(VSurfaceDesc: VSURFACE_DESC): SGPVSurface {
   hVSurface.usWidth = usWidth;
   hVSurface.ubBitDepth = ubBitDepth;
   hVSurface.pSurfaceData1 = <Uint8ClampedArray><unknown>null;
-  hVSurface.pSurfaceData = new Uint8ClampedArray(usHeight * usWidth * 4);
+  hVSurface.pSurfaceData = new Uint8ClampedArray(usHeight * usWidth * (ubBitDepth === 16 ? 4 : 1));
   hVSurface.pSavedSurfaceData1 = <Uint8ClampedArray><unknown>null;
   hVSurface.pSavedSurfaceData = <Uint8ClampedArray><unknown>null;
   hVSurface.pPalette = <SGPPaletteEntry[]><unknown>null;
@@ -686,7 +686,7 @@ export function CreateVideoSurface(VSurfaceDesc: VSURFACE_DESC): SGPVSurface {
   hVSurface.pClipper = null;
 
   hVSurface.pSavedSurfaceData1 = <Uint8ClampedArray><unknown>null;
-  hVSurface.pSavedSurfaceData = new Uint8ClampedArray(usHeight * usWidth * 4);
+  hVSurface.pSavedSurfaceData = new Uint8ClampedArray(usHeight * usWidth * (ubBitDepth === 16 ? 4 : 1));
 
   //
   // Initialize surface with hImage , if given
@@ -751,7 +751,7 @@ function LockVideoSurfaceBuffer(hVSurface: SGPVSurface, pPitch: Pointer<UINT32>)
   Assert(hVSurface != null);
   Assert(pPitch != null);
 
-  pPitch.value = hVSurface.usWidth * 4;
+  pPitch.value = hVSurface.usWidth * (hVSurface.ubBitDepth === 16 ? 4 : 1);
 
   return hVSurface.pSurfaceData;
 }
@@ -852,6 +852,7 @@ export function SetVideoSurfacePalette(hVSurface: SGPVSurface, pSrcPalette: SGPP
   // Create palette object if not already done so
   if (hVSurface.pPalette == null) {
     hVSurface.pPalette = createArrayFrom(256, createSGPPaletteEntry);
+    copyObjectArray(hVSurface.pPalette, pSrcPalette, copySGPPaletteEntry);
 
     // Set into surface
     // DDSetSurfacePalette( (LPDIRECTDRAWSURFACE2)hVSurface->pSurfaceData, (LPDIRECTDRAWPALETTE)hVSurface->pPalette );
@@ -1615,8 +1616,10 @@ function DDBltSurface(hDestVSurface: SGPVSurface, DestRect: RECT, hSrcVSurface: 
   let srcIndex = hSrcVSurface.usWidth * top * 4 + left * 4;
   let srcLineSkip = hSrcVSurface.usWidth * 4 - (right - left) * 4;
 
-  for (let y = top; y < bottom; y++) {
-    for (let x = left; x < right; x++) {
+  let x: number;
+  let y: number;
+  for (y = top; y < bottom; y++) {
+    for (x = left; x < right; x++) {
       destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
       destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
       destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]

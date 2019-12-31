@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 const SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
 const FORCE_SET_MOVEMENTCOST = (a: number, b: number, c: number, d: number) => (gubWorldMovementCosts[a][b][c] = d);
 const SET_CURRMOVEMENTCOST = (usGridNo: number, a: number, b: number) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
@@ -165,7 +167,7 @@ export function DeinitializeWorld(): void {
   TrashWorld();
 
   if (gpWorldLevelData != null) {
-    MemFree(gpWorldLevelData);
+    gpWorldLevelData.length = 0;
   }
 
   DestroyTileSurfaces();
@@ -188,19 +190,6 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: string[] /* [][32] */, ubTiles
   let uiPercentage: UINT32;
   // UINT32					uiLength;
   // UINT16					uiFillColor;
-  let ExeDir: string /* STRING512 */;
-  let INIFile: string /* STRING512 */;
-
-  // Get Executable Directory
-  ExeDir = GetExecutableDirectory();
-
-  // Adjust Current Dir
-  // CHECK IF DEFAULT INI OVERRIDE FILE EXISTS
-  INIFile = sprintf("%s\\engine.ini", ExeDir);
-  if (!FileExists(INIFile)) {
-    // USE PER TILESET BASIS
-    INIFile = sprintf("%s\\engine%d.ini", ExeDir, ubTilesetID);
-  }
 
   // If no Tileset filenames are given, return error
   if (ppTileSurfaceFilenames == null) {
@@ -220,7 +209,7 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: string[] /* [][32] */, ubTiles
   // load the tile surfaces
   SetRelativeStartAndEndPercentage(0, 1, 35, "Tile Surfaces");
   for (uiLoop = 0; uiLoop < Enum313.NUMBEROFTILETYPES; uiLoop++) {
-    uiPercentage = (uiLoop * 100) / (Enum313.NUMBEROFTILETYPES - 1);
+    uiPercentage = Math.trunc((uiLoop * 100) / (Enum313.NUMBEROFTILETYPES - 1));
     RenderProgressBar(0, uiPercentage);
 
     // uiFillColor = Get16BPPColor(FROMRGB( 100 + uiPercentage , 0, 0 ));
@@ -232,47 +221,29 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: string[] /* [][32] */, ubTiles
     // thus about 20 times, seems better than having to maintain two
     // almost completely identical functions
     if (ppTileSurfaceFilenames == null) {
-      GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
-      if (cTemp.value != '\0') {
-        TileSurfaceFilenames[uiLoop] = cTemp;
-        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
-          DestroyTileSurfaces();
-          return false;
-        }
-      } else {
-        // Use default
-        if (AddTileSurface(TileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
-          DestroyTileSurfaces();
-          return false;
-        }
+      // Use default
+      if (AddTileSurface(TileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
+        DestroyTileSurfaces();
+        return false;
       }
     } else {
-      GetPrivateProfileString("TileSurface Filenames", gTileSurfaceName[uiLoop], "", cTemp, SGPFILENAME_LEN, INIFile);
-      if (cTemp.value != '\0') {
-        TileSurfaceFilenames[uiLoop] = cTemp;
-        if (AddTileSurface(cTemp, uiLoop, ubTilesetID, true) == false) {
+      if ((ppTileSurfaceFilenames[uiLoop]) != '') {
+        if (AddTileSurface(ppTileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
           DestroyTileSurfaces();
           return false;
         }
       } else {
-        if ((ppTileSurfaceFilenames[uiLoop]).value != '\0') {
-          if (AddTileSurface(ppTileSurfaceFilenames[uiLoop], uiLoop, ubTilesetID, false) == false) {
+        // USE FIRST TILESET VALUE!
+
+        // ATE: If here, don't load default surface if already loaded...
+        if (!gbDefaultSurfaceUsed[uiLoop]) {
+          TileSurfaceFilenames[uiLoop] = gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop]; //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
+          if (AddTileSurface(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], uiLoop, Enum316.GENERIC_1, false) == false) {
             DestroyTileSurfaces();
             return false;
           }
         } else {
-          // USE FIRST TILESET VALUE!
-
-          // ATE: If here, don't load default surface if already loaded...
-          if (!gbDefaultSurfaceUsed[uiLoop]) {
-            TileSurfaceFilenames[uiLoop] = gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop]; //(char *)(ppTileSurfaceFilenames + (65 * uiLoop)) );
-            if (AddTileSurface(gTilesets[Enum316.GENERIC_1].TileSurfaceFilenames[uiLoop], uiLoop, Enum316.GENERIC_1, false) == false) {
-              DestroyTileSurfaces();
-              return false;
-            }
-          } else {
-            gbSameAsDefaultSurfaceUsed[uiLoop] = true;
-          }
+          gbSameAsDefaultSurfaceUsed[uiLoop] = true;
         }
       }
     }
@@ -342,7 +313,7 @@ export function BuildTileShadeTables(): void {
 
   // Set the directory to the shadetable directory
   DataDir = GetFileManCurrentDirectory();
-  ShadeTableDir = sprintf("%s\\ShadeTables", DataDir);
+  ShadeTableDir = path.join(DataDir, 'ShadeTables');
   if (!SetFileManCurrentDirectory(ShadeTableDir)) {
     AssertMsg(0, "Can't set the directory to Data\\ShadeTable.  Kris' big problem!");
   }
@@ -385,7 +356,7 @@ export function BuildTileShadeTables(): void {
           fForceRebuildForSlot = true;
         }
 
-        RenderProgressBar(0, uiLoop * 100 / Enum313.NUMBEROFTILETYPES);
+        RenderProgressBar(0, Math.trunc(uiLoop * 100 / Enum313.NUMBEROFTILETYPES));
         CreateTilePaletteTables(gTileSurfaceArray[uiLoop].vo, uiLoop, fForceRebuildForSlot);
       }
     }
@@ -1157,7 +1128,7 @@ export function AddTileToRecompileArea(sGridNo: INT16): void {
   // check Top/Left of recompile region
   sCheckGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.NORTHWEST));
   sCheckX = sCheckGridNo % WORLD_COLS;
-  sCheckY = sCheckGridNo / WORLD_COLS;
+  sCheckY = Math.trunc(sCheckGridNo / WORLD_COLS);
   if (sCheckX < gsRecompileAreaLeft) {
     gsRecompileAreaLeft = sCheckX;
   }
@@ -1168,7 +1139,7 @@ export function AddTileToRecompileArea(sGridNo: INT16): void {
   // check Bottom/Right
   sCheckGridNo = NewGridNo(sGridNo, DirectionInc(Enum245.SOUTHEAST));
   sCheckX = sCheckGridNo % WORLD_COLS;
-  sCheckY = sCheckGridNo / WORLD_COLS;
+  sCheckY = Math.trunc(sCheckGridNo / WORLD_COLS);
   if (sCheckX > gsRecompileAreaRight) {
     gsRecompileAreaRight = sCheckX;
   }
@@ -1347,7 +1318,8 @@ export function SaveWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Write out height values
-    buffer.writeUInt16LE(gpWorldLevelData[cnt].sHeight, 0);
+    buffer.writeUInt8(gpWorldLevelData[cnt].sHeight, 0);
+    buffer.writeUInt8(0, 1);
     uiBytesWritten = FileWrite(hfile, buffer, 2);
   }
 
@@ -1870,7 +1842,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   // read layer counts
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (!(cnt % 2560)) {
-      RenderProgressBar(0, (cnt / 2560) + 1); // 1 - 10
+      RenderProgressBar(0, Math.trunc(cnt / 2560) + 1); // 1 - 10
       // RenderProgressBar( 1, (cnt / 2560)+1 ); //1 - 10
     }
     // Read combination of land/world flags
@@ -1898,7 +1870,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   // skip all layers
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (!(cnt % 320)) {
-      RenderProgressBar(0, (cnt / 320) + 11); // 11 - 90
+      RenderProgressBar(0, Math.trunc(cnt / 320) + 11); // 11 - 90
       // RenderProgressBar( 1, (cnt / 320)+11 ); //11 - 90
     }
     offset += 2 * bCounts[cnt][6];
@@ -2254,7 +2226,8 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Read height values
-    gpWorldLevelData[cnt].sHeight = buffer.readUInt16LE(bufferOffset); bufferOffset += 2;
+    gpWorldLevelData[cnt].sHeight = buffer.readUInt8(bufferOffset++);
+    bufferOffset++;
   }
 
   // FP 0x00c810
@@ -3345,7 +3318,9 @@ function LoadMapLights(buffer: Buffer, offset: number): number {
 
   // read in the light colors!
   ubNumColors = buffer.readUInt8(offset++);
-  offset = readObjectArray(LColors, buffer, offset, readSGPPaletteEntry);
+  for (let i = 0; i < ubNumColors; i++) {
+    offset = readSGPPaletteEntry(LColors[i], buffer, offset);
+  }
 
   usNumLights = buffer.readUInt16LE(offset); offset += 2;
 

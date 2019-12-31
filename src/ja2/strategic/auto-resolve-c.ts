@@ -510,8 +510,8 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
 
   sStartLeft = 59;
   sStartTop = 69;
-  sEndLeft = SrcRect.iLeft + gpAR.sWidth / 2;
-  sEndTop = SrcRect.iTop + gpAR.sHeight / 2;
+  sEndLeft = SrcRect.iLeft + Math.trunc(gpAR.sWidth / 2);
+  sEndTop = SrcRect.iTop + Math.trunc(gpAR.sHeight / 2);
 
   // save the prebattle/mapscreen interface background
   BlitBufferToBuffer(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, 640, 480);
@@ -527,9 +527,10 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
   BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, SrcRect.iLeft, SrcRect.iTop, SrcRect.iRight, SrcRect.iBottom);
 
   PlayJA2SampleFromFile("SOUNDS\\Laptop power up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+  iPercentage = 100; // FIXME: Synchronous rendering
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
-    iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
+    iPercentage = Math.trunc((uiCurrTime - uiStartTime) * 100 / uiTimeRange);
     iPercentage = Math.min(iPercentage, 100);
 
     // Factor the percentage so that it is modified by a gravity falling acceleration effect.
@@ -540,13 +541,13 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
       iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
 
     // Calculate the center point.
-    iLeft = sStartLeft + (sEndLeft - sStartLeft + 1) * iPercentage / 100;
-    iTop = sStartTop + (sEndTop - sStartTop + 1) * iPercentage / 100;
+    iLeft = sStartLeft + Math.trunc((sEndLeft - sStartLeft + 1) * iPercentage / 100);
+    iTop = sStartTop + Math.trunc((sEndTop - sStartTop + 1) * iPercentage / 100);
 
-    DstRect.iLeft = iLeft - iWidth * iPercentage / 200;
-    DstRect.iRight = DstRect.iLeft + Math.max(iWidth * iPercentage / 100, 1);
-    DstRect.iTop = iTop - iHeight * iPercentage / 200;
-    DstRect.iBottom = DstRect.iTop + Math.max(iHeight * iPercentage / 100, 1);
+    DstRect.iLeft = iLeft - Math.trunc(iWidth * iPercentage / 200);
+    DstRect.iRight = DstRect.iLeft + Math.max(Math.trunc(iWidth * iPercentage / 100), 1);
+    DstRect.iTop = iTop - Math.trunc(iHeight * iPercentage / 200);
+    DstRect.iBottom = DstRect.iTop + Math.max(Math.trunc(iHeight * iPercentage / 100), 1);
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, SrcRect, DstRect);
     InvalidateScreen();
@@ -783,14 +784,14 @@ function CalculateSoldierCells(fReset: boolean): void {
   } else {
     gpAR.ubTimeModifierPercentage = 100;
   }
-  gpAR.uiTimeSlice = gpAR.uiTimeSlice * gpAR.ubTimeModifierPercentage / 100;
+  gpAR.uiTimeSlice = Math.trunc(gpAR.uiTimeSlice * gpAR.ubTimeModifierPercentage / 100);
 
-  iTop = 240 - gpAR.sHeight / 2;
+  iTop = 240 - Math.trunc(gpAR.sHeight / 2);
   if (iTop > 120)
     iTop -= 40;
 
   if (gpAR.ubMercs) {
-    iStartY = iTop + (gpAR.sHeight - ((gpAR.ubMercRows + gpAR.ubCivRows) * 47 + 7)) / 2 + 6;
+    iStartY = iTop + Math.trunc((gpAR.sHeight - ((gpAR.ubMercRows + gpAR.ubCivRows) * 47 + 7)) / 2) + 6;
     y = gpAR.ubMercRows;
     x = gpAR.ubMercCols;
     i = gpAR.ubMercs;
@@ -822,7 +823,7 @@ function CalculateSoldierCells(fReset: boolean): void {
       }
   }
   if (gpAR.ubCivs) {
-    iStartY = iTop + (gpAR.sHeight - ((gpAR.ubMercRows + gpAR.ubCivRows) * 47 + 7)) / 2 + gpAR.ubMercRows * 47 + 5;
+    iStartY = iTop + Math.trunc((gpAR.sHeight - ((gpAR.ubMercRows + gpAR.ubCivRows) * 47 + 7)) / 2) + gpAR.ubMercRows * 47 + 5;
     y = gpAR.ubCivRows;
     x = gpAR.ubCivCols;
     i = gpAR.ubCivs;
@@ -839,7 +840,7 @@ function CalculateSoldierCells(fReset: boolean): void {
       }
   }
   if (gpAR.ubEnemies) {
-    iStartY = iTop + (gpAR.sHeight - (gpAR.ubEnemyRows * 47 + 7)) / 2 + 5;
+    iStartY = iTop + Math.trunc((gpAR.sHeight - (gpAR.ubEnemyRows * 47 + 7)) / 2) + 5;
     y = gpAR.ubEnemyRows;
     x = gpAR.ubEnemyCols;
     i = gpAR.ubEnemies;
@@ -946,23 +947,23 @@ function RenderSoldierCellBars(pCell: SOLDIERCELL): void {
   if (!pCell.pSoldier.bLife)
     return;
   // yellow one for bleeding
-  iStartY = pCell.yp + 29 - 25 * pCell.pSoldier.bLifeMax / 100;
+  iStartY = pCell.yp + 29 - Math.trunc(25 * pCell.pSoldier.bLifeMax / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 37, iStartY, pCell.xp + 38, pCell.yp + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 38, iStartY, pCell.xp + 39, pCell.yp + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
   // pink one for bandaged.
-  iStartY += 25 * pCell.pSoldier.bBleeding / 100;
+  iStartY += Math.trunc(25 * pCell.pSoldier.bBleeding / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 37, iStartY, pCell.xp + 38, pCell.yp + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 38, iStartY, pCell.xp + 39, pCell.yp + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
   // red one for actual health
-  iStartY = pCell.yp + 29 - 25 * pCell.pSoldier.bLife / 100;
+  iStartY = pCell.yp + 29 - Math.trunc(25 * pCell.pSoldier.bLife / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 37, iStartY, pCell.xp + 38, pCell.yp + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 38, iStartY, pCell.xp + 39, pCell.yp + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
   // BREATH BAR
-  iStartY = pCell.yp + 29 - 25 * pCell.pSoldier.bBreathMax / 100;
+  iStartY = pCell.yp + 29 - Math.trunc(25 * pCell.pSoldier.bBreathMax / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 41, iStartY, pCell.xp + 42, pCell.yp + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 42, iStartY, pCell.xp + 43, pCell.yp + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
   // MORALE BAR
-  iStartY = pCell.yp + 29 - 25 * pCell.pSoldier.bMorale / 100;
+  iStartY = pCell.yp + 29 - Math.trunc(25 * pCell.pSoldier.bMorale / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 45, iStartY, pCell.xp + 46, pCell.yp + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell.xp + 46, iStartY, pCell.xp + 47, pCell.yp + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 }
@@ -978,9 +979,9 @@ function BuildInterfaceBuffer(): void {
   let y: INT32;
 
   // Setup the blitting clip regions, so we don't draw outside of the region (for excess panelling)
-  gpAR.Rect.iLeft = 320 - gpAR.sWidth / 2;
+  gpAR.Rect.iLeft = 320 - Math.trunc(gpAR.sWidth / 2);
   gpAR.Rect.iRight = gpAR.Rect.iLeft + gpAR.sWidth;
-  gpAR.Rect.iTop = 240 - gpAR.sHeight / 2;
+  gpAR.Rect.iTop = 240 - Math.trunc(gpAR.sHeight / 2);
   if (gpAR.Rect.iTop > 120)
     gpAR.Rect.iTop -= 40;
   gpAR.Rect.iBottom = gpAR.Rect.iTop + gpAR.sHeight;
@@ -1088,28 +1089,28 @@ function ExpandWindow(): void {
       OldRect.iBottom = ORIG_BOTTOM;
 
       uiTimeRange = gpAR.uiEndExpanding - gpAR.uiStartExpanding;
-      uiPercent = (uiCurrentTime - gpAR.uiStartExpanding) * 100 / uiTimeRange;
+      uiPercent = Math.trunc((uiCurrentTime - gpAR.uiStartExpanding) * 100 / uiTimeRange);
 
       // Left
       if (OldRect.iLeft <= gpAR.Rect.iLeft)
-        gpAR.ExRect.iLeft = OldRect.iLeft + (gpAR.Rect.iLeft - OldRect.iLeft) * uiPercent / 100;
+        gpAR.ExRect.iLeft = OldRect.iLeft + Math.trunc((gpAR.Rect.iLeft - OldRect.iLeft) * uiPercent / 100);
       else
-        gpAR.ExRect.iLeft = gpAR.Rect.iLeft + (OldRect.iLeft - gpAR.Rect.iLeft) * uiPercent / 100;
+        gpAR.ExRect.iLeft = gpAR.Rect.iLeft + Math.trunc((OldRect.iLeft - gpAR.Rect.iLeft) * uiPercent / 100);
       // Top
       if (OldRect.iTop <= gpAR.Rect.iTop)
-        gpAR.ExRect.iTop = OldRect.iTop + (gpAR.Rect.iTop - OldRect.iTop) * uiPercent / 100;
+        gpAR.ExRect.iTop = OldRect.iTop + Math.trunc((gpAR.Rect.iTop - OldRect.iTop) * uiPercent / 100);
       else
-        gpAR.ExRect.iTop = gpAR.Rect.iTop + (OldRect.iTop - gpAR.Rect.iTop) * uiPercent / 100;
+        gpAR.ExRect.iTop = gpAR.Rect.iTop + Math.trunc((OldRect.iTop - gpAR.Rect.iTop) * uiPercent / 100);
       // Right
       if (OldRect.iRight <= gpAR.Rect.iRight)
-        gpAR.ExRect.iRight = OldRect.iRight + (gpAR.Rect.iRight - OldRect.iRight) * uiPercent / 100;
+        gpAR.ExRect.iRight = OldRect.iRight + Math.trunc((gpAR.Rect.iRight - OldRect.iRight) * uiPercent / 100);
       else
-        gpAR.ExRect.iRight = gpAR.Rect.iRight + (OldRect.iRight - gpAR.Rect.iRight) * uiPercent / 100;
+        gpAR.ExRect.iRight = gpAR.Rect.iRight + Math.trunc((OldRect.iRight - gpAR.Rect.iRight) * uiPercent / 100);
       // Bottom
       if (OldRect.iBottom <= gpAR.Rect.iBottom)
-        gpAR.ExRect.iBottom = OldRect.iBottom + (gpAR.Rect.iBottom - OldRect.iBottom) * uiPercent / 100;
+        gpAR.ExRect.iBottom = OldRect.iBottom + Math.trunc((gpAR.Rect.iBottom - OldRect.iBottom) * uiPercent / 100);
       else
-        gpAR.ExRect.iBottom = gpAR.Rect.iBottom + (OldRect.iBottom - gpAR.Rect.iBottom) * uiPercent / 100;
+        gpAR.ExRect.iBottom = gpAR.Rect.iBottom + Math.trunc((OldRect.iBottom - gpAR.Rect.iBottom) * uiPercent / 100);
     } else {
       // expansion done -- final frame
       gpAR.ExRect.iLeft = gpAR.Rect.iLeft;
@@ -1169,14 +1170,14 @@ export function VirtualSoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIER
   }
 
   // calculate how much bandaging CAN be done this turn
-  uiPossible = (uiAvailAPs * uiDressSkill) / 50; // max rate is 2 * fullAPs
+  uiPossible = Math.trunc((uiAvailAPs * uiDressSkill) / 50); // max rate is 2 * fullAPs
 
   // if no healing is possible (insufficient APs or insufficient dressSkill)
   if (!uiPossible)
     return 0;
 
   if (pSoldier.inv[0].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
-    uiPossible += (uiPossible / 2); // add extra 50 %
+    uiPossible += Math.trunc(uiPossible / 2); // add extra 50 %
 
   uiActual = uiPossible; // start by assuming maximum possible
 
@@ -1201,7 +1202,7 @@ export function VirtualSoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIER
 
   // now make sure we HAVE that much
   if (pKit.usItem == Enum225.MEDICKIT) {
-    uiMedcost = uiActual / 2; // cost is only half
+    uiMedcost = Math.trunc(uiActual / 2); // cost is only half
     if (uiMedcost == 0 && uiActual > 0)
       uiMedcost = 1;
     if (uiMedcost > sKitPts) // if we can't afford this
@@ -1231,8 +1232,8 @@ export function VirtualSoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIER
       // use up appropriate # of actual healing points
       bPtsLeft -= (2 * bBelowOKlife);
     } else {
-      pVictim.bLife += (bPtsLeft / 2);
-      pVictim.bBleeding -= (bPtsLeft / 2);
+      pVictim.bLife += Math.trunc(bPtsLeft / 2);
+      pVictim.bBleeding -= Math.trunc(bPtsLeft / 2);
       bPtsLeft = bPtsLeft % 2; // if ptsLeft was odd, ptsLeft = 1
     }
 
@@ -1269,18 +1270,18 @@ export function VirtualSoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIER
   uiActual -= bPtsLeft;
 
   // usedAPs equals (actionPts) * (%of possible points actually used)
-  uiUsedAPs = (uiActual * uiAvailAPs) / uiPossible;
+  uiUsedAPs = Math.trunc((uiActual * uiAvailAPs) / uiPossible);
 
   if (pSoldier.inv[0].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
-    uiUsedAPs = (uiUsedAPs * 2) / 3; // reverse 50% bonus by taking 2/3rds
+    uiUsedAPs = Math.trunc((uiUsedAPs * 2) / 3); // reverse 50% bonus by taking 2/3rds
 
-  if (uiActual / 2)
+  if (Math.trunc(uiActual / 2))
     // MEDICAL GAIN (actual / 2):  Helped someone by giving first aid
-    StatChange(pSoldier, MEDICALAMT, ((uiActual / 2)), 0);
+    StatChange(pSoldier, MEDICALAMT, (Math.trunc(uiActual / 2)), 0);
 
-  if (uiActual / 4)
+  if (Math.trunc(uiActual / 4))
     // DEXTERITY GAIN (actual / 4):  Helped someone by giving first aid
-    StatChange(pSoldier, DEXTAMT, ((uiActual / 4)), 0);
+    StatChange(pSoldier, DEXTAMT, (Math.trunc(uiActual / 4)), 0);
 
   return uiMedcost;
 }
@@ -1467,7 +1468,7 @@ function RenderAutoResolve(): void {
       break;
   }
 
-  xp = gpAR.sCenterStartX + 70 - StringPixLength(str, FONT10ARIALBOLD()) / 2;
+  xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, FONT10ARIALBOLD()) / 2);
   yp = gpAR.Rect.iTop + 15;
   mprintf(xp, yp, str);
 
@@ -1476,7 +1477,7 @@ function RenderAutoResolve(): void {
   SetFontShadow(FONT_NEARBLACK);
 
   str = GetSectorIDString(gpAR.ubSectorX, gpAR.ubSectorY, 0, true);
-  xp = gpAR.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
+  xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2);
   yp += 11;
   mprintf(xp, yp, str);
 
@@ -1494,7 +1495,7 @@ function RenderAutoResolve(): void {
     SetFontForeground(FONT_YELLOW);
   }
 
-  xp = gpAR.sCenterStartX + 70 - StringPixLength(str, FONT14ARIAL()) / 2;
+  xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, FONT14ARIAL()) / 2);
   yp += 11;
   mprintf(xp, yp, str);
 
@@ -1604,14 +1605,14 @@ function RenderAutoResolve(): void {
     xp = gpAR.sCenterStartX + 12;
     yp = 218 + gpAR.bVerticalOffset;
     BltVideoObjectFromIndex(FRAME_BUFFER, gpAR.iIndent, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
-    xp = gpAR.sCenterStartX + 70 - StringPixLength(str, BLOCKFONT2()) / 2;
+    xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, BLOCKFONT2()) / 2);
     yp = 227 + gpAR.bVerticalOffset;
     mprintf(xp, yp, str);
 
     // Render the total battle time elapsed.
     SetFont(FONT10ARIAL());
-    str = swprintf("%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], gpAR.uiTotalElapsedBattleTimeInMilliseconds / 60000, (gpAR.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000);
-    xp = gpAR.sCenterStartX + 70 - StringPixLength(str, FONT10ARIAL()) / 2;
+    str = swprintf("%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], Math.trunc(gpAR.uiTotalElapsedBattleTimeInMilliseconds / 60000), Math.trunc((gpAR.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000));
+    xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2);
     yp = 290 + gpAR.bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
     mprintf(xp, yp, str);
@@ -1838,7 +1839,7 @@ function CreateAutoResolveInterface(): void {
 
   // If we are bumping up the interface, then also use that piece of info to
   // move the buttons up by the same amount.
-  gpAR.bVerticalOffset = 240 - gpAR.sHeight / 2 > 120 ? -40 : 0;
+  gpAR.bVerticalOffset = 240 - Math.trunc(gpAR.sHeight / 2) > 120 ? -40 : 0;
 
   // Create the buttons -- subject to relocation
   gpAR.iButton[Enum119.PLAY_BUTTON] = QuickCreateButton(gpAR.iButtonImage[Enum119.PLAY_BUTTON], (gpAR.sCenterStartX + 11), (240 + gpAR.bVerticalOffset), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK(), PlayButtonCallback);
@@ -1951,7 +1952,6 @@ function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
     gpMercs[i].uiVObjectID = -1;
     if (gpMercs[i].pRegion) {
       MSYS_RemoveRegion(gpMercs[i].pRegion);
-      MemFree(gpMercs[i].pRegion);
       gpMercs[i].pRegion = null;
     }
   }
@@ -1976,7 +1976,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
         default:
           break;
       }
-      if (fDeleteForGood && gpCivs[i].pSoldier.bLife < OKLIFE / 2) {
+      if (fDeleteForGood && gpCivs[i].pSoldier.bLife < Math.trunc(OKLIFE / 2)) {
         AddDeadSoldierToUnLoadedSector(gpAR.ubSectorX, gpAR.ubSectorY, 0, gpCivs[i].pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
         StrategicRemoveMilitiaFromSector(gpAR.ubSectorX, gpAR.ubSectorY, ubCurrentRank, 1);
         HandleGlobalLoyaltyEvent(Enum190.GLOBAL_LOYALTY_NATIVE_KILLED, gpAR.ubSectorX, gpAR.ubSectorY, 0);
@@ -2044,7 +2044,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: boolean): void {
   if (fDeleteForGood) {
     // Warp the game time accordingly
 
-    WarpGameTime(gpAR.uiTotalElapsedBattleTimeInMilliseconds / 1000, Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
+    WarpGameTime(Math.trunc(gpAR.uiTotalElapsedBattleTimeInMilliseconds / 1000), Enum131.WARPTIME_NO_PROCESSING_OF_EVENTS);
 
     // Deallocate all of the global memory.
     // Everything internal to them, should have already been deleted.
@@ -2083,7 +2083,7 @@ function PlayButtonCallback(btn: GUI_BUTTON, reason: INT32): void {
     ButtonList[gpAR.iButton[Enum119.PAUSE_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.iButton[Enum119.FAST_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR.iButton[Enum119.FINISH_BUTTON]].uiFlags &= ~BUTTON_CLICKED_ON;
-    gpAR.uiTimeSlice = 1000 * gpAR.ubTimeModifierPercentage / 100;
+    gpAR.uiTimeSlice = Math.trunc(1000 * gpAR.ubTimeModifierPercentage / 100);
     gpAR.fPaused = false;
   }
 }
@@ -2446,15 +2446,15 @@ function CalculateRowsAndColumns(): void {
   } else if (gpAR.ubMercs < 9 || gpAR.ubMercs == 10) {
     // 5-8, 10
     gpAR.ubMercCols = 2;
-    gpAR.ubMercRows = (gpAR.ubMercs + 1) / 2;
+    gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + 1) / 2);
   } else if (gpAR.ubMercs < 16) {
     // 9, 11-15
     gpAR.ubMercCols = 3;
-    gpAR.ubMercRows = (gpAR.ubMercs + 2) / 3;
+    gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + 2) / 3);
   } else {
     // 16-MAX_STRATEGIC_TEAM_SIZE
     gpAR.ubMercCols = 4;
-    gpAR.ubMercRows = (gpAR.ubMercs + 3) / 4;
+    gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + 3) / 4);
   }
 
   if (!gpAR.ubCivs) {
@@ -2466,15 +2466,15 @@ function CalculateRowsAndColumns(): void {
   } else if (gpAR.ubCivs < 9 || gpAR.ubCivs == 10) {
     // 5-8, 10
     gpAR.ubCivCols = 2;
-    gpAR.ubCivRows = (gpAR.ubCivs + 1) / 2;
+    gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + 1) / 2);
   } else if (gpAR.ubCivs < 16) {
     // 9, 11-15
     gpAR.ubCivCols = 3;
-    gpAR.ubCivRows = (gpAR.ubCivs + 2) / 3;
+    gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + 2) / 3);
   } else {
     // 16-MAX_ALLOWABLE_MILITIA_PER_SECTOR
     gpAR.ubCivCols = 4;
-    gpAR.ubCivRows = (gpAR.ubCivs + 3) / 4;
+    gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + 3) / 4);
   }
 
   if (!gpAR.ubEnemies) {
@@ -2486,15 +2486,15 @@ function CalculateRowsAndColumns(): void {
   } else if (gpAR.ubEnemies < 9 || gpAR.ubEnemies == 10) {
     // 5-8, 10
     gpAR.ubEnemyCols = 2;
-    gpAR.ubEnemyRows = (gpAR.ubEnemies + 1) / 2;
+    gpAR.ubEnemyRows = Math.trunc((gpAR.ubEnemies + 1) / 2);
   } else if (gpAR.ubEnemies < 16) {
     // 9, 11-15
     gpAR.ubEnemyCols = 3;
-    gpAR.ubEnemyRows = (gpAR.ubEnemies + 2) / 3;
+    gpAR.ubEnemyRows = Math.trunc((gpAR.ubEnemies + 2) / 3);
   } else {
     // 16-32
     gpAR.ubEnemyCols = 4;
-    gpAR.ubEnemyRows = (gpAR.ubEnemies + 3) / 4;
+    gpAR.ubEnemyRows = Math.trunc((gpAR.ubEnemies + 3) / 4);
   }
 
   // Now, that we have the number of mercs, militia, and enemies, it is possible that there
@@ -2506,10 +2506,10 @@ function CalculateRowsAndColumns(): void {
   if (gpAR.ubMercs && gpAR.ubCivs && gpAR.ubMercCols != gpAR.ubCivCols) {
     if (gpAR.ubMercCols < gpAR.ubCivCols) {
       gpAR.ubMercCols = gpAR.ubCivCols;
-      gpAR.ubMercRows = (gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols;
+      gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols);
     } else {
       gpAR.ubCivCols = gpAR.ubMercCols;
-      gpAR.ubCivRows = (gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols;
+      gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols);
     }
   }
   // If we have both mercs and militia, we must make sure that the height to width ratio is never higher than
@@ -2517,9 +2517,9 @@ function CalculateRowsAndColumns(): void {
   if (gpAR.ubMercs && gpAR.ubCivs && gpAR.ubMercRows + gpAR.ubCivRows > 4) {
     if (gpAR.ubMercCols * 2 < gpAR.ubMercRows + gpAR.ubCivRows) {
       gpAR.ubMercCols++;
-      gpAR.ubMercRows = (gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols;
+      gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols);
       gpAR.ubCivCols++;
-      gpAR.ubCivRows = (gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols;
+      gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols);
     }
   }
 
@@ -2527,12 +2527,12 @@ function CalculateRowsAndColumns(): void {
     if (gpAR.ubMercCols < 5) {
       // bump it up
       gpAR.ubMercCols++;
-      gpAR.ubMercRows = (gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols;
+      gpAR.ubMercRows = Math.trunc((gpAR.ubMercs + gpAR.ubMercCols - 1) / gpAR.ubMercCols);
     }
     if (gpAR.ubCivCols < 5) {
       // match it up with the mercs
       gpAR.ubCivCols = gpAR.ubMercCols;
-      gpAR.ubCivRows = (gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols;
+      gpAR.ubCivRows = Math.trunc((gpAR.ubCivs + gpAR.ubCivCols - 1) / gpAR.ubCivCols);
     }
   }
 
@@ -2541,13 +2541,13 @@ function CalculateRowsAndColumns(): void {
   else
     gpAR.sWidth = 146 + 55 * (Math.max(Math.max(gpAR.ubMercCols, gpAR.ubCivCols), 2) + Math.max(gpAR.ubEnemyCols, 2));
 
-  gpAR.sCenterStartX = 323 - gpAR.sWidth / 2 + Math.max(Math.max(gpAR.ubMercCols, 2), Math.max(gpAR.ubCivCols, 2)) * 55;
+  gpAR.sCenterStartX = 323 - Math.trunc(gpAR.sWidth / 2) + Math.max(Math.max(gpAR.ubMercCols, 2), Math.max(gpAR.ubCivCols, 2)) * 55;
 
   // Anywhere from 48*3 to 48*10
   gpAR.sHeight = 48 * Math.max(3, Math.max(gpAR.ubMercRows + gpAR.ubCivRows, gpAR.ubEnemyRows));
   // Make it an even multiple of 40 (rounding up).
   gpAR.sHeight += 39;
-  gpAR.sHeight /= 40;
+  gpAR.sHeight = Math.trunc(gpAR.sHeight / 40);
   gpAR.sHeight *= 40;
 
   // Here is a extremely bitchy case.  The formulae throughout this module work for most cases.
@@ -2672,13 +2672,13 @@ function RenderSoldierCellHealth(pCell: SOLDIERCELL): void {
     if (pCell.pSoldier.bLife >= OKLIFE) {
       SetFontForeground(FONT_YELLOW);
       str = gpStrategicString[Enum365.STR_AR_MERC_RETREAT];
-      xp = pCell.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT()) / 2;
+      xp = pCell.xp + 25 - Math.trunc(StringPixLength(pStr, SMALLCOMPFONT()) / 2);
       yp = pCell.yp + 12;
       mprintf(xp, yp, str);
     }
   }
   SetFontForeground(usColor);
-  xp = pCell.xp + 25 - StringPixLength(pStr, SMALLCOMPFONT()) / 2;
+  xp = pCell.xp + 25 - Math.trunc(StringPixLength(pStr, SMALLCOMPFONT()) / 2);
   yp = pCell.yp + 33;
   mprintf(xp, yp, pStr);
 }
@@ -2766,7 +2766,7 @@ function ResetNextAttackCounter(pCell: SOLDIERCELL): void {
   pCell.usNextAttack = Math.min(1000 - pCell.usAttack, 800);
   pCell.usNextAttack = (1000 + pCell.usNextAttack * 5 + PreRandom(2000 - pCell.usAttack));
   if (pCell.uiFlags & CELL_CREATURE) {
-    pCell.usNextAttack = pCell.usNextAttack * 8 / 10;
+    pCell.usNextAttack = Math.trunc(pCell.usNextAttack * 8 / 10);
   }
 }
 
@@ -2802,19 +2802,19 @@ function CalculateAttackValues(): void {
     if (pCell.usAttack < 1000) {
       // A player with 500 attack will be augmented to 625
       // A player with 600 attack will be augmented to 700
-      pCell.usAttack = (pCell.usAttack + (1000 - pCell.usAttack) / 4);
+      pCell.usAttack = (pCell.usAttack + Math.trunc((1000 - pCell.usAttack) / 4));
     }
-    usBreathStrengthPercentage = 100 - (100 - pCell.pSoldier.bBreathMax) / 3;
-    pCell.usAttack = pCell.usAttack * usBreathStrengthPercentage / 100;
+    usBreathStrengthPercentage = 100 - Math.trunc((100 - pCell.pSoldier.bBreathMax) / 3);
+    pCell.usAttack = Math.trunc(pCell.usAttack * usBreathStrengthPercentage / 100);
     pCell.usDefence = pSoldier.bAgility + pSoldier.bWisdom + pSoldier.bBreathMax + pSoldier.bMedical + pSoldier.bMorale;
     // 100 team leadership adds a bonus of 10%,
-    usBonus = 100 + gpAR.ubPlayerLeadership / 10; // + sOutnumberBonus;
+    usBonus = 100 + Math.trunc(gpAR.ubPlayerLeadership / 10); // + sOutnumberBonus;
 
     // bExpLevel adds a bonus of 7% per level after 2, level 1 soldiers get a 7% decrease
     // usBonus += 7 * (pSoldier->bExpLevel-2);
     usBonus += gpAR.ubPlayerDefenceAdvantage;
-    pCell.usAttack = pCell.usAttack * usBonus / 100;
-    pCell.usDefence = pCell.usDefence * usBonus / 100;
+    pCell.usAttack = Math.trunc(pCell.usAttack * usBonus / 100);
+    pCell.usDefence = Math.trunc(pCell.usDefence * usBonus / 100);
 
     if (pCell.uiFlags & CELL_EPC) {
       // strengthen the defense (seeing the mercs will keep them safe).
@@ -2840,15 +2840,15 @@ function CalculateAttackValues(): void {
     pCell = gpCivs[i];
     pSoldier = pCell.pSoldier;
     pCell.usAttack = pSoldier.bStrength + pSoldier.bDexterity + pSoldier.bWisdom + pSoldier.bMarksmanship + pSoldier.bMorale;
-    pCell.usAttack = pCell.usAttack * pSoldier.bBreath / 100;
+    pCell.usAttack = Math.trunc(pCell.usAttack * pSoldier.bBreath / 100);
     pCell.usDefence = pSoldier.bAgility + pSoldier.bWisdom + pSoldier.bBreathMax + pSoldier.bMedical + pSoldier.bMorale;
     // 100 team leadership adds a bonus of 10%
-    usBonus = 100 + gpAR.ubPlayerLeadership / 10; // + sOutnumberBonus;
+    usBonus = 100 + Math.trunc(gpAR.ubPlayerLeadership / 10); // + sOutnumberBonus;
     // bExpLevel adds a bonus of 7% per level after 2, level 1 soldiers get a 7% decrease
     // usBonus += 7 * (pSoldier->bExpLevel-2);
     usBonus += gpAR.ubPlayerDefenceAdvantage;
-    pCell.usAttack = pCell.usAttack * usBonus / 100;
-    pCell.usDefence = pCell.usDefence * usBonus / 100;
+    pCell.usAttack = Math.trunc(pCell.usAttack * usBonus / 100);
+    pCell.usDefence = Math.trunc(pCell.usDefence * usBonus / 100);
 
     pCell.usAttack = Math.min(pCell.usAttack, 1000);
     pCell.usDefence = Math.min(pCell.usDefence, 1000);
@@ -2878,15 +2878,15 @@ function CalculateAttackValues(): void {
     pCell = gpEnemies[i];
     pSoldier = pCell.pSoldier;
     pCell.usAttack = pSoldier.bStrength + pSoldier.bDexterity + pSoldier.bWisdom + pSoldier.bMarksmanship + pSoldier.bMorale;
-    pCell.usAttack = pCell.usAttack * pSoldier.bBreath / 100;
+    pCell.usAttack = Math.trunc(pCell.usAttack * pSoldier.bBreath / 100);
     pCell.usDefence = pSoldier.bAgility + pSoldier.bWisdom + pSoldier.bBreathMax + pSoldier.bMedical + pSoldier.bMorale;
     // 100 team leadership adds a bonus of 10%
-    usBonus = 100 + gpAR.ubPlayerLeadership / 10; // + sOutnumberBonus;
+    usBonus = 100 + Math.trunc(gpAR.ubPlayerLeadership / 10); // + sOutnumberBonus;
     // bExpLevel adds a bonus of 7% per level after 2, level 1 soldiers get a 7% decrease
     // usBonus += 7 * (pSoldier->bExpLevel-2);
     usBonus += gpAR.ubEnemyDefenceAdvantage;
-    pCell.usAttack = pCell.usAttack * usBonus / 100;
-    pCell.usDefence = pCell.usDefence * usBonus / 100;
+    pCell.usAttack = Math.trunc(pCell.usAttack * usBonus / 100);
+    pCell.usDefence = Math.trunc(pCell.usDefence * usBonus / 100);
 
     pCell.usAttack = Math.min(pCell.usAttack, 1000);
     pCell.usDefence = Math.min(pCell.usDefence, 1000);
@@ -2905,7 +2905,7 @@ function CalculateAttackValues(): void {
   }
   // Now, because we are starting a new battle, we want to get the ball rolling a bit earlier.  So,
   // we will take the usBestAttack value and subtract 60% of it from everybody's next attack.
-  usBestAttack = usBestAttack * 60 / 100;
+  usBestAttack = Math.trunc(usBestAttack * 60 / 100);
   for (i = 0; i < gpAR.ubMercs; i++)
     gpMercs[i].usNextAttack -= usBestAttack;
   for (i = 0; i < gpAR.ubCivs; i++)
@@ -3109,7 +3109,7 @@ function AttackTarget(pAttacker: SOLDIERCELL, pTarget: SOLDIERCELL): void {
   if (pTarget.uiFlags & CELL_RETREATING && !(pAttacker.uiFlags & CELL_FEMALECREATURE)) {
     // Attacking a retreating merc is harder.  Modify the attack value to 70% of it's value.
     // This allows retreaters to have a better chance of escaping.
-    usAttack = usAttack * 7 / 10;
+    usAttack = Math.trunc(usAttack * 7 / 10);
   }
   if (pTarget.usDefence < 950)
     usDefence = (pTarget.usDefence + PreRandom(1000 - pTarget.usDefence));
@@ -3128,9 +3128,9 @@ function AttackTarget(pAttacker: SOLDIERCELL, pTarget: SOLDIERCELL): void {
       if (!(pAttacker.uiFlags & CELL_CREATURE)) {
         // except for creatures
         if (fKnife)
-          usAttack = usAttack * 6 / 10;
+          usAttack = Math.trunc(usAttack * 6 / 10);
         else
-          usAttack = usAttack * 4 / 10;
+          usAttack = Math.trunc(usAttack * 4 / 10);
       }
     }
   }
@@ -3180,7 +3180,7 @@ function AttackTarget(pAttacker: SOLDIERCELL, pTarget: SOLDIERCELL): void {
       ubLocation = AIM_SHOT_LEGS;
     else
       ubLocation = AIM_SHOT_TORSO;
-    ubAccuracy = ((usAttack - usDefence + PreRandom(usDefence - pTarget.usDefence)) / 10);
+    ubAccuracy = Math.trunc((usAttack - usDefence + PreRandom(usDefence - pTarget.usDefence)) / 10);
     iImpact = BulletImpact(pAttacker.pSoldier, pTarget.pSoldier, ubLocation, ubImpact, ubAccuracy, null);
 
     if (bAttackIndex == -1) {
@@ -3198,7 +3198,7 @@ function AttackTarget(pAttacker: SOLDIERCELL, pTarget: SOLDIERCELL): void {
       return;
     }
 
-    ubAccuracy = ((usAttack - usDefence + PreRandom(usDefence - pTarget.usDefence)) / 10);
+    ubAccuracy = Math.trunc((usAttack - usDefence + PreRandom(usDefence - pTarget.usDefence)) / 10);
 
     // Determine attacking weapon.
     pAttacker.pSoldier.usAttackingWeapon = 0;
@@ -3231,7 +3231,7 @@ function AttackTarget(pAttacker: SOLDIERCELL, pTarget: SOLDIERCELL): void {
       // Target is a player, so increment the times he has been wounded.
       gMercProfiles[pTarget.pSoldier.ubProfile].usTimesWounded++;
       // EXPERIENCE GAIN: Took some damage
-      StatChange(pTarget.pSoldier, EXPERAMT, (5 * (iImpact / 10)), 0);
+      StatChange(pTarget.pSoldier, EXPERAMT, (5 * Math.trunc(iImpact / 10)), 0);
     }
     if (pTarget.pSoldier.bLife >= CONSCIOUSNESS || pTarget.uiFlags & CELL_CREATURE) {
       if (gpAR.fSound)
@@ -3309,14 +3309,14 @@ function TargetHitCallback(pTarget: SOLDIERCELL, index: INT32): void {
       break;
     case Enum194.YAF_MONSTER:
     case Enum194.YAM_MONSTER:
-      pTarget.usHitDamage[index] = (pTarget.usHitDamage[index] + 2) / 4;
+      pTarget.usHitDamage[index] = Math.trunc((pTarget.usHitDamage[index] + 2) / 4);
       break;
     case Enum194.ADULTFEMALEMONSTER:
     case Enum194.AM_MONSTER:
-      pTarget.usHitDamage[index] = (pTarget.usHitDamage[index] + 3) / 6;
+      pTarget.usHitDamage[index] = Math.trunc((pTarget.usHitDamage[index] + 3) / 6);
       break;
     case Enum194.QUEENMONSTER:
-      pTarget.usHitDamage[index] = (pTarget.usHitDamage[index] + 4) / 8;
+      pTarget.usHitDamage[index] = Math.trunc((pTarget.usHitDamage[index] + 4) / 8);
       break;
   }
 
@@ -3340,7 +3340,7 @@ function TargetHitCallback(pTarget: SOLDIERCELL, index: INT32): void {
     // Target is a player, so increment the times he has been wounded.
     gMercProfiles[pTarget.pSoldier.ubProfile].usTimesWounded++;
     // EXPERIENCE GAIN: Took some damage
-    StatChange(pTarget.pSoldier, EXPERAMT, (5 * (pTarget.usHitDamage[index] / 10)), 0);
+    StatChange(pTarget.pSoldier, EXPERAMT, (5 * Math.trunc(pTarget.usHitDamage[index] / 10)), 0);
   }
 
   // bullet hit -- play an impact sound and a merc hit sound
@@ -3716,7 +3716,7 @@ function ProcessBattleFrame(): void {
 
   uiDiff = gpAR.uiCurrTime - gpAR.uiPrevTime;
   if (gpAR.uiTimeSlice < 0xffffffff) {
-    ProcessBattleFrame__iTimeSlice = uiDiff * gpAR.uiTimeSlice / 1000;
+    ProcessBattleFrame__iTimeSlice = Math.trunc(uiDiff * gpAR.uiTimeSlice / 1000);
   } else {
     // largest positive signed value
     ProcessBattleFrame__iTimeSlice = 0x7fffffff;
@@ -3740,7 +3740,7 @@ function ProcessBattleFrame(): void {
       gpEnemies[i].uiFlags &= ~CELL_PROCESSED;
     while (--ProcessBattleFrame__iTotal) {
       let cnt: INT32;
-      if (ProcessBattleFrame__iTimeSlice != 0x7fffffff && GetJA2Clock() > gpAR.uiCurrTime + 17 || !gpAR.fInstantFinish && iAttacksThisFrame > (gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies) / 4) {
+      if (ProcessBattleFrame__iTimeSlice != 0x7fffffff && GetJA2Clock() > gpAR.uiCurrTime + 17 || !gpAR.fInstantFinish && iAttacksThisFrame > Math.trunc((gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies) / 4)) {
         // We have spent too much time in here.  In order to maintain 60FPS, we will
         // leave now, which will allow for updating of the graphics (and mouse cursor),
         // and all of the necessary locals are saved via static variables.  It'll check

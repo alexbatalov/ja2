@@ -16,7 +16,7 @@ const enum Enum23 {
   NUM_MENU_ITEMS,
 }
 
-const MAINMENU_X = ((640 - 214) / 2);
+const MAINMENU_X = Math.trunc((640 - 214) / 2);
 const MAINMENU_TITLE_Y = 75;
 const MAINMENU_Y = 277; // 200
 const MAINMENU_Y_SPACE = 37;
@@ -447,7 +447,7 @@ function CreateDestroyMainMenuButtons(fCreate: boolean): boolean {
           gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], 15);
           break;
       }
-      iMenuButtons[cnt] = QuickCreateButton(iMenuImages[cnt], (320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), MenuButtonCallback);
+      iMenuButtons[cnt] = QuickCreateButton(iMenuImages[cnt], Math.trunc(320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), MenuButtonCallback);
       if (iMenuButtons[cnt] == -1) {
         return false;
       }
@@ -506,7 +506,7 @@ function RestoreButtonBackGrounds(): void {
   //	RestoreExternBackgroundRect( (UINT16)(320 - gusMainMenuButtonWidths[TITLE]/2), MAINMENU_TITLE_Y, gusMainMenuButtonWidths[TITLE], 23 );
 
   for (cnt = 0; cnt < Enum23.NUM_MENU_ITEMS; cnt++) {
-    RestoreExternBackgroundRect((320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE) - 1), (gusMainMenuButtonWidths[cnt] + 1), 23);
+    RestoreExternBackgroundRect(Math.trunc(320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE) - 1), (gusMainMenuButtonWidths[cnt] + 1), 23);
   }
 }
 

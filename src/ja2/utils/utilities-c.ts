@@ -94,7 +94,7 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
 
   for (cnt1 = 0; cnt1 < ubSize; cnt1++) {
     sTLX = ubXPos + ((cnt1 % 16) * 20);
-    sTLY = ubYPos + ((cnt1 / 16) * 20);
+    sTLY = ubYPos + (Math.trunc(cnt1 / 16) * 20);
     sBRX = sTLX + 20;
     sBRY = sTLY + 20;
 

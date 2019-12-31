@@ -85,7 +85,7 @@ export function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): boolean {
     return false; // already valid
   }
 
-  sGridNo.value = MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
+  sGridNo.value = MAPROWCOLTOPOS(Math.trunc(iNewMapY / 10), Math.trunc(iNewMapX / 10));
 
   return true; // modified
 }

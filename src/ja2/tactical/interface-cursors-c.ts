@@ -181,7 +181,7 @@ export let gUICursors: UICursor[] /* [NUM_UI_CURSORS] */ = [
 
 let guiCurUICursor: UINT32 = Enum210.NO_UICURSOR;
 let guiOldUICursor: UINT32 = Enum210.NO_UICURSOR;
-export let gusCurMousePos: UINT16;
+export let gusCurMousePos: UINT16 = 0;
 let gusTargetDropPos: UINT16;
 let gfTargetDropPos: boolean = false;
 

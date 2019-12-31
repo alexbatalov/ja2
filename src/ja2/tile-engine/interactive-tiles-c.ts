@@ -343,8 +343,8 @@ function GetLevelNodeScreenRect(pNode: LEVELNODE, pRect: SGPRect, sXPos: INT16, 
     pTrav = TileElem.hTileSurface.pETRLEObject[TileElem.usRegionIndex];
   }
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
+  sScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
+  sScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
 
   // Adjust for offset position on screen
   sScreenX -= gsRenderWorldOffsetX;
@@ -363,11 +363,11 @@ function GetLevelNodeScreenRect(pNode: LEVELNODE, pRect: SGPRect, sXPos: INT16, 
   usWidth = pTrav.usWidth;
 
   // Add to start position of dest buffer
-  sScreenX += (pTrav.sOffsetX - (WORLD_TILE_X / 2));
-  sScreenY += (pTrav.sOffsetY - (WORLD_TILE_Y / 2));
+  sScreenX += (pTrav.sOffsetX - Math.trunc(WORLD_TILE_X / 2));
+  sScreenY += (pTrav.sOffsetY - Math.trunc(WORLD_TILE_Y / 2));
 
   // Adjust y offset!
-  sScreenY += (WORLD_TILE_Y / 2);
+  sScreenY += Math.trunc(WORLD_TILE_Y / 2);
 
   pRect.iLeft = sScreenX;
   pRect.iTop = sScreenY;
@@ -713,7 +713,7 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: SGPVObject, 
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
+  let SrcPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let fDataFound: boolean = false;
@@ -735,113 +735,28 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: SGPVObject, 
   iStartPos = 0;
   LineSkip = usWidth;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
+  SrcPtr = uiOffset;
 
-  asm(`
-    mov esi, SrcPtr
-    mov edi, iStartPos
-    xor eax, eax
-    xor ebx, ebx
-    xor ecx, ecx
+  let pPixData = hSrcVObject.pPixData;
+  let byte: number;
+  let runLength: number;
 
-    BlitDispatch:
+  while (usHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      usHeight--;
+      continue;
+    }
 
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz BlitDoneLine
+    runLength = byte & 0x7F;
 
-    // BlitNonTransLoop:
+    if (iTestPos >= iStartPos && iTestPos < iStartPos + runLength) {
+      fDataFound = !(byte & 0x80);
+      break;
+    }
 
-    clc
-    rcr cl, 1
-    jnc BlitNTL2
-
-    inc esi
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    BlitNTL2:
-    clc
-    rcr cl, 1
-    jnc BlitNTL3
-
-    add esi, 2
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    BlitNTL3:
-
-    or cl, cl
-    jz BlitDispatch
-
-    xor ebx, ebx
-
-    BlitNTL4:
-
-    add esi, 4
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    // Check
-    cmp edi, iTestPos
-    je BlitFound
-    add edi, 1
-
-    dec cl
-    jnz BlitNTL4
-
-    jmp BlitDispatch
-
-    BlitTransparent:
-
-    and ecx, 07fH
-    // shl ecx, 1
-    add edi, ecx
-    jmp BlitDispatch
-
-    BlitDoneLine:
-
-    // Here check if we have passed!
-    cmp edi, iTestPos
-    jge BlitDone
-
-    dec usHeight
-    jz BlitDone
-    // add edi, LineSkip
-    jmp BlitDispatch
-
-    BlitFound:
-
-    mov fDataFound, 1
-
-    BlitDone:
-  `);
+    iStartPos += runLength;
+  }
 
   return fDataFound;
 }

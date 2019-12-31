@@ -182,7 +182,6 @@ function DeleteTopStackNode(): boolean {
 
   // Remove node from stack, and free it's memory
   gpTileUndoStack = gpTileUndoStack.pNext;
-  MemFree(pCurrent);
 
   return true;
 }
@@ -196,7 +195,6 @@ function DeleteThisStackNode(pThisNode: undo_stack): undo_stack | null {
 
   // Remove node from stack, and free it's memory
   DeleteStackNodeContents(pCurrent);
-  MemFree(pCurrent);
 
   return pNextNode;
 }

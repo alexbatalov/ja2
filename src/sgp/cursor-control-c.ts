@@ -50,8 +50,8 @@ function BltToMouseCursorFromVObjectWithOutline(hVObject: SGPVObject, usVideoObj
   sYPos -= pTrav.sOffsetY;
 
   // Center!
-  sXPos += ((gsCurMouseWidth - pTrav.usWidth) / 2);
-  sYPos += ((gsCurMouseHeight - pTrav.usHeight) / 2);
+  sXPos += Math.trunc((gsCurMouseWidth - pTrav.usWidth) / 2);
+  sYPos += Math.trunc((gsCurMouseHeight - pTrav.usHeight) / 2);
 
   ReturnValue = BltVideoObjectOutline(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, sXPos, sYPos, Get16BPPColor(FROMRGB(0, 255, 0)), true);
 
@@ -158,7 +158,7 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
   pCurData.usWidth = sMaxWidth;
 
   if (pCurData.sOffsetX == CENTER_CURSOR) {
-    pCurData.sOffsetX = (pCurData.usWidth / 2);
+    pCurData.sOffsetX = Math.trunc(pCurData.usWidth / 2);
   }
   if (pCurData.sOffsetX == RIGHT_CURSOR) {
     pCurData.sOffsetX = pCurData.usWidth;
@@ -168,7 +168,7 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
   }
 
   if (pCurData.sOffsetY == CENTER_CURSOR) {
-    pCurData.sOffsetY = (pCurData.usHeight / 2);
+    pCurData.sOffsetY = Math.trunc(pCurData.usHeight / 2);
   }
   if (pCurData.sOffsetY == BOTTOM_CURSOR) {
     pCurData.sOffsetY = pCurData.usHeight;
@@ -194,11 +194,11 @@ function LoadCursorData(uiCursorIndex: UINT32): boolean {
     }
 
     if (pCurImage.usPosX == CENTER_SUBCURSOR) {
-      pCurImage.usPosX = pCurData.sOffsetX - (pTrav.usWidth / 2);
+      pCurImage.usPosX = pCurData.sOffsetX - Math.trunc(pTrav.usWidth / 2);
     }
 
     if (pCurImage.usPosY == CENTER_SUBCURSOR) {
-      pCurImage.usPosY = pCurData.sOffsetY - (pTrav.usHeight / 2);
+      pCurImage.usPosY = pCurData.sOffsetY - Math.trunc(pTrav.usHeight / 2);
     }
   }
 
@@ -314,8 +314,8 @@ export function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
           hVObjectTemp = GetVideoObject(guiExternVo);
           pTravTemp = hVObjectTemp.pETRLEObject[gusExternVoSubIndex];
 
-          sSubX = (pTrav.usWidth - pTravTemp.usWidth - pTravTemp.sOffsetX) / 2;
-          sSubY = (pTrav.usHeight - pTravTemp.usHeight - pTravTemp.sOffsetY) / 2;
+          sSubX = Math.trunc((pTrav.usWidth - pTravTemp.usWidth - pTravTemp.sOffsetX) / 2);
+          sSubY = Math.trunc((pTrav.usHeight - pTravTemp.usHeight - pTravTemp.sOffsetY) / 2);
 
           BltVideoObjectOutlineFromIndex(MOUSE_BUFFER, guiExternVo, gusExternVoSubIndex, sSubX, sSubY, 0, false);
         } else {
@@ -327,7 +327,7 @@ export function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): boolean {
           gMouseBltOverride();
         }
 
-        SetMouseCursorProperties((usEffWidth / 2), (usEffHeight / 2), (usEffHeight), (usEffWidth));
+        SetMouseCursorProperties(Math.trunc(usEffWidth / 2), Math.trunc(usEffHeight / 2), (usEffHeight), (usEffWidth));
         DirtyCursor();
       } else {
         pCurData = gpCursorDatabase[uiCursorIndex];

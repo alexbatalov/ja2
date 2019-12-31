@@ -3,7 +3,7 @@ namespace ja2 {
 const FOURPM = 960;
 
 // waketime is the # of minutes in the day minus the sleep time
-const WAKETIME = (x: number) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
+const WAKETIME = (x: number) => (Math.trunc(NUM_SEC_IN_DAY / NUM_SEC_IN_MIN) - x);
 
 //#define DISABLESCHEDULES
 
@@ -99,7 +99,6 @@ export function DeleteSchedule(ubScheduleID: UINT8): void {
     }
   if (temp) {
     DeleteStrategicEvent(Enum132.EVENT_PROCESS_TACTICAL_SCHEDULE, temp.ubScheduleID);
-    MemFree(temp);
   }
 }
 
@@ -149,7 +148,7 @@ export function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
     let uiEndTime: UINT32;
     // Grab the last time the eventlist was queued.  This will tell us how much time has passed since that moment,
     // and how long we need to auto process this schedule.
-    uiStartTime = (guiTimeOfLastEventQuery / 60) % NUM_MIN_IN_DAY;
+    uiStartTime = Math.trunc(guiTimeOfLastEventQuery / 60) % NUM_MIN_IN_DAY;
     uiEndTime = GetWorldMinutesInDay();
     if (uiStartTime != uiEndTime) {
       PrepareScheduleForAutoProcessing(pSchedule, uiStartTime, uiEndTime);
@@ -553,9 +552,9 @@ function AutoProcessSchedule(pSchedule: SCHEDULENODE, index: INT32): void {
   pSoldier = MercPtrs[pSchedule.ubSoldierID];
 
   if (pSoldier.ubProfile != NO_PROFILE) {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.ubAction[index]], pSoldier.name, pSoldier.ubID, GetWorldHour(), guiMin, pSchedule.usTime[index] / 60, pSchedule.usTime[index] % 60, pSchedule.usData1[index]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.ubAction[index]], pSoldier.name, pSoldier.ubID, GetWorldHour(), guiMin, Math.trunc(pSchedule.usTime[index] / 60), pSchedule.usTime[index] % 60, pSchedule.usData1[index]));
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.ubAction[index]], pSoldier.ubID, GetWorldHour(), guiMin, pSchedule.usTime[index] / 60, pSchedule.usTime[index] % 60, pSchedule.usData1[index]));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule.ubAction[index]], pSoldier.ubID, GetWorldHour(), guiMin, Math.trunc(pSchedule.usTime[index] / 60), pSchedule.usTime[index] % 60, pSchedule.usData1[index]));
   }
 
   // always assume the merc is going to wake, unless the event is a sleep

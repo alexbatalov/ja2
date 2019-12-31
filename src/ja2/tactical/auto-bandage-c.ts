@@ -298,8 +298,8 @@ export function AutoBandage(fStart: boolean): void {
     aRect.iRight = 640;
 
     // Determine position ( centered in rect )
-    gsX = ((((aRect.iRight - aRect.iLeft) - gusTextBoxWidth) / 2) + aRect.iLeft);
-    gsY = ((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
+    gsX = (Math.trunc(((aRect.iRight - aRect.iLeft) - gusTextBoxWidth) / 2) + aRect.iLeft);
+    gsY = (Math.trunc(((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
 
     // build a mask
     MSYS_DefineRegion(gAutoBandageRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, Enum317.CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
@@ -491,14 +491,14 @@ function DisplayAutoBandageUpdatePanel(): void {
   }
 
   // the doctors
-  iNumberDoctorsHigh = (iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX) + 1);
+  iNumberDoctorsHigh = (Math.trunc(iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX)) + 1);
 
   if (iNumberDoctors % NUMBER_MERC_FACES_AUTOBANDAGE_BOX) {
     // now the patients
-    iNumberDoctorsHigh = (iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX) + 1);
+    iNumberDoctorsHigh = (Math.trunc(iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX)) + 1);
   } else {
     // now the patients
-    iNumberDoctorsHigh = (iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX));
+    iNumberDoctorsHigh = Math.trunc(iNumberDoctors / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX));
   }
 
   if (iNumberPatients < NUMBER_MERC_FACES_AUTOBANDAGE_BOX) {
@@ -518,10 +518,10 @@ function DisplayAutoBandageUpdatePanel(): void {
 
   if (iNumberPatients % NUMBER_MERC_FACES_AUTOBANDAGE_BOX) {
     // now the patients
-    iNumberPatientsHigh = (iNumberPatients / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX) + 1);
+    iNumberPatientsHigh = (Math.trunc(iNumberPatients / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX)) + 1);
   } else {
     // now the patients
-    iNumberPatientsHigh = (iNumberPatients / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX));
+    iNumberPatientsHigh = (Math.trunc(iNumberPatients / (NUMBER_MERC_FACES_AUTOBANDAGE_BOX)));
   }
 
   // now the actual pixel dimensions
@@ -538,8 +538,8 @@ function DisplayAutoBandageUpdatePanel(): void {
   iTotalPixelsWide = TACT_UPDATE_MERC_FACE_X_WIDTH * iNumberDoctorsWide;
 
   // now get the x and y position for the box
-  sXPosition = (640 - iTotalPixelsWide) / 2;
-  sYPosition = (INV_INTERFACE_START_Y - iTotalPixelsHigh) / 2;
+  sXPosition = Math.trunc((640 - iTotalPixelsWide) / 2);
+  sYPosition = Math.trunc((INV_INTERFACE_START_Y - iTotalPixelsHigh) / 2);
 
   // now blit down the background
   hBackGroundHandle = GetVideoObject(guiUpdatePanelTactical);
@@ -904,27 +904,27 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
     return false;
 
   // yellow one for bleeding
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bLifeMax / 100;
+  iStartY = sCurrentYPosition + 29 - Math.trunc(27 * pSoldier.bLifeMax / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
-  iStartY += 27 * pSoldier.bBleeding / 100;
+  iStartY += Math.trunc(27 * pSoldier.bBleeding / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
 
   // red one for actual health
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bLife / 100;
+  iStartY = sCurrentYPosition + 29 - Math.trunc(27 * pSoldier.bLife / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bBreathMax / 100;
+  iStartY = sCurrentYPosition + 29 - Math.trunc(27 * pSoldier.bBreathMax / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 39, iStartY, sCurrentXPosition + 40, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 40, iStartY, sCurrentXPosition + 41, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
-  iStartY = sCurrentYPosition + 29 - 27 * pSoldier.bMorale / 100;
+  iStartY = sCurrentYPosition + 29 - Math.trunc(27 * pSoldier.bMorale / 100);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 42, iStartY, sCurrentXPosition + 43, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44, sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 

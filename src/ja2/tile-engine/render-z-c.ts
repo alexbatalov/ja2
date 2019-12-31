@@ -5,11 +5,11 @@ let gsRScreenCenterY: INT16;
 let gsRDistToCenterY: INT16;
 let gsRDistToCenterX: INT16;
 
-const GetMapXYWorldY = (sWorldCellX: INT16, sWorldCellY: INT16, sWorldY: INT16) => {
+const GetMapXYWorldY = (sWorldCellX: INT16, sWorldCellY: INT16): INT16 => {
   gsRDistToCenterX = (sWorldCellX * CELL_X_SIZE) - gCenterWorldX;
   gsRDistToCenterY = (sWorldCellY * CELL_Y_SIZE) - gCenterWorldY;
   gsRScreenCenterY = gsRDistToCenterX + gsRDistToCenterY;
-  sWorldY = gsRScreenCenterY + gsCY - gsTLY;
+  return gsRScreenCenterY + gsCY - gsTLY;
 };
 
 const GetMapXYWorldYFromCellCoords = (sWorldCellX: INT16, sWorldCellY: INT16, sWorldY: INT16) => {
@@ -19,46 +19,49 @@ const GetMapXYWorldYFromCellCoords = (sWorldCellX: INT16, sWorldCellY: INT16, sW
   sWorldY = gsRScreenCenterY + gsCY - gsTLY;
 };
 
-export const LandZLevel = (sMapX: INT16, sMapY: INT16) => {
-  sZLevel = LAND_Z_LEVEL;
+export const LandZLevel = (sMapX: INT16, sMapY: INT16): INT16 => {
+  return LAND_Z_LEVEL;
 };
 
-export const ObjectZLevel = (TileElem: TILE_ELEMENT, pNode: LEVELNODE, sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
+export const ObjectZLevel = (TileElem: TILE_ELEMENT, uiTileElemFlags: UINT32, sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
   if (uiTileElemFlags & CLIFFHANG_TILE) {
-    sZLevel = LAND_Z_LEVEL;
+    return LAND_Z_LEVEL;
   } else if (uiTileElemFlags & OBJECTLAYER_USEZHEIGHT) {
-    sZLevel = ((sWorldY) * Z_SUBLAYERS) + LAND_Z_LEVEL;
+    return ((sWorldY) * Z_SUBLAYERS) + LAND_Z_LEVEL;
   } else {
-    sZLevel = OBJECT_Z_LEVEL;
+    return OBJECT_Z_LEVEL;
   }
 };
 
-export const StructZLevel = (sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
+export const StructZLevel = (uiLevelNodeFlags: UINT32, pCorpse: ROTTING_CORPSE, pNode: LEVELNODE, uiAniTileFlags: UINT32, sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
+  let sZOffsetX: INT16 = -1;
+  let sZOffsetY: INT16 = -1;
+  let sZLevel: INT16;
   if ((uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE)) {
-    if (pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE) {
-      if (pNode.value.pStructureData != null) {
-        sZOffsetX = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
-        sZOffsetY = pNode.value.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
+    if (pCorpse.def.usFlags & ROTTING_CORPSE_VEHICLE) {
+      if (pNode.pStructureData != null) {
+        sZOffsetX = pNode.pStructureData.pDBStructureRef.pDBStructure.bZTileOffsetX;
+        sZOffsetY = pNode.pStructureData.pDBStructureRef.pDBStructure.bZTileOffsetY;
       }
-      GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
-      GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
+      sWorldY = GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY));
+      sWorldY = GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY));
       sZLevel = ((sWorldY) * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
     } else {
       sZOffsetX = -1;
       sZOffsetY = -1;
-      GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
+      sWorldY =GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY));
       sWorldY += 20;
       sZLevel = ((sWorldY) * Z_SUBLAYERS) + LAND_Z_LEVEL;
     }
   } else if (uiLevelNodeFlags & LEVELNODE_PHYSICSOBJECT) {
-    sWorldY += pNode.value.sRelativeZ;
+    sWorldY += pNode.sRelativeZ;
     sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
   } else if (uiLevelNodeFlags & LEVELNODE_ITEM) {
-    if (pNode.value.pItemPool.value.bRenderZHeightAboveLevel > 0) {
+    if (pNode.pItemPool.bRenderZHeightAboveLevel > 0) {
       sZLevel = (sWorldY * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
-      sZLevel += (pNode.value.pItemPool.value.bRenderZHeightAboveLevel);
+      sZLevel += (pNode.pItemPool.bRenderZHeightAboveLevel);
     } else {
       sZLevel = (sWorldY * Z_SUBLAYERS) + OBJECT_Z_LEVEL;
     }
@@ -68,22 +71,24 @@ export const StructZLevel = (sMapX: INT16, sMapY: INT16) => {
     if ((uiLevelNodeFlags & LEVELNODE_NOZBLITTER)) {
       sWorldY += 40;
     } else {
-      sWorldY += pNode.value.sRelativeZ;
+      sWorldY += pNode.sRelativeZ;
     }
     sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
   } else {
     sZLevel = (sWorldY * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
   }
+
+  return sZLevel;
 };
 
-export const RoofZLevel = (sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
+export const RoofZLevel = (sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
   sWorldY += WALL_HEIGHT;
-  sZLevel = (sWorldY * Z_SUBLAYERS) + ROOF_Z_LEVEL;
+  return (sWorldY * Z_SUBLAYERS) + ROOF_Z_LEVEL;
 };
 
-export const OnRoofZLevel = (sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
+export const OnRoofZLevel = (uiLevelNodeFlags: UINT32, sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
   if (uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE) {
     sWorldY += (WALL_HEIGHT + 40);
   }
@@ -92,28 +97,32 @@ export const OnRoofZLevel = (sMapX: INT16, sMapY: INT16) => {
   } else {
     sWorldY += WALL_HEIGHT;
   }
-  sZLevel = (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
+  return (sWorldY * Z_SUBLAYERS) + ONROOF_Z_LEVEL;
 };
 
-export const TopmostZLevel = (sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
-  sZLevel = TOPMOST_Z_LEVEL;
+export const TopmostZLevel = (sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
+  return TOPMOST_Z_LEVEL;
 };
 
-export const ShadowZLevel = (sMapX: INT16, sMapY: INT16) => {
-  GetMapXYWorldY(sMapX, sMapY, sWorldY);
-  sZLevel = Math.max(((sWorldY - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
+export const ShadowZLevel = (sMapX: INT16, sMapY: INT16): INT16 => {
+  let sWorldY: INT16 = GetMapXYWorldY(sMapX, sMapY);
+  return Math.max(((sWorldY - 80) * Z_SUBLAYERS) + SHADOW_Z_LEVEL, 0);
 };
 
-export const SoldierZLevel = (pSoldier: SOLDIERTYPE, sMapX: INT16, sMapY: INT16) => {
+export const SoldierZLevel = (pSoldier: SOLDIERTYPE, pNode: LEVELNODE, sMapX: INT16, sMapY: INT16, gsForceSoldierZLevel: INT16): INT16 => {
+  let sWorldY: INT16;
+  let sZOffsetX: INT16 = -1;
+  let sZOffsetY: INT16 = -1;
+  let sZLevel: INT16;
   if ((pSoldier.uiStatusFlags & SOLDIER_MULTITILE)) {
     if (pNode.pStructureData != null) {
-      sZOffsetX = pNode.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetX;
-      sZOffsetY = pNode.pStructureData.value.pDBStructureRef.value.pDBStructure.value.bZTileOffsetY;
+      sZOffsetX = pNode.pStructureData.pDBStructureRef.pDBStructure.bZTileOffsetX;
+      sZOffsetY = pNode.pStructureData.pDBStructureRef.pDBStructure.bZTileOffsetY;
     }
-    GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY), sWorldY);
+    sWorldY = GetMapXYWorldY((sMapX + sZOffsetX), (sMapY + sZOffsetY));
   } else {
-    GetMapXYWorldY(sMapX, sMapY, sWorldY);
+    sWorldY = GetMapXYWorldY(sMapX, sMapY);
   }
   if (pSoldier.uiStatusFlags & SOLDIER_VEHICLE) {
     sZLevel = (sWorldY * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
@@ -135,6 +144,7 @@ export const SoldierZLevel = (pSoldier: SOLDIERTYPE, sMapX: INT16, sMapY: INT16)
       sZLevel = gsForceSoldierZLevel;
     }
   }
+  return sZLevel;
 };
 
 //#if 0

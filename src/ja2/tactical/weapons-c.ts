@@ -19,8 +19,8 @@ const LASERSCOPE_BONUS = 20;
 const MANDATORY_WEAPON_DELAY = 1200;
 const NO_WEAPON_SOUND = 0;
 
-const HEAD_DAMAGE_ADJUSTMENT = (x: number) => ((x * 3) / 2);
-const LEGS_DAMAGE_ADJUSTMENT = (x: number) => (x / 2);
+const HEAD_DAMAGE_ADJUSTMENT = (x: number) => Math.trunc((x * 3) / 2);
+const LEGS_DAMAGE_ADJUSTMENT = (x: number) => Math.trunc(x / 2);
 
 const CRITICAL_HIT_THRESHOLD = 30;
 
@@ -29,7 +29,7 @@ const HTH_MODE_STAB = 2;
 const HTH_MODE_STEAL = 3;
 
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
-const WEAPON_STATUS_MOD = (x: number) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
+const WEAPON_STATUS_MOD = (x: number) => ((x) >= 85 ? 100 : Math.trunc(((x) * 100) / 85));
 
 export let gfNextShotKills: boolean = false;
 export let gfReportHitChances: boolean = false;
@@ -327,7 +327,7 @@ export function GunRange(pObj: OBJECTTYPE): UINT16 {
     if (bAttachPos == ITEM_NOT_FOUND) {
       return Weapon[pObj.usItem].usRange;
     } else {
-      return Weapon[pObj.usItem].usRange + (GUN_BARREL_RANGE_BONUS * WEAPON_STATUS_MOD(pObj.bAttachStatus[bAttachPos]) / 100);
+      return Weapon[pObj.usItem].usRange + Math.trunc(GUN_BARREL_RANGE_BONUS * WEAPON_STATUS_MOD(pObj.bAttachStatus[bAttachPos]) / 100);
     }
   } else {
     // return a minimal value of 1 tile
@@ -343,14 +343,14 @@ export function EffectiveArmour(pObj: OBJECTTYPE): INT8 {
     return 0;
   }
   iValue = Armour[Item[pObj.usItem].ubClassIndex].ubProtection;
-  iValue = iValue * pObj.bStatus[0] / 100;
+  iValue = Math.trunc(iValue * pObj.bStatus[0] / 100);
 
   bPlate = FindAttachment(pObj, Enum225.CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
     let iValue2: INT32;
 
     iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
-    iValue2 = iValue2 * pObj.bAttachStatus[bPlate] / 100;
+    iValue2 = Math.trunc(iValue2 * pObj.bAttachStatus[bPlate] / 100);
 
     iValue += iValue2;
   }
@@ -365,7 +365,7 @@ export function ArmourPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.VESTPOS].usItem) {
     iVest = EffectiveArmour(pSoldier.inv[Enum261.VESTPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iVest = 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection);
+    iVest = Math.trunc(65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
     iVest = 0;
   }
@@ -373,7 +373,7 @@ export function ArmourPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.HELMETPOS].usItem) {
     iHelmet = EffectiveArmour(pSoldier.inv[Enum261.HELMETPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection;
+    iHelmet = Math.trunc(15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
     iHelmet = 0;
   }
@@ -381,7 +381,7 @@ export function ArmourPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.LEGPOS].usItem) {
     iLeg = EffectiveArmour(pSoldier.inv[Enum261.LEGPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection;
+    iLeg = Math.trunc(25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
     iLeg = 0;
   }
@@ -396,7 +396,7 @@ function ExplosiveEffectiveArmour(pObj: OBJECTTYPE): INT8 {
     return 0;
   }
   iValue = Armour[Item[pObj.usItem].ubClassIndex].ubProtection;
-  iValue = iValue * pObj.bStatus[0] / 100;
+  iValue = Math.trunc(iValue * pObj.bStatus[0] / 100);
   if (pObj.usItem == Enum225.FLAK_JACKET || pObj.usItem == Enum225.FLAK_JACKET_18 || pObj.usItem == Enum225.FLAK_JACKET_Y) {
     // increase value for flak jackets!
     iValue *= 3;
@@ -407,7 +407,7 @@ function ExplosiveEffectiveArmour(pObj: OBJECTTYPE): INT8 {
     let iValue2: INT32;
 
     iValue2 = Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection;
-    iValue2 = iValue2 * pObj.bAttachStatus[bPlate] / 100;
+    iValue2 = Math.trunc(iValue2 * pObj.bAttachStatus[bPlate] / 100);
 
     iValue += iValue2;
   }
@@ -423,7 +423,7 @@ export function ArmourVersusExplosivesPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.VESTPOS].usItem) {
     iVest = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.VESTPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iVest = Math.min(65, 65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection));
+    iVest = Math.min(65, Math.trunc(65 * iVest / (Armour[Item[Enum225.SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[Enum225.CERAMIC_PLATES].ubClassIndex].ubProtection)));
   } else {
     iVest = 0;
   }
@@ -431,7 +431,7 @@ export function ArmourVersusExplosivesPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.HELMETPOS].usItem) {
     iHelmet = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.HELMETPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iHelmet = Math.min(15, 15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection);
+    iHelmet = Math.min(15, Math.trunc(15 * iHelmet / Armour[Item[Enum225.SPECTRA_HELMET_18].ubClassIndex].ubProtection));
   } else {
     iHelmet = 0;
   }
@@ -439,7 +439,7 @@ export function ArmourVersusExplosivesPercent(pSoldier: SOLDIERTYPE): INT8 {
   if (pSoldier.inv[Enum261.LEGPOS].usItem) {
     iLeg = ExplosiveEffectiveArmour(pSoldier.inv[Enum261.LEGPOS]);
     // convert to % of best; ignoring bug-treated stuff
-    iLeg = Math.min(25, 25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
+    iLeg = Math.min(25, Math.trunc(25 * iLeg / Armour[Item[Enum225.SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection));
   } else {
     iLeg = 0;
   }
@@ -859,7 +859,7 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
     if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY && (!pSoldier.bDoBurst || pSoldier.bDoBurst == 2) && (gTacticalStatus.uiFlags & INCOMBAT) && (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, MercPtrs[pSoldier.ubTargetID], pSoldier.bAimShotLocation) > 0)) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
-        usExpGain += (100 - uiHitChance) / 25;
+        usExpGain += Math.trunc((100 - uiHitChance) / 25);
 
         if (pSoldier.bAimTime && !pSoldier.bDoBurst) {
           // gain extra exp for aiming, up to the amount from
@@ -876,11 +876,11 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
 
       if (IsValidSecondHandShot(pSoldier) && pSoldier.inv[Enum261.HANDPOS].bGunStatus >= USABLE && pSoldier.inv[Enum261.HANDPOS].bGunAmmoStatus > 0) {
         // reduce exp gain for two pistol shooting since both shots give xp
-        usExpGain = (usExpGain * 2) / 3;
+        usExpGain = Math.trunc((usExpGain * 2) / 3);
       }
 
       if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
-        usExpGain /= 2;
+        usExpGain = Math.trunc(usExpGain / 2);
       } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
@@ -916,7 +916,7 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
     if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
-        usExpGain += (100 - uiHitChance) / 10;
+        usExpGain += Math.trunc((100 - uiHitChance) / 10);
 
         if (pSoldier.bAimTime) {
           // gain extra exp for aiming, up to the amount from
@@ -932,15 +932,15 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
       usExpGain += 10;
 
       if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
-        usExpGain /= 2;
+        usExpGain = Math.trunc(usExpGain / 2);
       } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
       }
 
       // MARKSMANSHIP/DEXTERITY GAIN: throwing knife attack
-      StatChange(pSoldier, MARKAMT, (usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
-      StatChange(pSoldier, DEXTAMT, (usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
+      StatChange(pSoldier, MARKAMT, Math.trunc(usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
+      StatChange(pSoldier, DEXTAMT, Math.trunc(usExpGain / 2), (fGonnaHit ? FROM_SUCCESS : FROM_FAILURE));
     }
   }
 
@@ -993,7 +993,7 @@ function UseGun(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
     bSilencerPos = FindAttachment(pSoldier.inv[Enum261.HANDPOS], Enum225.SILENCER);
     if (bSilencerPos != -1) {
       // reduce volume by a percentage equal to silencer's work %age (min 1)
-      ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
+      ubVolume = 1 + Math.trunc((100 - WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bAttachStatus[bSilencerPos])) / Math.trunc(100 / (ubVolume - 1)));
     }
   }
 
@@ -1073,14 +1073,14 @@ function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
       iImpact = HTHImpact(pSoldier, pTargetSoldier, (iHitChance - iDiceRoll), true);
 
       // modify this by the knife's condition (if it's dull, not much good)
-      iImpact = (iImpact * WEAPON_STATUS_MOD(pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0])) / 100;
+      iImpact = Math.trunc((iImpact * WEAPON_STATUS_MOD(pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0])) / 100);
 
       // modify by hit location
       ({ iImpact, iImpactForCrits } = AdjustImpactByHitLocation(iImpact, pSoldier.bAimShotLocation));
 
       // bonus for surprise
       if (fSurpriseAttack) {
-        iImpact = (iImpact * 3) / 2;
+        iImpact = Math.trunc((iImpact * 3) / 2);
       }
 
       // any successful hit does at LEAST 1 pt minimum damage
@@ -1089,10 +1089,10 @@ function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
       }
 
       if (pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] > USABLE) {
-        bMaxDrop = (iImpact / 20);
+        bMaxDrop = Math.trunc(iImpact / 20);
 
         // the duller they get, the slower they get any worse...
-        bMaxDrop = Math.min(bMaxDrop, pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] / 10);
+        bMaxDrop = Math.min(bMaxDrop, Math.trunc(pSoldier.inv[pSoldier.ubAttackingHand].bStatus[0] / 10));
 
         // as long as its still > USABLE, it drops another point 1/2 the time
         bMaxDrop = Math.max(bMaxDrop, 2);
@@ -1129,7 +1129,7 @@ function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
     if (PTR_OURTEAM(pSoldier) && pSoldier.ubTargetID != NOBODY) {
       if (fGonnaHit) {
         // grant extra exp for hitting a difficult target
-        usExpGain += (100 - iHitChance) / 10;
+        usExpGain += Math.trunc((100 - iHitChance) / 10);
 
         if (pSoldier.bAimTime) {
           // gain extra exp for aiming, up to the amount from
@@ -1145,7 +1145,7 @@ function UseBlade(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16): boolean {
       usExpGain += 10;
 
       if (MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.COW || MercPtrs[pSoldier.ubTargetID].ubBodyType == Enum194.CROW) {
-        usExpGain /= 2;
+        usExpGain = Math.trunc(usExpGain / 2);
       } else if (MercPtrs[pSoldier.ubTargetID].uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(MercPtrs[pSoldier.ubTargetID]) || TANK(MercPtrs[pSoldier.ubTargetID])) {
         // no exp from shooting a vehicle that you can't damage and can't move!
         usExpGain = 0;
@@ -1238,7 +1238,7 @@ export function UseHandToHand(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, fStea
             StatChange(pSoldier, STRAMT, 8, FROM_SUCCESS);
           }
 
-          if (iDiceRoll <= iHitChance * 2 / 3) {
+          if (iDiceRoll <= Math.trunc(iHitChance * 2 / 3)) {
             // Grabbed item
             if (AutoPlaceObject(pSoldier, pTargetSoldier.inv[Enum261.HANDPOS], true)) {
               // Item transferred; remove it from the target's inventory
@@ -1296,7 +1296,7 @@ export function UseHandToHand(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, fStea
           if (pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
           } else if (pTargetSoldier.ubBodyType == Enum194.COW || pTargetSoldier.ubBodyType == Enum194.CROW) {
-            ubExpGain /= 2;
+            ubExpGain = Math.trunc(ubExpGain / 2);
           }
 
           StatChange(pSoldier, STRAMT, ubExpGain, FROM_SUCCESS);
@@ -1307,7 +1307,7 @@ export function UseHandToHand(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16, fStea
           if (pTargetSoldier.uiStatusFlags & SOLDIER_VEHICLE || AM_A_ROBOT(pTargetSoldier) || TANK(pTargetSoldier)) {
             ubExpGain = 0;
           } else if (pTargetSoldier.ubBodyType == Enum194.COW || pTargetSoldier.ubBodyType == Enum194.CROW) {
-            ubExpGain /= 2;
+            ubExpGain = Math.trunc(ubExpGain / 2);
           }
 
           StatChange(pSoldier, STRAMT, ubExpGain, FROM_FAILURE);
@@ -1650,7 +1650,7 @@ export function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatu
     fHitSameStructureAsBefore = false;
   }
 
-  sGridNo = MAPROWCOLTOPOS((sYPos / CELL_Y_SIZE), (sXPos / CELL_X_SIZE));
+  sGridNo = MAPROWCOLTOPOS(Math.trunc(sYPos / CELL_Y_SIZE), Math.trunc(sXPos / CELL_X_SIZE));
   if (!fHitSameStructureAsBefore) {
     if (sZPos > WALL_HEIGHT) {
       MakeNoise(ubAttackerID, sGridNo, 1, gpWorldLevelData[sGridNo].ubTerrainID, Weapon[usWeaponIndex].ubHitVolume, Enum236.NOISE_BULLET_IMPACT);
@@ -2014,7 +2014,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
   if (usInHand == Enum225.ROCKET_LAUNCHER) {
     // use the same calculation as for mechanical thrown weapons
-    iMarksmanship = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + (10 * EffectiveExpLevel(pSoldier))) / 4;
+    iMarksmanship = Math.trunc((EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + (10 * EffectiveExpLevel(pSoldier))) / 4);
     // heavy weapons trait helps out
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.HEAVY_WEAPS)) {
       iMarksmanship += gbSkillTraitBonus[Enum269.HEAVY_WEAPS] * NUM_SKILL_TRAITS(pSoldier, Enum269.HEAVY_WEAPS);
@@ -2043,7 +2043,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     iChance = iMarksmanship;
   else
     // base chance is equal to the average of marksmanship & gun's condition!
-    iChance = (iMarksmanship + iGunCondition) / 2;
+    iChance = Math.trunc((iMarksmanship + iGunCondition) / 2);
 
   // if shooting same target as the last shot
   if (sGridNo == pSoldier.sLastTarget)
@@ -2058,7 +2058,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
   // if shooter is crouched, he aims slightly better (to max of AIM_BONUS_CROUCHING)
   if (gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_CROUCH) {
-    iBonus = iRange / 10;
+    iBonus = Math.trunc(iRange / 10);
     if (iBonus > AIM_BONUS_CROUCHING) {
       iBonus = AIM_BONUS_CROUCHING;
     }
@@ -2067,14 +2067,14 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
   // if shooter is prone, he aims even better, except at really close range
   else if (gAnimControl[pSoldier.usAnimState].ubEndHeight == ANIM_PRONE) {
     if (iRange > MIN_PRONE_RANGE) {
-      iBonus = iRange / 10;
+      iBonus = Math.trunc(iRange / 10);
       if (iBonus > AIM_BONUS_PRONE) {
         iBonus = AIM_BONUS_PRONE;
       }
       bAttachPos = FindAttachment(pInHand, Enum225.BIPOD);
       if (bAttachPos != ITEM_NOT_FOUND) {
         // extra bonus to hit for a bipod, up to half the prone bonus itself
-        iBonus += (iBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos]) / 100) / 2;
+        iBonus += Math.trunc(Math.trunc(iBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos]) / 100) / 2);
       }
       iChance += iBonus;
     }
@@ -2114,7 +2114,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
     // halve the penalty for people with the autofire trait
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.AUTO_WEAPS)) {
-      iPenalty /= 2 * NUM_SKILL_TRAITS(pSoldier, Enum269.AUTO_WEAPS);
+      iPenalty = Math.trunc(iPenalty / (2 * NUM_SKILL_TRAITS(pSoldier, Enum269.AUTO_WEAPS)));
     }
     iChance -= iPenalty;
   }
@@ -2219,7 +2219,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
   if (iSightRange > 0) {
     if (pSoldier.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
       // decrease effective range by 10% when using sungoggles (w or w/o scope)
-      iSightRange -= iRange / 10; // basically, +1% to hit per every 2 squares
+      iSightRange -= Math.trunc(iRange / 10); // basically, +1% to hit per every 2 squares
     }
 
     bAttachPos = FindAttachment(pInHand, Enum225.SNIPERSCOPE);
@@ -2228,10 +2228,10 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     if (bAttachPos != NO_SLOT && (iRange > MIN_SCOPE_RANGE) && (ubAimTime > 0)) {
       // reduce effective sight range by 20% per extra aiming time AP of the distance
       // beyond MIN_SCOPE_RANGE.  Max reduction is 80% of the range beyond.
-      iScopeBonus = ((SNIPERSCOPE_AIM_BONUS * ubAimTime) * (iRange - MIN_SCOPE_RANGE)) / 100;
+      iScopeBonus = Math.trunc(((SNIPERSCOPE_AIM_BONUS * ubAimTime) * (iRange - MIN_SCOPE_RANGE)) / 100);
 
       // adjust for scope condition, only has full affect at 100%
-      iScopeBonus = (iScopeBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos])) / 100;
+      iScopeBonus = Math.trunc((iScopeBonus * WEAPON_STATUS_MOD(pInHand.bAttachStatus[bAttachPos])) / 100);
 
       // reduce effective range by the bonus obtained from the scope
       iSightRange -= iScopeBonus;
@@ -2253,10 +2253,10 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
       // laser scope isn't of much use in high light levels; add something for that
       if (bLaserStatus > 50) {
-        iScopeBonus = LASERSCOPE_BONUS * (bLaserStatus - 50) / 50;
+        iScopeBonus = Math.trunc(LASERSCOPE_BONUS * (bLaserStatus - 50) / 50);
       } else {
         // laser scope in bad condition creates aim penalty!
-        iScopeBonus = -LASERSCOPE_BONUS * (50 - bLaserStatus) / 50;
+        iScopeBonus = Math.trunc(-LASERSCOPE_BONUS * (50 - bLaserStatus) / 50);
       }
 
       iChance += iScopeBonus;
@@ -2266,11 +2266,11 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
   // if aiming at the head, reduce chance to hit
   if (ubAimPos == AIM_SHOT_HEAD) {
     // penalty of 3% per tile
-    iPenalty = 3 * iSightRange / 10;
+    iPenalty = Math.trunc(3 * iSightRange / 10);
     iChance -= iPenalty;
   } else if (ubAimPos == AIM_SHOT_LEGS) {
     // penalty of 1% per tile
-    iPenalty = iSightRange / 10;
+    iPenalty = Math.trunc(iSightRange / 10);
     iChance -= iPenalty;
   }
 
@@ -2282,16 +2282,16 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
   // Effects of actual gun max range... the numbers are based on wanting -40%
   // at range 26for a pistol with range 13, and -0 for a sniper rifle with range 80
-  iPenalty = ((iMaxRange - iRange * 3) * 10) / (17 * CELL_X_SIZE);
+  iPenalty = Math.trunc(((iMaxRange - iRange * 3) * 10) / (17 * CELL_X_SIZE));
   if (iPenalty < 0) {
     iChance += iPenalty;
   }
   // iChance -= 20 * iRange / iMaxRange;
 
-  if (TANK(pSoldier) && (iRange / CELL_X_SIZE < MaxDistanceVisible())) {
+  if (TANK(pSoldier) && (Math.trunc(iRange / CELL_X_SIZE) < MaxDistanceVisible())) {
     // tank; penalize at close range!
     // 2 percent per tile closer than max visible distance
-    iChance -= 2 * (MaxDistanceVisible() - (iRange / CELL_X_SIZE));
+    iChance -= 2 * (MaxDistanceVisible() - Math.trunc(iRange / CELL_X_SIZE));
   }
 
   if (iSightRange == 0) {
@@ -2302,7 +2302,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     // From for JA2.5:  3% bonus/penalty for each tile different from range NORMAL_RANGE.
     // This doesn't provide a bigger bonus at close range, but stretches it out, making medium
     // range less penalized, and longer range more penalized
-    iChance += 3 * (NORMAL_RANGE - iSightRange) / CELL_X_SIZE;
+    iChance += Math.trunc(3 * (NORMAL_RANGE - iSightRange) / CELL_X_SIZE);
     /*
     if (iSightRange < NORMAL_RANGE)
     {
@@ -2343,26 +2343,26 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
       case ANIM_CROUCH:
         if (TANK(pSoldier) && iRange < MIN_TANK_RANGE) {
           // 13% penalty per tile closer than min range
-          iChance -= 13 * ((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
+          iChance -= 13 * Math.trunc((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
         } else {
           // at anything other than point-blank range
-          if (iRange > POINT_BLANK_RANGE + 10 * (AIM_PENALTY_TARGET_CROUCHED / 3)) {
+          if (iRange > POINT_BLANK_RANGE + 10 * Math.trunc(AIM_PENALTY_TARGET_CROUCHED / 3)) {
             iChance -= AIM_PENALTY_TARGET_CROUCHED;
           } else if (iRange > POINT_BLANK_RANGE) {
             // at close range give same bonus as prone, up to maximum of AIM_PENALTY_TARGET_CROUCHED
-            iChance -= 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
+            iChance -= 3 * Math.trunc((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
           }
         }
         break;
       case ANIM_PRONE:
         if (TANK(pSoldier) && iRange < MIN_TANK_RANGE) {
           // 25% penalty per tile closer than min range
-          iChance -= 25 * ((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
+          iChance -= 25 * Math.trunc((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
         } else {
           // at anything other than point-blank range
           if (iRange > POINT_BLANK_RANGE) {
             // reduce chance to hit with distance to the prone/immersed target
-            iPenalty = 3 * ((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
+            iPenalty = 3 * Math.trunc((iRange - POINT_BLANK_RANGE) / CELL_X_SIZE); // penalty -3%/tile
             iPenalty = Math.min(iPenalty, AIM_PENALTY_TARGET_PRONE);
 
             iChance -= iPenalty;
@@ -2381,7 +2381,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
           // e.g. 30% to aim at head at range 1, only 10% at range 3
           // or 20% to aim at torso at range 1, no penalty at range 3
           // NB torso aim position is 2, so (5-aimpos) is 3, for legs it's 2, for head 4
-          iChance -= (5 - ubAdjAimPos - iRange / CELL_X_SIZE) * 10;
+          iChance -= (5 - ubAdjAimPos - Math.trunc(iRange / CELL_X_SIZE)) * 10;
         }
         break;
       default:
@@ -2389,27 +2389,27 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     }
 
     // penalty for amount that enemy has moved
-    iPenalty = Math.min(((pTarget.bTilesMoved * 3) / 2), 30);
+    iPenalty = Math.min(Math.trunc((pTarget.bTilesMoved * 3) / 2), 30);
     iChance -= iPenalty;
 
     // if target sees us, he may have a chance to dodge before the gun goes off
     // but ability to dodge is reduced if crouched or prone!
     if (pTarget.bOppList[pSoldier.ubID] == SEEN_CURRENTLY && !TANK(pTarget) && !(pSoldier.ubBodyType != Enum194.QUEENMONSTER)) {
-      iPenalty = (EffectiveAgility(pTarget) / 5 + EffectiveExpLevel(pTarget) * 2);
+      iPenalty = (Math.trunc(EffectiveAgility(pTarget) / 5) + EffectiveExpLevel(pTarget) * 2);
       switch (gAnimControl[pTarget.usAnimState].ubHeight) {
         case ANIM_CROUCH:
-          iPenalty = iPenalty * 2 / 3;
+          iPenalty = Math.trunc(iPenalty * 2 / 3);
           break;
         case ANIM_PRONE:
-          iPenalty /= 3;
+          iPenalty = Math.trunc(iPenalty / 3);
           break;
       }
 
       // reduce dodge ability by the attacker's stats
-      iBonus = (EffectiveDexterity(pSoldier) / 5 + EffectiveExpLevel(pSoldier) * 2);
+      iBonus = (Math.trunc(EffectiveDexterity(pSoldier) / 5) + EffectiveExpLevel(pSoldier) * 2);
       if (TANK(pTarget) || (pSoldier.ubBodyType != Enum194.QUEENMONSTER)) {
         // reduce ability to track shots
-        iBonus = iBonus / 2;
+        iBonus = Math.trunc(iBonus / 2);
       }
 
       if (iPenalty > iBonus) {
@@ -2418,7 +2418,7 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     }
   } else if (TANK(pSoldier) && iRange < MIN_TANK_RANGE) {
     // 25% penalty per tile closer than min range
-    iChance -= 25 * ((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
+    iChance -= 25 * Math.trunc((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
   }
 
   // IF CHANCE EXISTS, BUT SHOOTER IS INJURED
@@ -2427,18 +2427,18 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
     bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
     // injury penalty is based on % damage taken (max 2/3rds chance)
-    iPenalty = (iChance * 2 * (pSoldier.bLifeMax - pSoldier.bLife + (bBandaged / 2))) / (3 * pSoldier.bLifeMax);
+    iPenalty = (iChance * 2 * (pSoldier.bLifeMax - pSoldier.bLife + Math.trunc(bBandaged / 2))) / (3 * pSoldier.bLifeMax);
 
     // reduce injury penalty due to merc's experience level (he can take it!)
-    iChance -= (iPenalty * (100 - (10 * (EffectiveExpLevel(pSoldier) - 1)))) / 100;
+    iChance -= Math.trunc((iPenalty * (100 - (10 * (EffectiveExpLevel(pSoldier) - 1)))) / 100);
   }
 
   // IF CHANCE EXISTS, BUT SHOOTER IS LOW ON BREATH
   if ((iChance > 0) && (pSoldier.bBreath < 100)) {
     // breath penalty is based on % breath missing (max 1/2 chance)
-    iPenalty = (iChance * (100 - pSoldier.bBreath)) / 200;
+    iPenalty = Math.trunc((iChance * (100 - pSoldier.bBreath)) / 200);
     // reduce breath penalty due to merc's dexterity (he can compensate!)
-    iChance -= (iPenalty * (100 - (EffectiveDexterity(pSoldier) - 10))) / 100;
+    iChance -= Math.trunc((iPenalty * (100 - (EffectiveDexterity(pSoldier) - 10))) / 100);
   }
 
   // CHECK IF TARGET IS WITHIN GUN'S EFFECTIVE MAXIMUM RANGE
@@ -2449,12 +2449,12 @@ export function CalcChanceToHitGun(pSoldier: SOLDIERTYPE, sGridNo: UINT16, ubAim
 
     // This won't cause the bullet to be off to the left or right, only make it
     // drop in flight.
-    iChance /= 2;
+    iChance = Math.trunc(iChance / 2);
   }
   //#endif
   if (iSightRange > (sDistVis * CELL_X_SIZE)) {
     // penalize out of sight shots, cumulative to effective range penalty
-    iChance /= 2;
+    iChance = Math.trunc(iChance / 2);
   }
 
   // MAKE SURE CHANCE TO HIT IS WITHIN DEFINED LIMITS
@@ -2559,14 +2559,14 @@ function ArmourProtection(pTarget: SOLDIERTYPE, ubArmourType: UINT8, pbStatus: P
     }
   } else if (ubAmmoType == Enum286.AMMO_MONSTER) {
     // creature spit damages armour a lot! an extra 3x for a total of 4x normal
-    pbStatus.value -= 3 * (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
+    pbStatus.value -= Math.trunc(3 * (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100);
 
     // reduce amount of protection from armour
-    iProtection /= 2;
+    iProtection = Math.trunc(iProtection / 2);
   }
 
   if (!AM_A_ROBOT(pTarget)) {
-    pbStatus.value -= (iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100;
+    pbStatus.value -= Math.trunc((iAppliedProtection * Armour[ubArmourType].ubDegradePercent) / 100);
   }
 
   // return armour protection
@@ -2672,10 +2672,10 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
   // NumMessage("Fluke = ",fluke);
 
   // up to 50% extra impact for making particularly accurate successful shots
-  iBonus = sHitBy / 2;
+  iBonus = Math.trunc(sHitBy / 2);
   // NumMessage("Bonus = ",bonus);
 
-  iOrigImpact = iOrigImpact * (100 + iFluke + iBonus) / 100;
+  iOrigImpact = Math.trunc(iOrigImpact * (100 + iFluke + iBonus) / 100);
 
   // at very long ranges (1.5x maxRange and beyond) impact could go negative
   if (iOrigImpact < 1) {
@@ -2688,7 +2688,7 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
 
     if (TANK(pTarget)) {
       // HEAT round on tank, divide by 3 for damage
-      iOrigImpact /= 2;
+      iOrigImpact = Math.trunc(iOrigImpact / 2);
     }
   }
 
@@ -2704,12 +2704,12 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
       iImpact = 0;
     }
   } else {
-    if (iImpact < ((iOrigImpact + 5) / 10)) {
-      iImpact = (iOrigImpact + 5) / 10;
+    if (iImpact < Math.trunc((iOrigImpact + 5) / 10)) {
+      iImpact = Math.trunc((iOrigImpact + 5) / 10);
     }
 
     if ((ubAmmoType == Enum286.AMMO_BUCKSHOT) && (pTarget.bNumPelletsHitBy > 0)) {
-      iImpact += (pTarget.bNumPelletsHitBy - 1) / 2;
+      iImpact += Math.trunc((pTarget.bNumPelletsHitBy - 1) / 2);
     }
   }
 
@@ -2750,7 +2750,7 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
             if (iImpactForCrits >= pTarget.bLife) {
               if (iImpactForCrits > MIN_DAMAGE_FOR_HEAD_EXPLOSION) {
                 pubSpecial.value = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
-              } else if (iImpactForCrits > (MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) && (PreRandom(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) < (iImpactForCrits - MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2))) {
+              } else if (iImpactForCrits > Math.trunc(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2) && (PreRandom(Math.trunc(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2)) < (iImpactForCrits - Math.trunc(MIN_DAMAGE_FOR_HEAD_EXPLOSION / 2)))) {
                 pubSpecial.value = FIRE_WEAPON_HEAD_EXPLODE_SPECIAL;
               }
             }
@@ -2764,7 +2764,7 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
             pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
           // else ramping up chance from 1/2 the automatic value onwards
-          else if (iImpactForCrits > (MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2) && (PreRandom(MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2) < (iImpactForCrits - MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2))) {
+          else if (iImpactForCrits > Math.trunc(MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2) && (PreRandom(Math.trunc(MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2)) < (iImpactForCrits - Math.trunc(MIN_DAMAGE_FOR_AUTO_FALL_OVER / 2)))) {
             pubSpecial.value = FIRE_WEAPON_LEG_FALLDOWN_SPECIAL;
           }
         }
@@ -2815,8 +2815,8 @@ export function BulletImpact(pFirer: SOLDIERTYPE, pTarget: SOLDIERTYPE, ubHitLoc
     }
 
     if (iImpactForCrits > 0 && iImpactForCrits < pTarget.bLife) {
-      if (PreRandom(iImpactForCrits / 2 + pFirer.bAimTime * 5) + 1 > CRITICAL_HIT_THRESHOLD) {
-        bStatLoss = PreRandom(iImpactForCrits / 2) + 1;
+      if (PreRandom(Math.trunc(iImpactForCrits / 2) + pFirer.bAimTime * 5) + 1 > CRITICAL_HIT_THRESHOLD) {
+        bStatLoss = PreRandom(Math.trunc(iImpactForCrits / 2)) + 1;
         switch (ubHitLocation) {
           case AIM_SHOT_HEAD:
             if (bStatLoss >= pTarget.bWisdom) {
@@ -2933,23 +2933,23 @@ export function HTHImpact(pSoldier: SOLDIERTYPE, pTarget: SOLDIERTYPE, iHitBy: I
   let iBonus: INT32;
 
   if (fBladeAttack) {
-    iImpact = (EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
+    iImpact = Math.trunc(EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
     iImpact += Weapon[pSoldier.usAttackingWeapon].ubImpact;
-    iImpact += EffectiveStrength(pSoldier) / 20; // 0 to 5 for strength, adjusted by damage taken
+    iImpact += Math.trunc(EffectiveStrength(pSoldier) / 20); // 0 to 5 for strength, adjusted by damage taken
 
     if (AM_A_ROBOT(pTarget)) {
-      iImpact /= 4;
+      iImpact = Math.trunc(iImpact / 4);
     }
   } else {
-    iImpact = (EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
-    iImpact += EffectiveStrength(pSoldier) / 5; // 0 to 20 for strength, adjusted by damage taken
+    iImpact = Math.trunc(EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
+    iImpact += Math.trunc(EffectiveStrength(pSoldier) / 5); // 0 to 20 for strength, adjusted by damage taken
 
     // NB martial artists don't get a bonus for using brass knuckles!
     if (pSoldier.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
       iImpact += Weapon[pSoldier.usAttackingWeapon].ubImpact;
 
       if (AM_A_ROBOT(pTarget)) {
-        iImpact /= 2;
+        iImpact = Math.trunc(iImpact / 2);
       }
     } else {
       // base HTH damage
@@ -2961,14 +2961,14 @@ export function HTHImpact(pSoldier: SOLDIERTYPE, pTarget: SOLDIERTYPE, iHitBy: I
   }
 
   iFluke = PreRandom(51) - 25; // +/-25% bonus due to random factors
-  iBonus = iHitBy / 2; // up to 50% extra impact for accurate attacks
+  iBonus = Math.trunc(iHitBy / 2); // up to 50% extra impact for accurate attacks
 
-  iImpact = iImpact * (100 + iFluke + iBonus) / 100;
+  iImpact = Math.trunc(iImpact * (100 + iFluke + iBonus) / 100);
 
   if (!fBladeAttack) {
     // add bonuses for hand-to-hand and martial arts
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100;
+      iImpact = Math.trunc(iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100);
       if (pSoldier.usAnimState == Enum193.NINJA_SPINKICK) {
         iImpact *= 2;
       }
@@ -2976,7 +2976,7 @@ export function HTHImpact(pSoldier: SOLDIERTYPE, pTarget: SOLDIERTYPE, iHitBy: I
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.HANDTOHAND)) {
       // SPECIAL  - give TRIPLE bonus for damage for hand-to-hand trait
       // because the HTH bonus is half that of martial arts, and gets only 1x for to-hit bonus
-      iImpact = iImpact * (100 + 3 * gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100;
+      iImpact = Math.trunc(iImpact * (100 + 3 * gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100);
     }
   }
 
@@ -3083,7 +3083,7 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
                   (10 * EffectiveExpLevel(pAttacker))); // experience, knowledge
   }
 
-  iAttRating /= 6; // convert from 6-600 to 1-100
+  iAttRating = Math.trunc(iAttRating / 6); // convert from 6-600 to 1-100
 
   // psycho bonus
   if (pAttacker.ubProfile != NO_PROFILE && gMercProfiles[pAttacker.ubProfile].bPersonalityTrait == Enum270.PSYCHO) {
@@ -3100,7 +3100,7 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
   if (ubAimTime) {
     // use only HALF of the normal aiming bonus for knife aiming.
     // since there's no range penalty, the bonus is otherwise too generous
-    iAttRating += ((AIM_BONUS_PER_AP * ubAimTime) / 2); // bonus for aiming
+    iAttRating += Math.trunc((AIM_BONUS_PER_AP * ubAimTime) / 2); // bonus for aiming
   }
 
   if (!(pAttacker.uiStatusFlags & SOLDIER_PC)) // if attacker is a computer AI controlled enemy
@@ -3131,12 +3131,12 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
     // if bandaged, give 1/2 of the bandaged life points back into equation
     ubBandaged = pAttacker.bLifeMax - pAttacker.bLife - pAttacker.bBleeding;
 
-    iAttRating -= (2 * iAttRating * (pAttacker.bLifeMax - pAttacker.bLife + (ubBandaged / 2))) / (3 * pAttacker.bLifeMax);
+    iAttRating -= Math.trunc((2 * iAttRating * (pAttacker.bLifeMax - pAttacker.bLife + Math.trunc(ubBandaged / 2))) / (3 * pAttacker.bLifeMax));
   }
 
   // If attacker tired, reduce chance accordingly (by up to 1/2)
   if ((iAttRating > 0) && (pAttacker.bBreath < 100))
-    iAttRating -= (iAttRating * (100 - pAttacker.bBreath)) / 200;
+    iAttRating -= Math.trunc((iAttRating * (100 - pAttacker.bBreath)) / 200);
 
   if (pAttacker.ubProfile != NO_PROFILE) {
     if (ubMode == HTH_MODE_STAB) {
@@ -3170,7 +3170,7 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
                  (10 * EffectiveExpLevel(pDefender)); // experience, knowledge
   }
 
-  iDefRating /= 6; // convert from 6-600 to 1-100
+  iDefRating = Math.trunc(iDefRating / 6); // convert from 6-600 to 1-100
 
   // modify chance to dodge by morale
   iDefRating += GetMoraleModifier(pDefender);
@@ -3201,12 +3201,12 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
     // if bandaged, give 1/2 of the bandaged life points back into equation
     ubBandaged = pDefender.bLifeMax - pDefender.bLife - pDefender.bBleeding;
 
-    iDefRating -= (2 * iDefRating * (pDefender.bLifeMax - pDefender.bLife + (ubBandaged / 2))) / (3 * pDefender.bLifeMax);
+    iDefRating -= Math.trunc((2 * iDefRating * (pDefender.bLifeMax - pDefender.bLife + Math.trunc(ubBandaged / 2))) / (3 * pDefender.bLifeMax));
   }
 
   // If defender tired, reduce chance accordingly (by up to 1/2)
   if ((iDefRating > 0) && (pDefender.bBreath < 100))
-    iDefRating -= (iDefRating * (100 - pDefender.bBreath)) / 200;
+    iDefRating -= Math.trunc((iDefRating * (100 - pDefender.bBreath)) / 200);
 
   if (usInHand == Enum225.CREATURE_QUEEN_TENTACLES && pDefender.ubBodyType == Enum194.LARVAE_MONSTER || pDefender.ubBodyType == Enum194.INFANT_MONSTER) {
     // try to prevent queen from killing the kids, ever!
@@ -3240,16 +3240,16 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
         }
         if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
           // the knife gets in the way but we're still better than nobody
-          iDefRating += (gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 3;
+          iDefRating += Math.trunc((gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 3);
         }
       } else {
         if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // good with knives, don't have one, but we know a bit about dodging
-          iDefRating += (gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 3;
+          iDefRating += Math.trunc((gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 3);
         }
         if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
           // bonus for dodging knives
-          iDefRating += (gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 2;
+          iDefRating += Math.trunc((gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pDefender, Enum269.MARTIALARTS)) / 2);
         }
       }
     } else {
@@ -3257,7 +3257,7 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
       if (Item[pDefender.inv[Enum261.HANDPOS].usItem].usItemClass == IC_BLADE && ubMode != HTH_MODE_STEAL) {
         if (HAS_SKILL_TRAIT(pDefender, Enum269.KNIFING)) {
           // with our knife, we get some bonus at defending from HTH attacks
-          iDefRating += (gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 2;
+          iDefRating += Math.trunc((gbSkillTraitBonus[Enum269.KNIFING] * NUM_SKILL_TRAITS(pDefender, Enum269.KNIFING)) / 2);
         }
       } else {
         if (HAS_SKILL_TRAIT(pDefender, Enum269.MARTIALARTS)) {
@@ -3282,10 +3282,10 @@ function CalcChanceHTH(pAttacker: SOLDIERTYPE, pDefender: SOLDIERTYPE, ubAimTime
   if (ubMode == HTH_MODE_STEAL) {
     // make this more extreme so that weak people have a harder time stealing from
     // the stronger
-    iChance = 50 * iAttRating / iDefRating;
+    iChance = Math.trunc(50 * iAttRating / iDefRating);
   } else {
     // Changed from DG by CJC to give higher chances of hitting with a stab or punch
-    iChance = 67 + (iAttRating - iDefRating) / 3;
+    iChance = 67 + Math.trunc((iAttRating - iDefRating) / 3);
 
     if (pAttacker.bAimShotLocation == AIM_SHOT_HEAD) {
       // make this harder!
@@ -3353,7 +3353,7 @@ export function CalcMaxTossRange(pSoldier: SOLDIERTYPE, usItem: UINT16, fArmed: 
 
   if (EXPLOSIVE_GUN(usItem)) {
     // oops! return value in weapons table
-    return Weapon[usItem].usRange / CELL_X_SIZE;
+    return Math.trunc(Weapon[usItem].usRange / CELL_X_SIZE);
   }
 
   // if item's fired mechanically
@@ -3366,27 +3366,27 @@ export function CalcMaxTossRange(pSoldier: SOLDIERTYPE, usItem: UINT16, fArmed: 
 
   if (Item[usItem].usItemClass == IC_LAUNCHER && fArmed) {
     // this function returns range in tiles so, stupidly, we have to divide by 10 here
-    iRange = Weapon[usItem].usRange / CELL_X_SIZE;
+    iRange = Math.trunc(Weapon[usItem].usRange / CELL_X_SIZE);
   } else {
     if (Item[usItem].fFlags & ITEM_UNAERODYNAMIC) {
       iRange = 1;
     } else if (Item[usItem].usItemClass == IC_GRENADE) {
       // start with the range based on the soldier's strength and the item's weight
-      let iThrowingStrength: INT32 = (EffectiveStrength(pSoldier) * 2 + 100) / 3;
-      iRange = 2 + (iThrowingStrength / Math.min((3 + (Item[usItem].ubWeight) / 3), 4));
+      let iThrowingStrength: INT32 = Math.trunc((EffectiveStrength(pSoldier) * 2 + 100) / 3);
+      iRange = 2 + Math.trunc(iThrowingStrength / Math.min((3 + Math.trunc((Item[usItem].ubWeight) / 3)), 4));
     } else {
       // not as aerodynamic!
 
       // start with the range based on the soldier's strength and the item's weight
-      iRange = 2 + ((EffectiveStrength(pSoldier) / (5 + Item[usItem].ubWeight)));
+      iRange = 2 + Math.trunc((EffectiveStrength(pSoldier) / (5 + Item[usItem].ubWeight)));
     }
 
     // adjust for thrower's remaining breath (lose up to 1/2 of range)
-    iRange -= (iRange * (100 - pSoldier.bBreath)) / 200;
+    iRange -= Math.trunc((iRange * (100 - pSoldier.bBreath)) / 200);
 
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.THROWING)) {
       // better max range due to expertise
-      iRange = iRange * (100 + gbSkillTraitBonus[Enum269.THROWING] * NUM_SKILL_TRAITS(pSoldier, Enum269.THROWING)) / 100;
+      iRange = Math.trunc(iRange * (100 + gbSkillTraitBonus[Enum269.THROWING] * NUM_SKILL_TRAITS(pSoldier, Enum269.THROWING)) / 100);
     }
   }
 
@@ -3425,14 +3425,14 @@ export function CalcThrownChanceToHit(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubA
   if (Item[usHandItem].usItemClass != IC_LAUNCHER && pSoldier.bWeaponMode != Enum265.WM_ATTACHED) {
     // PHYSICALLY THROWN arced projectile (ie. grenade)
     // for lack of anything better, base throwing accuracy on dex & marskmanship
-    iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier)) / 2;
+    iChance = Math.trunc((EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier)) / 2);
     // throwing trait helps out
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.THROWING)) {
       iChance += gbSkillTraitBonus[Enum269.THROWING] * NUM_SKILL_TRAITS(pSoldier, Enum269.THROWING);
     }
   } else {
     // MECHANICALLY FIRED arced projectile (ie. mortar), need brains & know-how
-    iChance = (EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + pSoldier.bExpLevel) / 4;
+    iChance = Math.trunc((EffectiveDexterity(pSoldier) + EffectiveMarksmanship(pSoldier) + EffectiveWisdom(pSoldier) + pSoldier.bExpLevel) / 4);
 
     // heavy weapons trait helps out
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.HEAVY_WEAPS)) {
@@ -3485,7 +3485,7 @@ export function CalcThrownChanceToHit(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubA
 
   if (pSoldier.inv[Enum261.HEAD1POS].usItem == Enum225.SUNGOGGLES || pSoldier.inv[Enum261.HEAD2POS].usItem == Enum225.SUNGOGGLES) {
     // decrease effective range by 10% when using sungoggles (w or w/o scope)
-    iRange -= iRange / 10; // basically, +1% to hit per every 2 squares
+    iRange -= Math.trunc(iRange / 10); // basically, +1% to hit per every 2 squares
   }
 
   // NumMessage("EFFECTIVE RANGE = ",range);
@@ -3503,13 +3503,13 @@ export function CalcThrownChanceToHit(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubA
 
     // bonus is 50% at range 0, -50% at maximum range
 
-    iChance += 50 * 2 * ((iMaxRange / 2) - iRange) / iMaxRange;
+    iChance += Math.trunc(50 * 2 * (Math.trunc(iMaxRange / 2) - iRange) / iMaxRange);
     // iChance += ((iMaxRange / 2) - iRange);		// increments of 1% per pixel
 
     // IF TARGET IS BEYOND MAXIMUM THROWING RANGE
     if (iRange > iMaxRange) {
       // the object CAN travel that far if not blocked, but it's NOT accurate!
-      iChance /= 2;
+      iChance = Math.trunc(iChance / 2);
     }
   }
 
@@ -3519,34 +3519,34 @@ export function CalcThrownChanceToHit(pSoldier: SOLDIERTYPE, sGridNo: INT16, ubA
     bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
     // injury penalty is based on % damage taken (max 2/3rds iChance)
-    bPenalty = (2 * iChance * (pSoldier.bLifeMax - pSoldier.bLife + (bBandaged / 2))) / (3 * pSoldier.bLifeMax);
+    bPenalty = Math.trunc((2 * iChance * (pSoldier.bLifeMax - pSoldier.bLife + Math.trunc(bBandaged / 2))) / (3 * pSoldier.bLifeMax));
 
     // for mechanically-fired projectiles, reduce penalty in half
     if (Item[usHandItem].usItemClass == IC_LAUNCHER) {
-      bPenalty /= 2;
+      bPenalty = Math.trunc(bPenalty / 2);
     }
 
     // reduce injury penalty due to merc's experience level (he can take it!)
-    iChance -= (bPenalty * (100 - (10 * (EffectiveExpLevel(pSoldier) - 1)))) / 100;
+    iChance -= Math.trunc((bPenalty * (100 - (10 * (EffectiveExpLevel(pSoldier) - 1)))) / 100);
   }
 
   // IF CHANCE EXISTS, BUT ATTACKER IS LOW ON BREATH
   if ((iChance > 0) && (pSoldier.bBreath < 100)) {
     // breath penalty is based on % breath missing (max 1/2 iChance)
-    bPenalty = (iChance * (100 - pSoldier.bBreath)) / 200;
+    bPenalty = Math.trunc((iChance * (100 - pSoldier.bBreath)) / 200);
 
     // for mechanically-fired projectiles, reduce penalty in half
     if (Item[usHandItem].usItemClass == IC_LAUNCHER)
-      bPenalty /= 2;
+      bPenalty = Math.trunc(bPenalty / 2);
 
     // reduce breath penalty due to merc's dexterity (he can compensate!)
-    iChance -= (bPenalty * (100 - (EffectiveDexterity(pSoldier) - 10))) / 100;
+    iChance -= Math.trunc((bPenalty * (100 - (EffectiveDexterity(pSoldier) - 10))) / 100);
   }
 
   // if iChance exists, but it's a mechanical item being used
   if ((iChance > 0) && (Item[usHandItem].usItemClass == IC_LAUNCHER))
     // reduce iChance to hit DIRECTLY by the item's working condition
-    iChance = (iChance * WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bStatus[0])) / 100;
+    iChance = Math.trunc((iChance * WEAPON_STATUS_MOD(pSoldier.inv[Enum261.HANDPOS].bStatus[0])) / 100);
 
   // MAKE SURE CHANCE TO HIT IS WITHIN DEFINED LIMITS
   if (iChance < MINCHANCETOHIT)

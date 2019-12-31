@@ -12,7 +12,7 @@ export function CenterScreenAtMapIndex(iMapIndex: INT32): void {
   let sCellY: INT16;
 
   // Get X, Y world GRID Coordinates
-  sWorldY = (iMapIndex / WORLD_COLS);
+  sWorldY = Math.trunc(iMapIndex / WORLD_COLS);
   sWorldX = iMapIndex - (sWorldY * WORLD_COLS);
 
   // Convert into cell coords

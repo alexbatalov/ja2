@@ -247,16 +247,16 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
     }
   }
 
-  if (bSearchRange > (DC_MAX_COVER_RANGE / 2))
-    bSearchRange = (DC_MAX_COVER_RANGE / 2);
+  if (bSearchRange > Math.trunc(DC_MAX_COVER_RANGE / 2))
+    bSearchRange = Math.trunc(DC_MAX_COVER_RANGE / 2);
 
   // determine maximum horizontal limits
   sMaxLeft = Math.min(bSearchRange, (sTargetGridNo % MAXCOL));
   sMaxRight = Math.min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(bSearchRange, (sTargetGridNo / MAXROW));
-  sMaxDown = Math.min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
+  sMaxUp = Math.min(bSearchRange, Math.trunc(sTargetGridNo / MAXROW));
+  sMaxDown = Math.min(bSearchRange, MAXROW - (Math.trunc(sTargetGridNo / MAXROW) + 1));
 
   // Find out which tiles around the location are reachable
   LocalReachableTest(sTargetGridNo, bSearchRange);
@@ -386,10 +386,10 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: SOLDIERTYPE, sTarge
       usMaxRange = Weapon[Enum225.GLOCK_18].usRange;
     }
 
-    iBulletGetThrough = Math.min(Math.max((((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
+    iBulletGetThrough = Math.min(Math.max(Math.trunc(((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
 
     if (iBulletGetThrough > 5 && iGetThrough > 0) {
-      iCover = (iGetThrough * iBulletGetThrough / 100);
+      iCover = Math.trunc(iGetThrough * iBulletGetThrough / 100);
 
       if (iCover > iHighestValue)
         iHighestValue = iCover;
@@ -404,9 +404,9 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: SOLDIERTYPE, sTarge
   } else {
     let iTemp: INT32;
 
-    bPercentCoverForGridno = (iTotalCoverPoints / bNumEnemies);
+    bPercentCoverForGridno = Math.trunc(iTotalCoverPoints / bNumEnemies);
 
-    iTemp = bPercentCoverForGridno - (iHighestValue / bNumEnemies);
+    iTemp = bPercentCoverForGridno - Math.trunc(iHighestValue / bNumEnemies);
 
     iTemp = iTemp + iHighestValue;
 
@@ -497,12 +497,12 @@ export function DisplayRangeToTarget(pSoldier: SOLDIERTYPE, sTargetGridNo: INT16
   // Get the range to the target location
   usRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sTargetGridNo);
 
-  usRange = usRange / 10;
+  usRange = Math.trunc(usRange / 10);
 
   // if the soldier has a weapon in hand,
   if (WeaponInHand(pSoldier)) {
     // display a string with the weapons range, then range to target
-    zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].usRange / 10, usRange);
+    zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET_AND_GUN_RANGE], Math.trunc(Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].usRange / 10), usRange);
   } else {
     // display a string with the range to target
     zOutputString = swprintf(zNewTacticalMessages[Enum320.TCTL_MSG__RANGE_TO_TARGET], usRange);
@@ -580,16 +580,16 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
     gVisibleToSoldierStruct[i].forEach(resetVisibleToSoldierStruct);
   }
 
-  if (bSearchRange > (DC_MAX_COVER_RANGE / 2))
-    bSearchRange = (DC_MAX_COVER_RANGE / 2);
+  if (bSearchRange > Math.trunc(DC_MAX_COVER_RANGE / 2))
+    bSearchRange = Math.trunc(DC_MAX_COVER_RANGE / 2);
 
   // determine maximum horizontal limits
   sMaxLeft = Math.min(bSearchRange, (sTargetGridNo % MAXCOL));
   sMaxRight = Math.min(bSearchRange, MAXCOL - ((sTargetGridNo % MAXCOL) + 1));
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(bSearchRange, (sTargetGridNo / MAXROW));
-  sMaxDown = Math.min(bSearchRange, MAXROW - ((sTargetGridNo / MAXROW) + 1));
+  sMaxUp = Math.min(bSearchRange, Math.trunc(sTargetGridNo / MAXROW));
+  sMaxDown = Math.min(bSearchRange, MAXROW - (Math.trunc(sTargetGridNo / MAXROW) + 1));
 
   pSoldier = GetCurrentMercForDisplayCover();
 

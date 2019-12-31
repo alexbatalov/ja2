@@ -369,7 +369,7 @@ export function DecaySmokeEffects(uiTime: UINT32): void {
         if ((uiTime - pSmoke.uiTimeOfLastUpdate) > 10) {
           fUpdate = true;
 
-          usNumUpdates = ((uiTime - pSmoke.uiTimeOfLastUpdate) / 10);
+          usNumUpdates = Math.trunc((uiTime - pSmoke.uiTimeOfLastUpdate) / 10);
         }
       }
 

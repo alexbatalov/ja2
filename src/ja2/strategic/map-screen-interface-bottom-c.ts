@@ -725,22 +725,22 @@ function MapScreenMessageScrollBarCallBack(pRegion: MOUSE_REGION, iReason: INT32
       ubMouseYOffset = MousePos.y - MESSAGE_SCROLL_AREA_START_Y;
 
       // if clicking in the top 5 pixels of the slider bar
-      if (ubMouseYOffset < (SLIDER_HEIGHT / 2)) {
+      if (ubMouseYOffset < Math.trunc(SLIDER_HEIGHT / 2)) {
         // scroll all the way to the top
         ubDesiredMessageIndex = 0;
       }
       // if clicking in the bottom 6 pixels of the slider bar
-      else if (ubMouseYOffset >= (MESSAGE_SCROLL_AREA_HEIGHT - (SLIDER_HEIGHT / 2))) {
+      else if (ubMouseYOffset >= (MESSAGE_SCROLL_AREA_HEIGHT - Math.trunc(SLIDER_HEIGHT / 2))) {
         // scroll all the way to the bottom
         ubDesiredMessageIndex = ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM;
       } else {
         // somewhere in between
-        ubDesiredSliderOffset = ubMouseYOffset - (SLIDER_HEIGHT / 2);
+        ubDesiredSliderOffset = ubMouseYOffset - Math.trunc(SLIDER_HEIGHT / 2);
 
         Assert(ubDesiredSliderOffset <= SLIDER_BAR_RANGE);
 
         // calculate what the index should be to place the slider at this offset (round fractions of .5+ up)
-        ubDesiredMessageIndex = ((ubDesiredSliderOffset * (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM)) + (SLIDER_BAR_RANGE / 2)) / SLIDER_BAR_RANGE;
+        ubDesiredMessageIndex = Math.trunc(((ubDesiredSliderOffset * (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM)) + Math.trunc(SLIDER_BAR_RANGE / 2)) / SLIDER_BAR_RANGE);
       }
 
       // if it's a change
@@ -762,7 +762,7 @@ function DisplayScrollBarSlider(): void {
   // only show the slider if there are more messages than will fit on screen
   if (ubNumMessages > MAX_MESSAGES_ON_MAP_BOTTOM) {
     // calculate where slider should be positioned
-    ubSliderOffset = (SLIDER_BAR_RANGE * gubFirstMapscreenMessageIndex) / (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM);
+    ubSliderOffset = Math.trunc((SLIDER_BAR_RANGE * gubFirstMapscreenMessageIndex) / (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM));
 
     hHandle = GetVideoObject(guiSliderBar);
     BltVideoObject(FRAME_BUFFER, hHandle, 8, MESSAGE_SCROLL_AREA_START_X + 2, MESSAGE_SCROLL_AREA_START_Y + ubSliderOffset, VO_BLT_SRCTRANSPARENCY, null);

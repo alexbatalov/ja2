@@ -319,8 +319,8 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gExitDialog.iBoxId = PrepareMercPopupBox(-1, Enum324.DIALOG_MERC_POPUP_BACKGROUND, Enum325.DIALOG_MERC_POPUP_BORDER, TacticalStr[Enum335.EXIT_GUI_TITLE_STR], 100, 85, 2, 75, createPointer(() => usTextBoxWidth, (v) => usTextBoxWidth = v), createPointer(() => usTextBoxHeight, (v) => usTextBoxHeight = v));
 
-  gExitDialog.sX = ((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
-  gExitDialog.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
+  gExitDialog.sX = (Math.trunc(((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
+  gExitDialog.sY = (Math.trunc(((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
   gExitDialog.usWidth = usTextBoxWidth;
   gExitDialog.usHeight = usTextBoxHeight;
 

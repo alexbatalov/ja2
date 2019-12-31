@@ -4,7 +4,7 @@ const NUM_ITEMS_LISTED = 8;
 const NUM_ITEM_FLASH_SLOTS = 50;
 const MIN_LOB_RANGE = 6;
 
-let FlashItemSlots: ITEM_POOL_LOCATOR[] /* [NUM_ITEM_FLASH_SLOTS] */;
+let FlashItemSlots: ITEM_POOL_LOCATOR[] /* [NUM_ITEM_FLASH_SLOTS] */ = createArrayFrom(NUM_ITEM_FLASH_SLOTS, createItemPoolLocator);
 let guiNumFlashItemSlots: UINT32 = 0;
 
 // Disgusting hacks: have to keep track of these values for accesses in callbacks
@@ -975,7 +975,7 @@ export function HandleSoldierDropBomb(pSoldier: SOLDIERTYPE, sGridNo: INT16): vo
       // EXPLOSIVES GAIN (25):  Place a bomb, or buried and armed a mine
       StatChange(pSoldier, EXPLODEAMT, 25, FROM_SUCCESS);
 
-      pSoldier.inv[Enum261.HANDPOS].bTrap = Math.min(10, (EffectiveExplosive(pSoldier) / 20) + (EffectiveExpLevel(pSoldier) / 3));
+      pSoldier.inv[Enum261.HANDPOS].bTrap = Math.min(10, Math.trunc(EffectiveExplosive(pSoldier) / 20) + Math.trunc(EffectiveExpLevel(pSoldier) / 3));
       pSoldier.inv[Enum261.HANDPOS].ubBombOwner = pSoldier.ubID + 2;
 
       // we now know there is something nasty here
@@ -1001,7 +1001,6 @@ export function SoldierHandleDropItem(pSoldier: SOLDIERTYPE): void {
     AddItemToPool(pSoldier.sGridNo, pSoldier.pTempObject, 1, pSoldier.bLevel, 0, -1);
     NotifySoldiersToLookforItems();
 
-    MemFree(pSoldier.pTempObject);
     pSoldier.pTempObject = null;
   }
 }
@@ -1048,7 +1047,6 @@ export function HandleSoldierThrowItem(pSoldier: SOLDIERTYPE, sGridNo: INT16): v
           AddItemToPool(sGridNo, pSoldier.pTempObject, 1, pSoldier.bLevel, 0, -1);
           NotifySoldiersToLookforItems();
 
-          MemFree(pSoldier.pTempObject);
           pSoldier.pTempObject = null;
         }
       } else {
@@ -2232,9 +2230,6 @@ export function RemoveItemFromPool(sGridNo: INT16, iItemIndex: INT32, ubLevel: U
 
     AdjustItemPoolVisibility(pItemPoolTemp);
 
-    // DELETE
-    MemFree(pItemPoolTemp);
-
     RemoveItemFromWorld(iItemIndex);
 
     return true;
@@ -2500,7 +2495,7 @@ export function DrawItemPoolList(pItemPool: ITEM_POOL | null, sGridNo: INT16, bC
   }
 
   // Detertime vertiacal center
-  sFontY -= (sHeight / 2);
+  sFontY -= Math.trunc(sHeight / 2);
 
   SetFont(SMALLFONT1());
   SetFontBackground(FONT_MCOLOR_BLACK);
@@ -2829,8 +2824,8 @@ export function RenderTopmostFlashingItems(): void {
           // Calculate guy's position
           ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-          sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-          sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[pItemPool.sGridNo].sHeight;
+          sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+          sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S) - gpWorldLevelData[pItemPool.sGridNo].sHeight;
 
           // Adjust for offset position on screen
           sXPos -= gsRenderWorldOffsetX;
@@ -3214,7 +3209,7 @@ function BombMessageBoxCallBack(ubExitValue: UINT8): void {
       }
 
       if (ArmBomb(gpTempSoldier.inv[Enum261.HANDPOS], ubExitValue)) {
-        gpTempSoldier.inv[Enum261.HANDPOS].bTrap = Math.min(10, (EffectiveExplosive(gpTempSoldier) / 20) + (EffectiveExpLevel(gpTempSoldier) / 3));
+        gpTempSoldier.inv[Enum261.HANDPOS].bTrap = Math.min(10, Math.trunc(EffectiveExplosive(gpTempSoldier) / 20) + Math.trunc(EffectiveExpLevel(gpTempSoldier) / 3));
         // HACK IMMINENT!
         // value of 1 is stored in maps for SIDE of bomb owner... when we want to use IDs!
         // so we add 2 to all owner IDs passed through here and subtract 2 later
@@ -4013,7 +4008,7 @@ export function FindNearestAvailableGridNoForItem(sSweetGridNo: INT16, ubRadius:
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;

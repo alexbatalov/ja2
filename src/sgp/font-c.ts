@@ -697,7 +697,7 @@ export function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT1
 
   // Compute the coordinates to right justify the text
   xp = ((sWidth - StringPixLength(pStr, iFontIndex))) + sLeft;
-  yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
+  yp = Math.trunc((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
   return { sX: xp, sY: yp };
 }
@@ -707,8 +707,8 @@ export function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT
   let yp: INT16;
 
   // Compute the coordinates to center the text
-  xp = ((sWidth - StringPixLength(pStr, iFontIndex) + 1) / 2) + sLeft;
-  yp = ((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
+  xp = Math.trunc((sWidth - StringPixLength(pStr, iFontIndex) + 1) / 2) + sLeft;
+  yp = Math.trunc((sHeight - GetFontHeight(iFontIndex)) / 2) + sTop;
 
   return { sX: xp, sY: yp };
 }
@@ -1175,7 +1175,7 @@ export function CreateEnglishTransTable(): FontTranslationTable {
   pTable.DynamicArrayOf16BitValues[temp++] = '['.charCodeAt(0);
   pTable.DynamicArrayOf16BitValues[temp++] = ']'.charCodeAt(0);
   pTable.DynamicArrayOf16BitValues[temp++] = ':'.charCodeAt(0);
-  pTable.DynamicArrayOf16BitValues[temp++] = '.charCodeAt(0);'.charCodeAt(0);
+  pTable.DynamicArrayOf16BitValues[temp++] = ';'.charCodeAt(0);
   pTable.DynamicArrayOf16BitValues[temp++] = '"'.charCodeAt(0);
   pTable.DynamicArrayOf16BitValues[temp++] = '\''.charCodeAt(0);
   pTable.DynamicArrayOf16BitValues[temp++] = '<'.charCodeAt(0);

@@ -374,22 +374,22 @@ let giContactButton: INT32;
 let giNextButton: INT32;
 
 // Video conference buttons
-let guiVideoConferenceButtonImage: INT32[] /* [3] */;
+let guiVideoConferenceButtonImage: INT32[] /* [3] */ = createArray(3, 0);
 
-let giContractLengthButton: INT32[] /* [3] */;
+let giContractLengthButton: INT32[] /* [3] */ = createArray(3, 0);
 
-let giBuyEquipmentButton: INT32[] /* [2] */;
+let giBuyEquipmentButton: INT32[] /* [2] */ = createArray(2, 0);
 
-let giAuthorizeButton: INT32[] /* [2] */;
+let giAuthorizeButton: INT32[] /* [2] */ = createArray(2, 0);
 
 let giHangUpButton: INT32;
 
 let guiPopUpOkButton: UINT32;
 let guiPopUpImage: INT32;
 
-let giFirstContactButton: INT32[] /* [2] */;
+let giFirstContactButton: INT32[] /* [2] */ = createArray(2, 0);
 
-let giAnsweringMachineButton: INT32[] /* [2] */;
+let giAnsweringMachineButton: INT32[] /* [2] */ = createArray(2, 0);
 
 // X to Close the video conference Button
 let giXToCloseVideoConfButtonImage: INT32;
@@ -873,7 +873,7 @@ function UpdateMercInfo(): boolean {
     sMedicalString = swprintf("%s %s", zTemp, CharacterInfo[Enum355.AIM_MEMBER_MEDICAL_DEPOSIT_REQ]);
 
     // If the string will be displayed in more then 2 lines, recenter the string
-    if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL())) > 2) {
+    if (Math.trunc(DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL())) > 2) {
       DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, (AIM_MEDICAL_DEPOSIT_Y - GetFontHeight(AIM_FONT12ARIAL())), AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else
       DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, AIM_MEDICAL_DEPOSIT_Y, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL(), AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
@@ -1110,8 +1110,8 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       usHeight = pTrav.usHeight;
       usWidth = pTrav.usWidth;
 
-      sCenX = PosX + (Math.abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.sOffsetX;
-      sCenY = PosY + (Math.abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.sOffsetY;
+      sCenX = PosX + Math.trunc(Math.abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav.sOffsetX;
+      sCenY = PosY + Math.trunc(Math.abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav.sOffsetY;
 
       // blt the shadow of the item
       BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, GetInterfaceGraphicForItem(pItem), pItem.ubGraphicNum, sCenX - 2, sCenY + 2);
@@ -1132,8 +1132,8 @@ function DisplayMercsInventory(ubMercID: UINT8): boolean {
       gzItemName = ShortItemNames[usItem];
 
       // if this will only be a single line, center it in the box
-      if ((DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT())) == 1)
-        DisplayWrappedString((PosX - 1), (AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT()) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+      if (Math.trunc(DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT())) == 1)
+        DisplayWrappedString((PosX - 1), Math.trunc(AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT()) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
       else
         DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT(), AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
@@ -1247,7 +1247,7 @@ function DisplayMercsFace(): boolean {
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, null);
 
   // load the Face graphic and add it
-  sTemp = sprintf("%s%02d.sti", sFaceLoc, gbCurrentSoldier);
+  sTemp = sprintf("%s%s.sti", sFaceLoc, gbCurrentSoldier.toString().padStart(2, '0'));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP(sTemp);
   if (!(guiFace = AddVideoObject(VObjectDesc))) {
@@ -1402,7 +1402,7 @@ function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString:
   let i: INT16;
   let usPosX: UINT16;
 
-  sNumberOfDots = (usStatX - usNameX - usStringLength) / 7;
+  sNumberOfDots = Math.trunc((usStatX - usNameX - usStringLength) / 7);
 
   usPosX = usStatX;
   for (i = usNameX + usStringLength; i <= usPosX; usPosX -= 7) {
@@ -1653,7 +1653,7 @@ function DisplayVideoConferencingDisplay(): boolean {
     iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, createPointer(() => usActualWidth, (v) => usActualWidth = v), createPointer(() => usActualHeight, (v) => usActualHeight = v));
     SET_USE_WINFONTS(false);
 
-    usPosX = (LAPTOP_SCREEN_LR_X - usActualWidth) / 2;
+    usPosX = Math.trunc((LAPTOP_SCREEN_LR_X - usActualWidth) / 2);
 
     RenderMercPopUpBoxFromIndex(iAimMembersBoxId, usPosX, TEXT_POPUP_WINDOW_Y, FRAME_BUFFER);
 
@@ -1860,9 +1860,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: string | null /* S
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
 
       usTempPosY += AIM_POPUP_BOX_STRING1_Y;
-      if (InitCreateDeleteAimPopUpBox__sPopUpString1[0] != '\0')
+      if (InitCreateDeleteAimPopUpBox__sPopUpString1 != '')
         usTempPosY += DisplayWrappedString(InitCreateDeleteAimPopUpBox__usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, InitCreateDeleteAimPopUpBox__sPopUpString1, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
-      if (InitCreateDeleteAimPopUpBox__sPopUpString2[0] != '\0')
+      if (InitCreateDeleteAimPopUpBox__sPopUpString2 != '')
         DisplayWrappedString(InitCreateDeleteAimPopUpBox__usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT(), AIM_POPUP_BOX_COLOR, InitCreateDeleteAimPopUpBox__sPopUpString2, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
       SetFontShadow(DEFAULT_SHADOW);
@@ -3304,13 +3304,13 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
     if (fInit)
       DisplayMovingTitleBar__ubCount = 1;
 
-    usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosX = (331 - usTemp * DisplayMovingTitleBar__ubCount);
 
-    usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosRightX = (405 + usTemp * DisplayMovingTitleBar__ubCount);
 
-    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * DisplayMovingTitleBar__ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
@@ -3318,13 +3318,13 @@ function DisplayMovingTitleBar(fForward: boolean, fInit: boolean): boolean {
     if (fInit)
       DisplayMovingTitleBar__ubCount = AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1;
 
-    usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosX = (331 - usTemp * DisplayMovingTitleBar__ubCount);
 
-    usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosRightX = (405 + usTemp * DisplayMovingTitleBar__ubCount);
 
-    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usTemp = Math.trunc((AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS);
     usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * DisplayMovingTitleBar__ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
@@ -3501,10 +3501,10 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
     return;
 
   // calc the approximate hour the mercs will arrive at
-  uiHour = ((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) - (((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) / 1440) * 1440)) / 60;
+  uiHour = Math.trunc(((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) - (Math.trunc((LaptopSaveInfo.sLastHiredMerc.uiArrivalTime) / 1440) * 1440)) / 60);
 
   // create the time string
-  zTimeString = swprintf("%02d:%02d", uiHour, 0);
+  zTimeString = swprintf("%s:%s", uiHour.toString().padStart(2, '0'), (0).toString().padStart(2, '0'));
 
   // get the id string
   zSectorIDString = GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, false);
@@ -3517,7 +3517,7 @@ export function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
 //   // Germans version has a different argument order
 //   swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString, zSectorIDString);
 // #else
-  szLocAndTime = swprintf(pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
+  szLocAndTime = swprintf(pMessageStrings[Enum333.MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier.ubProfile].zNickname, zSectorIDString, Math.trunc(LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440), zTimeString);
 // #endif
 
   // display the message box

@@ -232,7 +232,6 @@ export function RemoveObject(iMapIndex: UINT32, usIndex: UINT16): boolean {
       CheckForAndDeleteTileCacheStructInfo(pObject, usIndex);
 
       // Delete memory assosiated with item
-      MemFree(pObject);
       guiLevelNodes--;
 
       // Add the index to the maps temp file so we can remove it after reloading the map
@@ -928,7 +927,6 @@ export function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): boolean {
   if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != null) {
       if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == false) {
-        MemFree(pNextStruct);
         guiLevelNodes--;
         return false;
       }
@@ -1012,7 +1010,6 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
   if (usIndex < Enum312.NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != null) {
       if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == false) {
-        MemFree(pNextStruct);
         guiLevelNodes--;
         return false;
       }
@@ -1072,7 +1069,6 @@ function RemoveStructFromTailCommon(iMapIndex: UINT32, fRemoveStructDBInfo: bool
       // If we have to, make sure to remove this node when we reload the map from a saved game
       RemoveStructFromMapTempFile(iMapIndex, usIndex);
 
-      MemFree(pStruct);
       guiLevelNodes--;
 
       if (usIndex < Enum312.NUMBEROFTILES) {
@@ -1181,7 +1177,7 @@ export function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: LEVELNODE): 
           RemoveShadow(iMapIndex, gTileDatabase[usIndex].sBuddyNum);
         }
       }
-      MemFree(pStruct);
+
       guiLevelNodes--;
 
       return true;
@@ -1508,7 +1504,6 @@ function RemoveShadow(iMapIndex: UINT32, usIndex: UINT16): boolean {
       }
 
       // Delete memory assosiated with item
-      MemFree(pShadow);
       guiLevelNodes--;
 
       return true;
@@ -1543,7 +1538,6 @@ export function RemoveShadowFromLevelNode(iMapIndex: UINT32, pNode: LEVELNODE): 
       }
 
       // Delete memory assosiated with item
-      MemFree(pShadow);
       guiLevelNodes--;
 
       return true;
@@ -1578,7 +1572,6 @@ function RemoveStructShadowPartner(iMapIndex: UINT32, usIndex: UINT16): boolean 
       }
 
       // Delete memory assosiated with item
-      MemFree(pShadow);
       guiLevelNodes--;
 
       return true;
@@ -2271,7 +2264,6 @@ export function RemoveOnRoofFromLevelNode(iMapIndex: UINT32, pNode: LEVELNODE): 
       }
 
       // REMOVE ONROOF!
-      MemFree(pOnRoof);
       guiLevelNodes--;
 
       return true;

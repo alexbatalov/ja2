@@ -127,7 +127,7 @@ export function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: SOLDIERTYPE): boole
     pGroup.pPlayerList = pPlayer;
     pGroup.ubGroupSize = 1;
     pGroup.ubPrevX = ((pSoldier.ubPrevSectorID % 16) + 1);
-    pGroup.ubPrevY = ((pSoldier.ubPrevSectorID / 16) + 1);
+    pGroup.ubPrevY = (Math.trunc(pSoldier.ubPrevSectorID / 16) + 1);
     pGroup.ubSectorX = pSoldier.sSectorX;
     pGroup.ubSectorY = pSoldier.sSectorY;
     pGroup.ubSectorZ = pSoldier.bSectorZ;
@@ -180,7 +180,7 @@ function RemoveAllPlayersFromPGroup(pGroup: GROUP): boolean {
     curr.pSoldier.ubPrevSectorID = SECTOR(pGroup.ubPrevX, pGroup.ubPrevY);
     curr.pSoldier.ubGroupID = 0;
 
-    MemFree(curr);
+    curr = null;
 
     curr = pGroup.pPlayerList;
   }
@@ -212,7 +212,7 @@ function RemovePlayerFromPGroup(pGroup: GROUP, pSoldier: SOLDIERTYPE): boolean {
     pGroup.pPlayerList = (<PLAYERGROUP>pGroup.pPlayerList).next;
 
     // delete the node
-    MemFree(curr);
+    curr = null;
 
     // process info for soldier
     pGroup.ubGroupSize--;
@@ -241,7 +241,7 @@ function RemovePlayerFromPGroup(pGroup: GROUP, pSoldier: SOLDIERTYPE): boolean {
       if (prev) {
         prev.next = curr.next;
       }
-      MemFree(curr);
+      curr = null;
 
       // process info for soldier
       pSoldier.ubGroupID = 0;
@@ -354,11 +354,11 @@ export function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: GRO
   // clip the new dx/dy values to +/- 1
   if (newDX) {
     ubNumUnalignedAxes++;
-    newDX /= Math.abs(newDX);
+    newDX = Math.trunc(newDX / Math.abs(newDX));
   }
   if (newDY) {
     ubNumUnalignedAxes++;
-    newDY /= Math.abs(newDY);
+    newDY = Math.trunc(newDY / Math.abs(newDY));
   }
 
   // error checking
@@ -567,9 +567,9 @@ function AddGroupToList(pGroup: GROUP): UINT8 {
   let ID: UINT8 = 0;
   // First, find a unique ID
   while (++ID) {
-    index = ID / 32;
+    index = Math.trunc(ID / 32);
     bit = ID % 32;
-    mask = 1 << bit;
+    mask = (1 << bit) >>> 0;
     if (!(uniqueIDMask[index] & mask)) {
       // found a free ID
       pGroup.ubGroupID = ID;
@@ -639,9 +639,9 @@ export function RemoveGroupFromList(pGroup: GROUP): void {
     let mask: UINT32;
 
     // clear the unique group ID
-    index = pGroup.ubGroupID / 32;
+    index = Math.trunc(pGroup.ubGroupID / 32);
     bit = pGroup.ubGroupID % 32;
-    mask = 1 << bit;
+    mask = (1 << bit) >>> 0;
 
     if (!(uniqueIDMask[index] & mask)) {
       mask = mask;
@@ -1042,7 +1042,7 @@ function AwardExperienceForTravelling(pGroup: GROUP): void {
         // award exp...
         // amount was originally based on getting 100-bLifeMax points for 12 hours of travel (720)
         // but changed to flat rate since StatChange makes roll vs 100-lifemax as well!
-        uiPoints = pGroup.uiTraverseTime / (450 / 100 - pSoldier.bLifeMax);
+        uiPoints = Math.trunc(pGroup.uiTraverseTime / (Math.trunc(450 / 100) - pSoldier.bLifeMax));
         if (uiPoints > 0) {
           StatChange(pSoldier, HEALTHAMT, uiPoints, 0);
         }
@@ -1051,8 +1051,8 @@ function AwardExperienceForTravelling(pGroup: GROUP): void {
       if (pSoldier.bStrength < 100) {
         uiCarriedPercent = CalculateCarriedWeight(pSoldier);
         if (uiCarriedPercent > 50) {
-          uiPoints = pGroup.uiTraverseTime / (450 / (100 - pSoldier.bStrength));
-          StatChange(pSoldier, STRAMT, (uiPoints * (uiCarriedPercent - 50) / 100), 0);
+          uiPoints = Math.trunc(pGroup.uiTraverseTime / Math.trunc(450 / (100 - pSoldier.bStrength)));
+          StatChange(pSoldier, STRAMT, Math.trunc(uiPoints * (uiCarriedPercent - 50) / 100), 0);
         }
       }
     }
@@ -1079,7 +1079,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 
   // Set time of death
   // Make sure they will be rotting!
-  Corpse.uiTimeOfDeath = GetWorldTotalMin() - (2 * NUM_SEC_IN_DAY / 60);
+  Corpse.uiTimeOfDeath = GetWorldTotalMin() - Math.trunc(2 * NUM_SEC_IN_DAY / 60);
   // Set type
   Corpse.ubType = Enum249.SMERC_JFK;
   Corpse.usFlags = ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO;
@@ -1884,7 +1884,6 @@ export function RemovePGroupWaypoints(pGroup: GROUP): void {
   while (pGroup.pWaypoints) {
     wp = pGroup.pWaypoints;
     pGroup.pWaypoints = pGroup.pWaypoints.next;
-    MemFree(wp);
   }
   pGroup.ubNextWaypointID = 0;
   pGroup.pWaypoints = null;
@@ -1973,9 +1972,9 @@ export function RemovePGroup(pGroup: GROUP): void {
   }
 
   // clear the unique group ID
-  index = pGroup.ubGroupID / 32;
+  index = Math.trunc(pGroup.ubGroupID / 32);
   bit = pGroup.ubGroupID % 32;
-  mask = 1 << bit;
+  mask = (1 << bit) >>> 0;
 
   if (!(uniqueIDMask[index] & mask)) {
     mask = mask;
@@ -2286,7 +2285,7 @@ export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pG
     }
     if (ubTraverseMod == 0)
       return 0xffffffff; // Group can't traverse here.
-    iTraverseTime = FOOT_TRAVEL_TIME * 100 / ubTraverseMod;
+    iTraverseTime = Math.trunc(FOOT_TRAVEL_TIME * 100 / ubTraverseMod);
     if (iTraverseTime < iBestTraverseTime)
       iBestTraverseTime = iTraverseTime;
 
@@ -2304,7 +2303,7 @@ export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pG
         curr = curr.next;
       }
       if (iHighestEncumbrance > 100) {
-        iBestTraverseTime = iBestTraverseTime * iHighestEncumbrance / 100;
+        iBestTraverseTime = Math.trunc(iBestTraverseTime * iHighestEncumbrance / 100);
       }
     }
   }
@@ -2319,7 +2318,7 @@ export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pG
     }
     if (ubTraverseMod == 0)
       return 0xffffffff; // Group can't traverse here.
-    iTraverseTime = CAR_TRAVEL_TIME * 100 / ubTraverseMod;
+    iTraverseTime = Math.trunc(CAR_TRAVEL_TIME * 100 / ubTraverseMod);
     if (iTraverseTime < iBestTraverseTime)
       iBestTraverseTime = iTraverseTime;
   }
@@ -2343,7 +2342,7 @@ export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pG
     }
     if (ubTraverseMod == 0)
       return 0xffffffff; // Group can't traverse here.
-    iTraverseTime = TRUCK_TRAVEL_TIME * 100 / ubTraverseMod;
+    iTraverseTime = Math.trunc(TRUCK_TRAVEL_TIME * 100 / ubTraverseMod);
     if (iTraverseTime < iBestTraverseTime)
       iBestTraverseTime = iTraverseTime;
   }
@@ -2379,7 +2378,7 @@ export function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pG
     }
     if (ubTraverseMod == 0)
       return 0xffffffff; // Group can't traverse here.
-    iTraverseTime = TRACKED_TRAVEL_TIME * 100 / ubTraverseMod;
+    iTraverseTime = Math.trunc(TRACKED_TRAVEL_TIME * 100 / ubTraverseMod);
     if (iTraverseTime < iBestTraverseTime)
       iBestTraverseTime = iTraverseTime;
   }
@@ -2912,9 +2911,9 @@ export function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): boo
     if (ubNumPlayerGroupsEmpty || ubNumEnemyGroupsEmpty) {
       // report error?
     }
-    index = pGroup.ubGroupID / 32;
+    index = Math.trunc(pGroup.ubGroupID / 32);
     bit = pGroup.ubGroupID % 32;
-    mask = 1 << bit;
+    mask = (1 << bit) >>> 0;
     uniqueIDMask[index] += mask;
     pGroup = pGroup.next;
   }
@@ -3618,7 +3617,7 @@ function SpendVehicleFuel(pSoldier: SOLDIERTYPE, sFuelSpent: INT16): boolean {
   Assert(pSoldier.uiStatusFlags & SOLDIER_VEHICLE);
   pSoldier.sBreathRed -= sFuelSpent;
   pSoldier.sBreathRed = Math.max(0, pSoldier.sBreathRed);
-  pSoldier.bBreath = ((pSoldier.sBreathRed + 99) / 100);
+  pSoldier.bBreath = Math.trunc((pSoldier.sBreathRed + 99) / 100);
   return false;
 }
 
@@ -3644,9 +3643,9 @@ export function AddFuelToVehicle(pSoldier: SOLDIERTYPE, pVehicle: SOLDIERTYPE): 
     sFuelAdded = Math.min(sFuelNeeded, sFuelAvailable);
     // Add to vehicle
     pVehicle.sBreathRed += sFuelAdded;
-    pVehicle.bBreath = (pVehicle.sBreathRed / 100);
+    pVehicle.bBreath = Math.trunc(pVehicle.sBreathRed / 100);
     // Subtract from item
-    pItem.bStatus[0] = (pItem.bStatus[0] - sFuelAdded / 50);
+    pItem.bStatus[0] = (pItem.bStatus[0] - Math.trunc(sFuelAdded / 50));
     if (!pItem.bStatus[0]) {
       // Gas can is empty, so toast the item.
       DeleteObj(pItem);
@@ -3795,7 +3794,7 @@ function TestForBloodcatAmbush(pGroup: GROUP): boolean {
 
   ubChance = 5 * gGameOptions.ubDifficultyLevel;
 
-  iHoursElapsed = (GetWorldTotalMin() - pSector.uiTimeCurrentSectorWasLastLoaded) / 60;
+  iHoursElapsed = Math.trunc((GetWorldTotalMin() - pSector.uiTimeCurrentSectorWasLastLoaded) / 60);
   if (ubSectorID == Enum123.SEC_N5 || ubSectorID == Enum123.SEC_I16) {
     // These are special maps -- we use all placements.
     if (pSector.bBloodCats == -1) {
@@ -3805,7 +3804,7 @@ function TestForBloodcatAmbush(pGroup: GROUP): boolean {
       // come back up to the maximum if left long enough.
       let iBloodCatDiff: INT32;
       iBloodCatDiff = pSector.bBloodCatPlacements - pSector.bBloodCats;
-      pSector.bBloodCats += Math.min(iHoursElapsed / 18, iBloodCatDiff);
+      pSector.bBloodCats += Math.min(Math.trunc(iHoursElapsed / 18), iBloodCatDiff);
     }
     // Once 0, the bloodcats will never recupe.
   } else if (pSector.bBloodCats == -1) {
@@ -3815,7 +3814,7 @@ function TestForBloodcatAmbush(pGroup: GROUP): boolean {
       bDifficultyMaxCats = (Random(4) + gGameOptions.ubDifficultyLevel * 2 + 3);
 
       // maximum of 3 bloodcats or 1 for every 6%, 5%, 4% progress based on easy, normal, and hard, respectively
-      bProgressMaxCats = Math.max(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
+      bProgressMaxCats = Math.max(Math.trunc(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel)), 3);
 
       // make sure bloodcats don't outnumber mercs by a factor greater than 2
       bNumMercMaxCats = (PlayerMercsInSector(pGroup.ubSectorX, pGroup.ubSectorY, pGroup.ubSectorZ) * 2);

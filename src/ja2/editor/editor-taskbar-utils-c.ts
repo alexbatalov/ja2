@@ -457,8 +457,8 @@ export function DrawEditorInfoBox(str: string /* Pointer<UINT16> */, uiFont: UIN
   SetFont(uiFont);
   SetFontForeground(FONT_BLACK);
   SetFontShadow(FONT_BLACK);
-  x += (w - StringPixLength(str, uiFont)) / 2;
-  y += (h - GetFontHeight(uiFont)) / 2;
+  x += Math.trunc((w - StringPixLength(str, uiFont)) / 2);
+  y += Math.trunc((h - GetFontHeight(uiFont)) / 2);
   mprintf(x, y, "%s", str);
   InvalidateRegion(x, y, x2, y2);
 }
@@ -684,11 +684,11 @@ function RenderDoorLockInfo(): void {
           str = "Super Electric Trap";
           break;
       }
-      xp = sScreenX + 20 - StringPixLength(str, FONT10ARIAL()) / 2;
+      xp = sScreenX + 20 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2);
       yp = sScreenY;
       mprintf(xp, yp, str);
       str = swprintf("Trap Level %d", DoorTable[i].ubTrapLevel);
-      xp = sScreenX + 20 - StringPixLength(str, FONT10ARIAL()) / 2;
+      xp = sScreenX + 20 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2);
       mprintf(xp, yp + 10, str);
     }
   }
@@ -720,11 +720,11 @@ function RenderSelectedItemBlownUp(): void {
 
   sWidth = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usWidth;
   sOffsetX = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetX;
-  xp = sScreenX + (40 - sWidth - sOffsetX * 2) / 2;
+  xp = sScreenX + Math.trunc((40 - sWidth - sOffsetX * 2) / 2);
 
   sHeight = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].usHeight;
   sOffsetY = hVObject.pETRLEObject[Item[gpItem.usItem].ubGraphicNum].sOffsetY;
-  yp = sScreenY + (20 - sHeight - sOffsetY * 2) / 2;
+  yp = sScreenY + Math.trunc((20 - sHeight - sOffsetY * 2) / 2);
 
   BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, Item[gpItem.usItem].ubGraphicNum, xp, yp, Get16BPPColor(FROMRGB(0, 140, 170)), true);
 
@@ -739,14 +739,14 @@ function RenderSelectedItemBlownUp(): void {
   } else {
     ({ name: szItemName } = LoadItemInfo(gpItem.usItem));
   }
-  xp = sScreenX - (StringPixLength(szItemName, FONT10ARIAL()) - 40) / 2;
+  xp = sScreenX - Math.trunc((StringPixLength(szItemName, FONT10ARIAL()) - 40) / 2);
   yp -= 10;
   mprintf(xp, yp, szItemName);
 
   if (gpItem.usItem == Enum225.ACTION_ITEM) {
     let pStr: string /* Pointer<UINT16> */;
     pStr = GetActionItemName(gpItem);
-    xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD()) - 40) / 2;
+    xp = sScreenX - Math.trunc((StringPixLength(pStr, FONT10ARIALBOLD()) - 40) / 2);
     yp += 10;
     SetFont(FONT10ARIALBOLD());
     SetFontForeground(FONT_LTKHAKI);
@@ -792,7 +792,7 @@ function RenderEditorInfo(): void {
     FPSText = swprintf("   (%d)   ", iMapIndex);
   else
     FPSText = "          ";
-  mprintfEditor((50 - StringPixLength(FPSText, FONT12POINT1()) / 2), 463, FPSText);
+  mprintfEditor((50 - Math.trunc(StringPixLength(FPSText, FONT12POINT1()) / 2)), 463, FPSText);
 
   switch (iCurrentTaskbar) {
     case Enum36.TASK_OPTIONS:

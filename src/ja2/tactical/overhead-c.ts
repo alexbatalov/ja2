@@ -445,7 +445,7 @@ export function InitOverhead(): boolean {
           gGameSettings.fOptions[ TOPTION_RTCONFIRM ] = 0;
           gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] = 0;
   */
-  gTacticalStatus.bRealtimeSpeed = MAX_REALTIME_SPEED_VAL / 2;
+  gTacticalStatus.bRealtimeSpeed = Math.trunc(MAX_REALTIME_SPEED_VAL / 2);
 
   gfInAirRaid = false;
   gpCustomizableTimerCallback = null;
@@ -596,7 +596,7 @@ export function ExecuteOverhead(): boolean {
   if ((pSoldier = GetSoldier(gusSelectedSoldier)) !== null) {
     if (pSoldier.bActive) {
       if (pSoldier.uiStatusFlags & SOLDIER_GREEN_RAY)
-        LightShowRays((pSoldier.dXPos / CELL_X_SIZE), (pSoldier.dYPos / CELL_Y_SIZE), false);
+        LightShowRays(Math.trunc(pSoldier.dXPos / CELL_X_SIZE), Math.trunc(pSoldier.dYPos / CELL_Y_SIZE), false);
     }
   }
 
@@ -1549,7 +1549,7 @@ export function HandleGotoNewGridNo(pSoldier: SOLDIERTYPE, pfKeepMoving: Pointer
           EVENT_StopMerc(pSoldier, pSoldier.sGridNo, pSoldier.bDirection);
           fDontContinue = true;
 
-          DishOutGasDamage(pSoldier, pExplosive, 1, false, (pExplosive.ubDamage + PreRandom(pExplosive.ubDamage)), (100 * (pExplosive.ubStunDamage + PreRandom((pExplosive.ubStunDamage / 2)))), NOBODY);
+          DishOutGasDamage(pSoldier, pExplosive, 1, false, (pExplosive.ubDamage + PreRandom(pExplosive.ubDamage)), (100 * (pExplosive.ubStunDamage + PreRandom(Math.trunc(pExplosive.ubStunDamage / 2)))), NOBODY);
         }
       }
 
@@ -2082,7 +2082,7 @@ export function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: boolean
     // DeleteSoldierLight( pOldSoldier );
 
     if (pOldSoldier.uiStatusFlags & SOLDIER_GREEN_RAY) {
-      LightHideRays((pOldSoldier.dXPos / CELL_X_SIZE), (pOldSoldier.dYPos / CELL_Y_SIZE));
+      LightHideRays(Math.trunc(pOldSoldier.dXPos / CELL_X_SIZE), Math.trunc(pOldSoldier.dYPos / CELL_Y_SIZE));
       pOldSoldier.uiStatusFlags &= (~SOLDIER_GREEN_RAY);
     }
 
@@ -5333,7 +5333,7 @@ function CalcSuppressionTolerance(pSoldier: SOLDIERTYPE): INT8 {
   bTolerance = pSoldier.bExpLevel * 2;
   if (pSoldier.uiStatusFlags & SOLDIER_PC) {
     // give +1 for every 10% morale from 50, for a maximum bonus/penalty of 5.
-    bTolerance += (pSoldier.bMorale - 50) / 10;
+    bTolerance += Math.trunc((pSoldier.bMorale - 50) / 10);
   } else {
     // give +2 for every morale category from normal, for a max change of 4
     bTolerance += (pSoldier.bAIMorale - Enum244.MORALE_NORMAL) * 2;
@@ -5395,7 +5395,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
       bTolerance = CalcSuppressionTolerance(pSoldier);
 
       // multiply by 2, add 1 and divide by 2 to round off to nearest whole number
-      ubPointsLost = (((pSoldier.ubSuppressionPoints * 6) / (bTolerance + 6)) * 2 + 1) / 2;
+      ubPointsLost = Math.trunc((Math.trunc((pSoldier.ubSuppressionPoints * 6) / (bTolerance + 6)) * 2 + 1) / 2);
 
       // reduce loss of APs based on stance
       // ATE: Taken out because we can possibly supress ourselves...
@@ -5424,8 +5424,8 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
       }
 
       // morale modifier
-      if (ubTotalPointsLost / 2 > pSoldier.ubAPsLostToSuppression / 2) {
-        for (ubLoop2 = 0; ubLoop2 < (ubTotalPointsLost / 2) - (pSoldier.ubAPsLostToSuppression / 2); ubLoop2++) {
+      if (Math.trunc(ubTotalPointsLost / 2) > Math.trunc(pSoldier.ubAPsLostToSuppression / 2)) {
+        for (ubLoop2 = 0; ubLoop2 < Math.trunc(ubTotalPointsLost / 2) - Math.trunc(pSoldier.ubAPsLostToSuppression / 2); ubLoop2++) {
           HandleMoraleEvent(pSoldier, Enum234.MORALE_SUPPRESSED, pSoldier.sSectorX, pSoldier.sSectorY, pSoldier.bSectorZ);
         }
       }
@@ -5434,7 +5434,7 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
       ubNewStance = 0;
 
       // merc may get to react
-      if (pSoldier.ubSuppressionPoints >= (130 / (6 + bTolerance))) {
+      if (pSoldier.ubSuppressionPoints >= Math.trunc(130 / (6 + bTolerance))) {
         // merc gets to use APs to react!
         switch (gAnimControl[pSoldier.usAnimState].ubEndHeight) {
           case ANIM_PRONE:
@@ -5988,7 +5988,7 @@ function HandleBloodForNewGridNo(pSoldier: SOLDIERTYPE): void {
   if ((pSoldier.bBleeding > MIN_BLEEDING_THRESHOLD)) {
     let bBlood: INT8;
 
-    bBlood = ((pSoldier.bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR);
+    bBlood = Math.trunc((pSoldier.bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR);
 
     if (bBlood > MAXBLOODQUANTITY) {
       bBlood = MAXBLOODQUANTITY;

@@ -280,7 +280,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
   // Check coords
   {
     // CHECK FOR LEFT/RIGHT
-    sCenterXVal = gTalkPanel.usWidth / 2;
+    sCenterXVal = Math.trunc(gTalkPanel.usWidth / 2);
 
     sX -= sCenterXVal;
 
@@ -296,7 +296,7 @@ export function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: IN
 
     // Now check for top
     // Center in the y
-    sCenterYVal = gTalkPanel.usHeight / 2;
+    sCenterYVal = Math.trunc(gTalkPanel.usHeight / 2);
 
     sY -= sCenterYVal;
 
@@ -1023,18 +1023,18 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
       // Set it here!
       gTalkPanel.sPopupX = gTalkPanel.sX - sWidth;
       // Center in height!
-      gTalkPanel.sPopupY = gTalkPanel.sY + (gTalkPanel.usHeight / 2) - (sHeight / 2);
+      gTalkPanel.sPopupY = gTalkPanel.sY + Math.trunc(gTalkPanel.usHeight / 2) - Math.trunc(sHeight / 2);
       break;
     case TALK_PANEL_POPUP_RIGHT:
       // Set it here!
       gTalkPanel.sPopupX = gTalkPanel.sX + gTalkPanel.usWidth + 1;
       // Center in height!
-      gTalkPanel.sPopupY = gTalkPanel.sY + (gTalkPanel.usHeight / 2) - (sHeight / 2);
+      gTalkPanel.sPopupY = gTalkPanel.sY + Math.trunc(gTalkPanel.usHeight / 2) - Math.trunc(sHeight / 2);
       break;
     case TALK_PANEL_POPUP_BOTTOM:
 
       // Center in X
-      gTalkPanel.sPopupX = gTalkPanel.sX + (gTalkPanel.usWidth / 2) - (sWidth / 2);
+      gTalkPanel.sPopupX = gTalkPanel.sX + Math.trunc(gTalkPanel.usWidth / 2) - Math.trunc(sWidth / 2);
       // Calc height
       gTalkPanel.sPopupY = gTalkPanel.sY + gTalkPanel.usHeight;
       break;
@@ -1042,7 +1042,7 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
     case TALK_PANEL_POPUP_TOP:
 
       // Center in X
-      gTalkPanel.sPopupX = gTalkPanel.sX + (gTalkPanel.usWidth / 2) - (sWidth / 2);
+      gTalkPanel.sPopupX = gTalkPanel.sX + Math.trunc(gTalkPanel.usWidth / 2) - Math.trunc(sWidth / 2);
       // Calc height
       gTalkPanel.sPopupY = gTalkPanel.sY - sHeight;
       break;
@@ -1586,7 +1586,7 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
         pSoldier = FindSoldierByProfileID(ubTargetNPC, false);
         if (pSoldier && pSoldier.inv[Enum261.HANDPOS].usItem != NOTHING) {
           sGridNo = pSoldier.sGridNo + DirectionInc(pSoldier.bDirection);
-          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), false);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), Math.trunc(sGridNo / WORLD_COLS), false);
         }
         break;
 
@@ -1819,7 +1819,7 @@ export function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQu
         if (bItemIn != NO_SLOT && bItemIn != Enum261.HANDPOS) {
           SwapObjs(pSoldier.inv[Enum261.HANDPOS], pSoldier.inv[bItemIn]);
           sGridNo = pSoldier.sGridNo + DirectionInc(pSoldier.bDirection);
-          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), false);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), Math.trunc(sGridNo / WORLD_COLS), false);
         }
         // fall through so that the person faces the nearest merc!
       case Enum213.NPC_ACTION_TURN_TO_FACE_NEAREST_MERC:
@@ -3574,17 +3574,17 @@ export function CalcPatientMedicalCost(pSoldier: SOLDIERTYPE | null): UINT32 {
   }
 
   if (pSoldier.bHospitalPriceModifier == Enum212.HOSPITAL_BREAK) {
-    uiCost = (uiCost * 85) / 100;
+    uiCost = Math.trunc((uiCost * 85) / 100);
   } else if (pSoldier.bHospitalPriceModifier == Enum212.HOSPITAL_COST) {
     // 30% discount
-    uiCost = (uiCost * 70) / 100;
+    uiCost = Math.trunc((uiCost * 70) / 100);
   } else if (pSoldier.bHospitalPriceModifier == Enum212.HOSPITAL_UNSET) {
     if (gbHospitalPriceModifier == Enum212.HOSPITAL_BREAK) {
       // 15% discount
-      uiCost = (uiCost * 85) / 100;
+      uiCost = Math.trunc((uiCost * 85) / 100);
     } else if (gbHospitalPriceModifier == Enum212.HOSPITAL_COST) {
       // 30% discount
-      uiCost = (uiCost * 70) / 100;
+      uiCost = Math.trunc((uiCost * 70) / 100);
     }
   }
 
@@ -3620,7 +3620,7 @@ export function CalcMedicalCost(ubId: UINT8): UINT32 {
   }
 
   // round up to nearest 10 dollars
-  uiCostSoFar = ((uiCostSoFar + 9) / 10);
+  uiCostSoFar = Math.trunc((uiCostSoFar + 9) / 10);
   uiCostSoFar *= 10;
 
   // always ask for at least $10

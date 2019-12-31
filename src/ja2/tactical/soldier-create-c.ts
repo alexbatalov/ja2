@@ -898,7 +898,7 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: SOLDIERTYPE, pCreateStruc
     if (ubProgress < 60) {
       // ramp chance from 40 to 80% over the course of 60% progress
       // 60 * 2/3 = 40, and 40+40 = 80
-      iChance = 40 + (ubProgress * 2) / 3;
+      iChance = 40 + Math.trunc((ubProgress * 2) / 3);
     } else {
       iChance = 80;
     }
@@ -918,7 +918,7 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: SOLDIERTYPE, pCreateStruc
     if (ubProgress < 60) {
       // ramp chance from 0 to 40% over the course of 60% progress
       // 60 * 2/3 = 40
-      iChance = (ubProgress * 2) / 3;
+      iChance = Math.trunc((ubProgress * 2) / 3);
     } else {
       iChance = 40;
     }
@@ -1103,7 +1103,6 @@ export function TacticalRemoveSoldierPointer(pSoldier: SOLDIERTYPE, fRemoveVehic
     if (gfPersistantPBI) {
       DeleteSoldier(pSoldier);
     }
-    MemFree(pSoldier);
   }
 
   return true;
@@ -1140,7 +1139,7 @@ export function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
 
     case Enum9.DIF_LEVEL_MEDIUM:
       // equally strong militia, enemies, creatures, bloodcats (+10)
-      bDiffModifier += (DIFF_FACTOR_GAME_DIFFICULTY / 2);
+      bDiffModifier += Math.trunc(DIFF_FACTOR_GAME_DIFFICULTY / 2);
       break;
 
     case Enum9.DIF_LEVEL_HARD:
@@ -1165,7 +1164,7 @@ export function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
   }
 
   // adjust for progress level (0 to +50)
-  ubProgressModifier = (ubProgress * DIFF_FACTOR_PLAYER_PROGRESS) / 100;
+  ubProgressModifier = Math.trunc((ubProgress * DIFF_FACTOR_PLAYER_PROGRESS) / 100);
   bDiffModifier += ubProgressModifier;
 
   // adjust for map location
@@ -1301,7 +1300,7 @@ export function CreateDetailedPlacementGivenBasicPlacementInfo(pp: SOLDIERCREATE
   //				60 to 79									+1													5
   //				80 to 99									+2													6
   //				  100											+3													7		(can happen in P3 Meduna itself on HARD only!)
-  bExpLevelModifier = (ubDiffFactor / 20) - 2;
+  bExpLevelModifier = Math.trunc(ubDiffFactor / 20) - 2;
 
   // if in the upper half of this difficulty rating (10-19, 30-39, 50-59, 70-79, and 90-99)
   if ((ubDiffFactor % 20) >= 10) {
@@ -1964,7 +1963,7 @@ export function RandomizeRelativeLevel(bRelLevel: INT8, ubSoldierClass: UINT8): 
   ubLocationModifier = GetLocationModifier(ubSoldierClass);
 
   // convert to 0 to 10 (divide by 3), the subtract 5 to get a range of -5 to +5
-  bRollModifier = (ubLocationModifier / (DIFF_FACTOR_PALACE_DISTANCE / 10)) - 5;
+  bRollModifier = Math.trunc(ubLocationModifier / Math.trunc(DIFF_FACTOR_PALACE_DISTANCE / 10)) - 5;
 
   // roll a number from 0 to 9
   bRoll = Random(10);
@@ -2174,7 +2173,7 @@ function CopyProfileItems(pSoldier: SOLDIERTYPE, pCreateStruct: SOLDIERCREATE_ST
         while (bSlot != NO_SLOT) {
           uiMoneyLimitInSlot = MAX_MONEY_PER_SLOT;
           if (bSlot >= Enum261.SMALLPOCK1POS) {
-            uiMoneyLimitInSlot /= 2;
+            uiMoneyLimitInSlot = Math.trunc(uiMoneyLimitInSlot / 2);
           }
 
           CreateItem(Enum225.MONEY, 100, pSoldier.inv[bSlot]);
@@ -2265,7 +2264,7 @@ function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
   }
 
   // adjust for distance from Queen's palace (P3) (0 to +30)
-  ubLocationModifier = ((MAX_PALACE_DISTANCE - ubPalaceDistance) * DIFF_FACTOR_PALACE_DISTANCE) / MAX_PALACE_DISTANCE;
+  ubLocationModifier = Math.trunc(((MAX_PALACE_DISTANCE - ubPalaceDistance) * DIFF_FACTOR_PALACE_DISTANCE) / MAX_PALACE_DISTANCE);
 
   return ubLocationModifier;
 }
@@ -2286,9 +2285,9 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   fValue = Math.sqrt((sRows * sRows) + (sCols * sCols));
 
   if (fValue % 1.0 >= 0.50) {
-    ubDistance = (1 + fValue);
+    ubDistance = Math.trunc(1 + fValue);
   } else {
-    ubDistance = fValue;
+    ubDistance = Math.trunc(fValue);
   }
 
   return ubDistance;

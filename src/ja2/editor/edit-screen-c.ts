@@ -822,8 +822,8 @@ export function ShowCurrentDrawingMode(): void {
     iPicHeight = pETRLEObject.usHeight;
 
     // Center the picture in the display window.
-    iStartX = (100 - iPicWidth) / 2;
-    iStartY = (60 - iPicHeight) / 2;
+    iStartX = Math.trunc((100 - iPicWidth) / 2);
+    iStartY = Math.trunc((60 - iPicHeight) / 2);
 
     // We have to store the offset data in temp variables before zeroing them and blitting
     sTempOffsetX = pETRLEObject.sOffsetX;
@@ -2355,23 +2355,23 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   iPicHeight = hvSurface.usHeight;
 
   if (iPicWidth > iWinWidth) {
-    ClipRect.iLeft = (iPicWidth - iWinWidth) / 2;
+    ClipRect.iLeft = Math.trunc((iPicWidth - iWinWidth) / 2);
     ClipRect.iRight = ClipRect.iLeft + iWinWidth - 1;
     iStartX = WinRect.iLeft;
   } else {
     ClipRect.iLeft = 0;
     ClipRect.iRight = iPicWidth - 1;
-    iStartX = ((iWinWidth - iPicWidth) / 2) + WinRect.iLeft;
+    iStartX = Math.trunc((iWinWidth - iPicWidth) / 2) + WinRect.iLeft;
   }
 
   if (iPicHeight > iWinHeight) {
-    ClipRect.iTop = (iPicHeight - iWinHeight) / 2;
+    ClipRect.iTop = Math.trunc((iPicHeight - iWinHeight) / 2);
     ClipRect.iBottom = ClipRect.iTop + iWinHeight - 1;
     iStartY = WinRect.iTop;
   } else {
     ClipRect.iTop = 0;
     ClipRect.iBottom = iPicHeight - 1;
-    iStartY = ((iWinHeight - iPicHeight) / 2) + WinRect.iTop;
+    iStartY = Math.trunc((iWinHeight - iPicHeight) / 2) + WinRect.iTop;
   }
 
   vSfx.SrcRect = ClipRect;
@@ -2413,8 +2413,8 @@ function ShowCurrentSlotImage(hVObj: SGPVObject, iWindow: INT32): void {
   iPicWidth = pETRLEObject.usWidth;
   iPicHeight = pETRLEObject.usHeight;
 
-  iStartX = ((iWinWidth - iPicWidth) / 2) + NewRect.iLeft;
-  iStartY = ((iWinHeight - iPicHeight) / 2) + NewRect.iTop;
+  iStartX = Math.trunc((iWinWidth - iPicWidth) / 2) + NewRect.iLeft;
+  iStartY = Math.trunc((iWinHeight - iPicHeight) / 2) + NewRect.iTop;
 
   // We have to store the offset data in temp variables before zeroing them and blitting
   sTempOffsetX = pETRLEObject.sOffsetX;
@@ -2450,7 +2450,7 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
   // Attempt to create light
   if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
     // Couldn't load file because it doesn't exist. So let's make the file
-    ubIntensity = (sRadius / LIGHT_DECAY);
+    ubIntensity = Math.trunc(sRadius / LIGHT_DECAY);
     if ((iLightHandle = LightCreateOmni(ubIntensity, sRadius)) == (-1)) {
       // Can't create light template
       DebugMsg(TOPIC_GAME, DBG_LEVEL_1, FormatString("PlaceLight: Can't create light template for radius %d", sRadius));

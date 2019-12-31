@@ -2899,7 +2899,7 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   o.bCorpseQuoteTolerance = buffer.readInt8(offset++);
   o.bYetAnotherPaddingSpace = buffer.readInt8(offset++);
   o.iPositionSndID = buffer.readInt32LE(offset); offset += 4;
-  o.iTuringSoundID = buffer.readInt32LE(offset); offset += 4;
+  o.iTuringSoundID = buffer.readUInt32LE(offset); offset += 4;
   o.ubLastDamageReason = buffer.readUInt8(offset++);
   o.fComplainedThatTired = Boolean(buffer.readUInt8(offset++));
   offset = readIntArray(o.sLastTwoLocations, buffer, offset, 2);
@@ -3426,7 +3426,7 @@ export function writeSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number 
   offset = buffer.writeInt8(o.bCorpseQuoteTolerance, offset);
   offset = buffer.writeInt8(o.bYetAnotherPaddingSpace, offset);
   offset = buffer.writeInt32LE(o.iPositionSndID, offset);
-  offset = buffer.writeInt32LE(o.iTuringSoundID, offset);
+  offset = buffer.writeUInt32LE(o.iTuringSoundID, offset);
   offset = buffer.writeUInt8(o.ubLastDamageReason, offset);
   offset = buffer.writeUInt8(Number(o.fComplainedThatTired), offset);
   offset = writeIntArray(o.sLastTwoLocations, buffer, offset, 2);

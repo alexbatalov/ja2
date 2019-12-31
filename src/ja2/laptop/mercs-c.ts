@@ -1070,7 +1070,7 @@ function PixelateVideoMercImage(fUp: boolean, usPosX: UINT16, usPosY: UINT16, us
       // get the next color
       if (!(i % PixelateVideoMercImage__ubPixelationAmount)) {
         if (i < usPosX + usWidth - PixelateVideoMercImage__ubPixelationAmount)
-          DestColor = pBuffer[(j * uiPitch) + i + PixelateVideoMercImage__ubPixelationAmount / 2];
+          DestColor = pBuffer[(j * uiPitch) + i + Math.trunc(PixelateVideoMercImage__ubPixelationAmount / 2)];
         else
           DestColor = pBuffer[(j * uiPitch) + i];
       }
@@ -1339,7 +1339,7 @@ export function DisplayTextForSpeckVideoPopUp(pString: string /* STR16 */): void
   iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, gusSpeckDialogueActualWidth__Pointer, createPointer(() => usActualHeight, (v) => usActualHeight = v));
   SET_USE_WINFONTS(false);
 
-  gusSpeckDialogueX = (LAPTOP_SCREEN_LR_X - gusSpeckDialogueActualWidth - LAPTOP_SCREEN_UL_X) / 2 + LAPTOP_SCREEN_UL_X;
+  gusSpeckDialogueX = Math.trunc((LAPTOP_SCREEN_LR_X - gusSpeckDialogueActualWidth - LAPTOP_SCREEN_UL_X) / 2) + LAPTOP_SCREEN_UL_X;
 
   // Render the pop box
   RenderMercPopUpBoxFromIndex(iMercPopUpBox, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, FRAME_BUFFER);

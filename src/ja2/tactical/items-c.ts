@@ -927,7 +927,7 @@ export function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
   } else {
     ubSlotLimit = Item[usItem].ubPerPocket;
     if (bSlot >= Enum261.SMALLPOCK1POS && ubSlotLimit > 1) {
-      ubSlotLimit /= 2;
+      ubSlotLimit = Math.trunc(ubSlotLimit / 2);
     }
     return ubSlotLimit;
   }
@@ -935,7 +935,7 @@ export function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
 
 export function MoneySlotLimit(bSlot: INT8): UINT32 {
   if (bSlot >= Enum261.SMALLPOCK1POS) {
-    return MAX_MONEY_PER_SLOT / 2;
+    return Math.trunc(MAX_MONEY_PER_SLOT / 2);
   } else {
     return MAX_MONEY_PER_SLOT;
   }
@@ -1127,7 +1127,7 @@ export function FindThrowableGrenade(pSoldier: SOLDIERTYPE): INT8 {
   // JA2Gold: give some priority to looking for flares when at night
   // this is AI only so we can put in some customization for night
   if (GetTimeOfDayAmbientLightLevel() == NORMAL_LIGHTLEVEL_NIGHT) {
-    if (pSoldier.bLife > (pSoldier.bLifeMax / 2)) {
+    if (pSoldier.bLife > Math.trunc(pSoldier.bLifeMax / 2)) {
       fCheckForFlares = true;
     }
   }
@@ -1569,7 +1569,7 @@ export function CalculateCarriedWeight(pSoldier: SOLDIERTYPE): UINT32 {
   if (ubStrengthForCarrying > 80) {
     ubStrengthForCarrying += (ubStrengthForCarrying - 80);
   }
-  uiPercent = (10 * uiTotalWeight) / (ubStrengthForCarrying / 2);
+  uiPercent = Math.trunc((10 * uiTotalWeight) / Math.trunc(ubStrengthForCarrying / 2));
   return uiPercent;
 }
 
@@ -2200,7 +2200,7 @@ function PerformAttachmentComboMerge(pObj: OBJECTTYPE, bAttachmentComboMerge: IN
   bNumStatusContributors++;
 
   pObj.usItem = AttachmentComboMerge[bAttachmentComboMerge].usResult;
-  pObj.bStatus[0] = (uiStatusTotal / bNumStatusContributors);
+  pObj.bStatus[0] = Math.trunc(uiStatusTotal / bNumStatusContributors);
 }
 
 export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYPE, pAttachment: OBJECTTYPE): boolean {
@@ -2396,7 +2396,7 @@ export function AttachObject(pSoldier: SOLDIERTYPE | null, pTargetObj: OBJECTTYP
         // the merge will combine the two items
         pTargetObj.usItem = usResult;
         if (ubType != Enum226.TREAT_ARMOUR) {
-          pTargetObj.bStatus[0] = (pTargetObj.bStatus[0] + pAttachment.bStatus[0]) / 2;
+          pTargetObj.bStatus[0] = Math.trunc((pTargetObj.bStatus[0] + pAttachment.bStatus[0]) / 2);
         }
         DeleteObj(pAttachment);
         pTargetObj.ubWeight = CalculateObjectWeight(pTargetObj);
@@ -3747,11 +3747,11 @@ function CheckItemForDamage(usItem: UINT16, iMaxDamage: INT32): INT8 {
   // if the item is protective armour, reduce the amount of damage
   // by its armour value
   if (Item[usItem].usItemClass == IC_ARMOUR) {
-    iMaxDamage -= (iMaxDamage * Armour[Item[usItem].ubClassIndex].ubProtection) / 100;
+    iMaxDamage -= Math.trunc((iMaxDamage * Armour[Item[usItem].ubClassIndex].ubProtection) / 100);
   }
   // metal items are tough and will be damaged less
   if (Item[usItem].fFlags & ITEM_METAL) {
-    iMaxDamage /= 2;
+    iMaxDamage = Math.trunc(iMaxDamage / 2);
   } else if (usItem == Enum225.BLOODCAT_PELT) {
     iMaxDamage *= 2;
   }
@@ -3774,7 +3774,7 @@ function CheckForChainReaction(usItem: UINT16, bStatus: INT8, bDamage: INT8, fOn
       iChance = 50 + (iChance - 1) * 10;
     }
 
-    iChance = iChance * (100 + ((100 - bStatus) + bDamage) / 2) / 100;
+    iChance = Math.trunc(iChance * Math.trunc(100 + ((100 - bStatus) + bDamage) / 2) / 100);
     if (PreRandom(100) < iChance) {
       return true;
     }
@@ -4071,7 +4071,7 @@ export function ApplyCammo(pSoldier: SOLDIERTYPE, pObj: OBJECTTYPE, pfGoodAPs: P
 
   // points are used up at a rate of 50% kit = 100% cammo on guy
   // add 1 to round off
-  bPointsToUse = (100 - pSoldier.bCamo + 1) / 2;
+  bPointsToUse = Math.trunc((100 - pSoldier.bCamo + 1) / 2);
   bPointsToUse = Math.min(bPointsToUse, usTotalKitPoints);
   pSoldier.bCamo = Math.min(100, pSoldier.bCamo + bPointsToUse * 2);
 
@@ -4156,7 +4156,7 @@ export function ApplyElixir(pSoldier: SOLDIERTYPE, pObj: OBJECTTYPE, pfGoodAPs: 
 
   UseKitPoints(pObj, sPointsToUse, pSoldier);
 
-  pSoldier.bMonsterSmell += sPointsToUse / 2;
+  pSoldier.bMonsterSmell += Math.trunc(sPointsToUse / 2);
 
   return true;
 }
@@ -4166,7 +4166,7 @@ function ConvertProfileMoneyValueToObjectTypeMoneyValue(ubStatus: UINT8): UINT32
 }
 
 function ConvertObjectTypeMoneyValueToProfileMoneyValue(uiMoneyAmount: UINT32): UINT8 {
-  return (uiMoneyAmount / 50);
+  return Math.trunc(uiMoneyAmount / 50);
 }
 
 export function ItemIsCool(pObj: OBJECTTYPE): boolean {

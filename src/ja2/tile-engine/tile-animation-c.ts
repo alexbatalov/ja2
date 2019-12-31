@@ -351,7 +351,6 @@ export function DeleteAniTile(pAniTile: ANITILE): void {
         }
       }
 
-      MemFree(pAniNode);
       return;
     }
 

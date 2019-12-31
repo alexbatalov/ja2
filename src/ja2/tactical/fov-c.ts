@@ -308,7 +308,7 @@ export function RevealRoofsAndItems(pSoldier: SOLDIERTYPE, itemsToo: boolean /* 
   } else {
     range = pSoldier.bViewRange;
     // balance item viewing range between normal and the limit set by opplist-type functions -- CJC
-    range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel), range) + range) / 2;
+    range = Math.trunc((AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.sGridNo, pSoldier.bLevel), range) + range) / 2);
   }
 
   BuildSightDir(dir, createElementPointer(Dir, 0), createElementPointer(Dir, 1), createElementPointer(Dir, 2), createElementPointer(Dir, 3), createElementPointer(Dir, 4));

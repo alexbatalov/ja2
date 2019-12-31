@@ -28,7 +28,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 
   pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
-  if (pString == null)
+  if (!pString)
     return null;
 
   TempString = swprintf(pString, ...args); // process string (get output str)
@@ -126,7 +126,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
 
   pusLineWidthIfWordIsWiderThenWidth.value = usLineWidthPixels;
 
-  if (pString == null)
+  if (!pString)
     return null;
 
   TempString = swprintf(pString, ...args); // process string (get output str)

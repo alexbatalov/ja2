@@ -107,10 +107,10 @@ function Clip2D(ix0: Pointer<number>, iy0: Pointer<number>, ix1: Pointer<number>
     }
   }
 
-  ix0.value = x0;
-  ix1.value = x1;
-  iy0.value = y0;
-  iy1.value = y1;
+  ix0.value = Math.trunc(x0);
+  ix1.value = Math.trunc(x1);
+  iy0.value = Math.trunc(y0);
+  iy1.value = Math.trunc(y1);
 
   return visible;
 }
@@ -206,7 +206,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
   if (XDelta >= YDelta) {
     /* X major line */
     /* Minimum # of pixels in a run in this line */
-    WholeStep = XDelta / YDelta;
+    WholeStep = Math.trunc(XDelta / YDelta);
 
     /* Error term adjust each time Y steps by 1; used to tell when one
        extra pixel should be drawn as part of a run, to account for
@@ -224,7 +224,7 @@ export function LineDraw(fClip: boolean, XStart: number, YStart: number, XEnd: n
     /* The initial and last runs are partial, because Y advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional
@@ -481,7 +481,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
   if (XDelta >= YDelta) {
     /* X major line */
     /* Minimum # of pixels in a run in this line */
-    WholeStep = XDelta / YDelta;
+    WholeStep = Math.trunc(XDelta / YDelta);
 
     /* Error term adjust each time Y steps by 1; used to tell when one
        extra pixel should be drawn as part of a run, to account for
@@ -499,7 +499,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
     /* The initial and last runs are partial, because Y advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional
@@ -536,7 +536,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
     /* Y major line */
 
     /* Minimum # of pixels in a run in this line */
-    WholeStep = YDelta / XDelta;
+    WholeStep = Math.trunc(YDelta / XDelta);
 
     /* Error term adjust each time X steps by 1; used to tell when 1 extra
        pixel should be drawn as part of a run, to account for
@@ -553,7 +553,7 @@ function LineDraw8(fClip: boolean, XStart: number, YStart: number, XEnd: number,
     /* The initial and last runs are partial, because X advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional advance, we

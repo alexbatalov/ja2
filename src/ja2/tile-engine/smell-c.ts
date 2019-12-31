@@ -269,15 +269,15 @@ export function DropSmell(pSoldier: SOLDIERTYPE): void {
       if (ubOldSmell == ubSmell) {
         // same smell; increase the strength to the bigger of the two strengths,
         // plus 1/5 of the smaller
-        ubStrength = Math.max(ubStrength, ubOldStrength) + Math.min(ubStrength, ubOldStrength) / 5;
+        ubStrength = Math.max(ubStrength, ubOldStrength) + Math.trunc(Math.min(ubStrength, ubOldStrength) / 5);
         ubStrength = Math.max(ubStrength, SMELL_STRENGTH_MAX);
       } else {
         // different smell; we muddy the smell by reducing the smell strength
         if (ubOldStrength > ubStrength) {
-          ubOldStrength -= ubStrength / 3;
+          ubOldStrength -= Math.trunc(ubStrength / 3);
           pMapElement.ubSmellInfo = SET_SMELL(pMapElement.ubSmellInfo, ubOldStrength, ubOldSmell);
         } else {
-          ubStrength -= ubOldStrength / 3;
+          ubStrength -= Math.trunc(ubOldStrength / 3);
           if (ubStrength > 0) {
             pMapElement.ubSmellInfo = SET_SMELL(pMapElement.ubSmellInfo, ubStrength, ubSmell);
           } else {

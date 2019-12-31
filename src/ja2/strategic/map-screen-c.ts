@@ -525,7 +525,7 @@ function DisplayDestinationOfCurrentDestMerc(): void {
   SetBoxForeground(ghVehicleBox, FONT_LTGREEN);
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
 
-  sString = swprintf("%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
+  sString = swprintf("%s%s", pMapVertIndex[Math.trunc(sSector / MAP_WORLD_X)], pMapHortIndex[sSector % MAP_WORLD_X]);
   ({ sX, sY } = FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()), sString, MAP_SCREEN_FONT()));
 
   RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT()));
@@ -1172,7 +1172,7 @@ function DrawCharHealth(sCharNum: INT16): void {
     ({ sX: usX, sY: usY } = FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT()));
 
     if (pSoldier.bLifeMax > 0) {
-      uiHealthPercent = (pSoldier.bLife * 100) / pSoldier.bLifeMax;
+      uiHealthPercent = Math.trunc((pSoldier.bLife * 100) / pSoldier.bLifeMax);
     }
 
     // how is characters life?
@@ -1381,12 +1381,12 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
       dTimeLeft = (iTimeRemaining / (60 * 24.0));
 
       // more than a day, display in green
-      iTimeRemaining /= (60 * 24);
+      iTimeRemaining = Math.trunc(iTimeRemaining / (60 * 24));
       if (pSoldier.bLife > 0) {
         SetFontForeground(FONT_LTGREEN);
       }
 
-      sString = swprintf("%.1f%s/%d%s", dTimeLeft, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], pSoldier.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
+      sString = swprintf("%s%s/%d%s", dTimeLeft.toFixed(1), gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], pSoldier.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else {
       // less than a day, display hours left in red
       if (iTimeRemaining > 5) {
@@ -1395,12 +1395,12 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
         if (iTimeRemaining % 60 != 0)
           fNeedToIncrement = true;
 
-        iTimeRemaining /= 60;
+        iTimeRemaining = Math.trunc(iTimeRemaining / 60);
 
         if (fNeedToIncrement)
           iTimeRemaining++;
       } else {
-        iTimeRemaining /= 60;
+        iTimeRemaining = Math.trunc(iTimeRemaining / 60);
       }
 
       if (pSoldier.bLife > 0) {
@@ -1410,7 +1410,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
       sString = swprintf("%d%s/%d%s", iTimeRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION], pSoldier.iTotalContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     }
   } else if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__MERC) {
-    let iBeenHiredFor: INT32 = (GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier.iStartContractTime;
+    let iBeenHiredFor: INT32 = Math.trunc(GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier.iStartContractTime;
 
     sString = swprintf("%d%s/%d%s", gMercProfiles[pSoldier.ubProfile].iMercMercContractLength, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
   } else {
@@ -1429,10 +1429,10 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   if (pSoldier.ubWhatKindOfMercAmI == Enum260.MERC_TYPE__AIM_MERC) {
     // daily rate
     if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_2_WEEK) {
-      iDailyCost = (gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14);
+      iDailyCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiBiWeeklySalary / 14);
     }
     if (pSoldier.bTypeOfLastContract == Enum161.CONTRACT_EXTEND_1_WEEK) {
-      iDailyCost = (gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7);
+      iDailyCost = Math.trunc(gMercProfiles[pSoldier.ubProfile].uiWeeklySalary / 7);
     } else {
       iDailyCost = gMercProfiles[pSoldier.ubProfile].sSalary;
     }
@@ -1609,11 +1609,11 @@ export function GetPathTravelTimeDuringPlotting(pPath: PathSt | null): INT32 {
     if (!fSkipFirstNode) {
       // grab the current location
       pCurrent.x = (pPath.uiSectorId % MAP_WORLD_X);
-      pCurrent.y = (pPath.uiSectorId / MAP_WORLD_X);
+      pCurrent.y = Math.trunc(pPath.uiSectorId / MAP_WORLD_X);
 
       // grab the next location
       pNext.x = (pPath.pNext.uiSectorId % MAP_WORLD_X);
-      pNext.y = (pPath.pNext.uiSectorId / MAP_WORLD_X);
+      pNext.y = Math.trunc(pPath.pNext.uiSectorId / MAP_WORLD_X);
 
       iTravelTime += FindTravelTimeBetweenWaypoints(pCurrent, pNext, pGroup);
     } else {
@@ -1650,14 +1650,14 @@ function DisplayGroundEta(): void {
   mprintf(CLOCK_ETA_X, CLOCK_Y_START, pEtaString[0]);
 
   // if less than one day
-  if ((iTotalTime / (60 * 24)) < 1) {
+  if (Math.trunc(iTotalTime / (60 * 24)) < 1) {
     // show hours and minutes
     SetClockMin("%d", iTotalTime % 60);
-    SetClockHour("%d", iTotalTime / 60);
+    SetClockHour("%d", Math.trunc(iTotalTime / 60));
   } else {
     // show days and hours
-    SetHourAlternate("%d", (iTotalTime / 60) % 24);
-    SetDayAlternate("%d", iTotalTime / (60 * 24));
+    SetHourAlternate("%d", Math.trunc(iTotalTime / 60) % 24);
+    SetDayAlternate("%d", Math.trunc(iTotalTime / (60 * 24)));
   }
 }
 
@@ -3432,7 +3432,7 @@ function HandleMapUI(): UINT32 {
         // check if last sector in character's path is same as where mouse is
         if (GetLastSectorIdInCharactersPath(Menptr[gCharactersList[bSelectedDestChar].usSolID]) != (sMapX + (sMapY * MAP_WORLD_X))) {
           sX = (GetLastSectorIdInCharactersPath(Menptr[gCharactersList[bSelectedDestChar].usSolID]) % MAP_WORLD_X);
-          sY = (GetLastSectorIdInCharactersPath(Menptr[gCharactersList[bSelectedDestChar].usSolID]) / MAP_WORLD_X);
+          sY = Math.trunc(GetLastSectorIdInCharactersPath(Menptr[gCharactersList[bSelectedDestChar].usSolID]) / MAP_WORLD_X);
           GetCursorPos(MousePos);
           RestoreBackgroundForMapGrid(sX, sY);
           // fMapPanelDirty = TRUE;
@@ -4623,8 +4623,8 @@ function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY
     return false;
   }
 
-  psMapWorldX.value = (sMapX / MAP_GRID_X);
-  psMapWorldY.value = (sMapY / MAP_GRID_Y);
+  psMapWorldX.value = Math.trunc(sMapX / MAP_GRID_X);
+  psMapWorldY.value = Math.trunc(sMapY / MAP_GRID_Y);
 
   return true;
 }
@@ -5065,26 +5065,26 @@ function BltCharInvPanel(): void {
 
   // print armor/weight/camo labels
   mprintf(MAP_ARMOR_LABEL_X, MAP_ARMOR_LABEL_Y, pInvPanelTitleStrings[0]);
-  mprintf(MAP_ARMOR_PERCENT_X, MAP_ARMOR_PERCENT_Y, "%%");
+  mprintf(MAP_ARMOR_PERCENT_X, MAP_ARMOR_PERCENT_Y, "%");
 
   mprintf(MAP_WEIGHT_LABEL_X, MAP_WEIGHT_LABEL_Y, pInvPanelTitleStrings[1]);
-  mprintf(MAP_WEIGHT_PERCENT_X, MAP_WEIGHT_PERCENT_Y, "%%");
+  mprintf(MAP_WEIGHT_PERCENT_X, MAP_WEIGHT_PERCENT_Y, "%");
 
   mprintf(MAP_CAMMO_LABEL_X, MAP_CAMMO_LABEL_Y, pInvPanelTitleStrings[2]);
-  mprintf(MAP_CAMMO_PERCENT_X, MAP_CAMMO_PERCENT_Y, "%%");
+  mprintf(MAP_CAMMO_PERCENT_X, MAP_CAMMO_PERCENT_Y, "%");
 
   // display armor value
-  sString = swprintf("%3d", ArmourPercent(pSoldier));
+  sString = swprintf("%s", ArmourPercent(pSoldier).toString().padStart(3));
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
   // Display weight value
-  sString = swprintf("%3d", CalculateCarriedWeight(pSoldier));
+  sString = swprintf("%s", CalculateCarriedWeight(pSoldier).toString().padStart(3));
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
   // Display camo value
-  sString = swprintf("%3d", pSoldier.bCamo);
+  sString = swprintf("%s", pSoldier.bCamo.toString().padStart(3));
   ({ sX: usX, sY: usY } = FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2()));
   mprintf(usX, usY, sString);
 
@@ -5440,7 +5440,7 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
   SetFontDestBuffer(uiBufferToRenderTo, 0, 0, 640, 480, false);
 
   // assignment strings
-  DrawString(pUpperLeftMapScreenStrings[0], (220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT()) / 2), 6, CHAR_FONT());
+  DrawString(pUpperLeftMapScreenStrings[0], Math.trunc(220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT()) / 2), 6, CHAR_FONT());
 
   // vehicles and robot don't have attributes, contracts, or morale
   if ((pSoldier == null) || (!(pSoldier.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier))) {
@@ -7198,10 +7198,10 @@ function UpdateCursorIfInLastSector(): void {
 
     // translate screen values to map grid values for zoomed in
     if (fZoomFlag) {
-      sMapX = iZoomX / MAP_GRID_X + sMapX;
-      sMapX = sMapX / 2;
-      sMapY = iZoomY / MAP_GRID_Y + sMapY;
-      sMapY = sMapY / 2;
+      sMapX = Math.trunc(iZoomX / MAP_GRID_X) + sMapX;
+      sMapX = Math.trunc(sMapX / 2);
+      sMapY = Math.trunc(iZoomY / MAP_GRID_Y) + sMapY;
+      sMapY = Math.trunc(sMapY / 2);
     }
 
     if (fShowAircraftFlag == false) {
@@ -9053,14 +9053,14 @@ function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32): string {
   let uiHour: UINT32;
   let uiMin: UINT32;
 
-  uiDay = (uiTimeInMin / NUM_MIN_IN_DAY);
-  uiHour = (uiTimeInMin - (uiDay * NUM_MIN_IN_DAY)) / NUM_MIN_IN_HOUR;
+  uiDay = Math.trunc(uiTimeInMin / NUM_MIN_IN_DAY);
+  uiHour = Math.trunc((uiTimeInMin - (uiDay * NUM_MIN_IN_DAY)) / NUM_MIN_IN_HOUR);
   uiMin = uiTimeInMin - ((uiDay * NUM_MIN_IN_DAY) + (uiHour * NUM_MIN_IN_HOUR));
 
   // there ain't enough room to show both the day and ETA: and without ETA it's confused as the current time
   //	swprintf( sString, L"%s %s %d, %02d:%02d", pEtaString[ 0 ], pDayStrings[ 0 ], uiDay, uiHour, uiMin );
   //	swprintf( sString, L"%s %d, %02d:%02d", pDayStrings[ 0 ], uiDay, uiHour, uiMin );
-  return swprintf("%s %02d:%02d", pEtaString[0], uiHour, uiMin);
+  return swprintf("%s %s:%s", pEtaString[0], uiHour.toString().padStart(2, '0'), uiMin.toString().padStart(2, '0'));
 }
 
 function GetGroundTravelTimeOfCharacter(bCharNumber: INT8): INT32 {
@@ -9566,7 +9566,7 @@ export function GetMapscreenMercDestinationString(pSoldier: SOLDIERTYPE): string
       sSector = GetLastSectorIdInCharactersPath(pSoldier);
       // convert
       iSectorX = sSector % MAP_WORLD_X;
-      iSectorY = sSector / MAP_WORLD_Y;
+      iSectorY = Math.trunc(sSector / MAP_WORLD_Y);
     } else // no movement path is set...
     {
       if (pSoldier.fBetweenSectors) {
@@ -9611,7 +9611,7 @@ export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE): { sStrin
 
     // if 3 or more days remain
     if (iMinsRemaining >= MAP_TIME_UNDER_THIS_DISPLAY_AS_HOURS) {
-      iDaysRemaining = iMinsRemaining / (24 * 60);
+      iDaysRemaining = Math.trunc(iMinsRemaining / (24 * 60));
 
       ubFontColor = FONT_LTGREEN;
 
@@ -9619,7 +9619,7 @@ export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE): { sStrin
     } else // less than 3 days
     {
       if (iMinsRemaining > 5) {
-        iHoursRemaining = (iMinsRemaining + 59) / 60;
+        iHoursRemaining = Math.trunc((iMinsRemaining + 59) / 60);
       } else {
         iHoursRemaining = 0;
       }

@@ -773,8 +773,8 @@ function DoDive(): void {
         }
 
         // Do second one.... ( ll )
-        sX = (gsDiveX + (Math.sin(dAngle + (Math.PI / 2)) * 40));
-        sY = (gsDiveY + (Math.cos(dAngle + (Math.PI / 2)) * 40));
+        sX = Math.trunc(gsDiveX + (Math.sin(dAngle + (Math.PI / 2)) * 40));
+        sY = Math.trunc(gsDiveY + (Math.cos(dAngle + (Math.PI / 2)) * 40));
 
         gpRaidSoldier.dXPos = sX;
         gpRaidSoldier.sX = sX;

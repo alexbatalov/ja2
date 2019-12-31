@@ -97,7 +97,7 @@ export function CreatureCall(pCaller: SOLDIERTYPE): void {
     if (pReceiver.bActive && pReceiver.bInSector && (pReceiver.bLife >= OKLIFE) && (pReceiver != pCaller) && (pReceiver.bAlertStatus < Enum243.STATUS_BLACK)) {
       if (pReceiver.ubBodyType != Enum194.LARVAE_MONSTER && pReceiver.ubBodyType != Enum194.INFANT_MONSTER && pReceiver.ubBodyType != Enum194.QUEENMONSTER) {
         usDistToCaller = PythSpacesAway(pReceiver.sGridNo, pCaller.sGridNo);
-        bPriority = bFullPriority - (usDistToCaller / PRIORITY_DECR_DISTANCE);
+        bPriority = bFullPriority - Math.trunc(usDistToCaller / PRIORITY_DECR_DISTANCE);
         if (bPriority > pReceiver.bCallPriority) {
           pReceiver.bCallPriority = bPriority;
           pReceiver.bAlertStatus = Enum243.STATUS_RED; // our status can't be more than red to begin with
@@ -595,7 +595,7 @@ function CreatureDecideActionRed(pSoldier: SOLDIERTYPE, ubUnconsciousOK: UINT8):
           pSoldier.usActionData = Enum288.CALL_CRIPPLED;
           pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
           return Enum289.AI_ACTION_CREATURE_CALL;
-        } else if (pSoldier.bLifeMax / pSoldier.bLife > 2) {
+        } else if (Math.trunc(pSoldier.bLifeMax / pSoldier.bLife) > 2) {
           // crippled, 1/3 or less health!
           pSoldier.usActionData = Enum288.CALL_ATTACKED;
           pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
@@ -809,7 +809,7 @@ function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
         }
         else
         */
-        if (pSoldier.bLifeMax / pSoldier.bLife > 2) {
+        if (Math.trunc(pSoldier.bLifeMax / pSoldier.bLife) > 2) {
           // crippled, 1/3 or less health!
           pSoldier.usActionData = Enum288.CALL_ATTACKED;
           pSoldier.bOldLife = pSoldier.bLife; // don't want to call more than once
@@ -1060,7 +1060,7 @@ function CreatureDecideActionBlack(pSoldier: SOLDIERTYPE): INT8 {
       BestAttack.iAttackValue = 0;
       ubBestAttackAction = Enum289.AI_ACTION_NONE;
     }
-    if (BestStab.ubPossible && BestStab.iAttackValue > (BestAttack.iAttackValue * 12) / 10) {
+    if (BestStab.ubPossible && BestStab.iAttackValue > Math.trunc((BestAttack.iAttackValue * 12) / 10)) {
       BestAttack.iAttackValue = BestStab.iAttackValue;
       ubBestAttackAction = Enum289.AI_ACTION_KNIFE_MOVE;
     }

@@ -1,7 +1,7 @@
 namespace ja2 {
 
 let guiMugShotBorder: UINT32;
-let guiAimFiFace: UINT32[] /* [MAX_NUMBER_MERCS] */;
+let guiAimFiFace: UINT32[] /* [MAX_NUMBER_MERCS] */ = createArray(MAX_NUMBER_MERCS, 0);
 
 const AIM_FI_NUM_MUHSHOTS_X = 8;
 const AIM_FI_NUM_MUHSHOTS_Y = 5;
@@ -65,7 +65,7 @@ export function EnterAimFacialIndex(): boolean {
       MSYS_AddRegion(gMercFaceMouseRegions[i]);
       MSYS_SetRegionUserData(gMercFaceMouseRegions[i], 0, i);
 
-      sTemp = sprintf("%s%02d.sti", sFaceLoc, AimMercArray[i]);
+      sTemp = sprintf("%s%s.sti", sFaceLoc, AimMercArray[i].toString().padStart(2, '0'));
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       VObjectDesc.ImageFile = FilenameForBPP(sTemp);
       if (!(guiAimFiFace[i] = AddVideoObject(VObjectDesc)))
@@ -197,7 +197,7 @@ function SelectMercFaceMoveRegionCallBack(pRegion: MOUSE_REGION, reason: INT32):
   tx1 = AIM_FI_FIRST_MUGSHOT_X;
   tx2 = (AIM_FI_PORTRAIT_WIDTH + AIM_FI_MUGSHOT_GAP_X);
 
-  usPosY = ubMercNum / AIM_FI_NUM_MUHSHOTS_X;
+  usPosY = Math.trunc(ubMercNum / AIM_FI_NUM_MUHSHOTS_X);
   usPosY = AIM_FI_FIRST_MUGSHOT_Y + (AIM_FI_PORTRAIT_HEIGHT + AIM_FI_MUGSHOT_GAP_Y) * usPosY;
 
   usPosX = ubMercNum % AIM_FI_NUM_MUHSHOTS_X;

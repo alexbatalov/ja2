@@ -320,7 +320,7 @@ function DailyCheckOnItemQuantities(): void {
           ubMaxSupply = GetDealersMaxItemAmount(ubArmsDealer, usItemIndex);
 
           // if the qty on hand is half the desired amount or fewer
-          if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems <= (ubMaxSupply / 2)) {
+          if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems <= Math.trunc(ubMaxSupply / 2)) {
             // remember value of the "previously eligible" flag
             fPrevElig = gArmsDealersInventory[ubArmsDealer][usItemIndex].fPreviouslyEligible;
 
@@ -1277,7 +1277,7 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
   if (ubShotsLeft >= ubMagCapacity) {
     // add however many FULL magazines the #shot left represents
     SetSpecialItemInfoToDefaults(SpclItemInfo);
-    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, SpclItemInfo, (ubShotsLeft / ubMagCapacity));
+    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, SpclItemInfo, Math.trunc(ubShotsLeft / ubMagCapacity));
     ubShotsLeft %= ubMagCapacity;
   }
 
@@ -1290,7 +1290,7 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
     // if dealer has accumulated enough stray ammo to make another full magazine, convert it!
     if (pubStrayAmmo.value >= ubMagCapacity) {
       SetSpecialItemInfoToDefaults(SpclItemInfo);
-      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, SpclItemInfo, (pubStrayAmmo.value / ubMagCapacity));
+      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, SpclItemInfo, Math.trunc(pubStrayAmmo.value / ubMagCapacity));
       pubStrayAmmo.value = pubStrayAmmo.value % ubMagCapacity;
     }
     // I know, I know, this is getting pretty anal...  But what the hell, it was easy enough to do.  ARM.
@@ -1864,7 +1864,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
 
   // figure out the full value of the item, modified by this dealer's personal Sell (i.e. repair cost) modifier
   // don't use CalcShopKeeperItemPrice - we want FULL value!!!
-  uiItemCost = ((Item[usItemIndex].usPrice * ArmsDealerInfo[ubArmsDealer].dRepairCost));
+  uiItemCost = Math.trunc((Item[usItemIndex].usPrice * ArmsDealerInfo[ubArmsDealer].dRepairCost));
 
   // get item's repair ease, for each + point is 10% easier, each - point is 10% harder to repair
   sRepairCostAdj = 100 - (10 * Item[usItemIndex].bRepairEase);
@@ -1875,7 +1875,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
   }
 
   // calculate repair cost, the more broken it is the more it costs, and the difficulty of repair it is also a factor
-  uiRepairCost = (uiItemCost * (sRepairCostAdj * (100 - bItemCondition) / (100 * 100)));
+  uiRepairCost = Math.trunc(uiItemCost * (sRepairCostAdj * (100 - bItemCondition) / (100 * 100)));
 
   /*
           //if the price is not diviseble by 10, make it so
@@ -2066,14 +2066,14 @@ export function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16
     // exception: Gas (Jake's)
     if (usItemIndex != Enum225.GAS_CAN) {
       // they pay only 1/3 of true value!
-      usValueToThisDealer /= 3;
+      usValueToThisDealer = Math.trunc(usValueToThisDealer / 3);
     }
   }
 
   // Tony specializes in guns, weapons, and ammo, so make others pay much less for that kind of stuff
   if (DoesItemAppearInDealerInventoryList(Enum197.ARMS_DEALER_TONY, usItemIndex, true)) {
     // others pay only 1/2 of that value!
-    usValueToThisDealer /= 2;
+    usValueToThisDealer = Math.trunc(usValueToThisDealer / 2);
   }
 
   // minimum bet $1 !
@@ -2150,9 +2150,9 @@ export function DealerItemIsSafeToStack(usItemIndex: UINT16): boolean {
 }
 
 function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.BEER, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.BEER) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.WINE, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.WINE) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, Enum225.ALCOHOL) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.BEER, Math.trunc(GetDealersMaxItemAmount(ubArmsDealer, Enum225.BEER) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.WINE, Math.trunc(GetDealersMaxItemAmount(ubArmsDealer, Enum225.WINE) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, Enum225.ALCOHOL, Math.trunc(GetDealersMaxItemAmount(ubArmsDealer, Enum225.ALCOHOL) / 3));
 }
 
 export function ItemIsARocketRifle(sItemIndex: INT16): boolean {
@@ -2233,7 +2233,7 @@ export function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: 
   uiMinutesClosedOvernight = NUM_MIN_IN_DAY - (uiClosingTime - uiOpeningTime);
 
   // NOTE: this assumes stored are only closed overnight, so all we have to do is compare the day portion
-  uiDaysDifference = (uiEndTime / NUM_MIN_IN_DAY) - (uiStartTime / NUM_MIN_IN_DAY);
+  uiDaysDifference = Math.trunc(uiEndTime / NUM_MIN_IN_DAY) - Math.trunc(uiStartTime / NUM_MIN_IN_DAY);
 
   if (uiDaysDifference >= 2) {
     // close for 1 less than that many full nights...

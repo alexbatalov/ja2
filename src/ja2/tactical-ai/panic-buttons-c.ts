@@ -155,7 +155,7 @@ export function PossiblyMakeThisEnemyChosenOne(pSoldier: SOLDIERTYPE): void {
 
   sPanicTriggerGridNo = gTacticalStatus.sPanicTriggerGridNo[bPanicTrigger];
 
-  uiPercentEnemiesKilled = (100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = Math.trunc(100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
   if (gTacticalStatus.ubPanicTolerance[bPanicTrigger] > uiPercentEnemiesKilled) {
     // not yet... not yet
     return;
@@ -319,7 +319,7 @@ export function ClosestPanicTrigger(pSoldier: SOLDIERTYPE): INT8 {
   let bClosestTrigger: INT8 = -1;
   let uiPercentEnemiesKilled: UINT32;
 
-  uiPercentEnemiesKilled = (100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = Math.trunc(100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     if (gTacticalStatus.sPanicTriggerGridNo[bLoop] != NOWHERE) {
@@ -373,7 +373,7 @@ export function NeedToRadioAboutPanicTrigger(): boolean {
     }
   }
 
-  uiPercentEnemiesKilled = (100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
+  uiPercentEnemiesKilled = Math.trunc(100 * (gTacticalStatus.ubArmyGuysKilled) / (gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
 
   for (bLoop = 0; bLoop < NUM_PANIC_TRIGGERS; bLoop++) {
     // if the bomb exists and its tolerance has been exceeded

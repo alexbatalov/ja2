@@ -103,7 +103,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
     uiChanceOfTheft = 0;
   } else if (CheckFact(Enum170.FACT_PABLOS_BRIBED, 0)) {
     // Since Pacos has some money, reduce record of # of shipments since last bribed...
-    BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes /= 2;
+    BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes = Math.trunc(BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes / 2);
     uiChanceOfTheft = 0;
   } else {
     BobbyRayPurchaseEventCallback__ubShipmentsSinceNoBribes++;
@@ -148,7 +148,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
 
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
-            Object.bStatus[0] = (((70 + Random(11)) * Object.bStatus[0]) / 100);
+            Object.bStatus[0] = Math.trunc(((70 + Random(11)) * Object.bStatus[0]) / 100);
             // make damn sure it can't hit 0
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;
@@ -173,7 +173,7 @@ export function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
 
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
-            Object.bStatus[0] = (((70 + Random(11)) * Object.bStatus[0]) / 100);
+            Object.bStatus[0] = Math.trunc(((70 + Random(11)) * Object.bStatus[0]) / 100);
             // make damn sure it can't hit 0
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;

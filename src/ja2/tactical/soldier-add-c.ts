@@ -59,7 +59,7 @@ export function FindGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT
   // in the square region.
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -76,7 +76,7 @@ export function FindGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -105,7 +105,7 @@ export function FindGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridNo: INT
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -151,7 +151,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: SOLDIERTYPE, sSwe
   // in the square region.
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -168,7 +168,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: SOLDIERTYPE, sSwe
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -192,7 +192,7 @@ export function FindGridNoFromSweetSpotThroughPeople(pSoldier: SOLDIERTYPE, sSwe
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -248,7 +248,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: SOLDIERTYPE, usA
   // in the square region.
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -265,7 +265,7 @@ export function FindGridNoFromSweetSpotWithStructData(pSoldier: SOLDIERTYPE, usA
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -385,7 +385,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   // in the square region.
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -402,7 +402,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -527,7 +527,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: SOLDI
   // in the square region.
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -543,7 +543,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: SOLDI
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -586,7 +586,7 @@ export function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: SOLDI
               uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.sGridNo, sGridNo) + GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
             } else {
               // uiRange = GetRangeInCellCoordsFromGridNoDiff( sSweetGridNo, sGridNo );
-              uiRange = Math.abs((sSweetGridNo / MAXCOL) - (sGridNo / MAXCOL)) + Math.abs((sSweetGridNo % MAXROW) - (sGridNo % MAXROW));
+              uiRange = Math.abs(Math.trunc(sSweetGridNo / MAXCOL) - Math.trunc(sGridNo / MAXCOL)) + Math.abs((sSweetGridNo % MAXROW) - (sGridNo % MAXROW));
             }
 
             if (uiRange < uiLowestRange || (uiRange == uiLowestRange && PythSpacesAway(pSoldier.sGridNo, sGridNo) < PythSpacesAway(pSoldier.sGridNo, sLowestGridNo))) {
@@ -634,7 +634,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE,
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -661,7 +661,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE,
 
   if (fFound) {
     // Set direction to center of map!
-    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -697,7 +697,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: SO
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -723,7 +723,7 @@ export function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: SO
 
   if (fFound) {
     // Set direction to center of map!
-    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    pubDirection.value = GetDirectionToGridNoFromGridNo(sLowestGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -798,7 +798,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridN
 
   // ATE: CHECK FOR BOUNDARIES!!!!!!
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -816,7 +816,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridN
     sX = Random(ubRadius);
     sY = Random(ubRadius);
 
-    leftmost = ((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
 
     sGridNo = sSweetGridNo + (WORLD_COLS * sY) + sX;
 
@@ -842,7 +842,7 @@ export function FindRandomGridNoFromSweetSpot(pSoldier: SOLDIERTYPE, sSweetGridN
   } while (!fFound);
 
   // Set direction to center of map!
-  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
 
   gubNPCAPBudget = ubSaveNPCAPBudget;
   gubNPCDistLimit = ubSaveNPCDistLimit;
@@ -862,7 +862,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE, 
     sX = Random(ubRadius);
     sY = Random(ubRadius);
 
-    leftmost = ((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
 
     sGridNo = sSweetGridNo + (WORLD_COLS * sY) + sX;
 
@@ -885,7 +885,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: SOLDIERTYPE, 
   } while (!fFound);
 
   // Set direction to center of map!
-  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  pubDirection.value = GetDirectionToGridNoFromGridNo(sGridNo, ((Math.trunc(WORLD_ROWS / 2) * WORLD_COLS) + Math.trunc(WORLD_COLS / 2)));
 
   return sGridNo;
 }

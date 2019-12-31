@@ -412,7 +412,7 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
 
             usNewGridNo = NewGridNo(pSoldier.sGridNo, DirectionInc(pSoldier.bDirection));
             ({ sX: sXPos, sY: sYPos } = ConvertGridNoToCenterCellXY(usNewGridNo));
-            LightSpritePosition(pSoldier.iMuzFlash, (sXPos / CELL_X_SIZE), (sYPos / CELL_Y_SIZE));
+            LightSpritePosition(pSoldier.iMuzFlash, Math.trunc(sXPos / CELL_X_SIZE), Math.trunc(sYPos / CELL_Y_SIZE));
 
             // Start count
             pSoldier.bMuzFlashCount = 1;
@@ -785,10 +785,8 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
             // Update UI
             DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
-            MemFree(pSoldier.pTempObject);
             pSoldier.pTempObject = null;
 
-            MemFree(pSoldier.pThrowParams);
             pSoldier.pThrowParams = null;
           }
           break;
@@ -2180,7 +2178,6 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
             AddItemToPool(pSoldier.sPendingActionData2, pSoldier.pTempObject, 1, pSoldier.bLevel, 0, -1);
             NotifySoldiersToLookforItems();
 
-            MemFree(pSoldier.pTempObject);
             pSoldier.pTempObject = null;
           }
           break;

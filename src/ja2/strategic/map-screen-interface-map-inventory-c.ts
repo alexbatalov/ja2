@@ -198,12 +198,12 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
   usWidth = pTrav.usWidth;
 
   // set sx and sy
-  sX = (MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS)));
+  sX = (MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * Math.trunc(iCurrentSlot / MAP_INV_SLOT_COLS)));
   sY = (MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
 
   // CENTER IN SLOT!
-  sCenX = sX + (Math.abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.sOffsetX;
-  sCenY = sY + (Math.abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.sOffsetY;
+  sCenX = sX + Math.trunc(Math.abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav.sOffsetX;
+  sCenY = sY + Math.trunc(Math.abs(MAP_INVEN_SLOT_HEIGHT - 5 - usHeight) / 2) - pTrav.sOffsetY;
 
   if (fMapInventoryItemCompatable[iCurrentSlot]) {
     sOutLine = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -227,7 +227,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): boo
 
   // now draw bar for condition
   // Display ststus
-  DrawItemUIBarEx(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o, 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
+  DrawItemUIBarEx(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o, 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * Math.trunc(iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR()), Get16BPPColor(DESC_STATUS_BAR_SHADOW()), true, guiSAVEBUFFER);
 
   //
   // if the item is not reachable, or if the selected merc is not in the current sector
@@ -462,13 +462,11 @@ function SaveSeenAndUnseenItems(): void {
 
   // now clear out seen list
   if (pSeenItemsList != null) {
-    MemFree(pSeenItemsList);
     pSeenItemsList = <WORLDITEM[]><unknown>null;
   }
 
   // clear out unseen list
   if (pSaveList != null) {
-    MemFree(pSaveList);
     pSaveList = <WORLDITEM[]><unknown>null;
   }
 
@@ -499,7 +497,7 @@ function CreateMapInventoryPoolSlots(): void {
   MSYS_DefineRegion(MapInventoryPoolMask, MAP_INVENTORY_POOL_SLOT_START_X, 0, 640, 360, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapInvenPoolScreenMaskCallback);
 
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
-    sX = (iCounter / MAP_INV_SLOT_COLS);
+    sX = Math.trunc(iCounter / MAP_INV_SLOT_COLS);
     sY = (iCounter % (MAP_INV_SLOT_COLS));
 
     sXA = sX + 1;
@@ -747,7 +745,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   // allocate space for list
   pInventoryPoolList = createArrayFrom(iSize, createWorldItem);
 
-  iLastInventoryPoolPage = ((iTotalNumberOfSlots - 1) / MAP_INVENTORY_POOL_SLOT_COUNT);
+  iLastInventoryPoolPage = Math.trunc((iTotalNumberOfSlots - 1) / MAP_INVENTORY_POOL_SLOT_COUNT);
 
   uiNumberOfUnSeenItems = 0;
 
@@ -861,11 +859,6 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
       // copy over number of unseen
       uiNumberOfUnSeenItems = uiItemCount;
     }
-
-    // if anything was alloced, then get rid of it
-    if (uiTotalNumberOfRealItems > 0) {
-      MemFree(pTotalSectorList);
-    }
   }
 
   // Check to see if any of the items in the list have a gridno of NOWHERE and the entry point flag NOT set
@@ -921,12 +914,6 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
   // reset the visible item count in the sector info struct
   SetNumberOfVisibleWorldItemsInSectorStructureForSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, uiTotalNumberOfVisibleItems);
 
-  // clear out allocated space for total list
-  MemFree(pTotalList);
-
-  // reset total list
-  pTotalList = <WORLDITEM[]><unknown>null;
-
   return;
 }
 
@@ -946,7 +933,7 @@ function ReSizeStashListByThisAmount(iNumberOfItems: INT32): void {
 
 function DestroyStash(): void {
   // clear out stash
-  MemFree(pInventoryPoolList);
+  pInventoryPoolList.length = 0;
 }
 
 function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCountStacksAsOne: boolean): INT32 {
@@ -1135,7 +1122,7 @@ function PlaceObjectInInventoryStash(pInventorySlot: OBJECTTYPE, pItemPtr: OBJEC
       if (pItemPtr.usItem == Enum225.MONEY) {
         // always allow money to be combined!
         // average out the status values using a weighted average...
-        pInventorySlot.bStatus[0] = ((pInventorySlot.bMoneyStatus * pInventorySlot.uiMoneyAmount + pItemPtr.bMoneyStatus * pItemPtr.uiMoneyAmount) / (pInventorySlot.uiMoneyAmount + pItemPtr.uiMoneyAmount));
+        pInventorySlot.bStatus[0] = Math.trunc((pInventorySlot.bMoneyStatus * pInventorySlot.uiMoneyAmount + pItemPtr.bMoneyStatus * pItemPtr.uiMoneyAmount) / (pInventorySlot.uiMoneyAmount + pItemPtr.uiMoneyAmount));
         pInventorySlot.uiMoneyAmount += pItemPtr.uiMoneyAmount;
 
         DeleteObj(pItemPtr);
@@ -1374,7 +1361,7 @@ function CheckAndUnDateSlotAllocation(): void {
     ReSizeStashListByThisAmount(MAP_INVENTORY_POOL_SLOT_COUNT);
   }
 
-  iLastInventoryPoolPage = ((iTotalNumberOfSlots - 1) / MAP_INVENTORY_POOL_SLOT_COUNT);
+  iLastInventoryPoolPage = Math.trunc((iTotalNumberOfSlots - 1) / MAP_INVENTORY_POOL_SLOT_COUNT);
 
   return;
 }
@@ -1392,11 +1379,11 @@ function DrawTextOnMapInventoryBackground(): void {
 
   // Calculate the height of the string, as it needs to be vertically centered.
   usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, false, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, false, RIGHT_JUSTIFIED);
+  DisplayWrappedString(268, (342 - Math.trunc(usStringHeight / 2)), 53, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, false, RIGHT_JUSTIFIED);
 
   // Calculate the height of the string, as it needs to be vertically centered.
   usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, false, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, false, RIGHT_JUSTIFIED);
+  DisplayWrappedString(369, (342 - Math.trunc(usStringHeight / 2)), 65, 1, MAP_IVEN_FONT(), FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, false, RIGHT_JUSTIFIED);
 
   DrawTextOnSectorInventory();
 

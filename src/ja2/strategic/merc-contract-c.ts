@@ -31,9 +31,7 @@ export function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): boolean {
   let buffer: Buffer;
 
   buffer = Buffer.allocUnsafe(20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
-  for (let i = 0; i < 20; i++) {
-    writeContractRenewalListNode(ContractRenewalList[i], buffer, i * CONTRACT_RENEWAL_LIST_NODE_SIZE);
-  }
+  writeObjectArray(ContractRenewalList, buffer, 0, writeContractRenewalListNode);
 
   uiNumBytesWritten = FileWrite(hFile, buffer, 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
   if (uiNumBytesWritten != 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE) {
@@ -54,14 +52,12 @@ export function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): boolean 
   let buffer: Buffer;
 
   buffer = Buffer.allocUnsafe(20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
-  uiNumBytesRead = FileRead(hFile, buffer, CONTRACT_RENEWAL_LIST_NODE_SIZE);
-  if (uiNumBytesRead != CONTRACT_RENEWAL_LIST_NODE_SIZE) {
+  uiNumBytesRead = FileRead(hFile, buffer, 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE);
+  if (uiNumBytesRead != 20 * CONTRACT_RENEWAL_LIST_NODE_SIZE) {
     return false;
   }
 
-  for (let i = 0; i < 20; i++) {
-    readContractRenewalListNode(ContractRenewalList[i], buffer, i * CONTRACT_RENEWAL_LIST_NODE_SIZE);
-  }
+  readObjectArray(ContractRenewalList, buffer, 0, readContractRenewalListNode);
 
   uiNumBytesRead = FileRead(hFile, buffer, 1);
   if (uiNumBytesRead != 1) {
@@ -448,7 +444,7 @@ export function WillMercRenew(pSoldier: SOLDIERTYPE, fSayQuote: boolean): boolea
           // our tolerance has run out!
           fUnhappy = true;
           usReasonQuote = Enum202.QUOTE_LEARNED_TO_HATE_MERC_1_ON_TEAM_WONT_RENEW;
-        } else if (gMercProfiles[pSoldier.ubProfile].bLearnToHateCount <= gMercProfiles[pSoldier.ubProfile].bLearnToHateTime / 2) {
+        } else if (gMercProfiles[pSoldier.ubProfile].bLearnToHateCount <= Math.trunc(gMercProfiles[pSoldier.ubProfile].bLearnToHateTime / 2)) {
           pHated = FindSoldierByProfileID(bMercID, true);
           if (pHated && pHated.sSectorX == pSoldier.sSectorX && pHated.sSectorY == pSoldier.sSectorY && pHated.bSectorZ == pSoldier.bSectorZ) {
             fUnhappy = true;
@@ -556,7 +552,7 @@ function HandleSoldierLeavingForAnotherContract(pSoldier: SOLDIERTYPE): void {
   if (pSoldier.fSignedAnotherContract) {
     // merc goes to work elsewhere
     gMercProfiles[pSoldier.ubProfile].bMercStatus = MERC_WORKING_ELSEWHERE;
-    gMercProfiles[pSoldier.ubProfile].uiDayBecomesAvailable += 1 + Random(6 + (pSoldier.bExpLevel / 2)); // 1-(6 to 11) days
+    gMercProfiles[pSoldier.ubProfile].uiDayBecomesAvailable += 1 + Random(6 + Math.trunc(pSoldier.bExpLevel / 2)); // 1-(6 to 11) days
   }
 }
 
@@ -622,7 +618,7 @@ export function CheckIfMercGetsAnotherContract(pSoldier: SOLDIERTYPE): void {
   // if he doesn't already have another contract
   if (!pSoldier.fSignedAnotherContract) {
     // chance depends on how much time he has left in his contract, and his experience level (determines demand)
-    uiFullDaysRemaining = (pSoldier.iEndofContractTime - GetWorldTotalMin()) / (24 * 60);
+    uiFullDaysRemaining = Math.trunc((pSoldier.iEndofContractTime - GetWorldTotalMin()) / (24 * 60));
 
     if (uiFullDaysRemaining == 0) {
       // less than a full day left on contract
@@ -798,7 +794,7 @@ function CalculateMedicalDepositRefund(pSoldier: SOLDIERTYPE): void {
   // else the player is injured, refund a partial amount
   else {
     // use the medical deposit in pSoldier, not in profile, which goes up with leveling
-    iRefundAmount = ((pSoldier.bLife / pSoldier.bLifeMax) * pSoldier.usMedicalDeposit + 0.5);
+    iRefundAmount = Math.trunc(Math.trunc(pSoldier.bLife / pSoldier.bLifeMax) * pSoldier.usMedicalDeposit + 0.5);
 
     // add an entry in the finacial page for a PARTIAL refund of the medical deposit
     AddTransactionToPlayersBook(Enum80.PARTIAL_MEDICAL_REFUND, pSoldier.ubProfile, GetWorldTotalMin(), iRefundAmount);
@@ -1127,7 +1123,7 @@ export function GetHourWhenContractDone(pSoldier: SOLDIERTYPE): UINT32 {
   let uiArriveHour: UINT32;
 
   // Get the arrival hour - that will give us when they arrived....
-  uiArriveHour = ((pSoldier.uiTimeSoldierWillArrive) - (((pSoldier.uiTimeSoldierWillArrive) / 1440) * 1440)) / 60;
+  uiArriveHour = Math.trunc(((pSoldier.uiTimeSoldierWillArrive) - (Math.trunc((pSoldier.uiTimeSoldierWillArrive) / 1440) * 1440)) / 60);
 
   return uiArriveHour;
 }
@@ -1136,7 +1132,7 @@ function ContractIsExpiring(pSoldier: SOLDIERTYPE): boolean {
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
+  if (Math.trunc(pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // See if the hour we are on is the same....
@@ -1154,7 +1150,7 @@ function ContractIsGoingToExpireSoon(pSoldier: SOLDIERTYPE): boolean {
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
+  if (Math.trunc(pSoldier.iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // If we are <= 2 hours from expiry.

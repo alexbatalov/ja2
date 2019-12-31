@@ -357,7 +357,7 @@ function GarrisonReinforcementsRequested(iGarrisonID: INT32): { iReinforcementsR
 
   // Record how many of the reinforcements are additionally provided due to being denied in the past.  This will grow
   // until it is finally excepted or an absolute max is made.
-  ubExtraReinforcements = (gubGarrisonReinforcementsDenied[iGarrisonID] / (6 - gGameOptions.ubDifficultyLevel));
+  ubExtraReinforcements = Math.trunc(gubGarrisonReinforcementsDenied[iGarrisonID] / (6 - gGameOptions.ubDifficultyLevel));
   // Make sure the number of extra reinforcements don't bump the force size past the max of MAX_STRATEGIC_TEAM_SIZE.
   ubExtraReinforcements = Math.min(ubExtraReinforcements, Math.min((ubExtraReinforcements), MAX_STRATEGIC_TEAM_SIZE - iReinforcementsRequested));
 
@@ -927,7 +927,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: GROUP, ubSectorID: UIN
   if (pSector.ubGarrisonID != NO_GARRISON) {
     // Decide whether or not they will attack them with some of the troops.
     ubEnemies = (pSector.ubNumAdmins + pSector.ubNumTroops + pSector.ubNumElites);
-    iReinforcementsApproved = (ubEnemies - gArmyComp[gGarrisonGroup[pSector.ubGarrisonID].ubComposition].bDesiredPopulation / 2);
+    iReinforcementsApproved = Math.trunc(ubEnemies - gArmyComp[gGarrisonGroup[pSector.ubGarrisonID].ubComposition].bDesiredPopulation / 2);
     if (iReinforcementsApproved * 2 > pPlayerGroup.ubGroupSize * 3 && iReinforcementsApproved > gubMinEnemyGroupSize) {
       // Then enemy's available outnumber the player by at least 3:2, so attack them.
       pGroup = CreateNewEnemyGroupDepartingFromSector(ubSectorID, 0, iReinforcementsApproved, 0);
@@ -949,7 +949,7 @@ function HandleMilitiaNoticedByPatrolGroup(ubSectorID: UINT8, pEnemyGroup: GROUP
   let usOffensePoints: UINT16;
   let usDefencePoints: UINT16 = 0;
   let ubSectorX: UINT8 = (ubSectorID % 16) + 1;
-  let ubSectorY: UINT8 = (ubSectorID / 16) + 1;
+  let ubSectorY: UINT8 = Math.trunc(ubSectorID / 16) + 1;
   usOffensePoints = (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumAdmins * 2 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumTroops * 4 + (<ENEMYGROUP>pEnemyGroup.pEnemyGroup).ubNumElites * 6;
   if (PlayerForceTooStrong(ubSectorID, usOffensePoints, createPointer(() => usDefencePoints, (v) => usDefencePoints = v))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
@@ -978,7 +978,7 @@ function AttemptToNoticeEmptySectorSucceeds(): boolean {
     return false;
   }
   // Night time chances are one third of normal.
-  if (Chance(giArmyAlertness / 3)) {
+  if (Chance(Math.trunc(giArmyAlertness / 3))) {
     giArmyAlertness -= giArmyAlertnessDecay;
     // Minimum alertness should always be at least 0.
     giArmyAlertness = Math.max(0, giArmyAlertness);
@@ -1011,7 +1011,7 @@ function AttemptToNoticeAdjacentGroupSucceeds(): boolean {
     return false;
   }
   // Night time chances are one third of normal.
-  if (Chance(giArmyAlertness / 3)) {
+  if (Chance(Math.trunc(giArmyAlertness / 3))) {
     giArmyAlertness -= giArmyAlertnessDecay;
     // Minimum alertness should always be at least 0.
     giArmyAlertness = Math.max(0, giArmyAlertness);
@@ -1026,7 +1026,7 @@ function AttemptToNoticeAdjacentGroupSucceeds(): boolean {
 function HandleEmptySectorNoticedByPatrolGroup(pGroup: GROUP, ubEmptySectorID: UINT8): boolean {
   let ubGarrisonID: UINT8;
   let ubSectorX: UINT8 = (ubEmptySectorID % 16) + 1;
-  let ubSectorY: UINT8 = (ubEmptySectorID / 16) + 1;
+  let ubSectorY: UINT8 = Math.trunc(ubEmptySectorID / 16) + 1;
 
   ubGarrisonID = SectorInfo[ubEmptySectorID].ubGarrisonID;
   if (ubGarrisonID != NO_GARRISON) {
@@ -1075,7 +1075,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
 
   if (ubAvailableTroops >= gubMinEnemyGroupSize * 2) {
     // split group into two groups, and move one of the groups to the next sector.
-    pGroup = CreateNewEnemyGroupDepartingFromSector(ubGarrisonSectorID, 0, (ubAvailableTroops / 2), 0);
+    pGroup = CreateNewEnemyGroupDepartingFromSector(ubGarrisonSectorID, 0, Math.trunc(ubAvailableTroops / 2), 0);
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[ubDstGarrisonID].ubComposition);
     RemoveSoldiersFromGarrisonBasedOnComposition(ubSrcGarrisonID, pGroup.ubGroupSize);
     gGarrisonGroup[ubDstGarrisonID].ubPendingGroupID = pGroup.ubGroupID;
@@ -1095,7 +1095,7 @@ function ReinforcementsApproved(iGarrisonID: INT32, pusDefencePoints: Pointer<UI
 
   pusDefencePoints.value = pSector.ubNumberOfCivsAtLevel[Enum126.GREEN_MILITIA] * 1 + pSector.ubNumberOfCivsAtLevel[Enum126.REGULAR_MILITIA] * 2 + pSector.ubNumberOfCivsAtLevel[Enum126.ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 4;
   usOffensePoints = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bAdminPercentage * 2 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bTroopPercentage * 3 + gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bElitePercentage * 4 + gubGarrisonReinforcementsDenied[iGarrisonID];
-  usOffensePoints = usOffensePoints * gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation / 100;
+  usOffensePoints = Math.trunc(usOffensePoints * gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation / 100);
 
   if (usOffensePoints > pusDefencePoints.value) {
     return true;
@@ -1107,7 +1107,7 @@ function ReinforcementsApproved(iGarrisonID: INT32, pusDefencePoints: Pointer<UI
   }
   // Reinforcements will have to wait.  For now, increase the reinforcements denied.  The amount increase is 20 percent
   // of the garrison's priority.
-  gubGarrisonReinforcementsDenied[iGarrisonID] += (gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bPriority / 2);
+  gubGarrisonReinforcementsDenied[iGarrisonID] += Math.trunc(gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bPriority / 2);
 
   return false;
 }
@@ -1557,7 +1557,7 @@ function RecalculatePatrolWeight(iPatrolID: INT32): void {
   } else {
     iNeedPopulation = gPatrolGroup[iPatrolID].bSize;
   }
-  iWeight = iNeedPopulation * 3 * gPatrolGroup[iPatrolID].bPriority / 96;
+  iWeight = Math.trunc(iNeedPopulation * 3 * gPatrolGroup[iPatrolID].bPriority / 96);
   iWeight = Math.min(2, iWeight);
   gPatrolGroup[iPatrolID].bWeight = iWeight;
   giRequestPoints += iWeight;
@@ -1595,13 +1595,13 @@ function RecalculateGarrisonWeight(iGarrisonID: INT32): void {
   if (iWeight > 0) {
     // modify it by it's priority.
     // generates a value between 2 and 100
-    iWeight = iWeight * iPriority / 96;
+    iWeight = Math.trunc(iWeight * iPriority / 96);
     iWeight = Math.max(iWeight, 2);
     giRequestPoints += iWeight;
   } else if (iWeight < 0) {
     // modify it by it's reverse priority
     // generates a value between -2 and -100
-    iWeight = iWeight * (100 - iPriority) / 96;
+    iWeight = Math.trunc(iWeight * (100 - iPriority) / 96);
     iWeight = Math.min(iWeight, -2);
     giReinforcementPoints -= iWeight;
   }
@@ -1773,7 +1773,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
   // The maximum number of reinforcements can't be offsetted past a certain point based on the
   // priority of the garrison.
   iMaxReinforcementsAllowed = // from 1 to 3 times the desired size of the normal force.
-      gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bDesiredPopulation + gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bDesiredPopulation * gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 50;
+      gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bDesiredPopulation + Math.trunc(gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bDesiredPopulation * gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 50);
 
   if (iReinforcementsRequested + ubNumExtraReinforcements > iMaxReinforcementsAllowed) {
     // adjust the extra reinforcements so that it doesn't exceed the maximum allowed.
@@ -1824,7 +1824,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
 
     if (iReinforcementsApproved * 3 < usDefencePoints) {
       // The enemy force that would be sent would likely be decimated by the player forces.
-      gubGarrisonReinforcementsDenied[iDstGarrisonID] += (gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 2);
+      gubGarrisonReinforcementsDenied[iDstGarrisonID] += Math.trunc(gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 2);
       ValidateWeights(12);
       return;
     } else {
@@ -1835,7 +1835,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
     // The chance she will send them is related with the strength difference between the
     // player's force and the queen's.
     if (ubNumExtraReinforcements && fLimitMaxTroopsAllowable && iReinforcementsApproved == iMaxReinforcementsAllowed) {
-      iChance = (iReinforcementsApproved + ubNumExtraReinforcements) * 100 / usDefencePoints;
+      iChance = Math.trunc((iReinforcementsApproved + ubNumExtraReinforcements) * 100 / usDefencePoints);
       if (!Chance(iChance)) {
         ValidateWeights(13);
         return;
@@ -1866,7 +1866,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
     }
 
     ubSrcSectorX = (gGarrisonGroup[iSrcGarrisonID].ubSectorID % 16) + 1;
-    ubSrcSectorY = (gGarrisonGroup[iSrcGarrisonID].ubSectorID / 16) + 1;
+    ubSrcSectorY = Math.trunc(gGarrisonGroup[iSrcGarrisonID].ubSectorID / 16) + 1;
     if (ubSrcSectorX != gWorldSectorX || ubSrcSectorY != gWorldSectorY || gbWorldSectorZ > 0) {
       // The reinforcements aren't coming from the currently loaded sector!
       iReinforcementsAvailable = ReinforcementsAvailable(iSrcGarrisonID);
@@ -1882,7 +1882,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
         iReinforcementsApproved = iMaxReinforcementsAllowed - ubNumExtraReinforcements;
       } else if ((iReinforcementsApproved + ubNumExtraReinforcements) * 3 < usDefencePoints) {
         // The enemy force that would be sent would likely be decimated by the player forces.
-        gubGarrisonReinforcementsDenied[iDstGarrisonID] += (gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 2);
+        gubGarrisonReinforcementsDenied[iDstGarrisonID] += Math.trunc(gArmyComp[gGarrisonGroup[iDstGarrisonID].ubComposition].bPriority / 2);
         ValidateWeights(17);
         return;
       } else {
@@ -1893,7 +1893,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       // The chance she will send them is related with the strength difference between the
       // player's force and the queen's.
       if (iReinforcementsApproved + ubNumExtraReinforcements == iMaxReinforcementsAllowed && usDefencePoints) {
-        iChance = (iReinforcementsApproved + ubNumExtraReinforcements) * 100 / usDefencePoints;
+        iChance = Math.trunc((iReinforcementsApproved + ubNumExtraReinforcements) * 100 / usDefencePoints);
         if (!Chance(iChance)) {
           ValidateWeights(18);
           return;
@@ -1945,7 +1945,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<G
     return;
 
   ubDstSectorX = (gPatrolGroup[iPatrolID].ubSectorID[1] % 16) + 1;
-  ubDstSectorY = (gPatrolGroup[iPatrolID].ubSectorID[1] / 16) + 1;
+  ubDstSectorY = Math.trunc(gPatrolGroup[iPatrolID].ubSectorID[1] / 16) + 1;
 
   if (pOptionalGroup && pOptionalGroup.value) {
     // This group will provide the reinforcements
@@ -2710,14 +2710,14 @@ export function LoadStrategicAI(hFile: HWFILE): boolean {
           // if population is less than maximum
           if (iStartPop != MAX_STRATEGIC_TEAM_SIZE) {
             // then vary it a bit (+/- 25%)
-            iStartPop = iStartPop * (100 + (Random(51) - 25)) / 100;
+            iStartPop = Math.trunc(iStartPop * (100 + (Random(51) - 25)) / 100);
           }
 
           iStartPop = Math.max(gubMinEnemyGroupSize, Math.min(MAX_STRATEGIC_TEAM_SIZE, iStartPop));
           cnt = iStartPop;
 
           if (iAdminChance) {
-            pSector.ubNumAdmins = iAdminChance * iStartPop / 100;
+            pSector.ubNumAdmins = Math.trunc(iAdminChance * iStartPop / 100);
           } else
             while (cnt--) {
               // for each person, randomly determine the types of each soldier.
@@ -2801,7 +2801,7 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
   let ubOwned: UINT8[] /* [NUM_ARMY_COMPOSITIONS] */ = createArray(Enum174.NUM_ARMY_COMPOSITIONS, 0);
   let ubTotal: UINT8[] /* [NUM_ARMY_COMPOSITIONS] */ = createArray(Enum174.NUM_ARMY_COMPOSITIONS, 0);
   let ubNewPhase: UINT8;
-  ubNewPhase = CurrentPlayerProgressPercentage() / 10;
+  ubNewPhase = Math.trunc(CurrentPlayerProgressPercentage() / 10);
 
   if (!fForceChange && ubNewPhase == gubQueenPriorityPhase) {
     return;
@@ -2850,21 +2850,21 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
     // then she gets a maximum defensive penalty.  Everything else lies in the middle.  The legal
     // range is +-50.
     if (ubTotal[i]) {
-      iFactor = (ubOwned[i] * 100 / ubTotal[i]) - 50;
+      iFactor = Math.trunc(ubOwned[i] * 100 / ubTotal[i]) - 50;
     } else {
       iFactor = -50;
     }
-    iFactor = iFactor * gubQueenPriorityPhase / 10;
+    iFactor = Math.trunc(iFactor * gubQueenPriorityPhase / 10);
 
     // modify priority by + or - 25% of original
     if (gArmyComp[i].bPriority) {
-      num = gOrigArmyComp[i].bPriority + iFactor / 2;
+      num = gOrigArmyComp[i].bPriority + Math.trunc(iFactor / 2);
       num = Math.min(Math.max(0, num), 100);
       gArmyComp[i].bPriority = num;
     }
 
     // modify desired population by + or - 50% of original population
-    num = gOrigArmyComp[i].bDesiredPopulation * (100 + iFactor) / 100;
+    num = Math.trunc(gOrigArmyComp[i].bDesiredPopulation * (100 + iFactor) / 100);
     num = Math.min(Math.max(6, num), MAX_STRATEGIC_TEAM_SIZE);
     gArmyComp[i].bDesiredPopulation = num;
 
@@ -2906,7 +2906,7 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
       }
       pSector = SectorInfo[gGarrisonGroup[i].ubSectorID];
       if (ubTotal[index]) {
-        iFactor = (ubOwned[index] * 100 / ubTotal[index]) - 50;
+        iFactor = Math.trunc(ubOwned[index] * 100 / ubTotal[index]) - 50;
       } else {
         iFactor = -50;
       }
@@ -2915,7 +2915,7 @@ function EvolveQueenPriorityPhase(fForceChange: boolean): void {
         if (!gfWorldLoaded || gbWorldSectorZ || gWorldSectorX != SECTORX(gGarrisonGroup[i].ubSectorID) || gWorldSectorY != SECTORY(gGarrisonGroup[i].ubSectorID)) {
           // Also make sure the sector isn't currently loaded!
           iNumSoldiers = pSector.ubNumAdmins + pSector.ubNumTroops + pSector.ubNumElites;
-          iNumPromotions = gArmyComp[index].bElitePercentage * iNumSoldiers / 100 - pSector.ubNumElites;
+          iNumPromotions = Math.trunc(gArmyComp[index].bElitePercentage * iNumSoldiers / 100) - pSector.ubNumElites;
 
           if (iNumPromotions > 0) {
             while (iNumPromotions--) {
@@ -3036,8 +3036,8 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
       break;
     case Enum213.NPC_ACTION_SEND_SOLDIERS_TO_OMERTA:
       ubNumSoldiers = (gGameOptions.ubDifficultyLevel * 6); // 6, 12, or 18 based on difficulty.
-      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubNumSoldiers, (ubNumSoldiers / 7)); // add 1 elite to normal, and 2 for hard
-      ubNumSoldiers = (ubNumSoldiers + ubNumSoldiers / 7);
+      pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, ubNumSoldiers, Math.trunc(ubNumSoldiers / 7)); // add 1 elite to normal, and 2 for hard
+      ubNumSoldiers = (ubNumSoldiers + Math.trunc(ubNumSoldiers / 7));
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = Math.max(giReinforcementPool, 0);
       if (PlayerMercsInSector(9, 1, 1) && !PlayerMercsInSector(10, 1, 1) && !PlayerMercsInSector(10, 1, 2)) {
@@ -3054,7 +3054,7 @@ export function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, 
       break;
     case Enum213.NPC_ACTION_SEND_TROOPS_TO_SAM:
       ubSectorID = SECTOR(sSectorX, sSectorY);
-      ubNumSoldiers = (3 + gGameOptions.ubDifficultyLevel + HighestPlayerProgressPercentage() / 15);
+      ubNumSoldiers = (3 + gGameOptions.ubDifficultyLevel + Math.trunc(HighestPlayerProgressPercentage() / 15));
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = Math.max(giReinforcementPool, 0);
       pGroup = CreateNewEnemyGroupDepartingFromSector(Enum123.SEC_P3, 0, 0, ubNumSoldiers);
@@ -3557,26 +3557,26 @@ function RenderAIViewerGarrisonInfo(x: INT32, y: INT32, pSector: SECTORINFO): vo
 export function StrategicHandleMineThatRanOut(ubSectorID: UINT8): void {
   switch (ubSectorID) {
     case Enum123.SEC_B2:
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_A2].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B2].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_A2].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_A2].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B2].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B2].ubGarrisonID].ubComposition].bPriority / 4);
       break;
     case Enum123.SEC_D13:
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_D13].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B13].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_B13].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C13].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_C13].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_D13].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_D13].ubGarrisonID].ubComposition].bPriority / 4);
       break;
     case Enum123.SEC_H8:
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F8].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F9].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G8].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G9].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H8].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F8].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F8].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F9].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_F9].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G8].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G8].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G9].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_G9].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H8].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H8].ubGarrisonID].ubComposition].bPriority / 4);
       break;
     case Enum123.SEC_I14:
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H14].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I13].ubGarrisonID].ubComposition].bPriority /= 4;
-      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I14].ubGarrisonID].ubComposition].bPriority /= 4;
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H13].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H13].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H14].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_H14].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I13].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I13].ubGarrisonID].ubComposition].bPriority / 4);
+      gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I14].ubGarrisonID].ubComposition].bPriority = Math.trunc(gArmyComp[gGarrisonGroup[SectorInfo[Enum123.SEC_I14].ubGarrisonID].ubComposition].bPriority / 4);
       break;
   }
 }
@@ -3995,7 +3995,7 @@ function PermittedToFillPatrolGroup(iPatrolID: INT32): boolean {
   let iDay: INT32;
   let iDayAllowed: INT32;
   iDay = GetWorldDay();
-  iDayAllowed = gPatrolGroup[iPatrolID].bFillPermittedAfterDayMod100 + (iDay / 100) * 100;
+  iDayAllowed = gPatrolGroup[iPatrolID].bFillPermittedAfterDayMod100 + Math.trunc(iDay / 100) * 100;
   return iDay >= iDayAllowed;
 }
 
@@ -4052,8 +4052,8 @@ function CalcNumTroopsBasedOnComposition(ubTotal: UINT8, iCompositionID: INT32):
   let ubNumTroops: UINT8;
   let ubNumElites: UINT8;
 
-  ubNumTroops = gArmyComp[iCompositionID].bTroopPercentage * ubTotal / 100;
-  ubNumElites = gArmyComp[iCompositionID].bElitePercentage * ubTotal / 100;
+  ubNumTroops = Math.trunc(gArmyComp[iCompositionID].bTroopPercentage * ubTotal / 100);
+  ubNumElites = Math.trunc(gArmyComp[iCompositionID].bElitePercentage * ubTotal / 100);
 
   // Due to low roundoff, it is highly possible that we will be short one soldier.
   while (ubNumTroops + ubNumElites < ubTotal) {
@@ -4271,7 +4271,7 @@ function ReinitializeUnvisitedGarrisons(): void {
       iEliteChance = pArmyComp.bElitePercentage;
       iAdminChance = pArmyComp.bAdminPercentage;
       if (iAdminChance && !gfQueenAIAwake && cnt) {
-        pSector.ubNumAdmins = iAdminChance * cnt / 100;
+        pSector.ubNumAdmins = Math.trunc(iAdminChance * cnt / 100);
       } else
         while (cnt--) {
           // for each person, randomly determine the types of each soldier.

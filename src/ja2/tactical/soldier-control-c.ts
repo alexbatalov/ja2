@@ -299,7 +299,7 @@ export function CalcActionPoints(pSold: SOLDIERTYPE): INT8 {
 
   // Calculate merc's action points at 100% capability (range is 10 - 25)
   // round fractions of .5 up (that's why the +20 before the division!
-  ubPoints = 5 + (((10 * EffectiveExpLevel(pSold) + 3 * EffectiveAgility(pSold) + 2 * pSold.bLifeMax + 2 * EffectiveDexterity(pSold)) + 20) / 40);
+  ubPoints = 5 + Math.trunc(((10 * EffectiveExpLevel(pSold) + 3 * EffectiveAgility(pSold) + 2 * pSold.bLifeMax + 2 * EffectiveDexterity(pSold)) + 20) / 40);
 
   // if (GameOption[INCREASEDAP] % 2 == 1)
   // points += AP_INCREASE;
@@ -309,15 +309,15 @@ export function CalcActionPoints(pSold: SOLDIERTYPE): INT8 {
 
   // If injured, reduce action points accordingly (by up to 2/3rds)
   if (pSold.bLife < pSold.bLifeMax) {
-    ubPoints -= (2 * ubPoints * (pSold.bLifeMax - pSold.bLife + (bBandage / 2))) / (3 * pSold.bLifeMax);
+    ubPoints -= Math.trunc((2 * ubPoints * (pSold.bLifeMax - pSold.bLife + Math.trunc(bBandage / 2))) / (3 * pSold.bLifeMax));
   }
 
   // If tired, reduce action points accordingly (by up to 1/2)
   if (pSold.bBreath < 100)
-    ubPoints -= (ubPoints * (100 - pSold.bBreath)) / 200;
+    ubPoints -= Math.trunc((ubPoints * (100 - pSold.bBreath)) / 200);
 
   if (pSold.sWeightCarriedAtTurnStart > 100) {
-    ubPoints = ((ubPoints) * 100 / pSold.sWeightCarriedAtTurnStart);
+    ubPoints = Math.trunc((ubPoints) * 100 / pSold.sWeightCarriedAtTurnStart);
   }
 
   // If resulting APs are below our permitted minimum, raise them to it!
@@ -336,25 +336,25 @@ export function CalcActionPoints(pSold: SOLDIERTYPE): INT8 {
 
   if (pSold.ubBodyType == Enum194.BLOODCAT) {
     // use same as young monsters
-    ubPoints = (ubPoints * AP_YOUNG_MONST_FACTOR) / 10;
+    ubPoints = Math.trunc((ubPoints * AP_YOUNG_MONST_FACTOR) / 10);
   } else if (pSold.uiStatusFlags & SOLDIER_MONSTER) {
     // young monsters get extra APs
     if (pSold.ubBodyType == Enum194.YAF_MONSTER || pSold.ubBodyType == Enum194.YAM_MONSTER || pSold.ubBodyType == Enum194.INFANT_MONSTER) {
-      ubPoints = (ubPoints * AP_YOUNG_MONST_FACTOR) / 10;
+      ubPoints = Math.trunc((ubPoints * AP_YOUNG_MONST_FACTOR) / 10);
     }
 
     // if frenzied, female monsters get more APs! (for young females, cumulative!)
     if (pSold.bFrenzied) {
-      ubPoints = (ubPoints * AP_MONST_FRENZY_FACTOR) / 10;
+      ubPoints = Math.trunc((ubPoints * AP_MONST_FRENZY_FACTOR) / 10);
     }
   }
 
   // adjust APs for phobia situations
   if (pSold.ubProfile != NO_PROFILE) {
     if ((gMercProfiles[pSold.ubProfile].bPersonalityTrait == Enum270.CLAUSTROPHOBIC) && (gbWorldSectorZ > 0)) {
-      ubPoints = (ubPoints * AP_CLAUSTROPHOBE) / 10;
+      ubPoints = Math.trunc((ubPoints * AP_CLAUSTROPHOBE) / 10);
     } else if ((gMercProfiles[pSold.ubProfile].bPersonalityTrait == Enum270.FEAR_OF_INSECTS) && (MercSeesCreature(pSold))) {
-      ubPoints = (ubPoints * AP_AFRAID_OF_INSECTS) / 10;
+      ubPoints = Math.trunc((ubPoints * AP_AFRAID_OF_INSECTS) / 10);
     }
   }
 
@@ -368,7 +368,7 @@ export function CalcActionPoints(pSold: SOLDIERTYPE): INT8 {
 
   // if we are in boxing mode, adjust APs... THIS MUST BE LAST!
   if (gTacticalStatus.bBoxingState == Enum247.BOXING || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING) {
-    ubPoints /= 2;
+    ubPoints = Math.trunc(ubPoints / 2);
   }
 
   return ubPoints;
@@ -377,8 +377,8 @@ export function CalcActionPoints(pSold: SOLDIERTYPE): INT8 {
 export function CalcNewActionPoints(pSoldier: SOLDIERTYPE): void {
   if (gTacticalStatus.bBoxingState == Enum247.BOXING || gTacticalStatus.bBoxingState == Enum247.PRE_BOXING) {
     // if we are in boxing mode, carry 1/2 as many points
-    if (pSoldier.bActionPoints > MAX_AP_CARRIED / 2) {
-      pSoldier.bActionPoints = MAX_AP_CARRIED / 2;
+    if (pSoldier.bActionPoints > Math.trunc(MAX_AP_CARRIED / 2)) {
+      pSoldier.bActionPoints = Math.trunc(MAX_AP_CARRIED / 2);
     }
   } else {
     if (pSoldier.bActionPoints > MAX_AP_CARRIED) {
@@ -1495,7 +1495,7 @@ export function EVENT_InitNewSoldierAnim(pSoldier: SOLDIERTYPE, usNewState: UINT
 
       case Enum193.FALLFORWARD_FROMHIT_CROUCH:
 
-        DeductPoints(pSoldier, (AP_FALL_DOWN / 2), (BP_FALL_DOWN / 2));
+        DeductPoints(pSoldier, Math.trunc(AP_FALL_DOWN / 2), Math.trunc(BP_FALL_DOWN / 2));
         break;
 
       case Enum193.QUEEN_SWIPE:
@@ -1746,8 +1746,8 @@ export function EVENT_InternalSetSoldierPosition(pSoldier: SOLDIERTYPE, dNewXPos
   pSoldier.dXPos = dNewXPos;
   pSoldier.dYPos = dNewYPos;
 
-  pSoldier.sX = dNewXPos;
-  pSoldier.sY = dNewYPos;
+  pSoldier.sX = Math.trunc(dNewXPos);
+  pSoldier.sY = Math.trunc(dNewYPos);
 
   HandleCrowShadowNewPosition(pSoldier);
 
@@ -1792,7 +1792,7 @@ function InternalSetSoldierHeight(pSoldier: SOLDIERTYPE, dNewHeight: FLOAT, fUpd
   if (pSoldier.sHeightAdjustment > 0) {
     pSoldier.bLevel = SECOND_LEVEL;
 
-    ApplyTranslucencyToWalls((pSoldier.dXPos / CELL_X_SIZE), (pSoldier.dYPos / CELL_Y_SIZE));
+    ApplyTranslucencyToWalls(Math.trunc(pSoldier.dXPos / CELL_X_SIZE), Math.trunc(pSoldier.dYPos / CELL_Y_SIZE));
     // LightHideTrees((INT16)(pSoldier->dXPos/CELL_X_SIZE), (INT16)(pSoldier->dYPos/CELL_Y_SIZE));
     // ConcealAllWalls();
 
@@ -2622,7 +2622,7 @@ export function EVENT_SoldierGotHit(pSoldier: SOLDIERTYPE, usWeaponIndex: UINT16
         DecayIndividualOpplist(pSoldier);
       }
       // will always increase counter by at least 1
-      pSoldier.bBlindedCounter += (sDamage / 8) + 1;
+      pSoldier.bBlindedCounter += Math.trunc(sDamage / 8) + 1;
 
       // Dirty panel
       fInterfacePanelDirty = DIRTYLEVEL2;
@@ -2636,10 +2636,10 @@ export function EVENT_SoldierGotHit(pSoldier: SOLDIERTYPE, usWeaponIndex: UINT16
     // damage from hand-to-hand is 1/4 normal, 3/4 breath.. the sDamage value
     // is actually how much breath we'll take away
     sBreathLoss = sDamage * 100;
-    sDamage = sDamage / PUNCH_REAL_DAMAGE_PORTION;
+    sDamage = Math.trunc(sDamage / PUNCH_REAL_DAMAGE_PORTION);
     if (AreInMeanwhile() && gCurrentMeanwhileDef.ubMeanwhileID == Enum160.INTERROGATION) {
       sBreathLoss = 0;
-      sDamage /= 2;
+      sDamage = Math.trunc(sDamage / 2);
     }
     ubReason = TAKE_DAMAGE_HANDTOHAND;
   } else if (Item[usWeaponIndex].usItemClass & IC_EXPLOSV) {
@@ -3701,7 +3701,7 @@ export function EVENT_BeginMercTurn(pSoldier: SOLDIERTYPE, fFromRealTime: boolea
   // if he is still alive (didn't bleed to death)
   if (pSoldier.bLife) {
     // reduce the effects of any residual shock from past injuries by half
-    pSoldier.bShock /= 2;
+    pSoldier.bShock = Math.trunc(pSoldier.bShock / 2);
 
     // if this person has heard a noise that hasn't been investigated
     if (pSoldier.sNoiseGridno != NOWHERE) {
@@ -3877,7 +3877,7 @@ export function ConvertAniCodeToAniFrame(pSoldier: SOLDIERTYPE, usAniFrame: UINT
   }
   // Check # of directions /surface, adjust if ness.
   else if (gAnimSurfaceDatabase[usAnimSurface].uiNumDirections == 4) {
-    ubTempDir = ubTempDir / 2;
+    ubTempDir = Math.trunc(ubTempDir / 2);
   }
   // Check # of directions /surface, adjust if ness.
   else if (gAnimSurfaceDatabase[usAnimSurface].uiNumDirections == 1) {
@@ -4348,7 +4348,7 @@ function AdjustAniSpeed(pSoldier: SOLDIERTYPE): void {
     if (gTacticalStatus.bRealtimeSpeed == -1) {
       pSoldier.sAniDelay = 10000;
     } else {
-      pSoldier.sAniDelay = pSoldier.sAniDelay * (1 * gTacticalStatus.bRealtimeSpeed / 2);
+      pSoldier.sAniDelay = pSoldier.sAniDelay * Math.trunc(1 * gTacticalStatus.bRealtimeSpeed / 2);
     }
   }
 
@@ -4448,13 +4448,13 @@ function CalculateSoldierAniSpeed(pSoldier: SOLDIERTYPE, pStatsSoldier: SOLDIERT
     uiTerrainDelay = 40; // standing still
   }
 
-  bBreathDef = 50 - (pStatsSoldier.bBreath / 2);
+  bBreathDef = 50 - Math.trunc(pStatsSoldier.bBreath / 2);
 
   if (bBreathDef > 30)
     bBreathDef = 30;
 
-  bAgilDef = 50 - (EffectiveAgility(pStatsSoldier) / 4);
-  bLifeDef = 50 - (pStatsSoldier.bLife / 2);
+  bAgilDef = 50 - Math.trunc(EffectiveAgility(pStatsSoldier) / 4);
+  bLifeDef = 50 - Math.trunc(pStatsSoldier.bLife / 2);
 
   uiTerrainDelay += (bLifeDef + bBreathDef + bAgilDef + bAdditional);
 
@@ -4463,14 +4463,14 @@ function CalculateSoldierAniSpeed(pSoldier: SOLDIERTYPE, pStatsSoldier: SOLDIERT
   // If a moving animation and w/re on drugs, increase speed....
   if (gAnimControl[pSoldier.usAnimState].uiFlags & ANIM_MOVING) {
     if (GetDrugEffect(pSoldier, DRUG_TYPE_ADRENALINE)) {
-      pSoldier.sAniDelay = pSoldier.sAniDelay / 2;
+      pSoldier.sAniDelay = Math.trunc(pSoldier.sAniDelay / 2);
     }
   }
 
   // MODIFTY NOW BASED ON REAL-TIME, ETC
   // Adjust speed, make twice as fast if in turn-based!
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    pSoldier.sAniDelay = pSoldier.sAniDelay / 2;
+    pSoldier.sAniDelay = Math.trunc(pSoldier.sAniDelay / 2);
   }
 
   // MODIFY IF REALTIME COMBAT
@@ -5012,7 +5012,7 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
       // sLifeDeduct = (sLifeDeduct * 2) / 3;
     } else {
       if (ubReason == TAKE_DAMAGE_GUNFIRE) {
-        sLifeDeduct /= 3;
+        sLifeDeduct = Math.trunc(sLifeDeduct / 3);
       } else if (ubReason == TAKE_DAMAGE_EXPLOSION && sLifeDeduct > 50) {
         // boom!
         sLifeDeduct *= 2;
@@ -5068,20 +5068,20 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
           if (ubAttacker == NOBODY) {
             sReductionFactor = 8;
           } else {
-            sReductionFactor = 4 + PythSpacesAway(MercPtrs[ubAttacker].sGridNo, pSoldier.sGridNo) / 2;
+            sReductionFactor = 4 + Math.trunc(PythSpacesAway(MercPtrs[ubAttacker].sGridNo, pSoldier.sGridNo) / 2);
           }
           break;
       }
     }
 
     if (ubReason == TAKE_DAMAGE_EXPLOSION) {
-      sReductionFactor /= 4;
+      sReductionFactor = Math.trunc(sReductionFactor / 4);
     }
     if (sReductionFactor > 1) {
-      sLifeDeduct = (sLifeDeduct + (sReductionFactor / 2)) / sReductionFactor;
+      sLifeDeduct = Math.trunc((sLifeDeduct + Math.trunc(sReductionFactor / 2)) / sReductionFactor);
     } else if (ubReason == TAKE_DAMAGE_EXPLOSION) {
       // take at most 2/3rds
-      sLifeDeduct = (sLifeDeduct * 2) / 3;
+      sLifeDeduct = Math.trunc((sLifeDeduct * 2) / 3);
     }
 
     // reduce breath loss to a smaller degree, except for the queen...
@@ -5090,10 +5090,10 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
       sReductionFactor = Math.min(sReductionFactor, 8);
       sReductionFactor *= 2;
     } else {
-      sReductionFactor /= 2;
+      sReductionFactor = Math.trunc(sReductionFactor / 2);
     }
     if (sReductionFactor > 1) {
-      sBreathLoss = (sBreathLoss + (sReductionFactor / 2)) / sReductionFactor;
+      sBreathLoss = Math.trunc((sBreathLoss + Math.trunc(sReductionFactor / 2)) / sReductionFactor);
     }
   }
 
@@ -5153,14 +5153,14 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
   }
 
   // Deduct breath AND APs!
-  sAPCost = (sLifeDeduct / AP_GET_WOUNDED_DIVISOR); // + fallCost;
+  sAPCost = Math.trunc(sLifeDeduct / AP_GET_WOUNDED_DIVISOR); // + fallCost;
 
   // ATE: if the robot, do not deduct
   if (!AM_A_ROBOT(pSoldier)) {
     DeductPoints(pSoldier, sAPCost, sBreathLoss);
   }
 
-  ubCombinedLoss = sLifeDeduct / 10 + sBreathLoss / 2000;
+  ubCombinedLoss = Math.trunc(sLifeDeduct / 10) + Math.trunc(sBreathLoss / 2000);
 
   // Add shock
   if (!AM_A_ROBOT(pSoldier)) {
@@ -5200,7 +5200,7 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
     let bVisible: INT8 = -1;
 
     sTestOne = EffectiveStrength(pSoldier);
-    sTestTwo = (2 * (Math.max(sLifeDeduct, (sBreathLoss / 100))));
+    sTestTwo = (2 * (Math.max(sLifeDeduct, Math.trunc(sBreathLoss / 100))));
 
     if (pSoldier.ubAttackerID != NOBODY && MercPtrs[pSoldier.ubAttackerID].ubBodyType == Enum194.BLOODCAT) {
       // bloodcat boost, let them make people drop items more
@@ -5233,7 +5233,7 @@ export function SoldierTakeDamage(pSoldier: SOLDIERTYPE, bHeight: INT8, sLifeDed
 
   // Drop some blood!
   // decide blood amt, if any
-  ubBlood = (sLifeDeduct / BLOODDIVISOR);
+  ubBlood = Math.trunc(sLifeDeduct / BLOODDIVISOR);
   if (ubBlood > MAXBLOODQUANTITY) {
     ubBlood = MAXBLOODQUANTITY;
   }
@@ -6076,7 +6076,7 @@ function FullStructAlone(sGridNo: INT16, ubRadius: UINT8): boolean {
   sRight = ubRadius;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = sGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -6422,8 +6422,6 @@ export function EVENT_SoldierBeginGiveItem(pSoldier: SOLDIERTYPE): void {
     EVENT_InitNewSoldierAnim(pSoldier, Enum193.GIVE_ITEM, 0, false);
   } else {
     UnSetEngagedInConvFromPCAction(pSoldier);
-
-    MemFree(pSoldier.pTempObject);
   }
 }
 
@@ -6847,7 +6845,7 @@ export function SoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIERTYPE, s
   }
 
   // calculate how much bandaging CAN be done this turn
-  uiPossible = (uiAvailAPs * uiDressSkill) / 50; // max rate is 2 * fullAPs
+  uiPossible = Math.trunc((uiAvailAPs * uiDressSkill) / 50); // max rate is 2 * fullAPs
 
   // if no healing is possible (insufficient APs or insufficient dressSkill)
   if (!uiPossible)
@@ -6855,7 +6853,7 @@ export function SoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIERTYPE, s
 
   if (pSoldier.inv[Enum261.HANDPOS].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
   {
-    uiPossible += (uiPossible / 2); // add extra 50 %
+    uiPossible += Math.trunc(uiPossible / 2); // add extra 50 %
   }
 
   uiActual = uiPossible; // start by assuming maximum possible
@@ -6882,7 +6880,7 @@ export function SoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIERTYPE, s
 
   // now make sure we HAVE that much
   if (pSoldier.inv[Enum261.HANDPOS].usItem == Enum225.MEDICKIT) {
-    uiMedcost = (uiActual + 1) / 2; // cost is only half, rounded up
+    uiMedcost = Math.trunc((uiActual + 1) / 2); // cost is only half, rounded up
 
     if (uiMedcost > sKitPts) // if we can't afford this
     {
@@ -6917,8 +6915,8 @@ export function SoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIERTYPE, s
       // use up appropriate # of actual healing points
       ubPtsLeft -= (2 * ubBelowOKlife);
     } else {
-      pVictim.bLife += (ubPtsLeft / 2);
-      pVictim.bBleeding -= (ubPtsLeft / 2);
+      pVictim.bLife += Math.trunc(ubPtsLeft / 2);
+      pVictim.bBleeding -= Math.trunc(ubPtsLeft / 2);
 
       ubPtsLeft = ubPtsLeft % 2; // if ptsLeft was odd, ptsLeft = 1
     }
@@ -6967,21 +6965,21 @@ export function SoldierDressWound(pSoldier: SOLDIERTYPE, pVictim: SOLDIERTYPE, s
   uiActual -= ubPtsLeft;
 
   // usedAPs equals (actionPts) * (%of possible points actually used)
-  uiUsedAPs = (uiActual * uiAvailAPs) / uiPossible;
+  uiUsedAPs = Math.trunc((uiActual * uiAvailAPs) / uiPossible);
 
   if (pSoldier.inv[Enum261.HANDPOS].usItem == Enum225.MEDICKIT) // using the GOOD medic stuff
   {
-    uiUsedAPs = (uiUsedAPs * 2) / 3; // reverse 50% bonus by taking 2/3rds
+    uiUsedAPs = Math.trunc((uiUsedAPs * 2) / 3); // reverse 50% bonus by taking 2/3rds
   }
 
   DeductPoints(pSoldier, uiUsedAPs, ((uiUsedAPs * BP_PER_AP_LT_EFFORT)));
 
   if (PTR_OURTEAM(pSoldier)) {
     // MEDICAL GAIN   (actual / 2):  Helped someone by giving first aid
-    StatChange(pSoldier, MEDICALAMT, (uiActual / 2), 0);
+    StatChange(pSoldier, MEDICALAMT, Math.trunc(uiActual / 2), 0);
 
     // DEXTERITY GAIN (actual / 6):  Helped someone by giving first aid
-    StatChange(pSoldier, DEXTAMT, (uiActual / 6), 0);
+    StatChange(pSoldier, DEXTAMT, Math.trunc(uiActual / 6), 0);
   }
 
   return uiMedcost;
@@ -7068,7 +7066,6 @@ export function HaultSoldierFromSighting(pSoldier: SOLDIERTYPE, fFromSightingEne
   if (pSoldier.pTempObject != null && fFromSightingEnemy) {
     // Place it back into inv....
     AutoPlaceObject(pSoldier, pSoldier.pTempObject, false);
-    MemFree(pSoldier.pTempObject);
     pSoldier.pTempObject = null;
     pSoldier.usPendingAnimation = NO_PENDING_ANIMATION;
     pSoldier.usPendingAnimation2 = NO_PENDING_ANIMATION;
@@ -7330,10 +7327,10 @@ function CreateEnemyGreyGlow16BPPPalette(pPalette: SGPPaletteEntry[], rscale: UI
   p16BPPPalette = new Uint16Array(256);
 
   for (cnt = 0; cnt < 256; cnt++) {
-    lumin = (pPalette[cnt].peRed * 299 / 1000) + (pPalette[cnt].peGreen * 587 / 1000) + (pPalette[cnt].peBlue * 114 / 1000);
-    rmod = (100 * lumin) / 256;
-    gmod = (100 * lumin) / 256;
-    bmod = (100 * lumin) / 256;
+    lumin = Math.trunc(pPalette[cnt].peRed * 299 / 1000) + Math.trunc(pPalette[cnt].peGreen * 587 / 1000) + Math.trunc(pPalette[cnt].peBlue * 114 / 1000);
+    rmod = Math.trunc((100 * lumin) / 256);
+    gmod = Math.trunc((100 * lumin) / 256);
+    bmod = Math.trunc((100 * lumin) / 256);
 
     rmod = Math.max(rscale, rmod);
 
@@ -7675,7 +7672,7 @@ function CheckBleeding(pSoldier: SOLDIERTYPE): INT32 {
       if ((pSoldier.ubServiceCount == 0) && (AnyDoctorWhoCanHealThisPatient(pSoldier, HEALABLE_EVER) == null)) {
         // may drop blood whether or not any bleeding takes place this turn
         if (pSoldier.bTilesMoved < 1) {
-          iBlood = ((pSoldier.bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR); // + pSoldier->dying;
+          iBlood = Math.trunc((pSoldier.bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR); // + pSoldier->dying;
           if (iBlood > MAXBLOODQUANTITY) {
             iBlood = MAXBLOODQUANTITY;
           }
@@ -7882,7 +7879,7 @@ function CalcSoldierNextBleed(pSoldier: SOLDIERTYPE): FLOAT {
   // if bandaged, give 1/2 of the bandaged life points back into equation
   bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
-  return (1 + ((pSoldier.bLife + bBandaged / 2) / (10 + pSoldier.bTilesMoved))); // min = 1
+  return (1 + Math.trunc((pSoldier.bLife + Math.trunc(bBandaged / 2)) / (10 + pSoldier.bTilesMoved))); // min = 1
 }
 
 function CalcSoldierNextUnmovingBleed(pSoldier: SOLDIERTYPE): FLOAT {
@@ -7893,7 +7890,7 @@ function CalcSoldierNextUnmovingBleed(pSoldier: SOLDIERTYPE): FLOAT {
   // if bandaged, give 1/2 of the bandaged life points back into equation
   bBandaged = pSoldier.bLifeMax - pSoldier.bLife - pSoldier.bBleeding;
 
-  return (1 + ((pSoldier.bLife + bBandaged / 2) / 10)); // min = 1
+  return (1 + Math.trunc((pSoldier.bLife + Math.trunc(bBandaged / 2)) / 10)); // min = 1
 }
 
 export function HandlePlacingRoofMarker(pSoldier: SOLDIERTYPE, sGridNo: INT16, fSet: boolean, fForce: boolean): void {
@@ -7982,7 +7979,7 @@ export function PositionSoldierLight(pSoldier: SOLDIERTYPE): void {
     LightSpritePower(pSoldier.iLight, true);
     LightSpriteFake(pSoldier.iLight);
 
-    LightSpritePosition(pSoldier.iLight, (pSoldier.sX / CELL_X_SIZE), (pSoldier.sY / CELL_Y_SIZE));
+    LightSpritePosition(pSoldier.iLight, Math.trunc(pSoldier.sX / CELL_X_SIZE), Math.trunc(pSoldier.sY / CELL_Y_SIZE));
   }
 }
 
@@ -8676,7 +8673,6 @@ export function HandleSystemNewAISituation(pSoldier: SOLDIERTYPE, fResetABC: boo
         if (pSoldier.pTempObject != null) {
           // Place it back into inv....
           AutoPlaceObject(pSoldier, pSoldier.pTempObject, false);
-          MemFree(pSoldier.pTempObject);
           pSoldier.pTempObject = null;
           pSoldier.usPendingAnimation = NO_PENDING_ANIMATION;
           pSoldier.usPendingAnimation2 = NO_PENDING_ANIMATION;

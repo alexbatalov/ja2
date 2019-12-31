@@ -87,7 +87,7 @@ export function CallEldinTo(sGridNo: INT16): void {
   if (gTacticalStatus.Team[CIV_TEAM].bTeamActive) {
     // new situation for Eldin
     pSoldier = FindSoldierByProfileID(Enum268.ELDIN, false);
-    if (pSoldier && pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && (pSoldier.bAlertStatus == Enum243.STATUS_GREEN || pSoldier.ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
+    if (pSoldier && pSoldier.bActive && pSoldier.bInSector && pSoldier.bLife >= OKLIFE && (pSoldier.bAlertStatus == Enum243.STATUS_GREEN || pSoldier.ubNoiseVolume < Math.trunc(MAX_MISC_NOISE_DURATION / 2))) {
       if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), true)) {
         // sees the player now!
         TriggerNPCWithIHateYouQuote(Enum268.ELDIN);
@@ -188,7 +188,7 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
     if (pSoldier.bNoiseLevel != pSoldier.bLevel || PythSpacesAway(pSoldier.sGridNo, pSoldier.sNoiseGridno) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, pSoldier.sNoiseGridno, pSoldier.bNoiseLevel, 0, MaxDistanceVisible(), false) == 0) {
       // calculate how far this noise was, and its relative "importance"
       iDistAway = SpacesAway(pSoldier.sGridNo, pSoldier.sNoiseGridno);
-      iNoiseValue = ((pSoldier.ubNoiseVolume / 2) - 6) * iDistAway;
+      iNoiseValue = (Math.trunc(pSoldier.ubNoiseVolume / 2) - 6) * iDistAway;
 
       if (iNoiseValue > iBestValue) {
         iBestValue = iNoiseValue;
@@ -209,7 +209,7 @@ export function MostImportantNoiseHeard(pSoldier: SOLDIERTYPE, piRetValue: Point
       if (pbNoiseLevel != pSoldier.bLevel || PythSpacesAway(pSoldier.sGridNo, psNoiseGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, psNoiseGridNo, pbNoiseLevel, 0, MaxDistanceVisible(), false) == 0) {
         // calculate how far this noise was, and its relative "importance"
         iDistAway = SpacesAway(pSoldier.sGridNo, psNoiseGridNo);
-        iNoiseValue = ((pubNoiseVolume / 2) - 6) * iDistAway;
+        iNoiseValue = (Math.trunc(pubNoiseVolume / 2) - 6) * iDistAway;
 
         if (iNoiseValue > iBestValue) {
           iBestValue = iNoiseValue;

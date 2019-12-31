@@ -39,7 +39,7 @@ export const CHECK_DIR_Y_DELTA = (WORLD_TILE_Y * 10);
 // get index into aray
 export const CALCULATE_STRATEGIC_INDEX = (x: number, y: number) => (x + (y * MAP_WORLD_X));
 export const GET_X_FROM_STRATEGIC_INDEX = (i: number) => (i % MAP_WORLD_X);
-export const GET_Y_FROM_STRATEGIC_INDEX = (i: number) => (i / MAP_WORLD_X);
+export const GET_Y_FROM_STRATEGIC_INDEX = (i: number) => Math.trunc(i / MAP_WORLD_X);
 
 // macros to convert between the 2 different sector numbering systems
 export const SECTOR_INFO_TO_STRATEGIC_INDEX = (i: number) => (CALCULATE_STRATEGIC_INDEX(SECTORX(i), SECTORY(i)));

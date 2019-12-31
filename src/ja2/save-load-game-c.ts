@@ -1,5 +1,8 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+const path: typeof import('path') = require('path');
+
 /////////////////////////////////////////////////////
 //
 // Local Defines
@@ -649,7 +652,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
     // Place a message on the screen telling the user that we are saving the game
     iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, Enum324.BASIC_MERC_POPUP_BACKGROUND, Enum325.BASIC_MERC_POPUP_BORDER, zSaveLoadText[Enum371.SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, createPointer(() => usActualWidth, (v) => usActualWidth = v), createPointer(() => usActualHeight, (v) => usActualHeight = v));
-    usPosX = (640 - usActualWidth) / 2;
+    usPosX = Math.trunc((640 - usActualWidth) / 2);
 
     RenderMercPopUpBoxFromIndex(iSaveLoadGameMessageBoxID, usPosX, 160, FRAME_BUFFER);
 
@@ -2271,7 +2274,7 @@ function LoadSoldierStructure(hFile: HWFILE): boolean {
   // Loop through all the soldier structs to load
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
     // update the progress bar
-    uiPercentage = (cnt * 100) / (TOTAL_SOLDIERS - 1);
+    uiPercentage = Math.trunc((cnt * 100) / (TOTAL_SOLDIERS - 1));
 
     RenderProgressBar(0, uiPercentage);
 
@@ -3007,7 +3010,10 @@ function SaveOppListInfoToSavedGame(hFile: HWFILE): boolean {
 
   // Save the Public Last Noise Gridno
   uiSaveSize = MAXTEAMS;
-  buffer = Buffer.allocUnsafe(uiSaveSize);
+  // BUG: gsPublicNoiseGridno is UINT16[MAXTEAMS], but uiSaveSize is only
+  // MAXTEAMS so only first half of the array is actually written. For
+  // compatibility I have to follow the bug.
+  buffer = Buffer.allocUnsafe(uiSaveSize * 2);
   writeIntArray(gsPublicNoiseGridno, buffer, 0, 2);
   uiNumBytesWritten = FileWrite(hFile, buffer, uiSaveSize);
   if (uiNumBytesWritten != uiSaveSize) {
@@ -3099,7 +3105,7 @@ function LoadOppListInfoFromSavedGame(hFile: HWFILE): boolean {
 
   // Load the Public Last Noise Gridno
   uiLoadSize = MAXTEAMS;
-  buffer = Buffer.allocUnsafe(uiLoadSize);
+  buffer = Buffer.allocUnsafe(uiLoadSize * 2);
   uiNumBytesRead = FileRead(hFile, buffer, uiLoadSize);
   if (uiNumBytesRead != uiLoadSize) {
     return false;
@@ -4114,24 +4120,24 @@ export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
   let hFile: HWFILE;
   let fFile1Exist: boolean;
   let fFile2Exist: boolean;
-  let CreationTime1: SGP_FILETIME;
-  let LastAccessedTime1: SGP_FILETIME;
-  let LastWriteTime1: SGP_FILETIME;
-  let CreationTime2: SGP_FILETIME;
-  let LastAccessedTime2: SGP_FILETIME;
-  let LastWriteTime2: SGP_FILETIME;
+  let CreationTime1: SGP_FILETIME = createFileTime();
+  let LastAccessedTime1: SGP_FILETIME = createFileTime();
+  let LastWriteTime1: SGP_FILETIME = createFileTime();
+  let CreationTime2: SGP_FILETIME = createFileTime();
+  let LastAccessedTime2: SGP_FILETIME = createFileTime();
+  let LastWriteTime2: SGP_FILETIME = createFileTime();
 
   fFile1Exist = false;
   fFile2Exist = false;
 
   // The name of the file
-  zFileName1 = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 0, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
-  zFileName2 = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], 1, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+  zFileName1 = path.join(pMessageStrings[Enum333.MSG_SAVEDIRECTORY], sprintf('Auto%s.%s', (0).toString().padStart(2, '0'), pMessageStrings[Enum333.MSG_SAVEEXTENSION]));
+  zFileName2 = path.join(pMessageStrings[Enum333.MSG_SAVEDIRECTORY], sprintf('Auto%s.%s', (1).toString().padStart(2, '0'), pMessageStrings[Enum333.MSG_SAVEEXTENSION]));
 
   if (FileExists(zFileName1)) {
     hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 
-    GetFileManFileTime(hFile, addressof(CreationTime1), addressof(LastAccessedTime1), addressof(LastWriteTime1));
+    GetFileManFileTime(hFile, CreationTime1, LastAccessedTime1, LastWriteTime1);
 
     FileClose(hFile);
 
@@ -4141,7 +4147,7 @@ export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
   if (FileExists(zFileName2)) {
     hFile = FileOpen(zFileName2, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
 
-    GetFileManFileTime(hFile, addressof(CreationTime2), addressof(LastAccessedTime2), addressof(LastWriteTime2));
+    GetFileManFileTime(hFile, CreationTime2, LastAccessedTime2, LastWriteTime2);
 
     FileClose(hFile);
 
@@ -4161,7 +4167,7 @@ export function GetNumberForAutoSave(fLatestAutoSave: boolean): INT8 {
     else
       return -1;
   } else {
-    if (CompareSGPFileTimes(addressof(LastWriteTime1), addressof(LastWriteTime2)) > 0)
+    if (CompareSGPFileTimes(LastWriteTime1, LastWriteTime2) > 0)
       return 0;
     else
       return 1;
@@ -4238,7 +4244,7 @@ function CalcJA2EncryptionSet(pSaveGameHeader: SAVED_GAME_HEADER): UINT32 {
 
   uiEncryptionSet = uiEncryptionSet % 10;
 
-  uiEncryptionSet += pSaveGameHeader.uiDay / 10;
+  uiEncryptionSet += Math.trunc(pSaveGameHeader.uiDay / 10);
 
   uiEncryptionSet = uiEncryptionSet % 19;
 

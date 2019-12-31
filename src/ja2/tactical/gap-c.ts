@@ -178,7 +178,7 @@ export function PlayJA2GapSample(zSoundFile: string /* Pointer<CHAR8> */, usRate
   let spParms: SOUNDPARMS = createSoundParams();
 
   spParms.uiSpeed = usRate;
-  spParms.uiVolume = ((ubVolume / HIGHVOLUME) * GetSpeechVolume());
+  spParms.uiVolume = Math.trunc((ubVolume / HIGHVOLUME) * GetSpeechVolume());
   spParms.uiLoop = ubLoops;
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;

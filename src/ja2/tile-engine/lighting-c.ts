@@ -739,7 +739,7 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
       }
 
       if (uiFlags & LIGHT_BACKLIGHT)
-        ubShadeAdd = ubShade * 7 / 10;
+        ubShadeAdd = Math.trunc(ubShade * 7 / 10);
 
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != null) {
@@ -855,7 +855,7 @@ function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: 
       }
 
       if (uiFlags & LIGHT_BACKLIGHT)
-        ubShadeSubtract = ubShade * 7 / 10;
+        ubShadeSubtract = Math.trunc(ubShade * 7 / 10);
 
       pMerc = gpWorldLevelData[uiTile].pMercHead;
       while (pMerc != null) {
@@ -1181,15 +1181,15 @@ function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT
   dDistance = LinearDistanceDouble(iX, iY, iHotSpotX, iHotSpotY);
   dDistance /= DISTANCE_SCALE;
 
-  iLightDecay = (dDistance * LIGHT_DECAY);
+  iLightDecay = Math.trunc(dDistance * LIGHT_DECAY);
 
   if ((iLightDecay >= ubIntensity))
     ubShade = 0;
   else
     ubShade = ubIntensity - iLightDecay;
 
-  iX /= DISTANCE_SCALE;
-  iY /= DISTANCE_SCALE;
+  iX = Math.trunc(iX / DISTANCE_SCALE);
+  iY = Math.trunc(iY / DISTANCE_SCALE);
 
   LightAddRayNode(iLight, iX, iY, ubShade, uiFlags);
   return true;
@@ -1209,15 +1209,15 @@ function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iH
   dDistance = LinearDistanceDouble(iX, iY, iHotSpotX, iHotSpotY);
   dDistance /= DISTANCE_SCALE;
 
-  iLightDecay = (dDistance * LIGHT_DECAY);
+  iLightDecay = Math.trunc(dDistance * LIGHT_DECAY);
 
   if ((iLightDecay >= ubIntensity))
     ubShade = 0;
   else
     ubShade = ubIntensity - iLightDecay;
 
-  iX /= DISTANCE_SCALE;
-  iY /= DISTANCE_SCALE;
+  iX = Math.trunc(iX / DISTANCE_SCALE);
+  iY = Math.trunc(iY / DISTANCE_SCALE);
 
   LightInsertRayNode(iLight, usLightIns, iX, iY, ubShade, uiFlags);
 
@@ -1361,7 +1361,7 @@ and to avoid nasty boundary conditions and division by 0 */
   if (XDelta >= YDelta) {
     /* X major line */
     /* Minimum # of pixels in a run in this line */
-    WholeStep = XDelta / YDelta;
+    WholeStep = Math.trunc(XDelta / YDelta);
 
     /* Error term adjust each time Y steps by 1; used to tell when one
        extra pixel should be drawn as part of a run, to account for
@@ -1379,7 +1379,7 @@ and to avoid nasty boundary conditions and division by 0 */
     /* The initial and last runs are partial, because Y advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional
@@ -1452,7 +1452,7 @@ and to avoid nasty boundary conditions and division by 0 */
     /* Y major line */
 
     /* Minimum # of pixels in a run in this line */
-    WholeStep = YDelta / XDelta;
+    WholeStep = Math.trunc(YDelta / XDelta);
 
     /* Error term adjust each time X steps by 1; used to tell when 1 extra
        pixel should be drawn as part of a run, to account for
@@ -1469,7 +1469,7 @@ and to avoid nasty boundary conditions and division by 0 */
     /* The initial and last runs are partial, because X advances only 0.5
        for these runs, rather than 1. Divide one full run, plus the
        initial pixel, between the initial and last runs */
-    InitialPixelCount = (WholeStep / 2) + 1;
+    InitialPixelCount = Math.trunc(WholeStep / 2) + 1;
     FinalPixelCount = InitialPixelCount;
 
     /* If the basic run length is even and there's no fractional advance, we
@@ -1579,7 +1579,7 @@ function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB
     Temp = BSquared - (BSquared * WorkingX * WorkingX / ASquared);
 
     if (Temp >= 0)
-      WorkingY = (Math.sqrt(Temp) + 0.5);
+      WorkingY = Math.trunc(Math.sqrt(Temp) + 0.5);
     else
       WorkingY = 0;
 
@@ -1612,7 +1612,7 @@ function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB
     Temp = ASquared - (ASquared * WorkingY * WorkingY / BSquared);
 
     if (Temp >= 0)
-      WorkingX = (Math.sqrt(Temp) + 0.5);
+      WorkingX = Math.trunc(Math.sqrt(Temp) + 0.5);
     else
       WorkingX = 0;
 
@@ -2696,23 +2696,24 @@ export function LightSetColors(pPal: SGPPaletteEntry[], ubNumColors: UINT8): boo
 
   // we will have at least one light color
   copySGPPaletteEntry(gpLightColors[0], pPal[0]);
-  copyObjectArray(gpOrigLights, pPal, copySGPPaletteEntry);
+  copySGPPaletteEntry(gpOrigLights[0], pPal[0]);
+  copySGPPaletteEntry(gpOrigLights[1], pPal[1]);
 
   gubNumLightColors = ubNumColors;
 
   // if there are two colors, calculate a third palette that is a mix of the two
   if (ubNumColors == 2) {
-    sRed = Math.min(((pPal[0].peRed) * LVL1_L1_PER / 100 + (pPal[1].peRed) * LVL1_L2_PER / 100), 255);
-    sGreen = Math.min(((pPal[0].peGreen) * LVL1_L1_PER / 100 + (pPal[1].peGreen) * LVL1_L2_PER / 100), 255);
-    sBlue = Math.min(((pPal[0].peBlue) * LVL1_L1_PER / 100 + (pPal[1].peBlue) * LVL1_L2_PER / 100), 255);
+    sRed = Math.min((Math.trunc((pPal[0].peRed) * LVL1_L1_PER / 100) + Math.trunc((pPal[1].peRed) * LVL1_L2_PER / 100)), 255);
+    sGreen = Math.min((Math.trunc((pPal[0].peGreen) * LVL1_L1_PER / 100) + Math.trunc((pPal[1].peGreen) * LVL1_L2_PER / 100)), 255);
+    sBlue = Math.min((Math.trunc((pPal[0].peBlue) * LVL1_L1_PER / 100) + Math.trunc((pPal[1].peBlue) * LVL1_L2_PER / 100)), 255);
 
     gpLightColors[1].peRed = (sRed);
     gpLightColors[1].peGreen = (sGreen);
     gpLightColors[1].peBlue = (sBlue);
 
-    sRed = Math.min(((pPal[0].peRed) * LVL2_L1_PER / 100 + (pPal[1].peRed) * LVL2_L2_PER / 100), 255);
-    sGreen = Math.min(((pPal[0].peGreen) * LVL2_L1_PER / 100 + (pPal[1].peGreen) * LVL2_L2_PER / 100), 255);
-    sBlue = Math.min(((pPal[0].peBlue) * LVL2_L1_PER / 100 + (pPal[1].peBlue) * LVL2_L2_PER / 100), 255);
+    sRed = Math.min((Math.trunc((pPal[0].peRed) * LVL2_L1_PER / 100) + Math.trunc((pPal[1].peRed) * LVL2_L2_PER / 100)), 255);
+    sGreen = Math.min((Math.trunc((pPal[0].peGreen) * LVL2_L1_PER / 100) + Math.trunc((pPal[1].peGreen) * LVL2_L2_PER / 100)), 255);
+    sBlue = Math.min((Math.trunc((pPal[0].peBlue) * LVL2_L1_PER / 100) + Math.trunc((pPal[1].peBlue) * LVL2_L2_PER / 100)), 255);
 
     gpLightColors[2].peRed = (sRed);
     gpLightColors[2].peGreen = (sGreen);

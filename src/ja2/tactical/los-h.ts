@@ -11,9 +11,9 @@ const FIXEDPT_FRACTIONAL_BITS = 20;
 export const FIXEDPT_FRACTIONAL_RESOLUTION = 1048576;
 
 export const INT32_TO_FIXEDPT = (n: number) => ((n) << FIXEDPT_FRACTIONAL_BITS);
-export const FIXEDPT_TO_INT32 = (n: number) => ((n) / FIXEDPT_FRACTIONAL_RESOLUTION);
+export const FIXEDPT_TO_INT32 = (n: number) => Math.trunc((n) / FIXEDPT_FRACTIONAL_RESOLUTION);
 
-export const FIXEDPT_TO_TILE_NUM = (n: number) => (FIXEDPT_TO_INT32((n)) / CELL_X_SIZE);
+export const FIXEDPT_TO_TILE_NUM = (n: number) => Math.trunc(FIXEDPT_TO_INT32((n)) / CELL_X_SIZE);
 export const FIXEDPT_TO_LOS_INDEX = (n: number) => (CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32((n)) % CELL_X_SIZE));
 
 // fixed-point arithmetic definitions end here
@@ -44,14 +44,14 @@ export const HEIGHT_UNITS = 256;
 export const HEIGHT_UNITS_PER_INDEX = (HEIGHT_UNITS / PROFILE_Z_SIZE);
 const MAX_STRUCTURE_HEIGHT = 50;
 // 5.12 == HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT
-export const CONVERT_PIXELS_TO_HEIGHTUNITS = (n: number) => ((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT);
-const CONVERT_PIXELS_TO_INDEX = (n: number) => ((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS_PER_INDEX);
-export const CONVERT_HEIGHTUNITS_TO_INDEX = (n: number) => ((n) / HEIGHT_UNITS_PER_INDEX);
+export const CONVERT_PIXELS_TO_HEIGHTUNITS = (n: number) => Math.trunc((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT);
+const CONVERT_PIXELS_TO_INDEX = (n: number) => Math.trunc((n) * HEIGHT_UNITS / MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS_PER_INDEX);
+export const CONVERT_HEIGHTUNITS_TO_INDEX = (n: number) => Math.trunc((n) / HEIGHT_UNITS_PER_INDEX);
 export const CONVERT_HEIGHTUNITS_TO_DISTANCE = (n: number) => ((n) / (HEIGHT_UNITS / CELL_X_SIZE));
-export const CONVERT_HEIGHTUNITS_TO_PIXELS = (n: number) => ((n) * MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS);
+export const CONVERT_HEIGHTUNITS_TO_PIXELS = (n: number) => Math.trunc((n) * MAX_STRUCTURE_HEIGHT / HEIGHT_UNITS);
 export const CONVERT_WITHINTILE_TO_INDEX = (n: number) => ((n) >> 1);
 const CONVERT_INDEX_TO_WITHINTILE = (n: number) => ((n) << 1);
-export const CONVERT_INDEX_TO_PIXELS = (n: number) => ((n) * MAX_STRUCTURE_HEIGHT * HEIGHT_UNITS_PER_INDEX / HEIGHT_UNITS);
+export const CONVERT_INDEX_TO_PIXELS = (n: number) => Math.trunc((n) * MAX_STRUCTURE_HEIGHT * HEIGHT_UNITS_PER_INDEX / HEIGHT_UNITS);
 
 const TREE_SIGHT_REDUCTION = 6;
 const NORMAL_TREES = 10;

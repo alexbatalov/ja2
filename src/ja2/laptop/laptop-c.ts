@@ -1459,9 +1459,10 @@ export function LaptopScreenHandle(): UINT32 {
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
     BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, 0, 0, 640, 480);
     PlayJA2SampleFromFile("SOUNDS\\Laptop power up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+    iRealPercentage = 100; // FIXME: Synchronous rendering
     while (iRealPercentage < 100) {
       uiCurrTime = GetJA2Clock();
-      iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
+      iPercentage = Math.trunc((uiCurrTime - uiStartTime) * 100 / uiTimeRange);
       iPercentage = Math.min(iPercentage, 100);
 
       iRealPercentage = iPercentage;
@@ -1469,28 +1470,28 @@ export function LaptopScreenHandle(): UINT32 {
       // Factor the percentage so that it is modified by a gravity falling acceleration effect.
       iFactor = (iPercentage - 50) * 2;
       if (iPercentage < 50)
-        iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+        iPercentage = Math.trunc(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
       else
-        iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
+        iPercentage = Math.trunc(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
 
       // Mapscreen source rect
-      SrcRect1.iLeft = 464 * iPercentage / 100;
-      SrcRect1.iRight = 640 - 163 * iPercentage / 100;
-      SrcRect1.iTop = 417 * iPercentage / 100;
-      SrcRect1.iBottom = 480 - 55 * iPercentage / 100;
+      SrcRect1.iLeft = Math.trunc(464 * iPercentage / 100);
+      SrcRect1.iRight = Math.trunc(640 - 163 * iPercentage / 100);
+      SrcRect1.iTop = Math.trunc(417 * iPercentage / 100);
+      SrcRect1.iBottom = Math.trunc(480 - 55 * iPercentage / 100);
       // Laptop source rect
       if (iPercentage < 99)
-        iScalePercentage = 10000 / (100 - iPercentage);
+        iScalePercentage = Math.trunc(10000 / (100 - iPercentage));
       else
         iScalePercentage = 5333;
-      iWidth = 12 * iScalePercentage / 100;
-      iHeight = 9 * iScalePercentage / 100;
-      iX = 472 - (472 - 320) * iScalePercentage / 5333;
-      iY = 424 - (424 - 240) * iScalePercentage / 5333;
+      iWidth = Math.trunc(12 * iScalePercentage / 100);
+      iHeight = Math.trunc(9 * iScalePercentage / 100);
+      iX = Math.trunc(472 - (472 - 320) * iScalePercentage / 5333);
+      iY = Math.trunc(424 - (424 - 240) * iScalePercentage / 5333);
 
-      SrcRect2.iLeft = iX - iWidth / 2;
+      SrcRect2.iLeft = Math.trunc(iX - iWidth / 2);
       SrcRect2.iRight = SrcRect2.iLeft + iWidth;
-      SrcRect2.iTop = iY - iHeight / 2;
+      SrcRect2.iTop = Math.trunc(iY - iHeight / 2);
       SrcRect2.iBottom = SrcRect2.iTop + iHeight;
       // SrcRect2.iLeft = 464 - 464 * iScalePercentage / 100;
       // SrcRect2.iRight = 477 + 163 * iScalePercentage / 100;
@@ -2035,11 +2036,12 @@ export function LeaveLapTopScreen(): boolean {
       uiStartTime = GetJA2Clock();
       BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
       PlayJA2SampleFromFile("SOUNDS\\Laptop power down (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
+      iRealPercentage = 0; // FIXME: Synchronous rendering
       while (iRealPercentage > 0) {
         BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, 0, 0, 640, 480);
 
         uiCurrTime = GetJA2Clock();
-        iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
+        iPercentage = Math.trunc((uiCurrTime - uiStartTime) * 100 / uiTimeRange);
         iPercentage = Math.min(iPercentage, 100);
         iPercentage = 100 - iPercentage;
 
@@ -2048,28 +2050,28 @@ export function LeaveLapTopScreen(): boolean {
         // Factor the percentage so that it is modified by a gravity falling acceleration effect.
         iFactor = (iPercentage - 50) * 2;
         if (iPercentage < 50)
-          iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+          iPercentage = Math.trunc(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
         else
-          iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
+          iPercentage = Math.trunc(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
 
         // Mapscreen source rect
-        SrcRect1.iLeft = 464 * iPercentage / 100;
-        SrcRect1.iRight = 640 - 163 * iPercentage / 100;
-        SrcRect1.iTop = 417 * iPercentage / 100;
-        SrcRect1.iBottom = 480 - 55 * iPercentage / 100;
+        SrcRect1.iLeft = 464 * Math.trunc(iPercentage / 100);
+        SrcRect1.iRight = 640 - 163 * Math.trunc(iPercentage / 100);
+        SrcRect1.iTop = 417 * Math.trunc(iPercentage / 100);
+        SrcRect1.iBottom = 480 - 55 * Math.trunc(iPercentage / 100);
         // Laptop source rect
         if (iPercentage < 99)
-          iScalePercentage = 10000 / (100 - iPercentage);
+          iScalePercentage = Math.trunc(10000 / (100 - iPercentage));
         else
           iScalePercentage = 5333;
-        iWidth = 12 * iScalePercentage / 100;
-        iHeight = 9 * iScalePercentage / 100;
-        iX = 472 - (472 - 320) * iScalePercentage / 5333;
-        iY = 424 - (424 - 240) * iScalePercentage / 5333;
+        iWidth = 12 * Math.trunc(iScalePercentage / 100);
+        iHeight = 9 * Math.trunc(iScalePercentage / 100);
+        iX = 472 - (472 - 320) * Math.trunc(iScalePercentage / 5333);
+        iY = 424 - (424 - 240) * Math.trunc(iScalePercentage / 5333);
 
-        SrcRect2.iLeft = iX - iWidth / 2;
+        SrcRect2.iLeft = iX - Math.trunc(iWidth / 2);
         SrcRect2.iRight = SrcRect2.iLeft + iWidth;
-        SrcRect2.iTop = iY - iHeight / 2;
+        SrcRect2.iTop = iY - Math.trunc(iHeight / 2);
         SrcRect2.iBottom = SrcRect2.iTop + iHeight;
         // SrcRect2.iLeft = 464 - 464 * iScalePercentage / 100;
         // SrcRect2.iRight = 477 + 163 * iScalePercentage / 100;
@@ -3690,13 +3692,13 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
   }
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosX = (usTopLeftX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
+  sPosX = Math.trunc(usTopLeftX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosRightX = (usTopRightX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
+  sPosRightX = Math.trunc(usTopRightX + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosY = (usTopLeftY + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
+  sPosY = Math.trunc(usTopLeftY + dTemp * DisplayTitleBarMaximizeGraphic__ubCount);
 
   sPosBottomY = LAPTOP_TITLE_BAR_HEIGHT;
 
@@ -3753,7 +3755,7 @@ function DisplayTitleBarMaximizeGraphic(fForward: boolean, fInit: boolean, usTop
   InvalidateRegion(DestRect.iLeft, DestRect.iTop, DestRect.iRight, DestRect.iBottom);
   InvalidateRegion(DisplayTitleBarMaximizeGraphic__LastRect.iLeft, DisplayTitleBarMaximizeGraphic__LastRect.iTop, DisplayTitleBarMaximizeGraphic__LastRect.iRight, DisplayTitleBarMaximizeGraphic__LastRect.iBottom);
 
-  DisplayTitleBarMaximizeGraphic__LastRect = DestRect;
+  copySGPRect(DisplayTitleBarMaximizeGraphic__LastRect, DestRect);
 
   if (fForward) {
     if (DisplayTitleBarMaximizeGraphic__ubCount == NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
@@ -4372,7 +4374,7 @@ export function PrintDate(): void {
 
   SetFontShadow(NO_SHADOW);
 
-  mprintf(30 + (70 - StringPixLength(gswzWorldTimeStr, FONT10ARIAL())) / 2, 433, gswzWorldTimeStr);
+  mprintf(30 + Math.trunc((70 - StringPixLength(gswzWorldTimeStr, FONT10ARIAL())) / 2), 433, gswzWorldTimeStr);
 
   SetFontShadow(DEFAULT_SHADOW);
 

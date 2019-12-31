@@ -166,8 +166,8 @@ let gsUpArrowY: UINT16;
 let gsDownArrowX: UINT16;
 let gsDownArrowY: UINT16;
 
-let giUpArrowRect: UINT32;
-let giDownArrowRect: UINT32;
+let giUpArrowRect: UINT32 = 0;
+let giDownArrowRect: UINT32 = 0;
 
 export let fFirstTimeInGameScreen: boolean = true;
 export let fInterfacePanelDirty: UINT8 = DIRTYLEVEL2;
@@ -1123,10 +1123,10 @@ export function GetSoldierAboveGuyPositions(pSoldier: SOLDIERTYPE, psX: Pointer<
 
   if (pSoldier.ubProfile != NO_PROFILE) {
     if (fRadio) {
-      psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
+      psX.value = sMercScreenX - Math.trunc(80 / 2) - pSoldier.sLocatorOffX;
       psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
     } else {
-      psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
+      psX.value = sMercScreenX - Math.trunc(80 / 2) - pSoldier.sLocatorOffX;
       psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
 
       // OK, Check if we need to go below....
@@ -1135,13 +1135,13 @@ export function GetSoldierAboveGuyPositions(pSoldier: SOLDIERTYPE, psX: Pointer<
       // If not a radio position, adjust if we are getting hit, to be lower!
       // If we are getting hit, lower them!
       if (pSoldier.fDisplayDamage || psY.value < gsVIEWPORT_WINDOW_START_Y) {
-        psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
+        psX.value = sMercScreenX - Math.trunc(80 / 2) - pSoldier.sLocatorOffX;
         psY.value = sMercScreenY;
       }
     }
   } else {
     // Display Text!
-    psX.value = sMercScreenX - (80 / 2) - pSoldier.sLocatorOffX;
+    psX.value = sMercScreenX - Math.trunc(80 / 2) - pSoldier.sLocatorOffX;
     psY.value = sMercScreenY - sTextBodyTypeYOffset + sStanceOffset;
   }
 }
@@ -1440,7 +1440,7 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: string /* Pointer<UINT
 
   if (giPopupSlideMessageOverlay == -1) {
     // Set Overlay
-    VideoOverlayDesc.sLeft = (640 - gusOverlayPopupBoxWidth) / 2;
+    VideoOverlayDesc.sLeft = Math.trunc((640 - gusOverlayPopupBoxWidth) / 2);
     VideoOverlayDesc.sTop = 100;
     VideoOverlayDesc.sRight = VideoOverlayDesc.sLeft + gusOverlayPopupBoxWidth;
     VideoOverlayDesc.sBottom = VideoOverlayDesc.sTop + gusOverlayPopupBoxHeight;
@@ -1487,11 +1487,11 @@ function DrawBarsInUIBox(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWid
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(240, 240, 20));
-      RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
@@ -1500,11 +1500,11 @@ function DrawBarsInUIBox(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWid
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(222, 132, 132));
-      RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
@@ -1512,33 +1512,33 @@ function DrawBarsInUIBox(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT16, sWid
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(200, 0, 0));
-    RectangleDraw(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_RED;
-    RectangleDraw8(true, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 1, Math.trunc(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   }
 
   dPercentage = (pSoldier.bBreathMax) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(20, 20, 150));
-    RectangleDraw(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 4, Math.trunc(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 4, Math.trunc(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
   dPercentage = (pSoldier.bBreath) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(100, 100, 220));
-    RectangleDraw(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 3, sYPos + 4, Math.trunc(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(true, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(true, sXPos + 3, sYPos + 4, Math.trunc(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
   /*
@@ -1693,8 +1693,8 @@ export function InitDoorOpenMenu(pSoldier: SOLDIERTYPE, pStructure: STRUCTURE, u
   LocateSoldier(pSoldier.ubID, 0);
   ({ sHeight, sWidth } = GetSoldierAnimDims(pSoldier));
   ({ sScreenX, sScreenY } = GetSoldierScreenPos(pSoldier));
-  gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
-  gOpenDoorMenu.sY = sScreenY - ((BUTTON_PANEL_HEIGHT - sHeight) / 2);
+  gOpenDoorMenu.sX = sScreenX - Math.trunc((BUTTON_PANEL_WIDTH - sWidth) / 2);
+  gOpenDoorMenu.sY = sScreenY - Math.trunc((BUTTON_PANEL_HEIGHT - sHeight) / 2);
 
   // Alrighty, cancel lock UI if we havn't done so already
   UnSetUIBusy(pSoldier.ubID);
@@ -2165,7 +2165,7 @@ export function InternalBeginUIMessage(fUseSkullIcon: boolean, pFontString: stri
 
   if (giUIMessageOverlay == -1) {
     // Set Overlay
-    VideoOverlayDesc.sLeft = (640 - gusUIMessageWidth) / 2;
+    VideoOverlayDesc.sLeft = Math.trunc((640 - gusUIMessageWidth) / 2);
     VideoOverlayDesc.sTop = 150;
     VideoOverlayDesc.sRight = VideoOverlayDesc.sLeft + gusUIMessageWidth;
     VideoOverlayDesc.sBottom = VideoOverlayDesc.sTop + gusUIMessageHeight;
@@ -2209,9 +2209,9 @@ export function BeginMapUIMessage(ubPosition: UINT8, pFontString: string /* Poin
 
   if (giUIMessageOverlay == -1) {
     // Set Overlay
-    VideoOverlayDesc.sLeft = 20 + MAP_VIEW_START_X + (MAP_VIEW_WIDTH - gusUIMessageWidth) / 2;
+    VideoOverlayDesc.sLeft = 20 + MAP_VIEW_START_X + Math.trunc((MAP_VIEW_WIDTH - gusUIMessageWidth) / 2);
 
-    VideoOverlayDesc.sTop = MAP_VIEW_START_Y + (MAP_VIEW_HEIGHT - gusUIMessageHeight) / 2;
+    VideoOverlayDesc.sTop = MAP_VIEW_START_Y + Math.trunc((MAP_VIEW_HEIGHT - gusUIMessageHeight) / 2);
 
     if (ubPosition == MSG_MAP_UI_POSITION_UPPER) {
       VideoOverlayDesc.sTop -= 100;
@@ -2255,13 +2255,13 @@ export function EndUIMessage(): void {
 }
 
 const PLAYER_TEAM_TIMER_SEC_PER_TICKS = 100;
-const PLAYER_TEAM_TIMER_INTTERUPT_GRACE = (15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+const PLAYER_TEAM_TIMER_INTTERUPT_GRACE = Math.trunc(15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 const PLAYER_TEAM_TIMER_GRACE_PERIOD = 1000;
-const PLAYER_TEAM_TIMER_TICKS_PER_OK_MERC = (15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
-const PLAYER_TEAM_TIMER_TICKS_PER_NOTOK_MERC = (5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
-const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = (5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+const PLAYER_TEAM_TIMER_TICKS_PER_OK_MERC = Math.trunc(15000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+const PLAYER_TEAM_TIMER_TICKS_PER_NOTOK_MERC = Math.trunc(5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = Math.trunc(5000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 const PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS = (500);
-const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
+const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = Math.trunc(2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
 export function AddTopMessage(ubType: UINT8, pzString: string /* Pointer<UINT16> */): boolean {
   let cnt: UINT32;
@@ -2814,7 +2814,7 @@ function CalculateAimCubeUIPhysics(): void {
   if (gCubeUIData.fActiveHeightBar) {
     // OK, determine which power to use.....
     // TODO this: take force / max force * 10....
-    gCubeUIData.ubPowerIndex = (gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
+    gCubeUIData.ubPowerIndex = Math.trunc(gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
   }
 
   if (gCubeUIData.fActivePowerBar) {
@@ -2906,7 +2906,7 @@ function IncrementAimCubeUI(): void {
 
       // OK, determine which power to use.....
       // TODO this: take force / max force * 10....
-      gCubeUIData.ubPowerIndex = (gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
+      gCubeUIData.ubPowerIndex = Math.trunc(gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
     }
 
     // Cycle the last height yellow once
@@ -3129,8 +3129,8 @@ export function RenderTopmostMultiPurposeLocator(): void {
   // Calculate guy's position
   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;
+  sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+  sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S) - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;
 
   // Adjust for offset position on screen
   sXPos -= gsRenderWorldOffsetX;

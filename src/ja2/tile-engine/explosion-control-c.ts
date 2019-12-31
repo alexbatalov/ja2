@@ -279,7 +279,7 @@ function GenerateExplosionFromExplosionPointer(pExplosion: EXPLOSIONTYPE): void 
       if ((pExplosion.iLightID = LightSpriteCreate("L-R04.LHT", 0)) != (-1)) {
         LightSpritePower(pExplosion.iLightID, true);
 
-        LightSpritePosition(pExplosion.iLightID, (sX / CELL_X_SIZE), (sY / CELL_Y_SIZE));
+        LightSpritePosition(pExplosion.iLightID, Math.trunc(sX / CELL_X_SIZE), Math.trunc(sY / CELL_Y_SIZE));
       }
     }
   }
@@ -1018,7 +1018,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   gTacticalStatus.ubAttackBusyCount++;
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Incrementing Attack: Explosion dishing out damage, Count now %d", gTacticalStatus.ubAttackBusyCount));
 
-  sNewWoundAmt = sWoundAmt - Math.min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100;
+  sNewWoundAmt = sWoundAmt - Math.trunc(Math.min(sWoundAmt, 35) * ArmourVersusExplosivesPercent(pSoldier) / 100);
   if (sNewWoundAmt < 0) {
     sNewWoundAmt = 0;
   }
@@ -1082,7 +1082,7 @@ export function DishOutGasDamage(pSoldier: SOLDIERTYPE, pExplosive: EXPLOSIVETYP
     if (bPosOfMask != NO_SLOT) {
       if (pSoldier.inv[bPosOfMask].bStatus[0] < GASMASK_MIN_STATUS) {
         // GAS MASK reduces breath loss by its work% (it leaks if not at least 70%)
-        sBreathAmt = (sBreathAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100;
+        sBreathAmt = Math.trunc((sBreathAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100);
         if (sBreathAmt > 500) {
           // if at least 500 of breath damage got through
           // the soldier within the blast radius is gassed for at least one
@@ -1093,7 +1093,7 @@ export function DishOutGasDamage(pSoldier: SOLDIERTYPE, pExplosive: EXPLOSIVETYP
         if (pSoldier.uiStatusFlags & SOLDIER_PC) {
           if (sWoundAmt > 1) {
             pSoldier.inv[bPosOfMask].bStatus[0] -= Random(4);
-            sWoundAmt = (sWoundAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100;
+            sWoundAmt = Math.trunc((sWoundAmt * (100 - pSoldier.inv[bPosOfMask].bStatus[0])) / 100);
           } else if (sWoundAmt == 1) {
             pSoldier.inv[bPosOfMask].bStatus[0] -= Random(2);
           }
@@ -1220,10 +1220,10 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   uiRoll = PreRandom(100);
 
   // Calculate wound amount
-  sWoundAmt = pExplosive.ubDamage + ((pExplosive.ubDamage * uiRoll) / 100);
+  sWoundAmt = pExplosive.ubDamage + Math.trunc((pExplosive.ubDamage * uiRoll) / 100);
 
   // Calculate breath amount ( if stun damage applicable )
-  sBreathAmt = (pExplosive.ubStunDamage * 100) + (((pExplosive.ubStunDamage / 2) * 100 * uiRoll) / 100);
+  sBreathAmt = (pExplosive.ubStunDamage * 100) + Math.trunc((Math.trunc(pExplosive.ubStunDamage / 2) * 100 * uiRoll) / 100);
 
   // ATE: Make sure guys get pissed at us!
   HandleBuldingDestruction(sGridNo, ubOwner);
@@ -1238,12 +1238,12 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       // leave as is, has to be at range 0 here
     } else if (uiDist < pExplosive.ubRadius) {
       // if radius is 5, go down by 5ths ~ 20%
-      sWoundAmt -= (sWoundAmt * uiDist / pExplosive.ubRadius);
-      sBreathAmt -= (sBreathAmt * uiDist / pExplosive.ubRadius);
+      sWoundAmt -= Math.trunc(sWoundAmt * uiDist / pExplosive.ubRadius);
+      sBreathAmt -= Math.trunc(sBreathAmt * uiDist / pExplosive.ubRadius);
     } else {
       // at the edge of the explosion, do half the previous damage
-      sWoundAmt = ((sWoundAmt / pExplosive.ubRadius) / 2);
-      sBreathAmt = ((sBreathAmt / pExplosive.ubRadius) / 2);
+      sWoundAmt = Math.trunc(Math.trunc(sWoundAmt / pExplosive.ubRadius) / 2);
+      sBreathAmt = Math.trunc(Math.trunc(sBreathAmt / pExplosive.ubRadius) / 2);
     }
 
     if (sWoundAmt < 0)
@@ -1253,9 +1253,9 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       sBreathAmt = 0;
 
     // damage structures
-    if (uiDist <= Math.max(1, (pExplosive.ubDamage / 30))) {
+    if (uiDist <= Math.max(1, Math.trunc(pExplosive.ubDamage / 30))) {
       if (Item[usItem].usItemClass & IC_GRENADE) {
-        sStructDmgAmt = sWoundAmt / 3;
+        sStructDmgAmt = Math.trunc(sWoundAmt / 3);
       } else // most explosives
       {
         sStructDmgAmt = sWoundAmt;
@@ -1354,12 +1354,12 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
 
       if (bLevel == 1) {
         if ((ubPerson = WhoIsThere2(sGridNo, 0)) != NOBODY) {
-          if ((sWoundAmt / 2) > 20) {
+          if (Math.trunc(sWoundAmt / 2) > 20) {
             // debris damage!
-            if ((sBreathAmt / 2) > 20) {
-              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random((sWoundAmt / 2) - 20), Random((sBreathAmt / 2) - 20), uiDist, usItem, sSubsequent);
+            if (Math.trunc(sBreathAmt / 2) > 20) {
+              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random(Math.trunc(sWoundAmt / 2) - 20), Random(Math.trunc(sBreathAmt / 2) - 20), uiDist, usItem, sSubsequent);
             } else {
-              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random((sWoundAmt / 2) - 20), 1, uiDist, usItem, sSubsequent);
+              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random(Math.trunc(sWoundAmt / 2) - 20), 1, uiDist, usItem, sSubsequent);
             }
           }
         }
@@ -1718,7 +1718,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
   }
 
   // Set values for recompile region to optimize area we need to recompile for MPs
-  gsRecompileAreaTop = sGridNo / WORLD_COLS;
+  gsRecompileAreaTop = Math.trunc(sGridNo / WORLD_COLS);
   gsRecompileAreaLeft = sGridNo % WORLD_COLS;
   gsRecompileAreaRight = gsRecompileAreaLeft;
   gsRecompileAreaBottom = gsRecompileAreaTop;
@@ -1760,7 +1760,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
 
         // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
         // ok, do what we do here...
-        if (ExpAffect(sGridNo, uiNewSpot, cnt / 2, usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
+        if (ExpAffect(sGridNo, uiNewSpot, Math.trunc(cnt / 2), usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
           fRecompileMovement = true;
         }
 
@@ -1792,7 +1792,7 @@ export function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ub
               if (ubKeepGoing) {
                 // ok, do what we do here
                 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
-                if (ExpAffect(sGridNo, uiNewSpot, ((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
+                if (ExpAffect(sGridNo, uiNewSpot, Math.trunc((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, fAnyMercHit__Pointer, bLevel, iSmokeEffectID)) {
                   fRecompileMovement = true;
                 }
                 uiBranchSpot = uiNewSpot;

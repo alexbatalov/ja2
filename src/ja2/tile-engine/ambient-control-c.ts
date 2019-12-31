@@ -269,7 +269,7 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): boolean {
   }
 
   // loop through listing to get num sounds...
-  for (cnt = (Number(fInNight) * 4); cnt < (NUM_SOUNDS_PER_TIMEFRAME / 2); cnt++) {
+  for (cnt = (Number(fInNight) * 4); cnt < Math.trunc(NUM_SOUNDS_PER_TIMEFRAME / 2); cnt++) {
     if (gSteadyStateAmbientTable[ubAmbience].zSoundNames[cnt][0] == '') {
       break;
     }

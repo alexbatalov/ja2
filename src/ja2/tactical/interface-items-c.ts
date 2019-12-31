@@ -193,12 +193,12 @@ let fItemDescDelete: boolean = false;
 export let gItemDescAttachmentRegions: MOUSE_REGION[] /* [4] */ = createArrayFrom(4, createMouseRegion);
 let gProsAndConsRegions: MOUSE_REGION[] /* [2] */ = createArrayFrom(2, createMouseRegion);
 
-let guiMoneyButtonBtn: UINT32[] /* [MAX_ATTACHMENTS] */;
+let guiMoneyButtonBtn: UINT32[] /* [MAX_ATTACHMENTS] */ = createArray(MAX_ATTACHMENTS, 0);
 let guiMoneyButtonImage: INT32;
 let guiMoneyDoneButtonImage: INT32;
 
-let gusOriginalAttachItem: UINT16[] /* [MAX_ATTACHMENTS] */;
-let gbOriginalAttachStatus: UINT8[] /* [MAX_ATTACHMENTS] */;
+let gusOriginalAttachItem: UINT16[] /* [MAX_ATTACHMENTS] */ = createArray(MAX_ATTACHMENTS, 0);
+let gbOriginalAttachStatus: UINT8[] /* [MAX_ATTACHMENTS] */ = createArray(MAX_ATTACHMENTS, 0);
 let gpAttachSoldier: SOLDIERTYPE | null /* Pointer<SOLDIERTYPE> */;
 
 interface MoneyLoc {
@@ -1603,8 +1603,8 @@ export function INVRenderItem(uiBuffer: UINT32, pSoldier: SOLDIERTYPE | null, pO
 
     // CENTER IN SLOT!
     // CANCEL OFFSETS!
-    sCenX = sX + (Math.abs(sWidth - usWidth) / 2) - pTrav.sOffsetX;
-    sCenY = sY + (Math.abs(sHeight - usHeight) / 2) - pTrav.sOffsetY;
+    sCenX = sX + Math.trunc(Math.abs(sWidth - usWidth) / 2) - pTrav.sOffsetX;
+    sCenY = sY + Math.trunc(Math.abs(sHeight - usHeight) / 2) - pTrav.sOffsetY;
 
     // Shadow area
     BltVideoObjectOutlineShadowFromIndex(uiBuffer, GetInterfaceGraphicForItem(pItem), pItem.ubGraphicNum, sCenX - 2, sCenY + 2);
@@ -2404,8 +2404,8 @@ export function RenderItemDescriptionBox(): void {
 
     // CENTER IN SLOT!
     // REMOVE OFFSETS!
-    sCenX = MAP_ITEMDESC_ITEM_X() + (Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
-    sCenY = MAP_ITEMDESC_ITEM_Y() + (Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
+    sCenX = MAP_ITEMDESC_ITEM_X() + Math.trunc(Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
+    sCenY = MAP_ITEMDESC_ITEM_Y() + Math.trunc(Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
 
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiMapItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -2608,7 +2608,7 @@ export function RenderItemDescriptionBox(): void {
         }
 
         // Range
-        RenderItemDescriptionBox__pStr = swprintf("%2d", (GunRange(gpItemDescObject)) / 10);
+        RenderItemDescriptionBox__pStr = swprintf("%2d", Math.trunc(GunRange(gpItemDescObject)) / 10);
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[3].sX + gsInvDescX + gMapWeaponStats[3].sValDx), (gMapWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2792,8 +2792,8 @@ export function RenderItemDescriptionBox(): void {
     usWidth = pTrav.usWidth;
 
     // CENTER IN SLOT!
-    sCenX = ITEMDESC_ITEM_X() + (Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
-    sCenY = ITEMDESC_ITEM_Y() + (Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
+    sCenX = ITEMDESC_ITEM_X() + Math.trunc(Math.abs(ITEMDESC_ITEM_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
+    sCenY = ITEMDESC_ITEM_Y() + Math.trunc(Math.abs(ITEMDESC_ITEM_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
 
     BltVideoObjectFromIndex(guiSAVEBUFFER, guiItemDescBox, 0, gsInvDescX, gsInvDescY, VO_BLT_SRCTRANSPARENCY, null);
 
@@ -2973,7 +2973,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        RenderItemDescriptionBox__pStr = swprintf("%2d", (GunRange(gpItemDescObject)) / 10);
+        RenderItemDescriptionBox__pStr = swprintf("%2d", Math.trunc(GunRange(gpItemDescObject)) / 10);
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[3].sX + gsInvDescX + gWeaponStats[3].sValDx), (gWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -4165,7 +4165,7 @@ export function InitItemStackPopup(pSoldier: SOLDIERTYPE, ubPosition: UINT8, sIn
   gubNumItemPopups = ubLimit;
 
   // Calculate X,Y, first center
-  sCenX = sX - ((gsItemPopupWidth / 2) + (sItemSlotWidth / 2));
+  sCenX = sX - (Math.trunc(gsItemPopupWidth / 2) + Math.trunc(sItemSlotWidth / 2));
   sCenY = sY;
 
   // Limit it to window for item desc
@@ -4360,9 +4360,9 @@ export function InitKeyRingPopup(pSoldier: SOLDIERTYPE, sInvX: INT16, sInvY: INT
     // Build a mouse region here that is over any others.....
     MSYS_DefineRegion(gKeyRingRegions[cnt],
                       (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usPopupWidth) + sOffSetX), // top left
-                      (sInvY + sOffSetY + (cnt / sKeyRingItemWidth * usPopupHeight)), // top right
+                      (sInvY + sOffSetY + Math.trunc(cnt / sKeyRingItemWidth * usPopupHeight)), // top right
                       (gsKeyRingPopupInvX + ((cnt % sKeyRingItemWidth) + 1) * usPopupWidth + sOffSetX), // bottom left
-                      (sInvY + ((cnt / sKeyRingItemWidth + 1) * usPopupHeight) + sOffSetY), // bottom right
+                      (sInvY + ((Math.trunc(cnt / sKeyRingItemWidth) + 1) * usPopupHeight) + sOffSetY), // bottom right
                       MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingSlotInvClickCallback);
     // Add region
     MSYS_AddRegion(gKeyRingRegions[cnt]);
@@ -4448,20 +4448,20 @@ export function RenderKeyRingPopup(fFullRender: boolean): void {
   }
 
   for (cnt = 0; cnt < NUMBER_KEYS_ON_KEYRING; cnt++) {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usWidth) + sOffSetX), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), VO_BLT_SRCTRANSPARENCY, null);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiItemPopupBoxes, 0, (gsKeyRingPopupInvX + (cnt % sKeyRingItemWidth * usWidth) + sOffSetX), (gsKeyRingPopupInvY + sOffSetY + Math.trunc(cnt / sKeyRingItemWidth * usHeight)), VO_BLT_SRCTRANSPARENCY, null);
 
     // will want to draw key here.. if there is one
     if ((gpItemPopupSoldier.pKeyRing[cnt].ubKeyID != INVALID_KEY_NUMBER) && (gpItemPopupSoldier.pKeyRing[cnt].ubNumber > 0)) {
       pObject.ubNumberOfObjects = gpItemPopupSoldier.pKeyRing[cnt].ubNumber;
 
       // show 100% status for each
-      DrawItemUIBarEx(pObject, 0, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 7), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight) + 24), ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, FRAME_BUFFER);
+      DrawItemUIBarEx(pObject, 0, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 7), (gsKeyRingPopupInvY + sOffSetY + Math.trunc(cnt / sKeyRingItemWidth * usHeight) + 24), ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR()), Get16BPPColor(STATUS_BAR_SHADOW()), true, FRAME_BUFFER);
 
       // set item type
       pObject.usItem = FIRST_KEY + LockTable[gpItemPopupSoldier.pKeyRing[cnt].ubKeyID].usKeyItem;
 
       // render the item
-      INVRenderItem(FRAME_BUFFER, null, pObject, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 8), (gsKeyRingPopupInvY + sOffSetY + (cnt / sKeyRingItemWidth * usHeight)), (usWidth - 8), (usHeight - 2), DIRTYLEVEL2, null, 0, false, 0);
+      INVRenderItem(FRAME_BUFFER, null, pObject, (gsKeyRingPopupInvX + sOffSetX + (cnt % sKeyRingItemWidth * usWidth) + 8), (gsKeyRingPopupInvY + sOffSetY + Math.trunc(cnt / sKeyRingItemWidth * usHeight)), (usWidth - 8), (usHeight - 2), DIRTYLEVEL2, null, 0, false, 0);
     }
 
     // BltVideoObjectFromIndex( FRAME_BUFFER, guiItemPopupBoxes, 0, (INT16)(gsKeyRingPopupInvX + ( cnt % KEY_RING_ROW_WIDTH * usWidth ) ), ( INT16 )( gsKeyRingPopupInvY + ( cnt / KEY_RING_ROW_WIDTH * usHeight ) ), VO_BLT_SRCTRANSPARENCY, NULL );
@@ -4999,7 +4999,7 @@ export function InitializeItemPickupMenu(pSoldier: SOLDIERTYPE, sGridNo: INT16, 
 
     // Now check for top
     // Center in the y
-    sCenterYVal = gItemPickupMenu.sHeight / 2;
+    sCenterYVal = Math.trunc(gItemPickupMenu.sHeight / 2);
 
     sY -= sCenterYVal;
 
@@ -5974,7 +5974,7 @@ function createItemCursorSaveInfo(): ITEM_CURSOR_SAVE_INFO {
   };
 }
 
-const ITEM_CURSOR_SAVE_INFO_SIZE = 28;
+const ITEM_CURSOR_SAVE_INFO_SIZE = 44;
 
 function readItemCursorSaveInfo(o: ITEM_CURSOR_SAVE_INFO, buffer: Buffer, offset: number = 0): number {
   offset = readObjectType(o.ItemPointerInfo, buffer, offset);

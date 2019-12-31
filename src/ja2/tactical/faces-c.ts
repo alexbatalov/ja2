@@ -176,31 +176,31 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   if (uiInitFlags & FACE_BIGFACE) {
     // The filename is the profile ID!
     if (iFaceFileID < 100) {
-      VObjectDesc.ImageFile = sprintf("FACES\\b%02d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\b%s.sti", iFaceFileID.toString().padStart(2, '0'));
     } else {
-      VObjectDesc.ImageFile = sprintf("FACES\\b%03d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\b%s.sti", iFaceFileID.toString().padStart(3, '0'));
     }
 
     // ATE: Check for profile - if elliot , use special face :)
     if (usMercProfileID == Enum268.ELLIOT) {
       if (gMercProfiles[Enum268.ELLIOT].bNPCData > 3 && gMercProfiles[Enum268.ELLIOT].bNPCData < 7) {
-        VObjectDesc.ImageFile = sprintf("FACES\\b%02da.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%sa.sti", iFaceFileID.toString().padStart(2, '0'));
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 6 && gMercProfiles[Enum268.ELLIOT].bNPCData < 10) {
-        VObjectDesc.ImageFile = sprintf("FACES\\b%02db.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%sb.sti", iFaceFileID.toString().padStart(2, '0'));
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 9 && gMercProfiles[Enum268.ELLIOT].bNPCData < 13) {
-        VObjectDesc.ImageFile = sprintf("FACES\\b%02dc.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%sc.sti", iFaceFileID.toString().padStart(2, '0'));
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData > 12 && gMercProfiles[Enum268.ELLIOT].bNPCData < 16) {
-        VObjectDesc.ImageFile = sprintf("FACES\\b%02dd.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%sd.sti", iFaceFileID.toString().padStart(2, '0'));
       } else if (gMercProfiles[Enum268.ELLIOT].bNPCData == 17) {
-        VObjectDesc.ImageFile = sprintf("FACES\\b%02de.sti", iFaceFileID);
+        VObjectDesc.ImageFile = sprintf("FACES\\b%se.sti", iFaceFileID.toString().padStart(2, '0'));
       }
     }
   } else {
     if (iFaceFileID < 100) {
       // The filename is the profile ID!
-      VObjectDesc.ImageFile = sprintf("FACES\\%02d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\%s.sti", iFaceFileID.toString().padStart(2, '0'));
     } else {
-      VObjectDesc.ImageFile = sprintf("FACES\\%03d.sti", iFaceFileID);
+      VObjectDesc.ImageFile = sprintf("FACES\\%s.sti", iFaceFileID.toString().padStart(3, '0'));
     }
   }
 
@@ -1130,8 +1130,8 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
         fShowMaximum = true;
 
         // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
-        sPtsAvailable = (sPtsAvailable + 5) / 10;
-        usMaximumPts = (usMaximumPts + 5) / 10;
+        sPtsAvailable = Math.trunc((sPtsAvailable + 5) / 10);
+        usMaximumPts = Math.trunc((usMaximumPts + 5) / 10);
         break;
 
       case Enum117.PATIENT:
@@ -1168,8 +1168,8 @@ function HandleRenderFaceAdjustments(pFace: FACETYPE, fDisplayBuffer: boolean, f
           case (Enum117.TRAIN_TOWN):
             sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.ubSoldierID], usMaximumPts__Pointer);
             // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
-            sPtsAvailable = (sPtsAvailable + 5) / 10;
-            usMaximumPts = (usMaximumPts + 5) / 10;
+            sPtsAvailable = Math.trunc((sPtsAvailable + 5) / 10);
+            usMaximumPts = Math.trunc((usMaximumPts + 5) / 10);
             break;
           case (Enum117.TRAIN_TEAMMATE):
             sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.ubSoldierID], null, MercPtrs[pFace.ubSoldierID].bTrainStat, fAtGunRange, usMaximumPts__Pointer);

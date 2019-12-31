@@ -53,7 +53,6 @@ export function KillItemPoolList(): void {
   while (pIPCurr) {
     HideItemCursor(pIPCurr.sGridNo);
     pIPHead = (<IPListNode>pIPHead).next;
-    MemFree(pIPCurr);
     pIPCurr = pIPHead;
   }
   pIPHead = null;
@@ -239,7 +238,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
   // calculate the width of the buffer based on the number of items.
   // every pair of items (odd rounded up) requires 60 pixels for width.
   // the minimum buffer size is 420.  Height is always 80 pixels.
-  eInfo.sWidth = (eInfo.sNumItems > 12) ? ((eInfo.sNumItems + 1) / 2) * 60 : 360;
+  eInfo.sWidth = (eInfo.sNumItems > 12) ? Math.trunc((eInfo.sNumItems + 1) / 2) * 60 : 360;
   eInfo.sHeight = 80;
   // Create item buffer
   ({ usWidth: usUselessWidth, usHeight: usUselessHeight, ubBitDepth } = GetCurrentVideoSettings());
@@ -295,7 +294,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       // Calculate the center position of the graphic in a 60 pixel wide area.
       sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
       sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
-      sStart = x + (60 - sWidth - sOffset * 2) / 2;
+      sStart = x + Math.trunc((60 - sWidth - sOffset * 2) / 2);
 
       BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, 0, false);
       // cycle through the various slot positions (0,0), (0,40), (60,0), (60,40), (120,0)...
@@ -398,9 +397,9 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
                 pStr = "Panic Action3";
             } else {
               if (usCounter == Enum225.SWITCH)
-                pStr = swprintf("Trigger%d", (i - 4) / 2);
+                pStr = swprintf("Trigger%d", Math.trunc((i - 4) / 2));
               else
-                pStr = swprintf("Action%d", (i - 4) / 2);
+                pStr = swprintf("Action%d", Math.trunc((i - 4) / 2));
             }
           }
           DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
@@ -408,7 +407,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
           // Calculate the center position of the graphic in a 60 pixel wide area.
           sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
           sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
-          sStart = x + (60 - sWidth - sOffset * 2) / 2;
+          sStart = x + Math.trunc((60 - sWidth - sOffset * 2) / 2);
 
           if (sWidth) {
             BltVideoObjectOutlineFromIndex(eInfo.uiBuffer, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, 0, false);
@@ -437,7 +436,7 @@ export function DetermineItemsScrolling(): void {
   // Right most scroll position.  Calculated by taking every pair of numItems rounded up,
   // and subtracting 7 (because a scroll index 0 is disabled if there are <=12 items,
   // index 1 for <=14 items, index 2 for <=16 items...
-  if (eInfo.sScrollIndex == Math.max(((eInfo.sNumItems + 1) / 2) - 6, 0))
+  if (eInfo.sScrollIndex == Math.max(Math.trunc((eInfo.sNumItems + 1) / 2) - 6, 0))
     DisableEditorButton(Enum32.ITEMS_RIGHTSCROLL);
   else
     EnableEditorButton(Enum32.ITEMS_RIGHTSCROLL);
@@ -490,11 +489,11 @@ export function RenderEditorItemsInfo(): void {
       item = Item[eInfo.pusItemIndex[eInfo.sHilitedItemIndex]];
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
       hVObject = GetVideoObject(uiVideoObjectIndex);
-      x = (eInfo.sHilitedItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
+      x = (Math.trunc(eInfo.sHilitedItemIndex / 2) - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sHilitedItemIndex % 2) * 40;
       sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
       sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
-      sStart = x + (60 - sWidth - sOffset * 2) / 2;
+      sStart = x + Math.trunc((60 - sWidth - sOffset * 2) / 2);
       if (sWidth) {
         BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 250, 0)), true);
       }
@@ -506,11 +505,11 @@ export function RenderEditorItemsInfo(): void {
       item = Item[eInfo.pusItemIndex[eInfo.sSelItemIndex]];
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
       hVObject = GetVideoObject(uiVideoObjectIndex);
-      x = (eInfo.sSelItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
+      x = (Math.trunc(eInfo.sSelItemIndex / 2) - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sSelItemIndex % 2) * 40;
       sWidth = hVObject.pETRLEObject[item.ubGraphicNum].usWidth;
       sOffset = hVObject.pETRLEObject[item.ubGraphicNum].sOffsetX;
-      sStart = x + (60 - sWidth - sOffset * 2) / 2;
+      sStart = x + Math.trunc((60 - sWidth - sOffset * 2) / 2);
       if (sWidth) {
         BltVideoObjectOutlineFromIndex(FRAME_BUFFER, uiVideoObjectIndex, item.ubGraphicNum, sStart, y + 2, Get16BPPColor(FROMRGB(250, 0, 0)), true);
       }
@@ -521,7 +520,7 @@ export function RenderEditorItemsInfo(): void {
   for (i = minIndex; i <= maxIndex; i++) {
     usNumItems = CountNumberOfEditorPlacementsInWorld(i, usQuantity__Pointer);
     if (usNumItems) {
-      x = (i / 2 - eInfo.sScrollIndex) * 60 + 110;
+      x = (Math.trunc(i / 2) - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (i % 2) * 40;
       SetFont(FONT10ARIAL());
       SetFontForeground(FONT_YELLOW);
@@ -599,7 +598,7 @@ export function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: I
     sIndex++;
   // Add the converted mouse's XPos into a relative index;
   // Calc:  starting from 110, for every 60 pixels, add 2 to the index
-  sIndex += ((usScreenX - 110) / 60) * 2;
+  sIndex += Math.trunc((usScreenX - 110) / 60) * 2;
   switch (bEvent) {
     case Enum44.GUI_MOVE_EVENT:
       if (sIndex < eInfo.sNumItems) {
@@ -722,7 +721,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
       else if (eInfo.sSelItemIndex < 6)
         tempObject.bFrequency = PANIC_FREQUENCY_3;
       else
-        tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+        tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + Math.trunc((eInfo.sSelItemIndex - 4) / 2));
       usFlags |= WORLD_ITEM_ARMED_BOMB;
       break;
     case Enum225.ACTION_ITEM:
@@ -739,7 +738,7 @@ export function AddSelectedItemToWorld(sGridNo: INT16): void {
         else if (eInfo.sSelItemIndex < 6)
           tempObject.bFrequency = PANIC_FREQUENCY_3;
         else
-          tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+          tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + Math.trunc((eInfo.sSelItemIndex - 4) / 2));
       } else {
         tempObject.bDetonatorType = Enum224.BOMB_PRESSURE;
         tempObject.bDelay = 0;
@@ -909,7 +908,6 @@ export function DeleteSelectedItem(): void {
           }
           // remove node
           HideItemCursor(sGridNo);
-          MemFree(pIPCurr);
           pIPCurr = null;
           return;
         }
@@ -996,7 +994,7 @@ function FindNextItemOfSelectedType(): void {
       else if (eInfo.sSelItemIndex < 6)
         bFrequency = PANIC_FREQUENCY_3;
       else
-        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + Math.trunc((eInfo.sSelItemIndex - 4) / 2));
       SelectNextTriggerWithFrequency(usItem, bFrequency);
     } else {
       SelectNextPressureAction();
@@ -1297,7 +1295,7 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
       else if (usEInfoIndex < 6)
         bFrequency = PANIC_FREQUENCY_3;
       else
-        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (usEInfoIndex - 4) / 2);
+        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + Math.trunc((usEInfoIndex - 4) / 2));
       usNumPlacements = CountNumberOfItemsWithFrequency(eInfo.pusItemIndex[usEInfoIndex], bFrequency);
       pusQuantity.value = usNumPlacements;
     } else {
@@ -1356,7 +1354,7 @@ export function DisplayItemStatistics(): void {
   pItem = Item[usItemIndex];
   ({ name: pItemName } = LoadItemInfo(usItemIndex));
 
-  mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT()) / 2, 403, pItemName);
+  mprintf(50 - Math.trunc(StringPixLength(pItemName, SMALLCOMPFONT()) / 2), 403, pItemName);
   mprintf(2, 410, "Status Info Line 1");
   mprintf(2, 420, "Status Info Line 2");
   mprintf(2, 430, "Status Info Line 3");

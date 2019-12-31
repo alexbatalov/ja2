@@ -1314,9 +1314,9 @@ function VerifyEdgepoint(pSoldier: SOLDIERTYPE, sEdgepoint: INT16): boolean {
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(iSearchRange, (pSoldier.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, Math.trunc(pSoldier.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - (Math.trunc(pSoldier.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...
@@ -1385,9 +1385,9 @@ function EdgepointsClose(pSoldier: SOLDIERTYPE, sEdgepoint1: INT16, sEdgepoint2:
   // NumMessage("sMaxRight = ",sMaxRight);
 
   // determine maximum vertical limits
-  sMaxUp = Math.min(iSearchRange, (pSoldier.sGridNo / MAXROW));
+  sMaxUp = Math.min(iSearchRange, Math.trunc(pSoldier.sGridNo / MAXROW));
   // NumMessage("sMaxUp = ",sMaxUp);
-  sMaxDown = Math.min(iSearchRange, MAXROW - ((pSoldier.sGridNo / MAXROW) + 1));
+  sMaxDown = Math.min(iSearchRange, MAXROW - (Math.trunc(pSoldier.sGridNo / MAXROW) + 1));
 
   // Call FindBestPath to set flags in all locations that we can
   // walk into within range.  We have to set some things up first...

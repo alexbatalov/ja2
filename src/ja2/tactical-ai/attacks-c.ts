@@ -198,7 +198,7 @@ export function CalcBestShot(pSoldier: SOLDIERTYPE, pBestShot: ATTACKTYPE): void
       // sprintf(tempstr,"Vs. %s, at AimTime %d, ubChanceToHit = %d",ExtMen[pOpponent->ubID].name,ubAimTime,ubChanceToHit);
       // PopMessage(tempstr);
 
-      iHitRate = (pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime);
+      iHitRate = Math.trunc((pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime));
       // NumMessage("hitRate = ",iHitRate);
 
       // if aiming for this amount of time produces a better hit rate
@@ -214,14 +214,14 @@ export function CalcBestShot(pSoldier: SOLDIERTYPE, pBestShot: ATTACKTYPE): void
       continue; // next opponent
 
     // calculate chance to REALLY hit: shoot accurately AND get past cover
-    ubChanceToReallyHit = (ubBestChanceToHit * ubChanceToGetThrough) / 100;
+    ubChanceToReallyHit = Math.trunc((ubBestChanceToHit * ubChanceToGetThrough) / 100);
 
     // if we can't REALLY hit at all
     if (ubChanceToReallyHit == 0)
       continue; // next opponent
 
     // really limit knife throwing so it doesn't look wrong
-    if (Item[pSoldier.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.sGridNo, pOpponent.sGridNo) > CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, false) / 2)))
+    if (Item[pSoldier.usAttackingWeapon].usItemClass == IC_THROWING_KNIFE && (ubChanceToReallyHit < 30 || (PythSpacesAway(pSoldier.sGridNo, pOpponent.sGridNo) > Math.trunc(CalcMaxTossRange(pSoldier, Enum225.THROWING_KNIFE, false) / 2))))
       continue; // don't bother... next opponent
 
     // calculate this opponent's threat value (factor in my cover from him)
@@ -234,12 +234,12 @@ export function CalcBestShot(pSoldier: SOLDIERTYPE, pBestShot: ATTACKTYPE): void
     // calculate the combined "attack value" for this opponent
     // highest possible value before division should be about 1.8 billion...
     // normal value before division should be about 5 million...
-    iAttackValue = (iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000;
+    iAttackValue = Math.trunc((iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000);
     // NumMessage("SHOT AttackValue = ",iAttackValue / 1000);
 
     // special stuff for assassins to ignore militia more
     if (pSoldier.ubProfile >= Enum268.JIM && pSoldier.ubProfile <= Enum268.TYRONE && pOpponent.bTeam == MILITIA_TEAM) {
-      iAttackValue /= 2;
+      iAttackValue = Math.trunc(iAttackValue / 2);
     }
 
     // if we can hurt the guy, OR probably not, but at least it's our best
@@ -248,7 +248,7 @@ export function CalcBestShot(pSoldier: SOLDIERTYPE, pBestShot: ATTACKTYPE): void
       // if there already was another viable target
       if (pBestShot.ubChanceToReallyHit > 0) {
         // OK, how does our chance to hit him compare to the previous best one?
-        iPercentBetter = ((ubChanceToReallyHit * 100) / pBestShot.ubChanceToReallyHit) - 100;
+        iPercentBetter = Math.trunc((ubChanceToReallyHit * 100) / pBestShot.ubChanceToReallyHit) - 100;
 
         // if this chance to really hit is more than 50% worse, and the other
         // guy is conscious at all
@@ -392,7 +392,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
   usGrenade = NOTHING;
 
   if (EXPLOSIVE_GUN(usInHand)) {
-    iTossRange = Weapon[usInHand].usRange / CELL_X_SIZE;
+    iTossRange = Math.trunc(Weapon[usInHand].usRange / CELL_X_SIZE);
   } else {
     iTossRange = CalcMaxTossRange(pSoldier, usInHand, true);
   }
@@ -433,7 +433,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
 
     if (usGrenade == Enum225.BREAK_LIGHT) {
       // JA2Gold: light isn't as nasty as explosives
-      ubSafetyMargin /= 2;
+      ubSafetyMargin = Math.trunc(ubSafetyMargin / 2);
     }
   }
 
@@ -597,13 +597,13 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
       case 0:
       case 1:
         // they won't use them until they have 2+ opponents as long as half life left
-        if ((ubOpponentCnt < 2) && (pSoldier.bLife > (pSoldier.bLifeMax / 2))) {
+        if ((ubOpponentCnt < 2) && (pSoldier.bLife > Math.trunc(pSoldier.bLifeMax / 2))) {
           return;
         }
         break;
       case 2:
         // they won't use them until they have 2+ opponents as long as 3/4 life left
-        if ((ubOpponentCnt < 2) && (pSoldier.bLife > (pSoldier.bLifeMax / 4) * 3)) {
+        if ((ubOpponentCnt < 2) && (pSoldier.bLife > Math.trunc(pSoldier.bLifeMax / 4) * 3)) {
           return;
         }
         break;
@@ -742,7 +742,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
             if (usOppDist) {
               // reduce the estimated damage for his distance from gridno
               // use 100% at range 0, 80% at range 1, and 60% at range 2, etc.
-              iEstDamage = (iEstDamage * (100 - (20 * usOppDist))) / 100;
+              iEstDamage = Math.trunc((iEstDamage * (100 - (20 * usOppDist))) / 100);
               // NumMessage("THROW reduced usEstDamage = ",usEstDamage);
             } else {
               // throwing right on top of someone... always consider this
@@ -805,7 +805,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
               // rate "chance of hitting" according to how far away this is from the target
               // but keeping in mind that we don't want to hit far, subtract 1 from the radius here
               // to penalize being far from the target
-              uiPenalty = 100 * PythSpacesAway(sGridNo, sEndGridNo) / (ubSafetyMargin - 1);
+              uiPenalty = Math.trunc(100 * PythSpacesAway(sGridNo, sEndGridNo) / (ubSafetyMargin - 1));
               if (uiPenalty < 100) {
                 ubChanceToGetThrough = 100 - uiPenalty;
               } else {
@@ -822,7 +822,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
 
         // this is try to minimize enemies wasting their (few) mortar shells or LAWs
         // they won't use them on less than 2 targets as long as half life left
-        if ((usInHand == Enum225.MORTAR || usInHand == Enum225.ROCKET_LAUNCHER) && (ubOppsInRange < 2) && (pSoldier.bLife > (pSoldier.bLifeMax / 2))) {
+        if ((usInHand == Enum225.MORTAR || usInHand == Enum225.ROCKET_LAUNCHER) && (ubOppsInRange < 2) && (pSoldier.bLife > Math.trunc(pSoldier.bLifeMax / 2))) {
           continue; // next gridno
         }
 
@@ -849,7 +849,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
         if (usInHand != Enum225.MORTAR && EXPLOSIVE_GUN(usInHand)) {
           // special 50% to Hit bonus: this reflects that even if a tossed item
           // misses by a bit, it's still likely to affect the intended target(s)
-          ubChanceToHit += (ubChanceToHit / 2);
+          ubChanceToHit += Math.trunc(ubChanceToHit / 2);
 
           // still can't let it go over 100% chance, though
           if (ubChanceToHit > 100) {
@@ -857,11 +857,11 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
           }
         }
 
-        iHitRate = (pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubMaxPossibleAimTime);
+        iHitRate = Math.trunc((pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubMaxPossibleAimTime));
         // NumMessage("iHitRate = ",iHitRate);
 
         // calculate chance to REALLY hit: throw accurately AND get past cover
-        ubChanceToReallyHit = (ubChanceToHit * ubChanceToGetThrough) / 100;
+        ubChanceToReallyHit = Math.trunc((ubChanceToHit * ubChanceToGetThrough) / 100);
 
         // if we can't REALLY hit at all
         if (ubChanceToReallyHit == 0)
@@ -870,7 +870,7 @@ function CalcBestThrow(pSoldier: SOLDIERTYPE, pBestThrow: ATTACKTYPE): void {
         // calculate the combined "attack value" for this opponent
         // maximum possible attack value here should be about 140 million
         // typical attack value here should be about 500 thousand
-        iAttackValue = (iHitRate * ubChanceToReallyHit * iTotalThreatValue) / 1000;
+        iAttackValue = Math.trunc((iHitRate * ubChanceToReallyHit * iTotalThreatValue) / 1000);
         // NumMessage("THROW AttackValue = ",iAttackValue / 1000);
 
         // unlike SHOOTing and STABbing, find strictly the highest attackValue
@@ -1037,7 +1037,7 @@ export function CalcBestStab(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE, fBlad
       // sprintf(tempstr,"Vs. %s, at AimTime %d, ubChanceToHit = %d",ExtMen[pOpponent->ubID].name,ubAimTime,ubChanceToHit);
       // PopMessage(tempstr);
 
-      iHitRate = (pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime);
+      iHitRate = Math.trunc((pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime));
       // NumMessage("hitRate = ",iHitRate);
 
       // if aiming for this amount of time produces a better hit rate
@@ -1066,7 +1066,7 @@ export function CalcBestStab(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE, fBlad
     // calculate the combined "attack value" for this opponent
     // highest possible value before division should be about 1 billion...
     // normal value before division should be about 5 million...
-    iAttackValue = (iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000;
+    iAttackValue = Math.trunc((iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000);
     // NumMessage("STAB AttackValue = ",iAttackValue / 1000);
 
     // if we can hurt the guy, OR probably not, but at least it's our best
@@ -1075,7 +1075,7 @@ export function CalcBestStab(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE, fBlad
       // if there already was another viable target
       if (pBestStab.ubChanceToReallyHit > 0) {
         // OK, how does our chance to hit him compare to the previous best one?
-        iPercentBetter = ((ubChanceToReallyHit * 100) / pBestStab.ubChanceToReallyHit) - 100;
+        iPercentBetter = Math.trunc((ubChanceToReallyHit * 100) / pBestStab.ubChanceToReallyHit) - 100;
 
         // if this chance to really hit is more than 50% worse, and the other
         // guy is conscious at all
@@ -1196,7 +1196,7 @@ export function CalcTentacleAttack(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE)
       // sprintf(tempstr,"Vs. %s, at AimTime %d, ubChanceToHit = %d",ExtMen[pOpponent->ubID].name,ubAimTime,ubChanceToHit);
       // PopMessage(tempstr);
 
-      iHitRate = (pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime);
+      iHitRate = Math.trunc((pSoldier.bActionPoints * ubChanceToHit) / (ubRawAPCost + ubAimTime));
       // NumMessage("hitRate = ",iHitRate);
 
       // if aiming for this amount of time produces a better hit rate
@@ -1225,7 +1225,7 @@ export function CalcTentacleAttack(pSoldier: SOLDIERTYPE, pBestStab: ATTACKTYPE)
     // calculate the combined "attack value" for this opponent
     // highest possible value before division should be about 1 billion...
     // normal value before division should be about 5 million...
-    iAttackValue = (iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000;
+    iAttackValue = Math.trunc((iEstDamage * iBestHitRate * ubChanceToReallyHit * iThreatValue) / 1000);
     // NumMessage("STAB AttackValue = ",iAttackValue / 1000);
 
     // if we can hurt the guy, OR probably not, but at least it's our best
@@ -1298,46 +1298,46 @@ function EstimateShotDamage(pSoldier: SOLDIERTYPE, pOpponent: SOLDIERTYPE, ubCha
   iMaxRange = Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].usRange;
 
   // bullet loses speed and penetrating power, 50% loss per maximum range
-  iPowerLost = ((50 * iRange) / iMaxRange);
+  iPowerLost = Math.trunc((50 * iRange) / iMaxRange);
 
   // up to 50% extra impact for making particularly accurate successful shots
-  ubBonus = ubChanceToHit / 4; // /4 is really /2 and /2 again
+  ubBonus = Math.trunc(ubChanceToHit / 4); // /4 is really /2 and /2 again
 
-  iDamage = (Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].ubImpact * (100 - iPowerLost + ubBonus)) / 100;
+  iDamage = Math.trunc((Weapon[pSoldier.inv[Enum261.HANDPOS].usItem].ubImpact * (100 - iPowerLost + ubBonus)) / 100);
 
   // NumMessage("Pre-protection damage: ",damage);
 
   // if opponent is wearing a helmet
   if (pOpponent.inv[Enum261.HELMETPOS].usItem) {
-    iHeadProt += Armour[Item[pOpponent.inv[Enum261.HELMETPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.HELMETPOS].bStatus[0] / 100;
+    iHeadProt += Math.trunc(Armour[Item[pOpponent.inv[Enum261.HELMETPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.HELMETPOS].bStatus[0] / 100);
   }
 
   // if opponent is wearing a protective vest
   if (ubAmmoType != Enum286.AMMO_MONSTER && ubAmmoType != Enum286.AMMO_KNIFE) {
     // monster spit and knives ignore kevlar vests
     if (pOpponent.inv[Enum261.VESTPOS].usItem) {
-      iTorsoProt += Armour[Item[pOpponent.inv[Enum261.VESTPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.VESTPOS].bStatus[0] / 100;
+      iTorsoProt += Math.trunc(Armour[Item[pOpponent.inv[Enum261.VESTPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.VESTPOS].bStatus[0] / 100);
     }
   }
 
   // check for ceramic plates; these do affect monster spit
   bPlatePos = FindAttachment(pOpponent.inv[Enum261.VESTPOS], Enum225.CERAMIC_PLATES);
   if (bPlatePos != -1) {
-    iTorsoProt += Armour[Item[pOpponent.inv[Enum261.VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent.inv[Enum261.VESTPOS].bAttachStatus[bPlatePos] / 100;
+    iTorsoProt += Math.trunc(Armour[Item[pOpponent.inv[Enum261.VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent.inv[Enum261.VESTPOS].bAttachStatus[bPlatePos] / 100);
   }
 
   // if opponent is wearing armoured leggings (LEGPOS)
   if (ubAmmoType != Enum286.AMMO_MONSTER && ubAmmoType != Enum286.AMMO_KNIFE) {
     // monster spit and knives ignore kevlar leggings
     if (pOpponent.inv[Enum261.LEGPOS].usItem) {
-      iLegProt += Armour[Item[pOpponent.inv[Enum261.LEGPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.LEGPOS].bStatus[0] / 100;
+      iLegProt += Math.trunc(Armour[Item[pOpponent.inv[Enum261.LEGPOS].usItem].ubClassIndex].ubProtection * pOpponent.inv[Enum261.LEGPOS].bStatus[0] / 100);
     }
   }
 
   // 15% of all shots are to the head, 80% are to the torso.  Calc. avg. prot.
   // NB: make AI guys shoot at head 15% of time, 5% of time at legs
 
-  iTotalProt = ((15 * iHeadProt) + (75 * iTorsoProt) + 5 * iLegProt) / 100;
+  iTotalProt = Math.trunc(((15 * iHeadProt) + (75 * iTorsoProt) + 5 * iLegProt) / 100);
   switch (ubAmmoType) {
     case Enum286.AMMO_HP:
       iTotalProt = AMMO_ARMOUR_ADJUSTMENT_HP(iTotalProt);
@@ -1366,13 +1366,13 @@ function EstimateShotDamage(pSoldier: SOLDIERTYPE, pOpponent: SOLDIERTYPE, ubCha
     switch (pSoldier.inv[pSoldier.ubAttackingHand].usItem) {
       // explosive damage is 100-200% that of the rated, so multiply by 3/2s here
       case Enum225.CREATURE_QUEEN_SPIT:
-        iDamage += (3 * Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+        iDamage += Math.trunc((3 * Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.LARGE_CREATURE_GAS].ubClassIndex].ubRadius)) / 2);
         break;
       case Enum225.CREATURE_OLD_MALE_SPIT:
-        iDamage += (3 * Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+        iDamage += Math.trunc((3 * Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2);
         break;
       default:
-        iDamage += (3 * Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2;
+        iDamage += Math.trunc((3 * Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubDamage * NumMercsCloseTo(pOpponent.sGridNo, Explosive[Item[Enum225.VERY_SMALL_CREATURE_GAS].ubClassIndex].ubRadius)) / 2);
         break;
     }
   }
@@ -1411,24 +1411,24 @@ function EstimateThrowDamage(pSoldier: SOLDIERTYPE, ubItemPos: UINT8, pOpponent:
     return 5 * (LightTrueLevel(pOpponent.sGridNo, pOpponent.bLevel) - NORMAL_LIGHTLEVEL_DAY);
   }
 
-  iExplosDamage = ((Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
-  iBreathDamage = ((Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
+  iExplosDamage = Math.trunc(((Explosive[ubExplosiveIndex].ubDamage) * 3) / 2);
+  iBreathDamage = Math.trunc(((Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4);
 
   if (Explosive[ubExplosiveIndex].ubType == Enum287.EXPLOSV_TEARGAS || Explosive[ubExplosiveIndex].ubType == Enum287.EXPLOSV_MUSTGAS) {
     // if target gridno is outdoors (where tear gas lasts only 1-2 turns)
     if (gpWorldLevelData[sGridno].ubTerrainID != Enum315.FLAT_FLOOR)
-      iBreathDamage /= 2; // reduce effective breath damage by 1/2
+      iBreathDamage = Math.trunc(iBreathDamage / 2); // reduce effective breath damage by 1/2
 
     bSlot = FindObj(pOpponent, Enum225.GASMASK);
     if (bSlot == Enum261.HEAD1POS || bSlot == Enum261.HEAD2POS) {
       // take condition of the gas mask into account - it could be leaking
-      iBreathDamage = (iBreathDamage * (100 - pOpponent.inv[bSlot].bStatus[0])) / 100;
+      iBreathDamage = Math.trunc((iBreathDamage * (100 - pOpponent.inv[bSlot].bStatus[0])) / 100);
       // NumMessage("damage after GAS MASK: ",iBreathDamage);
     }
   } else if (iExplosDamage) {
     // EXPLOSION DAMAGE is spread amongst locations
     iArmourAmount = ArmourVersusExplosivesPercent(pSoldier);
-    iExplosDamage -= iExplosDamage * iArmourAmount / 100;
+    iExplosDamage -= Math.trunc(iExplosDamage * iArmourAmount / 100);
 
     if (iExplosDamage < 1)
       iExplosDamage = 1;
@@ -1446,11 +1446,11 @@ function EstimateThrowDamage(pSoldier: SOLDIERTYPE, ubItemPos: UINT8, pOpponent:
   }
 
   // estimate combined "damage" value considering combined health/breath damage
-  iDamage += iExplosDamage + (iBreathDamage / 3);
+  iDamage += iExplosDamage + Math.trunc(iBreathDamage / 3);
 
   // approximate chance of the grenade going off (Ian's formulas are too funky)
   // then use that to reduce the expected damage because thing may not blow!
-  iDamage = (iDamage * pSoldier.inv[ubItemPos].bStatus[0]) / 100;
+  iDamage = Math.trunc((iDamage * pSoldier.inv[ubItemPos].bStatus[0]) / 100);
 
   // if the target gridno is in water, grenade may not blow (guess 50% of time)
   /*
@@ -1472,7 +1472,7 @@ function EstimateStabDamage(pSoldier: SOLDIERTYPE, pOpponent: SOLDIERTYPE, ubCha
 
   if (fBladeAttack) {
     iImpact = Weapon[pSoldier.usAttackingWeapon].ubImpact;
-    iImpact += EffectiveStrength(pSoldier) / 20; // 0 to 5 for strength, adjusted by damage taken
+    iImpact += Math.trunc(EffectiveStrength(pSoldier) / 20); // 0 to 5 for strength, adjusted by damage taken
   } else {
     // NB martial artists don't get a bonus for using brass knuckles!
     if (pSoldier.usAttackingWeapon && !(HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS))) {
@@ -1481,27 +1481,27 @@ function EstimateStabDamage(pSoldier: SOLDIERTYPE, pOpponent: SOLDIERTYPE, ubCha
       // base HTH damage
       iImpact = 5;
     }
-    iImpact += EffectiveStrength(pSoldier) / 5; // 0 to 20 for strength, adjusted by damage taken
+    iImpact += Math.trunc(EffectiveStrength(pSoldier) / 5); // 0 to 20 for strength, adjusted by damage taken
   }
 
-  iImpact += (pSoldier.bExpLevel / 2); // 0 to 4 for level
+  iImpact += Math.trunc(pSoldier.bExpLevel / 2); // 0 to 4 for level
 
   iFluke = 0;
-  iBonus = ubChanceToHit / 4; // up to 50% extra impact for accurate attacks
+  iBonus = Math.trunc(ubChanceToHit / 4); // up to 50% extra impact for accurate attacks
 
-  iImpact = iImpact * (100 + iFluke + iBonus) / 100;
+  iImpact = Math.trunc(iImpact * (100 + iFluke + iBonus) / 100);
 
   if (!fBladeAttack) {
     // add bonuses for hand-to-hand and martial arts
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.MARTIALARTS)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100;
+      iImpact = Math.trunc(iImpact * (100 + gbSkillTraitBonus[Enum269.MARTIALARTS] * NUM_SKILL_TRAITS(pSoldier, Enum269.MARTIALARTS)) / 100);
     }
     if (HAS_SKILL_TRAIT(pSoldier, Enum269.HANDTOHAND)) {
-      iImpact = iImpact * (100 + gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100;
+      iImpact = Math.trunc(iImpact * (100 + gbSkillTraitBonus[Enum269.HANDTOHAND] * NUM_SKILL_TRAITS(pSoldier, Enum269.HANDTOHAND)) / 100);
     }
     // Here, if we're doing a bare-fisted attack,
     // we want to pay attention just to wounds inflicted
-    iImpact = iImpact / PUNCH_REAL_DAMAGE_PORTION;
+    iImpact = Math.trunc(iImpact / PUNCH_REAL_DAMAGE_PORTION);
   }
 
   if (iImpact < 1) {
@@ -1900,7 +1900,7 @@ export function CalcSpreadBurst(pSoldier: SOLDIERTYPE, sFirstTarget: INT16, bTar
     }
     // now 50% chance to reorganize to fire in reverse order
     if (Random(2)) {
-      for (bLoop = 0; bLoop < bTargets / 2; bLoop++) {
+      for (bLoop = 0; bLoop < Math.trunc(bTargets / 2); bLoop++) {
         pTarget = pTargets[bLoop];
         pTargets[bLoop] = pTargets[bTargets - 1 - bLoop];
         pTargets[bTargets - 1 - bLoop] = pTarget;

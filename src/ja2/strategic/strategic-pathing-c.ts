@@ -131,13 +131,13 @@ const NEWQUENODE = () => {
 const FLATCOST = 1;
 
 const ESTIMATE0 = (dx: number, dy: number) => ((dx > dy) ? (dx) : (dy));
-const ESTIMATE1 = (dx: number, dy: number) => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATE2 = (dx: number, dy: number) => FLATCOST * ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATE1 = (dx: number, dy: number) => ((dx < dy) ? (Math.trunc((dx * 14) / 10) + dy) : (Math.trunc((dy * 14) / 10) + dx));
+const ESTIMATE2 = (dx: number, dy: number) => FLATCOST * ((dx < dy) ? (Math.trunc((dx * 14) / 10) + dy) : (Math.trunc((dy * 14) / 10) + dx));
 const ESTIMATEn = (dx: number, dy: number) => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
 const ESTIMATE = (dx: number, dy: number) => ESTIMATE1(dx, dy);
 
 const REMAININGCOST = (iDestX: INT32, iDestY: INT32, ndx: number) => {
-  const locY = pathQB[ndx].location / MAP_WIDTH;
+  const locY = Math.trunc(pathQB[ndx].location / MAP_WIDTH);
   const locX = pathQB[ndx].location % MAP_WIDTH;
   const dy = Math.abs(iDestY - locY);
   const dx = Math.abs(iDestX - locX);
@@ -147,7 +147,7 @@ const REMAININGCOST = (iDestX: INT32, iDestY: INT32, ndx: number) => {
 const MAXCOST = (99900);
 const TOTALCOST = (ndx: number) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
 const XLOC = (a: number) => (a % MAP_WIDTH);
-const YLOC = (a: number) => (a / MAP_WIDTH);
+const YLOC = (a: number) => Math.trunc(a / MAP_WIDTH);
 const LEGDISTANCE = (a: number, b: number) => (Math.abs(XLOC(b) - XLOC(a)) + Math.abs(YLOC(b) - YLOC(a)));
 const FARTHER = (ndx: number, NDX: number, sDestination: number) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
 
@@ -239,7 +239,7 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
   // set up common info
   sOrigination = sStart;
 
-  iDestY = (sDestination / MAP_WIDTH);
+  iDestY = Math.trunc(sDestination / MAP_WIDTH);
   iDestX = (sDestination % MAP_WIDTH);
 
   // if origin and dest is water, then user wants to stay in water!
@@ -284,14 +284,14 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
       newLoc = curLoc + diStratDelta[iCnt];
 
       // are we going off the map?
-      if ((newLoc % MAP_WORLD_X == 0) || (newLoc % MAP_WORLD_X == MAP_WORLD_X - 1) || (newLoc / MAP_WORLD_X == 0) || (newLoc / MAP_WORLD_X == MAP_WORLD_X - 1)) {
+      if ((newLoc % MAP_WORLD_X == 0) || (newLoc % MAP_WORLD_X == MAP_WORLD_X - 1) || (Math.trunc(newLoc / MAP_WORLD_X) == 0) || (Math.trunc(newLoc / MAP_WORLD_X) == MAP_WORLD_X - 1)) {
         // yeppers
         continue;
       }
 
       if (gfPlotToAvoidPlayerInfuencedSectors && newLoc != sDestination) {
         sSectorX = (newLoc % MAP_WORLD_X);
-        sSectorY = (newLoc / MAP_WORLD_X);
+        sSectorY = Math.trunc(newLoc / MAP_WORLD_X);
 
         if (IsThereASoldierInThisSector(sSectorX, sSectorY, 0)) {
           continue;
@@ -307,7 +307,7 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
       // are we plotting path or checking for existance of one?
       if (sMvtGroupNumber != 0) {
         if (iHelicopterVehicleId != -1) {
-          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (iCnt / 2), sMvtGroupNumber);
+          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), Math.trunc(curLoc / MAP_WORLD_X))), Math.trunc(iCnt / 2), sMvtGroupNumber);
           if (nextCost != 0xffffffff && sMvtGroupNumber == pVehicleList[iHelicopterVehicleId].ubMovementGroup) {
             // is a heli, its pathing is determined not by time (it's always the same) but by total cost
             // Skyrider will avoid uncontrolled airspace as much as possible...
@@ -318,10 +318,10 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
             }
           }
         } else {
-          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (iCnt / 2), sMvtGroupNumber);
+          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), Math.trunc(curLoc / MAP_WORLD_X))), Math.trunc(iCnt / 2), sMvtGroupNumber);
         }
       } else {
-        nextCost = GetTravelTimeForFootTeam((SECTOR(curLoc % MAP_WORLD_X, curLoc / MAP_WORLD_X)), (iCnt / 2));
+        nextCost = GetTravelTimeForFootTeam((SECTOR(curLoc % MAP_WORLD_X, Math.trunc(curLoc / MAP_WORLD_X))), Math.trunc(iCnt / 2));
       }
 
       if (nextCost == 0xffffffff) {
@@ -334,7 +334,7 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
       if (fTacticalTraversal) {
         // if it's the first sector only (no cost yet)
         if (curCost == 0 && (newLoc == sDestination)) {
-          if (GetTraversability((SECTOR(curLoc % 18, curLoc / 18)), (SECTOR(newLoc % 18, newLoc / 18))) != Enum127.GROUNDBARRIER) {
+          if (GetTraversability((SECTOR(curLoc % 18, Math.trunc(curLoc / 18))), (SECTOR(newLoc % 18, Math.trunc(newLoc / 18)))) != Enum127.GROUNDBARRIER) {
             nextCost = 0;
           }
         }
@@ -1118,9 +1118,9 @@ function GetStrategicMvtSpeed(pCharacter: SOLDIERTYPE): INT32 {
 
   // avg of strength and agility * percentage health..very simple..replace later
 
-  iSpeed = ((pCharacter.bAgility + pCharacter.bStrength) / 2);
+  iSpeed = Math.trunc((pCharacter.bAgility + pCharacter.bStrength) / 2);
   iSpeed *= ((pCharacter.bLife));
-  iSpeed /= pCharacter.bLifeMax;
+  iSpeed = Math.trunc(iSpeed / pCharacter.bLifeMax);
 
   return iSpeed;
 }

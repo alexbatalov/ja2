@@ -183,7 +183,7 @@ export function InitTacticalPlacementGUI(): void {
         AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.ubProfile].ubFaceIndex));
       }
     }
-    xp = 91 + (i / 2) * 54;
+    xp = 91 + Math.trunc(i / 2) * 54;
     yp = (i % 2) ? 412 : 361;
     MSYS_DefineRegion(gMercPlacement[i].region, xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
   }
@@ -228,7 +228,7 @@ function RenderTacticalPlacementGUI(): void {
   // Check to make sure that if we have a hilighted merc (not selected) and the mouse has moved out
   // of it's region, then we will clear the hilighted ID, and refresh the display.
   if (!gfTacticalPlacementGUIDirty && gbHilightedMercID != -1) {
-    xp = 91 + (gbHilightedMercID / 2) * 54;
+    xp = 91 + Math.trunc(gbHilightedMercID / 2) * 54;
     yp = (gbHilightedMercID % 2) ? 412 : 361;
     if (gusMouseXPos < xp || gusMouseXPos > xp + 54 || gusMouseYPos < yp || gusMouseYPos > yp + 62) {
       gbHilightedMercID = -1;
@@ -249,7 +249,7 @@ function RenderTacticalPlacementGUI(): void {
     for (i = 0; i < giPlacements; i++) {
       // Render the mercs
       pSoldier = gMercPlacement[i].pSoldier;
-      xp = 95 + (i / 2) * 54;
+      xp = 95 + Math.trunc(i / 2) * 54;
       yp = (i % 2) ? 422 : 371;
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 36, yp + 2, xp + 44, yp + 30, 0);
       BltVideoObjectFromIndex(FRAME_BUFFER, giMercPanelImage, 0, xp, yp, VO_BLT_SRCTRANSPARENCY, null);
@@ -258,23 +258,23 @@ function RenderTacticalPlacementGUI(): void {
       if (!pSoldier.bLife)
         continue;
       // yellow one for bleeding
-      iStartY = yp + 29 - 27 * pSoldier.bLifeMax / 100;
+      iStartY = yp + 29 - Math.trunc(27 * pSoldier.bLifeMax / 100);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 36, iStartY, xp + 37, yp + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 37, iStartY, xp + 38, yp + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
       // pink one for bandaged.
-      iStartY += 27 * pSoldier.bBleeding / 100;
+      iStartY += Math.trunc(27 * pSoldier.bBleeding / 100);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 36, iStartY, xp + 37, yp + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 37, iStartY, xp + 38, yp + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
       // red one for actual health
-      iStartY = yp + 29 - 27 * pSoldier.bLife / 100;
+      iStartY = yp + 29 - Math.trunc(27 * pSoldier.bLife / 100);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 36, iStartY, xp + 37, yp + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 37, iStartY, xp + 38, yp + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
       // BREATH BAR
-      iStartY = yp + 29 - 27 * pSoldier.bBreathMax / 100;
+      iStartY = yp + 29 - Math.trunc(27 * pSoldier.bBreathMax / 100);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 39, iStartY, xp + 40, yp + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 40, iStartY, xp + 41, yp + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
       // MORALE BAR
-      iStartY = yp + 29 - 27 * pSoldier.bMorale / 100;
+      iStartY = yp + 29 - Math.trunc(27 * pSoldier.bMorale / 100);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 42, iStartY, xp + 43, yp + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, xp + 43, iStartY, xp + 44, yp + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
     }
@@ -334,7 +334,7 @@ function RenderTacticalPlacementGUI(): void {
   for (i = 0; i < giPlacements; i++) {
     // Render the merc's names
     pSoldier = gMercPlacement[i].pSoldier;
-    xp = 95 + (i / 2) * 54;
+    xp = 95 + Math.trunc(i / 2) * 54;
     yp = (i % 2) ? 422 : 371;
     // NAME
     if (gubDefaultButton == Enum310.GROUP_BUTTON && gMercPlacement[i].pSoldier.ubGroupID == gubSelectedGroupID || gubDefaultButton != Enum310.GROUP_BUTTON && i == gbSelectedMercID) {
@@ -357,7 +357,7 @@ function RenderTacticalPlacementGUI(): void {
     SetFont(BLOCKFONT());
     width = StringPixLength(pSoldier.name, BLOCKFONT());
     height = GetFontHeight(BLOCKFONT());
-    xp = xp + (48 - width) / 2;
+    xp = xp + Math.trunc((48 - width) / 2);
     yp = yp + 33;
     mprintf(xp, yp, pSoldier.name);
     InvalidateRegion(xp, yp, xp + width, yp + width);

@@ -183,8 +183,8 @@ export function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16): {
   let sCellX: INT16;
   let sCellY: INT16;
 
-  sCellX = ((sScreenX + (2 * sScreenY)) / 4);
-  sCellY = ((2 * sScreenY) - sScreenX) / 4;
+  sCellX = Math.trunc((sScreenX + (2 * sScreenY)) / 4);
+  sCellY = Math.trunc(((2 * sScreenY) - sScreenX) / 4);
 
   return { sCellX, sCellY };
 }
@@ -208,7 +208,7 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT): { d
   let dCellY: FLOAT;
 
   dCellX = ((dScreenX + (2 * dScreenY)) / 4);
-  dCellY = ((2 * dScreenY) - dScreenX) / 4;
+  dCellY = (((2 * dScreenY) - dScreenX) / 4);
 
   return { dCellX, dCellY };
 }
@@ -224,8 +224,8 @@ export function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): 
   }
 
   // Find start block
-  (psMouseX.value) = (sWorldX / CELL_X_SIZE);
-  (psMouseY.value) = (sWorldY / CELL_Y_SIZE);
+  (psMouseX.value) = Math.trunc(sWorldX / CELL_X_SIZE);
+  (psMouseY.value) = Math.trunc(sWorldY / CELL_Y_SIZE);
 
   return true;
 }
@@ -239,8 +239,8 @@ export function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Poin
   }
 
   // Find start block
-  (psMouseX.value) = (sWorldX / CELL_X_SIZE);
-  (psMouseY.value) = (sWorldY / CELL_Y_SIZE);
+  (psMouseX.value) = Math.trunc(sWorldX / CELL_X_SIZE);
+  (psMouseY.value) = Math.trunc(sWorldY / CELL_Y_SIZE);
 
   (psCellX.value) = sWorldX - ((psMouseX.value) * CELL_X_SIZE);
   (psCellY.value) = sWorldY - ((psMouseY.value) * CELL_Y_SIZE);
@@ -263,8 +263,8 @@ export function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<
     return false;
   }
 
-  sOffsetX = gViewportRegion.MouseXPos - ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2); // + gsRenderWorldOffsetX;
-  sOffsetY = gViewportRegion.MouseYPos - ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + 10; // + gsRenderWorldOffsetY;
+  sOffsetX = gViewportRegion.MouseXPos - Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2); // + gsRenderWorldOffsetX;
+  sOffsetY = gViewportRegion.MouseYPos - Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + 10; // + gsRenderWorldOffsetY;
 
   // OK, Let's offset by a value if our interfac level is changed!
   if (gsInterfaceLevel != 0) {
@@ -303,8 +303,8 @@ export function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: 
   }
 
   // Now adjust these cell coords into world coords
-  psMouseX.value = ((sMouseX)*CELL_X_SIZE) + (CELL_X_SIZE / 2);
-  psMouseY.value = ((sMouseY)*CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+  psMouseX.value = ((sMouseX)*CELL_X_SIZE) + Math.trunc(CELL_X_SIZE / 2);
+  psMouseY.value = ((sMouseY)*CELL_Y_SIZE) + Math.trunc(CELL_Y_SIZE / 2);
 
   return true;
 }
@@ -346,7 +346,7 @@ export function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer
   let sCellY: INT16;
 
   // Get X, Y world GRID Coordinates
-  sWorldY = (usMapPos / WORLD_COLS);
+  sWorldY = Math.trunc(usMapPos / WORLD_COLS);
   sWorldX = usMapPos - (sWorldY * WORLD_COLS);
 
   // Convert into cell coords
@@ -354,8 +354,8 @@ export function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer
   sCellX = sWorldX * CELL_X_SIZE;
 
   // Add center tile positions
-  psXPos.value = sCellX + (CELL_X_SIZE / 2);
-  psYPos.value = sCellY + (CELL_Y_SIZE / 2);
+  psXPos.value = sCellX + Math.trunc(CELL_X_SIZE / 2);
+  psYPos.value = sCellY + Math.trunc(CELL_Y_SIZE / 2);
 
   return true;
 }
@@ -372,8 +372,8 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16): { sWorldX: IN
   let sStartPointY_W: INT16;
 
   // Convert mouse screen coords into offset from center
-  sOffsetX = sScreenX - (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
-  sOffsetY = sScreenY - (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
+  sOffsetX = sScreenX - Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sOffsetY = sScreenY - Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(sOffsetX, sOffsetY));
 
@@ -397,8 +397,8 @@ function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16): { sWorldX: INT1
   ({ sWorldX, sWorldY } = GetScreenXYWorldCoords(sScreenX, sScreenY));
 
   // Find start block
-  sWorldX = (sWorldX / CELL_X_SIZE);
-  sWorldY = (sWorldY / CELL_Y_SIZE);
+  sWorldX = Math.trunc(sWorldX / CELL_X_SIZE);
+  sWorldY = Math.trunc(sWorldY / CELL_Y_SIZE);
 
   return { sWorldX, sWorldY };
 }
@@ -456,8 +456,8 @@ export function GetFromAbsoluteScreenXYWorldXY(sWorldScreenX: INT16, sWorldScree
 
   // ATE: We should call the fowllowing function but I'm putting it here verbatim for speed
   // FromCellToScreenCoordinates( sDistToCenterX , sDistToCenterY, &sScreenCenterX, &sScreenCenterY );
-  sWorldCenterX = ((sDistToCenterX + (2 * sDistToCenterY)) / 4);
-  sWorldCenterY = ((2 * sDistToCenterY) - sDistToCenterX) / 4;
+  sWorldCenterX = Math.trunc((sDistToCenterX + (2 * sDistToCenterY)) / 4);
+  sWorldCenterY = Math.trunc(((2 * sDistToCenterY) - sDistToCenterX) / 4);
 
   // Goto center again
   uiCellX = sWorldCenterX + gCenterWorldX;
@@ -537,8 +537,8 @@ export function CellXYToScreenXY(sCellX: INT16, sCellY: INT16): { sScreenX: INT1
 
   ({ sScreenX: sDeltaScreenX, sScreenY: sDeltaScreenY } = FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY));
 
-  sScreenX = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
-  sScreenY = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
+  sScreenX = (Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
+  sScreenY = (Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
 
   return { sScreenX, sScreenY };
 }
@@ -547,7 +547,7 @@ export function ConvertGridNoToXY(sGridNo: INT16): { sX: INT16, sY: INT16 } {
   let sX: INT16;
   let sY: INT16;
 
-  sY = sGridNo / WORLD_COLS;
+  sY = Math.trunc(sGridNo / WORLD_COLS);
   sX = (sGridNo - (sY * WORLD_COLS));
 
   return { sX, sY };
@@ -557,7 +557,7 @@ export function ConvertGridNoToCellXY(sGridNo: INT16): { sCellX: INT16, sCellY: 
   let sCellX: INT16;
   let sCellY: INT16;
 
-  sCellY = (sGridNo / WORLD_COLS);
+  sCellY = Math.trunc(sGridNo / WORLD_COLS);
   sCellX = sGridNo - (sCellY * WORLD_COLS);
 
   sCellY = (sCellY * CELL_Y_SIZE);
@@ -570,11 +570,11 @@ export function ConvertGridNoToCenterCellXY(sGridNo: INT16): { sX: INT16, sY: IN
   let sX: INT16;
   let sY: INT16;
 
-  sY = (sGridNo / WORLD_COLS);
+  sY = Math.trunc(sGridNo / WORLD_COLS);
   sX = (sGridNo - (sY * WORLD_COLS));
 
-  sY = (sY * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
-  sX = (sX * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  sY = (sY * CELL_Y_SIZE) + Math.trunc(CELL_Y_SIZE / 2);
+  sX = (sX * CELL_X_SIZE) + Math.trunc(CELL_X_SIZE / 2);
 
   return { sX, sY };
 }
@@ -636,12 +636,12 @@ export function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sCols: INT16;
   let sResult: INT16;
 
-  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sRows = Math.abs(Math.trunc(sOrigin / MAXCOL) - Math.trunc(sDest / MAXCOL));
   sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = Math.sqrt((sRows * sRows) + (sCols * sCols));
+  sResult = Math.trunc(Math.sqrt((sRows * sRows) + (sCols * sCols)));
 
   return sResult;
 }
@@ -650,7 +650,7 @@ export function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   let sRows: INT16;
   let sCols: INT16;
 
-  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sRows = Math.abs(Math.trunc(sOrigin / MAXCOL) - Math.trunc(sDest / MAXCOL));
   sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
   return Math.max(sRows, sCols);
@@ -662,7 +662,7 @@ export function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
   let sRows: INT16;
   let sCols: INT16;
 
-  sRows = Math.abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
+  sRows = Math.abs(Math.trunc(sOrigin / MAXCOL) - Math.trunc(sDest / MAXCOL));
   sCols = Math.abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
   return (sRows + sCols);
@@ -839,10 +839,10 @@ export function CenterX(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
-  sYPos = sGridNo / WORLD_COLS;
+  sYPos = Math.trunc(sGridNo / WORLD_COLS);
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
 
-  return (sXPos * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  return (sXPos * CELL_X_SIZE) + Math.trunc(CELL_X_SIZE / 2);
 }
 
 // Returns the (center ) cell coordinates in Y
@@ -850,7 +850,7 @@ export function CenterY(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
-  sYPos = sGridNo / WORLD_COLS;
+  sYPos = Math.trunc(sGridNo / WORLD_COLS);
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
 
   return (sYPos * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
@@ -860,7 +860,7 @@ function MapX(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
-  sYPos = sGridNo / WORLD_COLS;
+  sYPos = Math.trunc(sGridNo / WORLD_COLS);
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
 
   return sXPos;
@@ -870,7 +870,7 @@ function MapY(sGridNo: INT16): INT16 {
   let sYPos: INT16;
   let sXPos: INT16;
 
-  sYPos = sGridNo / WORLD_COLS;
+  sYPos = Math.trunc(sGridNo / WORLD_COLS);
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
 
   return sYPos;

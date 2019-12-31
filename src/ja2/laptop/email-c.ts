@@ -1167,7 +1167,7 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: boolean): void {
     SetFont(FONT10ARIALBOLD());
   }
   // draw date of message being displayed in mail viewer
-  sString = swprintf("%s %d", pDayStrings[0], iDate / (24 * 60));
+  sString = swprintf("%s %d", pDayStrings[0], Math.trunc(iDate / (24 * 60)));
   mprintf(DATE_X, ((4 + MIDDLE_Y + iCounter * MIDDLE_WIDTH)), sString);
 
   SetFont(MESSAGE_FONT());
@@ -1462,7 +1462,7 @@ function DisplayEmailMessage(pMail: Email | null): INT32 {
 
   iCounter = 0;
   // now blit the text background based on height
-  for (iCounter = 2; iCounter < ((iTotalHeight) / (GetFontHeight(MESSAGE_FONT()))); iCounter++) {
+  for (iCounter = 2; iCounter < Math.trunc((iTotalHeight) / (GetFontHeight(MESSAGE_FONT()))); iCounter++) {
     // get a handle to the bitmap of EMAIL VIEWER Background
     hHandle = GetVideoObject(guiEmailMessage);
 
@@ -2389,7 +2389,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: Email, iViewerY: INT32):
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
-  sString = swprintf("%d", ((pMail.iDate) / (24 * 60)));
+  sString = swprintf("%d", Math.trunc((pMail.iDate) / (24 * 60)));
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
@@ -3980,7 +3980,7 @@ function PreProcessEmail(pMail: Email): void {
   }
 
   // set iViewerY so to center the viewer
-  iViewerPositionY = (LAPTOP_SCREEN_LR_Y - 2 * VIEWER_Y - 2 * VIEWER_MESSAGE_BODY_START_Y - iHeight) / 2;
+  iViewerPositionY = Math.trunc((LAPTOP_SCREEN_LR_Y - 2 * VIEWER_Y - 2 * VIEWER_MESSAGE_BODY_START_Y - iHeight) / 2);
 
   if (iViewerPositionY < 0) {
     iViewerPositionY = 0;
@@ -3990,7 +3990,7 @@ function PreProcessEmail(pMail: Email): void {
   iTotalHeight = iHeight;
 
   // if the message background is less than MIN_MESSAGE_HEIGHT_IN_LINES, set to that number
-  if ((iTotalHeight / GetFontHeight(MESSAGE_FONT())) < MIN_MESSAGE_HEIGHT_IN_LINES) {
+  if (Math.trunc(iTotalHeight / GetFontHeight(MESSAGE_FONT())) < MIN_MESSAGE_HEIGHT_IN_LINES) {
     iTotalHeight = GetFontHeight(MESSAGE_FONT()) * MIN_MESSAGE_HEIGHT_IN_LINES;
   }
 

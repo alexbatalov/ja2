@@ -711,8 +711,8 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
     gHelpScreen.usScreenWidth = HELP_SCREEN_DEFUALT_LOC_WIDTH;
     gHelpScreen.usScreenHeight = HELP_SCREEN_DEFUALT_LOC_HEIGHT;
 
-    gHelpScreen.usScreenLocX = (640 - gHelpScreen.usScreenWidth) / 2;
-    gHelpScreen.usScreenLocY = (480 - gHelpScreen.usScreenHeight) / 2;
+    gHelpScreen.usScreenLocX = Math.trunc((640 - gHelpScreen.usScreenWidth) / 2);
+    gHelpScreen.usScreenLocY = Math.trunc((480 - gHelpScreen.usScreenHeight) / 2);
 
     gHelpScreen.bCurrentHelpScreenActiveSubPage = 0;
 
@@ -725,21 +725,21 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
       gHelpScreen.usCursor = Enum317.CURSOR_LAPTOP_SCREEN;
 
       // center the screen inside the laptop screen
-      gHelpScreen.usScreenLocX = LAPTOP_SCREEN_UL_X + (LAPTOP_SCREEN_WIDTH - gHelpScreen.usScreenWidth) / 2;
-      gHelpScreen.usScreenLocY = LAPTOP_SCREEN_UL_Y + (LAPTOP_SCREEN_HEIGHT - gHelpScreen.usScreenHeight) / 2;
+      gHelpScreen.usScreenLocX = LAPTOP_SCREEN_UL_X + Math.trunc((LAPTOP_SCREEN_WIDTH - gHelpScreen.usScreenWidth) / 2);
+      gHelpScreen.usScreenLocY = LAPTOP_SCREEN_UL_Y + Math.trunc((LAPTOP_SCREEN_HEIGHT - gHelpScreen.usScreenHeight) / 2);
 
       break;
     case Enum17.HELP_SCREEN_MAPSCREEN:
       gHelpScreen.bNumberOfButtons = Enum12.HLP_SCRN_NUM_MPSCRN_BTNS;
 
       // calc the center position based on the current panel thats being displayed
-      gHelpScreen.usScreenLocY = (gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2;
+      gHelpScreen.usScreenLocY = Math.trunc((gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2);
       break;
     case Enum17.HELP_SCREEN_TACTICAL:
       gHelpScreen.bNumberOfButtons = Enum16.HLP_SCRN_NUM_TACTICAL_PAGES;
 
       // calc the center position based on the current panel thats being displayed
-      gHelpScreen.usScreenLocY = (gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2;
+      gHelpScreen.usScreenLocY = Math.trunc((gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2);
       break;
 
     case Enum17.HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED:
@@ -749,10 +749,10 @@ function SetSizeAndPropertiesOfHelpScreen(): void {
       gHelpScreen.usScreenHeight = HELP_SCREEN_SMALL_LOC_HEIGHT;
 
       // calc screen position since we just set the width and height
-      gHelpScreen.usScreenLocX = (640 - gHelpScreen.usScreenWidth) / 2;
+      gHelpScreen.usScreenLocX = Math.trunc((640 - gHelpScreen.usScreenWidth) / 2);
 
       // calc the center position based on the current panel thats being displayed
-      gHelpScreen.usScreenLocY = (gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2;
+      gHelpScreen.usScreenLocY = Math.trunc((gsVIEWPORT_END_Y - gHelpScreen.usScreenHeight) / 2);
 
       gHelpScreen.bNumberOfButtons = 0;
       gHelpScreen.bCurrentHelpScreenActiveSubPage = 0;
@@ -1804,7 +1804,7 @@ function RenderCurrentHelpScreenTextToBuffer(): void {
   gHelpScreen.usTotalNumberOfPixelsInBuffer = RenderSpecificHelpScreen();
 
   // calc the number of lines in the buffer
-  gHelpScreen.usTotalNumberOfLinesInBuffer = gHelpScreen.usTotalNumberOfPixelsInBuffer / (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER());
+  gHelpScreen.usTotalNumberOfLinesInBuffer = Math.trunc(gHelpScreen.usTotalNumberOfPixelsInBuffer / (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER()));
 }
 
 function RenderTextBufferToScreen(): void {
@@ -2074,9 +2074,9 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
     dTemp = (iNewPosition - iPosY) / dSizeOfIncrement;
 
     if (dTemp < 0)
-      iNumberOfIncrements = (dTemp - 0.5);
+      iNumberOfIncrements = Math.trunc(dTemp - 0.5);
     else
-      iNumberOfIncrements = (dTemp + 0.5);
+      iNumberOfIncrements = Math.trunc(dTemp + 0.5);
 
     gHelpScreen.iLastMouseClickY = usMousePosY;
 
@@ -2089,9 +2089,9 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
     dTemp = (usMousePosY - iPosY) / dSizeOfIncrement;
 
     if (dTemp < 0)
-      iNumberOfIncrements = (dTemp - 0.5);
+      iNumberOfIncrements = Math.trunc(dTemp - 0.5);
     else
-      iNumberOfIncrements = (dTemp + 0.5);
+      iNumberOfIncrements = Math.trunc(dTemp + 0.5);
   }
 
   // if there has been a change

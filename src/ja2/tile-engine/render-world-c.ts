@@ -900,7 +900,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
           iTempPosX_S += 20;
 
         do {
-          uiTileIndex = RenderTiles__iTileMapPos[uiMapPosIndex];
+          uiTileIndex = RenderTiles__iTileMapPos[uiMapPosIndex] >>> 0;
           uiMapPosIndex++;
 
           // if ( 0 )
@@ -972,7 +972,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               // Looking up height every time here is alot better than doing it above!
               sTileHeight = gpWorldLevelData[uiTileIndex].sHeight;
 
-              sModifiedTileHeight = (((sTileHeight / 80) - 1) * 80);
+              sModifiedTileHeight = ((Math.trunc(sTileHeight / 80) - 1) * 80);
 
               if (sModifiedTileHeight < 0) {
                 sModifiedTileHeight = 0;
@@ -1134,8 +1134,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     // Calculate guy's position
                     ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-                    sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-                    sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
+                    sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+                    sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S) - sTileHeight;
 
                     // Adjust for offset position on screen
                     sXPos -= gsRenderWorldOffsetX;
@@ -1181,8 +1181,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                     ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-                    sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + SHORT_ROUND(dTempX_S);
-                    sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + SHORT_ROUND(dTempY_S);
+                    sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(SHORT_ROUND(dTempX_S));
+                    sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(SHORT_ROUND(dTempY_S));
 
                     // Adjust for offset position on screen
                     sXPos -= gsRenderWorldOffsetX;
@@ -1241,18 +1241,18 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               switch (uiRowFlags) {
                 case TILES_STATIC_LAND:
 
-                  LandZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = LandZLevel(iTempPosX_M, iTempPosY_M);
                   break;
 
                 case TILES_STATIC_OBJECTS:
 
                   // ATE: Modified to use constant z level, as these are same level as land items
-                  ObjectZLevel(TileElem, pNode, iTempPosX_M, iTempPosY_M);
+                  sZLevel = ObjectZLevel(TileElem, uiTileElemFlags, iTempPosX_M, iTempPosY_M);
                   break;
 
                 case TILES_STATIC_STRUCTURES:
 
-                  StructZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = StructZLevel(uiLevelNodeFlags, pCorpse, pNode, uiAniTileFlags, iTempPosX_M, iTempPosY_M);
 
                   if (fUseTileElem && (TileElem.uiFlags & MULTI_Z_TILE)) {
                     fMultiZBlitter = true;
@@ -1267,7 +1267,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                 case TILES_STATIC_ROOF:
 
-                  RoofZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = RoofZLevel(iTempPosX_M, iTempPosY_M);
 
                   // Automatically adjust height!
                   sYPos -= WALL_HEIGHT;
@@ -1279,19 +1279,19 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   break;
                 case TILES_STATIC_ONROOF:
 
-                  OnRoofZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = OnRoofZLevel(uiLevelNodeFlags, iTempPosX_M, iTempPosY_M);
                   // Automatically adjust height!
                   sYPos -= WALL_HEIGHT;
                   break;
 
                 case TILES_STATIC_TOPMOST:
 
-                  TopmostZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = TopmostZLevel(iTempPosX_M, iTempPosY_M);
                   break;
 
                 case TILES_STATIC_SHADOWS:
 
-                  ShadowZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = ShadowZLevel(iTempPosX_M, iTempPosY_M);
 
                   if (uiLevelNodeFlags & LEVELNODE_EXITGRID) {
                     fIntensityBlitter = true;
@@ -1301,31 +1301,31 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                 case TILES_DYNAMIC_LAND:
 
-                  LandZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = LandZLevel(iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   break;
                 case TILES_DYNAMIC_SHADOWS:
 
-                  ShadowZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = ShadowZLevel(iTempPosX_M, iTempPosY_M);
                   // sZLevel=SHADOW_Z_LEVEL;
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   break;
                 case TILES_DYNAMIC_OBJECTS:
 
-                  ObjectZLevel(TileElem, pNode, iTempPosX_M, iTempPosY_M);
+                  sZLevel = ObjectZLevel(TileElem, uiTileElemFlags, iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   break;
 
                 case TILES_DYNAMIC_STRUCTURES:
 
-                  StructZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = StructZLevel(uiLevelNodeFlags, pCorpse, pNode, uiAniTileFlags, iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   break;
                 case TILES_DYNAMIC_ROOF:
 
                   sYPos -= WALL_HEIGHT;
 
-                  RoofZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = RoofZLevel(iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   // For now, adjust to hieght of a wall ( 50 temp, make define )
                   // if ( TileElem->fType > FOOTPRINTS )
@@ -1336,14 +1336,14 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                 case TILES_DYNAMIC_ONROOF:
 
-                  OnRoofZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = OnRoofZLevel(uiLevelNodeFlags, iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   // Automatically adjust height!
                   sYPos -= WALL_HEIGHT;
                   break;
 
                 case TILES_DYNAMIC_TOPMOST:
-                  TopmostZLevel(iTempPosX_M, iTempPosY_M);
+                  sZLevel = TopmostZLevel(iTempPosX_M, iTempPosY_M);
                   uiDirtyFlags = BGND_FLAG_SINGLE | BGND_FLAG_ANIMATED;
                   break;
 
@@ -1451,8 +1451,8 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   // Calculate guy's position
                   ({ dScreenX: dTempX_S, dScreenY: dTempY_S } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-                  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
-                  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
+                  sXPos = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(dTempX_S);
+                  sYPos = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(dTempY_S) - sTileHeight;
 
                   // Adjust for offset position on screen
                   sXPos -= gsRenderWorldOffsetX;
@@ -1546,7 +1546,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   }
 
                   // Calculate Z level
-                  SoldierZLevel(pSoldier, iTempPosX_M, iTempPosY_M);
+                  sZLevel = SoldierZLevel(pSoldier, pNode, iTempPosX_M, iTempPosY_M, gsForceSoldierZLevel);
 
                   if (!(uiFlags & TILES_DIRTY)) {
                     if (pSoldier.fForceShade) {
@@ -2127,7 +2127,7 @@ function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScroll
 
   if (!gfDoVideoScroll) {
     // Clear z-buffer
-    gpZBuffer.fill(LAND_Z_LEVEL, 1280 * gsVIEWPORT_END_Y);
+    gpZBuffer.fill(LAND_Z_LEVEL, 1280 * gsVIEWPORT_END_Y * 2);
 
     RenderStaticWorldRect(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, false);
 
@@ -2388,7 +2388,7 @@ function RenderStaticWorld(): void {
   CalcRenderParameters(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
 
   // Clear z-buffer
-  gpZBuffer.fill(LAND_Z_LEVEL, 0, 1280 * gsVIEWPORT_END_Y / 2);
+  gpZBuffer.fill(LAND_Z_LEVEL, 0, Math.trunc(1280 * gsVIEWPORT_END_Y * 2));
 
   FreeBackgroundRectType(BGND_FLAG_ANIMATED);
   InvalidateBackgroundRects();
@@ -3079,36 +3079,36 @@ export function InitRenderParams(ubRestrictionID: UINT8): void {
     case 0: // Default!
 
       gTopLeftWorldLimitX = CELL_X_SIZE;
-      gTopLeftWorldLimitY = (WORLD_ROWS / 2) * CELL_X_SIZE;
+      gTopLeftWorldLimitY = Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE;
 
-      gTopRightWorldLimitX = (WORLD_COLS / 2) * CELL_Y_SIZE;
+      gTopRightWorldLimitX = Math.trunc(WORLD_COLS / 2) * CELL_Y_SIZE;
       gTopRightWorldLimitY = CELL_X_SIZE;
 
-      gBottomLeftWorldLimitX = ((WORLD_COLS / 2) * CELL_Y_SIZE);
+      gBottomLeftWorldLimitX = (Math.trunc(WORLD_COLS / 2) * CELL_Y_SIZE);
       gBottomLeftWorldLimitY = (WORLD_ROWS * CELL_Y_SIZE);
 
       gBottomRightWorldLimitX = (WORLD_COLS * CELL_Y_SIZE);
-      gBottomRightWorldLimitY = ((WORLD_ROWS / 2) * CELL_X_SIZE);
+      gBottomRightWorldLimitY = (Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE);
       break;
 
     case 1: // BAEMENT LEVEL 1
 
-      gTopLeftWorldLimitX = (3 * WORLD_ROWS / 10) * CELL_X_SIZE;
-      gTopLeftWorldLimitY = (WORLD_ROWS / 2) * CELL_X_SIZE;
+      gTopLeftWorldLimitX = Math.trunc(3 * WORLD_ROWS / 10) * CELL_X_SIZE;
+      gTopLeftWorldLimitY = Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE;
 
-      gTopRightWorldLimitX = (WORLD_ROWS / 2) * CELL_X_SIZE;
-      gTopRightWorldLimitY = (3 * WORLD_COLS / 10) * CELL_X_SIZE;
+      gTopRightWorldLimitX = Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE;
+      gTopRightWorldLimitY = Math.trunc(3 * WORLD_COLS / 10) * CELL_X_SIZE;
 
-      gBottomLeftWorldLimitX = (WORLD_ROWS / 2) * CELL_X_SIZE;
-      gBottomLeftWorldLimitY = (7 * WORLD_COLS / 10) * CELL_X_SIZE;
+      gBottomLeftWorldLimitX = Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE;
+      gBottomLeftWorldLimitY = Math.trunc(7 * WORLD_COLS / 10) * CELL_X_SIZE;
 
-      gBottomRightWorldLimitX = (7 * WORLD_ROWS / 10) * CELL_X_SIZE;
-      gBottomRightWorldLimitY = (WORLD_ROWS / 2) * CELL_X_SIZE;
+      gBottomRightWorldLimitX = Math.trunc(7 * WORLD_ROWS / 10) * CELL_X_SIZE;
+      gBottomRightWorldLimitY = Math.trunc(WORLD_ROWS / 2) * CELL_X_SIZE;
       break;
   }
 
-  gCenterWorldX = (WORLD_ROWS) / 2 * CELL_X_SIZE;
-  gCenterWorldY = (WORLD_COLS) / 2 * CELL_Y_SIZE;
+  gCenterWorldX = Math.trunc((WORLD_ROWS) / 2) * CELL_X_SIZE;
+  gCenterWorldY = Math.trunc((WORLD_COLS) / 2) * CELL_Y_SIZE;
 
   // Convert Bounding box into screen coords
   ({ sScreenX: gsTLX, sScreenY: gsTLY } = FromCellToScreenCoordinates(gTopLeftWorldLimitX, gTopLeftWorldLimitY));
@@ -3120,11 +3120,11 @@ export function InitRenderParams(ubRestrictionID: UINT8): void {
   // Adjust for interface height tabbing!
   gsTLY += ROOF_LEVEL_HEIGHT;
   gsTRY += ROOF_LEVEL_HEIGHT;
-  gsCY += (ROOF_LEVEL_HEIGHT / 2);
+  gsCY += Math.trunc(ROOF_LEVEL_HEIGHT / 2);
 
   // Take these spaning distances and determine # tiles spaning
-  gsTilesX = (gsTRX - gsTLX) / WORLD_TILE_X;
-  gsTilesY = (gsBRY - gsTRY) / WORLD_TILE_Y;
+  gsTilesX = Math.trunc((gsTRX - gsTLX) / WORLD_TILE_X);
+  gsTilesY = Math.trunc((gsBRY - gsTRY) / WORLD_TILE_Y);
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("World Screen Width %d Height %d", (gsTRX - gsTLX), (gsBRY - gsTRY)));
 
@@ -3196,12 +3196,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   let sMult: INT16;
 
   // Makesure it's a multiple of 5
-  sMult = sTempRenderCenterX / CELL_X_SIZE;
-  sTempRenderCenterX = (sMult * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+  sMult = Math.trunc(sTempRenderCenterX / CELL_X_SIZE);
+  sTempRenderCenterX = (sMult * CELL_X_SIZE) + Math.trunc(CELL_X_SIZE / 2);
 
   // Makesure it's a multiple of 5
-  sMult = sTempRenderCenterY / CELL_X_SIZE;
-  sTempRenderCenterY = (sMult * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+  sMult = Math.trunc(sTempRenderCenterY / CELL_X_SIZE);
+  sTempRenderCenterY = (sMult * CELL_Y_SIZE) + Math.trunc(CELL_Y_SIZE / 2);
 
   // Find the diustance from render center to true world center
   sDistToCenterX = sTempRenderCenterX - gCenterWorldX;
@@ -3220,8 +3220,8 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
   // Get corners in screen coords
   // TOP LEFT
-  sX_S = (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
-  sY_S = (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
+  sX_S = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sY_S = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   sTopLeftWorldX = sScreenCenterX - sX_S;
   sTopLeftWorldY = sScreenCenterY - sY_S;
@@ -3381,12 +3381,12 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       gDebugStr = sprintf("Center: %d %d ", gsRenderCenterX, gsRenderCenterY);
 
       // Makesure it's a multiple of 5
-      sMult = sTempRenderCenterX / CELL_X_SIZE;
-      gsRenderCenterX = (sMult * CELL_X_SIZE) + (CELL_X_SIZE / 2);
+      sMult = Math.trunc(sTempRenderCenterX / CELL_X_SIZE);
+      gsRenderCenterX = (sMult * CELL_X_SIZE) + Math.trunc(CELL_X_SIZE / 2);
 
       // Makesure it's a multiple of 5
-      sMult = sTempRenderCenterY / CELL_X_SIZE;
-      gsRenderCenterY = (sMult * CELL_Y_SIZE) + (CELL_Y_SIZE / 2);
+      sMult = Math.trunc(sTempRenderCenterY / CELL_X_SIZE);
+      gsRenderCenterY = (sMult * CELL_Y_SIZE) + Math.trunc(CELL_Y_SIZE / 2);
 
       // gsRenderCenterX = sTempRenderCenterX;
       // gsRenderCenterY = sTempRenderCenterY;
@@ -3463,9 +3463,9 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -3535,11 +3535,11 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
@@ -3569,7 +3569,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
 
   if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + Math.trunc((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -3592,254 +3592,111 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    // Skips the number of lines clipped at the top
-    TopSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-    dec TopSkip
-    jnz TopSkipLoop
-
-    // Start of line loop
-
-    // Skips the pixels hanging outside the left-side boundry
-    LeftSkipSetup:
-
-    mov Unblitted, 0 // Unblitted counts any pixels left from a run
-    mov eax, LeftSkip // after we have skipped enough left-side pixels
-    mov LSCount, eax // LSCount counts how many pixels skipped so far
-    or eax, eax
-    jz BlitLineSetup // check for nothing to skip
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNTL1 // *** jumps into non-transparent blit loop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitTransparent // *** jumps into transparent blit loop
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    //-------------------------------------------------
-    // setup for beginning of line
-
-    BlitLineSetup:
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz RSLoop2
-
-    //--------------------------------
-    // blitting non-transparent pixels
-
-    and ecx, 07fH
-
-    BlitNTL1:
-    mov ax, [ebx] // check z-level of pixel
-    cmp ax, usZLevel
-    jae BlitNTL2
-
-    mov ax, usZLevel // update z-level of pixel
-    mov [ebx], ax
-
-    xor eax, eax
-    mov al, [esi] // copy pixel
-    mov ax, [edx+eax*2]
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitNTL6
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitNTL5 // dir = 0 no change
-    js BlitNTL4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_STRIP_DELTA_Y
-    jmp BlitNTL5
-
-    BlitNTL4:
-    sub dx, Z_STRIP_DELTA_Y
-
-    BlitNTL5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitNTL6:
-    dec LSCount // decrement pixel length to blit
-    jz RightSkipLoop // done blitting the visible line
-
-    dec ecx
-    jnz BlitNTL1 // continue current run
-
-    jmp BlitDispatch // done current run, go for another
-
-    //----------------------------
-    // skipping transparent pixels
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-
-    BlitTrans2:
-
-    add edi, 2 // move up the destination pointer
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitTrans1
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitTrans5 // dir = 0 no change
-    js BlitTrans4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_STRIP_DELTA_Y
-    jmp BlitTrans5
-
-    BlitTrans4:
-    sub dx, Z_STRIP_DELTA_Y
-
-    BlitTrans5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitTrans1:
-
-    dec LSCount // decrement the pixels to blit
-    jz RightSkipLoop // done the line
-
-    dec ecx
-    jnz BlitTrans2
-
-    jmp BlitDispatch
-
-    //---------------------------------------------
-    // Scans the ETRLE until it finds an EOL marker
-
-    RightSkipLoop:
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    RSLoop2:
-
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    // reset all the z-level stuff for a new line
-
-    mov ax, usZStartLevel
-    mov usZLevel, ax
-    mov ax, usZStartIndex
-    mov usZIndex, ax
-    mov ax, usZStartCols
-    mov usZColsToGo, ax
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
+  let pPixData = hSrcVObject.pPixData;
+  let remainingSkip: number;
+  let remainingBlitLength: number;
+  let byte: number;
+  let runLength: number;
+  let isTransparent: boolean;
+  let rgb: number;
+
+  while (TopSkip) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      TopSkip--;
+    }
+  }
+
+  remainingSkip = LeftSkip;
+  remainingBlitLength = BlitLength;
+
+  while (BlitHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      BlitHeight--;
+      DestPtr += LineSkip;
+      ZPtr += LineSkip;
+      usZLevel = usZStartLevel;
+      usZColsToGo = usZStartCols;
+      remainingSkip = LeftSkip;
+      remainingBlitLength = BlitLength;
+      continue;
+    }
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    if (remainingSkip) {
+      if (remainingSkip > runLength) {
+        if (!isTransparent) {
+          SrcPtr += runLength;
+        }
+        remainingSkip -= runLength;
+        continue;
+      }
+
+      if (!isTransparent) {
+        SrcPtr += remainingSkip;
+      }
+      runLength -= remainingSkip;
+      remainingSkip = 0;
+    }
+
+    if (runLength > remainingBlitLength) {
+      runLength = remainingBlitLength;
+    }
+
+    remainingBlitLength -= runLength;
+
+    if (byte & 0x80) {
+      while (runLength--) {
+        DestPtr += 4;
+        ZPtr += 4;
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_STRIP_DELTA_Y;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_STRIP_DELTA_Y;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
+
+        if (pZBuffer[ZPtr] < usZLevel) {
+          rgb = GetRGBColor(p16BPPPalette[byte]);
+          pBuffer[DestPtr++] = SGPGetRValue(rgb);
+          pBuffer[DestPtr++] = SGPGetGValue(rgb);
+          pBuffer[DestPtr++] = SGPGetBValue(rgb);
+          pBuffer[DestPtr++] = 0xFF;
+
+          pZBuffer[ZPtr] = usZLevel;
+        } else {
+          DestPtr += 4;
+        }
+
+        ZPtr += 4;
+
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_STRIP_DELTA_Y;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_STRIP_DELTA_Y;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    }
+  }
 
   return true;
 }
@@ -3860,9 +3717,9 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -3932,11 +3789,11 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
@@ -3966,7 +3823,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
 
   if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + Math.trunc((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -3989,254 +3846,111 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    // Skips the number of lines clipped at the top
-    TopSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-    dec TopSkip
-    jnz TopSkipLoop
-
-    // Start of line loop
-
-    // Skips the pixels hanging outside the left-side boundry
-    LeftSkipSetup:
-
-    mov Unblitted, 0 // Unblitted counts any pixels left from a run
-    mov eax, LeftSkip // after we have skipped enough left-side pixels
-    mov LSCount, eax // LSCount counts how many pixels skipped so far
-    or eax, eax
-    jz BlitLineSetup // check for nothing to skip
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNTL1 // *** jumps into non-transparent blit loop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitTransparent // *** jumps into transparent blit loop
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    //-------------------------------------------------
-    // setup for beginning of line
-
-    BlitLineSetup:
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz RSLoop2
-
-    //--------------------------------
-    // blitting non-transparent pixels
-
-    and ecx, 07fH
-
-    BlitNTL1:
-    mov ax, [ebx] // check z-level of pixel
-    cmp ax, usZLevel
-    ja BlitNTL2
-
-    mov ax, usZLevel // update z-level of pixel
-    mov [ebx], ax
-
-    xor eax, eax
-    mov al, [esi] // copy pixel
-    mov ax, [edx+eax*2]
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitNTL6
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitNTL5 // dir = 0 no change
-    js BlitNTL4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_STRIP_DELTA_Y
-    jmp BlitNTL5
-
-    BlitNTL4:
-    sub dx, Z_STRIP_DELTA_Y
-
-    BlitNTL5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitNTL6:
-    dec LSCount // decrement pixel length to blit
-    jz RightSkipLoop // done blitting the visible line
-
-    dec ecx
-    jnz BlitNTL1 // continue current run
-
-    jmp BlitDispatch // done current run, go for another
-
-    //----------------------------
-    // skipping transparent pixels
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-
-    BlitTrans2:
-
-    add edi, 2 // move up the destination pointer
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitTrans1
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitTrans5 // dir = 0 no change
-    js BlitTrans4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_STRIP_DELTA_Y
-    jmp BlitTrans5
-
-    BlitTrans4:
-    sub dx, Z_STRIP_DELTA_Y
-
-    BlitTrans5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitTrans1:
-
-    dec LSCount // decrement the pixels to blit
-    jz RightSkipLoop // done the line
-
-    dec ecx
-    jnz BlitTrans2
-
-    jmp BlitDispatch
-
-    //---------------------------------------------
-    // Scans the ETRLE until it finds an EOL marker
-
-    RightSkipLoop:
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    RSLoop2:
-
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    // reset all the z-level stuff for a new line
-
-    mov ax, usZStartLevel
-    mov usZLevel, ax
-    mov ax, usZStartIndex
-    mov usZIndex, ax
-    mov ax, usZStartCols
-    mov usZColsToGo, ax
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
+  let pPixData = hSrcVObject.pPixData;
+  let remainingSkip: number;
+  let remainingBlitLength: number;
+  let byte: number;
+  let runLength: number;
+  let isTransparent: boolean;
+  let rgb: number;
+
+  while (TopSkip) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      TopSkip--;
+    }
+  }
+
+  remainingSkip = LeftSkip;
+  remainingBlitLength = BlitLength;
+
+  while (BlitHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      BlitHeight--;
+      DestPtr += LineSkip;
+      ZPtr += LineSkip;
+      usZLevel = usZStartLevel;
+      usZColsToGo = usZStartCols;
+      remainingSkip = LeftSkip;
+      remainingBlitLength = BlitLength;
+      continue;
+    }
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    if (remainingSkip) {
+      if (remainingSkip > runLength) {
+        if (!isTransparent) {
+          SrcPtr += runLength;
+        }
+        remainingSkip -= runLength;
+        continue;
+      }
+
+      if (!isTransparent) {
+        SrcPtr += remainingSkip;
+      }
+      runLength -= remainingSkip;
+      remainingSkip = 0;
+    }
+
+    if (runLength > remainingBlitLength) {
+      runLength = remainingBlitLength;
+    }
+
+    remainingBlitLength -= runLength;
+
+    if (byte & 0x80) {
+      while (runLength--) {
+        DestPtr += 4;
+        ZPtr += 4;
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_STRIP_DELTA_Y;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_STRIP_DELTA_Y;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
+
+        if (pZBuffer[ZPtr] <= usZLevel) {
+          rgb = GetRGBColor(p16BPPPalette[byte]);
+          pBuffer[DestPtr++] = SGPGetRValue(rgb);
+          pBuffer[DestPtr++] = SGPGetGValue(rgb);
+          pBuffer[DestPtr++] = SGPGetBValue(rgb);
+          pBuffer[DestPtr++] = 0xFF;
+
+          pZBuffer[ZPtr] = usZLevel;
+        } else {
+          DestPtr += 4;
+        }
+
+        ZPtr += 4;
+
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_STRIP_DELTA_Y;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_STRIP_DELTA_Y;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    }
+  }
 
   return true;
 }
@@ -4369,7 +4083,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
 
   if (LeftSkip >= pZInfo.ubFirstZStripWidth) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + Math.trunc((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -4676,9 +4390,9 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -4750,10 +4464,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
@@ -4783,7 +4497,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
 
   if (LeftSkip >= usZColsToGo) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + Math.trunc((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -4806,286 +4520,118 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    // Skips the number of lines clipped at the top
-    TopSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-
-    xor uiLineFlag, 1
-    dec TopSkip
-    jnz TopSkipLoop
-
-    // Start of line loop
-
-    // Skips the pixels hanging outside the left-side boundry
-    LeftSkipSetup:
-
-    mov Unblitted, 0 // Unblitted counts any pixels left from a run
-    mov eax, LeftSkip // after we have skipped enough left-side pixels
-    mov LSCount, eax // LSCount counts how many pixels skipped so far
-    or eax, eax
-    jz BlitLineSetup // check for nothing to skip
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNTL1 // *** jumps into non-transparent blit loop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-
-    mov Unblitted, 0
-    jmp BlitTransparent // *** jumps into transparent blit loop
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    //-------------------------------------------------
-    // setup for beginning of line
-
-    BlitLineSetup:
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz RSLoop2
-
-    //--------------------------------
-    // blitting non-transparent pixels
-
-    and ecx, 07fH
-
-    BlitNTL1:
-    mov ax, [ebx] // check z-level of pixel
-    cmp ax, usZLevel
-    jae BlitPixellate1
-    jmp BlitPixel1
-
-    BlitPixellate1:
-
-    // OK, DO PIXELLATE SCHEME HERE!
-    test uiLineFlag, 1
-    jz BlitSkip1
-
-    test edi, 2
-    jz BlitNTL2
-    jmp BlitPixel1
-
-    BlitSkip1:
-    test edi, 2
-    jnz BlitNTL2
-
-    BlitPixel1:
-
-    mov ax, usZLevel // update z-level of pixel
-    mov [ebx], ax
-
-    // Check for shadow...
-    xor eax, eax
-    mov al, [esi]
-    cmp al, 254
-    jne BlitNTL66
-
-    mov ax, [edi]
-    mov ax, ShadeTable[eax*2]
-    mov [edi], ax
-    jmp BlitNTL2
-
-    BlitNTL66:
-
-    mov ax, [edx+eax*2] // Copy pixel
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitNTL6
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitNTL5 // dir = 0 no change
-    js BlitNTL4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_SUBLAYERS
-    jmp BlitNTL5
-
-    BlitNTL4:
-    sub dx, Z_SUBLAYERS
-
-    BlitNTL5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitNTL6:
-    dec LSCount // decrement pixel length to blit
-    jz RightSkipLoop // done blitting the visible line
-
-    dec ecx
-    jnz BlitNTL1 // continue current run
-
-    jmp BlitDispatch // done current run, go for another
-
-    //----------------------------
-    // skipping transparent pixels
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-
-    BlitTrans2:
-
-    add edi, 2 // move up the destination pointer
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitTrans1
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitTrans5 // dir = 0 no change
-    js BlitTrans4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_SUBLAYERS
-    jmp BlitTrans5
-
-    BlitTrans4:
-    sub dx, Z_SUBLAYERS
-
-    BlitTrans5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitTrans1:
-
-    dec LSCount // decrement the pixels to blit
-    jz RightSkipLoop // done the line
-
-    dec ecx
-    jnz BlitTrans2
-
-    jmp BlitDispatch
-
-    //---------------------------------------------
-    // Scans the ETRLE until it finds an EOL marker
-
-    RightSkipLoop:
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    RSLoop2:
-
-    xor uiLineFlag, 1
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    // reset all the z-level stuff for a new line
-
-    mov ax, usZStartLevel
-    mov usZLevel, ax
-    mov ax, usZStartIndex
-    mov usZIndex, ax
-    mov ax, usZStartCols
-    mov usZColsToGo, ax
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
+  let pPixData = hSrcVObject.pPixData;
+  let remainingSkip: number;
+  let remainingBlitLength: number;
+  let byte: number;
+  let runLength: number;
+  let isTransparent: boolean;
+  let color: number;
+  let rgb: number;
+
+  while (TopSkip) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      TopSkip--;
+    }
+  }
+
+  remainingSkip = LeftSkip;
+  remainingBlitLength = BlitLength;
+
+  while (BlitHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      BlitHeight--;
+      DestPtr += LineSkip;
+      ZPtr += LineSkip;
+      usZLevel = usZStartLevel;
+      usZColsToGo = usZStartCols;
+      remainingSkip = LeftSkip;
+      remainingBlitLength = BlitLength;
+      continue;
+    }
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    if (remainingSkip) {
+      if (remainingSkip > runLength) {
+        if (!isTransparent) {
+          SrcPtr += runLength;
+        }
+        remainingSkip -= runLength;
+        continue;
+      }
+
+      if (!isTransparent) {
+        SrcPtr += remainingSkip;
+      }
+      runLength -= remainingSkip;
+      remainingSkip = 0;
+    }
+
+    if (runLength > remainingBlitLength) {
+      runLength = remainingBlitLength;
+    }
+
+    remainingBlitLength -= runLength;
+
+    if (byte & 0x80) {
+      while (runLength--) {
+        DestPtr += 4;
+        ZPtr += 4;
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_SUBLAYERS;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_SUBLAYERS;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
+
+        if (pZBuffer[ZPtr] < usZLevel) {
+          if (byte === 254) {
+            color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+            rgb = GetRGBColor(ShadeTable[color]);
+          } else {
+            rgb = GetRGBColor(p16BPPPalette[byte]);
+          }
+
+          pBuffer[DestPtr++] = SGPGetRValue(rgb);
+          pBuffer[DestPtr++] = SGPGetGValue(rgb);
+          pBuffer[DestPtr++] = SGPGetBValue(rgb);
+          pBuffer[DestPtr++] = 0xFF;
+
+          pZBuffer[ZPtr] = usZLevel;
+        } else {
+          DestPtr += 4;
+        }
+
+        ZPtr += 4;
+
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_SUBLAYERS;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_SUBLAYERS;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    }
+  }
 
   return true;
 }
@@ -5108,19 +4654,19 @@ function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16): { sNewScreenX: I
   sScreenY += 10;
 
   // Adjust to viewport start!
-  sScreenX -= ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
-  sScreenY -= ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
+  sScreenX -= Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sScreenY -= Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   // Make sure these coordinates are multiples of scroll steps
-  sNumXSteps = sScreenX / gubNewScrollXSpeeds[gfDoVideoScroll][gubCurScrollSpeedID];
-  sNumYSteps = sScreenY / gubNewScrollYSpeeds[gfDoVideoScroll][gubCurScrollSpeedID];
+  sNumXSteps = Math.trunc(sScreenX / gubNewScrollXSpeeds[gfDoVideoScroll][gubCurScrollSpeedID]);
+  sNumYSteps = Math.trunc(sScreenY / gubNewScrollYSpeeds[gfDoVideoScroll][gubCurScrollSpeedID]);
 
   sScreenX = (sNumXSteps * gubNewScrollXSpeeds[gfDoVideoScroll][gubCurScrollSpeedID]);
   sScreenY = (sNumYSteps * gubNewScrollYSpeeds[gfDoVideoScroll][gubCurScrollSpeedID]);
 
   // Adjust back
-  sScreenX += ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
-  sScreenY += ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
+  sScreenX += Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
+  sScreenY += Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2);
 
   sNewScreenX = sScreenX;
   sNewScreenY = sScreenY;
@@ -5244,7 +4790,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Uint8ClampedA
 
   if (LeftSkip >= usZColsToGo) {
     // Index into array after doing left clipping
-    usZStartIndex = 1 + ((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
+    usZStartIndex = 1 + Math.trunc((LeftSkip - pZInfo.ubFirstZStripWidth) / 20);
 
     // calculates the Z-value after left-side clipping
     if (usZStartIndex) {
@@ -5571,8 +5117,8 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
       usTileIndex = FASTMAPROWCOLTOPOS(sTempPosY_M, sTempPosX_M);
 
       if (usTileIndex < GRIDSIZE) {
-        sX = sTempPosX_S + (WORLD_TILE_X / 2) - 5;
-        sY = sTempPosY_S + (WORLD_TILE_Y / 2) - 5;
+        sX = sTempPosX_S + Math.trunc(WORLD_TILE_X / 2) - 5;
+        sY = sTempPosY_S + Math.trunc(WORLD_TILE_Y / 2) - 5;
 
         // THIS ROOM STUFF IS ONLY DONE IN THE EDITOR...
         // ADJUST BY SHEIGHT
@@ -5687,46 +5233,43 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
         // ATE: Don;t let any vehicle sit here....
         if (FindStructure(usTileIndex, (STRUCTURE_MOBILE))) {
           // Continue...
-          goto("ENDOFLOOP");
-        }
+        } else {
+          sX = sTempPosX_S;
+          sY = sTempPosY_S - gpWorldLevelData[usTileIndex].sHeight;
 
-        sX = sTempPosX_S;
-        sY = sTempPosY_S - gpWorldLevelData[usTileIndex].sHeight;
+          // Adjust for interface level
+          sY += gsRenderHeight;
 
-        // Adjust for interface level
-        sY += gsRenderHeight;
+          // Caluluate zvalue
+          // Look for anything less than struct layer!
+          ({ sScreenX: sWorldX, sScreenY: sZLevel } = GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M));
 
-        // Caluluate zvalue
-        // Look for anything less than struct layer!
-        ({ sScreenX: sWorldX, sScreenY: sZLevel } = GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M));
+          sZLevel += gsRenderHeight;
 
-        sZLevel += gsRenderHeight;
+          sZLevel = (sZLevel * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
 
-        sZLevel = (sZLevel * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
+          if (gpWorldLevelData[usTileIndex].uiFlags & MAPELEMENT_REEVALUATE_REDUNDENCY) {
+            bBlitClipVal = BltIsClippedOrOffScreen(TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex, gClippingRect);
 
-        if (gpWorldLevelData[usTileIndex].uiFlags & MAPELEMENT_REEVALUATE_REDUNDENCY) {
-          bBlitClipVal = BltIsClippedOrOffScreen(TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex, gClippingRect);
+            if (bBlitClipVal == 0) {
+              // Set flag to not evaluate again!
+              gpWorldLevelData[usTileIndex].uiFlags &= (~MAPELEMENT_REEVALUATE_REDUNDENCY);
 
-          if (bBlitClipVal == 0) {
-            // Set flag to not evaluate again!
-            gpWorldLevelData[usTileIndex].uiFlags &= (~MAPELEMENT_REEVALUATE_REDUNDENCY);
+              // OK, first do some rules with exceptions
+              // Don't let this happen for roads!
+              pObject = gpWorldLevelData[usTileIndex].pObjectHead;
 
-            // OK, first do some rules with exceptions
-            // Don't let this happen for roads!
-            pObject = gpWorldLevelData[usTileIndex].pObjectHead;
-
-            if (IsTileRedundent(gpZBuffer, sZLevel, TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex)) {
-              // Mark in the world!
-              gpWorldLevelData[usTileIndex].uiFlags |= MAPELEMENT_REDUNDENT;
-            } else {
-              // Un Mark in the world!
-              gpWorldLevelData[usTileIndex].uiFlags &= (~MAPELEMENT_REDUNDENT);
+              if (IsTileRedundent(gpZBuffer, sZLevel, TileElem.hTileSurface, sX, sY, TileElem.usRegionIndex)) {
+                // Mark in the world!
+                gpWorldLevelData[usTileIndex].uiFlags |= MAPELEMENT_REDUNDENT;
+              } else {
+                // Un Mark in the world!
+                gpWorldLevelData[usTileIndex].uiFlags &= (~MAPELEMENT_REDUNDENT);
+              }
             }
           }
         }
       }
-
-    ENDOFLOOP:
 
       sTempPosX_S += 40;
       sTempPosX_M++;
@@ -5764,7 +5307,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   let sOffsetX_S: INT16;
   let sOffsetY_S: INT16;
 
-  gOldClipRect = gClippingRect;
+  copySGPRect(gOldClipRect, gClippingRect);
 
   // Set new clipped rect
   gClippingRect.iLeft = Math.max(gsVIEWPORT_START_X, sLeft);
@@ -5780,8 +5323,8 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
   // STEP THREE - determine starting point in world coords
   // a) Determine where in screen coords to start rendering
-  gsStartPointX_S = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) - (sLeft - VIEWPORT_XOFFSET_S);
-  gsStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - VIEWPORT_YOFFSET_S);
+  gsStartPointX_S = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) - (sLeft - VIEWPORT_XOFFSET_S);
+  gsStartPointY_S = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
   ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(gsStartPointX_S, gsStartPointY_S));
@@ -5800,8 +5343,8 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
   // STEP FOUR - Determine Start block
   // a) Find start block
-  gsStartPointX_M = (gsStartPointX_W) / CELL_X_SIZE;
-  gsStartPointY_M = (gsStartPointY_W) / CELL_Y_SIZE;
+  gsStartPointX_M = Math.trunc((gsStartPointX_W) / CELL_X_SIZE);
+  gsStartPointY_M = Math.trunc((gsStartPointY_W) / CELL_Y_SIZE);
 
   // STEP 5 - Determine Deltas for center and find screen values
   // Make sure these coordinates are multiples of scroll steps
@@ -5833,8 +5376,8 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
   // STEP THREE - determine starting point in world coords
   // a) Determine where in screen coords to start rendering
-  gsLStartPointX_S = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) - (sLeft - LARGER_VIEWPORT_XOFFSET_S);
-  gsLStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - LARGER_VIEWPORT_YOFFSET_S);
+  gsLStartPointX_S = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) - (sLeft - LARGER_VIEWPORT_XOFFSET_S);
+  gsLStartPointY_S = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - LARGER_VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
   ({ sCellX: sTempPosX_W, sCellY: sTempPosY_W } = FromScreenToCellCoordinates(gsLStartPointX_S, gsLStartPointY_S));
@@ -5853,8 +5396,8 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
   // STEP FOUR - Determine Start block
   // a) Find start block
-  gsLStartPointX_M = (gsLStartPointX_W) / CELL_X_SIZE;
-  gsLStartPointY_M = (gsLStartPointY_W) / CELL_Y_SIZE;
+  gsLStartPointX_M = Math.trunc((gsLStartPointX_W) / CELL_X_SIZE);
+  gsLStartPointY_M = Math.trunc((gsLStartPointY_W) / CELL_Y_SIZE);
 
   // Adjust starting screen coordinates
   gsLStartPointX_S -= sOffsetX_S;
@@ -5869,7 +5412,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
 
 function ResetRenderParameters(): void {
   // Restore clipping rect
-  gClippingRect = gOldClipRect;
+  copySGPRect(gClippingRect, gOldClipRect);
 }
 
 function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16): boolean {
@@ -6106,8 +5649,8 @@ function IsTileRedundent(pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObj
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -6135,67 +5678,41 @@ function IsTileRedundent(pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObj
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  ZPtr = pZBuffer + (1280 * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  ZPtr = (1280 * iTempY * 2) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (1280 - (usWidth * 2));
+  LineSkip = (1280 * 2 - (usWidth * 4));
 
-  asm(`
-    mov esi, SrcPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
+  let pPixData = hSrcVObject.pPixData;
+  let byte: number;
+  let runLength: number;
 
-    BlitDispatch:
+  outer:
+  while (usHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      usHeight--;
+      ZPtr += LineSkip;
+      continue;
+    }
 
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz BlitDoneLine
+    runLength = byte & 0x7F;
 
-    // BlitNonTransLoop:
+    if (byte & 0x80) {
+      ZPtr += runLength * 4;
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
 
-    xor eax, eax
+        if (pZBuffer[ZPtr] < usZValue) {
+          fHidden = false;
+          break outer;
+        }
 
-    BlitNTL4:
-
-    mov ax, usZValue
-    cmp ax, [ebx]
-    jle BlitNTL5
-
-    // Set false, flag
-    mov fHidden, 0
-    jmp BlitDone
-
-    BlitNTL5:
-    inc esi
-    inc ebx
-    inc ebx
-
-    dec cl
-    jnz BlitNTL4
-
-    jmp BlitDispatch
-
-    BlitTransparent:
-
-    and ecx, 07fH
-    // shl ecx, 1
-    add ecx, ecx
-    add ebx, ecx
-    jmp BlitDispatch
-
-    BlitDoneLine:
-
-    dec usHeight
-    jz BlitDone
-    add ebx, LineSkip
-    jmp BlitDispatch
-
-    BlitDone:
-  `);
+        ZPtr += 4;
+      }
+    }
+  }
 
   return fHidden;
 }

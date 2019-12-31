@@ -151,8 +151,8 @@ export function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UI
 
     if (pCurr.swzTitle) {
       usStartX = pCurr.usPanelLeft + // left position
-                 (pCurr.usPanelRight - pCurr.usPanelLeft) / 2 - // + half width
-                 StringPixLength(pCurr.swzTitle, pCurr.usTitleFont) / 2; // - half string width
+                 Math.trunc((pCurr.usPanelRight - pCurr.usPanelLeft) / 2) - // + half width
+                 Math.trunc(StringPixLength(pCurr.swzTitle, pCurr.usTitleFont) / 2); // - half string width
       usStartY = pCurr.usPanelTop + 3;
       SetFont(pCurr.usTitleFont);
       SetFontForeground(pCurr.ubTitleFontForeColor);

@@ -386,7 +386,7 @@ export function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRa
   sLeft = -ubRadius;
   sRight = ubRadius;
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
       if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {
@@ -423,7 +423,7 @@ export function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, f
   sRight = ubRadius;
   for (cnt3 = Enum313.FIRSTTEXTURE; cnt3 <= Enum313.SEVENTHTEXTURE; cnt3++) {
     for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-      leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+      leftmost = Math.trunc((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
       for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
         iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
         if (iNewIndex >= 0 && iNewIndex < WORLD_MAX && iNewIndex >= leftmost && iNewIndex < (leftmost + WORLD_COLS)) {

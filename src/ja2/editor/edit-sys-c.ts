@@ -683,7 +683,7 @@ function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRad
   sRight = ubRadius;
 
   iXPos = (iMapIndex % WORLD_COLS);
-  iYPos = (iMapIndex - iXPos) / WORLD_COLS;
+  iYPos = Math.trunc((iMapIndex - iXPos) / WORLD_COLS);
 
   if ((iXPos + sLeft) < 0)
     sLeft = (-iXPos);
@@ -779,7 +779,7 @@ function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRad
     return false;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
@@ -827,7 +827,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
     return false;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((iMapIndex + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = iMapIndex + (WORLD_COLS * cnt1) + cnt2;
@@ -878,7 +878,6 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
     for (cnt1 = 0; cnt1 < sNumSmoothTiles; cnt1++) {
       SmoothTerrainRadius(puiSmoothTiles[cnt1], uiNewType, 10, false);
     }
-    MemFree(puiSmoothTiles);
   }
 
   return true;
@@ -926,7 +925,7 @@ function PasteTextureFromRadiusEx(sGridNo: INT16, usType: UINT16, ubRadius: UINT
     return;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       iNewIndex = sGridNo + (WORLD_COLS * cnt1) + cnt2;
@@ -1063,7 +1062,7 @@ export function RaiseWorldLand(): void {
   // start at y=159, x= 80 and go to x=159, y=80
 
   // now check along x=159, y=80 to x=80, y=0
-  for (cnt = ((WORLD_COLS * WORLD_ROWS) - (WORLD_ROWS / 2) * (WORLD_ROWS - 2) - 1); cnt > WORLD_ROWS - 1; cnt -= (WORLD_ROWS + 1)) {
+  for (cnt = ((WORLD_COLS * WORLD_ROWS) - Math.trunc(WORLD_ROWS / 2) * (WORLD_ROWS - 2) - 1); cnt > WORLD_ROWS - 1; cnt -= (WORLD_ROWS + 1)) {
     if (fAboutToRaise == true) {
       fRaiseSet = true;
       fAboutToRaise = false;

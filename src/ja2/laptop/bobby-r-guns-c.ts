@@ -44,7 +44,7 @@ const BOBBYR_NEXT_BUTTON_Y = BOBBYR_PREVIOUS_BUTTON_Y; // BOBBYR_PREVIOUS_BUTTON
 
 const BOBBYR_CATALOGUE_BUTTON_WIDTH = 56; // 75
 const BOBBYR_CATALOGUE_BUTTON_START_X = BOBBYR_PREVIOUS_BUTTON_X + 92; // LAPTOP_SCREEN_UL_X + 93 - BOBBYR_CATALOGUE_BUTTON_WIDTH/2
-const BOBBYR_CATALOGUE_BUTTON_GAP = (318 - NUM_CATALOGUE_BUTTONS * BOBBYR_CATALOGUE_BUTTON_WIDTH) / (NUM_CATALOGUE_BUTTONS + 1) + BOBBYR_CATALOGUE_BUTTON_WIDTH + 1; // 80
+const BOBBYR_CATALOGUE_BUTTON_GAP = Math.trunc((318 - NUM_CATALOGUE_BUTTONS * BOBBYR_CATALOGUE_BUTTON_WIDTH) / (NUM_CATALOGUE_BUTTONS + 1)) + BOBBYR_CATALOGUE_BUTTON_WIDTH + 1; // 80
 const BOBBYR_CATALOGUE_BUTTON_Y = LAPTOP_SCREEN_WEB_UL_Y + 340;
 
 const BOBBYR_HOME_BUTTON_X = 120;
@@ -716,7 +716,7 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): boolean {
   usWidth = pTrav.usWidth;
   //	sCenX = PosX + ( abs( BOBBYR_GRID_PIC_WIDTH - usWidth ) / 2 );
   //	sCenY = PosY + 8;
-  sCenX = PosX + (Math.abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
+  sCenX = PosX + Math.trunc(Math.abs(BOBBYR_GRID_PIC_WIDTH - usWidth) / 2) - pTrav.sOffsetX;
   sCenY = PosY + 8;
 
   // blt the shadow of the item
@@ -1029,7 +1029,7 @@ export function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
 
   gusFirstItemIndex = sFirst;
   gusLastItemIndex = sLast;
-  gubNumPages = (ubNumItems / BOBBYR_NUM_WEAPONS_ON_PAGE);
+  gubNumPages = Math.trunc(ubNumItems / BOBBYR_NUM_WEAPONS_ON_PAGE);
   if ((ubNumItems % BOBBYR_NUM_WEAPONS_ON_PAGE) != 0)
     gubNumPages += 1;
 }
@@ -1064,7 +1064,7 @@ export function SetFirstLastPagesForUsed(): void {
 
   gusFirstItemIndex = sFirst;
   gusLastItemIndex = sLast;
-  gubNumPages = (ubNumItems / BOBBYR_NUM_WEAPONS_ON_PAGE);
+  gubNumPages = Math.trunc(ubNumItems / BOBBYR_NUM_WEAPONS_ON_PAGE);
   if ((ubNumItems % BOBBYR_NUM_WEAPONS_ON_PAGE) != 0)
     gubNumPages += 1;
 }
@@ -1310,7 +1310,7 @@ export function CalcBobbyRayCost(usIndex: UINT16, usBobbyIndex: UINT16, fUsed: b
   else
     value = Item[LaptopSaveInfo.BobbyRayInventory[usBobbyIndex].usItemIndex].usPrice;
 
-  return value;
+  return Math.trunc(value);
 }
 
 function CalculateTotalPurchasePrice(): UINT32 {

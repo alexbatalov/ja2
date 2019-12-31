@@ -56,7 +56,7 @@ const AIM_POPUP_WIDTH = 309;
 const AIM_POPUP_TEXT_WIDTH = 296;
 const AIM_POPUP_SECTION_HEIGHT = 9;
 
-const AIM_POPUP_X = LAPTOP_SCREEN_UL_X + (500 - AIM_POPUP_WIDTH) / 2;
+const AIM_POPUP_X = LAPTOP_SCREEN_UL_X + Math.trunc((500 - AIM_POPUP_WIDTH) / 2);
 const AIM_POPUP_Y = 120 + LAPTOP_SCREEN_WEB_DELTA_Y;
 
 const AIM_POPUP_SHADOW_GAP = 4;
@@ -442,7 +442,7 @@ function DisplayAlumniOldMercPopUp(): void {
   sDesc = LoadEncryptedDataFromFile(AIM_ALUMNI_FILE, uiStartLoc, AIM_ALUMNI_DECRIPTION_SIZE);
 
   usStringPixLength = StringPixLength(sDesc, AIM_ALUMNI_POPUP_FONT());
-  ubNumDescLines = (usStringPixLength / AIM_POPUP_TEXT_WIDTH);
+  ubNumDescLines = Math.trunc(usStringPixLength / AIM_POPUP_TEXT_WIDTH);
 
   ubNumLines += ubNumDescLines;
 

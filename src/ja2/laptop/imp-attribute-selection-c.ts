@@ -192,7 +192,7 @@ export function HandleIMPAttributeSelection(): void {
       // get old stat value
       iCurrentAttributeValue = GetCurrentAttributeValue(giCurrentlySelectedStat);
       sNewX = sNewX - (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
-      iNewValue = (sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
+      iNewValue = Math.trunc((sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35);
 
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
@@ -697,7 +697,7 @@ export function RenderAttributeBoxes(): void {
     switch (iCnt) {
       case (Enum84.STRENGTH_ATTRIBUTE):
         // blt in strength slider
-        sX = ((iCurrentStrength - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentStrength - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
 
@@ -712,7 +712,7 @@ export function RenderAttributeBoxes(): void {
         break;
       case (Enum84.DEXTERITY_ATTRIBUTE):
         // blt in strength slider
-        sX = ((iCurrentDexterity - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentDexterity - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
 
@@ -728,7 +728,7 @@ export function RenderAttributeBoxes(): void {
         break;
       case (Enum84.AGILITY_ATTRIBUTE):
         // blt in strength slider
-        sX = ((iCurrentAgility - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentAgility - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
 
@@ -744,7 +744,7 @@ export function RenderAttributeBoxes(): void {
         break;
       case (Enum84.WISDOM_ATTRIBUTE):
         // blt in strength slider
-        sX = ((iCurrentWisdom - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentWisdom - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
 
@@ -759,7 +759,7 @@ export function RenderAttributeBoxes(): void {
         break;
       case (Enum84.LEADERSHIP_ATTRIBUTE):
         // blt in strength slider
-        sX = ((iCurrentLeaderShip - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentLeaderShip - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
@@ -773,7 +773,7 @@ export function RenderAttributeBoxes(): void {
         break;
       case (Enum84.HEALTH_ATTRIBUTE):
         // blt in health slider
-        sX = ((iCurrentHealth - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentHealth - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
 
@@ -789,7 +789,7 @@ export function RenderAttributeBoxes(): void {
       case (Enum84.MARKSMANSHIP_SKILL):
         // blt in marksmanship slider
 
-        sX = ((iCurrentMarkmanship - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentMarkmanship - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         // if less than zero..a zero'ed skill...reset to zero
         if (sX < 0) {
           sX = 0;
@@ -809,7 +809,7 @@ export function RenderAttributeBoxes(): void {
       case (Enum84.MEDICAL_SKILL):
         // blt in medical slider
 
-        sX = ((iCurrentMedical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentMedical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         // if less than zero..a zero'ed skill...reset to zero
         if (sX < 0) {
           sX = 0;
@@ -830,7 +830,7 @@ export function RenderAttributeBoxes(): void {
       case (Enum84.MECHANICAL_SKILL):
         // blt in mech slider
 
-        sX = ((iCurrentMechanical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentMechanical - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         // if less than zero..a zero'ed skill...reset to zero
         if (sX < 0) {
           sX = 0;
@@ -851,7 +851,7 @@ export function RenderAttributeBoxes(): void {
       case (Enum84.EXPLOSIVE_SKILL):
         // blt in explosive slider
 
-        sX = ((iCurrentExplosives - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50;
+        sX = Math.trunc(((iCurrentExplosives - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50);
         // if less than zero..a zero'ed skill...reset to zero
         if (sX < 0) {
           sX = 0;
@@ -888,16 +888,16 @@ function CreateAttributeSliderButtons(): void {
 
   for (iCounter = 0; iCounter < 20; iCounter += 2) {
     // left button - decrement stat
-    giIMPAttributeSelectionSliderButton[iCounter] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[0], LAPTOP_SCREEN_UL_X + (163), (LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderLeftCallback);
+    giIMPAttributeSelectionSliderButton[iCounter] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[0], LAPTOP_SCREEN_UL_X + (163), (LAPTOP_SCREEN_WEB_UL_Y + (99 + Math.trunc(iCounter / 2) * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderLeftCallback);
 
     // right button - increment stat
-    giIMPAttributeSelectionSliderButton[iCounter + 1] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[1], LAPTOP_SCREEN_UL_X + (419), (LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderRightCallback);
+    giIMPAttributeSelectionSliderButton[iCounter + 1] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[1], LAPTOP_SCREEN_UL_X + (419), (LAPTOP_SCREEN_WEB_UL_Y + (99 + Math.trunc(iCounter / 2) * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderRightCallback);
 
     SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter], Enum317.CURSOR_WWW);
     SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter + 1], Enum317.CURSOR_WWW);
     // set user data
-    MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter], 0, iCounter / 2);
-    MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter + 1], 0, iCounter / 2);
+    MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter], 0, Math.trunc(iCounter / 2));
+    MSYS_SetBtnUserData(giIMPAttributeSelectionSliderButton[iCounter + 1], 0, Math.trunc(iCounter / 2));
   }
 
   MarkButtonsDirty();
@@ -998,7 +998,7 @@ function CreateSliderBarMouseRegions(): void {
   let sX: INT16 = 0;
 
   // set the starting X
-  sX = (((55 - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50) + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
+  sX = Math.trunc((((55 - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50) + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
@@ -1091,7 +1091,7 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
       // get old stat value
       iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
       sNewX = sNewX - (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
-      iNewValue = (sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35;
+      iNewValue = Math.trunc((sNewX * 50) / BASE_SKILL_PIXEL_UNIT_SIZE + 35);
 
       // chenged, move mouse region if change large enough
       if (iCurrentAttributeValue != iNewValue) {
@@ -1138,7 +1138,7 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
 
     // set the new attribute value based on position of mouse click
-    iNewAttributeValue = ((sX - SKILL_SLIDE_START_X) * 50) / BASE_SKILL_PIXEL_UNIT_SIZE;
+    iNewAttributeValue = Math.trunc(((sX - SKILL_SLIDE_START_X) * 50) / BASE_SKILL_PIXEL_UNIT_SIZE);
 
     // too high, reset to 85
     if (iNewAttributeValue > 85) {
@@ -1183,7 +1183,7 @@ function SliderRegionButtonCallback(pRegion: MOUSE_REGION, iReason: INT32): void
     iCurrentAttributeValue = GetCurrentAttributeValue(SliderRegionButtonCallback__iAttribute);
 
     // get the boxes bounding x
-    sNewX = ((iCurrentAttributeValue - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50 + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
+    sNewX = Math.trunc(((iCurrentAttributeValue - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50 + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X);
 
     // the sNewX is below 0, reset to zero
     if (sNewX < 0) {

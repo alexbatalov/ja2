@@ -331,7 +331,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
         break;
       case (9):
         giIMPPersonalityQuizAnswerButtonImage[9] = LoadButtonImage("LAPTOP\\button_6.sti", -1, 0, -1, 1, -1);
-        giIMPPersonalityQuizAnswerButton[9] = QuickCreateButton(giIMPPersonalityQuizAnswerButtonImage[9], LAPTOP_SCREEN_UL_X + ((276 - 46) / 2), LAPTOP_SCREEN_WEB_UL_Y + (147), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CALLBACK, BtnIMPPersonalityQuizAnswer9Callback);
+        giIMPPersonalityQuizAnswerButton[9] = QuickCreateButton(giIMPPersonalityQuizAnswerButtonImage[9], LAPTOP_SCREEN_UL_X + Math.trunc((276 - 46) / 2), LAPTOP_SCREEN_WEB_UL_Y + (147), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CALLBACK, BtnIMPPersonalityQuizAnswer9Callback);
 
         break;
     }

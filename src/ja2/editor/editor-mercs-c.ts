@@ -777,7 +777,7 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 16, iXPos + 128 + 104, iYPos + 16 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 104, iYPos + 17 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 17, iXPos + 128 + 103, iYPos + 17 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(pSoldier.name, FONT12POINT1())) / 2;
+  iXOff = Math.trunc((105 - StringPixLength(pSoldier.name, FONT12POINT1())) / 2);
   gprintf(iXPos + 130 + iXOff, iYPos + 20, "%s", pSoldier.name);
 
   // Orders window
@@ -785,7 +785,7 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 51, iXPos + 128 + 104, iYPos + 51 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 104, iYPos + 52 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 52, iXPos + 128 + 103, iYPos + 52 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercOrders[pSoldier.bOrders], FONT12POINT1())) / 2;
+  iXOff = Math.trunc((105 - StringPixLength(EditMercOrders[pSoldier.bOrders], FONT12POINT1())) / 2);
   gprintf(iXPos + 130 + iXOff, iYPos + 55, "%s", EditMercOrders[pSoldier.bOrders]);
 
   // Combat window
@@ -793,7 +793,7 @@ function DisplayEditMercWindow(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 128, iYPos + 86, iXPos + 128 + 104, iYPos + 86 + 19, usFillColorDark);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 104, iYPos + 87 + 19, usFillColorLight);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 129, iYPos + 87, iXPos + 128 + 103, iYPos + 87 + 18, usFillColorTextBk);
-  iXOff = (105 - StringPixLength(EditMercAttitudes[pSoldier.bAttitude], FONT12POINT1())) / 2;
+  iXOff = Math.trunc((105 - StringPixLength(EditMercAttitudes[pSoldier.bAttitude], FONT12POINT1())) / 2);
   gprintf(iXPos + 130 + iXOff, iYPos + 90, "%s", EditMercAttitudes[pSoldier.bAttitude]);
 
   // Get stats
@@ -818,7 +818,7 @@ function DisplayEditMercWindow(): void {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, iXPos + 117, iYPos + 111 + (20 * x), iXPos + 116 + 29, iYPos + 111 + (20 * x) + 18, usFillColorTextBk);
 
     TempString = swprintf("%d", iEditStat[x]);
-    iXOff = (30 - StringPixLength(TempString, FONT12POINT1())) / 2;
+    iXOff = Math.trunc((30 - StringPixLength(TempString, FONT12POINT1())) / 2);
     gprintf(iXPos + 118 + iXOff, iYPos + 114 + (20 * x), "%s", TempString);
   }
 }
@@ -1138,7 +1138,7 @@ function ShowEditMercColorSet(ubPaletteRep: UINT8, sSet: INT16): void {
   else
     ubSize = gpPalRep[ubPaletteRep].ubPaletteSize;
 
-  sUnitSize = 128 / (ubSize);
+  sUnitSize = Math.trunc(128 / (ubSize));
 
   sTop = 364 + (sSet * 24);
   sBottom = sTop + 20;
@@ -1220,8 +1220,8 @@ export function DisplayWayPoints(): void {
 
     ({ dScreenX: ScrnX, dScreenY: ScrnY } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-    sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
-    sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
+    sScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
+    sScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
 
     // Adjust for tiles height factor!
     sScreenY -= gpWorldLevelData[sGridNo].sHeight;
@@ -1852,7 +1852,6 @@ export function InitDetailedPlacementForMerc(): void {
 
 export function KillDetailedPlacementForMerc(): void {
   Assert(gpSelected.pDetailedPlacement);
-  MemFree(gpSelected.pDetailedPlacement);
   gpSelected.pDetailedPlacement = null;
   gpSelected.pBasicPlacement.fDetailedPlacement = false;
   SetMercEditability(true);
@@ -2751,8 +2750,8 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
     rScalar = Math.max(rWidthScalar, rHeightScalar);
 
   // apply the scalar to the destination width and height
-  iDstWidth = (iSrcWidth * rScalar);
-  iDstHeight = (iSrcHeight * rScalar);
+  iDstWidth = Math.trunc(iSrcWidth * rScalar);
+  iDstHeight = Math.trunc(iSrcHeight * rScalar);
 
   // sometimes it is possible to scale too big, so clip if applicable
   if (iDstWidth > MERCINV_LGSLOT_WIDTH)
@@ -2763,9 +2762,9 @@ function AddNewItemToSelectedMercsInventory(fCreate: boolean): void {
     iDstHeight = MERCINV_SLOT_HEIGHT;
 
   // use the new width and height values to calculate the new dest rect (center the item)
-  DstRect.iLeft = (DstRect.iRight - DstRect.iLeft - iDstWidth) / 2;
+  DstRect.iLeft = Math.trunc((DstRect.iRight - DstRect.iLeft - iDstWidth) / 2);
   DstRect.iRight = DstRect.iLeft + iDstWidth;
-  DstRect.iTop = (DstRect.iBottom - DstRect.iTop - iDstHeight) / 2;
+  DstRect.iTop = Math.trunc((DstRect.iBottom - DstRect.iTop - iDstHeight) / 2);
   DstRect.iBottom = DstRect.iTop + iDstHeight;
 
   // scale the item down to the smaller buffer.
@@ -3334,9 +3333,9 @@ function RenderCurrentSchedule(): void {
   let str: string /* UINT16[3] */;
   for (i = 0; i < 8; i++) {
     if (i % 2)
-      iMapIndex = gCurrSchedule.usData2[i / 2];
+      iMapIndex = gCurrSchedule.usData2[Math.trunc(i / 2)];
     else
-      iMapIndex = gCurrSchedule.usData1[i / 2];
+      iMapIndex = gCurrSchedule.usData1[Math.trunc(i / 2)];
 
     if (iMapIndex == 0xffff)
       continue;
@@ -3349,8 +3348,8 @@ function RenderCurrentSchedule(): void {
 
     ({ dScreenX: ScrnX, dScreenY: ScrnY } = FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY));
 
-    sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
-    sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
+    sScreenX = Math.trunc((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + Math.trunc(ScrnX);
+    sScreenY = Math.trunc((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + Math.trunc(ScrnY);
 
     // Adjust for tiles height factor!
     sScreenY -= gpWorldLevelData[iMapIndex].sHeight;
@@ -3362,7 +3361,7 @@ function RenderCurrentSchedule(): void {
       SetFont(TINYFONT1());
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
-      str = swprintf("%d%c", i / 2 + 1, 'A' + (i % 2));
+      str = swprintf("%d%c", Math.trunc(i / 2) + 1, 'A' + (i % 2));
       ({ sX, sY } = VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), str));
       mprintf(sX, sY, str);
     }

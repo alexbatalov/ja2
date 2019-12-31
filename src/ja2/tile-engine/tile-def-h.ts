@@ -167,6 +167,25 @@ export function resetTileElement(o: TILE_ELEMENT) {
   o.bReserved.fill(0);
 }
 
+export function copyTileElement(destination: TILE_ELEMENT, source: TILE_ELEMENT) {
+  destination.fType = source.fType;
+  destination.hTileSurface = source.hTileSurface;
+  destination.pDBStructureRef = source.pDBStructureRef;
+  destination.uiFlags = source.uiFlags;
+  destination.pTileLocData = source.pTileLocData;
+  destination.usRegionIndex = source.usRegionIndex;
+  destination.sBuddyNum = source.sBuddyNum;
+  destination.ubTerrainID = source.ubTerrainID;
+  destination.ubNumberOfTiles = source.ubNumberOfTiles;
+  destination.bZOffsetX = source.bZOffsetX;
+  destination.bZOffsetY = source.bZOffsetY;
+  destination.sOffsetHeight = source.sOffsetHeight;
+  destination.usWallOrientation = source.usWallOrientation;
+  destination.ubFullTile = source.ubFullTile;
+  destination.pAnimData = source.pAnimData;
+  copyArray(destination.bReserved, source.bReserved);
+}
+
 export const TILE_ELEMENT_SIZE = 44;
 
 }

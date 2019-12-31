@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 const MAX_MERC_IN_HELI = 20;
 const MAX_HELI_SCRIPT = 30;
 const ME_SCRIPT_DELAY = 100;
@@ -311,7 +313,7 @@ let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = [
 ];
 
 let gfHandleHeli: boolean = false;
-let gusHeliSeats: UINT8[] /* [MAX_MERC_IN_HELI] */;
+let gusHeliSeats: UINT8[] /* [MAX_MERC_IN_HELI] */ = createArray(MAX_MERC_IN_HELI, 0);
 let gbNumHeliSeatsOccupied: INT8 = 0;
 
 let gfFirstGuyDown: boolean = false;
@@ -567,25 +569,25 @@ export function HandleHeliDrop(): void {
         case Enum233.HELI_MOVE_DOWN:
 
           gdHeliZPos -= 1;
-          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = Math.trunc(gdHeliZPos);
           break;
 
         case Enum233.HELI_MOVE_UP:
 
           gdHeliZPos += 1;
-          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = Math.trunc(gdHeliZPos);
           break;
 
         case Enum233.HELI_MOVESMALL_DOWN:
 
           gdHeliZPos -= 0.25;
-          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = Math.trunc(gdHeliZPos);
           break;
 
         case Enum233.HELI_MOVESMALL_UP:
 
           gdHeliZPos += 0.25;
-          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = Math.trunc(gdHeliZPos);
           break;
 
         case Enum233.HELI_MOVEY:
@@ -614,8 +616,8 @@ export function HandleHeliDrop(): void {
           AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_LOOPING;
           AniParams.sX = gsHeliXPos;
           AniParams.sY = gsHeliYPos;
-          AniParams.sZ = gdHeliZPos;
-          AniParams.zCachedFile = "TILECACHE\\HELI_SH.STI";
+          AniParams.sZ = Math.trunc(gdHeliZPos);
+          AniParams.zCachedFile = path.join('TILECACHE', 'HELI_SH.STI');
 
           gpHeli = <ANITILE>CreateAnimationTile(AniParams);
           break;
@@ -624,7 +626,7 @@ export function HandleHeliDrop(): void {
 
           // Goto drop animation
           gdHeliZPos -= 0.25;
-          gpHeli.pLevelNode.sRelativeZ = gdHeliZPos;
+          gpHeli.pLevelNode.sRelativeZ = Math.trunc(gdHeliZPos);
           gsHeliScript = -1;
           gubHeliState = Enum232.HELI_DROP;
           break;

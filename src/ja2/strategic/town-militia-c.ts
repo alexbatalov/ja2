@@ -353,7 +353,7 @@ function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY:
     if (StrategicMap[iTownSector].bNameId == gubTownSectorServerTownId) {
       // A sector in the specified town.  Calculate its X & Y sector compotents
       sMapX = iTownSector % MAP_WORLD_X;
-      sMapY = iTownSector / MAP_WORLD_X;
+      sMapY = Math.trunc(iTownSector / MAP_WORLD_X);
 
       // Make sure we're not supposed to skip it
       if ((sMapX != gsTownSectorServerSkipX) || (sMapY != gsTownSectorServerSkipY)) {
@@ -596,7 +596,7 @@ export function IsTownFullMilitia(bTownId: INT8): boolean {
     if (pTownNamesList[iCounter] == bTownId) {
       // get the sector x and y
       sSectorX = pTownLocationsList[iCounter] % MAP_WORLD_X;
-      sSectorY = pTownLocationsList[iCounter] / MAP_WORLD_X;
+      sSectorY = Math.trunc(pTownLocationsList[iCounter] / MAP_WORLD_X);
 
       // if sector is ours get number of militia here
       if (SectorOursAndPeaceful(sSectorX, sSectorY, 0)) {

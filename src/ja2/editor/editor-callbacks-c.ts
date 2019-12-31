@@ -549,7 +549,7 @@ export function ItemsLeftScrollCallback(btn: GUI_BUTTON, reason: INT32): void {
     eInfo.sScrollIndex--;
     if (!eInfo.sScrollIndex)
       DisableButton(iEditorButton[Enum32.ITEMS_LEFTSCROLL]);
-    if (eInfo.sScrollIndex < ((eInfo.sNumItems + 1) / 2) - 6)
+    if (eInfo.sScrollIndex < Math.trunc((eInfo.sNumItems + 1) / 2) - 6)
       EnableButton(iEditorButton[Enum32.ITEMS_RIGHTSCROLL]);
   }
 }
@@ -559,7 +559,7 @@ export function ItemsRightScrollCallback(btn: GUI_BUTTON, reason: INT32): void {
     gfRenderTaskbar = true;
     eInfo.sScrollIndex++;
     EnableButton(iEditorButton[Enum32.ITEMS_LEFTSCROLL]);
-    if (eInfo.sScrollIndex == Math.max(((eInfo.sNumItems + 1) / 2) - 6, 0))
+    if (eInfo.sScrollIndex == Math.max(Math.trunc((eInfo.sNumItems + 1) / 2) - 6, 0))
       DisableButton(iEditorButton[Enum32.ITEMS_RIGHTSCROLL]);
   }
 }

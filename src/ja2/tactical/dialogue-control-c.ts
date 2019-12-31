@@ -523,7 +523,6 @@ export function HandleDialogue(): void {
     }
 
     // Delete memory
-    MemFree(QItem);
     return;
   }
 
@@ -918,9 +917,6 @@ export function HandleDialogue(): void {
   if (QItem.fPauseTime) {
     fWasPausedDuringDialogue = true;
   }
-
-  // Delete memory
-  MemFree(QItem);
 }
 
 export function DelayedTacticalCharacterDialogue(pSoldier: SOLDIERTYPE, usQuoteNum: UINT16): boolean {

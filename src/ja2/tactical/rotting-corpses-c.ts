@@ -6,8 +6,8 @@ const CORPSE_WARNING_DIST = 5;
 const CORPSE_INDEX_OFFSET = 10000;
 
 //#define		DELAY_UNTIL_ROTTING		( 1 * NUM_SEC_IN_DAY )
-const DELAY_UNTIL_ROTTING = (1 * NUM_SEC_IN_DAY / 60);
-const DELAY_UNTIL_DONE_ROTTING = (3 * NUM_SEC_IN_DAY / 60);
+const DELAY_UNTIL_ROTTING = Math.trunc(1 * NUM_SEC_IN_DAY / 60);
+const DELAY_UNTIL_DONE_ROTTING = Math.trunc(3 * NUM_SEC_IN_DAY / 60);
 
 const MAX_NUM_CROWS = 6;
 
@@ -283,7 +283,7 @@ let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = [
   0,
 ];
 
-export let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */;
+export let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */ = createArrayFrom(MAX_ROTTING_CORPSES, createRottingCorpse);
 export let giNumRottingCorpse: INT32 = 0;
 
 function GetFreeRottingCorpse(): INT32 {
@@ -1259,7 +1259,7 @@ export function FindNearestAvailableGridNoForCorpse(pDef: ROTTING_CORPSE_DEFINIT
   uiLowestRange = 999999;
 
   for (cnt1 = sBottom; cnt1 <= sTop; cnt1++) {
-    leftmost = ((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
+    leftmost = Math.trunc((sSweetGridNo + (WORLD_COLS * cnt1)) / WORLD_COLS) * WORLD_COLS;
 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;

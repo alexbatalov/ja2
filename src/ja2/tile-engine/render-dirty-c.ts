@@ -342,12 +342,6 @@ export function FreeBackgroundRectPending(iIndex: INT32): boolean {
 }
 
 function FreeBackgroundRectNow(uiCount: INT32): boolean {
-  if (gBackSaves[uiCount].fFreeMemory == true) {
-    // MemFree(gBackSaves[uiCount].pSaveArea);
-    if (gBackSaves[uiCount].fZBuffer)
-      MemFree(gBackSaves[uiCount].pZSaveArea);
-  }
-
   gBackSaves[uiCount].fZBuffer = false;
   gBackSaves[uiCount].fAllocated = false;
   gBackSaves[uiCount].fFreeMemory = false;
@@ -366,7 +360,7 @@ export function FreeBackgroundRectType(uiFlags: UINT32): boolean {
       if (gBackSaves[uiCount].fFreeMemory == true) {
         // MemFree(gBackSaves[uiCount].pSaveArea);
         if (gBackSaves[uiCount].fZBuffer)
-          MemFree(gBackSaves[uiCount].pZSaveArea);
+          gBackSaves[uiCount].pSaveArea = null;
       }
 
       gBackSaves[uiCount].fZBuffer = false;
@@ -699,9 +693,6 @@ export function RemoveVideoOverlay(iVideoOverlay: INT32): void {
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Delete Overlay %d %S", iVideoOverlay, gVideoOverlays[ iVideoOverlay ].zText ) );
 
       // Remove save buffer if not done so
-      if (gVideoOverlays[iVideoOverlay].pSaveArea != null) {
-        MemFree(gVideoOverlays[iVideoOverlay].pSaveArea);
-      }
       gVideoOverlays[iVideoOverlay].pSaveArea = null;
 
       // Set as not allocated
@@ -836,7 +827,7 @@ export function AllocateVideoOverlaysArea(): void {
       // DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Setting Overlay Actively saving %d %S", uiCount, gVideoOverlays[ uiCount ].zText ) );
 
       // Allocate
-      if ((gVideoOverlays[uiCount].pSaveArea = MemAlloc(uiBufSize)) == null) {
+      if ((gVideoOverlays[uiCount].pSaveArea = new Uint8ClampedArray(uiBufSize)) == null) {
         continue;
       }
     }
@@ -894,10 +885,6 @@ export function DeleteVideoOverlaysArea(): void {
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
-      if (gVideoOverlays[uiCount].pSaveArea != null) {
-        MemFree(gVideoOverlays[uiCount].pSaveArea);
-      }
-
       gVideoOverlays[uiCount].fActivelySaving = false;
 
       gVideoOverlays[uiCount].pSaveArea = null;

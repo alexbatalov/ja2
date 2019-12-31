@@ -1782,7 +1782,7 @@ function InitializeShopKeeper(fResetPage: boolean): void {
     */
   }
 
-  gSelectArmsDealerInfo.ubNumberOfPages = (gSelectArmsDealerInfo.uiNumDistinctInventoryItems / SKI_NUM_ARMS_DEALERS_INV_SLOTS);
+  gSelectArmsDealerInfo.ubNumberOfPages = Math.trunc(gSelectArmsDealerInfo.uiNumDistinctInventoryItems / SKI_NUM_ARMS_DEALERS_INV_SLOTS);
   if (gSelectArmsDealerInfo.uiNumDistinctInventoryItems % 15 != 0)
     gSelectArmsDealerInfo.ubNumberOfPages += 1;
 
@@ -1973,8 +1973,8 @@ function DisplayInvSlot(ubSlotNum: UINT8, usItemIndex: UINT16, usPosX: UINT16, u
   usHeight = pTrav.usHeight;
   usWidth = pTrav.usWidth;
 
-  sCenX = usPosX + 7 + (Math.abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav.sOffsetX;
-  sCenY = usPosY + (Math.abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
+  sCenX = usPosX + 7 + Math.trunc(Math.abs(SKI_INV_WIDTH - 3 - usWidth) / 2) - pTrav.sOffsetX;
+  sCenY = usPosY + Math.trunc(Math.abs(SKI_INV_HEIGHT - usHeight) / 2) - pTrav.sOffsetY;
 
   // Restore the background region
   RestoreExternBackgroundRect(usPosX, usPosY, SKI_INV_SLOT_WIDTH, SKI_INV_HEIGHT);
@@ -2349,18 +2349,18 @@ function CalcShopKeeperItemPrice(fDealerSelling: boolean, fUnitPriceOnly: boolea
   switch (Item[usItemID].usItemClass) {
     case IC_GUN:
       // add value of the gun
-      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.bGunStatus) * dModifier);
+      uiUnitPrice += Math.trunc(CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.bGunStatus) * dModifier);
 
       // if any ammo is loaded
       if (pItemObject.usGunAmmoItem != Enum225.NONE) {
         // if it's regular ammo
         if (Item[pItemObject.usGunAmmoItem].usItemClass == IC_AMMO) {
           // add value of its remaining ammo
-          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.usGunAmmoItem, pItemObject.ubGunShotsLeft) * dModifier);
+          uiUnitPrice += Math.trunc(CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.usGunAmmoItem, pItemObject.ubGunShotsLeft) * dModifier);
         } else // assume it's attached ammo (mortar shells, grenades)
         {
           // add its value (uses normal status 0-100)
-          uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.usGunAmmoItem, pItemObject.bGunAmmoStatus) * dModifier);
+          uiUnitPrice += Math.trunc(CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usGunAmmoItem, fDealerSelling) * ItemConditionModifier(pItemObject.usGunAmmoItem, pItemObject.bGunAmmoStatus) * dModifier);
         }
       }
 
@@ -2385,7 +2385,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: boolean, fUnitPriceOnly: boolea
       // add the value of each magazine (multiple mags may have vastly different #bullets left)
       for (ubCnt = 0; ubCnt < ubItemsToCount; ubCnt++) {
         // for bullets, ItemConditionModifier will convert the #ShotsLeft into a percentage
-        uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.bStatus[ubCnt]) * dModifier);
+        uiUnitPrice += Math.trunc(CalcValueOfItemToDealer(gbSelectedArmsDealerID, usItemID, fDealerSelling) * ItemConditionModifier(usItemID, pItemObject.bStatus[ubCnt]) * dModifier);
 
         if (fUnitPriceOnly) {
           // want price for only one of them.  All statuses must be the same in order to use this flag!
@@ -2399,7 +2399,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: boolean, fUnitPriceOnly: boolea
   for (ubCnt = 0; ubCnt < MAX_ATTACHMENTS; ubCnt++) {
     if (pItemObject.usAttachItem[ubCnt] != Enum225.NONE) {
       // add value of this particular attachment
-      uiUnitPrice += (CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usAttachItem[ubCnt], fDealerSelling) * ItemConditionModifier(pItemObject.usAttachItem[ubCnt], pItemObject.bAttachStatus[ubCnt]) * dModifier);
+      uiUnitPrice += Math.trunc(CalcValueOfItemToDealer(gbSelectedArmsDealerID, pItemObject.usAttachItem[ubCnt], fDealerSelling) * ItemConditionModifier(pItemObject.usAttachItem[ubCnt], pItemObject.bAttachStatus[ubCnt]) * dModifier);
     }
   }
 
@@ -2409,7 +2409,7 @@ function CalcShopKeeperItemPrice(fDealerSelling: boolean, fUnitPriceOnly: boolea
     switch (Item[usItemID].usItemClass) {
       case IC_GUN:
       case IC_AMMO:
-        uiDiscountValue = (uiUnitPrice * FLO_DISCOUNT_PERCENTAGE) / 100;
+        uiDiscountValue = Math.trunc((uiUnitPrice * FLO_DISCOUNT_PERCENTAGE) / 100);
 
         // she gets a discount!  Read her M.E.R.C. profile to understand why
         if (fDealerSelling) {
@@ -4909,7 +4909,7 @@ function CrossOutUnwantedItems(): void {
         if ((WillShopKeeperRejectObjectsFromPlayer(gbSelectedArmsDealerID, bSlotId) == true) || !(PlayersOfferArea[bSlotId].uiFlags & ARMS_INV_PLAYERS_ITEM_HAS_VALUE)) {
           // get x and y positions
           sBoxStartX = SKI_PLAYERS_TRADING_INV_X + (bSlotId % SKI_NUM_TRADING_INV_COLS) * (SKI_INV_OFFSET_X);
-          sBoxStartY = SKI_PLAYERS_TRADING_INV_Y + (bSlotId / SKI_NUM_TRADING_INV_COLS) * (SKI_INV_OFFSET_Y);
+          sBoxStartY = SKI_PLAYERS_TRADING_INV_Y + Math.trunc(bSlotId / SKI_NUM_TRADING_INV_COLS) * (SKI_INV_OFFSET_Y);
 
           BltVideoObject(FRAME_BUFFER, hHandle, 0, (sBoxStartX + 22), (sBoxStartY), VO_BLT_SRCTRANSPARENCY, null);
 
@@ -4978,9 +4978,9 @@ function InitShopKeeperItemDescBox(pObject: OBJECTTYPE, ubPocket: UINT8, ubFromL
     case Enum252.ARMS_DEALER_INVENTORY: {
       let ubSelectedInvSlot: UINT8 = ubPocket - gSelectArmsDealerInfo.ubFirstItemIndexOnPage;
 
-      sPosX = SKI_ARMS_DEALERS_INV_START_X + (SKI_INV_OFFSET_X * (ubSelectedInvSlot % SKI_NUM_ARMS_DEALERS_INV_COLS) - (358 / 2)) + SKI_INV_SLOT_WIDTH / 2;
+      sPosX = SKI_ARMS_DEALERS_INV_START_X + (SKI_INV_OFFSET_X * (ubSelectedInvSlot % SKI_NUM_ARMS_DEALERS_INV_COLS) - Math.trunc(358 / 2)) + Math.trunc(SKI_INV_SLOT_WIDTH / 2);
 
-      sPosY = SKI_ARMS_DEALERS_INV_START_Y + ((SKI_INV_OFFSET_Y * ubSelectedInvSlot / SKI_NUM_ARMS_DEALERS_INV_COLS) + 1) - (128 / 2) + SKI_INV_SLOT_HEIGHT / 2;
+      sPosY = SKI_ARMS_DEALERS_INV_START_Y + (Math.trunc(SKI_INV_OFFSET_Y * ubSelectedInvSlot / SKI_NUM_ARMS_DEALERS_INV_COLS) + 1) - Math.trunc(128 / 2) + Math.trunc(SKI_INV_SLOT_HEIGHT / 2);
 
       // if the start position + the height of the box is off the screen, reposition
       if (sPosY < 0)
@@ -5001,9 +5001,9 @@ function InitShopKeeperItemDescBox(pObject: OBJECTTYPE, ubPocket: UINT8, ubFromL
     } break;
 
     case Enum252.ARMS_DEALER_OFFER_AREA: {
-      sPosX = SKI_ARMS_DEALERS_TRADING_INV_X + (SKI_INV_OFFSET_X * (ubPocket % (SKI_NUM_TRADING_INV_SLOTS / 2)) - (358 / 2)) + SKI_INV_SLOT_WIDTH / 2;
+      sPosX = SKI_ARMS_DEALERS_TRADING_INV_X + (SKI_INV_OFFSET_X * (ubPocket % Math.trunc(SKI_NUM_TRADING_INV_SLOTS / 2)) - Math.trunc(358 / 2)) + Math.trunc(SKI_INV_SLOT_WIDTH / 2);
 
-      sPosY = SKI_ARMS_DEALERS_TRADING_INV_Y + ((SKI_INV_OFFSET_Y * ubPocket / (SKI_NUM_TRADING_INV_SLOTS / 2)) + 1) - (128 / 2) + SKI_INV_SLOT_HEIGHT / 2;
+      sPosY = SKI_ARMS_DEALERS_TRADING_INV_Y + (Math.trunc(SKI_INV_OFFSET_Y * ubPocket / Math.trunc(SKI_NUM_TRADING_INV_SLOTS / 2)) + 1) - Math.trunc(128 / 2) + Math.trunc(SKI_INV_SLOT_HEIGHT / 2);
 
       // if the start position + the height of the box is off the screen, reposition
       if (sPosY < 0)
@@ -5852,7 +5852,7 @@ function RepairmanFixingAnyItemsThatShouldBeDoneNow(): UINT32 {
               uiMinutesShopClosedSinceItWasDone = CalculateMinutesClosedBetween(gbSelectedArmsDealerID, pSpecialItem.uiRepairDoneTime, GetWorldTotalMin());
 
               // calculate how many WORKING hours since this item's been repaired
-              uiWorkingHoursSinceThisItemRepaired = (uiMinutesSinceItWasDone - uiMinutesShopClosedSinceItWasDone) / 60;
+              uiWorkingHoursSinceThisItemRepaired = Math.trunc((uiMinutesSinceItWasDone - uiMinutesShopClosedSinceItWasDone) / 60);
 
               // we need to determine how long it's been since the item that's been repaired for the longest time was done
               if (uiWorkingHoursSinceThisItemRepaired > uiHoursSinceOldestItemRepaired) {
@@ -6037,7 +6037,7 @@ function BuildRepairTimeString(uiTimeInMinutesToFixItem: UINT32): string {
     // show hours
 
     // round fractions of 15+ minutes up to next full hour
-    usNumberOfHoursToFixItem = ((uiTimeInMinutesToFixItem + 45) / 60);
+    usNumberOfHoursToFixItem = Math.trunc((uiTimeInMinutesToFixItem + 45) / 60);
 
     if (usNumberOfHoursToFixItem > 1) {
       sString = swprintf(SKI_Text[Enum367.SKI_TEXT_PLURAL_HOURS], usNumberOfHoursToFixItem);
@@ -6080,15 +6080,15 @@ function BuildDoneWhenTimeString(ubArmsDealer: UINT8, usItemIndex: UINT16, ubEle
   }
 
   // uiDoneTime is in minutes...
-  uiDay = (uiDoneTime / NUM_MIN_IN_DAY);
-  uiHour = (uiDoneTime - (uiDay * NUM_MIN_IN_DAY)) / NUM_MIN_IN_HOUR;
+  uiDay = Math.trunc((uiDoneTime / NUM_MIN_IN_DAY));
+  uiHour = Math.trunc((uiDoneTime - (uiDay * NUM_MIN_IN_DAY)) / NUM_MIN_IN_HOUR);
   uiMin = uiDoneTime - ((uiDay * NUM_MIN_IN_DAY) + (uiHour * NUM_MIN_IN_HOUR));
 
   // only show day if it's gonna take overnight
   if (GetWorldDay() != uiDay) {
-    sString = swprintf("%s %d %02d:%02d", pDayStrings[0], uiDay, uiHour, uiMin);
+    sString = swprintf("%s %d %s:%s", pDayStrings[0], uiDay, uiHour.toString().padStart(2, '0'), uiMin.toString().padStart(2, '0'));
   } else {
-    sString = swprintf("%02d:%02d", uiHour, uiMin);
+    sString = swprintf("%s:%s", uiHour.toString().padStart(2, '0'), uiMin.toString().padStart(2, '0'));
   }
 
   return sString;

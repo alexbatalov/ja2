@@ -195,7 +195,7 @@ export function InitGameOptions(): void {
 
 export function DisplayGameSettings(): void {
   // Display the version number
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%S)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
+  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s (%s)", pMessageStrings[Enum333.MSG_VERSION], zVersionLabel, czVersionNumber);
 
   // Display the difficulty level
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "%s: %s", gzGIOScreenText[Enum375.GIO_DIF_LEVEL_TEXT], gzGIOScreenText[gGameOptions.ubDifficultyLevel + Enum375.GIO_EASY_TEXT - 1]);

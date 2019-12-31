@@ -389,14 +389,14 @@ export function MakeRemainingTerroristsTougher(): void {
     }
   }
 
-  ubRemainingDifficulty = (60 / gubNumTerrorists) * (gubNumTerrorists - ubRemainingTerrorists);
+  ubRemainingDifficulty = Math.trunc(60 / gubNumTerrorists) * (gubNumTerrorists - ubRemainingTerrorists);
 
   switch (gGameOptions.ubDifficultyLevel) {
     case Enum9.DIF_LEVEL_MEDIUM:
-      ubRemainingDifficulty = (ubRemainingDifficulty * 13) / 10;
+      ubRemainingDifficulty = Math.trunc((ubRemainingDifficulty * 13) / 10);
       break;
     case Enum9.DIF_LEVEL_HARD:
-      ubRemainingDifficulty = (ubRemainingDifficulty * 16) / 10;
+      ubRemainingDifficulty = Math.trunc((ubRemainingDifficulty * 16) / 10);
       break;
     default:
       break;
@@ -499,14 +499,14 @@ export function MakeRemainingAssassinsTougher(): void {
     }
   }
 
-  ubRemainingDifficulty = (60 / NUM_ASSASSINS) * (NUM_ASSASSINS - ubRemainingAssassins);
+  ubRemainingDifficulty = Math.trunc(60 / NUM_ASSASSINS) * (NUM_ASSASSINS - ubRemainingAssassins);
 
   switch (gGameOptions.ubDifficultyLevel) {
     case Enum9.DIF_LEVEL_MEDIUM:
-      ubRemainingDifficulty = (ubRemainingDifficulty * 13) / 10;
+      ubRemainingDifficulty = Math.trunc((ubRemainingDifficulty * 13) / 10);
       break;
     case Enum9.DIF_LEVEL_HARD:
-      ubRemainingDifficulty = (ubRemainingDifficulty * 16) / 10;
+      ubRemainingDifficulty = Math.trunc((ubRemainingDifficulty * 16) / 10);
       break;
     default:
       break;
@@ -565,7 +565,7 @@ function StartSomeMercsOnAssignment(): void {
 
     if (Random(100) < uiChance) {
       pProfile.bMercStatus = MERC_WORKING_ELSEWHERE;
-      pProfile.uiDayBecomesAvailable = 1 + Random(6 + (pProfile.bExpLevel / 2)); // 1-(6 to 11) days
+      pProfile.uiDayBecomesAvailable = 1 + Random(6 + Math.trunc(pProfile.bExpLevel / 2)); // 1-(6 to 11) days
     } else {
       pProfile.bMercStatus = MERC_OK;
       pProfile.uiDayBecomesAvailable = 0;
@@ -593,18 +593,18 @@ function CalcCompetence(pProfile: MERCPROFILESTRUCT): UINT16 {
 
   // count life twice 'cause it's also hit points
   // mental skills are halved 'cause they're actually not that important within the game
-  uiStats = ((2 * pProfile.bLifeMax) + pProfile.bStrength + pProfile.bAgility + pProfile.bDexterity + ((pProfile.bLeadership + pProfile.bWisdom) / 2)) / 3;
+  uiStats = Math.trunc(((2 * pProfile.bLifeMax) + pProfile.bStrength + pProfile.bAgility + pProfile.bDexterity + Math.trunc((pProfile.bLeadership + pProfile.bWisdom) / 2)) / 3);
 
   // marksmanship is very important, count it double
-  uiSkills = ((2 * (Math.pow(pProfile.bMarksmanship, 3) / 10000)) + 1.5 * (Math.pow(pProfile.bMedical, 3) / 10000) + (Math.pow(pProfile.bMechanical, 3) / 10000) + (Math.pow(pProfile.bExplosive, 3) / 10000));
+  uiSkills = Math.trunc(((2 * (Math.pow(pProfile.bMarksmanship, 3) / 10000)) + 1.5 * (Math.pow(pProfile.bMedical, 3) / 10000) + (Math.pow(pProfile.bMechanical, 3) / 10000) + (Math.pow(pProfile.bExplosive, 3) / 10000)));
 
   // action points
-  uiActionPoints = 5 + (((10 * pProfile.bExpLevel + 3 * pProfile.bAgility + 2 * pProfile.bLifeMax + 2 * pProfile.bDexterity) + 20) / 40);
+  uiActionPoints = 5 + Math.trunc(((10 * pProfile.bExpLevel + 3 * pProfile.bAgility + 2 * pProfile.bLifeMax + 2 * pProfile.bDexterity) + 20) / 40);
 
   // count how many he has, don't care what they are
   uiSpecialSkills = ((pProfile.bSkillTrait != 0) ? 1 : 0) + ((pProfile.bSkillTrait2 != 0) ? 1 : 0);
 
-  usCompetence = ((Math.pow(pProfile.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
+  usCompetence = Math.trunc((Math.pow(pProfile.bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
 
   // this currently varies from about 10 (Flo) to 1200 (Gus)
   return usCompetence;
@@ -614,7 +614,7 @@ function CalcMedicalDeposit(pProfile: MERCPROFILESTRUCT): INT16 {
   let usDeposit: UINT16;
 
   // this rounds off to the nearest hundred
-  usDeposit = (((5 * CalcCompetence(pProfile)) + 50) / 100) * 100;
+  usDeposit = Math.trunc(((5 * CalcCompetence(pProfile)) + 50) / 100) * 100;
 
   return usDeposit;
 }

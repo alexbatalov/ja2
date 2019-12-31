@@ -85,7 +85,6 @@ export function ShutdownVideoObjectManager(): boolean {
     curr = gpVObjectHead;
     gpVObjectHead = gpVObjectHead.next;
     DeleteVideoObject(curr.hVObject);
-    MemFree(curr);
   }
   gpVObjectHead = null;
   gpVObjectTail = null;
@@ -318,7 +317,6 @@ export function CreateVideoObject(VObjectDesc: VOBJECT_DESC): SGPVObject {
     }
     //		break;
   } else {
-    MemFree(hVObject);
     DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, "Invalid VObject creation flags given.");
     return <SGPVObject><unknown>null;
   }

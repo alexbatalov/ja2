@@ -1177,7 +1177,7 @@ export function RenderSummaryWindow(): void {
     for (x = 1; x <= 16; x++) {
       let str: string /* UINT16[3] */;
       str = swprintf("%d", x);
-      mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT())) / 2, MAP_TOP - 8, str);
+      mprintf(MAP_LEFT + x * 13 - Math.trunc((13 + StringPixLength(str, SMALLCOMPFONT())) / 2), MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
       let pos: UINT16;
@@ -1394,7 +1394,7 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
       InvalidateRegion(MAP_LEFT, MAP_BOTTOM + 100, MAP_LEFT + 150, MAP_BOTTOM + 110);
       CreateProgressBar(0, MAP_LEFT, MAP_BOTTOM + 110, MAP_LEFT + 140, MAP_BOTTOM + 120);
     } else {
-      mprintf(320 - StringPixLength(str, FONT10ARIAL()) / 2, 190, str);
+      mprintf(320 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2), 190, str);
       InvalidateRegion(200, 190, 400, 200);
       CreateProgressBar(0, 250, 200, 390, 210);
     }
@@ -1638,8 +1638,8 @@ function MapMoveCallback(reg: MOUSE_REGION, reason: INT32): void {
     gfRenderMap = true;
     return;
   }
-  gsHiSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
-  gsHiSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
+  gsHiSectorX = Math.min(Math.trunc(reg.RelativeXPos / 13) + 1, 16);
+  gsHiSectorY = Math.min(Math.trunc(reg.RelativeYPos / 13) + 1, 16);
   if (MapMoveCallback__gsPrevX != gsHiSectorX || MapMoveCallback__gsPrevY != gsHiSectorY) {
     MapMoveCallback__gsPrevX = gsHiSectorX;
     MapMoveCallback__gsPrevY = gsHiSectorY;
@@ -1657,8 +1657,8 @@ function MapClickCallback(reg: MOUSE_REGION, reason: INT32): void {
       gsSelSectorX = 0;
       SelectNextField();
     }
-    gsSelSectorX = Math.min((reg.RelativeXPos / 13) + 1, 16);
-    gsSelSectorY = Math.min((reg.RelativeYPos / 13) + 1, 16);
+    gsSelSectorX = Math.min(Math.trunc(reg.RelativeXPos / 13) + 1, 16);
+    gsSelSectorY = Math.min(Math.trunc(reg.RelativeYPos / 13) + 1, 16);
     if (gsSelSectorX != MapClickCallback__sLastX || gsSelSectorY != MapClickCallback__sLastY) {
       // clicked in a new sector
       gfOverrideDirty = true;
@@ -2386,11 +2386,11 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
   SetFontForeground(FONT_RED);
   SetFontShadow(FONT_NEARBLACK);
   str = "MAJOR VERSION UPDATE";
-  mprintf(320 - StringPixLength(str, HUGEFONT()) / 2, 105, str);
+  mprintf(320 - Math.trunc(StringPixLength(str, HUGEFONT()) / 2), 105, str);
   SetFont(FONT10ARIAL());
   SetFontForeground(FONT_YELLOW);
   str = swprintf("There are %d maps requiring a major version update.", gusNumberOfMapsToBeForceUpdated);
-  mprintf(320 - StringPixLength(str, FONT10ARIAL()) / 2, 130, str);
+  mprintf(320 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2), 130, str);
 
   CreateProgressBar(2, 120, 170, 520, 202);
   DefineProgressBarPanel(2, 65, 79, 94, 100, 150, 540, 222);

@@ -221,6 +221,23 @@ export interface ROTTING_CORPSE {
   iID: INT32;
 }
 
+export function createRottingCorpse(): ROTTING_CORPSE {
+  return {
+    def: createRottingCorpseDefinition(),
+    fActivated: false,
+    pAniTile: null,
+    p8BPPPalette: <SGPPaletteEntry[]><unknown>null,
+    p16BPPPalette: <Uint16Array><unknown>null,
+    pShades: createArray(NUM_CORPSE_SHADES, <Uint16Array><unknown>null),
+    sGraphicNum: 0,
+    iCachedTileID: 0,
+    dXPos: 0,
+    dYPos: 0,
+    fAttractCrowsOnlyWhenOnScreen: false,
+    iID: 0,
+  };
+}
+
 export const MAX_ROTTING_CORPSES = 100;
 
 }

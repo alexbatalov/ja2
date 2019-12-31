@@ -1040,7 +1040,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
     } else {
       // Create the string for the Data
-      zDateString = swprintf("%s %d, %02d:%02d", pMessageStrings[Enum333.MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
+      zDateString = swprintf("%s %d, %s:%s", pMessageStrings[Enum333.MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour.toString().padStart(2, '0'), SaveGameHeader.ubMin.toString().padStart(2, '0'));
 
       // Create the string for the current location
       if (SaveGameHeader.sSectorX == -1 && SaveGameHeader.sSectorY == -1 || SaveGameHeader.bSectorZ < 0) {

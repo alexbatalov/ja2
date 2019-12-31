@@ -93,7 +93,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   uiFileSize = FileGetSize(hFile);
 
   // Allocate memory for the buffer
-  pTempArrayOfMaps = createArrayFrom(uiFileSize / MODIFY_MAP_SIZE, createModifyMap);
+  pTempArrayOfMaps = createArrayFrom(Math.trunc(uiFileSize / MODIFY_MAP_SIZE), createModifyMap);
 
   // Read the map temp file into a buffer
   buffer = Buffer.allocUnsafe(uiFileSize)
@@ -111,7 +111,7 @@ export function LoadAllMapChangesFromMapTempFileAndApplyThem(): boolean {
   // Delete the file
   FileDelete(zMapName);
 
-  uiNumberOfElements = uiFileSize / MODIFY_MAP_SIZE;
+  uiNumberOfElements = Math.trunc(uiFileSize / MODIFY_MAP_SIZE);
 
   for (cnt = 0; cnt < uiNumberOfElements; cnt++) {
     pMap = pTempArrayOfMaps[cnt];
@@ -550,7 +550,7 @@ function SetSectorsRevealedBit(usMapIndex: UINT16): void {
   let usByteNumber: UINT16;
   let ubBitNumber: UINT8;
 
-  usByteNumber = usMapIndex / 8;
+  usByteNumber = Math.trunc(usMapIndex / 8);
   ubBitNumber = usMapIndex % 8;
 
   Assert(gpRevealedMap);
@@ -762,7 +762,7 @@ export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, s
   uiFileSize = FileGetSize(hFile);
 
   // Allocate memory for the buffer
-  pTempArrayOfMaps = createArrayFrom(uiFileSize / MODIFY_MAP_SIZE, createModifyMap);
+  pTempArrayOfMaps = createArrayFrom(Math.trunc(uiFileSize / MODIFY_MAP_SIZE), createModifyMap);
 
   // Read the map temp file into a buffer
   buffer = Buffer.allocUnsafe(uiFileSize);
@@ -781,7 +781,7 @@ export function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, s
   FileDelete(zMapName);
 
   // Get the number of elements in the file
-  uiNumberOfElements = uiFileSize / MODIFY_MAP_SIZE;
+  uiNumberOfElements = Math.trunc(uiFileSize / MODIFY_MAP_SIZE);
 
   // Get the image type and subindex
   uiType = GetTileType(usIndex);
@@ -920,7 +920,7 @@ export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, 
   uiFileSize = FileGetSize(hFile);
 
   // Allocate memory for the buffer
-  pTempArrayOfMaps = createArrayFrom(uiFileSize / MODIFY_MAP_SIZE, createModifyMap);
+  pTempArrayOfMaps = createArrayFrom(Math.trunc(uiFileSize / MODIFY_MAP_SIZE), createModifyMap);
 
   // Read the map temp file into a buffer
   buffer = Buffer.allocUnsafe(uiFileSize);
@@ -938,7 +938,7 @@ export function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, 
   // Delete the file
   FileDelete(zMapName);
 
-  uiNumberOfElements = uiFileSize / MODIFY_MAP_SIZE;
+  uiNumberOfElements = Math.trunc(uiFileSize / MODIFY_MAP_SIZE);
 
   // loop through all the array elements to
   for (cnt = 0; cnt < uiNumberOfElements; cnt++) {

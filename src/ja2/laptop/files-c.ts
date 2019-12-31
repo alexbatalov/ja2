@@ -729,7 +729,7 @@ function DisplayFormattedText(): boolean {
       hHandle = GetVideoObject(uiFirstTempPicture);
 
       // blt background to screen
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + (FILE_VIEWER_WIDTH - usFirstWidth) / 2, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + Math.trunc((FILE_VIEWER_WIDTH - usFirstWidth) / 2), FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, null);
 
       iHeight = usFirstHeight + 20;
 
@@ -772,7 +772,7 @@ function DisplayFormattedText(): boolean {
       // get free space;
       usFreeSpace = FILE_VIEWER_WIDTH - usFirstWidth - usSecondWidth;
 
-      usFreeSpace /= 3;
+      usFreeSpace = Math.trunc(usFreeSpace / 3);
       // get file background object
       hHandle = GetVideoObject(uiFirstTempPicture);
 

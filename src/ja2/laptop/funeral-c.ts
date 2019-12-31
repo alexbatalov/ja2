@@ -215,7 +215,7 @@ export function RenderFuneral(): void {
 
     // Calculate the height of the string, as it needs to be vertically centered.
     usStringHeight = IanWrappedStringHeight(0, 0, FUNERAL_LINK_TEXT_WIDTH, 2, FUNERAL_SENTENCE_FONT(), 0, sFuneralString[i + Enum344.FUNERAL_SEND_FLOWERS], 0, false, 0);
-    DisplayWrappedString((usPosX + FUNERAL_LINK_TEXT_OFFSET_X), (FUNERAL_LINK_1_Y + (FUNERAL_LINK_1_HEIGHT - usStringHeight) / 2), FUNERAL_LINK_TEXT_WIDTH, 2, FUNERAL_SENTENCE_FONT(), FUNERAL_TITLE_COLOR, sFuneralString[i + Enum344.FUNERAL_SEND_FLOWERS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
+    DisplayWrappedString((usPosX + FUNERAL_LINK_TEXT_OFFSET_X), Math.trunc(FUNERAL_LINK_1_Y + (FUNERAL_LINK_1_HEIGHT - usStringHeight) / 2), FUNERAL_LINK_TEXT_WIDTH, 2, FUNERAL_SENTENCE_FONT(), FUNERAL_TITLE_COLOR, sFuneralString[i + Enum344.FUNERAL_SEND_FLOWERS], FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
 
     usPosX += FUNERAL_LINK_OFFSET_X;
   }

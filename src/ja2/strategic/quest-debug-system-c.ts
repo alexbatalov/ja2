@@ -1742,10 +1742,10 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
   usPosX = gpActiveListBox.usScrollPosX + gpActiveListBox.usScrollWidth;
   usWidth = gpActiveListBox.usScrollBarWidth;
 
-  usHeight = (gpActiveListBox.usScrollBarHeight / (usNumEntries) + .5); // qq+ 1 );
+  usHeight = Math.trunc(gpActiveListBox.usScrollBarHeight / (usNumEntries) + .5); // qq+ 1 );
 
   if (usNumEntries > gpActiveListBox.usMaxNumDisplayedItems)
-    usPosY = usTempPosY + ((gpActiveListBox.usScrollBarHeight / (usNumEntries + 1)) * (gpActiveListBox.sCurSelectedItem - gpActiveListBox.usStartIndex));
+    usPosY = usTempPosY + Math.trunc((gpActiveListBox.usScrollBarHeight / (usNumEntries + 1)) * (gpActiveListBox.sCurSelectedItem - gpActiveListBox.usStartIndex));
   else
     usPosY = usTempPosY;
 
@@ -1847,7 +1847,7 @@ function CalcPositionOfNewScrollBoxLocation(): void {
   let dValue: FLOAT;
   let sHeight: INT16 = 0;
   //	INT16	sHeightOfScrollBox = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex ) + .5);
-  let sHeightOfScrollBox: INT16 = (gpActiveListBox.usScrollBarHeight / (gpActiveListBox.usMaxArrayIndex) + .5);
+  let sHeightOfScrollBox: INT16 = Math.trunc(gpActiveListBox.usScrollBarHeight / (gpActiveListBox.usMaxArrayIndex) + .5);
   let sStartPosOfScrollArea: INT16 = gpActiveListBox.usScrollPosY + gpActiveListBox.usScrollArrowHeight;
 
   sMouseXPos = gusMouseXPos;
@@ -1859,7 +1859,7 @@ function CalcPositionOfNewScrollBoxLocation(): void {
     sHeight = sMouseYPos - sStartPosOfScrollArea;
 
     dValue = sHeight / (gpActiveListBox.usScrollBarHeight);
-    sIncrementValue = ((dValue) * (gpActiveListBox.usMaxArrayIndex - gpActiveListBox.usStartIndex) + .5) + gpActiveListBox.usStartIndex;
+    sIncrementValue = Math.trunc((dValue) * (gpActiveListBox.usMaxArrayIndex - gpActiveListBox.usStartIndex) + .5) + gpActiveListBox.usStartIndex;
     //		sIncrementValue = (INT16)( ( dValue ) * ( gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex ) + .5 );
 
     IncrementActiveDropDownBox(sIncrementValue);
@@ -2185,7 +2185,7 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: string | nul
       }
 
       // create the ok button
-      guiQuestDebugTextEntryOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 12, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugTextEntryOkBtnButtonCallback);
+      guiQuestDebugTextEntryOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_TEB_X + Math.trunc(QUEST_DBS_TEB_WIDTH / 2) - 12, QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugTextEntryOkBtnButtonCallback);
       SetButtonCursor(guiQuestDebugTextEntryOkBtn, Enum317.CURSOR_WWW);
 
       CreateDestroyDisplayTextEntryBox__zString = <string>pString;
@@ -2345,7 +2345,7 @@ function InitQuestDebugTextInputBoxes(): void {
   sTemp = swprintf("%d", gsQdsEnteringGridNo);
 
   // Text entry field
-  AddTextInputField(QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH / 2 - 30, QUEST_DBS_TEB_Y + 65, 60, 15, MSYS_PRIORITY_HIGH + 60, sTemp, QUEST_DBS_TEXT_FIELD_WIDTH, INPUTTYPE_NUMERICSTRICT);
+  AddTextInputField(QUEST_DBS_TEB_X + Math.trunc(QUEST_DBS_TEB_WIDTH / 2) - 30, QUEST_DBS_TEB_Y + 65, 60, 15, MSYS_PRIORITY_HIGH + 60, sTemp, QUEST_DBS_TEXT_FIELD_WIDTH, INPUTTYPE_NUMERICSTRICT);
 }
 
 function DestroyQuestDebugTextInputBoxes(): void {
@@ -2467,7 +2467,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       }
 
       // create the ok button
-      guiQuestDebugNPCInventOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_INV_POPUP_X + QUEST_DBS_NPC_INV_POPUP_WIDTH / 2 - 12, QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugNPCInventOkBtnButtonCallback);
+      guiQuestDebugNPCInventOkBtn = CreateTextButton("OK", QUEST_DBS_FONT_STATIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, FONT_BLACK, BUTTON_USE_DEFAULT, QUEST_DBS_NPC_INV_POPUP_X + Math.trunc(QUEST_DBS_NPC_INV_POPUP_WIDTH / 2) - 12, QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT - 30, 30, 25, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 50, BUTTON_NO_CALLBACK, BtnQuestDebugNPCInventOkBtnButtonCallback);
       SetButtonCursor(guiQuestDebugNPCInventOkBtn, Enum317.CURSOR_WWW);
 
       break;

@@ -306,7 +306,7 @@ export function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): boolean {
       iCounter++;
 
       // update the progress bar
-      uiPercentage = (iCounter * 100) / (255);
+      uiPercentage = Math.trunc((iCounter * 100) / (255));
 
       RenderProgressBar(0, uiPercentage);
     }
@@ -627,9 +627,6 @@ export function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 
   // Save the Items to the the file
   SaveWorldItemsToTempItemFile(sMapX, sMapY, bMapZ, uiNumberOfItems, pWorldItems);
-
-  // Free the memory used to load in the item array
-  MemFree(pWorldItems);
 
   return true;
 }
@@ -2190,6 +2187,8 @@ export function MercChecksum(pSoldier: SOLDIERTYPE): UINT32 {
     uiChecksum += pSoldier.inv[uiLoop].ubNumberOfObjects;
   }
 
+  uiChecksum %= 2 ** 32;
+
   return uiChecksum;
 }
 
@@ -2214,6 +2213,8 @@ export function ProfileChecksum(pProfile: MERCPROFILESTRUCT): UINT32 {
     uiChecksum += pProfile.inv[uiLoop];
     uiChecksum += pProfile.bInvNumber[uiLoop];
   }
+
+  uiChecksum %= 2 ** 32;
 
   return uiChecksum;
 }

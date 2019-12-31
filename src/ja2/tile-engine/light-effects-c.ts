@@ -51,7 +51,7 @@ function UpdateLightingSprite(pLight: LIGHTEFFECT): void {
 
   LightSpritePower(pLight.iLight, true);
   //	LightSpriteFake( pLight->iLight );
-  LightSpritePosition(pLight.iLight, (CenterX(pLight.sGridNo) / CELL_X_SIZE), (CenterY(pLight.sGridNo) / CELL_Y_SIZE));
+  LightSpritePosition(pLight.iLight, Math.trunc(CenterX(pLight.sGridNo) / CELL_X_SIZE), Math.trunc(CenterY(pLight.sGridNo) / CELL_Y_SIZE));
 }
 
 export function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
@@ -132,7 +132,7 @@ export function DecayLightEffects(uiTime: UINT32): void {
     if (pLight.fAllocated) {
       // ATE: Do this every so ofte, to acheive the effect we want...
       if ((uiTime - pLight.uiTimeOfLastUpdate) > 350) {
-        usNumUpdates = ((uiTime - pLight.uiTimeOfLastUpdate) / 350);
+        usNumUpdates = Math.trunc((uiTime - pLight.uiTimeOfLastUpdate) / 350);
 
         pLight.uiTimeOfLastUpdate = uiTime;
 

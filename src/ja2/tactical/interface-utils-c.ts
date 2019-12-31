@@ -106,13 +106,13 @@ export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT1
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
-  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(LIFE_BAR());
-  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(LIFE_BAR_SHADOW());
-  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BANDAGE
 
@@ -125,13 +125,13 @@ export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT1
     dEnd = (dPercentage * sHeight);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
-    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR());
-    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BANDAGE_BAR_SHADOW());
-    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
   }
 
   // NOW DO BLEEDING
@@ -141,13 +141,13 @@ export function DrawLifeUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: INT1
     dEnd = (dPercentage * sHeight);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
-    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR());
-    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BLEEDING_BAR_SHADOW());
-    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
   }
 
   UnLockVideoSurface(uiBuffer);
@@ -206,13 +206,13 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
 
     // the old background colors for breath max diff
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
     usLineColor = Get16BPPColor(BREATH_BAR_SHAD_BACK());
-    RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+    RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
   }
 
   dPercentage = pSoldier.bBreathMax / 100;
@@ -220,13 +220,13 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
-  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH());
-  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_MAX_BREATH_SHADOW());
-  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   // NOW DO BREATH
   dPercentage = pSoldier.bBreath / 100;
@@ -234,13 +234,13 @@ export function DrawBreathUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
-  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR());
-  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(CURR_BREATH_BAR_SHADOW());
-  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 }
@@ -274,13 +274,13 @@ export function DrawMoraleUIBarEx(pSoldier: SOLDIERTYPE, sXPos: INT16, sYPos: IN
   dStart = sYPos;
 
   usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
-  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(MORALE_BAR());
-  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = Get16BPPColor(MORALE_BAR_SHADOW());
-  RectangleDraw(true, sXPos + 2, dStart, sXPos + 2, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 2, Math.trunc(dStart), sXPos + 2, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 }
@@ -304,7 +304,7 @@ export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT
 
   // Adjust for ammo, other thingys..
   if (Item[pObject.usItem].usItemClass & IC_AMMO) {
-    sValue = sValue * 100 / Magazine[Item[pObject.usItem].ubClassIndex].ubMagSize;
+    sValue = Math.trunc(sValue * 100 / Magazine[Item[pObject.usItem].ubClassIndex].ubMagSize);
 
     if (sValue > 100) {
       sValue = 100;
@@ -335,10 +335,10 @@ export function DrawItemUIBarEx(pObject: OBJECTTYPE, ubStatus: UINT8, sXPos: INT
 
   // usLineColor = Get16BPPColor( STATUS_BAR );
   usLineColor = sColor1;
-  RectangleDraw(true, sXPos, dStart, sXPos, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos, Math.trunc(dStart), sXPos, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   usLineColor = sColor2;
-  RectangleDraw(true, sXPos + 1, dStart, sXPos + 1, (dStart - dEnd), usLineColor, pDestBuf);
+  RectangleDraw(true, sXPos + 1, Math.trunc(dStart), sXPos + 1, Math.trunc(dStart - dEnd), usLineColor, pDestBuf);
 
   UnLockVideoSurface(uiBuffer);
 

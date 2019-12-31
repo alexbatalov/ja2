@@ -115,7 +115,7 @@ const enum Enum248 {
   STEP_BACKWARDS = 0x01,
 }
 
-const EASYWATERCOST = TRAVELCOST_FLAT / 2;
+const EASYWATERCOST = Math.trunc(TRAVELCOST_FLAT / 2);
 const ISWATER = (t: number) => (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER));
 const NOPASS = (TRAVELCOST_BLOCKED);
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
@@ -142,23 +142,23 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 const FLATCOST = 1;
 
 const ESTIMATE0 = (dx: number, dy: number) => ((dx > dy) ? (dx) : (dy));
-const ESTIMATE1 = (dx: number, dy: number) => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATE2 = (dx: number, dy: number) => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATE1 = (dx: number, dy: number) => ((dx < dy) ? (Math.trunc((dx * 14) / 10) + dy) : (Math.trunc((dy * 14) / 10) + dx));
+const ESTIMATE2 = (dx: number, dy: number) => FLATCOST *((dx < dy) ? (Math.trunc((dx * 14) / 10) + dy) : (Math.trunc((dy * 14) / 10) + dx));
 const ESTIMATEn = (dx: number, dy: number) => ((FLATCOST * Math.sqrt(dx * dx + dy * dy)));
-const ESTIMATEC = (dx: number, dy: number) => (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)));
+const ESTIMATEC = (dx: number, dy: number) => (((dx < dy) ? Math.trunc(TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : Math.trunc(TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)));
 //#define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) : (TRAVELCOST_FLAT * dy * 14 ) / 10 + dx) ) )
 const ESTIMATE = (dx: number, dy: number) => ESTIMATEC(dx, dy);
 
 const MAXCOST = (9990);
 //#define MAXCOST (255)
 //#define TOTALCOST( pCurrPtr ) (pCurrPtr->usCostSoFar + pCurrPtr->usCostToGo)
-const TOTALCOST = (ptr: Pointer<path_t>) => (ptr.value.usTotalCost);
+const TOTALCOST = (ptr: path_t) => (ptr.usTotalCost);
 const XLOC = (a: number) => (a % MAPWIDTH);
-const YLOC = (a: number) => (a / MAPWIDTH);
+const YLOC = (a: number) => Math.trunc(a / MAPWIDTH);
 //#define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
 const LEGDISTANCE = (x1: number, y1: number, x2: number, y2: number) => (Math.abs(x2 - x1) + Math.abs(y2 - y1));
 //#define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) > LEGDISTANCE(NDX->sLocation,sDestination) )
-const FARTHER = (ndx: Pointer<path_t>, NDX: Pointer<path_t>) => (ndx.value.ubLegDistance > NDX.value.ubLegDistance);
+const FARTHER = (ndx: path_t, NDX: path_t) => (ndx.ubLegDistance > NDX.ubLegDistance);
 
 const SETLOC = (str: path_t, loc: INT32) => {
   (str).iLocation = loc;
@@ -226,28 +226,11 @@ const pathNotYetFound = (iDestination: INT32) => (!pathFound(iDestination));
 */
 
 // experiment 1, seemed to fail
-const ClosedListAdd = (pNew) => {
-  pNew.value.pNext[0] = pClosedHead.pNext[0];
+const ClosedListAdd = (pNew: path_t) => {
+  pNew.pNext[0] = pClosedHead.pNext[0];
   pClosedHead.pNext[0] = pNew;
-  pNew.value.iLocation = -1;
+  pNew.iLocation = -1;
   iClosedListSize++;
-};
-
-const ClosedListGet = (pNew) => {
-  if (queRequests < QPOOLNDX()) {
-    pNew = pathQ + (queRequests);
-    queRequests++;
-    pNew.value.bLevel = RandomSkipListLevel();
-  } else if (iClosedListSize > 0) {
-    pNew = pClosedHead.pNext[0];
-    pClosedHead.pNext[0] = pNew.value.pNext[0];
-    iClosedListSize--;
-    queRequests++;
-    memset(pNew.value.pNext, 0, sizeof(path_t /* Pointer<path_t> */) * ABSMAX_SKIPLIST_LEVEL);
-    pNew.value.bLevel = RandomSkipListLevel();
-  } else {
-    pNew = null;
-  }
 };
 
 /*
@@ -288,59 +271,25 @@ const ClosedListGet = (pNew) => {
 */
 
 const SkipListRemoveHead = () => {
+  let pDel: path_t;
+  let iLoop: number;
+
   pDel = pQueueHead.pNext[0];
-  for (iLoop = 0; iLoop < Math.min(bSkipListLevel, pDel.value.bLevel); iLoop++) {
-    pQueueHead.pNext[iLoop] = pDel.value.pNext[iLoop];
+  for (iLoop = 0; iLoop < Math.min(bSkipListLevel, pDel.bLevel); iLoop++) {
+    pQueueHead.pNext[iLoop] = pDel.pNext[iLoop];
   }
   iSkipListSize--;
   ClosedListAdd(pDel);
 };
 
-const SkipListInsert = (pNew) => {
-  pCurr = pQueueHead;
-  uiCost = TOTALCOST(pNew);
-  memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t /* Pointer<path_t> */));
-  for (iCurrLevel = bSkipListLevel - 1; iCurrLevel >= 0; iCurrLevel--) {
-    pNext = pCurr.pNext[iCurrLevel];
-    while (pNext) {
-      if (uiCost > TOTALCOST(pNext) || (uiCost == TOTALCOST(pNext) && FARTHER(pNew, pNext))) {
-        pCurr = pNext;
-        pNext = pCurr.pNext[iCurrLevel];
-      } else {
-        break;
-      }
-    }
-    pUpdate[iCurrLevel] = pCurr;
-  }
-  pCurr = pCurr.pNext[0];
-  for (iCurrLevel = 0; iCurrLevel < pNew.value.bLevel; iCurrLevel++) {
-    if (!(pUpdate[iCurrLevel])) {
-      break;
-    }
-    pNew.value.pNext[iCurrLevel] = pUpdate[iCurrLevel].value.pNext[iCurrLevel];
-    pUpdate[iCurrLevel].value.pNext[iCurrLevel] = pNew;
-  }
-  iSkipListSize++;
-  if (iSkipListSize > iSkipListLevelLimit[bSkipListLevel]) {
-    pCurr = pQueueHead;
-    pNext = pQueueHead.value.pNext[bSkipListLevel - 1];
-    while (pNext) {
-      if (pNext.value.bLevel > bSkipListLevel) {
-        pCurr.pNext[bSkipListLevel] = pNext;
-        pCurr = pNext;
-      }
-      pNext = pNext.value.pNext[bSkipListLevel - 1];
-    }
-    pCurr.pNext[bSkipListLevel] = pNext;
-    bSkipListLevel++;
-  }
+const DELQUENODE = (ndx: path_t) => SkipListRemoveHead();
+
+const REMAININGCOST = (iDestX: INT32, iDestY: INT32, iLocX: INT32, iLocY: INT32, ptr: path_t) => {
+  const dx = Math.abs(iDestX - iLocX);
+  const dy = Math.abs(iDestY - iLocY);
+  return ESTIMATE(dx, dy);
 };
 
-const REMQUEHEADNODE = () => SkipListRemoveHead();
-
-const DELQUENODE = (ndx) => SkipListRemoveHead();
-
-const REMAININGCOST = (ptr) => ((dy = Math.abs(iDestY - iLocY)), (dx = Math.abs(iDestX - iLocX)), ESTIMATE());
 /*
 #define REMAININGCOST(ptr)					\
 (								\
@@ -351,10 +300,6 @@ const REMAININGCOST = (ptr) => ((dy = Math.abs(iDestY - iLocY)), (dx = Math.abs(
         ESTIMATE						\
 )
 */
-
-const NEWQUENODE = () => ClosedListGet(pNewPtr);
-
-const QUEINSERT = (ndx) => SkipListInsert(ndx);
 
 const GREENSTEPSTART = 0;
 const REDSTEPSTART = 16;
@@ -688,11 +633,11 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
   // set up common info
   if (fCopyPathCosts) {
-    iOriginationY = (iOrigination / MAPWIDTH);
+    iOriginationY = Math.trunc(iOrigination / MAPWIDTH);
     iOriginationX = (iOrigination % MAPWIDTH);
   }
 
-  iDestY = (iDestination / MAPWIDTH);
+  iDestY = Math.trunc(iDestination / MAPWIDTH);
   iDestX = (iDestination % MAPWIDTH);
 
   // if origin and dest is water, then user wants to stay in water!
@@ -716,7 +661,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
   pClosedHead.pNext[1] = pClosedHead;
 
   // setup first path record
-  iLocY = iOrigination / MAPWIDTH;
+  iLocY = Math.trunc(iOrigination / MAPWIDTH);
   iLocX = iOrigination % MAPWIDTH;
 
   SETLOC(pathQ[1], iOrigination);
@@ -725,12 +670,12 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
   if (fCopyReachable) {
     pathQ[1].usCostToGo = 100;
   } else {
-    pathQ[1].usCostToGo = REMAININGCOST(addressof(pathQ[1]));
+    pathQ[1].usCostToGo = REMAININGCOST(iDestX, iDestY, iLocX, iLocY, pathQ[1]);
   }
   pathQ[1].usTotalCost = pathQ[1].usCostSoFar + pathQ[1].usCostToGo;
   pathQ[1].ubLegDistance = LEGDISTANCE(iLocX, iLocY, iDestX, iDestY);
   pathQ[1].bLevel = 1;
-  pQueueHead.pNext[0] = addressof(pathQ[1]);
+  pQueueHead.pNext[0] = pathQ[1];
   iSkipListSize++;
 
   trailTreeNdx = 0;
@@ -761,12 +706,15 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
     DELQUENODE(pCurrPtr);
 
-    if (trailCostUsed[curLoc] == gubGlobalPathCount && trailCost[curLoc] < curCost)
-      goto("NEXTDIR");
+    let firstRun = true;
+
+    if (trailCostUsed[curLoc] == gubGlobalPathCount && trailCost[curLoc] < curCost) {
+      firstRun = false;
+    }
 
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String( "PATHAI %d", curLoc ) );
 
-    if (fContinuousTurnNeeded) {
+    if (firstRun && fContinuousTurnNeeded) {
       if (trailTreeNdx < 2) {
         iLastDir = s.bDirection;
       } else if (trailTree[pCurrPtr.sPathNdx].fFlags & Enum248.STEP_BACKWARDS) {
@@ -782,7 +730,24 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
     // contemplate a new path in each direction
     // for ( iCnt = iLoopStart; iCnt != iLoopEnd; iCnt = (iCnt + iLoopIncrement) % MAXDIR )
-    for (iCnt = iLoopStart;;) {
+    NEXTDIR:
+    while (true) {
+      if (firstRun) {
+        iCnt = iLoopStart;
+        firstRun = false;
+      } else {
+        if (bLoopState == LOOPING_CLOCKWISE) // backwards
+        {
+          iCnt = gOneCCDirection[iCnt];
+        } else {
+          iCnt = gOneCDirection[iCnt];
+        }
+        if (iCnt == iLoopEnd) {
+          break;
+        } else if (fContinuousTurnNeeded && iCnt == gOppositeDirection[iLoopStart]) {
+          fCheckedBehind = true;
+        }
+      }
       /*
       if (fTurnSlow)
       {
@@ -812,7 +777,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
       if (fMultiTile) {
         if (fContinuousTurnNeeded) {
           if (iCnt != iLastDir) {
-            if (!OkayToAddStructureToWorld(curLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
+            if (!OkayToAddStructureToWorld(curLoc, ubLevel, (<STRUCTURE_FILE_REF>pStructureFileRef).pDBStructureRef[iStructIndex], usOKToAddStructID)) {
               // we have to abort this loop and possibly reset the loop conditions to
               // search in the other direction (if we haven't already done the other dir)
               if (bLoopState == LOOPING_CLOCKWISE) {
@@ -822,7 +787,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
                 // when we go to the bottom of the loop, iLoopIncrement will be added to iCnt
                 // which is good since it avoids duplication of effort
                 iCnt = iLoopStart;
-                goto("NEXTDIR");
+                continue NEXTDIR;
               } else if (bLoopState == LOOPING_COUNTERCLOCKWISE && !fCheckedBehind) {
                 // check rear dir
                 bLoopState = LOOPING_REVERSE;
@@ -833,17 +798,17 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
                 iLoopEnd = (iLoopStart + 2) % MAXDIR;
                 iCnt = iLoopStart;
                 fCheckedBehind = true;
-                goto("NEXTDIR");
+                continue NEXTDIR;
               } else {
                 // done
-                goto("ENDOFLOOP");
+                break;
               }
             }
           }
         } else if (pStructureFileRef) {
           // check to make sure it's okay for us to turn to the new direction in our current tile
           if (!OkayToAddStructureToWorld(curLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
-            goto("NEXTDIR");
+            continue NEXTDIR;
           }
         }
       }
@@ -852,31 +817,31 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
       if (fVisitSpotsOnlyOnce && trailCostUsed[newLoc] == gubGlobalPathCount) {
         // on a "reachable" test, never revisit locations!
-        goto("NEXTDIR");
+        continue NEXTDIR;
       }
 
       // if (gpWorldLevelData[newLoc].sHeight != ubLevel)
       // ATE: Movement onto cliffs? Check vs the soldier's gridno height
       // CJC: PREVIOUS LOCATION's height
       if (gpWorldLevelData[newLoc].sHeight != gpWorldLevelData[curLoc].sHeight) {
-        goto("NEXTDIR");
+        continue NEXTDIR;
       }
 
       if (gubNPCDistLimit) {
         if (gfNPCCircularDistLimit) {
           if (PythSpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
-            goto("NEXTDIR");
+            continue NEXTDIR;
           }
         } else {
           if (SpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
-            goto("NEXTDIR");
+            continue NEXTDIR;
           }
         }
       }
 
       // AI check for mines
       if (gpWorldLevelData[newLoc].uiFlags & MAPELEMENT_ENEMY_MINE_PRESENT && s.bSide != 0) {
-        goto("NEXTDIR");
+        continue NEXTDIR;
       }
 
       /*
@@ -931,11 +896,11 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
             nextCost = gTileTypeMovementCost[gpWorldLevelData[newLoc].ubTerrainID];
           }
         } else if (nextCost == TRAVELCOST_FENCE && fNonFenceJumper) {
-          goto("NEXTDIR");
+          continue NEXTDIR;
         } else if (IS_TRAVELCOST_DOOR(nextCost)) {
           // don't let anyone path diagonally through doors!
           if (iCnt & 1) {
-            goto("NEXTDIR");
+            continue NEXTDIR;
           }
 
           switch (nextCost) {
@@ -1078,14 +1043,14 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
         // Apr. '96 - moved up be ahead of AP_Budget stuff
         if ((nextCost >= NOPASS)) // || ( nextCost == TRAVELCOST_DOOR ) )
-          goto("NEXTDIR");
+          continue NEXTDIR;
       } else {
         nextCost = TRAVELCOST_FLAT;
       }
 
       if (newLoc > GRIDSIZE) {
         // WHAT THE??? hack.
-        goto("NEXTDIR");
+        continue NEXTDIR;
       }
 
       // if contemplated tile is NOT final dest and someone there, disqualify route
@@ -1098,7 +1063,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
           // Check for movement....
           // if ( fTurnBased || ( (Menptr[ ubMerc ].sFinalDestination == Menptr[ ubMerc ].sGridNo) || (Menptr[ ubMerc ].fDelayedMovement) ) )
           //{
-          goto("NEXTDIR");
+          continue NEXTDIR;
           //}
           //	else
           //{
@@ -1116,8 +1081,8 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
         // then 0 1 2 3 4 5 6), we must subtract 1 from the direction
         // ATE: Send in our existing structure ID so it's ignored!
 
-        if (!OkayToAddStructureToWorld(newLoc, ubLevel, pStructureFileRef.pDBStructureRef[iStructIndex], usOKToAddStructID)) {
-          goto("NEXTDIR");
+        if (!OkayToAddStructureToWorld(newLoc, ubLevel, (<STRUCTURE_FILE_REF>pStructureFileRef).pDBStructureRef[iStructIndex], usOKToAddStructID)) {
+          continue NEXTDIR;
         }
 
         /*
@@ -1225,7 +1190,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
 
           case TRAVELCOST_OBSTACLE:
           default:
-            goto("NEXTDIR"); // Cost too much to be considered!
+            continue NEXTDIR; // Cost too much to be considered!
             break;
         }
 
@@ -1234,7 +1199,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
         if (iCnt & 1) {
           // ubAPCost++;
           // ubAPCost = gubDiagCost[ubAPCost];
-          ubAPCost = (ubAPCost * 14) / 10;
+          ubAPCost = Math.trunc((ubAPCost * 14) / 10);
         }
 
         usMovementModeToUseForAPs = usMovementMode;
@@ -1249,7 +1214,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
           case Enum193.RUNNING:
           case Enum193.ADULTMONSTER_WALKING:
             // save on casting
-            ubAPCost = ubAPCost * 10 / ((RUNDIVISOR * 10));
+            ubAPCost = Math.trunc(ubAPCost * 10 / ((RUNDIVISOR * 10)));
             // ubAPCost = (INT16)(DOUBLE)( (sTileCost / RUNDIVISOR) );	break;
             break;
           case Enum193.WALKING:
@@ -1281,7 +1246,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
             case Enum193.CRAWLING:
 
               // Can't do it here.....
-              goto("NEXTDIR");
+              continue NEXTDIR;
           }
         } else if (nextCost == TRAVELCOST_NOT_STANDING) {
           switch (usMovementModeToUseForAPs) {
@@ -1302,7 +1267,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
         ubNewAPCost = ubCurAPCost + ubAPCost;
 
         if (ubNewAPCost > gubNPCAPBudget)
-          goto("NEXTDIR");
+          continue NEXTDIR;
       }
 
       // ATE: Uncommented out for doors, if we are at a door but not dest, continue!
@@ -1365,7 +1330,7 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
       if (iCnt & 1) {
         // moving on a diagonal
         // nextCost = gubDiagCost[nextCost];
-        nextCost = nextCost * 14 / 10;
+        nextCost = Math.trunc(nextCost * 14 / 10);
         // nextCost++;
       }
 
@@ -1401,16 +1366,16 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
         // NEWQUENODE;
         {
           if (queRequests < QPOOLNDX()) {
-            pNewPtr = pathQ + (queRequests);
+            pNewPtr = pathQ[queRequests];
             queRequests++;
-            pNewPtr.pNext.forEach(resetPath);
+            pNewPtr.pNext.fill(<path_t><unknown>null);
             pNewPtr.bLevel = RandomSkipListLevel();
           } else if (iClosedListSize > 0) {
             pNewPtr = pClosedHead.pNext[0];
             pClosedHead.pNext[0] = pNewPtr.pNext[0];
             iClosedListSize--;
             queRequests++;
-            pNewPtr.pNext.forEach(resetPath);
+            pNewPtr.pNext.fill(<path_t><unknown>null);
             pNewPtr.bLevel = RandomSkipListLevel();
           } else {
             pNewPtr = null;
@@ -1441,15 +1406,15 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
           return 0;
         }
 
-        iLocY = newLoc / MAPWIDTH;
+        iLocY = Math.trunc(newLoc / MAPWIDTH);
         iLocX = newLoc % MAPWIDTH;
         SETLOC(pNewPtr, newLoc);
         pNewPtr.usCostSoFar = newTotCost;
-        pNewPtr.usCostToGo = REMAININGCOST(pNewPtr);
+        pNewPtr.usCostToGo = REMAININGCOST(iDestX, iDestY, iLocX, iLocY, pNewPtr);
         if (fCopyReachable) {
           pNewPtr.usCostToGo = 100;
         } else {
-          pNewPtr.usCostToGo = REMAININGCOST(pNewPtr);
+          pNewPtr.usCostToGo = REMAININGCOST(iDestX, iDestY, iLocX, iLocY, pNewPtr);
         }
 
         pNewPtr.usTotalCost = newTotCost + pNewPtr.usCostToGo;
@@ -1513,20 +1478,6 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
             bSkipListLevel++;
           }
         }
-      }
-
-    NEXTDIR:
-      if (bLoopState == LOOPING_CLOCKWISE) // backwards
-      {
-        iCnt = gOneCCDirection[iCnt];
-      } else {
-        iCnt = gOneCDirection[iCnt];
-      }
-      if (iCnt == iLoopEnd) {
-      ENDOFLOOP:
-        break;
-      } else if (fContinuousTurnNeeded && iCnt == gOppositeDirection[iLoopStart]) {
-        fCheckedBehind = true;
       }
     }
   } while (pathQNotEmpty() && pathNotYetFound(iDestination));
@@ -1908,7 +1859,7 @@ export function PlotPath(pSold: SOLDIERTYPE, sDestGridno: INT16, bCopyRoute: INT
           // so, then we must modify it for other movement styles and accumulate
           switch (usMovementModeToUseForAPs) {
             case Enum193.RUNNING:
-              sPoints += ((sTileCost / RUNDIVISOR)) + sExtraCostStand;
+              sPoints += Math.trunc(((sTileCost / RUNDIVISOR)) + sExtraCostStand);
               break;
             case Enum193.WALKING:
               sPoints += (sTileCost + WALKCOST) + sExtraCostStand;
@@ -1942,7 +1893,7 @@ export function PlotPath(pSold: SOLDIERTYPE, sDestGridno: INT16, bCopyRoute: INT
         sPointsSwat += (sTileCost + SWATCOST) + sExtraCostSwat;
 
         // now get cost as if RUNNING
-        sPointsRun += ((sTileCost / RUNDIVISOR)) + sExtraCostStand;
+        sPointsRun += Math.trunc(((sTileCost / RUNDIVISOR)) + sExtraCostStand);
       }
 
       if (iCnt == 0 && bPlot) {

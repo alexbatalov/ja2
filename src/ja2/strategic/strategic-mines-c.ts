@@ -123,7 +123,7 @@ export function InitializeMines(): void {
     } while (gMineStatus[ubMineIndex].fEmpty);
 
     // increase mine production by 20% of the base (minimum) rate
-    gMineStatus[ubMineIndex].uiMaxRemovalRate += (guiMinimumMineProduction[ubMineIndex] / 5);
+    gMineStatus[ubMineIndex].uiMaxRemovalRate += Math.trunc(guiMinimumMineProduction[ubMineIndex] / 5);
 
     ubMineProductionIncreases--;
   }
@@ -148,7 +148,7 @@ export function InitializeMines(): void {
       pMineStatus.uiRemainingOreSupply = ubMinDaysBeforeDepletion * (MINE_PRODUCTION_NUMBER_OF_PERIODS * pMineStatus.uiMaxRemovalRate);
 
       // ore starts running out when reserves drop to less than 25% of the initial supply
-      pMineStatus.uiOreRunningOutPoint = pMineStatus.uiRemainingOreSupply / 4;
+      pMineStatus.uiOreRunningOutPoint = Math.trunc(pMineStatus.uiRemainingOreSupply / 4);
     } else if (!pMineStatus.fEmpty) {
       // never runs out...
       pMineStatus.uiRemainingOreSupply = 999999999; // essentially unlimited
@@ -334,7 +334,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
       gMineStatus[bMineIndex].fRunningOut = true;
 
       // round all fractions UP to the next REMOVAL_RATE_INCREMENT
-      gMineStatus[bMineIndex].uiMaxRemovalRate = ((gMineStatus[bMineIndex].uiRemainingOreSupply / 10) / REMOVAL_RATE_INCREMENT + 0.9999) * REMOVAL_RATE_INCREMENT;
+      gMineStatus[bMineIndex].uiMaxRemovalRate = Math.trunc(((gMineStatus[bMineIndex].uiRemainingOreSupply / 10) / REMOVAL_RATE_INCREMENT + 0.9999) * REMOVAL_RATE_INCREMENT);
 
       // if we control it
       if (PlayerControlsMine(bMineIndex)) {
@@ -386,7 +386,7 @@ function GetAvailableWorkForceForMineForPlayer(bMineIndex: INT8): INT32 {
 
   // now adjust for town size.. the number of sectors you control
   iWorkForceSize *= GetTownSectorsUnderControl(bTownId);
-  iWorkForceSize /= GetTownSectorSize(bTownId);
+  iWorkForceSize = Math.trunc(iWorkForceSize / GetTownSectorSize(bTownId));
 
   return iWorkForceSize;
 }
@@ -422,7 +422,7 @@ function GetAvailableWorkForceForMineForEnemy(bMineIndex: INT8): INT32 {
 
   // now adjust for town size.. the number of sectors you control
   iWorkForceSize *= (GetTownSectorSize(bTownId) - GetTownSectorsUnderControl(bTownId));
-  iWorkForceSize /= GetTownSectorSize(bTownId);
+  iWorkForceSize = Math.trunc(iWorkForceSize / GetTownSectorSize(bTownId));
 
   return iWorkForceSize;
 }
@@ -431,7 +431,7 @@ function GetCurrentWorkRateOfMineForPlayer(bMineIndex: INT8): INT32 {
   let iWorkRate: INT32 = 0;
 
   // multiply maximum possible removal rate by the percentage of workforce currently working
-  iWorkRate = (gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForPlayer(bMineIndex)) / 100;
+  iWorkRate = Math.trunc((gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForPlayer(bMineIndex)) / 100);
 
   return iWorkRate;
 }
@@ -440,7 +440,7 @@ function GetCurrentWorkRateOfMineForEnemy(bMineIndex: INT8): INT32 {
   let iWorkRate: INT32 = 0;
 
   // multiply maximum possible removal rate by the percentage of workforce currently working
-  iWorkRate = (gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForEnemy(bMineIndex)) / 100;
+  iWorkRate = Math.trunc((gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForEnemy(bMineIndex)) / 100);
 
   return iWorkRate;
 }

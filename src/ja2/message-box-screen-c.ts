@@ -240,7 +240,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     // This is exclusive of any other buttons... no ok, no cancel, no nothing
 
     sBlankSpace = usTextBoxWidth - MSGBOX_SMALL_BUTTON_WIDTH * 4 - MSGBOX_SMALL_BUTTON_X_SEP * 3;
-    sButtonX = sBlankSpace / 2;
+    sButtonX = Math.trunc(sBlankSpace / 2);
     sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
     gMsgBox.uiButton[0] = CreateIconAndTextButton(gMsgBox.iButtonImages, "1", FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), NumberedMsgBoxCallback);
@@ -269,7 +269,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     // Create text button
     if (usFlags & MSG_BOX_FLAG_OK) {
       //			sButtonX = ( usTextBoxWidth - MSGBOX_BUTTON_WIDTH ) / 2;
-      sButtonX = (usTextBoxWidth - GetMSgBoxButtonWidth(gMsgBox.iButtonImages)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - GetMSgBoxButtonWidth(gMsgBox.iButtonImages)) / 2);
 
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
@@ -280,7 +280,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
 
     // Create text button
     if (usFlags & MSG_BOX_FLAG_CANCEL) {
-      sButtonX = (usTextBoxWidth - GetMSgBoxButtonWidth(gMsgBox.iButtonImages)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - GetMSgBoxButtonWidth(gMsgBox.iButtonImages)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiOKButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_CANCEL], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), OKMsgBoxCallback);
@@ -289,7 +289,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_YESNO) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_YES], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -303,7 +303,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_CONTINUESTOP) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pUpdatePanelButtons[0], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -317,7 +317,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_OKCONTRACT) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_OK], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), OKMsgBoxCallback);
@@ -331,7 +331,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_YESNOCONTRACT) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_YES], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -348,7 +348,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_GENERICCONTRACT) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, gzUserDefinedButton1, FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -365,7 +365,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_GENERIC) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, gzUserDefinedButton1, FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -378,7 +378,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_YESNOLIE) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 3);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_YES], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -395,7 +395,7 @@ export function DoMessageBox(ubStyle: UINT8, zString: string /* Pointer<INT16> *
     }
 
     if (usFlags & MSG_BOX_FLAG_OKSKIP) {
-      sButtonX = (usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2;
+      sButtonX = Math.trunc((usTextBoxWidth - (MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_WIDTH + MSGBOX_BUTTON_X_SEP)) / 2);
       sButtonY = usTextBoxHeight - MSGBOX_BUTTON_HEIGHT - 10;
 
       gMsgBox.uiYESButton = CreateIconAndTextButton(gMsgBox.iButtonImages, pMessageStrings[Enum333.MSG_OK], FONT12ARIAL(), ubFontColor, ubFontShadowColor, ubFontColor, ubFontShadowColor, TEXT_CJUSTIFIED, (gMsgBox.sX + sButtonX), (gMsgBox.sY + sButtonY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK(), YESMsgBoxCallback);
@@ -858,13 +858,13 @@ export function DoScreenIndependantMessageBox(zString: string /* Pointer<INT16> 
 
 // a basic box that don't care what screen we came from
 function DoUpperScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): void {
-  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, INV_INTERFACE_START_Y / 2);
+  let CenteringRect: SGPRect = createSGPRectFrom(0, 0, 640, Math.trunc(INV_INTERFACE_START_Y / 2));
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
 export function DoLowerScreenIndependantMessageBox(zString: string /* Pointer<INT16> */, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK | null): void {
-  let CenteringRect: SGPRect = createSGPRectFrom(0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y);
+  let CenteringRect: SGPRect = createSGPRectFrom(0, Math.trunc(INV_INTERFACE_START_Y / 2), 640, INV_INTERFACE_START_Y);
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, CenteringRect);
 }
 

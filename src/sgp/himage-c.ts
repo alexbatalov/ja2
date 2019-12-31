@@ -314,7 +314,7 @@ function Copy16BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array | U
 
   // Determine memcopy coordinates
   uiSrcStart = srcRect.iTop * hImage.usWidth + srcRect.iLeft;
-  uiDestStart = usY * usDestWidth + usX;
+  uiDestStart = usY * usDestWidth * 2 + usX * 4;
   uiNumLines = (srcRect.iBottom - srcRect.iTop) + 1;
   uiLineSize = (srcRect.iRight - srcRect.iLeft) + 1;
 
@@ -329,11 +329,17 @@ function Copy16BPPImageTo16BPPBuffer(hImage: ImageType, pDestBuf: Uint8Array | U
   pDest = uiDestStart;
   pSrc = uiSrcStart;
 
+  let p16BPPData = hImage.p16BPPData;
+  let rgb: number;
   for (cnt = 0; cnt < uiNumLines; cnt++) {
-    for (let i = 0; i < uiLineSize * 2; i++) {
-      pDestBuf[pDest + i] = hImage.p16BPPData[pSrc + i];
+    for (let i = 0; i < uiLineSize; i++) {
+      rgb = GetRGBColor(p16BPPData[pSrc + i]);
+      pDestBuf[pDest + i * 4] = SGPGetRValue(rgb);
+      pDestBuf[pDest + i * 4 + 1] = SGPGetGValue(rgb);
+      pDestBuf[pDest + i * 4 + 2] = SGPGetBValue(rgb);
+      pDestBuf[pDest + i * 4 + 3] = 0xFF;
     }
-    pDest += usDestWidth;
+    pDest += usDestWidth * 2;
     pSrc += hImage.usWidth;
   }
 
@@ -523,14 +529,14 @@ export function Create16BPPPaletteShaded(pPalette: SGPPaletteEntry[], rscale: UI
 
   for (cnt = 0; cnt < 256; cnt++) {
     if (mono) {
-      lumin = (pPalette[cnt].peRed * 299 / 1000) + (pPalette[cnt].peGreen * 587 / 1000) + (pPalette[cnt].peBlue * 114 / 1000);
-      rmod = (rscale * lumin) / 256;
-      gmod = (gscale * lumin) / 256;
-      bmod = (bscale * lumin) / 256;
+      lumin = Math.trunc(pPalette[cnt].peRed * 299 / 1000) + Math.trunc(pPalette[cnt].peGreen * 587 / 1000) + Math.trunc(pPalette[cnt].peBlue * 114 / 1000);
+      rmod = Math.trunc((rscale * lumin) / 256);
+      gmod = Math.trunc((gscale * lumin) / 256);
+      bmod = Math.trunc((bscale * lumin) / 256);
     } else {
-      rmod = (rscale * pPalette[cnt].peRed / 256);
-      gmod = (gscale * pPalette[cnt].peGreen / 256);
-      bmod = (bscale * pPalette[cnt].peBlue / 256);
+      rmod = Math.trunc(rscale * pPalette[cnt].peRed / 256);
+      gmod = Math.trunc(gscale * pPalette[cnt].peGreen / 256);
+      bmod = Math.trunc(bscale * pPalette[cnt].peBlue / 256);
     }
 
     r = Math.min(rmod, 255);

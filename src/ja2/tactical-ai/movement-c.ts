@@ -665,7 +665,7 @@ export function TrackScent(pSoldier: SOLDIERTYPE): INT16 {
 
   iStart = pSoldier.sGridNo;
   iXStart = iStart % WORLD_COLS;
-  iYStart = iStart / WORLD_COLS;
+  iYStart = Math.trunc(iStart / WORLD_COLS);
 
   if (CREATURE_OR_BLOODCAT(pSoldier)) // or bloodcats
   {

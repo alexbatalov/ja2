@@ -65,11 +65,14 @@
     "./src/sgp/*-h.ts",
     "./src/ja2/*-h.ts",
     "./src/ja2/utils/*-h.ts",
+    "./src/ja2/laptop/laptop-h.ts",
     "./src/ja2/laptop/*-h.ts",
+    "./src/ja2/tactical/overhead-types-h.ts",
+    "./src/ja2/tactical/interface-h.ts",
     "./src/ja2/tile-engine/world-def-h.ts",
     "./src/ja2/tile-engine/*-h.ts",
+    "./src/ja2/tactical/item-types-h.ts",
     "./src/ja2/strategic/*-h.ts",
-    "./src/ja2/tactical/overhead-types-h.ts",
     "./src/ja2/tactical/*-h.ts",
     "./src/ja2/tactical-ai/*-h.ts",
     "./src/ja2/editor/*-h.ts",
@@ -101,5 +104,14 @@
     "./src/ja2/tile-engine/*-c.ts",
     "./src/ja2/*-c.ts",
     "./src/main.ts"
+  ],
+  "exclude": [
+    "./src/ja2/utils/dutch-text-c.ts",
+    "./src/ja2/utils/french-text-c.ts",
+    "./src/ja2/utils/german-text-c.ts",
+    "./src/ja2/utils/italian-text-c.ts",
+    "./src/ja2/utils/polish-text-c.ts",
+    "./src/ja2/utils/russian-text-c.ts",
+    "./src/ja2/utils/ja25-german-text-c.ts"
   ]
 }

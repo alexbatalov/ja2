@@ -597,7 +597,7 @@ export function readSectorInfo(o: SECTORINFO, buffer: Buffer, offset: number = 0
 }
 
 export function writeSectorInfo(o: SECTORINFO, buffer: Buffer, offset: number = 0): number {
-  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeUInt32LE(o.uiFlags >>> 0, offset);
   offset = buffer.writeUInt8(o.ubInvestigativeState, offset);
   offset = buffer.writeUInt8(o.ubGarrisonID, offset);
   offset = buffer.writeInt8(o.ubPendingReinforcements, offset);

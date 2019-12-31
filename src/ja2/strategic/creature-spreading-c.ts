@@ -107,7 +107,7 @@ function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UI
   curr = createCreatureDirective();
   Assert(curr);
   ubSectorX = ((ubSectorID % 16) + 1);
-  ubSectorY = ((ubSectorID / 16) + 1);
+  ubSectorY = (Math.trunc(ubSectorID / 16) + 1);
   curr.pLevel = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
   if (!curr.pLevel) {
     AssertMsg(false, FormatString("Could not find underground sector node (%c%db_%d) that should exist.", String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX, ubSectorZ));
@@ -410,10 +410,10 @@ function PlaceNewCreature(node: CREATURE_DIRECTIVE | null, iDistance: INT32): bo
 
       switch (gGameOptions.ubDifficultyLevel) {
         case Enum9.DIF_LEVEL_EASY: // 50%
-          iAbsoluteMaxPopulation /= 2; // Half
+          iAbsoluteMaxPopulation = Math.trunc(iAbsoluteMaxPopulation / 2); // Half
           break;
         case Enum9.DIF_LEVEL_MEDIUM: // 80%
-          iAbsoluteMaxPopulation = iAbsoluteMaxPopulation * 4 / 5;
+          iAbsoluteMaxPopulation = Math.trunc(iAbsoluteMaxPopulation * 4 / 5);
           break;
         case Enum9.DIF_LEVEL_HARD: // 100%
           break;
@@ -421,15 +421,15 @@ function PlaceNewCreature(node: CREATURE_DIRECTIVE | null, iDistance: INT32): bo
 
       // Calculate the desired max population percentage based purely on current distant to creature range.
       // The closer we are to the lair, the closer this value will be to 100.
-      iMaxPopulation = 100 - iDistance * 100 / giHabitatedDistance;
+      iMaxPopulation = 100 - Math.trunc(iDistance * 100 / giHabitatedDistance);
       iMaxPopulation = Math.max(iMaxPopulation, 25);
       // Now, convert the previous value into a numeric population.
-      iMaxPopulation = iAbsoluteMaxPopulation * iMaxPopulation / 100;
+      iMaxPopulation = Math.trunc(iAbsoluteMaxPopulation * iMaxPopulation / 100);
       iMaxPopulation = Math.max(iMaxPopulation, 4);
 
       // The chance to populate a sector is higher for lower populations.  This is calculated on
       // the ratio of current population to the max population.
-      iChanceToPopulate = 100 - node.pLevel.ubNumCreatures * 100 / iMaxPopulation;
+      iChanceToPopulate = 100 - Math.trunc(node.pLevel.ubNumCreatures * 100 / iMaxPopulation);
 
       if (!node.pLevel.ubNumCreatures || iChanceToPopulate > Random(100) && iMaxPopulation > node.pLevel.ubNumCreatures) {
         AddCreatureToNode(node);
@@ -575,7 +575,7 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: boolean): vo
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
   ubSectorX = ((ubSectorID % 16) + 1);
-  ubSectorY = ((ubSectorID / 16) + 1);
+  ubSectorY = (Math.trunc(ubSectorID / 16) + 1);
 
   if (!fOverrideTest) {
     iRandom = PreRandom(100);
@@ -704,7 +704,7 @@ export function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): v
   gubCreatureBattleCode = Enum129.CREATURE_BATTLE_CODE_NONE;
 
   ubSectorX = ((ubSectorID % 16) + 1);
-  ubSectorY = ((ubSectorID / 16) + 1);
+  ubSectorY = (Math.trunc(ubSectorID / 16) + 1);
 
   if (!fOverrideTest) {
     // Record the number of creatures in the sector.
@@ -725,7 +725,7 @@ export function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: boolean): v
     // the mine entrance have a greater chance of being chosen.
     ChooseTownSectorToAttack(ubSectorID, false);
     ubSectorX = ((gubSectorIDOfCreatureAttack % 16) + 1);
-    ubSectorY = ((gubSectorIDOfCreatureAttack / 16) + 1);
+    ubSectorY = (Math.trunc(gubSectorIDOfCreatureAttack / 16) + 1);
   } else {
     ChooseTownSectorToAttack(ubSectorID, true);
     gubNumCreaturesAttackingTown = 5;

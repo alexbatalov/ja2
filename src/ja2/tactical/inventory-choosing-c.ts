@@ -158,7 +158,7 @@ export function GenerateRandomEquipment(pp: SOLDIERCREATE_STRUCT, bSoldierClass:
 
   // equipment level is modified by 1/10 of the difficulty percentage, -5, so it's between -5 to +5
   // (on normal, this is actually -4 to +4, easy is -5 to +3, and hard is -3 to +5)
-  bEquipmentModifier = bEquipmentRating + ((CalcDifficultyModifier(bSoldierClass) / 10) - 5);
+  bEquipmentModifier = bEquipmentRating + (Math.trunc(CalcDifficultyModifier(bSoldierClass) / 10) - 5);
 
   switch (bSoldierClass) {
     case Enum262.SOLDIER_CLASS_NONE:
@@ -587,14 +587,14 @@ function ChooseWeaponForSoldierCreateStruct(pp: SOLDIERCREATE_STRUCT, bWeaponCla
       case Enum262.SOLDIER_CLASS_REG_MILITIA:
         // Admins/Troops: 60-75% + 1% every 4% progress
         bStatus = (60 + Random(16));
-        bStatus += (HighestPlayerProgressPercentage() / 4);
+        bStatus += Math.trunc(HighestPlayerProgressPercentage() / 4);
         bStatus = Math.min(100, bStatus);
         break;
       case Enum262.SOLDIER_CLASS_ELITE:
       case Enum262.SOLDIER_CLASS_ELITE_MILITIA:
         // 85-90% +  1% every 10% progress
         bStatus = (85 + Random(6));
-        bStatus += (HighestPlayerProgressPercentage() / 10);
+        bStatus += Math.trunc(HighestPlayerProgressPercentage() / 10);
         bStatus = Math.min(100, bStatus);
         break;
       default:
@@ -1102,7 +1102,7 @@ function ChooseFaceGearForSoldierCreateStruct(pp: SOLDIERCREATE_STRUCT): void {
       break;
     case Enum262.SOLDIER_CLASS_ARMY:
     case Enum262.SOLDIER_CLASS_REG_MILITIA:
-      if (Chance(bDifficultyRating / 2)) {
+      if (Chance(Math.trunc(bDifficultyRating / 2))) {
         // chance of getting a face item
         if (Chance(50)) {
           CreateItem(Enum225.GASMASK, (70 + Random(31)), pp.Inv[Enum261.HEAD1POS]);
@@ -1112,7 +1112,7 @@ function ChooseFaceGearForSoldierCreateStruct(pp: SOLDIERCREATE_STRUCT): void {
           pp.Inv[Enum261.HEAD1POS].fFlags |= OBJECT_UNDROPPABLE;
         }
       }
-      if (Chance(bDifficultyRating / 3)) {
+      if (Chance(Math.trunc(bDifficultyRating / 3))) {
         // chance of getting a extended ear
         CreateItem(Enum225.EXTENDEDEAR, (70 + Random(31)), pp.Inv[Enum261.HEAD2POS]);
         pp.Inv[Enum261.HEAD2POS].fFlags |= OBJECT_UNDROPPABLE;
@@ -1438,7 +1438,7 @@ function RandomlyChooseWhichItemsAreDroppable(pp: SOLDIERCREATE_STRUCT, bSoldier
   if (Random(100) < ubOtherDropRate)
     fKit = true;
 
-  if (Random(100) < (ubOtherDropRate / 3))
+  if (Random(100) < Math.trunc(ubOtherDropRate / 3))
     fFace = true;
 
   if (Random(100) < ubOtherDropRate)
@@ -1718,7 +1718,7 @@ export function AssignCreatureInventory(pSoldier: SOLDIERTYPE): void {
   // as requested by ATE, males are more likely to drop their "organs" (he actually suggested this, I'm serious!)
   if (fMaleCreature) {
     // increase chance by 50%
-    uiChanceToDrop += (uiChanceToDrop / 2);
+    uiChanceToDrop += Math.trunc(uiChanceToDrop / 2);
   }
 
   if (Random(100) < uiChanceToDrop) {

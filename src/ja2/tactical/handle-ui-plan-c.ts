@@ -106,7 +106,7 @@ export function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): boolean {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Merc will not have enough action points");
     }
   } else if (ubPlanID == UIPLAN_ACTION_FIRE) {
-    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, 1, (gpUIPlannedSoldier.bShownAimTime / 2));
+    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, 1, Math.trunc(gpUIPlannedSoldier.bShownAimTime / 2));
 
     // Get XY from Gridno
     ({ sX: sXPos, sY: sYPos } = ConvertGridNoToCenterCellXY(sGridNo));

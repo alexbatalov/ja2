@@ -66,10 +66,10 @@ let gubUnusedTimePadding: UINT8[] /* [TIME_PADDINGBYTES] */ = createArray(TIME_P
 export function InitNewGameClock(): void {
   guiGameClock = STARTING_TIME;
   guiPreviousGameClock = STARTING_TIME;
-  guiDay = Math.floor(guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = Math.floor((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
-  guiMin = Math.floor((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
-  gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  guiDay = Math.trunc(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.trunc((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.trunc((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
+  gswzWorldTimeStr = swprintf("%s %d, %s:%s", pDayStrings[0], guiDay, guiHour.toString().padStart(2, '0'), guiMin.toString().padStart(2, '0'));
   guiTimeCurrentSectorWasLastLoaded = 0;
   guiGameSecondsPerRealSecond = 0;
   gubClockResolution = 1;
@@ -101,11 +101,11 @@ export function GetWorldDayInSeconds(): UINT32 {
 }
 
 export function GetWorldDayInMinutes(): UINT32 {
-  return Math.floor((guiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
+  return Math.trunc((guiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
 }
 
 export function GetFutureDayInMinutes(uiDay: UINT32): UINT32 {
-  return Math.floor((uiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
+  return Math.trunc((uiDay * NUM_SEC_IN_DAY) / NUM_SEC_IN_MIN);
 }
 
 // this function returns the amount of minutes there has been from start of game to midnight of the uiDay.
@@ -164,11 +164,11 @@ function AdvanceClock(ubWarpCode: UINT8): void {
   guiPreviousGameClock = guiGameClock;
 
   // Calculate the day, hour, and minutes.
-  guiDay = Math.floor(guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = Math.floor((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
-  guiMin = Math.floor((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
+  guiDay = Math.trunc(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.trunc((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.trunc((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
 
-  gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
+  gswzWorldTimeStr = swprintf("%s %d, %s:%s", gpGameClockString[Enum366.STR_GAMECLOCK_DAY_NAME], guiDay, guiHour.toString().padStart(2, '0'), guiMin.toString().padStart(2, '0'));
 
   if (gfResetAllPlayerKnowsEnemiesFlags && !gTacticalStatus.fEnemyInSector) {
     ClearAnySectorsFlashingNumberOfEnemies();
@@ -222,9 +222,9 @@ export function RenderClock(sX: INT16, sY: INT16): void {
   RestoreExternBackgroundRect(sX, sY, CLOCK_STRING_WIDTH, CLOCK_STRING_HEIGHT);
 
   if ((gfPauseDueToPlayerGamePause == false)) {
-    mprintf(sX + Math.floor((CLOCK_STRING_WIDTH - StringPixLength(gswzWorldTimeStr, CLOCK_FONT())) / 2), sY, gswzWorldTimeStr);
+    mprintf(sX + Math.trunc((CLOCK_STRING_WIDTH - StringPixLength(gswzWorldTimeStr, CLOCK_FONT())) / 2), sY, gswzWorldTimeStr);
   } else {
-    mprintf(sX + Math.floor((CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2), sY, pPausedGameText[0]);
+    mprintf(sX + Math.trunc((CLOCK_STRING_WIDTH - StringPixLength(pPausedGameText[0], CLOCK_FONT())) / 2), sY, pPausedGameText[0]);
   }
 }
 
@@ -395,7 +395,7 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond(Math.max(1, (guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(Math.max(1, Math.trunc(guiGameSecondsPerRealSecond / 60)));
   }
 
   // if the compress mode is X0 or X1
@@ -434,7 +434,7 @@ function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond(Math.max(1, (guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(Math.max(1, Math.trunc(guiGameSecondsPerRealSecond / 60)));
   }
 }
 
@@ -572,14 +572,14 @@ export function UpdateClock(): void {
   } else if (gubClockResolution > 1) {
     if (gubClockResolution != UpdateClock__ubLastResolution) {
       // guiTimesThisSecondProcessed = guiTimesThisSecondProcessed * ubLastResolution / gubClockResolution % gubClockResolution;
-      guiTimesThisSecondProcessed = guiTimesThisSecondProcessed * gubClockResolution / UpdateClock__ubLastResolution;
-      UpdateClock__uiLastTimeProcessed = UpdateClock__uiLastTimeProcessed * gubClockResolution / UpdateClock__ubLastResolution;
+      guiTimesThisSecondProcessed = Math.trunc(guiTimesThisSecondProcessed * gubClockResolution / UpdateClock__ubLastResolution);
+      UpdateClock__uiLastTimeProcessed = Math.trunc(UpdateClock__uiLastTimeProcessed * gubClockResolution / UpdateClock__ubLastResolution);
       UpdateClock__ubLastResolution = gubClockResolution;
     }
-    uiTimeSlice = 1000000 / gubClockResolution;
-    if (uiThousandthsOfThisSecondProcessed >= uiTimeSlice * (guiTimesThisSecondProcessed + 1) / 1000) {
-      guiTimesThisSecondProcessed = uiThousandthsOfThisSecondProcessed * 1000 / uiTimeSlice;
-      uiNewTimeProcessed = guiGameSecondsPerRealSecond * guiTimesThisSecondProcessed / gubClockResolution;
+    uiTimeSlice = Math.trunc(1000000 / gubClockResolution);
+    if (uiThousandthsOfThisSecondProcessed >= Math.trunc(uiTimeSlice * (guiTimesThisSecondProcessed + 1) / 1000)) {
+      guiTimesThisSecondProcessed = Math.trunc(uiThousandthsOfThisSecondProcessed * 1000 / uiTimeSlice);
+      uiNewTimeProcessed = Math.trunc(guiGameSecondsPerRealSecond * guiTimesThisSecondProcessed / gubClockResolution);
 
       uiNewTimeProcessed = Math.max(uiNewTimeProcessed, UpdateClock__uiLastTimeProcessed);
 
@@ -830,11 +830,11 @@ export function LoadGameClock(hFile: HWFILE): boolean {
   readUIntArray(gubUnusedTimePadding, buffer, 0, 1);
 
   // Update the game clock
-  guiDay = (guiGameClock / NUM_SEC_IN_DAY);
-  guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
-  guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
+  guiDay = Math.trunc(guiGameClock / NUM_SEC_IN_DAY);
+  guiHour = Math.trunc((guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR);
+  guiMin = Math.trunc((guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN);
 
-  gswzWorldTimeStr = swprintf("%s %d, %02d:%02d", pDayStrings[0], guiDay, guiHour, guiMin);
+  gswzWorldTimeStr = swprintf("%s %d, %s:%s", pDayStrings[0], guiDay, guiHour.toString().padStart(2, '0'), guiMin.toString().padStart(2, '0'));
 
   if (!gfBasement && !gfCaves)
     gfDoLighting = true;
@@ -953,8 +953,8 @@ function ScreenMaskForGamePauseBtnCallBack(pRegion: MOUSE_REGION, iReason: INT32
 
 export function RenderPausedGameBox(): void {
   if ((gfPauseDueToPlayerGamePause == true) && (gfGamePaused == true) && (iPausedPopUpBox != -1)) {
-    RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), FRAME_BUFFER);
-    InvalidateRegion((320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), (320 - usPausedActualWidth / 2 + usPausedActualWidth), (200 - usPausedActualHeight / 2 + usPausedActualHeight));
+    RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (320 - Math.trunc(usPausedActualWidth / 2)), (200 - Math.trunc(usPausedActualHeight / 2)), FRAME_BUFFER);
+    InvalidateRegion((320 - Math.trunc(usPausedActualWidth / 2)), (200 - Math.trunc(usPausedActualHeight / 2)), (320 - Math.trunc(usPausedActualWidth / 2) + usPausedActualWidth), (200 - Math.trunc(usPausedActualHeight / 2) + usPausedActualHeight));
   }
 
   // reset we've just finished a pause by the player

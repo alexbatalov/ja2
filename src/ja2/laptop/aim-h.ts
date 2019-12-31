@@ -9,7 +9,7 @@ export const AIM_HISTORY_LINE_SIZE = 400 * 2;
 
 export const MAX_NUMBER_MERCS = 40;
 
-const NUM_AIM_SCREENS = 6;
+export const NUM_AIM_SCREENS = 6;
 
 export const IMAGE_OFFSET_X = LAPTOP_SCREEN_UL_X; // 111
 export const IMAGE_OFFSET_Y = LAPTOP_SCREEN_WEB_UL_Y; // 24

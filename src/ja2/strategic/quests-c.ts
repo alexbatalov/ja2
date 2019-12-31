@@ -59,7 +59,7 @@ function CheckNPCInOkayHealth(ubProfileID: UINT8): boolean {
 
   // is the NPC at better than half health?
   pSoldier = FindSoldierByProfileID(ubProfileID, false);
-  if (pSoldier && pSoldier.bLife > (pSoldier.bLifeMax / 2) && pSoldier.bLife > 30) {
+  if (pSoldier && pSoldier.bLife > Math.trunc(pSoldier.bLifeMax / 2) && pSoldier.bLife > 30) {
     return true;
   } else {
     return false;
@@ -807,7 +807,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case Enum170.FACT_BLOODCAT_QUEST_STARTED_TWO_DAYS_AGO:
-      gubFact[usFact] = ((gubQuest[Enum169.QUEST_BLOODCATS] != QUESTNOTSTARTED) && (GetWorldTotalMin() - GetTimeQuestWasStarted(Enum169.QUEST_BLOODCATS) > 2 * NUM_SEC_IN_DAY / NUM_SEC_IN_MIN));
+      gubFact[usFact] = ((gubQuest[Enum169.QUEST_BLOODCATS] != QUESTNOTSTARTED) && (GetWorldTotalMin() - GetTimeQuestWasStarted(Enum169.QUEST_BLOODCATS) > Math.trunc(2 * NUM_SEC_IN_DAY / NUM_SEC_IN_MIN)));
       break;
 
     case Enum170.FACT_NOTHING_REPAIRED_YET:

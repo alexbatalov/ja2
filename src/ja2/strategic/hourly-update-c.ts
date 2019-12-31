@@ -94,7 +94,7 @@ function HourlyQuestUpdate(): void {
       // done resting now!
       gfBoxersResting = false;
       gubBoxersRests++;
-    } else if (gubBoxingMatchesWon / 3 > gubBoxersRests) {
+    } else if (Math.trunc(gubBoxingMatchesWon / 3) > gubBoxersRests) {
       // time for the boxers to rest!
       gfBoxersResting = true;
     }

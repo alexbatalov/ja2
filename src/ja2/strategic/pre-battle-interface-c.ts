@@ -331,7 +331,7 @@ export function InitPreBattleInterface(pBattleGroup: GROUP | null, fPersistantPB
               let iChance: INT32;
               pSector = SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
               if (!(pSector.uiFlags & SF_ALREADY_VISITED)) {
-                iChance = (4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
+                iChance = (4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + Math.trunc(CurrentPlayerProgressPercentage() / 10));
                 if (pSector.uiFlags & SF_ENEMY_AMBUSH_LOCATION) {
                   iChance += 20;
                 }
@@ -517,8 +517,8 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   uiStartTime = GetJA2Clock();
 
   ({ sX: sStartLeft, sY: sStartTop } = GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY));
-  sStartLeft += MAP_GRID_X / 2;
-  sStartTop += MAP_GRID_Y / 2;
+  sStartLeft += Math.trunc(MAP_GRID_X / 2);
+  sStartTop += Math.trunc(MAP_GRID_Y / 2);
   sEndLeft = 131;
   sEndTop = 180;
 
@@ -553,9 +553,10 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   InvalidateScreen();
   RefreshScreen();
 
+  iPercentage = 100; // FIXME: Synchronous rendering
   while (iPercentage < 100) {
     uiCurrTime = GetJA2Clock();
-    iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
+    iPercentage = Math.trunc((uiCurrTime - uiStartTime) * 100 / uiTimeRange);
     iPercentage = Math.min(iPercentage, 100);
 
     // Factor the percentage so that it is modified by a gravity falling acceleration effect.
@@ -566,16 +567,16 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
       iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
 
     // Calculate the center point.
-    iLeft = sStartLeft - (sStartLeft - sEndLeft + 1) * iPercentage / 100;
+    iLeft = sStartLeft - Math.trunc((sStartLeft - sEndLeft + 1) * iPercentage / 100);
     if (sStartTop > sEndTop)
-      iTop = sStartTop - (sStartTop - sEndTop + 1) * iPercentage / 100;
+      iTop = sStartTop - Math.trunc((sStartTop - sEndTop + 1) * iPercentage / 100);
     else
-      iTop = sStartTop + (sEndTop - sStartTop + 1) * iPercentage / 100;
+      iTop = sStartTop + Math.trunc((sEndTop - sStartTop + 1) * iPercentage / 100);
 
-    DstRect.iLeft = iLeft - iWidth * iPercentage / 200;
-    DstRect.iRight = DstRect.iLeft + Math.max(iWidth * iPercentage / 100, 1);
-    DstRect.iTop = iTop - iHeight * iPercentage / 200;
-    DstRect.iBottom = DstRect.iTop + Math.max(iHeight * iPercentage / 100, 1);
+    DstRect.iLeft = iLeft - Math.trunc(iWidth * iPercentage / 200);
+    DstRect.iRight = DstRect.iLeft + Math.max(Math.trunc(iWidth * iPercentage / 100), 1);
+    DstRect.iTop = iTop - Math.trunc(iHeight * iPercentage / 200);
+    DstRect.iBottom = DstRect.iTop + Math.max(Math.trunc(iHeight * iPercentage / 100), 1);
 
     BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, PBIRect, DstRect);
 
@@ -685,7 +686,7 @@ function RenderPBHeader(): { x: INT32, width: INT32 } {
         break;
     }
   width = StringPixLength(str, FONT10ARIALBOLD());
-  x = 130 - width / 2;
+  x = 130 - Math.trunc(width / 2);
   mprintf(x, 4, str);
   InvalidateRegion(0, 0, 231, 12);
 
@@ -827,16 +828,16 @@ export function RenderPreBattleInterface(): void {
       str = swprintf("%d", i);
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = i;
     }
-    x = 57 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
+    x = 57 + Math.trunc((27 - StringPixLength(str, FONT14ARIAL())) / 2);
     y = 36;
     mprintf(x, y, str);
     // player
     str = swprintf("%d", guiNumInvolved);
-    x = 142 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
+    x = 142 + Math.trunc((27 - StringPixLength(str, FONT14ARIAL())) / 2);
     mprintf(x, y, str);
     // militia
     str = swprintf("%d", CountAllMilitiaInSector(gubPBSectorX, gubPBSectorY));
-    x = 227 + (27 - StringPixLength(str, FONT14ARIAL())) / 2;
+    x = 227 + Math.trunc((27 - StringPixLength(str, FONT14ARIAL())) / 2);
     mprintf(x, y, str);
     SetFontShadow(FONT_NEARBLACK);
 
@@ -857,24 +858,24 @@ export function RenderPreBattleInterface(): void {
             SetFontForeground(FONT_YELLOW);
           // NAME
           str = MercPtrs[i].name;
-          x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
+          x = 17 + Math.trunc((52 - StringPixLength(str, BLOCKFONT2())) / 2);
           mprintf(x, y, str);
           // ASSIGN
           str = GetMapscreenMercAssignmentString(MercPtrs[i]);
-          x = 72 + (54 - StringPixLength(str, BLOCKFONT2())) / 2;
+          x = 72 + Math.trunc((54 - StringPixLength(str, BLOCKFONT2())) / 2);
           mprintf(x, y, str);
           // COND
           ({ szCondition: str, ubHPPercent, ubBPPercent } = GetSoldierConditionInfo(MercPtrs[i]));
-          x = 129 + (58 - StringPixLength(str, BLOCKFONT2())) / 2;
+          x = 129 + Math.trunc((58 - StringPixLength(str, BLOCKFONT2())) / 2);
           mprintf(x, y, str);
           // HP
           str = swprintf("%d%%", ubHPPercent);
-          x = 189 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
+          x = 189 + Math.trunc((25 - StringPixLength(str, BLOCKFONT2())) / 2);
           str += "%";
           mprintf(x, y, str);
           // BP
           str = swprintf("%d%%", ubBPPercent);
-          x = 217 + (25 - StringPixLength(str, BLOCKFONT2())) / 2;
+          x = 217 + Math.trunc((25 - StringPixLength(str, BLOCKFONT2())) / 2);
           str += "%";
           mprintf(x, y, str);
 
@@ -889,7 +890,7 @@ export function RenderPreBattleInterface(): void {
     if (!guiNumUninvolved) {
       SetFontForeground(FONT_YELLOW);
       str = gpStrategicString[Enum365.STR_PB_NONE];
-      x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
+      x = 17 + Math.trunc((52 - StringPixLength(str, BLOCKFONT2())) / 2);
       y = BOTTOM_Y - ROW_HEIGHT + 2;
       mprintf(x, y, str);
     } else {
@@ -905,25 +906,25 @@ export function RenderPreBattleInterface(): void {
               SetFontForeground(FONT_YELLOW);
             // NAME
             str = MercPtrs[i].name;
-            x = 17 + (52 - StringPixLength(str, BLOCKFONT2())) / 2;
+            x = 17 + Math.trunc((52 - StringPixLength(str, BLOCKFONT2())) / 2);
             mprintf(x, y, str);
             // ASSIGN
             str = GetMapscreenMercAssignmentString(MercPtrs[i]);
-            x = 72 + (54 - StringPixLength(str, BLOCKFONT2())) / 2;
+            x = 72 + Math.trunc((54 - StringPixLength(str, BLOCKFONT2())) / 2);
             mprintf(x, y, str);
             // LOC
             str = GetMapscreenMercLocationString(MercPtrs[i]);
-            x = 128 + (33 - StringPixLength(str, BLOCKFONT2())) / 2;
+            x = 128 + Math.trunc((33 - StringPixLength(str, BLOCKFONT2())) / 2);
             mprintf(x, y, str);
             // DEST
             str = GetMapscreenMercDestinationString(MercPtrs[i]);
             if (str.length > 0) {
-              x = 164 + (41 - StringPixLength(str, BLOCKFONT2())) / 2;
+              x = 164 + Math.trunc((41 - StringPixLength(str, BLOCKFONT2())) / 2);
               mprintf(x, y, str);
             }
             // DEP
             ({ sString: str, ubFontColor: ubJunk } = GetMapscreenMercDepartureString(MercPtrs[i]));
-            x = 208 + (34 - StringPixLength(str, BLOCKFONT2())) / 2;
+            x = 208 + Math.trunc((34 - StringPixLength(str, BLOCKFONT2())) / 2);
             mprintf(x, y, str);
             line++;
             y += ROW_HEIGHT;
@@ -1089,7 +1090,7 @@ function GetSoldierConditionInfo(pSoldier: SOLDIERTYPE): { szCondition: string, 
   let ubBPPercent: UINT8;
 
   Assert(pSoldier);
-  ubHPPercent = (pSoldier.bLife * 100 / pSoldier.bLifeMax);
+  ubHPPercent = Math.trunc(pSoldier.bLife * 100 / pSoldier.bLifeMax);
   ubBPPercent = pSoldier.bBreath;
   // Go from the worst condition to the best.
   if (!pSoldier.bLife) {

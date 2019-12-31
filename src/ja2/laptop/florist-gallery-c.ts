@@ -321,7 +321,7 @@ function ChangingFloristGallerySubPage(ubSubPageNumber: UINT8): void {
   if (ubSubPageNumber == FLOR_GALLERY_NUMBER_FLORAL_IMAGES)
     ubSubPageNumber = 4;
   else
-    ubSubPageNumber = ubSubPageNumber / 3;
+    ubSubPageNumber = Math.trunc(ubSubPageNumber / 3);
 
   if (FloristGallerySubPagesVisitedFlag[ubSubPageNumber] == false) {
     fConnectingToSubPage = true;
