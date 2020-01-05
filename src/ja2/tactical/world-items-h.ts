@@ -73,8 +73,8 @@ export function readWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0):
   offset += 3; // padding
   offset = readObjectType(o.o, buffer, offset);
   o.usFlags = buffer.readUInt16LE(offset); offset += 2;
-  o.bRenderZHeightAboveLevel = buffer.readUInt8(offset++);
-  o.bVisible = buffer.readUInt8(offset++);
+  o.bRenderZHeightAboveLevel = buffer.readInt8(offset++);
+  o.bVisible = buffer.readInt8(offset++);
   o.ubNonExistChance = buffer.readUInt8(offset++);
   offset += 3;
   return offset;
@@ -88,8 +88,8 @@ export function writeWorldItem(o: WORLDITEM, buffer: Buffer, offset: number = 0)
   offset = writePadding(buffer, offset, 3);
   offset = writeObjectType(o.o, buffer, offset);
   offset = buffer.writeUInt16LE(o.usFlags, offset);
-  offset = buffer.writeUInt8(o.bRenderZHeightAboveLevel, offset);
-  offset = buffer.writeUInt8(Number(o.bVisible), offset);
+  offset = buffer.writeInt8(o.bRenderZHeightAboveLevel, offset);
+  offset = buffer.writeInt8(o.bVisible, offset);
   offset = buffer.writeUInt8(o.ubNonExistChance, offset);
   offset = writePadding(buffer, offset, 3);
   return offset;
