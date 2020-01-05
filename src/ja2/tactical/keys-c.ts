@@ -947,6 +947,11 @@ export function ModifyDoorStatus(sGridNo: INT16, fOpen: boolean | undefined, fPe
 
     // reallocate memory to hold the new door
     gpDoorStatus.push(createDoorStatus());
+  } else {
+    // Set the initial number of doors
+    gubNumDoorStatus = 1;
+
+    gpDoorStatus = [createDoorStatus()];
   }
 
   gpDoorStatus[gubNumDoorStatus - 1].sGridNo = pBaseStructure.sGridNo;
