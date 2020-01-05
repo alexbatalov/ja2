@@ -33,6 +33,40 @@ export interface NPC_DIALOGUE_TYPE {
   zQuoteStr: string /* INT16[480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
 }
 
+export function createNpcDialogueType(): NPC_DIALOGUE_TYPE {
+  return {
+    iFaceIndex: 0,
+    sX: 0,
+    sY: 0,
+    sPopupX: 0,
+    sPopupY: 0,
+    ubPopupOrientation: 0,
+    ubCharNum: 0,
+    uiPanelVO: 0,
+    iButtonImages: 0,
+    uiCancelButton: 0,
+    bCurSelect: 0,
+    bOldCurSelect: 0,
+    usWidth: 0,
+    usHeight: 0,
+    Regions: createArrayFrom(6, createMouseRegion),
+    BackRegion: createMouseRegion(),
+    NameRegion: createMouseRegion(),
+    ScreenRegion: createMouseRegion(),
+    TextRegion: createMouseRegion(),
+    fTextRegionOn: false,
+    fOnName: false,
+    fDirtyLevel: 0,
+    uiSaveBuffer: 0,
+    fHandled: false,
+    fHandledTalkingVal: false,
+    fHandledCanDeleteVal: false,
+    fRenderSubTitlesNow: false,
+    fSetupSubTitles: false,
+    zQuoteStr: '',
+  };
+}
+
 export const enum Enum213 {
   NPC_ACTION_NONE = 0,
   NPC_ACTION_DONT_ACCEPT_ITEM,
