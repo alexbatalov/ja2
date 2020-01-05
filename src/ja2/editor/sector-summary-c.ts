@@ -389,7 +389,7 @@ function RenderSectorInformation(): void {
   mprintf(10, 32, "Tileset:  %s", gTilesets[s.ubTilesetID].zName);
   if (m.ubMapVersion < 10)
     SetFontForeground(FONT_RED);
-  mprintf(10, 42, "Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s.ubSummaryVersion, s.dMajorMapVersion, m.ubMapVersion);
+  mprintf(10, 42, "Version Info:  Summary:  1.%s,  Map:  %d.%s", s.ubSummaryVersion.toString().padStart(2, '0'), s.dMajorMapVersion, m.ubMapVersion.toString().padStart(2, '0'));
   SetFontForeground(FONT_GRAY2);
   mprintf(10, 55, "Number of items:  %d", s.usNumItems);
   mprintf(10, 65, "Number of lights:  %d", s.usNumLights);
@@ -608,8 +608,8 @@ function RenderItemDetails(): void {
         // Display stats.
         str = LoadShortNameItemInfo(index);
         mprintf(xp, yp, "%s", str);
-        mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
-        mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
+        mprintf(xp + 85, yp, "%s", dAvgExistChance.toFixed(2).padStart(3));
+        mprintf(xp + 110, yp, "@ %s%%", dAvgStatus.toFixed(2).padStart(3));
         yp += 10;
         if (yp >= 355) {
           xp += 170;
@@ -662,10 +662,10 @@ function RenderItemDetails(): void {
         if (i < 7) {
           dAvgExistChance = (uiTriggerExistChance[i] / 100.0);
           dAvgStatus = (uiActionExistChance[i] / 100.0);
-          mprintf(xp, yp, "%s:  %3.02f trigger(s), %3.02f action(s)", str, dAvgExistChance, dAvgStatus);
+          mprintf(xp, yp, "%s:  %s trigger(s), %s action(s)", str, dAvgExistChance.toFixed(2).padStart(3), dAvgStatus.toFixed(2).padStart(3));
         } else {
           dAvgExistChance = (uiActionExistChance[i] / 100.0);
-          mprintf(xp, yp, "%s:  %3.02f", str, dAvgExistChance);
+          mprintf(xp, yp, "%s:  %s", str, dAvgExistChance.toFixed(2).padStart(3));
         }
         yp += 10;
         if (yp >= 355) {
@@ -713,8 +713,8 @@ function RenderItemDetails(): void {
           // Display stats.
           str = LoadShortNameItemInfo(index);
           mprintf(xp, yp, "%s", str);
-          mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
-          mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
+          mprintf(xp + 85, yp, "%s", dAvgExistChance.toFixed(2).padStart(3));
+          mprintf(xp + 110, yp, "@ %s%%", dAvgStatus.toFixed(2).padStart(3));
           yp += 10;
           if (yp >= 355) {
             xp += 170;
@@ -772,8 +772,8 @@ function RenderItemDetails(): void {
         // Display stats.
         str = LoadShortNameItemInfo(index);
         mprintf(xp, yp, "%s", str);
-        mprintf(xp + 85, yp, "%3.02f", dAvgExistChance);
-        mprintf(xp + 110, yp, "@ %3.02f%%", dAvgStatus);
+        mprintf(xp + 85, yp, "%s", dAvgExistChance.toFixed(2).padStart(3));
+        mprintf(xp + 110, yp, "@ %s%%", dAvgStatus.toFixed(2).padStart(3));
         yp += 10;
         if (yp >= 355) {
           xp += 170;
@@ -822,7 +822,7 @@ export function RenderSummaryWindow(): void {
     SetFontShadow(FONT_DKKHAKI);
     SetFontBackground(0);
     if (!gfItemDetailsMode) {
-      mprintf(10, 5, "CAMPAIGN EDITOR -- %s Version 1.%02d", gszVersionType[GLOBAL_SUMMARY_STATE], GLOBAL_SUMMARY_VERSION);
+      mprintf(10, 5, "CAMPAIGN EDITOR -- %s Version 1.%s", gszVersionType[GLOBAL_SUMMARY_STATE], GLOBAL_SUMMARY_VERSION.toString().padStart(2, '0'));
     }
 
     // This section builds the proper header to be displayed for an existing global summary.
@@ -864,7 +864,7 @@ export function RenderSummaryWindow(): void {
           x = gsSelSectorX - 1, y = gsSelSectorY - 1;
         else
           x = gsSectorX - 1, y = gsSectorY - 1;
-        str = swprintf("%c%d", y + 'A', x + 1);
+        str = swprintf("%s%d", String.fromCharCode(y + 'A'.charCodeAt(0)), x + 1);
         gszFilename = str;
         giCurrLevel = giCurrentViewLevel;
         switch (giCurrentViewLevel) {
@@ -1172,7 +1172,7 @@ export function RenderSummaryWindow(): void {
     SetFont(SMALLCOMPFONT());
     SetFontForeground(FONT_BLACK);
     for (y = 0; y < 16; y++) {
-      mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, "%c", 65 + y);
+      mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, "%s", String.fromCharCode(65 + y));
     }
     for (x = 1; x <= 16; x++) {
       let str: string /* UINT16[3] */;
@@ -1399,7 +1399,7 @@ export function UpdateSectorSummary(gszFilename: string /* Pointer<UINT16> */, f
       CreateProgressBar(0, 250, 200, 390, 210);
     }
 
-    szCoord = sprintf("%S", gszFilename);
+    szCoord = sprintf("%s", gszFilename);
     if (gsSectorX > 9)
       szCoord = szCoord.substring(0, 3);
     else
@@ -1832,7 +1832,7 @@ function SummarySaveMapCallback(btn: GUI_BUTTON, reason: INT32): void {
     if (gubOverrideStatus == Enum57.INACTIVE || gfOverride == true) {
       if (gubOverrideStatus == Enum57.READONLY) {
         let filename: string /* UINT8[40] */;
-        filename = sprintf("MAPS\\%S", gszDisplayName);
+        filename = sprintf("MAPS\\%s", gszDisplayName);
         FileClearAttributes(filename);
       }
       if (ExternalSaveMap(gszDisplayName)) {
@@ -1865,7 +1865,7 @@ function CalculateOverrideStatus(): void {
   gfOverride = false;
   if (gfTempFile) {
     let ptr: string /* Pointer<UINT8> */;
-    szFilename = sprintf("MAPS\\%S", gszTempFilename);
+    szFilename = sprintf("MAPS\\%s", gszTempFilename);
     if (szFilename.length == 5)
       szFilename += "test.dat";
     ptr = strstr(szFilename, ".");
@@ -1874,8 +1874,8 @@ function CalculateOverrideStatus(): void {
     else
       ptr = ".dat";
   } else
-    szFilename = sprintf("MAPS\\%S", gszFilename);
-  gszDisplayName = swprintf("%S", addressof(szFilename[5]));
+    szFilename = sprintf("MAPS\\%s", gszFilename);
+  gszDisplayName = swprintf("%s", addressof(szFilename[5]));
   if (GetFileFirst(szFilename, addressof(FileInfo))) {
     if (gfWorldLoaded) {
       if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
@@ -1939,10 +1939,10 @@ function LoadGlobalSummary(): void {
   for (y = 0; y < 16; y++) {
     for (x = 0; x < 16; x++) {
       gbSectorLevels[x][y] = 0;
-      szSector = sprintf("%c%d", 'A' + y, x + 1);
+      szSector = sprintf("%s%d", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
 
       // main ground level
-      szFilename = sprintf("%c%d.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1957,7 +1957,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // main B1 level
-      szFilename = sprintf("%c%d_b1.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b1.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1972,7 +1972,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // main B2 level
-      szFilename = sprintf("%c%d_b2.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b2.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -1987,7 +1987,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // main B3 level
-      szFilename = sprintf("%c%d_b3.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b3.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2002,7 +2002,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // alternate ground level
-      szFilename = sprintf("%c%d_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_a.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2017,7 +2017,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // alternate B1 level
-      szFilename = sprintf("%c%d_b1_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b1_a.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2032,7 +2032,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // alternate B2 level
-      szFilename = sprintf("%c%d_b2_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b2_a.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2047,7 +2047,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
       // alternate B3 level
-      szFilename = sprintf("%c%d_b3_a.dat", 'A' + y, x + 1);
+      szFilename = sprintf("%s%d_b3_a.dat", String.fromCharCode('A'.charCodeAt(0) + y), x + 1);
       SetFileManCurrentDirectory(MapsDir);
       hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
       SetFileManCurrentDirectory(DevInfoDir);
@@ -2063,7 +2063,7 @@ function LoadGlobalSummary(): void {
         FileDelete(szFilename);
       }
     }
-    console.debug(FormatString("Sector Row %c complete... \n", y + 'A'));
+    console.debug(FormatString("Sector Row %s complete... \n", String.fromCharCode(y + 'A'.charCodeAt(0))));
   }
 
   MapsDir = sprintf("%s\\Data", ExecDir);
@@ -2248,7 +2248,7 @@ function ReportError(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8): void
   let temp: string /* UINT16[10] */;
 
   // Make sure the file exists... if not, then return false
-  str = swprintf("%S", pSector);
+  str = swprintf("%s", pSector);
   if (ubLevel % 4) {
     temp = swprintf("_b%d.dat", ubLevel % 4);
     str += temp;
@@ -2278,7 +2278,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
 
   for (y = 0; y < 16; y++)
     for (x = 0; x < 16; x++) {
-      str = sprintf("%c%d", y + 'A', x + 1);
+      str = sprintf("%s%d", String.fromCharCode(y + 'A'.charCodeAt(0)), x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
         if (!pSF || pSF.ubSummaryVersion != GLOBAL_SUMMARY_VERSION)
@@ -2345,7 +2345,7 @@ function SummaryUpdateCallback(btn: GUI_BUTTON, reason: INT32): void {
       gpCurrentSectorSummary = <SUMMARYFILE><unknown>null;
     }
 
-    str = sprintf("%c%d", String.fromCharCode(gsSelSectorY + 'A'.charCodeAt(0) - 1), gsSelSectorX);
+    str = sprintf("%s%d", String.fromCharCode(gsSelSectorY + 'A'.charCodeAt(0) - 1), gsSelSectorX);
     EvaluateWorld(str, giCurrLevel);
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
@@ -2404,7 +2404,7 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
 
   for (y = 0; y < 16; y++)
     for (x = 0; x < 16; x++) {
-      name = sprintf("%c%d", y + 'A', x + 1);
+      name = sprintf("%s%d", String.fromCharCode(y + 'A'.charCodeAt(0)), x + 1);
       if (gbSectorLevels[x][y] & GROUND_LEVEL_MASK) {
         pSF = gpSectorSummary[x][y][0];
         if (!pSF || pSF.ubSummaryVersion < MINIMUMVERSION || pSF.dMajorMapVersion < gdMajorMapVersion) {
@@ -2520,7 +2520,7 @@ function SetupItemDetailsMode(fAllowRecursion: boolean): void {
     gpCurrentSectorSummary = gpSectorSummary[gsSelSectorX - 1][gsSelSectorY - 1][giCurrLevel];
   }
   // Open the original map for the sector
-  szFilename = sprintf("MAPS\\%S", gszFilename);
+  szFilename = sprintf("MAPS\\%s", gszFilename);
   hfile = FileOpen(szFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
   if (!hfile) {
     // The file couldn't be found!

@@ -5546,7 +5546,7 @@ export function InternalDoMercBattleSound(pSoldier: SOLDIERTYPE, ubBattleSoundID
 
   // OK, build file and play!
   if (pSoldier.ubProfile != NO_PROFILE) {
-    zFilename = sprintf("BATTLESNDS\\%03d_%s.wav", pSoldier.ubProfile, gBattleSndsData[ubSoundID].zName);
+    zFilename = sprintf("BATTLESNDS\\%s_%s.wav", pSoldier.ubProfile.toString().padStart(3, '0'), gBattleSndsData[ubSoundID].zName);
 
     if (!FileExists(zFilename)) {
       // OK, temp build file...

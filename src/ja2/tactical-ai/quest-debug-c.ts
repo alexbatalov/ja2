@@ -110,7 +110,7 @@ function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: stri
     return;
   }
 
-  DestString = sprintf("#%5d. P%d:\n\t%s\n\n", QuestDebugFileMsg__uiLineNumber, ubPriority, TempString);
+  DestString = sprintf("#%s. P%d:\n\t%s\n\n", QuestDebugFileMsg__uiLineNumber.toString().padStart(5), ubPriority, TempString);
 
   // open the file and append to it
   buffer = Buffer.allocUnsafe(DestString.length);

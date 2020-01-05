@@ -335,7 +335,7 @@ function HandleBestSightingPositionInRealtime(): void {
 
     for (ubLoop = 0; ubLoop < guiNumMercSlots; ubLoop++) {
       if (MercSlots[ubLoop]) {
-        AssertMsg(MercSlots[ubLoop].bInterruptDuelPts == NO_INTERRUPT, FormatString("%S (%d) still has interrupt pts!", MercSlots[ubLoop].name, MercSlots[ubLoop].ubID));
+        AssertMsg(MercSlots[ubLoop].bInterruptDuelPts == NO_INTERRUPT, FormatString("%s (%d) still has interrupt pts!", MercSlots[ubLoop].name, MercSlots[ubLoop].ubID));
       }
     }
   }
@@ -387,7 +387,7 @@ function HandleBestSightingPositionInTurnbased(): void {
 
     for (ubLoop = 0; ubLoop < guiNumMercSlots; ubLoop++) {
       if (MercSlots[ubLoop]) {
-        AssertMsg(MercSlots[ubLoop].bInterruptDuelPts == NO_INTERRUPT, FormatString("%S (%d) still has interrupt pts!", MercSlots[ubLoop].name, MercSlots[ubLoop].ubID));
+        AssertMsg(MercSlots[ubLoop].bInterruptDuelPts == NO_INTERRUPT, FormatString("%s (%d) still has interrupt pts!", MercSlots[ubLoop].name, MercSlots[ubLoop].ubID));
       }
     }
   }
@@ -2856,13 +2856,13 @@ export function DebugSoldierPage2(): void {
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Direction:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gzDirectionStr[pSoldier.bDirection]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gzDirectionStr[pSoldier.bDirection]);
     ubLine++;
 
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "DesDirection:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gzDirectionStr[pSoldier.bDesiredDirection]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gzDirectionStr[pSoldier.bDesiredDirection]);
     ubLine++;
 
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
@@ -3064,9 +3064,9 @@ export function DebugSoldierPage3(): void {
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Action:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gzActionStr[pSoldier.bAction]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gzActionStr[pSoldier.bAction]);
     if (pSoldier.uiStatusFlags & SOLDIER_ENEMY) {
-      gprintf(350, LINE_HEIGHT * ubLine, "Alert %S", gzAlertStr[pSoldier.bAlertStatus]);
+      gprintf(350, LINE_HEIGHT * ubLine, "Alert %s", gzAlertStr[pSoldier.bAlertStatus]);
     }
     ubLine++;
 
@@ -3104,7 +3104,7 @@ export function DebugSoldierPage3(): void {
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Last Action:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gzActionStr[pSoldier.bLastAction]);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gzActionStr[pSoldier.bLastAction]);
     ubLine++;
 
     if (gubWatchedLocPoints[pSoldier.ubID][2] > 0) {
@@ -3114,7 +3114,7 @@ export function DebugSoldierPage3(): void {
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "Animation:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gAnimControl[pSoldier.usAnimState].zAnimStr);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gAnimControl[pSoldier.usAnimState].zAnimStr);
     ubLine++;
 
     /*
@@ -3159,7 +3159,7 @@ export function DebugSoldierPage3(): void {
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);
     gprintf(0, LINE_HEIGHT * ubLine, "PrevAnimation:");
     SetFontShade(LARGEFONT1(), FONT_SHADE_NEUTRAL);
-    gprintf(150, LINE_HEIGHT * ubLine, "%S", gAnimControl[pSoldier.usOldAniState].zAnimStr);
+    gprintf(150, LINE_HEIGHT * ubLine, "%s", gAnimControl[pSoldier.usOldAniState].zAnimStr);
     ubLine++;
 
     SetFontShade(LARGEFONT1(), FONT_SHADE_GREEN);

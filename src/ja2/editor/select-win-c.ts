@@ -965,9 +965,9 @@ export function DisplaySelectionWindowGraphicalInformation(): void {
     // usObjIndex = (UINT16)pNode->uiObjIndx;
     // usIndex = pNode->uiIndex;
     if (!gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.uiObjIndx][0]) {
-      mprintf(2, 2, "%S[%d] is from default tileset %s (%S)", gTilesets[0].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode.uiObjIndx]);
+      mprintf(2, 2, "%s[%d] is from default tileset %s (%s)", gTilesets[0].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTilesets[0].zName, gTileSurfaceName[pNode.uiObjIndx]);
     } else {
-      mprintf(2, 2, "File:  %S, subindex:  %d (%S)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTileSurfaceName[pNode.uiObjIndx]);
+      mprintf(2, 2, "File:  %s, subindex:  %d (%s)", gTilesets[giCurrentTilesetID].TileSurfaceFilenames[pNode.uiObjIndx], pNode.uiIndex, gTileSurfaceName[pNode.uiObjIndx]);
     }
   }
   mprintf(350, 2, "Current Tileset:  %s", gTilesets[giCurrentTilesetID].zName);

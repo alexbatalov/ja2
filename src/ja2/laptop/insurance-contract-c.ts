@@ -410,7 +410,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): boolean {
 
   // load the mercs face graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sTemp = sprintf("FACES\\%02d.sti", ubMercID);
+  sTemp = sprintf("FACES\\%s.sti", ubMercID.toString().padStart(2, '0'));
   VObjectDesc.ImageFile = FilenameForBPP(sTemp);
   if (!(uiInsMercFaceImage = AddVideoObject(VObjectDesc))) {
     return false;

@@ -800,8 +800,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s sono stati individuati nel settore %c%d e un'altra squadra sta per arrivare.", // STR_DETECTED_SINGULAR
-  "%s sono stati individuati nel settore %c%d e un'altra squadra sta per arrivare.", // STR_DETECTED_PLURAL
+  "%s sono stati individuati nel settore %s%d e un'altra squadra sta per arrivare.", // STR_DETECTED_SINGULAR
+  "%s sono stati individuati nel settore %s%d e un'altra squadra sta per arrivare.", // STR_DETECTED_PLURAL
   "Volete coordinare un attacco simultaneo?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -922,9 +922,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "I nemici attaccano il vostro esercito nel settore %c%d.",
+  "I nemici attaccano il vostro esercito nel settore %s%d.",
   //%c%d is the sector -- ex:  A9
-  "Le creature attaccano il vostro esercito nel settore %c%d.",
+  "Le creature attaccano il vostro esercito nel settore %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Le creature attaccano e uccidono %d civili nel settore %s.",
@@ -3483,7 +3483,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S file di dati della schermata di caricamento non trovato...",
+  "%s file di dati della schermata di caricamento non trovato...",
 
   // 1-5
   "Il robot non può lasciare questo settore, se nessuno sta usando il controller.",
@@ -3498,7 +3498,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s non ha abbastanza energia per cambiare posizione.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "Il %s ha esaurito la benzina e ora è rimasto a piedi a %c%d.",
+  "Il %s ha esaurito la benzina e ora è rimasto a piedi a %s%d.",
 
   // 6-10
 

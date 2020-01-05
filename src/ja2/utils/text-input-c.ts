@@ -380,7 +380,7 @@ export function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: str
       if (szNewText) {
         curr.ubStrLen = szNewText.length;
         Assert(curr.ubStrLen <= curr.ubMaxChars);
-        curr.szString = swprintf("%S", szNewText);
+        curr.szString = swprintf("%s", szNewText);
       } else if (!curr.fUserField) {
         curr.ubStrLen = 0;
         curr.szString = "";
@@ -399,7 +399,7 @@ function Get8BitStringFromField(ubField: UINT8): string {
   curr = gpTextInputHead;
   while (curr) {
     if (curr.ubID == ubField) {
-      return sprintf("%S", curr.szString);
+      return sprintf("%s", curr.szString);
     }
     curr = curr.next;
   }
@@ -1085,7 +1085,7 @@ function RenderActiveTextField(): void {
         SetFontBackground(0);
       }
       if (gpActive.szString[i] != '%') {
-        mprintf(uiCursorXPos + gpActive.region.RegionTopLeftX, gpActive.region.RegionTopLeftY + usOffset, "%c", gpActive.szString[i]);
+        mprintf(uiCursorXPos + gpActive.region.RegionTopLeftX, gpActive.region.RegionTopLeftY + usOffset, "%s", gpActive.szString[i]);
       } else {
         mprintf(uiCursorXPos + gpActive.region.RegionTopLeftX, gpActive.region.RegionTopLeftY + usOffset, "%%");
       }

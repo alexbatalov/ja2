@@ -110,7 +110,7 @@ function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UI
   ubSectorY = (Math.trunc(ubSectorID / 16) + 1);
   curr.pLevel = <UNDERGROUND_SECTORINFO>FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
   if (!curr.pLevel) {
-    AssertMsg(false, FormatString("Could not find underground sector node (%c%db_%d) that should exist.", String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX, ubSectorZ));
+    AssertMsg(false, FormatString("Could not find underground sector node (%s%db_%d) that should exist.", String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX, ubSectorZ));
   }
 
   curr.pLevel.ubCreatureHabitat = ubCreatureHabitat;

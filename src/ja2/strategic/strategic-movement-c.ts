@@ -1788,7 +1788,7 @@ function InitiateGroupMovementToNextSector(pGroup: GROUP): void {
   }
 
   if (pGroup.uiTraverseTime == 0xffffffff) {
-    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.ubGroupID, (pGroup.fPlayer) ? "Player" : "AI", pGroup.ubSectorY + 'A', pGroup.ubSectorX, pGroup.ubNextY + 'A', pGroup.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
+    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %s%d to %s%d (%s).", pGroup.ubGroupID, (pGroup.fPlayer) ? "Player" : "AI", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0)), pGroup.ubSectorX, String.fromCharCode(pGroup.ubNextY + 'A'.charCodeAt(0)), pGroup.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
   }
 
   // add sleep, if any
@@ -3243,7 +3243,7 @@ export function CalculateGroupRetreatSector(pGroup: GROUP): void {
     pGroup.ubPrevX = pGroup.ubSectorX;
     pGroup.ubPrevY = pGroup.ubSectorY + 1;
   } else {
-    AssertMsg(0, FormatString("Player group cannot retreat from sector %c%d ", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX));
+    AssertMsg(0, FormatString("Player group cannot retreat from sector %s%d ", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX));
     return;
   }
   if (pGroup.fPlayer) {
@@ -3285,7 +3285,7 @@ export function RetreatGroupToPreviousSector(pGroup: GROUP): void {
     else if (dx == -1 && !dy)
       ubDirection = Enum186.WEST_STRATEGIC_MOVE;
     else {
-      AssertMsg(0, FormatString("Player group attempting illegal retreat from %c%d to %c%d.", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX, String.fromCharCode(pGroup.ubNextY + 'A'.charCodeAt(0) - 1), pGroup.ubNextX));
+      AssertMsg(0, FormatString("Player group attempting illegal retreat from %s%d to %s%d.", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX, String.fromCharCode(pGroup.ubNextY + 'A'.charCodeAt(0) - 1), pGroup.ubNextX));
     }
   } else {
     // Group doesn't have a previous sector.  Create one, then recurse
@@ -3297,7 +3297,7 @@ export function RetreatGroupToPreviousSector(pGroup: GROUP): void {
   ubSector = SECTOR(pGroup.ubSectorX, pGroup.ubSectorY);
   pGroup.uiTraverseTime = GetSectorMvtTimeForGroup(ubSector, ubDirection, pGroup);
   if (pGroup.uiTraverseTime == 0xffffffff) {
-    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup.ubGroupID, (pGroup.fPlayer) ? "Player" : "AI", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0)), pGroup.ubSectorX, String.fromCharCode(pGroup.ubNextY + 'A'.charCodeAt(0)), pGroup.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
+    AssertMsg(0, FormatString("Group %d (%s) attempting illegal move from %s%d to %s%d (%s).", pGroup.ubGroupID, (pGroup.fPlayer) ? "Player" : "AI", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0)), pGroup.ubSectorX, String.fromCharCode(pGroup.ubNextY + 'A'.charCodeAt(0)), pGroup.ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
   }
 
   if (!pGroup.uiTraverseTime) {
@@ -3522,7 +3522,7 @@ export function GroupWillMoveThroughSector(pGroup: GROUP, ubSectorX: UINT8, ubSe
   let ubOrigY: UINT8;
 
   Assert(pGroup);
-  AssertMsg(pGroup.ubMoveType == Enum185.ONE_WAY, FormatString("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %c%d -- KM:0", pGroup.ubGroupID, pGroup.ubMoveType, String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX));
+  AssertMsg(pGroup.ubMoveType == Enum185.ONE_WAY, FormatString("GroupWillMoveThroughSector() -- Attempting to test group with an invalid move type.  ubGroupID: %d, ubMoveType: %d, sector: %s%d -- KM:0", pGroup.ubGroupID, pGroup.ubMoveType, String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX));
 
   // Preserve the original sector values, as we will be temporarily modifying the group's ubSectorX/Y values
   // as we traverse the waypoints.
@@ -3551,14 +3551,14 @@ export function GroupWillMoveThroughSector(pGroup: GROUP, ubSectorX: UINT8, ubSe
       dy = wp.y - pGroup.ubSectorY;
       if (dx && dy) {
         // Can't move diagonally!
-        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process waypoint in a diagonal direction from sector %c%d to sector %c%d for group at sector %c%d -- KM:0", pGroup.ubSectorY + 'A', pGroup.ubSectorX, String.fromCharCode(wp.y + 'A'.charCodeAt(0) - 1), wp.x, String.fromCharCode(ubOrigY + 'A'.charCodeAt(0) - 1), ubOrigX));
+        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process waypoint in a diagonal direction from sector %s%d to sector %s%d for group at sector %s%d -- KM:0", String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0)), pGroup.ubSectorX, String.fromCharCode(wp.y + 'A'.charCodeAt(0) - 1), wp.x, String.fromCharCode(ubOrigY + 'A'.charCodeAt(0) - 1), ubOrigX));
         pGroup.ubSectorX = ubOrigX;
         pGroup.ubSectorY = ubOrigY;
         return true;
       }
       if (!dx && !dy) // Can't move to position currently at!
       {
-        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process same waypoint at %c%d for group at %c%d -- KM:0", String.fromCharCode(wp.y + 'A'.charCodeAt(0) - 1), wp.x, String.fromCharCode(ubOrigY + 'A'.charCodeAt(0) - 1), ubOrigX));
+        AssertMsg(0, FormatString("GroupWillMoveThroughSector() -- Attempting to process same waypoint at %s%d for group at %s%d -- KM:0", String.fromCharCode(wp.y + 'A'.charCodeAt(0) - 1), wp.x, String.fromCharCode(ubOrigY + 'A'.charCodeAt(0) - 1), ubOrigX));
         pGroup.ubSectorX = ubOrigX;
         pGroup.ubSectorY = ubOrigY;
         return true;

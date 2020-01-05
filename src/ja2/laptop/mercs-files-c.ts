@@ -333,7 +333,7 @@ function DisplayMercFace(ubMercID: UINT8): boolean {
   pSoldier = FindSoldierByProfileID(ubMercID, true);
 
   // load the Face graphic and add it
-  sTemp = sprintf("%s%02d.sti", sFaceLoc, ubMercID);
+  sTemp = sprintf("%s%s.sti", sFaceLoc, ubMercID.toString().padStart(2, '0'));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   VObjectDesc.ImageFile = FilenameForBPP(sTemp);
   if (!(guiMercFace = AddVideoObject(VObjectDesc))) {

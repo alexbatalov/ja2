@@ -40,9 +40,9 @@ let gfMainMenuScreenExit: boolean = false;
 let guiMainMenuExitScreen: UINT32 = Enum26.MAINMENU_SCREEN;
 
 export function MainMenuScreenInit(): boolean {
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Version Label: %S", zVersionLabel));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Version Label: %s", zVersionLabel));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Version #:     %s", czVersionNumber));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Tracking #:    %S", zTrackingNumber));
+  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Tracking #:    %s", zTrackingNumber));
 
   return true;
 }

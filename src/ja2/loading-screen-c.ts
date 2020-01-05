@@ -331,7 +331,7 @@ export function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     SetFontForeground(FONT_YELLOW);
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
-    mprintf(5, 5, "%S loadscreen data file not found...", vs_desc.ImageFile);
+    mprintf(5, 5, "%s loadscreen data file not found...", vs_desc.ImageFile);
   }
 
   gubLastLoadingScreenID = ubLoadScreenID;

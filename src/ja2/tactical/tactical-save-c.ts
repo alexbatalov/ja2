@@ -756,7 +756,7 @@ export function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: IN
     // use any!
     sGridNo = gMapInformation.sWestGridNo;
   } else {
-    AssertMsg(false, FormatString("Map %c%d_b%d does not have any entry points!", String.fromCharCode('A'.charCodeAt(0) + gWorldSectorY - 1), gWorldSectorX, gbWorldSectorZ));
+    AssertMsg(false, FormatString("Map %s%d_b%d does not have any entry points!", String.fromCharCode('A'.charCodeAt(0) + gWorldSectorY - 1), gWorldSectorX, gbWorldSectorZ));
     return;
   }
 

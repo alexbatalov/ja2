@@ -802,8 +802,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s have been detected in sector %c%d and another squad is about to arrive.", // STR_DETECTED_SINGULAR
-  "%s have been detected in sector %c%d and other squads are about to arrive.", // STR_DETECTED_PLURAL
+  "%s have been detected in sector %s%d and another squad is about to arrive.", // STR_DETECTED_SINGULAR
+  "%s have been detected in sector %s%d and other squads are about to arrive.", // STR_DETECTED_PLURAL
   "Do you want to coordinate a simultaneous arrival?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -924,9 +924,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "Enemies attack your militia in sector %c%d.",
+  "Enemies attack your militia in sector %s%d.",
   //%c%d is the sector -- ex:  A9
-  "Creatures attack your militia in sector %c%d.",
+  "Creatures attack your militia in sector %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Creatures attack and kill %d civilians in sector %s.",
@@ -3479,7 +3479,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S loadscreen data file not found...",
+  "%s loadscreen data file not found...",
 
   // 1-5
   "The robot cannot leave this sector when nobody is using the controller.",
@@ -3494,7 +3494,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s does not have enough energy to change stance.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "The %s has run out of gas and is now stranded in %c%d.",
+  "The %s has run out of gas and is now stranded in %s%d.",
 
   // 6-10
 

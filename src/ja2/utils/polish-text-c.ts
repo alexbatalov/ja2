@@ -800,8 +800,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s wykryto w sektorze %c%d, a inny oddział jest w drodze.", // STR_DETECTED_SINGULAR
-  "%s wykryto w sektorze %c%d, a inne oddziały sš w drodze.", // STR_DETECTED_PLURAL
+  "%s wykryto w sektorze %s%d, a inny oddział jest w drodze.", // STR_DETECTED_SINGULAR
+  "%s wykryto w sektorze %s%d, a inne oddziały sš w drodze.", // STR_DETECTED_PLURAL
   "Chcesz skoordynować jednoczesne przybycie?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -922,9 +922,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "Nieprzyjaciel zatakował oddziały samoobrony w sektorze %c%d.",
+  "Nieprzyjaciel zatakował oddziały samoobrony w sektorze %s%d.",
   //%c%d is the sector -- ex:  A9
-  "Stworzenia zaatakowały oddziały samoobrony w sektorze %c%d.",
+  "Stworzenia zaatakowały oddziały samoobrony w sektorze %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Stworzenia zatakowały i zabiły %d cywili w sektorze %s.",
@@ -3476,7 +3476,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S - nie odnaleziono pliku...",
+  "%s - nie odnaleziono pliku...",
 
   // 1-5
   "Robot nie może opucić sektora bez operatora.",
@@ -3491,7 +3491,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s ma zbyt mało energii, aby zmienić pozycję.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "%s nie ma paliwa i stoi w sektorze %c%d.",
+  "%s nie ma paliwa i stoi w sektorze %s%d.",
 
   // 6-10
 

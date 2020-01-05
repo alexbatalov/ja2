@@ -335,7 +335,7 @@ export function HandleMoraleEvent(pSoldier: SOLDIERTYPE | null, bMoraleEvent: IN
   if (pSoldier == null) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d at X=%d, Y=%d,Z=%d", bMoraleEvent, sMapX, sMapY, bMapZ));
   } else {
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d for %S at X=%d, Y=%d, Z=%d", bMoraleEvent, pSoldier.name, sMapX, sMapY, bMapZ));
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, FormatString("Handling morale event %d for %s at X=%d, Y=%d, Z=%d", bMoraleEvent, pSoldier.name, sMapX, sMapY, bMapZ));
   }
 
   switch (bMoraleEvent) {

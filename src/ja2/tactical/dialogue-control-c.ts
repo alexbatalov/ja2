@@ -1377,11 +1377,11 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 // #ifdef RUSSIAN
 //       sprintf(zFileName, "NPC_SPEECH\\g_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
 // #else
-      GetDialogueDataFilename__zFileName = sprintf("NPC_SPEECH\\d_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+      GetDialogueDataFilename__zFileName = sprintf("NPC_SPEECH\\d_%s_%s.wav", ubCharacterNum.toString().padStart(3, '0'), usQuoteNum.toString().padStart(3, '0'));
 // #endif
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      GetDialogueDataFilename__zFileName = sprintf("NPCDATA\\d_%03d.EDT", ubCharacterNum);
+      GetDialogueDataFilename__zFileName = sprintf("NPCDATA\\d_%s.EDT", ubCharacterNum.toString().padStart(3, '0'));
     }
   } else if (ubCharacterNum >= FIRST_RPC && (!(gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) || ProfileCurrentlyTalkingInDialoguePanel(ubCharacterNum) || (gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_FORCENPCQUOTE))) {
     ubFileNumID = ubCharacterNum;
@@ -1397,10 +1397,10 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
     }
 
     if (fWavFile) {
-      GetDialogueDataFilename__zFileName = sprintf("NPC_SPEECH\\%03d_%03d.wav", ubFileNumID, usQuoteNum);
+      GetDialogueDataFilename__zFileName = sprintf("NPC_SPEECH\\%s_%s.wav", ubFileNumID.toString().padStart(3, '0'), usQuoteNum.toString().padStart(3, '0'));
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      GetDialogueDataFilename__zFileName = sprintf("NPCDATA\\%03d.EDT", ubFileNumID);
+      GetDialogueDataFilename__zFileName = sprintf("NPCDATA\\%s.EDT", ubFileNumID.toString().padStart(3, '0'));
     }
   } else {
     if (fWavFile) {
@@ -1412,11 +1412,11 @@ function GetDialogueDataFilename(ubCharacterNum: UINT8, usQuoteNum: UINT16, fWav
 // #endif
       {
         // build name of wav file (characternum + quotenum)
-        GetDialogueDataFilename__zFileName = sprintf("SPEECH\\%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+        GetDialogueDataFilename__zFileName = sprintf("SPEECH\\%s_%s.wav", ubCharacterNum.toString().padStart(3, '0'), usQuoteNum.toString().padStart(3, '0'));
       }
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
-      GetDialogueDataFilename__zFileName = sprintf("MERCEDT\\%03d.EDT", ubCharacterNum);
+      GetDialogueDataFilename__zFileName = sprintf("MERCEDT\\%s.EDT", ubCharacterNum.toString().padStart(3, '0'));
     }
   }
 
@@ -1445,12 +1445,12 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
     if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, false, createPointer(() => pFilename, (v) => pFilename = v))) {
       zDialogueText.value = LoadEncryptedDataFromFile(pFilename, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText.value == '') {
-        zDialogueText.value = swprintf("I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
+        zDialogueText.value = swprintf("I have no text in the EDT file ( %d ) %s", usQuoteNum, pFilename);
 
         return false;
       }
     } else {
-      zDialogueText.value = swprintf("I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
+      zDialogueText.value = swprintf("I have no text in the file ( %d ) %s", usQuoteNum, pFilename);
 
       return false;
     }

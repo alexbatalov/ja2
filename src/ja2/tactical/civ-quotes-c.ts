@@ -154,12 +154,12 @@ function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8): string {
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     if (gbWorldSectorZ > 0) {
       // sprintf( zFileName, "NPCData\\miners.edt" );
-      zFileName = sprintf("NPCDATA\\CIV%02d.edt", Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER);
+      zFileName = sprintf("NPCDATA\\CIV%s.edt", (Enum201.CIV_QUOTE_MINERS_NOT_FOR_PLAYER).toString().padStart(2, '0'));
     } else {
-      zFileName = sprintf("NPCData\\%c%d.edt", 'A' + (gWorldSectorY - 1), gWorldSectorX);
+      zFileName = sprintf("NPCData\\%s%d.edt", String.fromCharCode('A'.charCodeAt(0) + (gWorldSectorY - 1)), gWorldSectorX);
     }
   } else {
-    zFileName = sprintf("NPCDATA\\CIV%02d.edt", ubCivQuoteID);
+    zFileName = sprintf("NPCDATA\\CIV%s.edt", ubCivQuoteID.toString().padStart(2, '0'));
   }
 
   if (!FileExists(zFileName)) {

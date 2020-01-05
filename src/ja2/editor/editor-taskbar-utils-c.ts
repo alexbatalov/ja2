@@ -657,7 +657,7 @@ function RenderDoorLockInfo(): void {
     if (sScreenY > 390)
       continue;
     if (DoorTable[i].ubLockID != 255)
-      str = swprintf("%S", LockTable[DoorTable[i].ubLockID].ubEditorName);
+      str = swprintf("%s", LockTable[DoorTable[i].ubLockID].ubEditorName);
     else
       str = "No Lock ID";
     xp = sScreenX - 10;
@@ -735,7 +735,7 @@ function RenderSelectedItemBlownUp(): void {
   if (gpItem.usItem == Enum225.ACTION_ITEM || gpItem.usItem == Enum225.SWITCH) {
     szItemName = BuildTriggerName(gpItem);
   } else if (Item[gpItem.usItem].usItemClass == IC_KEY) {
-    szItemName = swprintf("%S", LockTable[gpItem.ubKeyID].ubEditorName);
+    szItemName = swprintf("%s", LockTable[gpItem.ubKeyID].ubEditorName);
   } else {
     ({ name: szItemName } = LoadItemInfo(gpItem.usItem));
   }
@@ -799,7 +799,7 @@ function RenderEditorInfo(): void {
       if (!gfWorldLoaded || giCurrentTilesetID < 0)
         mprintf(260, 445, "No map currently loaded.");
       else
-        mprintf(260, 445, "File:  %S, Current Tileset:  %s", gubFilename, gTilesets[giCurrentTilesetID].zName);
+        mprintf(260, 445, "File:  %s, Current Tileset:  %s", gubFilename, gTilesets[giCurrentTilesetID].zName);
       break;
     case Enum36.TASK_TERRAIN:
       if (gusSelectionType == Enum33.LINESELECTION)

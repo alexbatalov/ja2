@@ -1524,7 +1524,7 @@ export function RenderSMPanel(pfDirty: Pointer<UINT8>): void {
           }
         }
 
-        gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, "%2d", GetUIApsToDisplay(gpSMCurrentMerc));
+        gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, "%s", GetUIApsToDisplay(gpSMCurrentMerc).toString().padStart(2));
         ({ sX: sFontX, sY: sFontY } = VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1(), "%d", GetUIApsToDisplay(gpSMCurrentMerc)));
         mprintf(sFontX, SM_SELMERC_AP_Y, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
       }

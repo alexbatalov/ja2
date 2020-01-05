@@ -288,7 +288,7 @@ export function InitEditorItemsInfo(uiItemType: UINT32): void {
       SetFontForeground(FONT_MCOLOR_WHITE);
       SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, false);
 
-      pStr = swprintf("%S", LockTable[i].ubEditorName);
+      pStr = swprintf("%s", LockTable[i].ubEditorName);
       DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT(), FONT_WHITE, pStr, FONT_BLACK, true, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.

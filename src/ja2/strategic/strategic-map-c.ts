@@ -381,7 +381,7 @@ export function InitializeSAMSites(): void {
 // get short sector name without town name
 export function GetShortSectorString(sMapX: INT16, sMapY: INT16): string {
   // OK, build string id like J11
-  return swprintf("%S%S", pVertStrings[sMapY], pHortStrings[sMapX]);
+  return swprintf("%s%s", pVertStrings[sMapY], pHortStrings[sMapX]);
 }
 
 export function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, fUsePlaceholder: boolean, fAddAlternateMapLetter: boolean): string {
@@ -1714,7 +1714,7 @@ export function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: U
 
   // Now, determine the traversal time.
   pGroup = GetGroup(pValidSoldier.ubGroupID);
-  AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
+  AssertMsg(pGroup, FormatString("%s is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
 
   // If we are going through an exit grid, don't get traversal direction!
   if (ubTacticalDirection != 255) {
@@ -2544,7 +2544,7 @@ export function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, 
         if (bExitDirection != -1) {
           // Now, determine if this is a valid path.
           pGroup = GetGroup(pValidSoldier.ubGroupID);
-          AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
+          AssertMsg(pGroup, FormatString("%s is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
           if (!gbWorldSectorZ) {
             puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.ubSectorX, pGroup.ubSectorY), bExitDirection, pGroup);
           } else if (gbWorldSectorZ > 1) {
@@ -2592,7 +2592,7 @@ export function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, 
       // Now, determine if this is a valid path.
       Assert(pValidSoldier);
       pGroup = GetGroup(pValidSoldier.ubGroupID);
-      AssertMsg(pGroup, FormatString("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
+      AssertMsg(pGroup, FormatString("%s is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier.name, pValidSoldier.ubGroupID));
       if (!gbWorldSectorZ) {
         puiTraverseTimeInMinutes.value = GetSectorMvtTimeForGroup(SECTOR(pGroup.ubSectorX, pGroup.ubSectorY), bExitDirection, pGroup);
       } else if (gbWorldSectorZ > 0) {
@@ -3539,9 +3539,9 @@ function GetLoadedSectorString(): string {
     return pString;
   }
   if (gbWorldSectorZ) {
-    pString = swprintf("%c%d_b%d", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ);
+    pString = swprintf("%s%d_b%d", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ);
   } else {
-    pString = swprintf("%c%d", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX);
+    pString = swprintf("%s%d", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX);
   }
 
   return pString;

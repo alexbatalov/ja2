@@ -22,9 +22,9 @@ export let zNewTacticalMessages: string[] /* STR16[] */ = [
   "(Cannot save during combat)", //@@@@ new text
   "The current campaign name is greater than 30 characters.", // @@@ new text
   "The current campaign cannot be found.", // @@@ new text
-  "Campaign: Default ( %S )", // @@@ new text
-  "Campaign: %S", // @@@ new text
-  "You have selected the campaign %S. This campaign is a player-modified version of the original Unfinished Business campaign. Are you sure you wish to play the %S campaign?", // @@@ new text
+  "Campaign: Default ( %s )", // @@@ new text
+  "Campaign: %s", // @@@ new text
+  "You have selected the campaign %s. This campaign is a player-modified version of the original Unfinished Business campaign. Are you sure you wish to play the %s campaign?", // @@@ new text
   "In order to use the editor, please select a campaign other than the default.", ///@@new
 ];
 

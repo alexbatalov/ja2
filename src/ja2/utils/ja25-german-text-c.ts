@@ -20,9 +20,9 @@ export let zNewTacticalMessages: string[] /* STR16[] */ = [
   "(Kann während Kampf nicht speichern)",
   "Der Name der aktuellen Kampagne enthält mehr als 30 Buchstaben.",
   "Die aktuelle Kampagne kann nicht gefunden werden.",
-  "Kampagne: Standard ( %S )",
-  "Kampagne: %S",
-  "Sie haben die Kampagne %S gewählt. Diese ist eine vom Spieler modifizierte Version der Originalkampagne von JA2UB. Möchten Sie die Kampagne %S spielen?",
+  "Kampagne: Standard ( %s )",
+  "Kampagne: %s",
+  "Sie haben die Kampagne %s gewählt. Diese ist eine vom Spieler modifizierte Version der Originalkampagne von JA2UB. Möchten Sie die Kampagne %s spielen?",
   "Um den Editor zu benutzen, müssen Sie eine andere als die Standardkampgane auswählen.",
 ];
 

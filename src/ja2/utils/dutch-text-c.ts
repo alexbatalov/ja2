@@ -814,8 +814,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s zijn ontdekt in sector %c%d en een ander team arriveert binnenkort.", // STR_DETECTED_SINGULAR
-  "%s zijn ontdekt in sector %c%d en andere teams arriveren binnenkort.", // STR_DETECTED_PLURAL
+  "%s zijn ontdekt in sector %s%d en een ander team arriveert binnenkort.", // STR_DETECTED_SINGULAR
+  "%s zijn ontdekt in sector %s%d en andere teams arriveren binnenkort.", // STR_DETECTED_PLURAL
   "Wil je een gezamenlijke aankomst coördineren?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -936,9 +936,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "Vijanden vallen je militie aan in sector %c%d.",
+  "Vijanden vallen je militie aan in sector %s%d.",
   //%c%d is the sector -- ex:  A9
-  "Beesten vallen je militie aan in sector %c%d.",
+  "Beesten vallen je militie aan in sector %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Beesten vallen aan en doden %d burgers in sector %s.",
@@ -3499,7 +3499,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S laadscherm-data niet gevonden...",
+  "%s laadscherm-data niet gevonden...",
 
   // 1-5
   "De robot kan de sector niet verlaten als niemand de besturing gebruikt.",
@@ -3514,7 +3514,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s heeft niet genoeg energie om standpunt te wisselen.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "%s heeft geen brandstof en is gestrand in %c%d.",
+  "%s heeft geen brandstof en is gestrand in %s%d.",
 
   // 6-10
 

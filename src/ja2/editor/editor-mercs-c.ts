@@ -2402,10 +2402,10 @@ export function UpdateMercsInfo(): void {
       SetFont(SMALLCOMPFONT());
       SetFontForeground(FONT_BLACK);
       if (gpSelected.pDetailedPlacement.fVisible || gpSelected.pDetailedPlacement.ubProfile != NO_PROFILE) {
-        mprintfEditor(396, 374, "%S    ", gpSelected.pSoldier.HeadPal);
-        mprintfEditor(396, 398, "%S    ", gpSelected.pSoldier.SkinPal);
-        mprintfEditor(396, 422, "%S    ", gpSelected.pSoldier.VestPal);
-        mprintfEditor(396, 446, "%S    ", gpSelected.pSoldier.PantsPal);
+        mprintfEditor(396, 374, "%s    ", gpSelected.pSoldier.HeadPal);
+        mprintfEditor(396, 398, "%s    ", gpSelected.pSoldier.SkinPal);
+        mprintfEditor(396, 422, "%s    ", gpSelected.pSoldier.VestPal);
+        mprintfEditor(396, 446, "%s    ", gpSelected.pSoldier.PantsPal);
         ShowEditMercPalettes(gpSelected.pSoldier);
       } else {
         mprintf(396, 374, "RANDOM");
@@ -3361,7 +3361,7 @@ function RenderCurrentSchedule(): void {
       SetFont(TINYFONT1());
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
-      str = swprintf("%d%c", Math.trunc(i / 2) + 1, 'A' + (i % 2));
+      str = swprintf("%d%s", Math.trunc(i / 2) + 1, String.fromCharCode('A'.charCodeAt(0) + (i % 2)));
       ({ sX, sY } = VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1(), str));
       mprintf(sX, sY, str);
     }

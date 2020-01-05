@@ -1034,7 +1034,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): boolean //, UINT16 usPosY )
       zDifString = swprintf("%s %s", gzGIOScreenText[Enum375.GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[Enum371.SLG_DIFF]);
 
       // make a string containing the extended options
-      zMouseHelpTextString = swprintf("%20s     %22s     %22s     %22s", zDifString, SaveGameHeader.sInitialGameOptions.fIronManMode ? gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT] : gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT], SaveGameHeader.sInitialGameOptions.fGunNut ? zSaveLoadText[Enum371.SLG_ADDITIONAL_GUNS] : zSaveLoadText[Enum371.SLG_NORMAL_GUNS], SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[Enum371.SLG_SCIFI] : zSaveLoadText[Enum371.SLG_REALISTIC]);
+      zMouseHelpTextString = swprintf("%s     %s     %s     %s", zDifString.substring(0, 20), (SaveGameHeader.sInitialGameOptions.fIronManMode ? gzGIOScreenText[Enum375.GIO_IRON_MAN_TEXT] : gzGIOScreenText[Enum375.GIO_SAVE_ANYWHERE_TEXT]).substring(0, 22), (SaveGameHeader.sInitialGameOptions.fGunNut ? zSaveLoadText[Enum371.SLG_ADDITIONAL_GUNS] : zSaveLoadText[Enum371.SLG_NORMAL_GUNS]).substring(0, 22), (SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[Enum371.SLG_SCIFI] : zSaveLoadText[Enum371.SLG_REALISTIC]).substring(0, 22));
 
       // The date
       DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
@@ -1645,10 +1645,10 @@ function DisplayOnScreenNumber(fErase: boolean): void {
 
     if (bLoopNum != 10) {
       bNum = bLoopNum;
-      zTempString = swprintf("%2d", bNum);
+      zTempString = swprintf("%s", bNum.toString().padStart(2));
     } else {
       bNum = 0;
-      zTempString = swprintf("%2d", bNum);
+      zTempString = swprintf("%s", bNum.toString().padStart(2));
     }
 
     if (!fErase)

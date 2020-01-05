@@ -1410,9 +1410,9 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: string /* 
     // show picture
     if ((giFilesPage == 0) && (iCounter == 5)) {
       if (usProfileIdsForTerroristFiles[iFileNumber + 1] < 100) {
-        sTemp = sprintf("%s%02d.sti", "FACES\\BIGFACES\\", usProfileIdsForTerroristFiles[iFileNumber + 1]);
+        sTemp = sprintf("%s%s.sti", "FACES\\BIGFACES\\", usProfileIdsForTerroristFiles[iFileNumber + 1].toString().padStart(2, '0'));
       } else {
-        sTemp = sprintf("%s%03d.sti", "FACES\\BIGFACES\\", usProfileIdsForTerroristFiles[iFileNumber + 1]);
+        sTemp = sprintf("%s%s.sti", "FACES\\BIGFACES\\", usProfileIdsForTerroristFiles[iFileNumber + 1].toString().padStart(3, '0'));
       }
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

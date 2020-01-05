@@ -800,8 +800,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s обнаружен в секторе %c%d и вот-вот прибудет еще один отряд.", // STR_DETECTED_SINGULAR
-  "%s обнаружен в секторе %c%d и вот-вот прибудут еще отряды.", // STR_DETECTED_PLURAL
+  "%s обнаружен в секторе %s%d и вот-вот прибудет еще один отряд.", // STR_DETECTED_SINGULAR
+  "%s обнаружен в секторе %s%d и вот-вот прибудут еще отряды.", // STR_DETECTED_PLURAL
   "Вы хотите координировать одновременное прибытие?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -922,9 +922,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "Враги атакуют ваше ополчение в секторе %c%d.",
+  "Враги атакуют ваше ополчение в секторе %s%d.",
   //%c%d сектор -- напр:  A9
-  "Существа атакуют ваше ополч.в секторе %c%d.",
+  "Существа атакуют ваше ополч.в секторе %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Существа атакуют и убивают %d жителей в секторе %s.",
@@ -3477,7 +3477,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S файл для загрузки экрана не найден...",
+  "%s файл для загрузки экрана не найден...",
 
   // 1-5
   "Робот не может покинуть сектор,т.к.некому управлять им.",
@@ -3492,7 +3492,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s:недостаточно энергии,чтобы поменять положение.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "%s:кончилось топливо и он остается в %c%d.",
+  "%s:кончилось топливо и он остается в %s%d.",
 
   // 6-10
 

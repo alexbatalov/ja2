@@ -647,7 +647,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: boolean, fFired: b
     if ((50 < iId) && (57 > iId)) {
       sTemp = sprintf("%s%s.sti", FACES_DIR, gMercProfiles[iId].ubFaceIndex.toString().padStart(3, '0'));
     } else {
-      sTemp = sprintf("%s%2.sti", FACES_DIR, iId.toString().padStart(2, '0'));
+      sTemp = sprintf("%s%s.sti", FACES_DIR, iId.toString().padStart(2, '0'));
     }
   }
 
@@ -1955,7 +1955,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
           sString = swprintf("%d/%d", iTotalAmmo, (pSoldier.inv[ubCounter].ubNumberOfObjects * Magazine[Item[pSoldier.inv[ubCounter].usItem].ubClassIndex].ubMagSize));
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
         } else {
-          sString = swprintf("%2d%%%%", pSoldier.inv[ubCounter].bStatus[0]);
+          sString = swprintf("%s%%%%", pSoldier.inv[ubCounter].bStatus[0].toString().padStart(2));
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
 
           sX += StringPixLength("%", FONT10ARIAL());

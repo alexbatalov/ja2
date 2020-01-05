@@ -2584,7 +2584,7 @@ export function RenderItemDescriptionBox(): void {
       SetFontForeground(5);
       // Status
       // This is gross, but to get the % to work out right...
-      RenderItemDescriptionBox__pStr = swprintf("%2d%%", gpItemDescObject.bStatus[gubItemDescStatusIndex]);
+      RenderItemDescriptionBox__pStr = swprintf("%s%%", gpItemDescObject.bStatus[gubItemDescStatusIndex].toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       RenderItemDescriptionBox__pStr += "%%";
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
@@ -2596,7 +2596,7 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(5);
       }
       // Weight
-      RenderItemDescriptionBox__pStr = swprintf("%1.1f", fWeight);
+      RenderItemDescriptionBox__pStr = swprintf("%s", fWeight.toFixed(1).padStart(1));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[0].sX + gsInvDescX + gMapWeaponStats[0].sValDx + 6), (gMapWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
 
@@ -2608,7 +2608,7 @@ export function RenderItemDescriptionBox(): void {
         }
 
         // Range
-        RenderItemDescriptionBox__pStr = swprintf("%2d", Math.trunc(GunRange(gpItemDescObject)) / 10);
+        RenderItemDescriptionBox__pStr = swprintf("%s", Math.trunc(GunRange(gpItemDescObject) / 10).toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[3].sX + gsInvDescX + gMapWeaponStats[3].sValDx), (gMapWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2621,7 +2621,7 @@ export function RenderItemDescriptionBox(): void {
         }
 
         // Damage
-        RenderItemDescriptionBox__pStr = swprintf("%2d", Weapon[gpItemDescObject.usItem].ubImpact);
+        RenderItemDescriptionBox__pStr = swprintf("%s", Weapon[gpItemDescObject.usItem].ubImpact.toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[4].sX + gsInvDescX + gMapWeaponStats[4].sValDx), (gMapWeaponStats[4].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2635,7 +2635,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Ap's
-      RenderItemDescriptionBox__pStr = swprintf("%2d", ubAttackAPs);
+      RenderItemDescriptionBox__pStr = swprintf("%s", ubAttackAPs.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[5].sX + gsInvDescX + gMapWeaponStats[5].sValDx), (gMapWeaponStats[5].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
 
@@ -2646,7 +2646,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        RenderItemDescriptionBox__pStr = swprintf("%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
+        RenderItemDescriptionBox__pStr = swprintf("%s", (ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject)).toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[6].sX + gsInvDescX + gMapWeaponStats[6].sValDx), (gMapWeaponStats[6].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2747,7 +2747,7 @@ export function RenderItemDescriptionBox(): void {
         mprintf(sStrX, gMapWeaponStats[2].sY + gsInvDescY, RenderItemDescriptionBox__pStr);
       } else {
         // Status
-        RenderItemDescriptionBox__pStr = swprintf("%2d%%", gpItemDescObject.bStatus[gubItemDescStatusIndex]);
+        RenderItemDescriptionBox__pStr = swprintf("%s%%", gpItemDescObject.bStatus[gubItemDescStatusIndex].toString().padStart(2));
         uiStringLength = StringPixLength(RenderItemDescriptionBox__pStr, ITEMDESC_FONT());
         //			sStrX =  gMapWeaponStats[ 1 ].sX + gsInvDescX + gMapWeaponStats[ 1 ].sValDx + ( uiRightLength - uiStringLength );
         ({ sX: sStrX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[1].sX + gsInvDescX + gMapWeaponStats[1].sValDx + 6), (gMapWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
@@ -2756,7 +2756,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Weight
-      RenderItemDescriptionBox__pStr = swprintf("%1.1f", fWeight);
+      RenderItemDescriptionBox__pStr = swprintf("%s", fWeight.toFixed(1).padStart(1));
       uiStringLength = StringPixLength(RenderItemDescriptionBox__pStr, ITEMDESC_FONT());
       //			sStrX =  gMapWeaponStats[ 0 ].sX + gsInvDescX + gMapWeaponStats[ 0 ].sValDx + ( uiRightLength - uiStringLength );
       ({ sX: sStrX, sY: usY } = FindFontRightCoordinates((gMapWeaponStats[0].sX + gsInvDescX + gMapWeaponStats[0].sValDx + 6), (gMapWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
@@ -2956,13 +2956,13 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Status
-      RenderItemDescriptionBox__pStr = swprintf("%2d%%", gpItemDescObject.bGunStatus);
+      RenderItemDescriptionBox__pStr = swprintf("%s%%", gpItemDescObject.bGunStatus.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       RenderItemDescriptionBox__pStr += "%%";
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
 
       // Wieght
-      RenderItemDescriptionBox__pStr = swprintf("%1.1f", fWeight);
+      RenderItemDescriptionBox__pStr = swprintf("%s", fWeight.toFixed(1).padStart(1));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[0].sX + gsInvDescX + gWeaponStats[0].sValDx), (gWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
 
@@ -2973,7 +2973,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        RenderItemDescriptionBox__pStr = swprintf("%2d", Math.trunc(GunRange(gpItemDescObject)) / 10);
+        RenderItemDescriptionBox__pStr = swprintf("%s", Math.trunc(GunRange(gpItemDescObject) / 10).toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[3].sX + gsInvDescX + gWeaponStats[3].sValDx), (gWeaponStats[3].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2985,7 +2985,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        RenderItemDescriptionBox__pStr = swprintf("%2d", Weapon[gpItemDescObject.usItem].ubImpact);
+        RenderItemDescriptionBox__pStr = swprintf("%s", Weapon[gpItemDescObject.usItem].ubImpact.toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[4].sX + gsInvDescX + gWeaponStats[4].sValDx), (gWeaponStats[4].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -2998,7 +2998,7 @@ export function RenderItemDescriptionBox(): void {
         SetFontForeground(5);
       }
 
-      RenderItemDescriptionBox__pStr = swprintf("%2d", ubAttackAPs);
+      RenderItemDescriptionBox__pStr = swprintf("%s", ubAttackAPs.toString().padStart(2));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[5].sX + gsInvDescX + gWeaponStats[5].sValDx), (gWeaponStats[5].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
 
@@ -3009,7 +3009,7 @@ export function RenderItemDescriptionBox(): void {
           SetFontForeground(5);
         }
 
-        RenderItemDescriptionBox__pStr = swprintf("%2d", ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject));
+        RenderItemDescriptionBox__pStr = swprintf("%s", (ubAttackAPs + CalcAPsToBurst(DEFAULT_APS, gpItemDescObject)).toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[6].sX + gsInvDescX + gWeaponStats[6].sValDx), (gWeaponStats[6].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       }
@@ -3117,7 +3117,7 @@ export function RenderItemDescriptionBox(): void {
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
       } else {
         // Status
-        RenderItemDescriptionBox__pStr = swprintf("%2d%%", gpItemDescObject.bStatus[gubItemDescStatusIndex]);
+        RenderItemDescriptionBox__pStr = swprintf("%s%%", gpItemDescObject.bStatus[gubItemDescStatusIndex].toString().padStart(2));
         ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[1].sX + gsInvDescX + gWeaponStats[1].sValDx), (gWeaponStats[1].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
         RenderItemDescriptionBox__pStr += "%%";
         mprintf(usX, usY, RenderItemDescriptionBox__pStr);
@@ -3144,7 +3144,7 @@ export function RenderItemDescriptionBox(): void {
       }
 
       // Weight
-      RenderItemDescriptionBox__pStr = swprintf("%1.1f", fWeight);
+      RenderItemDescriptionBox__pStr = swprintf("%s", fWeight.toFixed(1).padStart(1));
       ({ sX: usX, sY: usY } = FindFontRightCoordinates((gWeaponStats[0].sX + gsInvDescX + gWeaponStats[0].sValDx), (gWeaponStats[0].sY + gsInvDescY), ITEM_STATS_WIDTH, ITEM_STATS_HEIGHT, RenderItemDescriptionBox__pStr, BLOCKFONT2()));
       mprintf(usX, usY, RenderItemDescriptionBox__pStr);
     }

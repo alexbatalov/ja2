@@ -3227,7 +3227,7 @@ export function DetermineSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimSt
   // CHECK IF WE CAN DO THIS ANIMATION, IE WE HAVE IT AVAILIBLE
   if (usAnimSurface == INVALID_ANIMATION) {
     // WE SHOULD NOT BE USING THIS ANIMATION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "Invalid Animation File for Body %d, animation %S.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr);
+    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "Invalid Animation File for Body %d, animation %s.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr);
     // Set index to FOUND_INVALID_ANIMATION
     gubAnimSurfaceIndex[pSoldier.ubBodyType][usAnimState] = FOUND_INVALID_ANIMATION;
     return INVALID_ANIMATION_SURFACE;
@@ -3387,7 +3387,7 @@ export function GetSoldierAnimationSurface(pSoldier: SOLDIERTYPE, usAnimState: U
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's loaded!
     if (gAnimSurfaceDatabase[usAnimSurface].hVideoObject == null) {
-      ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %S, surface %d not loaded.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
+      ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, "IAnimation Surface for Body %d, animation %s, surface %d not loaded.", pSoldier.ubBodyType, gAnimControl[usAnimState].zAnimStr, usAnimSurface);
       AnimDebugMsg(FormatString("Surface Database: PROBLEMS!!!!!!"));
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }

@@ -603,7 +603,7 @@ function EnterShopKeeperInterface(): boolean {
       gubArrayOfEmployedMercs[gubNumberMercsInArray] = pSoldier.ubProfile;
 
       // Create the string for the face file name
-      zTemp = sprintf("FACES\\33FACE\\%02d.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex);
+      zTemp = sprintf("FACES\\33FACE\\%s.sti", gMercProfiles[pSoldier.ubProfile].ubFaceIndex.toString().padStart(2, '0'));
 
       // While we are at it, add their small face
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

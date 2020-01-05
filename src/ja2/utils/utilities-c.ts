@@ -103,7 +103,7 @@ export function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: 
     ColorFillVideoSurfaceArea(uiDestSurface, sTLX, sTLY, sBRX, sBRY, us16BPPColor);
   }
 
-  gprintf(ubXPos + (16 * 20), ubYPos, "%S", gpPalRep[ubPaletteRep].ID);
+  gprintf(ubXPos + (16 * 20), ubYPos, "%s", gpPalRep[ubPaletteRep].ID);
 
   return true;
 }

@@ -1247,7 +1247,7 @@ function DisplayQuestList(): void {
   usPosY = QUEST_DBS_FIRST_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET; //&& (usCount < QUEST_DBS_MAX_DISPLAYED_ENTRIES )
   for (usLoop1 = 0, usCount = 0; (usLoop1 < MAX_QUESTS); usLoop1++) {
     // Display Quest Number text
-    sTemp = swprintf("%02d", usLoop1);
+    sTemp = swprintf("%s", usLoop1.toString().padStart(2, '0'));
     DrawTextToScreen(sTemp, QUEST_DBS_FIRST_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Quest title text
@@ -1277,12 +1277,12 @@ function DisplayFactList(): void {
 
   for (usLoop1 = gusFactAtTopOfList, usCount = 0; (usLoop1 < NUM_FACTS) && (usCount < QUEST_DBS_NUM_DISPLAYED_FACTS); usLoop1++) {
     // Display Quest Number text
-    sTemp = swprintf("%02d", usLoop1);
+    sTemp = swprintf("%s", usLoop1.toString().padStart(2, '0'));
     DrawTextToScreen(sTemp, QUEST_DBS_SECOND_COL_NUMBER_X, usPosY, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
 
     // Display Quest title text
     if (FactDescText[usLoop1][0] == '\0') {
-      sTemp = swprintf("No Fact %03d Yet", usLoop1);
+      sTemp = swprintf("No Fact %s Yet", usLoop1.toString().padStart(3, '0'));
       DisplayWrappedString(QUEST_DBS_SECOND_COL_TITLE_X, usPosY, QUEST_DBS_SECOND_TITLE_COL_WIDTH, 2, QUEST_DBS_FONT_DYNAMIC_TEXT(), QUEST_DBS_COLOR_STATIC_TEXT, sTemp, FONT_MCOLOR_BLACK, false, CENTER_JUSTIFIED);
     } else {
       sTemp = FactDescText[usLoop1];
@@ -2725,7 +2725,7 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
     return;
   }
 
-  DestString = sprintf("\n\n\nNew Approach for NPC ID: %d '%S' against Merc: %d '%S'", ubNpcID, gMercProfiles[ubNpcID].zNickname, ubMercID, gMercProfiles[ubMercID].zNickname);
+  DestString = sprintf("\n\n\nNew Approach for NPC ID: %d '%s' against Merc: %d '%s'", ubNpcID, gMercProfiles[ubNpcID].zNickname, ubMercID, gMercProfiles[ubMercID].zNickname);
   //	sprintf( DestString, "\n\n\nNew Approach for NPC ID: %d  against Merc: %d ", ubNpcID, ubMercID );
 
   buffer = Buffer.allocUnsafe(DestString.length);

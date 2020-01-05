@@ -1062,25 +1062,25 @@ export function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionC
       psArray = gps1stNorthEdgepointArray;
       usArraySize = gus1stNorthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any north mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any north mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_EAST:
       psArray = gps1stEastEdgepointArray;
       usArraySize = gus1stEastEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any east mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any east mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps1stSouthEdgepointArray;
       usArraySize = gus1stSouthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any south mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any south mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_WEST:
       psArray = gps1stWestEdgepointArray;
       usArraySize = gus1stWestEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any west mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any west mapedgepoints. LC:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     default:
       Assert(false);
@@ -1186,25 +1186,25 @@ export function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertio
       psArray = gps2ndNorthEdgepointArray;
       usArraySize = gus2ndNorthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated north mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any isolated north mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_EAST:
       psArray = gps2ndEastEdgepointArray;
       usArraySize = gus2ndEastEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated east mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any isolated east mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_SOUTH:
       psArray = gps2ndSouthEdgepointArray;
       usArraySize = gus2ndSouthEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated south mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any isolated south mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     case Enum175.INSERTION_CODE_WEST:
       psArray = gps2ndWestEdgepointArray;
       usArraySize = gus2ndWestEdgepointArraySize;
       if (!usArraySize)
-        AssertMsg(false, FormatString("Sector %c%d level %d doesn't have any isolated west mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
+        AssertMsg(false, FormatString("Sector %s%d level %d doesn't have any isolated west mapedgepoints. KM:1", String.fromCharCode(gWorldSectorY + 'A'.charCodeAt(0) - 1), gWorldSectorX, gbWorldSectorZ));
       break;
     default:
       Assert(false);

@@ -1321,7 +1321,7 @@ function HandleKeyboardShortcuts(): void {
 
           case F4:
             MusicPlay(giMusicID);
-            ScreenMsg(FONT_YELLOW, MSG_DEBUG, "%S", szMusicList[giMusicID]);
+            ScreenMsg(FONT_YELLOW, MSG_DEBUG, "%s", szMusicList[giMusicID]);
             giMusicID++;
             if (giMusicID >= Enum327.NUM_MUSIC)
               giMusicID = 0;
@@ -2445,7 +2445,7 @@ export function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: IN
   let iMapIndex: INT32;
   let usTmpIndex: UINT16;
 
-  Filename = sprintf("L-R%02d.LHT", sRadius);
+  Filename = sprintf("L-R%s.LHT", sRadius.toString().padStart(2, '0'));
 
   // Attempt to create light
   if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
@@ -3405,7 +3405,7 @@ function UpdateLastActionBeforeLeaving(): void {
 
 function ReloadMap(): void {
   let szFilename: string /* UINT16[30] */;
-  szFilename = swprintf("%S", gubFilename);
+  szFilename = swprintf("%s", gubFilename);
   ExternalLoadMap(szFilename);
 }
 

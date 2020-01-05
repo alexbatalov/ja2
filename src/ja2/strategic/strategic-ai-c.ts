@@ -3544,7 +3544,7 @@ function RenderAIViewerGarrisonInfo(x: INT32, y: INT32, pSector: SECTORINFO): vo
     if (gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID) {
       let pGroup: GROUP;
       pGroup = GetGroup(gGarrisonGroup[pSector.ubGarrisonID].ubPendingGroupID);
-      mprintf(x, y + 10, "%d reinforcements on route from group %d in %c%d", pGroup.ubGroupSize, pGroup.ubGroupID, String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX);
+      mprintf(x, y + 10, "%d reinforcements on route from group %d in %s%d", pGroup.ubGroupSize, pGroup.ubGroupID, String.fromCharCode(pGroup.ubSectorY + 'A'.charCodeAt(0) - 1), pGroup.ubSectorX);
     } else {
       mprintf(x, y + 10, "No pending reinforcements for this sector.");
     }
@@ -4215,7 +4215,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
     pGroup = pGroup.next;
   }
   if (ubNumGroupsRedirected) {
-    ScreenMsg(FONT_LTBLUE, MSG_BETAVERSION, "Test message for new feature:  %d enemy groups were redirected away from moving through sector %c%d.  Please don't report unless this number is greater than 5.", ubNumGroupsRedirected, String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX);
+    ScreenMsg(FONT_LTBLUE, MSG_BETAVERSION, "Test message for new feature:  %d enemy groups were redirected away from moving through sector %s%d.  Please don't report unless this number is greater than 5.", ubNumGroupsRedirected, String.fromCharCode(ubSectorY + 'A'.charCodeAt(0) - 1), ubSectorX);
   }
   return ubNumGroupsRedirected;
 }

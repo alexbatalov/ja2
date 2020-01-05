@@ -1804,7 +1804,7 @@ export function EvaluateWorld(pSector: string /* Pointer<UINT8> */, ubLevel: UIN
   uiBytesRead = FileRead(hfile, buffer, uiFileSize);
   FileClose(hfile);
 
-  str = swprintf("Analyzing map %S", szFilename);
+  str = swprintf("Analyzing map %s", szFilename);
   if (!gfUpdatingNow)
     SetRelativeStartAndEndPercentage(0, 0, 100, str);
   else
@@ -2170,7 +2170,7 @@ export function LoadWorld(puiFilename: string /* Pointer<UINT8> */): boolean {
   hfile = FileOpen(aFilename, FILE_ACCESS_READ, false);
 
   if (!hfile) {
-    SET_ERROR("Could not load map file %S", aFilename);
+    SET_ERROR("Could not load map file %s", aFilename);
     return false;
   }
 

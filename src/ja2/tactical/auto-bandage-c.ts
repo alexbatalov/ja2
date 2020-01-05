@@ -800,10 +800,10 @@ function AddFacesToAutoBandageBox(): boolean {
     if (iDoctorList[iCounter] != -1) {
       if (gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex.toString().padStart(2, '0'));
       } else {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[(Menptr[iDoctorList[iCounter]]).ubProfile].ubFaceIndex.toString().padStart(3, '0'));
       }
 
       // load the face
@@ -817,10 +817,10 @@ function AddFacesToAutoBandageBox(): boolean {
     if (iPatientList[iCounter] != -1) {
       if (gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex < 100) {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex.toString().padStart(2, '0'));
       } else {
         // grab filename of face
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[(Menptr[iPatientList[iCounter]]).ubProfile].ubFaceIndex.toString().padStart(3, '0'));
       }
 
       // load the face

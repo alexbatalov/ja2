@@ -599,7 +599,7 @@ export function RenderBobbyRMailOrder(): void {
 
   // Display the minimum weight disclaimer at the bottom of the page
   usHeight = GetFontHeight(BOBBYR_DISCLAIMER_FONT()) + 2;
-  sTemp = swprintf("%s %2.1f %s.", BobbyROrderFormText[Enum349.BOBBYR_MINIMUM_WEIGHT], GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0, GetWeightUnitString());
+  sTemp = swprintf("%s %s %s.", BobbyROrderFormText[Enum349.BOBBYR_MINIMUM_WEIGHT], (GetWeightBasedOnMetricOption(MIN_SHIPPING_WEIGHT) / 10.0).toFixed(1).padStart(2), GetWeightUnitString());
   DrawTextToScreen(sTemp, BOBBYR_USED_WARNING_X, (BOBBYR_USED_WARNING_Y + usHeight + 1), 0, BOBBYR_DISCLAIMER_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED | TEXT_SHADOWED);
 
   // Calculate and display the total package weight
@@ -836,11 +836,11 @@ export function DisplayPurchasedItems(fCalledFromOrderPage: boolean, usGridX: UI
       // Display the qty, order#, item name, unit price and the total
 
       // qty
-      sTemp = swprintf("%3d", pBobbyRayPurchase[i].ubNumberPurchased);
+      sTemp = swprintf("%s", pBobbyRayPurchase[i].ubNumberPurchased.toString().padStart(3));
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_FIRST_COLUMN_X - 2), usPosY, BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // weight
-      sTemp = swprintf("%3.1f", GetWeightBasedOnMetricOption(Item[pBobbyRayPurchase[i].usItemIndex].ubWeight) / (10.0) * pBobbyRayPurchase[i].ubNumberPurchased);
+      sTemp = swprintf("%s", (GetWeightBasedOnMetricOption(Item[pBobbyRayPurchase[i].usItemIndex].ubWeight) / (10.0) * pBobbyRayPurchase[i].ubNumberPurchased).toFixed(1).padStart(3));
       DrawTextToScreen(sTemp, (usGridX + BOBBYR_GRID_SECOND_COLUMN_X - 2), usPosY, BOBBYR_GRID_SECOND_COLUMN_WIDTH, BOBBYR_ORDER_DYNAMIC_TEXT_FONT(), BOBBYR_ORDER_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 
       // Display Items Name
@@ -1871,7 +1871,7 @@ function DisplayPackageWeight(): void {
 
   // Display the weight
   //	swprintf( zTemp, L"%3.1f %s", fWeight, pMessageStrings[ MSG_KILOGRAM_ABBREVIATION ] );
-  zTemp = swprintf("%3.1f %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0), GetWeightUnitString());
+  zTemp = swprintf("%s %s", (GetWeightBasedOnMetricOption(uiTotalWeight) / 10.0).toFixed(1).padStart(3), GetWeightUnitString());
   DrawTextToScreen(zTemp, BOBBYR_PACKAXGE_WEIGHT_X + 3, BOBBYR_PACKAXGE_WEIGHT_Y + 4, BOBBYR_PACKAXGE_WEIGHT_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT(), BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, false, RIGHT_JUSTIFIED);
 }
 

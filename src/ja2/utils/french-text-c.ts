@@ -800,8 +800,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 
 export let gpStrategicString: string[] /* STR16[] */ = [
   "", // Unused
-  "%s détecté dans le secteur %c%d et une autre escouade est en route.", // STR_DETECTED_SINGULAR
-  "%s détecté dans le secteur %c%d et d'autres escouades sont en route.", // STR_DETECTED_PLURAL
+  "%s détecté dans le secteur %s%d et une autre escouade est en route.", // STR_DETECTED_SINGULAR
+  "%s détecté dans le secteur %s%d et d'autres escouades sont en route.", // STR_DETECTED_PLURAL
   "Voulez-vous coordonner vos mouvements de troupe ?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -922,9 +922,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex:  A9
-  "L'ennemi attaque votre milice dans le secteur %c%d.",
+  "L'ennemi attaque votre milice dans le secteur %s%d.",
   //%c%d is the sector -- ex:  A9
-  "Les créatures attaquent votre milice dans le secteur %c%d.",
+  "Les créatures attaquent votre milice dans le secteur %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
   // Note:  the minimum number of civilians eaten will be two.
   "Les créatures ont tué %d civils dans le secteur %s.",
@@ -3477,7 +3477,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "Données de l'écran de chargement de %S introuvables...",
+  "Données de l'écran de chargement de %s introuvables...",
 
   // 1-5
   "Le robot ne peut quitter ce secteur par lui-même.",
@@ -3492,7 +3492,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "%s n'a pas assez d'énergie pour changer de position.",
 
   // A message that pops up when a vehicle runs out of gas.
-  "Le %s n'a plus de carburant ; le véhicule est bloqué à %c%d.",
+  "Le %s n'a plus de carburant ; le véhicule est bloqué à %s%d.",
 
   // 6-10
 

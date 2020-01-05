@@ -1611,7 +1611,7 @@ function RenderAutoResolve(): void {
 
     // Render the total battle time elapsed.
     SetFont(FONT10ARIAL());
-    str = swprintf("%s:  %dm %02ds", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], Math.trunc(gpAR.uiTotalElapsedBattleTimeInMilliseconds / 60000), Math.trunc((gpAR.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000));
+    str = swprintf("%s:  %dm %ss", gpStrategicString[Enum365.STR_AR_TIME_ELAPSED], Math.trunc(gpAR.uiTotalElapsedBattleTimeInMilliseconds / 60000), Math.trunc((gpAR.uiTotalElapsedBattleTimeInMilliseconds % 60000) / 1000).toString().padStart(2, '0'));
     xp = gpAR.sCenterStartX + 70 - Math.trunc(StringPixLength(str, FONT10ARIAL()) / 2);
     yp = 290 + gpAR.bVerticalOffset;
     SetFontForeground(FONT_YELLOW);
@@ -1696,11 +1696,11 @@ function CreateAutoResolveInterface(): void {
     let VObjectDesc: VOBJECT_DESC = createVObjectDesc();
     // Load the face
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-    VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.ubProfile].ubFaceIndex);
+    VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", gMercProfiles[gpMercs[i].pSoldier.ubProfile].ubFaceIndex.toString().padStart(2, '0'));
     if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
       if (!(gpMercs[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
-        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.ubProfile].ubFaceIndex));
+        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%s.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.ubProfile].ubFaceIndex.toString().padStart(2, '0')));
       }
     }
     if ((hVObject = GetVideoObject(gpMercs[i].uiVObjectID))) {

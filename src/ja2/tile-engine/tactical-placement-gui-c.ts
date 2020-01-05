@@ -172,15 +172,15 @@ export function InitTacticalPlacementGUI(): void {
     {
       ubFaceIndex = gMercProfiles[gMercPlacement[i].pSoldier.ubProfile].ubFaceIndex;
       if (ubFaceIndex < 100)
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%02d.sti", ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", ubFaceIndex.toString().padStart(2, '0'));
       else
-        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%03d.sti", ubFaceIndex);
+        VObjectDesc.ImageFile = sprintf("Faces\\65Face\\%s.sti", ubFaceIndex.toString().padStart(3, '0'));
     }
 
     if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
       VObjectDesc.ImageFile = "Faces\\65Face\\speck.sti";
       if (!(gMercPlacement[i].uiVObjectID = AddVideoObject(VObjectDesc))) {
-        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.ubProfile].ubFaceIndex));
+        AssertMsg(0, FormatString("Failed to load %Faces\\65Face\\%s.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.ubProfile].ubFaceIndex.toString().padStart(3, '0')));
       }
     }
     xp = 91 + Math.trunc(i / 2) * 54;

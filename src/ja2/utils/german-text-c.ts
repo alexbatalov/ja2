@@ -786,8 +786,8 @@ export let pLandTypeStrings: string[] /* STR16[] */ = [
 export let gpStrategicString: string[] /* STR16[] */ = [
   //     The first %s can either be bloodcats or enemies.
   "", // Unused
-  "%s wurden entdeckt in Sektor %c%d und ein weiterer Trupp wird gleich ankommen.", // STR_DETECTED_SINGULAR
-  "%s wurden entdeckt in Sektor %c%d und weitere Trupps werden gleich ankommen.", // STR_DETECTED_PLURAL
+  "%s wurden entdeckt in Sektor %s%d und ein weiterer Trupp wird gleich ankommen.", // STR_DETECTED_SINGULAR
+  "%s wurden entdeckt in Sektor %s%d und weitere Trupps werden gleich ankommen.", // STR_DETECTED_PLURAL
   "Gleichzeitige Ankunft koordinieren?", // STR_COORDINATE
 
   // Dialog strings for enemies.
@@ -908,9 +908,9 @@ export let gpStrategicString: string[] /* STR16[] */ = [
   // various popup messages for battle conditions.
 
   //%c%d is the sector -- ex: A9
-  "Feinde attackieren Ihre Miliz im Sektor %c%d.",
+  "Feinde attackieren Ihre Miliz im Sektor %s%d.",
   //%c%d is the sector -- ex: A9
-  "Monster attackieren Ihre Miliz im Sektor %c%d.",
+  "Monster attackieren Ihre Miliz im Sektor %s%d.",
   // 1st %d refers to the number of civilians eaten by monsters, %c%d is the sector -- ex: A9
   // Note: the minimum number of civilians eaten will be two.
   "Monster attackieren und töten %d Zivilisten im Sektor %s.",
@@ -3389,7 +3389,7 @@ export let zGioDifConfirmText: string[] /* STR16[] */ = [
 ];
 
 export let gzLateLocalizedString: string[] /* STR16[] */ = [
-  "%S Loadscreen-Daten nicht gefunden...",
+  "%s Loadscreen-Daten nicht gefunden...",
 
   // 1-5
   "Der Roboter kann diesen Sektor nicht verlassen, wenn niemand die Fernbedienung benutzt.",
@@ -3397,7 +3397,7 @@ export let gzLateLocalizedString: string[] /* STR16[] */ = [
   "Sie können den Zeitraffer jetzt nicht benutzen. Warten Sie das Feuerwerk ab!",
   "%s will sich nicht bewegen.",
   "%s hat nicht genug Energie, um die Position zu ändern.",
-  "%s hat kein Benzin mehr und steckt in %c%d fest.",
+  "%s hat kein Benzin mehr und steckt in %s%d fest.",
 
   // 6-10
 

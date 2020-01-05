@@ -640,7 +640,7 @@ export function SaveGame(ubSaveGameID: UINT8, pGameDesc: Pointer<string> /* STR1
 
   FAILED_TO_SAVE:
   do {
-    saveDir = sprintf("%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
+    saveDir = sprintf("%s", pMessageStrings[Enum333.MSG_SAVEDIRECTORY]);
 
     if (ubSaveGameID >= NUM_SAVE_GAMES && ubSaveGameID != SAVE__ERROR_NUM && ubSaveGameID != SAVE__END_TURN_NUM)
       return (false); // ddd
@@ -3218,12 +3218,12 @@ export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8): string {
 
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
-      zNewFileName = sprintf("%S\\%S.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+      zNewFileName = sprintf("%s\\%s.%s", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_QUICKSAVE_NAME], pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
   }
   //#ifdef JA2BETAVERSION
   else if (ubSaveGameID == SAVE__END_TURN_NUM) {
     // The name of the file
-    zNewFileName = sprintf("%S\\Auto%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], guiLastSaveGameNum, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+    zNewFileName = sprintf("%s\\Auto%s.%s", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], guiLastSaveGameNum.toString().padStart(2, '0'), pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
     // increment end turn number
     guiLastSaveGameNum++;
@@ -3236,7 +3236,7 @@ export function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8): string {
   //#endif
 
   else
-    zNewFileName = sprintf("%S\\%S%02d.%S", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
+    zNewFileName = sprintf("%s\\%s%s.%s", pMessageStrings[Enum333.MSG_SAVEDIRECTORY], pMessageStrings[Enum333.MSG_SAVE_NAME], ubSaveGameID.toString().padStart(2, '0'), pMessageStrings[Enum333.MSG_SAVEEXTENSION]);
 
   return zNewFileName;
 }

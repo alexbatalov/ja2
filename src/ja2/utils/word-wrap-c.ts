@@ -253,7 +253,7 @@ export function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidth
       } else {
         let zText: string /* CHAR[1024] */;
 
-        zText = sprintf("LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, TempString.substring(usCurIndex), usLineWidthPixels);
+        zText = sprintf("LineWrap() Error!  The string ( %s ) has a word ( %s ) that is too long to fit into the required width of %d!  Please fix!!", pString, TempString.substring(usCurIndex), usLineWidthPixels);
 
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zText);
 

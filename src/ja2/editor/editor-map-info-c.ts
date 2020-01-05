@@ -34,7 +34,7 @@ export function SetupTextInputForMapInfo(): void {
   AddTextInputField(210, 420, 30, 20, MSYS_PRIORITY_NORMAL, str, 2, INPUTTYPE_NUMERICSTRICT);
 
   // exit grid input fields
-  str = swprintf("%c%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
+  str = swprintf("%s%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
   AddTextInputField(338, 363, 30, 18, MSYS_PRIORITY_NORMAL, str, 3, Enum383.INPUTTYPE_EXCLUSIVE_COORDINATE);
   str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   AddTextInputField(338, 383, 30, 18, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
@@ -179,7 +179,7 @@ export function ApplyNewExitGridValuesToTextFields(): boolean {
   // exit grid input fields
   if (iCurrentTaskbar != Enum36.TASK_MAPINFO)
     return false;
-  str = swprintf("%c%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
+  str = swprintf("%s%d", String.fromCharCode(gExitGrid.ubGotoSectorY + 'A'.charCodeAt(0) - 1), gExitGrid.ubGotoSectorX);
   SetInputFieldStringWith16BitString(7, str);
   str = swprintf("%d", gExitGrid.ubGotoSectorZ);
   SetInputFieldStringWith16BitString(8, str);

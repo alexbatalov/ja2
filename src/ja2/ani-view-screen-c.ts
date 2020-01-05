@@ -83,8 +83,8 @@ export function AniEditScreenHandle(): UINT32 {
   mprintf(0, 0, "SOLDIER ANIMATION VIEWER");
   gprintfdirty(0, 0, "SOLDIER ANIMATION VIEWER");
 
-  mprintf(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
-  gprintfdirty(0, 20, "Current Animation: %S %S", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
+  mprintf(0, 20, "Current Animation: %s %s", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
+  gprintfdirty(0, 20, "Current Animation: %s %s", gAnimControl[usStartAnim].zAnimStr, gAnimSurfaceDatabase[pSoldier.usAnimSurface].Filename);
 
   switch (ubStartHeight) {
     case ANIM_STAND:
@@ -102,7 +102,7 @@ export function AniEditScreenHandle(): UINT32 {
       mprintf(0, 40, "Current Stance: PRONE");
       break;
   }
-  gprintfdirty(0, 40, "Current Animation: %S", gAnimControl[usStartAnim].zAnimStr);
+  gprintfdirty(0, 40, "Current Animation: %s", gAnimControl[usStartAnim].zAnimStr);
 
   if (AniEditScreenHandle__fToggle) {
     mprintf(0, 60, "FORCE ON");
@@ -113,8 +113,8 @@ export function AniEditScreenHandle(): UINT32 {
     mprintf(0, 70, "LOADED ORDER ON");
     gprintfdirty(0, 70, "LOADED ORDER ON");
 
-    mprintf(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
-    gprintfdirty(0, 90, "LOADED ORDER : %S", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
+    mprintf(0, 90, "LOADED ORDER : %s", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
+    gprintfdirty(0, 90, "LOADED ORDER : %s", gAnimControl[pusStates[ubCurLoadedState]].zAnimStr);
   }
 
   if (DequeueEvent(InputEvent) == true) {
@@ -272,7 +272,7 @@ function BuildListFile(): void {
       ubNumStates = cnt;
       pusStates[cnt] = usState;
     } else {
-      zError = swprintf("Animation str %S is not known: ", currFilename);
+      zError = swprintf("Animation str %s is not known: ", currFilename);
       DoMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zError, Enum26.ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, null, null);
       return;
     }

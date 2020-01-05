@@ -1612,7 +1612,7 @@ export function SearchForItems(pSoldier: SOLDIERTYPE, bReason: INT8, usItem: UIN
   }
 
   if (sBestSpot != NOWHERE) {
-    DebugAI(FormatString("%d decides to pick up %S", pSoldier.ubID, ItemNames[gWorldItems[iBestItemIndex].o.usItem]));
+    DebugAI(FormatString("%d decides to pick up %s", pSoldier.ubID, ItemNames[gWorldItems[iBestItemIndex].o.usItem]));
     if (Item[gWorldItems[iBestItemIndex].o.usItem].usItemClass == IC_GUN) {
       if (FindBetterSpotForItem(pSoldier, Enum261.HANDPOS) == false) {
         if (pSoldier.bActionPoints < AP_PICKUP_ITEM + AP_PICKUP_ITEM) {
@@ -1620,12 +1620,12 @@ export function SearchForItems(pSoldier: SOLDIERTYPE, bReason: INT8, usItem: UIN
         }
         if (pSoldier.inv[Enum261.HANDPOS].fFlags & OBJECT_UNDROPPABLE) {
           // destroy this item!
-          DebugAI(FormatString("%d decides he must drop %S first so destroys it", pSoldier.ubID, ItemNames[pSoldier.inv[Enum261.HANDPOS].usItem]));
+          DebugAI(FormatString("%d decides he must drop %s first so destroys it", pSoldier.ubID, ItemNames[pSoldier.inv[Enum261.HANDPOS].usItem]));
           DeleteObj(pSoldier.inv[Enum261.HANDPOS]);
           DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
         } else {
           // we want to drop this item!
-          DebugAI(FormatString("%d decides he must drop %S first", pSoldier.ubID, ItemNames[pSoldier.inv[Enum261.HANDPOS].usItem]));
+          DebugAI(FormatString("%d decides he must drop %s first", pSoldier.ubID, ItemNames[pSoldier.inv[Enum261.HANDPOS].usItem]));
 
           pSoldier.bNextAction = Enum289.AI_ACTION_PICKUP_ITEM;
           pSoldier.usNextActionData = sBestSpot;

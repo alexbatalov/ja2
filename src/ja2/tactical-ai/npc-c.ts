@@ -101,23 +101,23 @@ function LoadQuoteFile(ubNPC: UINT8): NPCQuoteInfo[] | null {
 
   if (ubNPC == Enum268.PETER || ubNPC == Enum268.ALBERTO || ubNPC == Enum268.CARLO) {
     // use a copy of Herve's data file instead!
-    zFileName = sprintf("NPCData\\%03d.npc", Enum268.HERVE);
+    zFileName = sprintf("NPCData\\%s.npc", (Enum268.HERVE).toString().padStart(3, '0'));
   } else if (ubNPC < FIRST_RPC || (ubNPC < FIRST_NPC && gMercProfiles[ubNPC].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED)) {
     zFileName = sprintf("NPCData\\000.npc", ubNPC);
   } else {
-    zFileName = sprintf("NPCData\\%03d.npc", ubNPC);
+    zFileName = sprintf("NPCData\\%s.npc", ubNPC.toString().padStart(3, '0'));
   }
 
   // ATE: Put some stuff i here to use a different NPC file if we are in a meanwhile.....
   if (AreInMeanwhile()) {
     // If we are the queen....
     if (ubNPC == Enum268.QUEEN) {
-      zFileName = sprintf("NPCData\\%03d.npc", gubAlternateNPCFileNumsForQueenMeanwhiles[GetMeanwhileID()]);
+      zFileName = sprintf("NPCData\\%s.npc", gubAlternateNPCFileNumsForQueenMeanwhiles[GetMeanwhileID()].toString().padStart(3, '0'));
     }
 
     // If we are elliot....
     if (ubNPC == Enum268.ELLIOT) {
-      zFileName = sprintf("NPCData\\%03d.npc", gubAlternateNPCFileNumsForElliotMeanwhiles[GetMeanwhileID()]);
+      zFileName = sprintf("NPCData\\%s.npc", gubAlternateNPCFileNumsForElliotMeanwhiles[GetMeanwhileID()].toString().padStart(3, '0'));
     }
   }
 
@@ -269,7 +269,7 @@ function LoadCivQuoteFile(ubIndex: UINT8): NPCQuoteInfo[] | null {
   if (ubIndex == MINERS_CIV_QUOTE_INDEX) {
     zFileName = "NPCData\\miners.npc";
   } else {
-    zFileName = sprintf("NPCData\\%c%d.npc", String.fromCharCode('A'.charCodeAt(0) + (gsCivQuoteSector[ubIndex][1] - 1)), gsCivQuoteSector[ubIndex][0]);
+    zFileName = sprintf("NPCData\\%s%d.npc", String.fromCharCode('A'.charCodeAt(0) + (gsCivQuoteSector[ubIndex][1] - 1)), gsCivQuoteSector[ubIndex][0]);
   }
 
   if (!FileExists(zFileName)) {
@@ -1340,7 +1340,7 @@ export function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproac
           break;
         case Enum296.TRIGGER_NPC:
           // if triggering, pass in the approach data as the record to consider
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, FormatString("Handling trigger %s/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
           NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, pQuotePtr__Pointer, ubRecordNum__Pointer);
           break;
         default:
