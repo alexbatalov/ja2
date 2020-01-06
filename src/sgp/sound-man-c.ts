@@ -931,7 +931,7 @@ function SoundGetCached(pFilename: string /* STR */): UINT32 {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
-    if (_stricmp(pSampleList[uiCount].pName, pFilename) == 0)
+    if (pSampleList[uiCount].pName.toLowerCase() === pFilename.toLowerCase())
       return uiCount;
   }
 

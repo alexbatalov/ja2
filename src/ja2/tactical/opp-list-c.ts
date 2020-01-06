@@ -2015,7 +2015,7 @@ function UpdatePublic(ubTeam: UINT8, ubID: UINT8, bNewOpplist: INT8, sGridno: IN
   pbPublOL = gbPublicOpplist[ubTeam][ubID];
 
   // if new opplist is more up-to-date, or we are just wiping it for some reason
-  if ((gubKnowledgeValue[pbPublOL - OLDEST_HEARD_VALUE][bNewOpplist - OLDEST_HEARD_VALUE] > 0) || (bNewOpplist == NOT_HEARD_OR_SEEN)) {
+  if ((bNewOpplist == NOT_HEARD_OR_SEEN) || (gubKnowledgeValue[pbPublOL - OLDEST_HEARD_VALUE][bNewOpplist - OLDEST_HEARD_VALUE] > 0)) {
     // if this team is becoming aware of a soldier it wasn't previously aware of
     if ((bNewOpplist != NOT_HEARD_OR_SEEN) && (pbPublOL == NOT_HEARD_OR_SEEN))
       ubTeamMustLookAgain = true;

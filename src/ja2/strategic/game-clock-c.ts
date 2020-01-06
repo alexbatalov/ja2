@@ -77,7 +77,7 @@ export function InitNewGameClock(): void {
 }
 
 export function GetWorldTotalMin(): UINT32 {
-  return guiGameClock / NUM_SEC_IN_MIN;
+  return Math.trunc(guiGameClock / NUM_SEC_IN_MIN);
 }
 
 export function GetWorldTotalSeconds(): UINT32 {

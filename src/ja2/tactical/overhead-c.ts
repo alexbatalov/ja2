@@ -162,7 +162,7 @@ let bDefaultTeamColors: COLORVAL[] /* [MAXTEAMS] */ = [
 
 export let gubWaitingForAllMercsToExitCode: UINT8 = 0;
 let gbNumMercsUntilWaitingOver: INT8 = 0;
-let guiWaitingForAllMercsToExitData: UINT32[] /* [3] */;
+let guiWaitingForAllMercsToExitData: UINT32[] /* [3] */ = createArray(3, 0);
 let guiWaitingForAllMercsToExitTimer: UINT32 = 0;
 export let gfKillingGuysForLosingBattle: boolean = false;
 
