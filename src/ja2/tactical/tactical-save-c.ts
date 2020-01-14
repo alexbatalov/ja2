@@ -55,14 +55,14 @@ const TEMP_NPC_QUOTE_INFO_SAVE_SIZE = 6;
 
 function readTempNPCQuoteInfoSave(o: TempNPCQuoteInfoSave, buffer: Buffer, offset: number = 0): number {
   o.usFlags = buffer.readUInt16LE(offset); offset += 2;
-  o.sRequiredItem = buffer.readUInt16LE(offset); offset += 2;
+  o.sRequiredItem = buffer.readInt16LE(offset); offset += 2;
   o.usGoToGridno = buffer.readUInt16LE(offset); offset += 2;
   return offset;
 }
 
 function writeTempNPCQuoteInfoSave(o: TempNPCQuoteInfoSave, buffer: Buffer, offset: number = 0): number {
   offset = buffer.writeUInt16LE(o.usFlags, offset);
-  offset = buffer.writeUInt16LE(o.sRequiredItem, offset);
+  offset = buffer.writeInt16LE(o.sRequiredItem, offset);
   offset = buffer.writeUInt16LE(o.usGoToGridno, offset);
   return offset;
 }
