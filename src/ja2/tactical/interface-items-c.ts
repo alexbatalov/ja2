@@ -5979,7 +5979,7 @@ const ITEM_CURSOR_SAVE_INFO_SIZE = 44;
 function readItemCursorSaveInfo(o: ITEM_CURSOR_SAVE_INFO, buffer: Buffer, offset: number = 0): number {
   offset = readObjectType(o.ItemPointerInfo, buffer, offset);
   o.ubSoldierID = buffer.readUInt8(offset++);
-  o.ubInvSlot = buffer.readUInt8(offset++);
+  o.ubInvSlot = buffer.readInt8(offset++);
   o.fCursorActive = Boolean(buffer.readUInt8(offset++));
   offset = readIntArray(o.bPadding, buffer, offset, 1);
   return offset;
@@ -5988,7 +5988,7 @@ function readItemCursorSaveInfo(o: ITEM_CURSOR_SAVE_INFO, buffer: Buffer, offset
 function writeItemCursorSaveInfo(o: ITEM_CURSOR_SAVE_INFO, buffer: Buffer, offset: number = 0): number {
   offset = writeObjectType(o.ItemPointerInfo, buffer, offset);
   offset = buffer.writeUInt8(o.ubSoldierID, offset);
-  offset = buffer.writeUInt8(o.ubInvSlot, offset);
+  offset = buffer.writeInt8(o.ubInvSlot, offset);
   offset = buffer.writeUInt8(Number(o.fCursorActive), offset);
   offset = writeIntArray(o.bPadding, buffer, offset, 1);
   return offset;
