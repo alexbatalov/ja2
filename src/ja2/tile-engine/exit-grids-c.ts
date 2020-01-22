@@ -18,9 +18,9 @@ function ConvertExitGridToINT32(pExitGrid: EXITGRID): INT32 {
 
 function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: EXITGRID): void {
   // convert the int into 4 unsigned bytes.
-  pExitGrid.ubGotoSectorX = (((iExitGridInfo & 0xf0000000) >> 28) + 1);
-  pExitGrid.ubGotoSectorY = (((iExitGridInfo & 0x0f000000) >> 24) + 1);
-  pExitGrid.ubGotoSectorZ = ((iExitGridInfo & 0x00f00000) >> 20);
+  pExitGrid.ubGotoSectorX = (((iExitGridInfo & 0xf0000000) >>> 28) + 1);
+  pExitGrid.ubGotoSectorY = (((iExitGridInfo & 0x0f000000) >>> 24) + 1);
+  pExitGrid.ubGotoSectorZ = ((iExitGridInfo & 0x00f00000) >>> 20);
   pExitGrid.usGridNo = (iExitGridInfo & 0x0000ffff);
 }
 
