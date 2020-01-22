@@ -376,7 +376,7 @@ export function readObjectType(o: OBJECTTYPE, buffer: Buffer, offset: number = 0
   offset = readUIntArray(o.usAttachItem, buffer, offset, 2);
   offset = readIntArray(o.bAttachStatus, buffer, offset, 1);
 
-  o.fFlags = buffer.readInt8(offset++);
+  o.fFlags = buffer.readUInt8(offset++);
   o.ubMission = buffer.readUInt8(offset++);
   o.bTrap = buffer.readInt8(offset++);
   o.ubImprintID = buffer.readUInt8(offset++);
@@ -398,7 +398,7 @@ export function writeObjectType(o: OBJECTTYPE, buffer: Buffer, offset: number = 
   offset = writeUIntArray(o.usAttachItem, buffer, offset, 2);
   offset = writeIntArray(o.bAttachStatus, buffer, offset, 1);
 
-  offset = buffer.writeInt8(o.fFlags, offset);
+  offset = buffer.writeUInt8(o.fFlags, offset);
   offset = buffer.writeUInt8(o.ubMission, offset);
   offset = buffer.writeInt8(o.bTrap, offset);
   offset = buffer.writeUInt8(o.ubImprintID, offset);
