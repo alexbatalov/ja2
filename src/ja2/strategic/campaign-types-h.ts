@@ -707,7 +707,7 @@ export function createUndergroundSectorInfo(): UNDERGROUND_SECTORINFO {
 export const UNDERGROUND_SECTOR_INFO_SIZE = 72;
 
 export function readUndergroundSectorInfo(o: UNDERGROUND_SECTORINFO, buffer: Buffer, offset: number = 0): number {
-  o.uiFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.uiFlags = buffer.readInt32LE(offset); offset += 4;
   o.ubSectorX = buffer.readUInt8(offset++);
   o.ubSectorY = buffer.readUInt8(offset++);
   o.ubSectorZ = buffer.readUInt8(offset++);
@@ -733,7 +733,7 @@ export function readUndergroundSectorInfo(o: UNDERGROUND_SECTORINFO, buffer: Buf
 }
 
 export function writeUndergroundSectorInfo(o: UNDERGROUND_SECTORINFO, buffer: Buffer, offset: number = 0): number {
-  offset = buffer.writeUInt32LE(o.uiFlags, offset);
+  offset = buffer.writeInt32LE(o.uiFlags, offset);
   offset = buffer.writeUInt8(o.ubSectorX, offset);
   offset = buffer.writeUInt8(o.ubSectorY, offset);
   offset = buffer.writeUInt8(o.ubSectorZ, offset);
