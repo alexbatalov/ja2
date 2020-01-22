@@ -784,7 +784,7 @@ function ShowTownText(): void {
 
       // don't show loyalty string until loyalty tracking for that town has been started
       if (gTownLoyalty[bTown].fStarted && gfTownUsesLoyalty[bTown]) {
-        sStringA = swprintf("%d%%%% %s", gTownLoyalty[bTown].ubRating, gsLoyalString[0]);
+        sStringA = swprintf("%d%% %s", gTownLoyalty[bTown].ubRating, gsLoyalString[0]);
 
         // if loyalty is too low to train militia, and militia training is allowed here
         if ((gTownLoyalty[bTown].ubRating < MIN_RATING_TO_TRAIN_TOWN) && MilitiaTrainingAllowedInTown(bTown)) {
@@ -4000,7 +4000,7 @@ function BlitMineText(sMapX: INT16, sMapY: INT16): void {
 
     // if potential is not nil, show percentage of the two
     if (GetMaxPeriodicRemovalFromMine(ubMineIndex) > 0) {
-      wSubString = swprintf(" (%d%%%%)", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
+      wSubString = swprintf(" (%d%%)", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
       wString += wSubString;
     }
 

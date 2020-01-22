@@ -1336,7 +1336,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           uiHits = 0;
         }
 
-        sString = swprintf("%d %%%%", uiHits);
+        sString = swprintf("%d %%", uiHits);
         ({ sX, sY } = FindFontRightCoordinates((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT()));
         sX += StringPixLength("%", PERS_FONT());
         mprintf(sX, pPersonnelScreenPoints[23].y, sString);
@@ -1955,7 +1955,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
           sString = swprintf("%d/%d", iTotalAmmo, (pSoldier.inv[ubCounter].ubNumberOfObjects * Magazine[Item[pSoldier.inv[ubCounter].usItem].ubClassIndex].ubMagSize));
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
         } else {
-          sString = swprintf("%s%%%%", pSoldier.inv[ubCounter].bStatus[0].toString().padStart(2));
+          sString = swprintf("%s%%", pSoldier.inv[ubCounter].bStatus[0].toString().padStart(2));
           ({ sX, sY } = FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL())), sString, FONT10ARIAL()));
 
           sX += StringPixLength("%", FONT10ARIAL());
@@ -4133,7 +4133,7 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
           uiHits = 0;
         }
 
-        sString = swprintf("%d %%%%", uiHits);
+        sString = swprintf("%d %%", uiHits);
         ({ sX, sY } = FindFontRightCoordinates((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT()));
         sX += StringPixLength("%", PERS_FONT());
         mprintf(sX, pPersonnelScreenPoints[23].y, sString);

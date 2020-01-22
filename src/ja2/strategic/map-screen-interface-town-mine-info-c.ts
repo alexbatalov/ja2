@@ -249,7 +249,7 @@ function AddTextToTownBox(): void {
     // town control
     wString = swprintf("%s:", pwTownInfoStrings[2]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", Math.trunc((GetTownSectorsUnderControl(ubTownId) * 100) / GetTownSectorSize(ubTownId)));
+    wString = swprintf("%d%%", Math.trunc((GetTownSectorsUnderControl(ubTownId) * 100) / GetTownSectorSize(ubTownId)));
     hStringHandle = AddSecondColumnMonoString(wString);
   }
 
@@ -258,7 +258,7 @@ function AddTextToTownBox(): void {
     // town loyalty
     wString = swprintf("%s:", pwTownInfoStrings[5]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", gTownLoyalty[ubTownId].ubRating);
+    wString = swprintf("%d%%", gTownLoyalty[ubTownId].ubRating);
     hStringHandle = AddSecondColumnMonoString(wString);
   }
 
@@ -337,14 +337,14 @@ function AddTextToMineBox(): void {
       // production rate (current production as a percentage of potential production)
       wString = swprintf("%s:", pwMineStrings[10]);
       hStringHandle = AddMonoString(wString);
-      wString = swprintf("%d%%%%", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
+      wString = swprintf("%d%%", Math.trunc((PredictDailyIncomeFromAMine(ubMineIndex) * 100) / GetMaxDailyRemovalFromMine(ubMineIndex)));
       hStringHandle = AddSecondColumnMonoString(wString);
     }
 
     // town control percentage
     wString = swprintf("%s:", pwMineStrings[12]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", Math.trunc((GetTownSectorsUnderControl(gMineLocation[ubMineIndex].bAssociatedTown) * 100) / GetTownSectorSize(gMineLocation[ubMineIndex].bAssociatedTown)));
+    wString = swprintf("%d%%", Math.trunc((GetTownSectorsUnderControl(gMineLocation[ubMineIndex].bAssociatedTown) * 100) / GetTownSectorSize(gMineLocation[ubMineIndex].bAssociatedTown)));
     hStringHandle = AddSecondColumnMonoString(wString);
 
     ubTown = gMineLocation[ubMineIndex].bAssociatedTown;
@@ -352,7 +352,7 @@ function AddTextToMineBox(): void {
       // town loyalty percentage
       wString = swprintf("%s:", pwMineStrings[13]);
       hStringHandle = AddMonoString(wString);
-      wString = swprintf("%d%%%%", gTownLoyalty[gMineLocation[ubMineIndex].bAssociatedTown].ubRating);
+      wString = swprintf("%d%%", gTownLoyalty[gMineLocation[ubMineIndex].bAssociatedTown].ubRating);
       hStringHandle = AddSecondColumnMonoString(wString);
     }
 
@@ -483,7 +483,7 @@ function AddCommonInfoToBox(): void {
     // percentage of current militia squad training completed
     wString = swprintf("%s:", pwTownInfoStrings[10]);
     hStringHandle = AddMonoString(wString);
-    wString = swprintf("%d%%%%", SectorInfo[SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)].ubMilitiaTrainingPercentDone);
+    wString = swprintf("%d%%", SectorInfo[SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)].ubMilitiaTrainingPercentDone);
     hStringHandle = AddSecondColumnMonoString(wString);
   }
 

@@ -931,7 +931,7 @@ function DisplayItemNameAndInfo(usPosY: UINT16, usIndex: UINT16, usBobbyIndex: U
 
   // if it's a used item, display how damaged the item is
   if (fUsed) {
-    sTemp = swprintf("*%s%%%%", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality.toString().padStart(3));
+    sTemp = swprintf("*%s%%", LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality.toString().padStart(3));
     DrawTextToScreen(sTemp, (BOBBYR_ITEM_NAME_X - 2), (usPosY - BOBBYR_ORDER_NUM_Y_OFFSET), BOBBYR_ORDER_NUM_WIDTH, BOBBYR_ITEM_NAME_TEXT_FONT(), BOBBYR_ITEM_NAME_TEXT_COLOR, FONT_MCOLOR_BLACK, false, LEFT_JUSTIFIED);
   }
 
