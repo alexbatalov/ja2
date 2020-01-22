@@ -1530,7 +1530,7 @@ export function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSector
   // if there is some to save
   if (gubNumDoorStatus != 0) {
     // Save the door array
-    buffer = Buffer.allocUnsafe(DOOR_STATUS_SIZE);
+    buffer = Buffer.allocUnsafe(DOOR_STATUS_SIZE * gubNumDoorStatus);
     writeObjectArray(gpDoorStatus, buffer, 0, writeDoorStatus);
     uiNumBytesWritten = FileWrite(hFile, buffer, (DOOR_STATUS_SIZE * gubNumDoorStatus));
     if (uiNumBytesWritten != (DOOR_STATUS_SIZE * gubNumDoorStatus)) {
