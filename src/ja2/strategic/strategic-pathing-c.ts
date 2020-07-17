@@ -227,7 +227,7 @@ export function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumbe
 
   // initialize the ai data structures
   trailStratTreeB.forEach(resetTrailT);
-  trailCostB.fill(255);
+  trailCostB.fill(0xFFFFFFFF);
 
   // memset(trailCostB,255*PATHFACTOR,MAP_LENGTH);
   pathQB.forEach(resetPathT);
