@@ -1389,16 +1389,37 @@ export function BltVSurfaceUsingDD(hDestVSurface: SGPVSurface, hSrcVSurface: SGP
     let srcIndex = hSrcVSurface.usWidth * top * 4 + left * 4;
     let srcLineSkip = hSrcVSurface.usWidth * 4 - (right - left) * 4;
 
-    for (let y = top; y < bottom; y++) {
-      for (let x = left; x < right; x++) {
-        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-      }
+    if (fBltFlags & VS_BLT_USECOLORKEY) {
+      const transparentColor = hSrcVSurface.TransparentColor;
+      for (let y = top; y < bottom; y++) {
+        for (let x = left; x < right; x++) {
+          const rgb = FROMRGB(srcSurfaceData[srcIndex], srcSurfaceData[srcIndex + 1], srcSurfaceData[srcIndex + 2]);
+          if (transparentColor != rgb) {
+            destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+            destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+            destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+            destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          } else {
+            destIndex += 4;
+            srcIndex += 4;
+          }
+        }
 
-      destIndex += destLineSkip;
-      srcIndex += srcLineSkip;
+        destIndex += destLineSkip;
+        srcIndex += srcLineSkip;
+      }
+    } else {
+      for (let y = top; y < bottom; y++) {
+        for (let x = left; x < right; x++) {
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+        }
+
+        destIndex += destLineSkip;
+        srcIndex += srcLineSkip;
+      }
     }
   } else {
     // Normal, specialized blit for clipping, etc
@@ -1618,16 +1639,38 @@ function DDBltSurface(hDestVSurface: SGPVSurface, DestRect: RECT, hSrcVSurface: 
 
   let x: number;
   let y: number;
-  for (y = top; y < bottom; y++) {
-    for (x = left; x < right; x++) {
-      destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-      destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-      destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-      destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
-    }
 
-    destIndex += destLineSkip;
-    srcIndex += srcLineSkip;
+  if (fBltFlags & VS_BLT_USECOLORKEY) {
+    let transparentColor = hSrcVSurface.TransparentColor;
+    for (y = top; y < bottom; y++) {
+      for (x = left; x < right; x++) {
+        let rgb = FROMRGB(srcSurfaceData[srcIndex], srcSurfaceData[srcIndex + 1], srcSurfaceData[srcIndex + 2]);
+        if (transparentColor != rgb) {
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+          destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++];
+        } else {
+          destIndex += 4;
+          srcIndex += 4;
+        }
+      }
+
+      destIndex += destLineSkip;
+      srcIndex += srcLineSkip;
+    }
+  } else {
+    for (y = top; y < bottom; y++) {
+      for (x = left; x < right; x++) {
+        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
+        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
+        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
+        destSurfaceData[destIndex++] = srcSurfaceData[srcIndex++]
+      }
+
+      destIndex += destLineSkip;
+      srcIndex += srcLineSkip;
+    }
   }
 
   return true;

@@ -397,8 +397,14 @@ export function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubB
     usColorVal = Get16BPPColor(FROMRGB(255, 255, 0));
     usLoopEnd = (usWidth * usHeight);
 
-    for (i = 0; i < usLoopEnd; i++) {
-      pDestBuf[i] = usColorVal;
+    i = 0;
+    for (let y = 0; y < usHeight; y++) {
+      for (let x = 0; x < usWidth; x++) {
+        pDestBuf[i++] = 255;
+        pDestBuf[i++] = 255;
+        pDestBuf[i++] = 0;
+        pDestBuf[i++] = 255;
+      }
     }
 
     UnLockVideoSurface(pPopUpTextBox.uiSourceBufferIndex);
