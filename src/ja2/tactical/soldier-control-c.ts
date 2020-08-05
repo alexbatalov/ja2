@@ -7196,7 +7196,7 @@ export function ReLoadSoldierAnimationDueToHandItemChange(pSoldier: SOLDIERTYPE,
 
   // Shutoff burst....
   // ( we could be on, then change gun that does not have burst )
-  if (Weapon[usNewItem].ubShotsPerBurst == 0) {
+  if (!Weapon[usNewItem] || Weapon[usNewItem].ubShotsPerBurst == 0) {
     pSoldier.bDoBurst = 0;
     pSoldier.bWeaponMode = Enum265.WM_NORMAL;
   }
