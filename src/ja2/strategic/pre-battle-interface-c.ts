@@ -707,6 +707,7 @@ export function RenderPreBattleInterface(): void {
   let ubBPPercent: UINT8;
   let fMouseInRetreatButtonArea: boolean;
   let ubJunk: UINT8;
+  let ubJunk__Pointer = createPointer(() => ubJunk, (v) => ubJunk = v);
   // PLAYERGROUP *pPlayer;
 
   // This code determines if the cursor is inside the rectangle consisting of the
@@ -923,7 +924,7 @@ export function RenderPreBattleInterface(): void {
               mprintf(x, y, str);
             }
             // DEP
-            ({ sString: str, ubFontColor: ubJunk } = GetMapscreenMercDepartureString(MercPtrs[i]));
+            str = GetMapscreenMercDepartureString(MercPtrs[i], ubJunk__Pointer);
             x = 208 + Math.trunc((34 - StringPixLength(str, BLOCKFONT2())) / 2);
             mprintf(x, y, str);
             line++;

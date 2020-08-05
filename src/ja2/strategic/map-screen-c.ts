@@ -3229,7 +3229,7 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   let usY: UINT16 = 0;
   let sString: string /* wchar_t[32] */;
 
-  ({ sString, ubFontColor } = GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID]));
+  sString = GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], createPointer(() => ubFontColor, (v) => ubFontColor = v));
 
   // if merc is highlighted, override the color decided above with bright white
   if (sCharNumber == giHighLine) {
@@ -9588,9 +9588,8 @@ export function GetMapscreenMercDestinationString(pSoldier: SOLDIERTYPE): string
   return sString;
 }
 
-export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE): { sString: string, ubFontColor: UINT8 } {
+export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE, ubFontColor: Pointer<UINT8>): string {
   let sString: string;
-  let ubFontColor: UINT8 = <UINT8><unknown>undefined;
 
   let iMinsRemaining: INT32 = 0;
   let iDaysRemaining: INT32 = 0;
@@ -9613,7 +9612,7 @@ export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE): { sStrin
     if (iMinsRemaining >= MAP_TIME_UNDER_THIS_DISPLAY_AS_HOURS) {
       iDaysRemaining = Math.trunc(iMinsRemaining / (24 * 60));
 
-      ubFontColor = FONT_LTGREEN;
+      ubFontColor.value = FONT_LTGREEN;
 
       sString = swprintf("%d%s", iDaysRemaining, gpStrategicString[Enum365.STR_PB_DAYS_ABBREVIATION]);
     } else // less than 3 days
@@ -9626,16 +9625,16 @@ export function GetMapscreenMercDepartureString(pSoldier: SOLDIERTYPE): { sStrin
 
       // last 3 days is Red, last 4 hours start flashing red/white!
       if ((iMinsRemaining <= MINS_TO_FLASH_CONTRACT_TIME) && (fFlashContractFlag == true)) {
-        ubFontColor = FONT_WHITE;
+        ubFontColor.value = FONT_WHITE;
       } else {
-        ubFontColor = FONT_RED;
+        ubFontColor.value = FONT_RED;
       }
 
       sString = swprintf("%d%s", iHoursRemaining, gpStrategicString[Enum365.STR_PB_HOURS_ABBREVIATION]);
     }
   }
 
-  return { sString, ubFontColor };
+  return sString;
 }
 
 function InitPreviousPaths(): void {
