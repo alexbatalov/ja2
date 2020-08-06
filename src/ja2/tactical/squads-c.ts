@@ -529,7 +529,7 @@ export function IsRobotControllerInSquad(bSquadValue: INT8): boolean {
   return false;
 }
 
-export function SectorSquadIsIn(bSquadValue: INT8): { sMapX: INT16, sMapY: INT16, sMapZ: INT16 } {
+export function SectorSquadIsIn(bSquadValue: INT8): { sMapX: INT16, sMapY: INT16, sMapZ: INT16 } | null {
   // returns if there is anyone on the squad and what sector ( strategic ) they are in
   let bCounter: INT8 = 0;
 
@@ -547,7 +547,7 @@ export function SectorSquadIsIn(bSquadValue: INT8): { sMapX: INT16, sMapY: INT16
   }
 
   // return there is no squad
-  throw new Error('Should be unreachable');
+  return null;
 }
 
 function CopyPathOfSquadToCharacter(pCharacter: SOLDIERTYPE, bSquadValue: INT8): boolean {

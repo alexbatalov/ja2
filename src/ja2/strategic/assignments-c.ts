@@ -1293,7 +1293,7 @@ function CanCharacterSquad(pSoldier: SOLDIERTYPE, bSquadValue: INT8): INT8 {
   */
 
   // see if the squad us at the same x,y,z
-  ({ sMapX: sX, sMapY: sY, sMapZ: sZ } = SectorSquadIsIn(bSquadValue));
+  ({ sMapX: sX, sMapY: sY, sMapZ: sZ } = SectorSquadIsIn(bSquadValue) || { sMapX: -1, sMapY: -1, sMapZ: -1 });
 
   // check sector x y and z, if not same, cannot join squad
   if ((sX != pSoldier.sSectorX) || (sY != pSoldier.sSectorY) || (sZ != pSoldier.bSectorZ)) {
