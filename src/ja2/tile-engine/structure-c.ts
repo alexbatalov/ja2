@@ -279,7 +279,7 @@ function CreateFileStructureArrays(pFileRef: STRUCTURE_FILE_REF, uiDataSize: UIN
   buffer = pFileRef.pubStructureData;
   pCurrent = 0;
 
-  pDBStructureRef = createArrayFrom(pFileRef.usNumberOfStructures, createDbStructureRef);;
+  pDBStructureRef = wrapDbStructureRefs(createArrayFrom(pFileRef.usNumberOfStructures, createDbStructureRef));
   pFileRef.pDBStructureRef = pDBStructureRef;
 
   for (usLoop = 0; usLoop < pFileRef.usNumberOfStructuresStored; usLoop++) {
@@ -957,7 +957,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: STRUCTURE |
 
   // record values
   bDelta = pBaseStructure.pDBStructureRef.pDBStructure.bPartnerDelta;
-  pPartnerDBStructure = pBaseStructure.pDBStructureRef + bDelta;
+  pPartnerDBStructure = (pBaseStructure.pDBStructureRef as _DB_STRUCTURE_REF_WRAPPER).getPartner(bDelta);
   sGridNo = pBaseStructure.sGridNo;
   ubHitPoints = pBaseStructure.ubHitPoints;
   sCubeOffset = pBaseStructure.sCubeOffset;
@@ -1901,6 +1901,41 @@ export function GetStructureOpenSound(pStructure: STRUCTURE, fClose: boolean): U
   }
 
   return uiSoundID;
+}
+
+class _DB_STRUCTURE_REF_WRAPPER implements DB_STRUCTURE_REF {
+  constructor(public readonly array: DB_STRUCTURE_REF[], public readonly index: number) {
+  }
+
+  get pDBStructure() {
+    return this.array[this.index].pDBStructure;
+  }
+
+  set pDBStructure(value) {
+    this.array[this.index].pDBStructure = value;
+  }
+
+  get ppTile() {
+    return this.array[this.index].ppTile;
+  }
+
+  set ppTile(value) {
+    this.array[this.index].ppTile = value;
+  }
+
+  getPartner(delta: number) {
+    return new _DB_STRUCTURE_REF_WRAPPER(this.array, this.index + delta);
+  }
+}
+
+function wrapDbStructureRefs(refs: DB_STRUCTURE_REF[]): DB_STRUCTURE_REF[] {
+  const wrappers = new Array(refs.length);
+
+  for (let i = 0; i < wrappers.length; i++) {
+    wrappers[i] = new _DB_STRUCTURE_REF_WRAPPER(refs, i);
+  }
+
+  return wrappers;
 }
 
 }
