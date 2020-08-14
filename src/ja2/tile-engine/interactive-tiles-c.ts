@@ -755,6 +755,10 @@ export function CheckVideoObjectScreenCoordinateInData(hSrcVObject: SGPVObject, 
       break;
     }
 
+    if (!(byte & 0x80)) {
+      SrcPtr += runLength;
+    }
+
     iStartPos += runLength;
   }
 
