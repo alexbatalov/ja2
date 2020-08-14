@@ -1783,7 +1783,7 @@ function InternalSetSoldierHeight(pSoldier: SOLDIERTYPE, dNewHeight: FLOAT, fUpd
   let bOldLevel: INT8 = pSoldier.bLevel;
 
   pSoldier.dHeightAdjustment = dNewHeight;
-  pSoldier.sHeightAdjustment = pSoldier.dHeightAdjustment;
+  pSoldier.sHeightAdjustment = Math.trunc(pSoldier.dHeightAdjustment);
 
   if (!fUpdateLevel) {
     return;

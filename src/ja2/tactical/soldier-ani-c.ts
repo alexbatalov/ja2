@@ -795,7 +795,7 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
 
           // CODE: MOVE UP FROM CLIFF CLIMB
           pSoldier.dHeightAdjustment += 2.1;
-          pSoldier.sHeightAdjustment = pSoldier.dHeightAdjustment;
+          pSoldier.sHeightAdjustment = Math.trunc(pSoldier.dHeightAdjustment);
           // Move over some...
           // MoveMercFacingDirection( pSoldier , FALSE, (FLOAT)0.5 );
           break;
@@ -811,7 +811,7 @@ export function AdjustToNextAnimationFrame(pSoldier: SOLDIERTYPE): boolean {
 
           // CODE: END CLIFF CLIMB
           pSoldier.dHeightAdjustment = 0;
-          pSoldier.sHeightAdjustment = pSoldier.dHeightAdjustment;
+          pSoldier.sHeightAdjustment = Math.trunc(pSoldier.dHeightAdjustment);
 
           // Set new gridno
           {
