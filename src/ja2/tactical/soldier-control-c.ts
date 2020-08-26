@@ -3250,7 +3250,7 @@ export function EVENT_InternalGetNewSoldierPath(pSoldier: SOLDIERTYPE, sDestGrid
       if (fAdvancePath) {
         copyArray(usPathingData, pSoldier.usPathingData);
         ubPathingMaxDirection = usPathingData[MAX_PATH_LIST_SIZE - 1];
-        pSoldier.usPathingData.copyWithin(0, 1);
+        pSoldier.usPathingData.copyWithin(1, 0);
 
         // If we have reach the max, go back one sFinalDest....
         if (pSoldier.usPathDataSize == MAX_PATH_LIST_SIZE) {
