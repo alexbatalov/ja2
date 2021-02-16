@@ -1622,6 +1622,24 @@ function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurf
   return false;
 }
 
+function copyRow(destSurfaceData: Uint8ClampedArray, destIndex: number, destWidth: number, srcSurfaceData: Uint8ClampedArray, srcIndex: number, srcWidth: number) {
+  let pos = 0x10000;
+  let inc = Math.trunc((srcWidth << 16) / destWidth);
+  for (let i = 0; i < destWidth; i++) {
+    while (pos >= 0x10000) {
+      srcIndex += 4;
+      pos -= 0x10000;
+    }
+
+    destSurfaceData[destIndex++] = srcSurfaceData[srcIndex];
+    destSurfaceData[destIndex++] = srcSurfaceData[srcIndex + 1];
+    destSurfaceData[destIndex++] = srcSurfaceData[srcIndex + 2];
+    destSurfaceData[destIndex++] = srcSurfaceData[srcIndex + 3];
+
+    pos += inc;
+  }
+}
+
 function DDBltSurface(hDestVSurface: SGPVSurface, DestRect: RECT, hSrcVSurface: SGPVSurface, SrcRect: RECT, fBltFlags: UINT32): boolean {
   let destSurfaceData = hDestVSurface.pSurfaceData;
   let srcSurfaceData = hSrcVSurface.pSurfaceData;
@@ -1639,6 +1657,30 @@ function DDBltSurface(hDestVSurface: SGPVSurface, DestRect: RECT, hSrcVSurface: 
 
   let x: number;
   let y: number;
+
+  if ((DestRect.right - DestRect.left != SrcRect.right - SrcRect.left) || (DestRect.bottom - DestRect.top != SrcRect.bottom - SrcRect.top)) {
+    let destWidth = DestRect.right - DestRect.left;
+    let destHeight = DestRect.bottom - DestRect.top;
+    let srcWidth = SrcRect.right - SrcRect.left;
+    let srcHeight = SrcRect.bottom - SrcRect.top;
+
+    let pos = 0x10000;
+    let inc = Math.trunc((srcHeight << 16) / destHeight);
+
+    for (y = DestRect.top; y < DestRect.bottom; y++) {
+      while (pos >= 0x10000) {
+        srcIndex += hSrcVSurface.usWidth * 4;
+        pos -= 0x10000;
+      }
+
+      copyRow(destSurfaceData, destIndex, destWidth, srcSurfaceData, srcIndex, srcWidth);
+
+      destIndex += hDestVSurface.usWidth * 4;
+      pos += inc;
+    }
+
+    return true;
+  }
 
   if (fBltFlags & VS_BLT_USECOLORKEY) {
     let transparentColor = hSrcVSurface.TransparentColor;

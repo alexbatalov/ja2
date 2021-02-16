@@ -6757,7 +6757,7 @@ export function Blt16BPPTo16BPPTrans(pDest: Uint8ClampedArray, uiDestPitch: UINT
   let b = SGPGetBValue(rgb);
   for (y = 0; y < uiHeight; y++) {
     for (x = 0; x < uiWidth; x++) {
-      if (pSrc[pSrcPtr] == r || pSrc[pSrcPtr + 1] === g || pSrc[pSrcPtr + 2] == b) {
+      if (pSrc[pSrcPtr] === r && pSrc[pSrcPtr + 1] === g && pSrc[pSrcPtr + 2] === b) {
         pSrcPtr += 4;
         pDestPtr += 4;
       } else {
@@ -7152,14 +7152,14 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Uint8Cla
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue;
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           if (uiLineFlag & 1) {
             if (DestPtr & 4) {
@@ -7181,7 +7181,7 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Uint8Cla
               pBuffer[DestPtr++] = SGPGetBValue(rgb);
               pBuffer[DestPtr++] = 0xFF;
 
-              pZBuffer[ZPtr] = usZValue;
+              setZValue(pZBuffer, ZPtr, usZValue);
             }
           }
         }
@@ -7942,14 +7942,14 @@ export function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Uint8ClampedArray, uiDes
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue;
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           DestPtr += 4;
         }
@@ -8035,7 +8035,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Uint8ClampedArray, uiD
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
@@ -8482,20 +8482,27 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Uint8ClampedArra
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
-            color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
-            rgb = GetRGBColor(ShadeTable[color]);
+            if (getZValue(pZBuffer, ZPtr) < usZValue) {
+              color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+              rgb = GetRGBColor(ShadeTable[color]);
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+            } else {
+              DestPtr += 4;
+            }
           } else {
             rgb = GetRGBColor(p16BPPPalette[byte]);
+
+            pBuffer[DestPtr++] = SGPGetRValue(rgb);
+            pBuffer[DestPtr++] = SGPGetGValue(rgb);
+            pBuffer[DestPtr++] = SGPGetBValue(rgb);
+            pBuffer[DestPtr++] = 0xFF;
           }
-
-          pBuffer[DestPtr++] = SGPGetRValue(rgb);
-          pBuffer[DestPtr++] = SGPGetGValue(rgb);
-          pBuffer[DestPtr++] = SGPGetBValue(rgb);
-          pBuffer[DestPtr++] = 0xFF;
-
-          pZBuffer[ZPtr] = usZValue;
         } else {
           DestPtr += 4;
         }
@@ -8572,6 +8579,7 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Uint8Cla
       usHeight--;
       DestPtr += LineSkip;
       ZPtr += LineSkip;
+      uiLineFlag ^= 1;
       continue;
     }
 
@@ -8584,20 +8592,55 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Uint8Cla
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
-            color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
-            rgb = GetRGBColor(ShadeTable[color]);
+            if (getZValue(pZBuffer, ZPtr) < usZValue) {
+              color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+              rgb = GetRGBColor(ShadeTable[color]);
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+            } else {
+              DestPtr += 4;
+            }
           } else {
             rgb = GetRGBColor(p16BPPPalette[byte]);
-          }
 
-          pBuffer[DestPtr++] = SGPGetRValue(rgb);
-          pBuffer[DestPtr++] = SGPGetGValue(rgb);
-          pBuffer[DestPtr++] = SGPGetBValue(rgb);
-          pBuffer[DestPtr++] = 0xFF;
+            pBuffer[DestPtr++] = SGPGetRValue(rgb);
+            pBuffer[DestPtr++] = SGPGetGValue(rgb);
+            pBuffer[DestPtr++] = SGPGetBValue(rgb);
+            pBuffer[DestPtr++] = 0xFF;
+          }
         } else {
-          DestPtr += 4;
+          if (byte === 254) {
+            DestPtr += 4;
+          } else {
+            if (uiLineFlag & 1) {
+              if (DestPtr & 4) {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+
+                pBuffer[DestPtr++] = SGPGetRValue(rgb);
+                pBuffer[DestPtr++] = SGPGetGValue(rgb);
+                pBuffer[DestPtr++] = SGPGetBValue(rgb);
+                pBuffer[DestPtr++] = 0xFF;
+              } else {
+                DestPtr += 4;
+              }
+            } else {
+              if (DestPtr & 4) {
+                DestPtr += 4;
+              } else {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+
+                pBuffer[DestPtr++] = SGPGetRValue(rgb);
+                pBuffer[DestPtr++] = SGPGetGValue(rgb);
+                pBuffer[DestPtr++] = SGPGetBValue(rgb);
+                pBuffer[DestPtr++] = 0xFF;
+              }
+            }
+          }
         }
 
         ZPtr += 4;
@@ -9134,270 +9177,6 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Uint8Clamped
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
-  let LineSkip: UINT32;
-  let pTrav: ETRLEObject;
-  let iTempX: INT32;
-  let iTempY: INT32;
-  let LeftSkip: INT32;
-  let RightSkip: INT32;
-  let TopSkip: INT32;
-  let BottomSkip: INT32;
-  let BlitLength: INT32;
-  let BlitHeight: INT32;
-  let LSCount: INT32;
-  let ClipX1: INT32;
-  let ClipY1: INT32;
-  let ClipX2: INT32;
-  let ClipY2: INT32;
-
-  // Assertions
-  Assert(hSrcVObject != null);
-  Assert(pBuffer != null);
-
-  // Get Offsets from Index into structure
-  pTrav = hSrcVObject.pETRLEObject[usIndex];
-  usHeight = pTrav.usHeight;
-  usWidth = pTrav.usWidth;
-  uiOffset = pTrav.uiDataOffset;
-
-  // Add to start position of dest buffer
-  iTempX = iX + pTrav.sOffsetX;
-  iTempY = iY + pTrav.sOffsetY;
-
-  if (clipregion == null) {
-    ClipX1 = ClippingRect.iLeft;
-    ClipY1 = ClippingRect.iTop;
-    ClipX2 = ClippingRect.iRight;
-    ClipY2 = ClippingRect.iBottom;
-  } else {
-    ClipX1 = clipregion.iLeft;
-    ClipY1 = clipregion.iTop;
-    ClipX2 = clipregion.iRight;
-    ClipY2 = clipregion.iBottom;
-  }
-
-  // Calculate rows hanging off each side of the screen
-  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
-  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
-  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
-  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
-
-  // calculate the remaining rows and columns to blit
-  BlitLength = (usWidth - LeftSkip - RightSkip);
-  BlitHeight = (usHeight - TopSkip - BottomSkip);
-
-  // check if whole thing is clipped
-  if ((LeftSkip >= usWidth) || (RightSkip >= usWidth))
-    return true;
-
-  // check if whole thing is clipped
-  if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
-    return true;
-
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    TopSkipLoop: // Skips the number of lines clipped at the top
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-    dec TopSkip
-    jnz TopSkipLoop
-
-    LeftSkipSetup:
-
-    mov Unblitted, 0
-    mov eax, LeftSkip
-    mov LSCount, eax
-    or eax, eax
-    jz BlitLineSetup
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNonTransLoop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitTransparent
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    BlitLineSetup: // Does any actual blitting (trans/non) for the line
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-
-    BlitNonTransLoop: // blit non-transparent pixels
-
-    cmp ecx, LSCount
-    jbe BNTrans1
-
-    sub ecx, LSCount
-    mov Unblitted, ecx
-    mov ecx, LSCount
-
-    BNTrans1:
-    sub LSCount, ecx
-
-    BlitNTL1:
-
-    mov ax, [ebx]
-    cmp ax, usZValue
-    ja BlitNTL2
-
-    xor eax, eax
-
-    mov al, [esi]
-    cmp al, 254
-    jne BlitNTL3
-
-    mov ax, [ebx]
-    cmp ax, usZValue
-    jae BlitNTL2
-
-    mov ax, [edi]
-    mov ax, ShadeTable[eax*2]
-    mov [edi], ax
-    jmp BlitNTL2
-
-    BlitNTL3:
-    mov ax, [edx+eax*2]
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-    dec cl
-    jnz BlitNTL1
-
-    // BlitLineEnd:
-    add esi, Unblitted
-    jmp BlitDispatch
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-    cmp ecx, LSCount
-    jbe BTrans1
-
-    mov ecx, LSCount
-
-    BTrans1:
-
-    sub LSCount, ecx
-    // shl ecx, 1
-    add ecx, ecx
-    add edi, ecx
-    add ebx, ecx
-    jmp BlitDispatch
-
-    RightSkipLoop: // skip along until we hit and end-of-line marker
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
-
-  return true;
-}
-
-/**********************************************************************************************
- Blt8BPPDataTo16BPPBufferTransShadowZNBClip
-
-        Blits an image into the destination buffer, using an ETRLE brush as a source, and a 16-bit
-        buffer as a destination. As it is blitting, it checks the Z value of the ZBuffer, and if the
-        pixel's Z level is below that of the current pixel, it is written on.
-        The Z-buffer is 16 bit, and	must be the same dimensions (including Pitch) as the
-        destination. Pixels with a value of	254 are shaded instead of blitted. The Z buffer is
-        NOT updated.
-
-**********************************************************************************************/
-export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Uint16Array): boolean {
-  let uiOffset: UINT32;
-  let usHeight: UINT32;
-  let usWidth: UINT32;
-  let Unblitted: UINT32;
-  let uiLineFlag: UINT32;
   let SrcPtr: number;
   let DestPtr: number;
   let ZPtr: number;
@@ -9528,20 +9307,238 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Uint
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
-            color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
-            rgb = GetRGBColor(ShadeTable[color]);
+            if (getZValue(pZBuffer, ZPtr) < usZValue) {
+              color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+              rgb = GetRGBColor(ShadeTable[color]);
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+            } else {
+              DestPtr += 4;
+            }
           } else {
             rgb = GetRGBColor(p16BPPPalette[byte]);
-          }
 
-          pBuffer[DestPtr++] = SGPGetRValue(rgb);
-          pBuffer[DestPtr++] = SGPGetGValue(rgb);
-          pBuffer[DestPtr++] = SGPGetBValue(rgb);
-          pBuffer[DestPtr++] = 0xFF;
+            pBuffer[DestPtr++] = SGPGetRValue(rgb);
+            pBuffer[DestPtr++] = SGPGetGValue(rgb);
+            pBuffer[DestPtr++] = SGPGetBValue(rgb);
+            pBuffer[DestPtr++] = 0xFF;
+          }
         } else {
           DestPtr += 4;
+        }
+
+        ZPtr += 4;
+      }
+    }
+  }
+
+  return true;
+}
+
+/**********************************************************************************************
+ Blt8BPPDataTo16BPPBufferTransShadowZNBClip
+
+        Blits an image into the destination buffer, using an ETRLE brush as a source, and a 16-bit
+        buffer as a destination. As it is blitting, it checks the Z value of the ZBuffer, and if the
+        pixel's Z level is below that of the current pixel, it is written on.
+        The Z-buffer is 16 bit, and	must be the same dimensions (including Pitch) as the
+        destination. Pixels with a value of	254 are shaded instead of blitted. The Z buffer is
+        NOT updated.
+
+**********************************************************************************************/
+export function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObject: SGPVObject, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: SGPRect | null, p16BPPPalette: Uint16Array): boolean {
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let uiLineFlag: UINT32;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
+  let LineSkip: UINT32;
+  let pTrav: ETRLEObject;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+
+  // Assertions
+  Assert(hSrcVObject != null);
+  Assert(pBuffer != null);
+
+  // Get Offsets from Index into structure
+  pTrav = hSrcVObject.pETRLEObject[usIndex];
+  usHeight = pTrav.usHeight;
+  usWidth = pTrav.usWidth;
+  uiOffset = pTrav.uiDataOffset;
+
+  // Add to start position of dest buffer
+  iTempX = iX + pTrav.sOffsetX;
+  iTempY = iY + pTrav.sOffsetY;
+
+  if (clipregion == null) {
+    ClipX1 = ClippingRect.iLeft;
+    ClipY1 = ClippingRect.iTop;
+    ClipX2 = ClippingRect.iRight;
+    ClipY2 = ClippingRect.iBottom;
+  } else {
+    ClipX1 = clipregion.iLeft;
+    ClipY1 = clipregion.iTop;
+    ClipX2 = clipregion.iRight;
+    ClipY2 = clipregion.iBottom;
+  }
+
+  // Calculate rows hanging off each side of the screen
+  LeftSkip = Math.min(ClipX1 - Math.min(ClipX1, iTempX), usWidth);
+  RightSkip = Math.min(Math.max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  TopSkip = Math.min(ClipY1 - Math.min(ClipY1, iTempY), usHeight);
+  BottomSkip = Math.min(Math.max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
+
+  // calculate the remaining rows and columns to blit
+  BlitLength = (usWidth - LeftSkip - RightSkip);
+  BlitHeight = (usHeight - TopSkip - BottomSkip);
+
+  // check if whole thing is clipped
+  if ((LeftSkip >= usWidth) || (RightSkip >= usWidth))
+    return true;
+
+  // check if whole thing is clipped
+  if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
+    return true;
+
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
+  uiLineFlag = (iTempY & 1);
+
+  let pPixData = hSrcVObject.pPixData;
+  let remainingSkip: number;
+  let remainingBlitLength: number;
+  let byte: number;
+  let runLength: number;
+  let isTransparent: boolean;
+  let color: number;
+  let rgb: number;
+
+  while (TopSkip) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      TopSkip--;
+      uiLineFlag ^= 1;
+    }
+  }
+
+  remainingSkip = LeftSkip;
+  remainingBlitLength = BlitLength;
+
+  while (BlitHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      BlitHeight--;
+      DestPtr += LineSkip;
+      ZPtr += LineSkip;
+      uiLineFlag ^= 1;
+      remainingSkip = LeftSkip;
+      remainingBlitLength = BlitLength;
+      continue;
+    }
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    if (remainingSkip) {
+      if (remainingSkip > runLength) {
+        if (!isTransparent) {
+          SrcPtr += runLength;
+        }
+        remainingSkip -= runLength;
+        continue;
+      }
+
+      if (!isTransparent) {
+        SrcPtr += remainingSkip;
+      }
+      runLength -= remainingSkip;
+      remainingSkip = 0;
+    }
+
+    if (runLength > remainingBlitLength) {
+      runLength = remainingBlitLength;
+    }
+
+    remainingBlitLength -= runLength;
+
+    if (byte & 0x80) {
+      DestPtr += runLength * 4;
+      ZPtr += runLength * 4;
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
+
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
+          if (byte === 254) {
+            if (getZValue(pZBuffer, ZPtr) < usZValue) {
+              color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+              rgb = GetRGBColor(ShadeTable[color]);
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+            } else {
+              DestPtr += 4;
+            }
+          } else {
+            rgb = GetRGBColor(p16BPPPalette[byte]);
+
+            pBuffer[DestPtr++] = SGPGetRValue(rgb);
+            pBuffer[DestPtr++] = SGPGetGValue(rgb);
+            pBuffer[DestPtr++] = SGPGetBValue(rgb);
+            pBuffer[DestPtr++] = 0xFF;
+          }
+        } else {
+          if (byte === 254) {
+            DestPtr += 4;
+          } else {
+            if (uiLineFlag & 1) {
+              if (DestPtr & 4) {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+
+                pBuffer[DestPtr++] = SGPGetRValue(rgb);
+                pBuffer[DestPtr++] = SGPGetGValue(rgb);
+                pBuffer[DestPtr++] = SGPGetBValue(rgb);
+                pBuffer[DestPtr++] = 0xFF;
+              } else {
+                DestPtr += 4;
+              }
+            } else {
+              if (DestPtr & 4) {
+                DestPtr += 4;
+              } else {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+
+                pBuffer[DestPtr++] = SGPGetRValue(rgb);
+                pBuffer[DestPtr++] = SGPGetGValue(rgb);
+                pBuffer[DestPtr++] = SGPGetBValue(rgb);
+                pBuffer[DestPtr++] = 0xFF;
+              }
+            }
+          }
         }
 
         ZPtr += 4;
@@ -9888,7 +9885,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Uint8ClampedArray, uiDe
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
           rgb = GetRGBColor(ShadeTable[color]);
 
@@ -9897,7 +9894,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Uint8ClampedArray, uiDe
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           DestPtr += 4;
         }
@@ -10057,7 +10054,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Uint8ClampedArray, 
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
           rgb = GetRGBColor(ShadeTable[color]);
 
@@ -10066,7 +10063,7 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Uint8ClampedArray, 
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           DestPtr += 4;
         }
@@ -10075,172 +10072,6 @@ export function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Uint8ClampedArray, 
       }
     }
   }
-
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, OFFSET ShadeTable
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    TopSkipLoop: // Skips the number of lines clipped at the top
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-    dec TopSkip
-    jnz TopSkipLoop
-
-    LeftSkipSetup:
-
-    mov Unblitted, 0
-    mov eax, LeftSkip
-    mov LSCount, eax
-    or eax, eax
-    jz BlitLineSetup
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNonTransLoop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitTransparent
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    BlitLineSetup: // Does any actual blitting (trans/non) for the line
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-
-    BlitNonTransLoop: // blit non-transparent pixels
-
-    cmp ecx, LSCount
-    jbe BNTrans1
-
-    sub ecx, LSCount
-    mov Unblitted, ecx
-    mov ecx, LSCount
-
-    BNTrans1:
-    sub LSCount, ecx
-
-    BlitNTL1:
-
-    mov ax, [ebx]
-    cmp ax, usZValue
-    jae BlitNTL2
-
-    mov ax, usZValue
-    mov [ebx], ax
-
-    xor eax, eax
-
-    mov ax, [edi]
-    mov ax, [edx+eax*2]
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-    dec cl
-    jnz BlitNTL1
-
-    // BlitLineEnd:
-    add esi, Unblitted
-    jmp BlitDispatch
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-    cmp ecx, LSCount
-    jbe BTrans1
-
-    mov ecx, LSCount
-
-    BTrans1:
-
-    sub LSCount, ecx
-    // shl ecx, 1
-    add ecx, ecx
-    add edi, ecx
-    add ebx, ecx
-    jmp BlitDispatch
-
-    RightSkipLoop: // skip along until we hit and end-of-line marker
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
 
   return true;
 }
@@ -10752,14 +10583,14 @@ export function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Uint8ClampedArray, u
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue;
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           DestPtr += 4;
         }
@@ -10917,7 +10748,7 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Uint8ClampedArray,
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
@@ -13961,7 +13792,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Uint8ClampedArray,
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
             if (fDoOutline) {
               rgb = GetRGBColor(s16BPPColor);
@@ -13979,7 +13810,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Uint8ClampedArray,
             pBuffer[DestPtr++] = SGPGetBValue(rgb);
             pBuffer[DestPtr++] = 0xFF;
 
-            pZBuffer[ZPtr] = usZValue;
+            setZValue(pZBuffer, ZPtr, usZValue);
           }
         } else {
           DestPtr += 4;
@@ -14083,6 +13914,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Ui
     byte = pPixData[SrcPtr++];
     if (byte === 0x00) {
       TopSkip--;
+      uiLineFlag ^= 1;
     }
   }
 
@@ -14133,7 +13965,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Ui
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
             if (fDoOutline) {
               rgb = GetRGBColor(s16BPPColor);
@@ -14150,9 +13982,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Ui
             pBuffer[DestPtr++] = SGPGetGValue(rgb);
             pBuffer[DestPtr++] = SGPGetBValue(rgb);
             pBuffer[DestPtr++] = 0xFF;
-
-            pZBuffer[ZPtr] = usZValue;
           }
+
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           if (uiLineFlag & 1) {
             if (DestPtr & 4) {
@@ -14196,9 +14028,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Ui
                 pBuffer[DestPtr++] = SGPGetGValue(rgb);
                 pBuffer[DestPtr++] = SGPGetBValue(rgb);
                 pBuffer[DestPtr++] = 0xFF;
-
-                pZBuffer[ZPtr] = usZValue;
               }
+
+              setZValue(pZBuffer, ZPtr, usZValue);
             }
           }
         }
@@ -14627,7 +14459,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Uint8ClampedArray, uiD
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) <= usZValue) {
           if (byte === 254) {
             if (fDoOutline) {
               rgb = GetRGBColor(s16BPPColor);
@@ -14645,7 +14477,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Uint8ClampedArray, uiD
             pBuffer[DestPtr++] = SGPGetBValue(rgb);
             pBuffer[DestPtr++] = 0xFF;
 
-            pZBuffer[ZPtr] = usZValue;
+            setZValue(pZBuffer, ZPtr, usZValue);
           }
         } else {
           DestPtr += 4;
@@ -14726,7 +14558,7 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Uint8C
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           if (byte === 254) {
             if (fDoOutline) {
               rgb = GetRGBColor(s16BPPColor);
@@ -14743,9 +14575,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Uint8C
             pBuffer[DestPtr++] = SGPGetGValue(rgb);
             pBuffer[DestPtr++] = SGPGetBValue(rgb);
             pBuffer[DestPtr++] = 0xFF;
-
-            pZBuffer[ZPtr] = usZValue;
           }
+
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           if (uiLineFlag & 1) {
             if (DestPtr & 4) {
@@ -14789,9 +14621,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Uint8C
                 pBuffer[DestPtr++] = SGPGetGValue(rgb);
                 pBuffer[DestPtr++] = SGPGetBValue(rgb);
                 pBuffer[DestPtr++] = 0xFF;
-
-                pZBuffer[ZPtr] = usZValue;
               }
+
+              setZValue(pZBuffer, ZPtr, usZValue);
             }
           }
         }
@@ -16229,14 +16061,14 @@ export function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Uint
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZValue;
+          setZValue(pZBuffer, ZPtr, usZValue);
         } else {
           if (uiLineFlag & 1) {
             if (DestPtr & 4) {

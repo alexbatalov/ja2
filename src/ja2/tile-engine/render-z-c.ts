@@ -152,4 +152,13 @@ export const SoldierZLevel = (pSoldier: SOLDIERTYPE, pNode: LEVELNODE, sMapX: IN
 ////		sZOffsetY = pNode->pStructureData->pDBStructureRef->pDBStructure->bZTileOffsetY;\
 //#endif
 
+export function getZValue(zBuffer: Uint8ClampedArray, index: number) {
+  return (zBuffer[index]) | (zBuffer[index + 1] << 8);
+}
+
+export function setZValue(zBuffer: Uint8ClampedArray, index: number, value: number) {
+  zBuffer[index] = (value & 0xFF);
+  zBuffer[index + 1] = ((value >> 8) & 0xFF);
+}
+
 }

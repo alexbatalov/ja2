@@ -3617,14 +3617,12 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
       DestPtr += LineSkip;
       ZPtr += LineSkip;
       usZLevel = usZStartLevel;
+      usZIndex = usZStartIndex;
       usZColsToGo = usZStartCols;
       remainingSkip = LeftSkip;
       remainingBlitLength = BlitLength;
       continue;
     }
-
-    runLength = byte & 0x7F;
-    isTransparent = Boolean(byte & 0x80);
 
     runLength = byte & 0x7F;
     isTransparent = Boolean(byte & 0x80);
@@ -3651,7 +3649,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
 
     remainingBlitLength -= runLength;
 
-    if (byte & 0x80) {
+    if (isTransparent) {
       while (runLength--) {
         DestPtr += 4;
         ZPtr += 4;
@@ -3670,14 +3668,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Uint8ClampedArray, uiDes
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZLevel) {
+        if (getZValue(pZBuffer, ZPtr) < usZLevel) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZLevel;
+          setZValue(pZBuffer, ZPtr, usZLevel);
         } else {
           DestPtr += 4;
         }
@@ -3871,14 +3869,12 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
       DestPtr += LineSkip;
       ZPtr += LineSkip;
       usZLevel = usZStartLevel;
+      usZIndex = usZStartIndex;
       usZColsToGo = usZStartCols;
       remainingSkip = LeftSkip;
       remainingBlitLength = BlitLength;
       continue;
     }
-
-    runLength = byte & 0x7F;
-    isTransparent = Boolean(byte & 0x80);
 
     runLength = byte & 0x7F;
     isTransparent = Boolean(byte & 0x80);
@@ -3905,7 +3901,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
 
     remainingBlitLength -= runLength;
 
-    if (byte & 0x80) {
+    if (isTransparent) {
       while (runLength--) {
         DestPtr += 4;
         ZPtr += 4;
@@ -3924,14 +3920,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Uint8C
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] <= usZLevel) {
+        if (getZValue(pZBuffer, ZPtr) <= usZLevel) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZLevel;
+          setZValue(pZBuffer, ZPtr, usZLevel);
         } else {
           DestPtr += 4;
         }
@@ -4133,6 +4129,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
       DestPtr += LineSkip;
       ZPtr += LineSkip;
       usZLevel = usZStartLevel;
+      usZIndex = usZStartIndex;
       usZColsToGo = usZStartCols;
       remainingSkip = LeftSkip;
       remainingBlitLength = BlitLength;
@@ -4164,7 +4161,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
 
     remainingBlitLength -= runLength;
 
-    if (byte & 0x80) {
+    if (isTransparent) {
       while (runLength--) {
         DestPtr += 4;
         ZPtr += 4;
@@ -4183,14 +4180,14 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZLevel) {
+        if (getZValue(pZBuffer, ZPtr) < usZLevel) {
           rgb = GetRGBColor(p16BPPPalette[byte]);
           pBuffer[DestPtr++] = SGPGetRValue(rgb);
           pBuffer[DestPtr++] = SGPGetGValue(rgb);
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZLevel;
+          setZValue(pZBuffer, ZPtr, usZLevel);
         } else {
           if (uiLineFlag & 1) {
             if (DestPtr & 4) {
@@ -4200,7 +4197,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
               pBuffer[DestPtr++] = SGPGetBValue(rgb);
               pBuffer[DestPtr++] = 0xFF;
 
-              pZBuffer[ZPtr] = usZLevel;
+              setZValue(pZBuffer, ZPtr, usZLevel);
             } else {
               DestPtr += 4;
             }
@@ -4214,7 +4211,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Uint8ClampedArray
               pBuffer[DestPtr++] = SGPGetBValue(rgb);
               pBuffer[DestPtr++] = 0xFF;
 
-              pZBuffer[ZPtr] = usZLevel;
+              setZValue(pZBuffer, ZPtr, usZLevel);
             }
           }
         }
@@ -4405,15 +4402,14 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
       BlitHeight--;
       DestPtr += LineSkip;
       ZPtr += LineSkip;
+      uiLineFlag ^= 1;
       usZLevel = usZStartLevel;
+      usZIndex = usZStartIndex;
       usZColsToGo = usZStartCols;
       remainingSkip = LeftSkip;
       remainingBlitLength = BlitLength;
       continue;
     }
-
-    runLength = byte & 0x7F;
-    isTransparent = Boolean(byte & 0x80);
 
     runLength = byte & 0x7F;
     isTransparent = Boolean(byte & 0x80);
@@ -4440,7 +4436,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
 
     remainingBlitLength -= runLength;
 
-    if (byte & 0x80) {
+    if (isTransparent) {
       while (runLength--) {
         DestPtr += 4;
         ZPtr += 4;
@@ -4459,7 +4455,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZLevel) {
+        if (getZValue(pZBuffer, ZPtr) < usZLevel) {
           if (byte === 254) {
             color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
             rgb = GetRGBColor(ShadeTable[color]);
@@ -4472,9 +4468,45 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Uint8C
           pBuffer[DestPtr++] = SGPGetBValue(rgb);
           pBuffer[DestPtr++] = 0xFF;
 
-          pZBuffer[ZPtr] = usZLevel;
+          setZValue(pZBuffer, ZPtr, usZLevel);
         } else {
-          DestPtr += 4;
+          if (uiLineFlag & 1) {
+            if (DestPtr & 4) {
+              if (byte === 254) {
+                color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+                rgb = GetRGBColor(ShadeTable[color]);
+              } else {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+              }
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+
+              setZValue(pZBuffer, ZPtr, usZLevel);
+            } else {
+              DestPtr += 4;
+            }
+          } else {
+            if (DestPtr & 4) {
+              DestPtr += 4;
+            } else {
+              if (byte === 254) {
+                color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+                rgb = GetRGBColor(ShadeTable[color]);
+              } else {
+                rgb = GetRGBColor(p16BPPPalette[byte]);
+              }
+
+              pBuffer[DestPtr++] = SGPGetRValue(rgb);
+              pBuffer[DestPtr++] = SGPGetGValue(rgb);
+              pBuffer[DestPtr++] = SGPGetBValue(rgb);
+              pBuffer[DestPtr++] = 0xFF;
+
+              setZValue(pZBuffer, ZPtr, usZLevel);
+            }
+          }
         }
 
         ZPtr += 4;
@@ -4545,9 +4577,9 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Uint8ClampedA
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -4617,10 +4649,10 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Uint8ClampedA
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   if (hSrcVObject.ppZStripInfo == null) {
     DebugMsg(TOPIC_VIDEOOBJECT, DBG_LEVEL_0, FormatString("Missing Z-Strip info on multi-Z object"));
@@ -4673,266 +4705,116 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Uint8ClampedA
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  asm(`
-    mov esi, SrcPtr
-    mov edi, DestPtr
-    mov edx, p16BPPPalette
-    xor eax, eax
-    mov ebx, ZPtr
-    xor ecx, ecx
-
-    cmp TopSkip, 0 // check for nothing clipped on top
-    je LeftSkipSetup
-
-    // Skips the number of lines clipped at the top
-    TopSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js TopSkipLoop
-    jz TSEndLine
-
-    add esi, ecx
-    jmp TopSkipLoop
-
-    TSEndLine:
-    dec TopSkip
-    jnz TopSkipLoop
-
-    // Start of line loop
-
-    // Skips the pixels hanging outside the left-side boundry
-    LeftSkipSetup:
-
-    mov Unblitted, 0 // Unblitted counts any pixels left from a run
-    mov eax, LeftSkip // after we have skipped enough left-side pixels
-    mov LSCount, eax // LSCount counts how many pixels skipped so far
-    or eax, eax
-    jz BlitLineSetup // check for nothing to skip
-
-    LeftSkipLoop:
-
-    mov cl, [esi]
-    inc esi
-
-    or cl, cl
-    js LSTrans
-
-    cmp ecx, LSCount
-    je LSSkip2 // if equal, skip whole, and start blit with new run
-    jb LSSkip1 // if less, skip whole thing
-
-    add esi, LSCount // skip partial run, jump into normal loop for rest
-    sub ecx, LSCount
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-    jmp BlitNTL1 // *** jumps into non-transparent blit loop
-
-    LSSkip2:
-    add esi, ecx // skip whole run, and start blit with new run
-    jmp BlitLineSetup
-
-    LSSkip1:
-    add esi, ecx // skip whole run, continue skipping
-    sub LSCount, ecx
-    jmp LeftSkipLoop
-
-    LSTrans:
-    and ecx, 07fH
-    cmp ecx, LSCount
-    je BlitLineSetup // if equal, skip whole, and start blit with new run
-    jb LSTrans1 // if less, skip whole thing
-
-    sub ecx, LSCount // skip partial run, jump into normal loop for rest
-    mov eax, BlitLength
-    mov LSCount, eax
-
-    mov Unblitted, 0
-    jmp BlitTransparent // *** jumps into transparent blit loop
-
-    LSTrans1:
-    sub LSCount, ecx // skip whole run, continue skipping
-    jmp LeftSkipLoop
-
-    //-------------------------------------------------
-    // setup for beginning of line
-
-    BlitLineSetup:
-    mov eax, BlitLength
-    mov LSCount, eax
-    mov Unblitted, 0
-
-    BlitDispatch:
-
-    cmp LSCount, 0 // Check to see if we're done blitting
-    je RightSkipLoop
-
-    mov cl, [esi]
-    inc esi
-    or cl, cl
-    js BlitTransparent
-    jz RSLoop2
-
-    //--------------------------------
-    // blitting non-transparent pixels
-
-    and ecx, 07fH
-
-    BlitNTL1:
-    mov ax, [ebx] // check z-level of pixel
-    cmp ax, usZLevel
-    ja BlitNTL2
-
-    mov ax, usZLevel // update z-level of pixel
-    mov [ebx], ax
-
-    // Check for shadow...
-    xor eax, eax
-    mov al, [esi]
-    cmp al, 254
-    jne BlitNTL66
-
-    mov ax, [edi]
-    mov ax, ShadeTable[eax*2]
-    mov [edi], ax
-    jmp BlitNTL2
-
-    BlitNTL66:
-
-    mov ax, [edx+eax*2] // Copy pixel
-    mov [edi], ax
-
-    BlitNTL2:
-    inc esi
-    add edi, 2
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitNTL6
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitNTL5 // dir = 0 no change
-    js BlitNTL4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_SUBLAYERS
-    jmp BlitNTL5
-
-    BlitNTL4:
-    sub dx, Z_SUBLAYERS
-
-    BlitNTL5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitNTL6:
-    dec LSCount // decrement pixel length to blit
-    jz RightSkipLoop // done blitting the visible line
-
-    dec ecx
-    jnz BlitNTL1 // continue current run
-
-    jmp BlitDispatch // done current run, go for another
-
-    //----------------------------
-    // skipping transparent pixels
-
-    BlitTransparent: // skip transparent pixels
-
-    and ecx, 07fH
-
-    BlitTrans2:
-
-    add edi, 2 // move up the destination pointer
-    add ebx, 2
-
-    dec usZColsToGo
-    jnz BlitTrans1
-
-    // update the z-level according to the z-table
-
-    push edx
-    mov edx, pZArray // get pointer to array
-    xor eax, eax
-    mov ax, usZIndex // pick up the current array index
-    add edx, eax
-    inc eax // increment it
-    mov usZIndex, ax // store incremented value
-
-    mov al, [edx] // get direction instruction
-    mov dx, usZLevel // get current z-level
-
-    or al, al
-    jz BlitTrans5 // dir = 0 no change
-    js BlitTrans4 // dir < 0 z-level down
-    // dir > 0 z-level up (default)
-    add dx, Z_SUBLAYERS
-    jmp BlitTrans5
-
-    BlitTrans4:
-    sub dx, Z_SUBLAYERS
-
-    BlitTrans5:
-    mov usZLevel, dx // store the now-modified z-level
-    mov usZColsToGo, 20 // reset the next z-level change to 20 cols
-    pop edx
-
-    BlitTrans1:
-
-    dec LSCount // decrement the pixels to blit
-    jz RightSkipLoop // done the line
-
-    dec ecx
-    jnz BlitTrans2
-
-    jmp BlitDispatch
-
-    //---------------------------------------------
-    // Scans the ETRLE until it finds an EOL marker
-
-    RightSkipLoop:
-
-    RSLoop1:
-    mov al, [esi]
-    inc esi
-    or al, al
-    jnz RSLoop1
-
-    RSLoop2:
-
-    dec BlitHeight
-    jz BlitDone
-    add edi, LineSkip
-    add ebx, LineSkip
-
-    // reset all the z-level stuff for a new line
-
-    mov ax, usZStartLevel
-    mov usZLevel, ax
-    mov ax, usZStartIndex
-    mov usZIndex, ax
-    mov ax, usZStartCols
-    mov usZColsToGo, ax
-
-    jmp LeftSkipSetup
-
-    BlitDone:
-  `);
+  let pPixData = hSrcVObject.pPixData;
+  let remainingSkip: number;
+  let remainingBlitLength: number;
+  let byte: number;
+  let runLength: number;
+  let isTransparent: boolean;
+  let color: number;
+  let rgb: number;
+
+  while (TopSkip) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      TopSkip--;
+    }
+  }
+
+  remainingSkip = LeftSkip;
+  remainingBlitLength = BlitLength;
+
+  while (BlitHeight) {
+    byte = pPixData[SrcPtr++];
+    if (byte === 0x00) {
+      BlitHeight--;
+      DestPtr += LineSkip;
+      ZPtr += LineSkip;
+      usZLevel = usZStartLevel;
+      usZIndex = usZStartIndex;
+      usZColsToGo = usZStartCols;
+      remainingSkip = LeftSkip;
+      remainingBlitLength = BlitLength;
+      continue;
+    }
+
+    runLength = byte & 0x7F;
+    isTransparent = Boolean(byte & 0x80);
+
+    if (remainingSkip) {
+      if (remainingSkip > runLength) {
+        if (!isTransparent) {
+          SrcPtr += runLength;
+        }
+        remainingSkip -= runLength;
+        continue;
+      }
+
+      if (!isTransparent) {
+        SrcPtr += remainingSkip;
+      }
+      runLength -= remainingSkip;
+      remainingSkip = 0;
+    }
+
+    if (runLength > remainingBlitLength) {
+      runLength = remainingBlitLength;
+    }
+
+    remainingBlitLength -= runLength;
+
+    if (isTransparent) {
+      while (runLength--) {
+        DestPtr += 4;
+        ZPtr += 4;
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_SUBLAYERS;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_SUBLAYERS;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    } else {
+      while (runLength--) {
+        byte = pPixData[SrcPtr++];
+
+        if (getZValue(pZBuffer, ZPtr) <= usZLevel) {
+          if (byte === 254) {
+            color = Get16BPPColor(FROMRGB(pBuffer[DestPtr], pBuffer[DestPtr + 1], pBuffer[DestPtr + 2]));
+            rgb = GetRGBColor(ShadeTable[color]);
+          } else {
+            rgb = GetRGBColor(p16BPPPalette[byte]);
+          }
+
+          pBuffer[DestPtr++] = SGPGetRValue(rgb);
+          pBuffer[DestPtr++] = SGPGetGValue(rgb);
+          pBuffer[DestPtr++] = SGPGetBValue(rgb);
+          pBuffer[DestPtr++] = 0xFF;
+
+          setZValue(pZBuffer, ZPtr, usZLevel);
+        } else {
+          DestPtr += 4;
+        }
+
+        ZPtr += 4;
+
+        if (--usZColsToGo === 0) {
+          if (pZArray[usZIndex] < 0) {
+            usZLevel -= Z_SUBLAYERS;
+          } else if (pZArray[usZIndex] > 0) {
+            usZLevel += Z_SUBLAYERS;
+          }
+
+          usZIndex++;
+          usZColsToGo = 20;
+        }
+      }
+    }
+  }
 
   return true;
 }
@@ -5564,7 +5446,7 @@ function IsTileRedundent(pZBuffer: Uint8ClampedArray, usZValue: UINT16, hSrcVObj
       while (runLength--) {
         byte = pPixData[SrcPtr++];
 
-        if (pZBuffer[ZPtr] < usZValue) {
+        if (getZValue(pZBuffer, ZPtr) < usZValue) {
           fHidden = false;
           break outer;
         }
