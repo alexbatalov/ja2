@@ -927,15 +927,13 @@ export function RemoveFileManDirectory(pcDirectory: string /* STRING512 */, fRec
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function EraseDirectory(pcDirectory: string /* STRING512 */): boolean {
-  console.log('EraseDirectory:', pcDirectory);
-
   const fileNames = fs.readdirSync(pcDirectory);
   for (let i = 0; i < fileNames.length; i++) {
     const filePath = path.join(pcDirectory, fileNames[i]);
 
     // if it's a file, not a directory
     if (FileGetAttributes(filePath) != FILE_ATTRIBUTES_DIRECTORY) {
-      // FileDelete(filePath);
+      FileDelete(filePath);
     }
   }
 
