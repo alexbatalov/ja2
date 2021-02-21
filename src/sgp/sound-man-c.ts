@@ -151,7 +151,6 @@ export function ShutdownSoundManager(): void {
   SoundStopAll();
   SoundStopMusic();
   SoundShutdownCache();
-  Sleep(1000);
   SoundShutdownHardware();
   // Sleep(1000);
   fSoundSystemInit = false;
@@ -218,7 +217,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: SOUND
   let hRealFileHandle: HANDLE;
   let pFileHandlefileName: string /* CHAR8[128] */;
   let hFile: HWFILE;
-  let uiRetVal: UINT32 = false;
+  let uiRetVal: UINT32 = 0;
 
   if (fSoundSystemInit) {
     if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
@@ -247,7 +246,7 @@ export function SoundPlayStreamedFile(pFilename: string /* STR */, pParms: SOUND
       pFileHandlefileName = sprintf("\\\\\\\\%d", hRealFileHandle);
 
       // Start the sound stream
-      uiRetVal = SoundStartStream(pFileHandlefileName, uiChannel, pParms);
+      uiRetVal = SoundStartStream(pFilename, uiChannel, pParms);
 
       // if it succeeded, record the file handle
       if (uiRetVal != SOUND_ERROR)
@@ -380,9 +379,6 @@ function SoundIndexIsPlaying(uiSound: UINT32): boolean {
     if (pSoundList[uiSound].hMSSStream != null)
       iStatus = AIL_stream_status(pSoundList[uiSound].hMSSStream);
 
-    if (pSoundList[uiSound].hM3D != null)
-      iStatus = AIL_3D_sample_status(pSoundList[uiSound].hM3D);
-
     return (iStatus != SMP_DONE) && (iStatus != SMP_STOPPED);
   }
 
@@ -482,9 +478,6 @@ function SoundSetVolumeIndex(uiChannel: UINT32, uiVolume: UINT32): boolean {
     if (pSoundList[uiChannel].hMSSStream != null)
       AIL_set_stream_volume(pSoundList[uiChannel].hMSSStream, uiVolCap);
 
-    if (pSoundList[uiChannel].hM3D != null)
-      AIL_set_3D_sample_volume(pSoundList[uiChannel].hM3D, uiVolCap);
-
     return true;
   }
 
@@ -557,9 +550,6 @@ function SoundGetVolumeIndex(uiChannel: UINT32): UINT32 {
 
     if (pSoundList[uiChannel].hMSSStream != null)
       return AIL_stream_volume(pSoundList[uiChannel].hMSSStream);
-
-    if (pSoundList[uiChannel].hM3D != null)
-      return AIL_3D_sample_volume(pSoundList[uiChannel].hM3D);
   }
 
   return SOUND_ERROR;
@@ -699,19 +689,6 @@ export function SoundServiceStreams(): boolean {
 
   if (fSoundSystemInit) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
-      if (pSoundList[uiCount].hMSSStream != null) {
-        if (AIL_service_stream(pSoundList[uiCount].hMSSStream, 0)) {
-          if (pSoundList[uiCount].uiFlags & SOUND_CALLBACK) {
-            uiSpeed = pSoundList[uiCount].hMSSStream.value.datarate;
-            uiBuffLen = pSoundList[uiCount].hMSSStream.value.bufsize;
-            pBuffer = pSoundList[uiCount].hMSSStream.value.bufs[pSoundList[uiCount].hMSSStream.value.buf1];
-            uiBytesPerSample = pSoundList[uiCount].hMSSStream.value.samp.value.format;
-            pData = pSoundList[uiCount].pData;
-            pSoundList[uiCount].pCallback(pBuffer, uiBuffLen, uiSpeed, uiBytesPerSample, pData);
-          }
-        }
-      }
-
       if (pSoundList[uiCount].hMSS || pSoundList[uiCount].hMSSStream || pSoundList[uiCount].hM3D) {
         // If a sound has a handle, but isn't playing, stop it and free up the handle
         if (!SoundIsPlaying(pSoundList[uiCount].uiSoundID))
@@ -986,9 +963,9 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
       return NO_SAMPLE;
     }
 
-    memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
+    resetSampleTag(pSampleList[uiSample]);
 
-    if ((pSampleList[uiSample].pData = AIL_mem_alloc_lock(uiSize)) == null) {
+    if ((pSampleList[uiSample].pData = Buffer.allocUnsafe(uiSize)) == null) {
       FastDebugMsg(FormatString("SoundLoadDisk:  ERROR: Trying to play %s, AIL channels are full\n", pFilename));
       FileClose(hFile);
       return NO_SAMPLE;
@@ -996,11 +973,11 @@ function SoundLoadDisk(pFilename: string /* STR */): UINT32 {
 
     guiSoundMemoryUsed += uiSize;
 
-    FileRead(hFile, pSampleList[uiSample].pData, uiSize, null);
+    FileRead(hFile, pSampleList[uiSample].pData as Buffer, uiSize);
     FileClose(hFile);
 
     pSampleList[uiSample].pName = pFilename;
-    strupr(pSampleList[uiSample].pName);
+    pSampleList[uiSample].pName = pSampleList[uiSample].pName.toUpperCase();
     pSampleList[uiSample].uiSize = uiSize;
     pSampleList[uiSample].uiFlags |= SAMPLE_ALLOCATED;
 
@@ -1097,10 +1074,10 @@ function SoundFreeSampleIndex(uiSample: UINT32): UINT32 {
   if (pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED) {
     if (pSampleList[uiSample].pData != null) {
       guiSoundMemoryUsed -= pSampleList[uiSample].uiSize;
-      AIL_mem_free_lock(pSampleList[uiSample].pData);
+      pSampleList[uiSample].pData = null;
     }
 
-    memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
+    resetSampleTag(pSampleList[uiSample]);
     return uiSample;
   }
 
@@ -1139,62 +1116,14 @@ function SoundInitHardware(): boolean {
   let uiCount: UINT32;
   let cDriverName: string /* CHAR8[128] */;
 
-  // Try to start up the Miles Sound System
-  if (!AIL_startup())
-    return false;
-
   // Initialize the driver handle
-  hSoundDriver = null;
-
-  // Set up preferences, to try to use DirectSound and to set the
-  // maximum number of handles that we are allowed to allocate. Note
-  // that this is not the number we may have playing at one time--
-  // that number is set by SOUND_MAX_CHANNELS
-  AIL_set_preference(DIG_MIXER_CHANNELS, SOUND_MAX_CHANNELS);
+  hSoundDriver = new AudioContext({ sampleRate: 44100 / 2 });
 
   fDirectSound = true;
 
-  AIL_set_preference(DIG_USE_WAVEOUT, NO);
-  // startup with DirectSound
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(44100, 16, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(44100, 8, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(22050, 8, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(11025, 8, 1);
-
-  if (hSoundDriver) {
-    // Detect if the driver is emulated or not
-    SoundGetDriverName(hSoundDriver, cDriverName);
-    _strlwr(cDriverName);
-    // If it is, we don't want to use it, since the extra
-    // code layer can slow us down by up to 40% under NT
-    if (strstr(cDriverName, "emulated")) {
-      AIL_waveOutClose(hSoundDriver);
-      hSoundDriver = null;
-    }
-  }
-
-  // nothing in DirectSound worked, so try waveOut
-  if (hSoundDriver == null) {
-    fDirectSound = false;
-    AIL_set_preference(DIG_USE_WAVEOUT, YES);
-  }
-
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(44100, 16, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(44100, 8, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(22050, 8, 2);
-  if (hSoundDriver == null)
-    hSoundDriver = SoundInitDriver(11025, 8, 1);
-
   if (hSoundDriver != null) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
-      memset(addressof(pSoundList[uiCount]), 0, sizeof(SOUNDTAG));
+      resetSoundTag(pSoundList[uiCount]);
 
     return true;
   }
@@ -1230,57 +1159,9 @@ function SoundInitHardware(): boolean {
 //*******************************************************************************
 function SoundShutdownHardware(): boolean {
   if (fSoundSystemInit)
-    AIL_shutdown();
+    hSoundDriver.close();
 
   return true;
-}
-
-//*******************************************************************************
-// SoundInitDriver
-//
-//		Tries to initialize the sound driver using the specified settings.
-//
-//	Returns:	Pointer to the driver if successful, NULL otherwise.
-//
-//*******************************************************************************
-function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGDRIVER {
-  /* static */ let sPCMWF: PCMWAVEFORMAT;
-  let DIG: HDIGDRIVER;
-  let cBuf: string /* CHAR8[128] */;
-
-  memset(addressof(sPCMWF), 0, sizeof(PCMWAVEFORMAT));
-  sPCMWF.wf.wFormatTag = WAVE_FORMAT_PCM;
-  sPCMWF.wf.nChannels = uiChans;
-  sPCMWF.wf.nSamplesPerSec = uiRate;
-  sPCMWF.wf.nAvgBytesPerSec = uiRate * (uiBits / 8) * uiChans;
-  sPCMWF.wf.nBlockAlign = (uiBits / 8) * uiChans;
-  sPCMWF.wBitsPerSample = uiBits;
-
-  if (AIL_waveOutOpen(addressof(DIG), null, 0, addressof(sPCMWF)))
-    return null;
-
-  memset(cBuf, 0, 128);
-  AIL_digital_configuration(DIG, 0, 0, cBuf);
-  FastDebugMsg(FormatString("Sound Init: %dKHz, %d uiBits, %s %s\n", uiRate, uiBits, (uiChans == 1) ? "Mono" : "Stereo", cBuf));
-
-  return DIG;
-}
-
-//*******************************************************************************
-// SoundGetDriverName
-//
-//		Returns the name of the AIL device.
-//
-//	Returns:	TRUE or FALSE if the string was filled.
-//
-//*******************************************************************************
-function SoundGetDriverName(DIG: HDIGDRIVER, cBuf: Pointer<string> /* Pointer<CHAR8> */): boolean {
-  if (DIG) {
-    cBuf[0] = '\0';
-    AIL_digital_configuration(DIG, null, null, cBuf);
-    return true;
-  } else
-    return false;
 }
 
 //*******************************************************************************
@@ -1323,22 +1204,22 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: SOUNDPARM
   if (!fSoundSystemInit)
     return SOUND_ERROR;
 
-  if ((pSoundList[uiChannel].hMSS = AIL_allocate_sample_handle(hSoundDriver)) == null) {
-    AILString = sprintf("Sample Error: %s", AIL_last_error());
-    FastDebugMsg(AILString);
-    return SOUND_ERROR;
-  }
+    if ((pSoundList[uiChannel].hMSS = AIL_allocate_sample_handle(hSoundDriver)) == null) {
+      AILString = sprintf("Sample Error: %s", AIL_last_error());
+      FastDebugMsg(AILString);
+      return SOUND_ERROR;
+    }
 
-  AIL_init_sample(pSoundList[uiChannel].hMSS);
+    AIL_init_sample(pSoundList[uiChannel].hMSS);
 
-  if (!AIL_set_named_sample_file(pSoundList[uiChannel].hMSS, pSampleList[uiSample].pName, pSampleList[uiSample].pData, pSampleList[uiSample].uiSize, 0)) {
-    AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
-    pSoundList[uiChannel].hMSS = null;
+    if (!AIL_set_named_sample_file(pSoundList[uiChannel].hMSS, pSampleList[uiSample].pName, pSampleList[uiSample].pData, pSampleList[uiSample].uiSize, 0)) {
+      AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
+      pSoundList[uiChannel].hMSS = <HSAMPLE><unknown>null;
 
-    AILString = sprintf("AIL Set Sample Error: %s", AIL_last_error());
-    DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
-    return SOUND_ERROR;
-  }
+      AILString = sprintf("AIL Set Sample Error: %s", AIL_last_error());
+      DbgMessage(TOPIC_GAME, DBG_LEVEL_0, AILString);
+      return SOUND_ERROR;
+    }
 
   // Store the natural playback rate before we modify it below
   pSampleList[uiSample].uiSpeed = AIL_sample_playback_rate(pSoundList[uiChannel].hMSS);
@@ -1386,7 +1267,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: SOUNDPARM
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != null) && (pParms.EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.EOSCallback as any != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms.EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms.pCallbackData;
   } else {
@@ -1470,7 +1351,7 @@ function SoundStartStream(pFilename: string /* STR */, uiChannel: UINT32, pParms
   else
     pSoundList[uiChannel].uiPriority = SOUND_PARMS_DEFAULT;
 
-  if ((pParms != null) && (pParms.EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != null) && (pParms.EOSCallback as any != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms.EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms.pCallbackData;
   } else {
@@ -1541,7 +1422,7 @@ function SoundStopIndex(uiChannel: UINT32): boolean {
       if (pSoundList[uiChannel].hMSS != null) {
         AIL_stop_sample(pSoundList[uiChannel].hMSS);
         AIL_release_sample_handle(pSoundList[uiChannel].hMSS);
-        pSoundList[uiChannel].hMSS = null;
+        pSoundList[uiChannel].hMSS = <HSAMPLE><unknown>null;
         uiSample = pSoundList[uiChannel].uiSample;
 
         // if this was a random sample, decrease the iteration count
@@ -1549,7 +1430,7 @@ function SoundStopIndex(uiChannel: UINT32): boolean {
           pSampleList[uiSample].uiInstances--;
 
         if (pSoundList[uiChannel].EOSCallback != null)
-          pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
+          pSoundList[uiChannel].EOSCallback!(pSoundList[uiChannel].pCallbackData);
 
         if (pSoundList[uiChannel].fLooping && !SoundSampleIsInUse(uiChannel))
           SoundRemoveSampleFlags(uiSample, SAMPLE_LOCKED);
@@ -1559,28 +1440,9 @@ function SoundStopIndex(uiChannel: UINT32): boolean {
 
       if (pSoundList[uiChannel].hMSSStream != null) {
         AIL_close_stream(pSoundList[uiChannel].hMSSStream);
-        pSoundList[uiChannel].hMSSStream = null;
+        pSoundList[uiChannel].hMSSStream = <HSTREAM><unknown>null;
         if (pSoundList[uiChannel].EOSCallback != null)
-          pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
-
-        pSoundList[uiChannel].uiSample = NO_SAMPLE;
-      }
-
-      if (pSoundList[uiChannel].hM3D != null) {
-        AIL_stop_3D_sample(pSoundList[uiChannel].hM3D);
-        AIL_release_3D_sample_handle(pSoundList[uiChannel].hM3D);
-        pSoundList[uiChannel].hM3D = null;
-        uiSample = pSoundList[uiChannel].uiSample;
-
-        // if this was a random sample, decrease the iteration count
-        if (pSampleList[uiSample].uiFlags & SAMPLE_RANDOM)
-          pSampleList[uiSample].uiInstances--;
-
-        if (pSoundList[uiChannel].EOSCallback != null)
-          pSoundList[uiChannel].EOSCallback(pSoundList[uiChannel].pCallbackData);
-
-        if (pSoundList[uiChannel].fLooping && !SoundSampleIsInUse(uiChannel))
-          SoundRemoveSampleFlags(uiSample, SAMPLE_LOCKED);
+          pSoundList[uiChannel].EOSCallback!(pSoundList[uiChannel].pCallbackData);
 
         pSoundList[uiChannel].uiSample = NO_SAMPLE;
       }
@@ -1659,6 +1521,424 @@ function SoundStopMusic(): boolean {
   }
 
   return fStopped;
+}
+
+type HDIGDRIVER = AudioContext;
+
+const SMP_DONE = 0x0002;
+const SMP_PLAYING = 0x0004;
+const SMP_STOPPED = 0x0008;
+
+const mssPanToStereoPannerNode = new Map([
+  [0, -1], // FARLEFT
+  [1, -1],
+  [LEFTSIDE, -0.25],
+  [MIDDLEPAN, 0],
+  [RIGHTSIDE, 0.25],
+  [126, 1],
+  [127, 1], // FARRIGHT
+]);
+
+let lastError = '';
+
+function setPan(stereoPannerNode: StereoPannerNode, pan: number) {
+  stereoPannerNode.pan.value = mssPanToStereoPannerNode.get(pan) || 0;
+}
+
+function getVolume(gainNode: GainNode) {
+  return gainNode.gain.value * 127;
+}
+
+function setVolume(gainNode: GainNode, volume: number) {
+  gainNode.gain.value = volume / 127;
+}
+
+function AIL_last_error() {
+  return lastError;
+}
+
+function AIL_allocate_sample_handle(context: AudioContext): HSAMPLE {
+  const gainNode = context.createGain();
+  gainNode.connect(context.destination);
+
+  const stereoPannerNode = context.createStereoPanner();
+  stereoPannerNode.connect(gainNode);
+
+  const audioBufferSourceNode = context.createBufferSource();
+  audioBufferSourceNode.connect(stereoPannerNode);
+
+  return {
+    context,
+    gainNode,
+    stereoPannerNode,
+    audioBufferSourceNode,
+    data: null,
+    loops: 1,
+    status: SMP_DONE,
+  };
+}
+
+function AIL_init_sample(sample: HSAMPLE) {
+
+}
+
+function AIL_set_named_sample_file(sample: HSAMPLE, fileName: string, data: Buffer | null, size: number, flags: number) {
+  if (data == null) {
+    lastError = 'data';
+    return false;
+  }
+
+  sample.data = data;
+
+  return true;
+}
+
+function AIL_start_sample(sample: HSAMPLE) {
+  const data = <Buffer>sample.data;
+  // const arrayBuffer = data.buffer.slice(data.byteOffset, data.byteLength);
+
+  const audioBuffer = decodeWav(data);
+  if (audioBuffer) {
+    sample.audioBufferSourceNode.buffer = audioBuffer;
+
+    sample.audioBufferSourceNode.addEventListener('ended', sampleEnded);
+
+    sample.audioBufferSourceNode.start();
+
+    sample.status = SMP_PLAYING;
+  } else {
+    sample.status = SMP_STOPPED;
+  }
+}
+
+function sampleEnded(this: HSAMPLE) {
+  if (--this.loops) {
+    const buffer = this.audioBufferSourceNode.buffer;
+    this.audioBufferSourceNode.disconnect(this.stereoPannerNode);
+
+    this.audioBufferSourceNode = this.context.createBufferSource();
+    this.audioBufferSourceNode.buffer = buffer;
+    this.audioBufferSourceNode.connect(this.stereoPannerNode);
+
+    AIL_start_stream(this);
+  } else {
+    this.status = SMP_DONE;
+  }
+}
+
+function AIL_stop_sample(sample: HSAMPLE) {
+  if (sample.status !== SMP_STOPPED) {
+    sample.audioBufferSourceNode.stop();
+    sample.status = SMP_STOPPED;
+  }
+}
+
+function AIL_release_sample_handle(sample: HSAMPLE) {
+  sample.gainNode.disconnect(sample.context.destination);
+  sample.stereoPannerNode.disconnect(sample.gainNode);
+  sample.audioBufferSourceNode.disconnect(sample.stereoPannerNode);
+  sample.audioBufferSourceNode.buffer = null;
+  sample.data = null;
+}
+
+function AIL_sample_playback_rate(sample: HSAMPLE) {
+  return Math.trunc(sample.audioBufferSourceNode.playbackRate.value * sample.context.sampleRate);
+}
+
+function AIL_set_sample_playback_rate(sample: HSAMPLE, playbackRate: number) {
+  sample.audioBufferSourceNode.playbackRate.value = (playbackRate !== 0 ? sample.context.sampleRate / playbackRate : 0);
+}
+
+function AIL_set_sample_pan(sample: HSAMPLE, pan: number) {
+  setPan(sample.stereoPannerNode, pan);
+}
+
+function AIL_sample_volume(sample: HSAMPLE) {
+  return getVolume(sample.gainNode);
+}
+
+function AIL_set_sample_volume(sample: HSAMPLE, volume: number) {
+  setVolume(sample.gainNode, volume);
+}
+
+function AIL_set_sample_loop_count(sample: HSAMPLE, loops: number) {
+  sample.loops = loops === 0 ? Infinity : loops;
+}
+
+function AIL_sample_status(sample: HSAMPLE) {
+  return sample.status;
+}
+
+function AIL_open_stream(context: AudioContext, fileName: string, flags: number): HSTREAM {
+  const file = FileOpen(fileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, false);
+  const size = FileGetSize(file);
+  const data = Buffer.allocUnsafe(size);
+  FileRead(file, data, size);
+  FileClose(file);
+
+  const gainNode = context.createGain();
+  gainNode.connect(context.destination);
+
+  const stereoPannerNode = context.createStereoPanner();
+  stereoPannerNode.connect(gainNode);
+
+  const audioBufferSourceNode = context.createBufferSource();
+  audioBufferSourceNode.buffer = decodeWav(data);
+  audioBufferSourceNode.connect(stereoPannerNode);
+
+  return {
+    context,
+    stereoPannerNode,
+    gainNode,
+    audioBufferSourceNode,
+    data,
+    status: SMP_DONE,
+    loops: 1,
+  };
+}
+
+function AIL_start_stream(stream: HSTREAM) {
+  stream.audioBufferSourceNode.addEventListener('ended', streamEnded);
+
+  stream.audioBufferSourceNode.start();
+
+  stream.status = SMP_PLAYING;
+}
+
+function streamEnded(this: HSTREAM) {
+  if (--this.loops) {
+    const buffer = this.audioBufferSourceNode.buffer;
+    this.audioBufferSourceNode.disconnect(this.stereoPannerNode);
+
+    this.audioBufferSourceNode = this.context.createBufferSource();
+    this.audioBufferSourceNode.buffer = buffer;
+    this.audioBufferSourceNode.connect(this.stereoPannerNode);
+
+    AIL_start_stream(this);
+
+    return;
+  } else {
+    this.status = SMP_DONE;
+  }
+}
+
+function AIL_close_stream(stream: HSTREAM) {
+  stream.gainNode.disconnect(stream.context.destination);
+  stream.stereoPannerNode.disconnect(stream.gainNode);
+  stream.audioBufferSourceNode.disconnect(stream.stereoPannerNode);
+  stream.audioBufferSourceNode.buffer = null;
+  stream.data = null;
+}
+
+function AIL_stream_playback_rate(stream: HSTREAM) {
+  return Math.trunc(stream.audioBufferSourceNode.playbackRate.value * stream.context.sampleRate);
+}
+
+function AIL_set_stream_playback_rate(stream: HSTREAM, playbackRate: number) {
+  stream.audioBufferSourceNode.playbackRate.value = (playbackRate !== 0 ? stream.context.sampleRate / playbackRate : 0);
+}
+
+function AIL_set_stream_pan(stream: HSTREAM, pan: number) {
+  setPan(stream.stereoPannerNode, pan);
+}
+
+function AIL_stream_volume(stream: HSTREAM) {
+  return getVolume(stream.gainNode);
+}
+
+function AIL_set_stream_volume(stream: HSTREAM, volume: number) {
+  setVolume(stream.gainNode, volume);
+}
+
+function AIL_stream_status(stream: HSTREAM) {
+  return stream.status;
+}
+
+function AIL_set_stream_loop_count(stream: HSTREAM, loops: number) {
+  stream.loops = loops;
+}
+
+const RIFF = 0x46464952;
+const WAVE = 0x45564157;
+const FMT = 0x20746d66;
+const DATA = 0x61746164;
+const FACT = 0x74636166;
+
+function decodeWav(buffer: Buffer): AudioBuffer | null {
+  if (buffer.readUInt32LE(0) !== RIFF) {
+    return null;
+  }
+
+  if (buffer.readUInt32LE(8) !== WAVE) {
+    return null;
+  }
+
+  let audioFormat = 0;
+  let numberOfChannels = 0;
+  let sampleRate = 0;
+  let byteRate = 0;
+  let blockAlign = 0;
+  let bitsPerSample = 0;
+  let samplesPerBlock = 0;
+  let samplesCount = 0;
+
+  let dataOffset = 0;
+  let dataSize = 0;
+
+  let offset = 12;
+  let chunkTag = 0;
+  let chunkSize = 0;
+
+  while (offset < buffer.length) {
+    chunkTag = buffer.readUInt32LE(offset); offset += 4;
+    chunkSize = buffer.readUInt32LE(offset); offset += 4;
+
+    switch (chunkTag) {
+      case FMT:
+        audioFormat = buffer.readUInt16LE(offset);
+        numberOfChannels = buffer.readUInt16LE(offset + 2);
+        sampleRate = buffer.readUInt32LE(offset + 4);
+        byteRate = buffer.readUInt32LE(offset + 8);
+        blockAlign = buffer.readUInt16LE(offset + 12);
+        bitsPerSample = buffer.readUInt16LE(offset + 14);
+        if (audioFormat === 0x0011 && chunkSize === 20) {
+          samplesPerBlock = buffer.readUInt16LE(offset + 18);
+        }
+        break;
+      case FACT:
+        samplesCount = buffer.readUInt32LE(offset);
+        break;
+      case DATA:
+        dataOffset = offset;
+        dataSize = chunkSize;
+        break;
+    }
+
+    offset += chunkSize + (chunkSize & 1);
+  }
+
+  if (samplesCount === 0) {
+    samplesCount = (dataSize * 8) / (numberOfChannels * bitsPerSample);
+  }
+
+  if (audioFormat === 0x0001) {
+    const numberOfFrames = dataSize / (bitsPerSample / 8) / numberOfChannels;
+
+    const audioBuffer = new AudioBuffer({
+      numberOfChannels,
+      sampleRate,
+      length: numberOfFrames,
+    });
+
+    const audioData = new Array(numberOfChannels);
+    for (let ch = 0; ch < numberOfChannels; ch++) {
+      audioData[ch] = audioBuffer.getChannelData(ch);
+    }
+
+    offset = dataOffset;
+    if (bitsPerSample === 8) {
+      for (let frame = 0; frame < numberOfFrames; frame++) {
+        audioData[0][frame] = (buffer.readUInt8(offset++) - 128) / 128;
+      }
+    } else if (bitsPerSample === 16) {
+      for (let frame = 0; frame < numberOfFrames; frame++) {
+        for (let ch = 0; ch < numberOfChannels; ch++) {
+          audioData[ch][frame] = buffer.readInt16LE(offset) / 32768;
+          offset += 2;
+        }
+      }
+    }
+
+    return audioBuffer;
+  } else if (audioFormat === 0x0011) {
+    const numberOfFrames = (dataSize / blockAlign) * samplesPerBlock;
+
+    const audioBuffer = new AudioBuffer({
+      numberOfChannels,
+      sampleRate,
+      length: numberOfFrames,
+    });
+
+    const audioData = new Array(numberOfChannels);
+    for (let ch = 0; ch < numberOfChannels; ch++) {
+      audioData[ch] = audioBuffer.getChannelData(ch);
+    }
+
+    const decodingContext: WavDecodingContext = {
+      predictor: 0,
+      stepIndex: 0,
+    };
+
+    offset = dataOffset;
+
+    let frame = 0;
+    let numberOfBlocks = dataSize / blockAlign;
+    while (numberOfBlocks--) {
+      decodingContext.predictor = buffer.readInt16LE(offset); offset += 2;
+      decodingContext.stepIndex = buffer.readUInt8(offset); offset += 2;
+
+      for (let i = 4; i < blockAlign; i++) {
+        const nibble = buffer.readUInt8(offset++);
+        audioData[0][frame++] = adpcmDecode(decodingContext, nibble & 0x0F, 3) / 32768;
+        audioData[0][frame++] = adpcmDecode(decodingContext, nibble >> 4, 3) / 32768;
+      }
+    }
+
+    return audioBuffer;
+  }
+
+  return null;
+}
+
+const adpcmIndexTable = [
+  -1, -1, -1, -1, 2, 4, 6, 8,
+  -1, -1, -1, -1, 2, 4, 6, 8,
+];
+
+const adpcmStepTable = [
+      7,     8,     9,    10,    11,    12,    13,    14,    16,    17,
+     19,    21,    23,    25,    28,    31,    34,    37,    41,    45,
+     50,    55,    60,    66,    73,    80,    88,    97,   107,   118,
+    130,   143,   157,   173,   190,   209,   230,   253,   279,   307,
+    337,   371,   408,   449,   494,   544,   598,   658,   724,   796,
+    876,   963,  1060,  1166,  1282,  1411,  1552,  1707,  1878,  2066,
+   2272,  2499,  2749,  3024,  3327,  3660,  4026,  4428,  4871,  5358,
+   5894,  6484,  7132,  7845,  8630,  9493, 10442, 11487, 12635, 13899,
+  15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767,
+];
+
+interface WavDecodingContext {
+  predictor: number;
+  stepIndex: number;
+}
+
+function adpcmDecode(context: WavDecodingContext, nibble: number, shift: number) {
+  let stepIndex: number;
+  let predictor: number;
+  let sign: number;
+  let delta: number;
+  let diff: number;
+  let step: number;
+
+  step = adpcmStepTable[context.stepIndex];
+  stepIndex = context.stepIndex + adpcmIndexTable[nibble];
+  stepIndex = Math.min(Math.max(stepIndex, 0), 88);
+
+  sign = nibble & 8;
+  delta = nibble & 7;
+
+  diff = ((2 * delta + 1) * step) >> shift;
+  predictor = context.predictor;
+  if (sign) {
+    predictor -= diff;
+  } else {
+    predictor += diff;
+  }
+
+  context.predictor = Math.min(Math.max(predictor, -32767), 32768);
+  context.stepIndex = stepIndex;
+
+  return context.predictor;
 }
 
 }

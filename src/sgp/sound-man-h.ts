@@ -134,6 +134,20 @@ export function resetSampleTag(o: SAMPLETAG) {
   o.uiADPCMBlockSize = 0;
 }
 
+export interface HSAMPLE {
+  context: AudioContext;
+  audioBufferSourceNode: AudioBufferSourceNode;
+  stereoPannerNode: StereoPannerNode;
+  gainNode: GainNode;
+  status: number;
+  data: Buffer | null;
+  loops: number;
+}
+
+export type HSTREAM = HSAMPLE;
+
+type H3DSAMPLE = any;
+
 // Structure definition for slots in the sound output
 //		These are used for both the cached and double-buffered
 //		streams
@@ -166,9 +180,9 @@ export function createSoundTag(): SOUNDTAG {
   return {
     pSample: null,
     uiSample: 0,
-    hMSS: 0,
-    hMSSStream: 0,
-    hM3D: 0,
+    hMSS: null as unknown as HSAMPLE,
+    hMSSStream: null as unknown as HSTREAM,
+    hM3D: null,
     uiFlags: 0,
     uiSoundID: 0,
     uiPriority: 0,
@@ -190,9 +204,9 @@ export function createSoundTag(): SOUNDTAG {
 export function resetSoundTag(o: SOUNDTAG) {
   o.pSample = null;
   o.uiSample = 0;
-  o.hMSS = 0;
-  o.hMSSStream = 0;
-  o.hM3D = 0;
+  o.hMSS = null as unknown as HSAMPLE;
+  o.hMSSStream = null as unknown as HSTREAM;
+  o.hM3D = null;
   o.uiFlags = 0;
   o.uiSoundID = 0;
   o.uiPriority = 0;
