@@ -845,18 +845,12 @@ export function GetMousePos(Point: SGPPoint): void {
   return;
 }
 
-function CharacterIsValid(usCharacter: UINT16, pFilter: string /* Pointer<UINT16> */): boolean {
+function CharacterIsValid(usCharacter: UINT16, pFilter: string | null /* Pointer<UINT16> */): boolean {
   let uiIndex: UINT32;
   let uiEndIndex: UINT32;
 
   if (pFilter != null) {
-    uiEndIndex = pFilter.value;
-    for (uiIndex = 1; uiIndex <= pFilter.value; uiIndex++) {
-      if (usCharacter == (pFilter + uiIndex).value) {
-        return true;
-      }
-    }
-    return false;
+    return pFilter.indexOf(String.fromCharCode(usCharacter)) !== -1;
   }
 
   return true;
@@ -934,10 +928,9 @@ function RedirectToString(usInputCharacter: UINT16): void {
       case BACKSPACE: // Delete the character preceding the cursor
         if (gpCurrentStringDescriptor.usStringOffset > 0) {
           // Ok, we are not at the beginning of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor.usStringOffset; usIndex <= gpCurrentStringDescriptor.usCurrentStringLength; usIndex++) {
-            // Shift the characters one at a time
-            (gpCurrentStringDescriptor.pString + usIndex - 1).value = (gpCurrentStringDescriptor.pString + usIndex).value;
-          }
+          gpCurrentStringDescriptor.pString =
+            gpCurrentStringDescriptor.pString.substring(0, gpCurrentStringDescriptor.usStringOffset - 1) +
+            gpCurrentStringDescriptor.pString.substring(gpCurrentStringDescriptor.usStringOffset);
           gpCurrentStringDescriptor.usStringOffset--;
           gpCurrentStringDescriptor.usCurrentStringLength--;
         }
@@ -946,10 +939,9 @@ function RedirectToString(usInputCharacter: UINT16): void {
       case DEL: // Delete the character which follows the cursor
         if (gpCurrentStringDescriptor.usStringOffset < gpCurrentStringDescriptor.usCurrentStringLength) {
           // Ok we are not at the end of the string, so we may proceed
-          for (usIndex = gpCurrentStringDescriptor.usStringOffset; usIndex < gpCurrentStringDescriptor.usCurrentStringLength; usIndex++) {
-            // Shift the characters one at a time
-            (gpCurrentStringDescriptor.pString + usIndex).value = (gpCurrentStringDescriptor.pString + usIndex + 1).value;
-          }
+          gpCurrentStringDescriptor.pString =
+            gpCurrentStringDescriptor.pString.substring(0, gpCurrentStringDescriptor.usStringOffset) +
+            gpCurrentStringDescriptor.pString.substring(gpCurrentStringDescriptor.usStringOffset + 1);
           gpCurrentStringDescriptor.usCurrentStringLength--;
         }
         gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
@@ -978,13 +970,11 @@ function RedirectToString(usInputCharacter: UINT16): void {
           if (gpCurrentStringDescriptor.fInsertMode == true) {
             // Before we can shift characters for the insert, we must make sure we have the space
             if (gpCurrentStringDescriptor.usCurrentStringLength < (gpCurrentStringDescriptor.usMaxStringLength - 1)) {
-              // Before we can add a new character we must shift existing ones to for the insert
-              for (usIndex = gpCurrentStringDescriptor.usCurrentStringLength; usIndex > gpCurrentStringDescriptor.usStringOffset; usIndex--) {
-                // Shift the characters one at a time
-                (gpCurrentStringDescriptor.pString + usIndex).value = (gpCurrentStringDescriptor.pString + usIndex - 1).value;
-              }
               // Ok now we introduce the new character
-              (gpCurrentStringDescriptor.pString + usIndex).value = usInputCharacter;
+              gpCurrentStringDescriptor.pString =
+                gpCurrentStringDescriptor.pString.substring(0, gpCurrentStringDescriptor.usStringOffset) +
+                String.fromCharCode(usInputCharacter) +
+                gpCurrentStringDescriptor.pString.substring(gpCurrentStringDescriptor.usStringOffset);
               gpCurrentStringDescriptor.usStringOffset++;
               gpCurrentStringDescriptor.usCurrentStringLength++;
             }
@@ -992,14 +982,11 @@ function RedirectToString(usInputCharacter: UINT16): void {
             // Ok, add character to string (by overwriting)
             if (gpCurrentStringDescriptor.usStringOffset < (gpCurrentStringDescriptor.usMaxStringLength - 1)) {
               // Ok, we have not exceeded the maximum number of characters yet
-              (gpCurrentStringDescriptor.pString + gpCurrentStringDescriptor.usStringOffset).value = usInputCharacter;
+              gpCurrentStringDescriptor.pString =
+                gpCurrentStringDescriptor.pString.substring(0, gpCurrentStringDescriptor.usStringOffset) +
+                String.fromCharCode(usInputCharacter) +
+                gpCurrentStringDescriptor.pString.substring(gpCurrentStringDescriptor.usStringOffset + 1);
               gpCurrentStringDescriptor.usStringOffset++;
-            }
-            // Did we push back the current string length (i.e. add character to end of string)
-            if (gpCurrentStringDescriptor.usStringOffset > gpCurrentStringDescriptor.usCurrentStringLength) {
-              // Add a NULL character
-              (gpCurrentStringDescriptor.pString + gpCurrentStringDescriptor.usStringOffset).value = 0;
-              gpCurrentStringDescriptor.usCurrentStringLength++;
             }
           }
           gpCurrentStringDescriptor.usLastCharacter = usInputCharacter;
