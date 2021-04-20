@@ -72,6 +72,7 @@
     "./src/ja2/tile-engine/world-def-h.ts",
     "./src/ja2/tile-engine/*-h.ts",
     "./src/ja2/tactical/item-types-h.ts",
+    "./src/ja2/strategic/quests-h.ts",
     "./src/ja2/strategic/*-h.ts",
     "./src/ja2/tactical/*-h.ts",
     "./src/ja2/tactical-ai/*-h.ts",
