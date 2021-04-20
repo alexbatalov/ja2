@@ -1,7 +1,11 @@
 namespace ja2 {
 
 export let gubQuest: UINT8[] /* [MAX_QUESTS] */ = createArray(MAX_QUESTS, 0);
-export let gubFact: boolean[] /* UINT8[NUM_FACTS] */ = createArray(NUM_FACTS, false); // this has to be updated when we figure out how many facts we have
+// Because FACT_MIKE_AVAILABLE_TO_ARMY and FACT_IGGY_AVAILABLE_TO_ARMY use
+// values 0, 1 and 2 this array cannot be boolean[]. On the other hand I don't
+// want to express it as number[] because it affects many modules and doing
+// so will introduce too many compiler errors.
+export let gubFact: (boolean | number)[] /* UINT8[NUM_FACTS] */ = createArray(NUM_FACTS, false); // this has to be updated when we figure out how many facts we have
 
 let gsFoodQuestSectorX: INT16;
 let gsFoodQuestSectorY: INT16;
@@ -1015,7 +1019,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
     default:
       break;
   }
-  return gubFact[usFact];
+  return gubFact[usFact] as boolean;
 }
 
 export function StartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
@@ -1109,7 +1113,7 @@ export function SaveQuestInfoToSavedGameFile(hFile: HWFILE): boolean {
 
   // Save all the states for the facts
   buffer = Buffer.allocUnsafe(NUM_FACTS);
-  writeBooleanArray(gubFact, buffer, 0);
+  writeUIntArray(gubFact as number[], buffer, 0, 1);
   uiNumBytesWritten = FileWrite(hFile, buffer, NUM_FACTS);
   if (uiNumBytesWritten != NUM_FACTS) {
     return false;
@@ -1138,7 +1142,7 @@ export function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): boolean {
     return false;
   }
 
-  readBooleanArray(gubFact, buffer, 0);
+  readUIntArray(gubFact as number[], buffer, 0, 1);
 
   return true;
 }
