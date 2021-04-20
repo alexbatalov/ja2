@@ -79,6 +79,7 @@
     "./src/ja2/editor/*-h.ts",
     "./src/sgp/*-c.ts",
     "./src/ja2/utils/*-c.ts",
+    "./src/ja2/utils/*-cpp.ts",
     "./src/ja2/laptop/*-c.ts",
     "./src/ja2/strategic/game-clock-c.ts",
     "./src/ja2/tactical/overhead-c.ts",

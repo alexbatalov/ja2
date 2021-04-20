@@ -1,5 +1,8 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+const path: typeof import('path') = require('path');
+
 const MINIMAP_X_SIZE = 88;
 const MINIMAP_Y_SIZE = 44;
 
@@ -15,35 +18,20 @@ let ghvSurface: SGPVSurface;
 // Loops though our maps directory and reads all .map files, subsamples an area, color
 // quantizes it into an 8-bit image ans writes it to an sti file in radarmaps.
 
-interface RGBValues {
-  r: INT8;
-  g: INT8;
-  b: INT8;
-}
-
-function createRGBValues(): RGBValues {
-  return {
-    r: 0,
-    g: 0,
-    b: 0,
-  };
-}
-
 export function MapUtilScreenInit(): boolean {
   return true;
 }
 
 /* static */ let MapUtilScreenHandle__fNewMap: boolean = true;
 /* static */ let MapUtilScreenHandle__sFileNum: INT16 = 0;
-/* static */ let MapUtilScreenHandle__FListNode: Pointer<FDLG_LIST>;
+/* static */ let MapUtilScreenHandle__FListNode: FDLG_LIST | null;
 /* static */ let MapUtilScreenHandle__sFiles: INT16 = 0;
 /* static */ let MapUtilScreenHandle__sCurFile: INT16 = 0;
-/* static */ let MapUtilScreenHandle__FileList: Pointer<FDLG_LIST> = null;
-/* static */ let MapUtilScreenHandle__p24BitDest: Uint8ClampedArray = null;
-/* static */ let MapUtilScreenHandle__p24BitValues: RGBValues[] /* Pointer<RGBValues> */ = <RGBValues[]><unknown>null;
+/* static */ let MapUtilScreenHandle__FileList: FDLG_LIST | null = null;
+/* static */ let MapUtilScreenHandle__p24BitDest: Uint8ClampedArray;
 export function MapUtilScreenHandle(): UINT32 {
   let InputEvent: InputAtom = createInputAtom();
-  let FileInfo: GETFILESTRUCT;
+  let FileInfo: GETFILESTRUCT = createGetFileStruct();
   let zFilename: string /* INT8[260] */;
   let zFilename2: string /* INT8[260] */;
   let vs_desc: VSURFACE_DESC = createVSurfaceDesc();
@@ -113,21 +101,20 @@ export function MapUtilScreenHandle(): UINT32 {
     }
 
     // USING BRET's STUFF FOR LOOPING FILES/CREATING LIST, hence AddToFDlgList.....
-    if (GetFileFirst("MAPS\\*.dat", addressof(FileInfo))) {
-      MapUtilScreenHandle__FileList = AddToFDlgList(MapUtilScreenHandle__FileList, addressof(FileInfo));
-      MapUtilScreenHandle__sFiles++;
-      while (GetFileNext(addressof(FileInfo))) {
-        MapUtilScreenHandle__FileList = AddToFDlgList(MapUtilScreenHandle__FileList, addressof(FileInfo));
-        MapUtilScreenHandle__sFiles++;
+    for (const fileName of fs.readdirSync('MAPS')) {
+      if (!fileName.toLowerCase().endsWith('.dat')) {
+        continue;
       }
-      GetFileClose(addressof(FileInfo));
+      FileInfo.zFileName = path.join('MAPS', fileName);
+
+      MapUtilScreenHandle__FileList = AddToFDlgList(MapUtilScreenHandle__FileList, FileInfo);
+      MapUtilScreenHandle__sFiles++;
     }
 
     MapUtilScreenHandle__FListNode = MapUtilScreenHandle__FileList;
 
     // Allocate 24 bit Surface
-    MapUtilScreenHandle__p24BitValues = createArrayFrom(MINIMAP_X_SIZE * MINIMAP_Y_SIZE, createRGBValues);
-    MapUtilScreenHandle__p24BitDest = MapUtilScreenHandle__p24BitValues;
+    MapUtilScreenHandle__p24BitDest = new Uint8ClampedArray(MINIMAP_X_SIZE * MINIMAP_Y_SIZE * 3);
 
     // Allocate 8-bit surface
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -147,7 +134,7 @@ export function MapUtilScreenHandle(): UINT32 {
     return Enum26.MAPUTILITY_SCREEN;
   }
 
-  zFilename = sprintf("%s", MapUtilScreenHandle__FListNode.value.FileInfo.zFileName);
+  zFilename = sprintf("%s", MapUtilScreenHandle__FListNode.FileInfo.zFileName);
 
   // OK, load maps and do overhead shrinkage of them...
   if (!LoadWorld(zFilename)) {
@@ -234,9 +221,10 @@ export function MapUtilScreenHandle(): UINT32 {
       // Write into dest!
       pDestBuf[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
 
-      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].r = bAvR;
-      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].g = bAvG;
-      MapUtilScreenHandle__p24BitValues[(iY * Math.trunc(uiDestPitchBYTES / 2)) + iX].b = bAvB;
+      const idx = ((iY * Math.trunc(uiDestPitchBYTES / 2)) + iX) * 3;
+      MapUtilScreenHandle__p24BitDest[idx] = bAvR;
+      MapUtilScreenHandle__p24BitDest[idx + 1] = bAvG;
+      MapUtilScreenHandle__p24BitDest[idx + 2] = bAvB;
 
       // Increment
       dY += gdYStep;
@@ -288,7 +276,7 @@ export function MapUtilScreenHandle(): UINT32 {
   }
 
   zFilename2 = sprintf("RADARMAPS\\%s.STI", zFilename);
-  WriteSTIFile(pDataPtr, pPalette, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, zFilename2, CONVERT_ETRLE_COMPRESS, 0);
+  WriteSTIFile(Buffer.from(pDataPtr.buffer, pDataPtr.byteOffset, pDataPtr.byteLength), pPalette, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, zFilename2, CONVERT_ETRLE_COMPRESS, 0);
 
   UnLockVideoSurface(gi8BitMiniMap);
 
@@ -309,7 +297,7 @@ export function MapUtilScreenHandle(): UINT32 {
   }
 
   // Set next
-  MapUtilScreenHandle__FListNode = MapUtilScreenHandle__FListNode.value.pNext;
+  MapUtilScreenHandle__FListNode = MapUtilScreenHandle__FListNode.pNext;
   MapUtilScreenHandle__sCurFile++;
 
   return Enum26.MAPUTILITY_SCREEN;

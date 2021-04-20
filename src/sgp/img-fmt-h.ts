@@ -127,6 +127,40 @@ export function readSTCIHeader(o: STCIHeader, buffer: Buffer, offset: number = 0
   return offset;
 }
 
+export function writeSTCIHeader(o: STCIHeader, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.write(o.cID, offset, 'ascii');
+  offset = buffer.writeUInt32LE(o.uiOriginalSize, offset);
+  offset = buffer.writeUInt32LE(o.uiStoredSize, offset);
+  offset = buffer.writeUInt32LE(o.uiTransparentValue, offset);
+  offset = buffer.writeUInt32LE(o.fFlags, offset);
+  offset = buffer.writeUInt16LE(o.usHeight, offset);
+  offset = buffer.writeUInt16LE(o.usWidth, offset);
+
+  if (o.fFlags & STCI_RGB) {
+    offset = buffer.writeUInt32LE(o.RGB.uiRedMask, offset);
+    offset = buffer.writeUInt32LE(o.RGB.uiGreenMask, offset);
+    offset = buffer.writeUInt32LE(o.RGB.uiBlueMask, offset);
+    offset = buffer.writeUInt32LE(o.RGB.uiAlphaMask, offset);
+    offset = buffer.writeUInt8(o.RGB.ubRedDepth, offset);
+    offset = buffer.writeUInt8(o.RGB.ubGreenDepth, offset);
+    offset = buffer.writeUInt8(o.RGB.ubBlueDepth, offset);
+    offset = buffer.writeUInt8(o.RGB.ubAlphaDepth, offset);
+  } else if (o.fFlags & STCI_INDEXED) {
+    offset = buffer.writeUInt32LE(o.Indexed.uiNumberOfColours, offset);
+    offset = buffer.writeUInt16LE(o.Indexed.usNumberOfSubImages, offset);
+    offset = buffer.writeUInt8(o.Indexed.ubRedDepth, offset);
+    offset = buffer.writeUInt8(o.Indexed.ubGreenDepth, offset);
+    offset = buffer.writeUInt8(o.Indexed.ubBlueDepth, offset);
+    offset = writeUIntArray(o.Indexed.cIndexedUnused, buffer, offset, 1);
+  }
+
+  offset = buffer.writeUInt8(o.ubDepth, offset);
+  offset = writePadding(buffer, offset, 3); // padding
+  offset = buffer.writeUInt32LE(o.uiAppDataSize, offset);
+
+  return offset;
+}
+
 export interface STCISubImage {
   uiDataOffset: UINT32;
   uiDataLength: UINT32;
@@ -136,12 +170,57 @@ export interface STCISubImage {
   usWidth: UINT16;
 }
 
+export function createSTCISubImage(): STCISubImage {
+  return {
+    uiDataOffset: 0,
+    uiDataLength: 0,
+    sOffsetX: 0,
+    sOffsetY: 0,
+    usHeight: 0,
+    usWidth: 0,
+  };
+}
+
+export function copySTCISubImage(dest: STCISubImage, src: STCISubImage) {
+  dest.uiDataOffset = src.uiDataOffset;
+  dest.uiDataLength = src.uiDataLength;
+  dest.sOffsetX = src.sOffsetX;
+  dest.sOffsetY = src.sOffsetY;
+  dest.usHeight = src.usHeight;
+  dest.usWidth = src.usWidth;
+}
+
+export function writeSTCISubImage(o: STCISubImage, buffer: Buffer, offset: number): number {
+  offset = buffer.writeUInt32LE(o.uiDataOffset, offset);
+  offset = buffer.writeUInt32LE(o.uiDataLength, offset);
+  offset = buffer.writeInt16LE(o.sOffsetX, offset);
+  offset = buffer.writeInt16LE(o.sOffsetY, offset);
+  offset = buffer.writeUInt16LE(o.usHeight, offset);
+  offset = buffer.writeUInt16LE(o.usWidth, offset);
+  return offset;
+}
+
 export const STCI_SUBIMAGE_SIZE = 16;
 
 export interface STCIPaletteElement {
   ubRed: UINT8;
   ubGreen: UINT8;
   ubBlue: UINT8;
+}
+
+export function createSTCIPaletteElement(): STCIPaletteElement {
+  return {
+    ubRed: 0,
+    ubGreen: 0,
+    ubBlue: 0,
+  };
+}
+
+export function writeSTCIPaletteElement(o: STCIPaletteElement, buffer: Buffer, offset: number = 0): number {
+  offset = buffer.writeUInt8(o.ubRed, offset);
+  offset = buffer.writeUInt8(o.ubGreen, offset);
+  offset = buffer.writeUInt8(o.ubBlue, offset);
+  return offset;
 }
 
 export const STCI_PALETTE_ELEMENT_SIZE = 3;
