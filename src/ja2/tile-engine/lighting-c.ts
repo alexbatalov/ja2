@@ -154,15 +154,32 @@ export function LoadShadeTablesFromTextFile(): void {
   let j: INT32;
   let num: INT32;
   let str: string /* UINT8[10] */;
+  let startPos: number;
+  let pos: number;
+  let ch: number;
   if (gfLoadShadeTablesFromTextFile) {
     fp = fs.openSync("ShadeTables.txt", "r");
     Assert(fp);
     if (fp) {
+      str = fs.readFileSync(fp, { encoding: 'ascii' });
+      pos = 0;
       for (i = 0; i < 16; i++) {
         for (j = 0; j < 3; j++) {
-          fscanf(fp, "%s", str);
-          sscanf(str, "%d", addressof(num));
-          gusShadeLevels[i][j] = num;
+          startPos = -1;
+          while (pos < str.length) {
+            ch = str.charCodeAt(pos);
+            if (ch === 0x09 || ch === 0x0A || ch === 0x0D || ch === 0x20) {
+              if (startPos !== -1) {
+                break;
+              }
+            } else {
+              if (startPos === -1) {
+                startPos = pos;
+              }
+            }
+            pos++;
+          }
+          gusShadeLevels[i][j] = parseInt(str.substring(startPos, pos), 10) || 0;
         }
       }
       fs.closeSync(fp);
