@@ -1803,11 +1803,8 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
 
     return;
   }
-  iRandom = Random(giReinforcementPoints + giReinforcementPool);
-  if (iRandom < giReinforcementPool) {
-    // use the pool and send the requested amount from SECTOR P3 (queen's palace)
-  QUEEN_POOL:
 
+  function QueenPool() {
     // KM : Sep 9, 1999
     // If the player owns sector P3, any troops that spawned there were causing serious problems, seeing battle checks
     // were not performed!
@@ -1857,12 +1854,19 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       MoveSAIGroupToSector(createPointer(() => pGroup, (v) => pGroup = v), gGarrisonGroup[iDstGarrisonID].ubSectorID, Enum172.STAGE, Enum184.REINFORCEMENTS);
     }
     ValidateWeights(14);
+  }
+
+  iRandom = Random(giReinforcementPoints + giReinforcementPool);
+  if (iRandom < giReinforcementPool) {
+    // use the pool and send the requested amount from SECTOR P3 (queen's palace)
+    QueenPool();
     return;
   } else {
     iSrcGarrisonID = ChooseSuitableGarrisonToProvideReinforcements(iDstGarrisonID, iReinforcementsRequested);
     if (iSrcGarrisonID == -1) {
       ValidateWeights(15);
-      goto("QUEEN_POOL");
+      QueenPool();
+      return;
     }
 
     ubSrcSectorX = (gGarrisonGroup[iSrcGarrisonID].ubSectorID % 16) + 1;
