@@ -1601,7 +1601,7 @@ function AIL_start_sample(sample: HSAMPLE) {
   if (audioBuffer) {
     sample.audioBufferSourceNode.buffer = audioBuffer;
 
-    sample.audioBufferSourceNode.addEventListener('ended', sampleEnded);
+    sample.audioBufferSourceNode.addEventListener('ended', sampleEnded.bind(sample));
 
     sample.audioBufferSourceNode.start();
 
@@ -1698,7 +1698,7 @@ function AIL_open_stream(context: AudioContext, fileName: string, flags: number)
 }
 
 function AIL_start_stream(stream: HSTREAM) {
-  stream.audioBufferSourceNode.addEventListener('ended', streamEnded);
+  stream.audioBufferSourceNode.addEventListener('ended', streamEnded.bind(stream));
 
   stream.audioBufferSourceNode.start();
 
