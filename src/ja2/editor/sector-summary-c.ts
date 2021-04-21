@@ -836,6 +836,9 @@ export function RenderSummaryWindow(): void {
     if (gfGlobalSummaryExists) {
       let str: string /* UINT16[100] */;
       let fSectorSummaryExists: boolean = false;
+
+      let gotoSpecialCase = false;
+
       if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
         DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         SetFontForeground(FONT_YELLOW);
@@ -852,7 +855,7 @@ export function RenderSummaryWindow(): void {
         if (gfTempFile) {
           SetFontForeground(FONT_YELLOW);
           mprintf(10, 30, "Entering a temp file name that doesn't follow campaign editor conventions...");
-          goto("SPECIALCASE_LABEL"); // OUCH!!!
+          gotoSpecialCase = true; // OUCH!!!
         } else if (!gfWorldLoaded) {
           SetFontForeground(FONT_YELLOW);
           mprintf(10, 30, "You need to either load an existing map or create a new map before being");
@@ -1082,7 +1085,10 @@ export function RenderSummaryWindow(): void {
           gszDisplayName = gszFilename;
           DisableButton(iSummaryButton[Enum58.SUMMARY_LOAD]);
         }
-      SPECIALCASE_LABEL:
+        gotoSpecialCase = true;
+      }
+
+      if (gotoSpecialCase) {
         if (gfOverrideDirty && gfPersistantSummary)
           CalculateOverrideStatus();
         if (gubOverrideStatus == Enum57.INACTIVE) {
