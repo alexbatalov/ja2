@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const fs: typeof import('fs') = require('fs');
+
 const MAP_SIZE = 208;
 const MAP_LEFT = 417;
 const MAP_TOP = 15;
@@ -1602,7 +1604,7 @@ export function HandleSummaryInput(pEvent: InputAtom): boolean {
 }
 
 function CreateGlobalSummary(): void {
-  let fp: Pointer<FILE>;
+  let fp: number;
   let Dir: string /* STRING512 */;
   let ExecDir: string /* STRING512 */;
 
@@ -1619,10 +1621,10 @@ function CreateGlobalSummary(): void {
   if (!SetFileManCurrentDirectory(Dir))
     AssertMsg(0, "Can't set to new directory, JA2\\DevInfo for summary information.");
   // Generate a simple readme file.
-  fp = fopen("readme.txt", "w");
+  fp = fs.openSync("readme.txt", "w");
   Assert(fp);
-  fprintf(fp, "%s\n%s\n", "This information is used in conjunction with the editor.", "This directory or it's contents shouldn't be included with final release.");
-  fclose(fp);
+  fs.writeSync(fp, Buffer.from(sprintf("%s\n%s\n", "This information is used in conjunction with the editor.", "This directory or it's contents shouldn't be included with final release."), "ascii"));
+  fs.closeSync(fp);
 
   Dir = sprintf("%s\\Data", ExecDir);
   SetFileManCurrentDirectory(Dir);
@@ -1870,27 +1872,26 @@ function CalculateOverrideStatus(): void {
   gfOverrideDirty = false;
   gfOverride = false;
   if (gfTempFile) {
-    let ptr: string /* Pointer<UINT8> */;
+    let ptr: number /* Pointer<UINT8> */;
     szFilename = sprintf("MAPS\\%s", gszTempFilename);
     if (szFilename.length == 5)
       szFilename += "test.dat";
-    ptr = strstr(szFilename, ".");
-    if (!ptr)
+    ptr = szFilename.indexOf(".");
+    if (ptr === -1)
       szFilename += ".dat";
     else
-      ptr = ".dat";
+    szFilename = szFilename.substring(0, ptr) + ".dat";
   } else
     szFilename = sprintf("MAPS\\%s", gszFilename);
-  gszDisplayName = swprintf("%s", addressof(szFilename[5]));
-  if (GetFileFirst(szFilename, addressof(FileInfo))) {
+  gszDisplayName = swprintf("%s", szFilename.substring(5));
+  if (FileExistsNoDB(szFilename)) {
     if (gfWorldLoaded) {
-      if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
+      if (FileGetAttributes(szFilename) & (FILE_IS_READONLY | FILE_IS_SYSTEM))
         gubOverrideStatus = Enum57.READONLY;
       else
         gubOverrideStatus = Enum57.OVERWRITE;
       ShowButton(iSummaryButton[Enum58.SUMMARY_OVERRIDE]);
       ButtonList[iSummaryButton[Enum58.SUMMARY_OVERRIDE]].uiFlags &= (~BUTTON_CLICKED_ON);
-      GetFileClose(addressof(FileInfo));
       DisableButton(iSummaryButton[Enum58.SUMMARY_SAVE]);
     }
     if (gfTempFile)
@@ -2083,7 +2084,7 @@ function LoadGlobalSummary(): void {
 }
 
 function GenerateSummaryList(): void {
-  let fp: Pointer<FILE>;
+  let fp: number;
   let ExecDir: string /* STRING512 */;
   let Dir: string /* STRING512 */;
 
@@ -2097,10 +2098,10 @@ function GenerateSummaryList(): void {
     if (!SetFileManCurrentDirectory(Dir))
       AssertMsg(0, "Can't set to new directory, JA2\\DevInfo for summary information.");
     // Generate a simple readme file.
-    fp = fopen("readme.txt", "w");
+    fp = fs.openSync("readme.txt", "w");
     Assert(fp);
-    fprintf(fp, "%s\n%s\n", "This information is used in conjunction with the editor.", "This directory or it's contents shouldn't be included with final release.");
-    fclose(fp);
+    fs.writeSync(fp, Buffer.from(sprintf("%s\n%s\n", "This information is used in conjunction with the editor.", "This directory or it's contents shouldn't be included with final release."), "ascii"));
+    fs.closeSync(fp);
   }
 
   // Set current directory back to data directory!
@@ -2109,33 +2110,33 @@ function GenerateSummaryList(): void {
 }
 
 export function WriteSectorSummaryUpdate(puiFilename: string /* Pointer<UINT8> */, ubLevel: UINT8, pSummaryFileInfo: SUMMARYFILE): void {
-  let fp: Pointer<FILE>;
+  let fp: number;
   let ExecDir: string /* STRING512 */;
   let Dir: string /* STRING512 */;
-  let ptr: string /* Pointer<UINT8> */;
+  let ptr: number /* Pointer<UINT8> */;
   let x: INT8;
   let y: INT8;
   let buffer: Buffer;
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
-  GetExecutableDirectory(ExecDir);
+  ExecDir = GetExecutableDirectory();
   Dir = sprintf("%s\\DevInfo", ExecDir);
   if (!SetFileManCurrentDirectory(Dir))
     AssertMsg(0, "JA2\\DevInfo folder not found and should exist!");
 
-  ptr = strstr(puiFilename, ".dat");
-  if (!ptr)
+  ptr = puiFilename.indexOf(".dat");
+  if (ptr === -1)
     AssertMsg(0, "Illegal sector summary filename.");
-  ptr = ".sum";
+  puiFilename = puiFilename.substring(0, ptr) + ".sum";
 
   // write the summary information
-  fp = fopen(puiFilename, "wb");
+  fp = fs.openSync(puiFilename, "w");
   Assert(fp);
 
   buffer = Buffer.allocUnsafe(SUMMARY_FILE_SIZE);
   writeSummaryFile(pSummaryFileInfo, buffer);
-  fwrite(buffer, 1, SUMMARY_FILE_SIZE, fp);
-  fclose(fp);
+  fs.writeSync(fp, buffer);
+  fs.closeSync(fp);
 
   gusNumEntriesWithOutdatedOrNoSummaryInfo--;
   UpdateMasterProgress();
@@ -2184,7 +2185,7 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   let temp: SUMMARYFILE = createSummaryFile();
   let x: INT32;
   let y: INT32;
-  let fp: Pointer<FILE>;
+  let fp: number;
   let buffer: Buffer;
 
   filename = pSector;
@@ -2198,13 +2199,13 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   }
   filename += ".sum";
 
-  fp = fopen(filename, "rb");
+  fp = fs.openSync(filename, "r");
   if (!fp) {
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     return;
   }
   buffer = Buffer.allocUnsafe(SUMMARY_FILE_SIZE);
-  fread(buffer, 1, SUMMARY_FILE_SIZE, fp);
+  fs.readSync(fp, buffer, 0, SUMMARY_FILE_SIZE, null);
   readSummaryFile(temp, buffer);
 
   if (temp.ubSummaryVersion < MINIMUMVERSION || dMajorMapVersion < gdMajorMapVersion) {
@@ -2229,7 +2230,7 @@ function LoadSummary(pSector: string /* Pointer<UINT8> */, ubLevel: UINT8, dMajo
   if (gpSectorSummary[x][y][ubLevel].ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 
-  fclose(fp);
+  fs.closeSync(fp);
 }
 
 export let MasterStart: DOUBLE;
