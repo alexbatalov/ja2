@@ -555,48 +555,6 @@ export function ShutdownZBuffer(pBuffer: Uint8ClampedArray): boolean {
   return true;
 }
 
-function BlitZRect(pZBuffer: Uint16Array, uiPitch: UINT32, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, usZValue: UINT16): boolean {
-  let sLeftClip: INT16;
-  let sTopClip: INT16;
-  let sRightClip: INT16;
-  let sBottomClip: INT16;
-  let pZPtr: Pointer<UINT8>;
-  let uiLineSkip: UINT32;
-  let usWidth: UINT32;
-  let usHeight: UINT32;
-
-  sLeftClip = Math.max(ClippingRect.iLeft, sLeft);
-  sRightClip = Math.min(ClippingRect.iRight, sRight);
-  sTopClip = Math.max(ClippingRect.iTop, sTop);
-  sBottomClip = Math.min(ClippingRect.iBottom, sBottom);
-
-  usHeight = sBottomClip - sTopClip;
-  usWidth = sRightClip - sLeftClip;
-  pZPtr = pZBuffer + (sTopClip * uiPitch) + (sLeftClip * 2);
-  uiLineSkip = (uiPitch - (usWidth * 2));
-
-  if ((usHeight == 0) || (usWidth == 0))
-    return false;
-
-  asm(`
-    mov edi, pZPtr
-    xor eax, eax
-    mov ax, usZValue
-    mov ebx, usWidth
-    mov edx, usHeight
-
-    BZR1:
-    mov ecx, ebx
-    rep stosw
-    add edi, uiLineSkip
-
-    dec edx
-    jnz BZR1
-  `);
-
-  return true;
-}
-
 //*****************************************************************************
 //** 16 Bit Blitters
 //**
