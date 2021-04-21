@@ -3071,7 +3071,7 @@ function DrawGenericButton(b: GUI_BUTTON): void {
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), b.YLoc, ImgNum, ClipRect);
+      throw new Error('Should be unreachable');
     }
 
     if (q == 0)
@@ -3082,20 +3082,20 @@ function DrawGenericButton(b: GUI_BUTTON): void {
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, (b.XLoc + (q * iBorderWidth)), cy, ImgNum, ClipRect);
+      throw new Error('Should be unreachable');
     }
   }
   // Blit the right side corners
   if (gbPixelDepth == 16) {
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, ClipRect);
   } else if (gbPixelDepth == 8) {
-    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, b.YLoc, 2, ClipRect);
+    throw new Error('Should be unreachable');
   }
 
   if (gbPixelDepth == 16) {
     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, ClipRect);
   } else if (gbPixelDepth == 8) {
-    Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, ClipRect);
+    throw new Error('Should be unreachable');
   }
   // Draw the vertical members of the button's borders
   NumChunksHigh--;
@@ -3105,13 +3105,13 @@ function DrawGenericButton(b: GUI_BUTTON): void {
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 3, ClipRect);
+      throw new Error('Should be unreachable');
     }
 
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight) - (iBorderHeight - hremain)), 4, ClipRect);
+      throw new Error('Should be unreachable');
     }
   }
 
@@ -3119,13 +3119,13 @@ function DrawGenericButton(b: GUI_BUTTON): void {
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, b.XLoc, (b.YLoc + (q * iBorderHeight)), 3, ClipRect);
+      throw new Error('Should be unreachable');
     }
 
     if (gbPixelDepth == 16) {
       Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, ClipRect);
     } else if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, (b.YLoc + (q * iBorderHeight)), 4, ClipRect);
+      throw new Error('Should be unreachable');
     }
   }
 

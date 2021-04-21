@@ -464,19 +464,7 @@ function BltVideoObjectToBuffer(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UI
             break;
           }
         } else if (gbPixelDepth == 8) {
-          if (fBltFlags & VO_BLT_SRCTRANSPARENCY) {
-            if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, ClippingRect))
-              Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex, ClippingRect);
-            else
-              Blt8BPPDataTo8BPPBufferTransparent(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex);
-            break;
-          } else if (fBltFlags & VO_BLT_SHADOW) {
-            if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, ClippingRect))
-              Blt8BPPDataTo8BPPBufferShadowClip(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex, ClippingRect);
-            else
-              Blt8BPPDataTo8BPPBufferShadow(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex);
-            break;
-          }
+          throw new Error('Should be unreachable');
         }
         // Use default blitter here
         // Blt8BPPDataTo16BPPBuffer( hDestVObject, hSrcVObject, (UINT16)iDestX, (UINT16)iDestY, (SGPRect*)&SrcRect );

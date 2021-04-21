@@ -1966,49 +1966,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     }
                   } else // 8bpp section
                   {
-                    if (fPixelate) {
-                      if (fZWrite)
-                        Blt8BPPDataTo8BPPBufferTransZClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                      else
-                        Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                    } else if (BltIsClipped(hVObject, sXPos, sYPos, usImageIndex, gClippingRect)) {
-                      if (fMerc) {
-                        Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect, pShadeTable);
-                      } else if (fShadowBlitter)
-                        if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                        else
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-
-                      else if (fZBlitter) {
-                        if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                        else
-                          Blt8BPPDataTo8BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                      } else
-                        Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, gClippingRect);
-                    } else {
-                      if (fMerc) {
-                        Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
-
-                        //	Blt8BPPDataTo8BPPBufferTransShadowZNB( (UINT16*)pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel,
-                        //																							hVObject,
-                        //																							sXPos, sYPos,
-                        //																							usImageIndex,
-                        //																							pShadeTable);
-                      } else if (fShadowBlitter) {
-                        if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferShadowZ(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
-                        else
-                          Blt8BPPDataTo8BPPBufferShadowZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
-                      } else if (fZBlitter) {
-                        if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferTransZ(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
-                        else
-                          Blt8BPPDataTo8BPPBufferTransZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
-                      } else
-                        Blt8BPPDataTo8BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex);
-                    }
+                    throw new Error('Should be unreachable');
                   }
                 }
 
