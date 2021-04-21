@@ -4169,41 +4169,6 @@ export function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Uint8ClampedArray, uiDestPi
     DestPtr += LineSkip;
   }
 
-  asm(`
-    mov esi, SrcPtr // pointer to current line start address in source
-    mov edi, DestPtr // pointer to current line start address in destination
-    mov ebx, BlitHeight // line counter (goes top to bottom)
-    mov edx, p16BPPPalette // conversion table
-
-    sub eax, eax
-    sub ecx, ecx
-
-    NewRow:
-    mov ecx, BlitLength // pixels to blit count
-
-    BlitLoop:
-    mov al, [esi]
-    xor ah, ah
-
-    shl eax, 1 // make it into a word index
-    mov ax, [edx+eax] // get 16-bit version of 8-bit pixel
-    mov [edi], ax // store it in destination buffer
-
-    inc edi
-    inc esi
-    inc edi
-    dec ecx
-    jnz BlitLoop
-
-    add esi, SrcSkip // move line pointers down one line
-    add edi, LineSkip
-
-    dec ebx // check line counter
-    jnz NewRow // done blitting, exit
-
-    // DoneBlit: // finished blit
-  `);
-
   return true;
 }
 
@@ -4504,45 +4469,6 @@ export function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Uint8ClampedArray, uiD
     SrcPtr += uiSrcSkip;
     DestPtr += LineSkip;
   }
-
-  asm(`
-    mov esi, SrcPtr // pointer to current line start address in source
-    mov edi, DestPtr // pointer to current line start address in destination
-    mov ebx, usHeight // line counter (goes top to bottom)
-    shr ebx, 1 // half the rows
-    mov edx, p16BPPPalette
-
-    xor eax, eax
-
-    BlitSetup:
-    mov ecx, usWidth
-    shr ecx, 1 // divide the width by 2
-
-    ReadMask:
-    mov al, [esi]
-    xor ah, ah
-    inc esi // skip one source byte
-    inc esi
-
-    shl eax, 1 // make it into a word index
-    mov ax, [edx+eax] // get 16-bit version of 8-bit pixel
-    mov [edi], ax // store it in destination buffer
-    inc edi // next pixel
-    inc edi
-
-    dec ecx
-    jnz ReadMask
-
-    // DoneRow:
-
-    add esi, uiSrcSkip // move source pointer down one line
-    add edi, LineSkip
-
-    dec ebx // check line counter
-    jnz BlitSetup // done blitting, exit
-
-    // DoneBlit: // finished blit
-  `);
 
   return true;
 }
