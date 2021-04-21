@@ -1051,8 +1051,6 @@ export function ShutdownFontManager(): void {
   let count: INT32;
 
   UnRegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
-  if (pFManager)
-    MemFree(pFManager);
 
   for (count = 0; count < MAX_FONTS; count++) {
     if (FontObjs[count] != null)
