@@ -1664,6 +1664,8 @@ function DoneFadeOutForSaveLoadScreen(): void {
   // Make sure we DONT reset the levels if we are loading a game
   gfHadToMakeBasementLevels = false;
 
+  let gotoSuccessfullyCorrectedSave = false;
+
   if (!LoadSavedGame(gbSelectedSaveLocation)) {
     if (guiBrokenSaveGameVersion < 95 && !gfSchedulesHosed) {
       // Hack problem with schedules getting misaligned.
@@ -1671,17 +1673,20 @@ function DoneFadeOutForSaveLoadScreen(): void {
       if (!LoadSavedGame(gbSelectedSaveLocation)) {
         DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_LOAD_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, FailedLoadingGameCallBack);
         NextLoopCheckForEnoughFreeHardDriveSpace();
+        gfSchedulesHosed = false;
       } else {
         gfSchedulesHosed = false;
-        goto("SUCCESSFULLY_CORRECTED_SAVE");
+        gotoSuccessfullyCorrectedSave = true;
       }
-      gfSchedulesHosed = false;
     } else {
       DoSaveLoadMessageBox(Enum24.MSG_BOX_BASIC_STYLE, zSaveLoadText[Enum371.SLG_LOAD_GAME_ERROR], Enum26.SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, FailedLoadingGameCallBack);
       NextLoopCheckForEnoughFreeHardDriveSpace();
     }
   } else {
-  SUCCESSFULLY_CORRECTED_SAVE:
+    gotoSuccessfullyCorrectedSave = true;
+  }
+
+  if (gotoSuccessfullyCorrectedSave) {
       // If we are to go to map screen after loading the game
       if (guiScreenToGotoAfterLoadingSavedGame == Enum26.MAP_SCREEN) {
         gFadeInDoneCallback = DoneFadeInForSaveLoadScreen;
