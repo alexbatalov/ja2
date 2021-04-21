@@ -30,9 +30,9 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Uint8Cl
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -93,11 +93,11 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Uint8Cl
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -295,9 +295,9 @@ export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Uint8ClampedA
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Uint16Array;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let uiLineFlag: UINT32;
   let pTrav: ETRLEObject;
 
@@ -323,11 +323,11 @@ export function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Uint8ClampedA
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -424,9 +424,9 @@ export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Uint8Clampe
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Uint16Array;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let uiLineFlag: UINT32;
   let pTrav: ETRLEObject;
 
@@ -452,11 +452,11 @@ export function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Uint8Clampe
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -773,8 +773,8 @@ export function Blt16BPPTo16BPPTrans(pDest: Uint8ClampedArray, uiDestPitch: UINT
 
 **********************************************************************************************/
 export function Blt16BPPTo16BPPMirror(pDest: Uint8ClampedArray, uiDestPitch: UINT32, pSrc: Uint8ClampedArray, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
-  let pSrcPtr: Pointer<UINT16>;
-  let pDestPtr: Pointer<UINT16>;
+  let pSrcPtr: number;
+  let pDestPtr: number;
   let uiLineSkipDest: UINT32;
   let uiLineSkipSrc: UINT32;
   let RightSkip: INT32;
@@ -804,10 +804,7 @@ export function Blt16BPPTo16BPPMirror(pDest: Uint8ClampedArray, uiDestPitch: UIN
     ClipX2 = 640; // ClippingRect.iRight;
     ClipY2 = 480; // ClippingRect.iBottom;
   } else {
-    ClipX1 = clipregion.iLeft;
-    ClipY1 = clipregion.iTop;
-    ClipX2 = clipregion.iRight;
-    ClipY2 = clipregion.iBottom;
+    throw new Error('Should be unreachable');
   }
 
   // Calculate rows hanging off each side of the screen
@@ -831,10 +828,10 @@ export function Blt16BPPTo16BPPMirror(pDest: Uint8ClampedArray, uiDestPitch: UIN
   if ((TopSkip >= uiHeight) || (BottomSkip >= uiHeight))
     return true;
 
-  pSrcPtr = (pSrc + (TopSkip * uiSrcPitch) + (RightSkip * 2));
-  pDestPtr = (pDest + (iTempY * uiDestPitch) + (iTempX * 2) + ((BlitLength - 1) * 2));
+  pSrcPtr = ((TopSkip * uiSrcPitch) + (RightSkip * 4));
+  pDestPtr = ((iTempY * uiDestPitch) + (iTempX * 4) + ((BlitLength - 1) * 4));
   uiLineSkipDest = uiDestPitch; //+((BlitLength-1)*2);
-  uiLineSkipSrc = uiSrcPitch - (BlitLength * 2);
+  uiLineSkipSrc = uiSrcPitch - (BlitLength * 4);
 
   asm(`
     mov esi, pSrcPtr
@@ -878,16 +875,16 @@ export function Blt16BPPTo16BPPMirror(pDest: Uint8ClampedArray, uiDestPitch: UIN
 
 **********************************************************************************************/
 export function Blt8BPPTo8BPP(pDest: Uint8ClampedArray, uiDestPitch: UINT32, pSrc: Uint8ClampedArray, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): boolean {
-  let pSrcPtr: Pointer<UINT8>;
-  let pDestPtr: Pointer<UINT8>;
+  let pSrcPtr: number;
+  let pDestPtr: number;
   let uiLineSkipDest: UINT32;
   let uiLineSkipSrc: UINT32;
 
   Assert(pDest != null);
   Assert(pSrc != null);
 
-  pSrcPtr = pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos);
-  pDestPtr = pDest + (iDestYPos * uiDestPitch) + (iDestXPos);
+  pSrcPtr = (iSrcYPos * uiSrcPitch) + (iSrcXPos);
+  pDestPtr = (iDestYPos * uiDestPitch) + (iDestXPos);
   uiLineSkipDest = uiDestPitch - (uiWidth);
   uiLineSkipSrc = uiSrcPitch - (uiWidth);
 
@@ -949,9 +946,9 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Uint8ClampedArra
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Uint16Array;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let uiLineFlag: UINT32;
   let pTrav: ETRLEObject;
 
@@ -977,11 +974,11 @@ export function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Uint8ClampedArra
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -1203,9 +1200,9 @@ export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Uint8ClampedAr
   let iTempX: INT32;
   let iTempY: INT32;
   let p16BPPPalette: Uint16Array;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let uiLineFlag: UINT32;
   let pTrav: ETRLEObject;
 
@@ -1231,11 +1228,11 @@ export function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Uint8ClampedAr
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -1335,9 +1332,9 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Uint8Clamp
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -1398,11 +1395,11 @@ export function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Uint8Clamp
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
   uiLineFlag = (iTempY & 1);
 
   asm(`
@@ -1786,8 +1783,8 @@ export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Uint8ClampedArray, 
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -1815,9 +1812,9 @@ export function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Uint8ClampedArray, 
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -1896,9 +1893,9 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Uint8ClampedArray,
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -1926,10 +1923,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Uint8ClampedArray,
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -2263,9 +2260,9 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Uint8ClampedAr
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -2326,10 +2323,10 @@ export function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Uint8ClampedAr
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -2525,8 +2522,8 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Uint8ClampedArr
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -2587,9 +2584,9 @@ export function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Uint8ClampedArr
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -3422,9 +3419,9 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Uint8ClampedArray, ui
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -3452,11 +3449,11 @@ export function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Uint8ClampedArray, ui
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -3535,9 +3532,9 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Uint8ClampedArray
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -3598,11 +3595,11 @@ export function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Uint8ClampedArray
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -4221,8 +4218,8 @@ export function Blt8BPPDataTo16BPPBuffer(pBuffer: Uint8ClampedArray, uiDestPitch
   //	UINT32 uiOffset;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   //	ETRLEObject *pTrav;
   let iTempX: INT32;
@@ -4250,10 +4247,10 @@ export function Blt8BPPDataTo16BPPBuffer(pBuffer: Uint8ClampedArray, uiDestPitch
     return false;
   }
 
-  SrcPtr = pSrcBuffer;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = 0;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVSurface.p16BPPPalette;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr // pointer to current line start address in source
@@ -5844,8 +5841,8 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Uint8ClampedArray, 
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -5907,9 +5904,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Uint8ClampedArray, 
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
   p16BPPPalette = hSrcVObject.pShadeCurrent;
 
   asm(`
@@ -6556,8 +6553,8 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Uint8ClampedA
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -6617,10 +6614,10 @@ export function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Uint8ClampedA
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7070,9 +7067,9 @@ export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Uint8ClampedArray, u
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7100,11 +7097,11 @@ export function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Uint8ClampedArray, u
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7205,9 +7202,9 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Uint8ClampedArray, u
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7235,11 +7232,11 @@ export function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Uint8ClampedArray, u
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7320,9 +7317,9 @@ export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Uint8ClampedArra
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7383,11 +7380,11 @@ export function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Uint8ClampedArra
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
+  ZPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7571,9 +7568,9 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Uint8ClampedArray,
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
-  let ZPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
+  let ZPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7601,11 +7598,11 @@ export function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Uint8ClampedArray,
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  ZPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7682,8 +7679,8 @@ export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Uint8ClampedArray
   let usHeight: UINT32;
   let usWidth: UINT32;
   let Unblitted: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7743,10 +7740,10 @@ export function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Uint8ClampedArray
   if ((TopSkip >= usHeight) || (BottomSkip >= usHeight))
     return true;
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 4));
 
   asm(`
     mov esi, SrcPtr
@@ -7955,8 +7952,8 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Uint8ClampedArray, ui
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -7984,10 +7981,10 @@ export function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Uint8ClampedArray, ui
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
   p16BPPPalette = hSrcVObject.pShadeCurrent;
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr

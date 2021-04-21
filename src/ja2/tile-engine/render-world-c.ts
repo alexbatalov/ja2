@@ -5119,8 +5119,8 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Uint8ClampedArray, uiDest
   let uiOffset: UINT32;
   let usHeight: UINT32;
   let usWidth: UINT32;
-  let SrcPtr: Pointer<UINT8>;
-  let DestPtr: Pointer<UINT8>;
+  let SrcPtr: number;
+  let DestPtr: number;
   let LineSkip: UINT32;
   let pTrav: ETRLEObject;
   let iTempX: INT32;
@@ -5148,9 +5148,9 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Uint8ClampedArray, uiDest
     return false;
   }
 
-  SrcPtr = hSrcVObject.pPixData + uiOffset;
-  DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
-  LineSkip = (uiDestPitchBYTES - (usWidth * 2));
+  SrcPtr = uiOffset;
+  DestPtr = (uiDestPitchBYTES * iTempY) + (iTempX * 4);
+  LineSkip = (uiDestPitchBYTES - (usWidth * 4));
 
   asm(`
     mov esi, SrcPtr
