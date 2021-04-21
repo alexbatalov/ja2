@@ -1,7 +1,7 @@
 namespace ja2 {
 
 export let gfShowTerrainTileButtons: boolean;
-let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */;
+let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */ = createArray(NUM_TERRAIN_TILE_REGIONS, 0);
 let usTotalWeight: UINT16;
 let fPrevShowTerrainTileButtons: boolean = true;
 export let fUseTerrainWeights: boolean = false;

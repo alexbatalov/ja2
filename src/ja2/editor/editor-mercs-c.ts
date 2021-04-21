@@ -165,7 +165,7 @@ let iEditMercColorPage: INT32 = -1;
 let iEditMercStatPage: INT32 = -1;
 let iEditMercFindButton: INT32 = -1;
 let iEditMercSlotNumber: INT32;
-let iEditColorStart: INT32[] /* [EDIT_NUM_COLORS] */;
+let iEditColorStart: INT32[] /* [EDIT_NUM_COLORS] */ = createArray(EDIT_NUM_COLORS, 0);
 
 export let gfShowPlayers: boolean = true;
 export let gfShowEnemies: boolean = true;
