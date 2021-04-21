@@ -278,6 +278,7 @@ export function swprintf(format: string, ...args: any[]): string {
 }
 
 export function asm(s: string) {
+  throw new Error('Missing blitter');
 }
 
 }
