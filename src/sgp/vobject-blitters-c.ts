@@ -4687,20 +4687,6 @@ export function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Uint8ClampedArray
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, usColor);
 }
 
-function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect): boolean {
-  let Pattern: UINT8[][] /* [8][8] */ = [
-    [ 1, 0, 0, 0, 1, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 1, 0, 0, 0, 1, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 0, 0, 0, 1, 0, 0, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 0, 0, 1, 0, 0, 0, 1, 0 ],
-    [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-  ];
-  return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
-}
-
 /**********************************************************************************************
  Blt8BPPDataTo16BPPBufferShadow
 
