@@ -3698,58 +3698,77 @@ function ProcessBattleFrame(): void {
   pAttacker = <SOLDIERCELL><unknown>null;
   iAttacksThisFrame = 0;
 
+  // The original code used `goto` statement which jumped right in the middle of
+  // the deeply nested loop below. This flag is used to track if we need to skip
+  // all code down the road until we get to appropriate code path. Once we're
+  // there this flag is turned off, so both loops can continue as usual.
+  let gotoContinueBattle = false;
+
   if (ProcessBattleFrame__fContinue) {
     gpAR.uiCurrTime = GetJA2Clock();
     ProcessBattleFrame__fContinue = false;
-    goto("CONTINUE_BATTLE");
-  }
-  // determine how much real-time has passed since the last frame
-  if (gpAR.uiCurrTime) {
-    gpAR.uiPrevTime = gpAR.uiCurrTime;
-    gpAR.uiCurrTime = GetJA2Clock();
-  } else {
-    gpAR.uiCurrTime = GetJA2Clock();
-    return;
-  }
-  if (gpAR.fPaused)
-    return;
-
-  uiDiff = gpAR.uiCurrTime - gpAR.uiPrevTime;
-  if (gpAR.uiTimeSlice < 0xffffffff) {
-    ProcessBattleFrame__iTimeSlice = Math.trunc(uiDiff * gpAR.uiTimeSlice / 1000);
-  } else {
-    // largest positive signed value
-    ProcessBattleFrame__iTimeSlice = 0x7fffffff;
+    gotoContinueBattle = true;
   }
 
-  while (ProcessBattleFrame__iTimeSlice > 0) {
-    ProcessBattleFrame__uiSlice = Math.min(ProcessBattleFrame__iTimeSlice, 1000);
-    if (gpAR.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS)
-      gpAR.uiTotalElapsedBattleTimeInMilliseconds += ProcessBattleFrame__uiSlice;
+  if (!gotoContinueBattle) {
+    // determine how much real-time has passed since the last frame
+    if (gpAR.uiCurrTime) {
+      gpAR.uiPrevTime = gpAR.uiCurrTime;
+      gpAR.uiCurrTime = GetJA2Clock();
+    } else {
+      gpAR.uiCurrTime = GetJA2Clock();
+      return;
+    }
+    if (gpAR.fPaused)
+      return;
 
-    // Now process each of the players
-    ProcessBattleFrame__iTotal = gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies + 1;
-    ProcessBattleFrame__iMercs = ProcessBattleFrame__iMercsLeft = gpAR.ubMercs;
-    ProcessBattleFrame__iCivs = ProcessBattleFrame__iCivsLeft = gpAR.ubCivs;
-    ProcessBattleFrame__iEnemies = ProcessBattleFrame__iEnemiesLeft = gpAR.ubEnemies;
-    for (i = 0; i < gpAR.ubMercs; i++)
-      gpMercs[i].uiFlags &= ~CELL_PROCESSED;
-    for (i = 0; i < gpAR.ubCivs; i++)
-      gpCivs[i].uiFlags &= ~CELL_PROCESSED;
-    for (i = 0; i < gpAR.ubEnemies; i++)
-      gpEnemies[i].uiFlags &= ~CELL_PROCESSED;
-    while (--ProcessBattleFrame__iTotal) {
+    uiDiff = gpAR.uiCurrTime - gpAR.uiPrevTime;
+    if (gpAR.uiTimeSlice < 0xffffffff) {
+      ProcessBattleFrame__iTimeSlice = Math.trunc(uiDiff * gpAR.uiTimeSlice / 1000);
+    } else {
+      // largest positive signed value
+      ProcessBattleFrame__iTimeSlice = 0x7fffffff;
+    }
+  }
+
+  while (gotoContinueBattle || ProcessBattleFrame__iTimeSlice > 0) {
+    if (!gotoContinueBattle) {
+      ProcessBattleFrame__uiSlice = Math.min(ProcessBattleFrame__iTimeSlice, 1000);
+      if (gpAR.ubBattleStatus == Enum120.BATTLE_IN_PROGRESS)
+        gpAR.uiTotalElapsedBattleTimeInMilliseconds += ProcessBattleFrame__uiSlice;
+
+      // Now process each of the players
+      ProcessBattleFrame__iTotal = gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies + 1;
+      ProcessBattleFrame__iMercs = ProcessBattleFrame__iMercsLeft = gpAR.ubMercs;
+      ProcessBattleFrame__iCivs = ProcessBattleFrame__iCivsLeft = gpAR.ubCivs;
+      ProcessBattleFrame__iEnemies = ProcessBattleFrame__iEnemiesLeft = gpAR.ubEnemies;
+      for (i = 0; i < gpAR.ubMercs; i++)
+        gpMercs[i].uiFlags &= ~CELL_PROCESSED;
+      for (i = 0; i < gpAR.ubCivs; i++)
+        gpCivs[i].uiFlags &= ~CELL_PROCESSED;
+      for (i = 0; i < gpAR.ubEnemies; i++)
+        gpEnemies[i].uiFlags &= ~CELL_PROCESSED;
+    }
+
+    while (gotoContinueBattle || --ProcessBattleFrame__iTotal) {
       let cnt: INT32;
-      if (ProcessBattleFrame__iTimeSlice != 0x7fffffff && GetJA2Clock() > gpAR.uiCurrTime + 17 || !gpAR.fInstantFinish && iAttacksThisFrame > Math.trunc((gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies) / 4)) {
-        // We have spent too much time in here.  In order to maintain 60FPS, we will
-        // leave now, which will allow for updating of the graphics (and mouse cursor),
-        // and all of the necessary locals are saved via static variables.  It'll check
-        // the fContinue flag, and goto the CONTINUE_BATTLE label the next time this function
-        // is called.
-        ProcessBattleFrame__fContinue = true;
-        return;
+
+      if (!gotoContinueBattle) {
+        if (ProcessBattleFrame__iTimeSlice != 0x7fffffff && GetJA2Clock() > gpAR.uiCurrTime + 17 || !gpAR.fInstantFinish && iAttacksThisFrame > Math.trunc((gpAR.ubMercs + gpAR.ubCivs + gpAR.ubEnemies) / 4)) {
+          // We have spent too much time in here.  In order to maintain 60FPS, we will
+          // leave now, which will allow for updating of the graphics (and mouse cursor),
+          // and all of the necessary locals are saved via static variables.  It'll check
+          // the fContinue flag, and goto the CONTINUE_BATTLE label the next time this function
+          // is called.
+          ProcessBattleFrame__fContinue = true;
+          return;
+        }
       }
-    CONTINUE_BATTLE:
+
+      if (gotoContinueBattle) {
+        gotoContinueBattle = false;
+      }
+
       if (IsBattleOver() || gubEnemyEncounterCode != Enum164.CREATURE_ATTACK_CODE && AttemptPlayerCapture())
         return;
 
