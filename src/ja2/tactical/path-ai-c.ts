@@ -1248,6 +1248,10 @@ export function FindBestPath(s: SOLDIERTYPE, sDestination: INT16, ubLevel: INT8,
               // Can't do it here.....
               continue NEXTDIR;
           }
+        // TODO: Compiler says the following condition will never be true.
+        // Investigate further if it's a bug in the original code or a dead
+        // code path left here unintentionally.
+        // @ts-ignore
         } else if (nextCost == TRAVELCOST_NOT_STANDING) {
           switch (usMovementModeToUseForAPs) {
             case Enum193.RUNNING:
