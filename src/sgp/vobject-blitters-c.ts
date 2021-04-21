@@ -4658,27 +4658,6 @@ export function Blt16BPPBufferPixelateRect(pBuffer: Uint8ClampedArray, uiDestPit
   return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
 }
 
-/**********************************************************************************************
-        Blt16BPPBufferHatchRect
-
-                A wrapper for Blt16BPPBufferPixelateRect(), it automatically sends a hatch pattern to it
-                of the specified color
-
-*********************************************************************************************/
-function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: SGPRect, usColor: UINT16): boolean {
-  let Pattern: UINT8[][] /* [8][8] */ = [
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-    [ 1, 0, 1, 0, 1, 0, 1, 0 ],
-    [ 0, 1, 0, 1, 0, 1, 0, 1 ],
-  ];
-  return Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, usColor);
-}
-
 // Uses black hatch color
 export function Blt16BPPBufferHatchRect(pBuffer: Uint8ClampedArray, uiDestPitchBYTES: UINT32, area: SGPRect): boolean {
   let Pattern: UINT8[][] /* [8][8] */ = [
