@@ -2390,7 +2390,7 @@ export function readSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number =
   o.bActionPoints = buffer.readInt8(offset++);
   o.bInitialActionPoints = buffer.readInt8(offset++);
   offset += 3; // padding
-  o.uiStatusFlags = buffer.readUInt32LE(offset); offset += 4;
+  o.uiStatusFlags = buffer.readInt32LE(offset); offset += 4;
   offset = readObjectArray(o.inv, buffer, offset, readObjectType);
   o.pTempObject = null; offset += 4; // pointer
   o.pKeyRing = <KEY_ON_RING[]><unknown>null; offset += 4; // pointer
@@ -2917,7 +2917,7 @@ export function writeSoldierType(o: SOLDIERTYPE, buffer: Buffer, offset: number 
   offset = buffer.writeInt8(o.bActionPoints, offset);
   offset = buffer.writeInt8(o.bInitialActionPoints, offset);
   offset = writePadding(buffer, offset, 3); // padding
-  offset = buffer.writeUInt32LE(o.uiStatusFlags, offset);
+  offset = buffer.writeInt32LE(o.uiStatusFlags, offset);
   offset = writeObjectArray(o.inv, buffer, offset, writeObjectType);
   offset = writePadding(buffer, offset, 4); // pTempObject (pointer)
   offset = writePadding(buffer, offset, 4); // pKeyRing (pointer)
