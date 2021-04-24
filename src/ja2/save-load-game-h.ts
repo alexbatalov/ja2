@@ -103,13 +103,13 @@ export function readSavedGameHeader(o: SAVED_GAME_HEADER, buffer: Buffer, offset
   o.sSectorY = buffer.readInt16LE(offset); offset += 2;
   o.bSectorZ = buffer.readInt8(offset++);
   o.ubNumOfMercsOnPlayersTeam = buffer.readUInt8(offset++);
-  offset++; // padding
   o.iCurrentBalance = buffer.readInt32LE(offset); offset += 4;
   o.uiCurrentScreen = buffer.readUInt32LE(offset); offset += 4;
   o.fAlternateSector = Boolean(buffer.readUInt8(offset++));
   o.fWorldLoaded = Boolean(buffer.readUInt8(offset++));
   o.ubLoadScreenID = buffer.readUInt8(offset++);
   offset = readGameOptions(o.sInitialGameOptions, buffer, offset);
+  offset++; // padding
   o.uiRandom = buffer.readUInt32LE(offset); offset += 4;
   offset = readUIntArray(o.ubFiller, buffer, offset, 1);
   offset += 2; // padding
@@ -128,13 +128,13 @@ export function writeSavedGameHeader(o: SAVED_GAME_HEADER, buffer: Buffer, offse
   offset = buffer.writeInt16LE(o.sSectorY, offset);
   offset = buffer.writeInt8(o.bSectorZ, offset);
   offset = buffer.writeUInt8(o.ubNumOfMercsOnPlayersTeam, offset);
-  offset = writePadding(buffer, offset, 1); // padding
   offset = buffer.writeInt32LE(o.iCurrentBalance, offset);
   offset = buffer.writeUInt32LE(o.uiCurrentScreen, offset);
   offset = buffer.writeUInt8(Number(o.fAlternateSector), offset);
   offset = buffer.writeUInt8(Number(o.fWorldLoaded), offset);
   offset = buffer.writeUInt8(o.ubLoadScreenID, offset);
   offset = writeGameOptions(o.sInitialGameOptions, buffer, offset);
+  offset = writePadding(buffer, offset, 1); // padding
   offset = buffer.writeUInt32LE(o.uiRandom, offset);
   offset = writeUIntArray(o.ubFiller, buffer, offset, 1);
   offset = writePadding(buffer, offset, 2); // padding
