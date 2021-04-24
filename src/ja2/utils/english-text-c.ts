@@ -1,5 +1,7 @@
 namespace ja2 {
 
+const path: typeof import('path') = require('path');
+
 /*
 
 ******************************************************************************************************
@@ -3200,7 +3202,7 @@ export let pMessageStrings: string[] /* STR16[] */ = [
   "QuickSave", // The name of the quicksave file (filename, text reference)
   "SaveGame", // The name of the normal savegame file, such as SaveGame01, SaveGame02, etc.
   "sav", // The 3 character dos extension (represents sav)
-  "..\\SavedGames", // The name of the directory where games are saved.
+  path.join("..", "SavedGames"), // The name of the directory where games are saved.
   "Day",
   "Mercs",
   "Empty Slot", // An empty save game slot
