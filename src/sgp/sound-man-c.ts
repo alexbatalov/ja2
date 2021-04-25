@@ -1614,8 +1614,6 @@ function AIL_start_sample(sample: HSAMPLE) {
 function sampleEnded(this: HSAMPLE) {
   if (--this.loops) {
     const buffer = this.audioBufferSourceNode.buffer;
-    this.audioBufferSourceNode.disconnect(this.stereoPannerNode);
-
     this.audioBufferSourceNode = this.context.createBufferSource();
     this.audioBufferSourceNode.buffer = buffer;
     this.audioBufferSourceNode.connect(this.stereoPannerNode);
@@ -1708,8 +1706,6 @@ function AIL_start_stream(stream: HSTREAM) {
 function streamEnded(this: HSTREAM) {
   if (--this.loops) {
     const buffer = this.audioBufferSourceNode.buffer;
-    this.audioBufferSourceNode.disconnect(this.stereoPannerNode);
-
     this.audioBufferSourceNode = this.context.createBufferSource();
     this.audioBufferSourceNode.buffer = buffer;
     this.audioBufferSourceNode.connect(this.stereoPannerNode);
