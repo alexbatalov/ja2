@@ -2,7 +2,7 @@
   "name": "ja2",
   "version": "0.1.0",
   "description": "Jagged Alliance 2",
-  "main": "out/main.js",
+  "main": "index.js",
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -17,6 +17,10 @@
   "author": {
     "name": "Alexander Batalov",
     "email": "alex.batalov@gmail.com"
+  },
+  "scripts": {
+    "start": "cross-env JA2_DATA_DIR=D:/SteamLibrary/steamapps/common/JaggedAlliance2Gold/Data electron .",
+    "build": "tsc"
   },
   "license": "SEE LICENSE IN SFI-SCLA",
   "bugs": {

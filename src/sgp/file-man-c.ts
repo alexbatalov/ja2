@@ -682,8 +682,8 @@ export function FileGetSize(hFile: HWFILE): UINT32 {
     uiFileSize = GetFileSize(hRealHandle, null);
   } else {
     // if the library is open
-    if (IsLibraryOpened(sLibraryID))
-      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader.uiFileLength;
+    if (IsLibraryOpened(sLibraryID) && gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader)
+      uiFileSize = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader?.uiFileLength;
   }
 
   if (uiFileSize == 0xFFFFFFFF)
