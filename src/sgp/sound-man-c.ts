@@ -1761,12 +1761,16 @@ const DATA = 0x61746164;
 const FACT = 0x74636166;
 
 function decodeWav(buffer: Buffer): AudioBuffer | null {
+  try {
   if (buffer.readUInt32LE(0) !== RIFF) {
     return null;
   }
 
   if (buffer.readUInt32LE(8) !== WAVE) {
     return null;
+  }
+  } catch(err) {
+      console.warn(err);
   }
 
   let audioFormat = 0;
